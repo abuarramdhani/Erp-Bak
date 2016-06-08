@@ -1,0 +1,174 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class C_pricelist extends CI_Controller {
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 */
+	function __construct() 
+	{
+		parent::__construct();
+		$this->load->helper('form');
+        $this->load->helper('url');
+        $this->load->helper('html');
+        $this->load->library('form_validation');
+          //load the login model
+		$this->load->library('session');
+		  //$this->load->library('Database');
+		$this->load->model('SalesMonitoring/M_pricelist');
+		$this->load->helper('download');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+				  //redirect('index');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
+    }
+	
+	public function checkSession(){
+		if($this->session->is_logged){
+			
+		}else{
+			redirect();
+		}
+	}
+	
+	
+	//indeks
+	public function index()
+	{
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		
+		$data['pricelist'] = $this->M_pricelist->viewPricelist();
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SalesMonitoring/setting/V_pricelist',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	//indeks dari halaman create
+	public function createPricelist()
+	{
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SalesMonitoring/setting/create/V_createpricelist');
+		$this->load->view('V_Footer',$data);
+	}
+	
+	//indeks dari halaman update
+	public function updatePricelist($id)
+	{
+		$this->checkUserMenu();
+		
+		$select = $this->M_pricelist->searchPricelist($id);
+		$data['selected']= $select;
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SalesMonitoring/setting/update/V_updatepricelist',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	//menambah data
+	public function create()
+	{
+		$itemcode = $this->input->post('txt_item_code');
+		$price = $this->input->post('txt_price');
+		$startdate = $this->input->post('txt_start_date');
+		$enddate = $this->input->post('txt_end_date');
+		$lastupdated = $this->input->post('txt_last_updated');
+		$lastupdateby = $this->input->post('txt_last_update_by');
+		$creationdate = $this->input->post('txt_creation_date');
+		$createdby = $this->input->post('txt_created_by');
+		$create = $this->M_pricelist->insertPricelist($itemcode,$price,$startdate,$enddate,$lastupdated,$lastupdateby,$creationdate,$createdby);
+		redirect('SalesMonitoring/pricelist');
+	}
+	
+	//menghapus data
+	public function delete($id)
+	{
+		$this->M_pricelist->deletePricelist($id);
+		redirect('SalesMonitoring/pricelist');
+	}
+	
+	//memperbaharui data
+	public function update()
+	{
+		$id = $this->input->post('txt_pricelist_index_id');
+		$itemcode = $this->input->post('txt_item_code');
+		$price = $this->input->post('txt_price');
+		$startdate = $this->input->post('txt_start_date');
+		$enddate = $this->input->post('txt_end_date');
+		$lastupdated = $this->input->post('txt_last_updated');
+		$lastupdateby = $this->input->post('txt_last_update_by');
+		$creationdate = $this->input->post('txt_creation_date');
+		$createdby = $this->input->post('txt_created_by');
+		$update = $this->M_pricelist->updatePricelist($id,$itemcode,$price,$startdate,$enddate,$lastupdated,$lastupdateby,$creationdate,$createdby);
+		redirect('SalesMonitoring/pricelist');		
+	}
+	
+	//download file as CSV
+	public function downloadcsv(){
+		$row  = $this->M_pricelist->downloadpricelistcsv();
+        $name = 'Pricelist.csv';
+        force_download($name,$row);
+	}
+	
+	//download file as XML
+	public function downloadxml(){
+		$row  = $this->M_pricelist->downloadpricelistxml();
+        $name = 'Pricelist.xml';
+        force_download($name,$row);
+	}
+	
+	//download file as pdf
+	public function downloadpdf(){
+		$data['data'] = $this->M_pricelist->viewPricelist();
+		$filename= 'pricelist'.time().'.pdf';
+		$data['page_title'] = 'Pricelist';
+
+			ini_set('memory_limit','3000M');
+			$html = $this->load->view('SalesMonitoring/setting/pdf/V_pdfpricelist', $data, true);
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load();
+			$pdf->SetFooter('Quick Sales Management |{PAGENO}| Pricelist Index');
+			$pdf->AddPage('L','', '', '', '',10,10,10,10,6,3);
+			$pdf->WriteHTML($html);
+			$pdf->Output($filename, 'D');
+		
+	}
+}
