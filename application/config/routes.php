@@ -133,80 +133,40 @@ $route['CustomerRelationship/Report/(:any)'] = 'CustomerRelationship/Report/C_Re
 $route['CustomerRelationship/Report/(:any)/(:any)'] = 'CustomerRelationship/Report/C_Report/$1/$2';
 $route['CustomerRelationship/Report/(:any)/(:any)/(:any)'] = 'CustomerRelationship/Report/C_Report/$1/$2/$3';
 
-//DASHBOARD
-$route['SalesMonitoring'] = 'SalesMonitoring/C_dashboard/index';
-$route['SalesMonitoring/dashboard'] = 'SalesMonitoring/C_dashboard/index';
+//sales monitoring routes
+$route['SalesMonitoring'] = 'SalesMonitoring/C_SalesMonitoring/index';
 
-//PRICELIST INDEX
-$route['SalesMonitoring/pricelist'] 				= 'SalesMonitoring/C_pricelist/index';
-$route['SalesMonitoring/pricelist/create'] 			= 'SalesMonitoring/C_pricelist/createPricelist';
-$route['SalesMonitoring/pricelist/created'] 		= 'SalesMonitoring/C_pricelist/create';
-$route['SalesMonitoring/pricelist/delete/(:any)'] 	= 'SalesMonitoring/C_pricelist/delete/$1';
-$route['SalesMonitoring/pricelist/update/(:any)'] 	= 'SalesMonitoring/C_pricelist/updatePricelist/$1';
-$route['SalesMonitoring/pricelist/updated'] 		= 'SalesMonitoring/C_pricelist/update';
-$route['SalesMonitoring/pricelist/download/csv'] 	= 'SalesMonitoring/C_pricelist/downloadcsv';
-$route['SalesMonitoring/pricelist/download/xml'] 	= 'SalesMonitoring/C_pricelist/downloadxml';
-$route['SalesMonitoring/pricelist/download/pdf'] 	= 'SalesMonitoring/C_pricelist/downloadpdf';
+//sales monitoring pricelist index
+$route['SalesMonitoring/pricelist'] 						= 'SalesMonitoring/C_pricelist/index';
+$route['SalesMonitoring/pricelist/Create'] 					= 'SalesMonitoring/C_pricelist/createPricelist';
+$route['SalesMonitoring/pricelist/Created'] 				= 'SalesMonitoring/C_pricelist/create';
+$route['SalesMonitoring/pricelist/Update/(:any)'] 			= 'SalesMonitoring/C_pricelist/updatePricelist/$1';
+$route['SalesMonitoring/pricelist/updated'] 				= 'SalesMonitoring/C_pricelist/update';
+$route['SalesMonitoring/pricelist/Delete/(:any)'] 			= 'SalesMonitoring/C_pricelist/delete/$1';
+$route['SalesMonitoring/pricelist/Download/csv'] 			= 'SalesMonitoring/C_pricelist/downloadcsv';
+$route['SalesMonitoring/pricelist/Download/xml'] 			= 'SalesMonitoring/C_pricelist/downloadxml';
+$route['SalesMonitoring/pricelist/Download/pdf'] 			= 'SalesMonitoring/C_pricelist/downloadpdf';
 
 //SALES OMSET
 $route['SalesMonitoring/salesomset'] 						= 'SalesMonitoring/C_salesomset/index';
-$route['SalesMonitoring/salesomset/download/csv'] 			= 'SalesMonitoring/C_salesomset/downloadcsv';
-$route['SalesMonitoring/salesomset/download/xml'] 			= 'SalesMonitoring/C_salesomset/downloadxml';
-$route['SalesMonitoring/salesomset/download/pdf'] 			= 'SalesMonitoring/C_salesomset/downloadpdf';
-$route['SalesMonitoring/salesomset/filter'] 				= 'SalesMonitoring/C_salesomset/profilter';
-$route['SalesMonitoring/salesomset/filter/download/pdf'] 	= 'SalesMonitoring/C_salesomset/downloadpdffilter';
+$route['SalesMonitoring/salesomset/Download/csv'] 			= 'SalesMonitoring/C_salesomset/downloadcsv';
+$route['SalesMonitoring/salesomset/Download/xml'] 			= 'SalesMonitoring/C_salesomset/downloadxml';
+$route['SalesMonitoring/salesomset/Download/pdf'] 			= 'SalesMonitoring/C_salesomset/downloadpdf';
+$route['SalesMonitoring/salesomset/Filter'] 				= 'SalesMonitoring/C_salesomset/profilter';
+$route['SalesMonitoring/salesomset/Filter/Download/pdf'] 	= 'SalesMonitoring/C_salesomset/downloadpdffilter';
 
 //SALES TARGET
 $route['SalesMonitoring/salestarget']						= 'SalesMonitoring/C_salestarget/index';
-$route['SalesMonitoring/salestarget/create'] 				= 'SalesMonitoring/C_salestarget/createSalestarget';
+$route['SalesMonitoring/salestarget/Create'] 				= 'SalesMonitoring/C_salestarget/createSalestarget';
 $route['SalesMonitoring/salestarget/created'] 				= 'SalesMonitoring/C_salestarget/create';
 $route['SalesMonitoring/salestarget/delete/(:any)'] 		= 'SalesMonitoring/C_salestarget/delete/$1';
 $route['SalesMonitoring/salestarget/update/(:any)'] 		= 'SalesMonitoring/C_salestarget/updateSalestarget/$1';
 $route['SalesMonitoring/salestarget/updated'] 				= 'SalesMonitoring/C_salestarget/update';
-$route['SalesMonitoring/salestarget/download/csv'] 			= 'SalesMonitoring/C_salestarget/downloadcsv';
-$route['SalesMonitoring/salestarget/download/xml'] 			= 'SalesMonitoring/C_salestarget/downloadxml';
-$route['SalesMonitoring/salestarget/download/pdf'] 			= 'SalesMonitoring/C_salestarget/downloadpdf';
-$route['SalesMonitoring/salestarget/filter'] 				= 'SalesMonitoring/C_salestarget/profilter';
-$route['SalesMonitoring/salestarget/filter/download/pdf'] 	= 'SalesMonitoring/C_salestarget/downloadpdffilter';
+$route['SalesMonitoring/salestarget/Download/csv'] 			= 'SalesMonitoring/C_salestarget/downloadcsv';
+$route['SalesMonitoring/salestarget/Download/xml'] 			= 'SalesMonitoring/C_salestarget/downloadxml';
+$route['SalesMonitoring/salestarget/Download/pdf'] 			= 'SalesMonitoring/C_salestarget/downloadpdf';
+$route['SalesMonitoring/salestarget/Filter'] 				= 'SalesMonitoring/C_salestarget/profilter';
+$route['SalesMonitoring/salestarget/Filter/Download/pdf'] 	= 'SalesMonitoring/C_salestarget/downloadpdffilter';
 
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
-
-//-------------------------------------Morning Greeting----------------------------------------------------
-//DASHBOARD
-$route['MorningGreeting'] = 'MorningGreeting/C_MorningGreeting/index';
-$route['MorningGreeting/dashboard'] = 'MorningGreeting/C_MorningGreeting/index';
-
-// route pada tabel config
-$route['MorningGreeting/configuration'] = 'MorningGreeting/configuration/C_config/index';
-$route['MorningGreeting/configuration/edit/(:any)'] = 'MorningGreeting/configuration/C_config/editConfig/$1';
-$route['MorningGreeting/configuration/save'] = 'MorningGreeting/configuration/C_config/saveConfig';
-
-//route pada tabel branch
-$route['MorningGreeting/extention'] = 'MorningGreeting/extention/C_extention/index';
-$route['MorningGreeting/extention/new'] = 'MorningGreeting/extention/C_extention/newBranch';
-$route['MorningGreeting/extention/new/save'] = 'MorningGreeting/extention/C_extention/newBranchSave';
-$route['MorningGreeting/extention/edit/(:any)'] = 'MorningGreeting/extention/C_extention/editBranch/$1';
-$route['MorningGreeting/extention/editsave'] = 'MorningGreeting/extention/C_extention/saveEditBranch';
-$route['MorningGreeting/extention/delete/(:any)'] = 'MorningGreeting/extention/C_extention/deleteBranch/$1';
-
-//route pada tabel schedule
-$route['MorningGreeting/schedule'] = 'MorningGreeting/schedule/C_schedule/index';
-$route['MorningGreeting/schedule/new'] = 'MorningGreeting/schedule/C_schedule/newSchedule';
-$route['MorningGreeting/schedule/new/save'] = 'MorningGreeting/schedule/C_schedule/newScheduleSave';
-$route['MorningGreeting/schedule/edit/(:any)'] = 'MorningGreeting/schedule/C_schedule/editSchedule/$1';
-$route['MorningGreeting/schedule/editsave'] = 'MorningGreeting/schedule/C_schedule/saveEditSchedule/$1';
-$route['MorningGreeting/schedule/delete/(:any)'] = 'MorningGreeting/schedule/C_schedule/deleteSchedule/$1';
-
-//route pada tabel relation
-$route['MorningGreeting/relation']					= 'MorningGreeting/relation/C_relation/index';
-$route['MorningGreeting/relation/showcn']			= 'MorningGreeting/relation/C_relation/showcn';
-$route['MorningGreeting/relation/new']				= 'MorningGreeting/relation/C_relation/newRelation';
-$route['MorningGreeting/relation/new/save']			= 'MorningGreeting/relation/C_relation/newRelationSave';
-$route['MorningGreeting/relation/edit/(:any)']		= 'MorningGreeting/relation/C_relation/editRelation/$1';
-$route['MorningGreeting/relation/editsave']			= 'MorningGreeting/relation/C_relation/saveEditRelation/$1';
-$route['MorningGreeting/relation/delete/(:any)']	= 'MorningGreeting/relation/C_relation/deleteRelation/$1';
-
-//Route pada tabel cdr
-$route['MorningGreeting/cdr']	= 'MorningGreeting/cdr/C_cdr/index';
-//-------------------------------------Morning Greeting----------------------------------------------------

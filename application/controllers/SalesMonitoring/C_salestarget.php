@@ -69,19 +69,29 @@ class C_salestarget extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/V_salestarget',$data);
+		$this->load->view('SalesMonitoring/setting/salestarget/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
 	//indeks dari halaman update
 	public function updateSalestarget($id)
 	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
 		$select = $this->M_salestarget->searchSalestarget($id);
 		$data['source'] = $this->M_salestarget->viewOrganization();
 		$data['selected'] = $select;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/update/V_updatesalestarget',$data);
+		$this->load->view('SalesMonitoring/setting/salestarget/V_update',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -102,7 +112,7 @@ class C_salestarget extends CI_Controller {
 		$data['source'] = $this->M_salestarget->viewOrganization();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/create/V_createsalestarget',$data);
+		$this->load->view('SalesMonitoring/setting/salestarget/V_create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -140,7 +150,8 @@ class C_salestarget extends CI_Controller {
 		$target = $this->input->post('txt_target');
 		$month = $this->input->post('txt_month');
 		$year = $this->input->post('txt_year');
-		$update = $this->M_salestarget->updateSalestarget($id,$orgid,$ordertype,$target,$month,$year);
+		$lastupdateby = $this->input->post('txt_last_update_by');
+		$update = $this->M_salestarget->updateSalestarget($id,$orgid,$ordertype,$target,$month,$year,$lastupdateby);
 		redirect('SalesMonitoring/salestarget');	
 	}
 	
@@ -160,16 +171,16 @@ class C_salestarget extends CI_Controller {
 	
 	//download filter file as pdf
 	public function downloadpdffilter(){
-		$organization = $this->input->post('txt_profilter_organization');
-		$month = $this->input->post('txt_profilter_month');
-		$year = $this->input->post('txt_profilter_year');
+		$organization = $this->input->post('txt_pdf_organization');
+		$month = $this->input->post('txt_pdf_month');
+		$year = $this->input->post('txt_pdf_year');
 		
 		$data['data'] = $this->M_salestarget->filterSalestarget($month,$year,$organization);
 		$filename= 'salestargetfiltered'.time().'.pdf';
 		$data['page_title'] = 'Salestarget Filtered';
 
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('SalesMonitoring/setting/pdf/V_pdfsalestarget', $data, true);
+		$html = $this->load->view('SalesMonitoring/setting/salestarget/V_pdf', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->SetFooter('Quick Sales Management |{PAGENO}| Sales Target');
@@ -185,7 +196,7 @@ class C_salestarget extends CI_Controller {
 		$filename= 'salestarget'.time().'.pdf';
 		$data['page_title'] = 'Salestarget';
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('SalesMonitoring/setting/pdf/V_pdfsalestarget', $data, true);
+		$html = $this->load->view('SalesMonitoring/setting/salestarget/V_pdf', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->SetFooter('Quick Sales Management |{PAGENO}| Sales Target');
@@ -196,7 +207,7 @@ class C_salestarget extends CI_Controller {
 
 	}
 	
-	//profilter ndex
+	//profilter index
 	public function profilter(){
 		
 		$this->checkSession();
@@ -226,7 +237,7 @@ class C_salestarget extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/profilter/V_filtersalestarget',$data);
+		$this->load->view('SalesMonitoring/setting/salestarget/V_filter',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }

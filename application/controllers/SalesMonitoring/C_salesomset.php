@@ -69,7 +69,7 @@ class C_salesomset extends CI_Controller {
 		$data['source_organization'] = $this->M_salesomset->viewOrganization();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/V_salesomset',$data);
+		$this->load->view('SalesMonitoring/setting/salesomset/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -94,7 +94,7 @@ class C_salesomset extends CI_Controller {
 		$data['page_title'] = 'Salesomset';
 
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('SalesMonitoring/setting/pdf/V_pdfsalesomset', $data, true);
+		$html = $this->load->view('SalesMonitoring/setting/salesomset/V_pdf', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->SetFooter('Quick Sales Management |{PAGENO}| Sales Omset');
@@ -106,16 +106,16 @@ class C_salesomset extends CI_Controller {
 	
 	//download filter file as pdf
 	public function downloadpdffilter(){
-		$organization = $this->input->post('txt_profilter_organization');
-		$month = $this->input->post('txt_profilter_month');
-		$year = $this->input->post('txt_profilter_year');
+		$organization = $this->input->post('txt_pdf_organization');
+		$month = $this->input->post('txt_pdf_month');
+		$year = $this->input->post('txt_pdf_year');
 		
 		$data['data'] = $this->M_salesomset->filterSalesomset($month,$year,$organization);
 		$filename= 'salesomsetfiltered'.time().'.pdf';
 		$data['page_title'] = 'Salesomset Filtered';
 
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('SalesMonitoring/setting/pdf/V_pdfsalesomset', $data, true);
+		$html = $this->load->view('SalesMonitoring/setting/salesomset/V_pdf', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->SetFooter('Quick Sales Management |{PAGENO}| Sales Omset');
@@ -153,7 +153,7 @@ class C_salesomset extends CI_Controller {
 		$data['result'] = $result;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/profilter/V_filtersalesomset',$data);
+		$this->load->view('SalesMonitoring/setting/salesomset/V_filter',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }

@@ -15,9 +15,6 @@
                                 <i class="icon-wrench icon-2x"></i>
                                 <span ><br /></span>
                             </a>
-							
-
-                            
 						</div>
 					</div>
 				</div>

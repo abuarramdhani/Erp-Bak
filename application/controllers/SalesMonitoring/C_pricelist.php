@@ -3,21 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_pricelist extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
 	function __construct() 
 	{
 		parent::__construct();
@@ -66,7 +51,7 @@ class C_pricelist extends CI_Controller {
 		$data['pricelist'] = $this->M_pricelist->viewPricelist();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/V_pricelist',$data);
+		$this->load->view('SalesMonitoring/setting/pricelist/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -86,20 +71,28 @@ class C_pricelist extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/create/V_createpricelist');
+		$this->load->view('SalesMonitoring/setting/pricelist/V_create');
 		$this->load->view('V_Footer',$data);
 	}
 	
 	//indeks dari halaman update
 	public function updatePricelist($id)
 	{
-		$this->checkUserMenu();
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$select = $this->M_pricelist->searchPricelist($id);
 		$data['selected']= $select;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/update/V_updatepricelist',$data);
+		$this->load->view('SalesMonitoring/setting/pricelist/V_update',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -162,7 +155,7 @@ class C_pricelist extends CI_Controller {
 		$data['page_title'] = 'Pricelist';
 
 			ini_set('memory_limit','3000M');
-			$html = $this->load->view('SalesMonitoring/setting/pdf/V_pdfpricelist', $data, true);
+			$html = $this->load->view('SalesMonitoring/setting/pricelist/V_pdf', $data, true);
 			$this->load->library('pdf');
 			$pdf = $this->pdf->load();
 			$pdf->SetFooter('Quick Sales Management |{PAGENO}| Pricelist Index');

@@ -35,7 +35,6 @@
   
   <!-- PAGE LEVEL STYLES FOR DATATABLES-->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
-	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.css')?>" type="text/css"/>	
 	<!-- PAGE LEVEL STYLES FOR FORM -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/uniform/themes/default/css/uniform.default.css');?>" />
