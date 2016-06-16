@@ -74,7 +74,30 @@ class M_pricelist extends CI_Model {
 			return $query->result_array();
 		}
 		
-	
+		//profilter
+		public function filterPricelist($itemcode,$productname,$pricelow,$pricehigh)
+		{
+			$sql = "select * from sf.pricelist_index pi, im.im_master_items imm where (pi.pricelist_index_id = imm.item_id ) AND (pi.item_code ILIKE '$itemcode') AND (imm.item_name ILIKE '$productname') AND (pi.price >= $pricelow) AND (pi.price <= $pricehigh) order by pi.pricelist_index_id";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}	
+		//
+		
+		//source item name
+		public function viewItemname()
+		{
+			$sql = "select distinct(item_name) from im.im_master_items order by item_name";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		//source item code
+		public function viewItemcode()
+		{
+			$sql = "select distinct(item_code) from sf.pricelist_index order by item_code";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
 		
 }
 ?>

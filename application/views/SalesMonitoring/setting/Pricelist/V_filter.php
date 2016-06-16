@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			<br />
-			
+
 			<div class="row">
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
@@ -35,30 +35,21 @@
 						Pricelist Index
 					</div>
 					<div class="box-body">
-
 						<div class="table-responsive" style="overflow:hidden;">
-							<table class="table">
-								<tr>
-									<td><div class="btn-group">
-										<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="glyphicon glyphicon-save" aria-hidden="true"></span> Export <span class="caret"></span>
-										</button><br>
-										<ul class="dropdown-menu">
-											<li><a href="<?php echo site_URL('SalesMonitoring/pricelist/Download/csv') ?>">CSV</a></li>
-											<li><a href="<?php echo site_URL('SalesMonitoring/pricelist/Download/xml') ?>">XML</a></li>
-											<li><a href="<?php echo site_URL('SalesMonitoring/pricelist/Download/pdf') ?>">PDF</a></li>
-										</ul>
-									</div></td>
-								</tr>
-							</table>
+							
 							<table class="table">
 								<form method="post" action="<?php echo base_url('SalesMonitoring/pricelist/Filter')?>">
 									<tr>
+										
 										<td width="18%">
 											<select class="form-control select4" name="txt_profilter_itemcode" required>
 												<option value="%">ANY</option>
 												<?php foreach($source_itemcode as $source_itemcode_item) { ?>
-												<?php echo '<option>'.$source_itemcode_item['item_code'].'</option>' ?>
+													<?php $status1 = '';
+															if ($source_itemcode_item['item_code'] == $select_ico){
+															$status1 = 'selected';
+													} ?>
+												<?php echo '<option '.$status1.'>'.$source_itemcode_item['item_code'].'</option>' ?>
 												<?php } ?>
 											</select>
 										</td>
@@ -66,18 +57,24 @@
 											<select class="form-control select4" name="txt_profilter_productname" required>
 												<option value="%">ANY</option>
 												<?php foreach($source_itemname as $source_itemname_item) { ?>
-												<?php echo '<option>'.$source_itemname_item['item_name'].'</option>' ?>
+													<?php $status2 = '';
+															if ($source_itemname_item['item_name'] == $select_pna){
+															$status2 = 'selected';
+													} ?>
+												<?php echo '<option '.$status2.'>'.$source_itemname_item['item_name'].'</option>' ?>
 												<?php } ?>
 											</select>
 										</td>
 										<td width="20%">
-											<input type="text" class="form-control" onkeypress="return isNumberKeyAndComma(event)" placeholder="minimum price" name="txt_profilter_pricelow"></input>
+											<input type="text" class="form-control" onkeypress="return isNumberKeyAndComma(event)"  placeholder="minimum price" name="txt_profilter_pricelow" 
+											value="<?php $a=$select_plo; if($a=="pi.price"){$a="";} echo $a ?>"></input>
 										</td>
 										<td align="center" width="2%">
 											<b>-</b>
 										</td>
 										<td width="20%">
-											<input type="text" class="form-control" onkeypress="return isNumberKeyAndComma(event)" placeholder="maximum price" name="txt_profilter_pricehigh"></input>
+											<input type="text" class="form-control" onkeypress="return isNumberKeyAndComma(event)"  placeholder="maximum price" name="txt_profilter_pricehigh"
+											value="<?php $b=$select_phi; if($b=="pi.price"){$b="";} echo $b ?>"></input>
 										</td>
 										<td width="10%">
 											<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Filter</button>
@@ -85,6 +82,7 @@
 									</tr>
 								</form>
 							</table>
+							
 							<table  class="table table-striped table-bordered table-hover text-left" id="dataTables-customer" style="font-size:12px;">
 								<thead>
 									<tr class="bg-primary">
@@ -96,15 +94,15 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php $no = 0; foreach($pricelist as $pricelist_item) { $no++ ?>
+									<?php $no = 0; foreach($result as $result_item) { $no++ ?>
 										<tr>
 											<td><?php echo $no; ?></td>
-											<td><?php echo $pricelist_item['item_code'] ?></td>
-											<td><?php echo $pricelist_item['item_name'] ?></td>
-											<td align="right"><?php echo number_format($pricelist_item['price'], 2 , ',' , '.' ); ?></td>
+											<td><?php echo $result_item['item_code'] ?></td>
+											<td><?php echo $result_item['item_name'] ?></td>
+											<td align="right"><?php echo number_format($result_item['price'], 2 , ',' , '.' ); ?></td>
 											<td>
-												<a href='<?php echo site_URL() ?>SalesMonitoring/pricelist/Update/<?php echo $pricelist_item['pricelist_index_id'] ?>'class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
-												<a href='<?php echo site_URL() ?>SalesMonitoring/Pricelist/Delete/<?php echo $pricelist_item['pricelist_index_id'] ?>'class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
+												<a href='<?php echo site_URL() ?>SalesMonitoring/pricelist/Update/<?php echo $result_item['pricelist_index_id'] ?>'class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
+												<a href='<?php echo site_URL() ?>SalesMonitoring/Pricelist/Delete/<?php echo $result_item['pricelist_index_id'] ?>'class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
 											</td>
 										</tr>
 									<?php } ?>
@@ -114,10 +112,8 @@
 					</div>
 				</div>
 				</div>
-			</div>		
-		</div>		
+			</div>
+		</div>
 	</div>
 	</div>
-</section>			
-			
-				
+</section>

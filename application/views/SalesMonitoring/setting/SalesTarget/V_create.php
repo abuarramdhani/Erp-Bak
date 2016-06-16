@@ -27,14 +27,14 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
-						Header
+						Sales Target
 					</div>
 					<div class="box-body">
 						<div class="panel-body">
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Organization</label>
 								<div class="col-lg-5">
-									<select class="form-control sales" name="txt_organization" class="form-control">
+									<select class="form-control select4" name="txt_organization" class="form-control">
 										<option value=""></option>
 										<?php $no = 0; foreach($source as $src) { $no++ ?>
 										<?php echo '<option value="'.$src['org_id'].'">'.$src['org_name'].'</option>' ?>
@@ -51,13 +51,13 @@
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Target</label>
 								<div class="col-lg-5">
-									<input name="txt_target" class="form-control" placeholder="target">
+									<input name="txt_target" class="form-control" onkeypress="return isNumberKeyAndComma(event)" placeholder="target">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Month</label>
 								<div class="col-lg-2">
-									<select class="form-control sales" placeholder="month" name="txt_month" required>
+									<select class="form-control select4" placeholder="month" name="txt_month" required>
 										<option value=""></option>
 										<option value="1">JANUARY</option><option value="2">FEBRUARY</option><option value="3">MARCH</option>
 										<option value="4">APRIL</option><option value="5">MAY</option><option value="6">JUNE</option>
@@ -67,7 +67,7 @@
 								</div>
 								<label class="col-lg-1 control-label">Year</label>
 								<div class="col-lg-2">
-									<input name="txt_year" class="form-control" placeholder="year">
+									<input name="txt_year" class="form-control" onkeypress="return isNumberKey(event)" placeholder="year">
 								</div>
 							</div>							
 						</div>
@@ -76,7 +76,7 @@
 								<div class="col-md-12">
 									<a href="<?php echo site_url('SalesMonitoring/salestarget');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 									&nbsp;&nbsp;
-									<button type="submit" class="btn btn-primary btn-lg btn-rect">Save Changes</button>
+									<button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
 								</div>
 							</div>
 						</div>

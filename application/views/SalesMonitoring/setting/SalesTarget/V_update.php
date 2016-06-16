@@ -8,7 +8,7 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Update Sales Target</b></h1>
+						<h1><b>Edit Sales Target</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
@@ -30,14 +30,14 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
-						Header
+						Sales Target
 					</div>
 					<div class="box-body">
 						<div class="panel-body">
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Organization</label>
 								<div class="col-lg-5">
-									<select class="form-control sales" name="txt_organization" class="form-control">
+									<select class="form-control select4" name="txt_organization" class="form-control">
 										<?php $no = 0; foreach($source as $src) { $no++ ?>
 										<?php $status = '';
 											  if ($selected_item['org_id'] == $src['org_id']){
@@ -57,13 +57,13 @@
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Target</label>
 								<div class="col-lg-5">
-									<input name="txt_target" class="form-control" placeholder="Target" value="<?php echo $selected_item['target'] ?>">
+									<input name="txt_target" class="form-control" onkeypress="return isNumberKeyAndComma(event)" placeholder="Target" value="<?php echo $selected_item['target'] ?>">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Month</label>
 								<div class="col-lg-2">
-									<select class="form-control sales" placeholder="month" name="txt_month" required>
+									<select class="form-control select4" placeholder="month" name="txt_month" required>
 										<?php
 										$a='';$b='';$c='';$d='';$e='';$f='';$g='';$h='';$i='';$j='';$k='';$l='';
 											 if($selected_item['month'] == 1){$a = 'selected';} else if($selected_item['month'] == 2){$b = 'selected';}
@@ -83,7 +83,7 @@
 								</div>
 								<label class="col-lg-1 control-label">Year</label>
 								<div class="col-lg-2">
-									<input name="txt_year" class="form-control" placeholder="year" value="<?php echo $selected_item['year'] ?>">
+									<input name="txt_year" class="form-control" onkeypress="return isNumberKey(event)" placeholder="year" value="<?php echo $selected_item['year'] ?>">
 								</div>
 							</div>							
 						</div>
@@ -92,7 +92,7 @@
 								<div class="col-md-12">
 									<a href="<?php echo site_url('SalesMonitoring/salestarget');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 									&nbsp;&nbsp;
-									<button type="submit" class="btn btn-primary btn-lg btn-rect">Save Changes</button>
+									<button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
 								</div>
 							</div>
 						</div>

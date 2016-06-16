@@ -49,7 +49,7 @@
 								<form method="post" action="<?php echo base_url('SalesMonitoring/salesomset/Filter')?>">
 									<tr>
 										<td width="30%">
-											<select class="form-control sales" name="txt_profilter_organization">
+											<select class="form-control select4" name="txt_profilter_organization" required>
 												<option value="so.org_id">ANY</option>
 												<?php foreach($source_organization as $source_organization_item) { ?>
 												<?php echo '<option value="'.$source_organization_item['org_id'].'">'.$source_organization_item['org_name'].'</option>' ?>
@@ -57,7 +57,7 @@
 											</select>
 										</td>
 										<td width="20%">
-											<select class="form-control sales" name="txt_profilter_month" required>
+											<select class="form-control select4" name="txt_profilter_month" required>
 												<option value="so.month">ANY</option>
 												<?php
 													$a='';$b='';$c='';$d='';$e='';$f='';$g='';$h='';$i='';$j='';$k='';$l='';$mm=date('m');
@@ -83,7 +83,7 @@
 											</select>
 										</td>
 										<td width="20%">
-											<select class="form-control sales" name="txt_profilter_year" required>
+											<select class="form-control select4" name="txt_profilter_year" required>
 												<option value="so.year">ANY</option>
 												<?php foreach($source_year as $source_year_item) {?>
 													<?php 

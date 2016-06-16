@@ -47,6 +47,8 @@ class C_pricelist extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['source_itemname'] = $this->M_pricelist->viewItemname();
+		$data['source_itemcode'] = $this->M_pricelist->viewItemcode();
 		
 		$data['pricelist'] = $this->M_pricelist->viewPricelist();
 		$this->load->view('V_Header',$data);
@@ -164,4 +166,42 @@ class C_pricelist extends CI_Controller {
 			$pdf->Output($filename, 'D');
 		
 	}
+	
+	//profilter index
+	public function profilter(){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['source_itemname'] = $this->M_pricelist->viewItemname();
+		$data['source_itemcode'] = $this->M_pricelist->viewItemcode();
+		
+		$itemcode = $this->input->post('txt_profilter_itemcode');
+		$productname = $this->input->post('txt_profilter_productname');
+
+		$pricelow = $this->input->post('txt_profilter_pricelow'); if ($pricelow==""){$pricelow="pi.price";};
+		$pricehigh = $this->input->post('txt_profilter_pricehigh'); if ($pricehigh==""){$pricehigh="pi.price";};
+		
+		$data['select_ico'] = $itemcode;
+		$data['select_pna'] = $productname;
+		$data['select_plo'] = $pricelow;
+		$data['select_phi'] = $pricehigh;
+		
+		$result = $this->M_pricelist->filterPricelist($itemcode,$productname,$pricelow,$pricehigh);
+		$data['result'] = $result;
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SalesMonitoring/setting/pricelist/V_filter',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	
 }

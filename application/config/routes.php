@@ -146,6 +146,7 @@ $route['SalesMonitoring/pricelist/Delete/(:any)'] 			= 'SalesMonitoring/C_pricel
 $route['SalesMonitoring/pricelist/Download/csv'] 			= 'SalesMonitoring/C_pricelist/downloadcsv';
 $route['SalesMonitoring/pricelist/Download/xml'] 			= 'SalesMonitoring/C_pricelist/downloadxml';
 $route['SalesMonitoring/pricelist/Download/pdf'] 			= 'SalesMonitoring/C_pricelist/downloadpdf';
+$route['SalesMonitoring/pricelist/Filter'] 					= 'SalesMonitoring/C_pricelist/profilter';
 
 //SALES OMSET
 $route['SalesMonitoring/salesomset'] 						= 'SalesMonitoring/C_salesomset/index';
@@ -167,6 +168,45 @@ $route['SalesMonitoring/salestarget/Download/xml'] 			= 'SalesMonitoring/C_sales
 $route['SalesMonitoring/salestarget/Download/pdf'] 			= 'SalesMonitoring/C_salestarget/downloadpdf';
 $route['SalesMonitoring/salestarget/Filter'] 				= 'SalesMonitoring/C_salestarget/profilter';
 $route['SalesMonitoring/salestarget/Filter/Download/pdf'] 	= 'SalesMonitoring/C_salestarget/downloadpdffilter';
+
+//-------------------------------------Morning Greeting----------------------------------------------------
+//DASHBOARD
+$route['MorningGreeting'] 									= 'MorningGreeting/C_MorningGreeting/index';
+$route['MorningGreeting/dashboard'] 						= 'MorningGreeting/C_MorningGreeting/index';
+
+// route pada tabel config
+$route['MorningGreeting/configuration'] 					= 'MorningGreeting/configuration/C_config/index';
+$route['MorningGreeting/configuration/edit/(:any)'] 		= 'MorningGreeting/configuration/C_config/editConfig/$1';
+$route['MorningGreeting/configuration/save'] 				= 'MorningGreeting/configuration/C_config/saveConfig';
+
+//route pada tabel branch
+$route['MorningGreeting/extention'] 						= 'MorningGreeting/extention/C_extention/index';
+$route['MorningGreeting/extention/new'] 					= 'MorningGreeting/extention/C_extention/newBranch';
+$route['MorningGreeting/extention/new/save'] 				= 'MorningGreeting/extention/C_extention/newBranchSave';
+$route['MorningGreeting/extention/edit/(:any)'] 			= 'MorningGreeting/extention/C_extention/editBranch/$1';
+$route['MorningGreeting/extention/editsave'] 				= 'MorningGreeting/extention/C_extention/saveEditBranch';
+$route['MorningGreeting/extention/delete/(:any)'] 			= 'MorningGreeting/extention/C_extention/deleteBranch/$1';
+
+//route pada tabel schedule
+$route['MorningGreeting/schedule'] 							= 'MorningGreeting/schedule/C_schedule/index';
+$route['MorningGreeting/schedule/new'] 						= 'MorningGreeting/schedule/C_schedule/newSchedule';
+$route['MorningGreeting/schedule/new/save'] 				= 'MorningGreeting/schedule/C_schedule/newScheduleSave';
+$route['MorningGreeting/schedule/edit/(:any)'] 				= 'MorningGreeting/schedule/C_schedule/editSchedule/$1';
+$route['MorningGreeting/schedule/editsave'] 				= 'MorningGreeting/schedule/C_schedule/saveEditSchedule/$1';
+$route['MorningGreeting/schedule/delete/(:any)'] 			= 'MorningGreeting/schedule/C_schedule/deleteSchedule/$1';
+
+//route pada tabel relation
+$route['MorningGreeting/relation']							= 'MorningGreeting/relation/C_relation/index';
+$route['MorningGreeting/relation/showcn']					= 'MorningGreeting/relation/C_relation/showcn';
+$route['MorningGreeting/relation/new']						= 'MorningGreeting/relation/C_relation/newRelation';
+$route['MorningGreeting/relation/new/save']					= 'MorningGreeting/relation/C_relation/newRelationSave';
+$route['MorningGreeting/relation/edit/(:any)']				= 'MorningGreeting/relation/C_relation/editRelation/$1';
+$route['MorningGreeting/relation/editsave']					= 'MorningGreeting/relation/C_relation/saveEditRelation/$1';
+$route['MorningGreeting/relation/delete/(:any)']			= 'MorningGreeting/relation/C_relation/deleteRelation/$1';
+
+//Route pada tabel cdr
+$route['MorningGreeting/cdr']								= 'MorningGreeting/cdr/C_cdr/index';
+//-------------------------------------Morning Greeting----------------------------------------------------
 
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';

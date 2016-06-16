@@ -25,18 +25,18 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 				<div class="box-header with-border">
-					Header
+					Pricelist Index
 				</div>
 				<div class="box-body">
 					<div class="panel-body">
 						<div class="form-group">
 							<label class="col-lg-2 control-label">Item Code</label>
 							<div class="col-lg-4">
-								<input type="text" class="form-control" placeholder="item code" name="txt_item_code" required></input>
+								<input type="text" class="form-control toupper" placeholder="item code" name="txt_item_code" required></input>
 							</div>
 							<label class="col-lg-1 control-label">Price</label>
 							<div class="col-lg-4">
-								<input type="text" class="form-control" placeholder="price" name="txt_price" required></input>
+								<input type="text" class="form-control" onkeypress="return isNumberKeyAndComma(event)" placeholder="price" name="txt_price" required></input>
 							</div>
 						</div>		
 					</div>
@@ -45,7 +45,7 @@
 							<div class="col-md-12">
 								<a href="<?php echo site_url('SalesMonitoring/pricelist');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 								&nbsp;&nbsp;
-								<button type="submit" class="btn btn-primary btn-lg btn-rect">Save Changes</button>
+								<button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
 							</div>
 						</div>
 					</div>
