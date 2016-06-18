@@ -55,9 +55,9 @@ class C_relation extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data_branch = $this->M_relation->data_branch();
-		$data_city = $this->M_relation->data_city();
+		$province = $this->M_relation->province();
 		$data['data_branch'] = $data_branch;
-		$data['data_city'] = $data_city;
+		$data['province'] = $province;
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -70,7 +70,7 @@ class C_relation extends CI_Controller {
 			$relation_name		= $this->input->post('relation_name');
 			$npwp				= $this->input->post('npwp');
 			$oracle_cust_id		= $this->input->post('oracle_cust_id');
-			$city_regency_id	= $this->input->post('city_regency_id');
+			$city_regency_id	= $this->input->post('txtCityRegency');
 			$org_id				= $this->input->post('org_id');
 			$contact_number		= $this->input->post('contact_number');
 			$contact_number_split	= explode(',', $contact_number);
@@ -98,15 +98,18 @@ class C_relation extends CI_Controller {
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$search_data_relation	= $this->M_relation->search_data_relation($relation_id);
-			$search_data_relation_cn= $this->M_relation->search_data_relation_cn($relation_id);
 			
-			$data_branch = $this->M_relation->data_branch();
-			$data_city = $this->M_relation->data_city();
-			$data['search'] = $search_data_relation;
-			$data['data_branch'] = $data_branch;
-			$data['data_city'] = $data_city;
-			$data['search_cn'] = $search_data_relation_cn;
+			$data['search'] = $this->M_relation->search_data_relation($relation_id);
+			$relation = $this->M_relation->search_data_relation($relation_id);
+				foreach($relation as $rlt){
+					$pr_id = $rlt['province_id'];
+				}
+				if($pr_id == null){ $pr_id = "0";}
+
+			$data['data_branch'] = $this->M_relation->data_branch();
+			$data['province'] = $this->M_relation->province();
+			$data['data_city'] = $this->M_relation->data_city($pr_id);
+			$data['search_cn'] = $this->M_relation->search_data_relation_cn($relation_id);
 			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
@@ -121,7 +124,7 @@ class C_relation extends CI_Controller {
 			$relation_name = $this->input->post('relation_name');
 			$npwp = $this->input->post('npwp');
 			$oracle_cust_id = $this->input->post('oracle_cust_id');
-			$city_regency_id = $this->input->post('city_regency_id');
+			$city_regency_id = $this->input->post('txtCityRegency');
 			$org_id = $this->input->post('org_id');
 			$saveeditrelation	= $this->M_relation->saveeditrelation($relation_id,$relation_name,$npwp,$oracle_cust_id,$city_regency_id,$org_id);
 			

@@ -9,40 +9,40 @@
 			</a>
 		</div>
 		<div class="box-body"> <!-- TAMBAHAN-->
-				<table id="relation" class="table table-striped table-bordered table-responsive table-hover text-center">
+				<table id="relation" class="table table-striped table-bordered table-responsive table-hover ">
 					<thead style="background:#22aadd; color:#FFFFFF;">
-						<th>No</th>
-						<th>Relation Name</th>
-						<th>City</th>
-						<th>NPWP</th>
-						<th>Oracle Cust ID</th>
-						<th>Branch</th>
-						<th>Phone</th>
-						<th>Action</th>
+						<th style="width:5%; text-align:center;">No</th>
+						<th style="text-align:center;">Relation Name</th>
+						<th style="text-align:center;">City</th>
+						<th style="text-align:center;">NPWP</th>
+						<th style="text-align:center;">Oracle Cust ID</th>
+						<th style="text-align:center;">Branch</th>
+						<th style="text-align:center;">Phone</th>
+						<th style="width:15%; text-align:center;">Action</th>
 					</thead>
 					<tbody>
 					<?php $no=1; foreach($relation as $relation_item){ ?>
 						<tr>
-							<td><?php echo $no++; ?></td>
+							<td style="text-align:center;"><?php echo $no++; ?></td>
 							<td><?php echo $relation_item['relation_name'];?></td>
 							<td><?php echo $relation_item['regency_name']; ?></td>
-							<td><?php echo $relation_item['npwp']; ?></td>
-							<td><?php echo $relation_item['oracle_cust_id']; ?></td>
-							<td><?php echo $relation_item['org_name']; ?></td>
+							<td style="text-align:center;"><?php echo $relation_item['npwp']; ?></td>
+							<td style="text-align:center;"><?php echo $relation_item['oracle_cust_id']; ?></td>
+							<td style="text-align:center;"><?php echo $relation_item['org_name']; ?></td>
 							<td><?php echo $relation_item['contact_number']; ?></td>
 							<td>
-							<div class="btn-group-vertical" role="group">
+							<div class="btn-group-justified" role="group">
 								<a class="btn btn-warning btn-sm" href="<?php echo base_url()?>MorningGreeting/relation/edit/<?php echo $relation_item['relation_id'] ?>">
 									<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
 								</a>
 								
 								<!-- Button trigger modal -->
-								<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete">
+								<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_<?php echo $relation_item['relation_id']; ?>">
 									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>	Delete
 								</a>
 								
 								<!-- Modal -->
-								<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								<div class="modal fade" id="delete_<?php echo $relation_item['relation_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 									<div class="modal-header">
@@ -51,6 +51,10 @@
 									</div>
 									<div class="modal-body">
 										Apakah anda yakin ingin menghapus data ini?
+										<p>
+											<b>Relation Name</b> : <?php echo $relation_item['relation_name'];?> <br>
+											<b>City         </b> : <?php echo $relation_item['regency_name']; ?>
+										</p>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

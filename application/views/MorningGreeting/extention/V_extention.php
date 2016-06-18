@@ -9,19 +9,19 @@
 			</a>
 		</div>
 		<div class="box-body">
-				<table style="max-width: 90%" id="branch" class="table table-striped table-bordered table-responsive table-hover text-center">
+				<table style="max-width: 90%" id="branch" class="table table-striped table-bordered table-responsive table-hover ">
 					<thead style="background:#22aadd; color:#FFFFFF;">
-						<th class="col-sm-1">No</th>
-						<th>Branch</th>
-						<th>Extention</th>
-						<th class="col-md-2">Action</th>
+						<th style="width:5%; text-align:center;">No</th>
+						<th style="text-align:center;">Branch</th>
+						<th style="text-align:center;">Extention</th>
+						<th style="width:15%; text-align:center;">Action</th>
 					</thead>
 					<tbody>
 					<?php $no=1; foreach($branch as $branch_item){ ?>
 						<tr>
-							<td><?php echo $no++; ?></td>
+							<td style="text-align:center;"><?php echo $no++; ?></td>
 							<td><?php echo $branch_item['org_name'];?></td>
-							<td><?php echo $branch_item['ext_number']; ?></td>
+							<td style="text-align:center;"><?php echo $branch_item['ext_number']; ?></td>
 							<td>
 							<div class="btn-group-justified" role="group">
 								<a class="btn btn-warning btn-sm" href="<?php echo base_url()?>MorningGreeting/extention/edit/<?php echo $branch_item['branch_extention_id'] ?>">

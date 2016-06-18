@@ -28,7 +28,9 @@
 		
 		function data_relation()
 		{
-			$sql = "select * from sf.relation";
+			$sql = "select * from sf.relation sr, sys.sys_area_city_regency cr, sys.sys_organization so
+					WHERE sr.org_id = so.org_id and cr.city_regency_id = sr.city
+					ORDER BY sr.relation_name asc";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

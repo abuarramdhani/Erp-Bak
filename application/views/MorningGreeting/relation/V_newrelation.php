@@ -2,42 +2,55 @@
 	<div class="inner">
 	<div class="box box-info">
 	<div class="box-header with-border">
-		<h2>Menambahkan data Relation</h2>
+		<h2>Add New Relation</h2>
 	</div>
 	<div class="box-body">
 		<form method="post" action="<?php echo base_url('MorningGreeting/relation/new/save')?>">
 		<table class="table">
 			<tr>
 				<td class="col-md-3">Relation Name</td>
-				<td><input class="form-control" placeholder="Text..." type="text" name="relation_name" required></input></td>
+				<td><input class="form-control" placeholder="Relation Name.Example: Subur Makmur Jaya Abadi" type="text" name="relation_name" required></input></td>
 			</tr>
 			<tr>
 				<td>NPWP</td>
-				<td><input class="form-control" placeholder="Text..." type="text" name="npwp" required></input></td>
+				<td><input class="form-control" placeholder="NPWP.Example: 35.223.961.0-406.000‬" type="text" name="npwp" required></input></td>
 			</tr>
 			<tr>
 				<td>Oracle Cust ID</td>
-				<td><input class="form-control" placeholder="Text..." type="text" name="oracle_cust_id" required></input></td>
+				<td><input onkeypress="return isNumberKey(event)" class="form-control" placeholder="Oracle Cust ID" type="text" name="oracle_cust_id" required></input></td>
 			</tr>
 			<tr>
-				<td>City</td>
+				<td>Province</td>
 				<td>
-					<select class="form-control" name ="city_regency_id" required>
-						<option value="" disabled selected> PILIH SALAH SATU </option>
-							<?php foreach($data_city as $dc){ ?>
-								<option value="<?php echo $dc['city_regency_id'];?>">
-									<?php echo $dc['regency_name']; ?>
-								</option>
-							<?php } ?>
+					<select name="txtProvince" id="txtProvince" data-placeholder="Province" onchange="getRegency('<?php echo base_url();?>')" class="form-control select4" required>
+						<option value="" disabled selected>-- PILIH SALAH SATU --</option>
+						<option value="muach" disabled>-- PILIH SALAH SATU --</option>
+						<?php
+						foreach($province as $ct){
+						?>
+							<option value="<?php echo $ct['province_id'];?>">
+								<?php echo $ct['province_name'];?>
+							</option>
+						<?php
+						}
+						?>
 					</select>
 				</td>
 			</tr>
-			
+			<tr>
+				<td>City / Regency</td>
+				<td>
+					<select data-placeholder="City / Regency" name="txtCityRegency" id="txtCityRegency" onchange="getDistrict('<?php echo base_url();?>')" class="form-control select4" disabled required>
+						<option value="muach" disabled >-- PILIH SALAH SATU --</option>
+					</select>
+				</td>
+			</tr>
 			<tr>
 				<td>Branch</td>
 				<td>
-					<select class="form-control" name ="org_id" required>
-						<option value="" disabled selected> PILIH SALAH SATU </option>
+					<select data-placeholder="Branch"  class="form-control select4" name ="org_id" required>
+						<option value="" disabled selected>-- PILIH SALAH SATU --</option>
+						<option value="muach" disabled >-- PILIH SALAH SATU --</option>
 							<?php foreach ($data_branch as $data_branch_item){?>
 								<option value="<?php echo $data_branch_item['org_id'];?>">
 									<?php echo $data_branch_item['org_name']; ?>
@@ -47,17 +60,18 @@
 				</td>
 			</tr>
 			<tr>
-				<td>HP</td>
-				<td><input class="form-control" placeholder="08xxxxxx,08xxxxxx,02xxxxxx" type="text" name="contact_number" required></input></td>
+				<td>Handphone</td>
+				<td><input onkeypress="return isNumberKeyAndComma(event)" class="form-control" placeholder="08xxxxxx,08xxxxxx,02xxxxxx" type="text" name="contact_number" required></input></td>
 			</tr>
 			<tr>
 				<td>
 				</td>
 				<td>
 					<a class="btn btn-default" href="<?php echo $_SERVER['HTTP_REFERER'] ?>">
-						<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Back</a>
+						<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> BACK
+					</a>
 					<button class="btn btn-primary pull-right" type="submit">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ADD
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> SAVE DATA
 					</button>
 				</td>
 			</tr>

@@ -10,7 +10,9 @@
 	//Menampilkan data
 		public function branch()
 		{
-			$sql = "select * from sf.branch_extention be, sys.sys_organization so where be.org_id = so.org_id";
+			$sql = "select * from sf.branch_extention be, sys.sys_organization so
+					where be.org_id = so.org_id
+					ORDER BY be.branch_extention_id";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

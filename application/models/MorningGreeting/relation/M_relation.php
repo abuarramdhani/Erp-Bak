@@ -10,7 +10,7 @@
 	//Menampilkan data relation
 		public function relation()
 		{
-			$sql = "select *,(select string_agg(cn.contact_number,',')
+			$sql = "select *,(select string_agg(cn.contact_number,', ')
 						from sf.relation_contact_number cn
 						where cn.relation_id=sr.relation_id) as contact_number from sf.relation sr, sys.sys_organization so, sys.sys_area_city_regency sc
 					where sr.org_id = so.org_id and sr.city = sc.city_regency_id
@@ -54,9 +54,16 @@
 				$query = $this->db->query($sql);
 		}
 		
-		public function data_city()
+		public function province()
 		{
-			$sql = "select * from sys.sys_area_city_regency";
+			$sql = "select * from sys.sys_area_province";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function data_city($pr_id)
+		{
+			$sql = "select * from sys.sys_area_city_regency where province_id='$pr_id' order by regency_name";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -64,7 +71,9 @@
 	//Mengedit data relation
 		public function search_data_relation($relation_id)
 		{
-			$sql = "select * from sf.relation where relation_id = '$relation_id'";
+			$sql = "select *
+					from sf.relation sr, sys.sys_area_city_regency sc, sys.sys_area_province sp
+					where sr.city = sc.city_regency_id AND sp.province_id = sc.province_id AND sr.relation_id = '$relation_id'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -76,6 +85,46 @@
 			return $query->result_array();
 		}
 		
+/*		public function getRelation($id = FALSE,$jenis=FALSE)
+		{		//$id = str_replace("~", " ", $id);
+				$this->load->helper('url');
+				if ($id === FALSE)
+				{		
+						$this->db->select('*');
+						$this->db->from('cr.vi_cr_customer');
+						//$this->db->where('end_date', NULL);						
+						$this->db->order_by('customer_name', 'ASC');
+						
+						$query = $this->db->get();
+						return $query->result_array();
+				}
+				else{						
+						if($jenis == 'INTEGER')
+						{
+							/*$this->db->select('*');
+							$this->db->from('cr.vi_cr_customer');
+							//$this->db->like('upper(customer_name)', $id);
+							$this->db->where_in('customer_id', $id);
+							$this->db->order_by('customer_name', 'ASC');
+							$sql = "select * from cr.vi_cr_customer where customer_id in ($id) order by customer_name asc";
+							
+							$query = $this->db->query($sql);
+							return $query->result_array();
+						}
+						else{
+							$this->db->select('*');
+							$this->db->from('cr.vi_cr_customer');
+							$this->db->like('upper(customer_name)', $id);
+							//$this->db->or_like('customer_id', $id);
+							$this->db->order_by('customer_name', 'ASC');
+							
+							$query = $this->db->get();
+							return $query->result_array();
+						}
+						
+				}
+		}*/
+
 		public function data_branch()
 		{
 			$sql = "select * from sys.sys_organization";

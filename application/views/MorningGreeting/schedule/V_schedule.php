@@ -8,15 +8,15 @@
 				</a>
 			</div>
 			<div class="box-body">
-				<table id="schedule" class="table table-striped table-bordered table-responsive table-hover text-center">
+				<table id="schedule" class="table table-striped table-bordered table-responsive table-hover">
 					<thead style="background:#22aadd; color:#FFFFFF;">
 						<tr>
-							<th class="col-md-1">No</th>
-							<th>Schedule Description</th>
-							<th>Day</th>
-							<th>Relasi</th>
-							<th>Branch</th>
-							<th class="col-md-2">Action</th>
+							<th style="width:5%; text-align:center;">No</th>
+							<th style="text-align:center;">Schedule Description</th>
+							<th style="text-align:center;">Day</th>
+							<th style="text-align:center;">Relasi</th>
+							<th style="width:15%; text-align:center;">Branch</th>
+							<th style="width:15%; text-align:center;">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -41,11 +41,11 @@
 							}
 							else $day = 'Minggu';?>
 						<tr>
-							<td><?php echo $no++; ?></td>
+							<td style="text-align:center;"><?php echo $no++; ?></td>
 							<td><?php echo $schedule_item['schedule_description'];?></td>
-							<td><?php echo $day; ?></td>
+							<td style="text-align:center;"><?php echo $day; ?></td>
 							<td><?php echo $schedule_item['relation_name']; ?></td>
-							<td><?php echo $schedule_item['org_name']; ?></td>
+							<td style="text-align:center;"><?php echo $schedule_item['org_name']; ?></td>
 							<td>
 							<div class="btn-group-justified" role="group">
 								<a class="btn btn-warning btn-sm" href="<?php echo base_url()?>MorningGreeting/schedule/edit/<?php echo $schedule_item['schedule_id'] ?>">
