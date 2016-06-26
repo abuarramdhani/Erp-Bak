@@ -31,10 +31,6 @@ class M_user extends CI_Model {
 		 
 		public function setUser($data)
 		{
-			
-
-			//$slug = url_title($this->input->post('title'), 'dash', TRUE);
-
 			return $this->db->insert('sys.sys_user', $data);
 		}
 		
@@ -42,6 +38,18 @@ class M_user extends CI_Model {
 		{		
 				$this->db->where('user_id',$user_id);
 				$this->db->update('sys.sys_user', $data); 
+
+		}
+		
+		public function setUserResponsbility($data)
+		{
+			return $this->db->insert('sys.sys_user_application', $data);
+		}
+		
+		public function UpdateUserResponsbility($data, $user_application_id)
+		{		
+				$this->db->where('user_application_id',$user_application_id);
+				$this->db->update('sys.sys_user_application', $data); 
 
 		}
 		
@@ -63,7 +71,7 @@ class M_user extends CI_Model {
 			return $query->result_array();
 		}
 		
-		public function getUserResponsibility($user_id=FALSE,$responsbility_id="")
+		public function getUserResponsibility($user_id=FALSE,$responsbility_id="",$user_application_id="")
 		{	
 			if($responsbility_id==""){
 				$and = "";
@@ -71,7 +79,14 @@ class M_user extends CI_Model {
 				$and = "AND sugm.user_group_menu_id = $responsbility_id";
 			}
 			
-			$sql = "SELECT su.user_id,sugm.user_group_menu_id, sugm.user_group_menu_name, smod.module_name,smod.module_link
+			if($user_application_id==""){
+				$and1 = "";
+			}else{
+				$and1 = "AND sua.user_application_id = $user_application_id";
+			}
+			
+			$sql = "SELECT su.user_id,sugm.user_group_menu_id, sugm.user_group_menu_name, 
+					smod.module_name,smod.module_link,sua.active,sua.user_application_id
 					FROM sys.sys_user su,
 					sys.sys_user_application sua,
 					sys.sys_user_group_menu sugm,
@@ -82,7 +97,7 @@ class M_user extends CI_Model {
 					AND sua.user_group_menu_id = sugm.user_group_menu_id
 					AND smod.module_id= sugm.module_id
 					AND su.user_id=$user_id
-					$and
+					$and $and1
 					order by sugm.user_group_menu_name;
 					";					
 			
@@ -131,8 +146,8 @@ class M_user extends CI_Model {
 				$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 			}
 				
-				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,
-						sm.menu_id,smgl.root_id,sm.menu_title,sm.menu_link
+				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,smgl.group_menu_list_id,
+						sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,sm.menu_link
 						FROM sys.sys_user su,
 						sys.sys_user_application sua,
 						sys.sys_user_group_menu sugm,
@@ -161,8 +176,9 @@ class M_user extends CI_Model {
 			}else{
 				$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 			}	
-				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,
-						sm.menu_id,smgl.root_id,sm.menu_title,sm.menu_link
+				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.group_menu_list_id,
+						smgl.menu_sequence,	sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,
+						sm.menu_link
 						FROM sys.sys_user su,
 						sys.sys_user_application sua,
 						sys.sys_user_group_menu sugm,
@@ -191,8 +207,8 @@ class M_user extends CI_Model {
 			}else{
 				$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 			}
-				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,
-						sm.menu_id,smgl.root_id,sm.menu_title,sm.menu_link
+				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,smgl.group_menu_list_id,
+						sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,sm.menu_link
 						FROM sys.sys_user su,
 						sys.sys_user_application sua,
 						sys.sys_user_group_menu sugm,
