@@ -41,7 +41,7 @@
 				<ul class="sidebar-menu" >
 					<li class="header">MENU</li>
 				</ul>
-				<!-----------------------Menu Level 1------------------->
+				<!-----------------------Menu Utama------------------->
 				
 				<ul class="sidebar-menu">
 					<?php
@@ -70,14 +70,14 @@
 								}
 							?>
 							</a>
-								<!-----------------------Menu Level 2------------------->
+								<!-----------------------Sub Menu Level 1------------------->
 								<?php	
 									if($UserMenu_item['menu_link']==""){
 								?>
 								<ul class="treeview-menu">
 									<?php
 										foreach($UserSubMenuOne as $UserSubMenuOne_item){
-											if($UserMenu_item['group_menu_list_id']==$UserSubMenuOne_item['root_id']){
+											if($UserMenu_item['menu_id']==$UserSubMenuOne_item['root_id']){
 												if($UserSubMenuOne_item['menu_link']==""){
 													$link_sub1 = "#";
 												}else{
@@ -100,14 +100,14 @@
 												echo $UserSubMenuOne_item['menu_title'];
 											}
 										?>
-										<!-----------------------Menu Level 3------------------->
+										<!-----------------------Sub Menu Level 2------------------->
 										<?php	
 											if($UserSubMenuOne_item['menu_link']==""){
 										?>
 										<ul class="treeview-menu">
 											<?php
 												foreach($UserSubMenuTwo as $UserSubMenuTwo_item){
-													if($UserSubMenuOne_item['group_menu_list_id']==$UserSubMenuTwo_item['root_id']){
+													if($UserSubMenuOne_item['menu_id']==$UserSubMenuTwo_item['root_id']){
 														if($UserSubMenuTwo_item['menu_link']==""){
 															$link_sub2 = "#";
 														}else{
@@ -130,7 +130,7 @@
 										<?php
 											}
 										?>
-										<!-----------------------Menu Level 3------------------->
+										<!-----------------------Sub Menu Level 2------------------->
 										</a></li>
 									<?php
 											}
@@ -141,14 +141,14 @@
 								<?php
 									}
 								?>
-								<!-----------------------Menu Level 2------------------->
+								<!-----------------------Sub Menu Level 1------------------->
 						</li>
 					<?php
 						}
 					?>
 					
 				</ul>
-				<!-----------------------Menu Level 1------------------->
+				<!-----------------------Menu Utama------------------->
 						<?php } ?>
 		</div>
 	</section>

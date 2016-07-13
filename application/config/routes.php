@@ -93,26 +93,6 @@ $route['CustomerRelationship/Setting/ServiceProblem/(:any)/(:any)'] = 'CustomerR
 $route['SystemAdministration/User'] = 'SystemAdministration/MainMenu/C_User/index';
 $route['SystemAdministration/User/(:any)'] = 'SystemAdministration/MainMenu/C_User/$1';
 $route['SystemAdministration/User/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_User/$1/$2';
-//SystemAdministration/C_Menu
-$route['SystemAdministration/Menu'] = 'SystemAdministration/MainMenu/C_Menu/index';
-$route['SystemAdministration/Menu/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1';
-$route['SystemAdministration/Menu/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1/$2';
-//SystemAdministration/C_MenuGroup
-$route['SystemAdministration/MenuGroup'] = 'SystemAdministration/MainMenu/C_MenuGroup/index';
-$route['SystemAdministration/MenuGroup/(:any)'] = 'SystemAdministration/MainMenu/C_MenuGroup/$1';
-$route['SystemAdministration/MenuGroup/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_MenuGroup/$1/$2';
-//SystemAdministration/C_Report
-$route['SystemAdministration/Report'] = 'SystemAdministration/MainMenu/C_Report/index';
-$route['SystemAdministration/Report/(:any)'] = 'SystemAdministration/MainMenu/C_Report/$1';
-$route['SystemAdministration/Report/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Report/$1/$2';
-//SystemAdministration/C_ReportGroup
-$route['SystemAdministration/ReportGroup'] = 'SystemAdministration/MainMenu/C_ReportGroup/index';
-$route['SystemAdministration/ReportGroup/(:any)'] = 'SystemAdministration/MainMenu/C_ReportGroup/$1';
-$route['SystemAdministration/ReportGroup/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_ReportGroup/$1/$2';
-//SystemAdministration/C_Responsibility
-$route['SystemAdministration/Responsibility'] = 'SystemAdministration/MainMenu/C_Responsibility/index';
-$route['SystemAdministration/Responsibility/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1';
-$route['SystemAdministration/Responsibility/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1/$2';
 //CustomerRelationship/C_Customer/
 $route['CustomerRelationship/Customer'] = 'CustomerRelationship/MainMenu/C_Customer/index';
 $route['CustomerRelationship/Customer/(:any)'] = 'CustomerRelationship/MainMenu/C_Customer/$1';
@@ -196,27 +176,27 @@ $route['MorningGreeting/dashboard'] 						= 'MorningGreeting/C_MorningGreeting/i
 
 // route pada tabel config
 $route['MorningGreeting/configuration'] 					= 'MorningGreeting/configuration/C_config/index';
-$route['MorningGreeting/configuration/edit/(:any)'] 		= 'MorningGreeting/configuration/C_config/editConfig/$1';
-$route['MorningGreeting/configuration/save'] 				= 'MorningGreeting/configuration/C_config/saveConfig';
+$route['MorningGreeting/configuration/edit/(:any)'] 	= 'MorningGreeting/configuration/C_config/editConfig/$1';
+$route['MorningGreeting/configuration/save'] 			= 'MorningGreeting/configuration/C_config/saveConfig';
 
 //route pada tabel branch
 $route['MorningGreeting/extention'] 						= 'MorningGreeting/extention/C_extention/index';
 $route['MorningGreeting/extention/new'] 					= 'MorningGreeting/extention/C_extention/newBranch';
-$route['MorningGreeting/extention/new/save'] 				= 'MorningGreeting/extention/C_extention/newBranchSave';
-$route['MorningGreeting/extention/edit/(:any)'] 			= 'MorningGreeting/extention/C_extention/editBranch/$1';
-$route['MorningGreeting/extention/editsave'] 				= 'MorningGreeting/extention/C_extention/saveEditBranch';
-$route['MorningGreeting/extention/delete/(:any)'] 			= 'MorningGreeting/extention/C_extention/deleteBranch/$1';
+$route['MorningGreeting/extention/new/save'] 			= 'MorningGreeting/extention/C_extention/newBranchSave';
+$route['MorningGreeting/extention/edit/(:any)'] 		= 'MorningGreeting/extention/C_extention/editBranch/$1';
+$route['MorningGreeting/extention/editsave'] 			= 'MorningGreeting/extention/C_extention/saveEditBranch';
+$route['MorningGreeting/extention/delete/(:any)'] 	= 'MorningGreeting/extention/C_extention/deleteBranch/$1';
 
 //route pada tabel schedule
 $route['MorningGreeting/schedule'] 							= 'MorningGreeting/schedule/C_schedule/index';
 $route['MorningGreeting/schedule/new'] 						= 'MorningGreeting/schedule/C_schedule/newSchedule';
 $route['MorningGreeting/schedule/new/save'] 				= 'MorningGreeting/schedule/C_schedule/newScheduleSave';
-$route['MorningGreeting/schedule/edit/(:any)'] 				= 'MorningGreeting/schedule/C_schedule/editSchedule/$1';
+$route['MorningGreeting/schedule/edit/(:any)'] 			= 'MorningGreeting/schedule/C_schedule/editSchedule/$1';
 $route['MorningGreeting/schedule/editsave'] 				= 'MorningGreeting/schedule/C_schedule/saveEditSchedule/$1';
 $route['MorningGreeting/schedule/delete/(:any)'] 			= 'MorningGreeting/schedule/C_schedule/deleteSchedule/$1';
 
 //route pada tabel relation
-$route['MorningGreeting/relation']							= 'MorningGreeting/relation/C_relation/index';
+$route['MorningGreeting/relation']								= 'MorningGreeting/relation/C_relation/index';
 $route['MorningGreeting/relation/showcn']					= 'MorningGreeting/relation/C_relation/showcn';
 $route['MorningGreeting/relation/new']						= 'MorningGreeting/relation/C_relation/newRelation';
 $route['MorningGreeting/relation/new/save']					= 'MorningGreeting/relation/C_relation/newRelationSave';
@@ -226,6 +206,23 @@ $route['MorningGreeting/relation/delete/(:any)']			= 'MorningGreeting/relation/C
 
 //Route pada tabel cdr
 $route['MorningGreeting/cdr']								= 'MorningGreeting/cdr/C_cdr/index';
+
+//Route pada menu Report
+$route['MorningGreeting/report']								= 'MorningGreeting/report/C_report/index';
+$route['MorningGreeting/report/showAll']						= 'MorningGreeting/report/C_report/showAll';
+$route['MorningGreeting/report/showAll/download/csv']	= 'MorningGreeting/report/C_report/showAllDownloadCsv';
+$route['MorningGreeting/report/showAll/download/xml']	= 'MorningGreeting/report/C_report/showAllDownloadXml';
+$route['MorningGreeting/report/showAll/download/pdf']	= 'MorningGreeting/report/C_report/showAllDownloadPdf';
+
+$route['MorningGreeting/report/showByBranch']					= 'MorningGreeting/report/C_report/showByBranch';
+$route['MorningGreeting/report/showByBranch/download/csv']	= 'MorningGreeting/report/C_report/showByBranchDownloadCsv';
+$route['MorningGreeting/report/showByBranch/download/xml']	= 'MorningGreeting/report/C_report/showByBranchDownloadXml';
+$route['MorningGreeting/report/showByBranch/download/pdf']	= 'MorningGreeting/report/C_report/showByBranchDownloadPdf';
+
+$route['MorningGreeting/report/showByRelation']					= 'MorningGreeting/report/C_report/showByRelation';
+$route['MorningGreeting/report/showByRelation/download/csv']	= 'MorningGreeting/report/C_report/showByRelationDownloadCsv';
+$route['MorningGreeting/report/showByRelation/download/xml']	= 'MorningGreeting/report/C_report/showByRelationDownloadXml';
+$route['MorningGreeting/report/showByRelation/download/pdf']	= 'MorningGreeting/report/C_report/showByRelationDownloadPdf';
 //-------------------------------------Morning Greeting----------------------------------------------------
 
 $route['(:any)'] = 'C_Index/$1';

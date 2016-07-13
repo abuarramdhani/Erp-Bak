@@ -87,10 +87,10 @@ $db['default'] = array(
 
 $db['oracle'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.1:1521/PROD',
+	'hostname' => 'dbprod.quick.com',
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_PROD',
+	'database' => 'PROD',
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -104,5 +104,28 @@ $db['oracle'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE
+	'save_queries' => TRUE,
+	'port' => 1521
+);
+
+$db['local'] = array(
+	'dsn'	=> '',
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'dinas_luar',
+	'dbdriver' => 'MySQL',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
 );

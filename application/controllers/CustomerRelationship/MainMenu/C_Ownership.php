@@ -91,7 +91,6 @@ class C_Ownership extends CI_Controller {
 				$data['Item'] = $this->M_item->getItem();
 				$data['Unit'] = $this->M_item->getItemHarvester();
 				$data['BuyingType'] = $this->M_buyingtype->getBuyingTypeName();
-				$data['Goverment'] = $this->M_ownership->getGoverment();
 
 				$this->form_validation->set_rules('slcUnit', 'Body Number', 'required');
 				//$this->form_validation->set_rules('txtEngineNumber', 'Engine Number', 'required');
@@ -122,8 +121,7 @@ class C_Ownership extends CI_Controller {
 							'ownership_date' => $this->input->post('txtOwnershipDate'),
 							'creation_date' => $this->input->post('hdnDate'),
 							'created_by' => $this->input->post('hdnUser'),
-							'warranty_expired_date' => $this->input->post('txtWarrantyExpiredDate'),
-							'goverment_project' => $this->input->post('slcGov')
+							'warranty_expired_date' => $this->input->post('txtWarrantyExpiredDate')
 						);
 						
 						if($data['ownership_date'] == '')
@@ -152,7 +150,6 @@ class C_Ownership extends CI_Controller {
 				$customer_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $customer_id);
 				
 				$data['Ownership'] = $this->M_ownership->getOwnershipId($plaintext_string);
-				$data['Goverment'] = $this->M_ownership->getGoverment();
 				$data['Employee'] = $this->M_employee->getEmployee();
 				$data['Item'] = $this->M_item->getItem();
 				$data['Unit'] = $this->M_item->getItemHarvester();
@@ -186,8 +183,7 @@ class C_Ownership extends CI_Controller {
 							'ownership_date' 	=> $this->input->post('txtOwnershipDate'),
 							'last_update_date' 	=> $this->input->post('hdnDate'),
 							'last_updated_by' 	=> $this->input->post('hdnUser'),
-							'warranty_expired_date' => $this->input->post('txtWarrantyExpiredDate'),
-							'goverment_project' => $this->input->post('slcGov')
+							'warranty_expired_date' => $this->input->post('txtWarrantyExpiredDate')
 						);
 						
 						if($data['ownership_date'] == '')

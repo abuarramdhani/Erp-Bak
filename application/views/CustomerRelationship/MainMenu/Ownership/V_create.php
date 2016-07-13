@@ -1,3 +1,20 @@
+<script>
+function sendValueItem(item_id,segment1,item_name){
+		$('#txtItemCode').val(segment1);
+		$('#hdnItemId').val(item_id);
+		$('#spanItem').html(item_name);
+}
+function sendValueEmployee(emp_id,emp_code,emp_name){
+		$('#txtEmployeeNum1').val(emp_code);
+		$('#hdnEmployeeId1').val(emp_id);
+		$('#spanEmployee').html(emp_name);
+}
+function sendValueBuyingType(by_id,by_name,by_desc){
+		$('#txtBuyingType').val(by_name);
+		$('#hdnBuyingTypeId').val(by_id);
+		$('#spanBuyingType').html(by_desc);
+}
+</script>
 <section class="content">
 	<div class="inner" >
 	<div class="row">
@@ -132,22 +149,6 @@
 									<label class="control-label col-lg-3" for="dp2">Ownership Date</label>
 									<div class="col-lg-4">
 										<input type="text" maxlength="11" placeholder="<?php echo date("d-M-Y")?>" name="txtOwnershipDate" value="" class="form-control" data-date-format="dd-M-yyyy" id="dp3" required/>
-									</div>
-									
-								</div>
-								<div class="form-group">
-									<label class="control-label col-lg-3" for="dp2">Goverment Project</label>
-									<div class="col-lg-4">
-										<select name="slcGov" id="slcGov" data-placeholder="Goverment" class="form-control select4" >
-											<option value="">-- Option --</option>
-											<?php
-											foreach($Goverment as $Goverment_item){ 
-											?>
-											<option value="<?php echo $Goverment_item['BILL_CUST_NAME'];?>"><?php echo strtoupper($Goverment_item['BILL_CUST_NAME']);?></option>
-											<?php
-											}
-											?>
-										</select>
 									</div>
 									
 								</div>

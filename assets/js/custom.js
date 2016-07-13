@@ -61,3 +61,43 @@
 			],
 		});
 	});
+	
+	$(document).ready(function(){
+		$('#reportShowAllTable').DataTable({
+			"filter": false,
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#reportBranchTable').DataTable({
+			"filter": false,
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#reportRelationTable').DataTable({
+			"filter": false,
+		});
+	});
+
+//Date Picker Report All
+$( document ).ready(function() {
+	$('#reportAll').daterangepicker({
+		"singleDatePicker": true,
+		"showDropdowns": true,
+		"maxDate": moment(),
+		format: 'dddd, DD MMMM, YYYY',
+		dayNamesMin: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+	});
+});
+
+//Date Picker Report Branch
+$( document ).ready(function() {
+	$('#reportBranch').daterangepicker({
+		"singleDatePicker": true,
+		"showDropdowns": true,
+		"maxDate": moment(),
+		format: 'dddd, DD MMMM, YYYY',
+		dayNamesMin: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+	});
+});

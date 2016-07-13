@@ -42,7 +42,6 @@
 							</div>
 							
 							<div class="panel-body">
-								<div class="row">
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">NIK</label>
 											<div class="col-lg-4">
@@ -69,62 +68,6 @@
 												</select>
 											</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="table-responsive"  style="overflow:hidden;">
-										<div class="row">
-											<div class="col-lg-12" >
-
-												<div class="panel panel-default">
-													<div class="panel-heading text-right">
-														<a href="javascript:void(0);" id="addSpLine"  title="Tambah Baris" onclick="addRowResponsibility('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
-														&nbsp;&nbsp;&nbsp;
-														<a href="javascript:void(0);" id="delSpLine" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a>
-													</div>
-													<div class="panel-body">
-														<div class="table-responsive" >
-															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
-																<thead>
-																	<tr class="bg-primary">
-																		<th width="80%">Responsibility</th>
-																		<th width="20%">Active</th>
-																	</tr>
-																</thead>
-																<tbody id="tbodyUserResponsibility">
-																	<?php foreach($UserResponsibility as $UserResponsibility_item){
-																	?>
-																	<tr class="clone">
-																	
-																		<td>
-																			<select class="form-control select4" name="slcUserResponsbility[]" id="slcUserResponsbility" required>
-																				<?php foreach($Responsibility as $Responsibility_item){
-																				?>
-																				<option value="<?php echo $Responsibility_item['user_group_menu_id']?>"<?php if($Responsibility_item['user_group_menu_id']==$UserResponsibility_item['user_group_menu_id']){echo "selected";} ?>><?=$Responsibility_item['user_group_menu_name']?></option>
-																				<?php } ?>
-																			</select>
-																			<input type="hidden" name="hdnUserApplicationId[]" id="hdnUserApplicationId" value="<?= $UserResponsibility_item['user_application_id']?>">
-																		</td>
-																		<td>
-																			<select class="form-control select4" name="slcActive[]" id="slcActive" required>
-																				<option value="" <?php if($UserResponsibility_item['active']=="N"){echo "selected";} ?>></option>
-																				<option value="Y" <?php if($UserResponsibility_item['active']=="Y"){echo "selected";} ?>>Yes</option>
-																				<option value="N" <?php if($UserResponsibility_item['active']=="N"){echo "selected";} ?>>No</option>
-																			</select>
-																		</td>
-																	</tr>
-																	<?php } ?>
-
-																</tbody>
-															</table>
-														</div>
-													</div>
-
-												</div>
-											</div>
-										</div>
-									</div>
-											
-								</div>
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">
