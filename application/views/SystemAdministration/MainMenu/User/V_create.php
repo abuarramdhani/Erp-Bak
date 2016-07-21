@@ -36,6 +36,7 @@
 							</div>
 						<div class="box-body">
 							<div class="panel-body">
+								<div class="row">
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">UserName</label>
 											<div class="col-lg-4">
@@ -62,6 +63,58 @@
 												</select>
 											</div>
 									</div>
+								</div>
+								<div class="row">
+									<div class="table-responsive"  style="overflow:hidden;">
+										<div class="row">
+											<div class="col-lg-12" >
+
+												<div class="panel panel-default">
+													<div class="panel-heading text-right">
+														<a href="javascript:void(0);" id="addResponsbility" title="Tambah Baris" onclick="addRowResponsibility('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
+														&nbsp;&nbsp;&nbsp;
+														<a href="javascript:void(0);" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a>
+													</div>
+													<div class="panel-body">
+														<div class="table-responsive" >
+															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
+																<thead>
+																	<tr class="bg-primary">
+																		<th width="80%">Responsibility</th>
+																		<th width="20%">Active</th>
+																	</tr>
+																</thead>
+																<tbody id="tbodyUserResponsibility">
+																	<tr  class="clone">
+																		<td>
+																			<select class="form-control select4" name="slcUserResponsbility[]" id="slcUserResponsbility" required>
+																				<option value=""></option>
+																				<?php foreach($Responsibility as $Responsibility_item){
+																				?>
+																				<option value="<?=$Responsibility_item['user_group_menu_id']?>"><?=$Responsibility_item['user_group_menu_name']?></option>
+																				<?php } ?>
+																			</select>
+																		</td>
+																		<td>
+																			<select class="form-control select4" name="slcActive[]" id="slcActive" required>
+																				<option value=""></option>
+																				<option value="Y">Yes</option>
+																				<option value="N">No</option>
+																			</select>
+																		</td>
+																	</tr>
+
+																</tbody>
+															</table>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+											
+								</div>
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">

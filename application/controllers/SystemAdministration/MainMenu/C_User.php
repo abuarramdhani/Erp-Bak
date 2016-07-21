@@ -31,6 +31,7 @@ class C_User extends CI_Controller {
 		  $this->load->library('encrypt');
 		  $this->load->model('M_index');
 		  $this->load->model('SystemAdministration/MainMenu/M_user');
+		  $this->load->model('SystemAdministration/MainMenu/M_responsibility');
 		  //$this->load->model('Setting/M_usermenu');
 		  //$this->load->library('encryption');
 		  $this->checkSession();
@@ -100,6 +101,8 @@ class C_User extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['Responsibility'] = $this->M_responsibility->getResponsibility();
+		
 
 		$this->form_validation->set_rules('txtUsername', 'username', 'required');
 		$this->form_validation->set_rules('txtPassword', 'Password', 'required');
@@ -128,6 +131,24 @@ class C_User extends CI_Controller {
 				);
 				
 				$this->M_user->setUser($data);
+				$insert_id = $this->db->insert_id();
+				
+				$responsibility_id = $this->input->post('slcUserResponsbility');
+				$active = $this->input->post('slcActive');
+				
+				$i=0;
+				foreach($responsibility_id as $loop){
+					$data_responsbility[$i] = array(
+						'user_group_menu_id' 	=> $responsibility_id[$i],
+						'user_id'				=> $insert_id,
+						'active'				=> $active[$i],
+						'creation_date' 		=> $this->input->post('hdnDate'),
+						'created_by' 			=> $this->input->post('hdnUser')
+					);
+					$this->M_user->setUserResponsbility($data_responsbility[$i]);
+					$i++;
+				}
+				
 				redirect('SystemAdministration/User');
 		}
 		
@@ -146,8 +167,13 @@ class C_User extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['Responsibility'] = $this->M_responsibility->getResponsibility();
+		
+		
 		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		
+		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($plaintext_string);
 		//echo $plaintext_string;
 
 		$data['UserData'] = $this->M_user->getUser($plaintext_string);
@@ -185,7 +211,41 @@ class C_User extends CI_Controller {
 				);
 			}	
 			$this->M_user->updateUser($data,$plaintext_string);
+				
+			$responsibility_id = $this->input->post('slcUserResponsbility');
+			$active = $this->input->post('slcActive');
+			$user_application_id = $this->input->post('hdnUserApplicationId');
 			
+			$i=0;
+			foreach($responsibility_id as $loop){
+				$data_responsbility[$i] = array(
+					'user_group_menu_id' 	=> $responsibility_id[$i],
+					'user_id'				=> $plaintext_string,
+					'active'				=> $active[$i],
+					'last_update_date' 		=> $this->input->post('hdnDate'),
+					'last_updated_by' 		=> $this->input->post('hdnUser'),
+					'creation_date' 		=> $this->input->post('hdnDate'),
+					'created_by' 			=> $this->input->post('hdnUser')
+				);
+				if(count($responsibility_id) > 0){
+					if($user_application_id[$i]==0){
+						unset($data_responsbility[$i]['last_update_date']);
+						unset($data_responsbility[$i]['last_updated_by']);
+						$this->M_user->setUserResponsbility($data_responsbility[$i]);
+					}else{
+						unset($data_responsbility[$i]['creation_date']);
+						unset($data_responsbility[$i]['created_by']);
+						$UserResponsibility = $this->M_user->getUserResponsibility($plaintext_string,"",$user_application_id[$i]);
+						if($data_responsbility[$i]['user_group_menu_id']!=$UserResponsibility[0]['user_group_menu_id'] 
+						or $data_responsbility[$i]['active']!=$UserResponsibility[0]['active']){
+							$this->M_user->UpdateUserResponsbility($data_responsbility[$i],$user_application_id[$i]);
+						}
+					}
+				}
+				$i++;
+			}
+			// print_r($data_responsbility);
+			// print_r($user_application_id);
 			redirect('SystemAdministration/User');
 		}
 			

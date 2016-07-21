@@ -6,8 +6,7 @@
 			<h4>Morning Greeting CDR</h4>
 		</div>
 		<div class="box-body" style="padding-top:50px;">
-			<div style="overflow-y:auto;">
-				<table id="config" class="table table-striped table-bordered table-responsive table-hover text-center" style="width:auto;">
+				<table id="config" class="table table-striped table-bordered table-responsive table-hover text-center">
 					<thead style="background:#22aadd; color:#FFFFFF;">
 						<th style="text-align:center;">No</th>
 						<th style="text-align:center;">Call Date</th>
@@ -22,24 +21,23 @@
 						<th style="text-align:center;">Bill Sec</th>
 						<th style="text-align:center;">Disposition</th>
 						<th style="text-align:center;">Branch</th>
-						<th style="text-align:center; width:15%;">Action</th>
+						<th style="text-align:center;">Action</th>
 					</thead>
 					<tbody>
 						<!-- CONTENT FORM TABEL CDR -->
 						<tr>
-							<td>1</td>
-							<td>22222222</td>
-							<td>333333</td>
-							<td>4</td>
-							<td>4444444445</td>
-							<td>6666666666666666</td>
-							<td>724111111111111111122222222222222</td>
-							<td>823232</td>
-							<td>311313129</td>
-							<td>101222222222</td>
-							<td>11</td>
-							<td>12777777777777777777775</td>
-							<td>13</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
 							<td>
 								<div class="btn-group-justified" role="group">
 								<a class="btn btn-warning btn-sm" href="#Edit">
@@ -69,13 +67,12 @@
 									</div>
 								</div>
 								</div>
-								</div>
+							</div>
 							</td>
-						</tr>
+						</tr
 					</tbody>
-					<div class="box box-info"></div>
 				</table>
-			
+		<div class="box box-info"></div>
 		</div>
 	</div>
 	</div>

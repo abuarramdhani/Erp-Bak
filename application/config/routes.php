@@ -93,6 +93,26 @@ $route['CustomerRelationship/Setting/ServiceProblem/(:any)/(:any)'] = 'CustomerR
 $route['SystemAdministration/User'] = 'SystemAdministration/MainMenu/C_User/index';
 $route['SystemAdministration/User/(:any)'] = 'SystemAdministration/MainMenu/C_User/$1';
 $route['SystemAdministration/User/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_User/$1/$2';
+//SystemAdministration/C_Menu
+$route['SystemAdministration/Menu'] = 'SystemAdministration/MainMenu/C_Menu/index';
+$route['SystemAdministration/Menu/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1';
+$route['SystemAdministration/Menu/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1/$2';
+//SystemAdministration/C_MenuGroup
+$route['SystemAdministration/MenuGroup'] = 'SystemAdministration/MainMenu/C_MenuGroup/index';
+$route['SystemAdministration/MenuGroup/(:any)'] = 'SystemAdministration/MainMenu/C_MenuGroup/$1';
+$route['SystemAdministration/MenuGroup/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_MenuGroup/$1/$2';
+//SystemAdministration/C_Report
+$route['SystemAdministration/Report'] = 'SystemAdministration/MainMenu/C_Report/index';
+$route['SystemAdministration/Report/(:any)'] = 'SystemAdministration/MainMenu/C_Report/$1';
+$route['SystemAdministration/Report/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Report/$1/$2';
+//SystemAdministration/C_ReportGroup
+$route['SystemAdministration/ReportGroup'] = 'SystemAdministration/MainMenu/C_ReportGroup/index';
+$route['SystemAdministration/ReportGroup/(:any)'] = 'SystemAdministration/MainMenu/C_ReportGroup/$1';
+$route['SystemAdministration/ReportGroup/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_ReportGroup/$1/$2';
+//SystemAdministration/C_Responsibility
+$route['SystemAdministration/Responsibility'] = 'SystemAdministration/MainMenu/C_Responsibility/index';
+$route['SystemAdministration/Responsibility/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1';
+$route['SystemAdministration/Responsibility/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1/$2';
 //CustomerRelationship/C_Customer/
 $route['CustomerRelationship/Customer'] = 'CustomerRelationship/MainMenu/C_Customer/index';
 $route['CustomerRelationship/Customer/(:any)'] = 'CustomerRelationship/MainMenu/C_Customer/$1';
@@ -176,27 +196,27 @@ $route['MorningGreeting/dashboard'] 						= 'MorningGreeting/C_MorningGreeting/i
 
 // route pada tabel config
 $route['MorningGreeting/configuration'] 					= 'MorningGreeting/configuration/C_config/index';
-$route['MorningGreeting/configuration/edit/(:any)'] 	= 'MorningGreeting/configuration/C_config/editConfig/$1';
-$route['MorningGreeting/configuration/save'] 			= 'MorningGreeting/configuration/C_config/saveConfig';
+$route['MorningGreeting/configuration/edit/(:any)'] 		= 'MorningGreeting/configuration/C_config/editConfig/$1';
+$route['MorningGreeting/configuration/save'] 				= 'MorningGreeting/configuration/C_config/saveConfig';
 
 //route pada tabel branch
 $route['MorningGreeting/extention'] 						= 'MorningGreeting/extention/C_extention/index';
 $route['MorningGreeting/extention/new'] 					= 'MorningGreeting/extention/C_extention/newBranch';
-$route['MorningGreeting/extention/new/save'] 			= 'MorningGreeting/extention/C_extention/newBranchSave';
-$route['MorningGreeting/extention/edit/(:any)'] 		= 'MorningGreeting/extention/C_extention/editBranch/$1';
-$route['MorningGreeting/extention/editsave'] 			= 'MorningGreeting/extention/C_extention/saveEditBranch';
-$route['MorningGreeting/extention/delete/(:any)'] 	= 'MorningGreeting/extention/C_extention/deleteBranch/$1';
+$route['MorningGreeting/extention/new/save'] 				= 'MorningGreeting/extention/C_extention/newBranchSave';
+$route['MorningGreeting/extention/edit/(:any)'] 			= 'MorningGreeting/extention/C_extention/editBranch/$1';
+$route['MorningGreeting/extention/editsave'] 				= 'MorningGreeting/extention/C_extention/saveEditBranch';
+$route['MorningGreeting/extention/delete/(:any)'] 			= 'MorningGreeting/extention/C_extention/deleteBranch/$1';
 
 //route pada tabel schedule
 $route['MorningGreeting/schedule'] 							= 'MorningGreeting/schedule/C_schedule/index';
 $route['MorningGreeting/schedule/new'] 						= 'MorningGreeting/schedule/C_schedule/newSchedule';
 $route['MorningGreeting/schedule/new/save'] 				= 'MorningGreeting/schedule/C_schedule/newScheduleSave';
-$route['MorningGreeting/schedule/edit/(:any)'] 			= 'MorningGreeting/schedule/C_schedule/editSchedule/$1';
+$route['MorningGreeting/schedule/edit/(:any)'] 				= 'MorningGreeting/schedule/C_schedule/editSchedule/$1';
 $route['MorningGreeting/schedule/editsave'] 				= 'MorningGreeting/schedule/C_schedule/saveEditSchedule/$1';
 $route['MorningGreeting/schedule/delete/(:any)'] 			= 'MorningGreeting/schedule/C_schedule/deleteSchedule/$1';
 
 //route pada tabel relation
-$route['MorningGreeting/relation']								= 'MorningGreeting/relation/C_relation/index';
+$route['MorningGreeting/relation']							= 'MorningGreeting/relation/C_relation/index';
 $route['MorningGreeting/relation/showcn']					= 'MorningGreeting/relation/C_relation/showcn';
 $route['MorningGreeting/relation/new']						= 'MorningGreeting/relation/C_relation/newRelation';
 $route['MorningGreeting/relation/new/save']					= 'MorningGreeting/relation/C_relation/newRelationSave';
@@ -206,24 +226,101 @@ $route['MorningGreeting/relation/delete/(:any)']			= 'MorningGreeting/relation/C
 
 //Route pada tabel cdr
 $route['MorningGreeting/cdr']								= 'MorningGreeting/cdr/C_cdr/index';
-
-//Route pada menu Report
-$route['MorningGreeting/report']								= 'MorningGreeting/report/C_report/index';
-$route['MorningGreeting/report/showAll']						= 'MorningGreeting/report/C_report/showAll';
-$route['MorningGreeting/report/showAll/download/csv']	= 'MorningGreeting/report/C_report/showAllDownloadCsv';
-$route['MorningGreeting/report/showAll/download/xml']	= 'MorningGreeting/report/C_report/showAllDownloadXml';
-$route['MorningGreeting/report/showAll/download/pdf']	= 'MorningGreeting/report/C_report/showAllDownloadPdf';
-
-$route['MorningGreeting/report/showByBranch']					= 'MorningGreeting/report/C_report/showByBranch';
-$route['MorningGreeting/report/showByBranch/download/csv']	= 'MorningGreeting/report/C_report/showByBranchDownloadCsv';
-$route['MorningGreeting/report/showByBranch/download/xml']	= 'MorningGreeting/report/C_report/showByBranchDownloadXml';
-$route['MorningGreeting/report/showByBranch/download/pdf']	= 'MorningGreeting/report/C_report/showByBranchDownloadPdf';
-
-$route['MorningGreeting/report/showByRelation']					= 'MorningGreeting/report/C_report/showByRelation';
-$route['MorningGreeting/report/showByRelation/download/csv']	= 'MorningGreeting/report/C_report/showByRelationDownloadCsv';
-$route['MorningGreeting/report/showByRelation/download/xml']	= 'MorningGreeting/report/C_report/showByRelationDownloadXml';
-$route['MorningGreeting/report/showByRelation/download/pdf']	= 'MorningGreeting/report/C_report/showByRelationDownloadPdf';
 //-------------------------------------Morning Greeting----------------------------------------------------
 
+//-------------------------------------Outstation.begin----------------------------------------------------
+
+$route['Outstation'] = 'general-afair/outstation/C_Outstation/index';
+$route['Outstation/select-employee'] = 'general-afair/outstation/C_Outstation/select_employee';
+
+$route['Outstation/area'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/index';
+$route['Outstation/area/deleted-area'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/deleted_area';
+$route['Outstation/area/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/new_area';
+$route['Outstation/area/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/save_area';
+$route['Outstation/area/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/edit_area/$1';
+$route['Outstation/area/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/update_area';
+$route['Outstation/area/delete'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/check_data_area';
+$route['Outstation/area/delete-temporary/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/delete_temporary/$1';
+$route['Outstation/area/delete-permanently/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationArea/delete_permanently/$1';
+
+$route['Outstation/ush'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/index';
+$route['Outstation/ush/deleted-ush'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/deleted_ush';
+$route['Outstation/ush/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/new_ush';
+$route['Outstation/ush/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/save_ush';
+$route['Outstation/ush/edit/(:any)/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/edit_ush/$1/$2';
+$route['Outstation/ush/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/update_ush';
+$route['Outstation/ush/delete'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/check_data_ush';
+$route['Outstation/ush/delete-temporary/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/delete_temporary/$1';
+$route['Outstation/ush/delete-permanently/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationUSH/delete_permanently/$1';
+
+$route['Outstation/time'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/index';
+$route['Outstation/time/deleted-time'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/deleted_time';
+$route['Outstation/time/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/new_time';
+$route['Outstation/time/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/save_time';
+$route['Outstation/time/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/edit_time/$1';
+$route['Outstation/time/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/update_time';
+$route['Outstation/time/delete'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/check_data_time';
+$route['Outstation/time/delete-temporary/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/delete_temporary/$1';
+$route['Outstation/time/delete-permanently/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationTime/delete_permanently/$1';
+
+$route['Outstation/position'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/index';
+$route['Outstation/position/deleted-position'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/deleted_position';
+$route['Outstation/position/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/new_position';
+$route['Outstation/position/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/save_position';
+$route['Outstation/position/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/edit_position/$1';
+$route['Outstation/position/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/update_position';
+$route['Outstation/position/delete'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/check_data_position';
+$route['Outstation/position/delete-temporary/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/delete_temporary/$1';
+$route['Outstation/position/delete-permanently/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationPosition/delete_permanently/$1';
+
+$route['Outstation/component'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/index';
+$route['Outstation/component/deleted-component'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/deleted_component';
+$route['Outstation/component/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/new_component';
+$route['Outstation/component/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/save_component';
+$route['Outstation/component/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/edit_component/$1';
+$route['Outstation/component/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/update_component';
+$route['Outstation/component/delete'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/check_data_component';
+$route['Outstation/component/delete-temporary/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/delete_temporary/$1';
+$route['Outstation/component/delete-permanently/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationComponent/delete_permanently/$1';
+
+$route['Outstation/city-type'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/index';
+$route['Outstation/city-type/deleted-city-type'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/deleted_city_type';
+$route['Outstation/city-type/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/new_city_type';
+$route['Outstation/city-type/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/save_city_type';
+$route['Outstation/city-type/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/edit_city_type/$1';
+$route['Outstation/city-type/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/update_city_type';
+$route['Outstation/city-type/delete'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/check_data_city_type';
+$route['Outstation/city-type/delete-temporary/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/delete_temporary/$1';
+$route['Outstation/city-type/delete-permanently/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationCityType/delete_permanently/$1';
+
+$route['Outstation/accomodation-allowance'] = 'general-afair/outstation/OutstationSetting/C_OutstationAccomodationAllowance/index';
+$route['Outstation/accomodation-allowance/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationAccomodationAllowance/new_AccomodationAllowance';
+$route['Outstation/accomodation-allowance/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationAccomodationAllowance/save_AccomodationAllowance';
+$route['Outstation/accomodation-allowance/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationAccomodationAllowance/edit_AccomodationAllowance/$1';
+$route['Outstation/accomodation-allowance/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationAccomodationAllowance/update_AccomodationAllowance';
+$route['Outstation/accomodation-allowance/delete/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationAccomodationAllowance/delete_permanently/$1';
+
+$route['Outstation/meal-allowance'] = 'general-afair/outstation/OutstationSetting/C_OutstationMealAllowance/index';
+$route['Outstation/meal-allowance/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationMealAllowance/new_MealAllowance';
+$route['Outstation/meal-allowance/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationMealAllowance/save_MealAllowance';
+$route['Outstation/meal-allowance/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationMealAllowance/edit_MealAllowance/$1';
+$route['Outstation/meal-allowance/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationMealAllowance/update_MealAllowance';
+$route['Outstation/meal-allowance/delete/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationMealAllowance/delete_permanently/$1';
+
+$route['Outstation/simulation'] = 'general-afair/outstation/OutstationSetting/C_OutstationSimulation/index';
+$route['Outstation/simulation/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationSimulation/new_Simulation';
+$route['Outstation/simulation/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationSimulation/save_Simulation';
+$route['Outstation/simulation/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationSimulation/edit_Simulation/$1';
+$route['Outstation/simulation/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationSimulation/update_Simulation';
+
+$route['Outstation/realization'] = 'general-afair/outstation/OutstationSetting/C_OutstationRealization/index';
+$route['Outstation/realization/new'] = 'general-afair/outstation/OutstationSetting/C_OutstationRealization/new_Realization';
+$route['Outstation/realization/new/save'] = 'general-afair/outstation/OutstationSetting/C_OutstationRealization/save_Realization';
+$route['Outstation/realization/edit/(:any)'] = 'general-afair/outstation/OutstationSetting/C_OutstationRealization/edit_Realization/$1';
+$route['Outstation/realization/update'] = 'general-afair/outstation/OutstationSetting/C_OutstationRealization/update_Realization';
+
+
+
+//-------------------------------------Outstation.end----------------------------------------------------
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';

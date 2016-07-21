@@ -316,6 +316,63 @@ function addRowAddAct(base){
 
 }
 
+function addRowResponsibility(base){
+	var newgroup = $('<tr>').addClass('clone');
+	var e = jQuery.Event( "click" );
+	e.preventDefault();
+	$("select#slcUserResponsbility:last").select2("destroy");
+	$("select#slcActive:last").select2("destroy");
+	
+	$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyUserResponsibility');
+
+	$("select#slcUserResponsbility").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcUserResponsbility:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcActive").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcActive:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	
+	$("select#slcUserResponsbility:last").val("").change();
+	$("select#slcActive:last").val("").change();
+	$("input#hdnUserApplicationId:last").val("0");
+}
+
+function addRowReport(base){
+	var newgroup = $('<tr>').addClass('clone');
+	var e = jQuery.Event( "click" );
+	e.preventDefault();
+	$("select#slcReport:last").select2("destroy");
+	
+	$('.clone').last().clone().appendTo(newgroup).appendTo('#tblReportGroup');
+
+	$("select#slcReport").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcReport:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcReport:last").val("").change();
+	$("input#hdnReportGroupListId:last").val("0");
+}
+
 function delRow(base){
     var rowCount = $("#tbl1 tr").size();
 	if(rowCount > 2){
@@ -932,6 +989,9 @@ $(document).ready(function() {
 			}
 		}
 	}
+	
+	$('#dataTables-customer').DataTable();
+	$('#tblUser').DataTable();
 	
 	$(".jsLineStatus").select2({
 		placeholder: "STATUS",

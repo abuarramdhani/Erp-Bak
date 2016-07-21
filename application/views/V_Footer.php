@@ -1,4 +1,4 @@
-
+			</div>
 		</div>
 		
 	   <!-- FOOTER -->
@@ -28,7 +28,10 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
-     <script>
+    <script type="text/javascript">
+		var baseurl = "<?php echo base_url(); ?>";
+	</script>
+    <script>
          $(document).ready(function () {
              $('#dataTables-example').dataTable({
 			  "bSort" : false
@@ -77,9 +80,9 @@
 	<script src="<?php echo base_url('assets/plugins/colorpicker/js/bootstrap-colorpicker.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/tagsinput/jquery.tagsinput.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validVal/js/jquery.validVal.min.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/daterangepicker/daterangepicker.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/daterangepicker/moment.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/daterangepicker-master/moment.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/daterangepicker-master/daterangepicker.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/switch/static/js/bootstrap-switch.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.dualListbox-1.3/jquery.dualListBox-1.3.min.js');?>"></script>
@@ -108,9 +111,7 @@
 		}
 		
 		
-		
-		
-    </script>
+	</script>
      <!--END MAIN WRAPPER -->
 </body>
      <!-- END BODY -->

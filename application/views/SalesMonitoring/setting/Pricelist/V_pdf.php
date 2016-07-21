@@ -23,4 +23,3 @@
 		<?php } ?>
 	</tbody>																			
 </table>
-    
