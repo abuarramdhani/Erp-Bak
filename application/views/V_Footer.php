@@ -25,9 +25,11 @@
     <script src="<?php echo base_url('assets/theme/js/app.min.js');?>" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS FOR DATATABLES-->
     <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
+    <script src="<?php echo base_url('assets/plugins/dataTables/sum.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 	</script>

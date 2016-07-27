@@ -41,7 +41,7 @@
 											<tr>
 												<td style="text-align: center"><?php echo $no++?></td>
 												<td><?php echo $du['position_name']?></td>
-												<td><?php echo $du['group_id']?></td>
+												<td><?php echo $du['group_name']?></td>
 												<td><?php echo $du['nominal']?></td>
 												<td style="text-align: center">
 													<a class="btn btn-warning" href="<?php echo base_url('Outstation/ush/edit/'.$du['position_id'].'/'.$du['group_id'])?>"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_<?php echo $du['position_id'].'_'.$du['group_id']?>"><i class="fa fa-times"></i> Delete</button>

@@ -7,10 +7,12 @@ class M_ush extends CI_Model {
     }
 	
 	public function show_ush(){
-		$sql="	select	ush.position_id, ush.group_id, ush.nominal, ush.start_date, ush.end_date, position.position_name
+		$sql="	select ush.position_id, ush.group_id, ush.nominal, ush.start_date, ush.end_date, position.position_name, grp.group_id, grp.group_name
 				from 	ga.ga_outstation_ush ush
 						LEFT JOIN ga.ga_outstation_position position
 							ON position.position_id = ush.position_id
+						LEFT JOIN ga.ga_outstation_groupush grp
+							ON grp.group_id = ush.group_id
 						where ush.end_date > now() order by ush.position_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -28,6 +30,12 @@ class M_ush extends CI_Model {
 
 	public function show_position(){
 		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function show_group_ush(){
+		$sql="select * from ga.ga_outstation_groupush where end_date > now() order by group_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

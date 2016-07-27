@@ -18,7 +18,7 @@
 										<table class="table">
 											<tr>
 												<td width="20%">Position</td>
-												<td><select name="txt_position_id" class="form-control select2" style="width: 100%" data-placeholder="Position">
+												<td><select name="txt_position_id" class="form-control select2" style="width: 100%" data-placeholder="Position" required>
 													<option value=""></option>
 													<?php foreach($position_list as $pos_list){?>
 														<?php
@@ -33,11 +33,22 @@
 											</tr>
 											<tr>
 												<td width="20%">Group</td>
-												<td><input type="text" name="txt_group_id" maxlength="1" class="form-control" value ="<?php echo $du['group_id']?>" required></td>
+												<td><select name="txt_group_id" class="form-control select2" style="width: 100%" data-placeholder="Group" required>
+													<option value=""></option>
+													<?php foreach($group_list as $grp_list){?>
+														<?php
+															$position_select = '';
+															if ($du['group_id'] == $grp_list['group_id']) {
+																$position_select = 'selected';
+															}
+														?>
+														<option <?php echo $position_select; ?> value="<?php echo $grp_list['group_id'] ?>"><?php echo $grp_list['group_name'] ?></option>
+													<?php } ?>
+												</select></td>
 											</tr>
 											<tr>
 												<td width="20%">Nominal</td>
-												<td><input type="text" name="txt_nominal" class="form-control" value ="<?php echo $du['nominal']?>" required></td>
+												<td><input type="text" name="txt_nominal" class="form-control input_money" value ="<?php echo $du['nominal']?>" required></td>
 											</tr>
 											<tr>
 												<td>Start Date</td>

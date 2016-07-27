@@ -120,6 +120,7 @@ class C_OutstationUSH extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['position_list'] = $this->M_ush->show_position();
+		$data['group_list'] = $this->M_ush->show_group_ush();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('general-afair/outstation/OutstationSetting/USH/V_NewUSH',$data);
@@ -153,6 +154,7 @@ class C_OutstationUSH extends CI_Controller {
 
 		$data['data_ush'] = $this->M_ush->select_edit_ush($position_id,$group_id);
 		$data['position_list'] = $this->M_ush->show_position();
+		$data['group_list'] = $this->M_ush->show_group_ush();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

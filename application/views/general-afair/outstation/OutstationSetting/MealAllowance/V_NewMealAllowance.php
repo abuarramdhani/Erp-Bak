@@ -42,7 +42,7 @@
 										</tr>
 										<tr>
 											<td width="20%">Nominal</td>
-											<td><input type="text" name="txt_nominal" class="form-control" required></td>
+											<td><input type="text" name="txt_nominal" class="form-control input_money" required></td>
 										</tr>
 										<tr>
 											<td>Start Date</td>
