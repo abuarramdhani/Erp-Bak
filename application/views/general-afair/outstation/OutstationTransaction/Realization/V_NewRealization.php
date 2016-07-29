@@ -12,7 +12,7 @@
 							<div class="table-responsive">
 								<fieldset class="row2">
 									<div class="box-body with-border">
-										<form method="post" action="<?php echo base_url('Outstation/realization/new/save') ?>">
+										<form method="post" id="realization-form" action="<?php echo base_url('Outstation/realization/new/save') ?>">
 											<table class="table">
 												<tr>
 													<td width="15%">Employee</td>
@@ -76,7 +76,7 @@
 												</tr>
 											</table>
 										<label>Estimate Allowance</label>
-										<div class="row2">
+										<div class="row2" id="estimate-allowance">
 											<div class="col-md-4">
 												<div class="row">
 													<div class="col-md-7">
@@ -117,51 +117,36 @@
 										<div class="row2">
 											<div class="col-md-12">
 												<span id="add-row" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i></span>
+												<input type="hidden" id="data_counter" name="txt_data_counter" value="0">
 											</div>
 										</div>
 										<table id="realization_detail" class="table table-bordered table-striped table-hover">
 											<thead>
 												<tr class="bg-primary">
-													<th width="5%">No</th>
-													<th>Component</th>
-													<th>Info</th>
-													<th>Qty</th>
-													<th>Nominal</th>
-													<th>Total</th>
-													<th>Action</th>
+													<th width="5%"><center>No</center></th>
+													<th width="25%"><center>Component</center></th>
+													<th width="25%"><center>Info</center></th>
+													<th width="10%"><center>Qty</center></th>
+													<th width="15%"><center>Nominal</center></th>
+													<th width="15%"><center>Total</center></th>
+													<th width="5%"><center>Action</center></th>
 												</tr>
 											</thead>
+												<script>
+													var counter_row = 0;
+													var data_Component = <?php	echo "{";
+																			foreach($Component as $comp){
+																				echo '"'.$comp['component_id'].'":"'.$comp['component_name'].'",';
+																			}
+																			echo "}";
+																		?>;
+												</script>
 											<tbody>
-												<tr>
-													<td></td>
-													<td>
-														<select name="txt_component_id[]"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
-															<option value=""></option>
-															<?php foreach($Component as $comp){?>
-																<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
-															<?php } ?>
-														</select>
-													</td>
-													<td><input type="text" name="txt_info[]" /></td>
-													<td><input type="text" name="txt_qty[]" /></td>
-													<td><input type="text" name="txt_nominal[]" /></td>
-													<td><input type="text" name="txt_total[]" /></td>
-													<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
-												</tr>
-												<tr>
-													<td></td>
-													<td><input type="text" name="txt_component[]" /></td>
-													<td><input type="text" name="txt_info[]" /></td>
-													<td><input type="text" name="txt_qty[]" /></td>
-													<td><input type="text" name="txt_nominal[]" /></td>
-													<td><input type="text" name="txt_total[]" /></td>
-													<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
-												</tr>
 											</tbody>
 											<tfoot>
 												<tr>
 													<td colspan="5" style="text-align: right">Total Estimate Allowance</td>
-													<td>xxxxx</td>
+													<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
 													<td></td>
 												</tr>
 											</tfoot>

@@ -449,6 +449,12 @@ class C_OutstationSimulation extends CI_Controller {
 		redirect('Outstation/simulation');
 	}
 
+	public function delete_simulation($simulation_id){
+		$this->M_Simulation->delete_simulation($simulation_id);
+			
+		redirect('Outstation/simulation');
+	}
+
 	public function print_simulation($simulation_id){
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
@@ -459,19 +465,14 @@ class C_OutstationSimulation extends CI_Controller {
 		$this->checkSession();
 
 		$data['data_simulation'] = $this->M_Simulation->select_edit_simulation($simulation_id);
-		$data['Area'] = $this->M_Simulation->show_area();
-		$data['CityType'] = $this->M_Simulation->show_city_type();
-		$data['Employee'] = $this->M_Simulation->show_employee();
 		$data['GroupUSH'] = $this->M_Simulation->show_group_ush_all();
 		$data['Simulation_detail'] = $this->M_Simulation->select_simulation_detail($simulation_id);
 		$data['total_nominal'] = $this->M_Simulation->sum_simulation_nominal($simulation_id);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('general-afair/outstation/OutstationTransaction/Simulation/V_EditSimulation',$data);
-		$this->load->view('V_Footer',$data);
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		
 		$html = $this->load->view('general-afair/outstation/OutstationTransaction/Simulation/V_PrintSimulation', $data, true);
 
+		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
 

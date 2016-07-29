@@ -1,8 +1,16 @@
-<h1>
-	Quick Outstation Simulation Detail
-</h1>
+<table>
+	<tr>
+		<td><img width="80px" src="<?php echo base_url('assets/img/logo.png')?>" /></td>
+		<td>
+			<h1>
+				Quick Outstation Simulation Detail
+			</h1>
+		</td>
+	</tr>
+</table>
+<br/>
 
-	<table width="100%">
+	<table class="table" style="font-size:15px;">
 	<?php
 	foreach($data_simulation as $dsim){
 ?>
@@ -41,19 +49,19 @@
 		}
 ?>
 <br/>
-<br/>
+
 <b>Simulation Table</b>
-<table width="100%" border="1" style="border-collapse: collapse; border: 1px solid #ddd">
+<table class="table table-bordered table-striped" style="font-size:15px;">
 	<thead>
-		<tr style="background-color:#337ab7;">
-			<th width="5%" style="color: #fff">No</th>
-			<th width="10%" style="color: #fff">Date</th>
-			<th width="10%" style="color: #fff">Time</th>
-			<th width="25%" style="color: #fff">Meal Allowance</th>
-			<th width="25%" style="color: #fff">Accomodation Allowance</th>
-			<th style="color: #fff">Group</th>
-			<th style="color: #fff">USH</th>
-			<th style="color: #fff">Total</th>
+		<tr>
+			<th style="background-color: #357ca5;color: #fff" width="5%"><center><br>No<br>&nbsp;</center></th>
+			<th style="background-color: #357ca5;color: #fff" width="10%"><center>Date</center></th>
+			<th style="background-color: #357ca5;color: #fff" width="10%"><center>Time</center></th>
+			<th style="background-color: #357ca5;color: #fff" width="15%"><center>Meal Allowance</center></th>
+			<th style="background-color: #357ca5;color: #fff" width="23%"><center>Accomodation Allowance</center></th>
+			<th style="background-color: #357ca5;color: #fff" width="10%"><center>Group</center></th>
+			<th style="background-color: #357ca5;color: #fff" width="13%"><center>USH</center></th>
+			<th style="background-color: #357ca5;color: #fff"><center>Total</center></th>
 		</tr>
 	</thead>
 	<tbody id="simulation_body">
@@ -61,20 +69,15 @@
 			$no=1;
 			foreach ($Simulation_detail as $sdet) {
 				$inn_date = explode(' ', $sdet['inn_date']);
-				$meal_rep = str_replace('Rp', '', $sdet['meal_allowance_nominal']);
-				$meal_rep1 = str_replace(',00', '', $meal_rep);
-				$meal_rep2 = str_replace('.', '', $meal_rep1);
+				$string = array('Rp',',00','.');
+				$meal_nominal = str_replace($string, '', $sdet['meal_allowance_nominal']);
 
-				$acc_rep = str_replace('Rp', '', $sdet['acomodation_allowance_nominal']);
-				$acc_rep1 = str_replace(',00', '', $acc_rep);
-				$acc_rep2 = str_replace('.', '', $acc_rep1);
+				$acc_nominal = str_replace($string, '', $sdet['acomodation_allowance_nominal']);
 
-				$ush_rep = str_replace('Rp', '', $sdet['ush_nominal']);
-				$ush_rep1 = str_replace(',00', '', $ush_rep);
-				$ush_rep2 = str_replace('.', '', $ush_rep1);
+				$ush_nominal = str_replace($string, '', $sdet['ush_nominal']);
 
-				$total = $meal_rep2+$acc_rep2+$ush_rep2;
-					$group_name ='-';
+				$total = $meal_nominal+$acc_nominal+$ush_nominal;
+				$group_name ='-';
 				foreach ($GroupUSH as $grp) {
 					if ($sdet['group_id'] == $grp['group_id']) {
 						$group_name = $grp['group_name'];
@@ -83,13 +86,13 @@
 		?>
 		<tr>
 			<td style="text-align: center"><?php echo $no++?></td>
-			<td><?php echo $inn_date[0] ?></td>
-			<td><?php echo $sdet['time_name'] ?></td>
-			<td style="text-align: right">Rp<?php echo number_format($meal_rep2 , 2, '.', ',') ?></td>
-			<td style="text-align: right">Rp<?php echo number_format($acc_rep2 , 2, '.', ',') ?></td>
-			<td><?php echo $group_name ?></td>
-			<td style="text-align: right">Rp<?php echo number_format($ush_rep2 , 2, '.', ',') ?></td>
-			<td style="text-align: right">Rp<?php echo number_format($total , 2, '.', ',') ?></td>
+			<td>&nbsp;&nbsp;<?php echo $inn_date[0] ?></td>
+			<td>&nbsp;&nbsp;<?php echo $sdet['time_name'] ?></td>
+			<td style="text-align: right">Rp<?php echo number_format($meal_nominal , 2, '.', ',') ?>&nbsp;&nbsp;</td>
+			<td style="text-align: right">Rp<?php echo number_format($acc_nominal , 2, '.', ',') ?>&nbsp;&nbsp;</td>
+			<td style="text-align: center"><?php echo $group_name ?></td>
+			<td style="text-align: right">Rp<?php echo number_format($ush_nominal , 2, '.', ',') ?>&nbsp;&nbsp;</td>
+			<td style="text-align: right">Rp<?php echo number_format($total , 2, '.', ',') ?>&nbsp;&nbsp;</td>
 		</tr>
 		<?php
 			}
@@ -109,12 +112,12 @@
 			}
 		?>
 		<tr>
-			<td colspan="3">Total</td>
-			<td style="text-align: right">Rp<?php echo number_format($meal_total , 2, '.', ',') ?></td>
-			<td style="text-align: right">Rp<?php echo number_format($accomodation_nominal , 2, '.', ',') ?></td>
+			<td style="text-align: right" colspan="3"><br>Total&nbsp;&nbsp;<br>&nbsp;&nbsp;</td>
+			<td style="text-align: right">Rp<?php echo number_format($meal_total , 2, '.', ',') ?>&nbsp;&nbsp;</td>
+			<td style="text-align: right">Rp<?php echo number_format($accomodation_nominal , 2, '.', ',') ?>&nbsp;&nbsp;</td>
 			<td></td>
-			<td style="text-align: right">Rp<?php echo number_format($ush_nominal , 2, '.', ',') ?></td>
-			<td style="text-align: right">Rp<?php echo number_format($total_nominal , 2, '.', ',') ?></td>
+			<td style="text-align: right">Rp<?php echo number_format($ush_nominal , 2, '.', ',') ?>&nbsp;&nbsp;</td>
+			<td style="text-align: right">Rp<?php echo number_format($total_nominal , 2, '.', ',') ?>&nbsp;&nbsp;</td>
 		</tr>
 	</tfoot>
 </table>

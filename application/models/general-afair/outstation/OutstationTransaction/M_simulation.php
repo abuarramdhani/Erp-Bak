@@ -7,8 +7,8 @@ class M_Simulation extends CI_Model {
 	}
 	
 	public function show_simulation(){
-		$sql="select * from (select * from ga.ga_outstation_simulation aa, ga.ga_outstation_area ar, er.er_employee_all emp, er.er_section sec, ga.ga_outstation_city_type ct where aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id and aa.employee_id = emp.employee_id and emp.section_code = sec.section_code) nama, (select simulation_id, sum(meal_allowance_nominal) meal_nominal, sum(acomodation_allowance_nominal) accomodation_nominal, sum(ush_nominal) ush_nominal from ga.ga_outstation_simulation_detail group by simulation_id) nominal
-where nama.simulation_id = nominal.simulation_id";
+		$sql="select * from (select * from ga.ga_outstation_simulation aa, ga.ga_outstation_area ar, er.er_employee_all emp, er.er_section sec, ga.ga_outstation_city_type ct where aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id and aa.employee_id = emp.employee_id and emp.section_code = sec.section_code) simulation, (select simulation_id, sum(meal_allowance_nominal) meal_nominal, sum(acomodation_allowance_nominal) accomodation_nominal, sum(ush_nominal) ush_nominal from ga.ga_outstation_simulation_detail group by simulation_id) nominal
+where simulation.simulation_id = nominal.simulation_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -109,6 +109,11 @@ where nama.simulation_id = nominal.simulation_id";
 		return $query->result_array();
 	}
 
+	public function delete_simulation($simulation_id){
+		$sql="delete from ga.ga_outstation_simulation where simulation_id = '$simulation_id'";
+		$query = $this->db->query($sql);
+		return;
+	}
 	
 }
 ?>

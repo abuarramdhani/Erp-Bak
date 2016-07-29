@@ -118,6 +118,7 @@ class C_OutstationRealization extends CI_Controller {
 		$interval = DateInterval::createFromDateString('1 day');
 		$period = new DatePeriod($begin, $interval, $end);
 		$count = $begin->diff($end)->days;
+		$indexx=0;
 		foreach ( $period as $dt ){
 			$count--;
 			if ($count == 0) {
@@ -127,12 +128,14 @@ class C_OutstationRealization extends CI_Controller {
 				$waktu_kembali = 3;
 			}
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
-					$meal_allowance = $this->M_Simulation->show_meal_allowance($area_id, $time_name[$time]);
-					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($area_id, $city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($return_time);
+					$meal_allowance = $this->M_Realization->show_meal_allowance($area_id, $time_name[$time]);
+					$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($area_id, $city_type_id);
+					$group_ush = $this->M_Realization->show_group_ush($return_time);
+					
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {
+								$indexx++;
 								if ($time == $y) {
 									$acc_nominal = $aa['nominal'];
 								}
@@ -140,78 +143,284 @@ class C_OutstationRealization extends CI_Controller {
 									$acc_nominal = '0';
 								}
 								if ($time == $i) {
-									$group_name = $grp['group_name'];
-									$nominal_ush = $grp['nominal'];
+									$nominal_ush = array($indexx => $grp['nominal']);
+									//$nominal_ush[$indexx] = $grp['nominal'];
 								}
 								else{
-									$group_name = '-';
-									$nominal_ush = '0';
+									$nominal_ush[$indexx] = '0';
 								}
-								$meal = $ma['nominal'];
-								$acc = $acc_nominal;
-								$meal_rep = str_replace('Rp', '', $meal);
-								$meal_rep1 = str_replace(',00', '', $meal_rep);
-								$meal_rep2 = str_replace('.', '', $meal_rep1);
+								$meal = array($indexx => $ma['nominal']);
+								$acc = array($indexx =>$acc_nominal);
+								//$meal[$indexx] = $ma['nominal'];
+								//$acc[$indexx] = $acc_nominal;
 
-								$acc_rep = str_replace('Rp', '', $acc);
-								$acc_rep1 = str_replace(',00', '', $acc_rep);
-								$acc_rep2 = str_replace('.', '', $acc_rep1);
+								$string = array('Rp',',00','.');
+								$remover = array('');
 
-								$ush_rep = str_replace('Rp', '', $nominal_ush);
-								$ush_rep1 = str_replace(',00', '', $ush_rep);
-								$ush_rep2 = str_replace('.', '', $ush_rep1);
+								$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
 
-								$total = $meal_rep2+$acc_rep2+$ush_rep2;
-									echo '
-									<tr>
-										<td width="5%"></td>
-										<td width="10%">'.$dt->format( "Y-m-d\n" ).'</td>
-										<td>'.$ma['time_name'].'</td>
-										<td style="text-align: right">Rp'.number_format($meal_rep2 , 2, '.', ',').'</td>
-										<td style="text-align: right">Rp'.number_format($acc_rep2 , 2, '.', ',').'</td>
-										<td>'.$group_name.'</td>
-										<td style="text-align: right">Rp'.number_format($ush_rep2 , 2, '.', ',').'</td>
-										<td style="text-align: right">Rp'.number_format($total , 2, '.', ',').'</td>
-									</tr>
-								';
+								$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
+
+								$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
+
+								//$total[$indexx] = $meal_number[$indexx]+$acc_number[$indexx]+$ush_number[$indexx];
+								$total_meal = array_sum($meal_number);
+								$total_acc = array_sum($acc_number);
+								$total_ush = array_sum($ush_number);
+								$total_all = $total_meal+$total_acc+$total_ush;
 							}
 						}
 					}
+
 				}
 				$i=1;
 		}
+				if($meal_allowance AND $accomodation_allowance AND $group_ush){
+					echo '
+						<div class="col-md-4">
+							<div class="row">
+								<div class="col-md-7">
+									Meal Allowance
+								</div>
+								<div class="col-md-5">
+									<p id="meal-estimate">Rp'.number_format($total_meal , 2, '.', ',').'</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-7">
+									Accomodation Allowance
+								</div>
+								<div class="col-md-5">
+									<p id="accomodation-estimate">Rp'.number_format($total_acc , 2, '.', ',').'</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-7">
+									 USH
+								</div>
+								<div class="col-md-5">
+									<p id="ush-estimate">Rp'.number_format($total_ush , 2, '.', ',').'</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row">
+								<div class="col-md-5">
+									Total Estimated
+								</div>
+								<div class="col-md-5">
+									<p id="total-estimate">Rp'.number_format($total_all , 2, '.', ',').'</p>
+								</div>
+							</div>
+						</div>
+						';
+				}
+				else{
+					echo '
+						<div class="col-md-4">
+							<div class="row">
+								<div class="col-md-7">
+									Meal Allowance
+								</div>
+								<div class="col-md-5">
+									<p id="meal-estimate">Rp0,00</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-7">
+									Accomodation Allowance
+								</div>
+								<div class="col-md-5">
+									<p id="accomodation-estimate">Rp0,00</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-7">
+									 USH
+								</div>
+								<div class="col-md-5">
+									<p id="ush-estimate">Rp0,00</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row">
+								<div class="col-md-5">
+									Total Estimated
+								</div>
+								<div class="col-md-5">
+									<p id="total-estimate">Rp0,00</p>
+								</div>
+							</div>
+						</div>
+						';
+				}
 	}
 
 	public function save_Realization()
 	{
 		$employee_id = $this->input->post('txt_employee_id');
-		$destination = $this->input->post('txt_destination');
-		$city_type = $this->input->post('txt_city_type');
+		$area_id = $this->input->post('txt_area_id');
+		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 		$return = $this->input->post('txt_return');
-		$total = $this->input->post('txt_total');
+		$bon_string = $this->input->post('txt_bon');
+		$data_count = $this->input->post('txt_data_counter');
 
-		$this->M_Realization->new_realization($position_id,$area_id ,$city_type);
+		$string = array('Rp','.');
+
+		$bon = str_replace($string, '', $bon_string);
+
+		$this->M_Realization->new_realization($employee_id,$area_id,$city_type_id,$depart,$return,$bon);
+
+		for ($i=0; $i < $data_count; $i++){ 
+			$component_id = $this->input->post('txt_component['.$i.']');
+			$info = $this->input->post('txt_info['.$i.']');
+			$qty = $this->input->post('txt_qty['.$i.']');
+			$component_nominal = $this->input->post('txt_component_nominal['.$i.']');
+
+			if(strlen($component_id) > 0 && strlen($info) > 0 && strlen($qty) > 0 && strlen($component_nominal) > 0){
+				$this->M_Realization->new_realization_detail($component_id,$info,$qty,$component_nominal);
+			}
+		}
 
 		redirect('Outstation/realization');
 	}
 
-	public function edit_Realization($realization)
+	public function edit_Realization($realization_id)
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['Title'] = 'Edit Realization';
 		$data['Menu'] = 'Outstation Transaction';
 		$data['SubMenuOne'] = 'Realization';
-		$data['Employee'] = $this->M_Realization->show_employee();
-        $data['area_data'] = $this->M_Realization->show_area();
-        $data['city_type_data'] = $this->M_Realization->show_city_type();
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['data_realization'] = $this->M_Realization->select_edit_Realization($realization);
+		$data['data_realization'] = $this->M_Realization->select_edit_Realization($realization_id);
+		$data['data_realization_detail'] = $this->M_Realization->select_edit_Realization_detail($realization_id);
+		$data['Area'] = $this->M_Realization->show_area();
+        $data['CityType'] = $this->M_Realization->show_city_type();
+        $data['Employee'] = $this->M_Realization->show_employee();
+        $data['Component'] = $this->M_Realization->show_component();
+
+        foreach ($data['data_realization'] as $realization) {
+        	$area_id = $realization['area_id'];
+			$city_type_id = $realization['city_type_id'];
+			$bon = $realization['bon_nominal'];
+			$depart = $realization['depart_time'];
+				$depart_ex =explode(' ', $depart);
+					$depart_tgl = $depart_ex[0];
+					$depart_wkt = $depart_ex[1];
+						$depart_wkt_ex = explode(':', $depart_wkt);
+							$depart_time = $depart_wkt_ex[0].':'.$depart_wkt_ex[1];
+			$return = $realization['return_time'];
+				$return_ex =explode(' ', $return);
+					$return_tgl = $return_ex[0];
+					$return_tgl_fix = date('Y-m-d', strtotime("+1 day", strtotime($return_tgl)));
+					$return_wkt = $return_ex[1];
+						$return_wkt_ex = explode(':', $return_wkt);
+							$return_time = $return_wkt_ex[0].':'.$return_wkt_ex[1];
+			$time_name = array('1' => 'pagi', '2' => 'siang', '3' => 'malam');
+
+			if ($depart_time <= '08:00') {
+				$i = 1;
+			}
+			elseif ($depart_time > '08:00' && $depart_time < '16:00') {
+				$i = 2;
+			}
+			elseif ($depart_time >= '16:00') {
+				$i = 3;
+			}
+
+			if ($return_time <= '08:00') {
+				$x = 1;
+			}
+			elseif ($return_time > '08:00' && $return_time < '18:00') {
+				$x = 2;
+			}
+			elseif ($return_time >= '18:00') {
+				$x = 3;
+			}
+
+			$y=3;
+			$begin = new DateTime( $depart_tgl );
+			$end = new DateTime( $return_tgl_fix );
+			$interval = DateInterval::createFromDateString('1 day');
+			$period = new DatePeriod($begin, $interval, $end);
+			$count = $begin->diff($end)->days;
+			$indexx=0;
+			foreach ( $period as $dt ){
+				$count--;
+				if ($count == 0) {
+					$waktu_kembali = $x;
+				}
+				else {
+					$waktu_kembali = 3;
+				}
+					for ($time=$i; $time <= $waktu_kembali; $time++) {
+						$meal_allowance = $this->M_Realization->show_meal_allowance($area_id, $time_name[$time]);
+						$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($area_id, $city_type_id);
+						$group_ush = $this->M_Realization->show_group_ush($return_time);
+						
+						foreach ($accomodation_allowance as $aa) {
+							foreach ($meal_allowance as $ma) {
+								foreach ($group_ush as $grp) {
+									$indexx++;
+									if ($time == $y) {
+										$acc_nominal = $aa['nominal'];
+									}
+									else{
+										$acc_nominal = '0';
+									}
+									if ($time == $i) {
+										$nominal_ush = array($indexx => $grp['nominal']);
+										//$nominal_ush[$indexx] = $grp['nominal'];
+									}
+									else{
+										$nominal_ush[$indexx] = '0';
+									}
+									$meal = array($indexx => $ma['nominal']);
+									$acc = array($indexx =>$acc_nominal);
+									//$meal[$indexx] = $ma['nominal'];
+									//$acc[$indexx] = $acc_nominal;
+
+									$string = array('Rp',',00','.');
+									$remover = array('');
+
+									$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
+
+									$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
+
+									$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
+
+									//$total[$indexx] = $meal_number[$indexx]+$acc_number[$indexx]+$ush_number[$indexx];
+									$total_meal = array_sum($meal_number);
+									$total_acc = array_sum($acc_number);
+									$total_ush = array_sum($ush_number);
+									$total_all = $total_meal+$total_acc+$total_ush;
+								}
+							}
+						}
+
+					}
+					$i=1;
+			}
+					if($meal_allowance AND $accomodation_allowance AND $group_ush){
+						$data['total_meal'] = 'Rp'.number_format($total_meal , 2, ',', '.');
+						$data['total_acc'] = 'Rp'.number_format($total_acc , 2, ',', '.');
+						$data['total_ush'] = 'Rp'.number_format($total_ush , 2, ',', '.');
+						$data['total_all'] = 'Rp'.number_format($total_all , 2, ',', '.');
+					}
+					else{
+						$data['total_meal'] = 'Rp0,00';
+						$data['total_acc'] = 'Rp0,00';
+						$data['total_ush'] = 'Rp0,00';
+						$data['total_all'] = 'Rp0,00';
+					}
+		}
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -219,16 +428,63 @@ class C_OutstationRealization extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function update_Realization()
-	{$employee_id = $this->input->post('txt_employee_id');
-		$destination = $this->input->post('txt_destination');
-		$city_type = $this->input->post('txt_city_type');
+	public function update_Realization(){
+		$realization_id = $this->input->post('txt_realization_id');
+		$employee_id = $this->input->post('txt_employee_id');
+		$area_id = $this->input->post('txt_area_id');
+		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 		$return = $this->input->post('txt_return');
-		$bon = $this->input->post('txt_bon');
+		$bon_string = $this->input->post('txt_bon');
+		$data_count = $this->input->post('txt_data_counter');
+		
+		$string = array('Rp','.');
 
-		$this->M_Realization->update_realization($realization,$employee_id,$area_id,$city_type);
+		$bon = str_replace($string, '', $bon_string);
+
+		$this->M_Realization->update_realization($realization_id,$employee_id,$area_id,$city_type_id,$depart,$return,$bon);
+		$this->M_Realization->delete_before_update($realization_id);
+
+		for ($i=0; $i < $data_count; $i++){ 
+			$component_id = $this->input->post('txt_component['.$i.']');
+			$info = $this->input->post('txt_info['.$i.']');
+			$qty = $this->input->post('txt_qty['.$i.']');
+			$component_nominal = $this->input->post('txt_component_nominal['.$i.']');
+
+			if(strlen($component_id) > 0 && strlen($info) > 0 && strlen($qty) > 0 && strlen($component_nominal) > 0){
+				$this->M_Realization->update_realization_detail($realization_id,$component_id,$info,$qty,$component_nominal);
+			}
+		}
 
 		redirect('Outstation/realization');
+	}
+
+	public function delete_realization($realization_id){
+		$this->M_Realization->delete_realization($realization_id);
+			
+		redirect('Outstation/simulation');
+	}
+
+
+	public function print_realization($realization_id){
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+
+		$pdf = new mPDF('utf-8', 'A4-L');
+
+		$filename = 'Simulation_Detail_'.time();
+		$this->checkSession();
+
+		$data['data_realization'] = $this->M_Realization->select_edit_Realization($realization_id);
+		$data['Component'] = $this->M_Realization->show_component();
+		$data['data_realization_detail'] = $this->M_Realization->select_edit_Realization_detail($realization_id);
+
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		$html = $this->load->view('general-afair/outstation/OutstationTransaction/Realization/V_PrintRealization', $data, true);
+
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
+
 	}
 }

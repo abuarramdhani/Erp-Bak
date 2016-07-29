@@ -104,14 +104,14 @@
 											<table id="simulation_detail" class="table table-bordered table-striped table-hover">
 												<thead>
 													<tr class="bg-primary">
-														<th width="5%">No</th>
-														<th width="10%">Date</th>
-														<th>Time</th>
-														<th>Meal Allowance</th>
-														<th>Accomodation Allowance</th>
-														<th>Group</th>
-														<th>USH</th>
-														<th>Total</th>
+														<th width="5%"><center>No</center></th>
+														<th width="10%"><center>Date</center></th>
+														<th><center>Time</center></th>
+														<th><center>Meal Allowance</center></th>
+														<th><center>Accomodation Allowance</center></th>
+														<th><center>Group</center></th>
+														<th><center>USH</center></th>
+														<th><center>Total</center></th>
 													</tr>
 												</thead>
 												<tbody id="simulation_body">

@@ -15,7 +15,7 @@
 									<table class="table">
 										<tr>
 											<td width="20%">Position</td>
-											<td><select id="position" name="txt_position_id"  class="form-control select2" style="width: 100%" data-placeholder="position">
+											<td><select id="position" name="txt_position_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!">
 													<option value=""></option>
 													<?php foreach($Position as $pos){?>
 														<option value="<?php echo $pos['position_id'] ?>"><?php echo $pos['position_name'] ?></option>
@@ -24,7 +24,7 @@
 										</tr>
 										<tr>
 											<td>Area</td>
-											<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="area">
+											<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!">
 													<option value=""></option>
 													<?php foreach($Area as $ar){?>
 														<option value="<?php echo $ar['area_id'] ?>"><?php echo $ar['area_name'] ?></option>
@@ -33,7 +33,7 @@
 										</tr>
 										<tr>
 											<td>City Type</td>
-											<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="citytype">
+											<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!">
 													<option value=""></option>
 													<?php foreach($CityType as $ci){?>
 														<option value="<?php echo $ci['city_type_id'] ?>"><?php echo $ci['city_type_name'] ?></option>

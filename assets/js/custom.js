@@ -430,25 +430,19 @@
 				'<span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span>',
 			] ).draw( false ).node();
 			$(rowAdd).addClass('multiRow');
-			counter++;
-			document.getElementById('data_counter').value = counter;
 			var component = data_Component;
-
 			for(var item in component)
 			{
 				$('<option value="'+item+'">'+component[item]+'</option>').appendTo('select[name="txt_component['+counter+']"]');
 			}
+			counter++;
+			document.getElementById('data_counter').value = counter;
 
-
-			var min_counter = counter;
 			$('.delete-row').on( 'click', function () {
 				table
 					.row($(this).parents('tr'))
 					.remove()
 					.draw();
-				min_counter--;
-				document.getElementById('data_counter').value = min_counter;
-				counter= min_counter;
 			} );
 			
 
@@ -463,6 +457,7 @@
 
 
 			$(".multiRow input").keyup(multInputs);
+			$(".multiRow input").click(multInputs);
 			$(".delete-row").click(multInputs);
 
 			function multInputs() {

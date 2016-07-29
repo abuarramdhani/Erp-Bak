@@ -15,7 +15,7 @@
 									<table class="table">
 										<tr>
 											<td width="20%">Position</td>
-											<td><select name="txt_position_id" class="form-control select2" style="width: 100%" data-placeholder="Position" required>
+											<td><select name="txt_position_id" class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!" required>
 													<option value=""></option>
 													<?php foreach($position_list as $pos_list){?>
 														<option value="<?php echo $pos_list['position_id'] ?>"><?php echo $pos_list['position_name'] ?></option>
@@ -24,7 +24,7 @@
 										</tr>
 										<tr>
 											<td>Group</td>
-											<td><select name="txt_group_id" class="form-control select2" style="width: 100%" data-placeholder="Group" required>
+											<td><select name="txt_group_id" class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!" required>
 													<option value=""></option>
 													<?php foreach($group_list as $grp_list){?>
 														<option value="<?php echo $grp_list['group_id'] ?>"><?php echo $grp_list['group_name'] ?></option>

@@ -28,7 +28,7 @@
 											<th width="5%" style="text-align: center">No</th>
 											<th style="text-align: center">Employee</th>
 											<th style="text-align: center">Destination</th>
-											<th style="text-align: center">City Type</th>
+											<th width="10%" style="text-align: center">City Type</th>
 											<th style="text-align: center">Depart</th>
 											<th style="text-align: center">Return</th>
 											<th style="text-align: center">Total</th>
@@ -42,20 +42,16 @@
 												$meal_nominal = $dsim['meal_nominal'];
 												$acc_nominal = $dsim['accomodation_nominal'];
 												$ush_nominal = $dsim['ush_nominal'];
+												$string = array('Rp',',00','.');
+												$remover = array('');
 
-												$meal_rep = str_replace('Rp', '', $meal_nominal);
-												$meal_rep1 = str_replace(',00', '', $meal_rep);
-												$meal_rep2 = str_replace('.', '', $meal_rep1);
+												$meal_number = str_replace($string, $remover, $meal_nominal);
 
-												$acc_rep = str_replace('Rp', '', $acc_nominal);
-												$acc_rep1 = str_replace(',00', '', $acc_rep);
-												$acc_rep2 = str_replace('.', '', $acc_rep1);
+												$acc_number = str_replace($string, $remover, $acc_nominal);
 
-												$ush_rep = str_replace('Rp', '', $ush_nominal);
-												$ush_rep1 = str_replace(',00', '', $ush_rep);
-												$ush_rep2 = str_replace('.', '', $ush_rep1);
+												$ush_number = str_replace($string, $remover, $ush_nominal);
 
-												$total = $meal_rep2+$acc_rep2+$ush_rep2;
+												$total = $meal_number+$acc_number+$ush_number;
 										?>
 										<tr>
 											<td><?php echo $no++?></td>

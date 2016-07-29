@@ -17,7 +17,7 @@
 										<table class="table">
 											<tr>
 												<td width="20%">Position</td>
-												<td><select id="position" name="txt_position_id"  class="form-control select2" style="width: 100%" data-placeholder="position">
+												<td><select id="position" name="txt_position_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!">
 													<option value=""></option>
 													<?php foreach($position_data as $pd){?>
 														<?php $position_selected='';
@@ -30,7 +30,7 @@
 												</select></td>
 											<tr>
 												<td>Area</td>
-												<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="area">
+												<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!">
 													<option value=""></option>
 													<?php foreach($area_data as $ad){?>
 														<?php $area_selected='';
@@ -44,7 +44,7 @@
 											</tr>
 											<tr>
 												<td width="20%">City Type</td>
-												<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="citytype">
+												<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu!">
 													<option value=""></option>
 													<?php foreach($city_type_data as $ct){?>
 														<?php $area_selected='';
