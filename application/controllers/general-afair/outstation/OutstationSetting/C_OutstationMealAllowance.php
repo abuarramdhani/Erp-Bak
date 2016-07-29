@@ -76,9 +76,13 @@ class C_OutstationMealAllowance extends CI_Controller {
 		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$time_id = $this->input->post('txt_time_id');
-		$nominal = $this->input->post('txt_nominal');
+		$nominal_string = $this->input->post('txt_nominal');
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
+
+		$string = array('Rp','.');
+
+		$nominal = str_replace($string, '', $nominal_string);
 
 		$this->M_mealallowance->new_mealallowance($position_id,$area_id ,$time_id,$nominal,$start_date,$end_date);
 
@@ -114,9 +118,13 @@ class C_OutstationMealAllowance extends CI_Controller {
 		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$time_id = $this->input->post('txt_time_id');
-		$nominal = $this->input->post('txt_nominal');
+		$nominal_string = $this->input->post('txt_nominal');
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
+
+		$string = array('Rp','.');
+
+		$nominal = str_replace($string, '', $nominal_string);
 
 		$this->M_mealallowance->update_mealallowance($mealallowance,$position_id,$area_id,$time_id,$nominal,
 			$start_date,$end_date);

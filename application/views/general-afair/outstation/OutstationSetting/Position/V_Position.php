@@ -28,6 +28,7 @@
 											<tr class="bg-primary">
 												<th width="10%"><center>No</center></th>
 												<th><center>Position Name</center></th>
+												<th width="20%"><center>Marketing Status</center></th>
 												<th width="20%"><center>Action</center></th>
 											</tr>
 										</thead>
@@ -39,6 +40,7 @@
 											<tr>
 												<td style="text-align: center"><?php echo $no++?></td>
 												<td><?php echo $dp['position_name']?></td>
+												<td style="text-align: center"><?php echo $dp['marketing_status']?></td>
 												<td style="text-align: center">
 													<a class="btn btn-warning" href="<?php echo base_url('Outstation/position/edit/'.$dp['position_id'])?>"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_<?php echo $dp['position_id']?>"><i class="fa fa-times"></i> Delete</button>
 													<div class="modal fade" id="delete_<?php echo $dp['position_id']?>">

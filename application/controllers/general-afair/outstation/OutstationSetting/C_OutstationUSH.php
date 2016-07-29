@@ -131,9 +131,13 @@ class C_OutstationUSH extends CI_Controller {
 	{
 		$position_id = $this->input->post('txt_position_id');
 		$group_id = $this->input->post('txt_group_id');
-		$nominal = $this->input->post('txt_nominal');
+		$nominal_string = $this->input->post('txt_nominal');
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
+
+		$string = array('Rp','.');
+
+		$nominal = str_replace($string, '', $nominal_string);
 
 		$this->M_ush->new_ush($position_id,$group_id,$nominal,$start_date,$end_date);
 
@@ -168,9 +172,13 @@ class C_OutstationUSH extends CI_Controller {
 		$position_id_old = $this->input->post('txt_position_id_old');
 		$group_id = $this->input->post('txt_group_id');
 		$group_id_old = $this->input->post('txt_group_id_old');
-		$nominal = $this->input->post('txt_nominal');
+		$nominal_string = $this->input->post('txt_nominal');
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
+
+		$string = array('Rp','.');
+
+		$nominal = str_replace($string, '', $nominal_string);
 
 		$this->M_ush->update_ush($position_id,$position_id_old,$group_id,$group_id_old,$nominal,$start_date,$end_date);
 
