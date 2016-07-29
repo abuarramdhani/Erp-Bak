@@ -92,7 +92,6 @@
 					format: 'YYYY-MM-DD HH:mm:ss'
 				},
 		});
-		$('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
 
 		var d = new Date();
 
@@ -104,6 +103,7 @@
 		$('.time-pickers').timepicker({
 			showMeridian: false,
 			defaultTime: now,
+			minuteStep: 1,
 		});
 	});
 
@@ -179,6 +179,8 @@
 			},
 			allowClear: true,
 		});
+
+		$('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
 	});
 
 	$('#txt_employee_id').change(function(){
@@ -408,54 +410,79 @@
 								"searchable": false
 							}],
 							"bDestroy": true,
-							"footerCallback": function ( row, data, start, end, display ) {
-								var api = this.api(), data;
-								var intVal = function ( i ) {
-									return typeof i === 'string' ?
-										i.replace(/[\Rp,]/g, '')*1 :
-										typeof i === 'number' ?
-											i : 0;
-									};
-
-								total_meal = api
-										.column( -2 )
-										.data()
-										.reduce( function (a, b) {
-											return intVal(a) + intVal(b);
-										}, 0 );
-								
-								$( api.column( -2 ).footer() ).html(
-									'Rp'+ addCommas(parseFloat(Math.round(total_meal * 100) / 100).toFixed(2))
-								);
-							}
 						});
+
 		table.on( 'order.dt search.dt', function () {
 			table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
 				cell.innerHTML = i+1;
 			} );
 		} ).draw();
 
-
+		var counter = counter_row;
 		$('#add-row').on( 'click', function () {
-			table.row.add( [
+			var rowAdd = table.row.add( [
 				'',
-				'',
-				'<input type="text" name="txt_info[]" />',
-				'<input type="text" name="txt_qty[]" />',
-				'<input type="text" name="txt_nominal[]" />',
-				'<input type="text" name="txt_total[]" />',
+				'<select style="width: 200px" name="txt_component['+counter+']" class="form-control select2" data-placeholder="Pilih Salah Satu!" required><option value=""></option></select>',
+				'<input type="text" name="txt_info['+counter+']" class="form-control" required/>',
+				'<input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty['+counter+']" class="form-control quantity" required/>',
+				'<input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal['+counter+']" class="form-control input_money nominal" required/>',
+				'<input style="text-align: right;" type="text" name="txt_total['+counter+']" class="form-control total-nominal" required readonly/>',
 				'<span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span>',
-			] ).draw( false );
+			] ).draw( false ).node();
+			$(rowAdd).addClass('multiRow');
+			counter++;
+			document.getElementById('data_counter').value = counter;
+			var component = data_Component;
 
+			for(var item in component)
+			{
+				$('<option value="'+item+'">'+component[item]+'</option>').appendTo('select[name="txt_component['+counter+']"]');
+			}
+
+
+			var min_counter = counter;
 			$('.delete-row').on( 'click', function () {
 				table
 					.row($(this).parents('tr'))
 					.remove()
 					.draw();
+				min_counter--;
+				document.getElementById('data_counter').value = min_counter;
+				counter= min_counter;
 			} );
+			
+
+			$(".select2").select2({
+				placeholder: function(){
+					$(this).data('placeholder');
+				},
+				allowClear: true,
+			});
+
+			$('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
+
+
+			$(".multiRow input").keyup(multInputs);
+			$(".delete-row").click(multInputs);
+
+			function multInputs() {
+				var grandTotal = 0;
+
+				$("tr.multiRow").each(function () {
+					var $qty = $('.quantity', this).val();
+					var $nominal_with_Rp = $('.nominal', this).val();
+					var $nominal_with_Dot = $nominal_with_Rp.replace(/Rp/g, '');
+					var $nominal = $nominal_with_Dot.replace(/\./g, '');
+					var $total = ($qty * 1) * ($nominal * 1);
+					$('.total-nominal',this).val('Rp'+addCommas(parseFloat(Math.round($total * 100) / 100).toFixed(2)));
+					grandTotal += $total;
+				});
+				$("#total-final").text('Rp'+addCommas(parseFloat(Math.round(grandTotal * 100) / 100).toFixed(2)));
+			}
 		} );
 
 		$('#add-row').click();
+
 
 		$('#submit-realization').click(function(){
 			$.ajax({
@@ -464,47 +491,7 @@
 				url:baseurl+"Outstation/realization/new/process",
 				success:function(result)
 				{
-					$('#realization_detail').dataTable().fnDestroy();
-					$('#realization_detail').html(result);
-					var table = $("#realization_detail").DataTable({
-										"dom": '<"pull-left">ti',
-										"info": false,
-										"paging": false,
-										language: {
-											"decimal": ".",
-											"thousands": ","
-										},
-										"columnDefs": [{
-											"targets": [ -1 ],
-											"searchable": false
-										}],
-										"bDestroy": true,
-										"footerCallback": function ( row, data, start, end, display ) {
-											var api = this.api(), data;
-											var intVal = function ( i ) {
-												return typeof i === 'string' ?
-													i.replace(/[\Rp,]/g, '')*1 :
-													typeof i === 'number' ?
-														i : 0;
-												};
-
-											total_meal = api
-													.column( 3 )
-													.data()
-													.reduce( function (a, b) {
-														return intVal(a) + intVal(b);
-													}, 0 );
-											
-											$( api.column( 3 ).footer() ).html(
-												'Rp'+ addCommas(parseFloat(Math.round(total_meal * 100) / 100).toFixed(2))
-											);
-										}
-									});
-					table.on( 'order.dt search.dt', function () {
-						table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-							cell.innerHTML = i+1;
-						} );
-					} ).draw();
+					$('#estimate-allowance').html(result);
 				}
 			});
 		});
