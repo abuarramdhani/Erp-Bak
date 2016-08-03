@@ -54,7 +54,7 @@
 												$total = $meal_number+$acc_number+$ush_number;
 										?>
 										<tr>
-											<td><?php echo $no++?></td>
+											<td style="text-align: center"><?php echo $no++?></td>
 											<td><?php echo $dsim['employee_name']?></td>
 											<td><?php echo $dsim['area_name']?></td>
 											<td><?php echo $dsim['city_type_name']?></td>

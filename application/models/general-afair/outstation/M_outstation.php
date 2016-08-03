@@ -7,7 +7,8 @@ class M_outstation extends CI_Model {
     }
 	
 	public function select_employee($employee_id){
-		$sql="select * from er.er_employee_all emp, er.er_section sec where emp.section_code = sec.section_code AND emp.employee_id = '$employee_id'";
+		$sql="select * from er.er_employee_all emp left join er.er_section sec on emp.section_code = sec.section_code left join ga.ga_outstation_position pst on pst.position_id = emp.outstation_position where emp.employee_id = '$employee_id'";
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

@@ -1,106 +1,109 @@
-<table>
-	<tr>
-		<td><img width="80px" src="<?php echo base_url('assets/img/logo.png')?>" /></td>
-		<td>
-			<h1>
-				Quick Outstation Realization Detail
-			</h1>
-		</td>
-	</tr>
-</table>
-<br/>
-
-	<table class="table" style="font-size:15px;">
-	<?php
+<?php
+	$no=1;
 	foreach($data_realization as $drel){
 ?>
-	<tr>
-		<td width="15%">ID Employee</td>
-		<td width="35%"><?php echo $drel['employee_code'] ?></td>
-		<td width="15%">Destination</td>
-		<td width="25%"><?php echo $drel['area_name'] ?></td>
-	</tr>
-	<tr>
-		<td>Employee Name</td>
-		<td><?php echo $drel['employee_name'] ?></td>
-		<td>City Type</td>
-		<td><?php echo $drel['city_type_name'] ?></td>
-	</tr>
-	<tr>
-		<td>Section</td>
-		<td><?php echo $drel['section_name'] ?></td>
-		<td>Depart</td>
-		<td><?php echo $drel['depart_time'] ?></td>
-	</tr>
-	<tr>
-		<td>Unit</td>
-		<td><?php echo $drel['unit_name'] ?></td>
-		<td>Return</td>
-		<td><?php echo $drel['return_time'] ?></td>
-	</tr>
-	<tr>
-		<td>Departemen</td>
-		<td><?php echo $drel['department_name'] ?></td>
-		<td>Bon</td>
-		<td><?php echo $drel['bon_nominal'] ?></td>
-	</tr>
-</table>
-<?php
-		}
-?>
-<br/>
-
-<b>Realization Table</b>
-<table class="table table-bordered table-striped" style="font-size:15px;">
-	<thead>
+<div style="border: 2px solid #000; height: 100%">
+	<table style="border: 1px solid #000; width: 100%; margin: 2px">
 		<tr>
-			<th style="background-color: #357ca5;color: #fff" width="5%"><center><br>No<br>&nbsp;</center></th>
-			<th style="background-color: #357ca5;color: #fff" width="10%"><center>Component Name</center></th>
-			<th style="background-color: #357ca5;color: #fff" width="10%"><center>Info</center></th>
-			<th style="background-color: #357ca5;color: #fff" width="15%"><center>Qty</center></th>
-			<th style="background-color: #357ca5;color: #fff" width="20%"><center>Nominal</center></th>
-			<th style="background-color: #357ca5;color: #fff"><center>Total</center></th>
+			<td height="20px" colspan="2" width="400px">&emsp;<b style="font-size: 17px">CV. KARYA HIDUP SENTOSA<b></td>
+			<td width="200px" style="border-left: 1px solid #000;">&nbsp;No. Kas Bon : <?php echo str_pad($drel['realization_id'], 8, "0", STR_PAD_LEFT); ?></td>
 		</tr>
-	</thead>
-	<tbody id="simulation_body">
-		<?php
-			$no=1;
-			$index=0;
-			foreach ($data_realization_detail as $real_det) {
-				foreach($Component as $comp){
-					if ($real_det['component_id'] == $comp['component_id']) {
-						$component_name = $comp['component_name'];
-					}
+		<tr>
+			<td width="100px">&emsp;Jl. Magelang 144</td>
+			<td rowspan="2" width="200px" style="font-size: 25px; text-align: center"><b>KAS BON</b></td>
+			<td rowspan="2" width="200px" style="border-left: 1px solid #000;">&nbsp;Tanggal : <?php echo date("d/m/Y") ?></td>
+		</tr>
+		<tr>
+			<td width="100px">&emsp;Yogyakarta</td>
+		</tr>
+	</table>
+	<table style="width: 100%; margin: 2px">
+		<tr>
+			<td height="40px" style="border: 1px solid #000; width:40px;font-size: 20px"><center><b>No</b></center></td>
+			<td height="40px" style="border: 1px solid #000; width:600px;font-size: 20px"><center><b>Pengeluaran</b></center></td>
+			<td height="40px" style="border: 1px solid #000; width:100px;font-size: 20px"><center><b>Jumlah</b></center></td>
+		</tr>
+	<?php
+		$index=0;
+		foreach ($data_realization_detail as $real_det) {
+			foreach($Component as $comp){
+				if ($real_det['component_id'] == $comp['component_id']) {
+					$component_name = $comp['component_name'];
 				}
-
-				$qty = $real_det['qty'];
-
-				$string = array('Rp',',00','.');
-				$nominal = str_replace($string, '', $real_det['nominal']);
-
-				$total[$index] = $qty*$nominal;
-				$group_name ='-';
-		?>
-		<tr>
-			<td style="text-align: center"><?php echo $no++?></td>
-			<td width="30%">&nbsp;&nbsp;<?php echo $component_name ?></td>
-			<td width="20%">&nbsp;&nbsp;<?php echo $real_det['info'] ?></td>
-			<td style="text-align: center" width="10%"><?php echo $qty?></td>
-			<td style="text-align: right">Rp<?php echo number_format($nominal , 2, ',', '.') ?>&nbsp;&nbsp;</td>
-			<td style="text-align: right">Rp<?php echo number_format($total[$index] , 2, ',', '.') ?>&nbsp;&nbsp;</td>
-		</tr>
-		<?php
-				$index++;
 			}
-		?>
-	</tbody>
-	<tfoot>
-		<?php
-			
-		?>
-		<tr>
-			<td colspan="5" style="text-align: right"><br>Total&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;</td>
-			<td style="text-align: right">Rp<?php echo number_format(array_sum($total), 2, ',', '.') ?>&nbsp;&nbsp;</td>
+			$qty = $real_det['qty'];
+			$string = array('Rp',',00','.');
+			$nominal = str_replace($string, '', $real_det['nominal']);
+
+			$total[$index] = $qty*$nominal;
+			$group_name ='-';
+
+			$index++;
+		}
+			if($drel['sex'] == 'L'){
+				$jk = 'Bp.';
+			}
+			else{
+				$jk = 'Ibu';
+			}
+			$ex_time1 = explode(' ', $drel['depart_time']);
+			$depart = explode('-', $ex_time1[0]);
+			$ex_time2 = explode(' ', $drel['return_time']);
+			$return = explode('-', $ex_time2[0]); 
+	?>
+		<tr >
+			<td height="40px" style="border: 1px solid #000;font-size: 15px; vertical-align: middle"><center><?php echo $no++; ?></center></td>
+			<td style="padding-left: 5px;border: 1px solid #000; font-size: 15px; vertical-align: top;">Bea DL <?php echo $jk.' '.$drel['employee_name'].' / '.$drel['employee_code'].' Ke '.$drel['area_name'].' tgl '.$depart[2].'/'.$depart[1].'/'.$depart[0].' - '.$return[2].'/'.$return[1].'/'.$return[0]?></td>
+			<td style="padding-left: 3px;text-align: right ;border: 1px solid #000;font-size: 15px; vertical-align: middle"><?php echo number_format(array_sum($total), 0, ',', '.') ?>&nbsp;</td>
 		</tr>
-	</tfoot>
-</table>
+		<tr>
+			<td height="40px" style="border: 1px solid #000;">&nbsp;</td>
+			<td style="border: 1px solid #000;">&nbsp;</td>
+			<td style="text-align: right ;border: 1px solid #000;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td height="40px" style="border: 1px solid #000;">&nbsp;</td>
+			<td style="border: 1px solid #000;">&nbsp;</td>
+			<td style="text-align: right ;border: 1px solid #000;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td height="40px" style="border: 1px solid #000;">&nbsp;</td>
+			<td style="border: 1px solid #000;">&nbsp;</td>
+			<td style="text-align: right ;border: 1px solid #000;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td height="40px" colspan="2" style="text-align: right ;border: 1px solid #000;"><b>Total Rp.</b>&emsp;</td>
+			<td style="text-align: right ;border: 1px solid #000;"><?php echo number_format(array_sum($total), 0, ',', '.') ?>&nbsp;</td>
+		</tr>
+	</table>
+	<table style="width: 100%; margin: 2px;">
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td style="font-size: 20px" width="300px"><center>Kasir</center></td>
+			<td style="font-size: 20px" width="300px"><center>Menyetujui</center></td>
+			<td style="font-size: 20px" width="300px"><center>Menerima</center></td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td style="font-size: 20px;vertical-align: top" width="300px"><center>Yuning Widiastuti</center></td>
+			<td style="font-size: 20px;vertical-align: top" width="300px"><center>Amelia Ayu Luthfi</center></td>
+			<td style="font-size: 20px;vertical-align: top" width="300px"><center><?php echo $drel['employee_name'] ?></center></td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+	<?php
+		}
+	?>
+	</table>
+</div>

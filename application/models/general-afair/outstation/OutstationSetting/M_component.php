@@ -7,13 +7,13 @@ class M_component extends CI_Model {
     }
 	
 	public function show_component(){
-		$sql="select * from ga.ga_outstation_component where end_date > now() order by component_id";
+		$sql="select * from ga.ga_outstation_component where end_date > now() order by component_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_deleted_component(){
-		$sql="select * from ga.ga_outstation_component order by component_id";
+		$sql="select * from ga.ga_outstation_component order by component_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

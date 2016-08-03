@@ -89,11 +89,26 @@
 													<td><input type="text" name="txt_return" value="<?php echo $dsim['return_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
+													<td>Outstation Position</td>
+													<td><p id="outstation-position"><?php echo $dsim['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $dsim['position_id'] ?>"></p></td>
+													<td></td>
+													<td></td>
+												</tr>
+												<tr>
 													<td colspan="4">
 														<center>
 															<a style="margin: 10px; width: 100px;" onclick="window.history.back()" class="btn btn-primary">Back</a>
 															<span id="submit-simulation" style="margin: 10px; width: 100px;" class="btn btn-primary">Process</span>
 														</center>
+													</td>
+												</tr>
+												<tr>
+													<td colspan="4" style="text-align: center">
+														<div id="loadAjax" class="progress" style="width:50%;margin: 0 auto;display:none">
+															<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+																<span class="sr-only">Processing</span>
+															</div>
+														</div>
 													</td>
 												</tr>
 											</table>

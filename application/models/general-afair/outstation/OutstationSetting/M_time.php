@@ -7,13 +7,13 @@ class M_time extends CI_Model {
     }
 	
 	public function show_time(){
-		$sql="select * from ga.ga_outstation_time where end_date > now() order by time_id";
+		$sql="select * from ga.ga_outstation_time where end_date > now() order by time_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_deleted_time(){
-		$sql="select * from ga.ga_outstation_time order by time_id";
+		$sql="select * from ga.ga_outstation_time order by time_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

@@ -115,11 +115,11 @@
 				search: "Search : ",
 			},
 			"columnDefs": [
-            {
-                "targets": [ -1 ],
-                "searchable": false
-            }
-        ],
+			{
+				"targets": [ -1 ],
+				"searchable": false
+			}
+		],
 		});
 		$('.dataTables_filter input[type="search"]').css(
 			{'width':'400px','display':'inline-block'}
@@ -144,11 +144,11 @@
 							search: "Search : ",
 						},
 						"columnDefs": [
-			            {
-			                "targets": [ -1 ],
-			                "searchable": false
-			            }
-			        ],
+						{
+							"targets": [ -1 ],
+							"searchable": false
+						}
+					],
 					});
 					$('.dataTables_filter input[type="search"]').css(
 						{'width':'400px','display':'inline-block'}
@@ -171,6 +171,25 @@
 				}
 			});
 	}
+	function check_before_save(modul){
+		if (modul == 'new'){
+			data = $("#new-ush").serialize();
+			url = $("#new-ush").attr("action");
+		}
+		else{
+			data = $("#update-ush").serialize();
+			url = $("#update-ush").attr("action");
+		}
+		$.ajax({
+				type:'POST',
+				data:data,
+				url:url,
+				success:function(result)
+				{
+					$('#error-div').html(result);
+				}
+			});
+	}
 
 	$(document).ready(function() {
 		$(".select2").select2({
@@ -184,6 +203,7 @@
 	});
 
 	$('#txt_employee_id').change(function(){
+		$('#loadAjax').show();
 		var val = $('#txt_employee_id').val();
 		$.ajax({
 			type:'POST',
@@ -201,6 +221,15 @@
 			success:function(result)
 			{
 				$('#employee_name').html(result);
+			}
+		});
+		$.ajax({
+			type:'POST',
+			data:{employee_id:val,modul:"outstationposition"},
+			url:baseurl+"Outstation/select-employee",
+			success:function(result)
+			{
+				$('#outstation-position').html(result);
 			}
 		});
 		$.ajax({
@@ -228,6 +257,7 @@
 			success:function(result)
 			{
 				$('#department_name').html(result);
+				$('#loadAjax').hide();
 			}
 		});
 	});
@@ -315,6 +345,7 @@
 		} ).draw();
 
 		$('#submit-simulation').click(function(){
+			$('#loadAjax').show();
 			$.ajax({
 				type:'POST',
 				data:$("#simulation-form").serialize(),
@@ -393,6 +424,7 @@
 							cell.innerHTML = i+1;
 						} );
 					} ).draw();
+					$('#loadAjax').hide();
 				}
 			});
 		});
@@ -480,6 +512,7 @@
 
 
 		$('#submit-realization').click(function(){
+			$('#loadAjax').show();
 			$.ajax({
 				type:'POST',
 				data:$("#realization-form").serialize(),
@@ -487,6 +520,7 @@
 				success:function(result)
 				{
 					$('#estimate-allowance').html(result);
+					$('#loadAjax').hide();
 				}
 			});
 		});

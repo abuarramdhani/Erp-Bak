@@ -7,7 +7,7 @@ class M_group_ush extends CI_Model {
     }
 	
 	public function show_group_ush(){
-		$sql="select * from ga.ga_outstation_groupush where end_date > now() order by group_id";
+		$sql="select * from ga.ga_outstation_groupush where end_date > now() order by group_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -44,7 +44,7 @@ class M_group_ush extends CI_Model {
 							ON sim.group_id = grp.group_id
 						LEFT JOIN ga.ga_outstation_ush ush
 							ON ush.group_id = grp.group_id
-				where grp.group_id='1' group by grp.group_id";
+				where grp.group_id='$group_id' group by grp.group_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

@@ -74,6 +74,7 @@ class C_OutstationRealization extends CI_Controller {
 	}
 
 	public function load_process(){
+		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$bon = $this->input->post('txt_bon');
@@ -128,9 +129,9 @@ class C_OutstationRealization extends CI_Controller {
 				$waktu_kembali = 3;
 			}
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
-					$meal_allowance = $this->M_Realization->show_meal_allowance($area_id, $time_name[$time]);
-					$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($area_id, $city_type_id);
-					$group_ush = $this->M_Realization->show_group_ush($return_time);
+					$meal_allowance = $this->M_Realization->show_meal_allowance($position_id,$area_id,$time_name[$time]);
+					$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($position_id,$area_id,$city_type_id);
+					$group_ush = $this->M_Realization->show_group_ush($position_id,$return_time);
 					
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
@@ -183,7 +184,7 @@ class C_OutstationRealization extends CI_Controller {
 									Meal Allowance
 								</div>
 								<div class="col-md-5">
-									<p id="meal-estimate">Rp'.number_format($total_meal , 2, '.', ',').'</p>
+									<p id="meal-estimate">Rp'.number_format($total_meal , 2, ',', '.').'</p>
 								</div>
 							</div>
 							<div class="row">
@@ -191,7 +192,7 @@ class C_OutstationRealization extends CI_Controller {
 									Accomodation Allowance
 								</div>
 								<div class="col-md-5">
-									<p id="accomodation-estimate">Rp'.number_format($total_acc , 2, '.', ',').'</p>
+									<p id="accomodation-estimate">Rp'.number_format($total_acc , 2, ',', '.').'</p>
 								</div>
 							</div>
 							<div class="row">
@@ -199,7 +200,7 @@ class C_OutstationRealization extends CI_Controller {
 									 USH
 								</div>
 								<div class="col-md-5">
-									<p id="ush-estimate">Rp'.number_format($total_ush , 2, '.', ',').'</p>
+									<p id="ush-estimate">Rp'.number_format($total_ush , 2, ',', '.').'</p>
 								</div>
 							</div>
 						</div>
@@ -209,7 +210,7 @@ class C_OutstationRealization extends CI_Controller {
 									Total Estimated
 								</div>
 								<div class="col-md-5">
-									<p id="total-estimate">Rp'.number_format($total_all , 2, '.', ',').'</p>
+									<p id="total-estimate">Rp'.number_format($total_all , 2, ',', '.').'</p>
 								</div>
 							</div>
 						</div>
@@ -260,6 +261,7 @@ class C_OutstationRealization extends CI_Controller {
 	public function save_Realization()
 	{
 		$employee_id = $this->input->post('txt_employee_id');
+		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
@@ -277,7 +279,11 @@ class C_OutstationRealization extends CI_Controller {
 			$component_id = $this->input->post('txt_component['.$i.']');
 			$info = $this->input->post('txt_info['.$i.']');
 			$qty = $this->input->post('txt_qty['.$i.']');
-			$component_nominal = $this->input->post('txt_component_nominal['.$i.']');
+			$component_nominal_string = $this->input->post('txt_component_nominal['.$i.']');
+			$string = array('Rp','.');
+
+			$component_nominal = str_replace($string, '', $component_nominal_string);
+
 
 			if(strlen($component_id) > 0 && strlen($info) > 0 && strlen($qty) > 0 && strlen($component_nominal) > 0){
 				$this->M_Realization->new_realization_detail($component_id,$info,$qty,$component_nominal);
@@ -307,6 +313,7 @@ class C_OutstationRealization extends CI_Controller {
         $data['Component'] = $this->M_Realization->show_component();
 
         foreach ($data['data_realization'] as $realization) {
+        	$position_id = $realization['outstation_position'];
         	$area_id = $realization['area_id'];
 			$city_type_id = $realization['city_type_id'];
 			$bon = $realization['bon_nominal'];
@@ -361,9 +368,9 @@ class C_OutstationRealization extends CI_Controller {
 					$waktu_kembali = 3;
 				}
 					for ($time=$i; $time <= $waktu_kembali; $time++) {
-						$meal_allowance = $this->M_Realization->show_meal_allowance($area_id, $time_name[$time]);
-						$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($area_id, $city_type_id);
-						$group_ush = $this->M_Realization->show_group_ush($return_time);
+						$meal_allowance = $this->M_Realization->show_meal_allowance($position_id,$area_id,$time_name[$time]);
+						$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($position_id,$area_id,$city_type_id);
+						$group_ush = $this->M_Realization->show_group_ush($position_id,$return_time);
 						
 						foreach ($accomodation_allowance as $aa) {
 							foreach ($meal_allowance as $ma) {
@@ -449,7 +456,11 @@ class C_OutstationRealization extends CI_Controller {
 			$component_id = $this->input->post('txt_component['.$i.']');
 			$info = $this->input->post('txt_info['.$i.']');
 			$qty = $this->input->post('txt_qty['.$i.']');
-			$component_nominal = $this->input->post('txt_component_nominal['.$i.']');
+			$component_nominal_string = $this->input->post('txt_component_nominal['.$i.']');
+			$string = array('Rp','.');
+
+			$component_nominal = str_replace($string, '', $component_nominal_string);
+
 
 			if(strlen($component_id) > 0 && strlen($info) > 0 && strlen($qty) > 0 && strlen($component_nominal) > 0){
 				$this->M_Realization->update_realization_detail($realization_id,$component_id,$info,$qty,$component_nominal);
@@ -462,7 +473,7 @@ class C_OutstationRealization extends CI_Controller {
 	public function delete_realization($realization_id){
 		$this->M_Realization->delete_realization($realization_id);
 			
-		redirect('Outstation/simulation');
+		redirect('Outstation/realization');
 	}
 
 
@@ -470,7 +481,7 @@ class C_OutstationRealization extends CI_Controller {
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', 'A4-L');
+		$pdf = new mPDF('utf-8', array(165,105), 0, '', 3, 3, 3, 3);
 
 		$filename = 'Simulation_Detail_'.time();
 		$this->checkSession();

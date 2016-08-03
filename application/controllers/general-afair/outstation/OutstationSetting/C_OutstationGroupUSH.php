@@ -126,10 +126,13 @@ class C_OutstationGroupUSH extends CI_Controller {
 		$group_name = $this->input->post('txt_group_name');
 		$foreign_checkbox = $this->input->post('checkbox_foreign');
 		$holiday_checkbox = $this->input->post('checkbox_holiday');
-		$time_from = $this->input->post('txt_time_from');
-		$time_to = $this->input->post('txt_time_to');
+		$time_from_string = $this->input->post('txt_time_from');
+		$time_to_string = $this->input->post('txt_time_to');
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
+
+		$time_from = str_pad($time_from_string, 5, "0", STR_PAD_LEFT);
+		$time_to = str_pad($time_to_string, 5, "0", STR_PAD_LEFT);
 
 		if ( $holiday_checkbox == '') {
 			$holiday = '0';
@@ -176,11 +179,14 @@ class C_OutstationGroupUSH extends CI_Controller {
 		$group_name = $this->input->post('txt_group_name');
 		$foreign_checkbox = $this->input->post('checkbox_foreign');
 		$holiday_checkbox = $this->input->post('checkbox_holiday');
-		$time_from = $this->input->post('txt_time_from');
-		$time_to = $this->input->post('txt_time_to');
+		$time_from_string = $this->input->post('txt_time_from');
+		$time_to_string = $this->input->post('txt_time_to');
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
 
+		$time_from = str_pad($time_from_string, 5, "0", STR_PAD_LEFT);
+		$time_to = str_pad($time_to_string, 5, "0", STR_PAD_LEFT);
+		
 		if ( $holiday_checkbox == '') {
 			$holiday = '0';
 		}

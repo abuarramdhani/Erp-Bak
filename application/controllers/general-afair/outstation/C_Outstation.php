@@ -78,7 +78,15 @@ class C_Outstation extends CI_Controller {
 		foreach ($employee_data as $ed) {
 			if($modul == 'code'){echo $ed['employee_code'].'<input type="hidden" name="txt_section" value="'.$ed['employee_id'].'">';}
 			if($modul == 'name'){echo $ed['employee_name'];}
-			if($modul == 'section'){echo $ed['section_name'].'<input type="hidden" name="txt_section" value="'.$ed['section_name'].'">';}
+			if($modul == 'outstationposition'){
+				if($ed['outstation_position'] == ""){
+					echo '-';
+				}
+				else{
+					echo $ed['position_name'].'<input type="hidden" name="txt_position_id" value="'.$ed['position_id'].'">';
+				}
+			}
+			if($modul == 'section'){echo $ed['section_name'];}
 			if($modul == 'unit'){echo $ed['unit_name'];}
 			if($modul == 'department'){echo $ed['department_name'];}
 		}

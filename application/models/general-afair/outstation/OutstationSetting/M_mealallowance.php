@@ -8,7 +8,7 @@ class M_mealallowance extends CI_Model {
 	
 	public function show_mealallowance(){
 		$sql="select * from ga.ga_outstation_meal_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
-		, ga.ga_outstation_time ti where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.time_id=ti.time_id";
+		, ga.ga_outstation_time ti where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.time_id=ti.time_id order by op.position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	} 
@@ -33,21 +33,19 @@ class M_mealallowance extends CI_Model {
 	}
 
 	public function show_position(){
-		$sql="select * from ga.ga_outstation_position where end_date > now()";
+		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_area(){
-		$sql="select * from ga.ga_outstation_area where end_date > now()";
+		$sql="select * from ga.ga_outstation_area where end_date > now() order by area_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-
-
 	public function show_time(){
-		$sql="select * from ga.ga_outstation_time where end_date > now()";
+		$sql="select * from ga.ga_outstation_time where end_date > now() order by time_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

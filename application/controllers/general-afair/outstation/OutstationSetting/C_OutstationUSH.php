@@ -62,9 +62,9 @@ class C_OutstationUSH extends CI_Controller {
 				<thead>
 					<tr class="bg-primary">
 						<th width="10%"><center>No</center></th>
-						<th><center>Position</center></th>
-						<th><center>Group</center></th>
-						<th><center>Nominal</center></th>
+						<th width="25%"><center>Position</center></th>
+						<th width="15%"><center>Group</center></th>
+						<th width="30%"><center>Nominal</center></th>
 						<th width="20%"><center>Action</center></th>
 					</tr>
 				</thead>
@@ -72,15 +72,15 @@ class C_OutstationUSH extends CI_Controller {
 		$no=1;
 		foreach ($data_ush as $du) {
 			$deleted = '';
-			if ($du['end_date'] <= date("Y-m-d H:i:s")) {
+			if ($du['tgl_end'] <= date("Y-m-d H:i:s")) {
 				$deleted = 'rgba(255, 0, 0, 0.17)';
 			}
 			echo '
 				<tr style="background-color :'.$deleted.' ">
 					<td style="text-align: center">'.$no++.'</td>
 					<td>'.$du['position_name'].'</td>
-					<td>'.$du['group_id'].'</td>
-					<td>'.$du['nominal'].'</td>
+					<td>'.$du['group_name'].'</td>
+					<td>Rp'.number_format($du['nominal'],2,',','.').'</td>
 					<td style="text-align: center">
 						<a class="btn btn-warning" href="'.base_url('Outstation/ush/edit/'.$du['position_id'].'/'.$du['group_id']).'"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_'.$du['position_id'].'_'.$du['group_id'].'"><i class="fa fa-times"></i> Delete</button>
 						<div class="modal fade" id="delete_'.$du['position_id'].'_'.$du['group_id'].'">
@@ -107,7 +107,7 @@ class C_OutstationUSH extends CI_Controller {
 				</table>';
 	}
 
-	public function new_ush()
+	public function new_ush($error = NULL)
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -121,6 +121,7 @@ class C_OutstationUSH extends CI_Controller {
 
 		$data['position_list'] = $this->M_ush->show_position();
 		$data['group_list'] = $this->M_ush->show_group_ush();
+		$data['error'] = $error;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('general-afair/outstation/OutstationSetting/USH/V_NewUSH',$data);
@@ -135,16 +136,32 @@ class C_OutstationUSH extends CI_Controller {
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
 
-		$string = array('Rp','.');
+		$Flashdata = array(
+						'position_id' => $position_id,
+						'group_id' => $group_id,
+						'nominal_string' => $nominal_string,
+						'start_date' => $start_date,
+						'end_date' => $end_date,
+					);
+		$this->session->set_flashdata($Flashdata);
+		$check_data = $this->M_ush->check_before_save($position_id,$group_id);
 
-		$nominal = str_replace($string, '', $nominal_string);
+		if ($check_data == 0) {
+			$string = array('Rp','.');
 
-		$this->M_ush->new_ush($position_id,$group_id,$nominal,$start_date,$end_date);
+			$nominal = str_replace($string, '', $nominal_string);
 
-		redirect('Outstation/ush');
+			$this->M_ush->new_ush($position_id,$group_id,$nominal,$start_date,$end_date);
+
+			redirect('Outstation/ush');
+		}
+		else{
+			$error = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Position & Group Sudah ada!</div>';
+			$this->new_ush($error);
+		}
 	}
 
-	public function edit_ush($position_id,$group_id)
+	public function edit_ush($position_id,$group_id,$error = NULL)
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -159,6 +176,7 @@ class C_OutstationUSH extends CI_Controller {
 		$data['data_ush'] = $this->M_ush->select_edit_ush($position_id,$group_id);
 		$data['position_list'] = $this->M_ush->show_position();
 		$data['group_list'] = $this->M_ush->show_group_ush();
+		$data['error'] = $error;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -176,13 +194,21 @@ class C_OutstationUSH extends CI_Controller {
 		$start_date = $this->input->post('txt_start_date');
 		$end_date = $this->input->post('txt_end_date');
 
-		$string = array('Rp','.');
+		$check_data = $this->M_ush->check_before_save($position_id,$group_id);
 
-		$nominal = str_replace($string, '', $nominal_string);
+		if ($check_data == 0) {
+			$string = array('Rp','.');
 
-		$this->M_ush->update_ush($position_id,$position_id_old,$group_id,$group_id_old,$nominal,$start_date,$end_date);
+			$nominal = str_replace($string, '', $nominal_string);
 
-		redirect('Outstation/ush');
+			$this->M_ush->update_ush($position_id,$position_id_old,$group_id,$group_id_old,$nominal,$start_date,$end_date);
+
+			redirect('Outstation/ush');
+		}
+		else{
+			$error = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Position & Group Sudah ada!</div>';
+			$this->edit_ush($position_id_old,$group_id_old,$error);
+		}
 	}
 
 	public function check_data_ush(){
@@ -205,7 +231,7 @@ class C_OutstationUSH extends CI_Controller {
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<a href="'.base_url('Outstation/area/delete-temporary/'.$position_id.'/'.$group_id.'').'" class="btn btn-danger">Delete</a>
+									<a href="'.base_url('Outstation/ush/delete-temporary/'.$position_id.'/'.$group_id.'').'" class="btn btn-danger">Delete</a>
 								</div>
 					';
 		}
@@ -220,7 +246,7 @@ class C_OutstationUSH extends CI_Controller {
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-									<a href="'.base_url('Outstation/area/delete-permanently/'.$position_id.'/'.$group_id.'').'" class="btn btn-danger">Delete</a>
+									<a href="'.base_url('Outstation/ush/delete-permanently/'.$position_id.'/'.$group_id.'').'" class="btn btn-danger">Delete</a>
 								</div>
 					';
 		}

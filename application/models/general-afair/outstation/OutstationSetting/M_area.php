@@ -7,13 +7,13 @@ class M_area extends CI_Model {
     }
 	
 	public function show_area(){
-		$sql="select * from ga.ga_outstation_area where end_date > now() order by area_id";
+		$sql="select * from ga.ga_outstation_area where end_date > now() order by area_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_deleted_area(){
-		$sql="select * from ga.ga_outstation_area order by area_id";
+		$sql="select * from ga.ga_outstation_area order by area_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
