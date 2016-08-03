@@ -345,6 +345,7 @@
 		} ).draw();
 
 		$('#submit-simulation').click(function(){
+			$('.alert').alert('close');
 			$('#loadAjax').show();
 			$.ajax({
 				type:'POST',
@@ -425,6 +426,10 @@
 						} );
 					} ).draw();
 					$('#loadAjax').hide();
+				},
+				error: function() {
+					$('#loadAjax').hide();
+					document.getElementById("errordiv").innerHTML = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Outstation Position/Destination/City Type Invalid!</div>';
 				}
 			});
 		});
@@ -512,6 +517,7 @@
 
 
 		$('#submit-realization').click(function(){
+			$('.alert').alert('close');
 			$('#loadAjax').show();
 			$.ajax({
 				type:'POST',
@@ -521,6 +527,10 @@
 				{
 					$('#estimate-allowance').html(result);
 					$('#loadAjax').hide();
+				},
+				error: function() {
+					$('#loadAjax').hide();
+					document.getElementById("errordiv").innerHTML = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Outstation Position/Destination/City Type Invalid!</div>';
 				}
 			});
 		});

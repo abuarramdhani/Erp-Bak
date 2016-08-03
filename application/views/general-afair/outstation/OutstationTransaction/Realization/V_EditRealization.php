@@ -103,6 +103,8 @@
 												</tr>
 												<tr>
 													<td colspan="4" style="text-align: center">
+														<p id="errordiv">
+														</p>
 														<div id="loadAjax" class="progress" style="width:50%;margin: 0 auto;display:none">
 															<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
 																<span class="sr-only">Processing</span>
