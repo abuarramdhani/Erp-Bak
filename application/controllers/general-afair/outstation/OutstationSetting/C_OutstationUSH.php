@@ -195,11 +195,15 @@ class C_OutstationUSH extends CI_Controller {
 		$end_date = $this->input->post('txt_end_date');
 
 		$check_data = $this->M_ush->check_before_save($position_id,$group_id);
+		$string = array('Rp','.');
+		$nominal = str_replace($string, '', $nominal_string);
+		
+		if ($position_id == $position_id_old && $group_id == $group_id_old) {
+			$this->M_ush->update_ush($position_id,$position_id_old,$group_id,$group_id_old,$nominal,$start_date,$end_date);
 
+			redirect('Outstation/ush');
+		}
 		if ($check_data == 0) {
-			$string = array('Rp','.');
-
-			$nominal = str_replace($string, '', $nominal_string);
 
 			$this->M_ush->update_ush($position_id,$position_id_old,$group_id,$group_id_old,$nominal,$start_date,$end_date);
 
@@ -236,7 +240,7 @@ class C_OutstationUSH extends CI_Controller {
 					';
 		}
 		else{
-			echo '	
+			echo '
 								<div class="modal-header bg-primary">
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 									<h4 class="modal-title">Delete Area?</h4>
