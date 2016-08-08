@@ -44,7 +44,7 @@
 												<td><?php echo $dac['position_name']?></td>
 												<td><?php echo $dac['area_name']?></td>
 												<td><?php echo $dac['city_type_name']?></td>
-												<td><?php echo $dac['nominal']?></td>
+												<td>Rp<?php echo number_format($dac['nominal'],2,',','.')?></td>
 												<td style="text-align: center">
 													<a class="btn btn-warning" href="<?php echo base_url('Outstation/accomodation-allowance/edit/'.$dac['accomodation_allowance_id'])?>"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_<?php echo $dac['accomodation_allowance_id']?>"><i class="fa fa-times"></i> Delete</button>
 													<div class="modal fade" id="delete_<?php echo $dac['accomodation_allowance_id']?>">

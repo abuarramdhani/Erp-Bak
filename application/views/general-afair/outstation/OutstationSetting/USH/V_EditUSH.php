@@ -76,6 +76,13 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div style="margin: 0 auto;width: 60%">
+							<?php echo $error; ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>

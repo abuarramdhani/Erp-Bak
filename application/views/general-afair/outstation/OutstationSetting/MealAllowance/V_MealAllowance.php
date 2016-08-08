@@ -44,7 +44,7 @@
 												<td><?php echo $dma['position_name']?></td>
 												<td><?php echo $dma['area_name']?></td>
 												<td><?php echo $dma['time_name']?></td>
-												<td><?php echo $dma['nominal']?></td>
+												<td>Rp<?php echo number_format($dma['nominal'], 2,',','.')?></td>
 												<td style="text-align: center">
 													<a class="btn btn-warning" href="<?php echo base_url('Outstation/meal-allowance/edit/'.$dma['meal_allowance_id'])?>"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_<?php echo $dma['meal_allowance_id']?>"><i class="fa fa-times"></i> Delete</button>
 													<div class="modal fade" id="delete_<?php echo $dma['meal_allowance_id']?>">

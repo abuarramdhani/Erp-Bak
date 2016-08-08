@@ -8,7 +8,7 @@ class M_AccomodationAllowance extends CI_Model {
 	
 	public function show_accomodationallowance(){
 		$sql="select * from ga.ga_outstation_accomodation_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
-		, ga.ga_outstation_city_type ct where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id";
+		, ga.ga_outstation_city_type ct where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id order by op.position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	} 
@@ -33,19 +33,19 @@ class M_AccomodationAllowance extends CI_Model {
 	}
 
 	public function show_position(){
-		$sql="select * from ga.ga_outstation_position where end_date > now()";
+		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_area(){
-		$sql="select * from ga.ga_outstation_area where end_date > now()";
+		$sql="select * from ga.ga_outstation_area where end_date > now() order by area_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_city_type(){
-		$sql="select * from ga.ga_outstation_city_type where end_date > now()";
+		$sql="select * from ga.ga_outstation_city_type where end_date > now() order by city_type_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

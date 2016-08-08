@@ -38,6 +38,12 @@
 												<tr>
 													<td>ID Employee</td>
 													<td><p id="employee_code"><?php echo $drel['employee_code'] ?></p></td>
+													<td></td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>Employee Name</td>
+													<td><p id="employee_name"><?php echo $drel['employee_name'] ?></p></td>
 													<td>Destination</td>
 													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
@@ -53,8 +59,8 @@
 														</select></td>
 												</tr>
 												<tr>
-													<td>Employee Name</td>
-													<td><p id="employee_name"><?php echo $drel['employee_name'] ?></p></td>
+													<td>Section</td>
+													<td><p id="section_name"><?php echo $drel['section_name'] ?></p></td>
 													<td>City Type</td>
 													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
@@ -70,20 +76,20 @@
 														</select></td>
 												</tr>
 												<tr>
-													<td>Section</td>
-													<td><p id="section_name"><?php echo $drel['section_name'] ?></p></td>
+													<td>Unit</td>
+													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" value="<?php echo $drel['depart_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
+													<td>Departemen</td>
+													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" value="<?php echo $drel['return_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
+													<td>Outstation Position</td>
+													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
 													<td>Bon</td>
 													<td><input id="txt_bon" type="text" name="txt_bon" value="<?php echo $drel['bon_nominal'] ?> " class="form-control input_money" required></td>
 												</tr>
@@ -93,6 +99,17 @@
 															<a style="margin: 10px; width: 100px;" onclick="window.history.back()" class="btn btn-primary">Back</a>
 															<span id="submit-realization" style="margin: 10px; width: 100px;" class="btn btn-primary">Process</span>
 														</center>
+													</td>
+												</tr>
+												<tr>
+													<td colspan="4" style="text-align: center">
+														<p id="errordiv">
+														</p>
+														<div id="loadAjax" class="progress" style="width:50%;margin: 0 auto;display:none">
+															<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+																<span class="sr-only">Processing</span>
+															</div>
+														</div>
 													</td>
 												</tr>
 											<?php
@@ -187,7 +204,7 @@
 														</td>
 														<td><input type="text" name="txt_info[<?php echo $counter; ?>]" class="form-control" value="<?php echo $real_det['info'] ?>" required/></td>
 														<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[<?php echo $counter; ?>]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" required/></td>
-														<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[<?php echo $counter; ?>]" class="form-control input_money nominal" value="<?php echo str_replace(',00', '', $real_det['nominal']) ?>" required/></td>
+														<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[<?php echo $counter; ?>]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/></td>
 														<td><input style="text-align: right;" type="text" name="txt_total[<?php echo $counter; ?>]" class="form-control total-nominal" required readonly/></td>
 														<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 													</tr>

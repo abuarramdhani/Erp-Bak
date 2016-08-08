@@ -73,6 +73,7 @@ class C_OutstationSimulation extends CI_Controller {
 	}
 
 	public function load_process(){
+		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
@@ -119,14 +120,14 @@ class C_OutstationSimulation extends CI_Controller {
 		echo '
 			<thead>
 				<tr class="bg-primary">
-					<th width="5%">No</th>
-					<th width="10%">Date</th>
-					<th>Time</th>
-					<th>Meal Allowance</th>
-					<th>Accomodation Allowance</th>
-					<th>Group</th>
-					<th>USH</th>
-					<th>Total</th>
+					<th width="5%"><center>No</center></th>
+					<th width="10%"><center>Date</center></th>
+					<th><center>Time</center></th>
+					<th><center>Meal Allowance</center></th>
+					<th><center>Accomodation Allowance</center></th>
+					<th><center>Group</center></th>
+					<th><center>USH</center></th>
+					<th><center>Total</center></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -140,9 +141,9 @@ class C_OutstationSimulation extends CI_Controller {
 				$waktu_kembali = 3;
 			}
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
-					$meal_allowance = $this->M_Simulation->show_meal_allowance($area_id, $time_name[$time]);
-					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($area_id, $city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($return_time);
+					$meal_allowance = $this->M_Simulation->show_meal_allowance($position_id, $area_id, $time_name[$time]);
+					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id, $area_id, $city_type_id);
+					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time);
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {
@@ -209,6 +210,7 @@ class C_OutstationSimulation extends CI_Controller {
 	public function save_Simulation()
 	{
 		$employee_id = $this->input->post('txt_employee_id');
+		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
@@ -265,9 +267,9 @@ class C_OutstationSimulation extends CI_Controller {
 				$waktu_kembali = 3;
 			}
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
-					$meal_allowance = $this->M_Simulation->show_meal_allowance($area_id, $time_name[$time]);
-					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($area_id, $city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($return_time);
+					$meal_allowance = $this->M_Simulation->show_meal_allowance($position_id,$area_id,$time_name[$time]);
+					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id,$area_id,$city_type_id);
+					$group_ush = $this->M_Simulation->show_group_ush($position_id,$return_time);
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {
@@ -345,6 +347,7 @@ class C_OutstationSimulation extends CI_Controller {
 	public function update_Simulation(){
 		$simulation_id = $this->input->post('txt_simulation_id');
 		$employee_id = $this->input->post('txt_employee_id');
+		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
@@ -402,9 +405,9 @@ class C_OutstationSimulation extends CI_Controller {
 				$waktu_kembali = 3;
 			}
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
-					$meal_allowance = $this->M_Simulation->show_meal_allowance($area_id, $time_name[$time]);
-					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($area_id, $city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($return_time);
+					$meal_allowance = $this->M_Simulation->show_meal_allowance($position_id,$area_id,$time_name[$time]);
+					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id,$area_id, $city_type_id);
+					$group_ush = $this->M_Simulation->show_group_ush($position_id,$return_time);
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {
@@ -459,7 +462,7 @@ class C_OutstationSimulation extends CI_Controller {
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', 'A4-L');
+		$pdf = new mPDF('utf-8', array(165,105), 0, '', 3, 3, 3, 3);
 
 		$filename = 'Simulation_Detail_'.time();
 		$this->checkSession();

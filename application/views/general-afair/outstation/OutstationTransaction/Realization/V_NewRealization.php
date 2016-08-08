@@ -28,6 +28,12 @@
 												<tr>
 													<td>ID Employee</td>
 													<td><p id="employee_code">-</p></td>
+													<td></td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>Employee Name</td>
+													<td><p id="employee_name">-</p></td>
 													<td>Destination</td>
 													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
@@ -37,8 +43,8 @@
 														</select></td>
 												</tr>
 												<tr>
-													<td>Employee Name</td>
-													<td><p id="employee_name">-</p></td>
+													<td>Section</td>
+													<td><p id="section_name">-</p></td>
 													<td>City Type</td>
 													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
@@ -48,20 +54,20 @@
 														</select></td>
 												</tr>
 												<tr>
-													<td>Section</td>
-													<td><p id="section_name">-</p></td>
+													<td>Unit</td>
+													<td><p id="unit_name">-</p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name">-</p></td>
+													<td>Departemen</td>
+													<td><p id="department_name">-</p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name">-</p></td>
+													<td>Outstation Position</td>
+													<td><p id="outstation-position">-</p></td>
 													<td>Bon</td>
 													<td><input id="txt_bon" type="text" name="txt_bon" class="form-control input_money" required></td>
 												</tr>
@@ -69,9 +75,20 @@
 													<td colspan="4">
 														<center>
 															<a style="margin: 10px; width: 100px;" onclick="window.history.back()" class="btn btn-primary">Back</a>
-															<a style="margin: 10px; width: 100px;" onclick="location.reload()" class="btn btn-primary">Reset</a>
+															<a style="margin: 10px; width: 100px;" onclick="document.getElementByID('realization-form').reset();" class="btn btn-primary">Reset</a>
 															<span id="submit-realization" style="margin: 10px; width: 100px;" class="btn btn-primary">Process</span>
 														</center>
+													</td>
+												</tr>
+												<tr>
+													<td colspan="4" style="text-align: center">
+														<p id="errordiv">
+														</p>
+														<div id="loadAjax" class="progress" style="width:50%;margin: 0 auto;display:none">
+															<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+																<span class="sr-only">Processing</span>
+															</div>
+														</div>
 													</td>
 												</tr>
 											</table>

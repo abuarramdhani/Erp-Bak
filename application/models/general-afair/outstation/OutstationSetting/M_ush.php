@@ -7,35 +7,37 @@ class M_ush extends CI_Model {
     }
 	
 	public function show_ush(){
-		$sql="	select ush.position_id, ush.group_id, ush.nominal, ush.start_date, ush.end_date, position.position_name, grp.group_id, grp.group_name
+		$sql="	select *,ush.end_date as tgl_end
 				from 	ga.ga_outstation_ush ush
 						LEFT JOIN ga.ga_outstation_position position
 							ON position.position_id = ush.position_id
 						LEFT JOIN ga.ga_outstation_groupush grp
 							ON grp.group_id = ush.group_id
-						where ush.end_date > now() order by ush.position_id";
+						where ush.end_date > now() order by position.position_name, grp.group_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_deleted_ush(){
-		$sql="	select	ush.position_id, ush.group_id, ush.nominal, ush.start_date, ush.end_date, position.position_name
+		$sql="	select	*,ush.end_date as tgl_end
 				from 	ga.ga_outstation_ush ush
 						LEFT JOIN ga.ga_outstation_position position
 							ON position.position_id = ush.position_id
-						order by ush.position_id";
+						LEFT JOIN ga.ga_outstation_groupush grp
+							ON grp.group_id = ush.group_id
+						order by position.position_name, grp.group_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_position(){
-		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_id";
+		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_group_ush(){
-		$sql="select * from ga.ga_outstation_groupush where end_date > now() order by group_id";
+		$sql="select * from ga.ga_outstation_groupush where end_date > now() order by group_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -79,6 +81,13 @@ class M_ush extends CI_Model {
 		$sql="delete from ga.ga_outstation_area where position_id='$position_id' AND group_id='$group_id'";
 		$query = $this->db->query($sql);
 		return;
+	}
+
+	public function check_before_save($position_id,$group_id){
+		$this->db->where('position_id', $position_id);
+        $this->db->where('group_id', $group_id);
+        $query =  $this->db->get('ga.ga_outstation_ush');
+        return $query->num_rows();
 	}
 }
 ?>

@@ -7,13 +7,13 @@ class M_position extends CI_Model {
     }
 	
 	public function show_position(){
-		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_id";
+		$sql="select * from ga.ga_outstation_position where end_date > now() order by position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_deleted_position(){
-		$sql="select * from ga.ga_outstation_position order by position_id";
+		$sql="select * from ga.ga_outstation_position order by position_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
