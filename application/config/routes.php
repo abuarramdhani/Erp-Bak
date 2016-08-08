@@ -347,5 +347,16 @@ $route['Outstation/realization/update'] = 'general-afair/outstation/OutstationTr
 $route['Outstation/realization/delete/(:any)'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/delete_realization/$1';
 
 //-------------------------------------Outstation.end----------------------------------------------------
+
+//------------------------------------Rekap TIMS.begin---------------------------------------------------
+$route['RekapTIMSPromosiPekerja'] = 'er/RekapTIMS/C_Rekap/index';
+$route['RekapTIMSPromosiPekerja/RekapTIMS'] = 'er/RekapTIMS/C_Rekap/rekapMenu';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/select-section'] = 'er/RekapTIMS/C_Rekap/select_section';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/ShowData'] = 'er/RekapTIMS/C_Rekap/showData';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/employee/(:any)'] = 'er/RekapTIMS/C_Rekap/searchEmployee/$1';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/month/(:any)'] = 'er/RekapTIMS/C_Rekap/searchMonth/$1';
+
+//------------------------------------Rekap TIMS.end---------------------------------------------------
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';

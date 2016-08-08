@@ -31,6 +31,9 @@
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
+		if(counter_row <= 0){
+			var counter_row = 0;
+		}
 	</script>
     <script>
          $(document).ready(function () {

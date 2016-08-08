@@ -8,6 +8,7 @@
 	}
 	
 	// ----------DATA TABLES---------- //
+
 	$(document).ready(function(){
 		$('#config').DataTable({
 			"aoColumns": [ 
@@ -418,6 +419,7 @@
 			} );
 		} ).draw();
 
+
 		var counter = counter_row;
 		$('#add-row').on( 'click', function () {
 			var rowAdd = table.row.add( [
@@ -491,3 +493,120 @@
 			});
 		});
 	});
+
+	//------------------------REKAP TIMS.begin------------------
+	//Date Picker
+	$( document ).ready(function() {
+		//-------begin.REKAP TIMS---------------
+		$('#rekapBegin').daterangepicker({
+			"singleDatePicker": true,
+			"timePicker": true,
+			"timePicker24Hour": true,
+			"showDropdowns": false,
+			locale: {
+					format: 'YYYY-MM-DD HH:mm:ss'
+				},
+		});
+
+		$('#rekapEnd').daterangepicker({
+			"singleDatePicker": true,
+			"timePicker": true,
+			"timePicker24Hour": true,
+			"showDropdowns": false,
+			locale: {
+					format: 'YYYY-MM-DD HH:mm:ss'
+				},
+		});
+	});
+
+	//DATA TABLE
+	$(document).ready(function(){
+		$('#monthRekap').DataTable({
+			"ordering"	: false,
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+		});
+	});
+	$(document).ready(function(){
+		$('#personalT').DataTable({
+			"ordering"	: false,
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+		});
+	});
+	$(document).ready(function(){
+		$('#personalI').DataTable({
+			"ordering"	: false,
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+		});
+	});
+	$(document).ready(function(){
+		$('#personalM').DataTable({
+			"ordering"	: false,
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+		});
+	});
+	$(document).ready(function(){
+		$('#personalIP').DataTable({
+			"ordering"	: false,
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+		});
+	});
+	$(document).ready(function(){
+		$('#personalSP').DataTable({
+			"ordering"	: false,
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+		});
+	});
+	//-------------------------- Ambil Data Seksi.Rekap TIMS -----------------------------
+	//AJAX JAVASCRIPT
+	$(document).ready(function() {
+		$('#departemen_select').change(function(){
+			var value = $('#departemen_select').val();
+			$.ajax({
+				type:'POST',
+				data:{data_name:value,modul:'bidang'},
+				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
+				success:function(result)
+				{
+					$('#bidang_select').html(result);
+				}
+			});
+		});
+		$('#bidang_select').change(function(){
+			var value = $('#bidang_select').val();
+			$.ajax({
+				type:'POST',
+				data:{data_name:value,modul:'unit'},
+				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
+				success:function(result)
+				{
+					$('#unit_select').html(result);
+				}
+			});
+		});
+		$('#unit_select').change(function(){
+			var value = $('#unit_select').val();
+			$.ajax({
+				type:'POST',
+				data:{data_name:value,modul:'seksi'},
+				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
+				success:function(result)
+				{
+					$('#section_select').html(result);
+				}
+			});
+		});
+	});
+
+	//---------------------------------REKAP TIMS.end-------------------------------
