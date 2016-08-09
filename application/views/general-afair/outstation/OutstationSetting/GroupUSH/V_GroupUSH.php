@@ -28,6 +28,10 @@
 											<tr class="bg-primary">
 												<th width="10%"><center>No</center></th>
 												<th><center>Group Name</center></th>
+												<th><center>Holiday</center></th>
+												<th><center>Foreign</center></th>
+												<th><center>From</center></th>
+												<th><center>To</center></th>
 												<th width="20%"><center>Action</center></th>
 											</tr>
 										</thead>
@@ -35,10 +39,27 @@
 											<?php
 												$no = 1;
 												foreach ($data_group_ush as $dgu) {
+													if ($dgu['holiday'] == '1') {
+														$holiday = 'Y';
+													}
+													else{
+														$holiday = 'N';
+													}
+
+													if ($dgu['foreign'] == '1') {
+														$foreign = 'Y';
+													}
+													else{
+														$foreign = 'N';
+													}
 											?>
 											<tr>
 												<td style="text-align: center"><?php echo $no++?></td>
 												<td><?php echo $dgu['group_name']?></td>
+												<td><?php echo $holiday ?></td>
+												<td><?php echo $foreign ?></td>
+												<td><?php echo $dgu['time_1'] ?></td>
+												<td><?php echo $dgu['time_2'] ?></td>
 												<td style="text-align: center">
 													<a class="btn btn-warning" href="<?php echo base_url('Outstation/group-ush/edit/'.$dgu['group_id'])?>"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_<?php echo $dgu['group_id']?>"><i class="fa fa-times"></i> Delete</button>
 													<div class="modal fade" id="delete_<?php echo $dgu['group_id']?>">
