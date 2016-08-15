@@ -59,7 +59,7 @@ class C_MenuGroup extends CI_Controller {
 		
 		$data['Title'] = 'List Menu Group';
 		$data['Menu'] = 'Menu';
-		$data['SubMenuOne'] = 'Menu Group';
+		$data['SubMenuOne'] = 'Group Menu';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -85,7 +85,7 @@ class C_MenuGroup extends CI_Controller {
 		
 		$data['Title'] = 'Create Menu Group';
 		$data['Menu'] = 'Menu';
-		$data['SubMenuOne'] = 'Menu Group';
+		$data['SubMenuOne'] = 'Group Menu';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -110,7 +110,7 @@ class C_MenuGroup extends CI_Controller {
 		else
 		{	
 				$data = array(
-					'menu_group_name' 	=> $this->input->post('txtMenuGroupName'),
+					'group_menu_name' 	=> $this->input->post('txtMenuGroupName'),
 					'creation_date'	=>  $this->input->post('hdnDate'),
 					'created_by'	=>  $this->input->post('hdnUser')
 				);
@@ -119,11 +119,16 @@ class C_MenuGroup extends CI_Controller {
 				$insert_id = $this->db->insert_id();
 				
 				$menu_id = $this->input->post('slcMenu');
+				$menu_sequence = $this->input->post('txtMenuSequence');
+				$menu_prompt = $this->input->post('txtMenuPrompt');
 				
 				foreach($menu_id as $i=>$loop){
 					$data_menu[$i] = array(
-						'menu_id' 		=> $menu_id[$i],
-						'menu_group_id' 	=> $insert_id,
+						'menu_id' 			=> $menu_id[$i],
+						'menu_sequence' 	=> $menu_sequence[$i],
+						'prompt' 			=> $menu_prompt[$i],
+						'menu_level' 		=> 1,
+						'group_menu_id' 	=> $insert_id,
 						'creation_date' 	=> $this->input->post('hdnDate'),
 						'created_by' 		=> $this->input->post('hdnUser')
 					);
@@ -138,12 +143,12 @@ class C_MenuGroup extends CI_Controller {
 		
 	}
 	
-	public function UpdateMenuGroup($id)
+	public function UpdateMenuGroup($id,$grup_list_id= "")
 	{	$user_id = $this->session->userid;
 		
 		$data['Title'] = 'Update Menu Group';
 		$data['Menu'] = 'Menu';
-		$data['SubMenuOne'] = 'Menu Group';
+		$data['SubMenuOne'] = 'Group Menu';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -151,14 +156,27 @@ class C_MenuGroup extends CI_Controller {
 		
 		$data['Responsibility'] = $this->M_responsibility->getResponsibility();
 		
-		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		
-		$data['MenuGroup'] = $this->M_menugroup->getMenuGroup($plaintext_string);
-		$data['MenuGroupList'] = $this->M_menugroup->getMenuGroupList($plaintext_string);
+		$plaintext_string2 = str_replace(array('-', '_', '~'), array('+', '/', '='), $grup_list_id);
+		$plaintext_string2 = $this->encrypt->decode($plaintext_string2);
 		
+		if($grup_list_id== ""){
+			$root_id = NULL;
+			
+			$data['MenuGroup'] = $this->M_menugroup->getMenuGroup($plaintext_string);
+			$data['MenuGroupList'] = $this->M_menugroup->getMenuGroupList($plaintext_string);
+		}else{
+			$root_id = $plaintext_string2;
+			
+			$data['MenuGroup'] = $this->M_menugroup->getMenuGroupList(FALSE,$plaintext_string2);
+			$data['MenuGroupList'] = $this->M_menugroup->getMenuGroupListSub($plaintext_string2);
+		}
 		$data['Menu'] = $this->M_menu->getMenu();
 		$data['id'] = $id;
+		$data['grup_list_id'] = $grup_list_id;
 		
 		$this->form_validation->set_rules('txtMenuGroupName', 'menugroup', 'required');
 		
@@ -178,17 +196,26 @@ class C_MenuGroup extends CI_Controller {
 			$menu_id = $this->input->post('slcMenu');
 			$menu_group_list_id = $this->input->post('hdnMenuGroupListId');
 			
+			$menu_id = $this->input->post('slcMenu');
+			$menu_sequence = $this->input->post('txtMenuSequence');
+			$menu_prompt = $this->input->post('txtMenuPrompt');
+			$menu_level = $this->input->post('txtMenuLevel');
+			
 			foreach($menu_id as $i=>$loop){
 				$data_menu[$i] = array(
-					'menu_id' 		=> $menu_id[$i],
-					'menu_group_id' 	=> $plaintext_string,
+					'menu_id' 			=> empty($menu_id[$i]) ? NULL : $menu_id[$i],
+					'menu_sequence' 	=> $menu_sequence[$i],
+					'prompt' 			=> empty($menu_prompt[$i]) ? NULL : $menu_prompt[$i],
+					'menu_level' 		=> $menu_level[$i],
+					'root_id' 			=> $root_id,
+					'group_menu_id' 	=> $plaintext_string,
 					'last_update_date' 	=> $this->input->post('hdnDate'),
 					'last_updated_by' 	=> $this->input->post('hdnUser'),
 					'creation_date' 	=> $this->input->post('hdnDate'),
 					'created_by' 		=> $this->input->post('hdnUser')
 				);
 				
-				if(count($menu_id) > 0){
+				if(count($menu_sequence) > 0){
 					if($menu_group_list_id[$i]==0){
 						unset($data_menu[$i]['last_update_date']);
 						unset($data_menu[$i]['last_updated_by']);
@@ -196,10 +223,7 @@ class C_MenuGroup extends CI_Controller {
 					}else{
 						unset($data_menu[$i]['creation_date']);
 						unset($data_menu[$i]['created_by']);
-						$MenuGroupList = $this->M_menugroup->getMenuGroupList($plaintext_string,$menu_group_list_id[$i]);
-						if($data_menu[$i]['menu_id']!=$MenuGroupList[0]['menu_id']){
-							$this->M_menugroup->updateMenuGroupList($data_menu[$i],$menu_group_list_id[$i]);
-						}
+						$this->M_menugroup->updateMenuGroupList($data_menu[$i],$menu_group_list_id[$i]);
 					}
 				}
 			}

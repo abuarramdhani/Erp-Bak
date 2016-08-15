@@ -116,7 +116,7 @@ class C_Responsibility extends CI_Controller {
 					'user_group_menu_name' 	=> $this->input->post('txtResponsibilityName'),
 					'module_id'		=> $this->input->post('slcModule'),
 					'group_menu_id'		=> $this->input->post('slcMenuGroup'),
-					'report_group_id'	=> $this->input->post('slcRepotGroup'),
+					'report_group_id'	=> intval($this->input->post('slcRepotGroup')),
 					'org_id'	=> $this->input->post('slcOrganization'),
 					'creation_date'	=>  $this->input->post('hdnDate'),
 					'created_by'	=>  $this->input->post('hdnUser')
@@ -174,7 +174,7 @@ class C_Responsibility extends CI_Controller {
 					'user_group_menu_name' 	=> $this->input->post('txtResponsibilityName'),
 					'module_id'		=> $this->input->post('slcModule'),
 					'group_menu_id'		=> $this->input->post('slcMenuGroup'),
-					'report_group_id'	=> $this->input->post('slcRepotGroup'),
+					'report_group_id'	=> intval($this->input->post('slcRepotGroup')),
 					'org_id'	=> $this->input->post('slcOrganization'),
 					'last_update_date'	=>  $this->input->post('hdnDate'),
 					'last_updated_by'	=>  $this->input->post('hdnUser')

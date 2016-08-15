@@ -351,6 +351,30 @@ function addRowResponsibility(base){
 	$("input#hdnUserApplicationId:last").val("0");
 }
 
+function addRowMenu(base){
+	var newgroup = $('<tr>').addClass('clone');
+	var e = jQuery.Event( "click" );
+	e.preventDefault();
+	$("select#slcMenu:last").select2("destroy");
+	
+	$('.clone').last().clone().appendTo(newgroup).appendTo('#tblMenuGroup');
+
+	$("select#slcMenu").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcMenu:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcMenu:last").val("").change();
+	$("input#txtMenuSequence:last").val("");
+	$("input#txtMenuPrompt:last").val("");
+	$("input#hdnMenuGroupListId:last").val("");
+}
+
 function addRowReport(base){
 	var newgroup = $('<tr>').addClass('clone');
 	var e = jQuery.Event( "click" );
@@ -371,6 +395,59 @@ function addRowReport(base){
 	
 	$("select#slcReport:last").val("").change();
 	$("input#hdnReportGroupListId:last").val("0");
+}
+
+function addRowItemDelivery(base){
+	var newgroup = $('<tr>').addClass('clone');
+	var e = jQuery.Event( "click" );
+	e.preventDefault();
+	$("select#slcDeliveryItem:last").select2("destroy");
+	
+	$('.clone').last().clone().appendTo(newgroup).appendTo('#tblItemDelivery');
+
+	$("select#slcDeliveryItem").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcDeliveryItem:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$(".jsDeliveryItem").select2({
+		allowClear : true,
+		placeholder: "item", 
+		minimumInputLength: 1,
+		ajax: {
+					url: base+"InventoryManagement/Search/DeliveryItem",
+					dataType: 'json',
+					type: "GET",
+					data: function (params) {
+
+						var queryParameters = {
+							term: params.term
+						}
+						return queryParameters;
+					},
+					processResults: function (data) {
+						return {
+							results: $.map(data, function(obj) {
+								
+								return { id:obj.INVENTORY_ITEM_ID, text:obj.SEGMENT1+" - "+ obj.DESCRIPTION};
+							})
+						};
+					}
+					
+			}
+		
+		});
+	
+	 var n = $('#tblItemDelivery tbody tr').length;
+	
+	$("select#slcDeliveryItem:last").val("").change();
+	$("input#txtNumber:last").val(n);
+	$("input#txtQuantity:last").val("");
 }
 
 function delRow(base){
@@ -665,6 +742,14 @@ function checkWarranty(base,i,owner_id){
 		});
 	}
 
+// function qtyProcessCheck(base,i,owner_id){
+		// var id = document.getElementById('hdnCustomerId').value;
+		// var item_id = owner_id;
+		// $.post(base+"ajax/CheckProductWarranty", {id:id,item_id:item_id}, function(data){
+			// $("input#txtWarranty").eq(i).val(data);
+		// });
+	// }
+
 function getUnit(url){
 			
 		var id = '';
@@ -828,6 +913,7 @@ $(document).ready(function() {
 		});*/
 	
 	var base = $('#txtBaseUrl').val();
+	var org_id = $('#txtOrgId').val();
 		
 	if($('#hdnCustomerId').val()){
 		var param2 = $('#tblServiceLines tbody tr').length-1;
@@ -890,6 +976,98 @@ $(document).ready(function() {
 			
 		}
 	}
+	
+	
+	$( "form select#slcIo" ).change(function() {
+		var io = $('select#slcIo option:selected').val();
+		$("select#slcSubInventory").val("").trigger('change');
+		$("select#slcToSubInventory").val("").trigger('change');
+		
+		if(io == ''){
+			$("select#slcSubInventory").prop("disabled", true);
+			$("select#slcToSubInventory").prop("disabled", true);
+		}else{
+			$("select#slcSubInventory").prop("disabled", false);
+			$("select#slcToSubInventory").prop("disabled", false);
+		}
+		
+	});
+	
+	$( "form#frmDeliveryRequest select#slcRequestType" ).change(function() {
+		var returnedValue;
+		var url = base+"InventoryManagement/ajax/GetLastRequestNumber";
+		
+		
+	   $.ajax({
+			type: "POST",
+			url: url,
+			data: {term : $('#slcRequestType').val()}, 
+			cache: false,
+
+			success: function(result) { //just add the result as argument in success anonymous function
+			   //$('#txtDescription').val(result) ;
+			   if(result == 'call_out'){
+					$('input#txtServiceNumber').prop('disabled', false);
+				}else{
+					//$('input#txtServiceNumber').prop('disabled', true);
+					$('input#txtServiceNumber').val(result);
+				}	
+				//alert(returnedvalue);
+			}
+		});
+		
+	});
+	
+	if(org_id != 82){
+		$("input#txtContractNumber").prop("readonly", true);
+		$("input#txtEmblem").prop("readonly", true);
+		$("textarea#txtAllocation").prop("readonly", true);
+	}
+	
+	if ($('form#frmDeliveryRequest  input#txtDeliveryStatus').length) {
+		var status = document.getElementById('txtDeliveryStatus').value;
+		if(status != 'REQUEST NEW'){
+			$("#frmDeliveryRequest :input").prop("disabled", true);
+			//BAGAIMANA DISABLE ADD ROW BUTTON AND CLOSE SEWAKTU NEW
+			if(status == 'REQUEST WAITING APPROVAL'){
+				$("input#txtDeliveryRequestNum").prop("disabled", false);
+				$("button#btnDeliveryRequestApprovalA").prop("disabled", false);
+				$("button#btnLRequestApprovalLine").prop("disabled", false);
+				
+			}else if(status == 'REQUEST APPROVED'){
+				$("button#btnLRequestApprovalLine").prop("disabled", false);
+				
+			}else{
+				$("button#btnDeliveryRequestApprovalA").prop("disabled", true);
+			}
+		}else{
+			$("button#btnDeliveryRequestApprovalA").prop("disabled", true);
+		}
+	}
+	if ($('form#frmDeliveryRequestComponent  input#txtDeliveryStatus').length) {
+		var status = document.getElementById('txtDeliveryStatus').value;
+		if(status != 'REQUEST NEW'){
+			$("#frmDeliveryRequestComponent :input").prop("disabled", true);
+			//BAGAIMANA DISABLE ADD ROW BUTTON AND CLOSE SEWAKTU NEW
+			// if(status == 'REQUEST WAITING APPROVAL'){
+				// $("button#btnComponent").prop("disabled", false);
+			// }else{
+				// $("button#btnDeliveryRequestApprovalA").prop("disabled", true);
+			// }
+		}
+	}
+	
+	$('#tblComponentDeliveryProcess').find('tr').keyup( function(){
+		var row = $(this).index();
+		var picked_qty = Number($('input#txtPickedQuantity').eq(row).val());
+		var processed_qty = Number($('input#txtProcessedQuantity').eq(row).val());
+		var to_process_qty = Number($('input#txtQtyToProcess').eq(row).val());
+		if((picked_qty-processed_qty)<to_process_qty){
+			alert("Don't insert number more than "+  (picked_qty-processed_qty));
+			$('input#txtQtyToProcess').eq(row).val("");
+		}
+	});
+
 	//pasangan dari function enadisDriverOwner
 	$.ajax({
             type: "POST",
@@ -928,9 +1106,9 @@ $(document).ready(function() {
 	});
 
 	$('.additional-activity').autocomplete({
-				source:base+'CustomerRelationship/Search/AdditionalActivity'
+		source:base+'CustomerRelationship/Search/AdditionalActivity'
 
-			});
+	});
 
 	if ($('#txtActivityStatus').length) {
 		var status = document.getElementById('txtActivityStatus').value;
@@ -991,6 +1169,7 @@ $(document).ready(function() {
 	}
 	
 	$('#dataTables-customer').DataTable();
+	$('.dataTables').DataTable();
 	$('#tblUser').DataTable();
 	
 	$(".jsLineStatus").select2({
@@ -1017,7 +1196,9 @@ $(document).ready(function() {
 			}
 
 		});
-	
+		
+		$(".jsTes").select2();
+		
 		$(".jsProblem").select2({
 		placeholder: "Problems",
 		minimumInputLength: 0,
@@ -1255,6 +1436,114 @@ $(document).ready(function() {
 			}
  
 		});
+		
+		$(".jsDeliveryItem").select2({
+		allowClear : true,
+		placeholder: "item", 
+		minimumInputLength: 1,
+		ajax: {
+					url: base+"InventoryManagement/Search/DeliveryItem",
+					dataType: 'json',
+					type: "GET",
+					data: function (params) {
+
+						var queryParameters = {
+							term: params.term
+						}
+						return queryParameters;
+					},
+					processResults: function (data) {
+						return {
+							results: $.map(data, function(obj) {
+								
+								return { id:obj.INVENTORY_ITEM_ID, text:obj.SEGMENT1+" - "+ obj.DESCRIPTION};
+							})
+						};
+					}
+					
+			}
+		
+		});
+		
+		$(".jsInvOrg").select2({
+		allowClear : true,
+		placeholder: "IO", 
+		minimumInputLength: 1,
+		ajax: {
+					url: base+"InventoryManagement/Search/InvOrg",
+					dataType: 'json',
+					type: "GET",
+					data: function (params) {
+
+						var queryParameters = {
+							term: params.term
+						}
+						return queryParameters;
+					},
+					processResults: function (data) {
+						return {
+							results: $.map(data, function(obj) {
+								return { id:obj.ORGANIZATION_ID, text:obj.ORGANIZATION_CODE };
+							})
+						};
+					}
+			}
+ 
+		});
+		
+		$(".jsSubInvOrg").select2({
+		allowClear : true,
+		placeholder: "SubInventory", 
+		minimumInputLength: 1,
+		ajax: {
+					url: base+"InventoryManagement/Search/SubIo",
+					dataType: 'json',
+					type: "GET",
+					data: function (params) {
+							var val = $('select#slcIo option:selected').val()||$('select#slcIoInterOrg option:selected').val()
+						var queryParameters = {
+							term: params.term,
+							term2: val
+						}
+						return queryParameters;
+					},
+					processResults: function (data) {
+						return {
+							results: $.map(data, function(obj) {
+								return { id:obj.SECONDARY_INVENTORY_NAME, text:obj.SECONDARY_INVENTORY_NAME };
+							})
+						};
+					}
+			}
+ 
+		});
+		
+		$(".jsOracleEmployee").select2({
+			allowClear : true,
+			placeholder: "By employee name or code",
+			minimumInputLength: 1,
+			ajax: {
+						url: base+"InventoryManagement/Search/OracleEmployee/",
+						dataType: 'json',
+						type: "GET",
+						data: function (params) {
+
+							var queryParameters = {
+								term: params.term
+							}
+							return queryParameters;
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function(obj) {
+									return { id:obj.PERSON_ID, text:obj.NATIONAL_IDENTIFIER +" ("+obj.FULL_NAME+")" };
+								})
+							};
+						}
+				}
+	 
+		});
+		
 });
 
 function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){

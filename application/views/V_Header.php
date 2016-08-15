@@ -42,7 +42,7 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/chosen/chosen.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/colorpicker/css/colorpicker.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/tagsinput/jquery.tagsinput.css');?>" />
-	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/daterangepicker-master/daterangepicker.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/daterangepicker/daterangepicker-bs3.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/datepicker/css/datepicker.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/timepicker/css/bootstrap-timepicker.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/switch/static/stylesheets/bootstrap-switch.css');?>" />
@@ -60,7 +60,17 @@
      <!-- MAIN WRAPPER -->
     <div class="wrapper">
 		<input type="hidden" value="<?php echo base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl"/>
+		<?php
+			if(empty($UserMenu[0]['org_id'])){
+				$org_id = $UserResponsibility[0]['org_id'];
+			}else{
+				$org_id = $UserMenu[0]['org_id'];
+			}
+		?>
+		
+		
 		<header class="main-header">
+		<input type="hidden" value="<?=$org_id ?>" name="txtOrgId" id="txtOrgId"/>
 			<!-- Logo -->
 			<a href="<?php echo site_url();?>" class="logo">
                     <!--<img src="<?php echo base_url('assets/img/header3.png');?>"   class="imgheader" alt="" />-->
@@ -117,7 +127,7 @@
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
-
+					
 					</div>
 				</div>
 			</div>
