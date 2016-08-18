@@ -680,9 +680,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-	$(function (){
-		setTimeout(function() {
-			$('#submit-filter-rekap').click();
-		}, 2000);
-	})
 });

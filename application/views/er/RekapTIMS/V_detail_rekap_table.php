@@ -4,10 +4,11 @@ $ex_period2 = explode(' ', $periode2);
 $tgl = explode('-', $ex_period2[0]);
 $bln_new = $tgl[1]-1;
 $periode2 = $tgl[0].'-'.$bln_new.'-'.$tgl[2].' '.$ex_period2[1];
+$datetime = new DateTime;
 $p = new DatePeriod(
 		new DateTime($periode1),
 		new DateInterval('P1M'),
-		(new DateTime($periode2))->modify('+1 month')
+		$datetime($periode2)->modify('+1 month')
 	);
 foreach ($rekap as $rekap_data) {}
 ?>

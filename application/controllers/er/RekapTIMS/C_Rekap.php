@@ -152,10 +152,11 @@ class C_Rekap extends CI_Controller {
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
 		else {
+			$datetime = new DateTime;
 			$p = new DatePeriod(
 					new DateTime($periode1),
 					new DateInterval('P1M'),
-					(new DateTime($periode2))->modify('+1 month')
+					$datetime($periode2)->modify('+1 month')
 				);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
@@ -196,10 +197,11 @@ class C_Rekap extends CI_Controller {
 			$bln_new = $ex_period2[1]-1;
 			$periode2 = $ex_period2[0].'-'.$bln_new.'-'.$ex_period2[2];
 
+			$datetime = new DateTime;
 			$p = new DatePeriod(
 					new DateTime($periode1),
 					new DateInterval('P1M'),
-					(new DateTime($periode2))->modify('+1 month')
+					$datetime($periode2)->modify('+1 month')
 				);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
@@ -702,10 +704,11 @@ class C_Rekap extends CI_Controller {
 		$periode2 = date('Y-m-t 23:59:59', strtotime($month));
 		$data['rekapPerMonth'] = $this->M_rekapmssql->dataRekapMonth($periode1,$periode2,$status,$seksi);
 
+		$datetime = new DateTime;
 		$p = new DatePeriod(
 				new DateTime($periode1),
 				new DateInterval('P1D'),
-				(new DateTime($periode2))->modify('+1 day')
+				$datetime($periode2)->modify('+1 day')
 			);
 		foreach ($p as $d) {
 			$perDay = $d->format('Y-m-d');
@@ -755,10 +758,11 @@ class C_Rekap extends CI_Controller {
 			$bln_new = $ex_period2[1]-1;
 			$periode2 = $ex_period2[0].'-'.$bln_new.'-'.$ex_period2[2];
 
+			$datetime = new DateTime;
 			$p = new DatePeriod(
 					new DateTime($periode1),
 					new DateInterval('P1D'),
-					(new DateTime($periode2))->modify('+1 day')
+					$datetime($periode2)->modify('+1 day')
 				);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
@@ -794,13 +798,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->setCellValue('A2', 'Status Hubungan Kerja');
 		$worksheet->setCellValue('A3', 'Seksi');
 
-		if ($detail == 1) {
-			$periodeDate = date('F Y', strtotime($periode1)).' - '.date('F Y', strtotime($periode2));
-		}
-		else{
-			$periodeDate = date('d-m-Y', strtotime($periode1)).' - '.date('d-m-Y', strtotime($periode2));
-		}
-		$worksheet->setCellValue('C1', $periodeDate, PHPExcel_Cell_DataType::TYPE_STRING);
+		$worksheet->setCellValue('C1', date('F Y', strtotime($periode1)), PHPExcel_Cell_DataType::TYPE_STRING);
 		
 		foreach ($rekap_all as $rekap_info) {}
 
@@ -833,8 +831,8 @@ class C_Rekap extends CI_Controller {
 				$head_merge = $col+5;
 				$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 				$worksheet->mergeCells($T.'6:'.$headCol.'6');
-				$monthName = $d->format('M/Y');
-				$worksheet->setCellValue($T.'6', $monthName);
+				$dateName = $d->format('d-m-Y');
+				$worksheet->setCellValue($T.'6', $dateName);
 				$worksheet->setCellValue($T.'7', 'T');
 				$worksheet->setCellValue($I.'7', 'I');
 				$worksheet->setCellValue($M.'7', 'M');
@@ -878,16 +876,16 @@ class C_Rekap extends CI_Controller {
 			$col = 3;
 			if ($detail == 1) {
 				foreach ($p as $d) {
-					$monthName = $d->format('M_y');
-					foreach (${'rekap_'.$monthName} as ${'rek'.$monthName}) {
-						if ($rekap_data['noind'] == ${'rek'.$monthName}['noind'] && $rekap_data['nama'] == ${'rek'.$monthName}['nama'] && $rekap_data['nik'] == ${'rek'.$monthName}['nik'] && $rekap_data['tgllahir'] == ${'rek'.$monthName}['tgllahir'])
+					$dateName = $d->format('d_M_y');
+					foreach (${'rekap_'.$dateName} as ${'rek'.$dateName}) {
+						if ($rekap_data['noind'] == ${'rek'.$dateName}['noind'] && $rekap_data['nama'] == ${'rek'.$dateName}['nama'] && $rekap_data['nik'] == ${'rek'.$dateName}['nik'] && $rekap_data['tgllahir'] == ${'rek'.$dateName}['tgllahir'])
 						{
-							$Terlambat = ${'rek'.$monthName}['FrekT'.$monthName]+${'rek'.$monthName}['FrekTs'.$monthName];
-							$IjinPribadi = ${'rek'.$monthName}['FrekI'.$monthName]+${'rek'.$monthName}['FrekIs'.$monthName];
-							$Mangkir = ${'rek'.$monthName}['FrekM'.$monthName]+${'rek'.$monthName}['FrekMs'.$monthName];
-							$SuratKeterangan = ${'rek'.$monthName}['FrekSK'.$monthName]+${'rek'.$monthName}['FrekSKs'.$monthName];
-							$IjinPerusahaan = ${'rek'.$monthName}['FrekIP'.$monthName]+${'rek'.$monthName}['FrekIPs'.$monthName];
-							$SuratPeringatan = ${'rek'.$monthName}['FrekSP'.$monthName]+${'rek'.$monthName}['FrekSPs'.$monthName];
+							$Terlambat = ${'rek'.$dateName}['FrekT'.$dateName]+${'rek'.$dateName}['FrekTs'.$dateName];
+							$IjinPribadi = ${'rek'.$dateName}['FrekI'.$dateName]+${'rek'.$dateName}['FrekIs'.$dateName];
+							$Mangkir = ${'rek'.$dateName}['FrekM'.$dateName]+${'rek'.$dateName}['FrekMs'.$dateName];
+							$SuratKeterangan = ${'rek'.$dateName}['FrekSK'.$dateName]+${'rek'.$dateName}['FrekSKs'.$dateName];
+							$IjinPerusahaan = ${'rek'.$dateName}['FrekIP'.$dateName]+${'rek'.$dateName}['FrekIPs'.$dateName];
+							$SuratPeringatan = ${'rek'.$dateName}['FrekSP'.$dateName]+${'rek'.$dateName}['FrekSPs'.$dateName];
 							if ($Terlambat == '0') {
 								$Terlambat = '-';
 							}
