@@ -83,7 +83,6 @@ class C_Index extends CI_Controller {
 				// }
 				$this->session->set_userdata('responsibility_id', $UserResponsibility_item['user_group_menu_id']);
 				$this->session->set_userdata('module_link', $UserResponsibility_item['module_link']);
-				$this->session->set_userdata('org_id', $UserResponsibility_item['org_id']);
 			}
 			//$this->session->set_userdata('responsbility', 'a');
 			//print_r($UserResponsibility);

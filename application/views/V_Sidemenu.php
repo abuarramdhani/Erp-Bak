@@ -51,7 +51,7 @@
 							}else{
 								$link= site_url($UserMenu_item['menu_link']);
 							}
-							if($UserMenu_item['menu']==$Menu){
+							if($UserMenu_item['menu_title']==$Menu){
 								$menu_class = "treeview active";
 							}else{
 								$menu_class = "treeview";
@@ -83,7 +83,7 @@
 												}else{
 													$link_sub1 = site_url($UserSubMenuOne_item['menu_link']);
 												}
-												if($UserSubMenuOne_item['menu']==$SubMenuOne){
+												if($UserSubMenuOne_item['menu_title']==$SubMenuOne){
 													$sub_menu_class_one = "active";
 												}else{
 													$sub_menu_class_one = "";
@@ -113,7 +113,7 @@
 														}else{
 															$link_sub2 = site_url($UserSubMenuTwo_item['menu_link']);
 														}
-														if($UserSubMenuTwo_item['menu']==$SubMenuTwo){
+														if($UserSubMenuTwo_item['menu_title']==$SubMenuTwo){
 															$sub_menu_class_two = "active";
 														}else{
 															$sub_menu_class_two = "";
@@ -154,3 +154,4 @@
 	</section>
 	<!-- /.sidebar -->
 </aside>
+<div id="data_content">

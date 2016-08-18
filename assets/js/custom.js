@@ -565,57 +565,25 @@
 
 	//DATA TABLE
 	$(document).ready(function(){
-		$('#monthRekap').DataTable({
+		$('.data-tims-personal').DataTable({
+			"dom": '<"pull-left"f>t<"pull-right"p>',
 			"ordering"	: false,
         	"info"		: false,
         	"searching"	: false,
         	"lengthChange": false,
-		});
-	});
-	$(document).ready(function(){
-		$('#personalT').DataTable({
-			"ordering"	: false,
-        	"info"		: false,
-        	"searching"	: false,
-        	"lengthChange": false,
-		});
-	});
-	$(document).ready(function(){
-		$('#personalI').DataTable({
-			"ordering"	: false,
-        	"info"		: false,
-        	"searching"	: false,
-        	"lengthChange": false,
-		});
-	});
-	$(document).ready(function(){
-		$('#personalM').DataTable({
-			"ordering"	: false,
-        	"info"		: false,
-        	"searching"	: false,
-        	"lengthChange": false,
-		});
-	});
-	$(document).ready(function(){
-		$('#personalIP').DataTable({
-			"ordering"	: false,
-        	"info"		: false,
-        	"searching"	: false,
-        	"lengthChange": false,
-		});
-	});
-	$(document).ready(function(){
-		$('#personalSP').DataTable({
-			"ordering"	: false,
-        	"info"		: false,
-        	"searching"	: false,
-        	"lengthChange": false,
+        	"pageLength": 5
 		});
 	});
 	//-------------------------- Ambil Data Seksi.Rekap TIMS -----------------------------
 	//AJAX JAVASCRIPT
 	$(document).ready(function() {
 		$('#departemen_select').change(function(){
+			$('#bidang_select').select2("val", "");
+			$('#unit_select').select2("val", "");
+			$('#section_select').select2("val", "");
+			$('#bidang_select').select2("data", null);
+			$('#unit_select').select2("data", null);
+			$('#section_select').select2("data", null);
 			var value = $('#departemen_select').val();
 			$.ajax({
 				type:'POST',
@@ -628,6 +596,10 @@
 			});
 		});
 		$('#bidang_select').change(function(){
+			$('#unit_select').select2("val", "");
+			$('#section_select').select2("val", "");
+			$('#unit_select').select2("data", null);
+			$('#section_select').select2("data", null);
 			var value = $('#bidang_select').val();
 			$.ajax({
 				type:'POST',
@@ -640,6 +612,8 @@
 			});
 		});
 		$('#unit_select').change(function(){
+			$('#section_select').select2("val", "");
+			$('#section_select').select2("data", null);
 			var value = $('#unit_select').val();
 			$.ajax({
 				type:'POST',
@@ -654,3 +628,61 @@
 	});
 
 	//---------------------------------REKAP TIMS.end-------------------------------
+$(document).ready(function(){
+	$('#rekap-tims').DataTable({
+			responsive: true,
+			"scrollX": true,
+			scrollCollapse: true,
+			"lengthChange": false,
+			"dom": '<"pull-left"f>tp',
+			"info": false,
+			language: {
+				search: "_INPUT_",
+			},
+		});
+		$('.dataTables_filter input[type="search"]').css(
+			{'width':'400px','display':'inline-block'}
+		);
+		$('#rekap-tims_filter input').attr("placeholder", "Search...")
+	function rekap_datatable() {
+		$('#rekap-tims').DataTable({
+			responsive: true,
+			"scrollX": true,
+			scrollCollapse: true,
+			"lengthChange": false,
+			"dom": '<"pull-left"f>tp',
+			"info": false,
+			language: {
+				search: "_INPUT_",
+			},
+		});
+		$('.dataTables_filter input[type="search"]').css(
+			{'width':'400px','display':'inline-block'}
+		);
+		$('#rekap-tims_filter input').attr("placeholder", "Search...")
+	}
+	$('#submit-filter-rekap').click(function(){
+		$('.alert').alert('close');
+		$('#loadingAjax').html('<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">Processing</span></div></div>');
+		$.ajax({
+			type:'POST',
+			data:$("#filter-rekap").serialize(),
+			url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/show-data",
+			success:function(result)
+			{
+				$('#table-div').html(result);
+				$('#loadingAjax').html('');
+				rekap_datatable();
+			},
+			error: function() {
+				$('#loadingAjax').html('');
+				document.getElementById("errordiv").innerHTML = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
+			}
+		});
+	});
+	$(function (){
+		setTimeout(function() {
+			$('#submit-filter-rekap').click();
+		}, 2000);
+	})
+});

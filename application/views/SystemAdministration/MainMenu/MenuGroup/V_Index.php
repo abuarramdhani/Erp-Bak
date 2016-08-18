@@ -36,7 +36,7 @@
 							<div class="box-body">
 								<div class="table-responsive">
 									
-									<table class="table table-striped table-bordered table-hover text-left dataTables" id="tblMenuGroup" style="font-size:12px;">
+									<table class="table table-striped table-bordered table-hover text-left" id="tblMenuGroup" style="font-size:12px;">
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>

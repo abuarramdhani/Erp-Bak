@@ -70,7 +70,7 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Report Group</label>
 											<div class="col-lg-4">
-												<select class="form-control select4" name="slcRepotGroup" id="slcRepotGroup" >
+												<select class="form-control select4" name="slcRepotGroup" id="slcRepotGroup" required>
 													<option value=""></option>
 													<?php foreach($ReportGroup as $ReportGroup_item){
 													?>

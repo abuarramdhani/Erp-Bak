@@ -86,7 +86,7 @@ class M_user extends CI_Model {
 			}
 			
 			$sql = "SELECT su.user_id,sugm.user_group_menu_id, sugm.user_group_menu_name, 
-					smod.module_name,smod.module_link,sua.active,sua.user_application_id,sugm.org_id
+					smod.module_name,smod.module_link,sua.active,sua.user_application_id
 					FROM sys.sys_user su,
 					sys.sys_user_application sua,
 					sys.sys_user_group_menu sugm,
@@ -115,7 +115,7 @@ class M_user extends CI_Model {
 			}
 			
 			$sql = "SELECT su.user_id, sugm.user_group_menu_name, sugm.user_group_menu_id,
-					sr.report_id,sr.report_name,sr.report_link,sugm.org_id
+					sr.report_id,sr.report_name,sr.report_link
 					FROM sys.sys_user su,
 					sys.sys_user_application sua,
 					sys.sys_user_group_menu sugm,
@@ -147,7 +147,7 @@ class M_user extends CI_Model {
 			}
 				
 				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,smgl.group_menu_list_id,
-						sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,COALESCE(sm.menu_title,smgl.prompt) menu,sm.menu_link,sugm.org_id
+						sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,sm.menu_link
 						FROM sys.sys_user su,
 						sys.sys_user_application sua,
 						sys.sys_user_group_menu sugm,
@@ -177,8 +177,8 @@ class M_user extends CI_Model {
 				$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 			}	
 				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.group_menu_list_id,
-						smgl.menu_sequence,	sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,COALESCE(sm.menu_title,smgl.prompt) menu,
-						sm.menu_link,sugm.org_id
+						smgl.menu_sequence,	sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,
+						sm.menu_link
 						FROM sys.sys_user su,
 						sys.sys_user_application sua,
 						sys.sys_user_group_menu sugm,
@@ -208,7 +208,7 @@ class M_user extends CI_Model {
 				$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 			}
 				$sql = "SELECT su.user_id, sugm.user_group_menu_name,sugm.user_group_menu_id,smgl.menu_sequence,smgl.group_menu_list_id,
-						sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,COALESCE(sm.menu_title,smgl.prompt) menu,sm.menu_link,sugm.org_id
+						sm.menu_id,smgl.root_id,COALESCE(smgl.prompt,sm.menu_title) menu_title,sm.menu_link
 						FROM sys.sys_user su,
 						sys.sys_user_application sua,
 						sys.sys_user_group_menu sugm,

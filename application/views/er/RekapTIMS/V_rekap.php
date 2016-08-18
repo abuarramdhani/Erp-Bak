@@ -31,21 +31,21 @@
 							<tr>
 								<td style="text-align:center;"><?php echo $no++; ?></td>
 								<td style="text-align:center;">
-									<a href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['NIK']; ?>">
-										<?php echo $rekap_data['noINd']; ?>
+									<a href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+										<?php echo $rekap_data['noind']; ?>
 									</a>
 								</td>
 								<td>
-									<a href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['NIK']; ?>">
+									<a href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
 										<?php echo $rekap_data['nama']; ?>
 									</a>
 								</td>
-								<td style="text-align:center;"><?php echo $rekap_data['FrekT']; ?></td>
-								<td style="text-align:center;"><?php echo $rekap_data['FrekTs']; ?></td>
-								<td style="text-align:center;"><?php echo $rekap_data['FrekIs']; ?></td>
-								<td style="text-align:center;"><?php echo $rekap_data['FrekMs']; ?></td>
-								<td style="text-align:center;"><?php echo $rekap_data['FrekSK']; ?></td>
-								<td style="text-align:center;"><?php echo $rekap_data['FrekSKs']; ?></td>
+								<td style="text-align:center;"><?php echo $rekap_data['FrekT']+$rekap_data['FrekTs']; ?></td>
+								<td style="text-align:center;"><?php echo $rekap_data['FrekI']+$rekap_data['FrekIs']; ?></td>
+								<td style="text-align:center;"><?php echo $rekap_data['FrekM']+$rekap_data['FrekMs']; ?></td>
+								<td style="text-align:center;"><?php echo $rekap_data['FrekSK']+$rekap_data['FrekSKs']; ?></td>
+								<td style="text-align:center;"><?php echo "null"; ?></td>
+								<td style="text-align:center;"><?php echo "null"; ?></td>
 							</tr>
 						<?php } ?>
 					</tbody>
