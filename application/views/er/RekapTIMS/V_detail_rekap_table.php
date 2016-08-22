@@ -4,12 +4,16 @@ $ex_period2 = explode(' ', $periode2);
 $tgl = explode('-', $ex_period2[0]);
 $bln_new = $tgl[1]-1;
 $periode2 = $tgl[0].'-'.$bln_new.'-'.$tgl[2].' '.$ex_period2[1];
-$datetime = new DateTime;
-$p = new DatePeriod(
-		new DateTime($periode1),
-		new DateInterval('P1M'),
-		$datetime($periode2)->modify('+1 month')
-	);
+$begin = new DateTime($periode1);
+$end = new DateTime($periode2);
+$end = $end->modify('+1 month');
+$interval = new DateInterval('P1M');
+
+$p = new DatePeriod($begin, $interval ,$end);
+if (empty($rekap)) {
+	$rekap_data['kode_status_kerja'] = '';
+	$rekap_data['seksi'] = '';
+}
 foreach ($rekap as $rekap_data) {}
 ?>
 <!--<section class="content-header">
@@ -23,7 +27,7 @@ foreach ($rekap as $rekap_data) {}
 			<div class="box box-primary">
 				
 						<div class="box-body with-border">-->
-							<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kd_jabatan'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/1">
+							<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/1">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 							</a>
 							<table class="table table-bordered table-hover table-striped" id="rekap-tims" width="100%">
@@ -51,7 +55,7 @@ foreach ($rekap as $rekap_data) {}
 										?>
 										<th colspan="6" style="text-align: center">
 											<div style="width: 200px">
-												<a target="_blank" style="color:#fff;" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan/'.$monthNum.'/'.$rekap_data['kd_jabatan'].'/'.str_replace(' ', '-', $rekap_data['seksi'])) ?>">
+												<a target="_blank" style="color:#fff;" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan/'.$monthNum.'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-', $rekap_data['seksi'])) ?>">
 													<?php echo $monthName ?>
 												</a>
 											</div>
@@ -143,7 +147,7 @@ foreach ($rekap as $rekap_data) {}
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 100px">
-														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-01',strtotime($ex_period1[0])).'/'.date('Y-m-t', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
 															<?php echo $rekap_data['noind']?>
 														</a>
 													</div>
@@ -151,7 +155,7 @@ foreach ($rekap as $rekap_data) {}
 												</td>
 												<td>
 													<div style="width: 300px">
-														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-01',strtotime($ex_period1[0])).'/'.date('Y-m-t', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
 															<?php echo $rekap_data['nama']?>
 														</a>
 													</div>
@@ -161,7 +165,7 @@ foreach ($rekap as $rekap_data) {}
 													foreach ($p as $d) {
 														$monthName = $d->format('M_y');
 														foreach (${'rekap_'.$monthName} as ${'rek'.$monthName}) {
-															if ($rekap_data['noind'] == ${'rek'.$monthName}['noind'] && $rekap_data['nama'] == ${'rek'.$monthName}['nama'] && $rekap_data['nik'] == ${'rek'.$monthName}['nik'] && $rekap_data['tgllahir'] == ${'rek'.$monthName}['tgllahir'])
+															if ($rekap_data['noind'] == ${'rek'.$monthName}['noind'])
 															{
 																$Terlambat = ${'rek'.$monthName}['FrekT'.$monthName]+${'rek'.$monthName}['FrekTs'.$monthName];
 																$IjinPribadi = ${'rek'.$monthName}['FrekI'.$monthName]+${'rek'.$monthName}['FrekIs'.$monthName];
@@ -189,7 +193,7 @@ foreach ($rekap as $rekap_data) {}
 																}
 
 															}
-														}		
+														}
 												?>
 															<td style="text-align:center;">
 																<div style="width: 20px">

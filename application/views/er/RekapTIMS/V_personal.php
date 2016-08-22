@@ -2,7 +2,7 @@
 
 } ?>
 <section class="content-header">
-	<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-employee/'.$info_item['nik'])?>">
+	<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-employee/'.$periode1.'/'.$periode2.'/'.$info_item['nik'])?>">
 		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 	</a>
 	<h1>
@@ -57,6 +57,14 @@
 						?>
 					</td>
 				</tr>
+				<tr>
+					<td width="10%"><b>PERIODE</b></td>
+					<td>: 
+						<?php
+							echo $periode1.' s/d '.$periode2;
+						?>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
@@ -88,40 +96,6 @@
 											<td style="text-align:center;"><?php echo date('Y-m-d',strtotime($T['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $T['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $T['keluar']; ?></td>
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="box box-danger">
-							<div class="box-header with-border">
-								<h3 class="box-title">Surat Peringatan</h3>
-								<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-								</div>
-							</div>
-							<div class="box-body" style="display: block;">
-								<table class="table table-striped table-bordered table-responsive table-hover data-tims-personal">
-									<thead class="bg-primary">
-										<tr>
-											<td style="text-align:center;">NO</td>
-											<td style="text-align:center;">Tanggal</td>
-											<td style="text-align:center;">Masuk</td>
-											<td style="text-align:center;">Keluar</td>
-										</tr>
-									</thead>
-									<tbody>
-										<?php $no=1; foreach ($SuratPeringatan as $SP) { ?>
-										<tr>
-											<td style="text-align:center;"><?php echo $no++; ?></td>
-											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($SP['tanggal'])); ?></td>
-											<td style="text-align:center;"><?php echo $SP['masuk']; ?></td>
-											<td style="text-align:center;"><?php echo $SP['keluar']; ?></td>
 										</tr>
 										<?php } ?>
 									</tbody>
@@ -236,5 +210,76 @@
 				</div>	
 			</div>
 		</div>
+		<div class="row">
+					<div class="col-md-12">
+						<div class="box box-danger">
+							<div class="box-header with-border">
+								<h3 class="box-title">Surat Peringatan</h3>
+								<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+								</div>
+							</div>
+							<div class="box-body" style="display: block;">
+								<table class="table table-striped table-bordered table-responsive table-hover data-tims-personal">
+									<thead class="bg-primary">
+										<tr>
+											<td width="5%" style="text-align:center;">No</td>
+											<td width="15%" style="text-align:center;">No SP</td>
+											<td width="15%" style="text-align:center;">Bulan</td>
+											<td width="5%" style="text-align:center;">T</td>
+											<td width="5%" style="text-align:center;">I</td>
+											<td width="5%" style="text-align:center;">M</td>
+											<td width="25%" style="text-align:center;">Bobot</td>
+											<td width="10%" style="text-align:center;">SP ke</td>
+											<td width="15%" style="text-align:center;">Absensi/Non Absensi</td>
+										</tr>
+									</thead>
+									<tbody>
+										<?php 
+											$no = 1;
+											foreach ($SuratPeringatan as $SP) {
+												if ($SP['nT'] == NULL) {
+													$T = '-';
+												}
+												else{
+													$T = $SP['nT'];
+												}
+												if ($SP['nIK'] == NULL) {
+													$IK = '-';
+												}
+												else{
+													$IK = $SP['nIK'];
+												}
+												if ($SP['nM'] == NULL) {
+													$M = '-';
+												}
+												else{
+													$M = $SP['nM'];
+												}
+												if ($SP['bobot'] == NULL) {
+													$Bobot = '-';
+												}
+												else{
+													$Bobot = $SP['bobot'];
+												}
+										?>
+										<tr>
+											<td style="text-align:center;"><?php echo $no++ ?></td>
+											<td style="text-align:center;"><?php echo $SP['no_surat']?></td>
+											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($SP['tgl_cetak'])); ?></td>
+											<td style="text-align:center;"><?php echo $T; ?></td>
+											<td style="text-align:center;"><?php echo $IK; ?></td>
+											<td style="text-align:center;"><?php echo $M; ?></td>
+											<td><?php echo $Bobot; ?></td>
+											<td style="text-align:center;"><?php echo $SP['sp_ke']; ?></td>
+											<td style="text-align:center;"><?php echo $SP['Status']; ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
 	</div>
 </section>

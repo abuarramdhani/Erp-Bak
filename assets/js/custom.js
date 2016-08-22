@@ -546,7 +546,7 @@
 			"singleDatePicker": true,
 			"timePicker": true,
 			"timePicker24Hour": true,
-			"showDropdowns": false,
+			"showDropdowns": true,
 			locale: {
 					format: 'YYYY-MM-DD HH:mm:ss'
 				},
@@ -556,7 +556,7 @@
 			"singleDatePicker": true,
 			"timePicker": true,
 			"timePicker24Hour": true,
-			"showDropdowns": false,
+			"showDropdowns": true,
 			locale: {
 					format: 'YYYY-MM-DD HH:mm:ss'
 				},
@@ -567,7 +567,6 @@
 	$(document).ready(function(){
 		$('.data-tims-personal').DataTable({
 			"dom": '<"pull-left"f>t<"pull-right"p>',
-			"ordering"	: false,
         	"info"		: false,
         	"searching"	: false,
         	"lengthChange": false,
@@ -676,7 +675,7 @@ $(document).ready(function(){
 			},
 			error: function() {
 				$('#loadingAjax').html('');
-				document.getElementById("errordiv").innerHTML = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
+				document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
 			}
 		});
 	});

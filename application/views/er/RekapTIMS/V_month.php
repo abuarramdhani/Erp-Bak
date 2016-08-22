@@ -1,20 +1,22 @@
 <?php
-$ex_period = explode(' ', $periode2);
-$tgl = explode('-', $ex_period[0]);
+$ex_period1 = explode(' ', $periode1);
+$ex_period2 = explode(' ', $periode2);
+$tgl = explode('-', $ex_period2[0]);
 $tgl_new = $tgl[2]-1;
-$periode2 = $tgl[0].'-'.$tgl[1].'-'.$tgl_new.' '.$ex_period[1];
-$datetime = new DateTime;
-$p = new DatePeriod(
-		new DateTime($periode1),
-		new DateInterval('P1D'),
-		$datetime($periode2)->modify('+1 day')
-	);
+$periode2_new = $tgl[0].'-'.$tgl[1].'-'.$tgl_new.' '.$ex_period2[1];
+$begin = new DateTime($periode1);
+$end = new DateTime($periode2_new);
+$end = $end->modify('+1 day');
+
+$interval = new DateInterval('P1D');
+
+$p = new DatePeriod($begin, $interval ,$end);
 
 foreach ($rekapPerMonth as $rekap_data) {}
 
 ?>
 <section class="content-header">
-	<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan/'.$tgl[0].'-'.$tgl[1].'/'.$rekap_data['kd_jabatan'].'/'.str_replace(' ', '-',$rekap_data['seksi']))?>">
+	<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan/'.$tgl[0].'-'.$tgl[1].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-',$rekap_data['seksi']))?>">
 		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 	</a>
 	<h1>
@@ -28,7 +30,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 				<table class="table no-border">
 					<tr>
 						<td width="20%">Periode</td>
-						<td>: <?php echo $periodeMonth ?></td>
+						<td>: <?php echo date('F Y', strtotime($ex_period1[0])) ?></td>
 					</tr>
 					<tr>
 						<td width="20%">Status Hubungan Kerja</td>
@@ -159,7 +161,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 100px">
-									<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+									<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['nik']; ?>">
 										<?php echo $rekap_data['noind']?>
 									</a>
 								</div>
@@ -167,7 +169,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							</td>
 							<td>
 								<div style="width: 300px">
-									<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+									<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['nik']; ?>">
 										<?php echo $rekap_data['nama']?>
 									</a>
 								</div>

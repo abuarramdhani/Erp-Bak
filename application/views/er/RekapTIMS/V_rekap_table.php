@@ -1,6 +1,10 @@
 <?php
 $ex_period1 = explode(' ', $periode1);
 $ex_period2 = explode(' ', $periode2);
+if (empty($rekap)) {
+	$rekap_data['kode_status_kerja'] = '';
+	$rekap_data['seksi'] = '';
+}
 foreach ($rekap as $rekap_data) {}
 ?>
 <!--<section class="content-header">
@@ -13,7 +17,7 @@ foreach ($rekap as $rekap_data) {}
 		<div class="col-lg-12">	
 			<div class="box box-primary">
 						<div class="box-body with-border">-->
-							<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kd_jabatan'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/0">
+							<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/0">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 							</a>
 							<table id="rekap-tims" class="table table-bordered table-hover table-striped">
@@ -38,12 +42,12 @@ foreach ($rekap as $rekap_data) {}
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
 											<td style="text-align:center;">
-												<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+												<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['nik']; ?>">
 													<?php echo $rekap_data['noind']; ?>
 												</a>
 											</td>
 											<td>
-												<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $rekap_data['nik']; ?>">
+												<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['nik']; ?>">
 													<?php echo $rekap_data['nama']; ?>
 												</a>
 											</td>

@@ -133,8 +133,7 @@ class C_Rekap extends CI_Controller {
 		$data['section'] = $section;
 		$detail 	= $this->input->post('detail');
 
-		$this->session->set_userdata('periode1Filter', $periode1);
-		$this->session->set_userdata('periode2Filter', $periode2);
+		
 		$this->session->set_userdata('statusFilter', $status);
 		$this->session->set_userdata('departemenFilter', $departemen);
 		$this->session->set_userdata('bidangFilter', $bidang);
@@ -148,16 +147,20 @@ class C_Rekap extends CI_Controller {
 		$data['periode1']	= $this->input->post('rekapBegin');
 		$data['periode2']	= $this->input->post('rekapEnd');
 		if ($detail==NULL) {
+			$this->session->set_userdata('periode1Filter', $periode1);
+			$this->session->set_userdata('periode2Filter', $periode2);
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
 		else {
-			$datetime = new DateTime;
-			$p = new DatePeriod(
-					new DateTime($periode1),
-					new DateInterval('P1M'),
-					$datetime($periode2)->modify('+1 month')
-				);
+			$this->session->set_userdata('periode1Filter', date('Y-m-01 00:00:00', strtotime($periode1)));
+			$this->session->set_userdata('periode2Filter', date('Y-m-t 00:00:00', strtotime($periode2)));
+			$begin = new DateTime($periode1);
+			$end = new DateTime($periode2);
+			$end = $end->modify('+1 month');
+			$interval = new DateInterval('P1M');
+
+			$p = new DatePeriod($begin, $interval ,$end);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
@@ -170,6 +173,7 @@ class C_Rekap extends CI_Controller {
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);
 		}
+		$this->config->set_item('sess_expiration',60);
 		//$this->load->view('V_Footer',$data);
 	}
 
@@ -193,16 +197,28 @@ class C_Rekap extends CI_Controller {
 
 		$section = str_replace('-', ' ', $section);
 		if ($detail == 1) {
+			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+		}
+		else{
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
+		}
+		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$section);
+
+		if ($detail == 1) {
 			$ex_period2 = explode('-', $periode2);
 			$bln_new = $ex_period2[1]-1;
 			$periode2 = $ex_period2[0].'-'.$bln_new.'-'.$ex_period2[2];
 
-			$datetime = new DateTime;
-			$p = new DatePeriod(
-					new DateTime($periode1),
-					new DateInterval('P1M'),
-					$datetime($periode2)->modify('+1 month')
-				);
+			$begin = new DateTime($periode1);
+			$end = new DateTime($periode2);
+			$end = $end->modify('+1 month');
+
+			$interval = new DateInterval('P1M');
+
+			$p = new DatePeriod($begin, $interval ,$end);
+
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
@@ -212,16 +228,6 @@ class C_Rekap extends CI_Controller {
 			}
 		}
 
-		if ($detail == 1) {
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
-		}
-		else{
-			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
-		}
-
-		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$section);
 
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
@@ -253,7 +259,7 @@ class C_Rekap extends CI_Controller {
 		
 		foreach ($rekap_all as $rekap_info) {}
 
-		$worksheet->setCellValue('C2', $rekap_info['nama_jabatan']);
+		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
 		$worksheet->setCellValue('C3', $rekap_info['seksi']);
 
 		$worksheet->mergeCells('A6:A7');
@@ -436,7 +442,7 @@ class C_Rekap extends CI_Controller {
 		$objWriter->save("php://output");
 	}
 
-	public function searchEmployee($nik)
+	public function searchEmployee($periode1,$periode2,$nik)
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -448,12 +454,15 @@ class C_Rekap extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['periode1'] = date('Y-m-d', strtotime($periode1));
+		$data['periode2'] = date('Y-m-d', strtotime($periode2));
+
 		$data['info'] = $this->M_rekapmssql->rekapPersonInfo($nik);
-		$data['Terlambat'] = $this->M_rekapmssql->rekapPersonTIM($nik,$keterangan = 'TT');
-		$data['IjinPribadi'] = $this->M_rekapmssql->rekapPersonTIM($nik,$keterangan = 'TIK');
-		$data['Mangkir'] = $this->M_rekapmssql->rekapPersonTIM($nik,$keterangan = 'TM');
-		$data['IjinPerusahaan'] = $this->M_rekapmssql->rekapPersonSIPSP($nik,$keterangan = 'PIP');
-		$data['SuratPeringatan'] = $this->M_rekapmssql->rekapPersonSIPSP($nik,$keterangan = 'PSP');
+		$data['Terlambat'] = $this->M_rekapmssql->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TT');
+		$data['IjinPribadi'] = $this->M_rekapmssql->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TIK');
+		$data['Mangkir'] = $this->M_rekapmssql->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TM');
+		$data['IjinPerusahaan'] = $this->M_rekapmssql->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'PIP');
+		$data['SuratPeringatan'] = $this->M_rekapmssql->rekapPersonSP($data['periode1'],$data['periode2'],$nik);
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -461,17 +470,17 @@ class C_Rekap extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportEmployee($nik){
+	public function ExportEmployee($periode1,$periode2,$nik){
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
 
-		$info = $this->M_rekapmssql->rekapPersonInfo($nik);
-		$Terlambat = $this->M_rekapmssql->rekapPersonTIM($nik,$keterangan = 'TT');
-		$IjinPribadi = $this->M_rekapmssql->rekapPersonTIM($nik,$keterangan = 'TIK');
-		$Mangkir = $this->M_rekapmssql->rekapPersonTIM($nik,$keterangan = 'TM');
-		$IjinPerusahaan = $this->M_rekapmssql->rekapPersonSIPSP($nik,$keterangan = 'PIP');
-		$SuratPeringatan = $this->M_rekapmssql->rekapPersonSIPSP($nik,$keterangan = 'PSP');
+		$info = $this->M_rekapmssql->rekapPersonInfo($periode1,$periode2,$nik);
+		$Terlambat = $this->M_rekapmssql->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TT');
+		$IjinPribadi = $this->M_rekapmssql->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TIK');
+		$Mangkir = $this->M_rekapmssql->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TM');
+		$IjinPerusahaan = $this->M_rekapmssql->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'PIP');
+		$SuratPeringatan = $this->M_rekapmssql->rekapPersonSP($periode1,$periode2,$nik);
 		$objPHPExcel->setActiveSheetIndex(0);
 
 		$styleArray = array(
@@ -702,27 +711,26 @@ class C_Rekap extends CI_Controller {
 		$seksi = str_replace('-', ' ', $seksi);
 		$periode1 = date('Y-m-01 00:00:00', strtotime($month));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($month));
-		$data['rekapPerMonth'] = $this->M_rekapmssql->dataRekapMonth($periode1,$periode2,$status,$seksi);
 
-		$datetime = new DateTime;
-		$p = new DatePeriod(
-				new DateTime($periode1),
-				new DateInterval('P1D'),
-				$datetime($periode2)->modify('+1 day')
-			);
+		$begin = new DateTime($periode1);
+		$end = new DateTime($periode2);
+		$end = $end->modify('+1 day');
+
+		$interval = new DateInterval('P1D');
+
+		$p = new DatePeriod($begin, $interval ,$end);
 		foreach ($p as $d) {
 			$perDay = $d->format('Y-m-d');
 			$date = $d->format('d_M_y');
-			$periodeName = $d->format('F Y');
 			$firstdate = date('Y-m-d 00:00:00', strtotime($perDay));
 			$lastdate = date('Y-m-d 23:59:59', strtotime($perDay));
 			$data['rekap_'.$date] = $this->M_rekapmssql->dataRekapMonthDetail($firstdate,$lastdate,$status,$seksi,$date);
 		}
+		$data['rekapPerMonth'] = $this->M_rekapmssql->dataRekapMonth($periode1,$periode2,$status,$seksi);
 		foreach ($data['rekapPerMonth'] as $rk) {
 		}
 
-		$data['periodeMonth'] = $periodeName;
-		$data['statusJabatan'] = $rk['nama_jabatan'];
+		$data['statusJabatan'] = $rk['fs_ket'];
 		$data['kode_status'] = $rk['kode_status_kerja'];
 		$data['seksi'] = $seksi;
 		$data['periode1'] = $periode1;
@@ -753,28 +761,31 @@ class C_Rekap extends CI_Controller {
 		);
 
 		$section = str_replace('-', ' ', $section);
-		if ($detail == 1) {
-			$ex_period2 = explode('-', $periode2);
-			$bln_new = $ex_period2[1]-1;
-			$periode2 = $ex_period2[0].'-'.$bln_new.'-'.$ex_period2[2];
+		
+		$periode1 = date('Y-m-01 00:00:00', strtotime($periode));
+		$periode2 = date('Y-m-t 23:59:59', strtotime($periode));
 
-			$datetime = new DateTime;
-			$p = new DatePeriod(
-					new DateTime($periode1),
-					new DateInterval('P1D'),
-					$datetime($periode2)->modify('+1 day')
-				);
-			foreach ($p as $d) {
-				$perMonth = $d->format('Y-m');
-				$date = $d->format('d_M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				${'rekap_'.$date} = $this->M_rekapmssql->dataRekapMonthDetail($firstdate,$lastdate,$status,$section,$date);
-			}
+		$ex_period2 = explode('-', $periode2);
+		$tgl_new = $ex_period2[2]-1;
+		$periode2 = $ex_period2[0].'-'.$ex_period2[1].'-'.$tgl_new;
+
+		$begin = new DateTime($periode1);
+		$end = new DateTime($periode2);
+		$end = $end->modify('+1 day');
+
+		$interval = new DateInterval('P1D');
+
+		$p = new DatePeriod($begin, $interval ,$end);
+		foreach ($p as $d) {
+			$perMonth = $d->format('Y-m-d');
+			$date = $d->format('d_M_y');
+			$firstdate = date('Y-m-d 00:00:00', strtotime($perMonth));
+			$lastdate = date('Y-m-d 23:59:59', strtotime($perMonth));
+			${'rekap_'.$date} = $this->M_rekapmssql->dataRekapMonthDetail($firstdate,$lastdate,$status,$section,$date);
 		}
 
-		$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-		$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+		$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+		$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 
 		$rekap_all = $this->M_rekapmssql->dataRekapMonth($firstdate,$lastdate,$status,$section,$date);
 
@@ -802,7 +813,7 @@ class C_Rekap extends CI_Controller {
 		
 		foreach ($rekap_all as $rekap_info) {}
 
-		$worksheet->setCellValue('C2', $rekap_info['nama_jabatan']);
+		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
 		$worksheet->setCellValue('C3', $rekap_info['seksi']);
 
 		$worksheet->mergeCells('A6:A7');
@@ -814,7 +825,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->setCellValue('C6', 'NAMA');
 
 		$col = '3';
-		if ($detail == 1) {
+		
 			foreach ($p as $d) {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
 				$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -841,7 +852,7 @@ class C_Rekap extends CI_Controller {
 				$worksheet->setCellValue($SP.'7', 'SP');
 				$col=$col+6;
 			}
-		}
+		
 
 		$T = PHPExcel_Cell::stringFromColumnIndex($col);
 		$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -874,7 +885,7 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
 
 			$col = 3;
-			if ($detail == 1) {
+			
 				foreach ($p as $d) {
 					$dateName = $d->format('d_M_y');
 					foreach (${'rekap_'.$dateName} as ${'rek'.$dateName}) {
@@ -922,7 +933,7 @@ class C_Rekap extends CI_Controller {
 
 					$col=$col+6;
 				}
-			}
+			
 
 			$T = PHPExcel_Cell::stringFromColumnIndex($col);
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -943,7 +954,7 @@ class C_Rekap extends CI_Controller {
 
 		$highestColumn = $worksheet->getHighestColumn();
 		$highestRow = $worksheet->getHighestRow();
-		if ($detail == 1) {
+		
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->applyFromArray($styleArray);
 			$worksheet	->getStyle('A6:'.$highestColumn.'7')
 						->getFill()
@@ -952,27 +963,14 @@ class C_Rekap extends CI_Controller {
 						->setARGB('0099ff');
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-		}
-		else{
-			$worksheet->getStyle('A6:I7')->applyFromArray($styleArray);
-			$worksheet	->getStyle('A6:I7')
-						->getFill()
-						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-						->getStartColor()
-						->setARGB('0099ff');
-			$worksheet->getStyle('A6:I7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-			$worksheet->getStyle('A6:I7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-		}
+		
 		$worksheet->freezePaneByColumnAndRow(3, 8);
 
 		$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-		if ($detail == 1) {
-			$fileName = 'Rekap_With_Detail';
-		}
-		else{
-			$fileName = 'Rekap_Without_Detail';
-		}
+		
+			$fileName = 'Rekap_Monthly';
+		
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

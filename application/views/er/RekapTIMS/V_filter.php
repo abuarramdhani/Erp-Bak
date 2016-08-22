@@ -22,7 +22,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-calendar"></i>
 													</div>
-													<input type="text" id="rekapBegin" class="form-control" name="rekapBegin" value="<?php echo $this->session->userdata('periode1Filter') ?>" required>
+												<input type="text" id="rekapBegin" class="form-control" name="rekapBegin" value="<?php echo $this->session->userdata('periode1Filter') ?>" required>
 												</div>
 											</div>
 										</td>
@@ -52,11 +52,11 @@
 														<option value=""><option>
 														<?php foreach ($status as $status_item){
 																$select = '';
-																if ($status_item['kd_jabatan'] == $this->session->userdata('statusFilter')) {
+																if ($status_item['fs_noind'] == $this->session->userdata('statusFilter')) {
 																	$select = 'selected';
 																}
 														?>
-															<option <?php echo $select ?> value="<?php echo $status_item['kd_jabatan'];?>"><?php echo $status_item['nama_jabatan'];?></option>
+															<option <?php echo $select ?> value="<?php echo $status_item['fs_noind'];?>"><?php echo $status_item['fs_noind'].' - '.$status_item['fs_ket'];?></option>
 													<?php } ?>
 													</select>
 												</div>
