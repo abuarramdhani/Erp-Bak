@@ -35,8 +35,8 @@ class C_StockControlNew extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		$data['Title'] = 'List Product';
-		$data['Menu'] = 'Product';
+		$data['Title'] = 'List Stock Control';
+		$data['Menu'] = 'Stock Control';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
