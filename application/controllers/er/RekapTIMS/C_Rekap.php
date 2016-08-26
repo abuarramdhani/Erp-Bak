@@ -475,7 +475,7 @@ class C_Rekap extends CI_Controller {
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
 
-		$info = $this->M_rekapmssql->rekapPersonInfo($periode1,$periode2,$nik);
+		$info = $this->M_rekapmssql->rekapPersonInfo($nik);
 		$Terlambat = $this->M_rekapmssql->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TT');
 		$IjinPribadi = $this->M_rekapmssql->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TIK');
 		$Mangkir = $this->M_rekapmssql->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TM');
@@ -499,11 +499,6 @@ class C_Rekap extends CI_Controller {
 		$worksheet->getColumnDimension('G')->setWidth(15);
 		$worksheet->getColumnDimension('H')->setWidth(10);
 		$worksheet->getColumnDimension('I')->setWidth(10);
-		$worksheet->getColumnDimension('J')->setWidth(5);
-		$worksheet->getColumnDimension('K')->setWidth(5);
-		$worksheet->getColumnDimension('L')->setWidth(15);
-		$worksheet->getColumnDimension('M')->setWidth(10);
-		$worksheet->getColumnDimension('N')->setWidth(10);
 
 		$worksheet->mergeCells('A1:G1');
 		$worksheet->mergeCells('A2:B2');
@@ -539,17 +534,7 @@ class C_Rekap extends CI_Controller {
 					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 					->getStartColor()
 					->setARGB('c0c0c0');
-		$worksheet	->getStyle('K9')
-					->getFill()
-					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-					->getStartColor()
-					->setARGB('0099ff');
-		$worksheet	->getStyle('K10:N10')
-					->getFill()
-					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-					->getStartColor()
-					->setARGB('c0c0c0');
-		$worksheet->getStyle('A9:K9')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$worksheet->getStyle('A9:F9')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		
 
 		$worksheet->setCellValue('A1', 'INFORMASI PEKERJA');
@@ -567,7 +552,6 @@ class C_Rekap extends CI_Controller {
 
 		$worksheet->mergeCells('A9:D9');
 		$worksheet->mergeCells('F9:I9');
-		$worksheet->mergeCells('K9:N9');
 
 		foreach ($info as $inf) {}
 		$worksheet->setCellValue('C2', $inf['nik'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -608,22 +592,6 @@ class C_Rekap extends CI_Controller {
 			$row++;
 		}
 		
-		$worksheet->setCellValue('K9', 'IJIN PERUSAHAAN');
-		$worksheet->setCellValue('K10', 'No');
-		$worksheet->setCellValue('L10', 'Tanggal');
-		$worksheet->setCellValue('M10', 'Masuk');
-		$worksheet->setCellValue('N10', 'Keluar');
-
-		$row = 11;
-		$no = 1;
-		foreach ($IjinPerusahaan as $iper) {
-			$worksheet->setCellValue('K'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('L'.$row, date('Y-m-d', strtotime($iper['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('M'.$row, $iper['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('N'.$row, $iper['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$row++;
-		}
-
 		$highestRow = $worksheet->getHighestRow();
 
 		$worksheet->getStyle('A'.($highestRow+3).':F'.($highestRow+3))->applyFromArray($styleArray);
@@ -653,7 +621,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->mergeCells('A'.($highestRow+3).':D'.($highestRow+3));
 		$worksheet->mergeCells('F'.($highestRow+3).':I'.($highestRow+3));
 
-		$worksheet->setCellValue('A'.($highestRow+3), 'SURAT PERINGATAN');
+		$worksheet->setCellValue('A'.($highestRow+3), 'IJIN PERUSAHAAN');
 		$worksheet->setCellValue('A'.($highestRow+4), 'No');
 		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal');
 		$worksheet->setCellValue('C'.($highestRow+4), 'Masuk');
@@ -661,11 +629,11 @@ class C_Rekap extends CI_Controller {
 
 		$row = $highestRow+5;
 		$no = 1;
-		foreach ($SuratPeringatan as $sper) {
+		foreach ($IjinPerusahaan as $iper) {
 			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($sper['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('C'.$row, $sper['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('D'.$row, $sper['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($iper['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $iper['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $iper['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$row++;
 		}
 
@@ -685,6 +653,47 @@ class C_Rekap extends CI_Controller {
 			$row++;
 		}
 
+		$highestRow = $worksheet->getHighestRow();
+		$worksheet->mergeCells('A'.($highestRow+3).':I'.($highestRow+3));
+		$worksheet->mergeCells('E'.($highestRow+4).':F'.($highestRow+4));
+
+		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->applyFromArray($styleArray);
+		$worksheet	->getStyle('A'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('A'.($highestRow+4).':I'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+		$worksheet->getStyle('A'.($highestRow+3).':I'.($highestRow+4))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$worksheet->setCellValue('A'.($highestRow+3), 'SURAT PERINGATAN');
+		$worksheet->setCellValue('A'.($highestRow+4), 'No');
+		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal Cetak');
+		$worksheet->setCellValue('C'.($highestRow+4), 'Terlambat');
+		$worksheet->setCellValue('D'.($highestRow+4), 'Ijin');
+		$worksheet->setCellValue('E'.($highestRow+4), 'Mangkir');
+		$worksheet->setCellValue('G'.($highestRow+4), 'Bobot');
+		$worksheet->setCellValue('H'.($highestRow+4), 'SP ke');
+		$worksheet->setCellValue('I'.($highestRow+4), 'Absen/Non');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($SuratPeringatan as $SP) {
+			$worksheet->mergeCells('E'.$row.':F'.$row);
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($SP['tgl_cetak'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $SP['nT'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $SP['nIK'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('E'.$row, $SP['nM'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('G'.$row, $SP['bobot'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('H'.$row, $SP['sp_ke'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('I'.$row, $SP['Status'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

@@ -366,6 +366,37 @@ $route['RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan/(:any)/(:any)/(:any)'] =
 $route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/ExportRekapMonthly/$1/$2/$3/';
 
 //------------------------------------Rekap TIMS.end---------------------------------------------------
+$route['StockControl'] = 'StockControl/C_StockControl/index';
+
+$route['StockControl/item'] = 'StockControl/C_Item/index';
+$route['StockControl/item/(:any)'] = 'StockControl/C_Item/$1';
+$route['StockControl/item/(:any)/(:any)'] = 'StockControl/C_Item/$1/$2';
+
+$route['StockControl/plan-production'] = 'StockControl/C_PlanProduction/index';
+$route['StockControl/plan-production/(:any)'] = 'StockControl/C_PlanProduction/$1';
+$route['StockControl/plan-production/(:any)/(:any)'] = 'StockControl/C_PlanProduction/$1/$2';
+
+$route['StockControl/product'] = 'StockControl/C_Product/index';
+$route['StockControl/product/(:any)'] = 'StockControl/C_Product/$1';
+$route['StockControl/product/(:any)/(:any)'] = 'StockControl/C_Product/$1/$2';
+
+$route['StockControl/submit-stock'] = 'StockControl/C_SubmitStock/index';
+$route['StockControl/submit-stock/(:any)'] = 'StockControl/C_SubmitStock/$1';
+$route['StockControl/submit-stock/(:any)/(:any)'] = 'StockControl/C_SubmitStock/$1/$2';
+$route['StockControl/submit-stock/(:any)/(:any)/(:any)'] = 'StockControl/C_SubmitStock/$1/$2/$3';
+
+$route['StockControl/stock-transaction'] = 'StockControl/C_StockTransaction/index';
+$route['StockControl/stock-transaction/(:any)'] = 'StockControl/C_StockTransaction/$1';
+$route['StockControl/stock-transaction/(:any)/(:any)'] = 'StockControl/C_StockTransaction/$1/$2';
+$route['StockControl/stock-transaction/(:any)/(:any)/(:any)'] = 'StockControl/C_StockTransaction/$1/$2/$3';
+
+$route['StockControl/lapor-kekurangan'] = 'StockControl/C_Lapor/index';
+$route['StockControl/lapor-kekurangan/(:any)'] = 'StockControl/C_Lapor/$1';
+$route['StockControl/lapor-kekurangan/(:any)/(:any)'] = 'StockControl/C_Lapor/$1/$2';
+$route['StockControl/lapor-kekurangan/(:any)/(:any)/(:any)'] = 'StockControl/C_Lapor/$1/$2/$3';
+
+$route['StockControl/stock-control-new'] = 'StockControl/C_StockControlNew/index';
+$route['StockControl/stock-control-new/(:any)'] = 'StockControl/C_StockControlNew/$1';
 
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';

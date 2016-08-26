@@ -225,7 +225,7 @@
 										<tr>
 											<td width="5%" style="text-align:center;">No</td>
 											<td width="15%" style="text-align:center;">No SP</td>
-											<td width="15%" style="text-align:center;">Bulan</td>
+											<td width="15%" style="text-align:center;">Tanggal Cetak</td>
 											<td width="5%" style="text-align:center;">T</td>
 											<td width="5%" style="text-align:center;">I</td>
 											<td width="5%" style="text-align:center;">M</td>

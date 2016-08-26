@@ -7,6 +7,10 @@
 		return false;
 	}
 	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+	
 	// ----------DATA TABLES---------- //
 
 	$(document).ready(function(){
@@ -456,6 +460,7 @@
 			} );
 		} ).draw();
 
+		if (counter_row == null) {var counter_row = 0}
 
 		var counter = counter_row;
 		$('#add-row').on( 'click', function () {
@@ -679,4 +684,154 @@ $(document).ready(function(){
 			}
 		});
 	});
+});
+
+
+//Stock Control
+$(document).ready(function(){
+	var assembling_table = $('#assembling').DataTable({
+		"dom": 't',
+	});
+	assembling_table.on( 'order.dt search.dt', function () {
+			assembling_table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+				cell.innerHTML = i+1;
+			} );
+		} ).draw();
+	var counter = 0;
+	$('#tmbh-row').on( 'click', function () {
+		var rowAdd = assembling_table.row.add( [
+			'',
+			'<select style="width: 100%" name="txt_component['+counter+']" class="form-control select2" data-placeholder="Pilih Salah Satu!" required><option value=""></option></select>',
+			'xxxx',
+			'<input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" required/>',
+		] ).draw( false ).node();
+		$(rowAdd).addClass('multiRow');
+
+		$(".select2").select2({
+			placeholder: function(){
+				$(this).data('placeholder');
+			},
+			allowClear: true,
+		});
+	});
+
+	var lapor_table = $("#lapor_detail").DataTable({
+						"dom": 't',
+						"info": false,
+						"paging": false,
+						"columnDefs": [{
+							"targets": [ -1 ],
+							"searchable": false
+						}],
+					});
+	lapor_table.on( 'order.dt search.dt', function () {
+		lapor_table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+			cell.innerHTML = i+1;
+		} );
+	} ).draw();
+
+	$('#tmbh-row').on( 'click', function () {
+		$.ajax({
+			type: POST,
+			url:baseurl+"StockControl/lapor-kekurangan/getItemList",
+			success:function(result)
+			{
+				var rowAdd = lapor_table.row.add( [
+					'',
+					'<select style="width: 100%" name="txt_item[]" class="form-control select2" data-placeholder="Pilih Salah Satu!" required><option value=""></option>'+result+'</select>',
+					'<input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" style="width: 100%" required/>',
+					'<p style="text-align: center"><span class="btn btn-primary btn-sm hps-row"><i class="fa fa-minus"></i></span></p>',
+				] ).draw( false ).node();
+
+				$(".select2").select2({
+					placeholder: function(){
+						$(this).data('placeholder');
+					},
+					allowClear: true,
+				});
+
+				$('.hps-row').on( 'click', function () {
+					lapor_table
+						.row($(this).parents('tr'))
+						.remove()
+						.draw();
+				});
+			}
+		});
+
+	});
+
+	$('#tmbh-row').click();
+
+	production_monitoring();
+	function production_monitoring(){
+		$('#production_monitoring').DataTable({
+			responsive: true,
+			"scrollX": true,
+			"scrollY": "360px",
+			scrollCollapse: true,
+			"lengthChange": false,
+			"dom": 't',
+			"paging": false,
+			"info": false,
+			language: {
+				search: "_INPUT_",
+			},
+		});
+	}
+
+	$('.filter_from').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		locale: {
+			format: 'YYYY-MM-DD'
+		},
+	})
+
+	getMinDate($("input[name='txt_date_from']").val());
+	function getMinDate(min_date){
+		$('.filter_to').daterangepicker({
+			"singleDatePicker": true,
+			"timePicker": false,
+			"timePicker24Hour": true,
+			"showDropdowns": false,
+			locale: {
+				format: 'YYYY-MM-DD'
+			},
+			"minDate":min_date
+		})
+	}
+
+	$("input[name='txt_date_from']").change(function(){
+		var date_from = $(this).val();
+		getMinDate(date_from);
+	})
+
+	
+	$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").change(function(){
+		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
+		var data = $('#filter-form').serialize();
+		$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").prop('disabled',true);
+		$.ajax({
+			type: "POST",
+			url:baseurl+"StockControl/stock-control-new/getData",
+			data:data,
+			success:function(result)
+			{
+				$("#table-full").html(result);
+				production_monitoring();
+				$("#loadingImage").html('');
+				$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").prop('disabled',false);
+			},
+			error:function()
+			{
+				$("#loadingImage").html('');
+				$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").prop('disabled',false);			
+				alert('Something Error');
+			}
+		});
+	});
+	
 });

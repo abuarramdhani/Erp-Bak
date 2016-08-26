@@ -116,6 +116,11 @@
 		
 		
 	</script>
+	<?php
+	if (empty($alert)) {
+		$alert = '';
+	};
+	echo $alert; ?>
      <!--END MAIN WRAPPER -->
 </body>
      <!-- END BODY -->
