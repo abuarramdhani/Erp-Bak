@@ -838,23 +838,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-	$("#qty_simulation").on("keyup", function() {
-		var tr  = $('.multiple-row');
-		var num = +tr.find('.qty-needed').text();
-		var val = this.value;
-        
-		tr.find('.qty-total').text((val * num));
-	});
-	
-	$('#qty_simulation').keyup(simulasi_qty);
-
-	function simulasi_qty() {
-		$("tr.multiple-row").each(function () {
-			var $qty_simulation = $('#qty_simulation').val();
-			var $qty = $('.qty-needed').text();
-			var $total = ($qty * 1) * ($qty_simulation * 1);
-			$('.qty-total',this).text($total);
-		});
-	}
 });

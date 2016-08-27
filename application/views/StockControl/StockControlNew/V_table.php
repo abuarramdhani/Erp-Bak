@@ -33,8 +33,8 @@
 									</td>
 									<td width="75px" rowspan="2" style="text-align: center; vertical-align : middle">
 										<div style="width: 75px;">
-											<b>QTY</b>
-											<input type="text" name="qty_simulation" id="qty_simulation" class="form-control" style="width: 100%; height: 30px; ">
+											<b style="font-size: 9px">QTY SIMULATION</b>
+											<input type="text" name="qty_simulation" id="qty_simulation" class="form-control" style="width: 95%; height: 30px; ">
 										</div>
 									</td>
 									<?php
@@ -94,7 +94,7 @@
 									<td align="left"><div style="width: 150px;margin: 0 auto"><b><?php echo $pl['component_code']?></b></div></td>
 									<td align="left"><div style="width: 150px;margin: 0 auto"><b><?php echo $pl['component_desc']?></b></div></td>
 									<td align="center"><div style="width: 50px;margin: 0 auto"><b><span class="qty-needed"><?php echo $pl['qty_component_needed']?></span></b></div></td>
-									<td align="center" class="qty-total"><div style="width: 75px;margin: 0 auto"><b></b></div></td>
+									<td align="center"><b><div style="width: 75px;margin: 0 auto" class="qty-total"></div></b></td>
 									<?php 
 										foreach ($stock_on_date as $sod) {
 											if (empty(${'data_'.$pl['master_data_id'].'_'.$sod['plan_id']})) {
@@ -144,3 +144,16 @@
 								?>
 							</tbody>																				
 						</table>
+
+						<script type="text/javascript">
+							$('#qty_simulation').keyup(simulasi_qty);
+
+							function simulasi_qty() {
+								$("#production_monitoring tr").each(function () {
+									var $qty = $(this).find('.qty-needed').text();
+									var $qty_simulation = $('#qty_simulation').val();
+									var $total = ($qty * 1) * ($qty_simulation * 1);
+									$(this).find('.qty-total').text($total);
+								});
+							}
+						</script>
