@@ -50,6 +50,7 @@
 					data:{qtySO : soData, master_id : masterID, plan_id : planID},
 					success:function(result)
 					{
+						var form = $('#filter-form');
 						var data = $('#filter-form').serialize();
 						$.ajax({
 							type: "POST",
@@ -61,7 +62,7 @@
 								$('#production_monitoring').DataTable({
 									responsive: true,
 									"scrollX": true,
-									"scrollY": "360px",
+									"scrollY": "330px",
 									scrollCollapse: true,
 									"lengthChange": false,
 									"dom": 't',

@@ -768,16 +768,20 @@ $(document).ready(function(){
 		$('#production_monitoring').DataTable({
 			responsive: true,
 			"scrollX": true,
-			"scrollY": "360px",
+			"scrollY": "330px",
 			scrollCollapse: true,
 			"lengthChange": false,
-			"dom": 't',
+			"dom": '<"pull-left"f>t',
 			"paging": false,
 			"info": false,
 			language: {
 				search: "_INPUT_",
 			},
 		});
+		$('#production_monitoring_filter input[type="search"]').css(
+			{'width':'400px','display':'inline-block'}
+		);
+		$('#production_monitoring_filter input').attr("placeholder", "Search...")
 	}
 
 	$('.filter_from').daterangepicker({
@@ -812,6 +816,7 @@ $(document).ready(function(){
 	
 	$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").change(function(){
 		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
+		var form = $('#filter-form');
 		var data = $('#filter-form').serialize();
 		$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").prop('disabled',true);
 		$.ajax({
@@ -833,5 +838,23 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$("#qty_simulation").on("keyup", function() {
+		var tr  = $('.multiple-row');
+		var num = +tr.find('.qty-needed').text();
+		var val = this.value;
+        
+		tr.find('.qty-total').text((val * num));
+	});
 	
+	$('#qty_simulation').keyup(simulasi_qty);
+
+	function simulasi_qty() {
+		$("tr.multiple-row").each(function () {
+			var $qty_simulation = $('#qty_simulation').val();
+			var $qty = $('.qty-needed').text();
+			var $total = ($qty * 1) * ($qty_simulation * 1);
+			$('.qty-total',this).text($total);
+		});
+	}
 });

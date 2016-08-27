@@ -43,6 +43,7 @@
 					</div>
 					<div class="col-lg-5">
 						<select class="form-control select2" name="txt_area" data-placeholder="Pilih Salah Satu!">
+							<option></option>
 							<option>All</option>
 							<?php
 								foreach ($area as $area) {
@@ -59,7 +60,8 @@
 						<label class="control-label">Sub Assy</label>
 					</div>
 					<div class="col-lg-5">
-						<select class="form-control select2" name="txt_subassy" data-placeholder="Pilih Salah Satu!">
+						<select class="form-control select2" name="txt_subassy" data-placeholder="Pilih Salah Satu!" disabled>
+							<option></option>
 							<option>All</option>
 							<?php
 								foreach ($subassy as $subassy) {
@@ -78,10 +80,10 @@
 					<div class="col-lg-4">
 						<div class="row">
 							<div class="col-lg-6">
-								<input type="text" class="form-control filter_from" placeholder="From" name="txt_date_from" value="<?php echo $from ?>" required></input>
+								<input type="text" class="form-control filter_from" placeholder="From" name="txt_date_from" value="<?php echo $from ?>" disabled required></input>
 							</div>
 							<div class="col-lg-6">
-								<input type="text" class="form-control filter_to" placeholder="To" name="txt_date_to" value="<?php echo $to ?>" required></input>
+								<input type="text" class="form-control filter_to" placeholder="To" name="txt_date_to" value="<?php echo $to ?>" disabled required></input>
 							</div>
 						</div>
 					</div>

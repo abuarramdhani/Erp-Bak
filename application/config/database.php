@@ -64,9 +64,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
+	'hostname' => 'localhost',
 	'username' => 'postgres',
-	'password' => 'password',
+	'password' => '123456',
 	'database' => 'erp',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',

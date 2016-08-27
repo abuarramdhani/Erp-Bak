@@ -375,6 +375,7 @@ $route['StockControl/item/(:any)/(:any)'] = 'StockControl/C_Item/$1/$2';
 $route['StockControl/plan-production'] = 'StockControl/C_PlanProduction/index';
 $route['StockControl/plan-production/(:any)'] = 'StockControl/C_PlanProduction/$1';
 $route['StockControl/plan-production/(:any)/(:any)'] = 'StockControl/C_PlanProduction/$1/$2';
+$route['StockControl/plan-production/(:any)/(:any)/(:any)'] = 'StockControl/C_PlanProduction/$1/$2/$3';
 
 $route['StockControl/product'] = 'StockControl/C_Product/index';
 $route['StockControl/product/(:any)'] = 'StockControl/C_Product/$1';

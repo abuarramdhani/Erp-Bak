@@ -7,7 +7,7 @@ class M_stock_control_new extends CI_Model {
     }
 	
 	public function production_list(){
-		$sql="select * from stock_control_new.master_data order by sequence asc";
+		$sql="select * from stock_control_new.master_data order by area,sequence asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -25,7 +25,7 @@ class M_stock_control_new extends CI_Model {
 	}
 
 	public function production_list_filter($area,$subassy){
-		$sql="select * from stock_control_new.master_data where area = $area AND subassy_desc = $subassy order by sequence asc";
+		$sql="select * from stock_control_new.master_data where area = $area AND subassy_desc = $subassy order by area,sequence asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

@@ -59,13 +59,6 @@ class C_StockControlNew extends CI_Controller {
 		$data['to'] = date('Y-m-d 23:59:59', strtotime('+ 5 day'));
 		
 		$data['stock_on_date'] = $this->M_stock_control_new->qty_plan($data['from'],$data['to']);
-		$data['production_list'] = $this->M_stock_control_new->production_list();
-
-		foreach ($data['production_list'] as $pl) {
-			foreach ($data['stock_on_date'] as $sod) {
-				$data['data_'.$pl['master_data_id'].'_'.$sod['plan_id']] = $this->M_stock_control_new->transaction_list($pl['master_data_id'],$sod['plan_id']);
-			}
-		}
 
 		$this->load->view('StockControl/StockControlNew/V_Monitoring',$data);
 		$this->load->view('StockControl/StockControlNew/V_table',$data);

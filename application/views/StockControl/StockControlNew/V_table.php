@@ -1,3 +1,8 @@
+<?php
+	if(!(empty($production_list))){
+		
+	}
+?>
 						<table class="table table-hover table-striped table-bordered" id="production_monitoring" style="font-size:12px;">
 							<thead class="bg-primary">
 								<tr>
@@ -24,6 +29,12 @@
 									<td width="50px" rowspan="2" style="text-align: center; vertical-align : middle">
 										<div style="width: 50px;">
 											<b>QTY NEEDED</b>
+										</div>
+									</td>
+									<td width="75px" rowspan="2" style="text-align: center; vertical-align : middle">
+										<div style="width: 75px;">
+											<b>QTY</b>
+											<input type="text" name="qty_simulation" id="qty_simulation" class="form-control" style="width: 100%; height: 30px; ">
 										</div>
 									</td>
 									<?php
@@ -71,21 +82,23 @@
 							</thead>
 							<tbody>
 								<?php
+								if(!(empty($production_list))){
 									$no=0;
 									foreach($production_list as $pl) { $no++;
 								?>
-								<tr>
+								<tr class="multiple-row">
 									<td align="center"><div style="width: 20px"><?php echo $no?></div></td>
 									<td align="left"><div style="width: 200px;"><?php echo $pl['area']?></div></td>
 									<td align="left"><div style="width: 150px;margin: 0 auto"><b><?php echo $pl['subassy_code']?></b></div></td>
 									<td align="left"><div style="width: 150px;margin: 0 auto"><b><?php echo $pl['subassy_desc']?></b></div></td>
 									<td align="left"><div style="width: 150px;margin: 0 auto"><b><?php echo $pl['component_code']?></b></div></td>
 									<td align="left"><div style="width: 150px;margin: 0 auto"><b><?php echo $pl['component_desc']?></b></div></td>
-									<td align="center"><div style="width: 50px;margin: 0 auto"><b><?php echo $pl['qty_component_needed']?></b></div></td>
+									<td align="center"><div style="width: 50px;margin: 0 auto"><b><span class="qty-needed"><?php echo $pl['qty_component_needed']?></span></b></div></td>
+									<td align="center" class="qty-total"><div style="width: 75px;margin: 0 auto"><b></b></div></td>
 									<?php 
 										foreach ($stock_on_date as $sod) {
 											if (empty(${'data_'.$pl['master_data_id'].'_'.$sod['plan_id']})) {
-												$qty = '0';
+												$qty = '';
 												$status = '';
 											}
 
@@ -118,14 +131,16 @@
 									?>
 									<td align="center">
 										<div style="width: 55px;margin: 0 auto">
-											<input data-toggle="tooltip" data-placement="bottom" title="Press Enter to Submit!" class="form-control" style="width: 100%; <?php echo $style ?>" type="text" value="<?php echo $qty; ?>" name="txt_qty_so" onchange="SaveSO('<?php echo $pl['master_data_id']."','".$sod['plan_id'] ?>',this)" />
+											<input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" class="form-control" style="width: 100%; <?php echo $style ?>" type="text" value="<?php echo $qty; ?>" name="txt_qty_so" onchange="SaveSO('<?php echo $pl['master_data_id']."','".$sod['plan_id'] ?>',this)" />
 										</div>
 									</td>
 									<?php
 										}
 									?>
 								</tr>
-								<?php }?>
+								<?php 
+									}
+								}
+								?>
 							</tbody>																				
 						</table>
-						
