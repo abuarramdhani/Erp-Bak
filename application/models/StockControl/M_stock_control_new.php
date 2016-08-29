@@ -73,5 +73,45 @@ class M_stock_control_new extends CI_Model {
 		return;
 	}
 
+	public function area_export($area,$subassy,$from,$to){
+		$sql="select distinct(md.area) from
+				stock_control_new.transaction tr
+				left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
+				left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
+				where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to' order by md.area";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function subassy_export($area,$subassy,$from,$to){
+		$sql="select distinct(md.subassy_desc),md.area from
+				stock_control_new.transaction tr
+				left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
+				left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
+				where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to' order by md.area";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function component_export($area,$subassy,$from,$to){
+		$sql="select * from
+			stock_control_new.transaction tr
+			left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
+			left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
+			where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to' order by md.area, md.sequence";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function periode_export($area,$subassy,$from,$to){
+		$sql="select distinct(pp.plan_date) from
+			stock_control_new.transaction tr
+			left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
+			left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
+			where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 }
 ?>

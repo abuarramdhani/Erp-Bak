@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<form id="filter-form">
+			<form id="filter-form" method="post">
 			<div class="form-group">
 				<div class="row" style="margin: 10px 10px">
 					<div class="col-lg-1">
