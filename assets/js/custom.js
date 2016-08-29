@@ -768,7 +768,6 @@ $(document).ready(function(){
 		$('#production_monitoring').DataTable({
 			responsive: true,
 			"scrollX": true,
-			"scrollY": "330px",
 			scrollCollapse: true,
 			"lengthChange": false,
 			"dom": '<"pull-left"f>t',
@@ -816,6 +815,7 @@ $(document).ready(function(){
 	
 	$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").change(function(){
 		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
+		$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").prop('disabled',false);
 		var form = $('#filter-form');
 		var data = $('#filter-form').serialize();
 		$("select[name='txt_area'], select[name='txt_subassy'], input[name='txt_date_from'], input[name='txt_date_to']").prop('disabled',true);
@@ -837,5 +837,15 @@ $(document).ready(function(){
 				alert('Something Error');
 			}
 		});
+	});
+
+	$('#export_excel').click(function(){
+		$('#filter-form').attr("action",baseurl+"StockControl/stock-control-new/export_excel");
+		$('#filter-form').submit();
+	});
+
+	$('#export_pdf').click(function(){
+		$('#filter-form').attr("action",baseurl+"StockControl/stock-control-new/export_pdf");
+		$('#filter-form').submit();
 	});
 });

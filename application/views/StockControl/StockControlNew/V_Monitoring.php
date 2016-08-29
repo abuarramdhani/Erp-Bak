@@ -32,8 +32,10 @@
 			</div>
 			<div class="col-md-2" align="center">
 				<h3 class="pull-right">
-					<span onclick="window.location.reload()" class="btn btn-xs btn-success faa-parent animated-hover"><i class="fa fa-refresh faa-spin"></i></span>
-					<a href="<?php echo site_url('StockControl/stock-control-new')?>" class="btn btn-xs btn-danger faa-parent animated-hover"><i class="fa fa-close faa-flash"></i></a>
+					<button data-toggle="tooltip" data-placement="left" title="Export Current Data to Excel File" id="export_excel" class="btn btn-xs btn-primary faa-parent animated-hover"><i class="fa fa-file-excel-o faa-flash"></i></button>
+					<a data-toggle="tooltip" data-placement="left" title="Export Current Data to PDF File" href="<?php echo site_url('StockControl/stock-control-new')?>" class="btn btn-xs btn-primary faa-parent animated-hover"><i class="fa fa-file-pdf-o faa-flash"></i></a>
+					<span data-toggle="tooltip" data-placement="left" title="Refresh" onclick="window.location.reload()" class="btn btn-xs btn-success faa-parent animated-hover"><i class="fa fa-refresh faa-spin"></i></span>
+					<a data-toggle="tooltip" data-placement="left" title="Close Monitoring" href="<?php echo site_url('StockControl/stock-control-new')?>" class="btn btn-xs btn-danger faa-parent animated-hover"><i class="fa fa-close faa-flash"></i></a>
 				</h3>
 			</div>
 		</div>

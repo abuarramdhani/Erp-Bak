@@ -39,45 +39,16 @@
 			var baseurl = "<?php echo base_url() ?>";
 		</script>
 		<script type="text/javascript">
-			function SaveSO(masterID,planID,data){
+			function SaveSO(masterID,planID,input){
 				$("#loadingImage").html('<img src="<?php echo base_url() ?>assets/img/gif/loading3.gif" style="width: 33px"/>');
-				var soData = data.value;
+				var soData = input.value;
 				$.ajax({
 					type: "POST",
 					url:baseurl+"StockControl/stock-control-new/saveTransaction",
 					data:{qtySO : soData, master_id : masterID, plan_id : planID},
 					success:function(result)
 					{
-						var form = $('#filter-form');
-						var data = $('#filter-form').serialize();
-						$.ajax({
-							type: "POST",
-							url:baseurl+"StockControl/stock-control-new/getData",
-							data:data,
-							success:function(result)
-							{
-								$("#table-full").html(result);
-								$('#production_monitoring').DataTable({
-									responsive: true,
-									"scrollX": true,
-									"scrollY": "330px",
-									scrollCollapse: true,
-									"lengthChange": false,
-									"dom": 't',
-									"paging": false,
-									"info": false,
-									language: {
-										search: "_INPUT_",
-									},
-								});
-								$("#loadingImage").html('');
-							},
-							error:function()
-							{
-								$("#loadingImage").html('');
-								alert('Something Error');
-							}
-						});
+						$(input).parent().html(result);
 						$("#loadingImage").html('');
 					},
 					error:function()

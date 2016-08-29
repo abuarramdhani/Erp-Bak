@@ -56,7 +56,7 @@ class C_StockControlNew extends CI_Controller {
 		$data['subassy'] = $this->M_stock_control_new->subassy_list();
 
 		$data['from'] = date('Y-m-d 00:00:00');
-		$data['to'] = date('Y-m-d 23:59:59', strtotime('+ 5 day'));
+		$data['to'] = date('Y-m-d 23:59:59');
 		
 		$data['stock_on_date'] = $this->M_stock_control_new->qty_plan($data['from'],$data['to']);
 
@@ -136,6 +136,24 @@ class C_StockControlNew extends CI_Controller {
 			$this->M_stock_control_new->update_data($qty,$master_id,$plan_id,$status);
 		}
 
-		$this->getData();
+		if ($status == 'LENGKAP') {
+			$style = "border-color: #008d4c ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #008d4c;";
+		}
+		elseif ($status == 'KURANG') {
+			$style = "border-color: #d33724 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d33724;";
+		}
+		elseif ($status == 'DILENGKAPI') {
+			$style = "border-color: #357ca5 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #357ca5;";
+		}
+		else{
+			$style ="";
+		}
+
+		echo '<input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" class="form-control" style="width: 100%;'.$style.'" type="text" value="'.$qty.'" name="txt_qty_so" onchange="SaveSO(\''.$master_id.'\',\''.$plan_id.'\',this)" />';
+	}
+
+	public function export_excel()
+	{
+		
 	}
 }

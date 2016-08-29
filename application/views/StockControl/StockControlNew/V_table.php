@@ -34,7 +34,7 @@
 									<td width="75px" rowspan="2" style="text-align: center; vertical-align : middle">
 										<div style="width: 75px;">
 											<b style="font-size: 9px">QTY SIMULATION</b>
-											<input type="text" name="qty_simulation" id="qty_simulation" class="form-control" style="width: 95%; height: 30px; ">
+											<input type="text" onkeypress="return isNumberKeyAndComma(event)" name="qty_simulation" id="qty_simulation" class="form-control" style="width: 95%; height: 30px; text-align: center;">
 										</div>
 									</td>
 									<?php
@@ -152,6 +152,7 @@
 								$("#production_monitoring tr").each(function () {
 									var $qty = $(this).find('.qty-needed').text();
 									var $qty_simulation = $('#qty_simulation').val();
+									$qty_simulation = $qty_simulation.replace(/,/g, '.');
 									var $total = ($qty * 1) * ($qty_simulation * 1);
 									$(this).find('.qty-total').text($total);
 								});

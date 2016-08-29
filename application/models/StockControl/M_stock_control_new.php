@@ -61,9 +61,8 @@ class M_stock_control_new extends CI_Model {
 	}
 
 	public function insert_data($qty,$master_id,$plan_id,$status){
-		$date = date('Y-m-d 00:00:00');
 		$sql="insert into stock_control_new.transaction (transaction_date, master_data_id, plan_id, qty, status)
-			values ((select plan_date from stock_control_new.plan_production where plan_id = '$plan_id'), '$master_id', '$plan_id', '$qty', '$status')";
+			values (now(), '$master_id', '$plan_id', '$qty', '$status')";
 		$query = $this->db->query($sql);
 		return;
 	}
