@@ -109,47 +109,53 @@ class C_StockControlNew extends CI_Controller {
 		$master_data = $this->M_stock_control_new->select_master_data($master_id);
 		$plan_data = $this->M_stock_control_new->select_plan_data($plan_id);
 
-		foreach ($master_data as $md) {
-			$qty_needed = $md['qty_component_needed'];
-		}
-		foreach ($plan_data as $pd) {
-			$qty_plan = $pd['qty_plan'];
-		}
-
-		$check_transaction = $this->M_stock_control_new->check_transaction($master_id,$plan_id);
-		if ($check_transaction == '0') {
-			if ($qty < ($qty_needed*$qty_plan)) {
-				$status = "KURANG";
-			}
-			elseif ($qty >= ($qty_needed*$qty_plan)) {
-				$status = "LENGKAP";
-			}
-			$this->M_stock_control_new->insert_data($qty,$master_id,$plan_id,$status);
+		if ($qty == '-') {
+			$this->M_stock_control_new->delete_data($master_id,$plan_id);
+			echo '<input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" class="form-control" style="width: 100%;" type="text" value="" name="txt_qty_so" onchange="SaveSO(\''.$master_id.'\',\''.$plan_id.'\',this)" />';
 		}
 		else{
-			if ($qty < ($qty_needed*$qty_plan)) {
-				$status = "KURANG";
+			foreach ($master_data as $md) {
+				$qty_needed = $md['qty_component_needed'];
 			}
-			elseif ($qty >= ($qty_needed*$qty_plan)) {
-				$status = "DILENGKAPI";
+			foreach ($plan_data as $pd) {
+				$qty_plan = $pd['qty_plan'];
 			}
-			$this->M_stock_control_new->update_data($qty,$master_id,$plan_id,$status);
-		}
 
-		if ($status == 'LENGKAP') {
-			$style = "border-color: #008d4c ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #008d4c;";
-		}
-		elseif ($status == 'KURANG') {
-			$style = "border-color: #d33724 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d33724;";
-		}
-		elseif ($status == 'DILENGKAPI') {
-			$style = "border-color: #357ca5 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #357ca5;";
-		}
-		else{
-			$style ="";
-		}
+			$check_transaction = $this->M_stock_control_new->check_transaction($master_id,$plan_id);
+			if ($check_transaction == '0') {
+				if ($qty < ($qty_needed*$qty_plan)) {
+					$status = "KURANG";
+				}
+				elseif ($qty >= ($qty_needed*$qty_plan)) {
+					$status = "LENGKAP";
+				}
+				$this->M_stock_control_new->insert_data($qty,$master_id,$plan_id,$status);
+			}
+			else{
+				if ($qty < ($qty_needed*$qty_plan)) {
+					$status = "KURANG";
+				}
+				elseif ($qty >= ($qty_needed*$qty_plan)) {
+					$status = "DILENGKAPI";
+				}
+				$this->M_stock_control_new->update_data($qty,$master_id,$plan_id,$status);
+			}
 
-		echo '<input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" class="form-control" style="width: 100%;'.$style.'" type="text" value="'.$qty.'" name="txt_qty_so" onchange="SaveSO(\''.$master_id.'\',\''.$plan_id.'\',this)" />';
+			if ($status == 'LENGKAP') {
+				$style = "border-color: #008d4c ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #008d4c;";
+			}
+			elseif ($status == 'KURANG') {
+				$style = "border-color: #d33724 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d33724;";
+			}
+			elseif ($status == 'DILENGKAPI') {
+				$style = "border-color: #357ca5 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #357ca5;";
+			}
+			else{
+				$style ="";
+			}
+
+			echo '<input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" class="form-control" style="width: 100%;'.$style.'" type="text" value="'.$qty.'" name="txt_qty_so" onchange="SaveSO(\''.$master_id.'\',\''.$plan_id.'\',this)" />';
+		}
 	}
 
 	public function export_excel()
@@ -206,7 +212,7 @@ class C_StockControlNew extends CI_Controller {
 		$worksheet->setCellValue('D1', 'PER UNIT');
 
 		$col = "4";
-		foreach ($periode as $periode) {
+		foreach ($periode as $per) {
 			$column = PHPExcel_Cell::stringFromColumnIndex($col);
 			$column1 = PHPExcel_Cell::stringFromColumnIndex($col+1);
 			$column2 = PHPExcel_Cell::stringFromColumnIndex($col+2);
@@ -220,7 +226,7 @@ class C_StockControlNew extends CI_Controller {
 			$worksheet->mergeCells($column2.'2:'.$column2.'3');
 			$worksheet->mergeCells($column3.'2:'.$column3.'3');
 
-			$worksheet->setCellValue($column.'1', date('Y-m-d', strtotime($periode['plan_date'])));
+			$worksheet->setCellValue($column.'1', date('Y-m-d', strtotime($per['plan_date'])));
 			$worksheet->setCellValue($column.'2', 'QTY NEEDED');
 			$worksheet->setCellValue($column1.'2', 'QTY ACTUAL');
 			$worksheet->setCellValue($column2.'2', 'QTY KURANG');
@@ -271,19 +277,34 @@ class C_StockControlNew extends CI_Controller {
 							$worksheet->setCellValue('D'.$row, $comp['qty_component_needed']);
 
 							$col = '4';
-							foreach ($component_list as $stock) {
-								if ($comp['component_code'] == $stock['component_code']) {
-									$column = PHPExcel_Cell::stringFromColumnIndex($col);
-									$column1 = PHPExcel_Cell::stringFromColumnIndex($col+1);
-									$column2 = PHPExcel_Cell::stringFromColumnIndex($col+2);
-									$worksheet->setCellValue($column.$row, $stock['qty_plan']*$stock['qty_component_needed']);
-									$worksheet->setCellValue($column1.$row, $stock['qty']);
-									$worksheet->setCellValue($column2.$row, ($stock['qty_plan']*$stock['qty_component_needed'])-$stock['qty']);
-									$col = $col+3;
-								}
+							foreach ($periode as $per) {
+								//if ($per['plan_date'] == $comp['plan_date']) {
+									${'data_'.$comp['master_data_id'].'_'.$per['plan_id']} = $this->M_stock_control_new->transaction_export($comp['master_data_id'],$per['plan_id']);
+									if (empty(${'data_'.$comp['master_data_id'].'_'.$per['plan_id']})) {
+										$qty_needed = '-';
+										$qty_actual = '-';
+										$qty_kurang = '-';
+										$status = '-';
+									}
+									foreach (${'data_'.$comp['master_data_id'].'_'.$per['plan_id']} as $tr_status) {
+										//if ($tr_status['plan_date'] == $comp['plan_date']) {
+											$qty_needed = $tr_status['qty_plan']*$tr_status['qty_component_needed'];
+											$qty_actual = $tr_status['qty'];
+											$qty_kurang = ($tr_status['qty_plan']*$tr_status['qty_component_needed'])-$tr_status['qty'];
+											$status = $tr_status['status'];
+										//}
+									}
+											$column = PHPExcel_Cell::stringFromColumnIndex($col);
+											$column1 = PHPExcel_Cell::stringFromColumnIndex($col+1);
+											$column2 = PHPExcel_Cell::stringFromColumnIndex($col+2);
+											$column3 = PHPExcel_Cell::stringFromColumnIndex($col+3);
+											$worksheet->setCellValue($column.$row, $qty_needed);
+											$worksheet->setCellValue($column1.$row, $qty_actual);
+											$worksheet->setCellValue($column2.$row, $qty_kurang);
+											$worksheet->setCellValue($column3.$row, $status);
+											$col = $col+4;
+							//	}
 							}
-							$column = PHPExcel_Cell::stringFromColumnIndex($col);
-							$worksheet->setCellValue($column.$row, $comp['status']);
 							$no++;
 							$row++;	
 						}
@@ -300,7 +321,11 @@ class C_StockControlNew extends CI_Controller {
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="DDD-'.time().'.xlsx"');
+		header('Content-Disposition: attachment;filename="Report-Kekurangan-Komponen-'.time().'.xlsx"');
 		$objWriter->save("php://output");
+	}
+
+	public function export_pdf(){
+		echo "<center><h1>Under Construction</h1></center>";
 	}
 }

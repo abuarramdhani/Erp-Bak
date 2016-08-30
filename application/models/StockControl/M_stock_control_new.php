@@ -78,7 +78,7 @@ class M_stock_control_new extends CI_Model {
 				stock_control_new.transaction tr
 				left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
 				left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
-				where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to' order by md.area";
+				where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND tr.status <> 'GUDANG READY' order by md.area";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -88,29 +88,50 @@ class M_stock_control_new extends CI_Model {
 				stock_control_new.transaction tr
 				left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
 				left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
-				where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to' order by md.area";
+				where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND tr.status <> 'GUDANG READY' order by md.area";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function component_export($area,$subassy,$from,$to){
-		$sql="select * from
+		$sql="select distinct(md.component_desc),md.master_data_id,md.component_code,md.qty_component_needed,md.area,md.sequence,md.subassy_desc from
 			stock_control_new.transaction tr
 			left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
 			left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
-			where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to' order by md.area, md.sequence";
+			where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND tr.status <> 'GUDANG READY' order by md.area, md.sequence asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function periode_export($area,$subassy,$from,$to){
-		$sql="select distinct(pp.plan_date) from
-			stock_control_new.transaction tr
-			left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
-			left join stock_control_new.plan_production pp on pp.plan_id = tr.plan_id
-			where tr.status <> 'LENGKAP' AND tr.status <> 'DILENGKAPI' AND md.area = $area AND md.subassy_desc = $subassy AND pp.plan_date BETWEEN '$from' AND '$to'";
+		$sql="select distinct(pp.plan_date), pp.plan_id from stock_control_new.plan_production pp
+				left join stock_control_new.transaction tr on pp.plan_id = tr.plan_id
+				where tr.transaction_id is not null
+					AND tr.status <> 'LENGKAP'
+					AND tr.status <> 'DILENGKAPI'
+					AND tr.status <> 'GUDANG READY'
+				order by pp.plan_date";
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+
+	public function transaction_export($master_data_id,$plan_id){
+		$sql="select * from stock_control_new.transaction tr
+				left join stock_control_new.master_data md on tr.master_data_id = md.master_data_id
+				left join stock_control_new.plan_production pp on tr.plan_id = pp.plan_id
+				where tr.master_data_id = '$master_data_id'
+					AND tr.plan_id = '$plan_id'
+					AND tr.status <> 'LENGKAP'
+					AND tr.status <> 'DILENGKAPI'
+					AND tr.status <> 'GUDANG READY' ";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function delete_data($master_id,$plan_id){
+		$sql="delete from stock_control_new.transaction where master_data_id = '$master_id' AND plan_id = '$plan_id'";
+		$query = $this->db->query($sql);
+		return;
 	}
 
 }

@@ -838,14 +838,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-	$('#export_excel').click(function(){
-		$('#filter-form').attr("action",baseurl+"StockControl/stock-control-new/export_excel");
-		$('#filter-form').submit();
-	});
-
-	$('#export_pdf').click(function(){
-		$('#filter-form').attr("action",baseurl+"StockControl/stock-control-new/export_pdf");
-		$('#filter-form').submit();
-	});
 });
