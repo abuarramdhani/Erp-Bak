@@ -7,9 +7,9 @@ class C_StockControlNew extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper('form');
-        $this->load->helper('url');
-        $this->load->helper('html');
-        $this->load->library('form_validation');
+		$this->load->helper('url');
+		$this->load->helper('html');
+		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -160,36 +160,21 @@ class C_StockControlNew extends CI_Controller {
 
 	public function export_excel()
 	{
-		$area = $this->input->post('txt_area');
-		$subassy = $this->input->post('txt_subassy');
-		$from = $this->input->post('txt_date_from');
-		$to = $this->input->post('txt_date_to');
-
 		$styleArray = array(
 			'font'  => array(
 				'bold'  => true,
 				'color' => array('rgb' => 'FFFFFF'),
 			)
 		);
+		$bold = array(
+			'font'  => array(
+				'bold'  => true,
+			));
 
-		if ($area == 'All' || $area == '' ) {
-			$area = "md.area";
-		}
-		else{
-			$area = "'".$area."'";
-		}
-
-		if ($subassy == 'All' || $subassy == '') {
-			$subassy = "md.subassy_desc";
-		}
-		else{
-			$subassy = "'".$subassy."'";
-		}
-
-		$area_list = $this->M_stock_control_new->area_export($area,$subassy,$from,$to);
-		$subassy_list = $this->M_stock_control_new->subassy_export($area,$subassy,$from,$to);
-		$component_list = $this->M_stock_control_new->component_export($area,$subassy,$from,$to);
-		$periode = $this->M_stock_control_new->periode_export($area,$subassy,$from,$to);
+		$area_list = $this->M_stock_control_new->area_export();
+		$subassy_list = $this->M_stock_control_new->subassy_export();
+		$component_list = $this->M_stock_control_new->component_export();
+		$periode = $this->M_stock_control_new->periode_export();
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -230,6 +215,11 @@ class C_StockControlNew extends CI_Controller {
 			$worksheet->setCellValue($column.'2', 'QTY NEEDED');
 			$worksheet->setCellValue($column1.'2', 'QTY ACTUAL');
 			$worksheet->setCellValue($column2.'2', 'QTY KURANG');
+			$worksheet	->getStyle($column2)
+						->getFill()
+						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+						->getStartColor()
+						->setARGB('e9897e');
 			$worksheet->setCellValue($column3.'2', 'STATUS');
 
 			$col = $col+4;
@@ -262,11 +252,21 @@ class C_StockControlNew extends CI_Controller {
 		foreach ($area_list as $ar) {
 			$worksheet->mergeCells('A'.$row.':D'.$row);
 			$worksheet->setCellValue('A'.$row, $ar['area']);
+			$worksheet
+				->getStyle('A'.$row.':A'.$row)
+				->getAlignment()
+				->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$worksheet
+				->getStyle('A'.$row.':A'.$row)
+				->applyFromArray($bold);
 			$row++;
 			foreach ($subassy_list as $sub) {
 				if ($sub['area'] == $ar['area']) {
 					$worksheet->mergeCells('A'.$row.':D'.$row);
 					$worksheet->setCellValue('A'.$row, $sub['subassy_desc']);
+					$worksheet
+						->getStyle('A'.$row.':A'.$row)
+						->applyFromArray($bold);
 					$no = 1;
 					$row++;
 					foreach ($component_list as $comp) {
@@ -326,6 +326,39 @@ class C_StockControlNew extends CI_Controller {
 	}
 
 	public function export_pdf(){
-		echo "<center><h1>Under Construction</h1></center>";
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+
+		$pdf = new mPDF('', 'A4-L');
+
+		$filename = 'Report-Kekurangan-Komponen-'.time();
+
+		$data['area_list'] = $this->M_stock_control_new->area_export();
+		$data['subassy_list'] = $this->M_stock_control_new->subassy_export();
+		$data['component_list'] = $this->M_stock_control_new->component_export();
+		$data['periode'] = $this->M_stock_control_new->periode_export();
+
+		$stylesheet = file_get_contents('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');
+
+		$html = $this->load->view('StockControl/StockControlNew/V_table_pdf', $data, true);
+
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'D');
+	}
+
+	public function monitoring_kekurangan(){
+		$data['area_list'] = $this->M_stock_control_new->area_export();
+		$data['subassy_list'] = $this->M_stock_control_new->subassy_export();
+		$data['component_list'] = $this->M_stock_control_new->component_export();
+		$data['periode'] = $this->M_stock_control_new->periode_export();
+
+		foreach ($data['component_list'] as $comp) {
+			foreach ($data['periode'] as $per) {
+				$data['data_'.$comp['master_data_id'].'_'.$per['plan_id']] = $this->M_stock_control_new->transaction_export($comp['master_data_id'],$per['plan_id']);
+			}
+		}
+
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_Kekurangan', $data);
 	}
 }

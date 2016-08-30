@@ -20,7 +20,8 @@
 							Stock Control
 						</div>
 						<div class="box-body" align="center">
-							<a href="<?php echo site_url('StockControl/stock-control-new/monitoring') ?>" class="btn btn-success btn-lg"><i class="fa fa-play"></i> Start</a>
+							<a href="<?php echo site_url('StockControl/stock-control-new/monitoring') ?>" class="btn btn-success btn-lg"><i class="fa fa-cubes"></i> Input Stock</a>
+							<a href="<?php echo site_url('StockControl/stock-control-new/monitoring_kekurangan') ?>" class="btn btn-success btn-lg"><i class="fa fa-search"></i> Monitoring Kekurangan</a>
 						</div>
 					</div>
 				</div>

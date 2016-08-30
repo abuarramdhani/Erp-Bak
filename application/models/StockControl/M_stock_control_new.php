@@ -73,7 +73,7 @@ class M_stock_control_new extends CI_Model {
 		return;
 	}
 
-	public function area_export($area,$subassy,$from,$to){
+	public function area_export(){
 		$sql="select distinct(md.area) from
 				stock_control_new.transaction tr
 				left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
@@ -83,7 +83,7 @@ class M_stock_control_new extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function subassy_export($area,$subassy,$from,$to){
+	public function subassy_export(){
 		$sql="select distinct(md.subassy_desc),md.area from
 				stock_control_new.transaction tr
 				left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
@@ -93,7 +93,7 @@ class M_stock_control_new extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function component_export($area,$subassy,$from,$to){
+	public function component_export(){
 		$sql="select distinct(md.component_desc),md.master_data_id,md.component_code,md.qty_component_needed,md.area,md.sequence,md.subassy_desc from
 			stock_control_new.transaction tr
 			left join stock_control_new.master_data md on md.master_data_id = tr.master_data_id
@@ -103,7 +103,7 @@ class M_stock_control_new extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function periode_export($area,$subassy,$from,$to){
+	public function periode_export(){
 		$sql="select distinct(pp.plan_date), pp.plan_id from stock_control_new.plan_production pp
 				left join stock_control_new.transaction tr on pp.plan_id = tr.plan_id
 				where tr.transaction_id is not null
