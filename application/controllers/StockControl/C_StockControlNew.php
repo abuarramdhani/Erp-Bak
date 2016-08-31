@@ -61,8 +61,8 @@ class C_StockControlNew extends CI_Controller {
 		$data['stock_on_date'] = $this->M_stock_control_new->qty_plan($data['from'],$data['to']);
 
 		$this->load->view('StockControl/StockControlNew/V_Monitoring',$data);
-		$this->load->view('StockControl/StockControlNew/V_table',$data);
-		$this->load->view('StockControl/StockControlNew/V_foot',$data);
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_table',$data);
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_footer',$data);
 	}
 
 	public function getData()
@@ -97,7 +97,7 @@ class C_StockControlNew extends CI_Controller {
 			}
 		}
 
-		$this->load->view('StockControl/StockControlNew/V_table',$data);
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_table',$data);
 	}
 
 	public function saveTransaction()
@@ -348,10 +348,14 @@ class C_StockControlNew extends CI_Controller {
 	}
 
 	public function monitoring_kekurangan(){
-		$data['area_list'] = $this->M_stock_control_new->area_export();
-		$data['subassy_list'] = $this->M_stock_control_new->subassy_export();
-		$data['component_list'] = $this->M_stock_control_new->component_export();
-		$data['periode'] = $this->M_stock_control_new->periode_export();
+		$data['from'] = date('Y-m-d 00:00:00');
+		$data['to'] = date('Y-m-d 23:59:59');
+
+		$data['area_list'] = $this->M_stock_control_new->area_export($data['from'],$data['to']);
+		$data['subassy_list'] = $this->M_stock_control_new->subassy_export($data['from'],$data['to']);
+		$data['component_list'] = $this->M_stock_control_new->component_export($data['from'],$data['to']);
+		$data['periode'] = $this->M_stock_control_new->qty_plan($data['from'],$data['to']);
+
 
 		foreach ($data['component_list'] as $comp) {
 			foreach ($data['periode'] as $per) {
@@ -360,5 +364,26 @@ class C_StockControlNew extends CI_Controller {
 		}
 
 		$this->load->view('StockControl/StockControlNew/V_Monitoring_Kekurangan', $data);
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_Kekurangan_table', $data);
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_Kekurangan_footer', $data);
+	}
+
+	public function getDataKekurangan(){
+		$from = $this->input->post('txt_date_from_kekurangan');
+		$to = $this->input->post('txt_date_to_kekurangan');
+
+		$data['area_list'] = $this->M_stock_control_new->area_export($from,$to);
+		$data['subassy_list'] = $this->M_stock_control_new->subassy_export($from,$to);
+		$data['component_list'] = $this->M_stock_control_new->component_export($from,$to);
+		$data['periode'] = $this->M_stock_control_new->qty_plan($from,$to);
+
+
+		foreach ($data['component_list'] as $comp) {
+			foreach ($data['periode'] as $per) {
+				$data['data_'.$comp['master_data_id'].'_'.$per['plan_id']] = $this->M_stock_control_new->transaction_export($comp['master_data_id'],$per['plan_id']);
+			}
+		}
+
+		$this->load->view('StockControl/StockControlNew/V_Monitoring_Kekurangan_table', $data);
 	}
 }
