@@ -147,7 +147,7 @@
 						<div style="background-color: #D81B60;" class="color-palette"></div>
 					</div>
 					<div class="col-lg-9">
-						*DILENGKAPI PPIC ?
+						PPIC READY
 					</div>
 				</div>
 				<div class="row" style="margin: 10px 10px;vertical-align: middle">
@@ -160,18 +160,18 @@
 				</div>
 				<div class="row" style="margin: 10px 10px;vertical-align: middle">
 					<div class="col-lg-3" style="">
-						<div style="background-color: #000;" class="color-palette"></div>
+						<div style="background-color: #001a35;" class="color-palette"></div>
 					</div>
 					<div class="col-lg-9">
-						WIP ?
+						WIP
 					</div>
 				</div>
 				<div class="row" style="margin: 10px 10px;vertical-align: middle">
 					<div class="col-lg-3" style="">
-						<div style="background-color: #000;" class="color-palette"></div>
+						<div style="background-color: #555299;" class="color-palette"></div>
 					</div>
 					<div class="col-lg-9">
-						NEW ?
+						NEW
 					</div>
 				</div>
 			</div>

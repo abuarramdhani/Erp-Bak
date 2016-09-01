@@ -838,6 +838,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-	
 });

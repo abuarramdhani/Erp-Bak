@@ -32,8 +32,8 @@
 			</div>
 			<div class="col-md-2" align="center">
 				<h3 class="pull-right">
-					<a data-toggle="tooltip" data-placement="left" title="Export All Data to Excel File" href="<?php echo base_url('StockControl/stock-control-new/export_excel')?>" class="btn btn-xs btn-primary faa-parent animated-hover"><i class="fa fa-file-excel-o faa-flash"></i></a>
-					<a data-toggle="tooltip" data-placement="left" title="Export All Data to PDF File" href="<?php echo base_url('StockControl/stock-control-new/export_pdf')?>" class="btn btn-xs btn-primary faa-parent animated-hover"><i class="fa fa-file-pdf-o faa-flash"></i></a>
+					<button id="export_excel" data-toggle="tooltip" data-placement="left" title="Export All Data to Excel File" class="btn btn-xs btn-primary faa-parent animated-hover"><i class="fa fa-file-excel-o faa-flash"></i></button>
+					<button id="export_pdf" data-toggle="tooltip" data-placement="left" title="Export All Data to PDF File" class="btn btn-xs btn-primary faa-parent animated-hover"><i class="fa fa-file-pdf-o faa-flash"></i></button>
 					<span data-toggle="tooltip" data-placement="left" title="Refresh" onclick="window.location.reload()" class="btn btn-xs btn-success faa-parent animated-hover"><i class="fa fa-refresh faa-spin"></i></span>
 					<a data-toggle="tooltip" data-placement="left" title="Close Monitoring" href="<?php echo site_url('StockControl/stock-control-new')?>" class="btn btn-xs btn-danger faa-parent animated-hover"><i class="fa fa-close faa-flash"></i></a>
 				</h3>

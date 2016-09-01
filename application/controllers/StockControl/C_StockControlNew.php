@@ -160,6 +160,9 @@ class C_StockControlNew extends CI_Controller {
 
 	public function export_excel()
 	{
+		$from = $this->input->post('txt_date_from_kekurangan');
+		$to = $this->input->post('txt_date_to_kekurangan');
+
 		$styleArray = array(
 			'font'  => array(
 				'bold'  => true,
@@ -171,10 +174,10 @@ class C_StockControlNew extends CI_Controller {
 				'bold'  => true,
 			));
 
-		$area_list = $this->M_stock_control_new->area_export();
-		$subassy_list = $this->M_stock_control_new->subassy_export();
-		$component_list = $this->M_stock_control_new->component_export();
-		$periode = $this->M_stock_control_new->periode_export();
+		$area_list = $this->M_stock_control_new->area_export($from,$to);
+		$subassy_list = $this->M_stock_control_new->subassy_export($from,$to);
+		$component_list = $this->M_stock_control_new->component_export($from,$to);
+		$periode = $this->M_stock_control_new->qty_plan($from,$to);
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -326,6 +329,9 @@ class C_StockControlNew extends CI_Controller {
 	}
 
 	public function export_pdf(){
+		$from = $this->input->post('txt_date_from_kekurangan');
+		$to = $this->input->post('txt_date_to_kekurangan');
+
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
@@ -333,10 +339,10 @@ class C_StockControlNew extends CI_Controller {
 
 		$filename = 'Report-Kekurangan-Komponen-'.time();
 
-		$data['area_list'] = $this->M_stock_control_new->area_export();
-		$data['subassy_list'] = $this->M_stock_control_new->subassy_export();
-		$data['component_list'] = $this->M_stock_control_new->component_export();
-		$data['periode'] = $this->M_stock_control_new->periode_export();
+		$data['area_list'] = $this->M_stock_control_new->area_export($from,$to);
+		$data['subassy_list'] = $this->M_stock_control_new->subassy_export($from,$to);
+		$data['component_list'] = $this->M_stock_control_new->component_export($from,$to);
+		$data['periode'] = $this->M_stock_control_new->qty_plan($from,$to);
 
 		$stylesheet = file_get_contents('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');
 

@@ -110,7 +110,7 @@
 				})
 			}
 
-			$("#periode1").change(function(){
+				$("#periode1").change(function(){
 				var date_from = $(this).val();
 				getMinDate1(date_from);
 			})
@@ -144,6 +144,15 @@
 			setTimeout(function () {
 				window.location.reload();
 			},(900000));
+
+			$("#export_excel").click(function(){
+				$("#filter_periode").attr('action', '<?php echo base_url('StockControl/stock-control-new/export_excel'); ?>');
+				$("#filter_periode").submit();
+			});
+			$("#export_pdf").click(function(){
+				$("#filter_periode").attr('action', '<?php echo base_url('StockControl/stock-control-new/export_pdf'); ?>');
+				$("#filter_periode").submit();
+			});
 		</script>
 	</body>
 </html>
