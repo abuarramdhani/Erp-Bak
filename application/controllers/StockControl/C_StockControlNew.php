@@ -142,13 +142,13 @@ class C_StockControlNew extends CI_Controller {
 			}
 
 			if ($status == 'LENGKAP') {
-				$style = "border-color: #008d4c ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #008d4c;";
+				$style = "border-color: #008d4c ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #008d4c;";
 			}
 			elseif ($status == 'KURANG') {
-				$style = "border-color: #d33724 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d33724;";
+				$style = "border-color: #d33724 ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #d33724;";
 			}
 			elseif ($status == 'DILENGKAPI') {
-				$style = "border-color: #357ca5 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #357ca5;";
+				$style = "border-color: #357ca5 ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #357ca5;";
 			}
 			else{
 				$style ="";

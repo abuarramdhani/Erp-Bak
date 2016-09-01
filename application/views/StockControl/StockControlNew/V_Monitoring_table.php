@@ -102,22 +102,22 @@
 												$status = $td['status'];
 											}
 											if ($status == 'LENGKAP') {
-												$style = "border-color: #008d4c ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #008d4c;";
+												$style = "border-color: #008d4c ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #008d4c;";
 											}
 											elseif ($status == 'KURANG') {
-												$style = "border-color: #d33724 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d33724;";
+												$style = "border-color: #d33724 ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #d33724;";
 											}
 											elseif ($status == 'DILENGKAPI') {
-												$style = "border-color: #357ca5 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #357ca5;";
+												$style = "border-color: #357ca5 ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #357ca5;";
 											}
 											elseif ($status == 'ON PPIC') {
-												$style = "border-color: #db8b0b ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #db8b0b;";
+												$style = "border-color: #db8b0b ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #db8b0b;";
 											}
 											elseif ($status == 'DILENGKAPI PPIC') {
-												$style = "border-color: #D81B60 ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #D81B60;";
+												$style = "border-color: #D81B60 ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #D81B60;";
 											}
 											elseif ($status == 'GUDANG READY') {
-												$style = "border-color: #39CCCC ; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #39CCCC;";
+												$style = "border-color: #39CCCC ; box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.075) inset, 5px 5px 5px #39CCCC;";
 											}
 											else{
 												$style = '';
