@@ -11,9 +11,15 @@ class M_user extends CI_Model {
 		
 		public function getUser($user_id=FALSE)
 		{	if($user_id === FALSE){
-				$sql = "select * from sys.vi_sys_user";
+				$sql = "
+					select *,
+						case when employee_name is null then '-' else employee_name end as employee_name
+					from sys.vi_sys_user";
 			}else{
-				$sql = "select * from sys.vi_sys_user  where user_id=$user_id";
+				$sql = "
+					select *,
+					case when employee_name is null then '-' else employee_name end as employee_name
+					from sys.vi_sys_user  where user_id=$user_id";
 			}						
 			
 			$query = $this->db->query($sql);
