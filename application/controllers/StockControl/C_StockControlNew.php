@@ -294,7 +294,7 @@ class C_StockControlNew extends CI_Controller {
 											$qty_needed = $tr_status['qty_plan']*$tr_status['qty_component_needed'];
 											$qty_actual = $tr_status['qty'];
 											$qty_kurang = ($tr_status['qty_plan']*$tr_status['qty_component_needed'])-$tr_status['qty'];
-											$status = $tr_status['status'];
+											$status = $tr_status['status_publish'];
 										//}
 									}
 											$column = PHPExcel_Cell::stringFromColumnIndex($col);

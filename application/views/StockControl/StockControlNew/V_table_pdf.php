@@ -133,7 +133,7 @@
 																	$qty_needed = $tr_status['qty_plan']*$tr_status['qty_component_needed'];
 																	$qty_actual = $tr_status['qty'];
 																	$qty_kurang = ($tr_status['qty_plan']*$tr_status['qty_component_needed'])-$tr_status['qty'];
-																	$status = $tr_status['status'];
+																	$status = $tr_status['status_publish'];
 																}
 								?>
 									<td><?php echo $qty_needed?></td>
