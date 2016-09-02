@@ -20,6 +20,7 @@
 		<script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
 		<style type="text/css">
 			.color-palette {
+				width: 30px;
 				height: 10px;
 				margin-top: 5px;
 				line-height: 35px;
@@ -107,73 +108,65 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-lg-3">
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #008d4c;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						LENGKAP
-					</div>
-				</div>
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #d33724;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						KURANG
-					</div>
-				</div>
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #357ca5;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						DILENGKAPI
-					</div>
-				</div>
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #db8b0b;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						ON PPIC
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #D81B60;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						PPIC READY
-					</div>
-				</div>
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #39CCCC;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						GUDANG READY
-					</div>
-				</div>
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #001a35;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						WIP
-					</div>
-				</div>
-				<div class="row" style="margin: 10px 10px;vertical-align: middle">
-					<div class="col-lg-3" style="">
-						<div style="background-color: #555299;" class="color-palette"></div>
-					</div>
-					<div class="col-lg-9">
-						NEW
-					</div>
-				</div>
+			<div class="col-lg-6">
+				<table class="table no-border">
+					<tr>
+						<td>
+							<div style="background-color: #008d4c;" class="color-palette"></div>
+						</td>
+						<td>
+							LENGKAP
+						</td>
+						<td>
+							<div style="background-color: #D81B60;" class="color-palette"></div>
+						</td>
+						<td>
+							SIAP SUPPLY KE GUDANG (PIC : PPIC)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="background-color: #d33724;" class="color-palette"></div>
+						</td>
+						<td>
+							DATA BARU (PIC : GUDANG)
+						</td>
+						<td>
+							<div style="background-color: #39CCCC;" class="color-palette"></div>
+						</td>
+						<td>
+							SIAP SUPPLY KE RAK (PIC : GUDANG)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="background-color: #357ca5;" class="color-palette"></div>
+						</td>
+						<td>
+							DILENGKAPI
+						</td>
+						<td>
+							<div style="background-color: #001a35;" class="color-palette"></div>
+						</td>
+						<td>
+							PROSES PRODUKSI (PIC : PPIC)
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="background-color: #db8b0b;" class="color-palette"></div>
+						</td>
+						<td>
+							DATA BARU (PIC : PPIC)
+						</td>
+						<td>
+							<div style="background-color: #555299;" class="color-palette"></div>
+						</td>
+						<td>
+							BELUM DIBUATKAN JOB (PIC : PPIC)
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="row">
