@@ -37,19 +37,22 @@ class M_Realization extends CI_Model {
 	}
 
 	public function update_realization($realization_id,$employee_id,$area_id,$city_type_id,$depart,$return,$bon){
-		$sql="update ga.ga_outstation_realization set employee_id='$employee_id', area_id='$area_id', city_type_id='$city_type_id' where realization_id='$realization_id'";
+		$sql="update ga.ga_outstation_realization set employee_id='$employee_id', area_id='$area_id', city_type_id='$city_type_id', depart_time='$depart', return_time='$return', bon_nominal='$bon' where realization_id='$realization_id'";
 		$query = $this->db->query($sql);
+		echo $sql;
 		return;
 	}
 
 	public function delete_before_update($realization_id){
 		$sql="delete from ga.ga_outstation_realization_detail where realization_id='$realization_id'";
 		$query = $this->db->query($sql);
+		echo $sql;
 		return;
 	}
 	public function update_realization_detail($realization_id,$component_id,$info,$qty,$component_nominal){
 		$sql="insert into ga.ga_outstation_realization_detail (realization_id, component_id, info, qty, nominal) values ('$realization_id','$component_id','$info','$qty','$component_nominal')";
 		$query = $this->db->query($sql);
+		echo $sql;
 		return;
 	}
 

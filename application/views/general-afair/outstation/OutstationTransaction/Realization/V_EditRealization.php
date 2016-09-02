@@ -91,7 +91,7 @@
 													<td>Outstation Position</td>
 													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
 													<td>Bon</td>
-													<td><input id="txt_bon" type="text" name="txt_bon" value="<?php echo $drel['bon_nominal'] ?> " class="form-control input_money" required></td>
+													<td><input  id="txt_bon" type="text" name="txt_bon" value="<?php echo str_replace(',00', '', $drel['bon_nominal']); ?> " class="form-control input_money" required></td>
 												</tr>
 												<tr>
 													<td colspan="4">
@@ -118,39 +118,85 @@
 											</table>
 										<label>Estimate Allowance</label>
 										<div class="row2" id="estimate-allowance">
-											<div class="col-md-4">
-												<div class="row">
-													<div class="col-md-7">
-														Meal Allowance
+											<div class="col-md-6">
+												<div class="row" style="margin-bottom: 10px;">
+													<div class="col-md-4">
+														Meal
 													</div>
-													<div class="col-md-5">
-														<p id="meal-estimate"><?php echo $total_meal; ?></p>
+													<div class="col-md-8">
+														<div class="row">
+															<table>
+																<tr>
+																	<td><?php echo $meal_pagi ?> Pagi</td>
+																	<td>&emsp;X&emsp;</td>
+																	<td>Rp.<?php echo number_format($nom_meal_pagi, 2, ',', '.') ?></td>
+																	<td>&emsp;=&emsp;</td>
+																	<td align="right">Rp.<?php echo number_format($total_meal_pagi, 2, ',', '.')  ?></td>
+																</tr>
+																<tr>
+																	<td><?php echo $meal_siang ?> Siang</td>
+																	<td>&emsp;X&emsp;</td>
+																	<td>Rp.<?php echo number_format($nom_meal_siang, 2, ',', '.')  ?></td>
+																	<td>&emsp;=&emsp;</td>
+																	<td align="right">Rp.<?php echo number_format($total_meal_siang, 2, ',', '.')  ?></td>
+																</tr>
+																<tr>
+																	<td><?php echo $meal_malam ?> Malam</td>
+																	<td>&emsp;X&emsp;</td>
+																	<td>Rp.<?php echo number_format($nom_meal_malam, 2, ',', '.')  ?></td>
+																	<td>&emsp;=&emsp;</td>
+																	<td align="right">Rp.<?php echo number_format($total_meal_malam, 2, ',', '.')  ?></td>
+																</tr>
+																<tr>
+																	<td colspan="3">Total Meal Allowance</td>
+																	<td>&emsp;=&emsp;</td>
+																	<td align="right"><?php echo $total_meal  ?></td>
+																</tr>
+															</table>
+														</div>
 													</div>
 												</div>
-												<div class="row">
-													<div class="col-md-7">
-														Accomodation Allowance
+												<div class="row" style="margin-bottom: 10px;">
+													<div class="col-md-4">
+														Accomodation
 													</div>
-													<div class="col-md-5">
-														<p id="accomodation-estimate"><?php echo $total_acc; ?></p>
+													<div class="col-md-8">
+														<div class="row">
+															<table>
+																<tr>
+																	<td><?php echo $meal_malam ?> Malam</td>
+																	<td>&emsp;X&emsp;</td>
+																	<td align="right">Rp.<?php echo number_format($nom_inn_malam, 2, ',', '.')  ?></td>
+																	<td>&emsp;=&emsp;</td>
+																	<td align="right"><?php echo $total_acc  ?></td>
+																</tr>
+																<tr>
+																	<td colspan="3">Total Accomodation Allowance</td>
+																	<td>&emsp;=&emsp;</td>
+																	<td align="right"><?php echo $total_acc  ?></td>
+																</tr>
+															</table>
+														</div>
 													</div>
 												</div>
-												<div class="row">
-													<div class="col-md-7">
+												<div class="row" style="margin-bottom: 10px;">
+													<div class="col-md-4">
 														 USH
 													</div>
-													<div class="col-md-5">
-														<p id="ush-estimate"><?php echo $total_ush; ?></p>
+													<div class="col-md-8">
+														<div class="row">
+															<p id="ush-estimate"><?php echo $total_ush  ?></p>
+														</div>
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4">
-												<div class="row">
-													<div class="col-md-5">
+											<div class="col-md-6">
+												<div class="row" style="margin-bottom: 10px;">
+													<div class="col-md-4">
 														Total Estimated
 													</div>
-													<div class="col-md-5">
-														<p id="total-estimate"><?php echo $total_all; ?></p>
+													<div class="col-md-8">
+														<p id="total-estimate"><?php echo $total_all  ?></p>
 													</div>
 												</div>
 											</div>
@@ -158,7 +204,6 @@
 										<div class="row2">
 											<div class="col-md-12">
 												<span id="add-row" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i></span>
-												<input type="hidden" id="data_counter" name="txt_data_counter" value="0">
 											</div>
 										</div>
 										<table id="realization_detail" class="table table-bordered table-striped table-hover">
@@ -212,7 +257,7 @@
 													$counter++;
 													} ?>
 												<script type="text/javascript">
-													var counter_row = <?php echo $counter; ?>;
+													
 												</script>
 											</tbody>
 											<tfoot>
@@ -223,6 +268,7 @@
 												</tr>
 											</tfoot>
 										</table>
+										<input type="hidden" id="data_counter" name="txt_data_counter" value="<?php echo $counter; ?>">
 										<table width="100%">
 											<tr>
 												<td colspan="8">

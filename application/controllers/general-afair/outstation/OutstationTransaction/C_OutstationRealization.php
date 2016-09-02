@@ -120,6 +120,13 @@ class C_OutstationRealization extends CI_Controller {
 		$period = new DatePeriod($begin, $interval, $end);
 		$count = $begin->diff($end)->days;
 		$indexx=0;
+		$meal_pagi = 0;
+		$meal_siang = 0;
+		$meal_malam = 0;
+		$nom_meal_pagi = '';
+		$nom_meal_siang = '';
+		$nom_meal_malam = '';
+		$nom_inn_malam = '';
 		foreach ( $period as $dt ){
 			$count--;
 			if ($count == 0) {
@@ -139,6 +146,7 @@ class C_OutstationRealization extends CI_Controller {
 								$indexx++;
 								if ($time == $y) {
 									$acc_nominal = $aa['nominal'];
+									$nom_inn_malam = $aa['nominal'];
 								}
 								else{
 									$acc_nominal = '0';
@@ -154,6 +162,18 @@ class C_OutstationRealization extends CI_Controller {
 								$acc = array($indexx =>$acc_nominal);
 								//$meal[$indexx] = $ma['nominal'];
 								//$acc[$indexx] = $acc_nominal;
+								if (strtolower($ma['time_name']) == strtolower("Pagi")) {
+									$meal_pagi++;
+									$nom_meal_pagi = $ma['nominal'];
+								}
+								if (strtolower($ma['time_name']) == strtolower("Siang")) {
+									$meal_siang++;
+									$nom_meal_siang = $ma['nominal'];
+								}
+								if (strtolower($ma['time_name']) == strtolower("Malam")) {
+									$meal_malam++;
+									$nom_meal_malam = $ma['nominal'];
+								}
 
 								$string = array('Rp',',00','.');
 								$remover = array('');
@@ -177,40 +197,89 @@ class C_OutstationRealization extends CI_Controller {
 				$i=1;
 		}
 				if($meal_allowance AND $accomodation_allowance AND $group_ush){
+					$total_meal_pagi = $meal_pagi*$nom_meal_pagi;
+					$total_meal_siang = $meal_siang*$nom_meal_siang;
+					$total_meal_malam = $meal_malam*$nom_meal_malam;
 					echo '
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-7">
-									Meal Allowance
+						<div class="col-md-6">
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
+									Meal
 								</div>
-								<div class="col-md-5">
-									<p id="meal-estimate">Rp'.number_format($total_meal , 2, ',', '.').'</p>
+								<div class="col-md-8">
+									<div class="row">
+										<table>
+											<tr>
+												<td>'.$meal_pagi.' Pagi</td>
+												<td>&emsp;X&emsp;</td>
+												<td>Rp.'.number_format($nom_meal_pagi , 2, ',', '.').'</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.'.number_format($total_meal_pagi , 2, ',', '.').'</td>
+											</tr>
+											<tr>
+												<td>'.$meal_siang.' Siang</td>
+												<td>&emsp;X&emsp;</td>
+												<td>Rp.'.number_format($nom_meal_siang , 2, ',', '.').'</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.'.number_format($total_meal_siang , 2, ',', '.').'</td>
+											</tr>
+											<tr>
+												<td>'.$meal_malam.' Malam</td>
+												<td>&emsp;X&emsp;</td>
+												<td>Rp.'.number_format($nom_meal_malam , 2, ',', '.').'</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.'.number_format($total_meal_malam , 2, ',', '.').'</td>
+											</tr>
+											<tr>
+												<td colspan="3">Total Meal Allowance</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.'.number_format($total_meal , 2, ',', '.').'</td>
+											</tr>
+										</table>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-7">
-									Accomodation Allowance
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
+									Accomodation
 								</div>
-								<div class="col-md-5">
-									<p id="accomodation-estimate">Rp'.number_format($total_acc , 2, ',', '.').'</p>
+								<div class="col-md-8">
+									<div class="row">
+										<table>
+											<tr>
+												<td>'.$meal_malam.' Malam</td>
+												<td>&emsp;X&emsp;</td>
+												<td align="right">Rp.'.number_format($nom_inn_malam , 2, ',', '.').'</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.'.number_format($total_acc , 2, ',', '.').'</td>
+											</tr>
+											<tr>
+												<td colspan="3">Total Accomodation Allowance</td>
+												<td>&emsp;=&emsp;</td>
+												<td>Rp.'.number_format($total_acc , 2, ',', '.').'</td>
+											</tr>
+										</table>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-7">
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
 									 USH
 								</div>
-								<div class="col-md-5">
-									<p id="ush-estimate">Rp'.number_format($total_ush , 2, ',', '.').'</p>
+								<div class="col-md-8">
+									<div class="row">
+										<p id="ush-estimate">Rp.'.number_format($total_ush , 2, ',', '.').'</p>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-5">
+						<div class="col-md-6">
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
 									Total Estimated
 								</div>
-								<div class="col-md-5">
-									<p id="total-estimate">Rp'.number_format($total_all , 2, ',', '.').'</p>
+								<div class="col-md-8">
+									<p id="total-estimate">Rp.'.number_format($total_all , 2, ',', '.').'</p>
 								</div>
 							</div>
 						</div>
@@ -218,24 +287,68 @@ class C_OutstationRealization extends CI_Controller {
 				}
 				else{
 					echo '
-						<div class="col-md-4">
-							<div class="row">
-								<div class="col-md-7">
-									Meal Allowance
+						<div class="col-md-6">
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
+									Meal
 								</div>
-								<div class="col-md-5">
-									<p id="meal-estimate">Rp0,00</p>
+								<div class="col-md-8">
+									<div class="row">
+										<table>
+											<tr>
+												<td>0 Pagi</td>
+												<td>&emsp;X&emsp;</td>
+												<td>Rp.0,00</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.0,00</td>
+											</tr>
+											<tr>
+												<td>0 Siang</td>
+												<td>&emsp;X&emsp;</td>
+												<td>Rp.0,00</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.0,00</td>
+											</tr>
+											<tr>
+												<td>0 Malam</td>
+												<td>&emsp;X&emsp;</td>
+												<td>Rp.0,00</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.0,00</td>
+											</tr>
+											<tr>
+												<td colspan="3">Total Meal Allowance</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.0,00</td>
+											</tr>
+										</table>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-7">
-									Accomodation Allowance
+							<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
+									Accomodation
 								</div>
-								<div class="col-md-5">
-									<p id="accomodation-estimate">Rp0,00</p>
+								<div class="col-md-8">
+									<div class="row">
+										<table>
+											<tr>
+												<td>0 Malam</td>
+												<td>&emsp;X&emsp;</td>
+												<td align="right">Rp.0,00</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.0,00</td>
+											</tr>
+											<tr>
+												<td colspan="3">Total Accomodation Allowance</td>
+												<td>&emsp;=&emsp;</td>
+												<td>Rp.0,00</td>
+											</tr>
+										</table>
+									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" style="margin-bottom: 10px;">
 								<div class="col-md-7">
 									 USH
 								</div>
@@ -244,8 +357,8 @@ class C_OutstationRealization extends CI_Controller {
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="row">
+						<div class="col-md-6">
+							<div class="row" style="margin-bottom: 10px;">
 								<div class="col-md-5">
 									Total Estimated
 								</div>
@@ -359,6 +472,13 @@ class C_OutstationRealization extends CI_Controller {
 			$period = new DatePeriod($begin, $interval, $end);
 			$count = $begin->diff($end)->days;
 			$indexx=0;
+			$data['meal_pagi'] = 0;
+			$data['meal_siang'] = 0;
+			$data['meal_malam'] = 0;
+			$data['nom_meal_pagi'] = '';
+			$data['nom_meal_siang'] = '';
+			$data['nom_meal_malam'] = '';
+			$data['nom_inn_malam'] = '';
 			foreach ( $period as $dt ){
 				$count--;
 				if ($count == 0) {
@@ -378,6 +498,7 @@ class C_OutstationRealization extends CI_Controller {
 									$indexx++;
 									if ($time == $y) {
 										$acc_nominal = $aa['nominal'];
+										$data['nom_inn_malam'] = $aa['nominal'];
 									}
 									else{
 										$acc_nominal = '0';
@@ -393,6 +514,18 @@ class C_OutstationRealization extends CI_Controller {
 									$acc = array($indexx =>$acc_nominal);
 									//$meal[$indexx] = $ma['nominal'];
 									//$acc[$indexx] = $acc_nominal;
+									if (strtolower($ma['time_name']) == strtolower("Pagi")) {
+										$data['meal_pagi']++;
+										$data['nom_meal_pagi'] = $ma['nominal'];
+									}
+									if (strtolower($ma['time_name']) == strtolower("Siang")) {
+										$data['meal_siang']++;
+										$data['nom_meal_siang'] = $ma['nominal'];
+									}
+									if (strtolower($ma['time_name']) == strtolower("Malam")) {
+										$data['meal_malam']++;
+										$data['nom_meal_malam'] = $ma['nominal'];
+									}
 
 									$string = array('Rp',',00','.');
 									$remover = array('');
@@ -416,12 +549,18 @@ class C_OutstationRealization extends CI_Controller {
 					$i=1;
 			}
 					if($meal_allowance AND $accomodation_allowance AND $group_ush){
+						$data['total_meal_pagi'] = $data['meal_pagi']*$data['nom_meal_pagi'];
+						$data['total_meal_siang'] = $data['meal_siang']*$data['nom_meal_siang'];
+						$data['total_meal_malam'] = $data['meal_malam']*$data['nom_meal_malam'];
 						$data['total_meal'] = 'Rp'.number_format($total_meal , 2, ',', '.');
 						$data['total_acc'] = 'Rp'.number_format($total_acc , 2, ',', '.');
 						$data['total_ush'] = 'Rp'.number_format($total_ush , 2, ',', '.');
 						$data['total_all'] = 'Rp'.number_format($total_all , 2, ',', '.');
 					}
 					else{
+						$data['total_meal_pagi'] = 'Rp0,00';
+						$data['total_meal_siang'] = 'Rp0,00';
+						$data['total_meal_malam'] = 'Rp0,00';
 						$data['total_meal'] = 'Rp0,00';
 						$data['total_acc'] = 'Rp0,00';
 						$data['total_ush'] = 'Rp0,00';
@@ -467,7 +606,7 @@ class C_OutstationRealization extends CI_Controller {
 			}
 		}
 
-		redirect('Outstation/realization');
+		//redirect('Outstation/realization');
 	}
 
 	public function delete_realization($realization_id){

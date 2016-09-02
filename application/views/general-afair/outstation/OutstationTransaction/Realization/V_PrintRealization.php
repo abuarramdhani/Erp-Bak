@@ -32,7 +32,7 @@
 				}
 			}
 			$qty = $real_det['qty'];
-			$string = array('Rp',',00','.');
+			$string = array('Rp',',00','.','$');
 			$nominal = str_replace($string, '', $real_det['nominal']);
 
 			$total[$index] = $qty*$nominal;
