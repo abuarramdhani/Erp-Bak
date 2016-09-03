@@ -838,4 +838,58 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	
+// Catering	
+	$('.singledate').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		locale: {
+			format: 'YYYY-MM-DD'
+		},
+	})
+	
+	$('.doubledate').daterangepicker({
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		locale: {
+			format: 'YYYY-MM-DD'
+		},
+	})
+	
+	$("#orderqty,#singleprice,#fine").keyup(function() {
+
+			var $qty = $('#orderqty').val();
+			var $price = $('#singleprice').val();
+			var $calc = ($qty * $price);
+			var $fine = $('#fine').val();
+			var $pph = (2 / 100) * $calc;
+			var $total = $calc - $fine - $pph;
+			
+		$("#calc").val($calc);
+		$("#pph").val($pph);
+		$("#total").val($total);
+		payment();
+	});
+	
+	$("#payment").keyup(payment);
+	function payment(){
+		var $total = $('#total').val();
+		var $payment = $('#payment').val();
+		
+		if(($payment/1) < ($total/1)){
+			$('#payment').attr("style","border-color:#dd4b39;");
+		}
+		else if(($payment/1) > ($total/1)){
+			$('#payment').attr("style","border-color:#39CCCC;");
+		}
+		else{
+			$('#payment').removeAttr("style");
+		}
+		
+	};
+	
 });

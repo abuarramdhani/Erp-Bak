@@ -399,5 +399,14 @@ $route['StockControl/lapor-kekurangan/(:any)/(:any)/(:any)'] = 'StockControl/C_L
 $route['StockControl/stock-control-new'] = 'StockControl/C_StockControlNew/index';
 $route['StockControl/stock-control-new/(:any)'] = 'StockControl/C_StockControlNew/$1';
 
+//------------------------------------Catering Management---------------------------------------------------
+$route['CateringManagement'] = 'CateringManagement/C_CateringManagement/index';
+
+$route['CateringManagement/Receipt'] 				= 'CateringManagement/C_Receipt/index';
+$route['CateringManagement/Receipt/Create'] 		= 'CateringManagement/C_Receipt/create';
+$route['CateringManagement/Receipt/Add'] 			= 'CateringManagement/C_Receipt/add';
+$route['CateringManagement/Receipt/Details/(:any)']	= 'CateringManagement/C_Receipt/details/$1';
+$route['CateringManagement/Receipt/Print/(:any)']	= 'CateringManagement/C_Receipt/printreceipt/$1';
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
