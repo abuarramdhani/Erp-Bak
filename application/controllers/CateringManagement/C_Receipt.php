@@ -141,7 +141,7 @@ class C_Receipt extends CI_Controller {
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', array(210,165), 0, '', 3, 3, 3, 3);
+		$pdf = new mPDF('utf-8', array(215,80), 0, '', 0, 0, 0, 0);
 
 		$filename = 'Catering-Receipt-'.$id;
 		$this->checkSession();
