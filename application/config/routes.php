@@ -405,8 +405,11 @@ $route['CateringManagement'] = 'CateringManagement/C_CateringManagement/index';
 $route['CateringManagement/Receipt'] 				= 'CateringManagement/C_Receipt/index';
 $route['CateringManagement/Receipt/Create'] 		= 'CateringManagement/C_Receipt/create';
 $route['CateringManagement/Receipt/Add'] 			= 'CateringManagement/C_Receipt/add';
+$route['CateringManagement/Receipt/Update'] 			= 'CateringManagement/C_Receipt/update';
 $route['CateringManagement/Receipt/Details/(:any)']	= 'CateringManagement/C_Receipt/details/$1';
+$route['CateringManagement/Receipt/Edit/(:any)']	= 'CateringManagement/C_Receipt/edit/$1';
 $route['CateringManagement/Receipt/Print/(:any)']	= 'CateringManagement/C_Receipt/printreceipt/$1';
+$route['CateringManagement/Receipt/Delete/(:any)']	= 'CateringManagement/C_Receipt/delete/$1';
 
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';

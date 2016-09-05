@@ -1,160 +1,68 @@
 <?php foreach ($Receipt as $rc) {?>
-						<input type="hidden" name="TxtId" class="form-control" value="<?php echo $rc['receipt_id']?>" required>
-						<!-- INPUT GROUP 1 ROW 1 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">No.</label>
-								<div class="col-lg-6">
-									<input name="TxtNo" class="form-control toupper" placeholder="No." value="<?php echo $rc['receipt_no']?>" required>
-								</div>
+							<div class="col-md-12">
+								<a href="<?php echo base_url('CateringManagement/Receipt/Edit/'.$rc['receipt_id'])?>" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
+								<a href="<?php echo base_url('CateringManagement/Receipt/Print/'.$rc['receipt_id'])?>" class="btn btn-info"><i class="fa fa-print"></i> Print</a>
+								<a href="<?php echo base_url('CateringManagement/Receipt/Delete/'.$rc['receipt_id'])?>" class="btn btn-danger"><i class="fa fa-remove"></i> Delete</a>
 							</div>
-						</div>
-						<!-- INPUT GROUP 1 ROW 2 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Receipt Date</label>
-								<div class="col-lg-3">
-									<input name="TxtReceiptDate" class="form-control singledate" placeholder="Receipt Date" required >
-									<input type="hidden" id="receipt-date" value="<?php echo $rc['receipt_date'] ?>" />
-								</div>
-								<label class="col-lg-1 control-label" align="right">Place</label>
-								<div class="col-lg-2">
-									<input name="TxtPlace" class="form-control toupper" placeholder="Place" value="<?php echo $rc['receipt_place']?>" required >
-								</div>
-							</div>
-						</div>
-						<!-- INPUT GROUP 1 ROW 3 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">From</label>
-								<div class="col-lg-3">
-									<input name="TxtFrom" class="form-control toupper" placeholder="Company Name" value="<?php echo $rc['receipt_from']?>" required >
-								</div>
-								<label class="col-lg-1 control-label" align="right">Signer</label>
-								<div class="col-lg-2">
-									<input name="TxtSigner" class="form-control toupper" placeholder="Signer" value="<?php echo $rc['receipt_signer']?>" required >
-								</div>
-							</div>
-						</div>
-						<hr>
-											
-						<!-- INPUT GROUP 2 ROW 1 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Order Type</label>
-								<div class="col-lg-6">
-									<select class="form-control select4" name="TxtOrderType" placeholder="Select Order Type" required>
+							<div class="col-md-12">
+								<table style="font-size:14px" class="table table-bordered text-left" id="dataTables-customer">
 										<?php
-											foreach ($Type as $tp) {
-											$status1='';
-											if ($tp['type_id'] == $rc['order_type_id']){$status1='selected';}
+											$total = $rc['order_qty']*$rc['order_price'];
+											$grand = $total-$rc['fine']-$rc['pph'];
 										?>
-										<option <?php echo $status1 ?> value="<?php echo $tp['type_id']?>"><?php echo $tp['type_description']?></option>
-										<?php }?>
-									</select>
-								</div>
+									<tr>
+										<td colspan="2"></td>
+										<td width="15%">No.</td>
+										<td width="2%">:</td>
+										<td colspan="2"><?php echo $rc['receipt_no'] ?></td>
+									</tr>
+									<tr>
+										<td style="font-size:9px;" width="10%" rowspan="2" align="right">
+										<b>RICIAN :<br></b>
+										CALCULATION :<br>
+										(-) FINE :<br>
+										(-) PPH :<br>
+										TOTAL :<br>
+										</td>
+										<td style="font-size:9px;" width="9%" rowspan="2" align="right">
+										<?php echo '<br>'.number_format($total, 0 , ',' , '.' ).'<br>'.number_format($rc['fine'], 0 , ',' , '.' ).'<br>'.number_format($rc['pph'], 0 , ',' , '.' ).'<br>'.number_format($grand, 0 , ',' , '.' ) ?>
+										</td>
+										<td >TELAH DITERIMA DARI</td>
+										<td >:</td>
+										<td colspan="2"><?php echo $rc['receipt_from'] ?></td>
+									</tr>
+									<tr>
+										<td >UANG SEBANYAK</td>
+										<td >:</td>
+										<td colspan="2">Rp <?php echo number_format($rc['payment'], 2 , ',' , '.' ) ?></td>
+									</tr>
+									<tr>
+										<td style="font-size:10px;" colspan="2"></td>
+										<td >GUNA MEMBAYAR</td>
+										<td >:</td>
+										<td colspan="2"><?php echo $rc['type_description'].' '.$rc['catering_name'].' DARI TANGGAL '.$rc['order_start_date'].' - '.$rc['order_end_date'].' SEBANYAK '.$rc['order_qty'].' BOX @Rp '.$rc['order_price']  ?></td>
+									</tr>
+									<tr>
+										<td align="center" colspan="2"><?php echo $rc['short_receipt_date'] ?></td>
+										<td></td>
+										<td></td>
+										<td width="32%"></td>
+										<td width="32%"><?php echo $rc['receipt_place'].', '.$rc['receipt_date'] ?></td>
+									</tr>
+									<tr>
+										<td align="center" colspan="2"></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td>MENGETAHUI</td>
+									</tr>
+									<tr>
+										<td align="center" colspan="2"><?php echo $rc['receipt_signer'] ?></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>
 							</div>
-						</div>
-						<!-- INPUT GROUP 2 ROW 1.2 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Catering</label>
-								<div class="col-lg-6">
-									<select class="form-control select4" name="TxtCatering" placeholder="Select Order Type" required>
-										<?php 
-											foreach ($Catering as $cr) {
-											$status2='';
-											if ($cr['catering_id'] == $rc['catering_id']){$status2='selected';}
-										?>
-											<option <?php echo $status2 ?> value="<?php echo $cr['catering_id']?>"><?php echo $cr['catering_name']?></option>
-										<?php }?>
-									</select>
-								</div>
-							</div>
-						</div>
-						<!-- INPUT GROUP 2 ROW 2 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Order Date</label>
-								<div class="col-lg-6">
-									<input name="TxtOrderDate" class="form-control doubledate" placeholder="Order Date" required >
-									<input type="hidden" id="order-start-date" value="<?php echo $rc['order_start_date'] ?>" />
-									<input type="hidden" id="order-end-date" value="<?php echo $rc['order_end_date'] ?>" />
-								</div>
-							</div>
-						</div>
-						
-						<!-- INPUT GROUP 2 ROW 3 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Order Qty</label>
-								<div class="col-lg-3">
-									<input id="orderqty" name="TxtOrderQty" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Order Qty" value="<?php echo $rc['order_qty']?>" required >
-								</div>	
-								<label class="col-lg-1 control-label" align="right">@</label>
-								<div class="col-lg-2">
-									<input id="singleprice" name="TxtSinglePrice" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Price per qty" value="<?php echo $rc['order_price']?>" required >
-								</div>
-								
-							</div>
-						</div>
-						<hr>
-						
-						<!-- INPUT GROUP 3 ROW 1 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Calculation</label>
-								<div class="col-lg-3">
-									<input id="calc" name="TxtCalc" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Calc" value="0" readonly>
-								</div>								
-							</div>
-						</div>
-						<!-- INPUT GROUP 3 ROW 1 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Fine</label>
-								<div class="col-lg-3">
-									<input id="fine" name="TxtFine" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Fine" value="<?php echo $rc['fine']?>">
-								</div>								
-							</div>
-						</div>
-						<!-- INPUT GROUP 3 ROW 2 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">PPH (2%)</label>
-								<div class="col-lg-3">
-									<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" value="<?php echo $rc['pph']?>" readonly>
-								</div>								
-							</div>
-						</div>
-						<!-- INPUT GROUP 3 ROW 3 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Total</label>
-								<div class="col-lg-3">
-									<input id="total" name="TxtTotal" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Total" readonly>
-								</div>								
-							</div>
-						</div>
-						<hr>
-						
-						<!-- INPUT GROUP 4 ROW 1 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Payment Nominal</label>
-								<div class="col-lg-3">
-									<input id="payment" name="TxtPayment" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Payment Nominal" value="<?php echo $rc['payment']?>">
-								</div>								
-							</div>
-						</div>
-						<hr>
-						
-						<!-- submit -->
-						<div class="form-group">
-							<div class="col-lg-8 text-right">
-								<a href="<?php echo site_url('CateringManagement/Receipt/Details');?>"  class="btn btn-success btn-lg btn-rect">Back</a>
-								&nbsp;&nbsp;
-								<button type="submit" class="btn btn-success btn-lg btn-rect">Save Change</button>
-							</div>
-						</div>
-					<?php }?>
+						<?php }?>
