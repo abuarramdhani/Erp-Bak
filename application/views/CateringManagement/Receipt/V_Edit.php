@@ -31,13 +31,15 @@
 					</div>
 					
 					<div class="box-body">
-					<form method="post" action="<?php echo base_url('CateringManagement/Receipt/Add')?>">
+					<form method="post" action="<?php echo base_url('CateringManagement/Receipt/Update')?>">
+					<?php foreach ($Receipt as $rc) {?>
+						<input type="hidden" name="TxtId" class="form-control" value="<?php echo $rc['receipt_id']?>" required>
 						<!-- INPUT GROUP 1 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">No.</label>
 								<div class="col-lg-6">
-									<input name="TxtNo" class="form-control toupper" placeholder="No." required >
+									<input name="TxtNo" class="form-control toupper" placeholder="No." value="<?php echo $rc['receipt_no']?>" required>
 								</div>
 							</div>
 						</div>
@@ -47,10 +49,11 @@
 								<label class="col-lg-2 control-label">Receipt Date</label>
 								<div class="col-lg-3">
 									<input name="TxtReceiptDate" class="form-control singledate" placeholder="Receipt Date" required >
+									<input type="hidden" id="receipt-date" value="<?php echo $rc['receipt_date'] ?>" />
 								</div>
 								<label class="col-lg-1 control-label" align="right">Place</label>
 								<div class="col-lg-2">
-									<input name="TxtPlace" class="form-control toupper" placeholder="Place" required >
+									<input name="TxtPlace" class="form-control toupper" placeholder="Place" value="<?php echo $rc['receipt_place']?>" required >
 								</div>
 							</div>
 						</div>
@@ -59,11 +62,11 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">From</label>
 								<div class="col-lg-3">
-									<input name="TxtFrom" class="form-control toupper" placeholder="Company Name" value="CV. KHS" required >
+									<input name="TxtFrom" class="form-control toupper" placeholder="Company Name" value="<?php echo $rc['receipt_from']?>" required >
 								</div>
 								<label class="col-lg-1 control-label" align="right">Signer</label>
 								<div class="col-lg-2">
-									<input name="TxtSigner" class="form-control toupper" placeholder="Signer" required >
+									<input name="TxtSigner" class="form-control toupper" placeholder="Signer" value="<?php echo $rc['receipt_signer']?>" required >
 								</div>
 							</div>
 						</div>
@@ -75,8 +78,12 @@
 								<label class="col-lg-2 control-label">Order Type</label>
 								<div class="col-lg-6">
 									<select class="form-control select4" name="TxtOrderType" placeholder="Select Order Type" required>
-										<?php foreach ($Type as $tp) {?>
-										<option value="<?php echo $tp['type_id']?>"><?php echo $tp['type_description']?></option>
+										<?php
+											foreach ($Type as $tp) {
+											$status1='';
+											if ($tp['type_id'] == $rc['order_type_id']){$status1='selected';}
+										?>
+										<option <?php echo $status1 ?> value="<?php echo $tp['type_id']?>"><?php echo $tp['type_description']?></option>
 										<?php }?>
 									</select>
 								</div>
@@ -88,8 +95,12 @@
 								<label class="col-lg-2 control-label">Catering</label>
 								<div class="col-lg-6">
 									<select class="form-control select4" name="TxtCatering" placeholder="Select Order Type" required>
-										<?php foreach ($Catering as $cr) {?>
-											<option value="<?php echo $cr['catering_id']?>"><?php echo $cr['catering_name']?></option>
+										<?php 
+											foreach ($Catering as $cr) {
+											$status2='';
+											if ($cr['catering_id'] == $rc['catering_id']){$status2='selected';}
+										?>
+											<option <?php echo $status2 ?> value="<?php echo $cr['catering_id']?>"><?php echo $cr['catering_name']?></option>
 										<?php }?>
 									</select>
 								</div>
@@ -101,6 +112,8 @@
 								<label class="col-lg-2 control-label">Order Date</label>
 								<div class="col-lg-6">
 									<input name="TxtOrderDate" class="form-control doubledate" placeholder="Order Date" required >
+									<input type="hidden" id="order-start-date" value="<?php echo $rc['order_start_date'] ?>" />
+									<input type="hidden" id="order-end-date" value="<?php echo $rc['order_end_date'] ?>" />
 								</div>
 							</div>
 						</div>
@@ -110,11 +123,11 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Qty</label>
 								<div class="col-lg-3">
-									<input id="orderqty" name="TxtOrderQty" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Order Qty" required >
+									<input id="orderqty" name="TxtOrderQty" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Order Qty" value="<?php echo $rc['order_qty']?>" required >
 								</div>	
 								<label class="col-lg-1 control-label" align="right">@</label>
 								<div class="col-lg-2">
-									<input id="singleprice" name="TxtSinglePrice" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Price per qty" required >
+									<input id="singleprice" name="TxtSinglePrice" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Price per qty" value="<?php echo $rc['order_price']?>" required >
 								</div>
 								
 							</div>
@@ -135,7 +148,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Fine</label>
 								<div class="col-lg-3">
-									<input id="fine" name="TxtFine" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Fine" value="0">
+									<input id="fine" name="TxtFine" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Fine" value="<?php echo $rc['fine']?>">
 								</div>								
 							</div>
 						</div>
@@ -144,7 +157,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">PPH (2%)</label>
 								<div class="col-lg-3">
-									<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" readonly>
+									<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" value="<?php echo $rc['pph']?>" readonly>
 								</div>								
 							</div>
 						</div>
@@ -164,7 +177,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Payment Nominal</label>
 								<div class="col-lg-3">
-									<input id="payment" name="TxtPayment" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Payment Nominal">
+									<input id="payment" name="TxtPayment" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Payment Nominal" value="<?php echo $rc['payment']?>">
 								</div>								
 							</div>
 						</div>
@@ -173,11 +186,12 @@
 						<!-- submit -->
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a href="<?php echo site_url('CateringManagement/Receipt');?>"  class="btn btn-success btn-lg btn-rect">Back</a>
+								<a href="<?php echo site_url('CateringManagement/Receipt/Details');?>"  class="btn btn-success btn-lg btn-rect">Back</a>
 								&nbsp;&nbsp;
-								<button type="submit" class="btn btn-success btn-lg btn-rect">Save Data</button>
+								<button type="submit" class="btn btn-success btn-lg btn-rect">Save Change</button>
 							</div>
 						</div>
+					<?php }?>
 					<form>
 					</div>
 				</div>

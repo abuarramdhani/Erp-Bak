@@ -849,7 +849,12 @@ $(document).ready(function(){
 		locale: {
 			format: 'YYYY-MM-DD'
 		},
-	})
+	});
+	if (typeof $('#receipt-date').val() !== 'undefined'){
+	var startDate = $('#receipt-date').val()
+	$(".singledate").data('daterangepicker').setStartDate(startDate);
+	$(".singledate").data('daterangepicker').setEndDate(startDate)};
+	
 	
 	$('.doubledate').daterangepicker({
 		"timePicker": false,
@@ -858,7 +863,13 @@ $(document).ready(function(){
 		locale: {
 			format: 'YYYY-MM-DD'
 		},
-	})
+	});
+	if (typeof $('#order-start-date').val() !== 'undefined'){
+	var startDate = $('#order-start-date').val()
+	var endDate = $('#order-end-date').val()
+	$(".doubledate").data('daterangepicker').setStartDate(startDate);
+	$(".doubledate").data('daterangepicker').setEndDate(endDate)};
+	
 	
 	$("#orderqty,#singleprice,#fine").keyup(function() {
 

@@ -56,7 +56,7 @@
 											<td><?php echo $no; ?></td>
 											<td><?php echo $rc['receipt_no'] ?></td>
 											<td><?php echo $rc['receipt_place'].', '.$rc['receipt_date'].' BY '.$rc['receipt_signer'] ?></td>
-											<td><?php echo $rc['order_description'] ?> (<?php echo $rc['order_start_date'] ?> - <?php echo $rc['order_end_date'] ?>)</td>
+											<td><?php echo $rc['type_description'].' '.$rc['catering_name'] ?> (<?php echo $rc['order_start_date'] ?> - <?php echo $rc['order_end_date'] ?>)</td>
 											<td><?php echo $rc['order_qty'] ?></td>
 											<td>Rp <?php echo number_format($rc['order_price'], 2 , ',' , '.' ) ?></td>
 											<td>Rp <?php echo number_format($rc['payment'], 2 , ',' , '.' ) ?></td>

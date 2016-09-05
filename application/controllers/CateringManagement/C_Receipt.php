@@ -79,6 +79,9 @@ class C_Receipt extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['Catering'] = $this->M_receipt->GetCatering();
+		$data['Type'] = $this->M_receipt->GetOrderType();
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Receipt/V_Create',$data);
@@ -105,6 +108,31 @@ class C_Receipt extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Receipt/V_Details',$data);
+		$this->load->view('V_Footer',$data);
+		
+	}
+	
+	public function edit($id)
+	{
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['Receipt'] = $this->M_receipt->GetReceiptForEdit($id);
+		$data['Catering'] = $this->M_receipt->GetCatering();
+		$data['Type'] = $this->M_receipt->GetOrderType();
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('CateringManagement/Receipt/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
 		
 	}
@@ -136,7 +164,8 @@ class C_Receipt extends CI_Controller {
 		$place 		= $this->input->post('TxtPlace');
 		$from 		= $this->input->post('TxtFrom');
 		$signer		= $this->input->post('TxtSigner');
-		$orderdesc	= $this->input->post('TxtOrderDescription');
+		$ordertype	= $this->input->post('TxtOrderType');
+		$catering	= $this->input->post('TxtCatering');
 		
 		$Doubledate = $this->input->post('TxtOrderDate');
 		$ex_Doubledate = explode(' ', $Doubledate);
@@ -149,7 +178,41 @@ class C_Receipt extends CI_Controller {
 		$pph 		= $this->input->post('TxtPPH');
 		$payment	= $this->input->post('TxtPayment');
 		
-		$this->M_receipt->AddReceipt($no,$date,$place,$from,$signer,$orderdesc,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
+		$this->M_receipt->AddReceipt($no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
+		redirect('CateringManagement/Receipt');
+		
+	}
+	
+		public function update()
+	{
+		$id			= $this->input->post('TxtId');
+		$no 		= $this->input->post('TxtNo');
+		$date 		= $this->input->post('TxtReceiptDate');
+		$place 		= $this->input->post('TxtPlace');
+		$from 		= $this->input->post('TxtFrom');
+		$signer		= $this->input->post('TxtSigner');
+		$ordertype	= $this->input->post('TxtOrderType');
+		$catering	= $this->input->post('TxtCatering');
+		
+		$Doubledate = $this->input->post('TxtOrderDate');
+		$ex_Doubledate = explode(' ', $Doubledate);
+		$startdate 	= $ex_Doubledate[0];
+		$enddate 	= $ex_Doubledate[2];
+		
+		$orderqty 	= $this->input->post('TxtOrderQty');
+		$orderprice	= $this->input->post('TxtSinglePrice');
+		$fine 		= $this->input->post('TxtFine');
+		$pph 		= $this->input->post('TxtPPH');
+		$payment	= $this->input->post('TxtPayment');
+		
+		$this->M_receipt->UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
+		redirect('CateringManagement/Receipt');
+		
+	}
+	
+	public function delete($id)
+	{
+		$this->M_receipt->DeleteReceipt($id);
 		redirect('CateringManagement/Receipt');
 		
 	}
