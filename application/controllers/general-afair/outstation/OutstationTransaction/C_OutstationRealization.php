@@ -606,7 +606,7 @@ class C_OutstationRealization extends CI_Controller {
 			}
 		}
 
-		//redirect('Outstation/realization');
+		redirect('Outstation/realization');
 	}
 
 	public function delete_realization($realization_id){
