@@ -1262,3 +1262,25 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		$('#hdnCustomerId').val(cust_id);
 		$('#hdnCategoryId').val(cat_id);
 	}
+
+//NEW
+function deleteSingleRow(tableID,line) {
+	try {
+		var table = document.getElementById(tableID);
+		var rowCount = table.rows.length;
+		var i = line;
+		var lineID = $('#'+tableID+' tbody tr input.id').eq(rowCount-2).val();
+		//alert(n);
+		if(rowCount > 2){
+			if(lineID > 0){
+				alert('Baris sudah tersimpan tidak bisa dihapus');
+			}else{
+				table.deleteRow(i);
+			}
+		}else{
+			alert('Minimal harus ada satu baris tersisa');
+		}
+	}catch(e) {
+		alert(e);
+	}
+}
