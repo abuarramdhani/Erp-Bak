@@ -10,6 +10,30 @@ clASs M_rekapmssql extends CI_Model {
 	
 	public function dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section)
 	{
+		if ($departemen == 'All') {
+			$departemen = "dept";
+		}
+		else{
+			$departemen = "'$departemen'";
+		}
+		if ($bidang == 'All') {
+			$bidang = "bidang";
+		}
+		else{
+			$bidang = "'$bidang'";
+		}
+		if ($unit == 'All') {
+			$unit = "unit";
+		}
+		else{
+			$unit = "'$unit'";
+		}
+		if ($section == 'All') {
+			$section = "seksi";
+		}
+		else{
+			$section = "'$section'";
+		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
 				(SELECT count(*) FROM presensi.dbo.tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
@@ -78,10 +102,10 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND dept = '$departemen'
-				AND bidang = '$bidang'
-				AND unit = '$unit'
-				AND seksi = '$section'
+				AND dept = $departemen
+				AND bidang = $bidang
+				AND unit = $unit
+				AND seksi = $section
 
 			ORDER BY noind
 		";
@@ -91,6 +115,30 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName)
 	{
+		if ($departemen == 'All') {
+			$departemen = "dept";
+		}
+		else{
+			$departemen = "'$departemen'";
+		}
+		if ($bidang == 'All') {
+			$bidang = "bidang";
+		}
+		else{
+			$bidang = "'$bidang'";
+		}
+		if ($unit == 'All') {
+			$unit = "unit";
+		}
+		else{
+			$unit = "'$unit'";
+		}
+		if ($section == 'All') {
+			$section = "seksi";
+		}
+		else{
+			$section = "'$section'";
+		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
 				(SELECT count(*) FROM presensi.dbo.tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
@@ -159,10 +207,10 @@ clASs M_rekapmssql extends CI_Model {
 
 				WHERE keluar = '0'
 					AND a.kode_status_kerja = '$status'
-					AND dept = '$departemen'
-					AND bidang = '$bidang'
-					AND unit = '$unit'
-					AND seksi = '$section'
+					AND dept = $departemen
+					AND bidang = $bidang
+					AND unit = $unit
+					AND seksi = $section
 
 				ORDER BY noind
 			";
@@ -172,6 +220,12 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function ExportRekap($periode1,$periode2,$status,$section)
 	{
+		if ($section == 'All') {
+			$section = "seksi";
+		}
+		else{
+			$section = "'$section'";
+		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
 				(SELECT count(*) FROM presensi.dbo.tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
@@ -240,7 +294,7 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND seksi = '$section'
+				AND seksi = $section
 
 			ORDER BY noind
 		";
@@ -250,6 +304,12 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function ExportDetail($firstdate,$lastdate,$status,$section,$monthName)
 	{
+		if ($section == 'All') {
+			$section = "seksi";
+		}
+		else{
+			$section = "'$section'";
+		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
 				(SELECT count(*) FROM presensi.dbo.tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
@@ -318,7 +378,7 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND seksi = '$section'
+				AND seksi = $section
 
 			ORDER BY noind
 		";
@@ -342,21 +402,44 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function bidang($value)
 	{
-		$sql = "SELECT distinct(Bidang) Bidang FROM hrd_khs.dbo.TSeksi WHERE Bidang NOT LIKE '-' AND Dept = '$value'";
+		if ($value == 'All') {
+			$value = "Dept";
+		}
+		else{
+			$value = "'$value'";
+		}
+		$this->session->set_userdata('departemen_filter',$value);
+		$sql = "SELECT distinct(Bidang) Bidang FROM hrd_khs.dbo.TSeksi WHERE Bidang NOT LIKE '-' AND Dept = $value";
 		$query = $this->mssql->query($sql);
 		return $query->result_array();
 	}
 	
 	public function unit($value)
 	{
-		$sql = "SELECT distinct(Unit) Unit FROM hrd_khs.dbo.TSeksi WHERE Unit NOT LIKE '-' AND Bidang = '$value'";
+		if ($value == 'All') {
+			$value = "Bidang";
+		}
+		else{
+			$value = "'$value'";
+		}
+		$this->session->set_userdata('bidang_filter',$value);
+		$dept = $this->session->userdata('departemen_filter');
+		$sql = "SELECT distinct(Unit) Unit FROM hrd_khs.dbo.TSeksi WHERE Unit NOT LIKE '-' AND Bidang = $value AND Dept = $dept ";
 		$query = $this->mssql->query($sql);
 		return $query->result_array();
 	}
 	
 	public function seksi($value)
 	{
-		$sql = "SELECT distinct(Seksi) Seksi FROM hrd_khs.dbo.TSeksi WHERE Seksi NOT LIKE '-' AND Unit = '$value'";
+		if ($value == 'All') {
+			$value = "Unit";
+		}
+		else{
+			$value = "'$value'";
+		}
+		$dept = $this->session->userdata('departemen_filter');
+		$bid = $this->session->userdata('bidang_filter');
+		$sql = "SELECT distinct(Seksi) Seksi FROM hrd_khs.dbo.TSeksi WHERE Seksi NOT LIKE '-' AND Unit = $value AND Dept = $dept AND Bidang = $bid";
 		$query = $this->mssql->query($sql);
 		return $query->result_array();
 	}
@@ -429,6 +512,12 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function dataRekapMonth($periode1,$periode2,$status,$seksi)
 	{
+		if ($seksi == 'All') {
+			$seksi = "seksi";
+		}
+		else{
+			$seksi = "'$seksi'";
+		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
 				(SELECT count(*) FROM presensi.dbo.tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
@@ -497,7 +586,7 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND seksi = '$seksi'
+				AND seksi = $seksi
 
 			ORDER BY noind
 		";
@@ -507,6 +596,12 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function dataRekapMonthDetail($firstdate,$lastdate,$status,$seksi,$date)
 	{
+		if ($seksi == 'All') {
+			$seksi = "seksi";
+		}
+		else{
+			$seksi = "'$seksi'";
+		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
 				(SELECT count(*) FROM presensi.dbo.tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$date.",
@@ -575,7 +670,7 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND seksi = '$seksi'
+				AND seksi = $seksi
 
 			ORDER BY noind
 		";

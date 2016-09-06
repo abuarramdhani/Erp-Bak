@@ -89,6 +89,7 @@ class C_Rekap extends CI_Controller {
 
 		echo '
 			<option value=""></option>
+			<option value="All">ALL</option>
 		';
 		if ($modul == 'bidang') {
 			$data = $this->M_rekapmssql->bidang($id);

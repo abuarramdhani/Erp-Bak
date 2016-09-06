@@ -77,6 +77,7 @@
 													</div>
 													<select id="departemen_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="departemen" required>
 														<option value=""></option>
+														<option value="All">ALL</option>
 														<?php foreach ($dept as $dept_item){
 																$select = '';
 																if ($dept_item['Dept'] == $this->session->userdata('departemenFilter')) {
@@ -100,7 +101,7 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="bidang_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="bidang" required>
+													<select id="bidang_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="bidang" required disabled>
 														<option value=""></option>
 														<?php 
 															if ($this->session->userdata('bidangFilter') == '') {
@@ -132,7 +133,7 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="unit_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="unit" required>
+													<select id="unit_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="unit" required disabled>
 														<option value=""></option>
 														<?php 
 															if ($this->session->userdata('unitFilter') == '') {
@@ -163,7 +164,7 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="section_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="section" required>
+													<select id="section_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="section" required disabled>
 														<option value=""></option>
 														<option value="0" disabled>Pilih Unit terlebih dahulu</option>
 														<?php 
