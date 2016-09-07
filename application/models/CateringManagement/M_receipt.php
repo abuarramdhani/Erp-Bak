@@ -128,5 +128,11 @@ class M_receipt extends CI_Model {
 			return;
 		}
 		
+		public function GetPphStatus($id){
+			$sql = "select * from cm.cm_catering where catering_id='$id'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
 }
 ?>

@@ -78,6 +78,7 @@
 								<label class="col-lg-2 control-label">Order Type</label>
 								<div class="col-lg-6">
 									<select class="form-control select4" name="TxtOrderType" placeholder="Select Order Type" required>
+											<option></option>
 										<?php
 											foreach ($Type as $tp) {
 											$status1='';
@@ -94,7 +95,8 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Catering</label>
 								<div class="col-lg-6">
-									<select class="form-control select4" name="TxtCatering" placeholder="Select Order Type" required>
+									<select class="form-control select4" id="catering" name="TxtCatering" data-placeholder="Select Catering" required>
+											<option></option>
 										<?php 
 											foreach ($Catering as $cr) {
 											$status2='';
@@ -155,10 +157,17 @@
 						<!-- INPUT GROUP 3 ROW 2 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">PPH (2%)</label>
-								<div class="col-lg-3">
-									<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" value="<?php echo $rc['pph']?>" readonly>
-								</div>								
+								<div class="form-group">
+									<label class="col-lg-2 control-label">PPH (2%)*</label>
+									<div class="col-lg-3">
+										<div class="input-group">
+											<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" value="<?php echo $rc['pph']?>" readonly>
+											<span class="input-group-btn">
+												<a id="pphverify" data-toggle="tooltip" data-placement="right" title="Cek PPH" class="btn btn-info"><i class="fa fa-check"></i></a>								
+											</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<!-- INPUT GROUP 3 ROW 3 -->
@@ -183,10 +192,13 @@
 						</div>
 						<hr>
 						
+						<div class="row" style="margin: 10px 10px">
+							<b style="color:#440000">*) Pastikan anda telah men-klik tombol cek pph</b>
+						</div>
 						<!-- submit -->
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a href="<?php echo site_url('CateringManagement/Receipt/Details');?>"  class="btn btn-success btn-lg btn-rect">Back</a>
+								<a href="<?php echo site_url('CateringManagement/Receipt/Details/'.$rc['receipt_id']);?>"  class="btn btn-success btn-lg btn-rect">Back</a>
 								&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn-lg btn-rect">Save Change</button>
 							</div>

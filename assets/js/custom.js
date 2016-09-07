@@ -588,9 +588,6 @@
 			$('#bidang_select').select2("data", null);
 			$('#unit_select').select2("data", null);
 			$('#section_select').select2("data", null);
-			$('#bidang_select').prop("disabled", false);
-			$('#unit_select').prop("disabled", true);
-			$('#section_select').prop("disabled", true);
 			var value = $('#departemen_select').val();
 			$.ajax({
 				type:'POST',
@@ -607,8 +604,6 @@
 			$('#section_select').select2("val", "");
 			$('#unit_select').select2("data", null);
 			$('#section_select').select2("data", null);
-			$('#unit_select').prop("disabled", false);
-			$('#section_select').prop("disabled", true);
 			var value = $('#bidang_select').val();
 			$.ajax({
 				type:'POST',
@@ -623,7 +618,6 @@
 		$('#unit_select').change(function(){
 			$('#section_select').select2("val", "");
 			$('#section_select').select2("data", null);
-			$('#section_select').prop("disabled", false);
 			var value = $('#unit_select').val();
 			$.ajax({
 				type:'POST',
@@ -876,21 +870,44 @@ $(document).ready(function(){
 	$(".doubledate").data('daterangepicker').setStartDate(startDate);
 	$(".doubledate").data('daterangepicker').setEndDate(endDate)};
 	
+	$("#catering").change(cekpph);
+	$("#pphverify").click(cekpph);
+	function cekpph(){
+		$.ajax({
+			type:'POST',
+			data:{id:$("#catering").val()},
+			url:baseurl+"CateringManagement/Receipt/Checkpph",
+			success:function(result)
+			{
+				calculation(result);
+			},
+			error: function() {
+				alert('error');
+			}
+		});
+	};
 	
-	$("#orderqty,#singleprice,#fine").keyup(function() {
-
+	$("#orderqty,#singleprice,#fine").keyup(calculation);
+	function calculation(pphstatus){
+			
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
 			var $calc = ($qty * $price);
 			var $fine = $('#fine').val();
-			var $pph = (2 / 100) * $calc;
+			
+			if (pphstatus==1){
+				var $pph = (2 / 100) * $calc;
+			} else {
+				var $pph = (0 / 100) * $calc;
+			}
+			
 			var $total = $calc - $fine - $pph;
 			
 		$("#calc").val($calc);
 		$("#pph").val($pph);
 		$("#total").val($total);
 		payment();
-	});
+	};
 	
 	$("#payment").keyup(payment);
 	function payment(){

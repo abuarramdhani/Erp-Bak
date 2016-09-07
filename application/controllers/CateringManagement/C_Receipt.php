@@ -48,7 +48,7 @@ class C_Receipt extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
+		$data['Menu'] = 'Catering Receipt';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		
@@ -71,7 +71,7 @@ class C_Receipt extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
+		$data['Menu'] = 'Catering Receipt';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		
@@ -95,7 +95,7 @@ class C_Receipt extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
+		$data['Menu'] = 'Catering Receipt';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		
@@ -118,7 +118,7 @@ class C_Receipt extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
+		$data['Menu'] = 'Catering Receipt';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		
@@ -183,7 +183,7 @@ class C_Receipt extends CI_Controller {
 		
 	}
 	
-		public function update()
+	public function update()
 	{
 		$id			= $this->input->post('TxtId');
 		$no 		= $this->input->post('TxtNo');
@@ -206,7 +206,7 @@ class C_Receipt extends CI_Controller {
 		$payment	= $this->input->post('TxtPayment');
 		
 		$this->M_receipt->UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
-		redirect('CateringManagement/Receipt');
+		redirect('CateringManagement/Receipt/Details/'.$id);
 		
 	}
 	
@@ -215,6 +215,16 @@ class C_Receipt extends CI_Controller {
 		$this->M_receipt->DeleteReceipt($id);
 		redirect('CateringManagement/Receipt');
 		
+	}
+	
+	public function checkpph()
+	{
+		$id 	= $this->input->post('id');
+		
+		$cater_data = $this->M_receipt->GetPphStatus($id);
+			foreach($cater_data as $cater){
+				echo $cater['catering_pph'];
+			}
 	}
 	
 	public function checkSession(){
