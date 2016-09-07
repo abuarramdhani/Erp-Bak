@@ -400,16 +400,23 @@ $route['StockControl/stock-control-new'] = 'StockControl/C_StockControlNew/index
 $route['StockControl/stock-control-new/(:any)'] = 'StockControl/C_StockControlNew/$1';
 
 //------------------------------------Catering Management---------------------------------------------------
-$route['CateringManagement'] = 'CateringManagement/C_CateringManagement/index';
+$route['CateringManagement'] 						= 'CateringManagement/C_CateringManagement/index';
 
 $route['CateringManagement/Receipt'] 				= 'CateringManagement/C_Receipt/index';
 $route['CateringManagement/Receipt/Create'] 		= 'CateringManagement/C_Receipt/create';
+$route['CateringManagement/Receipt/Update'] 		= 'CateringManagement/C_Receipt/update';
 $route['CateringManagement/Receipt/Add'] 			= 'CateringManagement/C_Receipt/add';
-$route['CateringManagement/Receipt/Update'] 			= 'CateringManagement/C_Receipt/update';
 $route['CateringManagement/Receipt/Details/(:any)']	= 'CateringManagement/C_Receipt/details/$1';
 $route['CateringManagement/Receipt/Edit/(:any)']	= 'CateringManagement/C_Receipt/edit/$1';
 $route['CateringManagement/Receipt/Print/(:any)']	= 'CateringManagement/C_Receipt/printreceipt/$1';
 $route['CateringManagement/Receipt/Delete/(:any)']	= 'CateringManagement/C_Receipt/delete/$1';
+
+$route['CateringManagement/List'] 					= 'CateringManagement/C_List/index';
+$route['CateringManagement/List/Create'] 			= 'CateringManagement/C_List/create';
+$route['CateringManagement/List/Update'] 			= 'CateringManagement/C_List/update';
+$route['CateringManagement/List/Add'] 				= 'CateringManagement/C_List/add';
+$route['CateringManagement/List/Edit/(:any)']		= 'CateringManagement/C_List/edit/$1';
+$route['CateringManagement/List/Delete/(:any)']		= 'CateringManagement/C_List/delete/$1';
 
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
