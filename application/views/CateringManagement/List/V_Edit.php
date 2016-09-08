@@ -33,7 +33,7 @@
 					<div class="box-body">
 					<form method="post" action="<?php echo base_url('CateringManagement/List/Update')?>">
 					<?php foreach($Catering as $ct){?>
-					<input name="TxtId" class="form-control" value="<?php echo $ct['catering_id']?>" required >
+					<input type="hidden" name="TxtId" class="form-control" value="<?php echo $ct['catering_id']?>" required >
 						<!-- INPUT GROUP 1 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -73,14 +73,14 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Phone Number</label>
 								<div class="col-lg-6">
-									<input name="TxtPhone" class="form-control toupper" placeholder="Phone Number" value="<?php echo $ct['catering_phone']?>" required >
+									<input name="TxtPhone" class="form-control toupper" onkeypress="return isNumberKey(event)" placeholder="Phone Number" value="<?php echo $ct['catering_phone']?>" maxlength="13" required >
 								</div>
 								<label class="col-lg-1 control-label" align="right">PPH</label>
 								<div class="col-lg-2">
 									<select class="form-control select4" name="TxtPph" placeholder="PPH" required>
 										<?php 
-											$c=''; if ($ct['catering_status'] == 0){$c = 'selected';}
-											$d=''; if ($ct['catering_status'] == 1){$d = 'selected';}
+											$c=''; if ($ct['catering_pph'] == 0){$c = 'selected';}
+											$d=''; if ($ct['catering_pph'] == 1){$d = 'selected';}
 										?>
 										<option <?php echo $d ?> value="1">YA</option>
 										<option <?php echo $c ?> value="0">TIDAK</option>

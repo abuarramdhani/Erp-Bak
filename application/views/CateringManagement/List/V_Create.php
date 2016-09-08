@@ -54,7 +54,8 @@
 								</div>
 								<label class="col-lg-1 control-label" align="right">Status</label>
 								<div class="col-lg-2">
-									<select class="form-control select4" name="txtStatus" placeholder="Status" required>	
+									<select class="form-control select4" name="txtStatus" data-placeholder="Status" required>	
+										<option></option>
 										<option value="1">1</option>
 										<option value="0">0</option>
 									</select>
@@ -67,11 +68,12 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Phone Number</label>
 								<div class="col-lg-6">
-									<input name="TxtPhone" class="form-control toupper" placeholder="Phone Number" required >
+									<input name="TxtPhone" class="form-control toupper" onkeypress="return isNumberKey(event)" placeholder="Phone Number" maxlength="15" required >
 								</div>
 								<label class="col-lg-1 control-label" align="right">PPH</label>
 								<div class="col-lg-2">
-									<select class="form-control select4" name="TxtPph" placeholder="PPH" required>	
+									<select class="form-control select4" name="TxtPph" data-placeholder="PPH" required>	
+										<option></option>
 										<option value="1">YA</option>
 										<option value="0">TIDAK</option>
 									</select>
