@@ -158,14 +158,9 @@
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<div class="form-group">
-									<label class="col-lg-2 control-label">PPH (2%)*</label>
+									<label class="col-lg-2 control-label">PPH (2%)</label>
 									<div class="col-lg-3">
-										<div class="input-group">
-											<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" value="<?php echo $rc['pph']?>" readonly>
-											<span class="input-group-btn">
-												<a id="pphverify" data-toggle="tooltip" data-placement="right" title="Cek PPH" class="btn btn-info"><i class="fa fa-check"></i></a>								
-											</span>
-										</div>
+										<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" value="<?php echo $rc['pph']?>" readonly>
 									</div>
 								</div>
 							</div>
@@ -191,10 +186,6 @@
 							</div>
 						</div>
 						<hr>
-						
-						<div class="row" style="margin: 10px 10px">
-							<b style="color:#440000">*) Pastikan anda telah men-klik tombol cek pph</b>
-						</div>
 						<!-- submit -->
 						<div class="form-group">
 							<div class="col-lg-8 text-right">

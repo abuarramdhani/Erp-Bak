@@ -870,8 +870,10 @@ $(document).ready(function(){
 	$(".doubledate").data('daterangepicker').setStartDate(startDate);
 	$(".doubledate").data('daterangepicker').setEndDate(endDate)};
 	
+	
 	$("#catering").change(cekpph);
 	$("#pphverify").click(cekpph);
+		//Check if pph exist
 	function cekpph(){
 		$.ajax({
 			type:'POST',
@@ -886,8 +888,8 @@ $(document).ready(function(){
 			}
 		});
 	};
-	
-	$("#orderqty,#singleprice,#fine").keyup(calculation);
+		//calculate final cost
+	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	function calculation(pphstatus){
 			
 			var $qty = $('#orderqty').val();
@@ -908,6 +910,12 @@ $(document).ready(function(){
 		$("#total").val($total);
 		payment();
 	};
+		
+		//run both function
+	function checkncalc(){
+		cekpph();
+		calculation();
+	}
 	
 	$("#payment").keyup(payment);
 	function payment(){
