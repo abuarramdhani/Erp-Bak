@@ -359,11 +359,19 @@ $route['RekapTIMSPromosiPekerja'] = 'er/RekapTIMS/C_Rekap/index';
 $route['RekapTIMSPromosiPekerja/RekapTIMS'] = 'er/RekapTIMS/C_Rekap/rekapMenu';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/select-section'] = 'er/RekapTIMS/C_Rekap/select_section';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/show-data'] = 'er/RekapTIMS/C_Rekap/showData';
-$route['RekapTIMSPromosiPekerja/RekapTIMS/employee/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/searchEmployee/$1/$2/$3';
-$route['RekapTIMSPromosiPekerja/RekapTIMS/export-employee/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/ExportEmployee/$1/$2/$3';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/ExportRekapDetail/$1/$2/$3/$4/$5';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/searchMonth/$1/$2/$3';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/ExportRekapMonthly/$1/$2/$3/';
+
+$route['RekapTIMSPromosiPekerja/RekapPerPekerja'] = 'er/RekapTIMS/C_RekapPerPekerja/index';
+$route['RekapTIMSPromosiPekerja/RekapPerPekerja/show-data'] = 'er/RekapTIMS/C_RekapPerPekerja/show_data_per_pekerja';
+$route['RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail'] = 'er/RekapTIMS/C_RekapPerPekerja/ExportRekapDetail';
+$route['RekapTIMSPromosiPekerja/RekapPerPekerja/rekap-bulanan'] = 'er/RekapTIMS/C_RekapPerPekerja/searchMonth';
+$route['RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-bulanan'] = 'er/RekapTIMS/C_RekapPerPekerja/ExportRekapMonthly';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/employee/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_RekapPerPekerja/searchEmployee/$1/$2/$3';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/export-employee/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_RekapPerPekerja/ExportEmployee/$1/$2/$3';
+
+$route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/GetNoInduk';
 
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
