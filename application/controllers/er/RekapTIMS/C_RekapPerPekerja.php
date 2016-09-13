@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_Rekap extends CI_Controller {
+class C_RekapPerPekerja extends CI_Controller {
 
 	public function __construct()
     {
@@ -16,7 +16,8 @@ class C_Rekap extends CI_Controller {
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('er/RekapTIMS/M_rekapmssql');
+		
+		$this->load->model('er/RekapTIMS/M_rekap_per_pekerja');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -41,8 +42,8 @@ class C_Rekap extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Rekap TIMS Per Pekerja';
+		$data['Menu'] = 'Rekap TIMS Per Pekerja';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -50,71 +51,35 @@ class C_Rekap extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('er/RekapTIMS/V_index',$data);
+		$this->load->view('er/RekapTIMS/V_filter_per_pekerja',$data);
 		$this->load->view('V_Footer',$data);
 		
 	}
 
 	//------------------------show the filtering menu-----------------------------
-	public function rekapMenu()
+	public function GetNoInduk(){
+		$noind = $this->input->get("term");
+		$data = $this->M_rekap_per_pekerja->GetNoInduk($noind);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{"NoInduk":"'.$data['Noind'].'"}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
+	public function show_data_per_pekerja()
 	{
 		
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
 		$data['Title'] = 'Filter TIMS';
-		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['status'] = $this->M_rekapmssql->statusKerja();
-		$data['dept'] = $this->M_rekapmssql->dept();
-		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('er/RekapTIMS/V_filter',$data);
-		$this->load->view('V_Footer',$data);		
-	}
-
-	//------------------------automatically post value to select section-----------------------------
-	public function select_section()
-	{
-		$id = $this->input->post('data_name');
-		$modul = $this->input->post('modul');
-
-		echo '
-			<option value=""></option>
-			<option value="All">ALL</option>
-		';
-		if ($modul == 'bidang') {
-			$data = $this->M_rekapmssql->bidang($id);
-			foreach ($data as $data) {
-				echo '<option value="'.$data['Bidang'].'">'.$data['Bidang'].'</option>';
-			}
-		}
-		elseif ($modul == 'unit') {
-			$data = $this->M_rekapmssql->unit($id);
-			foreach ($data as $data) {
-				echo '<option value="'.$data['Unit'].'">'.$data['Unit'].'</option>';
-			}
-		}
-		elseif ($modul == 'seksi') {
-			$data = $this->M_rekapmssql->seksi($id);
-			foreach ($data as $data) {
-				echo '<option value="'.$data['Seksi'].'">'.$data['Seksi'].'</option>';
-			}
-		}
-	}
-
-	//------------------------show the data REKAP TIMS-----------------------------
-	public function showData()
-	{
-		$this->checkSession();
-		$user_id = $this->session->userid;
-		
-		$data['Title'] = 'Filter TIMS';
-		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
+		$data['Menu'] = 'Rekap TIMS Per Pekerja';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -122,22 +87,26 @@ class C_Rekap extends CI_Controller {
 
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
-		$status 	= $this->input->post('statushubker');
-		$departemen	= $this->input->post('departemen');
-		$bidang 	= $this->input->post('bidang');
-		$unit 		= $this->input->post('unit');
-		$section 	= $this->input->post('section');
-		$data['section'] = $section;
+		$noinduk 	= $this->input->post('slcNoInduk');
 		$detail 	= $this->input->post('detail');
-
 		
-		//$this->load->view('V_Header',$data);
-		//$this->load->view('V_Sidemenu',$data);
-		$data['periode1']	= $this->input->post('rekapBegin');
-		$data['periode2']	= $this->input->post('rekapEnd');
+		$count = count($noinduk);
+		$nomer_induk ="";
+		foreach ($noinduk as $noind) {
+			$count--;
+			if ($count !== 0) {
+				$nomer_induk .= '"'.$noind.'",';
+			}
+			else{
+				$nomer_induk .= '"'.$noind.'"';
+			}
+		}
+
+		$data['periode1_ori']	= $periode1;
+		$data['periode2_ori']	= $periode2;
 		if ($detail==NULL) {
-			$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);
-			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk);
+			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
 			$begin = new DateTime($periode1);
@@ -151,17 +120,21 @@ class C_Rekap extends CI_Controller {
 				$monthName = $d->format('M_y');
 				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
 				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				$data['rekap_'.$monthName] = $this->M_rekapmssql->dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);
+				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName);
 			}
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
-			$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
-			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk);
+			$this->load->view('er/RekapTIMS/V_detail_rekap_per_pekerja',$data);
 		}
-		//$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportRekapDetail($periode1,$periode2,$status,$section,$detail){
+	public function ExportRekapDetail(){
+		$detail = $this->input->post("txtDetail");
+		$periode1 = $this->input->post("txtPeriode1_export");
+		$periode2 = $this->input->post("txtPeriode2_export");
+		$NoInduk = $this->input->post("txtNoInduk_export");
+
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
@@ -179,7 +152,6 @@ class C_Rekap extends CI_Controller {
 			)
 		);
 
-		$section = str_replace('-', ' ', $section);
 		if ($detail == 1) {
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
@@ -188,7 +160,8 @@ class C_Rekap extends CI_Controller {
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
-		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$section);
+
+		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk);
 
 		if ($detail == 1) {
 			$ex_period2 = explode('-', $periode2);
@@ -208,7 +181,7 @@ class C_Rekap extends CI_Controller {
 				$monthName = $d->format('M_y');
 				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
 				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				${'rekap_'.$monthName} = $this->M_rekapmssql->ExportDetail($firstdate,$lastdate,$status,$section,$monthName);
+				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName);
 			}
 		}
 
@@ -230,8 +203,6 @@ class C_Rekap extends CI_Controller {
 					->setARGB('0099ff');
 
 		$worksheet->setCellValue('A1', 'Periode');
-		$worksheet->setCellValue('A2', 'Status Hubungan Kerja');
-		$worksheet->setCellValue('A3', 'Seksi');
 
 		if ($detail == 1) {
 			$periodeDate = date('F Y', strtotime($periode1)).' - '.date('F Y', strtotime($periode2));
@@ -240,11 +211,6 @@ class C_Rekap extends CI_Controller {
 			$periodeDate = date('d-m-Y', strtotime($periode1)).' - '.date('d-m-Y', strtotime($periode2));
 		}
 		$worksheet->setCellValue('C1', $periodeDate, PHPExcel_Cell_DataType::TYPE_STRING);
-		
-		foreach ($rekap_all as $rekap_info) {}
-
-		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
-		$worksheet->setCellValue('C3', $rekap_info['seksi']);
 
 		$worksheet->mergeCells('A6:A7');
 		$worksheet->mergeCells('B6:B7');
@@ -426,18 +392,21 @@ class C_Rekap extends CI_Controller {
 		$objWriter->save("php://output");
 	}
 
-	public function searchMonth($month,$status,$seksi)
+	public function searchMonth()
 	{
+		$month = $this->input->post("txtPeriode_bulanan");
+		$NoInduk = $this->input->post("txtNoInduk_bulanan");
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
 		$data['Title'] = 'Filter TIMS';
-		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
+		$data['Menu'] = 'Rekap TIMS Per Pekerja';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$seksi = str_replace('-', ' ', $seksi);
+		
 		$periode1 = date('Y-m-01 00:00:00', strtotime($month));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($month));
 
@@ -453,25 +422,23 @@ class C_Rekap extends CI_Controller {
 			$date = $d->format('d_M_y');
 			$firstdate = date('Y-m-d 00:00:00', strtotime($perDay));
 			$lastdate = date('Y-m-d 23:59:59', strtotime($perDay));
-			$data['rekap_'.$date] = $this->M_rekapmssql->dataRekapMonthDetail($firstdate,$lastdate,$status,$seksi,$date);
+			$data['rekap_'.$date] = $this->M_rekap_per_pekerja->dataRekapMonthDetail($firstdate,$lastdate,$NoInduk,$date);
 		}
-		$data['rekapPerMonth'] = $this->M_rekapmssql->dataRekapMonth($periode1,$periode2,$status,$seksi);
-		foreach ($data['rekapPerMonth'] as $rk) {
-		}
+		$data['rekapPerMonth'] = $this->M_rekap_per_pekerja->dataRekapMonth($periode1,$periode2,$NoInduk);
 
-		$data['statusJabatan'] = $rk['fs_ket'];
-		$data['kode_status'] = $rk['kode_status_kerja'];
-		$data['seksi'] = $seksi;
 		$data['periode1'] = $periode1;
 		$data['periode2'] = $periode2;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('er/RekapTIMS/V_month',$data);
+		$this->load->view('er/RekapTIMS/V_month_per_pekerja',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportRekapMonthly($periode,$status,$section){
+	public function ExportRekapMonthly(){
+		$periode = $this->input->post("txtPeriode_bulanan_export");
+		$NoInduk = $this->input->post("txtNoInduk_bulanan_export");
+
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
@@ -489,14 +456,8 @@ class C_Rekap extends CI_Controller {
 			)
 		);
 
-		$section = str_replace('-', ' ', $section);
-		
 		$periode1 = date('Y-m-01 00:00:00', strtotime($periode));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($periode));
-
-		$ex_period2 = explode('-', $periode2);
-		$tgl_new = $ex_period2[2]-1;
-		$periode2 = $ex_period2[0].'-'.$ex_period2[1].'-'.$tgl_new;
 
 		$begin = new DateTime($periode1);
 		$end = new DateTime($periode2);
@@ -510,13 +471,13 @@ class C_Rekap extends CI_Controller {
 			$date = $d->format('d_M_y');
 			$firstdate = date('Y-m-d 00:00:00', strtotime($perMonth));
 			$lastdate = date('Y-m-d 23:59:59', strtotime($perMonth));
-			${'rekap_'.$date} = $this->M_rekapmssql->dataRekapMonthDetail($firstdate,$lastdate,$status,$section,$date);
+			${'rekap_'.$date} = $this->M_rekap_per_pekerja->dataRekapMonthDetail($firstdate,$lastdate,$NoInduk,$date);
 		}
 
 		$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
 		$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 
-		$rekap_all = $this->M_rekapmssql->dataRekapMonth($firstdate,$lastdate,$status,$section,$date);
+		$rekap_all = $this->M_rekap_per_pekerja->dataRekapMonth($firstdate,$lastdate,$NoInduk);
 
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
@@ -535,15 +496,8 @@ class C_Rekap extends CI_Controller {
 					->setARGB('0099ff');
 
 		$worksheet->setCellValue('A1', 'Periode');
-		$worksheet->setCellValue('A2', 'Status Hubungan Kerja');
-		$worksheet->setCellValue('A3', 'Seksi');
 
 		$worksheet->setCellValue('C1', date('F Y', strtotime($periode1)), PHPExcel_Cell_DataType::TYPE_STRING);
-		
-		foreach ($rekap_all as $rekap_info) {}
-
-		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
-		$worksheet->setCellValue('C3', $rekap_info['seksi']);
 
 		$worksheet->mergeCells('A6:A7');
 		$worksheet->mergeCells('B6:B7');
@@ -709,6 +663,270 @@ class C_Rekap extends CI_Controller {
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xlsx"');
+		$objWriter->save("php://output");
+	}
+
+	public function searchEmployee($periode1,$periode2,$nik)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Title'] = 'Filter TIMS';
+		$data['Menu'] = 'Rekap TIMS Per Pekerja';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['periode1'] = date('Y-m-d', strtotime($periode1));
+		$data['periode2'] = date('Y-m-d', strtotime($periode2));
+
+		$data['info'] = $this->M_rekap_per_pekerja->rekapPersonInfo($nik);
+		$data['Terlambat'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TT');
+		$data['IjinPribadi'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TIK');
+		$data['Mangkir'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TM');
+		$data['IjinPerusahaan'] = $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'PIP');
+		$data['SuratPeringatan'] = $this->M_rekap_per_pekerja->rekapPersonSP($data['periode1'],$data['periode2'],$nik);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('er/RekapTIMS/V_personal',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function ExportEmployee($periode1,$periode2,$nik){
+		$this->load->library('Excel');
+		$objPHPExcel = new PHPExcel();
+		$worksheet = $objPHPExcel->getActiveSheet();
+
+		$info = $this->M_rekap_per_pekerja->rekapPersonInfo($nik);
+		$Terlambat = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TT');
+		$IjinPribadi = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TIK');
+		$Mangkir = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TM');
+		$IjinPerusahaan = $this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'PIP');
+		$SuratPeringatan = $this->M_rekap_per_pekerja->rekapPersonSP($periode1,$periode2,$nik);
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		$styleArray = array(
+			'font'  => array(
+				'bold'  => true,
+				'color' => array('rgb' => 'FFFFFF'),
+			)
+		);
+		
+		$worksheet->getColumnDimension('A')->setWidth(5);
+		$worksheet->getColumnDimension('B')->setWidth(15);
+		$worksheet->getColumnDimension('C')->setWidth(10);
+		$worksheet->getColumnDimension('D')->setWidth(10);
+		$worksheet->getColumnDimension('E')->setWidth(5);
+		$worksheet->getColumnDimension('F')->setWidth(5);
+		$worksheet->getColumnDimension('G')->setWidth(15);
+		$worksheet->getColumnDimension('H')->setWidth(10);
+		$worksheet->getColumnDimension('I')->setWidth(10);
+
+		$worksheet->mergeCells('A1:G1');
+		$worksheet->mergeCells('A2:B2');
+		$worksheet->mergeCells('A3:B3');
+		$worksheet->mergeCells('A4:B4');
+		$worksheet->mergeCells('A5:B5');
+		$worksheet->mergeCells('A6:B6');
+
+		$worksheet->getStyle('A1')->applyFromArray($styleArray);
+		$worksheet	->getStyle('A1')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet->getStyle('A9:K9')->applyFromArray($styleArray);
+		$worksheet	->getStyle('A9')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('A10:D10')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+		$worksheet	->getStyle('F9')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('F10:I10')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+		$worksheet->getStyle('A9:F9')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
+
+		$worksheet->setCellValue('A1', 'INFORMASI PEKERJA');
+		$worksheet->setCellValue('A2', 'NIK');
+		$worksheet->setCellValue('A3', 'NAMA');
+		$worksheet->setCellValue('A4', 'SEKSI');
+		$worksheet->setCellValue('A5', 'UNIT');
+		$worksheet->setCellValue('A6', 'UNIT');
+
+		$worksheet->mergeCells('C2:G2');
+		$worksheet->mergeCells('C3:G3');
+		$worksheet->mergeCells('C4:G4');
+		$worksheet->mergeCells('C5:G5');
+		$worksheet->mergeCells('C6:G6');
+
+		$worksheet->mergeCells('A9:D9');
+		$worksheet->mergeCells('F9:I9');
+
+		foreach ($info as $inf) {}
+		$worksheet->setCellValue('C2', $inf['nik'], PHPExcel_Cell_DataType::TYPE_STRING);
+		$worksheet->setCellValue('C3', $inf['nama']);
+		$worksheet->setCellValue('C4', $inf['seksi']);
+		$worksheet->setCellValue('C5', $inf['unit']);
+		$worksheet->setCellValue('C6', $inf['bidang']);
+
+		$worksheet->setCellValue('A9', 'TERLAMBAT');
+		$worksheet->setCellValue('A10', 'No');
+		$worksheet->setCellValue('B10', 'Tanggal');
+		$worksheet->setCellValue('C10', 'Masuk');
+		$worksheet->setCellValue('D10', 'Keluar');
+
+		$row = 11;
+		$no = 1;
+		foreach ($Terlambat as $tlt) {
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($tlt['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $tlt['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $tlt['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$worksheet->setCellValue('F9', 'MANGKIR');
+		$worksheet->setCellValue('F10', 'No');
+		$worksheet->setCellValue('G10', 'Tanggal');
+		$worksheet->setCellValue('H10', 'Masuk');
+		$worksheet->setCellValue('I10', 'Keluar');
+
+		$row = 11;
+		$no = 1;
+		foreach ($Mangkir as $mkr) {
+			$worksheet->setCellValue('F'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('G'.$row, date('Y-m-d', strtotime($mkr['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('H'.$row, $mkr['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('I'.$row, $mkr['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+		
+		$highestRow = $worksheet->getHighestRow();
+
+		$worksheet->getStyle('A'.($highestRow+3).':F'.($highestRow+3))->applyFromArray($styleArray);
+		$worksheet	->getStyle('A'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('F'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('A'.($highestRow+4).':D'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+		$worksheet	->getStyle('F'.($highestRow+4).':I'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+
+		$worksheet->getStyle('A'.($highestRow+3).':F'.($highestRow+3))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$worksheet->mergeCells('A'.($highestRow+3).':D'.($highestRow+3));
+		$worksheet->mergeCells('F'.($highestRow+3).':I'.($highestRow+3));
+
+		$worksheet->setCellValue('A'.($highestRow+3), 'IJIN PERUSAHAAN');
+		$worksheet->setCellValue('A'.($highestRow+4), 'No');
+		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal');
+		$worksheet->setCellValue('C'.($highestRow+4), 'Masuk');
+		$worksheet->setCellValue('D'.($highestRow+4), 'Keluar');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($IjinPerusahaan as $iper) {
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($iper['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $iper['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $iper['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$worksheet->setCellValue('F'.($highestRow+3), 'IJIN PRIBADI');
+		$worksheet->setCellValue('F'.($highestRow+4), 'No');
+		$worksheet->setCellValue('G'.($highestRow+4), 'Tanggal');
+		$worksheet->setCellValue('H'.($highestRow+4), 'Masuk');
+		$worksheet->setCellValue('I'.($highestRow+4), 'Keluar');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($IjinPribadi as $ipri) {
+			$worksheet->setCellValue('F'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('G'.$row, date('Y-m-d', strtotime($ipri['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('H'.$row, $ipri['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('I'.$row, $ipri['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$highestRow = $worksheet->getHighestRow();
+		$worksheet->mergeCells('A'.($highestRow+3).':I'.($highestRow+3));
+		$worksheet->mergeCells('E'.($highestRow+4).':F'.($highestRow+4));
+
+		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->applyFromArray($styleArray);
+		$worksheet	->getStyle('A'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('A'.($highestRow+4).':I'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+		$worksheet->getStyle('A'.($highestRow+3).':I'.($highestRow+4))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$worksheet->setCellValue('A'.($highestRow+3), 'SURAT PERINGATAN');
+		$worksheet->setCellValue('A'.($highestRow+4), 'No');
+		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal Cetak');
+		$worksheet->setCellValue('C'.($highestRow+4), 'Terlambat');
+		$worksheet->setCellValue('D'.($highestRow+4), 'Ijin');
+		$worksheet->setCellValue('E'.($highestRow+4), 'Mangkir');
+		$worksheet->setCellValue('G'.($highestRow+4), 'Bobot');
+		$worksheet->setCellValue('H'.($highestRow+4), 'SP ke');
+		$worksheet->setCellValue('I'.($highestRow+4), 'Absen/Non');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($SuratPeringatan as $SP) {
+			$worksheet->mergeCells('E'.$row.':F'.$row);
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($SP['tgl_cetak'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $SP['nT'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $SP['nIK'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('E'.$row, $SP['nM'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('G'.$row, $SP['bobot'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('H'.$row, $SP['sp_ke'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('I'.$row, $SP['Status'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$worksheet->setTitle('Rekap TIMS');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="'.str_replace(' ', '', $inf['nama']).'-'.time().'.xlsx"');
 		$objWriter->save("php://output");
 	}
 

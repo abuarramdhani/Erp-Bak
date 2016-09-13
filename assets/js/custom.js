@@ -588,6 +588,9 @@
 			$('#bidang_select').select2("data", null);
 			$('#unit_select').select2("data", null);
 			$('#section_select').select2("data", null);
+			$('#bidang_select').prop("disabled", false);
+			$('#unit_select').prop("disabled", true);
+			$('#section_select').prop("disabled", true);
 			var value = $('#departemen_select').val();
 			$.ajax({
 				type:'POST',
@@ -604,6 +607,8 @@
 			$('#section_select').select2("val", "");
 			$('#unit_select').select2("data", null);
 			$('#section_select').select2("data", null);
+			$('#unit_select').prop("disabled", false);
+			$('#section_select').prop("disabled", true);
 			var value = $('#bidang_select').val();
 			$.ajax({
 				type:'POST',
@@ -618,6 +623,7 @@
 		$('#unit_select').change(function(){
 			$('#section_select').select2("val", "");
 			$('#section_select').select2("data", null);
+			$('#section_select').prop("disabled", false);
 			var value = $('#unit_select').val();
 			$.ajax({
 				type:'POST',
@@ -684,8 +690,53 @@ $(document).ready(function(){
 			}
 		});
 	});
-});
 
+	$(".js-slcNoInduk").select2({
+		placeholder: "No Induk",
+		minimumInputLength: 0,
+		ajax: {		
+			url:baseurl+"RekapTIMSPromosiPekerja/GetNoInduk",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcNoInduk').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { id:obj.NoInduk, text:obj.NoInduk};
+					})
+				};
+			}
+		}
+	});
+
+	$('#submit-filter-no-induk').click(function(){
+		$('.alert').alert('close');
+		$('#loadingAjax').html('<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">Processing</span></div></div>');
+		$.ajax({
+			type:'POST',
+			data:$("#filter-rekap").serialize(),
+			url:baseurl+"RekapTIMSPromosiPekerja/RekapPerPekerja/show-data",
+			success:function(result)
+			{
+				$('#table-div').html(result);
+				$('#loadingAjax').html('');
+				rekap_datatable();
+			},
+			error: function() {
+				$('#loadingAjax').html('');
+				document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
+			}
+		});
+	});
+
+});
 
 //Stock Control
 $(document).ready(function(){
@@ -840,7 +891,7 @@ $(document).ready(function(){
 	});
 	
 	
-	// Catering	
+// Catering	
 	$('.singledate').daterangepicker({
 		"singleDatePicker": true,
 		"timePicker": false,
@@ -871,53 +922,20 @@ $(document).ready(function(){
 	$(".doubledate").data('daterangepicker').setEndDate(endDate)};
 	
 	
-	$("#catering").change(cekpph);
-	$("#pphverify").click(cekpph);
-	
-	//Check if pph exist
-	function cekpph(){
-		$.ajax({
-			type:'POST',
-			data:{id:$("#catering").val()},
-			url:baseurl+"CateringManagement/Receipt/Checkpph",
-			success:function(result)
-			{
-				calculation(result);
-			},
-			error: function() {
-				alert('error');
-			}
-		});
-	};
-	
-	//calculate final cost
-	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
-	function calculation(pphstatus){
-			
+	$("#orderqty,#singleprice,#fine").keyup(function() {
+
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
 			var $calc = ($qty * $price);
 			var $fine = $('#fine').val();
-			
-			if (pphstatus==1){
-				var $pph = (2 / 100) * $calc;
-			} else {
-				var $pph = (0 / 100) * $calc;
-			}
-			
+			var $pph = (2 / 100) * $calc;
 			var $total = $calc - $fine - $pph;
 			
 		$("#calc").val($calc);
 		$("#pph").val($pph);
 		$("#total").val($total);
 		payment();
-	};
-		
-	//run both function
-	function checkncalc(){
-		cekpph();
-		calculation();
-	}
+	});
 	
 	$("#payment").keyup(payment);
 	function payment(){

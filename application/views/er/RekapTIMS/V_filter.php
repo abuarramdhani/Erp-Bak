@@ -11,38 +11,37 @@
 					<fieldset class="row2">
 						<div class="box-body with-border">
 							<form id="filter-rekap" method="post" action="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/show-data')?>">
-								<table class="table">
-									<tr>
-										<td class="col-md-2">
-											Periode
-										</td>
-										<td class="col-md-5">
+								<div class="form-group">
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-3">
+											<label class="control-label">Periode</label>
+										</div>
+										<div class="col-md-4">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
-														<i class="fa fa-calendar"></i>
+														From
 													</div>
-												<input type="text" id="rekapBegin" class="form-control" name="rekapBegin" value="<?php echo $this->session->userdata('periode1Filter') ?>" required>
+												<input type="text" id="rekapBegin" class="form-control" name="rekapBegin" required>
 												</div>
 											</div>
-										</td>
-										<td> s/d </td>
-										<td class="col-md-5">
+										</div>
+										<div class="col-md-4">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
-														<i class="fa fa-calendar"></i>
+														To
 													</div>
-													<input type="text" id="rekapEnd" class="form-control" name="rekapEnd" value="<?php echo $this->session->userdata('periode2Filter') ?>" required>
+												<input type="text" id="rekapEnd" class="form-control" name="rekapEnd" required>
 												</div>
 											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="col-md-2">
-											Status Hubungan Kerja
-										</td>
-										<td class="col-md-5">
+										</div>
+									</div>
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-3">
+											<label class="control-label">Status Hubungan Kerja</label>
+										</div>
+										<div class="col-md-8">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
@@ -51,25 +50,19 @@
 													<select data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name ="statushubker" required>
 														<option value=""><option>
 														<?php foreach ($status as $status_item){
-																$select = '';
-																if ($status_item['fs_noind'] == $this->session->userdata('statusFilter')) {
-																	$select = 'selected';
-																}
 														?>
-															<option <?php echo $select ?> value="<?php echo $status_item['fs_noind'];?>"><?php echo $status_item['fs_noind'].' - '.$status_item['fs_ket'];?></option>
+															<option value="<?php echo $status_item['fs_noind'];?>"><?php echo $status_item['fs_noind'].' - '.$status_item['fs_ket'];?></option>
 													<?php } ?>
 													</select>
 												</div>
 											</div>
-										</td>
-										<td></td>
-										<td class="col-md-5"></td>
-									</tr>
-									<tr>
-										<td class="col-md-2">
-											Departemen
-										</td>
-										<td class="col-md-5">
+										</div>
+									</div>
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-3">
+											<label class="control-label">Departemen</label>
+										</div>
+										<div class="col-md-8">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
@@ -79,23 +72,19 @@
 														<option value=""></option>
 														<option value="All">ALL</option>
 														<?php foreach ($dept as $dept_item){
-																$select = '';
-																if ($dept_item['Dept'] == $this->session->userdata('departemenFilter')) {
-																	$select = 'selected';
-																}
 														?>
-															<option <?php echo $select ?> value="<?php echo $dept_item['Dept'];?>"><?php echo $dept_item['Dept'];?></option>
+															<option value="<?php echo $dept_item['Dept'];?>"><?php echo $dept_item['Dept'];?></option>
 													<?php } ?>
 													</select>
 												</div>
 											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="col-md-2">
-											Bidang
-										</td>
-										<td class="col-md-5">
+										</div>
+									</div>
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-3">
+											<label class="control-label">Bidang</label>
+										</div>
+										<div class="col-md-8">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
@@ -103,31 +92,18 @@
 													</div>
 													<select id="bidang_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="bidang" required disabled>
 														<option value=""></option>
-														<?php 
-															if ($this->session->userdata('bidangFilter') == '') {
-																echo '<option value="0" disabled>Pilih Departemen terlebih dahulu</option>';
-															}
-															else{
-																foreach ($bidang as $bidang_item){
-																	$select = '';
-																	if ($bidang_item['Bidang'] == $this->session->userdata('bidangFilter')) {
-																		$select = 'selected';
-																	}
-																	echo "<option ".$select." >".$bidang_item['Bidang']."</option>";
-																}
-															}
-														?>
+														
 
 													</select>
 												</div>
 											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="col-md-2">
-											Unit
-										</td>
-										<td class="col-md-5">
+										</div>
+									</div>
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-3">
+											<label class="control-label">Unit</label>
+										</div>
+										<div class="col-md-8">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
@@ -135,30 +111,17 @@
 													</div>
 													<select id="unit_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="unit" required disabled>
 														<option value=""></option>
-														<?php 
-															if ($this->session->userdata('unitFilter') == '') {
-																echo '<option value="0" disabled>Pilih Bidang terlebih dahulu</option>';
-															}
-															else{
-																foreach ($unit as $unit_item){
-																	$select = '';
-																	if ($unit_item['Unit'] == $this->session->userdata('unitFilter')) {
-																		$select = 'selected';
-																	}
-																	echo "<option ".$select." >".$unit_item['Unit']."</option>";
-																}
-															}
-														?>
+														
 													</select>
 												</div>
 											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="col-md-2">
-											Seksi
-										</td>
-										<td class="col-md-5">
+										</div>
+									</div>
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-3">
+											<label class="control-label">Seksi</label>
+										</div>
+										<div class="col-md-8">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
@@ -167,56 +130,33 @@
 													<select id="section_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="section" required disabled>
 														<option value=""></option>
 														<option value="0" disabled>Pilih Unit terlebih dahulu</option>
-														<?php 
-															if ($this->session->userdata('seksiFilter') == '') {
-																echo '<option value="0" disabled>Pilih Unit terlebih dahulu</option>';
-															}
-															else{
-																foreach ($seksi as $seksi_item){
-																	$select = '';
-																	if ($seksi_item['Seksi'] == $this->session->userdata('seksiFilter')) {
-																		$select = 'selected';
-																	}
-																	echo "<option ".$select." >".$seksi_item['Seksi']."</option>";
-																}
-															}
-														?>
+														
 													</select>
 												</div>
 											</div>
-										</td>
-										<td></td>
-										<td>
-											<div class="form-group">
+										</div>
+									</div>
+									<div class="row" style="margin: 10px 10px;vertical-align: middle">
+										<div class="col-md-7">
+											<div id="loadingAjax"></div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group" style="vertical-align: middle">
 												<div class="checkbox">
 													<label>
-														<?php
-															$check = 'checked';
-															if ($this->session->userdata('detailFilter') == NULL) {
-																$check = '';
-															}
-
-														?>
-														<input id="toggle_button" name="detail" type="checkbox" value="1" <?php echo $check ?>>
+														<input id="toggle_button" name="detail" type="checkbox" value="1">
 														Tampilkan Detail Data TIMS
 													</label>
 												</div>
 											</div>
-										</td>
-									</tr>
-									<tr>
-										<td></td>
-										<td>
-											<div id="loadingAjax"></div>
-										</td>
-										<td></td>
-										<td>
-											<span id="submit-filter-rekap" class="btn btn-primary pull-right">
+										</div>
+										<div class="col-md-1">
+											<span id="submit-filter-rekap" class="btn btn-primary pull-right" style="vertical-align: middle">
 												PROSES
 											</span>
-										</td>
-									</tr>
-								</table>
+										</div>
+									</div>
+								</div>
 							</form>
 							<div id="table-div">
 								
