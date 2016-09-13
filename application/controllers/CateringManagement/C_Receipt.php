@@ -81,6 +81,8 @@ class C_Receipt extends CI_Controller {
 		
 		$data['Catering'] = $this->M_receipt->GetCatering();
 		$data['Type'] = $this->M_receipt->GetOrderType();
+		$data['FineType'] = $this->M_receipt->GetFineType();
+		$data['LatestId'] = $this->M_receipt->GetLatestId();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -127,7 +129,9 @@ class C_Receipt extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['Receipt'] = $this->M_receipt->GetReceiptForEdit($id);
+		$data['ReceiptFine'] = $this->M_receipt->GetReceiptFineForEdit($id);
 		$data['Catering'] = $this->M_receipt->GetCatering();
+		$data['FineType'] = $this->M_receipt->GetFineType();
 		$data['Type'] = $this->M_receipt->GetOrderType();
 		
 		$this->load->view('V_Header',$data);
@@ -159,6 +163,7 @@ class C_Receipt extends CI_Controller {
 	
 	public function add()
 	{
+		$id 		= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
 		$date 		= $this->input->post('TxtReceiptDate');
 		$place 		= $this->input->post('TxtPlace');
@@ -178,9 +183,28 @@ class C_Receipt extends CI_Controller {
 		$pph 		= $this->input->post('TxtPPH');
 		$payment	= $this->input->post('TxtPayment');
 		
-		$this->M_receipt->AddReceipt($no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
-		redirect('CateringManagement/Receipt');
+		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
 		
+		$finedate = $this->input->post('TxtFineDate');
+		$fineqty = $this->input->post('TxtFineQty');
+		$fineprice = $this->input->post('TxtFinePrice');
+		$finetype = $this->input->post('TxtFineType');
+		$finenominal = $this->input->post('TxtFineNominal');
+				
+			$i=0;
+			foreach($finedate as $loop){
+				$data_fine[$i] = array(
+					'receipt_id' 			=> $this->input->post('TxtID'),
+					'receipt_fine_date' 	=> $finedate[$i],
+					'receipt_fine_qty'		=> $fineqty[$i],
+					'receipt_fine_price'	=> $fineprice[$i],
+					'fine_type_percentage'	=> $finetype[$i],
+					'fine_nominal'			=> $finenominal[$i]
+				);
+				$this->M_receipt->AddReceiptFine($data_fine[$i]);
+				$i++;
+			}
+		redirect('CateringManagement/Receipt');
 	}
 	
 	public function update()
@@ -206,8 +230,30 @@ class C_Receipt extends CI_Controller {
 		$payment	= $this->input->post('TxtPayment');
 		
 		$this->M_receipt->UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
-		redirect('CateringManagement/Receipt/Details/'.$id);
 		
+		$this->M_receipt->DeleteReceiptFine($id);
+		
+		$finedate = $this->input->post('TxtFineDate');
+		$fineqty = $this->input->post('TxtFineQty');
+		$fineprice = $this->input->post('TxtFinePrice');
+		$finetype = $this->input->post('TxtFineType');
+		$finenominal = $this->input->post('TxtFineNominal');
+				
+			$i=0;
+			foreach($finedate as $loop){
+				$data_fine[$i] = array(
+					'receipt_id' 			=> $this->input->post('TxtID'),
+					'receipt_fine_date' 	=> $finedate[$i],
+					'receipt_fine_qty'		=> $fineqty[$i],
+					'receipt_fine_price'	=> $fineprice[$i],
+					'fine_type_percentage'	=> $finetype[$i],
+					'fine_nominal'			=> $finenominal[$i]
+				);
+				$this->M_receipt->AddReceiptFine($data_fine[$i]);
+				$i++;
+			}
+		
+		redirect('CateringManagement/Receipt/Details/'.$id);
 	}
 	
 	public function delete($id)
@@ -217,13 +263,21 @@ class C_Receipt extends CI_Controller {
 		
 	}
 	
-	public function checkpph()
-	{
+	public function checkpph(){
 		$id 	= $this->input->post('id');
 		
 		$cater_data = $this->M_receipt->GetPphStatus($id);
 			foreach($cater_data as $cater){
 				echo $cater['catering_pph'];
+			}
+	}
+	
+	public function checkfine(){
+		$id 	= $this->input->post('id');
+		
+		$fine_data = $this->M_receipt->GetFineValue($id);
+			foreach($fine_data as $fine){
+				echo $fine['percentage'];
 			}
 	}
 	

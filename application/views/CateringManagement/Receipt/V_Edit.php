@@ -136,6 +136,55 @@
 						</div>
 						<hr>
 						
+						<div class="row" style="margin 10px 10px">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-heading text-right">
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="addResponsbility" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+									</div>
+									<div class="panel-body">
+										<div class="table-responsive" >
+											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblFineCatering" id="tblFineCatering">
+												<thead>
+													<tr class="bg-primary">
+														<th width="20%">DATE</th>
+														<th width="20%">QTY</th>
+														<th width="20%">PRICE</th>
+														<th width="20%">TYPE</th>
+														<th width="20%">FINE</th>
+													</tr>
+												</thead>
+												<tbody id="tbodyFineCatering">
+													<?php foreach($ReceiptFine as $rf){ ?>
+													<tr class="clone">
+														<td>
+															<input id="finedate" name="TxtFineDate[]" class="form-control finedate" placeholder="Fine Date" value="<?php echo $rf['receipt_fine_date']?>">
+														</td>
+														<td><input id="fineqty" name="TxtFineQty[]" class="form-control fineqty" onkeypress="return isNumberKey(event)" placeholder="Order Qty" value="<?php echo $rf['receipt_fine_qty']?>" ></td>
+														<td><input id="fineprice" name="TxtFinePrice[]" class="form-control fineprice" onkeypress="return isNumberKey(event)" placeholder="Order Price" value="<?php echo $rf['receipt_fine_price']?>" ></td>
+														<td>
+															<select class="form-control select4 finetype" id="finetype" name="TxtFineType[]" data-placeholder="Select Type">
+																	<option></option>
+																<?php foreach ($FineType as $ft) {
+																	$fts='';
+																	if ($rf['fine_type_percentage'] == $ft['percentage']){$fts='selected';}
+																?>
+																	<option <?php echo $fts ?>  value="<?php echo $ft['percentage']?>"><?php echo $ft['fine_type']?></option>
+																<?php }?>
+															</select>
+														</td>
+														<td><input id="finenominal" name="TxtFineNominal[]" class="form-control finenominal" placeholder="Fine" value="<?php echo $rf['fine_nominal']?>" readonly></td>
+													</tr>
+													<?php } ?>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<!-- INPUT GROUP 3 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">

@@ -840,7 +840,7 @@ $(document).ready(function(){
 	});
 	
 	
-// Catering	
+	// Catering	
 	$('.singledate').daterangepicker({
 		"singleDatePicker": true,
 		"timePicker": false,
@@ -873,7 +873,8 @@ $(document).ready(function(){
 	
 	$("#catering").change(cekpph);
 	$("#pphverify").click(cekpph);
-		//Check if pph exist
+	
+	//Check if pph exist
 	function cekpph(){
 		$.ajax({
 			type:'POST',
@@ -888,7 +889,8 @@ $(document).ready(function(){
 			}
 		});
 	};
-		//calculate final cost
+	
+	//calculate final cost
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	function calculation(pphstatus){
 			
@@ -911,7 +913,7 @@ $(document).ready(function(){
 		payment();
 	};
 		
-		//run both function
+	//run both function
 	function checkncalc(){
 		cekpph();
 		calculation();

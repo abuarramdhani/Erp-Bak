@@ -32,6 +32,9 @@
 					
 					<div class="box-body">
 					<form method="post" action="<?php echo base_url('CateringManagement/Receipt/Add')?>">
+						<?php foreach ($LatestId as $LI) {?>
+						<input type="hidden" name="TxtID" class="form-control" required value="<?php echo $LI['nextval']?>">
+						<?php }?>
 						<!-- INPUT GROUP 1 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -123,6 +126,48 @@
 						</div>
 						<hr>
 						
+						<div class="row" style="margin 10px 10px">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-heading text-right">
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="addResponsbility" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+									</div>
+									<div class="panel-body">
+										<div class="table-responsive" >
+											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblFineCatering" id="tblFineCatering">
+												<thead>
+													<tr class="bg-primary">
+														<th width="20%">DATE</th>
+														<th width="20%">QTY</th>
+														<th width="20%">PRICE</th>
+														<th width="20%">TYPE</th>
+														<th width="20%">FINE</th>
+													</tr>
+												</thead>
+												<tbody id="tbodyFineCatering">
+													<tr class="clone">
+														<td><input id="finedate" name="TxtFineDate[]" class="form-control singledate finedate" placeholder="Fine Date"></td>
+														<td><input id="fineqty" name="TxtFineQty[]" class="form-control fineqty" onkeypress="return isNumberKey(event)" placeholder="Order Qty"></td>
+														<td><input id="fineprice" name="TxtFinePrice[]" class="form-control fineprice" onkeypress="return isNumberKey(event)" placeholder="Order Price"></td>
+														<td>
+															<select class="form-control select4 finetype" id="finetype" name="TxtFineType[]" data-placeholder="Select Type">
+																	<option></option>
+																<?php foreach ($FineType as $ft) {?>
+																	<option value="<?php echo $ft['percentage']?>"><?php echo $ft['fine_type']?></option>
+																<?php }?>
+															</select>
+														</td>
+														<td><input id="finenominal" name="TxtFineNominal[]" class="form-control finenominal" placeholder="Fine" readonly></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<!-- INPUT GROUP 3 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -137,7 +182,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Fine</label>
 								<div class="col-lg-3">
-									<input id="fine" name="TxtFine" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Fine" value="0">
+									<input id="fine" name="TxtFine" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Fine" value="0" readonly>
 								</div>								
 							</div>
 						</div>

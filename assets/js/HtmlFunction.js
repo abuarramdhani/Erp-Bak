@@ -1263,24 +1263,83 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		$('#hdnCategoryId').val(cat_id);
 	}
 
-//NEW
-function deleteSingleRow(tableID,line) {
-	try {
-		var table = document.getElementById(tableID);
-		var rowCount = table.rows.length;
-		var i = line;
-		var lineID = $('#'+tableID+' tbody tr input.id').eq(rowCount-2).val();
-		//alert(n);
-		if(rowCount > 2){
-			if(lineID > 0){
-				alert('Baris sudah tersimpan tidak bisa dihapus');
+	//SINGLE DELETION
+	function deleteSingleRow(tableID,line) {
+		try {
+			var table = document.getElementById(tableID);
+			var rowCount = table.rows.length;
+			var i = line;
+			var lineID = $('#'+tableID+' tbody tr input.id').eq(rowCount-2).val();
+			//alert(n);
+			if(rowCount > 2){
+				if(lineID > 0){
+					alert('Baris sudah tersimpan tidak bisa dihapus');
+				}else{
+					table.deleteRow(i);
+				}
 			}else{
-				table.deleteRow(i);
+				alert('Minimal harus ada satu baris tersisa');
 			}
-		}else{
-			alert('Minimal harus ada satu baris tersisa');
+		}catch(e) {
+			alert(e);
 		}
-	}catch(e) {
-		alert(e);
 	}
-}
+
+	//RECEIPT ADD ROW
+	function AddFine(base){
+		var newgroup = $('<tr>').addClass('clone');
+		var e = jQuery.Event( "click" );
+		e.preventDefault();
+		$("select#finetype:last").select2("destroy");
+		
+		$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyFineCatering');
+
+		$("select#finetype").select2({
+			placeholder: "",
+			allowClear : true,
+		});
+		
+		$("select#finetype:last").select2({
+			placeholder: "",
+			allowClear : true,
+		});
+		
+		$("select#finetype:last").val("").change();
+		
+		$("#tbodyFineCatering input").keyup(multInputs);
+		$("#tbodyFineCatering input").click(multInputs);
+		$("#tbodyFineCatering select").change(multInputs);
+		function multInputs() {
+			
+			$("tr.clone").each(function () {
+				var qty = $('#fineqty', this).val();
+				var price = $('#fineprice', this).val();
+				var percentage = $('#finetype', this).val();
+				var total = qty*price*percentage/100;
+				$("#finenominal", this).val(total);
+			});
+			
+			var item = document.getElementsByClassName("finenominal");
+			var itemCount = item.length;
+			var total = 0;
+			for(var i = 0; i < itemCount; i++)
+			{
+				total = total +  parseInt(item[i].value);
+			}
+			document.getElementById('fine').value = total;
+		}
+		
+		$('.singledate').daterangepicker({
+			"singleDatePicker": true,
+			"timePicker": false,
+			"timePicker24Hour": true,
+			"showDropdowns": false,
+			locale: {
+				format: 'YYYY-MM-DD'
+			},
+		});
+		if (typeof $('#receipt-date').val() !== 'undefined'){
+		var startDate = $('#receipt-date').val()
+		$(".singledate").data('daterangepicker').setStartDate(startDate);
+		$(".singledate").data('daterangepicker').setEndDate(startDate)};
+	}
