@@ -1286,6 +1286,7 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 	}
 
 	//RECEIPT ADD ROW
+	
 	function AddFine(base){
 		var newgroup = $('<tr>').addClass('clone');
 		var e = jQuery.Event( "click" );
@@ -1343,3 +1344,14 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		$(".singledate").data('daterangepicker').setStartDate(startDate);
 		$(".singledate").data('daterangepicker').setEndDate(startDate)};
 	}
+
+	
+	$(function(){
+	setTimeout(function(){
+      $('#AddFine').click();
+    },100);
+	setTimeout(function(){
+	  $('#DelFine').click();
+    },200);
+	
+	});
