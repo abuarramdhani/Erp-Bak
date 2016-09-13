@@ -167,7 +167,7 @@
 								<tr>
 									<td colspan="4">
 										<b><?php 
-											$no = 1;
+											
 											echo $sub['subassy_desc'];
 										?></b>
 									</td>
@@ -188,11 +188,12 @@
 								</tr>
 								<?php
 											if(!(empty($component_list))){
+												$no = 1;
 												foreach ($component_list as $comp) {
-													if ($comp['subassy_desc'] == $sub['subassy_desc']) {
+													if ($comp['subassy_desc'] == $sub['subassy_desc'] && $comp['area'] == $sub['area'] ) {
 								?>
 								<tr>
-									<td align="center"><?php echo $no; ?></td>
+									<td align="center"><?php echo $no++; ?></td>
 									<td><?php echo $comp['component_code']; ?></td>
 									<td><?php echo $comp['component_desc']; ?></td>
 									<td align="center" style="width: 30px;"><div style="width: 30px;text-align: center;margin: 0 auto"><?php echo $comp['qty_component_needed']; ?></div></td>
@@ -221,7 +222,6 @@
 								<?php
 															}
 														}
-														$no++;
 								?>
 								</tr>
 								
