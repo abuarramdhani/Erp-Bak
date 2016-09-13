@@ -273,7 +273,7 @@ class C_StockControlNew extends CI_Controller {
 					$no = 1;
 					$row++;
 					foreach ($component_list as $comp) {
-						if ($comp['subassy_desc'] == $sub['subassy_desc']) {
+						if ($comp['subassy_desc'] == $sub['subassy_desc'] && $comp['area'] == $sub['area']) {
 							$worksheet->setCellValue('A'.$row, $no);
 							$worksheet->setCellValue('B'.$row, $comp['component_code']);
 							$worksheet->setCellValue('C'.$row, $comp['component_desc']);

@@ -112,7 +112,7 @@
 								</tr>
 								<?php
 												foreach ($component_list as $comp) {
-													if ($comp['subassy_desc'] == $sub['subassy_desc']) {
+													if ($comp['subassy_desc'] == $sub['subassy_desc'] &&  && $comp['area'] == $sub['area']) {
 								?>
 								<tr>
 									<td><?php echo $no; ?></td>
