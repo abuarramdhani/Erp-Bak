@@ -635,6 +635,53 @@
 				}
 			});
 		});
+
+		$(".js-slcNoInduk").select2({
+			placeholder: "No Induk",
+			minimumInputLength: 0,
+			ajax: {		
+				url:baseurl+"RekapTIMSPromosiPekerja/GetNoInduk",
+				dataType: 'json',
+				type: "GET",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term,
+						type: $('select#slcNoInduk').val()
+					}
+					return queryParameters;
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.NoInduk, text:obj.NoInduk};
+						})
+					};
+				}
+			}	
+		});
+			
+			
+			
+		$('#submit-filter-no-induk').click(function(){
+			$('.alert').alert('close');
+			$('#loadingAjax').html('<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">Processing</span></div></div>');
+			
+			$.ajax({
+				type:'POST',
+				data:$("#filter-rekap").serialize(),
+				url:baseurl+"RekapTIMSPromosiPekerja/RekapPerPekerja/show-data",
+				success:function(result)
+				{
+					$('#table-div').html(result);
+					$('#loadingAjax').html('');
+					rekap_datatable();
+				},
+				error: function() {
+					$('#loadingAjax').html('');
+					document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
+				}
+			});
+		});
 	});
 
 	//---------------------------------REKAP TIMS.end-------------------------------
