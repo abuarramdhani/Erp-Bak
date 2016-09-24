@@ -35,7 +35,7 @@
 						<?php foreach ($Receipt as $rc) {?>
 							<div class="col-md-12">
 								<a href="<?php echo base_url('CateringManagement/Receipt/Edit/'.$rc['receipt_id'])?>" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
-								<a href="<?php echo base_url('CateringManagement/Receipt/Print/'.$rc['receipt_id'])?>" class="btn btn-info"><i class="fa fa-print"></i> Print</a>
+								<a href="<?php echo base_url('CateringManagement/Receipt/Print/'.$rc['receipt_id'])?>" class="btn btn-info" target="blank_"><i class="fa fa-print"></i> Print</a>
 								<a href="<?php echo base_url('CateringManagement/Receipt/Delete/'.$rc['receipt_id'])?>" class="btn btn-danger"><i class="fa fa-remove"></i> Delete</a>
 							</div>
 							<div class="col-md-12">

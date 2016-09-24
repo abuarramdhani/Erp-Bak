@@ -1306,17 +1306,22 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		});
 		
 		$("select#finetype:last").val("").change();
+		$("input#fineprice:last").val("").change();
+		$("input#fineqty:last").val("").change();
 		
 		$("#tbodyFineCatering input").keyup(multInputs);
 		$("#tbodyFineCatering input").click(multInputs);
 		$("#tbodyFineCatering select").change(multInputs);
 		function multInputs() {
-			
+
 			$("tr.clone").each(function () {
+
 				var qty = $('#fineqty', this).val();
+				var ordertype = $('#ordertype').val();
+					if(ordertype==2){var bonus_qty = Math.floor(qty/50);}else {var bonus_qty = 0;}
 				var price = $('#fineprice', this).val();
 				var percentage = $('#finetype', this).val();
-				var total = qty*price*percentage/100;
+				var total = (qty-bonus_qty)*price*percentage/100;
 				$("#finenominal", this).val(total);
 			});
 			
@@ -1349,9 +1354,9 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 	$(function(){
 	setTimeout(function(){
       $('#AddFine').click();
-    },100);
+    },10);
 	setTimeout(function(){
 	  $('#DelFine').click();
-    },200);
+    },20);
 	
 	});

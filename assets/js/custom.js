@@ -949,7 +949,16 @@ $(document).ready(function(){
 			
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
-			var $calc = ($qty * $price);
+			var $ordertype = $('#ordertype').val();
+			
+			if($ordertype==2){
+				var $bonus_qty = Math.floor($qty/50);
+			}
+			else {
+				var $bonus_qty = 0;
+			}
+			
+			var $calc = (($qty-$bonus_qty) * $price);
 			var $fine = $('#fine').val();
 			var $est = $calc - $fine;
 			if (pphstatus==1){

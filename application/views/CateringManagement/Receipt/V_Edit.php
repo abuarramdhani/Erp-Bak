@@ -77,7 +77,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Type</label>
 								<div class="col-lg-6">
-									<select class="form-control select4" name="TxtOrderType" placeholder="Select Order Type" required>
+									<select class="form-control select4" id="ordertype" name="TxtOrderType" placeholder="Select Order Type" required>
 											<option></option>
 										<?php
 											foreach ($Type as $tp) {
@@ -140,8 +140,8 @@
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="addResponsbility" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddFine" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelFine" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
