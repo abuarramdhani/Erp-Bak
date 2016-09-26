@@ -33,7 +33,7 @@
 					<div class="box-body">
 					<form method="post" action="<?php echo base_url('CateringManagement/Receipt/Update')?>">
 					<?php foreach ($Receipt as $rc) {?>
-						<input type="hidden" name="TxtId" class="form-control" value="<?php echo $rc['receipt_id']?>" required>
+						<input type="hidden" name="TxtID" class="form-control" value="<?php echo $rc['receipt_id']?>" required>
 						<!-- INPUT GROUP 1 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">

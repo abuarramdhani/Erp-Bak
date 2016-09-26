@@ -106,6 +106,7 @@ class C_Receipt extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['Receipt'] = $this->M_receipt->GetReceiptDetails($id);
+		$data['ReceiptFine'] = $this->M_receipt->GetReceiptFineForEdit($id);
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -209,7 +210,7 @@ class C_Receipt extends CI_Controller {
 	
 	public function update()
 	{
-		$id			= $this->input->post('TxtId');
+		$id			= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
 		$date 		= $this->input->post('TxtReceiptDate');
 		$place 		= $this->input->post('TxtPlace');
