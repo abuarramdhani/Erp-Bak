@@ -945,6 +945,10 @@ $(document).ready(function(){
 	
 	//calculate final cost
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
+	$("#orderqty,#singleprice,#fine").click(checkncalc);
+		$("#tbodyFineCatering input").keyup(checkncalc);
+		$("#tbodyFineCatering input").click(checkncalc);
+		$("#tbodyFineCatering select").change(checkncalc);
 	function calculation(pphstatus){
 			
 			var $qty = $('#orderqty').val();
@@ -967,7 +971,7 @@ $(document).ready(function(){
 				var $pph = (0 / 100) * $est;
 			}
 			
-			var $total = $est - $fine - $pph;
+			var $total = $est - $pph;
 			
 		$("#calc").val($calc);
 		$("#pph").val($pph);
