@@ -166,6 +166,9 @@
 											</table>
 										</div>
 									</div>
+									<div class="panel-footer text-right">
+										<a href="javascript:void(0);" class="btn btn-sm btn-info" id="FineChecking" title="Periksa"><i class="fa fa-search"></i> Check</a>
+									</div>
 								</div>
 							</div>
 						</div>
