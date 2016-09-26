@@ -1309,6 +1309,7 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		$("input#fineprice:last").val("").change();
 		$("input#fineqty:last").val("").change();
 		
+		$("#DelFine").click(multInputs);
 		$("#tbodyFineCatering input").keyup(multInputs);
 		$("#tbodyFineCatering input").click(multInputs);
 		$("#tbodyFineCatering select").change(multInputs);
@@ -1358,5 +1359,4 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 	setTimeout(function(){
 	  $('#DelFine').click();
     },20);
-	
 	});

@@ -148,11 +148,12 @@
 											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblFineCatering" id="tblFineCatering">
 												<thead>
 													<tr class="bg-primary">
-														<th width="20%">DATE</th>
-														<th width="20%">QTY</th>
-														<th width="20%">PRICE</th>
+														<th width="15%">DATE</th>
+														<th width="15%">QTY</th>
+														<th width="15%">PRICE</th>
 														<th width="20%">TYPE</th>
-														<th width="20%">FINE</th>
+														<th width="20%">DESC</th>
+														<th width="15%">FINE</th>
 													</tr>
 												</thead>
 												<tbody id="tbodyFineCatering">
@@ -174,6 +175,7 @@
 																<?php }?>
 															</select>
 														</td>
+														<td><input id="finedesc" name="TxtFineDesc[]" class="form-control finedesc toupper" placeholder="Description" value="<?php echo $rf['fine_description']?>"></td>
 														<td><input id="finenominal" name="TxtFineNominal[]" class="form-control finenominal" placeholder="Fine" value="<?php echo $rf['fine_nominal']?>" readonly></td>
 													</tr>
 													<?php } ?>

@@ -146,12 +146,13 @@ class C_Receipt extends CI_Controller {
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', array(215,80), 0, '', 0, 0, 0, 0);
+		$pdf = new mPDF('utf-8', array(215,120), 0, '', 0, 0, 0, 0);
 
 		$filename = 'Catering-Receipt-'.$id;
 		$this->checkSession();
 
 		$data['Receipt'] = $this->M_receipt->GetReceiptDetails($id);
+		$data['ReceiptFine'] = $this->M_receipt->GetReceiptFineForEdit($id);
 
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		$html = $this->load->view('CateringManagement/Receipt/V_Print', $data, true);
@@ -190,6 +191,7 @@ class C_Receipt extends CI_Controller {
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
 		$finetype = $this->input->post('TxtFineType');
+		$finedesc = $this->input->post('TxtFineDesc');
 		$finenominal = $this->input->post('TxtFineNominal');
 				
 			$i=0;
@@ -200,6 +202,7 @@ class C_Receipt extends CI_Controller {
 					'receipt_fine_qty'		=> $fineqty[$i],
 					'receipt_fine_price'	=> $fineprice[$i],
 					'fine_type_percentage'	=> $finetype[$i],
+					'fine_description'		=> $finedesc[$i],
 					'fine_nominal'			=> $finenominal[$i]
 				);
 				$this->M_receipt->AddReceiptFine($data_fine[$i]);
@@ -238,6 +241,7 @@ class C_Receipt extends CI_Controller {
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
 		$finetype = $this->input->post('TxtFineType');
+		$finedesc = $this->input->post('TxtFineDesc');
 		$finenominal = $this->input->post('TxtFineNominal');
 				
 			$i=0;
@@ -248,6 +252,7 @@ class C_Receipt extends CI_Controller {
 					'receipt_fine_qty'		=> $fineqty[$i],
 					'receipt_fine_price'	=> $fineprice[$i],
 					'fine_type_percentage'	=> $finetype[$i],
+					'fine_description'		=> $finedesc[$i],
 					'fine_nominal'			=> $finenominal[$i]
 				);
 				$this->M_receipt->AddReceiptFine($data_fine[$i]);

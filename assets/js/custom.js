@@ -946,6 +946,7 @@ $(document).ready(function(){
 	//calculate final cost
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	$("#orderqty,#singleprice,#fine").click(checkncalc);
+		$("#DelFine").click(checkncalc);
 		$("#tbodyFineCatering input").keyup(checkncalc);
 		$("#tbodyFineCatering input").click(checkncalc);
 		$("#tbodyFineCatering select").change(checkncalc);

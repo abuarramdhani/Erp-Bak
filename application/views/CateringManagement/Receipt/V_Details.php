@@ -124,6 +124,7 @@
 										<td style="width:40px;text-align:center;">Qty</td>
 										<td style="width:30px;text-align:center;">(%)</td>
 										<td style="width:80px;text-align:right;">Harga</td>
+										<td style="width:80px;text-align:center;">Deskripsi</td>
 										<td style="width:80px;text-align:right;">Total</td>
 									</tr>
 									<?php $no=0; foreach($ReceiptFine as $rf){ $no++;?>
@@ -133,6 +134,7 @@
 										<td style="text-align:center;"><?php echo $rf['receipt_fine_qty'] ?></td>
 										<td style="text-align:center;"><?php echo $rf['fine_type_percentage'] ?> %</td>
 										<td style="text-align:right;"><?php echo number_format($rf['receipt_fine_price'], 0 , ',' , '.' ); ?></td>
+										<td style="text-align:center;"><?php echo $rf['fine_description'] ?></td>
 										<td style="text-align:right;"><?php echo number_format($rf['fine_nominal'], 0 , ',' , '.' ); ?></td>
 									</tr>
 									<?php } ?>
