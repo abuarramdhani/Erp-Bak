@@ -1391,7 +1391,7 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 			calculationalias();
 		}
 		
-		$('.singledate').daterangepicker({
+		$('.singledate:last').daterangepicker({
 			"singleDatePicker": true,
 			"timePicker": false,
 			"timePicker24Hour": true,
@@ -1403,8 +1403,8 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		
 		if (typeof $('#receipt-date').val() !== 'undefined'){
 		var startDate = $('#receipt-date').val()
-		$(".singledate").data('daterangepicker').setStartDate(startDate);
-		$(".singledate").data('daterangepicker').setEndDate(startDate)};
+		$(".singledate:last").data('daterangepicker').setStartDate(startDate);
+		$(".singledate:last").data('daterangepicker').setEndDate(startDate)};
 	}
 
 	//RECEIPT MANAGEMENT AUTO-ADD-REMOVE ROW
