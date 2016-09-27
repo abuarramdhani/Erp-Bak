@@ -1285,7 +1285,7 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		}
 	}
 
-	//RECEIPT ADD ROW
+	//RECEIPT MANAGEMENT ADD ROW
 	
 	function AddFine(base){
 		var newgroup = $('<tr>').addClass('clone');
@@ -1310,9 +1310,11 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		$("input#fineqty:last").val("").change();
 		
 		$("#DelFine").click(multInputs);
-		$("#tbodyFineCatering input").keyup(multInputs);
-		$("#tbodyFineCatering input").click(multInputs);
-		$("#tbodyFineCatering select").change(multInputs);
+		$("#tbodyFineCatering input").keyup(finerowall);
+		$("#tbodyFineCatering input").click(finerowall);
+		$("#tbodyFineCatering select").change(finerowall);
+		
+		// Function 1 : CALCULATE FINE PER ROW
 		function multInputs() {
 
 			$("tr.clone").each(function () {
@@ -1329,11 +1331,64 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 			var item = document.getElementsByClassName("finenominal");
 			var itemCount = item.length;
 			var total = 0;
-			for(var i = 0; i < itemCount; i++)
-			{
+			for(var i = 0; i < itemCount; i++){
 				total = total +  parseInt(item[i].value);
 			}
-			document.getElementById('fine').value = total;
+			document.getElementById('fine').value = total;	
+		}
+		
+		// Function 2 : CHECK PPH (COPY of CHECK PPH . CUSTOM.JS)
+		function cekpphalias(){
+			$.ajax({
+				type:'POST',
+				data:{id:$("#catering").val()},
+				url:baseurl+"CateringManagement/Receipt/Checkpph",
+				success:function(result)
+				{
+					calculationalias(result);
+				},
+				error: function() {
+					alert('error');
+				}
+			});
+		};
+		
+		//FUNCTION 3 : FINAL CALCULATION (COPY OF CALCULATION . CUSTOM.JS)
+		function calculationalias(pphstatus){
+				
+			var $qty = $('#orderqty').val();
+			var $price = $('#singleprice').val();
+			var $ordertype = $('#ordertype').val();
+				
+			if($ordertype==2){
+				var $bonus_qty = Math.floor($qty/50);
+			}
+			else {
+				var $bonus_qty = 0;
+			}
+				
+			var $calc = (($qty-$bonus_qty) * $price);
+			var $fine = $('#fine').val();
+			var $est = $calc - $fine;
+			if (pphstatus==1){
+				var $pph = (2 / 100) * $est;
+			} else {
+				var $pph = (0 / 100) * $est;
+			}
+				
+			var $total = $est - $pph;
+				
+			$("#calc").val($calc);
+			$("#pph").val($pph);
+			$("#total").val($total);
+			
+		};
+		
+		//FUNCTION 4 : RUN ALL FUNCTION
+		function finerowall(){
+			multInputs();
+			cekpphalias();
+			calculationalias();
 		}
 		
 		$('.singledate').daterangepicker({
@@ -1345,18 +1400,20 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 				format: 'YYYY-MM-DD'
 			},
 		});
+		
 		if (typeof $('#receipt-date').val() !== 'undefined'){
 		var startDate = $('#receipt-date').val()
 		$(".singledate").data('daterangepicker').setStartDate(startDate);
 		$(".singledate").data('daterangepicker').setEndDate(startDate)};
 	}
 
+	//RECEIPT MANAGEMENT AUTO-ADD-REMOVE ROW
 	
 	$(function(){
-	setTimeout(function(){
-      $('#AddFine').click();
-    },10);
-	setTimeout(function(){
-	  $('#DelFine').click();
-    },20);
+		setTimeout(function(){
+		  $('#AddFine').click();
+		},10);
+		setTimeout(function(){
+		  $('#HiddenDelFine').click();
+		},20);
 	});

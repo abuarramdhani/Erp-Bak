@@ -35,6 +35,12 @@
 						<?php foreach ($LatestId as $LI) {?>
 						<input type="hidden" name="TxtID" class="form-control" required value="<?php echo $LI['nextval']?>">
 						<?php }?>
+						<!-- HEADER ROW -->
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-8 control-label">*) Harap diisi sesuai urutan</label>
+							</div>
+						</div>
 						<!-- INPUT GROUP 1 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -132,6 +138,7 @@
 									<div class="panel-heading text-right">
 										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddFine" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelFine" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+										<a id="HiddenDelFine" onclick="deleteRow('tblFineCatering')" hidden >Hidden</a>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
@@ -166,9 +173,11 @@
 											</table>
 										</div>
 									</div>
+									<!-- CHECK BUTTON (ALTERNATIVE)
 									<div class="panel-footer text-right">
 										<a href="javascript:void(0);" class="btn btn-sm btn-info" id="FineChecking" title="Periksa"><i class="fa fa-search"></i> Check</a>
 									</div>
+									-->
 								</div>
 							</div>
 						</div>

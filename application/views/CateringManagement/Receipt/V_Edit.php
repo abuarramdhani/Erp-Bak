@@ -142,6 +142,7 @@
 									<div class="panel-heading text-right">
 										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddFine" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelFine" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+										<a id="HiddenDelFine" onclick="deleteRow('tblFineCatering')" hidden >Hidden</a>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
@@ -183,9 +184,11 @@
 											</table>
 										</div>
 									</div>
+									<!-- CHECK BUTTON (ALTERNATIVE)
 									<div class="panel-footer text-right">
 										<a href="javascript:void(0);" class="btn btn-sm btn-info" id="FineChecking" title="Periksa"><i class="fa fa-search"></i> Check</a>
 									</div>
+									-->
 								</div>
 							</div>
 						</div>
