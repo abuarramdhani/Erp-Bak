@@ -75,6 +75,12 @@ class C_OutstationSimulation extends CI_Controller {
 	public function load_process(){
 		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
+		if ($area_id == '39') {
+			$is_foreign = 1;
+		}
+		else{
+			$is_foreign = 0;
+		}
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
@@ -132,6 +138,13 @@ class C_OutstationSimulation extends CI_Controller {
 			</thead>
 			<tbody>
 		';
+		$check_holiday = $this->M_Simulation->check_holiday(date('Y-m-d', strtotime($depart_tgl)),date('Y-m-d', strtotime($return_tgl_fix)));
+		$have_holiday = "0";
+		foreach ( $period as $dt1 ){
+			if ($dt1->format('N') > 6 || $check_holiday > 0) {
+				$have_holiday = "1";
+			}
+		}
 		foreach ( $period as $dt ){
 			$count--;
 			if ($count == 0) {
@@ -143,7 +156,7 @@ class C_OutstationSimulation extends CI_Controller {
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
 					$meal_allowance = $this->M_Simulation->show_meal_allowance($position_id, $area_id, $time_name[$time]);
 					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id, $area_id, $city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time);
+					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time, $have_holiday, $is_foreign);
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {
@@ -212,6 +225,12 @@ class C_OutstationSimulation extends CI_Controller {
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
+		if ($area_id == '39') {
+			$is_foreign = 1;
+		}
+		else{
+			$is_foreign = 0;
+		}
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
@@ -258,6 +277,13 @@ class C_OutstationSimulation extends CI_Controller {
 		$interval = DateInterval::createFromDateString('1 day');
 		$period = new DatePeriod($begin, $interval, $end);
 		$count = $begin->diff($end)->days;
+		$check_holiday = $this->M_Simulation->check_holiday(date('Y-m-d', strtotime($depart_tgl)),date('Y-m-d', strtotime($return_tgl_fix)));
+		$have_holiday = "0";
+		foreach ( $period as $dt1 ){
+			if ($dt1->format('N') > 6 || $check_holiday > 0) {
+				$have_holiday = "1";
+			}
+		}
 		foreach ( $period as $dt ){
 			$count--;
 			if ($count == 0) {
@@ -269,7 +295,7 @@ class C_OutstationSimulation extends CI_Controller {
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
 					$meal_allowance = $this->M_Simulation->show_meal_allowance($position_id,$area_id,$time_name[$time]);
 					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id,$area_id,$city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($position_id,$return_time);
+					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time, $have_holiday, $is_foreign);
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {
@@ -349,6 +375,12 @@ class C_OutstationSimulation extends CI_Controller {
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
+		if ($area_id == '39') {
+			$is_foreign = 1;
+		}
+		else{
+			$is_foreign = 0;
+		}
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
@@ -396,6 +428,13 @@ class C_OutstationSimulation extends CI_Controller {
 		$interval = DateInterval::createFromDateString('1 day');
 		$period = new DatePeriod($begin, $interval, $end);
 		$count = $begin->diff($end)->days;
+		$check_holiday = $this->M_Simulation->check_holiday(date('Y-m-d', strtotime($depart_tgl)),date('Y-m-d', strtotime($return_tgl_fix)));
+		$have_holiday = "0";
+		foreach ( $period as $dt1 ){
+			if ($dt1->format('N') > 6 || $check_holiday > 0) {
+				$have_holiday = "1";
+			}
+		}
 		foreach ( $period as $dt ){
 			$count--;
 			if ($count == 0) {
@@ -407,7 +446,7 @@ class C_OutstationSimulation extends CI_Controller {
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
 					$meal_allowance = $this->M_Simulation->show_meal_allowance($position_id,$area_id,$time_name[$time]);
 					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id,$area_id, $city_type_id);
-					$group_ush = $this->M_Simulation->show_group_ush($position_id,$return_time);
+					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time, $have_holiday, $is_foreign);
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
 							foreach ($group_ush as $grp) {

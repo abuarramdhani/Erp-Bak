@@ -113,6 +113,130 @@
 	});
 
 	$(document).ready(function() {
+		$("#employee_position_table").DataTable({
+			"dom": '<"pull-left"f>tip',
+			"info": false,
+			language: {
+				search: "Search : ",
+			},
+			"columnDefs": [
+				{
+					"targets": [ -1 ],
+					"searchable": false,
+					"orderable": false,
+				},
+				{
+					"targets": [ 0 ],
+					"searchable": false,
+					"orderable": false,
+					"width": 20
+				}
+			],
+			"processing": true,
+			"serverSide": true,
+			"ajax":{
+				url : baseurl+"Outstation/employee-position/show-employee-position",
+				type: "post",
+				error: function(){
+					//$("#employee_position_table").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+					//$("#employee_position_table_processing").css("display","none");
+				}
+			}
+		});
+
+		$("#accomodation_table").DataTable({
+			"dom": '<"pull-left"f>tip',
+			"info": false,
+			language: {
+				search: "Search : ",
+			},
+			"columnDefs": [
+				{
+					"targets": [ -1 ],
+					"searchable": false,
+					"orderable": false,
+				},
+				{
+					"targets": [ 0 ],
+					"searchable": false,
+					"orderable": false,
+					"width": 20
+				}
+			],
+			"processing": true,
+			"serverSide": true,
+			"ajax":{
+				url : baseurl+"Outstation/accomodation-allowance/show-accomodation-allowance",
+				type: "post",
+				error: function(){
+					//$("#employee_position_table").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+					//$("#employee_position_table_processing").css("display","none");
+				}
+			}
+		});
+
+		$("#meal_table").DataTable({
+			"dom": '<"pull-left"f>tip',
+			"info": false,
+			language: {
+				search: "Search : ",
+			},
+			"columnDefs": [
+				{
+					"targets": [ -1 ],
+					"searchable": false,
+					"orderable": false,
+				},
+				{
+					"targets": [ 0 ],
+					"searchable": false,
+					"orderable": false,
+					"width": 20
+				}
+			],
+			"processing": true,
+			"serverSide": true,
+			"ajax":{
+				url : baseurl+"Outstation/meal-allowance/show-meal-allowance",
+				type: "post",
+				error: function(){
+					//$("#employee_position_table").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+					//$("#employee_position_table_processing").css("display","none");
+				}
+			}
+		});
+
+		$("#ush_table").DataTable({
+			"dom": '<"pull-left"f>tip',
+			"info": false,
+			language: {
+				search: "Search : ",
+			},
+			"columnDefs": [
+				{
+					"targets": [ -1 ],
+					"searchable": false,
+					"orderable": false,
+				},
+				{
+					"targets": [ 0 ],
+					"searchable": false,
+					"orderable": false,
+					"width": 20
+				}
+			],
+			"processing": true,
+			"serverSide": true,
+			"ajax":{
+				url : baseurl+"Outstation/ush/show-ush",
+				type: "post",
+				error: function(){
+					//$("#employee_position_table").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+					//$("#employee_position_table_processing").css("display","none");
+				}
+			}
+		});
+
 		var output_datatables = $("#data_table").DataTable({
 			"dom": '<"pull-left"f>tip',
 			"info": false,
@@ -439,88 +563,72 @@
 			});
 		});
 
-		var table = $("#realization_detail").DataTable({
-							"dom": '<"pull-left">ti',
-							"info": false,
-							"paging": false,
-							language: {
-								"decimal": ",",
-								"thousands": "."
-							},
-							"columnDefs": [{
-								"targets": [ -1 ],
-								"searchable": false
-							}],
-							"bDestroy": true,
-						});
+		$(".select2-component").select2({
+			placeholder: function(){
+				$(this).data('placeholder');
+			},
+			allowClear: true,
+		});
 
-		table.on( 'order.dt search.dt', function () {
-			table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-				cell.innerHTML = i+1;
-			} );
-		} ).draw();
-
-		if (counter_row == null) {var counter_row = 0}
-
-		var counter = counter_row;
 		$('#add-row').on( 'click', function () {
-			var rowAdd = table.row.add( [
-				'',
-				'<select style="width: 200px" name="txt_component['+counter+']" class="form-control select2" data-placeholder="Pilih Salah Satu!" required><option value=""></option></select>',
-				'<input type="text" name="txt_info['+counter+']" class="form-control" required/>',
-				'<input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty['+counter+']" class="form-control quantity" required/>',
-				'<input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal['+counter+']" class="form-control input_money nominal" required/>',
-				'<input style="text-align: right;" type="text" name="txt_total['+counter+']" class="form-control total-nominal" required readonly/>',
-				'<span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span>',
-			] ).draw( false ).node();
-			$(rowAdd).addClass('multiRow');
-			var component = data_Component;
-			for(var item in component)
-			{
-				$('<option value="'+item+'">'+component[item]+'</option>').appendTo('select[name="txt_component['+counter+']"]');
-			}
-			counter++;
-			document.getElementById('data_counter').value = counter;
-
-			$('.delete-row').on( 'click', function () {
-				table
-					.row($(this).parents('tr'))
-					.remove()
-					.draw();
-			} );
+			var new_form = $('<tr>').addClass('multiRow');
+			var e = jQuery.Event( "click" );
+			e.preventDefault();
 			
-
-			$(".select2").select2({
+			$(".multiRow:last .select2-component:last").select2("destroy");
+			$('.multiRow').last().clone().appendTo(new_form).appendTo('#realization_detail');
+			$(".multiRow:last .form-control").val("").change();
+			
+			$(".select2-component").select2({
 				placeholder: function(){
 					$(this).data('placeholder');
 				},
 				allowClear: true,
 			});
-
 			$('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
-
+			
+			delete_row();
 
 			$(".multiRow input").keyup(multInputs);
 			$(".multiRow input").click(multInputs);
 			$(".delete-row").click(multInputs);
+			$("#add-row").click(multInputs);
 
-			function multInputs() {
-				var grandTotal = 0;
-
-				$("tr.multiRow").each(function () {
-					var $qty = $('.quantity', this).val();
-					var $nominal_with_Rp = $('.nominal', this).val();
-					var $nominal_with_Dot = $nominal_with_Rp.replace(/Rp/g, '');
-					var $nominal = $nominal_with_Dot.replace(/\./g, '');
-					var $total = ($qty * 1) * ($nominal * 1);
-					$('.total-nominal',this).val('Rp'+addCommas(parseFloat(Math.round($total * 100) / 100).toFixed(2)));
-					grandTotal += $total;
-				});
-				$("#total-final").text('Rp'+addCommas(parseFloat(Math.round(grandTotal * 100) / 100).toFixed(2)));
-			}
 		} );
+		$("#add-row").click(multInputs);
+		$(".multiRow input").keyup(multInputs);
+		$(".multiRow input").click(multInputs);
+		$(".delete-row").click(multInputs);
 
-		$('#add-row').click();
+		function multInputs() {
+			var grandTotal = 0;
+
+			$("tr.multiRow").each(function () {
+				var $qty = $('.quantity', this).val();
+				var $nominal_with_Rp = $('.nominal', this).val();
+				var $nominal_with_Dot = $nominal_with_Rp.replace(/Rp/g, '');
+				var $nominal = $nominal_with_Dot.replace(/\./g, '');
+				var $total = ($qty * 1) * ($nominal * 1);
+				$('.total-nominal',this).val('Rp'+addCommas(parseFloat(Math.round($total * 100) / 100).toFixed(2)));
+				grandTotal += $total;
+			});
+			$("#total-final").text('Rp'+addCommas(parseFloat(Math.round(grandTotal * 100) / 100).toFixed(2)));
+		}
+
+		$("#add-row").click();
+		$(".delete-row:last").click();
+		delete_row();
+		function delete_row(){
+			$('.delete-row').click(function(){
+				var formCount = $("#realization_detail .multiRow").size();
+				if(formCount <= 1){
+					alert("Can't delete more form!");
+				}
+				else{
+					$(this).closest('.multiRow').remove();
+				}
+			});
+		}
 
 
 		$('#submit-realization').click(function(){

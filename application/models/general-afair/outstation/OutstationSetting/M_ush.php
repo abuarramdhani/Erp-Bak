@@ -78,7 +78,7 @@ class M_ush extends CI_Model {
 	}
 
 	public function delete_permanently($position_id,$group_id){
-		$sql="delete from ga.ga_outstation_area where position_id='$position_id' AND group_id='$group_id'";
+		$sql="delete from ga.ga_outstation_ush where position_id='$position_id' AND group_id='$group_id'";
 		$query = $this->db->query($sql);
 		return;
 	}
@@ -88,6 +88,62 @@ class M_ush extends CI_Model {
         $this->db->where('group_id', $group_id);
         $query =  $this->db->get('ga.ga_outstation_ush');
         return $query->num_rows();
+	}
+
+	public function show_ush_server_side(){
+		$sql="select *,ush.end_date as tgl_end
+				from 	ga.ga_outstation_ush ush
+						LEFT JOIN ga.ga_outstation_position position
+							ON position.position_id = ush.position_id
+						LEFT JOIN ga.ga_outstation_groupush grp
+							ON grp.group_id = ush.group_id
+						where ush.end_date > now()";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function show_ush_server_side_search($searchValue){
+		$sql="select *,ush.end_date as tgl_end
+				from 	ga.ga_outstation_ush ush
+						LEFT JOIN ga.ga_outstation_position position
+							ON position.position_id = ush.position_id
+						LEFT JOIN ga.ga_outstation_groupush grp
+							ON grp.group_id = ush.group_id
+						where ush.end_date > now()
+
+			AND (
+				position.position_name ILIKE '%$searchValue%'
+				OR grp.group_name ILIKE '%$searchValue%'
+			)
+			";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function show_ush_server_side_order_limit($searchValue, $order_col, $order_dir, $limit, $offset){
+		if ($searchValue == NULL || $searchValue == "") {
+			$condition = "";
+		}
+		else{
+			$condition = "AND (
+				position.position_name ILIKE '%$searchValue%'
+				OR grp.group_name ILIKE '%$searchValue%'
+			)";
+		}
+		$sql="select *,ush.end_date as tgl_end
+				from 	ga.ga_outstation_ush ush
+						LEFT JOIN ga.ga_outstation_position position
+							ON position.position_id = ush.position_id
+						LEFT JOIN ga.ga_outstation_groupush grp
+							ON grp.group_id = ush.group_id
+						where ush.end_date > now()
+
+			$condition
+
+			ORDER BY $order_col $order_dir LIMIT $limit OFFSET $offset
+			";
+		$query = $this->db->query($sql);
+		return $query;
 	}
 }
 ?>

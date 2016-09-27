@@ -50,6 +50,59 @@ class C_OutstationMealAllowance extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function show_meal_allowance(){
+		$requestData= $_REQUEST;
+
+		$columns = array(  
+			0 => 'meal_allowance_id', 
+			1 => 'position_name', 
+			2 => 'area_name',
+			2 => 'time_name',
+			3 => 'nominal',
+		);
+
+		$data_table = $this->M_mealallowance->show_meal_allowance_server_side();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_mealallowance->show_meal_allowance_server_side_search($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_mealallowance->show_meal_allowance_server_side_order_limit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_mealallowance->show_meal_allowance_server_side_order_limit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$count--;
+			if ($count != 0) {
+				$json .= '["'.$no.'","'.$result['position_name'].'","'.$result['area_name'].'","'.$result['time_name'].'","'.$result['nominal'].'","<div width=\'100%\' style=\'text-align: center\'><a class=\'btn btn-warning\' href=\''.base_url('Outstation/meal-allowance/edit/'.$result['meal_allowance_id']).'\'><i class=\'fa fa-edit\'></i> Edit</a> <button class=\'btn btn-danger\' data-toggle=\'modal\' data-target=\'#delete_'.$result['meal_allowance_id'].'\'><i class=\'fa fa-times\'></i> Delete</button><div class=\'modal fade\' id=\'delete_'.$result['meal_allowance_id'].'\'><div class=\'modal-dialog\'><div class=\'modal-content\'><div class=\'modal-header bg-primary\'><button type=\'button\' class=\'close\' data-dismiss=\'modal\' aria-label=\'Close\'><span aria-hidden=\'true\'>&times;</span></button><h4 class=\'modal-title\'>Delete Accomodation Allowance?</h4></div><div class=\'modal-body\'><p>Apakah Anda yakin akan menghapus data ini?</p></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Cancel</button><a href=\''.base_url('Outstation/meal-allowance/delete/'.$result['meal_allowance_id']).'\' id=\'delete_button\'  class=\'btn btn-danger\'>Delete</a></div></div></div></div></div>"],';
+			}
+			else{
+				$json .= '["'.$no.'","'.$result['position_name'].'","'.$result['area_name'].'","'.$result['time_name'].'","'.$result['nominal'].'","<div width=\'100%\' style=\'text-align: center\'><a class=\'btn btn-warning\' href=\''.base_url('Outstation/meal-allowance/edit/'.$result['meal_allowance_id']).'\'><i class=\'fa fa-edit\'></i> Edit</a> <button class=\'btn btn-danger\' data-toggle=\'modal\' data-target=\'#delete_'.$result['meal_allowance_id'].'\'><i class=\'fa fa-times\'></i> Delete</button><div class=\'modal fade\' id=\'delete_'.$result['meal_allowance_id'].'\'><div class=\'modal-dialog\'><div class=\'modal-content\'><div class=\'modal-header bg-primary\'><button type=\'button\' class=\'close\' data-dismiss=\'modal\' aria-label=\'Close\'><span aria-hidden=\'true\'>&times;</span></button><h4 class=\'modal-title\'>Delete Accomodation Allowance?</h4></div><div class=\'modal-body\'><p>Apakah Anda yakin akan menghapus data ini?</p></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Cancel</button><a href=\''.base_url('Outstation/meal-allowance/delete/'.$result['meal_allowance_id']).'\' id=\'delete_button\'  class=\'btn btn-danger\'>Delete</a></div></div></div></div></div>"]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
+
+	}
+
 	public function new_MealAllowance()
 	{
 		$this->checkSession();

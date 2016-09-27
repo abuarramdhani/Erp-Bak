@@ -11,7 +11,7 @@
 					<div class="table-responsive">
 						<fieldset class="row2">
 							<div class="box-body with-border">
-								<table id="data_table" class="table table-bordered table-striped table-hover">
+								<table id="employee_position_table" class="table table-bordered table-striped table-hover" width="100%">
 									<thead style="background-color: #3c8dbc; color: #fff;">
 										<tr class="bg-primary">
 											<th width="10%"><center>No</center></th>
@@ -22,6 +22,7 @@
 											<th width="10%"><center>Action</center></th>
 										</tr>
 									</thead>
+									<!--
 									<tbody>
 										<?php
 											$no = 1;
@@ -46,6 +47,10 @@
 											</td>
 										</tr>
 										<?php }?>
+									</tbody>
+									-->
+									<tbody>
+										
 									</tbody>
 								</table>
 								<div class="modal fade text-center" id="delete_data">

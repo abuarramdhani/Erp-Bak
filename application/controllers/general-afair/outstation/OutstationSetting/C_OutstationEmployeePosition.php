@@ -80,4 +80,70 @@ class C_OutstationEmployeePosition extends CI_Controller {
 
 		redirect('Outstation/employee-position');
 	}
+
+	public function show_employee_server_side(){
+		$requestData= $_REQUEST;
+
+		$columns = array(  
+			0 => 'employee_id', 
+			1 => 'employee_code', 
+			2 => 'employee_name',
+			3 => 'position_name',
+			4 => 'marketing_status'
+		);
+
+		$data_table = $this->M_employee_position->show_employee_server_side();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_employee_position->show_employee_server_side_search($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_employee_position->show_employee_server_side_order_limit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_employee_position->show_employee_server_side_order_limit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$count--;
+			if ($result['position_name'] == "") {
+				$position_name = "-";
+			}
+			else{
+				$position_name = $result['position_name'];
+			}
+			if ($result['marketing_status'] == "") {
+				$marketing_status = "-";
+			}
+			else{
+				$marketing_status = $result['marketing_status'];
+			}
+			if ($count != 0) {
+				$json .= '["'.$no.'","'.$result['employee_code'].'","'.$result['employee_name'].'","'.$position_name.'","<div width=\'100%\' style=\'text-align: center\'>'.$marketing_status.'</div>","<div width=\'100%\' style=\'text-align: center\'><a class=\'btn btn-warning\' href=\''.base_url('Outstation/employee-position/edit/'.$result['employee_id']).'\'><i class=\'fa fa-edit\'></i> Edit</a></div>"],';
+			}
+			else{
+				$json .= '["'.$no.'","'.$result['employee_code'].'","'.$result['employee_name'].'","'.$position_name.'","<div width=\'100%\' style=\'text-align: center\'>'.$marketing_status.'</div>","<div width=\'100%\' style=\'text-align: center\'><a class=\'btn btn-warning\' href=\''.base_url('Outstation/employee-position/edit/'.$result['employee_id']).'\'><i class=\'fa fa-edit\'></i> Edit</a></div>"]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
+
+		
+	}
 }

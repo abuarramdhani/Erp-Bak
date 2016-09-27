@@ -17,7 +17,6 @@
 				    <div class="col-lg-12 text-right reup">    
                         <h4><small>You are logged in as : <?php echo $this->session->user;?></small></h4>
 					</div>	
-						
 						<center> 
 							
 							<img  src="<?php echo base_url('assets/img/outstation.png');?>" style="max-width:27%;" />
@@ -31,7 +30,6 @@
 							echo ' detik';
 						?>
 						</center>
-                    
 				</div>
 			</div>
 		</div>

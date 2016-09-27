@@ -54,7 +54,7 @@
 		<tr >
 			<td height="40px" style="border: 1px solid #000;font-size: 15px; vertical-align: middle"><center><?php echo $no++; ?></center></td>
 			<td style="padding-left: 5px;border: 1px solid #000; font-size: 15px; vertical-align: top;">Bea DL <?php echo $jk.' '.$drel['employee_name'].' / '.$drel['employee_code'].' Ke '.$drel['area_name'].' tgl '.$depart[2].'/'.$depart[1].'/'.$depart[0].' - '.$return[2].'/'.$return[1].'/'.$return[0]?></td>
-			<td style="padding-left: 3px;text-align: right ;border: 1px solid #000;font-size: 15px; vertical-align: middle"><?php echo number_format(array_sum($total), 0, ',', '.') ?>&nbsp;</td>
+			<td style="padding-left: 3px;text-align: right ;border: 1px solid #000;font-size: 15px; vertical-align: middle"><?php if (!empty($total)){ echo number_format(array_sum($total), 0, ',', '.'); } else{echo "N/A";} ?>&nbsp;</td>
 		</tr>
 		<tr>
 			<td height="40px" style="border: 1px solid #000;">&nbsp;</td>
@@ -73,7 +73,7 @@
 		</tr>
 		<tr>
 			<td height="40px" colspan="2" style="text-align: right ;border: 1px solid #000;"><b>Total Rp.</b>&emsp;</td>
-			<td style="text-align: right ;border: 1px solid #000;"><?php echo number_format(array_sum($total), 0, ',', '.') ?>&nbsp;</td>
+			<td style="text-align: right ;border: 1px solid #000;"><?php if (!empty($total)) {echo number_format(array_sum($total), 0, ',', '.');} else{echo "N/A";}?>&nbsp;</td>
 		</tr>
 	</table>
 	<table style="width: 100%; margin: 2px;">

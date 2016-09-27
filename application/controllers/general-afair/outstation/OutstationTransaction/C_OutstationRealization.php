@@ -76,6 +76,12 @@ class C_OutstationRealization extends CI_Controller {
 	public function load_process(){
 		$position_id = $this->input->post('txt_position_id');
 		$area_id = $this->input->post('txt_area_id');
+		if ($area_id == '39') {
+			$is_foreign = 1;
+		}
+		else{
+			$is_foreign = 0;
+		}
 		$city_type_id = $this->input->post('txt_city_type_id');
 		$bon = $this->input->post('txt_bon');
 		$depart = $this->input->post('txt_depart');
@@ -127,6 +133,13 @@ class C_OutstationRealization extends CI_Controller {
 		$nom_meal_siang = '';
 		$nom_meal_malam = '';
 		$nom_inn_malam = '';
+		$check_holiday = $this->M_Realization->check_holiday(date('Y-m-d', strtotime($depart_tgl)),date('Y-m-d', strtotime($return_tgl_fix)));
+		$have_holiday = "0";
+		foreach ( $period as $dt1 ){
+			if ($dt1->format('N') > 6 || $check_holiday > 0) {
+				$have_holiday = "1";
+			}
+		}
 		foreach ( $period as $dt ){
 			$count--;
 			if ($count == 0) {
@@ -138,7 +151,7 @@ class C_OutstationRealization extends CI_Controller {
 				for ($time=$i; $time <= $waktu_kembali; $time++) {
 					$meal_allowance = $this->M_Realization->show_meal_allowance($position_id,$area_id,$time_name[$time]);
 					$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($position_id,$area_id,$city_type_id);
-					$group_ush = $this->M_Realization->show_group_ush($position_id,$return_time);
+					$group_ush = $this->M_Realization->show_group_ush($position_id, $return_time, $have_holiday, $is_foreign);
 					
 					foreach ($accomodation_allowance as $aa) {
 						foreach ($meal_allowance as $ma) {
@@ -380,7 +393,11 @@ class C_OutstationRealization extends CI_Controller {
 		$depart = $this->input->post('txt_depart');
 		$return = $this->input->post('txt_return');
 		$bon_string = $this->input->post('txt_bon');
-		$data_count = $this->input->post('txt_data_counter');
+		$component_id = $this->input->post('txt_component');
+		$info = $this->input->post('txt_info');
+		$qty = $this->input->post('txt_qty');
+		$component_nominal_string = $this->input->post('txt_component_nominal');
+		$data_count = sizeof($component_id);
 
 		$string = array('Rp','.');
 
@@ -388,18 +405,13 @@ class C_OutstationRealization extends CI_Controller {
 
 		$this->M_Realization->new_realization($employee_id,$area_id,$city_type_id,$depart,$return,$bon);
 
-		for ($i=0; $i < $data_count; $i++){ 
-			$component_id = $this->input->post('txt_component['.$i.']');
-			$info = $this->input->post('txt_info['.$i.']');
-			$qty = $this->input->post('txt_qty['.$i.']');
-			$component_nominal_string = $this->input->post('txt_component_nominal['.$i.']');
+		for ($i=0; $i <= $data_count; $i++){ 
+			
 			$string = array('Rp','.');
+			$component_nominal = str_replace($string, '', $component_nominal_string[$i]);
 
-			$component_nominal = str_replace($string, '', $component_nominal_string);
-
-
-			if(strlen($component_id) > 0 && strlen($info) > 0 && strlen($qty) > 0 && strlen($component_nominal) > 0){
-				$this->M_Realization->new_realization_detail($component_id,$info,$qty,$component_nominal);
+			if(strlen($component_id[$i]) > 0 && strlen($info[$i]) > 0 && strlen($qty[$i]) > 0 && strlen($component_nominal[$i]) > 0){
+				$this->M_Realization->new_realization_detail($component_id[$i],$info[$i],$qty[$i],$component_nominal);
 			}
 		}
 
@@ -428,6 +440,12 @@ class C_OutstationRealization extends CI_Controller {
         foreach ($data['data_realization'] as $realization) {
         	$position_id = $realization['outstation_position'];
         	$area_id = $realization['area_id'];
+        	if ($area_id == '39') {
+				$is_foreign = 1;
+			}
+			else{
+				$is_foreign = 0;
+			}
 			$city_type_id = $realization['city_type_id'];
 			$bon = $realization['bon_nominal'];
 			$depart = $realization['depart_time'];
@@ -479,6 +497,13 @@ class C_OutstationRealization extends CI_Controller {
 			$data['nom_meal_siang'] = '';
 			$data['nom_meal_malam'] = '';
 			$data['nom_inn_malam'] = '';
+			$check_holiday = $this->M_Realization->check_holiday(date('Y-m-d', strtotime($depart_tgl)),date('Y-m-d', strtotime($return_tgl_fix)));
+			$have_holiday = "0";
+			foreach ( $period as $dt1 ){
+				if ($dt1->format('N') > 6 || $check_holiday > 0) {
+					$have_holiday = "1";
+				}
+			}
 			foreach ( $period as $dt ){
 				$count--;
 				if ($count == 0) {
@@ -490,7 +515,7 @@ class C_OutstationRealization extends CI_Controller {
 					for ($time=$i; $time <= $waktu_kembali; $time++) {
 						$meal_allowance = $this->M_Realization->show_meal_allowance($position_id,$area_id,$time_name[$time]);
 						$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($position_id,$area_id,$city_type_id);
-						$group_ush = $this->M_Realization->show_group_ush($position_id,$return_time);
+						$group_ush = $this->M_Realization->show_group_ush($position_id, $return_time, $have_holiday, $is_foreign);
 						
 						foreach ($accomodation_allowance as $aa) {
 							foreach ($meal_allowance as $ma) {
@@ -582,7 +607,12 @@ class C_OutstationRealization extends CI_Controller {
 		$depart = $this->input->post('txt_depart');
 		$return = $this->input->post('txt_return');
 		$bon_string = $this->input->post('txt_bon');
-		$data_count = $this->input->post('txt_data_counter');
+		$component_id = $this->input->post('txt_component');
+		$info = $this->input->post('txt_info');
+		$qty = $this->input->post('txt_qty');
+		$component_nominal_string = $this->input->post('txt_component_nominal');
+
+		$data_count = sizeof($component_id);
 		
 		$string = array('Rp','.');
 
@@ -591,18 +621,13 @@ class C_OutstationRealization extends CI_Controller {
 		$this->M_Realization->update_realization($realization_id,$employee_id,$area_id,$city_type_id,$depart,$return,$bon);
 		$this->M_Realization->delete_before_update($realization_id);
 
-		for ($i=0; $i < $data_count; $i++){ 
-			$component_id = $this->input->post('txt_component['.$i.']');
-			$info = $this->input->post('txt_info['.$i.']');
-			$qty = $this->input->post('txt_qty['.$i.']');
-			$component_nominal_string = $this->input->post('txt_component_nominal['.$i.']');
+		for ($i=0; $i <= $data_count; $i++){ 
 			$string = array('Rp','.');
 
-			$component_nominal = str_replace($string, '', $component_nominal_string);
+			$component_nominal = str_replace($string, '', $component_nominal_string[$i]);
 
-
-			if(strlen($component_id) > 0 && strlen($info) > 0 && strlen($qty) > 0 && strlen($component_nominal) > 0){
-				$this->M_Realization->update_realization_detail($realization_id,$component_id,$info,$qty,$component_nominal);
+			if(strlen($component_id[$i]) > 0 && strlen($info[$i]) > 0 && strlen($qty[$i]) > 0 && strlen($component_nominal[$i]) > 0){
+				$this->M_Realization->update_realization_detail($realization_id,$component_id[$i],$info[$i],$qty[$i],$component_nominal);
 			}
 		}
 

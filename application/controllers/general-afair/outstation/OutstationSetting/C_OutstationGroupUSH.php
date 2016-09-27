@@ -63,6 +63,10 @@ class C_OutstationGroupUSH extends CI_Controller {
 					<tr class="bg-primary">
 						<th width="10%"><center>No</center></th>
 						<th><center>Group Name</center></th>
+						<th><center>Holiday</center></th>
+						<th><center>Foreign</center></th>
+						<th><center>From</center></th>
+						<th><center>To</center></th>
 						<th width="20%"><center>Action</center></th>
 					</tr>
 				</thead>
@@ -73,10 +77,27 @@ class C_OutstationGroupUSH extends CI_Controller {
 			if ($dgu['end_date'] <= date("Y-m-d H:i:s")) {
 				$deleted = 'rgba(255, 0, 0, 0.17)';
 			}
+			if ($dgu['holiday'] == '1') {
+				$holiday = 'Y';
+			}
+			else{
+				$holiday = 'N';
+			}
+
+			if ($dgu['foreign'] == '1') {
+				$foreign = 'Y';
+			}
+			else{
+				$foreign = 'N';
+			}
 			echo '
 				<tr style="background-color :'.$deleted.' ">
 					<td style="text-align: center">'.$no++.'</td>
 					<td>'.$dgu['group_name'].'</td>
+					<td>'.$holiday.'</td>
+					<td>'.$foreign.'</td>
+					<td>'.$dgu['time_1'].'</td>
+					<td>'.$dgu['time_2'].'</td>
 					<td style="text-align: center">
 						<a class="btn btn-warning" href="'.base_url('Outstation/group-ush/edit/'.$dgu['group_id']).'"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_'.$dgu['group_id'].'"><i class="fa fa-times"></i> Delete</button>
 						<div class="modal fade" id="delete_'.$dgu['group_id'].'">

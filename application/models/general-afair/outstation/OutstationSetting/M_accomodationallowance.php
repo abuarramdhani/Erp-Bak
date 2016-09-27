@@ -55,5 +55,48 @@ class M_AccomodationAllowance extends CI_Model {
 		$query = $this->db->query($sql);
 		return;
 	}
+
+	public function show_accomodation_allowance_server_side(){
+		$sql="select * from ga.ga_outstation_accomodation_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
+		, ga.ga_outstation_city_type ct where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function show_accomodation_allowance_server_side_search($searchValue){
+		$sql="select * from ga.ga_outstation_accomodation_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
+		, ga.ga_outstation_city_type ct where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id
+
+			AND (
+				op.position_name ILIKE '%$searchValue%'
+				OR ar.area_name ILIKE '%$searchValue%'
+				OR ct.city_type_name ILIKE '%$searchValue%'
+			)
+			";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function show_accomodation_allowance_server_side_order_limit($searchValue, $order_col, $order_dir, $limit, $offset){
+		if ($searchValue == NULL || $searchValue == "") {
+			$condition = "";
+		}
+		else{
+			$condition = "AND (
+				op.position_name ILIKE '%$searchValue%'
+				OR ar.area_name ILIKE '%$searchValue%'
+				OR ct.city_type_name ILIKE '%$searchValue%'
+			)";
+		}
+		$sql="select * from ga.ga_outstation_accomodation_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
+		, ga.ga_outstation_city_type ct where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id
+
+			$condition
+
+			ORDER BY $order_col $order_dir LIMIT $limit OFFSET $offset
+			";
+		$query = $this->db->query($sql);
+		return $query;
+	}
 }
 ?>

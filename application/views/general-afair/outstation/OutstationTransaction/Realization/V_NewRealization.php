@@ -140,7 +140,6 @@
 										<table id="realization_detail" class="table table-bordered table-striped table-hover">
 											<thead>
 												<tr class="bg-primary">
-													<th width="5%"><center>No</center></th>
 													<th width="25%"><center>Component</center></th>
 													<th width="25%"><center>Info</center></th>
 													<th width="10%"><center>Qty</center></th>
@@ -149,20 +148,26 @@
 													<th width="5%"><center>Action</center></th>
 												</tr>
 											</thead>
-												<script>
-													var counter_row = 0;
-													var data_Component = <?php	echo "{";
-																			foreach($Component as $comp){
-																				echo '"'.$comp['component_id'].'":"'.$comp['component_name'].'",';
-																			}
-																			echo "}";
-																		?>;
-												</script>
 											<tbody>
+												<tr class="multiRow">
+													<td>
+														<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+															<option value=""></option>
+															<?php foreach($Component as $comp){ ?>
+																<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
+															<?php } ?>
+														</select>
+													</td>
+													<td><input type="text" name="txt_info[]" class="form-control" value="" required/></td>
+													<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" required/></td>
+													<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" required/></td>
+													<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+													<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
+												</tr>
 											</tbody>
 											<tfoot>
 												<tr>
-													<td colspan="5" style="text-align: right">Total Estimate Allowance</td>
+													<td colspan="4" style="text-align: right">Total Estimate Allowance</td>
 													<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
 													<td></td>
 												</tr>
