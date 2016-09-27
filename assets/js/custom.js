@@ -947,6 +947,7 @@ $(document).ready(function(){
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	$("#orderqty,#singleprice,#fine").click(checkncalc);
 		$("#DelFine").click(checkncalc);
+		$("#ReCalculate").click(checkncalc);
 		$("#tbodyFineCatering input").keyup(checkncalc);
 		$("#tbodyFineCatering input").click(checkncalc);
 		$("#tbodyFineCatering select").change(checkncalc);

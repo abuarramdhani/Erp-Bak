@@ -1416,4 +1416,7 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 		setTimeout(function(){
 		  $('#HiddenDelFine').click();
 		},20);
+		setTimeout(function(){
+		  $('#ReCalculate').click();
+		},15);
 	});
