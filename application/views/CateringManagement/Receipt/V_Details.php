@@ -40,7 +40,7 @@
 						<div class="col-md-12">
 							<a href="<?php echo base_url('CateringManagement/Receipt/Edit/'.$rc['receipt_id'])?>" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
 							<a href="<?php echo base_url('CateringManagement/Receipt/Print/'.$rc['receipt_id'])?>" class="btn btn-info" target="blank_"><i class="fa fa-print"></i> Print</a>
-							<a href="<?php echo base_url('CateringManagement/Receipt/Delete/'.$rc['receipt_id'])?>" class="btn btn-danger"><i class="fa fa-remove"></i> Delete</a>
+							<a data-toggle="modal" data-target="#deletealert" class="btn btn-danger"><i class="fa fa-remove"></i> Delete</a>
 							<hr>
 						</div>
 						<div style="margin-left:20px;padding-top:10px;">
@@ -114,7 +114,7 @@
 								</table>
 							</div>
 							<div style="margin-left:10px;margin-top:5px;border:1px solid black;width:43%;float:left;">
-								<table style="font-size:10px;margin:3px auto;">
+								<table style="font-size:10px;margin:3px;margin-left:5px;margin-right:5px;auto;">
 									<tr>
 										<td height="15" colspan="6" style="border-bottom:1p solid black;"><b>Rincian Denda</b></td>
 									</tr>
@@ -123,8 +123,8 @@
 										<td style="width:70px;text-align:center;">Tanggal</td>
 										<td style="width:40px;text-align:center;">Qty</td>
 										<td style="width:30px;text-align:center;">(%)</td>
-										<td style="width:80px;text-align:right;">Harga</td>
-										<td style="width:80px;text-align:center;">Deskripsi</td>
+										<td style="width:40px;text-align:right;">Harga</td>
+										<td style="width:160px;text-align:right;">Deskripsi</td>
 										<td style="width:80px;text-align:right;">Total</td>
 									</tr>
 									<?php $no=0; foreach($ReceiptFine as $rf){ $no++;?>
@@ -134,7 +134,7 @@
 										<td style="text-align:center;"><?php echo $rf['receipt_fine_qty'] ?></td>
 										<td style="text-align:center;"><?php echo $rf['fine_type_percentage'] ?> %</td>
 										<td style="text-align:right;"><?php echo number_format($rf['receipt_fine_price'], 0 , ',' , '.' ); ?></td>
-										<td style="text-align:center;"><?php echo $rf['fine_description'] ?></td>
+										<td style="text-align:right;"><?php echo $rf['fine_description'] ?></td>
 										<td style="text-align:right;"><?php echo number_format($rf['fine_nominal'], 0 , ',' , '.' ); ?></td>
 									</tr>
 									<?php } ?>
@@ -176,6 +176,29 @@
 								</table>
 							</div>
 						</div>
+						
+						<!-- DELETE ALERT/CONFIRMATION -->
+						<div class="modal fade modal-danger" id="deletealert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-8" align="center"><h5><b>WARNING !</b></h5></div>
+										<div class="col-sm-2"><h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></h5></div>
+										</br>
+									</div>
+									<div class="modal-body" align="center">
+										Are you sure want to delete receipt No. <b><?php echo $rc['receipt_no'] ?></b> signed by <b><?php echo $rc['receipt_signer']?></b> ? <br>
+										<small>*) Data that has been deleted cannot be retrieved.<small>
+										<div class="row">
+											<br>
+											<a href="<?php echo base_url('CateringManagement/Receipt/Delete/'.$rc['receipt_id'])?>" class="btn btn-default"><i class="fa fa-remove"></i> DELETE</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<?php } ?>
 					</div>
 				</div>
