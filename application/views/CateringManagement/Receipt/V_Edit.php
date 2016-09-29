@@ -33,7 +33,7 @@
 					<div class="box-body">
 					<form method="post" action="<?php echo base_url('CateringManagement/Receipt/Update')?>">
 					<?php foreach ($Receipt as $rc) {?>
-						<input type="hidden" name="TxtId" class="form-control" value="<?php echo $rc['receipt_id']?>" required>
+						<input type="hidden" name="TxtID" class="form-control" value="<?php echo $rc['receipt_id']?>" required>
 						<!-- INPUT GROUP 1 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -77,7 +77,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Type</label>
 								<div class="col-lg-6">
-									<select class="form-control select4" name="TxtOrderType" placeholder="Select Order Type" required>
+									<select class="form-control select4" id="ordertype" name="TxtOrderType" placeholder="Select Order Type" required>
 											<option></option>
 										<?php
 											foreach ($Type as $tp) {
@@ -140,19 +140,22 @@
 							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="addResponsbility" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddFine" title="Tambah Baris" onclick="AddFine('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelFine" title="Hapus Baris" onclick="deleteRow('tblFineCatering')"><i class="fa fa-remove"></i></a>
+										<a id="HiddenDelFine" onclick="deleteRow('tblFineCatering')" hidden >Hidden</a>
+										<a id="ReCalculate" hidden >Hidden</a>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
 											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblFineCatering" id="tblFineCatering">
 												<thead>
 													<tr class="bg-primary">
-														<th width="20%">DATE</th>
-														<th width="20%">QTY</th>
-														<th width="20%">PRICE</th>
+														<th width="15%">DATE</th>
+														<th width="15%">QTY</th>
+														<th width="15%">PRICE</th>
 														<th width="20%">TYPE</th>
-														<th width="20%">FINE</th>
+														<th width="20%">DESC</th>
+														<th width="15%">FINE</th>
 													</tr>
 												</thead>
 												<tbody id="tbodyFineCatering">
@@ -174,6 +177,7 @@
 																<?php }?>
 															</select>
 														</td>
+														<td><input id="finedesc" name="TxtFineDesc[]" class="form-control finedesc toupper" placeholder="Description" value="<?php echo $rf['fine_description']?>"></td>
 														<td><input id="finenominal" name="TxtFineNominal[]" class="form-control finenominal" placeholder="Fine" value="<?php echo $rf['fine_nominal']?>" readonly></td>
 													</tr>
 													<?php } ?>
@@ -181,6 +185,11 @@
 											</table>
 										</div>
 									</div>
+									<!-- CHECK BUTTON (ALTERNATIVE)
+									<div class="panel-footer text-right">
+										<a href="javascript:void(0);" class="btn btn-sm btn-info" id="FineChecking" title="Periksa"><i class="fa fa-search"></i> Check</a>
+									</div>
+									-->
 								</div>
 							</div>
 						</div>

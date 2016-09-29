@@ -945,11 +945,27 @@ $(document).ready(function(){
 	
 	//calculate final cost
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
+	$("#orderqty,#singleprice,#fine").click(checkncalc);
+		$("#DelFine").click(checkncalc);
+		$("#ReCalculate").click(checkncalc);
+		$("#tbodyFineCatering input").keyup(checkncalc);
+		$("#tbodyFineCatering input").click(checkncalc);
+		$("#tbodyFineCatering select").change(checkncalc);
+		
 	function calculation(pphstatus){
 			
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
-			var $calc = ($qty * $price);
+			var $ordertype = $('#ordertype').val();
+			
+			if($ordertype==2){
+				var $bonus_qty = Math.floor($qty/50);
+			}
+			else {
+				var $bonus_qty = 0;
+			}
+			
+			var $calc = (($qty-$bonus_qty) * $price);
 			var $fine = $('#fine').val();
 			var $est = $calc - $fine;
 			if (pphstatus==1){
@@ -958,7 +974,7 @@ $(document).ready(function(){
 				var $pph = (0 / 100) * $est;
 			}
 			
-			var $total = $est - $fine - $pph;
+			var $total = $est - $pph;
 			
 		$("#calc").val($calc);
 		$("#pph").val($pph);

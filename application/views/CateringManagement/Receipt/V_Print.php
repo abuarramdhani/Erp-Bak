@@ -1,77 +1,146 @@
 
-<div style="border: 2px solid #b7a96c; height: 100%;background: url('<?php echo base_url()?>assets/img/rb.png');background-size: 100% 100%;
+<div style="border: 2px solid #b7a96c; height: 95%;background: url('<?php echo base_url()?>assets/img/rb.png');background-size: 100% 100%;
     background-repeat: no-repeat;">
-<?php foreach ($Receipt as $rc) {?>
-							
-								<table style="font-size:14px;margin: 20 30px">
-										<?php
-											$total = $rc['order_qty']*$rc['order_price'];
-											$grand = $total-$rc['fine']-$rc['pph'];
-										?>
-									<tr>
-										<td style="border-top: 1px solid #000;border-left: 1px solid #000;border-right: 1px solid #000" colspan="2"></td>
-										<td>&nbsp;</td>
-										<td style="border-top: 1px solid #000;border-left: 1px solid #000" width="21%">&nbsp;NO.</td>
-										<td style="border-top: 1px solid #000;" width="2%">:</td>
-										<td style="border-top: 1px solid #000;border-right: 1px solid #000" colspan="2"><?php echo $rc['receipt_no'] ?></td>
-									</tr>
-									<tr>
-										<td style="font-size:9px;border-left: 1px solid #000" width="10%" rowspan="2" align="right">
-										<b>RICIAN :<br></b>
-										CALCULATION :<br>
-										(-) FINE :<br>
-										(-) PPH :<br>
-										TOTAL :<br>
-										</td>
-										<td style="font-size:9px;border-right: 1px solid #000" width="9%" rowspan="2" align="right">
-										<?php echo '<br>'.number_format($total, 0 , ',' , '.' ).'&nbsp;<br>'.number_format($rc['fine'], 0 , ',' , '.' ).'&nbsp;<br>'.number_format($rc['pph'], 0 , ',' , '.' ).'&nbsp;<br>'.number_format($grand, 0 , ',' , '.' ).'&nbsp;' ?>
-										</td>
-										<td>&nbsp;</td>
-										<td style="border-left: 1px solid #000">&nbsp;TELAH DITERIMA DARI</td>
-										<td >:</td>
-										<td style="border-right: 1px solid #000" colspan="2"><?php echo $rc['receipt_from'] ?></td>
-									</tr>
-									<tr>
-										<td >&nbsp;</td>
-										<td style="border-left: 1px solid #000">&nbsp;UANG SEBANYAK</td>
-										<td >:</td>
-										<td style="border-right: 1px solid #000" colspan="2">Rp <?php echo number_format($rc['payment'], 2 , ',' , '.' ) ?></td>
-									</tr>
-									<tr>
-										<td style="font-size:10px;border-left: 1px solid #000;border-right: 1px solid #000" colspan="2"></td>
-										<td>&nbsp;</td>
-										<td style="border-left: 1px solid #000">&nbsp;GUNA MEMBAYAR</td>
-										<td >:</td>
-										<td style="border-right: 1px solid #000" colspan="2"><?php echo $rc['type_description'].' '.$rc['catering_name'].' DARI TANGGAL '.$rc['order_start_date'].' - '.$rc['order_end_date'].' SEBANYAK '.$rc['order_qty'].' BOX @Rp '.$rc['order_price']  ?></td>
-									</tr>
-									<tr>
-										<td style="border-left: 1px solid #000;border-right: 1px solid #000" align="center" colspan="2"></td>
-										<td>&nbsp;</td>
-										<td style="border-left: 1px solid #000;border-right: 1px solid #000" colspan="4"></td>
-									</tr>
-									<tr>
-										<td style="border-left: 1px solid #000;border-right: 1px solid #000" align="center" colspan="2"><?php echo $rc['short_receipt_date'] ?></td>
-										<td>&nbsp;</td>
-										<td style="border-left: 1px solid #000"></td>
-										<td></td>
-										<td width="23%"></td>
-										<td align="center" style="border-right: 1px solid #000" width="35%"><?php echo $rc['receipt_place'].', '.$rc['receipt_date'] ?></td>
-									</tr>
-									<tr>
-										<td style="border-left: 1px solid #000;border-right: 1px solid #000" align="center" colspan="2"></td>
-										<td>&nbsp;</td>
-										<td style="border-left: 1px solid #000" height="30px"></td>
-										<td></td>
-										<td></td>
-										<td align="center" style="vertical-align:top;border-right: 1px solid #000">MENGETAHUI</td>
-									</tr>
-									<tr>
-										<td height="80px" style="border-left: 1px solid #000;border-right: 1px solid #000;border-bottom: 1px solid #000" align="center" colspan="2"><?php echo $rc['receipt_signer'] ?></td>
-										<td>&nbsp;</td>
-										<td colspan="3" style="border-left: 1px solid #000;border-bottom: 1px solid #000;"></td>
-										<td align="center" style="border-bottom: 1px solid #000;border-right: 1px solid #000">(..................................)</td>
-									</tr>
-								</table>
-							
-						<?php }?>
+	
+	<div style="margin-left:20px;padding-top:10px;">
+		<h4>
+			RECEIPT CATERING<br>
+			<small style="font-size:10px;">CV.Karya Hidup Sentosa Jl. Magelang No. 144 Yogyakarta 55241</small>
+		</h4>
+	</div>
+	<div style="border-style: double;border-width:1px;width:98%;margin:0 auto;"></div>
+	<?php
+		$this->load->helper('terbilang_helper');
+		foreach ($Receipt as $rc) {
+			$total = $rc['order_qty']*$rc['order_price'];
+			$grand = $total-$rc['fine']-$rc['pph'];
+	?>
+	<div style="margin-left:10px;margin-top:10px;">
+		<table style="font-size:12px;">
+			<tr>
+				<td height="15">No.</td>
+				<td width="20" style="text-align:center;">:</td>
+				<td><?php echo $rc['receipt_no'] ?></td>
+			</tr>
+			<tr>
+				<td>Telah Diterima Dari</td>
+				<td width="20" style="text-align:center;">:</td>
+				<td><?php echo $rc['receipt_from'] ?></td>
+			</tr>
+			<tr>
+				<td>Guna Pembayaran</td>
+				<td width="20" style="text-align:center;">:</td>
+				<td><?php echo $rc['type_description'].' '.$rc['catering_name'].' DARI TANGGAL '.$rc['order_start_date'].' - '.$rc['order_end_date'].' SEBANYAK '.$rc['order_qty'].' BOX/PCS @ Rp. '.number_format($rc['order_price'],0,",",".") ?></td>
+			</tr>
+			<tr>
+				<td>Uang Sebanyak</td>
+				<td width="20" style="text-align:center;">:</td>
+				<td>Rp. <?php  echo number_format($grand,0,",",".")?></td>
+			</tr>
+			<tr>
+				<td>Terbilang</td>
+				<td width="20" style="text-align:center;">:</td>
+				<td><?php echo ucwords(number_to_words($grand))." Rupiah" ?></td>
+			</tr>
+		</table>
+	</div>
+	<div class="row" style="width:100%;">
+		<div class="col-md-12">
+		<div style="margin-left:10px;margin-top:5px;border:1px solid black;width:27%;float:left;">
+			<table style="font-size:10px;margin:3px auto;">
+				<tr>
+					<td height="15" colspan="3" style="border-bottom:1p solid black;"><b>Rincian Pembayaran</b></td>
+				</tr>
+				<tr>
+					<td>Total Pesanan</td>
+					<td width="20" style="text-align:center;">:</td>
+					<td style="text-align:right;"><?php echo "Rp. ".number_format($total, 0 , ',' , '.' ) ?></td>
+				</tr>
+				<tr>
+					<td>Total Denda</td>
+					<td width="20" style="text-align:center;">:</td>
+					<td style="text-align:right;"><?php echo "Rp. ".number_format($rc['fine'], 0 , ',' , '.' ) ?></td>
+				</tr>
+				<tr>
+					<td>Pajak</td>
+					<td width="20" style="text-align:center;">:</td>
+					<td style="text-align:right;">Rp. <?php  echo number_format($rc['pph'], 0 , ',' , '.' )?></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td width="20" style="text-align:center;">( - )</td>
+					<td style="text-align:right;">-----------------------------</td>
+				</tr>
+				<tr>
+					<td><b>Total Pembayaran</b></td>
+					<td width="20" style="text-align:center;"><b>:</b></td>
+					<td style="text-align:right;"><b><?php echo "Rp. ".number_format($grand, 0 , ',' , '.' ) ?></b></td>
+				</tr>
+			</table>
+		</div>
+		<div style="margin-left:10px;margin-top:5px;border:1px solid black;width:43%;float:left;">
+			<table style="font-size:10px;margin:3px auto;">
+				<tr>
+					<td height="15" colspan="6" style="border-bottom:1p solid black;"><b>Rincian Denda</b></td>
+				</tr>
+				<tr>
+					<td style="width:30px;text-align:center;">No.</td>
+					<td style="width:70px;text-align:center;">Tanggal</td>
+					<td style="width:40px;text-align:center;">Qty</td>
+					<td style="width:30px;text-align:center;">(%)</td>
+					<td style="width:40px;text-align:right;">Harga</td>
+					<td style="width:160px;text-align:right;">Deskripsi</td>
+					<td style="width:80px;text-align:right;">Total</td>
+				</tr>
+				<?php $no=0; foreach($ReceiptFine as $rf){ $no++;?>
+				<tr>
+					<td style="text-align:center;"><?php echo $no; ?></td>
+					<td style="text-align:center;"><?php echo $rf['receipt_fine_date'] ?></td>
+					<td style="text-align:center;"><?php echo $rf['receipt_fine_qty'] ?></td>
+					<td style="text-align:center;"><?php echo $rf['fine_type_percentage'] ?> %</td>
+					<td style="text-align:right;"><?php echo number_format($rf['receipt_fine_price'], 0 , ',' , '.' ); ?></td>
+					<td style="text-align:right;"><?php echo $rf['fine_description'] ?></td>
+					<td style="text-align:right;"><?php echo number_format($rf['fine_nominal'], 0 , ',' , '.' ); ?></td>
+				</tr>
+				<?php } ?>
+			</table>
+		</div>
+		</div>
+	</div>
+	<div style="width:100%;">
+		<div style="width:40%;float:left;"> 
+			<table style="margin:3px auto;font-size:12px;">
+				<tr>
+					<td style="text-align:center;">&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="text-align:center;">Mengetahui, </td>
+				</tr>
+				<tr>
+					<td style="text-align:center;height:30px;">&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="text-align:center;">( .......................................... )</td>
+				</tr>
+			</table>
+		</div>
+		<div style="width:40%;float:right;">
+			<table style="margin:3px auto;font-size:12px;">
+				<tr>
+					<td><?php echo $rc['receipt_place'].', '.$rc['receipt_date'] ?></td>
+				</tr>
+				<tr>
+					<td style="text-align:center;">Pekerja, </td>
+				</tr>
+				<tr>
+					<td style="text-align:center;height:30px;">&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="text-align:center;"><?php echo "(       ".$rc['receipt_signer']."       )"; ?></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<?php } ?>
+	
 </div>
