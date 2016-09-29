@@ -23,7 +23,7 @@
 									</div>
 								</div>
 								<div id="div_data_tables">
-									<table id="data_table" class="table table-bordered table-striped table-hover">
+									<table id="meal_table" class="table table-bordered table-striped table-hover" width="100%">
 										<thead>
 											<tr class="bg-primary">
 												<th width="10%"><center>No</center></th>
@@ -35,38 +35,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php
-												$no = 1;
-												foreach ($data_meal_allowance as $dma) {
-											?>
-											<tr>
-												<td style="text-align: center"><?php echo $no++?></td>
-												<td><?php echo $dma['position_name']?></td>
-												<td><?php echo $dma['area_name']?></td>
-												<td><?php echo $dma['time_name']?></td>
-												<td>Rp<?php echo number_format($dma['nominal'], 2,',','.')?></td>
-												<td style="text-align: center">
-													<a class="btn btn-warning" href="<?php echo base_url('Outstation/meal-allowance/edit/'.$dma['meal_allowance_id'])?>"><i class="fa fa-edit"></i> Edit</a> <button class="btn btn-danger" data-toggle="modal" data-target="#delete_<?php echo $dma['meal_allowance_id']?>"><i class="fa fa-times"></i> Delete</button>
-													<div class="modal fade" id="delete_<?php echo $dma['meal_allowance_id']?>">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header bg-primary">
-																	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-																	<h4 class="modal-title">Delete Meal Allowance?</h4>
-																</div>
-																<div class="modal-body">
-																	<p>Apakah Anda yakin akan menghapus data ini?</p>
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																	<a href="<?php echo base_url('Outstation/meal-allowance/delete/'.$dma['meal_allowance_id'])?>" id="delete_button" class="btn btn-danger">Delete</a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</td>
-											</tr>
-											<?php }?>
+											
 										</tbody>
 									</table>
 								</div>

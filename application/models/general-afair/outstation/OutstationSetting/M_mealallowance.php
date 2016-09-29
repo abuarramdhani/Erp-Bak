@@ -56,6 +56,48 @@ class M_mealallowance extends CI_Model {
 		return;
 	}
 
+	public function show_meal_allowance_server_side(){
+		$sql="select * from ga.ga_outstation_meal_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
+		, ga.ga_outstation_time ti where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.time_id=ti.time_id";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function show_meal_allowance_server_side_search($searchValue){
+		$sql="select * from ga.ga_outstation_meal_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
+		, ga.ga_outstation_time ti where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.time_id=ti.time_id
+
+			AND (
+				op.position_name ILIKE '%$searchValue%'
+				OR ar.area_name ILIKE '%$searchValue%'
+				OR ti.time_name ILIKE '%$searchValue%'
+			)
+			";
+		$query = $this->db->query($sql);
+		return $query;
+	}
+
+	public function show_meal_allowance_server_side_order_limit($searchValue, $order_col, $order_dir, $limit, $offset){
+		if ($searchValue == NULL || $searchValue == "") {
+			$condition = "";
+		}
+		else{
+			$condition = "AND (
+				op.position_name ILIKE '%$searchValue%'
+				OR ar.area_name ILIKE '%$searchValue%'
+				OR ti.time_name ILIKE '%$searchValue%'
+			)";
+		}
+		$sql="select * from ga.ga_outstation_meal_allowance aa, ga.ga_outstation_position op, ga.ga_outstation_area ar
+		, ga.ga_outstation_time ti where aa.position_id=op.position_id and aa.area_id=ar.area_id and aa.time_id=ti.time_id
+
+			$condition
+
+			ORDER BY $order_col $order_dir LIMIT $limit OFFSET $offset
+			";
+		$query = $this->db->query($sql);
+		return $query;
+	}
 }
 
 ?>

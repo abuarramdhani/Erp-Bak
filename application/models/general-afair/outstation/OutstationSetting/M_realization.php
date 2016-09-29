@@ -33,7 +33,7 @@ class M_Realization extends CI_Model {
 	}
 
 	public function show_employee(){
-		$sql="select * from er.er_employee_all where resign = 0 order by employee_code";
+		$sql="select * from er.er_employee_all where resign = 0 OR resign is null order by employee_code";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

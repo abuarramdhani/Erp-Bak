@@ -50,6 +50,58 @@ class C_OutstationUSH extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function show_ush(){
+		$requestData= $_REQUEST;
+
+		$columns = array(  
+			0 => 'ush.position_id', 
+			1 => 'position.position_name', 
+			2 => 'grp.group_name',
+			3 => 'nominal',
+		);
+
+		$data_table = $this->M_ush->show_ush_server_side();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_ush->show_ush_server_side_search($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_ush->show_ush_server_side_order_limit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_ush->show_ush_server_side_order_limit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$count--;
+			if ($count != 0) {
+				$json .= '["'.$no.'","'.$result['position_name'].'","'.$result['group_name'].'","'.$result['nominal'].'","<div width=\'100%\' style=\'text-align: center\'><a class=\'btn btn-warning\' href=\''.base_url('Outstation/ush/edit/'.$result['position_id'].'/'.$result['group_id']).'\'><i class=\'fa fa-edit\'></i> Edit</a> <button class=\'btn btn-danger\' data-toggle=\'modal\' data-target=\'#delete_'.$result['position_id'].'_'.$result['group_id'].'\'><i class=\'fa fa-times\'></i> Delete</button><div class=\'modal fade\' id=\'delete_'.$result['position_id'].'_'.$result['group_id'].'\'><div class=\'modal-dialog\'><div class=\'modal-content\'><div class=\'modal-header bg-primary\'><button type=\'button\' class=\'close\' data-dismiss=\'modal\' aria-label=\'Close\'><span aria-hidden=\'true\'>&times;</span></button><h4 class=\'modal-title\'>Delete USH?</h4></div><div class=\'modal-body\'><p>Apakah Anda yakin akan menghapus data ini?</p></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Cancel</button><button id=\'delete_button\' type=\'button\' data-dismiss=\'modal\' data-toggle=\'modal\' data-target=\'#delete_data\' class=\'btn btn-danger\' onClick=\"checkDelete(\''.base_url('Outstation/ush/delete').'\',\''.$result['position_id'].' - '.$result['group_id'].'\')\">Delete</button></div></div></div></div></div>"],';
+			}
+			else{
+				$json .= '["'.$no.'","'.$result['position_name'].'","'.$result['group_name'].'","'.$result['nominal'].'","<div width=\'100%\' style=\'text-align: center\'><a class=\'btn btn-warning\' href=\''.base_url('Outstation/ush/edit/'.$result['position_id'].'/'.$result['group_id']).'\'><i class=\'fa fa-edit\'></i> Edit</a> <button class=\'btn btn-danger\' data-toggle=\'modal\' data-target=\'#delete_'.$result['position_id'].'_'.$result['group_id'].'\'><i class=\'fa fa-times\'></i> Delete</button><div class=\'modal fade\' id=\'delete_'.$result['position_id'].'_'.$result['group_id'].'\'><div class=\'modal-dialog\'><div class=\'modal-content\'><div class=\'modal-header bg-primary\'><button type=\'button\' class=\'close\' data-dismiss=\'modal\' aria-label=\'Close\'><span aria-hidden=\'true\'>&times;</span></button><h4 class=\'modal-title\'>Delete USH?</h4></div><div class=\'modal-body\'><p>Apakah Anda yakin akan menghapus data ini?</p></div><div class=\'modal-footer\'><button type=\'button\' class=\'btn btn-default\' data-dismiss=\'modal\'>Cancel</button><button id=\'delete_button\' type=\'button\' data-dismiss=\'modal\' data-toggle=\'modal\' data-target=\'#delete_data\' class=\'btn btn-danger\' onClick=\"checkDelete(\''.base_url('Outstation/ush/delete').'\',\''.$result['position_id'].' - '.$result['group_id'].'\')\">Delete</button></div></div></div></div></div>"]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
+
+	}
+
 	public function deleted_ush(){
 		$deleted_ush = $this->input->post('show_data');
 		if ($deleted_ush == 'Y'){

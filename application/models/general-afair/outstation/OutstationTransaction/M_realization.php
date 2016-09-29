@@ -67,14 +67,20 @@ class M_Realization extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function show_group_ush($position_id,$return_time){
-		$sql="select * from ga.ga_outstation_ush ush, ga.ga_outstation_groupush grp, ga.ga_outstation_position op where ush.group_id = grp.group_id AND ush.position_id = op.position_id AND op.position_id = '$position_id' AND grp.time_1 <= '$return_time' AND grp.time_2 >= '$return_time'";
+	public function show_group_ush($position_id,$return_time,$have_sunday,$is_foreign){
+		$sql="select * from ga.ga_outstation_ush ush, ga.ga_outstation_groupush grp, ga.ga_outstation_position op where ush.group_id = grp.group_id AND ush.position_id = op.position_id AND op.position_id = '$position_id' AND grp.time_1 <= '$return_time' AND grp.time_2 >= '$return_time' AND grp.holiday = '$have_sunday' AND grp.foreign = '$is_foreign'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
+	public function check_holiday($depart,$return){
+		$sql="select * from ga.ga_outstation_holiday where tanggal between '$depart' AND '$return'";
+		$query = $this->db->query($sql);
+		return $query->num_rows();
+	}
+
 	public function show_employee(){
-		$sql="select * from er.er_employee_all where resign = 0 order by employee_code";
+		$sql="select * from er.er_employee_all where resign = 0 OR resign is null order by employee_code";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

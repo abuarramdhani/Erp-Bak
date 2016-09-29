@@ -129,23 +129,23 @@
 																<tr>
 																	<td><?php echo $meal_pagi ?> Pagi</td>
 																	<td>&emsp;X&emsp;</td>
-																	<td>Rp.<?php echo number_format($nom_meal_pagi, 2, ',', '.') ?></td>
+																	<td>Rp.<?php if(!empty($nom_meal_pagi)){echo number_format($nom_meal_pagi, 2, ',', '.');}else{echo "0,00";} ?></td>
 																	<td>&emsp;=&emsp;</td>
-																	<td align="right">Rp.<?php echo number_format($total_meal_pagi, 2, ',', '.')  ?></td>
+																	<td align="right">Rp.<?php if(!empty($nom_meal_pagi)){echo number_format($total_meal_pagi, 2, ',', '.');}else{echo "0,00";}  ?></td>
 																</tr>
 																<tr>
 																	<td><?php echo $meal_siang ?> Siang</td>
 																	<td>&emsp;X&emsp;</td>
-																	<td>Rp.<?php echo number_format($nom_meal_siang, 2, ',', '.')  ?></td>
+																	<td>Rp.<?php if(!empty($nom_meal_siang)){echo number_format($nom_meal_siang, 2, ',', '.');}else{echo "0,00";}  ?></td>
 																	<td>&emsp;=&emsp;</td>
-																	<td align="right">Rp.<?php echo number_format($total_meal_siang, 2, ',', '.')  ?></td>
+																	<td align="right">Rp.<?php if(!empty($nom_meal_siang)){echo number_format($total_meal_siang, 2, ',', '.');}else{echo "0,00";}  ?></td>
 																</tr>
 																<tr>
 																	<td><?php echo $meal_malam ?> Malam</td>
 																	<td>&emsp;X&emsp;</td>
-																	<td>Rp.<?php echo number_format($nom_meal_malam, 2, ',', '.')  ?></td>
+																	<td>Rp.<?php if(!empty($nom_meal_malam)){echo number_format($nom_meal_malam, 2, ',', '.');}else{echo "0,00";}  ?></td>
 																	<td>&emsp;=&emsp;</td>
-																	<td align="right">Rp.<?php echo number_format($total_meal_malam, 2, ',', '.')  ?></td>
+																	<td align="right">Rp.<?php if(!empty($nom_meal_malam)){echo number_format($total_meal_malam, 2, ',', '.');}else{echo "0,00";}  ?></td>
 																</tr>
 																<tr>
 																	<td colspan="3">Total Meal Allowance</td>
@@ -166,7 +166,7 @@
 																<tr>
 																	<td><?php echo $meal_malam ?> Malam</td>
 																	<td>&emsp;X&emsp;</td>
-																	<td align="right">Rp.<?php echo number_format($nom_inn_malam, 2, ',', '.')  ?></td>
+																	<td align="right">Rp.<?php if(!empty($nom_inn_malam)){echo number_format($nom_inn_malam, 2, ',', '.');}else{echo "0,00";}  ?></td>
 																	<td>&emsp;=&emsp;</td>
 																	<td align="right"><?php echo $total_acc  ?></td>
 																</tr>
@@ -203,72 +203,70 @@
 										</div>
 										<div class="row2">
 											<div class="col-md-12">
-												<span id="add-row" class="btn btn-primary btn-sm pull-right"><i class="fa fa-plus"></i></span>
+											<table id="realization_detail" class="table table-bordered table-striped table-hover">
+												<thead>
+													<tr class="bg-primary">
+														<th width="30%"><center>Component</center></th>
+														<th width="25%"><center>Info</center></th>
+														<th width="10%"><center>Qty</center></th>
+														<th width="15%"><center>Nominal</center></th>
+														<th width="15%"><center>Total</center></th>
+														<th width="5%"><center><span id="add-row" class="btn btn-primary btn-sm pull-right" style="margin-right: 10px;"><i class="fa fa-plus"></i></span></center></th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php 
+														foreach ($data_realization_detail as $real_det) {
+													?>
+														<tr class="multiRow">
+															<td>
+																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+																	<option value=""></option>
+																	<?php foreach($Component as $comp){ ?>
+																		<?php
+																			$selected = '';
+																			if ($real_det['component_id'] == $comp['component_id']) {
+																				$selected = 'selected';
+																			}
+																		?>
+																		<option <?php echo $selected ?> value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
+																	<?php } ?>
+																</select>
+															</td>
+															<td><input type="text" name="txt_info[]" class="form-control" value="<?php echo $real_det['info'] ?>" required/></td>
+															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" required/></td>
+															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/></td>
+															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
+														</tr>
+													<?php
+														} ?>
+														<tr class="multiRow">
+															<td>
+																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+																	<option value=""></option>
+																	<?php foreach($Component as $comp){ ?>
+																		<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
+																	<?php } ?>
+																</select>
+															</td>
+															<td><input type="text" name="txt_info[]" class="form-control" value="" required/></td>
+															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" required/></td>
+															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" required/></td>
+															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
+														</tr>
+												</tbody>
+												<tfoot>
+													<tr>
+														<td colspan="4" style="text-align: right">Total Estimate Allowance</td>
+														<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
+														<td></td>
+													</tr>
+												</tfoot>
+											</table>
 											</div>
 										</div>
-										<table id="realization_detail" class="table table-bordered table-striped table-hover">
-											<thead>
-												<tr class="bg-primary">
-													<th width="5%"><center>No</center></th>
-													<th width="25%"><center>Component</center></th>
-													<th width="25%"><center>Info</center></th>
-													<th width="10%"><center>Qty</center></th>
-													<th width="15%"><center>Nominal</center></th>
-													<th width="15%"><center>Total</center></th>
-													<th width="5%"><center>Action</center></th>
-												</tr>
-											</thead>
-												<script>
-													var data_Component = <?php	echo "{";
-															foreach($Component as $comp){
-																echo '"'.$comp['component_id'].'":"'.$comp['component_name'].'",';
-															}
-															echo "}";
-													?>
-												</script>
-											<tbody>
-												<?php 
-													$counter = 0;
-													foreach ($data_realization_detail as $real_det) {
-												?>
-													<tr class="multiRow">
-														<td></td>
-														<td>
-															<select style="width: 200px" name="txt_component[<?php echo $counter; ?>]" class="form-control select2" data-placeholder="Pilih Salah Satu!" required>
-																<option value=""></option>
-																<?php foreach($Component as $comp){ ?>
-																	<?php
-																		$selected = '';
-																		if ($real_det['component_id'] == $comp['component_id']) {
-																			$selected = 'selected';
-																		}
-																	?>
-																	<option <?php echo $selected ?> value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
-																<?php } ?>
-															</select>
-														</td>
-														<td><input type="text" name="txt_info[<?php echo $counter; ?>]" class="form-control" value="<?php echo $real_det['info'] ?>" required/></td>
-														<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[<?php echo $counter; ?>]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" required/></td>
-														<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[<?php echo $counter; ?>]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/></td>
-														<td><input style="text-align: right;" type="text" name="txt_total[<?php echo $counter; ?>]" class="form-control total-nominal" required readonly/></td>
-														<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
-													</tr>
-												<?php
-													$counter++;
-													} ?>
-												<script type="text/javascript">
-													
-												</script>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="5" style="text-align: right">Total Estimate Allowance</td>
-													<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
-													<td></td>
-												</tr>
-											</tfoot>
-										</table>
-										<input type="hidden" id="data_counter" name="txt_data_counter" value="<?php echo $counter; ?>">
 										<table width="100%">
 											<tr>
 												<td colspan="8">
