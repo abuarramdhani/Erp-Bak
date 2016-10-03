@@ -57,12 +57,12 @@ foreach ($rekap as $rekap_data) {}
 													<?php echo $rekap_data['nama']; ?>
 												</a>
 											</td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekT']+$rekap_data['FrekTs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekI']+$rekap_data['FrekIs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekM']+$rekap_data['FrekMs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekSK']+$rekap_data['FrekSKs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekIP']+$rekap_data['FrekIPs'] ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekSP']+$rekap_data['FrekSPs'] ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['freki']+$rekap_data['frekis']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekm']+$rekap_data['frekms']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['freksk']+$rekap_data['freksks']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekip']+$rekap_data['frekips'] ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['freksp']+$rekap_data['freksps'] ?></td>
 										</tr>
 									<?php } ?>
 								</tbody>

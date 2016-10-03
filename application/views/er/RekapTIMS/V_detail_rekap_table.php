@@ -27,7 +27,7 @@ foreach ($rekap as $rekap_data) {}
 			<div class="box box-primary">
 				
 						<div class="box-body with-border">-->
-							<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/1">
+							<a target="_blank" class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/1">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 							</a>
 							<table class="table table-bordered table-hover table-striped" id="rekap-tims" width="100%">
@@ -167,12 +167,12 @@ foreach ($rekap as $rekap_data) {}
 														foreach (${'rekap_'.$monthName} as ${'rek'.$monthName}) {
 															if ($rekap_data['noind'] == ${'rek'.$monthName}['noind'])
 															{
-																$Terlambat = ${'rek'.$monthName}['FrekT'.$monthName]+${'rek'.$monthName}['FrekTs'.$monthName];
-																$IjinPribadi = ${'rek'.$monthName}['FrekI'.$monthName]+${'rek'.$monthName}['FrekIs'.$monthName];
-																$Mangkir = ${'rek'.$monthName}['FrekM'.$monthName]+${'rek'.$monthName}['FrekMs'.$monthName];
-																$SuratKeterangan = ${'rek'.$monthName}['FrekSK'.$monthName]+${'rek'.$monthName}['FrekSKs'.$monthName];
-																$IjinPerusahaan = ${'rek'.$monthName}['FrekIP'.$monthName]+${'rek'.$monthName}['FrekIPs'.$monthName];
-																$SuratPeringatan = ${'rek'.$monthName}['FrekSP'.$monthName]+${'rek'.$monthName}['FrekSPs'.$monthName];
+																$Terlambat = ${'rek'.$monthName}['frekt'.strtolower($monthName)]+${'rek'.$monthName}['frekts'.strtolower($monthName)];
+																$IjinPribadi = ${'rek'.$monthName}['freki'.strtolower($monthName)]+${'rek'.$monthName}['frekis'.strtolower($monthName)];
+																$Mangkir = ${'rek'.$monthName}['frekm'.strtolower($monthName)]+${'rek'.$monthName}['frekms'.strtolower($monthName)];
+																$SuratKeterangan = ${'rek'.$monthName}['freksk'.strtolower($monthName)]+${'rek'.$monthName}['freksks'.strtolower($monthName)];
+																$IjinPerusahaan = ${'rek'.$monthName}['frekip'.strtolower($monthName)]+${'rek'.$monthName}['frekips'.strtolower($monthName)];
+																$SuratPeringatan = ${'rek'.$monthName}['freksp'.strtolower($monthName)]+${'rek'.$monthName}['freksps'.strtolower($monthName)];
 																if ($Terlambat == '0') {
 																	$Terlambat = '-';
 																}
@@ -231,32 +231,32 @@ foreach ($rekap as $rekap_data) {}
 
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['FrekT']+$rekap_data['FrekTs']; ?>
+														<?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?>
 													</div>
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['FrekI']+$rekap_data['FrekIs']; ?>
+														<?php echo $rekap_data['freki']+$rekap_data['frekis']; ?>
 													</div>
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['FrekM']+$rekap_data['FrekMs']; ?>
+														<?php echo $rekap_data['frekm']+$rekap_data['frekms']; ?>
 													</div>
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['FrekSK']+$rekap_data['FrekSKs']; ?>
+														<?php echo $rekap_data['freksk']+$rekap_data['freksks']; ?>
 													</div>
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['FrekIP']+$rekap_data['FrekIPs']; ?>
+														<?php echo $rekap_data['frekip']+$rekap_data['frekips']; ?>
 													</div>
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['FrekSP']+$rekap_data['FrekSPs']; ?>
+														<?php echo $rekap_data['freksp']+$rekap_data['freksps']; ?>
 													</div>
 												</td>
 											</tr>

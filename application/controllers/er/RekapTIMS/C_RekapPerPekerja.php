@@ -64,7 +64,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"NoInduk":"'.$data['Noind'].'"}';
+			echo '{"NoInduk":"'.$data['noind'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}
@@ -95,10 +95,10 @@ class C_RekapPerPekerja extends CI_Controller {
 		foreach ($noinduk as $noind) {
 			$count--;
 			if ($count !== 0) {
-				$nomer_induk .= '"'.$noind.'",';
+				$nomer_induk .= '\''.$noind.'\',';
 			}
 			else{
-				$nomer_induk .= '"'.$noind.'"';
+				$nomer_induk .= '\''.$noind.'\'';
 			}
 		}
 
@@ -287,12 +287,12 @@ class C_RekapPerPekerja extends CI_Controller {
 					foreach (${'rekap_'.$monthName} as ${'rek'.$monthName}) {
 						if ($rekap_data['noind'] == ${'rek'.$monthName}['noind'] && $rekap_data['nama'] == ${'rek'.$monthName}['nama'] && $rekap_data['nik'] == ${'rek'.$monthName}['nik'] && $rekap_data['tgllahir'] == ${'rek'.$monthName}['tgllahir'])
 						{
-							$Terlambat = ${'rek'.$monthName}['FrekT'.$monthName]+${'rek'.$monthName}['FrekTs'.$monthName];
-							$IjinPribadi = ${'rek'.$monthName}['FrekI'.$monthName]+${'rek'.$monthName}['FrekIs'.$monthName];
-							$Mangkir = ${'rek'.$monthName}['FrekM'.$monthName]+${'rek'.$monthName}['FrekMs'.$monthName];
-							$SuratKeterangan = ${'rek'.$monthName}['FrekSK'.$monthName]+${'rek'.$monthName}['FrekSKs'.$monthName];
-							$IjinPerusahaan = ${'rek'.$monthName}['FrekIP'.$monthName]+${'rek'.$monthName}['FrekIPs'.$monthName];
-							$SuratPeringatan = ${'rek'.$monthName}['FrekSP'.$monthName]+${'rek'.$monthName}['FrekSPs'.$monthName];
+							$Terlambat = ${'rek'.$monthName}['frekt'.strtolower($monthName)]+${'rek'.$monthName}['frekts'.strtolower($monthName)];
+							$IjinPribadi = ${'rek'.$monthName}['freki'.strtolower($monthName)]+${'rek'.$monthName}['frekis'.strtolower($monthName)];
+							$Mangkir = ${'rek'.$monthName}['frekm'.strtolower($monthName)]+${'rek'.$monthName}['frekms'.strtolower($monthName)];
+							$SuratKeterangan = ${'rek'.$monthName}['freksk'.strtolower($monthName)]+${'rek'.$monthName}['freksks'.strtolower($monthName)];
+							$IjinPerusahaan = ${'rek'.$monthName}['frekip'.strtolower($monthName)]+${'rek'.$monthName}['frekips'.strtolower($monthName)];
+							$SuratPeringatan = ${'rek'.$monthName}['freksp'.strtolower($monthName)]+${'rek'.$monthName}['freksps'.strtolower($monthName)];
 							if ($Terlambat == '0') {
 								$Terlambat = '-';
 							}
@@ -338,12 +338,12 @@ class C_RekapPerPekerja extends CI_Controller {
 			$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
 			$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
 
-			$worksheet->setCellValue($T.$highestRow, $rekap_data['FrekT']+$rekap_data['FrekTs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($I.$highestRow, $rekap_data['FrekI']+$rekap_data['FrekIs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($M.$highestRow, $rekap_data['FrekM']+$rekap_data['FrekMs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($S.$highestRow, $rekap_data['FrekSK']+$rekap_data['FrekSKs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($IP.$highestRow, $rekap_data['FrekIP']+$rekap_data['FrekIPs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($SP.$highestRow, $rekap_data['FrekSP']+$rekap_data['FrekSPs'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($T.$highestRow, $rekap_data['frekt']+$rekap_data['frekts'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($I.$highestRow, $rekap_data['freki']+$rekap_data['frekis'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($M.$highestRow, $rekap_data['frekm']+$rekap_data['frekms'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($S.$highestRow, $rekap_data['freksk']+$rekap_data['freksks'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($IP.$highestRow, $rekap_data['frekip']+$rekap_data['frekips'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($SP.$highestRow, $rekap_data['freksp']+$rekap_data['freksps'], PHPExcel_Cell_DataType::TYPE_STRING);
 
 			$highestRow++;
 		}
@@ -574,12 +574,12 @@ class C_RekapPerPekerja extends CI_Controller {
 					foreach (${'rekap_'.$dateName} as ${'rek'.$dateName}) {
 						if ($rekap_data['noind'] == ${'rek'.$dateName}['noind'] && $rekap_data['nama'] == ${'rek'.$dateName}['nama'] && $rekap_data['nik'] == ${'rek'.$dateName}['nik'] && $rekap_data['tgllahir'] == ${'rek'.$dateName}['tgllahir'])
 						{
-							$Terlambat = ${'rek'.$dateName}['FrekT'.$dateName]+${'rek'.$dateName}['FrekTs'.$dateName];
-							$IjinPribadi = ${'rek'.$dateName}['FrekI'.$dateName]+${'rek'.$dateName}['FrekIs'.$dateName];
-							$Mangkir = ${'rek'.$dateName}['FrekM'.$dateName]+${'rek'.$dateName}['FrekMs'.$dateName];
-							$SuratKeterangan = ${'rek'.$dateName}['FrekSK'.$dateName]+${'rek'.$dateName}['FrekSKs'.$dateName];
-							$IjinPerusahaan = ${'rek'.$dateName}['FrekIP'.$dateName]+${'rek'.$dateName}['FrekIPs'.$dateName];
-							$SuratPeringatan = ${'rek'.$dateName}['FrekSP'.$dateName]+${'rek'.$dateName}['FrekSPs'.$dateName];
+							$Terlambat = ${'rek'.$dateName}['frekt'.strtolower($dateName)]+${'rek'.$dateName}['frekts'.strtolower($dateName)];
+							$IjinPribadi = ${'rek'.$dateName}['freki'.strtolower($dateName)]+${'rek'.$dateName}['frekis'.strtolower($dateName)];
+							$Mangkir = ${'rek'.$dateName}['frekm'.strtolower($dateName)]+${'rek'.$dateName}['frekms'.strtolower($dateName)];
+							$SuratKeterangan = ${'rek'.$dateName}['freksk'.strtolower($dateName)]+${'rek'.$dateName}['freksks'.strtolower($dateName)];
+							$IjinPerusahaan = ${'rek'.$dateName}['frekip'.strtolower($dateName)]+${'rek'.$dateName}['frekips'.strtolower($dateName)];
+							$SuratPeringatan = ${'rek'.$dateName}['freksp'.strtolower($dateName)]+${'rek'.$dateName}['freksps'.strtolower($dateName)];
 							if ($Terlambat == '0') {
 								$Terlambat = '-';
 							}
@@ -625,12 +625,12 @@ class C_RekapPerPekerja extends CI_Controller {
 			$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
 			$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
 
-			$worksheet->setCellValue($T.$highestRow, $rekap_data['FrekT']+$rekap_data['FrekTs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($I.$highestRow, $rekap_data['FrekI']+$rekap_data['FrekIs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($M.$highestRow, $rekap_data['FrekM']+$rekap_data['FrekMs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($S.$highestRow, $rekap_data['FrekSK']+$rekap_data['FrekSKs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($IP.$highestRow, $rekap_data['FrekIP']+$rekap_data['FrekIPs'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($SP.$highestRow, $rekap_data['FrekSP']+$rekap_data['FrekSPs'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($T.$highestRow, $rekap_data['frekt']+$rekap_data['frekts'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($I.$highestRow, $rekap_data['freki']+$rekap_data['frekis'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($M.$highestRow, $rekap_data['frekm']+$rekap_data['frekms'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($S.$highestRow, $rekap_data['freksk']+$rekap_data['freksks'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($IP.$highestRow, $rekap_data['frekip']+$rekap_data['frekips'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($SP.$highestRow, $rekap_data['freksp']+$rekap_data['freksps'], PHPExcel_Cell_DataType::TYPE_STRING);
 
 			$highestRow++;
 		}
@@ -910,12 +910,12 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->mergeCells('E'.$row.':F'.$row);
 			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($SP['tgl_cetak'])), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('C'.$row, $SP['nT'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('D'.$row, $SP['nIK'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('E'.$row, $SP['nM'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $SP['nt'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $SP['nik'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('E'.$row, $SP['nm'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('G'.$row, $SP['bobot'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('H'.$row, $SP['sp_ke'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('I'.$row, $SP['Status'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('I'.$row, $SP['status'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$row++;
 		}
 

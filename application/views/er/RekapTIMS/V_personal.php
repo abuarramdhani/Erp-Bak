@@ -238,23 +238,23 @@
 										<?php 
 											$no = 1;
 											foreach ($SuratPeringatan as $SP) {
-												if ($SP['nT'] == NULL) {
+												if ($SP['nt'] == NULL) {
 													$T = '-';
 												}
 												else{
-													$T = $SP['nT'];
+													$T = $SP['nt'];
 												}
-												if ($SP['nIK'] == NULL) {
+												if ($SP['nik'] == NULL) {
 													$IK = '-';
 												}
 												else{
-													$IK = $SP['nIK'];
+													$IK = $SP['nik'];
 												}
-												if ($SP['nM'] == NULL) {
+												if ($SP['nm'] == NULL) {
 													$M = '-';
 												}
 												else{
-													$M = $SP['nM'];
+													$M = $SP['nm'];
 												}
 												if ($SP['bobot'] == NULL) {
 													$Bobot = '-';
@@ -272,7 +272,7 @@
 											<td style="text-align:center;"><?php echo $M; ?></td>
 											<td><?php echo $Bobot; ?></td>
 											<td style="text-align:center;"><?php echo $SP['sp_ke']; ?></td>
-											<td style="text-align:center;"><?php echo $SP['Status']; ?></td>
+											<td style="text-align:center;"><?php echo $SP['status']; ?></td>
 										</tr>
 										<?php } ?>
 									</tbody>

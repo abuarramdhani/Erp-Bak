@@ -181,12 +181,12 @@ foreach ($rekapPerMonth as $rekap_data) {}
 									foreach (${'rekap_'.$date} as ${'rek'.$date}) {
 										if ($rekap_data['noind'] == ${'rek'.$date}['noind'] && $rekap_data['nama'] == ${'rek'.$date}['nama'] && $rekap_data['nik'] == ${'rek'.$date}['nik'] && $rekap_data['tgllahir'] == ${'rek'.$date}['tgllahir'])
 										{
-											$Terlambat = ${'rek'.$date}['FrekT'.$date]+${'rek'.$date}['FrekTs'.$date];
-											$IjinPribadi = ${'rek'.$date}['FrekI'.$date]+${'rek'.$date}['FrekIs'.$date];
-											$Mangkir = ${'rek'.$date}['FrekM'.$date]+${'rek'.$date}['FrekMs'.$date];
-											$SuratKeterangan = ${'rek'.$date}['FrekSK'.$date]+${'rek'.$date}['FrekSKs'.$date];
-											$IjinPerusahaan = ${'rek'.$date}['FrekIP'.$date]+${'rek'.$date}['FrekIPs'.$date];
-											$SuratPeringatan = ${'rek'.$date}['FrekSP'.$date]+${'rek'.$date}['FrekSPs'.$date];
+											$Terlambat = ${'rek'.$date}['frekt'.strtolower($date)]+${'rek'.$date}['frekts'.strtolower($date)];
+											$IjinPribadi = ${'rek'.$date}['freki'.strtolower($date)]+${'rek'.$date}['frekis'.strtolower($date)];
+											$Mangkir = ${'rek'.$date}['frekm'.strtolower($date)]+${'rek'.$date}['frekms'.strtolower($date)];
+											$SuratKeterangan = ${'rek'.$date}['freksk'.strtolower($date)]+${'rek'.$date}['freksks'.strtolower($date)];
+											$IjinPerusahaan = ${'rek'.$date}['frekip'.strtolower($date)]+${'rek'.$date}['frekips'.strtolower($date)];
+											$SuratPeringatan = ${'rek'.$date}['freksp'.strtolower($date)]+${'rek'.$date}['freksps'.strtolower($date)];
 											if ($Terlambat == '0') {
 												$Terlambat = '-';
 											}
@@ -243,32 +243,32 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							?>
 							<td style="text-align:center;">
 								<div style="width: 20px">
-									<?php echo $rekap_data['FrekT']+$rekap_data['FrekTs']; ?>
+									<?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?>
 								</div>
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 20px">
-									<?php echo $rekap_data['FrekI']+$rekap_data['FrekIs']; ?>
+									<?php echo $rekap_data['freki']+$rekap_data['frekis']; ?>
 								</div>
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 20px">
-									<?php echo $rekap_data['FrekM']+$rekap_data['FrekMs']; ?>
+									<?php echo $rekap_data['frekm']+$rekap_data['frekms']; ?>
 								</div>
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 20px">
-									<?php echo $rekap_data['FrekSK']+$rekap_data['FrekSKs']; ?>
+									<?php echo $rekap_data['freksk']+$rekap_data['freksks']; ?>
 								</div>
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 20px">
-									<?php echo $rekap_data['FrekIP']+$rekap_data['FrekIPs']; ?>
+									<?php echo $rekap_data['frekip']+$rekap_data['frekips']; ?>
 								</div>
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 20px">
-									<?php echo $rekap_data['FrekSP']+$rekap_data['FrekSPs']; ?>
+									<?php echo $rekap_data['freksp']+$rekap_data['freksps']; ?>
 								</div>
 							</td>
 						</tr>
