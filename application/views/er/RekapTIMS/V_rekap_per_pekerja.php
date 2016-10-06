@@ -1,6 +1,6 @@
 <?php
-$ex_period1 = explode(' ', $periode1_ori);
-$ex_period2 = explode(' ', $periode2_ori);
+$ex_period1 = explode(' ', $periode1);
+$ex_period2 = explode(' ', $periode2);
 if (empty($rekap)) {
 	$rekap_data['kode_status_kerja'] = '';
 	$rekap_data['seksi'] = '';
@@ -19,8 +19,8 @@ foreach ($rekap as $rekap_data) {}
 						<div class="box-body with-border">-->
 						<form target="_blank" id="export_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail") ?>">
 							<input type="hidden" name="txtDetail" value="0">
-							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1_ori ?>">
-							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2_ori ?>">
+							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
+							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($rekap); foreach ($rekap as $rkp_export) { $count--; if ($count !== 0) { echo "'".$rkp_export['noind']."'".",";} else { echo "'".$rkp_export['noind']."'";} } ?>">
 							<button class="btn btn-default pull-right">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
@@ -65,7 +65,7 @@ foreach ($rekap as $rekap_data) {}
 														$masukkerja = $rekap_data['masukkerja'];
 													}
 													$masa1 = strtotime($masukkerja);
-													$masa2 = strtotime($periode2_ori);
+													$masa2 = strtotime($periode2);
 
 													$year1 = date('Y', $masa1);
 													$year2 = date('Y', $masa2);
