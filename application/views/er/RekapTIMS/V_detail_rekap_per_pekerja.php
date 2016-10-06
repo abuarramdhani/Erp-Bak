@@ -1,12 +1,8 @@
 <?php
-$ex_period1 = explode(' ', $periode1_ori);
-$ex_period2 = explode(' ', $periode2_ori);
-$tgl = explode('-', $ex_period2[0]);
-$bln_new = $tgl[1]-1;
-$periode2 = $tgl[0].'-'.$bln_new.'-'.$tgl[2].' '.$ex_period2[1];
-$begin = new DateTime($periode1_ori);
+$ex_period1 = explode(' ', $periode1);
+$ex_period2 = explode(' ', $periode2);
+$begin = new DateTime($periode1);
 $end = new DateTime($periode2);
-$end = $end->modify('+1 month');
 $interval = new DateInterval('P1M');
 
 $p = new DatePeriod($begin, $interval ,$end);
@@ -29,8 +25,8 @@ foreach ($rekap as $rekap_data) {}
 						<div class="box-body with-border">-->
 						<form target="_blank" id="export_detail_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail") ?>">
 							<input type="hidden" name="txtDetail" value="1">
-							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1_ori ?>">
-							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2_ori ?>">
+							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
+							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($rekap); foreach ($rekap as $rkp_export) { $count--; if ($count !== 0) { echo "'".$rkp_export['noind']."'".",";} else { echo "'".$rkp_export['noind']."'";} } ?>">
 							<button class="btn btn-default pull-right">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
@@ -52,6 +48,11 @@ foreach ($rekap as $rekap_data) {}
 										<th rowspan="2" width="40%" style="text-align: center;vertical-align:middle;font-size:20px;">
 											<div style="width: 300px">
 												NAMA
+											</div>
+										</th>
+										<th rowspan="2" width="15%" style="text-align: center;vertical-align:middle;font-size:20px;">
+											<div style="width: 100px">
+												MASA KERJA
 											</div>
 										</th>
 										<?php
@@ -170,6 +171,28 @@ foreach ($rekap as $rekap_data) {}
 														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-01',strtotime($ex_period1[0])).'/'.date('Y-m-t', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
 															<?php echo $rekap_data['nama']?>
 														</a>
+													</div>
+													
+												</td>
+												<td style="text-align:center;">
+													<div style="width: 100px">
+														<?php
+															$masukkerja = $rekap_data['masuk_kerja_sebelum'];
+															if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
+																$masukkerja = $rekap_data['masukkerja'];
+															}
+															$masa1 = strtotime($masukkerja);
+															$masa2 = strtotime($periode2);
+
+															$year1 = date('Y', $masa1);
+															$year2 = date('Y', $masa2);
+
+															$month1 = date('m', $masa1);
+															$month2 = date('m', $masa2);
+
+															$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
+															echo $total_masa_kerja;
+														?>
 													</div>
 													
 												</td>

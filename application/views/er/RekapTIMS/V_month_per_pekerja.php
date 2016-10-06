@@ -2,11 +2,8 @@
 $ex_period1 = explode(' ', $periode1);
 $ex_period2 = explode(' ', $periode2);
 $tgl = explode('-', $ex_period2[0]);
-$tgl_new = $tgl[2]-1;
-$periode2_new = $tgl[0].'-'.$tgl[1].'-'.$tgl_new.' '.$ex_period2[1];
 $begin = new DateTime($periode1);
-$end = new DateTime($periode2_new);
-$end = $end->modify('+1 day');
+$end = new DateTime($periode2);
 
 $interval = new DateInterval('P1D');
 
@@ -55,6 +52,11 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							<th rowspan="2" style="text-align: center;vertical-align:middle;">
 								<div style="width: 300px">
 									NAMA
+								</div>
+							</th>
+							<th rowspan="2" style="text-align: center;vertical-align:middle;">
+								<div style="width: 100px">
+									MASA KERJA
 								</div>
 							</th>
 							<?php
@@ -168,6 +170,28 @@ foreach ($rekapPerMonth as $rekap_data) {}
 									<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo $ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['nik']; ?>">
 										<?php echo $rekap_data['nama']?>
 									</a>
+								</div>
+								
+							</td>
+							<td style="text-align:center;">
+								<div style="width: 100px">
+									<?php
+										$masukkerja = $rekap_data['masuk_kerja_sebelum'];
+										if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
+											$masukkerja = $rekap_data['masukkerja'];
+										}
+										$masa1 = strtotime($masukkerja);
+										$masa2 = strtotime($periode2);
+
+										$year1 = date('Y', $masa1);
+										$year2 = date('Y', $masa2);
+
+										$month1 = date('m', $masa1);
+										$month2 = date('m', $masa2);
+
+										$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
+										echo $total_masa_kerja;
+									?>
 								</div>
 								
 							</td>

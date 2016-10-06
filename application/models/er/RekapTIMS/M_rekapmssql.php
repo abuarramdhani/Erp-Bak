@@ -8,34 +8,36 @@ clASs M_rekapmssql extends CI_Model {
 		$this->personalia = $this->load->database('personalia', TRUE );
     }
 	
-	public function dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section)
+	public function dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$seksi)
 	{
 		if ($departemen == 'All') {
 			$departemen = "rtrim(dept)";
 		}
 		else{
-			$departemen = "'$departemen'";
+			$departemen = "rtrim('$departemen')";
 		}
 		if ($bidang == 'All') {
 			$bidang = "rtrim(bidang)";
 		}
 		else{
-			$bidang = "'$bidang'";
+			$bidang = "rtrim('$bidang')";
 		}
 		if ($unit == 'All') {
 			$unit = "rtrim(unit)";
 		}
 		else{
-			$unit = "'$unit'";
+			$unit = "rtrim('$unit')";
 		}
-		if ($section == 'All') {
+		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
 		else{
-			$section = "'$section'";
+			$section = "rtrim('$seksi')";
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -113,34 +115,35 @@ clASs M_rekapmssql extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName)
+	public function dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$seksi,$monthName)
 	{
 		if ($departemen == 'All') {
 			$departemen = "rtrim(dept)";
 		}
 		else{
-			$departemen = "'$departemen'";
+			$departemen = "rtrim('$departemen')";
 		}
 		if ($bidang == 'All') {
 			$bidang = "rtrim(bidang)";
 		}
 		else{
-			$bidang = "'$bidang'";
+			$bidang = "rtrim('$bidang')";
 		}
 		if ($unit == 'All') {
 			$unit = "rtrim(unit)";
 		}
 		else{
-			$unit = "'$unit'";
+			$unit = "rtrim('$unit')";
 		}
-		if ($section == 'All') {
+		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
 		else{
-			$section = "'$section'";
+			$section = "rtrim('$seksi')";
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -218,16 +221,17 @@ clASs M_rekapmssql extends CI_Model {
 			return $query->result_array();
 	}
 
-	public function ExportRekap($periode1,$periode2,$status,$section)
+	public function ExportRekap($periode1,$periode2,$status,$seksi)
 	{
-		if ($section == 'All') {
+		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
 		else{
-			$section = "'$section'";
+			$section = "rtrim('$seksi')";
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -302,16 +306,17 @@ clASs M_rekapmssql extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function ExportDetail($firstdate,$lastdate,$status,$section,$monthName)
+	public function ExportDetail($firstdate,$lastdate,$status,$seksi,$monthName)
 	{
-		if ($section == 'All') {
+		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
 		else{
-			$section = "'$section'";
+			$section = "rtrim('$seksi')";
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -513,13 +518,14 @@ clASs M_rekapmssql extends CI_Model {
 	public function dataRekapMonth($periode1,$periode2,$status,$seksi)
 	{
 		if ($seksi == 'All') {
-			$seksi = "rtrim(seksi)";
+			$section = "rtrim(seksi)";
 		}
 		else{
-			$seksi = "'$seksi'";
+			$section = "rtrim('$seksi')";
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -586,7 +592,7 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND rtrim(seksi) = $seksi
+				AND rtrim(seksi) = $section
 
 			ORDER BY noind
 		";
@@ -597,13 +603,14 @@ clASs M_rekapmssql extends CI_Model {
 	public function dataRekapMonthDetail($firstdate,$lastdate,$status,$seksi,$date)
 	{
 		if ($seksi == 'All') {
-			$seksi = "rtrim(seksi)";
+			$section = "rtrim(seksi)";
 		}
 		else{
-			$seksi = "'$seksi'";
+			$section = "rtrim('$seksi')";
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$date.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -670,7 +677,7 @@ clASs M_rekapmssql extends CI_Model {
 
 			WHERE keluar = '0'
 				AND a.kode_status_kerja = '$status'
-				AND rtrim(seksi) = $seksi
+				AND rtrim(seksi) = $section
 
 			ORDER BY noind
 		";

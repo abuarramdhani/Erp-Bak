@@ -142,7 +142,6 @@ class C_Rekap extends CI_Controller {
 		else {
 			$begin = new DateTime($periode1);
 			$end = new DateTime($periode2);
-			$end = $end->modify('+1 month');
 			$interval = new DateInterval('P1M');
 
 			$p = new DatePeriod($begin, $interval ,$end);
@@ -188,16 +187,13 @@ class C_Rekap extends CI_Controller {
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
+		$periode_masa_kerja = $period2;
 		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$section);
 
 		if ($detail == 1) {
-			$ex_period2 = explode('-', $periode2);
-			$bln_new = $ex_period2[1]-1;
-			$periode2 = $ex_period2[0].'-'.$bln_new.'-'.$ex_period2[2];
 
 			$begin = new DateTime($periode1);
 			$end = new DateTime($periode2);
-			$end = $end->modify('+1 month');
 
 			$interval = new DateInterval('P1M');
 
@@ -216,6 +212,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
 		$worksheet->getColumnDimension('C')->setWidth(45);
+		$worksheet->getColumnDimension('D')->setWidth(17);
 
 		$worksheet->mergeCells('A1:B1');
 		$worksheet->mergeCells('A2:B2');
@@ -249,12 +246,14 @@ class C_Rekap extends CI_Controller {
 		$worksheet->mergeCells('A6:A7');
 		$worksheet->mergeCells('B6:B7');
 		$worksheet->mergeCells('C6:C7');
+		$worksheet->mergeCells('D6:D7');
 
 		$worksheet->setCellValue('A6', 'No');
 		$worksheet->setCellValue('B6', 'NIK');
 		$worksheet->setCellValue('C6', 'NAMA');
+		$worksheet->setCellValue('D6', 'MASA KERJA');
 
-		$col = '3';
+		$col = '4';
 		if ($detail == 1) {
 			foreach ($p as $d) {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
@@ -307,14 +306,30 @@ class C_Rekap extends CI_Controller {
 		$worksheet->setCellValue($IP.'7', 'IP');
 		$worksheet->setCellValue($SP.'7', 'SP');
 
+
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
+			$masukkerja = $rekap_data['masuk_kerja_sebelum'];
+			if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
+				$masukkerja = $rekap_data['masukkerja'];
+			}
+			$masa1 = strtotime($masukkerja);
+			$masa2 = strtotime($periode_masa_kerja);
+
+			$year1 = date('Y', $masa1);
+			$year2 = date('Y', $masa2);
+
+			$month1 = date('m', $masa1);
+			$month2 = date('m', $masa2);
+
+			$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
+			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
 
-			$col = 3;
+			$col = 4;
 			if ($detail == 1) {
 				foreach ($p as $d) {
 					$monthName = $d->format('M_y');
@@ -395,16 +410,16 @@ class C_Rekap extends CI_Controller {
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		else{
-			$worksheet->getStyle('A6:I7')->applyFromArray($styleArray);
-			$worksheet	->getStyle('A6:I7')
+			$worksheet->getStyle('A6:J7')->applyFromArray($styleArray);
+			$worksheet	->getStyle('A6:J7')
 						->getFill()
 						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 						->getStartColor()
 						->setARGB('0099ff');
-			$worksheet->getStyle('A6:I7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-			$worksheet->getStyle('A6:I7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$worksheet->getStyle('A6:J7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$worksheet->getStyle('A6:J7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
-		$worksheet->freezePaneByColumnAndRow(3, 8);
+		$worksheet->freezePaneByColumnAndRow(4, 8);
 
 		$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
@@ -443,7 +458,6 @@ class C_Rekap extends CI_Controller {
 
 		$begin = new DateTime($periode1);
 		$end = new DateTime($periode2);
-		$end = $end->modify('+1 day');
 
 		$interval = new DateInterval('P1D');
 
@@ -493,14 +507,10 @@ class C_Rekap extends CI_Controller {
 		
 		$periode1 = date('Y-m-01 00:00:00', strtotime($periode));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($periode));
-
-		//$ex_period2 = explode('-', $periode2);
-		//$tgl_new = $ex_period2[2]-1;
-		//$periode2 = $ex_period2[0].'-'.$ex_period2[1].'-'.$tgl_new;
+		$periode_masa_kerja = $periode2;
 
 		$begin = new DateTime($periode1);
 		$end = new DateTime($periode2);
-		$end = $end->modify('+1 day');
 
 		$interval = new DateInterval('P1D');
 
@@ -521,6 +531,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
 		$worksheet->getColumnDimension('C')->setWidth(45);
+		$worksheet->getColumnDimension('D')->setWidth(17);
 
 		$worksheet->mergeCells('A1:B1');
 		$worksheet->mergeCells('A2:B2');
@@ -548,12 +559,14 @@ class C_Rekap extends CI_Controller {
 		$worksheet->mergeCells('A6:A7');
 		$worksheet->mergeCells('B6:B7');
 		$worksheet->mergeCells('C6:C7');
+		$worksheet->mergeCells('D6:D7');
 
 		$worksheet->setCellValue('A6', 'No');
 		$worksheet->setCellValue('B6', 'NIK');
 		$worksheet->setCellValue('C6', 'NAMA');
+		$worksheet->setCellValue('D6', 'MASA KERJA');
 
-		$col = '3';
+		$col = '4';
 		
 			foreach ($p as $d) {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
@@ -609,11 +622,27 @@ class C_Rekap extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
+			$masukkerja = $rekap_data['masuk_kerja_sebelum'];
+			if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
+				$masukkerja = $rekap_data['masukkerja'];
+			}
+			$masa1 = strtotime($masukkerja);
+			$masa2 = strtotime($periode_masa_kerja);
+
+			$year1 = date('Y', $masa1);
+			$year2 = date('Y', $masa2);
+
+			$month1 = date('m', $masa1);
+			$month2 = date('m', $masa2);
+
+			$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
+
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
+			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
 
-			$col = 3;
+			$col = 4;
 			
 				foreach ($p as $d) {
 					$dateName = $d->format('d_M_y');
@@ -693,7 +722,7 @@ class C_Rekap extends CI_Controller {
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		
-		$worksheet->freezePaneByColumnAndRow(3, 8);
+		$worksheet->freezePaneByColumnAndRow(4, 8);
 
 		$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 

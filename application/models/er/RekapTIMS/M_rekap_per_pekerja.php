@@ -12,6 +12,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 		$sql = "
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -91,6 +92,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	public function data_per_pekerja_detail($firstdate,$lastdate,$noinduk,$monthName){
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -171,6 +173,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -251,6 +254,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -331,6 +335,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -411,6 +416,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$date.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
