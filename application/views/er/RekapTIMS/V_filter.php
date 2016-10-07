@@ -73,7 +73,7 @@
 														<option value="All">ALL</option>
 														<?php foreach ($dept as $dept_item){
 														?>
-															<option value="<?php echo $dept_item['Dept'];?>"><?php echo $dept_item['Dept'];?></option>
+															<option value="<?php echo $dept_item['dept'];?>"><?php echo $dept_item['dept'];?></option>
 													<?php } ?>
 													</select>
 												</div>

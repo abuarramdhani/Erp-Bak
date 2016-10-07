@@ -1,6 +1,6 @@
 <?php
-$ex_period1 = explode(' ', $periode1_ori);
-$ex_period2 = explode(' ', $periode2_ori);
+$ex_period1 = explode(' ', $periode1);
+$ex_period2 = explode(' ', $periode2);
 if (empty($rekap)) {
 	$rekap_data['kode_status_kerja'] = '';
 	$rekap_data['seksi'] = '';
@@ -19,8 +19,8 @@ foreach ($rekap as $rekap_data) {}
 						<div class="box-body with-border">-->
 						<form target="_blank" id="export_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail") ?>">
 							<input type="hidden" name="txtDetail" value="0">
-							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1_ori ?>">
-							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2_ori ?>">
+							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
+							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($rekap); foreach ($rekap as $rkp_export) { $count--; if ($count !== 0) { echo "'".$rkp_export['noind']."'".",";} else { echo "'".$rkp_export['noind']."'";} } ?>">
 							<button class="btn btn-default pull-right">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
@@ -32,6 +32,7 @@ foreach ($rekap as $rekap_data) {}
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NO</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NIK</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NAMA</th>
+										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">MASA KERJA</th>
 										<th colspan="6" style="text-align: center">REKAP</th>
 									</tr>
 									<tr class="bg-primary">
@@ -57,12 +58,31 @@ foreach ($rekap as $rekap_data) {}
 													<?php echo $rekap_data['nama']; ?>
 												</a>
 											</td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekT']+$rekap_data['FrekTs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekI']+$rekap_data['FrekIs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekM']+$rekap_data['FrekMs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekSK']+$rekap_data['FrekSKs']; ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekIP']+$rekap_data['FrekIPs'] ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['FrekSP']+$rekap_data['FrekSPs'] ?></td>
+											<td style="text-align:center;">
+												<?php
+													$masukkerja = $rekap_data['masuk_kerja_sebelum'];
+													if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
+														$masukkerja = $rekap_data['masukkerja'];
+													}
+													$masa1 = strtotime($masukkerja);
+													$masa2 = strtotime($periode2);
+
+													$year1 = date('Y', $masa1);
+													$year2 = date('Y', $masa2);
+
+													$month1 = date('m', $masa1);
+													$month2 = date('m', $masa2);
+
+													$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
+													echo $total_masa_kerja;
+												?>
+											</td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['freki']+$rekap_data['frekis']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekm']+$rekap_data['frekms']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['freksk']+$rekap_data['freksks']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekip']+$rekap_data['frekips'] ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['freksp']+$rekap_data['freksps'] ?></td>
 										</tr>
 									<?php } ?>
 								</tbody>
