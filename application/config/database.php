@@ -131,7 +131,7 @@ $db['mssql'] = array(
 
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
+	'hostname' => 'db.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
