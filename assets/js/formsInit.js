@@ -755,7 +755,7 @@ $( "#txtCustomerName" ).change(function() {
 		 format: 'D/MM/YYYY'
 	});
 
-    $('#reportrange').daterangepicker(
+    /*$('#reportrange').daterangepicker(
 			
             {
 				format: 'D/MMM/YYYY',
@@ -788,7 +788,7 @@ $( "#txtCustomerName" ).change(function() {
     function (start, end) {
         $('daterangewithchoice span').html(start.format('MMM, YYYY') + ' - ' + end.format('MMM, YYYY'));
     }
-    );
+    );*/
     /*----------- END daterangepicker CODE -------------------------*/
 
     /*----------- BEGIN timepicker CODE -------------------------*/

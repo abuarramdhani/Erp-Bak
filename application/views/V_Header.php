@@ -35,8 +35,8 @@
   
   <!-- PAGE LEVEL STYLES FOR DATATABLES-->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
-	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/uniform/themes/default/css/uniform.default.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/inputlimiter/jquery.inputlimiter.1.0.css');?>" />
@@ -57,11 +57,21 @@
      <!-- END HEAD -->
      <!-- BEGIN BODY -->
 <body  class="skin-blue-light sidebar-mini"  >
-	<div id="loadingAjax"></div>
+
      <!-- MAIN WRAPPER -->
     <div class="wrapper">
 		<input type="hidden" value="<?php echo base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl"/>
+		<?php
+			if(empty($UserMenu[0]['org_id'])){
+				$org_id = $UserResponsibility[0]['org_id'];
+			}else{
+				$org_id = $UserMenu[0]['org_id'];
+			}
+		?>
+		
+		
 		<header class="main-header">
+		<input type="hidden" value="<?=$org_id ?>" name="txtOrgId" id="txtOrgId"/>
 			<!-- Logo -->
 			<a href="<?php echo site_url();?>" class="logo">
                     <!--<img src="<?php echo base_url('assets/img/header3.png');?>"   class="imgheader" alt="" />-->
@@ -118,7 +128,7 @@
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
-
+					
 					</div>
 				</div>
 			</div>

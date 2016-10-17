@@ -26,7 +26,6 @@ class C_DeliveryProcess extends CI_Controller {
           $this->load->helper('url');
           $this->load->helper('html');
           $this->load->library('form_validation');
-          //load the login model
 		  $this->load->library('session');
 		  $this->load->library('encrypt');
 		  $this->load->model('M_index');
@@ -35,7 +34,6 @@ class C_DeliveryProcess extends CI_Controller {
 		  $this->load->model('SystemAdministration/MainMenu/M_responsibility');
 		  $this->load->model('SystemAdministration/MainMenu/M_menu');
 		  //$this->load->model('Setting/M_usermenu');
-		  //$this->load->library('encryption');
 		  $this->checkSession();
     }
 	
@@ -124,6 +122,7 @@ class C_DeliveryProcess extends CI_Controller {
 		{		
 				$part_id = $this->input->post('hdnPartId');
 				$qty = $this->input->post('txtQtyToProcess');
+				$type = $this->input->post('slcLineType');
 				$num = $this->M_deliveryrequest->getMoNumber();
 				
 				foreach($part_id as $i => $part_id_item){
@@ -133,12 +132,18 @@ class C_DeliveryProcess extends CI_Controller {
 							'LINE_ID' 					=> intval($plaintext_string2),
 							'PART_ID' 					=> intval($part_id[$i]),
 							'QUANTITY_PROCESSED' 		=> intval($qty[$i]),
-							'MOVE_ORDER_NUMBER'			=> $num,
+							'MOVE_ORDER_NUMBER'			=> ($type[$i] === "Internal")?$num:"",
+							'TYPE'						=> $type[$i],
 							'PROCESS_DATE' 				=> date("d-M-Y H:i:s"),
 							'WORKER' 					=> $user
 						);
+						
+						$data_part[$i] = array(
+							'PART_TYPE' 		=> $type[$i]
+						);
 					
 						$this->M_deliveryrequest->setDeliveryProcessMo($data_lines[$i]);
+						$this->M_deliveryrequest->updateComponent($data_part[$i],intval($part_id[$i]));
 							
 					}
 				}
@@ -149,14 +154,38 @@ class C_DeliveryProcess extends CI_Controller {
 					$user = 'AA PMP2 TR 02';
 				}
 				
-				$this->M_deliveryrequest->processMoveOrder($num,$data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+				ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 				
-				// print_r($data_lines);
+				if (in_array('Internal', array_column($data_lines, 'TYPE')) and in_array('External', array_column($data_lines, 'TYPE'))) {
+					$this->M_deliveryrequest->processMoveOrder($num,$data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+					$pr_num = $this->M_deliveryrequest->processPR($data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+					// print_r("aaaaa");
+					
+				?>
+					<script>alert('Move Order Number = <?php echo $num?>' and PR Number = <?php echo $pr_num?>);
+							window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>';
+					</script>
+				<?php
+				}elseif(in_array('Internal', array_column($data_lines, 'TYPE'))){
+					$this->M_deliveryrequest->processMoveOrder($num,$data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+					// print_r("bbbb");
 				?>
 					<script>alert('Move Order Number = <?php echo $num?>');
 							window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>';
 					</script>
-					<?php
+				<?php
+				}elseif(in_array('External', array_column($data_lines, 'TYPE'))){
+					$pr_num = $this->M_deliveryrequest->processPR($data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+					// print_r("cccc");
+				?>
+					<script>alert('PR Number = <?php echo $pr_num?>');
+						window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>';
+					</script>
+				<?php
+				}
+								
+				// print_r($data_lines);
+				
 				// redirect('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id);
 		}
 			
@@ -188,7 +217,9 @@ class C_DeliveryProcess extends CI_Controller {
 		$data['num'] = count($data['DeliveryRequestLines']);
 		$data['id'] = $id;
 		
-		$this->form_validation->set_rules('txtDeliveryRequestNum', 'menuname', 'required');
+		$status = $this->input->post('txtDeliveryStatus');
+				
+		$this->form_validation->set_rules('txtDeliveryStatus', 'menuname', 'required');
 		
 		if ($this->form_validation->run() === FALSE)
 		{
@@ -202,41 +233,50 @@ class C_DeliveryProcess extends CI_Controller {
 
 		}
 		else
-		{		
+		{		$btn = $this->input->post('btnDeliveryRequest');
 				$qty = $this->input->post('txtQtyToProcess');
 				$line_id = $this->input->post('hdnLineId');
-				$btn = $this->input->post('btnDeliveryRequestApproval');
 				$date = $this->input->post('hdnDate');
-					
-				$data_header = array(
-					'CATEGORY	' 		=> 'P',
-					'ORGANIZATION_ID' 	=> $this->input->post('slcIo'),
-					'SUBINVENTORY' 		=> $this->input->post('slcSubInventory'),
-					'TO_SUBINVENTORY' 	=> $this->input->post('slcToSubInventory'),
-					'BLANKET' 			=> $this->input->post('txtBlanket'),
-					'EXPEDITION' 		=> $this->input->post('txtExpedition'),
-					'ENGINE' 			=> $this->input->post('slcEngine'),
-					'TRACTOR' 			=> $this->input->post('slcTractor'),
-					'LAST_UPDATE_DATE' 	=> date("d-M-Y H:i:s"),
-					'LAST_UPDATED_BY' 	=> intval($this->input->post('hdnUser'))
-				);
+				$type = $this->input->post('slcLineType');
 				
-				$tes = $this->M_deliveryrequest->updateDeliveryRequest($data_header,intval($plaintext_string));
-				$num = $this->M_deliveryrequest->getMoNumber();
+				if($status !== "REQUEST CLOSED"){	
+					$data_header = array(
+						'CATEGORY	' 		=> 'P',
+						'ORGANIZATION_ID' 	=> $this->input->post('slcIo'),
+						'SUBINVENTORY' 		=> $this->input->post('slcSubInventory'),
+						'TO_SUBINVENTORY' 	=> $this->input->post('slcToSubInventory'),
+						'BLANKET' 			=> $this->input->post('txtBlanket'),
+						'EXPEDITION' 		=> $this->input->post('txtExpedition'),
+						'STATUS' 			=> ($btn==="Close")?"REQUEST CLOSED":'REQUEST IN PROCESS',
+						'ENGINE' 			=> $this->input->post('slcEngine'),
+						'TRACTOR' 			=> $this->input->post('slcTractor'),
+						'LAST_UPDATE_DATE' 	=> date("d-M-Y H:i:s"),
+						'LAST_UPDATED_BY' 	=> intval($this->input->post('hdnUser'))
+					);
+					
+					$tes = $this->M_deliveryrequest->updateDeliveryRequest($data_header,intval($plaintext_string));
+					$num = $this->M_deliveryrequest->getMoNumber();
+				}
 				// print_r($data);
-				if($btn == "" or !is_numeric($btn)){
+				if($btn == "Process"){
 					foreach($qty as $i => $loop){
 						if($qty[$i]){
 							$data_lines[$i] = array(
 								'DELIVERY_REQUEST_ID' 		=> intval($plaintext_string),
 								'LINE_ID' 					=> intval($line_id[$i]),
 								'QUANTITY_PROCESSED' 		=> intval($qty[$i]),
-								'MOVE_ORDER_NUMBER'			=> $num,
+								'MOVE_ORDER_NUMBER'			=> ($type[$i] === "Internal")?$num:"",
+								'TYPE'						=> $type[$i],
 								'PROCESS_DATE' 				=> date("d-M-Y H:i:s"),
 								'WORKER' 					=> $user
 							);
-						
+							
+							$data_lines2[$i] = array(
+								'LINE_TYPE' 		=> $type[$i]
+							);
+							
 							$this->M_deliveryrequest->setDeliveryProcessMo($data_lines[$i]);
+							$this->M_deliveryrequest->updateDeliveryRequestLine($data_lines2[$i],intval($line_id[$i]));
 								
 						}
 					}
@@ -247,21 +287,47 @@ class C_DeliveryProcess extends CI_Controller {
 					}
 					// print_r($data_lines);
 					// print_r($qty); 
-					$this->M_deliveryrequest->processMoveOrder($num,$data['DeliveryRequest'][0]['SEGMENT1'],$user);
+					
+					ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+					
+					if (in_array('Internal', array_column($data_lines, 'TYPE')) and in_array('External', array_column($data_lines, 'TYPE'))) {
+						$this->M_deliveryrequest->processMoveOrder($num,$data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+						$pr_num = $this->M_deliveryrequest->processPR($data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+						// print_r("aaaaa");
+						
 					?>
-					<script>alert('Move Order Number = <?php echo $num?>');
-							window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/UpdateDeliveryProcess/'.$id)?>';
-					</script>
+						<script>alert('Move Order Number = <?php echo $num?>' and PR Number = <?php echo $pr_num?>);
+								window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>';
+						</script>
 					<?php
-					// redirect('InventoryManagement/DeliveryProcess/UpdateDeliveryProcess/'.$id); 
+					}elseif(in_array('Internal', array_column($data_lines, 'TYPE'))){
+						$this->M_deliveryrequest->processMoveOrder($num,$data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+						// print_r("bbbb");
+					?>
+						<script>alert('Move Order Number = <?php echo $num?>');
+								window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>';
+						</script>
+					<?php
+					}elseif(in_array('External', array_column($data_lines, 'TYPE'))){
+						$pr_num = $this->M_deliveryrequest->processPR($data['ComponenHeader'][0]['DELIVERY_NUMBER'],$user);
+						// print_r("cccc");
+					?>
+						<script>alert('PR Number = <?php echo $pr_num?>');
+							window.location.href = '<?= base_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>';
+						</script>
+					<?php
+					}
+					// redirect('InventoryManagement/DeliveryProcess/UpdateDeliveryProcess/'.$id);
 					
 					
 				}
-				else{
+				elseif(is_numeric($btn)){
 					$encrypted_string = $this->encrypt->encode($btn);
 					$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 					
 					redirect('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$id.'/'.$encrypted_string);
+				}else{
+					redirect('InventoryManagement/DeliveryProcess/UpdateDeliveryProcess/'.$id);
 				}
 		}
 	

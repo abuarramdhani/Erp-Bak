@@ -40,9 +40,13 @@
 									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
-												<label class="control-label col-lg-4">Status</label>
+												<label class="control-label col-lg-4">Type</label>
 												<div class="col-lg-8">
-													<input type="text" value="<?= $DeliveryRequest_item['STATUS']?>" name="txtDeliveryStatus" id="txtDeliveryStatus" class="form-control" readonly/>
+													<select name="slcRequestType" id="slcRequestType" class="form-control" disabled>
+														<option value=""></option>
+														<option value="UNIT"<?php echo ($DeliveryRequest_item['REQUEST_TYPE']=="UNIT")?"selected":""?>>UNIT</option>
+														<option value="SPARE PART" <?php echo ($DeliveryRequest_item['REQUEST_TYPE']=="SPARE PART")?"selected":""?> >SPARE PART</option>
+													</select>
 												</div>
 											</div>
 										</div>
@@ -53,6 +57,16 @@
 													<input type="text" value="<?= $DeliveryRequest_item['SEGMENT1']?>" name="txtDeliveryRequestNum" id="txtDeliveryRequestNum" class="form-control" required readonly/>
 												</div>
 												
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label class="control-label col-lg-4">Status</label>
+												<div class="col-lg-8">
+													<input type="text" value="<?= $DeliveryRequest_item['STATUS']?>" name="txtDeliveryStatus" id="txtDeliveryStatus" class="form-control" readonly/>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -166,6 +180,8 @@
 												</div>
 											</div>
 										</div>
+									</div>
+									<div class="row">
 										<div class="col-lg-6">
 											<div class="form-group">
 												<label class="control-label col-lg-4">From SubInventory</label>
@@ -274,7 +290,8 @@
 																	<thead>
 																		<tr class="bg-primary">
 																			<th width="7.5%">No.</th>
-																			<th width="45.5%">Item</th>
+																			<th width="38%">Item</th>
+																			<th width="7.5%"><input type="text" value="External" size="4" name="txtBtnExIn" id="txtBtnExIn" class="btn btn-default btn-rect btn-xs" readonly/><br />Type</th>
 																			<th width="7.5%">Qty</th>
 																			<th width="7.5%">Qty Processed</th>
 																			<th width="7.5%">Qty to Process</th>
@@ -287,7 +304,7 @@
 																			<td>
 																				<?php if($DeliveryRequestLines_item['CHECK_COMPONENT']!="0"){
 																				?>
-																				<button name="btnDeliveryRequestApproval" class="btn btn-danger btn-rect form-control" value="<?=$DeliveryRequestLines_item['LINE_ID']?>"><?= $row+1 ?></button>
+																				<button name="btnDeliveryRequest" ID="btnDeliveryRequestComponent" class="btn btn-info btn-rect form-control" value="<?=$DeliveryRequestLines_item['LINE_ID']?>"><?= $row+1 ?></button>
 																				<?php }else{
 																				?>
 																				<input type="text" value="<?=$row+1?>" name="txtNumber[]" id="txtNumber" class="form-control text-center" readonly/>
@@ -301,14 +318,33 @@
 																				</select>
 																			</td>
 																			<td>
+																				<?php if($DeliveryRequestLines_item['CHECK_COMPONENT']=="0"){ ?>
+																				<select class="form-control" name="slcLineType[]" id="slcLineType" >
+																					<option value="Internal">Internal</option>
+																					<?php if($DeliveryRequestLines_item['PURCHASING_FLAG']==="Y"){ ?>
+																					<option value="External" <?php echo ($DeliveryRequestLines_item['LINE_TYPE']==="External")?"selected":""?>>External</option>
+																					<?php } ?>
+																				</select>
+																				<?php }else{
+																				?>
+																				<input type="hidden" value="" name="slcLineType[]" id="slcLineType" class="form-control" />
+																				<?php
+																				} ?>
+																			</td>
+																			<td>
 																				<input type="text" value="<?= $DeliveryRequestLines_item['QUANTITY']?>" name="txtPickedQuantity[]" id="txtPickedQuantity" class="form-control" readonly/>
+																				
 																			</td>
 																			<td>
+																				<?php if($DeliveryRequestLines_item['CHECK_COMPONENT']=="0"){ ?>
 																				<input type="number" value="<?= $DeliveryRequestLines_item['PROCESSED_QUANTITY']?>" name="txtProcessedQuantity[]" id="txtProcessedQuantity" class="form-control" readonly/>
+																				<?php } ?>
 																			</td>
 																			<td>
+																				<?php if($DeliveryRequestLines_item['CHECK_COMPONENT']=="0"){ ?>
 																				<input type="number" min="0" name="txtQtyToProcess[]" id="txtQtyToProcess" class="form-control" <?php echo ($DeliveryRequestLines_item['CHECK_COMPONENT']!="0")?"readonly":""?>
 																				<?php echo (intval($DeliveryRequestLines_item['PROCESSED_QUANTITY'])>=intval($DeliveryRequestLines_item['QUANTITY']))?"readonly":""?>/>
+																				<?php } ?>
 																			</td>
 																			<td>
 																				<?php if($DeliveryRequestLines_item['CHECK_COMPONENT']=="0"){
@@ -406,7 +442,9 @@
 									<div class="row text-right">
 										<a href="<?php echo base_url('InventoryManagement/DeliveryProcess/') ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 										&nbsp;&nbsp;
-										<button name="btnDeliveryRequestApproval" id="btnDeliveryRequestApproval" class="btn btn-info btn-lg btn-rect">Save / Process</button>
+										<button name="btnDeliveryRequest" id="btnRequestClose" class="btn btn-danger btn-lg btn-rect" value="Close">Close</button>
+										<button name="btnDeliveryRequest" id="btnRequestProcess" class="btn btn-warning btn-lg btn-rect" value="Process">Process</button>
+										<button name="btnDeliveryRequest" id="btnRequestSave" class="btn btn-info btn-lg btn-rect" value="Save">Save Header</button>
 										
 									</div>
 								</div>

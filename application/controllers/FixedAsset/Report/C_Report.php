@@ -2144,4 +2144,3 @@ class C_Report extends CI_Controller {
 			$this->createPDF('ResponseTime.pdf',$html);
 		}
 }
-?>

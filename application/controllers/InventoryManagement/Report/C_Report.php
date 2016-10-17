@@ -4,26 +4,30 @@ class C_Report extends CI_Controller {
         public function __construct()
         {
                 parent::__construct();
-                $this->load->model('CustomerRelationship/Setting/M_buyingtype');
-                $this->load->model('CustomerRelationship/MainMenu/M_customer');
-				$this->load->model('CustomerRelationship/MainMenu/M_customercontacts');
-				$this->load->model('CustomerRelationship/MainMenu/M_customerdriver');
-				$this->load->model('CustomerRelationship/MainMenu/M_ownership');
-				$this->load->model('CustomerRelationship/MainMenu/M_customergroup');
-				$this->load->model('CustomerRelationship/MainMenu/M_customerrelation');
-				$this->load->model('CustomerRelationship/Setting/M_customercategory');
-				$this->load->model('CustomerRelationship/Setting/M_customeradditional');
+                // $this->load->model('CustomerRelationship/Setting/M_buyingtype');
+                // $this->load->model('CustomerRelationship/MainMenu/M_customer');
+				// $this->load->model('CustomerRelationship/MainMenu/M_customercontacts');
+				// $this->load->model('CustomerRelationship/MainMenu/M_customerdriver');
+				// $this->load->model('CustomerRelationship/MainMenu/M_ownership');
+				// $this->load->model('CustomerRelationship/MainMenu/M_customergroup');
+				// $this->load->model('CustomerRelationship/MainMenu/M_customerrelation');
+				// $this->load->model('CustomerRelationship/Setting/M_customercategory');
+				// $this->load->model('CustomerRelationship/Setting/M_customeradditional');
 				// $this->load->model('CustomerRelationship/M_servicelinestatus');
-				$this->load->model('CustomerRelationship/MainMenu/M_serviceproducts');
-				$this->load->model('CustomerRelationship/Report/M_report');
-				$this->load->model('EmployeeRecruitment/MainMenu/M_employee');
-				$this->load->model('InventoryManagement/MainMenu/M_item');
+				// $this->load->model('CustomerRelationship/MainMenu/M_serviceproducts');
+				// $this->load->model('EmployeeRecruitment/MainMenu/M_employee');
+				// $this->load->model('InventoryManagement/MainMenu/M_item');
 				$this->load->model('SystemAdministration/MainMenu/M_user');
-				$this->load->model('SystemAdministration/MainMenu/M_province');
 				// $this->load->model('SystemAdministration/MainMenu/M_province');
+				// $this->load->model('SystemAdministration/MainMenu/M_province');
+				$this->load->model('InventoryManagement/Report/M_report');
+				$this->load->model('InventoryManagement/MainMenu/M_deliveryrequest');
+				$this->load->model('InventoryManagement/Setting/M_deliveryrequestapproval');
+				$this->load->model('SystemAdministration/MainMenu/M_organization');
 				$this->load->helper('form');
 				$this->load->library('form_validation');
 				$this->load->library('session');
+				$this->load->library('Excel/PHPExcel');
 				$this->load->helper('url');
 				$this->checkSession();
 				
@@ -287,41 +291,33 @@ class C_Report extends CI_Controller {
 			//offer it to user via browser download! (The PDF won't be saved on your server HDD)
 			$pdf->Output($title, "I");
 		}
-	
+		
+		//  ================================================ BAGIAN REPORT REQUEST FULFILLMENT ========================================================//
+		
 		//  ================================================ BAGIAN REPORT CUSTOMER ========================================================//
 		//memanggil halaman report customer
-		public function ReportCustomer(){
+		public function DataPemenuhanRequest(){
 			$this->checkSession();
-			$data['Customer'] = $this->M_customer->getCustomer();
-			$data['title'] = 'Report Customer';
-			$data['Menu'] = 'customer';
-			$data['province'] = $this->M_customergroup->getAllProvince();
-			$data['job'] = $this->M_customeradditional->getAllAdditional();
-			$data['categories']=$this->M_customercategory->getAllCategory();
+			$user_id = $this->session->userid;
+			$data['Menu'] = 'Report';
+			$data['SubMenuOne'] = '';
+	
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			// $data['Customer'] = $this->M_customer->getCustomer();
+			
+			// $data['province'] = $this->M_customergroup->getAllProvince();
+			$data['Org'] = $this->M_organization->getOrganization();
+
 			$this->load->view('V_Header',$data);
-			$this->load->view('CustomerRelationship/Report/ReportCustomer/V_report_customer', $data);
+			$this->load->view('InventoryManagement/Report/DataPemenuhanRequest/V_data_pemenuhan_request', $data);
 			$this->load->view('V_Footer',$data);
 		}
 
-		//fungsi pencarian dengan ajax
-		public function AjaxCustomerReport(){
-			$name = $this->input->get("name");
-			$district = $this->input->get("district");
-			$city = $this->input->get("city");
-			$province = $this->input->get("province");
-			$job = strtoupper(str_replace(",","%",$this->input->get("job")));
-			$job2 = $job."%";
-			$category = $this->input->get("category");
-
-			$data['customer'] = $this->M_report->getCustomerData($name,$district,$city,$province,$job,$category);
-			$data['province'] = $this->input->get("province");
-			$data['job'] = strtoupper(str_replace(",",", ",$this->input->get("job")));
-
-			$this->load->view("CustomerRelationship/Report/ReportCustomer/V_ajax_report_customer",$data);
-		}
-
 		//fungsi export data hasil pencarian ke dalam bentuk excel
-		public function ExportCustomerReport(){
+		public function ExportDataPemenuhanRequest(){
 			$name = strtoupper($this->input->post("txtbyname"));
 			$district = strtoupper($this->input->post("txtbydistrict"));
 			$city = strtoupper($this->input->post("txtbycity"));
@@ -2144,4 +2140,3 @@ class C_Report extends CI_Controller {
 			$this->createPDF('ResponseTime.pdf',$html);
 		}
 }
-?>

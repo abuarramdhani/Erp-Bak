@@ -42,7 +42,7 @@
 			<td><?php echo $Customer_item['city_regency'] ?></td>
 			<td><?php echo $Customer_item['province'] ?></td>
 			<td align="center">
-				<a href="<?php echo site_url('CustomerRelationship/Customer/')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/detail.png');?>" title="Details"></a>
+				<a href="<?php echo site_url('CustomerRelationship/Customer/Details')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/detail.png');?>" title="Details"></a>
 				<!--
 				<a href="<?php echo site_url('CustomerRelationship/Customer/Update/')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png');?>" title="Update"></a>
 				-->
