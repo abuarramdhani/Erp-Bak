@@ -138,7 +138,6 @@
 									</div>
 									<div class="row" style="margin: 10px 10px;vertical-align: middle">
 										<div class="col-md-7">
-											<div id="loadingAjax"></div>
 										</div>
 										<div class="col-md-3">
 											<div class="form-group" style="vertical-align: middle">

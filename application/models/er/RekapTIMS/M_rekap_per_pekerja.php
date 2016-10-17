@@ -12,7 +12,9 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 		$sql = "
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$periode2',(
+					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
+				)) AS t(age)) AS masa_kerja,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -92,7 +94,9 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	public function data_per_pekerja_detail($firstdate,$lastdate,$noinduk,$monthName){
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$lastdate',(
+					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
+				)) AS t(age)) AS masa_kerja,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -173,7 +177,9 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$periode2',(
+					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
+				)) AS t(age)) AS masa_kerja,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -254,7 +260,9 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$lastdate',(
+					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
+				)) AS t(age)) AS masa_kerja,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -335,7 +343,9 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$periode2',(
+					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
+				)) AS t(age)) AS masa_kerja,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -416,7 +426,9 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	{
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT masukkerja FROM hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik AND keluar = '1' ORDER BY masukkerja LIMIT 1) AS masuk_kerja_sebelum,
+				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$lastdate',(
+					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
+				)) AS t(age)) AS masa_kerja,
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$date.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -493,15 +505,15 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function GetNoInduk($noind){
-		if ($noind === FALSE) {
+	public function GetNoInduk($term){
+		if ($term === FALSE) {
 			$sql = "
 				SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' ORDER BY noind ASC
 			";
 		}
 		else{
 			$sql = "
-				SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' AND noind ILIKE '%$noind%' ORDER BY noind ASC
+				SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' AND (noind ILIKE '%$term%' OR nama ILIKE '%$term%') ORDER BY noind ASC
 			";
 		}
 		$query = $this->personalia->query($sql);

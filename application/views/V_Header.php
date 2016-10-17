@@ -36,6 +36,7 @@
   <!-- PAGE LEVEL STYLES FOR DATATABLES-->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/uniform/themes/default/css/uniform.default.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/inputlimiter/jquery.inputlimiter.1.0.css');?>" />
@@ -56,7 +57,7 @@
      <!-- END HEAD -->
      <!-- BEGIN BODY -->
 <body  class="skin-blue-light sidebar-mini"  >
-
+	<div id="loadingAjax"></div>
      <!-- MAIN WRAPPER -->
     <div class="wrapper">
 		<input type="hidden" value="<?php echo base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl"/>

@@ -39,7 +39,7 @@
 									</div>
 									<div class="row" style="margin: 10px 10px">
 										<div class="col-md-2">
-											<label class="control-label">No Induk</label>
+											<label class="control-label">Pekerja</label>
 										</div>
 										<div class="col-md-10">
 											<div class="form-group">
@@ -56,7 +56,6 @@
 									</div>
 									<div class="row" style="margin: 10px 10px;vertical-align: middle">
 										<div class="col-md-8">
-											<div id="loadingAjax"></div>
 										</div>
 										<div class="col-md-3">
 											<div class="form-group" style="vertical-align: middle">
