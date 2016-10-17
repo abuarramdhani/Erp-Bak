@@ -58,13 +58,13 @@ class C_RekapPerPekerja extends CI_Controller {
 
 	//------------------------show the filtering menu-----------------------------
 	public function GetNoInduk(){
-		$noind = $this->input->get("term");
-		$data = $this->M_rekap_per_pekerja->GetNoInduk($noind);
+		$term = $this->input->get("term");
+		$data = $this->M_rekap_per_pekerja->GetNoInduk($term);
 		$count = count($data);
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"NoInduk":"'.$data['noind'].'"}';
+			echo '{"NoInduk":"'.$data['noind'].'","Nama":"'.$data['nama'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}
@@ -184,7 +184,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
 		$worksheet->getColumnDimension('C')->setWidth(45);
-		$worksheet->getColumnDimension('D')->setWidth(17);
+		$worksheet->getColumnDimension('D')->setWidth(24);
 
 		$worksheet->mergeCells('A1:B1');
 		$worksheet->mergeCells('A2:B2');
@@ -274,20 +274,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-			$masukkerja = $rekap_data['masuk_kerja_sebelum'];
-			if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
-				$masukkerja = $rekap_data['masukkerja'];
-			}
-			$masa1 = strtotime($masukkerja);
-			$masa2 = strtotime($periode_masa_kerja);
-
-			$year1 = date('Y', $masa1);
-			$year2 = date('Y', $masa2);
-
-			$month1 = date('m', $masa1);
-			$month2 = date('m', $masa2);
-
-			$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
+						$total_masa_kerja = $rekap_data['masa_kerja'];
 
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -495,7 +482,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
 		$worksheet->getColumnDimension('C')->setWidth(45);
-		$worksheet->getColumnDimension('D')->setWidth(17);
+		$worksheet->getColumnDimension('D')->setWidth(24);
 
 		$worksheet->mergeCells('A1:B1');
 		$worksheet->mergeCells('A2:B2');
@@ -579,20 +566,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-			$masukkerja = $rekap_data['masuk_kerja_sebelum'];
-			if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
-				$masukkerja = $rekap_data['masukkerja'];
-			}
-			$masa1 = strtotime($masukkerja);
-			$masa2 = strtotime($periode_masa_kerja);
-
-			$year1 = date('Y', $masa1);
-			$year2 = date('Y', $masa2);
-
-			$month1 = date('m', $masa1);
-			$month2 = date('m', $masa2);
-
-			$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
+						$total_masa_kerja = $rekap_data['masa_kerja'];
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));

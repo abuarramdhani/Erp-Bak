@@ -55,7 +55,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 								</div>
 							</th>
 							<th rowspan="2" style="text-align: center;vertical-align:middle;">
-								<div style="width: 100px">
+								<div style="width: 160px">
 									MASA KERJA
 								</div>
 							</th>
@@ -174,23 +174,9 @@ foreach ($rekapPerMonth as $rekap_data) {}
 								
 							</td>
 							<td style="text-align:center;">
-								<div style="width: 100px">
+								<div style="width: 160px">
 									<?php
-										$masukkerja = $rekap_data['masuk_kerja_sebelum'];
-										if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
-											$masukkerja = $rekap_data['masukkerja'];
-										}
-										$masa1 = strtotime($masukkerja);
-										$masa2 = strtotime($periode2);
-
-										$year1 = date('Y', $masa1);
-										$year2 = date('Y', $masa2);
-
-										$month1 = date('m', $masa1);
-										$month2 = date('m', $masa2);
-
-										$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
-										echo $total_masa_kerja;
+										echo $rekap_data['masa_kerja']
 									?>
 								</div>
 								

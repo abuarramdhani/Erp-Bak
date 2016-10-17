@@ -761,7 +761,7 @@
 				processResults: function (data) {
 					return {
 						results: $.map(data, function(obj) {
-							return { id:obj.NoInduk, text:obj.NoInduk};
+							return { id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
 						})
 					};
 				}
@@ -772,8 +772,9 @@
 			
 		$('#submit-filter-no-induk').click(function(){
 			$('.alert').alert('close');
-			$('#loadingAjax').html('<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">Processing</span></div></div>');
-			
+			$('body').addClass('noscroll');
+			$('#loadingAjax').addClass('overlay_loading');
+			$('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
 			$.ajax({
 				type:'POST',
 				data:$("#filter-rekap").serialize(),
@@ -781,11 +782,15 @@
 				success:function(result)
 				{
 					$('#table-div').html(result);
+					$('body').removeClass('noscroll');
 					$('#loadingAjax').html('');
+					$('#loadingAjax').removeClass('overlay_loading');
 					rekap_datatable();
 				},
 				error: function() {
+					$('body').removeClass('noscroll');
 					$('#loadingAjax').html('');
+					$('#loadingAjax').removeClass('overlay_loading');
 					document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
 				}
 			});
@@ -793,42 +798,30 @@
 	});
 
 	//---------------------------------REKAP TIMS.end-------------------------------
-$(document).ready(function(){
-	$('#rekap-tims').DataTable({
-			responsive: true,
-			"scrollX": true,
-			scrollCollapse: true,
-			"lengthChange": false,
-			"dom": '<"pull-left"f>tp',
-			"info": false,
-			language: {
-				search: "_INPUT_",
-			},
-		});
-		$('.dataTables_filter input[type="search"]').css(
-			{'width':'400px','display':'inline-block'}
-		);
-		$('#rekap-tims_filter input').attr("placeholder", "Search...")
-	function rekap_datatable() {
-		$('#rekap-tims').DataTable({
-			responsive: true,
-			"scrollX": true,
-			scrollCollapse: true,
-			"lengthChange": false,
-			"dom": '<"pull-left"f>tp',
-			"info": false,
-			language: {
-				search: "_INPUT_",
-			},
-		});
-		$('.dataTables_filter input[type="search"]').css(
-			{'width':'400px','display':'inline-block'}
-		);
-		$('#rekap-tims_filter input').attr("placeholder", "Search...")
-	}
-	$('#submit-filter-rekap').click(function(){
+function rekap_datatable() {
+	var rekap_table = $('#rekap-tims').DataTable({
+		responsive: true,
+		"scrollX": true,
+		scrollCollapse: true,
+		"lengthChange": false,
+		"dom": '<"pull-left"f>tp',
+		"info": false,
+		language: {
+			search: "_INPUT_",
+		},
+	});
+	$('.dataTables_filter input[type="search"]').css(
+		{'width':'400px','display':'inline-block'}
+	);
+	$('#rekap-tims_filter input').attr("placeholder", "Search...")
+}
+//$(document).ready(function(){
+	rekap_datatable();
+	$('#submit-filter-rekap').click(function(e){
 		$('.alert').alert('close');
-		$('#loadingAjax').html('<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">Processing</span></div></div>');
+		$('body').addClass('noscroll');
+		$('#loadingAjax').addClass('overlay_loading');
+		$('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
 		$.ajax({
 			type:'POST',
 			data:$("#filter-rekap").serialize(),
@@ -836,16 +829,20 @@ $(document).ready(function(){
 			success:function(result)
 			{
 				$('#table-div').html(result);
+				$('body').removeClass('noscroll');
 				$('#loadingAjax').html('');
+				$('#loadingAjax').removeClass('overlay_loading');
 				rekap_datatable();
 			},
 			error: function() {
 				$('#loadingAjax').html('');
+				$('body').removeClass('noscroll');
+				$('#loadingAjax').removeClass('overlay_loading');
 				document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
 			}
 		});
 	});
-});
+//});
 
 
 //Stock Control
@@ -1053,27 +1050,11 @@ $(document).ready(function(){
 	
 	//calculate final cost
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
-	$("#orderqty,#singleprice,#fine").click(checkncalc);
-		$("#DelFine").click(checkncalc);
-		$("#ReCalculate").click(checkncalc);
-		$("#tbodyFineCatering input").keyup(checkncalc);
-		$("#tbodyFineCatering input").click(checkncalc);
-		$("#tbodyFineCatering select").change(checkncalc);
-		
 	function calculation(pphstatus){
 			
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
-			var $ordertype = $('#ordertype').val();
-			
-			if($ordertype==2){
-				var $bonus_qty = Math.floor($qty/50);
-			}
-			else {
-				var $bonus_qty = 0;
-			}
-			
-			var $calc = (($qty-$bonus_qty) * $price);
+			var $calc = ($qty * $price);
 			var $fine = $('#fine').val();
 			var $est = $calc - $fine;
 			if (pphstatus==1){
@@ -1082,7 +1063,7 @@ $(document).ready(function(){
 				var $pph = (0 / 100) * $est;
 			}
 			
-			var $total = $est - $pph;
+			var $total = $est - $fine - $pph;
 			
 		$("#calc").val($calc);
 		$("#pph").val($pph);

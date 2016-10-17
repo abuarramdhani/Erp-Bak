@@ -27,6 +27,7 @@ foreach ($rekap as $rekap_data) {}
 							</button>
 						</form>
 							<table id="rekap-tims" class="table table-bordered table-hover table-striped">
+								
 								<thead>
 									<tr class="bg-primary">
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NO</th>
@@ -60,21 +61,7 @@ foreach ($rekap as $rekap_data) {}
 											</td>
 											<td style="text-align:center;">
 												<?php
-													$masukkerja = $rekap_data['masuk_kerja_sebelum'];
-													if($rekap_data['masuk_kerja_sebelum'] == NULL || $rekap_data['masuk_kerja_sebelum'] == ''){
-														$masukkerja = $rekap_data['masukkerja'];
-													}
-													$masa1 = strtotime($masukkerja);
-													$masa2 = strtotime($periode2);
-
-													$year1 = date('Y', $masa1);
-													$year2 = date('Y', $masa2);
-
-													$month1 = date('m', $masa1);
-													$month2 = date('m', $masa2);
-
-													$total_masa_kerja = (($year2 - $year1) * 12) + ($month2 - $month1);
-													echo $total_masa_kerja;
+													echo $rekap_data['masa_kerja']
 												?>
 											</td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?></td>
@@ -87,6 +74,17 @@ foreach ($rekap as $rekap_data) {}
 									<?php } ?>
 								</tbody>
 							</table>
+							<p style="margin-bottom: 0;font-style:normal;">
+								Note&emsp;:&emsp;&emsp;&emsp;
+								<strong>
+									T : Terlambat&emsp;
+									I : Izin Pribadi&emsp;
+									M : Mangkir&emsp;
+									S : Sakit&emsp;
+									IP : Izin Perusahaan&emsp;
+									SP : Surat Peringatan
+								</strong>
+							</p>
 						<!--</div>
 			</div>
 		</div>
