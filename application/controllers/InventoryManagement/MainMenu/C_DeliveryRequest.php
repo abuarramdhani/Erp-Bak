@@ -223,7 +223,7 @@ class C_DeliveryRequest extends CI_Controller {
 				foreach($item as $i => $loop){
 					if($item[$i]!=""){
 						$data_lines = array(
-							'DELIVERY_REQUEST_ID' 	=> $id[0]['DELIVERY_REQUEST_ID'],
+							'DELIVERY_REQUEST_ID' 	=> $id,
 							'LINE_ITEM_ID' 			=> $item[$i],
 							'QUANTITY' 				=> $qty[$i]
 						);
@@ -232,7 +232,7 @@ class C_DeliveryRequest extends CI_Controller {
 					}
 				}
 				
-				$this->M_deliveryrequest->setComponent($id[0]['DELIVERY_REQUEST_ID']);
+				$this->M_deliveryrequest->setComponent($id);
 				
 				$encrypted_string = $this->encrypt->encode($id[0]['DELIVERY_REQUEST_ID']);
 				$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);

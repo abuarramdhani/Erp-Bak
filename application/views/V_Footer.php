@@ -24,10 +24,17 @@
 	<!-- AdminLTE App -->
     <script src="<?php echo base_url('assets/theme/js/app.min.js');?>" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS FOR DATATABLES-->
-    <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
+    <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.print.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/dataTables.buttons.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
@@ -77,6 +84,8 @@
 	</script>
 	<!-- PAGE LEVEL SCRIPTS FOR FORM-->
 	
+	
+	<script src="<?php echo base_url('assets/plugins/jquery.number.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/uniform/jquery.uniform.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/inputlimiter/jquery.inputlimiter.1.3.1.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/select2/select2.full.min.js');?>"></script>

@@ -41,9 +41,10 @@
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
 												<th width="20%"><center>Delivery Request</center></th>
-												<th width="20%"><center>Status</center></th>
-												<th width="20%"><center>Menu Icon</center></th>
-												<th width="15%"><center>Menu Title</center></th>
+												<th width="10%"><center>Status</center></th>
+												<th width="10%"><center>Type</center></th>
+												<th width="10%"><center>Order Date</center></th>
+												<th width="10%"><center>Ship Request</center></th>
 												<th width="10%"><center>Action</center></th>
 											</tr>
 										</thead>
@@ -58,8 +59,9 @@
 													<td align="center"><?php echo $num?></td>
 													<td><?php echo $DeliveryRequest_item['SEGMENT1'] ?></td>
 													<td><?php echo $DeliveryRequest_item['STATUS'] ?></td>
-													<td></td>
-													<td></td>
+													<td><?php echo $DeliveryRequest_item['REQUEST_TYPE'] ?></td>
+													<td><?php echo $DeliveryRequest_item['ORDER_DATE'] ?></td>
+													<td><?php echo $DeliveryRequest_item['SHIP_REQUEST_DATE'] ?></td>
 													<td align="center">
 													<a href="<?php echo base_url('InventoryManagement/DeliveryRequest/UpdateDeliveryRequest/')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png');?>" title="Update <?php echo $DeliveryRequest_item['SEGMENT1'] ?>"></a>
 													

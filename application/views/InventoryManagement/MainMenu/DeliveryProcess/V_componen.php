@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner" >
 		<div class="row">
-			<form method="post" action="<?php echo site_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>" class="form-horizontal">
+			<form id="frmProcessRequestComponent" method="post" action="<?php echo site_url('InventoryManagement/DeliveryProcess/DeliveryProcessComponent/'.$delivery_id.'/'.$line_id)?>" class="form-horizontal">
 					<!-- action merupakan halaman yang dituju ketika tombol submit dalam suatu form ditekan -->
 					<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 					<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
@@ -35,7 +35,8 @@
 								Header
 							</div>
 							<div class="box-body">
-								<?php foreach($ComponenHeader as $ComponenHeader_item){ ?>
+								<?php 	$attribute = "";$attributeBtn = "";
+										foreach($ComponenHeader as $ComponenHeader_item){ ?>
 								<div class="panel-body">
 									<div class="row">
 										<div class="form-group">
@@ -66,8 +67,9 @@
 																	<thead>
 																		<tr class="bg-primary">
 																			<th width="6%">No.</th>
-																			<th width="30%">Component</th>
-																			<th width="30%">Optional</th>
+																			<th width="25%">Component</th>
+																			<th width="25%">Optional</th>
+																			<th width="10%"><input type="text" value="External" size="4" name="txtBtnExIn[]" id="txtBtnExIn" class="btn btn-default btn-rect btn-xs" readonly/><br />Type</th>
 																			<th width="8%">Qty</th>
 																			<th width="8%">Qty Processed</th>
 																			<th width="8%">Qty to Prosess</th>
@@ -75,8 +77,19 @@
 																		</tr>
 																	</thead>
 																	<tbody id="tbodyUserDeliveryItem">
-																	<?php	$part_seq = ""; 
+																	<?php	$part_seq = "";
 																		foreach($Component as $row => $Component_item){ 
+																		$attributeBtn = "";
+																		if($ComponenHeader_item['STATUS']==="REQUEST CLOSED"){
+																			$attribute = "readonly";
+																			$attributeBtn = "disabled";
+																		}else{
+																			if(intval($Component_item['PART_PROCESSED_QUANTITY'])>=intval($Component_item['PICKED_QUANTITY'])){
+																				$attribute = "readonly";
+																			}else{
+																				$attribute = "";
+																			}
+																		}
 																	?>
 																		<tr>
 																			<?php if($part_seq != $Component_item['PART_SEQUENCE']){
@@ -94,6 +107,14 @@
 																				<input type="text" value="<?= $Component_item['KODE_OPTION']." - ".$Component_item['DESCRIPTION_OPTION']?>" name="txtOption[]" id="txtOption" class="form-control" readonly required/> 
 																			</td>
 																			<td>
+																				<select class="form-control" name="slcLineType[]" id="slcLineType" >
+																					<option value="Internal">Internal</option>
+																					<?php if($Component_item['PURCHASING_FLAG']==="Y"){ ?>
+																					<option value="External" <?php echo ($Component_item['PART_TYPE']==="External")?"selected":""?>>External</option>
+																					<?php } ?>
+																				</select>
+																			</td>
+																			<td>
 																				<input type="text" value="<?= $Component_item['PICKED_QUANTITY'] ?>" name="txtPickedQuantity[]" id="txtPickedQuantity" class="form-control" readonly required/> 
 																			</td>
 																			<td>
@@ -101,7 +122,7 @@
 																			</td>
 																			<td>
 																				<input type="number" min="0" name="txtQtyToProcess[]" id="txtQtyToProcess" onkepress="qtyProcessCheck(<?=$row?>)" class="form-control" 
-																				<?php echo (intval($Component_item['PART_PROCESSED_QUANTITY'])>=intval($Component_item['PICKED_QUANTITY']))?"readonly":""?>/> 
+																				<?= $attribute ?>/> 
 																			</td>
 																			<td>
 																				<a href="#" data-toggle="modal" data-target="#history<?php echo $row;?>">
@@ -199,7 +220,7 @@
 									<div class="row text-right">
 										<a href="<?php echo base_url('InventoryManagement/DeliveryProcess/UpdateDeliveryProcess/')."/".$delivery_id ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 										&nbsp;&nbsp;
-										<button name="btnProcessComponen" id="btnProcessComponen" class="btn btn-info btn-lg btn-rect">Process Component</button>
+										<button name="btnProcessComponen" id="btnProcessComponen" class="btn btn-warning btn-lg btn-rect" <?= $attributeBtn ?>>Process Component</button>
 									</div>
 								</div>
 							</div>

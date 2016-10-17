@@ -126,7 +126,7 @@
 									<div class="row text-right">
 										<a href="<?php echo base_url('InventoryManagement/DeliveryRequest/UpdateDeliveryRequest/')."/".$delivery_id ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 										&nbsp;&nbsp;
-										<button id="btnComponent" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+										<button id="btnComponent" class="btn btn-primary btn-lg btn-rect">Confrim Component</button>
 									</div>
 								</div>
 							</div>

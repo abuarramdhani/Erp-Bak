@@ -50,26 +50,33 @@ class M_deliveryrequest extends CI_Model {
 		
 		public function getDeliveryProcess($id = FALSE,$org_id = FALSE)
 		{	if($id === FALSE){
-				$sql = "select kdr.*,mp.organization_code,papf.national_identifier,papf.full_name
+				$sql = "select kdr.*,mp.organization_code,papf.national_identifier,papf.full_name,
+						hou.name branch
 						from khs_delivery_requests kdr,
 						mtl_parameters mp,
-						per_all_people_f papf
+						per_all_people_f papf,
+						hr_operating_units hou
 						where 1=1
 						and kdr.organization_id = mp.organization_id(+)
-						and kdr.requestor = papf.person_id(+) 
-						and (kdr.status like 'PROCESS%' or kdr.status = 'REQUEST APPROVED')
-						order by kdr.segment1";
+						and kdr.requestor = papf.person_id(+)
+						and kdr.org_id = hou.organization_id(+)
+						and (kdr.status like '%PROCESS%' or kdr.status = 'REQUEST APPROVED'
+							or kdr.status like '%CLOSE%')
+						order by kdr.creation_date DESC NULLS LAST,kdr.segment1";
 			}else{
-				$sql = "select kdr.*,mp.organization_code,papf.national_identifier,papf.full_name
+				$sql = "select kdr.*,mp.organization_code,papf.national_identifier,papf.full_name,
+						hou.name branch
 						from khs_delivery_requests kdr,
 						mtl_parameters mp,
-						per_all_people_f papf
+						per_all_people_f papf,
+						hr_operating_units hou
 						where 1=1
 						and kdr.organization_id = mp.organization_id(+)
 						and kdr.requestor = papf.person_id(+) 
+						and kdr.org_id = hou.organization_id(+)
 						and kdr.delivery_request_id = $id 
 						and (kdr.status like 'PROCESS%' or kdr.status = 'REQUEST APPROVED')
-						order by kdr.segment1";
+						order by kdr.creation_date DESC NULLS LAST,kdr.segment1";
 			}						
 			
 			$oracle =  $this->load->database('oracle',TRUE);
@@ -89,7 +96,7 @@ class M_deliveryrequest extends CI_Model {
 							(select sum(kdrm.quantity_processed) from khs_delivery_request_mo kdrm where kdr.delivery_request_id = kdrm.delivery_request_id
 							and kdrm.line_id = kdrl.line_id  and kdrm.part_id is null) processed_quantity,
 							(select count(kdrp.part_id) from khs_delivery_request_parts kdrp where kdrp.delivery_request_id = kdrl.delivery_request_id
-							and kdrp.line_id = kdrl.line_id) check_component
+							and kdrp.line_id = kdrl.line_id) check_component,msib.purchasing_item_flag purchasing_flag
 						from khs_delivery_request_lines kdrl, mtl_system_items_b msib, khs_delivery_requests kdr
 						where kdr.delivery_request_id = kdrl.delivery_request_id
 						and msib.inventory_item_id = kdrl.line_item_id 
@@ -100,7 +107,7 @@ class M_deliveryrequest extends CI_Model {
 							(select sum(kdrm.quantity_processed) from khs_delivery_request_mo kdrm where kdr.delivery_request_id = kdrm.delivery_request_id
 							and kdrm.line_id = kdrl.line_id and kdrm.part_id is null) processed_quantity,
 							(select count(kdrp.part_id) from khs_delivery_request_parts kdrp where kdrp.delivery_request_id = kdrl.delivery_request_id
-							and kdrp.line_id = kdrl.line_id) check_component
+							and kdrp.line_id = kdrl.line_id) check_component,msib.purchasing_item_flag purchasing_flag
 						from khs_delivery_request_lines kdrl, mtl_system_items_b msib, khs_delivery_requests kdr
 						where kdr.delivery_request_id = kdrl.delivery_request_id
 						and msib.inventory_item_id = kdrl.line_item_id
@@ -134,16 +141,20 @@ class M_deliveryrequest extends CI_Model {
 						from khs_delivery_request_parts kdrp 
 						where 1=1 $and1 order by kdrp.part_sequence";
 			}else{
-				$sql = "select kdrp.*, msib_component.segment1 kode_component, msib_component.description description_component,
+				$sql = "select kdrp.*, kdr.*,msib_component.segment1 kode_component, 
+						msib_component.description description_component, 
 						msib_option.segment1 kode_option, msib_option.description description_option,
+						nvl(msib_option.purchasing_item_flag,msib_component.purchasing_item_flag) purchasing_flag,
                         count(kdrp.part_id) over(partition by kdrp.part_item_id) jumlah, 
 						(select sum(kdrm.quantity_processed) from khs_delivery_request_mo kdrm where kdrp.delivery_request_id = kdrm.delivery_request_id
 						and kdrm.line_id = kdrp.line_id and kdrm.part_id = kdrp.part_id) part_processed_quantity
-						from khs_delivery_request_parts kdrp,
+						from khs_delivery_requests kdr,
+						khs_delivery_request_parts kdrp,
 						(select * from mtl_system_items_b where organization_id = 102) msib_component,
 						(select * from mtl_system_items_b where organization_id = 102) msib_option
 						where kdrp.delivery_request_id = $delivery_request_id 
 						$and1 $and2
+						and kdr.delivery_request_id = kdrp.delivery_request_id
 						and kdrp.part_item_id = msib_component.inventory_item_id(+)
 						and kdrp.option_item_id = msib_option.inventory_item_id(+)
 						order by kdrp.part_sequence,kdrp.part_sequence";
@@ -184,9 +195,14 @@ class M_deliveryrequest extends CI_Model {
 			$oracle->set('CREATION_DATE',"to_date('$date','dd-Mon-yyyy HH24:MI:SS')",false);
 			$oracle->insert('KHS_DELIVERY_REQUESTS', $data);
 			
-			$sql = "select delivery_request_id from khs_delivery_requests where rownum=1 order by delivery_request_id desc";
+			$sql = "select delivery_request_id 
+			from (select * from khs_delivery_requests order by delivery_request_id desc) where rownum=1";
 			$query = $oracle->query($sql);
-			return $query->result_array();
+			$id = $query->result_array();
+			
+			return $id[0]['DELIVERY_REQUEST_ID'];
+			// $id = $oracle->insert_id();
+			// return $id;
 		}
 		
 		public function setComponent($delivery_request_id = FALSE)
@@ -230,7 +246,7 @@ class M_deliveryrequest extends CI_Model {
 							AND bbom_option.organization_id = bic_option.pk2_value(+)
 							AND bbom.assembly_item_id = msib_item.inventory_item_id
 							AND bbom.organization_id = msib_item.organization_id
-							AND msib_item.organization_id = 102
+							--AND msib_item.organization_id = 81
 							AND msib_item.item_type in ('K','PTO','KIT')
 							and msib_item.inventory_item_id = mic.inventory_item_id
 							AND msib_item.organization_id = mic.organization_id
@@ -341,7 +357,7 @@ class M_deliveryrequest extends CI_Model {
 						AND inventory_item_status_code != 'Inactive'
 						AND customer_order_flag = 'Y'
 						and rownum <= 100
-						AND (segment1 like '%$id%' or description like '%$id%')
+						AND (segment1 like '$id%')
 						order by segment1";
 			}
 			$oracle =  $this->load->database('oracle',TRUE);
@@ -567,6 +583,48 @@ class M_deliveryrequest extends CI_Model {
 			$query2 = $oracle->query($sql);
 			
 			
+		}
+		
+		public function processPR($request_num,$user){
+			$oracle =  $this->load->database('oracle',TRUE);
+			
+			$sql = "select kdrm.delivery_request_mo_id
+					from khs_delivery_requests kdr,
+						 khs_delivery_request_mo kdrm
+					where kdr.delivery_request_id = kdrm.delivery_request_id
+					  and kdr.segment1 = '$request_num'
+					  and kdrm.move_order_number is null
+					  and rownum = 1";
+			$query = $oracle->query($sql);
+			$result = $query->result_array();
+			$id = $result[0]['DELIVERY_REQUEST_MO_ID'];
+			
+			$sql = "CALL CREATE_PR_FROM_OPK('$request_num','$user')";
+			// $sql = "declare
+					  // x number;
+					// begin
+					  // x := CREATE_PR_FROM_OPK_FUNCT('$request_num','$user');
+					// end;";
+			$query2 = $oracle->query($sql);
+			
+			$sql = "select kdrm.*
+					from khs_delivery_request_mo kdrm
+					where kdrm.delivery_request_mo_id = $id
+					  and rownum = 1";
+			$query = $oracle->query($sql);
+			$result = $query->result_array();
+			return $result[0]['MOVE_ORDER_NUMBER'];
+			
+		}
+		
+		public function checkPurchasableItem($item)
+		{	
+			$sql = "select * from mtl_system_items_b where inventory_item_id = $item 
+					and organization_id = 81";
+			
+			$oracle =  $this->load->database('oracle',TRUE);
+			$query = $oracle->query($sql);
+			return $query->result_array();
 		}
 		
 }
