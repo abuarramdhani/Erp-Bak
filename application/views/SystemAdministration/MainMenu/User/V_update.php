@@ -78,19 +78,20 @@
 												<div class="panel panel-default">
 													<div class="panel-heading text-right">
 														<a href="javascript:void(0);" id="addSpLine"  title="Tambah Baris" onclick="addRowResponsibility('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
+														&nbsp;&nbsp;&nbsp;
+														<a href="javascript:void(0);" id="delSpLine" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a>
 													</div>
 													<div class="panel-body">
 														<div class="table-responsive" >
 															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
 																<thead>
 																	<tr class="bg-primary">
-																		<th width="60%">Responsibility</th>
+																		<th width="80%">Responsibility</th>
 																		<th width="20%">Active</th>
-																		<th width="20%">Action</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyUserResponsibility">
-																	<?php $no=0; foreach($UserResponsibility as $UserResponsibility_item){ $no++;
+																	<?php foreach($UserResponsibility as $UserResponsibility_item){
 																	?>
 																	<tr class="clone">
 																	
@@ -109,9 +110,6 @@
 																				<option value="Y" <?php if($UserResponsibility_item['active']=="Y"){echo "selected";} ?>>Yes</option>
 																				<option value="N" <?php if($UserResponsibility_item['active']=="N"){echo "selected";} ?>>No</option>
 																			</select>
-																		</td>
-																		<td>
-																			<a href="javascript:void(0);" class="btn btn-danger" onclick="deleteSingleRow('tblUserResponsbility','<?php echo $no ?>')"><i class="fa fa-remove"></i> Remove</a>
 																		</td>
 																	</tr>
 																	<?php } ?>

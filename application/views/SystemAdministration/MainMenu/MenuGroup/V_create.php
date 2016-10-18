@@ -61,23 +61,17 @@
 																<thead>
 																	<tr class="bg-primary">
 																		<th width="10%">Menu Sequence</th>
-																		<th width="10%">Menu Level</th>
 																		<th width="30%">Menu Name</th>
-																		<th width="20%">Root</th>
-																		<th width="10%">Has Sub</th>
 																		<th width="15%">Menu Prompt</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyMenuGroup">
 																	<tr  class="clone">
 																		<td>
-																			<input type="text" placeholder="Menu Sequence" name="txtMenuSequence[]" id="txtMenuSequence" class="form-control" required/>
+																			<input type="number" min="0" placeholder="Menu Sequence" name="txtMenuSequence[]" id="txtMenuSequence" class="form-control" required/>
 																		</td>
 																		<td>
-																			<input type="text" placeholder="Menu Level" name="txtMenuLevel[]" id="txtMenuLevel" class="form-control" required/>
-																		</td>
-																		<td>
-																			<select class="form-control select4" name="slcMenu[]" id="slcMenu" required>
+																			<select class="form-control select4" name="slcMenu[]" id="slcMenu" >
 																				<option value=""></option>
 																				<?php foreach($Menu as $Menu_item){
 																				?>
@@ -86,13 +80,7 @@
 																			</select>
 																		</td>
 																		<td>
-																			<input type="text" placeholder="Root" name="txtRoot[]" id="txtRoot" class="form-control" required/>
-																		</td>
-																		<td>
-																			<input type="text" placeholder="Has Sub" name="txtSub[]" class="form-control" required/>
-																		</td>
-																		<td>
-																			<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" class="form-control" required/>
+																			<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" class="form-control" />
 																		</td>
 																	</tr>
 
