@@ -512,7 +512,7 @@ class C_DataAssets extends CI_Controller {
 			}
 			// echo $highest_row." & ".$highest_column;
 			// print_r($import);
-			echo $tag_number;
+			// echo $tag_number;
 			// redirect('FixedAsset/DataAssets');
 		}else{
 			// $data['DataAsset'] = $this->M_dataassets->GetDataAssets();
