@@ -218,9 +218,9 @@
 								</div>								
 							</div>
 						</div>
-						<hr>
 						
-						<!-- INPUT GROUP 4 ROW 1 -->
+						<!-- UNUSED INPUT
+						<hr>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Payment Nominal</label>
@@ -229,6 +229,8 @@
 								</div>								
 							</div>
 						</div>
+						-->
+						
 						<hr>
 						<!-- submit -->
 						<div class="form-group">
