@@ -181,6 +181,21 @@
 														<td><input id="finenominal" name="TxtFineNominal[]" class="form-control finenominal" placeholder="Fine" value="<?php echo $rf['fine_nominal']?>" readonly></td>
 													</tr>
 													<?php } ?>
+													<tr class="clone">
+														<td><input id="finedate" name="TxtFineDate[]" class="form-control singledate finedate" placeholder="Fine Date"></td>
+														<td><input id="fineqty" name="TxtFineQty[]" class="form-control fineqty" onkeypress="return isNumberKey(event)" placeholder="Order Qty"></td>
+														<td><input id="fineprice" name="TxtFinePrice[]" class="form-control fineprice" onkeypress="return isNumberKey(event)" placeholder="Order Price"></td>
+														<td>
+															<select class="form-control select4 finetype" id="finetype" name="TxtFineType[]" data-placeholder="Select Type">
+																	<option></option>
+																<?php foreach ($FineType as $ft) {?>
+																	<option value="<?php echo $ft['percentage']?>"><?php echo $ft['fine_type']?></option>
+																<?php }?>
+															</select>
+														</td>
+														<td><input id="finedesc" name="TxtFineDesc[]" class="form-control finedesc toupper" placeholder="Description"></td>
+														<td><input id="finenominal" name="TxtFineNominal[]" class="form-control finenominal" placeholder="Fine" readonly></td>
+													</tr>
 												</tbody>
 											</table>
 										</div>
@@ -232,9 +247,9 @@
 								</div>								
 							</div>
 						</div>
-						<hr>
 						
-						<!-- INPUT GROUP 4 ROW 1 -->
+						<!-- UNUSED INPUT
+						<hr>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Payment Nominal</label>
@@ -243,6 +258,8 @@
 								</div>								
 							</div>
 						</div>
+						-->
+						
 						<hr>
 						<!-- submit -->
 						<div class="form-group">

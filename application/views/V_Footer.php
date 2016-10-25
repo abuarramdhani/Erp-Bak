@@ -35,6 +35,7 @@
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customCM.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
