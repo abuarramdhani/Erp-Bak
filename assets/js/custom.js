@@ -1120,4 +1120,3 @@ $(document).ready(function(){
 	//========================
 	// END PRESENCE MANAGEMENT
 	//========================
-});
