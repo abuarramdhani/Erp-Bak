@@ -1063,7 +1063,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+});	
 	//========
 	// JAVASCRIPT & JQUERY PRESENCE MANAGEMENT > PIC : ALFIAN AFIEF N
 	//======== START
