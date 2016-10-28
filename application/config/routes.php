@@ -430,6 +430,13 @@ $route['StockControl/lapor-kekurangan/(:any)/(:any)/(:any)'] = 'StockControl/C_L
 $route['StockControl/stock-control-new'] = 'StockControl/C_StockControlNew/index';
 $route['StockControl/stock-control-new/(:any)'] = 'StockControl/C_StockControlNew/$1';
 
+$route['StockControl/stock-opname-pusat'] = 'StockControl/C_StockOpnamePusat/index';
+$route['StockControl/stock-opname-pusat/(:any)'] = 'StockControl/C_StockOpnamePusat/$1';
+$route['StockControl/stock-opname-pusat/(:any)/(:any)'] = 'StockControl/C_StockOpnamePusat/$1/$2';
+$route['StockControl/stock-opname-pusat/autocomplete/(:any)'] = 'StockControl/C_StockOpnamePusat/autocomplete/$1';
+$route['StockControl/stock-opname-pusat/autocomplete/(:any)/(:any)'] = 'StockControl/C_StockOpnamePusat/autocomplete/$1/$2';
+
+
 //------------------------------------Catering Management---------------------------------------------------
 $route['CateringManagement'] 						= 'CateringManagement/C_CateringManagement/index';
 
