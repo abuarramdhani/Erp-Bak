@@ -458,5 +458,12 @@ $route['CateringManagement/List/Add'] 				= 'CateringManagement/C_List/add';
 $route['CateringManagement/List/Edit/(:any)']		= 'CateringManagement/C_List/edit/$1';
 $route['CateringManagement/List/Delete/(:any)']		= 'CateringManagement/C_List/delete/$1';
 
+//------------------------------------Management Presensi---------------------------------------------------
+$route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
+
+$route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Monitoring/index';
+$route['PresenceManagement/Monitoring/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1';
+$route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
