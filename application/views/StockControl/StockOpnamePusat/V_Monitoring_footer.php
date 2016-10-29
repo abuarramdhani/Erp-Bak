@@ -43,11 +43,10 @@
 		<script language=Javascript>
 				function isNumberKey(evt)
 			  {
-				 var charCode = (evt.which) ? evt.which : event.keyCode
-				 if (charCode > 31 && (charCode < 48 || charCode > 57))
-					return false;
-
-				 return true;
+				var charCode = (evt.which) ? evt.which : event.keyCode
+				if (charCode == 44 || (charCode < 58 && charCode > 47) || charCode == 46)
+				return true;
+				return false;
 			  }
 			  //-->
 		</script>

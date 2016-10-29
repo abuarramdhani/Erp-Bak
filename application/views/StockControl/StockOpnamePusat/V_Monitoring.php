@@ -78,16 +78,8 @@
 								<label class="control-label">Sub Inventory</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_sub_inventory" data-placeholder="Pilih Salah Satu!">
+								<select class="form-control select2" name="txt_sub_inventory" data-placeholder="Pilih Salah Satu!" disabled>
 									<option></option>
-									<option>All</option>
-									<?php
-										foreach ($sub_inventory as $sub_inventory) {
-									?>
-										<option><?php echo $sub_inventory['sub_inventory'] ?></option>
-									<?php
-										}
-									?>
 								</select>
 							</div>
 						</div>
@@ -96,16 +88,7 @@
 								<label class="control-label">Area</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_area_pusat" data-placeholder="Pilih Salah Satu!">
-									<option></option>
-									<option>All</option>
-									<?php
-										foreach ($area as $area) {
-									?>
-										<option><?php echo $area['area'] ?></option>
-									<?php
-										}
-									?>
+								<select class="form-control select2" name="txt_area_pusat" data-placeholder="Pilih Salah Satu!" disabled>
 								</select>
 							</div>
 						</div>
@@ -114,21 +97,21 @@
 								<label class="control-label">Locator</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_locator" data-placeholder="Pilih Salah Satu!">
-									<option></option>
-									<option>All</option>
-									<?php
-										foreach ($locator as $locator) {
-									?>
-										<option><?php echo $locator['locator'] ?></option>
-									<?php
-										}
-									?>
+								<select class="form-control select2" name="txt_locator" data-placeholder="Pilih Salah Satu!" disabled>
 								</select>
 							</div>
 						</div>
 					</div>
 				</form>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="row" style="margin: 10px 10px; padding-top: 19%">
+						<div class="col-lg-12">
+							<button type="button" id="show-result" class="btn btn-primary btn-lg" disabled><b><i class="fa fa-search"></i> Search</b></button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row">

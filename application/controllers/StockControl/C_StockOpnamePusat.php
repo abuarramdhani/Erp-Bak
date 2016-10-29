@@ -53,9 +53,9 @@ class C_StockOpnamePusat extends CI_Controller {
 	public function monitoring()
 	{
 		$data['io_name'] = $this->M_stock_opname_pusat->io_name_list();
-		$data['sub_inventory'] = $this->M_stock_opname_pusat->sub_inventory_list();
-		$data['area'] = $this->M_stock_opname_pusat->area_list();
-		$data['locator'] = $this->M_stock_opname_pusat->locator_list();
+		//$data['sub_inventory'] = $this->M_stock_opname_pusat->sub_inventory_list();
+		//$data['area'] = $this->M_stock_opname_pusat->area_list();
+		//$data['locator'] = $this->M_stock_opname_pusat->locator_list();
 		$next_seq = $this->M_stock_opname_pusat->next_seq();
 		foreach ($next_seq as $seq) {
 			$seq = $seq['seq']+1;
@@ -290,11 +290,11 @@ class C_StockOpnamePusat extends CI_Controller {
 
 	public function export_pdf(){
 		ini_set('memory_limit', '-1');
-		$io_name = $this->input->post('txt_pdf_io_name');
-		$sub_inventory = $this->input->post('txt_pdf_sub_inventory');
-		$area = $this->input->post('txt_pdf_area_pusat');
-		$locator = $this->input->post('txt_pdf_locator');
-		$tgl_so = $this->input->post('txt_pdf_tgl_so');
+		$io_name = $this->input->post('txt_io_name');
+		$sub_inventory = $this->input->post('txt_sub_inventory');
+		$area = $this->input->post('txt_area_pusat');
+		$locator = $this->input->post('txt_locator');
+		$tgl_so = $this->input->post('txt_tgl_so');
 
 		if ($io_name == 'All' || $io_name == '' ) {
 			$io_name = "io_name";
@@ -344,5 +344,33 @@ class C_StockOpnamePusat extends CI_Controller {
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
 		//print_r($data['item_classification']);
+	}
+
+	public function getFilterData(){
+		$id = $this->input->get('value');
+		$modul = $this->input->get('modul');
+
+		echo '
+			<option value=""></option>
+			<option value="All">ALL</option>
+		';
+		if ($modul == 'sub_inventory') {
+			$data = $this->M_stock_opname_pusat->slc_SubInventory($id);
+			foreach ($data as $data) {
+				echo '<option value="'.$data['sub_inventory'].'">'.$data['sub_inventory'].'</option>';
+			}
+		}
+		elseif($modul == 'area'){
+			$data = $this->M_stock_opname_pusat->slc_Area($id);
+			foreach ($data as $data) {
+				echo '<option value="'.$data['area'].'">'.$data['area'].'</option>';
+			}
+		}
+		elseif($modul == 'locator'){
+			$data = $this->M_stock_opname_pusat->slc_Locator($id);
+			foreach ($data as $data) {
+				echo '<option value="'.$data['locator'].'">'.$data['locator'].'</option>';
+			}
+		}
 	}
 }
