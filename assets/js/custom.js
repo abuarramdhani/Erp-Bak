@@ -1,4 +1,4 @@
-// ----------NUMERIC & COMMA INPUT---------- //
+	// ----------NUMERIC & COMMA INPUT---------- //
 	function isNumberKeyAndComma(evt)
 	{
 		var charCode = (evt.which) ? evt.which : event.keyCode
@@ -998,76 +998,15 @@ $(document).ready(function(){
 	});
 
 
-	//Stock Opname Pusat
 
-	$('.tgl-so').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		"locale": {
-			"format": 'DD MMMM YYYY',
-			"monthNames": [
-				"Januari",
-				"Februari",
-				"Maret",
-				"April",
-				"Mei",
-				"Juni",
-				"Juli",
-				"Agustus",
-				"September",
-				"Oktober",
-				"November",
-				"Desember"
-			],
-		},
-	})
 
-	stock_opname_pusat();
-	function stock_opname_pusat(){
-		$('#stock-opname-pusat').DataTable({
-			"scrollY": "620px",
-			scrollCollapse: true,
-			"lengthChange": false,
-			"dom": '<"pull-left"f>t',
-			"paging": false,
-			"info": false,
-			language: {
-				search: "_INPUT_",
-			},
-		});
-		$('#stock-opname-pusat_filter input[type="search"]').css(
-			{'width':'400px','display':'inline-block'}
-		);
-		$('#stock-opname-pusat_filter input').attr("placeholder", "Search...")
-	}
-	$("select[name='txt_area_pusat'], select[name='txt_io_name'], select[name='txt_sub_inventory'], select[name='txt_locator']").change(function(){
-		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
-		var form = $('#filter-form-pusat');
-		var data = $('#filter-form-pusat').serialize();
-		$.ajax({
-			type: "POST",
-			url:baseurl+"StockControl/stock-opname-pusat/getData",
-			data:data,
-			success:function(result)
-			{
-				$("#table-full").html(result);
-				$("#loadingImage").html('');
-				stock_opname_pusat();
-			},
-			error:function()
-			{
-				$("#loadingImage").html('');
-				alert('Something Error');
-			}
-		});
-	});
-});	
-	//========
+	
+//========
 	// JAVASCRIPT & JQUERY PRESENCE MANAGEMENT > PIC : ALFIAN AFIEF N
 	//======== START
-	
+	$('#datatable-presensi').dataTable({
+	 "bLengthChange": false
+	});
 	$('#confirm-delete').on('show.bs.modal', function(e) {
 		$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 	});
@@ -1120,3 +1059,4 @@ $(document).ready(function(){
 	//========================
 	// END PRESENCE MANAGEMENT
 	//========================
+});

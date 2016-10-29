@@ -56,7 +56,7 @@
 								<label class="control-label">IO</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_pdf_io_name" data-placeholder="Pilih Salah Satu!">
+								<select class="form-control select2" name="txt_io_name" data-placeholder="Pilih Salah Satu!">
 									<option></option>
 									<option>All</option>
 									<?php
@@ -74,16 +74,7 @@
 								<label class="control-label">Sub Inventory</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_pdf_sub_inventory" data-placeholder="Pilih Salah Satu!">
-									<option></option>
-									<option>All</option>
-									<?php
-										foreach ($sub_inventory as $sub_inventory) {
-									?>
-										<option><?php echo $sub_inventory['sub_inventory'] ?></option>
-									<?php
-										}
-									?>
+								<select class="form-control select2" name="txt_sub_inventory" data-placeholder="Pilih Salah Satu!" disabled>
 								</select>
 							</div>
 						</div>
@@ -92,16 +83,7 @@
 								<label class="control-label">Area</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_pdf_area_pusat" data-placeholder="Pilih Salah Satu!">
-									<option></option>
-									<option>All</option>
-									<?php
-										foreach ($area as $area) {
-									?>
-										<option><?php echo $area['area'] ?></option>
-									<?php
-										}
-									?>
+								<select class="form-control select2" name="txt_area_pusat" data-placeholder="Pilih Salah Satu!" disabled>
 								</select>
 							</div>
 						</div>
@@ -110,16 +92,7 @@
 								<label class="control-label">Locator</label>
 							</div>
 							<div class="col-lg-9">
-								<select class="form-control select2" name="txt_pdf_locator" data-placeholder="Pilih Salah Satu!">
-									<option></option>
-									<option>All</option>
-									<?php
-										foreach ($locator as $locator) {
-									?>
-										<option><?php echo $locator['locator'] ?></option>
-									<?php
-										}
-									?>
+								<select class="form-control select2" name="txt_locator" data-placeholder="Pilih Salah Satu!" disabled>
 								</select>
 							</div>
 						</div>
@@ -128,12 +101,15 @@
 								<label class="control-label">Tanggal SO</label>
 							</div>
 							<div class="col-lg-9">
-								<input type="text" name="txt_pdf_tgl_so" class="form-control tgl-so">
+								<input type="text" name="txt_tgl_so" class="form-control tgl-so">
 							</div>
 						</div>
 						<div class="row" style="margin: 10px 10px">
-							<div class="col-lg-12">
-								<button type="submit" class="btn btn-primary btn-lg pull-right">Print to PDF</button>
+							<div class="col-lg-9" style="text-align: right">
+								<div id="loadingImage"></div>
+							</div>
+							<div class="col-lg-3">
+								<button type="submit" id="btn-submit" class="btn btn-primary btn-lg pull-right" disabled>Print to PDF</button>
 							</div>
 						</div>
 					</div>
@@ -145,8 +121,5 @@
 			<div class="col-lg-12">
 				<div class="table-responsive">
 					<fieldset class="row2" style="background:#ECF7FF;">
-						<div class="pull-right">
-							<div id="loadingImage"></div>
-						</div>
-						<div id="table-full">
+						<div>
 							

@@ -154,5 +154,46 @@ class M_stock_opname_pusat extends CI_Model {
 		}
 	}
 
+	public function slc_SubInventory($term){
+		if ($term == 'All') {
+			$term = 'io_name';
+		}
+		else{
+			$term = "'".$term."'";
+		}
+		$this->session->set_userdata('io_name',$term);
+		$sql="select distinct on (sub_inventory) sub_inventory from stock_control_pusat.master_data where io_name = $term order by sub_inventory asc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function slc_Area($term){
+		if ($term == 'All') {
+			$term = 'sub_inventory';
+		}
+		else{
+			$term = "'".$term."'";
+		}
+		$this->session->set_userdata('sub_inventory',$term);
+		$io_name = $this->session->userdata('io_name');
+		$sql="select distinct on (area) area from stock_control_pusat.master_data where sub_inventory = $term AND io_name = $io_name order by area asc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function slc_Locator($term){
+		if ($term == 'All') {
+			$term = 'area';
+		}
+		else{
+			$term = "'".$term."'";
+		}
+		$io_name = $this->session->userdata('io_name');
+		$sub_inventory = $this->session->userdata('sub_inventory');
+		$sql="select distinct on (locator) locator from stock_control_pusat.master_data where area = $term AND io_name = $io_name AND sub_inventory = $sub_inventory order by locator asc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 }
 ?>

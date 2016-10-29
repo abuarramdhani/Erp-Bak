@@ -66,10 +66,10 @@
 									<td align="left"><?php echo $data['locator']?></td>
 									<td align="left"><?php echo $data['saving_place']?></td>
 									<td align="left"><a data-toggle="modal" data-target="#update-component" href="#" onclick="update_component(<?php echo $data['master_data_id'];?>)"><?php echo $data['component_code']?></a></td>
-									<td align="left"><?php echo $data['component_desc']?></td>
+									<td align="left"><a data-toggle="modal" data-target="#update-component" href="#" onclick="update_component(<?php echo $data['master_data_id'];?>)"><?php echo $data['component_desc']?></td>
 									<td align="left"><?php echo $data['onhand_qty']?></td>
 									<td align="left"><?php echo $data['uom']?></td>
-									<td align="left"><input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" class="form-control" style="width: 100%;" type="text" name="txt_qty_so" onchange="SaveSO_Pusat('<?php echo $data['master_data_id']?>',this)" value="<?php echo $data['so_qty'];?>"></td>
+									<td align="left"><input data-toggle="tooltip" data-placement="top" title="Press Enter to Submit!" onkeypress="return isNumberKey(event)" class="form-control" style="width: 100%;" type="text" name="txt_qty_so" onchange="SaveSO_Pusat('<?php echo $data['master_data_id']?>',this)" value="<?php echo $data['so_qty'];?>"></td>
 								</tr>
 								<?php 
 									}
