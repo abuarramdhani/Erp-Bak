@@ -378,6 +378,12 @@ class M_dataassets extends CI_Model {
 		return $sql->result_array();
 	}
 	
+	public function getOldNumber($old_number)
+	{
+		$sql= $this->db->query("select * from fa.fa_data_assets WHERE old_number='$old_number'");
+		return $sql->result_array();
+	}
+	
 	public function getTagNumberId($tag_number,$id)
 	{
 		$sql= $this->db->query("select * from fa.fa_data_assets WHERE asset_data_id = $id");
