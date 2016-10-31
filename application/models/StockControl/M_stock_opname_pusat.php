@@ -155,8 +155,11 @@ class M_stock_opname_pusat extends CI_Model {
 	}
 
 	public function slc_SubInventory($term){
-		if ($term == 'All') {
+		if ($term == 'ALL') {
 			$term = 'io_name';
+		}
+		elseif ($term == 'X') {
+			$term = "''";
 		}
 		else{
 			$term = "'".$term."'";
@@ -168,8 +171,11 @@ class M_stock_opname_pusat extends CI_Model {
 	}
 
 	public function slc_Area($term){
-		if ($term == 'All') {
+		if ($term == 'ALL') {
 			$term = 'sub_inventory';
+		}
+		elseif ($term == 'X') {
+			$term = "''";
 		}
 		else{
 			$term = "'".$term."'";
@@ -182,8 +188,11 @@ class M_stock_opname_pusat extends CI_Model {
 	}
 
 	public function slc_Locator($term){
-		if ($term == 'All') {
+		if ($term == 'ALL') {
 			$term = 'area';
+		}
+		elseif ($term == 'X') {
+			$term = "''";
 		}
 		else{
 			$term = "'".$term."'";

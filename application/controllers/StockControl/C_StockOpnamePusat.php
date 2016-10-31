@@ -73,29 +73,41 @@ class C_StockOpnamePusat extends CI_Controller {
 		$sub_inventory = $this->input->post('txt_sub_inventory');
 		$area = $this->input->post('txt_area_pusat');
 		$locator = $this->input->post('txt_locator');
-		if ($io_name == 'All' || $io_name == '' ) {
+		if ($io_name == 'ALL') {
 			$io_name = "io_name";
+		}
+		elseif ($io_name == 'X') {
+			$io_name = "''";
 		}
 		else{
 			$io_name = "'".$io_name."'";
 		}
 
-		if ($sub_inventory == 'All' || $sub_inventory == '') {
+		if ($sub_inventory == 'ALL') {
 			$sub_inventory = "sub_inventory";
+		}
+		elseif ($sub_inventory == 'X') {
+			$sub_inventory = "''";
 		}
 		else{
 			$sub_inventory = "'".$sub_inventory."'";
 		}
 
-		if ($area == 'All' || $area == '') {
+		if ($area == 'ALL') {
 			$area = "area";
+		}
+		elseif ($area == 'X') {
+			$area = "''";
 		}
 		else{
 			$area = "'".$area."'";
 		}
 
-		if ($locator == 'All' || $locator == '') {
+		if ($locator == 'ALL') {
 			$locator = "locator";
+		}
+		elseif ($locator == 'X') {
+			$locator = "''";
 		}
 		else{
 			$locator = "'".$locator."'";
@@ -296,34 +308,46 @@ class C_StockOpnamePusat extends CI_Controller {
 		$locator = $this->input->post('txt_locator');
 		$tgl_so = $this->input->post('txt_tgl_so');
 
-		if ($io_name == 'All' || $io_name == '' ) {
+		if ($io_name == 'ALL') {
 			$io_name = "io_name";
+		}
+		elseif ($io_name == 'X') {
+			$io_name = "''";
 		}
 		else{
 			$io_name = "'".$io_name."'";
 		}
 
-		if ($sub_inventory == 'All' || $sub_inventory == '') {
+		if ($sub_inventory == 'ALL') {
 			$sub_inventory = "sub_inventory";
+		}
+		elseif ($sub_inventory == 'X') {
+			$sub_inventory = "''";
 		}
 		else{
 			$sub_inventory = "'".$sub_inventory."'";
 		}
 
-		if ($area == 'All' || $area == '') {
+		if ($area == 'ALL') {
 			$area = "area";
+		}
+		elseif ($area == 'X') {
+			$area = "''";
 		}
 		else{
 			$area = "'".$area."'";
 		}
 
-		if ($locator == 'All' || $locator == '') {
+		if ($locator == 'ALL') {
 			$locator = "locator";
+		}
+		elseif ($locator == 'X') {
+			$locator = "''";
 		}
 		else{
 			$locator = "'".$locator."'";
 		}
-
+		
 		$data['item_classification'] = $this->M_stock_opname_pusat->item_classification($io_name,$sub_inventory,$area,$locator);
 		$data['tanggal_so'] = $tgl_so;
 		$data['stock_opname_pusat'] = $this->M_stock_opname_pusat->stock_opname_pusat_filter($io_name,$sub_inventory,$area,$locator);
@@ -351,25 +375,40 @@ class C_StockOpnamePusat extends CI_Controller {
 		$modul = $this->input->get('modul');
 
 		echo '
-			<option value=""></option>
-			<option value="All">ALL</option>
+			<option></option>
+			<option value="ALL">ALL</option>
 		';
 		if ($modul == 'sub_inventory') {
 			$data = $this->M_stock_opname_pusat->slc_SubInventory($id);
 			foreach ($data as $data) {
-				echo '<option value="'.$data['sub_inventory'].'">'.$data['sub_inventory'].'</option>';
+				if ($data['sub_inventory'] == '') {
+					echo '<option value="X">KOSONG</option>';
+				}
+				else{
+					echo '<option value="'.$data['sub_inventory'].'">'.$data['sub_inventory'].'</option>';
+				}
 			}
 		}
 		elseif($modul == 'area'){
 			$data = $this->M_stock_opname_pusat->slc_Area($id);
 			foreach ($data as $data) {
-				echo '<option value="'.$data['area'].'">'.$data['area'].'</option>';
+				if ($data['area'] == '') {
+					echo '<option value="X">KOSONG</option>';
+				}
+				else{
+					echo '<option value="'.$data['area'].'">'.$data['area'].'</option>';
+				}
 			}
 		}
 		elseif($modul == 'locator'){
 			$data = $this->M_stock_opname_pusat->slc_Locator($id);
 			foreach ($data as $data) {
-				echo '<option value="'.$data['locator'].'">'.$data['locator'].'</option>';
+				if ($data['locator'] == '') {
+					echo '<option value="X">KOSONG</option>';
+				}
+				else{
+					echo '<option value="'.$data['locator'].'">'.$data['locator'].'</option>';
+				}
 			}
 		}
 	}

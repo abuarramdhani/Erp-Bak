@@ -56,13 +56,13 @@ function update_component(id){
 		url: baseurl+"StockControl/stock-opname-pusat/edit_component",
 		success:function(result)
 		{
-			$('#loading').html();
+			$('#loading').html('');
 			$('#update-form').html(result);
 			auto_complete_all();
 		},
 		error:function()
 		{
-			$('#loading').html();
+			$('#loading').html('');
 			$('#update-form').html("Error While Get Data!");
 		}
 	});
@@ -111,29 +111,35 @@ function stock_opname_pusat(){
 	$('#stock-opname-pusat_filter input').attr("placeholder", "Search...")
 }
 
-$("select[name='txt_io_name']").change(function(){
+$("select[name='txt_locator']").change(function(){
+	var data = $(this).val();
+	if (data != '') {
+		$("#show-result").prop("disabled", false);
+		$("#btn-submit").prop("disabled",false);
+	}
+	else{
+		$("#show-result").prop("disabled", true);
+		$("#btn-submit").prop("disabled",true);
+	}
+});
+
+$("select[name='txt_area_pusat']").change(function(){
 	var data = $(this).val();
 	if (data != '') {
 		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
-		$("select[name='txt_sub_inventory']").select2("val", "");
-		$("select[name='txt_sub_inventory']").select2("data", null);
-		$("select[name='txt_sub_inventory']").prop("disabled", false);
-		$("select[name='txt_area_pusat']").select2("val", "");
-		$("select[name='txt_area_pusat']").select2("data", null);
-		$("select[name='txt_area_pusat']").prop("disabled", true);
+		$("select[name='txt_locator']").prop("disabled", false);
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
-		$("select[name='txt_locator']").prop("disabled", true);
 		$("#show-result").prop("disabled", true);
 		$("#btn-submit").prop("disabled",true);
-		var data2 = "sub_inventory";
+		var data2 = "locator";
 		$.ajax({
 			type: "GET",
 			url:baseurl+"StockControl/stock-opname-pusat/getFilterData",
 			data:{modul: data2, value: data},
 			success:function(result)
 			{
-				$("select[name='txt_sub_inventory']").html(result);
+				$("select[name='txt_locator']").html(result);
 				$("#loadingImage").html('');
 			},
 			error:function()
@@ -144,15 +150,9 @@ $("select[name='txt_io_name']").change(function(){
 		});
 	}
 	else{
-		$("select[name='txt_sub_inventory']").select2("val", "");
-		$("select[name='txt_sub_inventory']").select2("data", null);
-		$("select[name='txt_sub_inventory']").prop("disabled", true);
-		$("select[name='txt_area_pusat']").select2("val", "");
-		$("select[name='txt_area_pusat']").select2("data", null);
-		$("select[name='txt_area_pusat']").prop("disabled", true);
+		$("select[name='txt_locator']").prop("disabled", true);
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
-		$("select[name='txt_locator']").prop("disabled", true);
 		$("#show-result").prop("disabled", true);
 		$("#btn-submit").prop("disabled",true);
 	}
@@ -162,9 +162,9 @@ $("select[name='txt_sub_inventory']").change(function(){
 	var data = $(this).val();
 	if (data != '') {
 		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
+		$("select[name='txt_area_pusat']").prop("disabled", false);
 		$("select[name='txt_area_pusat']").select2("val", "");
 		$("select[name='txt_area_pusat']").select2("data", null);
-		$("select[name='txt_area_pusat']").prop("disabled", false);
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
 		$("select[name='txt_locator']").prop("disabled", true);
@@ -188,34 +188,40 @@ $("select[name='txt_sub_inventory']").change(function(){
 		});
 	}
 	else{
+		$("select[name='txt_area_pusat']").prop("disabled", true);
 		$("select[name='txt_area_pusat']").select2("val", "");
 		$("select[name='txt_area_pusat']").select2("data", null);
-		$("select[name='txt_area_pusat']").prop("disabled", true);
+		$("select[name='txt_locator']").prop("disabled", true);
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
-		$("select[name='txt_locator']").prop("disabled", true);
 		$("#show-result").prop("disabled", true);
 		$("#btn-submit").prop("disabled",true);
 	}
 });
 
-$("select[name='txt_area_pusat']").change(function(){
+$("select[name='txt_io_name']").change(function(){
 	var data = $(this).val();
 	if (data != '') {
 		$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
+		$("select[name='txt_sub_inventory']").prop("disabled", false);
+		$("select[name='txt_sub_inventory']").select2("val", "");
+		$("select[name='txt_sub_inventory']").select2("data", null);
+		$("select[name='txt_area_pusat']").prop("disabled", true);
+		$("select[name='txt_area_pusat']").select2("val", "");
+		$("select[name='txt_area_pusat']").select2("data", null);
+		$("select[name='txt_locator']").prop("disabled", true);
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
-		$("select[name='txt_locator']").prop("disabled", false);
 		$("#show-result").prop("disabled", true);
 		$("#btn-submit").prop("disabled",true);
-		var data2 = "locator";
+		var data2 = "sub_inventory";
 		$.ajax({
 			type: "GET",
 			url:baseurl+"StockControl/stock-opname-pusat/getFilterData",
 			data:{modul: data2, value: data},
 			success:function(result)
 			{
-				$("select[name='txt_locator']").html(result);
+				$("select[name='txt_sub_inventory']").html(result);
 				$("#loadingImage").html('');
 			},
 			error:function()
@@ -226,21 +232,15 @@ $("select[name='txt_area_pusat']").change(function(){
 		});
 	}
 	else{
+		$("select[name='txt_sub_inventory']").prop("disabled", true);
+		$("select[name='txt_sub_inventory']").select2("val", "");
+		$("select[name='txt_sub_inventory']").select2("data", null);
+		$("select[name='txt_area_pusat']").prop("disabled", true);
+		$("select[name='txt_area_pusat']").select2("val", "");
+		$("select[name='txt_area_pusat']").select2("data", null);
+		$("select[name='txt_locator']").prop("disabled", true);
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
-		$("select[name='txt_locator']").prop("disabled", true);
-		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
-	}
-});
-
-$("select[name='txt_locator']").change(function(){
-	var data = $(this).val();
-	if (data != '') {
-		$("#show-result").prop("disabled", false);
-		$("#btn-submit").prop("disabled",false);
-	}
-	else{
 		$("#show-result").prop("disabled", true);
 		$("#btn-submit").prop("disabled",true);
 	}
