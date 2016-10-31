@@ -836,4 +836,38 @@ class C_DataAssets extends CI_Controller {
 		echo $result;
 	}
 	
+	public function GetOldNumberInfo() {
+		if (isset($_POST['term'])){
+			$tag = $_POST['term'];//term = karakter yang kita ketikkan
+		}else{
+			$tag = "";
+		}
+		if ($_POST['id'] !== "0"){
+			$id = $_POST['id'];//id = id dari data
+		}else{
+			$id = "";
+		}
+		if($id === ""){
+			$data = $this->M_dataassets->getOldNumber($tag);
+		}else{
+			$asset = $this->M_dataassets->getOldNumber($tag);
+			if(count($asset) === 0){
+				$data = "";
+			}
+			elseif(count($asset) === 1 and $asset[0]['asset_data_id'] == $id){
+				$data = "";
+			}
+			else{
+				$data = "NotEmpty";
+			}
+		}
+		
+		if(empty($data)){
+			$result = "OK";
+		}else{
+			$result = "DANGER";
+		}
+		echo $result;
+	}
+	
 }

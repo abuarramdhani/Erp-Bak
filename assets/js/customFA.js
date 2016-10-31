@@ -81,12 +81,62 @@ $(document).ready(function() {
 			});
 		});
 		
+		$("#frmDataAsset input#txtOldNumber").change(function(){
+			var tag = $('#txtOldNumber').val();
+			var id_asset = $('#hdnTemp').val() || "0";
+			var returnedValue;
+			var url = base+"FixedAsset/DataAssets/GetOldNumberInfo";
+			// alert(url);
+			
+		   $.ajax({
+				type: "POST",
+				url: url,
+				data: {term : tag,id : id_asset}, 
+				cache: false,
+
+				success: function(result) { //just add the result as argument in success anonymous function
+				   //$('#txtDescription').val(result) ;
+				   if(result === 'DANGER'){
+						$('input#txtOldNumber').val('');
+						// event.preventDefault();
+						alert('Duplicate Tag Number');
+					}/*else{
+						alert(result);
+					}*/
+					// alert(result);
+				}
+			});
+		});
+		
 		$("#frmDataAsset").submit(function(event){
 			event.preventDefault();
 			var tag = $('#txtTagNumber').val();
 			var id_asset = $('#hdnTemp').val() || "0";
 			var form = this;
 			var url = base+"FixedAsset/DataAssets/GetTagNumberInfo";
+			
+		   $.ajax({
+				type: "POST",
+				url: url,
+				data: {term : tag,id : id_asset}, 
+				cache: false,
+
+				success: function(result) { //just add the result as argument in success anonymous function
+				   //$('#txtDescription').val(result) ;
+				   if(result !== 'DANGER'){
+						form.submit();
+					}
+					// alert(result);
+				}
+			});
+		});
+		
+		$("#frmDataAsset").submit(function(event){
+			event.preventDefault();
+			var tag = $('#txtOldNumber').val();
+			var id_asset = $('#hdnTemp').val() || "0";
+			var form = this;
+			var url = base+"FixedAsset/DataAssets/GetOldNumberInfo";
 			
 		   $.ajax({
 				type: "POST",
