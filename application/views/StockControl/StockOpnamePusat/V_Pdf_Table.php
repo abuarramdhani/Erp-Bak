@@ -3,7 +3,7 @@
 		$count = sizeof($item_classification);
 		foreach ($item_classification as $ic) {
 ?>
-<table class="table table-hover table-striped table-bordered" style="font-size:8px;">
+<table class="table table-hover table-striped" style="font-size:8px;">
 	<thead>
 		<tr>
 			<td style="border: none;padding-bottom: 4px;font-weight: bold" colspan="13" align="center"><h5>DAFTAR KODE BARANG - STOCK OPNAME - CV. KARYA HIDUP SENTOSA</h5></td>
@@ -53,47 +53,47 @@
 	</thead>
 	<thead class="bg-primary">
 		<tr>
-			<td style="text-align: center; vertical-align : middle;background-color: #cecece" width="1cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="1cm" height="25px">
 				
 					<b>NO</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="3cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="3cm" height="25px">
 				
 					<b>KODE BARANG</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="10cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="10cm" height="25px">
 				
 					<b>NAMA BARANG</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="2cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="2cm" height="25px">
 				
 					<b>TYPE</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="3cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="3cm" height="25px">
 				
 					<b>LOKASI SIMPAN</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="1cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="1cm" height="25px">
 				
 					<b>ON HAND</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="1cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="1cm" height="25px">
 				
 					<b>UOM</b>
 				
 			</td>
-			<td colspan="5" style="text-align: center; vertical-align : middle;" width="3cm" height="25px">
+			<td colspan="5" style="text-align: center; vertical-align : middle; border: 1px solid #000" width="3cm" height="25px">
 				
 					<b>SO QTY</b>
 				
 			</td>
-			<td style="text-align: center; vertical-align : middle;" width="4cm" height="25px">
+			<td style="text-align: center; vertical-align : middle; border: 1px solid #000" width="4cm" height="25px">
 				
 					<b>KETERANGAN</b>
 				
@@ -109,19 +109,19 @@
 					$no++
 		?>
 		<tr class="multiple-row">
-			<td align="center" height="0.75cm"><?php echo $no?></td>
-			<td align="left" style="padding: 1px 10px"><?php echo $data['component_code']?></td>
-			<td align="left" style="padding: 1px 10px"><?php echo $data['component_desc']?></td>
-			<td align="left" style="padding: 1px 10px"><?php echo $data['type']?></td>
-			<td align="left" style="padding: 1px 10px"><?php echo $data['saving_place']?></td>
-			<td align="center" style="padding:1px 10px"><?php echo $data['onhand_qty']?></td>
-			<td align="left" style="padding: 1px 10px"><?php echo $data['uom']?></td>
-			<td align="left" style="padding: 1px 10px"></td>
-			<td align="left" style="padding: 1px 10px"></td>
-			<td align="left" style="padding: 1px 10px"></td>
-			<td align="left" style="padding: 1px 10px"></td>
-			<td align="left" style="padding: 1px 10px"></td>
-			<td align="left" style="padding: 1px 10px"></td>
+			<td align="center" style="border: 1px solid #000" height="0.75cm"><?php echo $no?></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"><?php echo $data['component_code']?></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"><?php echo $data['component_desc']?></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"><?php echo $data['type']?></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"><?php echo $data['saving_place']?></td>
+			<td align="center" style="padding:1px 10px; border: 1px solid #000"><?php echo $data['onhand_qty']?></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"><?php echo $data['uom']?></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"></td>
+			<td align="left" style="padding: 1px 10px; border: 1px solid #000"></td>
 		</tr>
 		<?php
 				}

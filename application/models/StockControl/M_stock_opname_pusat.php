@@ -25,7 +25,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (io_name) io_name from stock_control_pusat.master_data where io_name $term order by io_name asc";
+		$sql="select io_name from stock_control_pusat.master_data where io_name $term group by io_name order by io_name asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -37,7 +37,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (area) area from stock_control_pusat.master_data where area $term order by area asc";
+		$sql="select area from stock_control_pusat.master_data where area $term group by area order by area asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -49,7 +49,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (locator) locator from stock_control_pusat.master_data where locator $term order by locator asc";
+		$sql="select locator from stock_control_pusat.master_data where locator $term group by locator order by locator asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -61,7 +61,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (sub_inventory) sub_inventory from stock_control_pusat.master_data where sub_inventory $term order by sub_inventory asc";
+		$sql="select sub_inventory from stock_control_pusat.master_data where sub_inventory $term group by sub_inventory order by sub_inventory asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -73,7 +73,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (saving_place) saving_place from stock_control_pusat.master_data where saving_place $term order by saving_place asc";
+		$sql="select saving_place from stock_control_pusat.master_data where saving_place $term group by saving_place order by saving_place asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -85,7 +85,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (cost_center) cost_center from stock_control_pusat.master_data where cost_center $term order by cost_center asc";
+		$sql="select cost_center from stock_control_pusat.master_data where cost_center $term group by cost_center order by cost_center asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -97,7 +97,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (type) type from stock_control_pusat.master_data where type $term order by type asc";
+		$sql="select type from stock_control_pusat.master_data where type $term group by type order by type asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -109,7 +109,7 @@ class M_stock_opname_pusat extends CI_Model {
 		else{
 			$term = "ilike '%".$term."%'";
 		}
-		$sql="select distinct on (uom) uom from stock_control_pusat.master_data where uom $term order by uom asc";
+		$sql="select uom from stock_control_pusat.master_data where uom $term group by uom order by uom asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -121,13 +121,31 @@ class M_stock_opname_pusat extends CI_Model {
 	}
 
 	public function update_qty($qty,$master_id){
-		$sql="update stock_control_pusat.master_data set so_qty = '$qty' where master_data_id = '$master_id'";
+		if ($qty == '' || $qty == NULL) {
+			$qty = '0';
+		}
+		else{
+			$qty = "'$qty'";
+		}
+		$sql="update stock_control_pusat.master_data set so_qty = $qty, ubah = '1' where master_data_id = '$master_id'";
 		$query = $this->db->query($sql);
 		return;
 	}
 
 	public function new_component($io_name,$sub_inventory,$area,$locator,$saving_place,$cost_center,$seq,$component_code,$component_desc,$type,$onhand_qty,$so_qty,$uom){
-		$sql="insert into stock_control_pusat.master_data (io_name, sub_inventory, area, locator, saving_place, cost_center, seq, component_code, component_desc, type, onhand_qty, so_qty, uom) values ('$io_name', '$sub_inventory', '$area', '$locator', '$saving_place', '$cost_center', '$seq', '$component_code', '$component_desc', '$type', '$onhand_qty', '$so_qty', '$uom')";
+		if ($so_qty == '' || $so_qty == NULL) {
+			$so_qty = '0';
+		}
+		else{
+			$so_qty = "'$so_qty'";
+		}
+		if ($onhand_qty == '' || $onhand_qty == NULL) {
+			$onhand_qty = '0';
+		}
+		else{
+			$onhand_qty = "'$onhand_qty'";
+		}
+		$sql="insert into stock_control_pusat.master_data (io_name, sub_inventory, area, locator, saving_place, cost_center, seq, component_code, component_desc, type, onhand_qty, so_qty, uom, manual_insert) values ('$io_name', '$sub_inventory', '$area', '$locator', '$saving_place', '$cost_center', '$seq', '$component_code', '$component_desc', '$type', $onhand_qty, $so_qty, '$uom', '1')";
 		$query = $this->db->query($sql);
 		if (!$query) {
 			return 0;
@@ -144,7 +162,19 @@ class M_stock_opname_pusat extends CI_Model {
 	}
 
 	public function update_component($master_data_id,$io_name,$sub_inventory,$area,$locator,$saving_place,$cost_center,$seq,$component_code,$component_desc,$type,$onhand_qty,$so_qty,$uom){
-		$sql="update stock_control_pusat.master_data set io_name = '$io_name', sub_inventory = '$sub_inventory', area = '$area', locator = '$locator', saving_place = '$saving_place', seq = '$seq', cost_center = '$cost_center', component_code = '$component_code', component_desc = '$component_desc', type = '$type', onhand_qty = '$onhand_qty', so_qty = '$so_qty', uom = '$uom' where master_data_id = '$master_data_id'";
+		if ($so_qty == '' || $so_qty == NULL) {
+			$so_qty = '0';
+		}
+		else{
+			$so_qty = "'$so_qty'";
+		}
+		if ($onhand_qty == '' || $onhand_qty == NULL) {
+			$onhand_qty = '0';
+		}
+		else{
+			$onhand_qty = "'$onhand_qty'";
+		}
+		$sql="update stock_control_pusat.master_data set io_name = '$io_name', sub_inventory = '$sub_inventory', area = '$area', locator = '$locator', saving_place = '$saving_place', seq = '$seq', cost_center = '$cost_center', component_code = '$component_code', component_desc = '$component_desc', type = '$type', onhand_qty = $onhand_qty, so_qty = $so_qty, uom = '$uom', ubah = '1' where master_data_id = '$master_data_id'";
 		$query = $this->db->query($sql);
 		if (!$query) {
 			return 0;

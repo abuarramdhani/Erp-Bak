@@ -7,22 +7,22 @@ a.logo:hover {
 
 .flyover {
     text-align: center;
-    bottom: 100%;
+    left: 100%;
     font-weight: bold;
     overflow: hidden;
     position: fixed;
     width: 35%;
     opacity: 0.9;
     z-index: 1050;
-    transition: bottom 0.6s ease-out 0s;
+    transition: left 0.6s ease-out 0s;
 }
  
 .flyover-top {
-    right: 32.5%;
+    bottom: 80%;
 }
 
 .flyover.in {
-    bottom: 76.5%;
+    left: 64%;
 }
 
 .overlay_loading{

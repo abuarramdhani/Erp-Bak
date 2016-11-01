@@ -191,19 +191,22 @@ class C_StockOpnamePusat extends CI_Controller {
 		$insert = $this->M_stock_opname_pusat->new_component($io_name,$sub_inventory,$area,$locator,$saving_place,$cost_center,$seq,$component_code,$component_desc,$type,$onhand_qty,$so_qty,$uom);
 		if ($insert == 1) {
 			$alert = '
-				<div class="alert alert-success flyover flyover-top">
+				<div class="alert bg-primary flyover flyover-top">
 					<button type="button" class="close" data-dismiss="alert"><b style="color: #fff;">&times;</b></button>
 					Data Insert Successfully
-				</div>
 
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$(".flyover-top").addClass("in");
-						setTimeout(function(){
-							$(".flyover-top").removeClass("in");
-						}, 3000);
-					});
-				</script>
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$(".flyover-top").addClass("in");
+							setTimeout(function(){
+								$(".flyover-top").removeClass("in");
+								setTimeout(function(){
+									$(".flyover-top").remove();
+								}, 2000);
+							}, 3000);;
+						});
+					</script>
+				</div>
 			';
 		}
 		else{
@@ -211,16 +214,19 @@ class C_StockOpnamePusat extends CI_Controller {
 				<div class="alert alert-danger flyover flyover-top">
 					<button type="button" class="close" data-dismiss="alert"><b style="color: #fff;">&times;</b></button>
 					Error occurred when insert data!
-				</div>
 
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$(".flyover-top").addClass("in");
-						setTimeout(function(){
-							$(".flyover-top").removeClass("in");
-						}, 3000);
-					});
-				</script>
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$(".flyover-top").addClass("in");
+							setTimeout(function(){
+								$(".flyover-top").removeClass("in");
+								setTimeout(function(){
+									$(".flyover-top").remove();
+								}, 2000);
+							}, 3000);
+						});
+					</script>
+				</div>
 			';
 		}
 
@@ -253,19 +259,22 @@ class C_StockOpnamePusat extends CI_Controller {
 		$update = $this->M_stock_opname_pusat->update_component($master_data_id,$io_name,$sub_inventory,$area,$locator,$saving_place,$cost_center,$seq,$component_code,$component_desc,$type,$onhand_qty,$so_qty,$uom);
 		if ($update == 1) {
 			$alert = '
-				<div class="alert alert-success flyover flyover-top">
+				<div class="alert bg-primary flyover flyover-top">
 					<button type="button" class="close" data-dismiss="alert"><b style="color: #fff;">&times;</b></button>
 					Data Update Successfully
-				</div>
 
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$(".flyover-top").addClass("in");
-						setTimeout(function(){
-							$(".flyover-top").removeClass("in");
-						}, 3000);
-					});
-				</script>
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$(".flyover-top").addClass("in");
+							setTimeout(function(){
+								$(".flyover-top").removeClass("in");
+								setTimeout(function(){
+									$(".flyover-top").remove();
+								}, 2000);
+							}, 3000);
+						});
+					</script>
+				</div>
 			';
 		}
 		else{
@@ -273,16 +282,19 @@ class C_StockOpnamePusat extends CI_Controller {
 				<div class="alert alert-danger flyover flyover-top">
 					<button type="button" class="close" data-dismiss="alert"><b style="color: #fff;">&times;</b></button>
 					Error occurred when update data!
-				</div>
 
-				<script type="text/javascript">
-					$(document).ready(function(){
-						$(".flyover-top").addClass("in");
-						setTimeout(function(){
-							$(".flyover-top").removeClass("in");
-						}, 3000);
-					});
-				</script>
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$(".flyover-top").addClass("in");
+							setTimeout(function(){
+								$(".flyover-top").removeClass("in");
+								setTimeout(function(){
+									$(".flyover-top").remove();
+								}, 2000);
+							}, 3000);
+						});
+					</script>
+				</div>
 			';
 		}
 
