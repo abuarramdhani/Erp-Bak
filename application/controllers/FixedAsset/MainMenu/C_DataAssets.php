@@ -870,4 +870,43 @@ class C_DataAssets extends CI_Controller {
 		echo $result;
 	}
 	
+	public function CheckDuplicateAll() {
+		if (isset($_POST['tag'])){
+			$tag = $_POST['tag'];//term = karakter yang kita ketikkan
+		}else{
+			$tag = "";
+		}
+		if ($_POST['id'] !== "0"){
+			$id = $_POST['id'];//id = id dari data
+		}else{
+			$id = "";
+		}
+		if (isset($_POST['old'])){
+			$old = $_POST['old'];//term = karakter yang kita ketikkan
+		}else{
+			$old = "";
+		}
+		if($id === ""){
+			$data = $this->M_dataassets->getDuplicate($tag,$old);
+		}else{
+			$asset = $this->M_dataassets->getDuplicate($tag,$old);
+			if(count($asset) === 0){
+				$data = "";
+			}
+			elseif(count($asset) === 1 and $asset[0]['asset_data_id'] == $id){
+				$data = "";
+			}
+			else{
+				$data = "NotEmpty";
+			}
+		}
+		
+		if(empty($data)){
+			$result = "OK";
+		}else{
+			$result = "DANGER";
+		}
+		echo $result;
+	}
+	
 }
