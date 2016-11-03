@@ -49,7 +49,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-6 col-lg-offset-3">
-				<form id="filter-form" method="post" action="<?php echo base_url('StockControl/stock-opname-pusat/export_pdf') ?>">
+				<form target="_blank" id="filter-form" method="post" action="#">
 					<div class="form-group">
 						<div class="row" style="margin: 10px 10px">
 							<div class="col-lg-3">
@@ -105,11 +105,14 @@
 							</div>
 						</div>
 						<div class="row" style="margin: 10px 10px">
-							<div class="col-lg-9" style="text-align: right">
+							<div class="col-lg-6" style="text-align: right">
 								<div id="loadingImage"></div>
 							</div>
 							<div class="col-lg-3">
-								<button type="submit" id="btn-submit" class="btn btn-primary btn-lg pull-right" disabled>Print to PDF</button>
+								<button type="button" onclick="submit_export('<?php echo base_url('StockControl/stock-opname-pusat/export_excel') ?>')" class="btn btn-primary btn-lg pull-right btn-submit" disabled><i class="fa fa-file-excel-o"></i> Print to Excel</button>
+							</div>
+							<div class="col-lg-3">
+								<button type="button" onclick="submit_export('<?php echo base_url('StockControl/stock-opname-pusat/export_pdf') ?>')" class="btn btn-primary btn-lg pull-right btn-submit" disabled><i class="fa fa-file-pdf-o"></i> Print to PDF</button>
 							</div>
 						</div>
 					</div>

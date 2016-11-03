@@ -115,11 +115,11 @@ $("select[name='txt_locator']").change(function(){
 	var data = $(this).val();
 	if (data != '') {
 		$("#show-result").prop("disabled", false);
-		$("#btn-submit").prop("disabled",false);
+		$(".btn-submit").prop("disabled",false);
 	}
 	else{
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 	}
 });
 
@@ -131,7 +131,7 @@ $("select[name='txt_area_pusat']").change(function(){
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 		var data2 = "locator";
 		$.ajax({
 			type: "GET",
@@ -154,7 +154,7 @@ $("select[name='txt_area_pusat']").change(function(){
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 	}
 });
 
@@ -169,7 +169,7 @@ $("select[name='txt_sub_inventory']").change(function(){
 		$("select[name='txt_locator']").select2("data", null);
 		$("select[name='txt_locator']").prop("disabled", true);
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 		var data2 = "area";
 		$.ajax({
 			type: "GET",
@@ -195,7 +195,7 @@ $("select[name='txt_sub_inventory']").change(function(){
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 	}
 });
 
@@ -213,7 +213,7 @@ $("select[name='txt_io_name']").change(function(){
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 		var data2 = "sub_inventory";
 		$.ajax({
 			type: "GET",
@@ -242,14 +242,18 @@ $("select[name='txt_io_name']").change(function(){
 		$("select[name='txt_locator']").select2("val", "");
 		$("select[name='txt_locator']").select2("data", null);
 		$("#show-result").prop("disabled", true);
-		$("#btn-submit").prop("disabled",true);
+		$(".btn-submit").prop("disabled",true);
 	}
 });
 
 $("#filter-form").submit(function(){
-	$("#btn-submit").prop("disabled",true);
-	$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');
+	$(".btn-submit").prop("disabled",true);
 });
+
+function submit_export(url){
+	$("#filter-form").attr('action', url);
+	$("#filter-form").submit();
+}
 
 $("#show-result").click(function(){
 	$("#loadingImage").html('<img src="'+baseurl+'assets/img/gif/loading3.gif" style="width: 33px"/>');

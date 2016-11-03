@@ -308,7 +308,7 @@ class C_StockOpnamePusat extends CI_Controller {
 		$data['area'] = $this->M_stock_opname_pusat->area_list();
 		$data['locator'] = $this->M_stock_opname_pusat->locator_list();
 
-		$this->load->view('StockControl/StockOpnamePusat/V_Pdf_Filter', $data);
+		$this->load->view('StockControl/StockOpnamePusat/V_Export_Filter', $data);
 		$this->load->view('StockControl/StockOpnamePusat/V_Monitoring_footer', $data);
 	}
 
@@ -380,6 +380,185 @@ class C_StockOpnamePusat extends CI_Controller {
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
 		//print_r($data['item_classification']);
+	}
+
+	public function export_excel(){
+		ini_set('memory_limit', '-1');
+		$io_name = $this->input->post('txt_io_name');
+		$sub_inventory = $this->input->post('txt_sub_inventory');
+		$area = $this->input->post('txt_area_pusat');
+		$locator = $this->input->post('txt_locator');
+		$tgl_so = $this->input->post('txt_tgl_so');
+
+		if ($io_name == 'ALL') {
+			$io_name = "io_name";
+		}
+		elseif ($io_name == 'X') {
+			$io_name = "''";
+		}
+		else{
+			$io_name = "'".$io_name."'";
+		}
+
+		if ($sub_inventory == 'ALL') {
+			$sub_inventory = "sub_inventory";
+		}
+		elseif ($sub_inventory == 'X') {
+			$sub_inventory = "''";
+		}
+		else{
+			$sub_inventory = "'".$sub_inventory."'";
+		}
+
+		if ($area == 'ALL') {
+			$area = "area";
+		}
+		elseif ($area == 'X') {
+			$area = "''";
+		}
+		else{
+			$area = "'".$area."'";
+		}
+
+		if ($locator == 'ALL') {
+			$locator = "locator";
+		}
+		elseif ($locator == 'X') {
+			$locator = "''";
+		}
+		else{
+			$locator = "'".$locator."'";
+		}
+		
+		$item_classification = $this->M_stock_opname_pusat->item_classification($io_name,$sub_inventory,$area,$locator);
+		$stock_opname_pusat = $this->M_stock_opname_pusat->stock_opname_pusat_filter($io_name,$sub_inventory,$area,$locator);
+
+		$this->load->library('Excel');
+		$objPHPExcel = new PHPExcel();
+		$worksheet = $objPHPExcel->getActiveSheet();
+
+		$styleArray = array(
+			'font'  => array(
+				'bold'  => true
+			)
+		);
+
+		$worksheet->getColumnDimension('A')->setWidth(5);
+		$worksheet->getColumnDimension('B')->setWidth(20);
+		$worksheet->getColumnDimension('C')->setWidth(40);
+		$worksheet->getColumnDimension('D')->setWidth(10);
+		$worksheet->getColumnDimension('E')->setWidth(15);
+		$worksheet->getColumnDimension('F')->setWidth(10);
+		$worksheet->getColumnDimension('G')->setWidth(7);
+		$worksheet->getColumnDimension('H')->setWidth(7);
+		$worksheet->getColumnDimension('I')->setWidth(20);
+
+		if(!(empty($item_classification))){
+			$highest_row = 1;
+			foreach ($item_classification as $ic) {
+				$worksheet->mergeCells('A'.$highest_row.':I'.$highest_row);
+				$worksheet->setCellValue('A'.$highest_row, 'DAFTAR KODE BARANG - STOCK OPNAME - CV. KARYA HIDUP SENTOSA');
+				$worksheet->getStyle('A'.$highest_row)->applyFromArray($styleArray);
+				$worksheet->getStyle('A'.$highest_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+				$highest_row = $worksheet->getHighestRow() + 2;
+
+				$worksheet->mergeCells('A'.$highest_row.':B'.$highest_row);
+				$worksheet->setCellValue('A'.$highest_row, 'NAMA IO');
+				$worksheet->setCellValue('C'.$highest_row, $ic['io_name']);
+
+				$worksheet->mergeCells('A'.($highest_row+1).':B'.($highest_row+1));
+				$worksheet->setCellValue('A'.($highest_row+1), 'SUB INVENTORY');
+				$worksheet->setCellValue('C'.($highest_row+1), $ic['sub_inventory']);
+
+				$worksheet->mergeCells('A'.($highest_row+2).':B'.($highest_row+2));
+				$worksheet->setCellValue('A'.($highest_row+2), 'AREA');
+				$worksheet->setCellValue('C'.($highest_row+2), $ic['area']);
+
+				$worksheet->mergeCells('A'.($highest_row+3).':B'.($highest_row+3));
+				$worksheet->setCellValue('A'.($highest_row+3), 'LOCATOR');
+				$worksheet->setCellValue('C'.($highest_row+3), $ic['locator']);
+
+				$worksheet->mergeCells('G'.$highest_row.':I'.$highest_row);
+				$worksheet->mergeCells('G'.($highest_row+1).':I'.($highest_row+1));
+				$worksheet->mergeCells('G'.($highest_row+2).':I'.($highest_row+2));
+				$worksheet->mergeCells('G'.($highest_row+3).':I'.($highest_row+3));
+
+				$worksheet->mergeCells('E'.$highest_row.':F'.$highest_row);
+				$worksheet->setCellValue('E'.$highest_row, 'PETUGAS INPUT');
+				$worksheet->setCellValue('G'.$highest_row, '.........................................................');
+
+				$worksheet->mergeCells('E'.($highest_row+1).':F'.($highest_row+1));
+				$worksheet->setCellValue('E'.($highest_row+1), 'TANGGAL SO');
+				$worksheet->setCellValue('G'.($highest_row+1), $tgl_so);
+
+				$worksheet->mergeCells('E'.($highest_row+2).':F'.($highest_row+2));
+				$worksheet->setCellValue('E'.($highest_row+2), 'NAMA PENCATAT');
+				$worksheet->setCellValue('G'.($highest_row+2), '.........................................................');
+
+				$worksheet->mergeCells('E'.($highest_row+3).':F'.($highest_row+3));
+				$worksheet->setCellValue('E'.($highest_row+3), 'PIC AREA');
+				$worksheet->setCellValue('G'.($highest_row+3), '.........................................................');
+
+				$highest_row = $worksheet->getHighestRow() + 2;
+				$border_corner = $highest_row;
+				$worksheet->setCellValue('A'.$highest_row, 'No');
+				$worksheet->setCellValue('B'.$highest_row, 'Kode Barang');
+				$worksheet->setCellValue('C'.$highest_row, 'Nama Barang');
+				$worksheet->setCellValue('D'.$highest_row, 'Type');
+				$worksheet->setCellValue('E'.$highest_row, 'Lokasi Simpan');
+				$worksheet->setCellValue('F'.$highest_row, 'On Hand');
+				$worksheet->setCellValue('G'.$highest_row, 'UOM');
+				$worksheet->setCellValue('H'.$highest_row, 'So QTY');
+				$worksheet->setCellValue('I'.$highest_row, 'Ket');
+
+				$worksheet->getStyle('A'.$highest_row.':I'.$highest_row)->applyFromArray($styleArray);
+				$worksheet->getStyle('A'.$highest_row.':I'.$highest_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				$worksheet->getStyle('F')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+				$highest_row = $worksheet->getHighestRow() + 1;
+				if(!(empty($stock_opname_pusat))){
+					$no=0;
+					foreach($stock_opname_pusat as $sop) {
+						if ($sop['io_name'] == $ic['io_name'] && $sop['sub_inventory'] == $ic['sub_inventory'] && $sop['area'] == $ic['area'] && $sop['locator'] == $ic['locator']) {
+							$no++;
+							$worksheet->setCellValue('A'.$highest_row, $no);
+							$worksheet->setCellValue('B'.$highest_row, $sop['component_code'], PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValue('C'.$highest_row, $sop['component_desc'], PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValue('D'.$highest_row, $sop['type'], PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValue('E'.$highest_row, $sop['saving_place'], PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValue('F'.$highest_row, $sop['onhand_qty'], PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValue('G'.$highest_row, $sop['uom'], PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValue('H'.$highest_row, $sop['so_qty'], PHPExcel_Cell_DataType::TYPE_STRING);
+
+							$highest_row++;
+						}
+					}
+					$borderStyle = array(
+						'borders' => array(
+							'allborders' => array(
+								'style' => PHPExcel_Style_Border::BORDER_THIN
+							)
+						)
+					);
+
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$border_corner.':I'.($highest_row-1))->applyFromArray($borderStyle);
+					unset($borderStyle);
+				}
+				$highest_row = $worksheet->getHighestRow() + 5;
+			}
+		}
+
+		$worksheet->setTitle('Report Stock Opname Pusat');
+		$worksheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="Report-Stock-Opname-Pusat-'.time().'.xlsx"');
+		$objWriter->save("php://output");
 	}
 
 	public function getFilterData(){
