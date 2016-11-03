@@ -1,0 +1,368 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class C_Invoice extends CI_Controller {
+
+   function __construct() {
+        parent::__construct();
+		$this->load->helper('form');
+	    $this->load->helper('url');
+	    $this->load->helper('html');
+		$this->load->helper('download');
+	    $this->load->library('form_validation');
+	    //load the login model
+		$this->load->library('session');
+		$this->load->library('csvimport');
+		//$this->load->library('Database');
+		$this->load->model('M_Index');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('AccountPayables/M_Invoice');
+
+			  
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+			//redirect('index');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
+	}
+
+	public function index()
+	{
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+		
+	}	
+
+	public function checkSession(){
+		if($this->session->is_logged){
+			
+		}else{
+			redirect();
+		}
+	}
+
+	public function search(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$tanggal_awal = $this->input->post('tanggal_awal');
+		$tanggal_akhir = $this->input->post('tanggal_akhir');
+		$supplier = $this->input->post('supplier');
+		$invoice_number = $this->input->post('invoice_number');
+		$invoice_status = $this->input->post('invoice_status');
+
+		$data['tanggal_awal'] = $tanggal_awal;
+		$data['tanggal_akhir'] = $tanggal_akhir;
+		$data['supplier'] = $supplier;
+		$data['invoice_number'] = $invoice_number;
+		$data['invoice_status'] = $invoice_status;
+
+		$query = $this->M_Invoice->alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status);
+		$data['data']=$query;
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_SearchResult',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function getSupplier(){
+		$supplier = $this->input->GET('term');
+		$query = $this->M_Invoice->getSupplier($supplier);
+		echo json_encode($query);
+		// print_r($query);
+	}	
+
+	public function getInvoiceNumber(){
+		$supplier = $this->input->GET('supplier');
+		$start_date = $this->input->GET('tanggal_awal');
+		$end_date = $this->input->GET('tanggal_akhir');
+		$invoice_num = $this->input->GET('term');
+		$query = $this->M_Invoice->getInvoiceNumber($invoice_num,$start_date,$end_date,$supplier);
+		echo json_encode($query);
+		// print_r($query);
+	}
+
+	public function getInvoiceNumber2(){
+		$period = $this->input->GET('period');
+		$year = $this->input->GET('year');
+		$invoice_num = $this->input->GET('term');
+		$query = $this->M_Invoice->getInvoiceNumber2($period,$year,$invoice_num);
+		echo json_encode($query);
+		// print_r($query);
+	}
+
+	public function getInvoiceNumber3(){
+		$invoice_num = $this->input->POST('invoice_num');
+		$query = $this->M_Invoice->getInvoiceNumber3($invoice_num);
+		foreach ($query as $name){
+			echo $name['NAME'];
+		}
+		// print_r($query);
+	}	
+
+	public function inputTaxNumber($invoice_id){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+
+		$query = $this->M_Invoice->getDetail($invoice_id);
+		$data['data']=$query;
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_Input',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function saveTaxNumber(){
+
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$invoice_id = $this->input->post('invoice_id');
+		$tax_number = $this->input->post('tax_number');
+		$tax_number_awal = substr($tax_number, 0, 11);
+		$jmlTextAkhir = strlen(tax_number)-11;
+		$tax_number_akhir = substr($tax_number, 11, $jmlTextAkhir);
+		
+		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tax_number_awal, $tax_number_akhir);
+		if($query){
+			echo "
+				<script>
+				    alert('Input Berhasil');
+				</script>
+			";
+		}else{
+			echo "
+			<script>
+			    alert('Input Gagal');
+			</script>
+			";
+		}
+		$this->inputTaxNumber($invoice_id);
+	}	
+
+	public function deleteTaxNumber($invoice_id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$query = $this->M_Invoice->deleteTaxNumber($invoice_id);
+		if($query>0){
+			echo "
+				<script>
+				    alert('Hapus Berhasil');
+				    window.close();
+				</script>
+			";
+		}else{
+			echo "
+			<script>
+			    alert('Hapus Gagal');
+			    window.close();
+			</script>
+			";
+		}
+
+	}
+	
+	//LOAD PAGE : HALAMAN DOWNLOAD FAKTUR MASUKAN (RFM)
+	public function downloadrfm(){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_Download_RFM',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	//LOAD PAGE : HALAMAN DOWNLOAD FAKTUR MASUKAN (FM)
+	public function downloadfm(){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_Download_FM1',$data);
+		$this->load->view('AccountPayables/V_Download_FM2',$data);
+		$this->load->view('AccountPayables/V_Download_FM3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	//FIND FAKTUR MASUKAN USING JAVASCRIPT (FM)
+	public function FindFaktur(){
+		
+		$month 			= $this->input->POST('month');
+		$year 			= $this->input->POST('year');
+		$invoice_num 	= $this->input->POST('invoice_num');
+		$name 			= $this->input->POST('name');
+		
+		$ket1 			= $this->input->POST('ket1');
+		$ket2 			= $this->input->POST('ket2');
+		
+		$sta1 			= $this->input->POST('sta1');
+		$sta2 			= $this->input->POST('sta2');
+		$sta3 			= $this->input->POST('sta3');
+
+		$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3);
+		$this->load->view('AccountPayables/V_Download_FM2',$data);
+	}
+	
+	//DOWNLOAD FILTERED DATA (FM)
+	public function savefile(){
+		
+		$month 			= $this->input->POST('TxtMasaPajak');
+		$year 			= $this->input->POST('TxtTahun');
+		$invoice_num 	= $this->input->POST('slcInvoiceNumber2');
+		$name 			= $this->input->POST('TxtNama');
+		
+		//CHECKBOX KETERANGAN
+		$keterangan1	= $this->input->POST('ket1');
+		$keterangan2	= $this->input->POST('ket2');
+
+		$ket1 	= "no";	if($keterangan1 == 'on'){$ket1="yes";}
+		$ket2 	= "no";	if($keterangan2 == 'on'){$ket2="yes";}
+	
+		//CHECKBOX STATUS
+		$status1 		= $this->input->POST('sta1');
+		$status2 		= $this->input->POST('sta2');
+		$status3 		= $this->input->POST('sta3');
+		
+		$sta1 	= "no";	if($status1 == 'on'){$sta1="yes";}
+		$sta2 	= "no"; if($status2 == 'on'){$sta2="yes";}
+		$sta3 	= "no"; if($status3 == 'on'){$sta3="yes";}
+		
+		$type = $this->input->POST('slcFileType');
+		
+		if($type=="1"){
+			$row  = $this->M_Invoice->FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3);
+			$name = 'Faktur-Selected.csv';
+			force_download($name,$row);
+			
+		} else if ($type=="2"){
+			
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load();
+
+			$pdf = new mPDF('utf-8', array(210,330), 0, '', 0, 0, 0, 0, 0, 0, 'L');
+			$filename = 'Faktur-Selected';
+			$this->checkSession();
+
+			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3);
+			
+			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+			$html = $this->load->view('AccountPayables/V_Download_FMPDF', $data, true);
+
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($html,2);
+			$pdf->Output($filename, 'I');
+		
+		} else if ($type=="3") {
+			
+			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3);
+			$this->load->view('AccountPayables/V_Download_FMEXCEL',$data);
+		}
+	}
+	
+	//CLICK BUTTON IMPORT THEN LOAD IMPORT INFORMATION PAGE (FM)
+	function importfm() {
+       
+		$config['upload_path'] = 'assets/upload/';
+		$config['allowed_types'] = 'csv';
+		$config['max_size'] = '1000';
+		$this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfmfile')) { echo $this->upload->display_errors();}
+		else {	$file_data 	= $this->upload->data();
+				$filename	= $file_data['file_name'];
+				$file_path 	= 'assets/upload/'.$file_data['file_name'];
+			
+			if ($this->csvimport->get_array($file_path)) {
+                $data['csvarray'] = $this->csvimport->get_array($file_path);
+				$data['filename'] = $filename;
+				
+				$this->checkSession();
+				$user_id = $this->session->userid;
+
+				$data['Menu'] = 'Dashboard';
+				$data['SubMenuOne'] = '';
+				
+				$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+				$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+				$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+				
+				$this->load->view('V_Header',$data);
+				$this->load->view('V_Sidemenu',$data);
+				$this->load->view('AccountPayables/V_Upload_FM',$data);
+				$this->load->view('V_Footer',$data);
+            } else {
+                $this->load->view('csvindex', $data);
+			}
+        }
+    }
+	
+	//CONFIRM INFORMATION PAGE THEN EXECUTE UPDATE QUERY (FM)
+	function confirmfm(){
+		
+		$filename	= $this->input->POST('TxtFileName');
+        $file_path 	= 'assets/upload/'.$filename;
+		$csv_array 	= 	$this->csvimport->get_array($file_path);
+			
+		foreach ($csv_array as $row) {
+			$update_data = array(
+				'FAKTUR_PAJAK'=> str_replace(str_split('.-'), '', $row['FAKTUR_PAJAK']),
+				'STATUS'=> strtoupper($row['STATUS']),
+			);
+			$this->M_Invoice->UpdateFmDesc($update_data);
+		}
+		unlink($file_path);
+        redirect(base_url().'AccountPayables/C_Invoice/downloadfm');
+	}
+
+}
