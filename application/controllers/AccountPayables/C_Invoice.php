@@ -120,6 +120,15 @@ class C_Invoice extends CI_Controller {
 			echo $name['NAME'];
 		}
 		// print_r($query);
+	}
+	
+	//MENGAMBIL DAFTAR NAMA
+	public function getInvoiceName(){
+		
+		$name = $this->input->GET('term');
+		$query = $this->M_Invoice->getInvoiceName($name);
+		echo json_encode($query);
+		// print_r($query);
 	}	
 
 	public function inputTaxNumber($invoice_id){
@@ -152,8 +161,7 @@ class C_Invoice extends CI_Controller {
 		$invoice_id = $this->input->post('invoice_id');
 		$tax_number = $this->input->post('tax_number');
 		$tax_number_awal = substr($tax_number, 0, 11);
-		$jmlTextAkhir = strlen(tax_number)-11;
-		$tax_number_akhir = substr($tax_number, 11, $jmlTextAkhir);
+		$tax_number_akhir = substr($tax_number, 11, 3);
 		
 		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tax_number_awal, $tax_number_akhir);
 		if($query){
