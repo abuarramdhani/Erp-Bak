@@ -49,8 +49,34 @@ $(document).ready(function() {
 		}	
 	});
 	
+	//GET INVOICE NAME
+	$("#slcnama").select2({
+		tags: "true",
+		placeholder: "NAMA",
+		minimumInputLength: 2,
+		ajax: {		
+			url:baseurl+"AccountPayables/C_Invoice/getInvoiceName",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+					return { id:obj.NAME, text:obj.NAME};
+					})
+				};
+			}
+		}	
+	});
+	
 	//GET INVOICE NUMBER LIST BASED PERIOD AND YEAR
 	$("#slcInvoiceNumber2").select2({
+		tags: "true",
 		placeholder: "NOMOR FAKTUR",
 		minimumInputLength: 2,
 		ajax: {		
@@ -85,7 +111,7 @@ $(document).ready(function() {
 			url:baseurl+"AccountPayables/C_Invoice/getInvoiceNumber3",
 			success:function(result)
 			{
-				$('#TxtNama').val(result);
+				$('#slcnama').append('<option value="'+ result +'">'+ result +'</option>').val(result).trigger('change');
 			}
 		});
 	});
@@ -106,7 +132,7 @@ $(document).ready(function() {
 			var period 		= $('input[name="TxtMasaPajak"]').val();
 			var year 		= $('input[name="TxtTahun"]').val();
 			var invoice_num = $('select[name="TxtInvoiceNumber"]').val();
-			var name 		= $('input[name="TxtNama"]').val();
+			var name 		= $('select[name="TxtNama"]').val();
 			
 			var ket1		= 'no'; if(document.getElementById('ket1').checked){ket1= 'yes';}
 			var ket2		= 'no'; if(document.getElementById('ket2').checked){ket2= 'yes';}
@@ -138,4 +164,3 @@ $(document).ready(function() {
 		});
 	});
 });
-	
