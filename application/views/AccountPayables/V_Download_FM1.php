@@ -60,7 +60,10 @@
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Nama</label>
 									<div class="col-lg-5">
-										<input name="TxtNama" id="TxtNama" class="form-control" placeholder="Nama" readonly>
+										<select id="slcnama" name="TxtNama" class="form-control select2" style="width:265px;">
+											<option value="">- pilih -</option>
+										</select >
+										<!--<input name="TxtNama" id="TxtNama" class="form-control" placeholder="Nama">-->
 									</div>
 								</div>
 							</div>
