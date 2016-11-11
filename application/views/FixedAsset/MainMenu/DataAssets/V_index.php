@@ -49,6 +49,7 @@
 							<div class="table-responsive">
 								<div style="margin-bottom:10px">
 								<button data-toggle="collapse" data-target="#demo" class="btn btn-warning">Dangerous Function</button>
+								<button data-toggle="collapse" data-target="#filter" class="btn btn-primary">Filter Data</button>
 								</div>
 							<form method="post" id="frmUploadAsset" action="<?php echo site_url('FixedAsset/DataAssets/ExportImport') ?>"  enctype="multipart/form-data"> </form>
 							<form method="post" id="frmDeleteAsset" action="<?php echo site_url('FixedAsset/DataAssets/DeleteShown') ?>" > </form>
@@ -118,104 +119,63 @@
 										</div>-->
 									</div>
 								</div>
-							<table class="table table-striped table-bordered table-hover text-left display" style="font-size:12px;min-width:4800px;table-layout: fixed;" id="dataTables" style="font-size:12px;">
-								<thead>
-									<tr class="bg-primary">
-										<th width="100px"><center>Action</center></th>
-										<th width="20px"><center>No</center></th>
-										<th width="100px"><center>Tag Number</center></th>
-										<th width="200px"><center>Location</center></th>
-										<th width="120px"><center>Asset Category</center></th>
-										<th width="400px"><center>Item</center></th>
-										<th width="200px"><center>Specification</center></th>
-										<th width="80px"><center>Serial Number</center></th>
-										<th width="50px"><center>Power</center></th>
-										<th width="100px"><center>Old Number</center></th>
-										<th width="80px"><center>Ownership Date</center></th>
-										<th width="200px"><center>Person In Charge</center></th>
-										<th width="80px"><center>BPPBA Number</center></th>
-										<th width="80px"><center>BPPBA Date</center></th>
-										<th width="80px"><center>LPA Number</center></th>
-										<th width="80px"><center>LPA Date</center></th>
-										<th width="80px"><center>Transfer Number</center></th>
-										<th width="80px"><center>Transfer Date</center></th>
-										<th width="80px"><center>Retirement Number</center></th>
-										<th width="80px"><center>Retirement Date</center></th>
-										<th width="80px"><center>PP Number</center></th>
-										<th width="80px"><center>PO Number</center></th>
-										<th width="80px"><center>PR Number</center></th>
-										<th width="80px"><center>Add-by</center></th>
-										<th width="80px"><center>Add-by Date</center></th>
-										<th width="80px"><center>Upload Oracle</center></th>
-										<th width="80px"><center>Upload Oracle Date</center></th>
-										<th width="180px"><center>Description</center></th>
-										<th width="80px"><center>Insurance</center></th>
-										<th width="80px"><center>Appraisal</center></th>
-										<th width="80px"><center>Stock Opname</center></th>
-										<th width="50px"><center>Sticker</center></th>
-										<th width="80px"><center>Asset Value</center></th>
-										<th width="80px"><center>Asset Age (Yr)</center></th>
-										<th width="80px"><center>Asset Group (Tax)</center></th>
-									</tr>
-								</thead>
-								<tbody>
-								<?php $num = 0;
-								foreach ($DataAsset as $row):
-								$num++;
-								?>
+								<div id="filter" class="collapse" style="margin-bottom:10px">
+									<table class="table">
 										<tr>
-											<td>
-												<a style="margin-right:8px;margin-left:4px;" href="<?php echo site_url('FixedAsset/DataAssets/DeleteData/'.$row['asset_data_id']) ?>"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?" class="confirm">
-													<i class="fa fa-trash fa-2x"></i>
-												</a>
-												<a style="margin-right:8px;" href="<?php echo site_url('FixedAsset/DataAssets/Update/'.$row['asset_data_id']) ?>"  alt="Update" title="Update" >
-													<i class="fa fa-pencil-square-o fa-2x"></i>
-												</a>
-												<a style="margin-right:8px;" href="<?php echo site_url('FixedAsset/DataAssets/Copy/'.$row['asset_data_id']);?>"  alt="Copy" title="Copy">
-													<i class="fa fa-files-o fa-2x"></i>
-												</a>
-												
-											</td>
-											<td align="center"><?php echo $num?><input type="hidden" name="txtAssetid[]" value="<?=$row['asset_data_id']?>" form="frmDeleteAsset"/>
-											<input type="hidden" name="txtAssetid[]" value="<?=$row['asset_data_id']?>" form="frmUpdateAsset"/></td>
-											<td><?php echo $row['tag_number'];?></td>
-											<td><?php echo $row['location'];?></td>
-											<td><?php echo $row['asset_category'];?></td>
-											<td><?php echo $row['item_code'];?></td>
-											<td><?php echo $row['specification'];?></td>
-											<td><?php echo $row['serial_number'];?></td>
-											<td><?php echo $row['power'];?></td>
-											<td><?php echo $row['old_number'];?></td>
-											<td><?php echo (empty($row['ownership_date']))?'':date("d-M-Y",strtotime(strtok($row['ownership_date']," ")));?></td>
-											<td><?php echo $row['person_in_charge'];?></td>
-											<td><?php echo $row['bppba_number'];?></td>
-											<td><?php echo (empty($row['bppba_date']))?'':date("d-M-Y",strtotime(strtok($row['bppba_date']," ")));?></td>
-											<td><?php echo $row['lpa_number'];?></td>
-											<td><?php echo (empty($row['lpa_date']))?'':date("d-M-Y",strtotime(strtok($row['lpa_date']," ")));?></td>
-											<td><?php echo $row['transfer_number'];?></td>
-											<td><?php echo (empty($row['transfer_date']))?'':date("d-M-Y",strtotime(strtok($row['transfer_date']," ")));?></td>
-											<td><?php echo $row['retirement_number'];?></td>
-											<td><?php echo (empty($row['retirement_date']))?'':date("d-M-Y",strtotime(strtok($row['retirement_date']," ")));?></td>
-											<td><?php echo $row['pp_number'];?></td>
-											<td><?php echo $row['po_number'];?></td>
-											<td><?php echo $row['pr_number'];?></td>
-											<td><?php echo $row['add_by'];?></td>
-											<td><?php echo (empty($row['add_by_date']))?'':date("d-M-Y",strtotime(strtok($row['add_by_date']," ")));?></td>
-											<td><?php echo $row['upload_oracle'];?></td>
-											<td><?php echo (empty($row['upload_oracle_date']))?'':date("d-M-Y",strtotime(strtok($row['upload_oracle_date']," ")));?></td>
-											<td><?php echo $row['description'];?></td>
-											<td><?php echo $row['insurance'];?></td>
-											<td><?php echo $row['appraisal'];?></td>
-											<td><?php echo $row['stock_opname'];?></td>
-											<td><?php echo $row['sticker'];?></td>
-											<td><?php echo number_format($row['asset_value'],2,'.','');?></td>
-											<td><?php echo $row['asset_age'];?></td>
-											<td><?php echo $row['asset_group'];?></td>
-											
+											<td width="20%"><input type="text" class="form-control toupper" placeholder="Location" name="txtSearchByLocation" id="txtSearchByLocation" /></td>
+											<td width="20%"><input type="text" class="form-control toupper" placeholder="Item" name="txtSearchByItem" id="txtSearchByItem" /></td>											
+											<td width="10%"><a href="#" onclick="searchServiceProducts('<?php echo base_url();?>');return false;" class="btn btn-primary btn-md btn-rect">Search</a></td>
 										</tr>
-								<?php endforeach ?>
-								</tbody>
-							</table>
+									</table>
+									
+								</div>
+								<div id="loading"></div>
+								<div id="res">
+									<table class="table table-striped table-bordered table-hover text-left display" style="font-size:12px;min-width:4800px;table-layout: fixed;" id="dataAssetdataTables" style="font-size:12px;">
+										<thead>
+											<tr class="bg-primary">
+												<th width="100px"><center>Action</center></th>
+												<th width="20px"><center>No</center></th>
+												<th width="100px"><center>Tag Number</center></th>
+												<th width="200px"><center>Location</center></th>
+												<th width="120px"><center>Asset Category</center></th>
+												<th width="400px"><center>Item</center></th>
+												<th width="200px"><center>Specification</center></th>
+												<th width="80px"><center>Serial Number</center></th>
+												<th width="50px"><center>Power</center></th>
+												<th width="100px"><center>Old Number</center></th>
+												<th width="80px"><center>Ownership Date</center></th>
+												<th width="200px"><center>Person In Charge</center></th>
+												<th width="80px"><center>BPPBA Number</center></th>
+												<th width="80px"><center>BPPBA Date</center></th>
+												<th width="80px"><center>LPA Number</center></th>
+												<th width="80px"><center>LPA Date</center></th>
+												<th width="80px"><center>Transfer Number</center></th>
+												<th width="80px"><center>Transfer Date</center></th>
+												<th width="80px"><center>Retirement Number</center></th>
+												<th width="80px"><center>Retirement Date</center></th>
+												<th width="80px"><center>PP Number</center></th>
+												<th width="80px"><center>PO Number</center></th>
+												<th width="80px"><center>PR Number</center></th>
+												<th width="80px"><center>Add-by</center></th>
+												<th width="80px"><center>Add-by Date</center></th>
+												<th width="80px"><center>Upload Oracle</center></th>
+												<th width="80px"><center>Upload Oracle Date</center></th>
+												<th width="180px"><center>Description</center></th>
+												<th width="80px"><center>Insurance</center></th>
+												<th width="80px"><center>Appraisal</center></th>
+												<th width="80px"><center>Stock Opname</center></th>
+												<th width="50px"><center>Sticker</center></th>
+												<th width="80px"><center>Asset Value</center></th>
+												<th width="80px"><center>Asset Age (Yr)</center></th>
+												<th width="80px"><center>Asset Group (Tax)</center></th>
+											</tr>
+										</thead>
+										<tbody>
+										
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>

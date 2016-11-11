@@ -360,13 +360,21 @@ $(document).ready(function() {
 
 		});
 		
-		$('#dataTables').DataTable({
-          // "paging": true,
+		$('#dataAssetdataTables').DataTable({
+		   // "paging": true,
           // "lengthChange": true,
           // "searching": true,
           // "ordering": true,
           // "info": true,
           // "autoWidth": false,
+		"processing": true,
+		"serverSide": true,
+        "ajax": base+"FixedAsset/DataAssets/LoadDataAsset",
+		 "order": [[ 24, "desc" ]],
+		"columnDefs": [
+            { "targets": [ 0 ], "searchable": false },
+            { "visible": false,  "targets": [ 1 ], "searchable": false }
+        ],
 		  dom: 'Blfrtip',
 		  lengthMenu : [ 10, 25, 50, 75, 100, 500, 1000, 10000000 ],
 			buttons: [
