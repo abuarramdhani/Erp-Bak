@@ -376,7 +376,7 @@ $(document).ready(function() {
             { "visible": false,  "targets": [ 1 ], "searchable": false }
         ],
 		  dom: 'Blfrtip',
-		  lengthMenu : [ 10, 25, 50, 75, 100, 500, 1000, 10000000 ],
+		  lengthMenu : [ 10, 25, 50, 75, 100, 500, 1000, 5000, 10000, 10000000 ],
 			buttons: [
 				'copy', 'csv', 'excel', 'pdf', 'print'
 			]
