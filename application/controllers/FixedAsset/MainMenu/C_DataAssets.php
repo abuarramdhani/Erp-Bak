@@ -226,7 +226,7 @@ class C_DataAssets extends CI_Controller {
 		$sql_details = array(
 			'user' => 'postgres',
 			'pass' => 'password',
-			'db'   => 'quickerpdev',
+			'db'   => 'erp',
 			'host' => 'db.quick.com'
 		);
 		 
