@@ -49,7 +49,6 @@
 							<div class="table-responsive">
 								<div style="margin-bottom:10px">
 								<button data-toggle="collapse" data-target="#demo" class="btn btn-warning">Dangerous Function</button>
-								<button data-toggle="collapse" data-target="#filter" class="btn btn-primary">Filter Data</button>
 								</div>
 							<form method="post" id="frmUploadAsset" action="<?php echo site_url('FixedAsset/DataAssets/ExportImport') ?>"  enctype="multipart/form-data"> </form>
 							<form method="post" id="frmDeleteAsset" action="<?php echo site_url('FixedAsset/DataAssets/DeleteShown') ?>" > </form>
@@ -118,16 +117,6 @@
 											<input name="btnDownload" style="margin-left:15px" type="submit" class="btn btn-success" value="Export" />  
 										</div>-->
 									</div>
-								</div>
-								<div id="filter" class="collapse" style="margin-bottom:10px">
-									<table class="table">
-										<tr>
-											<td width="20%"><input type="text" class="form-control toupper" placeholder="Location" name="txtSearchByLocation" id="txtSearchByLocation" /></td>
-											<td width="20%"><input type="text" class="form-control toupper" placeholder="Item" name="txtSearchByItem" id="txtSearchByItem" /></td>											
-											<td width="10%"><a href="#" onclick="searchServiceProducts('<?php echo base_url();?>');return false;" class="btn btn-primary btn-md btn-rect">Search</a></td>
-										</tr>
-									</table>
-									
 								</div>
 								<div id="loading"></div>
 								<div id="res">
