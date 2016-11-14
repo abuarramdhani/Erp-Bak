@@ -465,5 +465,11 @@ $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Moni
 $route['PresenceManagement/Monitoring/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1';
 $route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
 
+//------------------------------------Account Payables---------------------------------------------------
+$route['AccountPayables'] 				= 'AccountPayables/C_Invoice';
+$route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
+$route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
+$route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
