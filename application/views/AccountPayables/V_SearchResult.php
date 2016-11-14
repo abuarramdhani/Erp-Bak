@@ -170,7 +170,7 @@
 												include "phpqrcode/qrlib.php"; 
 												//$this->load->library('phpqrcode/qrlib.php');
 												// ngatur ning ngendi mengko arep nyimpen gambar QRcode
-												$PNG_TEMP_DIR = dirname(__FILE__).'/assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
+												$PNG_TEMP_DIR = '/var/www/erp/assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
 												//$PNG_WEB_DIR = 'phpqrcode/temp/';
 												//$PNG_TEMP_DIR = base_URL('assets/plugins/phpqrcode/temp');
 												$PNG_WEB_DIR = base_URL('assets/upload/qrcodeAP/');
