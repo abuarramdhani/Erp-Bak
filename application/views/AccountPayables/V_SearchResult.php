@@ -32,8 +32,8 @@
 					                     			<td>
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-														<div class="date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_awal; ?>"  data-date-format="yyyy-mm-dd" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+														<div class="date" data-date="" data-date-format="dd-mm-yyyy" data-link-field="dtp_input2" data-link-format="dd-mm-yyyy">
+															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_awal; ?>"  data-date-format="dd-mm-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 														</div>
 					                     			</td>
@@ -43,8 +43,8 @@
 					                     			<td>
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-														<div class="date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_akhir; ?>"  data-date-format="yyyy-mm-dd" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+														<div class="date" data-date="" data-date-format="dd-mm-yyyy" data-link-field="dtp_input2" data-link-format="dd-mm-yyyy">
+															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_akhir; ?>"  data-date-format="dd-mm-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 													</div>
 					                     			</td>
@@ -149,19 +149,20 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
+												<th width="10%"><center>Invoice Number</center></th>
 												<th width="15%"><center>Supplier</center></th>
 												<th width="10%"><center>Invoice Date</center></th>
 												<th width="10%"><center>Product</center></th>
 												<th width="10%"><center>DPP</center></th>
 												<th width="10%"><center>PPN</center></th>
-												<th width="15%"><center>QR Code</center></th>
+												<th width="15%"><center>QR Code Invoice</center></th>
 												<th width="15%"><center>Tax Invoice Number</center></th>
 												<th width="20%"><center>Action</center></th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php 
-												$files = glob('phpqrcode/temp/*'); // get all file names
+												$files = glob('/../../../assets/upload/qrcodeAP/*'); // get all file names
 												foreach($files as $file){ // iterate files
 												  if(is_file($file))
 												    unlink($file); // delete file
@@ -169,47 +170,63 @@
 												include "phpqrcode/qrlib.php"; 
 												//$this->load->library('phpqrcode/qrlib.php');
 												// ngatur ning ngendi mengko arep nyimpen gambar QRcode
-												$PNG_TEMP_DIR = dirname(__FILE__).DIRECTORY_SEPARATOR.'phpqrcode'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
+												$PNG_TEMP_DIR = dirname(__FILE__).'/../../../assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
 												//$PNG_WEB_DIR = 'phpqrcode/temp/';
 												//$PNG_TEMP_DIR = base_URL('assets/plugins/phpqrcode/temp');
-												$PNG_WEB_DIR = base_URL('application/views/AccountPayables/phpqrcode/temp/');
+												$PNG_WEB_DIR = base_URL('assets/upload/qrcodeAP/');
 												// ben QR code dadi kualitas apik
 												$errorCorrectionLevel = 'H';
 												// ben ukurane dadi cilik QRcode'e
 												$matrixPointSize = 5;
-												$i=0;
+												$i=1;
+												$invbefore = '';
 												foreach ($data as $row){
-													if($row->PPN == 0){
+													if($row->PPN != 0){
 												
 												// gawe QRcode disik bro
 												$uniqpartcode = $row->INVOICE_ID;
 												$filename = $PNG_TEMP_DIR.'test'.md5($uniqpartcode.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
 												QRcode::png($uniqpartcode, $filename, $errorCorrectionLevel, $matrixPointSize, 1);
 												$urlImage = $PNG_WEB_DIR.DIRECTORY_SEPARATOR.basename($filename);
-												$i++;
+												//$i++;
 												
 												//Tax Invoice Number
 												$TaxInvNum = $row->TAX_NUMBER_DEPAN.$row->TAX_NUMBER_BELAKANG;
 												if($row->TAX_NUMBER_BELAKANG == NULL){$TaxInvNum = '-';}
 											?>
+											<?php
+										
+												if($invbefore == $row->INVOICE_ID){
+											?>
+												<tr>
+													<td><?php echo $row->DESCRIPTION?></td>
+												</tr>
+											<?php
+												}else{
+											?>
 											<tr>
-												<td><?php echo $i;?></td>
-												<td><?php echo $row->VENDOR_NAME?></td>
-												<td><?php echo $row->INVOICE_DATE?></td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo $i;?></td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo $row->INVOICE_NUM?></td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo $row->VENDOR_NAME?></td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo $row->INVOICE_DATE?></td>
 												<td><?php echo $row->DESCRIPTION?></td>
-												<td><?php echo number_format($row->DPP, 0 , ',' , '.' )?></td>
-												<td><?php echo number_format($row->PPN, 0 , ',' , '.' )?></td>
-												<td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo number_format($row->DPP, 0 , ',' , '.' )?></td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo number_format($row->PPN, 0 , ',' , '.' )?></td>
+												<td rowspan="<?php echo $row->JML?>">
 													<img src=" <?php echo $urlImage;?> ">
 												</td>
-												<td><?php echo $TaxInvNum?></td>
-												<td>											
+												<td rowspan="<?php echo $row->JML?>"><?php echo $TaxInvNum?></td>
+												<td rowspan="<?php echo $row->JML?>">											
 													<a class="btn btn-warning btn-sm" title="Input" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxNumber/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-edit"></i></a>
-													
-													<a class="btn btn-danger btn-sm" title="Delete" href="<?php echo base_URL('AccountPayables/C_Invoice/deleteTaxNumber/'.$row->INVOICE_ID)?>" onclick="return confirm('Anda YAKIN menghapus data \n (<?php echo $row->INVOICE_NUM?>)..?');" target="blank"><i class="glyphicon glyphicon-trash"></i></a>					
+													<?php $fkp = str_replace(str_split('.-'), '', $row->INVOICE_NUM); ?>
+													<a class="btn btn-danger btn-sm" title="Delete" href="<?php echo base_URL('AccountPayables/C_Invoice/deleteTaxNumber/'.$row->INVOICE_ID.'/'.$fkp)?>" onclick="return confirm('Anda YAKIN menghapus data \n (<?php echo $row->INVOICE_NUM?>)..?');" target="blank"><i class="glyphicon glyphicon-trash"></i></a>					
 												</td>
 											</tr>
-											<?php } } ?>
+											<?php 
+											$i++;
+											}
+											$invbefore = $row->INVOICE_ID;
+											} } ?>
 										</tbody>
 									</table>
 								</div>
