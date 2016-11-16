@@ -129,9 +129,10 @@ $(document).ready(function() {
 	//CLICK BTN
 	$(document).ready(function() {	
 		$('#FindFakturButton').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
 			var period 		= $('input[name="TxtMasaPajak"]').val();
 			var year 		= $('input[name="TxtTahun"]').val();
-			var invoice_num = $('select[name="TxtInvoiceNumber"]').val();
+			var invoice_num = $('input[name="TxtInvoiceNumber"]').val();
 			var name 		= $('select[name="TxtNama"]').val();
 			
 			var ket1		= 'no'; if(document.getElementById('ket1').checked){ket1= 'yes';}
@@ -157,10 +158,33 @@ $(document).ready(function() {
 				url:baseurl+"AccountPayables/C_Invoice/FindFaktur",
 				success:function(result)
 				{
+					$('#loading').html('');
 					$("#table-full").html(result);
 					findfakturtable();
 				}
 			});
 		});
 	});
+
+	$('#tanggal_akhir').datepicker('setDate', new Date());
+	$('#tanggal_awal').datepicker('setDate', new Date());
+	$('#tanggal_akhir_pilih').datepicker();
+	$('#tanggal_awal_pilih').datepicker();
+
+})
+
+$(document).ready(function() {
+	$('.tanggal_cari').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		locale: {
+			format: 'DD-MM-YYYY'
+		},
+	});
+	if (typeof $('#tanggal_asli').val() !== 'undefined'){
+	var startDate = $('#tanggal_asli').val()
+	$(".tanggal_cari").data('daterangepicker').setStartDate(startDate);
+	$(".tanggal_cari").data('daterangepicker').setEndDate(startDate)};
 });

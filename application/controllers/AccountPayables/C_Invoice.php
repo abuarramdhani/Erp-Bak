@@ -71,14 +71,16 @@ class C_Invoice extends CI_Controller {
 		$supplier = $this->input->post('supplier');
 		$invoice_number = $this->input->post('invoice_number');
 		$invoice_status = $this->input->post('invoice_status');
+		$voucher_number = $this->input->post('voucher_number');
 
 		$data['tanggal_awal'] = $tanggal_awal;
 		$data['tanggal_akhir'] = $tanggal_akhir;
 		$data['supplier'] = $supplier;
 		$data['invoice_number'] = $invoice_number;
 		$data['invoice_status'] = $invoice_status;
+		$data['voucher_number'] = $voucher_number;
 
-		$query = $this->M_Invoice->alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status);
+		$query = $this->M_Invoice->alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status, $voucher_number);
 		$data['data']=$query;
 		
 		$this->load->view('V_Header',$data);
@@ -100,6 +102,16 @@ class C_Invoice extends CI_Controller {
 		$end_date = $this->input->GET('tanggal_akhir');
 		$invoice_num = $this->input->GET('term');
 		$query = $this->M_Invoice->getInvoiceNumber($invoice_num,$start_date,$end_date,$supplier);
+		echo json_encode($query);
+		// print_r($query);
+	}
+	
+	
+	public function getVoucherNumber(){
+		$start_date = $this->input->GET('tanggal_awal');
+		$end_date = $this->input->GET('tanggal_akhir');
+		$voucher_num = $this->input->GET('term');
+		$query = $this->M_Invoice->getVoucherNumber($voucher_num,$start_date,$end_date);
 		echo json_encode($query);
 		// print_r($query);
 	}
@@ -146,7 +158,6 @@ class C_Invoice extends CI_Controller {
 
 		$query = $this->M_Invoice->getDetail($invoice_id);
 		$data['data']=$query;
-		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_Input',$data);
@@ -159,11 +170,13 @@ class C_Invoice extends CI_Controller {
 		$user_id = $this->session->userid;
 
 		$invoice_id = $this->input->post('invoice_id');
+		
+		$invoice_date = $this->input->post('invoice_date');
 		$tax_number = $this->input->post('tax_number');
 		$tax_number_awal = substr($tax_number, 0, 11);
-		$tax_number_akhir = substr($tax_number, 11, 3);
+		$tax_number_akhir = substr($tax_number, 11, strlen($tax_number)-11);
 		
-		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tax_number_awal, $tax_number_akhir);
+		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $invoice_date, $tax_number_awal, $tax_number_akhir);
 		if($query){
 			echo "
 				<script>
@@ -180,11 +193,11 @@ class C_Invoice extends CI_Controller {
 		$this->inputTaxNumber($invoice_id);
 	}	
 
-	public function deleteTaxNumber($invoice_id){
+	public function deleteTaxNumber($invoice_id,$invoice_num){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$query = $this->M_Invoice->deleteTaxNumber($invoice_id);
+		$query = $this->M_Invoice->deleteTaxNumber($invoice_id,$invoice_num);
 		if($query>0){
 			echo "
 				<script>
@@ -267,7 +280,7 @@ class C_Invoice extends CI_Controller {
 		
 		$month 			= $this->input->POST('TxtMasaPajak');
 		$year 			= $this->input->POST('TxtTahun');
-		$invoice_num 	= $this->input->POST('slcInvoiceNumber2');
+		$invoice_num 	= $this->input->POST('TxtInvoiceNumber');
 		$name 			= $this->input->POST('TxtNama');
 		
 		//CHECKBOX KETERANGAN
@@ -366,6 +379,8 @@ class C_Invoice extends CI_Controller {
 			$update_data = array(
 				'FAKTUR_PAJAK'=> str_replace(str_split('.-'), '', $row['FAKTUR_PAJAK']),
 				'STATUS'=> strtoupper($row['STATUS']),
+				'MONTH' => $row['BULAN_PAJAK'],
+				'YEAR' => $row['TAHUN_PAJAK'],
 			);
 			$this->M_Invoice->UpdateFmDesc($update_data);
 		}

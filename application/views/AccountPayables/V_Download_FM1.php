@@ -23,15 +23,19 @@
 					<div class="box-body">
 						<!-- INPUT ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
-							<div class=" col-lg-offset-8 col-lg-2">
-								<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadfm')?>"  class="btn btn-info btn-block">Faktur Masukan</a>
-							</div>
-							<div class=" col-lg-2">
-								<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadrfm')?>"  class="btn btn-info btn-block">Retur Masukan</a>
+							<div class=" col-lg-offset-7 col-lg-5">
+								<div class="row">
+									<div class=" col-lg-6">
+										<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadfm')?>"  class="btn btn-info btn-block">Faktur Masukan</a>
+									</div>
+									<div class=" col-lg-6">
+										<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadrfm')?>"  class="btn btn-info btn-block">Retur Masukan</a>
+									</div>
+								</div>
 							</div>
 						</div>
 						<!-- INPUT ROW 2 -->
-						<form method="post" action="<?php echo base_url('AccountPayables/C_Invoice/savefile')?>">
+						<form method="post" id="fm-form" action="<?php echo base_url('AccountPayables/C_Invoice/savefile')?>">
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Masa Pajak</label>
@@ -49,9 +53,8 @@
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Nomor Faktur</label>
 									<div class="col-lg-5">
-										<select id="slcInvoiceNumber2" name="TxtInvoiceNumber" class="form-control select2" style="width:265px;">
-											<option value="">- pilih -</option>
-										</select >
+										<input id="slcInvoiceNumber2_deactive" name="TxtInvoiceNumber" class="form-control select2_deactive" style="width:265px;">
+											
 									</div>
 								</div>
 							</div>
@@ -87,19 +90,24 @@
 							<!-- INPUT ROW 5 -->
 							<div class="row" style="margin: 10px 10px">
 								<div class="col-lg-offset-2 col-lg-2">
-									<a id="FindFakturButton" class="btn btn-info btn-rect">Find</a>
+									<a id="FindFakturButton" class="btn btn-info btn-block btn-rect">find</a>
 								</div>
-									<div class="col-lg-offset-3 col-lg-3">
-										<select class="form-control select4" data-placeholder="Select File Type" style="width:100%" name="slcFileType" required>
-											<option></option>
-											<option value="1">CSV</option>
-											<option value="2">PDF</option>
-											<option value="3">EXCEL</option>
-										</select>
-									</div>
-									<div class=" col-lg-2">
-										<button class="btn btn-info btn-block">Save</button>
-									</div>
+								<div class="col-lg-2">
+									<a id="ClearFakturButton" class="btn btn-danger btn-block btn-rect">clear</a>
+								</div>
+								<div class="col-lg-1" align="center"  id="loading">
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control select4" data-placeholder="Select File Type" style="width:100%" name="slcFileType" required>
+										<option></option>
+										<option value="1">CSV</option>
+										<option value="2">PDF</option>
+										<option value="3">EXCEL</option>
+									</select>
+								</div>
+								<div class=" col-lg-2">
+									<button class="btn btn-info btn-block">Save</button>
+								</div>
 							</div>
 						</form>
 						<!-- INPUT ROW 6 -->
@@ -117,7 +125,7 @@
 						</form>
 						<!-- INPUT ROW 7 -->
 						<div class="row" style="margin: 10px 10px">
-							<div class=" col-lg-offset-7 col-lg-5">
+							<div class="col-lg-offset-7 col-lg-5">
 								<a href="#"  class="btn btn-primary btn-block">Input Manual</a>
 							</div>
 						</div>

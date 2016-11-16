@@ -31,8 +31,8 @@
 					                     			<td>
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-														<div class="date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>"  data-date-format="yyyy-mm-dd" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 														</div>
 					                     			</td>
@@ -42,8 +42,8 @@
 					                     			<td>
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-														<div class="date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('Y-m-d'); ?>"  data-date-format="yyyy-mm-dd" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 													</div>
 					                     			</td>
@@ -101,13 +101,31 @@
 														</select >
 					                     			</td>
 					                     		</tr>
+												<tr>
+					                     			<td>
+					                     				<br/>
+					                     			</td>
+					                     		</tr>
+					                     	</table>
+											<table>	
+					                     		<tr>
+					                     			<td width="150px">
+					                     				<label for="exampleInputPassword1">Voucher Number</label>
+					                     			</td>
+					                     			<td>
+					                     				<select id="slcVoucherNumber" name="voucher_number" class="form-control select2" style="width:265px;">
+															<option value="">- pilih -</option>
+														</select >
+					                     			</td>
+					                     		</tr>
 					                     	</table>
 
 										</div>
 							 	</fieldset>
 							 	<div class="box-footer">
 									<button type="submit" class="btn btn-primary btn-sm" id="save"><b>Cari Data</b></button>
-									<!-- <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
+									<a id="ClearSearch" class="btn btn-danger btn-sm"><b>Clear</b></a>
+									<!-- a <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
 				            	</div>
 							</div>
 						</div>

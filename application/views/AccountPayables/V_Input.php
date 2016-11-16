@@ -61,8 +61,10 @@
 					                     				<label for="exampleInputPassword1">Invoice Date</label>
 					                     			</td>
 					                     			<td>
-					                     				<input type="text" id="nomor_cari" style="width:280px;" class="form-control " name="invoice_date" value="<?php echo $data[0]->INVOICE_DATE; ?>" disabled>
-					                     			</td>
+														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+															<input id="tanggal_cari" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $data[0]->TODATE;  ?>" data-date-format="dd-M-yyyy" type="text" name="invoice_date" riquaite placeholder=" Date" autocomplete="off">
+														</div>
+													</td>
 					                     		</tr>
 					                     		<tr>
 					                     			<td>

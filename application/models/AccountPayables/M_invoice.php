@@ -4,13 +4,16 @@ class M_invoice extends CI_Model{
 		parent::__construct();
 	}
 
-	public function alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status){
+	public function alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status, $voucher_number){
 
 		if($supplier == ''){
 			$supplier = '%';
 		}
 		if($invoice_number == ''){
 			$invoice_number = '%';
+		}
+		if($voucher_number == ''){
+			$voucher_number = '%';
 		}
 		if($invoice_status == 1){
 			$attribute = ' ';
@@ -23,7 +26,7 @@ class M_invoice extends CI_Model{
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("select
 								aia.invoice_id, ass.vendor_name,aia.invoice_num,aia.invoice_date,aila.description,aia.invoice_amount-nvl(aia.total_tax_amount,0) DPP,
-								nvl(aia.total_tax_amount,0) PPN,aia.attribute5 tax_number_depan, aia.attribute3 tax_number_belakang,
+								nvl(aia.total_tax_amount,0) PPN,aia.attribute5 tax_number_depan, aia.attribute3 tax_number_belakang, aia.attribute15 voucher_number,
 								COUNT(*) 
 								OVER (PARTITION BY aia.invoice_id) JML
 								from
@@ -35,11 +38,11 @@ class M_invoice extends CI_Model{
 								and aia.vendor_id = ass.vendor_id
 								and aia.invoice_id = aila.invoice_id
 								and aia.cancelled_date is NULL
-								and invoice_date BETWEEN TO_DATE('$tanggal_awal','YYYY-MM-DD') AND TO_DATE('$tanggal_akhir','YYYY-MM-DD')
+								and invoice_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 								AND ass.vendor_name LIKE '$supplier'
 								AND aia.invoice_num LIKE '$invoice_number'
-								$attribute
-								AND ROWNUM < 101"
+								AND aia.attribute15 LIKE '$voucher_number'
+								$attribute"
 		);
 		return $query->result();
 	}
@@ -61,7 +64,18 @@ class M_invoice extends CI_Model{
 			WHERE
 				(a.INVOICE_NUM LIKE '$invoice_num%') AND
 				(b.VENDOR_NAME = $vendor) AND
-				(a.INVOICE_DATE BETWEEN TO_DATE('$start_date', 'YYYY-MM-DD') AND TO_DATE('$end_date', 'YYYY-MM-DD'))");
+				(a.INVOICE_DATE BETWEEN TO_DATE('$start_date', 'DD-MM-YYYY') AND TO_DATE('$end_date', 'DD-MM-YYYY'))");
+		return $query->result_array();
+	}
+	
+	public function getVoucherNumber($voucher_num,$start_date,$end_date){
+		$oracle = $this->load->database("oracle",true);
+		$query = $oracle->query("
+			SELECT ATTRIBUTE15
+			FROM ap_invoices_all
+			WHERE
+				(ATTRIBUTE15 LIKE '$voucher_num%') AND
+				(INVOICE_DATE BETWEEN TO_DATE('$start_date', 'DD-MM-YYYY') AND TO_DATE('$end_date', 'DD-MM-YYYY'))");
 		return $query->result_array();
 	}
 	
@@ -100,6 +114,7 @@ class M_invoice extends CI_Model{
 									aia.invoice_id,
 									ass.vendor_name,
 									aia.invoice_num,
+									TO_CHAR (aia.invoice_date, 'DD-MON-YYYY') AS TODATE,
 									aia.invoice_date,
 									aila.description,
 									aia.invoice_amount - NVL( aia.total_tax_amount, 0 ) DPP,
@@ -252,8 +267,8 @@ class M_invoice extends CI_Model{
 					else to_char(faktur_date, 'DD/MM/YYYY')
 					end as TANGGAL_FAKTUR
 				,NPWP
-				,NAME
-				,ADDRESS
+				,NAME AS NAMA
+				,ADDRESS AS ALAMAT_LENGKAP
 				,DPP
 				,PPN
 				,PPN_BM
@@ -273,22 +288,33 @@ class M_invoice extends CI_Model{
 		return $this->dbutil->csv_from_result($q,$delimiter,$newline);
 	}
 	
-	public function saveTaxNumber($invoice_id, $tax_number_awal, $tax_number_akhir){
+	public function saveTaxNumber($invoice_id, $invoice_date, $tax_number_awal, $tax_number_akhir){
 		$oracle = $this->load->database("oracle",true);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
 		$query = $oracle->query("UPDATE ap_invoices_all
-								SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir'
+								SET ATTRIBUTE5 = '$tax_number_awal',
+									ATTRIBUTE3 = '$tax_number_akhir',
+									ATTRIBUTE4 = '$invoice_date'
 								WHERE INVOICE_ID = '$invoice_id'
 		");
 		return $query;
 	}
 
-	public function deleteTaxNumber($invoice_id){
+	public function deleteTaxNumber($invoice_id, $invoice_num){
 		$oracle = $this->load->database("oracle",true);
-		$query = $oracle->query("UPDATE ap_invoices_all
-								SET ATTRIBUTE3 = ''
-								WHERE INVOICE_ID = '$invoice_id'
+		$query = $oracle->query("
+			UPDATE ap_invoices_all
+			SET ATTRIBUTE3 = '',
+				ATTRIBUTE4 = '',
+				ATTRIBUTE5 = ''
+			WHERE INVOICE_ID = '$invoice_id'
 		");
+		$query = $oracle->query("
+			DELETE
+			FROM khs_faktur_web
+			WHERE FAKTUR_PAJAK = '$invoice_num'
+		");
+
 		return $query;
 
 	}
@@ -297,7 +323,9 @@ class M_invoice extends CI_Model{
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("UPDATE khs_faktur_web
 								SET DESCRIPTION = 'REPORTED',
-									STATUS = '$update_data[STATUS]'
+									STATUS = '$update_data[STATUS]',
+									MONTH = '$update_data[MONTH]',
+									YEAR = '$update_data[YEAR]' 
 								WHERE FAKTUR_PAJAK = '$update_data[FAKTUR_PAJAK]'
 		");
 		return $query;

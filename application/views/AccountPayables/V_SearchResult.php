@@ -32,8 +32,8 @@
 					                     			<td>
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-														<div class="date" data-date="" data-date-format="dd-mm-yyyy" data-link-field="dtp_input2" data-link-format="dd-mm-yyyy">
-															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_awal; ?>"  data-date-format="dd-mm-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+															<input id="tanggal_akhir_pilih" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_awal; ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 														</div>
 					                     			</td>
@@ -43,8 +43,8 @@
 					                     			<td>
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-														<div class="date" data-date="" data-date-format="dd-mm-yyyy" data-link-field="dtp_input2" data-link-format="dd-mm-yyyy">
-															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_akhir; ?>"  data-date-format="dd-mm-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+															<input id="tanggal_awal_pilih" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $tanggal_akhir; ?>" data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 													</div>
 					                     			</td>
@@ -85,15 +85,8 @@
 					                     				<label for="exampleInputPassword1">Invoice Number</label>
 					                     			</td>
 					                     			<td>
-					                     				<select id="slcInvoiceNumber" name="invoice_number" class="form-control select2" style="width:265px;">
-															<?php
-					                     						if($invoice_number == ''){
-					                     							echo "<option value=''>- pilih -</option>";
-					                     						}else{
-					                     							echo "<option value='$invoice_number'>$invoice_number</option>";
-					                     						}
-					                     					?>
-														</select >
+					                     				<input id="slcInvoiceNumber_deactive" name="invoice_number" class="form-control select2_deactive" style="width:265px;" value="<?php echo $invoice_number;?>">
+														
 					                     			</td>
 					                     		</tr>
 					                     		<tr>
@@ -134,12 +127,29 @@
 														</select >
 					                     			</td>
 					                     		</tr>
+												<tr>
+													<td>
+														<br>
+													</td>
+												</tr>
+					                     	</table>
+											<table>	
+					                     		<tr>
+					                     			<td width="150px">
+					                     				<label for="exampleInputPassword1">Voucher Number</label>
+					                     			</td>
+					                     			<td>
+					                     				<input id="slcVoucherNumber_deactive" name="voucher_number" class="form-control select2_deactive" style="width:265px;" value="<?php echo $voucher_number;?>">
+															
+					                     			</td>
+					                     		</tr>
 					                     	</table>
 
 										</div>
 							 	</fieldset>
 							 	<div class="box-footer">
 									<button type="submit" class="btn btn-primary btn-sm" id="save"><b>Cari Data</b></button>
+									<a id="ClearSearch" class="btn btn-danger btn-sm"><b>Clear</b></a>
 									<!-- <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
 				            	</div>
 
@@ -150,14 +160,15 @@
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
 												<th width="10%"><center>Invoice Number</center></th>
-												<th width="15%"><center>Supplier</center></th>
+												<th width="10%"><center>Supplier</center></th>
 												<th width="10%"><center>Invoice Date</center></th>
 												<th width="10%"><center>Product</center></th>
 												<th width="10%"><center>DPP</center></th>
 												<th width="10%"><center>PPN</center></th>
 												<th width="15%"><center>QR Code Invoice</center></th>
 												<th width="15%"><center>Tax Invoice Number</center></th>
-												<th width="20%"><center>Action</center></th>
+												<th width="10%"><center>Voucher Number</center></th>
+												<th width="15%"><center>Action</center></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -170,7 +181,7 @@
 												include "phpqrcode/qrlib.php"; 
 												//$this->load->library('phpqrcode/qrlib.php');
 												// ngatur ning ngendi mengko arep nyimpen gambar QRcode
-												$PNG_TEMP_DIR = '/var/www/erp/assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
+												$PNG_TEMP_DIR = dirname(__FILE__).'/../../../assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
 												//$PNG_WEB_DIR = 'phpqrcode/temp/';
 												//$PNG_TEMP_DIR = base_URL('assets/plugins/phpqrcode/temp');
 												$PNG_WEB_DIR = base_URL('assets/upload/qrcodeAP/');
@@ -216,9 +227,10 @@
 													<img src=" <?php echo $urlImage;?> ">
 												</td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $TaxInvNum?></td>
+												<td rowspan="<?php echo $row->JML?>"><?php echo $row->VOUCHER_NUMBER?></td>
 												<td rowspan="<?php echo $row->JML?>">											
 													<a class="btn btn-warning btn-sm" title="Input" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxNumber/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-edit"></i></a>
-													<?php $fkp = str_replace(str_split('.-'), '', $row->INVOICE_NUM); ?>
+													<?php $fkp = str_replace(str_split('.-'), '', $TaxInvNum); ?>
 													<a class="btn btn-danger btn-sm" title="Delete" href="<?php echo base_URL('AccountPayables/C_Invoice/deleteTaxNumber/'.$row->INVOICE_ID.'/'.$fkp)?>" onclick="return confirm('Anda YAKIN menghapus data \n (<?php echo $row->INVOICE_NUM?>)..?');" target="blank"><i class="glyphicon glyphicon-trash"></i></a>					
 												</td>
 											</tr>

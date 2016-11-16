@@ -29,8 +29,8 @@
 											<th><div style="width:120px;">KODE JENIS TRANS</div></th>
 											<th><div style="width:100px;">FG PENGGANTI</div></th>
 											<th><div style="width:120px">NOMOR FAKTUR</div></th>
-											<!--<th><div style="width:80px">MASA PAJAK</div></th>-->
-											<!--<th><div style="width:90px">TAHUN PAJAK</div></th>-->
+											<th><div style="width:80px">BULAN PAJAK</div></th>
+											<th><div style="width:90px">TAHUN PAJAK</div></th>
 											<!--<th><div style="width:120px">TANGGAL FAKTUR</div></th>-->
 											<!--<th><div style="width:100px">NPWP</div></th>-->
 											<!--<th><div style="width:140px">NAMA</div></th>-->
@@ -56,8 +56,8 @@
 											<td><?php echo $typ?></td>
 											<td><?php echo $alt?></td>
 											<td><?php echo $num?></td>
-											<!--<td><?php echo $row['MONTH']?></td>-->
-											<!--<td><?php echo $row['YEAR']?></td>-->
+											<td><?php echo $row['BULAN_PAJAK']?></td>
+											<td><?php echo $row['TAHUN_PAJAK']?></td>
 											<!--<td><?php echo $row['FAKTUR_DATE']?></td>-->
 											<!--<td><?php echo $row['NPWP']?></td>-->
 											<!--<td><?php echo $row['NAME']?></td>-->
