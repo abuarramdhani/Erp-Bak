@@ -119,7 +119,7 @@ class SSP {
 						$kolom = $column['db'];
 					}
 					if ( $requestColumn['searchable'] == 'true' ) {
-						$globalSearch[$h][] = " {$kolom}::varchar ILIKE UPPER('%$var%')";
+						$globalSearch[$h][] = " {$kolom}::varchar ILIKE UPPER('$var')";
 					}
 				}
 			}
