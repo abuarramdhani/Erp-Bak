@@ -155,7 +155,7 @@
 
 				            	<div class="table-responsive">
 									
-									<table class="table table-striped table-bordered table-hover text-left" id="tblUser" style="font-size:12px;">
+									<table class="table table-striped table-bordered table-hover text-left" style="font-size:12px;">
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
@@ -173,33 +173,13 @@
 										</thead>
 										<tbody>
 											<?php 
-												$files = glob('/../../../assets/upload/qrcodeAP/*'); // get all file names
-												foreach($files as $file){ // iterate files
-												  if(is_file($file))
-												    unlink($file); // delete file
-												}
-												include "phpqrcode/qrlib.php"; 
-												//$this->load->library('phpqrcode/qrlib.php');
-												// ngatur ning ngendi mengko arep nyimpen gambar QRcode
-												$PNG_TEMP_DIR = dirname(__FILE__).'/../../../assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
-												//$PNG_WEB_DIR = 'phpqrcode/temp/';
-												//$PNG_TEMP_DIR = base_URL('assets/plugins/phpqrcode/temp');
-												$PNG_WEB_DIR = base_URL('assets/upload/qrcodeAP/');
-												// ben QR code dadi kualitas apik
-												$errorCorrectionLevel = 'H';
-												// ben ukurane dadi cilik QRcode'e
-												$matrixPointSize = 5;
 												$i=1;
 												$invbefore = '';
 												foreach ($data as $row){
 													if($row->PPN != 0){
 												
-												// gawe QRcode disik bro
+												//Code to Generate QR
 												$uniqpartcode = $row->INVOICE_ID;
-												$filename = $PNG_TEMP_DIR.'test'.md5($uniqpartcode.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
-												QRcode::png($uniqpartcode, $filename, $errorCorrectionLevel, $matrixPointSize, 1);
-												$urlImage = $PNG_WEB_DIR.DIRECTORY_SEPARATOR.basename($filename);
-												//$i++;
 												
 												//Tax Invoice Number
 												$TaxInvNum = $row->TAX_NUMBER_DEPAN.$row->TAX_NUMBER_BELAKANG;
@@ -215,7 +195,7 @@
 											<?php
 												}else{
 											?>
-											<tr>
+											<tr class="data-row">
 												<td rowspan="<?php echo $row->JML?>"><?php echo $i;?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $row->INVOICE_NUM?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $row->VENDOR_NAME?></td>
@@ -223,8 +203,9 @@
 												<td><?php echo $row->DESCRIPTION?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo number_format($row->DPP, 0 , ',' , '.' )?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo number_format($row->PPN, 0 , ',' , '.' )?></td>
-												<td rowspan="<?php echo $row->JML?>">
-													<img src=" <?php echo $urlImage;?> ">
+												<td rowspan="<?php echo $row->JML?>" align="center">
+													<a class="btn btn-success inspectqr" data-toggle="modal" data-target="#qrcode" ><i class="fa fa-qrcode"></i> Generate</a>
+													<input type="hidden" class="uniqpartcode" value="<?php echo $uniqpartcode?>">
 												</td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $TaxInvNum?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $row->VOUCHER_NUMBER?></td>
@@ -239,6 +220,22 @@
 											}
 											$invbefore = $row->INVOICE_ID;
 											} } ?>
+											<div class="modal fade modal-default" id="qrcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+												<div class="modal-dialog" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-8" align="center"><b>QR Code</b></div>
+															<div class="col-sm-2"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+															<br>
+														</div>
+														<div class="modal-body" align="center">
+															<div class="qrarea">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</tbody>
 									</table>
 								</div>
