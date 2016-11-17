@@ -89,6 +89,27 @@ class C_Invoice extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function generateQR(){
+		$invid = $this->input->POST('invid');
+		
+		$files = glob('/../../../assets/upload/qrcodeAP/*');
+		foreach($files as $file){ // iterate files
+		if(is_file($file))
+		unlink($file); // delete file
+		}
+		include "phpqrcode/qrlib.php"; 
+		$PNG_TEMP_DIR = dirname(__FILE__).'/../../../assets/upload/qrcodeAP'.DIRECTORY_SEPARATOR;
+		$PNG_WEB_DIR = base_URL('assets/upload/qrcodeAP/');
+		$errorCorrectionLevel = 'H';
+		$matrixPointSize = 5;
+		
+		$uniqpartcode = $invid;
+		$filename = $PNG_TEMP_DIR.'test'.md5($uniqpartcode.'|'.$errorCorrectionLevel.'|'.$matrixPointSize).'.png';
+		QRcode::png($uniqpartcode, $filename, $errorCorrectionLevel, $matrixPointSize, 1);
+		$urlImage = $PNG_WEB_DIR.DIRECTORY_SEPARATOR.basename($filename);
+		echo $urlImage;
+	}	
+	
 	public function getSupplier(){
 		$supplier = $this->input->GET('term');
 		$query = $this->M_Invoice->getSupplier($supplier);

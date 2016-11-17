@@ -1,4 +1,4 @@
-//---------------------invoice faktur pajak---------------//
+//---------------------invoice faktur pajak----------------//
 $(document).ready(function() {
 	$("#slcSupplier").select2({
 		placeholder: "SUPPLIER",
@@ -163,6 +163,45 @@ $(document).ready(function() {
 					findfakturtable();
 				}
 			});
+		});
+	});
+	
+	//INSPECT QRCODE
+	$(document).ready(function() {	
+		$('.inspectqr').click(function(){
+			
+			$('.qrarea').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			var invid 		= $(this).closest('.data-row').find('.uniqpartcode').val()
+			
+			$.ajax({
+				type: "POST",
+				data:{invid:invid},
+				url:baseurl+"AccountPayables/C_Invoice/generateQR",
+				success:function(result)
+				{
+					$('.qrarea').html('<img src="'+(result)+'"/></br><b>'+invid+'<b>');
+				}
+			});
+		});
+	});
+	
+	//CLEAR BUTTON
+	$(document).ready(function() {	
+		$('#ClearFakturButton').click(function(){
+			document.getElementById("fm-form").reset();
+			$("#slcInvoiceNumber2").select2("val", "");
+		});
+	});
+	
+	//CLEAR BUTTON
+	$(document).ready(function() {	
+		$('#ClearSearch').click(function(){
+			$("#tanggal_akhir").datepicker('setDate', new Date());
+			$("#tanggal_awal").datepicker('setDate', new Date());
+			$("#tanggal_akhir_pilih").datepicker();
+			$("#tanggal_awal_pilih").datepicker();
+			$("#slcSupplier").select2("val", "");
+			$("#slcInvoiceNumber").select2("val", "");
 		});
 	});
 
