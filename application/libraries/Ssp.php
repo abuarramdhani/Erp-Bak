@@ -105,18 +105,22 @@ class SSP {
 		if ( isset($request['search']) && $request['search']['value'] != '' ) {
 			$str = $request['search']['value'];
 			$str = pg_escape_string($str);
-			for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
-				$requestColumn = $request['columns'][$i];
-				$columnIdx = array_search( $requestColumn['data'], $dtColumns );
-				$column = $columns[ $columnIdx ];
-				if(substr($column['db'],-4)=='date'){
-					$kolom = "to_char(".$column['db'].",'DD-MON-YYYY')";
-				}
-				else{
-					$kolom = $column['db'];
-				}
-				if ( $requestColumn['searchable'] == 'true' ) {
-					$globalSearch[] = " {$kolom}::varchar ILIKE UPPER('%$str%')";
+			$str = explode(" ",$str);
+			for($h=0;$h<count($str);$h++){
+				for ( $i=0, $ien=count($request['columns']) ; $i<$ien ; $i++ ) {
+					$requestColumn = $request['columns'][$i];
+					$columnIdx = array_search( $requestColumn['data'], $dtColumns );
+					$column = $columns[ $columnIdx ];
+					$var = $str[$h];
+					if(substr($column['db'],-4)=='date'){
+						$kolom = "to_char(".$column['db'].",'DD-MON-YYYY')";
+					}
+					else{
+						$kolom = $column['db'];
+					}
+					if ( $requestColumn['searchable'] == 'true' ) {
+						$globalSearch[$h][] = " {$kolom}::varchar ILIKE UPPER('%$var%')";
+					}
 				}
 			}
 		}
@@ -134,8 +138,15 @@ class SSP {
 		}
 		// Combine the filters into a single string
 		$where = '';
+		
 		if ( count( $globalSearch ) ) {
-			$where = '('.implode(' OR ', $globalSearch).')';
+			for($h=0;$h<count($globalSearch);$h++){
+				if($h!=count($globalSearch)-1){
+					$where = $where.'('.implode(' OR ', $globalSearch[$h]).') AND ';
+				}else{
+					$where = $where.'('.implode(' OR ', $globalSearch[$h]).')';
+				}
+			}
 		}
 		if ( count( $columnSearch ) ) {
 			$where = $where === '' ?
@@ -205,7 +216,8 @@ class SSP {
 		 	"draw"            => intval( $request['draw'] ),
 		 	"recordsTotal"    => intval( $recordsTotal ),
 		 	"recordsFiltered" => intval( $recordsFiltered ),
-		 	"data"            => self::data_output( $columns, $data )
+		 	"data"            => self::data_output( $columns, $data ),
+			"where"			=> $select
 		 );
 	}
 	
