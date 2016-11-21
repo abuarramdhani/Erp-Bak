@@ -465,6 +465,55 @@ $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Moni
 $route['PresenceManagement/Monitoring/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1';
 $route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
 
+//------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
+$route['ItemManagement'] = 'ItemManagement/C_Index/index';
+
+$route['ItemManagement/MasterItem']  = 'ItemManagement/Admin/C_MasterItem/index';
+$route['ItemManagement/MasterItem/(:any)']  = 'ItemManagement/Admin/C_MasterItem/$1';
+$route['ItemManagement/MasterItem/(:any)/(:any)']  = 'ItemManagement/Admin/C_MasterItem/$1/$2';
+
+$route['ItemManagement/SetupKebutuhan']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhan/index';
+$route['ItemManagement/SetupKebutuhan/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhan/$1';
+
+$route['ItemManagement/SetupKebutuhan/Kodesie']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/index';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1/$2';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1/$2/$3';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1/$2/$3/$4';
+
+$route['ItemManagement/SetupKebutuhan/Individu']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/index';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2/$3';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2/$3/$4';
+
+$route['ItemManagement/HitungKebutuhan']  = 'ItemManagement/Admin/C_HitungKebutuhan/index';
+$route['ItemManagement/HitungKebutuhan/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1';
+$route['ItemManagement/HitungKebutuhan/(:any)/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1/$2';
+$route['ItemManagement/HitungKebutuhan/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1/$2/$3';
+$route['ItemManagement/HitungKebutuhan/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1/$2/$3/$4';
+
+$route['ItemManagement/HitungKebutuhan/Individu']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/index';
+$route['ItemManagement/HitungKebutuhan/Individu/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1';
+$route['ItemManagement/HitungKebutuhan/Individu/(:any)/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1/$2';
+$route['ItemManagement/HitungKebutuhan/Individu/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1/$2/$3';
+$route['ItemManagement/HitungKebutuhan/Individu/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1/$2/$3/$4';
+
+$route['ItemManagement/MonitoringBon']  = 'ItemManagement/Admin/C_MonitoringBon/index';
+$route['ItemManagement/MonitoringBon/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1';
+$route['ItemManagement/MonitoringBon/(:any)/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1/$2';
+$route['ItemManagement/MonitoringBon/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1/$2/$3';
+
+$route['ItemManagement/User/MonitoringBon']  = 'ItemManagement/User/C_MonitoringBon/index';
+$route['ItemManagement/User/MonitoringBon/(:any)']  = 'ItemManagement/User/C_MonitoringBon/$1';
+$route['ItemManagement/User/MonitoringBon/(:any)/(:any)']  = 'ItemManagement/User/C_MonitoringBon/$1/$2';
+$route['ItemManagement/User/MonitoringBon/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_MonitoringBon/$1/$2/$3';
+
+$route['ItemManagement/User/InputPekerja']  = 'ItemManagement/User/C_InputPekerja/index';
+$route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1';
+$route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
+$route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
+
 //------------------------------------Account Payables---------------------------------------------------
 $route['AccountPayables'] 				= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
