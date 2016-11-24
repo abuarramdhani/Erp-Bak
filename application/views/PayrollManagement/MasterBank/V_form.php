@@ -38,9 +38,9 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                        <label for="txtKdBank" class="control-label col-lg-4">Kode Bank</label>
+                                        <label for="txtKdBankNew" class="control-label col-lg-4">Kode Bank</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Bank" name="txtKdBank" id="txtKdBank" class="form-control" value="<?php echo $kd_bank; ?>" maxlength="3"/>
+                                            <input type="text" placeholder="Bank" name="txtKdBankNew" id="txtKdBankNew" class="form-control" value="<?php echo $kd_bank; ?>" maxlength="3"/>
                                         </div>
                                     </div>
 									<div class="form-group">
@@ -73,7 +73,8 @@
                                                 ?>
 											</select>
 	                                    </div>
-	                                </div>                             
+	                                </div>
+									<input type="hidden" placeholder="Bank" name="txtKdBank" id="txtKdBank" class="form-control" value="<?php echo $kd_bank; ?>" maxlength="3"/>									
 								</div>
 								<div class="panel-footer">
 									<div class="row text-right">

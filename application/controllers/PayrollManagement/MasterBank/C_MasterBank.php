@@ -99,7 +99,7 @@ class C_MasterBank extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'kd_bank' => $this->input->post('txtKdBank',TRUE),
+				'kd_bank' => $this->input->post('txtKdBankNew',TRUE),
 				'bank' => $this->input->post('txtBank',TRUE),
 				'pot_transfer' => $this->input->post('txtPotTransfer',TRUE),
 				'pot_transfer_tg_prshn' => $this->input->post('txtPotTransferTgPrshn',TRUE),
@@ -150,7 +150,7 @@ class C_MasterBank extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kd_bank' => $this->input->post('txtKdBank',TRUE),
+			'kd_bank' => $this->input->post('txtKdBankNew',TRUE),
 			'bank' => $this->input->post('txtBank',TRUE),
 			'pot_transfer' => $this->input->post('txtPotTransfer',TRUE),
 			'pot_transfer_tg_prshn' => $this->input->post('txtPotTransferTgPrshn',TRUE),

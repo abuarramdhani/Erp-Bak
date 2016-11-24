@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_MasterBankInduk extends CI_Controller
+class C_MasterJabatan extends CI_Controller
 {
     function __construct()
     {
@@ -8,7 +8,7 @@ class C_MasterBankInduk extends CI_Controller
         $this->load->library('session');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('PayrollManagement/MasterBankInduk/M_masterbankinduk');
+        $this->load->model('PayrollManagement/MasterJabatan/M_masterjabatan');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -16,7 +16,8 @@ class C_MasterBankInduk extends CI_Controller
         }
     }
 
-	public function index(){
+	public function index()
+    {
         $this->checkSession();
         $user_id = $this->session->userid;
         
@@ -27,21 +28,21 @@ class C_MasterBankInduk extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $masterBankInduk = $this->M_masterbankinduk->get_all();
+        $masterJabatan = $this->M_masterjabatan->get_all();
 
-        $data['masterBankInduk_data'] = $masterBankInduk;
+        $data['masterJabatan_data'] = $masterJabatan;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/MasterBankInduk/V_index', $data);
+        $this->load->view('PayrollManagement/MasterJabatan/V_index', $data);
         $this->load->view('V_Footer',$data);
     }
-	
-	//LOAD READ PAGE
-	public function read($id){
+
+	public function read($id)
+    {
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $row = $this->M_masterbankinduk->get_by_id($id);
+        $row = $this->M_masterjabatan->get_by_id($id);
         if ($row) {
             $data = array(
             	'Menu' => 'Payroll Management',
@@ -51,23 +52,24 @@ class C_MasterBankInduk extends CI_Controller
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             
-				'kd_bank_induk' => $row->kd_bank_induk,
-				'bank_induk' => $row->bank_induk,
+				'kd_jabatan' => $row->kd_jabatan,
+				'jabatan' => $row->jabatan,
 			);
 
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('PayrollManagement/MasterBankInduk/V_read', $data);
+            $this->load->view('PayrollManagement/MasterJabatan/V_read', $data);
             $this->load->view('V_Footer',$data);
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/MasterBankInduk'));
+            redirect(site_url('PayrollManagement/MasterJabatan'));
         }
     }
-	
-	//LOAD CREATE PAGE
-    public function create(){
+
+    public function create()
+    {
+
         $this->checkSession();
         $user_id = $this->session->userid;
 
@@ -78,50 +80,37 @@ class C_MasterBankInduk extends CI_Controller
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            'action' => site_url('PayrollManagement/MasterBankInduk/save'),
-			'kd_bank_induk' => set_value(''),
-			'bank_induk' => set_value(''),
+            'action' => site_url('PayrollManagement/MasterJabatan/save'),
+				'kd_jabatan' => set_value(''),
+			'jabatan' => set_value('jabatan'),
 		);
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/MasterBankInduk/V_form', $data);
+        $this->load->view('PayrollManagement/MasterJabatan/V_form', $data);
         $this->load->view('V_Footer',$data);
     }
 
-	//SAVE NEW DATA
     public function save(){
-		$this->formValidation();
-
-        $data = array(
-			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
-		);
-
-        $this->M_masterbankinduk->insert($data);
-        $this->session->set_flashdata('message', 'Create Record Success');
-        redirect(site_url('PayrollManagement/MasterBankInduk'));
-    }
-	
-	//SAVE DATA UPDATE
-    public function saveUpdate(){
         $this->formValidation();
 
-		$data = array(
-			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+        $data = array(
+			'kd_jabatan' => $this->input->post('txtKdJabatanNew',TRUE),
+			'jabatan' => $this->input->post('txtJabatan',TRUE),
 		);
 
-        $this->M_masterbankinduk->update($this->input->post('txtKdBankInduk', TRUE), $data);
-        $this->session->set_flashdata('message', 'Update Record Success');
-        redirect(site_url('PayrollManagement/MasterBankInduk'));
+        $this->M_masterjabatan->insert($data);
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/MasterJabatan'));
     }
 
-    public function update($id){
-		$this->checkSession();
+    public function update($id)
+    {
+
+        $this->checkSession();
         $user_id = $this->session->userid;
 
-        $row = $this->M_masterbankinduk->get_by_id($id);
+        $row = $this->M_masterjabatan->get_by_id($id);
 
         if ($row) {
             $data = array(
@@ -131,31 +120,42 @@ class C_MasterBankInduk extends CI_Controller
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-                'action' => site_url('PayrollManagement/MasterBankInduk/saveUpdate'),
-				'kd_bank_induk' => set_value('txtKdBankInduk', $row->kd_bank_induk),
-				'bank_induk' => set_value('txtBankInduk', $row->bank_induk),
+                'action' => site_url('PayrollManagement/MasterJabatan/saveUpdate'),
+				'kd_jabatan' => set_value('txtKdJabatan', $row->kd_jabatan),
+				'jabatan' => set_value('txtJabatan', $row->jabatan),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('PayrollManagement/MasterBankInduk/V_form', $data);
+            $this->load->view('PayrollManagement/MasterJabatan/V_form', $data);
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/MasterBankInduk'));
+            redirect(site_url('PayrollManagement/MasterJabatan'));
         }
     }
 
+    public function saveUpdate(){
+       $data = array(
+			'kd_jabatan' => $this->input->post('txtKdJabatanNew',TRUE),
+			'jabatan' => $this->input->post('txtJabatan',TRUE),
+		);
 
-    public function delete($id){
-        $row = $this->M_masterbankinduk->get_by_id($id);
+        $qwer = $this->M_masterjabatan->update($this->input->post('txtKdJabatan', TRUE), $data);
+		$this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('PayrollManagement/MasterJabatan'));
+    }
+
+    public function delete($id)
+    {
+        $row = $this->M_masterjabatan->get_by_id($id);
 
         if ($row) {
-            $this->M_masterbankinduk->delete($id);
+            $this->M_masterjabatan->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('PayrollManagement/MasterBankInduk'));
+            redirect(site_url('PayrollManagement/MasterJabatan'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/MasterBankInduk'));
+            redirect(site_url('PayrollManagement/MasterJabatan'));
         }
     }
 
@@ -167,11 +167,10 @@ class C_MasterBankInduk extends CI_Controller
         }
     }
 
-    public function formValidation(){
-	}
+    public function formValidation(){}
 
 }
 
-/* End of file C_MasterBankInduk.php */
-/* Location: ./application/controllers/PayrollManagement/MasterBankInduk/C_MasterBankInduk.php */
-/* Generated automatically on 2016-11-24 09:56:50 */
+/* End of file C_MasterJabatan.php */
+/* Location: ./application/controllers/PayrollManagement/MasterJabatan/C_MasterJabatan.php */
+/* Generated automatically on 2016-11-24 09:47:28 */
