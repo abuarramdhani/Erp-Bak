@@ -183,7 +183,7 @@ class C_Receipt extends CI_Controller {
 		$orderprice	= $this->input->post('TxtSinglePrice');
 		$fine 		= $this->input->post('TxtFine');
 		$pph 		= $this->input->post('TxtPPH');
-		$payment	= $this->input->post('TxtPayment');
+		$payment	= $this->input->post('TxtTotal');
 		
 		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
 		
