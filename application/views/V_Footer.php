@@ -1,4 +1,4 @@
-</div>
+			</div>
 		</div>
 		
 	   <!-- FOOTER -->
@@ -32,13 +32,11 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
-	<!--<script src="<?php echo base_url('assets/plugins/jquery-autocomplete/jquery.autocomplete.min.js');?>"></script>-->
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCM.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";

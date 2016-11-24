@@ -471,5 +471,14 @@ $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
 
+//------------------------------------Payroll Management---------------------------------------------------
+$route['PayrollManagement/MasterBankInduk'] = 'PayrollManagement/MasterBankInduk/C_MasterBankInduk';
+$route['PayrollManagement/MasterBankInduk/(:any)'] = 'PayrollManagement/MasterBankInduk/C_MasterBankInduk/$1';
+$route['PayrollManagement/MasterBankInduk/(:any)/(:any)'] = 'PayrollManagement/MasterBankInduk/C_MasterBankInduk/$1/$2';
+
+$route['PayrollManagement/MasterBank'] = 'PayrollManagement/MasterBank/C_MasterBank';
+$route['PayrollManagement/MasterBank/(:any)'] = 'PayrollManagement/MasterBank/C_MasterBank/$1';
+$route['PayrollManagement/MasterBank/(:any)/(:any)'] = 'PayrollManagement/MasterBank/C_MasterBank/$1/$2';
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
