@@ -40,19 +40,19 @@
 									<div class="form-group">
                                             <label for="txtKdStatusKerjaNew" class="control-label col-lg-4">Kode Status Kerja</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Status Kerja" name="txtKdStatusKerjaNew" id="txtKdStatusKerjaNew" class="form-control" value="<?php echo $kd_status_kerja; ?>"/>
+                                                <input type="text" placeholder="Status Kerja" name="txtKdStatusKerjaNew" id="txtKdStatusKerjaNew" class="form-control" value="<?php echo $kd_status_kerja; ?>" maxlength="2"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtStatusKerja" class="control-label col-lg-4">Status Kerja</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Status Kerja" name="txtStatusKerja" id="txtStatusKerja" class="form-control" value="<?php echo $status_kerja; ?>"/>
+                                                <input type="text" placeholder="Status Kerja" name="txtStatusKerja" id="txtStatusKerja" class="form-control" value="<?php echo $status_kerja; ?>" maxlength="50"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtStatusKerjaSingkat" class="control-label col-lg-4">Status Kerja Singkat</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Status Kerja Singkat" name="txtStatusKerjaSingkat" id="txtStatusKerjaSingkat" class="form-control" value="<?php echo $status_kerja_singkat; ?>"/>
+                                                <input type="text" placeholder="Status Kerja Singkat" name="txtStatusKerjaSingkat" id="txtStatusKerjaSingkat" class="form-control" value="<?php echo $status_kerja_singkat; ?>" maxlength="30"/>
                                             </div>
                                     </div>
 

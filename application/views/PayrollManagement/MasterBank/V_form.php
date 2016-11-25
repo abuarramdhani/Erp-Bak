@@ -40,25 +40,25 @@
 									<div class="form-group">
                                         <label for="txtKdBankNew" class="control-label col-lg-4">Kode Bank</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Bank" name="txtKdBankNew" id="txtKdBankNew" class="form-control" value="<?php echo $kd_bank; ?>" maxlength="3"/>
+                                            <input type="text" placeholder="Bank" name="txtKdBankNew" id="txtKdBankNew" class="form-control" value="<?php echo $kd_bank; ?>" maxlength="3" />
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBank" class="control-label col-lg-4">Bank</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Bank" name="txtBank" id="txtBank" class="form-control" value="<?php echo $bank; ?>"/>
+                                            <input type="text" placeholder="Bank" name="txtBank" id="txtBank" class="form-control" value="<?php echo $bank; ?>" maxlength="30" />
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPotTransfer" class="control-label col-lg-4">Pot Transfer</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pot Transfer" name="txtPotTransfer" id="txtPotTransfer" class="form-control" value="<?php echo $pot_transfer; ?>"/>
+                                            <input type="text" placeholder="Pot Transfer" name="txtPotTransfer" id="txtPotTransfer" class="form-control" value="<?php echo $pot_transfer; ?>" maxlength="10" />
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPotTransferTgPrshn" class="control-label col-lg-4">Pot Transfer Tg Perusahaan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pot Transfer Tg Prshn" name="txtPotTransferTgPrshn" id="txtPotTransferTgPrshn" class="form-control" value="<?php echo $pot_transfer_tg_prshn; ?>"/>
+                                            <input type="text" placeholder="Pot Transfer Tg Prshn" name="txtPotTransferTgPrshn" id="txtPotTransferTgPrshn" class="form-control" value="<?php echo $pot_transfer_tg_prshn; ?>" maxlength="10" />
                                         </div>
                                     </div>
 									<div class="form-group">
