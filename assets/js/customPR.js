@@ -52,5 +52,11 @@ $('#dataTables-setgajiump').DataTable( {
         'excel'
       ]
     });
+$('#dataTables-settarifpekerjasakit').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 //$('#cmbKdBankInduk').select2();
 //$('#cmbDept').select2();
