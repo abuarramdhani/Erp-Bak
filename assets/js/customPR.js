@@ -10,7 +10,6 @@ $('#dataTables-masterJabatan').DataTable( {
         'excel'
       ]
     });
-$('#cmbDept').select2();
 $('#dataTables-masterSeksi').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -35,11 +34,23 @@ $('#dataTables-masterBankInduk').DataTable( {
         'excel'
       ]
     });
-$('#cmbKdBankInduk').select2();
-$('#dataTables-masterBank').DataTable({"lengthChange": false});
+$('#dataTables-masterBank').DataTable({
+	  dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+	});
 $('#dataTables-masterSekolahAsal').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
+$('#dataTables-setgajiump').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+//$('#cmbKdBankInduk').select2();
+//$('#cmbDept').select2();
