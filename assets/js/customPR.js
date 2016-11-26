@@ -58,5 +58,18 @@ $('#dataTables-settarifpekerjasakit').DataTable( {
         'excel'
       ]
     });
+	
+$('#dataTables-standartJamTkpw').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-standartJamUmum').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 //$('#cmbKdBankInduk').select2();
 //$('#cmbDept').select2();
