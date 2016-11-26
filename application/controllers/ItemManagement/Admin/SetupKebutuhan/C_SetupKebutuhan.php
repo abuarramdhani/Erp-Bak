@@ -63,7 +63,21 @@ class C_SetupKebutuhan extends CI_Controller {
 
 		$kodepkj = $this->M_setupkebutuhan->getKodePekerjaan($term);
 
-		echo json_encode($kodepkj);
+		echo "<option></option>";
+		foreach ($kodepkj as $pkj) {
+			echo '<option value="'.$pkj['kdpekerjaan'].'">'.$pkj['kdpekerjaan'].' - '.$pkj['pekerjaan'].'</option>';
+		}
+	}
+
+	public function getNoInduk(){
+		$term = $this->input->get('term');
+
+		$noinduk = $this->M_setupkebutuhan->getNoInduk($term);
+
+		echo "<option></option>";
+		foreach ($noinduk as $ind) {
+			echo '<option value="'.$ind['employee_code'].'">'.$ind['employee_code'].' - '.$ind['employee_name'].'</option>';
+		}
 	}
 
 	public function getKodeBarang(){

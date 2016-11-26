@@ -45,7 +45,7 @@ class C_InputPekerja extends CI_Controller {
 
 		$user_kodesie = $this->M_inputpekerja->UserKodesie($user_id);
 		foreach ($user_kodesie as $uk) {
-			$kodesie = $uk['section_code'];
+			$kodesie = $uk['kodesie'];
 		}
 		$data['JumlahPekerja'] = $this->M_inputpekerja->JumlahPekerja($kodesie);
 
@@ -56,9 +56,14 @@ class C_InputPekerja extends CI_Controller {
 	}
 
 	public function getKodePekerjaan(){
+		$user_id = $this->session->userid;
 		$term = $this->input->get('term');
+		$user_kodesie = $this->M_inputpekerja->UserKodesie($user_id);
+		foreach ($user_kodesie as $uk) {
+			$kodesie = $uk['kodesie'];
+		}
 
-		$kodepkj = $this->M_inputpekerja->getPekerjaan($term);
+		$kodepkj = $this->M_inputpekerja->getPekerjaan($term,$kodesie);
 
 		echo json_encode($kodepkj);
 	}
@@ -90,7 +95,9 @@ class C_InputPekerja extends CI_Controller {
 	public function create(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		$data['Menu'] = 'Setup Kebutuhan';
+		$data['Menu'] = 'Input Pekerja';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -98,10 +105,12 @@ class C_InputPekerja extends CI_Controller {
 
 		$user_kodesie = $this->M_inputpekerja->UserKodesie($user_id);
 		foreach ($user_kodesie as $uk) {
-			$kodesie = $uk['section_code'];
+			$kodesie = $uk['kodesie'];
+			$seksi = $uk['seksi'];
 		}
 
 		$data['user_kodesie'] = $kodesie;
+		$data['user_seksi'] = $seksi;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -131,63 +140,59 @@ class C_InputPekerja extends CI_Controller {
 		}
 	}
 
-	public function edit(){
-		$kode_barang = $this->input->post('kode_barang');
+	public function edit($id_jml_pkj){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		$data['Menu'] = 'Input Pekerja';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['UpdateData'] = $this->M_inputpekerja->UpdateData($kode_barang);
-		$data['SatuanList'] = $this->M_inputpekerja->SatuanList();
-		$data['UkuranList'] = $this->M_inputpekerja->UkuranList();
+		$user_kodesie = $this->M_inputpekerja->UserKodesie($user_id);
+		foreach ($user_kodesie as $uk) {
+			$kodesie = $uk['kodesie'];
+			$seksi = $uk['seksi'];
+		}
 
-		$this->load->view('ItemManagement/Admin/MasterItem/V_Update', $data);
+		$data['user_kodesie'] = $kodesie;
+		$data['user_seksi'] = $seksi;
+
+		$data['UpdateData'] = $this->M_inputpekerja->UpdateData($id_jml_pkj);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ItemManagement/User/InputPekerja/V_Edit',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function update(){
-		$kode_barang_old = $this->input->post('txt_kode_barang_old');
-		$kode_barang = strtoupper($this->input->post('txt_kode_barang'));
-		$detail = strtoupper($this->input->post('txt_detail'));
-		$umur = $this->input->post('txt_umur');
-		$satuan = $this->input->post('txt_satuan');
-		$stok = $this->input->post('txt_stok');
-		$ukuran = $this->input->post('txt_ukuran');
-		$dikembalikan = $this->input->post('txt_dikembalikan');
-		$peringatan = $this->input->post('txt_peringatan');
-		$interval_peringatan = $this->input->post('txt_interval_peringatan');
-		$satuan_peringatan = strtoupper($this->input->post('txt_satuan_peringatan'));
-		$set_buffer = $this->input->post('txt_set_buffer');
+		$id_jml_pkj = $this->input->post('txt_id_jml_pkj');
+		$periode = $this->input->post('txt_periode');
+		$kodesie = $this->input->post('txt_kodesie');
+		$kdpekerjaan = $this->input->post('txt_kdpekerjaan');
+		$jumlah = $this->input->post('txt_jumlah');
 
-		if ($kode_barang == $kode_barang_old) {
-			$update = $this->M_inputpekerja->update($kode_barang, $detail, $umur, $satuan, $stok, $ukuran, $dikembalikan, $peringatan, $interval_peringatan, $satuan_peringatan, $set_buffer, $kode_barang_old);
-			if ($update == 1) {
-				$this->show_alert('Item Updated Successfully', 'bg-primary', base_url('ItemManagement/MasterItem'));
-			}
-			else{
-				$this->show_alert('Error Ocured when updating Item', 'alert-danger', base_url('ItemManagement/MasterItem'));
-			}
+		$update = $this->M_inputpekerja->update($id_jml_pkj, $periode, $kodesie, $kdpekerjaan, $jumlah);
+		$result[] = $update;
+
+		if (in_array(0, $result)) {
+			$this->show_alert('Error Ocured when inserting Item', 'alert-danger', base_url('ItemManagement/User/InputPekerja'));
 		}
 		else{
-			$CheckItem = $this->M_inputpekerja->CheckItem($kode_barang);
-			if ($CheckItem == 0) {
-				$update = $this->M_inputpekerja->update($kode_barang, $detail, $umur, $satuan, $stok, $ukuran, $dikembalikan, $peringatan, $interval_peringatan, $satuan_peringatan, $set_buffer, $kode_barang_old);
-				if ($update == 1) {
-					$this->show_alert('Item Updated Successfully', 'bg-primary', base_url('ItemManagement/MasterItem'));
-				}
-				else{
-					$this->show_alert('Error Ocured when updating Item', 'alert-danger', base_url('ItemManagement/MasterItem'));
-				}
-			}
-			else{
-				$this->show_alert('Item Code Already Exist', 'alert-danger', base_url('ItemManagement/MasterItem'));
-			}
+			$this->show_alert('Item Created Successfully', 'bg-primary', base_url('ItemManagement/User/InputPekerja'));
 		}
 	}
 
-	public function delete($kode_barang){
-		$delete = $this->M_inputpekerja->delete($kode_barang);
+	public function delete($id_jml_pkj){
+		$delete = $this->M_inputpekerja->delete($id_jml_pkj);
 		if ($delete == 1) {
-			$this->show_alert('Item Deleted Successfully', 'bg-primary', base_url('ItemManagement/MasterItem'));
+			$this->show_alert('Item Deleted Successfully', 'bg-primary', base_url('ItemManagement/User/InputPekerja'));
 		}
 		else{
-			$this->show_alert('Error Ocured when deleting Item', 'alert-danger', base_url('ItemManagement/MasterItem'));
+			$this->show_alert('Error Ocured when deleting Item', 'alert-danger', base_url('ItemManagement/User/InputPekerja'));
 		}
 	}
 }

@@ -1,3 +1,124 @@
+//$(document).ready(function(){
+	var table_group = $('#im-data-table-group').DataTable({
+		"dom": '<"pull-left"f>tip',
+		"info": false,
+		"displayLength": 10,
+		language: {
+			search: "Search : ",
+		},
+		"columnDefs": [
+			{ "visible": false, "targets": 2 }
+		],
+		"order": [[ 2, 'asc' ]],
+		"drawCallback": function ( settings ) {
+			var api = this.api();
+			var rows = api.rows( {page:'current'} ).nodes();
+			var last=null;
+ 
+			api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+				if ( last !== group ) {
+					$(rows).eq( i ).before(
+						'<tr class="group"><td colspan="4">'+group+'</td></tr>'
+					);
+ 
+					last = group;
+				}
+			} );
+		}
+	});
+
+	$('#im-data-table-group tbody').on( 'click', 'tr.group', function () {
+		var currentOrder = table_group.order()[0];
+		if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
+			table_group.order( [ 2, 'desc' ] ).draw();
+		}
+		else {
+			table_group.order( [ 2, 'asc' ] ).draw();
+		}
+	} );
+
+
+	var table_ignore_last = $('#im-data-table-ignore-last').DataTable({
+		"dom": '<"pull-left"f>tip',
+		"info": false,
+		language: {
+			search: "Search : ",
+		},
+		"columnDefs": [
+			{
+				"targets": [ -1 ],
+				"searchable": false,
+				"orderable": false,
+			}
+		],
+	});
+
+	data_table();
+	function data_table(){
+		var table = $('#im-data-table, .im-data-table').DataTable({
+			destroy: true,
+			"dom": '<"pull-left"f>tip',
+			"info": false,
+			language: {
+				search: "Search : ",
+			},
+		});
+
+		$('.dataTables_filter input[type="search"]').css(
+			{'width':'400px','display':'inline-block'}
+		);
+	}
+
+	checkBox();
+	var rows = table_ignore_last.rows({ 'search': 'applied' }).nodes();
+	function checkBox(){
+		var rows = table_ignore_last.rows({ 'search': 'applied' }).nodes();
+		if ($('input[name="txt_data_status[]"]:checked', rows).length > 0)
+		{
+			$('#update-status-btn').prop('disabled', false);
+		}
+		else
+		{
+			$('input[name="check_all"]').prop('checked', false);
+			$('#update-status-btn').prop('disabled', true);
+		}
+
+		if ($('input[name="txt_data_status[]"]', rows).length > $('input[name="txt_data_status[]"]:checked', rows).length)
+		{
+			$('input[name="check_all"]').prop('checked', false);
+		}
+		else{
+			$('input[name="check_all"]').prop('checked', true);
+		}
+	}
+
+	$('input[name="txt_data_status[]"]', rows).change(function(){
+		checkBox();
+	});
+
+	$('input[name="check_all"]').on('change', function(){
+		$('input[name="txt_data_status[]"]', rows).prop('checked', this.checked);
+
+		checkBox();
+	});
+
+	$('#form-status').on('submit', function(e){
+		var form = this;
+		table_ignore_last.$('input[type="checkbox"]').each(function(){
+			if(!$.contains(document, this)){
+				if(this.checked){
+					$(form).append(
+						$('<input>')
+							.attr('type', 'hidden')
+							.attr('name', this.name)
+							.val(this.value)
+					);
+				}
+			} 
+		});
+	});
+//});
+
 im_datepicker();
 function im_datepicker(){
 	$(document).ready(function() {
@@ -23,6 +144,24 @@ function select2_IM(){
 	});
 }
 
+checkbox_peringatan();
+function checkbox_peringatan(){
+	$('#chkPeringatan').on('change', function(){
+		if (this.checked) {
+			$('#peringatan').show();
+			$('select[name="txt_satuan_peringatan"]').prop('required', true);
+			$('input[name="txt_interval_peringatan"]').prop('required', true);
+		}
+		else{
+			$('#peringatan').hide();
+			$('select[name="txt_satuan_peringatan"]').select2("val", "");
+			$('select[name="txt_satuan_peringatan"]').prop('required', false);
+			$('input[name="txt_interval_peringatan"]').val("");
+			$('input[name="txt_interval_peringatan"]').prop('required', false);
+		}
+	});
+}
+
 function update_item(id){
 	$('#update-form').html('');
 	$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="64px"/>');
@@ -35,6 +174,70 @@ function update_item(id){
 			$('#loading').html('');
 			$('#update-form').html(result);
 			select2_IM();
+			checkbox_peringatan();
+		},
+		error:function()
+		{
+			$('#loading').html('');
+			$('#update-form').html("<center><h1>Error Ocurred When Getting Data!</h1></center>");
+		}
+	});
+}
+
+function detail_kebutuhan(kd_std,kd_sie,kd_pekerjaan){
+	$('#update-form').html('');
+	$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="64px"/>');
+	$.ajax({
+		type:'POST',
+		data:{kd_std:kd_std, kd_sie:kd_sie, kd_pekerjaan:kd_pekerjaan},
+		url: baseurl+"ItemManagement/SetupKebutuhan/Kodesie/detail",
+		success:function(result)
+		{
+			$('#loading').html('');
+			$('#update-form').html(result);
+			data_table();
+		},
+		error:function()
+		{
+			$('#loading').html('');
+			$('#update-form').html("<center><h1>Error Ocurred When Getting Data!</h1></center>");
+		}
+	});
+}
+
+function detail_kebutuhan_indv(kd_std,kd_sie,noind){
+	$('#update-form').html('');
+	$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="64px"/>');
+	$.ajax({
+		type:'POST',
+		data:{kd_std:kd_std, kd_sie:kd_sie, noind:noind},
+		url: baseurl+"ItemManagement/SetupKebutuhan/Individu/detail",
+		success:function(result)
+		{
+			$('#loading').html('');
+			$('#update-form').html(result);
+			data_table();
+		},
+		error:function()
+		{
+			$('#loading').html('');
+			$('#update-form').html("<center><h1>Error Ocurred When Getting Data!</h1></center>");
+		}
+	});
+}
+
+function detail_monitoring_kebutuhan(periode,kd_sie){
+	$('#update-form').html('');
+	$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="64px"/>');
+	$.ajax({
+		type:'POST',
+		data:{periode:periode, kd_sie:kd_sie},
+		url: baseurl+"ItemManagement/Hitung/MonitoringKebutuhan/detail",
+		success:function(result)
+		{
+			$('#loading').html('');
+			$('#update-form').html(result);
+			data_table();
 		},
 		error:function()
 		{
@@ -56,6 +259,10 @@ function delete_kebutuhan_indv(kd_std,kd_sie,noind){
 	$('#delete_btn').attr('href', baseurl + 'ItemManagement/SetupKebutuhan/Individu/delete/' + kd_std + '/' + kd_sie + '/' + noind);
 }
 
+function delete_jumlah_pekerja(id){
+	$('#delete_btn').attr('href', baseurl + 'ItemManagement/User/InputPekerja/delete/' + id);
+}
+
 function addNewForm(){
 	var new_form = $('<div>').addClass('form-clone');
 	var e = jQuery.Event( "click" );
@@ -63,9 +270,14 @@ function addNewForm(){
 	$(".form-clone:last .slcKodeBrg:last").select2("destroy");
 	$(".form-clone:last .slcBonItem:last").select2("destroy");
 	$(".form-clone:last .slcKodePkj:last").select2("destroy");
-	$('.form-clone').last().clone().appendTo(new_form).appendTo('#multiple-form');
+	if ($('.add-col').length) {
+		$('.add-col').before($('.form-clone').last().clone());
+	}
+	else{
+		$('.form-clone').last().clone().appendTo(new_form).appendTo('#multiple-form');
+	}
 	$(".form-clone:last .form-control").val("").change();
-	$(".form-clone:last .periode-selesai:last").val("999912").change();
+	$(".form-clone:last .periode-selesai:last").val("9999-12").change();
 	kode_barang();
 	getDetail();
 	im_datepicker();
@@ -94,7 +306,7 @@ function kode_barang(){
 		$('.slcKodeBrg').select2({
 			placeholder : $(this).data('placeholder'),
 			allowClear : true,
-			minimumInputLength: 2,
+			minimumInputLength: 0,
 			ajax: {		
 				url: baseurl + "ItemManagement/SetupKebutuhan/getKodeBarang",
 				dataType: 'json',
@@ -211,7 +423,7 @@ $(document).ready(function() {
 	$('#slcKodesie').select2({
 		placeholder : $(this).data('placeholder'),
 		allowClear : true,
-		minimumInputLength: 2,
+		minimumInputLength: 0,
 		ajax: {		
 			url: baseurl + "ItemManagement/SetupKebutuhan/getSeksi",
 			dataType: 'json',
@@ -232,28 +444,59 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#slcKodesie').change(function(){
+		var value = $(this).val();
+		console.log(value);
+		if (value != null && value != '') {
+			$('#save-btn').prop("disabled", false);
+
+			$('#slcKodePkj').prop("disabled", false);
+			$('#slcKodePkj').select2("val", "");
+			$('#slcKodePkj').select2("data", null);
+			$.ajax({
+				type:'GET',
+				data:{term:value},
+				url:baseurl+"ItemManagement/SetupKebutuhan/getKodePekerjaan",
+				success:function(result)
+				{
+					$('#slcKodePkj').html(result);
+				}
+			});
+
+			$('#slcNoInduk').prop("disabled", false);
+			$('#slcNoInduk').select2("val", "");
+			$('#slcNoInduk').select2("data", null);
+			$.ajax({
+				type:'GET',
+				data:{term:value},
+				url:baseurl+"ItemManagement/SetupKebutuhan/getNoInduk",
+				success:function(result)
+				{
+					$('#slcNoInduk').html(result);
+				}
+			});
+		}
+		else{
+			$('#slcKodePkj').select2("val", "");
+			$('#slcKodePkj').select2("data", null);
+			$('#slcKodePkj').prop("disabled", true);
+			
+			$('#slcNoInduk').select2("val", "");
+			$('#slcNoInduk').select2("data", null);
+			$('#slcNoInduk').prop("disabled", true);
+
+			$('#save-btn').prop("disabled", true);
+		}
+	});
+
 	$('#slcKodePkj').select2({
 		placeholder : $(this).data('placeholder'),
 		allowClear : true,
-		minimumInputLength: 2,
-		ajax: {		
-			url: baseurl + "ItemManagement/SetupKebutuhan/getKodePekerjaan",
-			dataType: 'json',
-			type: "GET",
-			data: function (params) {
-				var queryParameters = {
-					term: params.term,
-				}
-				return queryParameters;
-			},
-			processResults: function (data) {
-				return {
-					results: $.map(data, function(obj) {
-						return { id:obj.kdpekerjaan, text:obj.kdpekerjaan + ' - ' + obj.pekerjaan};
-					})
-				};
-			}
-		}
+	});
+
+	$('#slcNoInduk').select2({
+		placeholder : $(this).data('placeholder'),
+		allowClear : true,
 	});
 });
 
@@ -318,7 +561,7 @@ $("#btn-hitung-kebutuhan").click(function(){
 	$.ajax({
 		type:'POST',
 		data:$("#form-hitung-kebutuhan").serialize(),
-		url: baseurl+"ItemManagement/HitungKebutuhan/calculate",
+		url: baseurl+"ItemManagement/Hitung/HitungKebutuhan/calculate",
 		success:function(result)
 		{
 			$('#hitung-kebutuhan').html(result);
@@ -326,7 +569,7 @@ $("#btn-hitung-kebutuhan").click(function(){
 			$.ajax({
 				type:'POST',
 				data:$("#form-hitung-kebutuhan").serialize(),
-				url: baseurl+"ItemManagement/HitungKebutuhan/calculate",
+				url: baseurl+"ItemManagement/Hitung/HitungKebutuhan/calculate",
 				success:function(result)
 				{
 					$('#summary-kebutuhan').html(result);
@@ -370,80 +613,3 @@ $('#date-filter').change(function(){
 	});
 });
 
-$(document).ready(function(){
-	var table_ignore_last = $('#im-data-table-ignore-last').DataTable({
-		"dom": '<"pull-left"f>tip',
-		"info": false,
-		language: {
-			search: "Search : ",
-		},
-		"columnDefs": [
-			{
-				"targets": [ -1 ],
-				"searchable": false,
-				"orderable": false,
-			}
-		],
-	});
-
-	var table = $('#im-data-table').DataTable({
-		"dom": '<"pull-left"f>tip',
-		"info": false,
-		language: {
-			search: "Search : ",
-		},
-	});
-
-	$('.dataTables_filter input[type="search"]').css(
-		{'width':'400px','display':'inline-block'}
-	);
-
-	checkBox();
-	function checkBox(){
-		var rows = table_ignore_last.rows({ 'search': 'applied' }).nodes();
-		$('input[name="txt_data_status[]"]', rows).change(function(){
-			if ($('input[name="txt_data_status[]"]:checked', rows).length > 0)
-			{
-				$('#update-status-btn').prop('disabled', false);
-			}
-			else
-			{
-				$('input[name="check_all"]').prop('checked', false);
-				$('#update-status-btn').prop('disabled', true);
-			}
-
-			if ($('input[name="txt_data_status[]"]', rows).length > $('input[name="txt_data_status[]"]:checked', rows).length)
-			{
-				$('input[name="check_all"]').prop('checked', false);
-			}
-			else{
-				$('input[name="check_all"]').prop('checked', true);
-			}
-		});
-	}
-
-	$('input[name="check_all"]').on('change', function(){
-		var rows = table_ignore_last.rows({ 'search': 'applied' }).nodes();
-		$('input[name="txt_data_status[]"]', rows).prop('checked', this.checked);
-
-		checkBox();
-	});
-
-	$('#form-status').on('submit', function(e){
-		var form = this;
-		table_ignore_last.$('input[type="checkbox"]').each(function(){
-			if(!$.contains(document, this)){
-				if(this.checked){
-					$(form).append(
-						$('<input>')
-							.attr('type', 'hidden')
-							.attr('name', this.name)
-							.val(this.value)
-					);
-				}
-			} 
-		});
-	});
-
-
-});

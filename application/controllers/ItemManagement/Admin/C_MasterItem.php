@@ -110,6 +110,15 @@ class C_MasterItem extends CI_Controller {
 		$interval_peringatan = $this->input->post('txt_interval_peringatan');
 		$satuan_peringatan = strtoupper($this->input->post('txt_satuan_peringatan'));
 		$set_buffer = $this->input->post('txt_set_buffer');
+		if ($dikembalikan == '') {
+			$dikembalikan = 0;
+		}
+
+		if ($peringatan == '') {
+			$peringatan = 0;
+			$interval_peringatan = 0;
+			$satuan_peringatan = 0;
+		}
 
 		$CheckItem = $this->M_masteritem->CheckItem($kode_barang);
 		if ($CheckItem == 0) {
@@ -149,6 +158,16 @@ class C_MasterItem extends CI_Controller {
 		$interval_peringatan = $this->input->post('txt_interval_peringatan');
 		$satuan_peringatan = strtoupper($this->input->post('txt_satuan_peringatan'));
 		$set_buffer = $this->input->post('txt_set_buffer');
+
+		if ($dikembalikan == '') {
+			$dikembalikan = 0;
+		}
+
+		if ($peringatan == '') {
+			$peringatan = 0;
+			$interval_peringatan = 0;
+			$satuan_peringatan = 0;
+		}
 
 		if ($kode_barang == $kode_barang_old) {
 			$update = $this->M_masteritem->update($kode_barang, $detail, $umur, $satuan, $stok, $ukuran, $dikembalikan, $peringatan, $interval_peringatan, $satuan_peringatan, $set_buffer, $kode_barang_old);

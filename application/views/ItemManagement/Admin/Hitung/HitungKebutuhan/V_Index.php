@@ -1,5 +1,5 @@
 <section class="content-header">
-	<a class="btn btn-primary pull-right" href="<?php echo base_url('ItemManagement/HitungKebutuhan/create')?>">
+	<a class="btn btn-primary pull-right" href="<?php echo base_url('ItemManagement/Hitung/HitungKebutuhan/create')?>">
 		<span class="fa fa-plus" aria-hidden="true"></span> NEW
 	</a>
 	<h1>
@@ -11,7 +11,7 @@
 		<div class="col-lg-12">	
 			<div class="box box-primary">
 				<div class="box-body with-border">
-					<form id="form-status" method="post" action="<?php echo base_url('ItemManagement/HitungKebutuhan/changeStatus')?>">
+					<form id="form-status" method="post" action="<?php echo base_url('ItemManagement/Hitung/HitungKebutuhan/changeStatus')?>">
 						<div class="pull-right">
 							<button id="update-status-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-status" disabled><i class="fa fa-edit"></i> CHANGE STATUS</button>
 						</div>

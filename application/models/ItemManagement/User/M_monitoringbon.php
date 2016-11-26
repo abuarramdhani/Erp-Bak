@@ -30,7 +30,7 @@ class M_monitoringbon extends CI_Model {
 
 	public function UserKodesie($user_id){
 		$sql="
-			SELECT * FROM es.tb_seksi
+			SELECT *, substr(kodesie, 0, 8) kodesie FROM es.tb_seksi
 			WHERE kodesie = (	SELECT section_code FROM er.er_employee_all
 									WHERE employee_id = (	SELECT employee_id FROM sys.sys_user
 															WHERE user_id = '$user_id'))
@@ -52,7 +52,7 @@ class M_monitoringbon extends CI_Model {
 
 	public function getItem($term,$kodesie,$periode){
 		$sql="
-			SELECT * FROM es.tb_batas_bon bb
+			SELECT * FROM es.tb_keb_k3 bb
 			LEFT JOIN es.tb_master_item mi ON mi.kode_barang = bb.kode_barang
 			WHERE (bb.kode_barang ILIKE '%$term%' OR mi.detail ILIKE '%$term%') AND bb.kodesie = '$kodesie' AND bb.total_kebutuhan != 0 AND bb.periode = '$periode'
 			ORDER BY bb.kode_barang
@@ -63,7 +63,7 @@ class M_monitoringbon extends CI_Model {
 
 	public function getBonItem($periode, $kodesie, $kode_barang){
 		$sql="
-			SELECT * FROM es.tb_batas_bon bb
+			SELECT * FROM es.tb_keb_k3 bb
 			LEFT JOIN es.tb_master_item mi ON mi.kode_barang = bb.kode_barang
 			WHERE
 				bb.periode = '$periode'
@@ -88,7 +88,7 @@ class M_monitoringbon extends CI_Model {
 			INSERT INTO es.tb_bon
 			(kode_blanko, periode, kodesie, kode_barang, jumlah, jumlah_batas, sisa_stok, tgl_bon)
 			VALUES
-			('$kode_blanko', '$periode', '$kodesie', '$kode_barang', '$jumlah', (SELECT total_kebutuhan FROM es.tb_batas_bon WHERE periode='$periode' AND kodesie='$kodesie' AND kode_barang='$kode_barang'), (SELECT total_kebutuhan-'$jumlah' FROM es.tb_batas_bon WHERE periode='$periode' AND kodesie='$kodesie' AND kode_barang='$kode_barang'), now())
+			('$kode_blanko', '$periode', '$kodesie', '$kode_barang', '$jumlah', (SELECT total_kebutuhan FROM es.tb_keb_k3 WHERE periode='$periode' AND kodesie='$kodesie' AND kode_barang='$kode_barang'), (SELECT total_kebutuhan-'$jumlah' FROM es.tb_keb_k3 WHERE periode='$periode' AND kodesie='$kodesie' AND kode_barang='$kode_barang'), now())
 			";
 		$query = $this->db->query($sql);
 		if (!$query) {
@@ -101,8 +101,8 @@ class M_monitoringbon extends CI_Model {
 
 	public function UpdateStock($periode, $kodesie, $kode_barang, $jumlah){
 		$sql="
-			UPDATE es.tb_batas_bon
-			SET total_kebutuhan = total_kebutuhan-'$jumlah'
+			UPDATE es.tb_keb_k3
+			SET sisa_stok = sisa_stok-'$jumlah'
 			WHERE
 				periode = '$periode'
 				AND kodesie = '$kodesie'

@@ -210,6 +210,16 @@ class C_SetupKebutuhanKodesie extends CI_Controller {
 		}
 	}
 
+	public function detail(){
+		$kode_standar = strtoupper($this->input->post('kd_std'));
+		$kodesie = $this->input->post('kd_sie');
+		$kdpekerjaan = $this->input->post('kd_pekerjaan');
+
+		$data['DetailKebutuhan'] = $this->M_setupkebutuhankodesie->UpdateData($kode_standar,$kodesie,$kdpekerjaan);
+
+		$this->load->view('ItemManagement/Admin/SetupKebutuhan/Kodesie/V_Detail',$data);
+	}
+
 	public function delete($kode_standar,$kodesie,$kdpekerjaan){
 		$delete = $this->M_setupkebutuhankodesie->DeleteBarang($kode_standar,$kodesie,$kdpekerjaan,$kode_barang = NULL);
 		if ($delete == 1) {

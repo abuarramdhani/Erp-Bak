@@ -17,8 +17,8 @@
 								<th width="5%"><center>No</center></th>
 								<th width="15%"><center>Kode Barang</center></th>
 								<th width="30%"><center>Nama Barang</center></th>
-								<th width="10%"><center>Umur</center></th>
 								<th width="10%"><center>Stok</center></th>
+								<th width="10%"><center>Umur</center></th>
 								<th width="10%"><center>Satuan</center></th>
 								<th width="10%"><center>Ukuran</center></th>
 								<th width="10%"><center>Action</center></th>
@@ -33,8 +33,8 @@
 								<td align="center"><?php echo $no; ?></td>
 								<td><?php echo $MI['kode_barang'] ?></td>
 								<td><?php echo $MI['detail'] ?></td>
-								<td align="center"><?php echo $MI['umur'] ?></td>
 								<td align="center"><?php echo $MI['stok'] ?></td>
+								<td align="center"><?php echo $MI['umur'] ?></td>
 								<td><?php echo $MI['satuan_lang'] ?></td>
 								<td><?php echo $MI['ukuran_lang'] ?></td>
 								<td align="center">

@@ -20,8 +20,8 @@
 								<th width="5%"><center>No</center></th>
 								<th width="25%"><center>Seksi</center></th>
 								<th width="30%"><center>Kode Pekerjaan</center></th>
-								<th width="30%"><center>Kode Standar</center></th>
-								<th width="10%"><center>Action</center></th>
+								<th width="25%"><center>Kode Standar</center></th>
+								<th width="15%"><center>Action</center></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -35,6 +35,10 @@
 								<td><?php echo $SetupKebutuhan['pekerjaan'] ?></td>
 								<td><?php echo $SetupKebutuhan['kode_standar'] ?></td>
 								<td align="center">
+									<button type="button" data-toggle="modal" data-target="#detail-modal" class="btn btn-primary btn-sm" onclick="detail_kebutuhan('<?php echo $SetupKebutuhan['kode_standar'] ?>','<?php echo $SetupKebutuhan['kodesie'] ?>','<?php echo $SetupKebutuhan['kdpekerjaan'] ?>')">
+										<i data-toggle="tooltip" title="Detail" class="fa fa-search-plus"></i>
+									</button>
+
 									<a class="btn btn-warning btn-sm" href="<?php echo base_url('ItemManagement/SetupKebutuhan/Kodesie/edit/'.$SetupKebutuhan['kode_standar'].'/'.$SetupKebutuhan['kodesie'].'/'.$SetupKebutuhan['kdpekerjaan']) ?>">
 										<i data-toggle="tooltip" title="Edit" class="fa fa-edit"></i>
 									</a>
@@ -42,6 +46,7 @@
 									<button type="button" data-toggle="modal" data-target="#delete-modal" class="btn btn-danger btn-sm" onclick="delete_kebutuhan('<?php echo $SetupKebutuhan['kode_standar'] ?>','<?php echo $SetupKebutuhan['kodesie'] ?>','<?php echo $SetupKebutuhan['kdpekerjaan'] ?>')">
 										<i data-toggle="tooltip" title="Delete" class="fa fa-trash-o"></i>
 									</button>
+
 								</td>
 							</tr>
 							<?php 
@@ -49,6 +54,27 @@
 							} ?>
 						</tbody>
 					</table>
+					<div class="modal fade" id="detail-modal">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header bg-primary">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title">Detail Kebutuhan</h4>
+								</div>
+								<div class="modal-body">
+									<div id="update-form">
+										
+									</div>
+									<div id="loading" style="width: 10%;margin: 0 auto">
+										
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="modal fade" id="delete-modal">
 						<div class="modal-dialog modal-sm">
 							<div class="modal-content">

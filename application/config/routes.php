@@ -487,17 +487,17 @@ $route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)']  = 'ItemManagemen
 $route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2/$3';
 $route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2/$3/$4';
 
-$route['ItemManagement/HitungKebutuhan']  = 'ItemManagement/Admin/C_HitungKebutuhan/index';
-$route['ItemManagement/HitungKebutuhan/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1';
-$route['ItemManagement/HitungKebutuhan/(:any)/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1/$2';
-$route['ItemManagement/HitungKebutuhan/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1/$2/$3';
-$route['ItemManagement/HitungKebutuhan/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/C_HitungKebutuhan/$1/$2/$3/$4';
+$route['ItemManagement/Hitung/HitungKebutuhan']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/index';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1/$2';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1/$2/$3';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1/$2/$3/$4';
 
-$route['ItemManagement/HitungKebutuhan/Individu']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/index';
-$route['ItemManagement/HitungKebutuhan/Individu/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1';
-$route['ItemManagement/HitungKebutuhan/Individu/(:any)/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1/$2';
-$route['ItemManagement/HitungKebutuhan/Individu/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1/$2/$3';
-$route['ItemManagement/HitungKebutuhan/Individu/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/HitungKebutuhan/C_HitungKebutuhanIndv/$1/$2/$3/$4';
+$route['ItemManagement/Hitung/MonitoringKebutuhan']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/index';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1/$2';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1/$2/$3';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1/$2/$3/$4';
 
 $route['ItemManagement/MonitoringBon']  = 'ItemManagement/Admin/C_MonitoringBon/index';
 $route['ItemManagement/MonitoringBon/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1';
@@ -513,12 +513,9 @@ $route['ItemManagement/User/InputPekerja']  = 'ItemManagement/User/C_InputPekerj
 $route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
+$route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
 
-//------------------------------------Account Payables---------------------------------------------------
-$route['AccountPayables'] 				= 'AccountPayables/C_Invoice';
-$route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
-$route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
-$route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
+
 
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';

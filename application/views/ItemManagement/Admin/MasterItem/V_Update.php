@@ -68,29 +68,50 @@
 			<div class="row" style="margin: 10px 10px">
 				<label class="col-lg-6 control-label">DIKEMBALIKAN</label>
 				<div class="col-lg-6">
-					<input type="text" class="form-control" style="width: 100%" placeholder="DIKEMBALIKAN" name="txt_dikembalikan" value="<?php echo $ud['dikembalikan'] ?>" required></input>
+					<input type="checkbox" name="txt_dikembalikan" value="1" <?php if ($ud['dikembalikan'] == 1){ echo "checked";}?> />
 				</div>
 			</div>
 			<div class="row" style="margin: 10px 10px">
 				<label class="col-lg-6 control-label">PERINGATAN</label>
 				<div class="col-lg-6">
-					<input type="text" class="form-control" style="width: 100%" placeholder="PERINGATAN" name="txt_peringatan" value="<?php echo $ud['peringatan'] ?>" required></input>
+					<input type="checkbox" id="chkPeringatan" name="txt_peringatan" value="1" <?php if ($ud['peringatan'] == 1){ echo "checked";}?>  />
+				</div>
+			</div>
+			<?php
+				if ($ud['peringatan'] == 1) {
+					$display = "block";
+				}
+				else{
+					$display = "none";
+				}
+			?>
+			<div id="peringatan" style="display: <?php echo $display;?>;">
+				<div class="row" style="margin: 10px 10px">
+					<label class="col-lg-6 control-label">INTERVAL PERINGATAN</label>
+					<div class="col-lg-6">
+						<input type="text" class="form-control" style="width: 100%" placeholder="INTERVAL PERINGATAN" name="txt_interval_peringatan" value="<?php echo $ud['interval_peringatan'] ?>"></input>
+					</div>
+				</div>
+				<div class="row" style="margin: 10px 10px">
+					<label class="col-lg-6 control-label">SATUAN PERINGATAN</label>
+					<div class="col-lg-6">
+						<select name="txt_satuan_peringatan" class="form-control select2" style="width: 100%" data-placeholder="SATUAN PERINGATAN">
+						<option></option>
+						<?php
+							foreach ($SatuanList as $st) {
+								$select_st_pr = '';
+								if ($st['kode'] == $ud['satuan_peringatan']) {
+									$select_st_pr = 'selected';
+								}
+						?>
+						<option <?php echo $select_st_pr; ?> value="<?php echo $st['kode'] ?>"><?php echo $st['satuan'] ?></option>
+						<?php } ?>
+					</select>
+					</div>
 				</div>
 			</div>
 			<div class="row" style="margin: 10px 10px">
-				<label class="col-lg-6 control-label">INTERVAL PERINGATAN</label>
-				<div class="col-lg-6">
-					<input type="text" class="form-control" style="width: 100%" placeholder="INTERVAL PERINGATAN" name="txt_interval_peringatan" value="<?php echo $ud['interval_peringatan'] ?>" required></input>
-				</div>
-			</div>
-			<div class="row" style="margin: 10px 10px">
-				<label class="col-lg-6 control-label">SATUAN PERINGATAN</label>
-				<div class="col-lg-6">
-					<input type="text" class="form-control" style="width: 100%" placeholder="SATUAN PERINGATAN" name="txt_satuan_peringatan" value="<?php echo $ud['satuan_peringatan'] ?>" required></input>
-				</div>
-			</div>
-			<div class="row" style="margin: 10px 10px">
-				<label class="col-lg-6 control-label">SET BUFFER</label>
+				<label class="col-lg-6 control-label">SET BUFFER (%)</label>
 				<div class="col-lg-6">
 					<input type="text" class="form-control" style="width: 100%" placeholder="SET BUFFER" name="txt_set_buffer" value="<?php echo $ud['set_buffer'] ?>" required></input>
 				</div>

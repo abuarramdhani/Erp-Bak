@@ -28,11 +28,11 @@
 									<div class="row" style="margin: 10px 10px">
 										<label class="col-lg-2 control-label">KODE PEKERJAAN</label>
 										<div class="col-lg-4">
-											<select id="slcKodePkj" name="txt_kdpekerjaan" class="form-control" data-placeholder="KODE PEKERJAAN" style="width: 100%;" required>
+											<select id="slcKodePkj" name="txt_kdpekerjaan" class="form-control" data-placeholder="KODE PEKERJAAN" style="width: 100%;" required disabled>
 											</select>
 										</div>
 										<div class="col-lg-6">
-											<button type="submit" class="btn btn-primary">SAVE</button>
+											<button id="save-btn" type="submit" class="btn btn-primary" disabled>SAVE</button>
 											<button type="button" class="btn btn-primary" onclick="window.history.back()">BACK</button>
 											<button type="button" onclick="addNewForm()" class="btn btn-primary"><i class="fa fa-plus"></i> ADD NEW FORM</button>
 										</div>
@@ -85,6 +85,11 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="col-md-6 add-col">
+				<div class="col-sm-12 add-form-div">
+					<button onclick="addNewForm()" type="button" class="btn btn-primary add-form-button"><i class="fa fa-plus fa-3x"></i></button>
 				</div>
 			</div>
 		</div>

@@ -8,7 +8,7 @@
 		<div class="col-lg-12">	
 			<div class="box box-primary">
 				<div class="box-body with-border">
-					<form id="form-hitung-kebutuhan" method="post" action="<?php echo base_url('ItemManagement/HitungKebutuhan/insert') ?>">
+					<form id="form-hitung-kebutuhan" method="post" action="<?php echo base_url('ItemManagement/Hitung/HitungKebutuhan/insert') ?>">
 						<input type="hidden" name="txt_modul" value="">
 						<div class="form-group">
 							<div class="row">
@@ -78,9 +78,12 @@
 									<table class="table table-bordered">
 										<thead class="bg-primary">
 											<tr>
-												<td width="25%" align="center">KODE BARANG</td>
-												<td width="70%" align="center">DETAIL</td>
+												<td width="20%" align="center">KODE BARANG</td>
+												<td width="40%" align="center">DETAIL</td>
+												<td width="10%" align="center">BUFFER</td>
 												<td width="5%" align="center">JUMLAH</td>
+												<td width="10%" align="center">SISA STOK</td>
+												<td width="15%" align="center">JUMLAH AKHIR</td>
 											</tr>
 										</thead>
 										<tbody id="summary-kebutuhan">

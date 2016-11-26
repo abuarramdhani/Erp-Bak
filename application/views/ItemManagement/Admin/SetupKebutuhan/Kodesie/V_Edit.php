@@ -42,7 +42,7 @@
 											</select>
 										</div>
 										<div class="col-lg-6">
-											<button type="submit" class="btn btn-primary">SAVE</button>
+											<button id="save-btn" type="submit" class="btn btn-primary">SAVE</button>
 											<button type="button" class="btn btn-primary" onclick="window.history.back()">BACK</button>
 											<button type="button" onclick="addNewForm()" class="btn btn-primary"><i class="fa fa-plus"></i> ADD NEW FORM</button>
 										</div>
@@ -93,7 +93,7 @@
 						<div class="row" style="margin: 10px 10px">
 							<label class="col-lg-4 control-label">PERIODE SELESAI</label>
 							<div class="col-lg-8">
-								<input type="text" class="form-control im-datepicker" style="width: 100%" placeholder="PERIODE" name="txt_periode[]" value="<?php echo $ud['periode_selesai'] ?>" required></input>
+								<input type="text" class="form-control im-datepicker periode-selesai" style="width: 100%" placeholder="PERIODE" name="txt_periode[]" value="<?php echo $ud['periode_selesai'] ?>" required></input>
 							</div>
 						</div>
 						<div class="row" style="margin: 10px 10px">
@@ -106,6 +106,11 @@
 				</div>
 			</div>
 		<?php }?>
+			<div class="col-md-6 add-col">
+				<div class="col-sm-12 add-form-div">
+					<button onclick="addNewForm()" type="button" class="btn btn-primary add-form-button"><i class="fa fa-plus fa-3x"></i></button>
+				</div>
+			</div>
 		</div>
 	</form>
 	<div class="alert alert-danger flyover flyover-top">

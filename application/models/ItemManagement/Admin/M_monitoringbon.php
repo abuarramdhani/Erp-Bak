@@ -9,7 +9,7 @@ class M_monitoringbon extends CI_Model {
 	public function MonitoringBonList(){
 		$sql="
 			SELECT * FROM es.tb_bon bo
-			LEFT JOIN es.tb_seksi se ON se.kodesie = bo.kodesie
+			LEFT JOIN (SELECT substr(kodesie, 0, 8) kodesie, seksi FROM es.tb_seksi GROUP BY substr(kodesie, 0, 8), seksi) AS t ON t.kodesie = bo.kodesie
 			LEFT JOIN es.tb_master_item mi ON mi.kode_barang = bo.kode_barang
 			ORDER BY seksi
 			";
@@ -31,7 +31,7 @@ class M_monitoringbon extends CI_Model {
 
 	public function insert($periode, $kodesie, $kode_barang, $jml_akhir){
 		$sql="
-			INSERT INTO es.tb_batas_bon
+			INSERT INTO es.tb_keb_k3
 			(periode, kodesie, kode_barang, total_kebutuhan)
 			VALUES
 			('$periode', '$kodesie', '$kode_barang', '$jml_akhir')

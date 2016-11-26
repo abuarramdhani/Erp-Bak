@@ -8,9 +8,10 @@ class M_setupkebutuhanindv extends CI_Model {
 	
 	public function SetupKebutuhanList(){
 		$sql="
-			SELECT rtrim(indv.kode_standar_ind) kode_standar_ind, se.seksi, indv.kodesie, indv.noind FROM es.tb_std_indv indv
-			LEFT JOIN es.tb_seksi se ON se.kodesie = indv.kodesie
-			GROUP BY indv.kode_standar_ind, se.seksi, indv.kodesie, indv.noind
+			SELECT rtrim(indv.kode_standar_ind) kode_standar_ind, t.seksi, indv.kodesie, indv.noind, ea.employee_name FROM es.tb_std_indv indv
+			LEFT JOIN (SELECT substr(kodesie, 0, 8) kodesie, seksi FROM es.tb_seksi GROUP BY substr(kodesie, 0, 8), seksi) AS t ON t.kodesie = indv.kodesie
+			LEFT JOIN er.er_employee_all ea ON ea.employee_code = indv.noind
+			GROUP BY indv.kode_standar_ind, t.seksi, indv.kodesie, indv.noind, ea.employee_name
 			ORDER BY kode_standar_ind ASC
 			";
 		$query = $this->db->query($sql);
@@ -56,8 +57,10 @@ class M_setupkebutuhanindv extends CI_Model {
 
 	public function UpdateData($kode_standar,$kodesie,$noind){
 		$sql="
-			SELECT *, rtrim(kode_standar_ind) kode_standar_ind FROM es.tb_std_indv indv
-			LEFT JOIN es.tb_seksi se ON se.kodesie = indv.kodesie
+			SELECT *, indv.kodesie, rtrim(kode_standar_ind) kode_standar_ind FROM es.tb_std_indv indv
+			LEFT JOIN (SELECT substr(kodesie, 0, 8) kodesie, seksi FROM es.tb_seksi GROUP BY substr(kodesie, 0, 8), seksi) AS t ON t.kodesie = indv.kodesie
+			LEFT JOIN er.er_employee_all ea ON ea.employee_code = indv.noind
+			LEFT JOIN es.tb_seksi se ON se.kodesie = ea.section_code
 			LEFT JOIN es.tb_master_item mi ON mi.kode_barang = indv.kode_barang
 
 			WHERE

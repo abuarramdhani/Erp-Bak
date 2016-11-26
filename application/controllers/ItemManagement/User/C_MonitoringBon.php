@@ -195,7 +195,7 @@ class C_MonitoringBon extends CI_Controller {
 		$periode = $this->input->post('txt_periode_bon');
 		$user_kodesie = $this->M_monitoringbon->UserKodesie($user_id);
 		foreach ($user_kodesie as $uk) {
-			$kodesie = $uk['section_code'];
+			$kodesie = $uk['kodesie'];
 		}
 		$data['MonitoringBon'] = $this->M_monitoringbon->MonitoringBonList($kodesie, $periode);
 		$data['KodeBon'] = $this->M_monitoringbon->KodeBon($kodesie, $periode);

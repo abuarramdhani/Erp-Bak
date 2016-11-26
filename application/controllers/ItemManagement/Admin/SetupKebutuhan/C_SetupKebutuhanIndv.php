@@ -210,6 +210,16 @@ class C_SetupKebutuhanIndv extends CI_Controller {
 		}
 	}
 
+	public function detail(){
+		$kode_standar = strtoupper($this->input->post('kd_std'));
+		$kodesie = $this->input->post('kd_sie');
+		$noind = $this->input->post('noind');
+
+		$data['DetailKebutuhan'] = $this->M_setupkebutuhanindv->UpdateData($kode_standar,$kodesie,$noind);
+
+		$this->load->view('ItemManagement/Admin/SetupKebutuhan/Individu/V_Detail',$data);
+	}
+
 	public function delete($kode_standar,$kodesie,$noind){
 		$delete = $this->M_setupkebutuhanindv->DeleteBarang($kode_standar,$kodesie,$noind,$kode_barang = NULL);
 		if ($delete == 1) {
@@ -218,5 +228,25 @@ class C_SetupKebutuhanIndv extends CI_Controller {
 		else{
 			$this->show_alert('Error Ocured when deleting Item', 'alert-danger', base_url('ItemManagement/SetupKebutuhan/Individu'));
 		}
+	}
+
+	public function export(){
+		$data['SetupKebutuhan'] = $this->M_setupkebutuhanindv->SetupKebutuhanList();
+
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+
+		$pdf = new mPDF('', 'A4-L', 0, '', 5, 5, 10, 12);
+
+		$filename = 'Kebutuhan-Standar-Individu-'.time();
+
+		$stylesheet = file_get_contents('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');
+
+		$html = $this->load->view('ItemManagement/Admin/SetupKebutuhan/Individu/V_Table_Export', $data, true);
+
+		$pdf->setFooter('Halaman {PAGENO} dari {nbpg}');
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
 	}
 }

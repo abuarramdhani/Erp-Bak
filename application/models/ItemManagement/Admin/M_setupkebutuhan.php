@@ -44,9 +44,9 @@ class M_setupkebutuhan extends CI_Model {
 
 	public function getSeksi($term){
 		$sql="
-			SELECT * FROM es.tb_seksi
-			WHERE kodesie ILIKE '%$term%' OR seksi ILIKE '%$term%'
-			ORDER BY kodesie
+			SELECT distinct(substr(kodesie, 0, 8)) kodesie, seksi FROM es.tb_seksi
+			WHERE seksi NOT LIKE '-%' AND (kodesie ILIKE '%$term%' OR seksi ILIKE '%$term%')
+			ORDER BY kodesie, seksi
 			";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -55,8 +55,18 @@ class M_setupkebutuhan extends CI_Model {
 	public function getKodePekerjaan($term){
 		$sql="
 			SELECT * FROM es.tb_job
-			WHERE kdpekerjaan ILIKE '%$term%' OR pekerjaan ILIKE '%$term%'
+			WHERE kdpekerjaan ILIKE '$term%'
 			ORDER BY kdpekerjaan
+			";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function getNoInduk($term){
+		$sql="
+			SELECT employee_code, employee_name FROM er.er_employee_all
+			WHERE section_code ILIKE '$term%'
+			ORDER BY employee_code
 			";
 		$query = $this->db->query($sql);
 		return $query->result_array();
