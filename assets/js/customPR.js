@@ -127,7 +127,24 @@ $('#dataTables-riwayatSetAsuransi').DataTable( {
         'excel'
       ]
     });	
+
+$('#dataTables-masterParamKompUmum').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-riwayatParamKoperasi').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
+$('#txtTglBerlaku').datepicker({ autoclose: true });
+$('#txtTglTberlaku').datepicker({ autoclose: true });
+$('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglBerlaku').datepicker({ autoclose: true });
 $('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
