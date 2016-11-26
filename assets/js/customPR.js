@@ -71,5 +71,22 @@ $('#dataTables-standartJamUmum').DataTable( {
         'excel'
       ]
     });
+
+$('#txtBatasMaxJkn').datepicker({ autoclose: true });
+
+$('#txtBatasMaxJpn').datepicker({ autoclose: true });
+
+$('#dataTables-masterParamBpjs').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-masterParamPtkp').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 //$('#cmbKdBankInduk').select2();
 //$('#cmbDept').select2();
