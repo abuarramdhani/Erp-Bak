@@ -113,6 +113,13 @@ $('#dataTables-masterParamKompJab').DataTable( {
       ]
     });
 
+$('#dataTables-masterParamPengurangPajak').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
 //$('#cmbKdStatusKerja').select2();
 //$('#cmbKdJabatan').select2();
 //$('#cmbIdKantorAsal').select2();
