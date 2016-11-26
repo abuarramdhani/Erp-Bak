@@ -88,5 +88,12 @@ $('#dataTables-masterParamPtkp').DataTable( {
         'excel'
       ]
     });
+	
+$('#dataTables-masterParameterTarifPph').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 //$('#cmbKdBankInduk').select2();
 //$('#cmbDept').select2();
