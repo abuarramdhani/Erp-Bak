@@ -16,4 +16,18 @@ $(document).ready(function() {
 	$('#txtTglTberlaku').datepicker({ autoclose: true });
 	$('#txtTglRec').datepicker({ autoclose: true });
 	$('#dataTables-riwayatUpamk').DataTable({"lengthChange": false});
+	$('#txtTglBerlaku').datepicker({ autoclose: true });
+	$('#txtTglTberlaku').datepicker({ autoclose: true });
+	$('#cmbKdHubunganKerja').select2();
+	$('#cmbKdStatusKerja').select2();
+	$('#cmbKdJabatan').select2();
+	$('#txtTglRecord').datepicker({ autoclose: true });
+	$('#dataTables-riwayatGaji').DataTable({"lengthChange": false});
+	$('#txtTglBerlaku').datepicker({ autoclose: true });
+	$('#txtTglTberlaku').datepicker({ autoclose: true });
+	$('#cmbKdStatusKerja').select2();
+	$('#txtTglRec').datepicker({ autoclose: true });
+	$('#dataTables-riwayatSetAsuransi').DataTable({"lengthChange": false});
+	$('#cmbIdLokasiKerja').select2();
+	$('#dataTables-masterTarifJkk').DataTable({"lengthChange": false});
 });
