@@ -73,7 +73,6 @@ $('#dataTables-standartJamUmum').DataTable( {
     });
 
 $('#txtBatasMaxJkn').datepicker({ autoclose: true });
-
 $('#txtBatasMaxJpn').datepicker({ autoclose: true });
 
 $('#dataTables-masterParamBpjs').DataTable( {
@@ -95,5 +94,20 @@ $('#dataTables-masterParameterTarifPph').DataTable( {
         'excel'
       ]
     });
+	
+$('#txtTglBerlaku').datepicker({ autoclose: true });
+$('#txtTglTberlaku').datepicker({ autoclose: true });
+$('#txtTglRecord').datepicker({ autoclose: true });
+
+$('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+//$('#cmbIdKantorAsal').select2();
+//$('#cmbIdLokasiKerja').select2();
+//$('#cmbKdStatusKerja').select2();
+//$('#cmbKdJabatan').select2();
 //$('#cmbKdBankInduk').select2();
 //$('#cmbDept').select2();
