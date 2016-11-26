@@ -44,7 +44,15 @@ class M_setpenerimaubthr extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-    }}
+    }
+	
+	// association
+    function get_pr_master_status_kerja()
+    {
+        return $this->db->get('pr.pr_master_status_kerja')->result();
+    }
+
+}
 
 /* End of file M_masterstatuskerja.php */
 /* Location: ./application/models/PayrollManagement/MasterStatusKerja/M_masterstatuskerja.php */

@@ -86,7 +86,9 @@ class C_SetPenerimaUBTHR extends CI_Controller
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
+			'pr_master_status_kerja' => $this->M_setpenerimaubthr->get_pr_master_status_kerja(),
             'action' => site_url('PayrollManagement/SetPenerimaUBTHR/save'),
+			'pg' => 'a',
 			
 			'id_setting' => set_value(''),
 			'tgl_berlaku' => set_value(''),
@@ -110,7 +112,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
 		
 			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 			'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-			'kd_status_kerja' => $this->input->post('txtStatusKerja',TRUE),
+			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
 			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
 			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
@@ -138,7 +140,9 @@ class C_SetPenerimaUBTHR extends CI_Controller
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-                'action' => site_url('PayrollManagement/SetPenerimaUBTHR/saveUpdate'),
+                'pr_master_status_kerja' => $this->M_setpenerimaubthr->get_pr_master_status_kerja(),
+				'action' => site_url('PayrollManagement/SetPenerimaUBTHR/saveUpdate'),
+				'pg' => 'c',
 				
 				'id_setting' => $row->id_setting,
 				'tgl_berlaku' => $row->tgl_berlaku,
@@ -166,11 +170,11 @@ class C_SetPenerimaUBTHR extends CI_Controller
 		
 			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 			'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-			'kd_status_kerja' => $this->input->post('cmbStatusKerja',TRUE),
+			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
 			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
-			'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-			'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'tgl_record' => $this->input->post('txtTanggalRecord',TRUE),
 				
 		);
 

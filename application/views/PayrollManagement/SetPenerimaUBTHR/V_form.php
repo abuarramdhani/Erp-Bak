@@ -50,27 +50,34 @@
                                         </div>
                                     </div>
 									<div class="form-group">
-                                        <label for="txtKdStatusKerja" class="control-label col-lg-4">Kode Status Kerja</label>
+                                        <label for="txtKdStatusKerja" class="control-label col-lg-4">Status Kerja</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="txtKdStatusKerja" id="txtKdStatusKerja" class="form-control" value="<?php echo $kd_status_kerja; ?>" maxlenght="1"/>
+												<select id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option" width="300px"><option value=""></option>
+                                                <?php
+													foreach ($pr_master_status_kerja as $row){ 
+													$slc='';if($row->kd_status_kerja == $kd_status_kerja){$slc='selected';}
+                                                    echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">'.$row->status_kerja.'</option>';
+                                                    }
+                                                ?>
+											</select>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPersentaseTHR" class="control-label col-lg-4">Persentase THR</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="txtPersentaseTHR" id="txtPersentaseTHR" class="form-control" value="<?php echo $persentase_thr; ?>" maxlenght="5"/>
+                                            <input type="text" name="txtPersentaseTHR" id="txtPersentaseTHR" class="form-control" value="<?php echo $persentase_thr; ?>" maxlength="5"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPersentaseUBTHR" class="control-label col-lg-4">Persentase UBTHR</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="txtPersentaseUBTHR" id="txtPersentaseUBTHR" class="form-control" value="<?php echo $persentase_ubthr; ?>" maxlenght="5"/>
+                                            <input type="text" name="txtPersentaseUBTHR" id="txtPersentaseUBTHR" class="form-control" value="<?php echo $persentase_ubthr; ?>" maxlength="5"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kd_petugas; ?>" maxlenght="7"/>
+                                            <input type="text" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kd_petugas; ?>" maxlength="7"/>
                                         </div>
                                     </div>
 									<div class="form-group">
