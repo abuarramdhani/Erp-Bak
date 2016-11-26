@@ -72,9 +72,6 @@ $('#dataTables-standartJamUmum').DataTable( {
       ]
     });
 
-$('#txtBatasMaxJkn').datepicker({ autoclose: true });
-$('#txtBatasMaxJpn').datepicker({ autoclose: true });
-
 $('#dataTables-masterParamBpjs').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -95,9 +92,6 @@ $('#dataTables-masterParameterTarifPph').DataTable( {
       ]
     });
 	
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
-$('#txtTglRecord').datepicker({ autoclose: true });
 
 $('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
       dom: 'Bfrtip',
@@ -120,6 +114,32 @@ $('#dataTables-masterParamPengurangPajak').DataTable( {
       ]
     });
 	
+$('#dataTables-masterPekerja').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#txtTglBerlaku').datepicker({ autoclose: true });
+$('#txtTglTberlaku').datepicker({ autoclose: true });
+$('#txtTglRecord').datepicker({ autoclose: true });
+$('#txtTglLahir').datepicker({ autoclose: true });
+$('#txtTglNikah').datepicker({ autoclose: true });
+$('#txtDiangkat').datepicker({ autoclose: true });
+$('#txtMasukKerja').datepicker({ autoclose: true });
+$('#txtAkhKontrak').datepicker({ autoclose: true });
+$('#txtTglSpsi').datepicker({ autoclose: true });
+$('#txtTglKop').datepicker({ autoclose: true });
+$('#txtTglKeluar').datepicker({ autoclose: true });
+$('#txtBatasMaxJkn').datepicker({ autoclose: true });
+$('#txtBatasMaxJpn').datepicker({ autoclose: true });
+	
+//$('#cmbJabatan').select2();
+//$('#cmbKdStatusKerja').select2();
+//$('#cmbIdKantorAsal').select2();
+//$('#cmbIdLokasiKerja').select2();
+//$('#cmbJnsKelamin').select2();
 //$('#cmbKdStatusKerja').select2();
 //$('#cmbKdJabatan').select2();
 //$('#cmbIdKantorAsal').select2();
