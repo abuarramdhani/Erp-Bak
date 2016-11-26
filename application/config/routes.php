@@ -552,5 +552,9 @@ $route['PayrollManagement/MasterPekerja'] = 'PayrollManagement/MasterPekerja/C_M
 $route['PayrollManagement/MasterPekerja/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1';
 $route['PayrollManagement/MasterPekerja/(:any)/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1/$2';
 
+$route['PayrollManagement/RiwayatSetAsuransi'] = 'PayrollManagement/SetPenerimaAsuransi/C_RiwayatSetAsuransi';
+$route['PayrollManagement/RiwayatSetAsuransi/(:any)'] = 'PayrollManagement/SetPenerimaAsuransi/C_RiwayatSetAsuransi/$1';
+$route['PayrollManagement/RiwayatSetAsuransi/(:any)/(:any)'] = 'PayrollManagement/SetPenerimaAsuransi/C_RiwayatSetAsuransi/$1/$2';
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
