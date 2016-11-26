@@ -105,6 +105,16 @@ $('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
         'excel'
       ]
     });
+	
+$('#dataTables-masterParamKompJab').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+//$('#cmbKdStatusKerja').select2();
+//$('#cmbKdJabatan').select2();
 //$('#cmbIdKantorAsal').select2();
 //$('#cmbIdLokasiKerja').select2();
 //$('#cmbKdStatusKerja').select2();
