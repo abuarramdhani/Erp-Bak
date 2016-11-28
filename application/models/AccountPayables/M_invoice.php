@@ -115,7 +115,7 @@ class M_invoice extends CI_Model{
 									ass.vendor_name,
 									aia.invoice_num,
 									TO_CHAR (aia.invoice_date, 'DD-MON-YYYY') AS TODATE,
-									aia.invoice_date,
+									TO_CHAR(TO_DATE(aia.ATTRIBUTE4 , 'YYYY/MM/DD hh24:mi:ss'),'DD-MON-YYYY') AS FAKTUR_DATE,
 									aila.description,
 									aia.invoice_amount - NVL( aia.total_tax_amount, 0 ) DPP,
 									NVL( aia.total_tax_amount, 0 ) PPN,
