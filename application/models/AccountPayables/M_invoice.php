@@ -291,10 +291,12 @@ class M_invoice extends CI_Model{
 	public function saveTaxNumber($invoice_id, $invoice_date, $tax_number_awal, $tax_number_akhir){
 		$oracle = $this->load->database("oracle",true);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
+		$date=date_create($invoice_date);
+		$invoice_date_fix = date_format($date,"Y/m/d H:i:s");
 		$query = $oracle->query("UPDATE ap_invoices_all
 								SET ATTRIBUTE5 = '$tax_number_awal',
 									ATTRIBUTE3 = '$tax_number_akhir',
-									ATTRIBUTE4 = '$invoice_date'
+									ATTRIBUTE4 = '$invoice_date_fix'
 								WHERE INVOICE_ID = '$invoice_id'
 		");
 		return $query;
