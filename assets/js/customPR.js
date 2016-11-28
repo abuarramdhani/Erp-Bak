@@ -149,6 +149,15 @@ $('#dataTables-transaksiKlaimSisaCuti').DataTable( {
       ]
     });
 
+$('#dataTables-transaksiHitungThr').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });	
+	
+$('#txtTanggal').datepicker({ autoclose: true });
+$('#txtDiangkat').datepicker({ autoclose: true });
 $('#txtTglBerlaku').datepicker({ autoclose: true });
 $('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
@@ -169,6 +178,7 @@ $('#txtTglKeluar').datepicker({ autoclose: true });
 $('#txtBatasMaxJkn').datepicker({ autoclose: true });
 $('#txtBatasMaxJpn').datepicker({ autoclose: true });
 	
+//$('#cmbKdStatusKerja').select2();
 //$('#cmbKdJnsTransaksi').select2();
 //$('#cmbKdStatusKerja').select2();
 //$('#cmbJabatan').select2();
