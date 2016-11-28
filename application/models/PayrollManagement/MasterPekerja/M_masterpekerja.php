@@ -16,7 +16,7 @@ class M_masterpekerja extends CI_Model
     // get all data
     function get_all()
     {
-    	return $this->db->get($this->table)->result();
+    	return $this->db->order_by('noind', 'DESC')->get($this->table, 30)->result();
     }
 
     // get data by id
