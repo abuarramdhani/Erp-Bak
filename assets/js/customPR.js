@@ -132,6 +132,7 @@ $('#dataTables-masterPekerja').DataTable( {
     });
 
 $('#dataTables-riwayatSetAsuransi').DataTable( {
+	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'

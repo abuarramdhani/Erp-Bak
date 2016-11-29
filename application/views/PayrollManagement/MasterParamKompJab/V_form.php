@@ -44,9 +44,9 @@
                                         </div>
                                     </div>
 									<div class="form-group">
-	                                    <label for="cmbKdStatusKerja" class="control-label col-lg-4">Kd Status Kerja</label>
+	                                    <label for="cmbKdStatusKerja" class="control-label col-lg-4">Status Kerja</label>
 											<div class="col-lg-4">
-												<select id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+												<select style="width:100%" id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                     <?php
                                                         foreach ($pr_master_status_kerja_data as $row) {
 														$slc='';if($row->kd_status_kerja==$kd_status_kerja){$slc='selected';}
@@ -57,9 +57,9 @@
 	                                        </div>
 	                                        </div>
 									<div class="form-group">
-	                                        <label for="cmbKdJabatan" class="control-label col-lg-4">Kd Jabatan</label>
+	                                        <label for="cmbKdJabatan" class="control-label col-lg-4">Jabatan</label>
 	                                        <div class="col-lg-4">
-	                                        <select id="cmbKdJabatan" name="cmbKdJabatan" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbKdJabatan" name="cmbKdJabatan" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                 <?php
 													foreach ($pr_master_jabatan_data as $row) {
 													$slc2='';if($row->kd_jabatan==$kd_jabatan){$slc2='selected';}
