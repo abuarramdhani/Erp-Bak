@@ -7,6 +7,7 @@ class C_RiwayatUpamk extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
+        $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/UPAMK/M_riwayatupamk');
         if($this->session->userdata('logged_in')!=TRUE) {
@@ -193,6 +194,78 @@ class C_RiwayatUpamk extends CI_Controller
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         }
+    }
+
+    public function import($data = array(), $filename = ''){
+
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data = array(
+            'Menu' => 'Payroll Management',
+            'SubMenuOne' => '',
+            'SubMenuTwo' => '',
+            'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
+            'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
+            'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
+            'action' => site_url('PayrollManagement/RiwayatUpamk/import'),
+            'data' => $data,
+            'filename' => $filename,
+        );
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('PayrollManagement/RiwayatUpamk/V_import', $data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function upload() {
+       
+        $config['upload_path'] = 'assets/upload/importPR';
+        $config['file_name'] = 'MasterUPAMK-'.time();
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) {
+            echo $this->upload->display_errors();
+        }
+        else {
+            $file_data  = $this->upload->data();
+            $filename   = $file_data['file_name'];
+            $file_path  = 'assets/upload/importPR/'.$file_data['file_name'];
+            
+            if ($this->csvimport->get_array($file_path)){
+                $data = $this->csvimport->get_array($file_path);
+                $this->import($data, $filename);
+            }
+            else {
+                $this->import($data = array(), $filename = '');
+            }
+        }
+    }
+
+    public function saveImport(){
+        $filename = $this->input->post('txtFileName');
+        $file_path  = 'assets/upload/importPR/'.$filename;
+        $importData = $this->csvimport->get_array($file_path);
+
+        foreach ($importData as $row) {
+            $data = array(
+                'tgl_berlaku' => $row['tgl_berlaku'],
+                'tgl_tberlaku' => $row['tgl_tberlaku'],
+                'periode' => $row['periode'],
+                'noind' => $row['noind'],
+                'upamk' => $row['upamk'],
+                'kd_petugas' => $row['kd_petugas'],
+                'tgl_rec' => $row['tgl_rec'],
+            );
+
+            $this->M_riwayatupamk->insert($data);
+        }
+
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/RiwayatUpamk'));
     }
 
     public function checkSession(){
