@@ -153,11 +153,15 @@ $('#dataTables-masterTarifJkk').DataTable({
 	"lengthChange": false
 	});
 	
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
+
+$('#dataTables-kompTamb').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
 $('#txtTglRec').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglLahir').datepicker({ autoclose: true });
 $('#txtTglNikah').datepicker({ autoclose: true });
@@ -169,43 +173,15 @@ $('#txtTglKop').datepicker({ autoclose: true });
 $('#txtTglKeluar').datepicker({ autoclose: true });
 $('#txtBatasMaxJkn').datepicker({ autoclose: true });
 $('#txtBatasMaxJpn').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#cmbKdBank').select2();
-$('#txtTglRecord').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglJamRecord').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
-$('#txtTglRecord').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
 $('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#cmbKdHubunganKerja').select2();
 $('#cmbKdStatusKerja').select2();
 $('#cmbKdJabatan').select2();
-$('#txtTglRecord').datepicker({ autoclose: true });
+$('#cmbNoind').select2();
+$('#cmbStat').select2();
 $('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
-$('#cmbKdStatusKerja').select2();
 $('#txtTglRec').datepicker({ autoclose: true });
 $('#cmbIdLokasiKerja').select2();
-	
-	
-//$('#cmbKdStatusKerja').select2();
-//$('#cmbJabatan').select2();
-//$('#cmbKdStatusKerja').select2();
-//$('#cmbIdKantorAsal').select2();
-//$('#cmbIdLokasiKerja').select2();
-//$('#cmbJnsKelamin').select2();
-//$('#cmbKdStatusKerja').select2();
-//$('#cmbKdJabatan').select2();
-//$('#cmbIdKantorAsal').select2();
-//$('#cmbIdLokasiKerja').select2();
-//$('#cmbKdStatusKerja').select2();
-//$('#cmbKdJabatan').select2();
-//$('#cmbKdBankInduk').select2();
-//$('#cmbDept').select2();

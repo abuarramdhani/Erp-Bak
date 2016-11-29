@@ -52,7 +52,7 @@
 									<div class="form-group">
 	                                            <label for="cmbKdStatusKerja" class="control-label col-lg-4">Status Kerja</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%"  id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_master_status_kerja_data as $row) {
 															$slc='';if($row->kd_status_kerja==$kd_status_kerja){$slc='selected';}
@@ -64,50 +64,106 @@
 									<div class="form-group">
                                             <label for="txtJkk" class="control-label col-lg-4">JKK</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkk" name="txtJkk" id="txtJkk" class="form-control" value="<?php echo $jkk; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+												<select style="width:100%" id="txtJkk" name="txtJkk" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jkk==1){$yes='selected';}
+														$not='';if($jkk==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJkm" class="control-label col-lg-4">JKM</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkm" name="txtJkm" id="txtJkm" class="form-control" value="<?php echo $jkm; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+												<select style="width:100%" id="txtJkm" name="txtJkm" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jkm==1){$yes='selected';}
+														$not='';if($jkm==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJhtKary" class="control-label col-lg-4">JHT Karyawan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jht Kary" name="txtJhtKary" id="txtJhtKary" class="form-control" value="<?php echo $jht_kary; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+                                                <select style="width:100%" id="txtJhtKary" name="txtJhtKary" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jht_kary==1){$yes='selected';}
+														$not='';if($jht_kary==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJhtPrshn" class="control-label col-lg-4">JHT Perusahaan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jht Prshn" name="txtJhtPrshn" id="txtJhtPrshn" class="form-control" value="<?php echo $jht_prshn; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+                                                <select style="width:100%" id="txtJhtPrshn" name="txtJhtPrshn" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jht_prshn==1){$yes='selected';}
+														$not='';if($jht_prshn==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJknKary" class="control-label col-lg-4">JKN Karyawan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkn Kary" name="txtJknKary" id="txtJknKary" class="form-control" value="<?php echo $jkn_kary; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+												<select style="width:100%" id="txtJknKary" name="txtJknKary" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jkn_kary==1){$yes='selected';}
+														$not='';if($jkn_kary==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJknPrshn" class="control-label col-lg-4">JKN Perusahaan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkn Prshn" name="txtJknPrshn" id="txtJknPrshn" class="form-control" value="<?php echo $jkn_prshn; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+												<select style="width:100%" id="txtJknPrshn" name="txtJknPrshn" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jkn_prshn==1){$yes='selected';}
+														$not='';if($jkn_prshn==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJpnKary" class="control-label col-lg-4">JPN Karyawan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpn Kary" name="txtJpnKary" id="txtJpnKary" class="form-control" value="<?php echo $jpn_kary; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+                                                <select style="width:100%" id="txtJpnKary" name="txtJpnKary" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jpn_kary==1){$yes='selected';}
+														$not='';if($jpn_kary==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJpnPrshn" class="control-label col-lg-4">JPN Perusahaan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpn Prshn" name="txtJpnPrshn" id="txtJpnPrshn" class="form-control" value="<?php echo $jpn_prshn; ?>" onkeypress="return isNumberKey(event)" maxlength="1"/>
-                                            </div>
+												<select style="width:100%" id="txtJpnPrshn" name="txtJpnPrshn" class="select2" data-placeholder="Choose an option"><option value=""></option>
+													<?php
+														$yes='';if($jpn_prshn==1){$yes='selected';}
+														$not='';if($jpn_prshn==0){$not='selected';}
+													?>
+													<option <?php echo $yes?> value="1">YA</option>
+													<option <?php echo $not?> value="0">TIDAK</option>
+												</select>
+											</div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtKdPetugas" class="control-label col-lg-4">Kode Petugas</label>
@@ -115,14 +171,9 @@
                                                 <input type="text" placeholder="Kd Petugas" name="txtKdPetugas" id="txtKdPetugas" class="form-control" value="<?php echo $kd_petugas; ?>" onkeypress="return isNumberKey(event)" maxlength="7" />
                                             </div>
                                     </div>
-									<div class="form-group">
-	                                            <label for="txtTglRec" class="control-label col-lg-4">Tanggal Rec</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRec" value="<?php echo $tgl_rec ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRec" />
-	                                            </div>
-	                                        </div>
-
-	    <input type="hidden" name="txtIdSetAsuransi" value="<?php echo $id_set_asuransi; ?>" /> </div>
+									<input type="hidden" name="txtTglRec" value="<?php echo $tgl_rec ?>" />
+	                                <input type="hidden" name="txtIdSetAsuransi" value="<?php echo $id_set_asuransi; ?>" />
+								</div>
                                 
                             </div>
                             <div class="panel-footer">
