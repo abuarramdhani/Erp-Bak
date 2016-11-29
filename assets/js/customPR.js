@@ -1,3 +1,10 @@
+//INCREMENT FORM
+	$('.increment-form').TouchSpin({
+      verticalbuttons: true,
+      verticalupclass: 'glyphicon glyphicon-plus',
+      verticaldownclass: 'glyphicon glyphicon-minus'
+    });
+
 $('#dataTables-masterStatusKerja').DataTable( {
       dom: 'Bfrtip',
       buttons: [

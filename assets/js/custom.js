@@ -7,7 +7,19 @@
 		return false;
 	}
 	
-	function isNumberKeyAndStrip(evt)
+	function isNumberKeyAndDot(evt)
+	{
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode == 46 || (charCode < 58 && charCode > 47))
+		return true;
+		return false;
+	}
+	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+	
+	function isNumberKeyAndPoint(evt)
 	{
 		var charCode = (evt.which) ? evt.which : event.keyCode
 		if (charCode == 45 || (charCode < 58 && charCode > 47))
