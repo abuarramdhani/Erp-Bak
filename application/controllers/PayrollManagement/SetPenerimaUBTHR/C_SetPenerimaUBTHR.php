@@ -116,7 +116,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
 			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
 			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
 			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
-			'tgl_record' => $this->input->post('txtTanggalRecord',TRUE),
+			'tgl_record' => date('Y-m-d H:i:s'),
 		);
 
         $this->M_setpenerimaubthr->insert($data);

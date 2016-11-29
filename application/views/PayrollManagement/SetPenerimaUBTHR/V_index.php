@@ -38,16 +38,16 @@
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-settarifpekerjasakit" style="font-size:12px;">
 		                <thead class="bg-primary">
 							<tr>
-								<th style="text-align:center; width:30px">NO</th>
-								<th style='text-align:center'>ACTION</th>
-								<th>ID</th>
-								<th>Tanggal Berlaku</th>
-								<th>Tanggal Tak Berlaku</th>
-								<th>Kode Status Kerja</th>
-								<th>Persentase THR</th>
-								<th>Persentase UBTHR</th>
-								<th>Kode Petugas</th>
-								<th>Tanggal Record</th>
+								<th style="text-align:center"><div style="width:40px"></div>NO</th>
+								<th style="text-align:center"><div style="width:100px"></div>ACTION</th>
+								<th><div style="width:40px"></div>ID</th>
+								<th><div style="width:120px"></div>Tanggal Berlaku</th>
+								<th><div style="width:120px"></div>Tanggal Tak Berlaku</th>
+								<th><div style="width:40px"></div>Kode Status Kerja</th>
+								<th><div style="width:60px"></div>Persentase THR</th>
+								<th><div style="width:60px"></div>Persentase UBTHR</th>
+								<th><div style="width:100px"></div>Kode Petugas</th>
+								<th><div style="width:100px"></div>Tanggal Record</th>
 							</tr>
 						
 		                </thead>
