@@ -73,7 +73,7 @@
 								<th><div style="width:50px"></div>Gelar B</th>
 								<th><div style="width:40px"></div>Pendidikan</th>
 								<th><div style="width:200px"></div>Jurusan</th>
-								<th><div style="width:200px"></div>Sekolah</th>
+								<th><div style="width:300px"></div>Sekolah</th>
 								<th><div style="width:50px"></div>Stat Nikah</th>
 								<th><div style="width:120px"></div>Tanggal Nikah</th>
 								<th><div style="width:50px"></div>Jumlah Anak</th>
@@ -84,7 +84,7 @@
 								<th><div style="width:50px"></div>Gol Kerja</th>
 								<th><div style="width:50px"></div>Kode Asal Outsourcing</th>
 								<th><div style="width:50px"></div>Kode Jabatan</th>
-								<th><div style="width:400px"></div>Jabatan</th>
+								<th><div style="width:500px"></div>Jabatan</th>
 								<th><div style="width:200px"></div>NPWP</th>
 								<th><div style="width:200px"></div>No KPJ</th>
 								<th><div style="width:50px"></div>Lama Kontrak</th>

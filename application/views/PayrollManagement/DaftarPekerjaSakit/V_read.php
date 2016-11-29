@@ -7,7 +7,7 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Daftar Pekerja Sakit</b></h1>
+                                <h1><b>Transaksi Pekerja Sakit Berkepanjangan</b></h1>
 
                                 </div>
                             </div>
@@ -26,7 +26,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                Read Daftar Pekerja Sakit
+                                Read Transaksi Pekerja Sakit Berkepanjangan
                             </div>
                         <div class="box-body">
                             <div class="panel-body">

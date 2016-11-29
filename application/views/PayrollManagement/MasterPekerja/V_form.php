@@ -52,10 +52,10 @@
 									<div class="form-group">
 	                                    <label for="cmbKdStatusKerja" class="control-label col-lg-4">Status Kerja</label>
 	                                    <div class="col-lg-4">
-	                                        <select id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                 <?php
 													foreach ($pr_master_status_kerja_data as $row) {
-													$slc1='';if($row->kd_status_kerja==$kd_status_kerja){$slc1='selected';}
+													$slc1='';if(rtrim($row->kd_status_kerja)==rtrim($kd_status_kerja)){$slc1='selected';}
 													echo '<option '.$slc1.' value="'.$row->kd_status_kerja.'">'.$row->status_kerja.'</option>';
                                                     }
                                                 ?>
@@ -83,10 +83,10 @@
 									<div class="form-group">
 	                                            <label for="cmbIdKantorAsal" class="control-label col-lg-4">Kantor Asal</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbIdKantorAsal" name="cmbIdKantorAsal" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%"  id="cmbIdKantorAsal" name="cmbIdKantorAsal" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_kantor_asal_data as $row) {
-															$slc2='';if($row->id_kantor_asal==$id_kantor_asal){$slc2='selected';}
+															$slc2='';if(rtrim($row->id_kantor_asal)==rtrim($id_kantor_asal)){$slc2='selected';}
                                                             echo '<option '.$slc2.' value="'.$row->id_kantor_asal.'">'.$row->kantor_asal.'</option>';
                                                         }
                                                         ?></select>
@@ -95,10 +95,10 @@
 									<div class="form-group">
 	                                            <label for="cmbIdLokasiKerja" class="control-label col-lg-4">Lokasi Kerja</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbIdLokasiKerja" name="cmbIdLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%"  id="cmbIdLokasiKerja" name="cmbIdLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_lokasi_kerja_data as $row) {
-															$slc3='';if($row->id_lokasi_kerja==$id_lokasi_kerja){$slc3='selected';}
+															$slc3='';if(rtrim($row->id_lokasi_kerja)==rtrim($id_lokasi_kerja)){$slc3='selected';}
                                                             echo '<option '.$slc3.' value="'.$row->id_lokasi_kerja.'">'.$row->lokasi_kerja.'</option>';
                                                         }
                                                         ?></select>
@@ -107,10 +107,10 @@
 									<div class="form-group">
 	                                            <label for="cmbJnsKelamin" class="control-label col-lg-4">Jenis Kelamin</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbJnsKelamin" name="cmbJnsKelamin" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%"  id="cmbJnsKelamin" name="cmbJnsKelamin" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                             <?php 
-																$l='';if(jns_kelamin=='L'){$l='selected';}
-																$p='';if(jns_kelamin=='P'){$p='selected';}
+																$l='';if($jns_kelamin=='L'){$l='selected';}
+																$p='';if($jns_kelamin=='P'){$p='selected';}
 															?>
 															<option <?php echo $l ?> value="L">LAKI-LAKI</option><option value=""></option>
                                                             <option <?php echo $p ?> value="P">PEREMPUAN</option></select>
@@ -263,10 +263,11 @@
 									<div class="form-group">
 	                                            <label for="cmbJabatan" class="control-label col-lg-4">Jabatan</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbJabatan" name="cmbJabatan" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%" id="cmbJabatan" name="cmbJabatan" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_master_jabatan_data as $row) {
-                                                            echo '<option value="'.$row->kd_jabatan.'">'.$row->jabatan.'</option>';
+															$slc4='';if(rtrim($row->kd_jabatan)==rtrim($kd_jabatan)){$slc4='selected';}
+                                                            echo '<option '.$slc4.' value="'.$row->kd_jabatan.'">'.$row->jabatan.'</option>';
                                                         }
                                                         ?></select>
 	                                            </div>
