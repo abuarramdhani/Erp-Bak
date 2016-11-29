@@ -1,3 +1,10 @@
+//INCREMENT FORM
+	$('.increment-form').TouchSpin({
+      verticalbuttons: true,
+      verticalupclass: 'glyphicon glyphicon-plus',
+      verticaldownclass: 'glyphicon glyphicon-minus'
+    });
+
 $('#dataTables-masterStatusKerja').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -11,6 +18,7 @@ $('#dataTables-masterJabatan').DataTable( {
       ]
     });
 $('#dataTables-masterSeksi').DataTable( {
+	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -94,6 +102,7 @@ $('#dataTables-masterParameterTarifPph').DataTable( {
 	
 
 $('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
+	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -115,6 +124,7 @@ $('#dataTables-masterParamPengurangPajak').DataTable( {
     });
 	
 $('#dataTables-masterPekerja').DataTable( {
+	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -122,45 +132,74 @@ $('#dataTables-masterPekerja').DataTable( {
     });
 
 $('#dataTables-riwayatSetAsuransi').DataTable( {
+	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });	
-	
-$('#dataTables-riwayatRekeningPekerja').DataTable({
-	"lengthChange": false
-	});
-	
-$('#dataTables-riwayatPotDanaPensiun').DataTable({
-	"lengthChange": false
-	});
-	
-$('#dataTables-riwayatInsentifKemahalan').DataTable({
-	"lengthChange": false
-	});	
-	
-$('#dataTables-riwayatUpamk').DataTable({
-	"lengthChange": false
-	});
-	
-$('#dataTables-riwayatGaji').DataTable({
-	"lengthChange": false
-	});
-	
-	
-$('#dataTables-masterTarifJkk').DataTable({
-	"lengthChange": false
-	});
-	
 
-$('#dataTables-kompTamb').DataTable( {
+$('#dataTables-masterParamKompUmum').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 
+$('#dataTables-riwayatParamKoperasi').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-transaksiKlaimSisaCuti').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-transaksiHitungThr').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });	
+
+$('#dataTables-transaksiHutang').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-daftarPekerjaSakit').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-dataGajianPersonalia').DataTable( {
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel','pdf'
+      ]
+    });
+	
+$('#txtTanggal').datepicker({ autoclose: true });
+$('#txtTglJamRecord').datepicker({ autoclose: true });
+$('#txtTanggal').datepicker({ autoclose: true });
+$('#txtTglTransaksi').datepicker({ autoclose: true });
+$('#txtDiangkat').datepicker({ autoclose: true });
+$('#txtTanggal').datepicker({ autoclose: true });
+$('#txtTglBerlaku').datepicker({ autoclose: true });
+$('#txtTglTberlaku').datepicker({ autoclose: true });
+$('#txtTglRecord').datepicker({ autoclose: true });
+$('#txtTglBerlaku').datepicker({ autoclose: true });
+$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglLahir').datepicker({ autoclose: true });

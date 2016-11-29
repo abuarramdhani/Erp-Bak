@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_SetPenerimaUBTHR extends CI_Controller
+class C_DaftarPekerjaSakit extends CI_Controller
 {
     function __construct()
     {
@@ -8,7 +8,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $this->load->library('session');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('PayrollManagement/SetPenerimaUBTHR/M_setpenerimaubthr');
+        $this->load->model('PayrollManagement/TransaksiPekerjaSakitBerkepanjangan/M_daftarpekerjasakit');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -28,12 +28,12 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $SetPenerimaUBTHR = $this->M_setpenerimaubthr->get_all();
+        $daftarPekerjaSakit = $this->M_daftarpekerjasakit->get_all();
 
-        $data['setpenerimaubthr_data'] = $SetPenerimaUBTHR;
+        $data['daftarPekerjaSakit_data'] = $daftarPekerjaSakit;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/SetPenerimaUBTHR/V_index', $data);
+        $this->load->view('PayrollManagement/DaftarPekerjaSakit/V_index', $data);
         $this->load->view('V_Footer',$data);
     }
 
@@ -42,7 +42,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $row = $this->M_setpenerimaubthr->get_by_id($id);
+        $row = $this->M_daftarpekerjasakit->get_by_id($id);
         if ($row) {
             $data = array(
             	'Menu' => 'Payroll Management',
@@ -53,23 +53,19 @@ class C_SetPenerimaUBTHR extends CI_Controller
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             
 				'id_setting' => $row->id_setting,
-				'tgl_berlaku' => $row->tgl_berlaku,
-				'tgl_tberlaku' => $row->tgl_tberlaku,
-				'kd_status_kerja' => $row->kd_status_kerja,
-				'persentase_thr' => $row->persentase_thr,
-				'persentase_ubthr' => $row->persentase_ubthr,
-				'kd_petugas' => $row->kd_petugas,
-				'tgl_record' => $row->tgl_record,
+				'tanggal' => $row->tanggal,
+				'noind' => $row->noind,
+				'bulan_sakit' => $row->bulan_sakit,
 			);
 
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('PayrollManagement/SetPenerimaUBTHR/V_read', $data);
+            $this->load->view('PayrollManagement/DaftarPekerjaSakit/V_read', $data);
             $this->load->view('V_Footer',$data);
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
+            redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
         }
     }
 
@@ -86,42 +82,37 @@ class C_SetPenerimaUBTHR extends CI_Controller
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-			'pr_master_status_kerja' => $this->M_setpenerimaubthr->get_pr_master_status_kerja(),
-            'action' => site_url('PayrollManagement/SetPenerimaUBTHR/save'),
-			'pg' => 'a',
-			
-			'id_setting' => set_value(''),
-			'tgl_berlaku' => set_value(''),
-			'tgl_tberlaku' => set_value(''),
-			'kd_status_kerja' => set_value(''),
-			'persentase_thr' => set_value(''),
-			'persentase_ubthr' => set_value(''),
-			'kd_petugas' => set_value(''),
-			'tgl_record' => set_value(''),
+            'action' => site_url('PayrollManagement/DaftarPekerjaSakit/save'),
+				'id_setting' => set_value(''),
+			'tanggal' => set_value('tanggal'),
+			'noind' => set_value('noind'),
+			'bulan_sakit' => set_value('bulan_sakit'),
 		);
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/SetPenerimaUBTHR/V_form', $data);
+        $this->load->view('PayrollManagement/DaftarPekerjaSakit/V_form', $data);
         $this->load->view('V_Footer',$data);
     }
 
-    public function save(){
+    public function save()
+    {
         $this->formValidation();
-        $data = array(
-		
-			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-			'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
-			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
-			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
-			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
-			'tgl_record' => date('Y-m-d H:i:s'),
-		);
 
-        $this->M_setpenerimaubthr->insert($data);
-        $this->session->set_flashdata('message', 'Create Record Success');
-        redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
+        if ($this->form_validation->run() == FALSE) {
+            $this->create();
+        }
+        else{
+            $data = array(
+				'tanggal' => $this->input->post('txtTanggal',TRUE),
+				'noind' => $this->input->post('txtNoind',TRUE),
+				'bulan_sakit' => $this->input->post('txtBulanSakit',TRUE),
+			);
+
+            $this->M_daftarpekerjasakit->insert($data);
+            $this->session->set_flashdata('message', 'Create Record Success');
+            redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
+        }
     }
 
     public function update($id)
@@ -130,7 +121,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $row = $this->M_setpenerimaubthr->get_by_id($id);
+        $row = $this->M_daftarpekerjasakit->get_by_id($id);
 
         if ($row) {
             $data = array(
@@ -140,60 +131,53 @@ class C_SetPenerimaUBTHR extends CI_Controller
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-                'pr_master_status_kerja' => $this->M_setpenerimaubthr->get_pr_master_status_kerja(),
-				'action' => site_url('PayrollManagement/SetPenerimaUBTHR/saveUpdate'),
-				'pg' => 'c',
-				
-				'id_setting' => $row->id_setting,
-				'tgl_berlaku' => $row->tgl_berlaku,
-				'tgl_tberlaku' => $row->tgl_tberlaku,
-				'kd_status_kerja' => $row->kd_status_kerja,
-				'persentase_thr' => $row->persentase_thr,
-				'persentase_ubthr' => $row->persentase_ubthr,
-				'kd_petugas' => $row->kd_petugas,
-				'tgl_record' => $row->tgl_record,
+                'action' => site_url('PayrollManagement/DaftarPekerjaSakit/saveUpdate'),
+				'id_setting' => set_value('txtIdSetting', $row->id_setting),
+				'tanggal' => set_value('txtTanggal', $row->tanggal),
+				'noind' => set_value('txtNoind', $row->noind),
+				'bulan_sakit' => set_value('txtBulanSakit', $row->bulan_sakit),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('PayrollManagement/SetPenerimaUBTHR/V_form', $data);
+            $this->load->view('PayrollManagement/DaftarPekerjaSakit/V_form', $data);
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
+            redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
         }
     }
 
-    public function saveUpdate(){
+    public function saveUpdate()
+    {
         $this->formValidation();
 
-        $data = array(
-		
-			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-			'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
-			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
-			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
-			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
-			'tgl_record' => $this->input->post('txtTanggalRecord',TRUE),
-				
-		);
+        if ($this->form_validation->run() == FALSE) {
+            $this->update();
+        }
+        else{
+            $data = array(
+				'tanggal' => $this->input->post('txtTanggal',TRUE),
+				'noind' => $this->input->post('txtNoind',TRUE),
+				'bulan_sakit' => $this->input->post('txtBulanSakit',TRUE),
+			);
 
-            $this->M_setpenerimaubthr->update($this->input->post('txtIdSetting', TRUE), $data);
+            $this->M_daftarpekerjasakit->update($this->input->post('txtIdSetting', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
+            redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
+        }
     }
 
     public function delete($id)
     {
-        $row = $this->M_setpenerimaubthr->get_by_id($id);
+        $row = $this->M_daftarpekerjasakit->get_by_id($id);
 
         if ($row) {
-            $this->M_setpenerimaubthr->delete($id);
+            $this->M_daftarpekerjasakit->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
+            redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
+            redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
         }
     }
 
@@ -211,6 +195,6 @@ class C_SetPenerimaUBTHR extends CI_Controller
 
 }
 
-/* End of file C_SetPenerimaUBTHR.php */
-/* Location: ./application/controllers/PayrollManagement/SetPenerimaUBTHR/C_SetPenerimaUBTHR.php */
-/* Generated automatically on 2016-11-24 09:46:53 */
+/* End of file C_DaftarPekerjaSakit.php */
+/* Location: ./application/controllers/PayrollManagement/TransaksiPekerjaSakitBerkepanjangan/C_DaftarPekerjaSakit.php */
+/* Generated automatically on 2016-11-29 10:08:11 */

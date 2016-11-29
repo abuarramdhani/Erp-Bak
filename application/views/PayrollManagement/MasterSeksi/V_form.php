@@ -46,7 +46,7 @@
 									<div class="form-group">
 	                                    <label for="cmbDept" class="control-label col-lg-4">Dept</label>
 	                                    <div class="col-lg-4">
-	                                        <select id="cmbDept" name="cmbDept" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbDept" name="cmbDept" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                 <?php
 													$keuangan=''; if($dept=='KEUANGAN'){$keuangan='selected';}
 													$pemasaran=''; if($dept=='PEMASARAN'){$pemasaran='selected';}

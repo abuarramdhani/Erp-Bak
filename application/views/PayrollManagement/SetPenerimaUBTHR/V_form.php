@@ -52,10 +52,10 @@
 									<div class="form-group">
                                         <label for="txtKdStatusKerja" class="control-label col-lg-4">Status Kerja</label>
                                         <div class="col-lg-4">
-												<select id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option" width="300px"><option value=""></option>
+												<select style="width:100%" id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option" width="300px"><option value=""></option>
                                                 <?php
 													foreach ($pr_master_status_kerja as $row){ 
-													$slc='';if($row->kd_status_kerja == $kd_status_kerja){$slc='selected';}
+													$slc='';if(rtrim($row->kd_status_kerja)==rtrim($kd_status_kerja)){$slc='selected';}
                                                     echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">'.$row->status_kerja.'</option>';
                                                     }
                                                 ?>
@@ -80,15 +80,9 @@
                                             <input type="text" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kd_petugas; ?>" maxlength="7"/>
                                         </div>
                                     </div>
-									<div class="form-group">
-                                        <label for="txtTanggalRecord" class="control-label col-lg-4">Tanggal Record</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtTanggalRecord" id="txtTanggalRecord" class="form-control" value="<?php echo $tgl_record; ?>" />
-                                        </div>
-                                    </div>
+									<input type="hidden" name="txtTanggalRecord" value="<?php echo $tgl_record; ?>" />
 									<input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" />
-								</div>
-                                
+								</div>  
                             </div>
                             <div class="panel-footer">
                                 <div class="row text-right">

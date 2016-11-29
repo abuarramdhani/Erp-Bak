@@ -38,15 +38,15 @@
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-masterSeksi" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
-		                    <th style="text-align:center; width:30px">NO</th>
-                            <th style='text-align:center; width:90px'>ACTION</th>
-							<th>Kodesie</th>
-							<th>Dept</th>
-							<th>Bidang</th>
-							<th>Unit</th>
-							<th>Seksi</th>
-							<th>Pekerjaan</th>
-							<th>Golkerja</th>
+		                    <th style="text-align:center"><div style="width:40px"></div>NO</th>
+                            <th style="text-align:center"><div style="width:100px"></div>ACTION</th>
+							<th><div style="width:80px"></div>Kodesie</th>
+							<th><div style="width:80px"></div>Dept</th>
+							<th><div style="width:300px"></div>Bidang</th>
+							<th><div style="width:300px"></div>Unit</th>
+							<th><div style="width:400px"></div>Seksi</th>
+							<th><div style="width:300px"></div>Pekerjaan</th>
+							<th><div style="width:40px"></div>Golkerja</th>
 
 		                  </tr>
 		                </thead>
@@ -54,7 +54,7 @@
 							<?php $no = 1; foreach($masterSeksi_data as $row) { ?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
-                              <td align='center' width='200px'>
+                              <td align='center'>
                               	<a href="<?php echo base_url('PayrollManagement/MasterSeksi/read/'.$row->kodesie.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterSeksi/update/'.$row->kodesie.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterSeksi/delete/'.$row->kodesie.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
