@@ -48,7 +48,7 @@ class M_item extends CI_Model {
 				{		
 						$this->db->select('*');
 						$this->db->from('im.im_master_items');
-						$this->db->where('category_id', 2);
+						$this->db->where('category_id', 1);
 						$this->db->order_by('segment1', 'ASC');
 						
 						$query = $this->db->get();
@@ -61,13 +61,13 @@ class M_item extends CI_Model {
 							$this->db->from('im.im_master_items');
 							//$this->db->like('upper(customer_name)', $id);
 							$this->db->where('item_id', $id);
-							$this->db->where('category_id', 2);
+							$this->db->where('category_id', 1);
 							$this->db->order_by('segment1', 'ASC');
 						}
 						else{
 							$this->db->select('*');
 							$this->db->from('im.im_master_items');
-							$this->db->where('category_id', 2);
+							$this->db->where('category_id', 1);
 							$this->db->like('upper(segment1)', $id);
 							//$this->db->or_like('customer_id', $id);
 							$this->db->order_by('segment1', 'ASC');
