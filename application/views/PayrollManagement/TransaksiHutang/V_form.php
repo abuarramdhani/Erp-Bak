@@ -58,7 +58,7 @@
 									<div class="form-group">
 	                                    <label for="cmbJenisTransaksi" class="control-label col-lg-4">Jenis Transaksi</label>
 	                                    <div class="col-lg-4">
-	                                        <select id="cmbJenisTransaksi" name="cmbJenisTransaksi" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbJenisTransaksi" name="cmbJenisTransaksi" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                 <?php
                                                     foreach ($pr_jns_transaksi_data as $row) {
 													$slc='';if( rtrim($row->kd_jns_transaksi)==rtrim($jenis_transaksi)){$slc='selected';}
@@ -77,7 +77,7 @@
 									<div class="form-group">
 	                                    <label for="cmbLunas" class="control-label col-lg-4">Lunas</label>
 	                                    <div class="col-lg-4">
-	                                        <select id="cmbLunas" name="cmbLunas" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbLunas" name="cmbLunas" class="select2" data-placeholder="Choose an option"><option value=""></option>
 												<?php
 													$blm='';if($lunas==0){$blm='selected';}
 													$sdh='';if($lunas==1){$sdh='selected';}
