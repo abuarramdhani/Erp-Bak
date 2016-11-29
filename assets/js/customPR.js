@@ -170,6 +170,14 @@ $('#dataTables-transaksiHutang').DataTable( {
       ]
     });
 	
+$('#dataTables-daftarPekerjaSakit').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });	
+	
+$('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTanggal').datepicker({ autoclose: true });
 $('#txtDiangkat').datepicker({ autoclose: true });
