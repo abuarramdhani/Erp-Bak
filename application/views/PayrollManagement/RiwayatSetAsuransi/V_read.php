@@ -7,7 +7,7 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Riwayat Set Asuransi</b></h1>
+                                <h1><b>Set Asuransi</b></h1>
 
                                 </div>
                             </div>
@@ -26,85 +26,85 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                Read Riwayat Set Asuransi
+                                Read Set Asuransi
                             </div>
                         <div class="box-body">
                             <div class="panel-body">
                                 <div class="row">
 <div class="form-group">
-                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
+                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tanggal Berlaku</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtTglBerlaku" id="txtTglBerlaku" class="form-control" value="<?php echo $tgl_berlaku; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tgl Tberlaku</label>
+                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tanggal Tberlaku</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtTglTberlaku" id="txtTglTberlaku" class="form-control" value="<?php echo $tgl_tberlaku; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtKdStatusKerja" class="control-label col-lg-4">Kd Status Kerja</label>
+                                            <label for="txtKdStatusKerja" class="control-label col-lg-4">Kode Status Kerja</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtKdStatusKerja" id="txtKdStatusKerja" class="form-control" value="<?php echo $kd_status_kerja; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJkk" class="control-label col-lg-4">Jkk</label>
+                                            <label for="txtJkk" class="control-label col-lg-4">JKK</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJkk" id="txtJkk" class="form-control" value="<?php echo $jkk; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJkm" class="control-label col-lg-4">Jkm</label>
+                                            <label for="txtJkm" class="control-label col-lg-4">JKM</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJkm" id="txtJkm" class="form-control" value="<?php echo $jkm; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJhtKary" class="control-label col-lg-4">Jht Kary</label>
+                                            <label for="txtJhtKary" class="control-label col-lg-4">JHT Karyawan</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJhtKary" id="txtJhtKary" class="form-control" value="<?php echo $jht_kary; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJhtPrshn" class="control-label col-lg-4">Jht Prshn</label>
+                                            <label for="txtJhtPrshn" class="control-label col-lg-4">JHT Perusahaan</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJhtPrshn" id="txtJhtPrshn" class="form-control" value="<?php echo $jht_prshn; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJknKary" class="control-label col-lg-4">Jkn Kary</label>
+                                            <label for="txtJknKary" class="control-label col-lg-4">JKN Karyawan</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJknKary" id="txtJknKary" class="form-control" value="<?php echo $jkn_kary; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJknPrshn" class="control-label col-lg-4">Jkn Prshn</label>
+                                            <label for="txtJknPrshn" class="control-label col-lg-4">JKN Perusahaan</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJknPrshn" id="txtJknPrshn" class="form-control" value="<?php echo $jkn_prshn; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJpnKary" class="control-label col-lg-4">Jpn Kary</label>
+                                            <label for="txtJpnKary" class="control-label col-lg-4">JPN Karyawan</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJpnKary" id="txtJpnKary" class="form-control" value="<?php echo $jpn_kary; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtJpnPrshn" class="control-label col-lg-4">Jpn Prshn</label>
+                                            <label for="txtJpnPrshn" class="control-label col-lg-4">JPN Perusahaan</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtJpnPrshn" id="txtJpnPrshn" class="form-control" value="<?php echo $jpn_prshn; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtKdPetugas" class="control-label col-lg-4">Kd Petugas</label>
+                                            <label for="txtKdPetugas" class="control-label col-lg-4">Kode Petugas</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtKdPetugas" id="txtKdPetugas" class="form-control" value="<?php echo $kd_petugas; ?>" readonly/>
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtTglRec" class="control-label col-lg-4">Tgl Rec</label>
+                                            <label for="txtTglRec" class="control-label col-lg-4">Tanggal Rec</label>
                                             <div class="col-lg-4">
                                                 <input type="text" name="txtTglRec" id="txtTglRec" class="form-control" value="<?php echo $tgl_rec; ?>" readonly/>
                                             </div>

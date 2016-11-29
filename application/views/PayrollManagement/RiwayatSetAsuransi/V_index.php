@@ -6,7 +6,7 @@
 	        <div class="col-lg-12">
 	          <div class="col-lg-11">
 	            <div class="text-right">
-	            <h1><b>Riwayat Set Asuransi</b></h1>
+	            <h1><b>Set Asuransi</b></h1>
 	            </div>
 	          </div>
 	          <div class="col-lg-1">
@@ -30,7 +30,7 @@
                         <i class="icon-plus icon-2x"></i>
                       </button>
                     </a>
-                    <b>Riwayat Set Asuransi</b>
+                    <b>Set Asuransi</b>
 		          </div>
 		          <div class="box-body">
 
@@ -38,21 +38,21 @@
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-riwayatSetAsuransi" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
-		                    <th style="text-align:center; width:30px">NO</th>
-                            <th style='text-align:center'>ACTION</th>
-							<th>Tgl Berlaku</th>
-							<th>Tgl Tberlaku</th>
-							<th>Kd Status Kerja</th>
-							<th>Jkk</th>
-							<th>Jkm</th>
-							<th>Jht Kary</th>
-							<th>Jht Prshn</th>
-							<th>Jkn Kary</th>
-							<th>Jkn Prshn</th>
-							<th>Jpn Kary</th>
-							<th>Jpn Prshn</th>
-							<th>Kd Petugas</th>
-							<th>Tgl Rec</th>
+		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
+                            <th style='text-align:center'><div style="width:100px"></div>ACTION</th>
+							<th><div style="width:100px"></div>Tanggal Berlaku</th>
+							<th><div style="width:100px"></div>Tanggal Tberlaku</th>
+							<th><div style="width:40px"></div>Kode Status Kerja</th>
+							<th><div style="width:40px"></div>JKK</th>
+							<th><div style="width:40px"></div>JKM</th>
+							<th><div style="width:40px"></div>JHT Karyawan</th>
+							<th><div style="width:40px"></div>JHT Perusahaan</th>
+							<th><div style="width:40px"></div>JKN Karyawan</th>
+							<th><div style="width:40px"></div>JKN Perusahaan</th>
+							<th><div style="width:40px"></div>JPN Karyawan</th>
+							<th><div style="width:40px"></div>JPN Perusahaan</th>
+							<th><div style="width:100px"></div>Kode Petugas</th>
+							<th><div style="width:100px"></div>Tanggal Record</th>
 
 		                  </tr>
 		                </thead>
