@@ -64,7 +64,7 @@
 									<div class="form-group">
 	                                    <label for="cmbKdBankInduk" class="control-label col-lg-4">Kode Bank Induk</label>
 	                                    <div class="col-lg-4">
-	                                        <select id="cmbKdBankInduk" name="cmbKdBankInduk" class="select2" data-placeholder="Choose an option" width="300px"><option value=""></option>
+	                                        <select style="width:100%" id="cmbKdBankInduk" name="cmbKdBankInduk" class="select2" data-placeholder="Choose an option" width="300px"><option value=""></option>
                                                 <?php
 													foreach ($pr_master_bank_induk_data as $row){ 
 													$slc='';if($row->kd_bank_induk==$kd_bank_induk){$slc='selected';}
