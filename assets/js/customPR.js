@@ -65,4 +65,22 @@ $(document).ready(function() {
         'excel'
       ]
     });
+
+    $('#dataTables-masterParamTarifJamsostek').DataTable( {
+	      dom: 'Bfrtip',
+	      buttons: [
+	        'excel'
+	      ]
+	    });
+	$('#txtTglBerlaku').datepicker({ autoclose: true });
+	$('#txtTglTberlaku').datepicker({ autoclose: true });
+	$('#cmbIdKantorAsal').select2();
+	$('#cmbIdLokasiKerja').select2();
+	$('#txtTglRec').datepicker({ autoclose: true });
+	$('#dataTables-riwayatTarifJkk').DataTable({
+		dom: 'Bfrtip',
+	      buttons: [
+	        'excel'
+	      ]
+	});
 });
