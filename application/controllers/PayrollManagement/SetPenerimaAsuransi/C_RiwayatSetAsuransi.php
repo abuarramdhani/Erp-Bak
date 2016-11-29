@@ -133,7 +133,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'jpn_kary' => $this->input->post('txtJpnKary',TRUE),
 				'jpn_prshn' => $this->input->post('txtJpnPrshn',TRUE),
 				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
+				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatsetasuransi->insert($data);
