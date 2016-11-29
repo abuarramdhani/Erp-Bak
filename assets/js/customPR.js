@@ -162,7 +162,15 @@ $('#dataTables-transaksiHitungThr').DataTable( {
         'excel'
       ]
     });	
+
+$('#dataTables-transaksiHutang').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
+$('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTanggal').datepicker({ autoclose: true });
 $('#txtDiangkat').datepicker({ autoclose: true });
 $('#txtTglBerlaku').datepicker({ autoclose: true });
@@ -185,6 +193,8 @@ $('#txtTglKeluar').datepicker({ autoclose: true });
 $('#txtBatasMaxJkn').datepicker({ autoclose: true });
 $('#txtBatasMaxJpn').datepicker({ autoclose: true });
 	
+//$('#cmbJenisTransaksi').select2();
+//$('#cmbLunas').select2();
 //$('#cmbKdStatusKerja').select2();
 //$('#cmbKdJnsTransaksi').select2();
 //$('#cmbKdStatusKerja').select2();
