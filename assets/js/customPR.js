@@ -188,20 +188,20 @@ $('#dataTables-dataGajianPersonalia').DataTable( {
         'excel','pdf'
       ]
     });
+
+$('#dataTables-transaksiKlaimDl').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
 $('#txtTanggal').datepicker({ autoclose: true });
-$('#txtTglJamRecord').datepicker({ autoclose: true });
-$('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglTransaksi').datepicker({ autoclose: true });
-$('#txtDiangkat').datepicker({ autoclose: true });
-$('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglBerlaku').datepicker({ autoclose: true });
 $('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
-$('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglLahir').datepicker({ autoclose: true });
 $('#txtTglNikah').datepicker({ autoclose: true });
 $('#txtDiangkat').datepicker({ autoclose: true });
@@ -214,13 +214,9 @@ $('#txtBatasMaxJkn').datepicker({ autoclose: true });
 $('#txtBatasMaxJpn').datepicker({ autoclose: true });
 $('#cmbKdBank').select2();
 $('#txtTglJamRecord').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
-$('#txtTglRec').datepicker({ autoclose: true });
 $('#cmbKdHubunganKerja').select2();
 $('#cmbKdStatusKerja').select2();
 $('#cmbKdJabatan').select2();
 $('#cmbNoind').select2();
 $('#cmbStat').select2();
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglRec').datepicker({ autoclose: true });
 $('#cmbIdLokasiKerja').select2();

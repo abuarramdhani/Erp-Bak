@@ -7,13 +7,13 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Transaksi Pekerja Sakit Berkepanjangan</b></h1>
+                                <h1><b>Transaksi Klaim Dl</b></h1>
 
                                 </div>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagement/DaftarPekerjaSakit/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagement/TransaksiKlaimDl/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
                                     </a>                             
@@ -26,7 +26,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                Transaksi Pekerja Sakit Berkepanjangan
+                                Transaksi Klaim Dl
                             </div>
                         <div class="box-body">
                             <div class="panel-body">
@@ -38,25 +38,26 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-	                                    <label for="txtTanggal" class="control-label col-lg-4">Tanggal</label>
-	                                    <div class="col-lg-4">
-	                                        <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggal" value="<?php echo $tanggal ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTanggal" />
-	                                    </div>
-	                                </div>
+	                                            <label for="txtTanggal" class="control-label col-lg-4">Tanggal</label>
+	                                            <div class="col-lg-4">
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggal" value="<?php echo $tanggal ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTanggal" />
+	                                            </div>
+	                                        </div>
 									<div class="form-group">
-                                        <label for="txtNoind" class="control-label col-lg-4">No induk</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
-                                        </div>
+                                            <label for="txtNoind" class="control-label col-lg-4">Noind</label>
+                                            <div class="col-lg-4">
+                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>"/>
+                                            </div>
                                     </div>
 									<div class="form-group">
-                                        <label for="txtBulanSakit" class="control-label col-lg-4">Bulan Sakit</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Bulan Sakit" name="txtBulanSakit" id="txtBulanSakit" class="form-control" value="<?php echo $bulan_sakit; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
-                                        </div>
+                                            <label for="txtKlaimDl" class="control-label col-lg-4">Klaim Dl</label>
+                                            <div class="col-lg-4">
+                                                <input type="text" placeholder="Klaim Dl" name="txtKlaimDl" id="txtKlaimDl" class="form-control" value="<?php echo $klaim_dl; ?>"/>
+                                            </div>
                                     </div>
-									<input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" />
-								</div>
+
+	    <input type="hidden" name="txtIdKlaimDl" value="<?php echo $id_klaim_dl; ?>" /> </div>
+                                
                             </div>
                             <div class="panel-footer">
                                 <div class="row text-right">

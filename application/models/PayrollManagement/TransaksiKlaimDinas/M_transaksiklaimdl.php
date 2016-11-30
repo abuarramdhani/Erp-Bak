@@ -1,10 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_masterparamtarifjamsostek extends CI_Model
+class M_transaksiklaimdl extends CI_Model
 {
 
-    public $table = 'pr.pr_master_param_tarif_jamsostek';
-    public $id = 'periode_jst';
+    public $table = 'pr.pr_transaksi_klaim_dl';
+    public $id = 'id_klaim_dl';
     public $order = 'DESC';
 
     function __construct()
@@ -46,6 +46,6 @@ class M_masterparamtarifjamsostek extends CI_Model
         $this->db->delete($this->table);
     }}
 
-/* End of file M_masterparamtarifjamsostek.php */
-/* Location: ./application/models/PayrollManagement/SetTarifJamsostek/M_masterparamtarifjamsostek.php */
-/* Generated automatically on 2016-11-29 09:11:10 */
+/* End of file M_transaksiklaimdl.php */
+/* Location: ./application/models/PayrollManagement/TransaksiKlaimDinas/M_transaksiklaimdl.php */
+/* Generated automatically on 2016-11-30 09:42:19 */
