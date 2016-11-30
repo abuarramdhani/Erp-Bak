@@ -4,6 +4,7 @@ class M_masterbank extends CI_Model
 {
 
     public $table = 'pr.pr_master_bank';
+    public $table_riwayat = 'pr.pr_riwayat_bank';
     public $id = 'kd_bank';
     public $order = 'DESC';
 
@@ -46,11 +47,40 @@ class M_masterbank extends CI_Model
         $this->db->delete($this->table);
     }
 
-// association
-            function get_pr_master_bank_induk_data()
-            {
-                return $this->db->get('pr.pr_master_bank_induk')->result();
-            }
+	// association
+    function get_pr_master_bank_induk_data()
+    {
+        return $this->db->get('pr.pr_master_bank_induk')->result();
+    }
+
+//------------------------- RIWAYAT RELATION -------------------------	
+	
+	//GET LATEST IDRB
+	function get_idrb($rs_where)
+    {
+		$this->db->where($rs_where);
+    	return $this->db->get($this->table_riwayat)->row()->id_riwayat_bank;
+    }
+	
+	//MASTER DELETE CURRENT
+    function master_delete($md_where)
+    {
+        $this->db->where($md_where);
+        $this->db->delete($this->table);
+    }
+	
+	//RIWAYAT CHANGE CURRENT
+    function riwayat_update($ru_where, $ru_data)
+    {
+        $this->db->where($ru_where);
+        $this->db->update($this->table_riwayat, $ru_data);
+    }
+	
+	//RIWAYAT INSERT NEW
+    function riwayat_insert($ri_data)
+    {
+        $this->db->insert($this->table_riwayat, $ri_data);
+    }
 
 }
 
