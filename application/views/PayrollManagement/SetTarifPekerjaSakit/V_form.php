@@ -38,6 +38,12 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
+                                        <label for="txtKdTarifNew" class="control-label col-lg-4">Kode Tarif</label>
+                                        <div class="col-lg-4">
+                                            <input type="text" name="txtKdTarifNew" id="txtKdTarifNew" class="form-control" value="<?php echo $kd_tarif; ?>" maxlength="2"/>
+                                        </div>
+                                    </div>
+									<div class="form-group">
                                         <label for="txtTingkatan" class="control-label col-lg-4">Tingkatan</label>
                                         <div class="col-lg-4">
                                             <input type="text" name="txtTingkatan" id="txtTingkatan" class="form-control" value="<?php echo $tingkatan; ?>" maxlength="2"/>
