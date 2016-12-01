@@ -195,7 +195,15 @@ $('#dataTables-transaksiKlaimDl').DataTable( {
         'excel'
       ]
     });
+
+$('#dataTables-hutangKaryawan').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });	
 	
+$('#txtTglPengajuan').datepicker({ autoclose: true });
 $('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglBerlaku').datepicker({ autoclose: true });
@@ -218,3 +226,4 @@ $('#cmbKdJabatan').select2();
 $('#cmbNoind').select2();
 $('#cmbStat').select2();
 $('#cmbIdLokasiKerja').select2();
+$('#cmbStatusLunas').select2();
