@@ -1,11 +1,13 @@
 <?php
 class M_serviceproducts extends CI_Model {
 
+		var $oracle;
         public function __construct()
         {
                 $this->load->database();
 				$this->load->library('encrypt');
 				$this->load->helper('url');
+        		$this->oracle = $this->load->database ( 'oracle', TRUE );
         }
 		
 		public function getActivity($id = FALSE)
@@ -634,6 +636,132 @@ class M_serviceproducts extends CI_Model {
 				}else{
 					return 0;
 			}
+		}
+
+		function processClaimHeaderP($customerName,$created_by)
+		{
+			$sqlpostgre =	"INSERT INTO cr.\"KHS_EXTERNAL_CLAIM_HEADERS\"
+									(\"USER_ID\",
+									\"CUST_ACCOUNT_ID\",
+									\"OWNER_NAME\",
+									\"CREATED_BY\",
+									\"CREATION_DATE\",
+									\"STATUS\")
+									VALUES (
+										'42',
+										'1042',
+										'".$customerName."',
+										'".$created_by."',
+										now(),
+										'NEW'
+									)";
+			$query = $this->db->query($sqlpostgre);
+
+			$sql = "SELECT LAST_VALUE(\"HEADER_ID\") OVER (ORDER BY \"HEADER_ID\" DESC) as ins_id FROM cr.\"KHS_EXTERNAL_CLAIM_HEADERS\"";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		function processClaimHeaderO($customerName,$created_by)
+		{
+			$sqloracle	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
+									(USER_ID,
+									CUST_ACCOUNT_ID,
+									OWNER_NAME,
+									CREATED_BY,
+									CREATION_DATE,
+									STATUS)
+									VALUES (
+										'42',
+										'1042',
+										'".$customerName."',
+										'".$created_by."',
+										sysdate,
+										'NEW'
+									)";
+			$query = $this->oracle->query($sqloracle);
+
+			$sql = "SELECT LAST_VALUE(HEADER_ID) OVER (ORDER BY HEADER_ID DESC) as ins_id FROM KHS_EXTERNAL_CLAIM_HEADERS";
+			$query = $this->oracle->query($sql);
+			return $query->result_array();
+		}
+
+		function processClaimLinesP($headeridP,$itemCode,$created_by)
+		{
+			$sqlpostgre =	"INSERT INTO cr.\"KHS_EXTERNAL_CLAIM_LINES\"
+									(\"HEADER_ID\",
+									\"ITEM_CODE\",
+									\"CREATED_BY\",
+									\"CREATION_DATE\")
+									VALUES (
+										'".$headeridP."',
+										'".$itemCode."',
+										'".$created_by."',
+										now()
+									)";
+			$query = $this->db->query($sqlpostgre);
+		}
+
+		function processClaimLinesO($headeridO,$itemCode,$created_by)
+		{
+			$sqloracle	=	"INSERT INTO KHS_EXTERNAL_CLAIM_LINES
+									(HEADER_ID,
+									ITEM_CODE,
+									CREATED_BY,
+									CREATION_DATE)
+									VALUES (
+										'".$headeridO."',
+										'".$itemCode."',
+										'".$created_by."',
+										sysdate
+									)";
+			$query = $this->oracle->query($sqloracle);
+		}
+
+		function province()
+		{
+			$sql = "select * from sys.sys_area_province";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function cityRegency($name)
+		{
+			$sql =	"	SELECT DISTINCT(regency_name)
+						FROM sys.sys_area_city_regency
+						WHERE province_id=(SELECT DISTINCT(province_id)
+						FROM sys.sys_area_province
+						WHERE province_name='$name')
+						ORDER BY regency_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+			
+		public function district($name)
+		{
+			$sql =	"	SELECT district_name
+						FROM sys.sys_area_district
+						WHERE city_regency_id=(SELECT DISTINCT(city_regency_id)
+						FROM sys.sys_area_city_regency
+						WHERE regency_name='$name')
+						ORDER BY district_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+			
+		public function village($name)
+		{
+			$sql =	"	SELECT village_name
+						FROM sys.sys_area_village
+						WHERE district_id=(SELECT DISTINCT(district_id)
+						FROM sys.sys_area_district
+						WHERE district_name='$name')
+						ORDER BY village_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
 		}
 		
 }

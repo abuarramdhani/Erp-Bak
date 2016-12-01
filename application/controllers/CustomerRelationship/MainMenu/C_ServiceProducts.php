@@ -642,10 +642,8 @@ class C_ServiceProducts extends CI_Controller {
 				$data['Checklist'] = $this->M_Checklist->getChecklistActive();
 				$data['AdditionalActivity'] = $this->M_additionalactivity->getAdditionalActivity();
 				 
-				
 				$data['title'] = 'New Service';
-				
-				
+				$data['province']	= $this->M_serviceproducts->province();
 				
 				if ($this->form_validation->run() === FALSE)
 				{
@@ -657,7 +655,6 @@ class C_ServiceProducts extends CI_Controller {
 						$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_create', $data);
 						$this->load->view('V_Footer',$data);
 						//$this->load->view('templates/footer');
-
 				}
 				else
 				{	
@@ -677,7 +674,6 @@ class C_ServiceProducts extends CI_Controller {
 							'creation_date' 			=> $this->input->post('hdnDate'),
 							'created_by' 				=> $this->input->post('hdnUser')
 						);
-						
 
 						//$service_id = 0;
 						$this->M_serviceproducts->setServiceProducts($data_headers);
@@ -691,7 +687,7 @@ class C_ServiceProducts extends CI_Controller {
 						$problem_description = $this->input->post('txtProblemDescription');
 						$action = $this->input->post('txtAction');
 						$action_date = $this->input->post('txtActionDate');
-						$finish_date = $this->input->post('txtFinishDate');
+						//$finish_date = $this->input->post('txtFinishDate');
 						$ownership_id = $this->input->post('hdnOwnershipId');
 						$tech_id = $this->input->post('slcEmployeeNum');
 						$warranty = $this->input->post('txtWarranty');
@@ -708,8 +704,8 @@ class C_ServiceProducts extends CI_Controller {
 							{	$ownership_id[$i] = NULL; }
 							if($action_date[$i] == '')
 							{	$action_date[$i] = NULL; }
-							if($finish_date[$i] == '')
-							{	$finish_date[$i] = NULL; }
+							//if($finish_date[$i] == '')
+							//{	$finish_date[$i] = NULL; }
 							if($tech_id[$i] == '')
 							{	$tech_id[$i] = NULL; }
 							if($spare_part[$i] == '')
@@ -795,6 +791,32 @@ class C_ServiceProducts extends CI_Controller {
 							}
 						}
 						
+						$actionClaim = $this->input->post('actionClaim');
+						$improcess = implode($actionClaim, " - ");
+						$created_by = $this->input->post('hdnUser');
+						
+						if (stripos($improcess, "PROCESS") !== FALSE) {
+							$customerName = $this->input->post('txtCustomerName');
+							$saveClaimHeaderP = $this->M_serviceproducts->processClaimHeaderP($customerName,$created_by);
+							$saveClaimHeaderO = $this->M_serviceproducts->processClaimHeaderO($customerName,$created_by);
+							$headeridP = $saveClaimHeaderP[0]['ins_id'];
+							$headeridO = $saveClaimHeaderO[0]['INS_ID'];
+						}
+
+						$itemCode = $this->input->post('txtOwnership');
+						//$description = $this->input->post('txtItemDescription');
+						//print_r($description);
+						//exit();
+						$countClaim = count($actionClaim);
+						for ($i=0; $i<$countClaim ; $i++) {
+							if ($actionClaim[$i] == 'PROCESS') {
+								$saveClaimLinesP = $this->M_serviceproducts->processClaimLinesP($headeridP,$itemCode[$i],$created_by);
+								$saveClaimLinesO = $this->M_serviceproducts->processClaimLinesO($headeridO,$itemCode[$i],$created_by);
+							}
+						}
+
+						//print_r($countClaim);
+						//exit;
 						
 						redirect('CustomerRelationship/ServiceProducts');
 						
@@ -803,7 +825,7 @@ class C_ServiceProducts extends CI_Controller {
 						
 				}
 		}
-		
+
 		public function CreateConnect()
 		{		$this->form_validation->set_rules('txtServiceNumber', 'Service Number', 'required');
 				
@@ -993,4 +1015,32 @@ class C_ServiceProducts extends CI_Controller {
 				}
 		}
 		
+		public function Location()
+		{
+			$name 	= $this->input->post('data_name');
+			$modul 	= $this->input->post('modul');
+	
+			echo '
+				<option value=""></option>
+				<option value="muach" disabled >-- Choose One --</option>
+			';
+			if ($modul == 'CityRegency') {
+				$data = $this->M_serviceproducts->cityRegency($name);
+				foreach ($data as $data) {
+					echo '<option value="'.$data['regency_name'].'">'.strtoupper($data['regency_name']).'</option>';
+				}
+			}
+			elseif ($modul == 'District') {
+				$data = $this->M_serviceproducts->district($name);
+				foreach ($data as $data) {
+					echo '<option value="'.$data['district_name'].'">'.strtoupper($data['district_name']).'</option>';
+				}
+			}
+			elseif ($modul == 'Village') {
+				$data = $this->M_serviceproducts->village($name);
+				foreach ($data as $data) {
+					echo '<option value="'.$data['village_name'].'">'.strtoupper($data['village_name']).'</option>';
+				}
+			}
+		}
 }

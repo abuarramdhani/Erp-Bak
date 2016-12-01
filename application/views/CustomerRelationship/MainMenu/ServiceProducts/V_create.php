@@ -8,8 +8,6 @@
 						<div class="col-lg-11">
 							<div class="text-right">
 							<h1><b> <?php echo $title;?></b></h1>
-							
-						
 							</div>
 						</div>
 						<div class="col-lg-1 ">
@@ -18,9 +16,6 @@
 									<i class="icon-gears icon-2x"></i>
 									<span ><br /></span>
 								</a>
-								
-
-								
 							</div>
 						</div>
 					</div>
@@ -33,11 +28,8 @@
 					<div class="box-body">
 						<div class="row">
 							<div class="col-lg-12">
-
 								<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 								<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
-
-
 								<div class="col-lg-6">
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Activity Type</label>
@@ -53,13 +45,14 @@
 											</div>
 
 									</div>
-									<!--<div class="form-group">
-										<label for="norm" class="control-label col-lg-4">Others Type</label>
-											<div class="col-lg-8">
-												<input type="text" name="txtOtherType" id="txtOtherType" class="form-control" disabled="disabled"/>
-											</div>
-
-									</div>-->
+									<div class="form-group">
+										<label for="norm" class="control-label col-lg-4">Officer</label>
+										<div class="col-lg-8">
+											<select name="slcEmployeeNum[]" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
+												<option value=""></option>
+											</select>
+										</div>
+									</div>
 									<div class="form-group">
 											<label class="control-label col-lg-4" for="dp2">Activity Date</label>
 
@@ -83,8 +76,14 @@
 												<input type="hidden" name="hdnCategoryId" id ="hdnCategoryId"  />
 											</div>
 									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4">Condition</label>
+										<div class="col-lg-8">
+											<textarea type="text" class="form-control" name="ConditionClaim" id="ConditionClaim" rows="1" placeholder="Condition"></textarea>
+										</div>
+									</div>
 								</div>
-									<div class="col-lg-6">
+								<div class="col-lg-6">
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Activity Number</label>
 											<div class="col-lg-8">
@@ -109,16 +108,62 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Description</label>
 											<div class="col-lg-8">
-												<textarea placeholder="Description" name="txtDescription" id="txtDescription" class="form-control"></textarea>
-
+												<textarea placeholder="Description" name="txtDescription" id="txtDescription" class="form-control" rows="1"></textarea>
 											</div>
-
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4">Qty</label>
+										<div class="col-lg-8">
+											<input type="number" class="form-control" name="QtyClaim" id="QtyClaim" placeholder="Qty">
+										</div>
 									</div>
 									<input type="hidden" id="spanEmployee" />
 								</div>
 							</div>
 						</div>
-					
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="col-lg-12">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<h5><b>Location Incident</b></h5>
+											<div class="form-group">
+												<label class="control-label col-lg-3">Province</label>
+												<div class="col-lg-9">
+													<select class="form-control select4" name="provinceIncident[]" id="provinceIncident">
+														<option value=""></option>
+														<option value="muach" disabled >-- Choose One --</option>
+														<?php foreach ($province as $p) { ?>
+															<option value="<?php echo $p['province_name']; ?>">
+																<?php echo strtoupper($p['province_name']); ?>
+															</option>
+														<?php } ?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-3">City / Regency</label>
+												<div class="col-lg-9">
+													<select class="form-control select4" name="CityIncident[]" id="CityIncident" disabled></select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-3">District</label>
+												<div class="col-lg-9">
+													<select class="form-control select4" name="DistrictIncident[]" id="DistrictIncident" disabled></select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-3">Village</label>
+												<div class="col-lg-9">
+													<select class="form-control select4" name="VillageIncident[]" id="VillageIncident" disabled></select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
@@ -159,13 +204,10 @@
 																					<th width="3%">Warranty</th>
 																					<th width="4%">Claim Number</th>
 																					<th width="15%">Spare Part</th>
-																					<!--<th width="10%">Spare Part Description</th>-->
 																					<th width="5%">Problem</th>
 																					<th width="14%">Problem Description</th>
-																					<th width="14%">Actions</th>
-																					<th width="5%">Technician</th>
-																					<th width="5%">Status</th>
-																					<th width="4%">Action Date</th>
+																					<th width="5%">Action Claim</th>
+																					<th width="5%">Upload</th>
 																					<th width="3%">History</th>
 																				</tr>
 																			</thead>
@@ -184,39 +226,28 @@
 																					<select name="slcSparePart[]" id="slcSparePart" disabled="disabled" class="form-control jsSparePart" data-placeholder="Spare part">
 																						<option value=""></option>
 																					</select>
-																					<!--<input type="hidden" name="hdnSparePartId[]" id ="hdnSparePartId1" />-->
 																				</td>
-																				<!--<td><input type="text" name="txtSparePartDescription[]" id="txtSparePartDescription" class="form-control" readonly="readonly"/></td>-->
 																				<td><select  name="slcProblem[]" id="slcProblem" class="form-control jsProblem" disabled="disabled">
 
 																						<option value="" ></option>
 																					</select></td>
 																				<td><input type="text" name="txtProblemDescription[]" id="txtProblemDescription" class="form-control" disabled="disabled"/></td>
-																				<td><input type="text" name="txtAction[]" id="txtAction" class="form-control" disabled="disabled"/></td>
 																				<td>
-																					<!--<input type="text" name="txtEmployeeNum[]" onblur="selectEmployee(1);" id="txtEmployeeNum" class="form-control2" disabled="disabled"/>-->
-																					<select name="slcEmployeeNum[]" id="slcEmployeeNum" disabled class="form-control jsEmployeeData" data-placeholder="Employee">
-																						<option value=""></option>
+																					<select name="actionClaim[]" id="actionClaim" class="form-control select4" data-placeholder="Action Claim" disabled>
+																						<option value="" disabled selected>-- CHOOSE ONE --</option>
+																						<option value="PROCESS">PROCESS</option>
+																						<option value="NO">NO PROCESS</option>
 																					</select>
-																					<!--<input type="hidden" name="hdnEmployeeId[]" id ="hdnEmployeeId"/>-->
 																				</td>
 																				<td>
-																					<!--<input type="text" name="txtServiceLineStatus[]" onblur="selectServiceLineStatus(1)" id="txtServiceLineStatus1" class="form-control2" />-->
-																					<select name="slcServiceLineStatus[]" id="slcServiceLineStatus" class="form-control" disabled="disabled">
-																					  <option value="OPEN" selected>OPEN</option>
-																					  <option value="CLOSE">CLOSE</option>
-																					</select>
-																					<!--<input type="hidden" name="hdnServiceLineStatusId[]" id ="hdnServiceLineStatusId"/>-->
+																					<input type="file" name="claimImage" id='claimImage' disabled>
 																				</td>
-																				<td><input type="text" name="txtActionDate[]" id="txtActionDate" placeholder="<?php echo date("d-M-Y")?>" class="form-control" data-date-format="dd-M-yyyy" disabled="disabled" required/></td>
 																				<td></td>
 																				</tr>
-
 																			</tbody>
 																		</table>
 																	</div>
 																</div>
-
 															</div>
 														</div>
 													</div>
