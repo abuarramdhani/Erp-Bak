@@ -98,21 +98,50 @@ class C_MasterParamPtkp extends CI_Controller
     public function save()
     {
         $this->formValidation();
+		$status_pajak 	= $this->input->post('txtStatusPajak');
+		$periode 		= $this->input->post('txtPeriode');
+		
+		//MASTER DELETE CURRENT
+		$md_where = array(
+			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+		);
+		
+		//MASTER INSERT NEW
+		$data = array(
+			'periode' => $this->input->post('txtPeriode',TRUE),
+			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+			'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'id_riwayat_ptkp'		=> $status_pajak.$periode,
+			'periode'				=> $this->input->post('txtPeriode',TRUE),
+			'status_pajak' 			=> $this->input->post('txtStatusPajak',TRUE),
+			'ptkp_per_tahun' 		=> $this->input->post('txtPtkpPerTahun',TRUE),
+			'tgl_berlaku' 			=> date('Y-m-d'),
+			'tgl_tberlaku' 			=> '9999-12-31',
+			'kode_petugas' 			=> '0000001',
+			'tgl_record' 			=> date('Y-m-d H:i:s'),
+		);
+		
+		$this->M_masterparamptkp->master_delete($md_where);
+		$this->M_masterparamptkp->insert($data);
+		$this->M_masterparamptkp->riwayat_update($ru_where,$ru_data);
+		$this->M_masterparamptkp->riwayat_insert($ri_data);
+        
+		$this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/MasterParamPtkp'));
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
-            $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
-				'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
-				'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
-			);
-
-            $this->M_masterparamptkp->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/MasterParamPtkp'));
-        }
     }
 
     public function update($id)
