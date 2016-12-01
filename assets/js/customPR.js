@@ -210,8 +210,6 @@ $('#txtAkhKontrak').datepicker({ autoclose: true });
 $('#txtTglSpsi').datepicker({ autoclose: true });
 $('#txtTglKop').datepicker({ autoclose: true });
 $('#txtTglKeluar').datepicker({ autoclose: true });
-$('#txtBatasMaxJkn').datepicker({ autoclose: true });
-$('#txtBatasMaxJpn').datepicker({ autoclose: true });
 $('#cmbKdBank').select2();
 $('#txtTglJamRecord').datepicker({ autoclose: true });
 $('#cmbKdHubunganKerja').select2();

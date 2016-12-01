@@ -40,7 +40,7 @@
 									<div class="form-group">
 	                                            <label for="txtBatasMaxJkn" class="control-label col-lg-4">Batas Max JKN</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtBatasMaxJkn" value="<?php echo $batas_max_jkn ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtBatasMaxJkn" />
+	                                                <input type="text" placeholder="Batas Max JKN" name="txtBatasMaxJkn" id="txtBatasMaxJkn" class="form-control" value="<?php echo $batas_max_jkn ?>" maxlength="10" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
@@ -58,7 +58,7 @@
 									<div class="form-group">
 	                                            <label for="txtBatasMaxJpn" class="control-label col-lg-4">Batas Max JPN</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtBatasMaxJpn" value="<?php echo $batas_max_jpn ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtBatasMaxJpn" />
+	                                                <input type="text" placeholder="Batas Max JPN" name="txtBatasMaxJpn" id="txtBatasMaxJpn" class="form-control" value="<?php echo $batas_max_jpn ?>" maxlength="10"/>
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
