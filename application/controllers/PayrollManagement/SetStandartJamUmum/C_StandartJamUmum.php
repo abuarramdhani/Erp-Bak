@@ -95,19 +95,43 @@ class C_StandartJamUmum extends CI_Controller
     {
         $this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
-            $data = array(
-				'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
-				'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
-			);
+		//MASTER DELETE CURRENT
+		$md_where = array(
+			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
+		);
+		
+		//MASTER INSERT NEW
+        $data = array(
+			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
+			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'tgl_tberlaku' 			=> '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 			=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'kode_standart_jam'		=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'jml_std_jam_per_bln'	=> $this->input->post('txtJmlStdJamPerBln',TRUE),
+			'tgl_berlaku' 			=> date('Y-m-d'),
+			'tgl_tberlaku' 			=> '9999-12-31',
+			'kd_petugas' 			=> '0000001',
+			'tgl_rec' 				=> date('Y-m-d H:i:s'),
+		);
+		
+		$this->M_standartjamumum->master_delete($md_where);
+		$this->M_standartjamumum->insert($data);
+		$this->M_standartjamumum->riwayat_update($ru_where,$ru_data);
+		$this->M_standartjamumum->riwayat_insert($ri_data);
 
-            $this->M_standartjamumum->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/StandartJamUmum'));
-        }
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/StandartJamUmum'));
     }
 
     public function update($id)
@@ -144,19 +168,14 @@ class C_StandartJamUmum extends CI_Controller
     {
         $this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
-            $data = array(
-				'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
-				'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
-			);
+        $data = array(
+			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
+			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
+		);
 
-            $this->M_standartjamumum->update($this->input->post('txtKodeStandartJam', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('PayrollManagement/StandartJamUmum'));
-        }
+        $this->M_standartjamumum->update($this->input->post('txtKodeStandartJam', TRUE), $data);
+        $this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('PayrollManagement/StandartJamUmum'));
     }
 
     public function delete($id)
