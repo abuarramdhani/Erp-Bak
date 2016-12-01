@@ -81,7 +81,7 @@ class C_StandartJamTkpw extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/StandartJamTkpw/save'),
-				'kode_standart_jam' => set_value(''),
+			'kode_standart_jam' => set_value(''),
 			'jml_std_jam_per_bln' => set_value('jml_std_jam_per_bln'),
 		);
 
@@ -91,23 +91,47 @@ class C_StandartJamTkpw extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-    public function save()
-    {
-        $this->formValidation();
+    public function save(){
+        
+		$this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
-            $data = array(
-				'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
-				'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
-			);
+		//MASTER DELETE CURRENT
+		$md_where = array(
+			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
+		);
+		
+		//MASTER INSERT NEW
+        $data = array(
+			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'jml_std_jam_per_bln'	=> $this->input->post('txtJmlStdJamPerBln',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'tgl_tberlaku' 			=> '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 			=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'kode_standart_jam'		=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'jml_std_jam_per_bln'	=> $this->input->post('txtJmlStdJamPerBln',TRUE),
+			'tgl_berlaku' 			=> date('Y-m-d'),
+			'tgl_tberlaku' 			=> '9999-12-31',
+			'kd_petugas' 			=> '0000001',
+			'tgl_rec' 				=> date('Y-m-d H:i:s'),
+		);
 
-            $this->M_standartjamtkpw->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/StandartJamTkpw'));
-        }
+		$this->M_standartjamtkpw->master_delete($md_where);
+		$this->M_standartjamtkpw->insert($data);
+		$this->M_standartjamtkpw->riwayat_update($ru_where,$ru_data);
+		$this->M_standartjamtkpw->riwayat_insert($ri_data);
+
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/StandartJamTkpw'));
     }
 
     public function update($id)
@@ -143,20 +167,14 @@ class C_StandartJamTkpw extends CI_Controller
     public function saveUpdate()
     {
         $this->formValidation();
+        $data = array(
+			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
+			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
+		);
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
-            $data = array(
-				'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
-				'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
-			);
-
-            $this->M_standartjamtkpw->update($this->input->post('txtKodeStandartJam', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('PayrollManagement/StandartJamTkpw'));
-        }
+        $this->M_standartjamtkpw->update($this->input->post('txtKodeStandartJam', TRUE), $data);
+        $this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('PayrollManagement/StandartJamTkpw'));
     }
 
     public function delete($id)
