@@ -41,6 +41,10 @@
                                         <label for="txtNoind" class="control-label col-lg-4">No induk</label>
                                         <div class="col-lg-4">
                                             <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
+                                            <!--
+                                            <select style="width:100%" id="cmbNoind" name="cmbNoind" class="select2" data-placeholder="Choose an option"><option value=""></option>
+                                            </select>
+                                            -->
                                         </div>
                                     </div>
 									<div class="form-group">
