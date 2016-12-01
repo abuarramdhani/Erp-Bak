@@ -107,22 +107,49 @@ class C_MasterParamTarifJamsostek extends CI_Controller
     public function save()
     {
         $this->formValidation();
+		
+		//MASTER INSERT NEW
+        $data = array(
+			'periode_jst' => $this->input->post('txtPeriodeJst_new',TRUE),
+			'jkk' => $this->input->post('txtJkk',TRUE),
+			'jht_karyawan' => $this->input->post('txtJhtKaryawan',TRUE),
+			'jht_perusahaan' => $this->input->post('txtJhtPerusahaan',TRUE),
+			'jkm' => $this->input->post('txtJkm',TRUE),
+			'jpk_lajang' => $this->input->post('txtJpkLajang',TRUE),
+			'jpk_nikah' => $this->input->post('txtJpkNikah',TRUE),
+			'batas_jpk' => $this->input->post('txtBatasJpk',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'tgl_tberlaku' 	=> '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku'	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'jkk' 					=> $this->input->post('txtJkk',TRUE),
+			'jht_karyawan'			=> $this->input->post('txtJhtKaryawan',TRUE),
+			'jht_perusahaan' 		=> $this->input->post('txtJhtPerusahaan',TRUE),
+			'jkm' 					=> $this->input->post('txtJkm',TRUE),
+			'jpk_lajang' 			=> $this->input->post('txtJpkLajang',TRUE),
+			'jpk_nikah' 			=> $this->input->post('txtJpkNikah',TRUE),
+			'batas_jpk' 			=> $this->input->post('txtBatasJpk',TRUE),		
+			'tgl_berlaku' 			=> date('Y-m-d'),
+			'tgl_tberlaku' 			=> '9999-12-31',
+			'kode_petugas' 			=> '0000001',
+			'tgl_record' 			=> date('Y-m-d H:i:s'),
+		);
 
-        
-            $data = array(
-                'periode_jst' => $this->input->post('txtPeriodeJst_new',TRUE),
-				'jkk' => $this->input->post('txtJkk',TRUE),
-				'jht_karyawan' => $this->input->post('txtJhtKaryawan',TRUE),
-				'jht_perusahaan' => $this->input->post('txtJhtPerusahaan',TRUE),
-				'jkm' => $this->input->post('txtJkm',TRUE),
-				'jpk_lajang' => $this->input->post('txtJpkLajang',TRUE),
-				'jpk_nikah' => $this->input->post('txtJpkNikah',TRUE),
-				'batas_jpk' => $this->input->post('txtBatasJpk',TRUE),
-			);
-
-            $this->M_masterparamtarifjamsostek->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
+		$this->M_masterparamtarifjamsostek->master_delete();
+		$this->M_masterparamtarifjamsostek->insert($data);
+		$this->M_masterparamtarifjamsostek->riwayat_update($ru_where,$ru_data);
+		$this->M_masterparamtarifjamsostek->riwayat_insert($ri_data);
+		
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         
     }
 
