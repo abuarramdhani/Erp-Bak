@@ -101,17 +101,50 @@ class C_MasterTarifJkk extends CI_Controller
     {
         $this->formValidation();
 
-        
-            $data = array(
-				'id_tarif_jkk' => $this->input->post('txtIdTarifJkk_new',TRUE),
-                'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
-                'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
-                'tarif_jkk' => $this->input->post('txtTarifJkk',TRUE),
-			);
+        //MASTER DELETE CURRENT
+		$md_where = array(
+			'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
+			'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
+		);
+		
+		//MASTER INSERT NEW
+        $data = array(
+			'id_tarif_jkk' => $this->input->post('txtIdTarifJkk_new',TRUE),
+			'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
+			'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
+			'tarif_jkk' => $this->input->post('txtTarifJkk',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'id_kantor_asal' 	=> $this->input->post('cmbIdKantorAsal',TRUE),
+			'id_lokasi_kerja' 	=> $this->input->post('cmbIdLokasiKerja',TRUE),
+			'tgl_tberlaku' 		=> '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 		=> date('Y-m-d'),
+			'status_aktif' 		=> '0',
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'tgl_berlaku' 		=> date('Y-m-d'),
+			'tgl_tberlaku' 		=> '9999-12-31',
+			'id_kantor_asal'	=> $this->input->post('cmbIdKantorAsal',TRUE),
+			'id_lokasi_kerja' 	=> $this->input->post('cmbIdLokasiKerja',TRUE),
+			'tarif_jkk' 		=> $this->input->post('txtTarifJkk',TRUE),
+			'kd_petugas' 		=> '0000001',
+			'tgl_rec' 		=> date('Y-m-d H:i:s'),
+			'status_aktif' 		=> '1',
+		);
 
-            $this->M_mastertarifjkk->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/MasterTarifJkk'));
+		$this->M_mastertarifjkk->master_delete($md_where);
+		$this->M_mastertarifjkk->insert($data);
+		$this->M_mastertarifjkk->riwayat_update($ru_where,$ru_data);
+		$this->M_mastertarifjkk->riwayat_insert($ri_data);
+		
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/MasterTarifJkk'));
         
     }
 
@@ -153,7 +186,6 @@ class C_MasterTarifJkk extends CI_Controller
     {
         $this->formValidation();
 
-        
             $data = array(
 				'id_tarif_jkk' => $this->input->post('txtIdTarifJkk_new',TRUE),
                 'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),

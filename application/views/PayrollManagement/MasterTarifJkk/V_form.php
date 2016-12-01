@@ -45,7 +45,7 @@
 									<div class="form-group">
 	                                            <label for="cmbIdKantorAsal" class="control-label col-lg-4">Id Kantor Asal</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbIdKantorAsal" name="cmbIdKantorAsal" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%" id="cmbIdKantorAsal" name="cmbIdKantorAsal" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_kantor_asal_data as $row) {
                                                             $slc = '';
@@ -60,13 +60,10 @@
 									<div class="form-group">
 	                                            <label for="cmbIdLokasiKerja" class="control-label col-lg-4">Id Lokasi Kerja</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbIdLokasiKerja" name="cmbIdLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%" id="cmbIdLokasiKerja" name="cmbIdLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_lokasi_kerja_data as $row) {
-                                                            $slc = '';
-                                                            if (rtrim($row->id_lokasi_kerja) == rtrim($id_lokasi_kerja)) {
-                                                                $slc = 'selected';
-                                                            }
+                                                            $slc='';if(rtrim($row->id_lokasi_kerja)==rtrim($id_lokasi_kerja)){$slc='selected';                                                          }
                                                             echo '<option value="'.$row->id_lokasi_kerja.'" '.$slc.'>'.$row->lokasi_kerja.'</option>';
                                                         }
                                                         ?></select>
