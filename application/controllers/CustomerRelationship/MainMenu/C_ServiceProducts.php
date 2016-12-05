@@ -796,9 +796,13 @@ class C_ServiceProducts extends CI_Controller {
 						$created_by = $this->input->post('hdnUser');
 						
 						if (stripos($improcess, "PROCESS") !== FALSE) {
-							$customerName = $this->input->post('txtCustomerName');
-							$saveClaimHeaderP = $this->M_serviceproducts->processClaimHeaderP($customerName,$created_by);
-							$saveClaimHeaderO = $this->M_serviceproducts->processClaimHeaderO($customerName,$created_by);
+							$customerName 	= $this->input->post('txtCustomerName');
+							$province 		= $this->input->post('provinceIncident');
+							$City 			= $this->input->post('CityIncident');
+							$District 		= $this->input->post('DistrictIncident');
+							$Village 		= $this->input->post('VillageIncident');
+							$saveClaimHeaderP = $this->M_serviceproducts->processClaimHeaderP($customerName,$province,$City,$District,$Village,$created_by);
+							$saveClaimHeaderO = $this->M_serviceproducts->processClaimHeaderO($customerName,$province,$City,$District,$Village,$created_by);
 							$headeridP = $saveClaimHeaderP[0]['ins_id'];
 							$headeridO = $saveClaimHeaderO[0]['INS_ID'];
 						}
@@ -1042,5 +1046,8 @@ class C_ServiceProducts extends CI_Controller {
 					echo '<option value="'.$data['village_name'].'">'.strtoupper($data['village_name']).'</option>';
 				}
 			}
+		}
+		public function shipped(){
+			$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_shipped');
 		}
 }
