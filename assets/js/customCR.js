@@ -135,5 +135,34 @@
 				}
 			});
 		});
+		function datepick(){
+			$('#sentDate').daterangepicker({
+				"singleDatePicker": true,
+				"timePicker": true,
+				"timePicker24Hour": true,
+				"showDropdowns": false,
+				locale: {
+						format: 'DD-MM-YYYY HH:mm:ss'
+					},
+			});
+		};
+		$('#claimsItem1').click(function(){
+			$.ajax({
+				url:baseurl+"CustomerRelationship/ServiceProducts/shipped",
+				success:function(result)
+				{
+					$('#showClaimsItem').html(result);
+					datepick();
+				}
+			})
+		});
+		$('#claimsItem2').click(function(){
+			$('#loadAjax').show();
+			document.getElementById("showClaimsItem").innerHTML = '<div class="form-group"><label>Reason Can Not be Sent</label><div class="input-group"><div class="input-group-addon"><i class="glyphicon glyphicon-home"></i></div><input type="text" class="form-control" name="reason" placeholder="Reason Can Not be Sent" data-toggle="tooltip" data-placement="top" title="Masukkan alasan barang tidak dapat dikirim" required></div></div>';
+		});
+		$('#claimsItem3').click(function(){
+			$('#loadAjax').show();
+			document.getElementById("showClaimsItem").innerHTML = '<p style="text-align:center;"><strong>- No Evidence for The Claim -</strong></p>';
+		});
 	});
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------
