@@ -638,19 +638,55 @@ class M_serviceproducts extends CI_Model {
 			}
 		}
 
-		function processClaimHeaderP($customerName,$created_by)
+		function processClaimHeaderP($customerName,$province,$City,$District,$Village,$created_by)
 		{
 			$sqlpostgre =	"INSERT INTO cr.\"KHS_EXTERNAL_CLAIM_HEADERS\"
-									(\"USER_ID\",
+									(\"CLAIM_TYPE\",
+									\"USER_ID\",
 									\"CUST_ACCOUNT_ID\",
 									\"OWNER_NAME\",
+									\"OWNER_ADDRESS\",
+									\"OWNER_PHONE_NUMBER\",
+									\"DURATION_OF_USE\",
+									\"LOCATION_ADDRESS\",
+									\"LOCATION_VILLAGE\",
+									\"LOCATION_DISTRICT\",
+									\"LOCATION_CITY\",
+									\"LOCATION_PROVINCE\",
+									\"SHIPPED\",
+									\"NOT_SHIPPED_REASON\",
+									\"NO_EVIDENCE\",
+									\"LAND_CATEGORY\",
+									\"TYPE_OF_SOIL\",
+									\"LAND_DEPTH\",
+									\"WEEDS\",
+									\"TOPOGRAPHY\",
+									\"EVENT_CHRONOLOGY\",
 									\"CREATED_BY\",
 									\"CREATION_DATE\",
 									\"STATUS\")
 									VALUES (
-										'42',
+										'HARVESTER',
+										'".$created_by."',
 										'1042',
 										'".$customerName."',
+										'OWNER_ADDRESS',
+										'OWNER_PHONE_NUMBER',
+										'DURATION_OF_USE',
+										'LOCATION_ADDRESS',
+										'LOCATION_VILLAGE',
+										'LOCATION_DISTRICT',
+										'LOCATION_CITY',
+										'LOCATION_PROVINCE',
+										'SHIPPED',
+										'NOT_SHIPPED_REASON',
+										'NO_EVIDENCE',
+										'LAND_CATEGORY',
+										'TYPE_OF_SOIL',
+										'LAND_DEPTH',
+										'WEEDS',
+										'TOPOGRAPHY',
+										'EVENT_CHRONOLOGY',
 										'".$created_by."',
 										now(),
 										'NEW'
@@ -662,19 +698,55 @@ class M_serviceproducts extends CI_Model {
 			return $query->result_array();
 		}
 
-		function processClaimHeaderO($customerName,$created_by)
+		function processClaimHeaderO($customerName,$province,$City,$District,$Village,$created_by)
 		{
 			$sqloracle	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
-									(USER_ID,
+									(CLAIM_TYPE,
+									USER_ID,
 									CUST_ACCOUNT_ID,
 									OWNER_NAME,
+									OWNER_ADDRESS,
+									OWNER_PHONE_NUMBER,
+									DURATION_OF_USE,
+									LOCATION_ADDRESS,
+									LOCATION_VILLAGE,
+									LOCATION_DISTRICT,
+									LOCATION_CITY,
+									LOCATION_PROVINCE,
+									SHIPPED,
+									NOT_SHIPPED_REASON,
+									NO_EVIDENCE,
+									LAND_CATEGORY,
+									TYPE_OF_SOIL,
+									LAND_DEPTH,
+									WEEDS,
+									TOPOGRAPHY,
+									EVENT_CHRONOLOGY,
 									CREATED_BY,
 									CREATION_DATE,
 									STATUS)
 									VALUES (
-										'42',
+										'HARVESTER'
+										'".$created_by."',
 										'1042',
 										'".$customerName."',
+										'OWNER_ADDRESS',
+										'OWNER_PHONE_NUMBER',
+										'DURATION_OF_USE',
+										'LOCATION_ADDRESS',
+										'".$Village."',
+										'".$District."',
+										'".$City."',
+										'".$province."',
+										'SHIPPED',
+										'NOT_SHIPPED_REASON',
+										'NO_EVIDENCE',
+										'LAND_CATEGORY',
+										'TYPE_OF_SOIL',
+										'LAND_DEPTH',
+										'WEEDS',
+										'TOPOGRAPHY',
+										'EVENT_CHRONOLOGY',
 										'".$created_by."',
 										sysdate,
 										'NEW'
