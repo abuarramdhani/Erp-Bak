@@ -266,5 +266,21 @@ $(document).ready(function() {
 });
 
 function getMaxHutang(noind){
-  alert(noind);
+  $.ajax({
+    type:'POST',
+    data:{noind: noind},
+    url:baseurl+"PayrollManagement/HutangKaryawan/getMaxHutang",
+    success:function(result)
+    {
+      $('#txtTotalHutang').attr("placeholder",result);
+      $('#txtTotalHutang').attr("max",result);
+      $('#max-hutang').text("* Max 2x Gaji Pokok ("+result+")");
+    },
+    error:function()
+    {
+      $('#txtTotalHutang').attr("placeholder",'Error Occured');
+      $('#txtTotalHutang').attr("max",'0');
+      $('#max-hutang').text("* Max 2x Gaji Pokok ()");
+    }
+  });
 }
