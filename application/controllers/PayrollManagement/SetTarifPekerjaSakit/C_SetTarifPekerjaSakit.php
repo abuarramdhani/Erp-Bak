@@ -100,16 +100,48 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 
     public function save(){
         $this->formValidation();
-        $data = array(
 		
-			'tingkatan' => $this->input->post('txtTingkatan',TRUE),
-			'bulan_awal' => $this->input->post('txtBulanAwal',TRUE),
-			'bulan_akhir' => $this->input->post('txtBulanAkhir',TRUE),
-			'persentase' => $this->input->post('txtPersentase',TRUE),
-
+		//MASTER DELETE CURRENT
+		$md_where = array(
+			'kd_tarif' 	=> $this->input->post('txtKdTarifNew',TRUE),
+		);
+		
+		//MASTER INSERT NEW
+        $data = array(
+			'kd_tarif' 		=> $this->input->post('txtKdTarifNew',TRUE),
+			'tingkatan' 	=> $this->input->post('txtTingkatan',TRUE),
+			'bulan_awal' 	=> $this->input->post('txtBulanAwal',TRUE),
+			'bulan_akhir' 	=> $this->input->post('txtBulanAkhir',TRUE),
+			'persentase' 	=> $this->input->post('txtPersentase',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'kd_tarif' 		=> $this->input->post('txtKdTarifNew',TRUE),
+			'tgl_tberlaku' 	=> '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'kd_tarif' 		=> $this->input->post('txtKdTarifNew',TRUE),
+			'tingkatan' 	=> $this->input->post('txtTingkatan',TRUE),
+			'bulan_awal' 	=> $this->input->post('txtBulanAwal',TRUE),
+			'bulan_akhir' 	=> $this->input->post('txtBulanAkhir',TRUE),
+			'persentase' 	=> $this->input->post('txtPersentase',TRUE),
+			'tgl_berlaku' 	=> date('Y-m-d'),
+			'tgl_tberlaku' 	=> '9999-12-31',
+			'kd_petugas' 	=> '0000001',
+			'tgl_rec' 		=> date('Y-m-d H:i:s'),
 		);
 
-        $this->M_settarifpekerjasakit->insert($data);
+		$this->M_settarifpekerjasakit->master_delete($md_where);
+		$this->M_settarifpekerjasakit->insert($data);
+		$this->M_settarifpekerjasakit->riwayat_update($ru_where,$ru_data);
+		$this->M_settarifpekerjasakit->riwayat_insert($ri_data);
+		
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/SetTarifPekerjaSakit'));
     }

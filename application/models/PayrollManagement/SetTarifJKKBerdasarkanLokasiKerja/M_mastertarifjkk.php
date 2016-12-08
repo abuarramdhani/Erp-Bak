@@ -4,6 +4,7 @@ class M_mastertarifjkk extends CI_Model
 {
 
     public $table = 'pr.pr_master_tarif_jkk';
+	public $table_riwayat = 'pr.pr_riwayat_tarif_jkk';
     public $id = 'id_tarif_jkk';
     public $order = 'DESC';
 
@@ -45,20 +46,41 @@ class M_mastertarifjkk extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
     }
+	
+	// association
+    function get_pr_kantor_asal_data()
+    {
+        return $this->db->get('pr.pr_kantor_asal')->result();
+    }
 
-// association
-            function get_pr_kantor_asal_data()
-            {
-                return $this->db->get('pr.pr_kantor_asal')->result();
-            }
+	// association
+    function get_pr_lokasi_kerja_data()
+    {
+        return $this->db->get('pr.pr_lokasi_kerja')->result();
+    }
+	
+//------------------------- RIWAYAT RELATION -------------------------	
+	
+	//MASTER DELETE CURRENT
+    function master_delete($md_where)
+    {
+        $this->db->where($md_where);
+        $this->db->delete($this->table);
+    }
+	
+	//RIWAYAT CHANGE CURRENT
+    function riwayat_update($ru_where, $ru_data)
+    {
+        $this->db->where($ru_where);
+        $this->db->update($this->table_riwayat, $ru_data);
+    }
+	
+	//RIWAYAT INSERT NEW
+    function riwayat_insert($ri_data)
+    {
+        $this->db->insert($this->table_riwayat, $ri_data);
+    }
 
-
-
-// association
-            function get_pr_lokasi_kerja_data()
-            {
-                return $this->db->get('pr.pr_lokasi_kerja')->result();
-            }
 
 }
 

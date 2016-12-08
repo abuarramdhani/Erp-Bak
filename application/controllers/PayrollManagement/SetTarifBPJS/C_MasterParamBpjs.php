@@ -86,7 +86,7 @@ class C_MasterParamBpjs extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterParamBpjs/save'),
-				'id_setting' => set_value(''),
+			'id_setting' => set_value(''),
 			'batas_max_jkn' => set_value('batas_max_jkn'),
 			'jkn_tg_kary' => set_value('jkn_tg_kary'),
 			'jkn_tg_prshn' => set_value('jkn_tg_prshn'),
@@ -101,27 +101,51 @@ class C_MasterParamBpjs extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-    public function save()
-    {
+    public function save(){
         $this->formValidation();
+		
+		
+		
+		//MASTER INSERT NEW
+		$data = array(
+			'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+			'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
+			'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
+			'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+			'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
+			'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'tgl_berlaku' 	=> date('Y-m-d'),
+			'tgl_tberlaku' 	=> '9999-12-31',
+			'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+			'jkn_tg_kary' 	=> $this->input->post('txtJknTgKary',TRUE),
+			'jkn_tg_prshn' 	=> $this->input->post('txtJknTgPrshn',TRUE),
+			'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+			'jpn_tg_kary' 	=> $this->input->post('txtJpnTgKary',TRUE),
+			'jpn_tg_prshn' 	=> $this->input->post('txtJpnTgPrshn',TRUE),
+			'kode_petugas' 	=> '0001225',
+			'tgl_record' 	=> date('Y-m-d H:i:s'),
+		);
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
-            $data = array(
-				'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
-				'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
-				'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
-				'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
-				'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
-				'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
-			);
+        $this->M_masterparambpjs->master_delete();
+		$this->M_masterparambpjs->insert($data);
+		$this->M_masterparambpjs->riwayat_update($ru_where,$ru_data);
+		$this->M_masterparambpjs->riwayat_insert($ri_data);
+		
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/MasterParamBpjs'));
 
-            $this->M_masterparambpjs->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/MasterParamBpjs'));
-        }
     }
 
     public function update($id)

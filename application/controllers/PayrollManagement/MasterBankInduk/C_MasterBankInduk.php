@@ -89,33 +89,48 @@ class C_MasterBankInduk extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-	//SAVE NEW DATA
     public function save(){
 		$this->formValidation();
-
-        $data = array(
-			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
+		
+		//MASTER DELETE CURRENT
+		$md_where = array(
 			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
 		);
-
-        $this->M_masterbankinduk->insert($data);
+		
+		//MASTER INSERT NEW
+		$data = array(
+			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'kd_bank_induk' 		=> $this->input->post('txtKdBankIndukNew',TRUE),
+			'bank_induk' 			=> $this->input->post('txtBankInduk',TRUE),
+			'tgl_berlaku' 			=> date('Y-m-d'),
+			'tgl_tberlaku' 			=> '9999-12-31',
+			'kode_petugas' 			=> '0001225',
+			'tgl_record' 			=> date('Y-m-d H:i:s'),
+		);
+		
+		$this->M_masterbankinduk->master_delete($md_where);
+		$this->M_masterbankinduk->insert($data);
+		$this->M_masterbankinduk->riwayat_update($ru_where,$ru_data);
+		$this->M_masterbankinduk->riwayat_insert($ri_data);
+		
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/MasterBankInduk'));
     }
 	
-	//SAVE DATA UPDATE
-    public function saveUpdate(){
-        $this->formValidation();
-
-		$data = array(
-			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
-		);
-
-        $this->M_masterbankinduk->update($this->input->post('txtKdBankInduk', TRUE), $data);
-        $this->session->set_flashdata('message', 'Update Record Success');
-        redirect(site_url('PayrollManagement/MasterBankInduk'));
-    }
 
     public function update($id){
 		$this->checkSession();
@@ -145,6 +160,18 @@ class C_MasterBankInduk extends CI_Controller
         }
     }
 
+    public function saveUpdate(){
+        $this->formValidation();
+
+		$data = array(
+			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
+			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+		);
+
+        $this->M_masterbankinduk->update($this->input->post('txtKdBankInduk', TRUE), $data);
+        $this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('PayrollManagement/MasterBankInduk'));
+    }
 
     public function delete($id){
         $row = $this->M_masterbankinduk->get_by_id($id);

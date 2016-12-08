@@ -196,20 +196,28 @@ $('#dataTables-dataGajianPersonalia').DataTable( {
         'excel','pdf'
       ]
     });
+
+$('#dataTables-transaksiKlaimDl').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-hutangKaryawan').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });	
 	
-$('#txtTanggal').datepicker({ autoclose: true });
-$('#txtTglJamRecord').datepicker({ autoclose: true });
+$('#txtTglPengajuan').datepicker({ autoclose: true });
 $('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglTransaksi').datepicker({ autoclose: true });
-$('#txtDiangkat').datepicker({ autoclose: true });
-$('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglBerlaku').datepicker({ autoclose: true });
 $('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
-$('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglLahir').datepicker({ autoclose: true });
 $('#txtTglNikah').datepicker({ autoclose: true });
 $('#txtDiangkat').datepicker({ autoclose: true });

@@ -46,13 +46,13 @@
 									<div class="form-group">
                                         <label for="txtBatasBawah" class="control-label col-lg-4">Batas Bawah</label>
                                         <div class="col-lg-4">
-											<input type="text" placeholder="Batas Bawah" name="txtBatasBawah" id="txtBatasBawah" class="form-control" value="<?php echo $batas_bawah; ?>" maxlength="15"/>
+											<input type="text" placeholder="Batas Bawah" name="txtBatasBawah" id="txtBatasBawah" class="form-control" value="<?php echo $batas_bawah; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBatasAtas" class="control-label col-lg-4">Batas Atas</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Batas Atas" name="txtBatasAtas" id="txtBatasAtas" class="form-control" value="<?php echo $batas_atas; ?>" maxlength="15"/>
+                                            <input type="text" placeholder="Batas Atas" name="txtBatasAtas" id="txtBatasAtas" class="form-control" value="<?php echo $batas_atas; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
                                         </div>
                                     </div>
 									<div class="form-group">

@@ -4,6 +4,7 @@ class M_standartjamtkpw extends CI_Model
 {
 
     public $table = 'pr.pr_standart_jam_tkpw';
+    public $table_riwayat = 'pr.pr_riwayat_standart_jam_tkpw';
     public $id = 'kode_standart_jam';
     public $order = 'DESC';
 
@@ -44,7 +45,31 @@ class M_standartjamtkpw extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-    }}
+    }
+	
+//------------------------- RIWAYAT RELATION -------------------------	
+	
+	//MASTER DELETE CURRENT
+    function master_delete($md_where)
+    {
+        $this->db->where($md_where);
+        $this->db->delete($this->table);
+    }
+	
+	//RIWAYAT CHANGE CURRENT
+    function riwayat_update($ru_where, $ru_data)
+    {
+        $this->db->where($ru_where);
+        $this->db->update($this->table_riwayat, $ru_data);
+    }
+	
+	//RIWAYAT INSERT NEW
+    function riwayat_insert($ri_data)
+    {
+        $this->db->insert($this->table_riwayat, $ri_data);
+    }
+	
+}
 
 /* End of file M_standartjamtkpw.php */
 /* Location: ./application/models/PayrollManagement/SetStandartJamTKPW/M_standartjamtkpw.php */

@@ -102,18 +102,43 @@ class C_MasterParamPengurangPajak extends CI_Controller
     public function save()
     {
         $this->formValidation();
+		
+		//MASTER INSERT NEW
+		$data = array(
+			'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
+			'max_jab' => $this->input->post('txtMaxJab',TRUE),
+			'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
+			'max_pensiun' => $this->input->post('txtMaxPensiun',TRUE),
+			'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'tgl_berlaku' 				=> date('Y-m-d'),
+			'tgl_tberlaku' 				=> '9999-12-31',
+			'max_jab' 					=> $this->input->post('txtMaxJab',TRUE),
+			'persentase_jab' 			=> $this->input->post('txtPersentaseJab',TRUE),
+			'max_pensiun' 				=> $this->input->post('txtMaxPensiun',TRUE),
+			'persentase_pensiun' 		=> $this->input->post('txtPersentasePensiun',TRUE),
+			'kode_petugas' 				=> '0000001',
+			'tgl_record' 				=> date('Y-m-d H:i:s'),
+		);
 
-            $data = array(
-				'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
-				'max_jab' => $this->input->post('txtMaxJab',TRUE),
-				'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
-				'max_pensiun' => $this->input->post('txtMaxPensiun',TRUE),
-				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
-			);
-
-            $this->M_masterparampengurangpajak->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
+		$this->M_masterparampengurangpajak->master_delete();
+		$this->M_masterparampengurangpajak->insert($data);
+		$this->M_masterparampengurangpajak->riwayat_update($ru_where,$ru_data);
+		$this->M_masterparampengurangpajak->riwayat_insert($ri_data);
+		
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
     }
 
     public function update($id)

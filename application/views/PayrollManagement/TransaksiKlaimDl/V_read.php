@@ -7,13 +7,13 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Transaksi Pekerja Sakit Berkepanjangan</b></h1>
+                                <h1><b>Transaksi Klaim Dl</b></h1>
 
                                 </div>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagement/DaftarPekerjaSakit/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagement/TransaksiKlaimDl/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
                                     </a>                             
@@ -26,7 +26,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                Read Transaksi Pekerja Sakit Berkepanjangan
+                                Read Transaksi Klaim Dl
                             </div>
                         <div class="box-body">
                             <div class="panel-body">
@@ -44,9 +44,9 @@
                                             </div>
                                         </div>
 <div class="form-group">
-                                            <label for="txtBulanSakit" class="control-label col-lg-4">Bulan Sakit</label>
+                                            <label for="txtKlaimDl" class="control-label col-lg-4">Klaim Dl</label>
                                             <div class="col-lg-4">
-                                                <input type="text" name="txtBulanSakit" id="txtBulanSakit" class="form-control" value="<?php echo $bulan_sakit; ?>" readonly/>
+                                                <input type="text" name="txtKlaimDl" id="txtKlaimDl" class="form-control" value="<?php echo $klaim_dl; ?>" readonly/>
                                             </div>
                                         </div>
 </div>

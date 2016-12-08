@@ -4,6 +4,7 @@ class M_masterparamtarifjamsostek extends CI_Model
 {
 
     public $table = 'pr.pr_master_param_tarif_jamsostek';
+	public $table_riwayat = 'pr.pr_riwayat_param_tarif_jamsostek';
     public $id = 'periode_jst';
     public $order = 'DESC';
 
@@ -44,7 +45,31 @@ class M_masterparamtarifjamsostek extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-    }}
+    }
+
+//------------------------- RIWAYAT RELATION -------------------------
+	
+	//MASTER DELETE CURRENT
+    function master_delete()
+    {
+        $this->db->where('1', '1');
+        $this->db->delete($this->table);
+    }
+	
+	//RIWAYAT CHANGE CURRENT
+    function riwayat_update($ru_where, $ru_data)
+    {
+        $this->db->where($ru_where);
+        $this->db->update($this->table_riwayat, $ru_data);
+    }
+	
+	//RIWAYAT INSERT NEW
+    function riwayat_insert($ri_data)
+    {
+        $this->db->insert($this->table_riwayat, $ri_data);
+    }
+	
+}
 
 /* End of file M_masterparamtarifjamsostek.php */
 /* Location: ./application/models/PayrollManagement/SetTarifJamsostek/M_masterparamtarifjamsostek.php */

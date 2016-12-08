@@ -98,14 +98,46 @@ class C_MasterParameterTarifPph extends CI_Controller
     public function save()
     {
         $this->formValidation();
-        $data = array(
+        
+		//MASTER DELETE CURRENT
+		$md_where = array(
+			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
+		);
+		
+		//MASTER INSERT NEW
+		$data = array(
 			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
 			'batas_bawah' => $this->input->post('txtBatasBawah',TRUE),
 			'batas_atas' => $this->input->post('txtBatasAtas',TRUE),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
 		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+		//RIWAYAT INSERT NEW
+		$ri_data = array(
+			'tgl_berlaku' 		=> date('Y-m-d'),
+			'tgl_tberlaku' 		=> '9999-12-31',
+			'kd_pph' 			=> $this->input->post('txtKdPphNew',TRUE),
+			'batas_bawah' 		=> $this->input->post('txtBatasBawah',TRUE),
+			'batas_atas' 		=> $this->input->post('txtBatasAtas',TRUE),
+			'persen' 			=> $this->input->post('txtPersen',TRUE),
+			'kode_petugas' 		=> '0000001',
+			'tgl_jam_record' 	=> date('Y-m-d H:i:s'),
+		);
+		
+		$this->M_masterparametertarifpph->master_delete($md_where);
 		$this->M_masterparametertarifpph->insert($data);
+		$this->M_masterparametertarifpph->riwayat_update($ru_where,$ru_data);
+		$this->M_masterparametertarifpph->riwayat_insert($ri_data);
+		
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/MasterParameterTarifPph'));
     }

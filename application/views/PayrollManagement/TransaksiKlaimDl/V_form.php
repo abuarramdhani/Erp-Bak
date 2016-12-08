@@ -7,13 +7,13 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Master Param Bpjs</b></h1>
+                                <h1><b>Transaksi Klaim Dl</b></h1>
 
                                 </div>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagement/MasterParamBpjs/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagement/TransaksiKlaimDl/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
                                     </a>                             
@@ -26,7 +26,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                Master Param Bpjs
+                                Transaksi Klaim Dl
                             </div>
                         <div class="box-body">
                             <div class="panel-body">
@@ -38,43 +38,25 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-	                                            <label for="txtBatasMaxJkn" class="control-label col-lg-4">Batas Max JKN</label>
+	                                            <label for="txtTanggal" class="control-label col-lg-4">Tanggal</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" placeholder="Batas Max JKN" name="txtBatasMaxJkn" id="txtBatasMaxJkn" class="form-control" value="<?php echo $batas_max_jkn ?>" maxlength="10" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggal" value="<?php echo $tanggal ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTanggal" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
-                                            <label for="txtJknTgKary" class="control-label col-lg-4">JKN Tg Karyawan</label>
+                                            <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkn Tg Kary" name="txtJknTgKary" id="txtJknTgKary" class="form-control" value="<?php echo $jkn_tg_kary; ?>" maxlength="5"/>
+                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>"/>
                                             </div>
                                     </div>
 									<div class="form-group">
-                                            <label for="txtJknTgPrshn" class="control-label col-lg-4">JKN Tg Perusahaan</label>
+                                            <label for="txtKlaimDl" class="control-label col-lg-4">Klaim Dl</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkn Tg Prshn" name="txtJknTgPrshn" id="txtJknTgPrshn" class="form-control" value="<?php echo $jkn_tg_prshn; ?>"  maxlength="5"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtBatasMaxJpn" class="control-label col-lg-4">Batas Max JPN</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" placeholder="Batas Max JPN" name="txtBatasMaxJpn" id="txtBatasMaxJpn" class="form-control" value="<?php echo $batas_max_jpn ?>" maxlength="10"/>
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-                                            <label for="txtJpnTgKary" class="control-label col-lg-4">JPN Tg Karyawan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpn Tg Kary" name="txtJpnTgKary" id="txtJpnTgKary" class="form-control" value="<?php echo $jpn_tg_kary; ?>"  maxlength="5"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-                                            <label for="txtJpnTgPrshn" class="control-label col-lg-4">JPN Tg Perusahaan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpn Tg Prshn" name="txtJpnTgPrshn" id="txtJpnTgPrshn" class="form-control" value="<?php echo $jpn_tg_prshn; ?>"  maxlength="5"/>
+                                                <input type="text" placeholder="Klaim Dl" name="txtKlaimDl" id="txtKlaimDl" class="form-control" value="<?php echo $klaim_dl; ?>"/>
                                             </div>
                                     </div>
 
-	    <input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" /> </div>
+	    <input type="hidden" name="txtIdKlaimDl" value="<?php echo $id_klaim_dl; ?>" /> </div>
                                 
                             </div>
                             <div class="panel-footer">
