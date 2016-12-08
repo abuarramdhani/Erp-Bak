@@ -57,7 +57,7 @@
 							</table>
 						<?php } ?>
 						</div>
-							<table class="table table-striped table-bordered table-hover text-left" id="datatable-presensi" style="font-size:14px;">
+							<table class="table table-striped table-bordered table-hover text-left" id="datatable-presensi-presence-management" style="font-size:14px;">
 								<thead class="bg-primary">
 									<tr>
 										<th style="text-align:center;" width="5%">NO</th>

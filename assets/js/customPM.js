@@ -2,7 +2,7 @@ $(document).ready(function() {
 	//========
 	// JAVASCRIPT & JQUERY PRESENCE MANAGEMENT > PIC : ALFIAN AFIEF N
 	//======== START
-	$('#datatable-presensi').dataTable({
+	$('#datatable-presensi-presence-management').dataTable({
 	 "bLengthChange": false,
 	 "ordering": false
 	});
