@@ -7,6 +7,7 @@ class C_TransaksiHitungThr extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
+        $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/TransaksiTHR/M_transaksihitungthr');
         if($this->session->userdata('logged_in')!=TRUE) {
@@ -28,6 +29,7 @@ class C_TransaksiHitungThr extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
         $transaksiHitungThr = $this->M_transaksihitungthr->get_all();
 
         $data['transaksiHitungThr_data'] = $transaksiHitungThr;
@@ -222,6 +224,121 @@ class C_TransaksiHitungThr extends CI_Controller
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/TransaksiHitungThr'));
         }
+    }
+
+    public function import($data = array(), $filename = ''){
+
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data = array(
+            'Menu' => 'Payroll Management',
+            'SubMenuOne' => '',
+            'SubMenuTwo' => '',
+            'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
+            'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
+            'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
+            'action' => site_url('PayrollManagement/TransaksiHitungThr/import'),
+            'data' => $data,
+            'filename' => $filename,
+        );
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('PayrollManagement/TransaksiHitungThr/V_import', $data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function upload() {
+       
+        $config['upload_path'] = 'assets/upload/importPR';
+        $config['file_name'] = 'HitungTHR-'.time();
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) {
+            echo $this->upload->display_errors();
+        }
+        else {
+            $file_data  = $this->upload->data();
+            $filename   = $file_data['file_name'];
+            $file_path  = 'assets/upload/importPR/'.$file_data['file_name'];
+            
+            if ($this->csvimport->get_array($file_path)){
+                $data = $this->csvimport->get_array($file_path);
+                $this->import($data, $filename);
+            }
+            else {
+                $this->load->view('csvindex', $data);
+            }
+        }
+    }
+
+    public function saveImport(){
+        $filename = $this->input->post('txtFileName');
+        $file_path  = 'assets/upload/importPR/'.$filename;
+        $importData = $this->csvimport->get_array($file_path);      
+
+        foreach ($importData as $row) {
+            $data = array(
+                'tanggal' => $row['tanggal'],
+                'periode' => $row['periode'],
+                'noind' => $row['noind'],
+                'kd_status_kerja' => $row['kd_status_kerja'],
+                'diangkat' => $row['diangkat'],
+                'lama_thn' => $row['lama_thn'],
+                'lama_bln' => $row['lama_bln'],
+                'gaji_pokok' => '0',
+                'kode_petugas' => '0000001',
+                'tgl_jam_record' => date('Y-m-d H:i:s'),
+            );
+            $this->M_transaksihitungthr->insert($data);
+        }
+
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/TransaksiHitungThr'));
+    }
+
+    public function hitung(){
+        $periode = $this->input->post('txtPeriodeHitung');
+        $hitung_data = $this->M_transaksihitungthr->get_hitung_data($periode);
+
+        foreach ($hitung_data as $row) {
+            $ht_where = array(
+                'id_transaksi_thr' => $row['id_transaksi_thr'], 
+            );
+
+            $lama_thn = $row['lama_thn'];
+            $lama_bln = $row['lama_bln'];
+            $gaji_pokok = $row['gaji_pokok'];
+            $persentase_thr = $row['persentase_thr'];
+            $persentase_ubthr = $row['persentase_ubthr'];
+
+            if ($lama_thn > 0) {
+                $thr_awal = $gaji_pokok * 1;
+                $ubthr_awal = $gaji_pokok * 1;
+            }
+            else{
+                $thr_awal = $gaji_pokok * ($lama_bln/12);
+                $ubthr_awal = $gaji_pokok * ($lama_bln/12);
+            }
+
+            $thr_akhir = $thr_awal * ($persentase_thr/100);
+            $ubthr_akhir = $ubthr_awal * ($persentase_ubthr/100);
+
+            $ht_data = array(
+                'gaji_pokok' => $gaji_pokok,
+                'thr' => round($thr_akhir, 2),
+                'persentase_ubthr' => $persentase_ubthr,
+                'ubthr' => round($ubthr_akhir, 2),
+            );
+
+            $this->M_transaksihitungthr->update_hitung($ht_where, $ht_data);
+        }
+
+        $this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('PayrollManagement/TransaksiHitungThr'));
     }
 
     public function checkSession(){

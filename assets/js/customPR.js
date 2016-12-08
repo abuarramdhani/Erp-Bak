@@ -162,10 +162,18 @@ $('#dataTables-transaksiKlaimSisaCuti').DataTable( {
 
 $('#dataTables-transaksiHitungThr').DataTable( {
       dom: 'Bfrtip',
+      "scrollX": true,
       buttons: [
         'excel'
       ]
-    });	
+    });
+
+$('#dataTables-transaksiHitungThrImport').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 
 $('#dataTables-transaksiHutang').DataTable( {
       dom: 'Bfrtip',
@@ -218,12 +226,69 @@ $('#txtAkhKontrak').datepicker({ autoclose: true });
 $('#txtTglSpsi').datepicker({ autoclose: true });
 $('#txtTglKop').datepicker({ autoclose: true });
 $('#txtTglKeluar').datepicker({ autoclose: true });
-$('#cmbKdBank').select2();
+$('#txtBatasMaxJkn').datepicker({ autoclose: true });
+$('#txtBatasMaxJpn').datepicker({ autoclose: true });
 $('#txtTglJamRecord').datepicker({ autoclose: true });
-$('#cmbKdHubunganKerja').select2();
-$('#cmbKdStatusKerja').select2();
-$('#cmbKdJabatan').select2();
-$('#cmbNoind').select2();
-$('#cmbStat').select2();
-$('#cmbIdLokasiKerja').select2();
-$('#cmbStatusLunas').select2();
+$('#txtTglTberlaku').datepicker({ autoclose: true });
+$('#txtTglRec').datepicker({ autoclose: true });
+$('#txtTglBerlaku').datepicker({ autoclose: true });
+$('#txtTglRec').datepicker({ autoclose: true });
+
+$(document).ready(function() {
+  $('#txtPeriodeHitung').datepicker({
+    autoclose: true,
+    format: "yyyy-mm",
+    viewMode: "months", 
+    minViewMode: "months"
+  });
+  $('#cmbKdBank').select2();
+  $('#cmbKdHubunganKerja').select2();
+  $('#cmbKdStatusKerja').select2();
+  $('#cmbKdJabatan').select2();
+  $('#cmbNoind').select2();
+  $('#cmbStat').select2();
+  $('#cmbIdLokasiKerja').select2();
+  $('#cmbNoind').select2({
+    placeholder: "No Induk",
+    allowClear: true,
+    minimumInputLength: 2,
+    ajax: {   
+      url:baseurl+"PayrollManagement/getNoind",
+      dataType: 'json',
+      type: "GET",
+      data: function (params) {
+        var queryParameters = {
+          term: params.term
+        }
+        return queryParameters;
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function(obj) {
+            return { id:obj.noind, text:obj.noind+' - '+obj.nama};
+          })
+        };
+      }
+    }
+  });
+});
+
+function getMaxHutang(noind){
+  $.ajax({
+    type:'POST',
+    data:{noind: noind},
+    url:baseurl+"PayrollManagement/HutangKaryawan/getMaxHutang",
+    success:function(result)
+    {
+      $('#txtTotalHutang').attr("placeholder",result);
+      $('#txtTotalHutang').attr("max",result);
+      $('#max-hutang').text("* Max 2x Gaji Pokok ("+result+")");
+    },
+    error:function()
+    {
+      $('#txtTotalHutang').attr("placeholder",'Error Occured');
+      $('#txtTotalHutang').attr("max",'0');
+      $('#max-hutang').text("* Max 2x Gaji Pokok ()");
+    }
+  });
+}

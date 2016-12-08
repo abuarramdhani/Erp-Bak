@@ -25,6 +25,11 @@
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
 		          <div class="box-header with-border">
+		          <a href="<?php echo site_url('PayrollManagement/TransaksiKlaimSisaCuti/import/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Import" title="Import" >
+                      <button type="button" class="btn btn-default btn-sm">
+                        <i class="icon-file icon-2x"></i>
+                      </button>
+                    </a>
                   <a href="<?php echo site_url('PayrollManagement/TransaksiKlaimSisaCuti/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
                       <button type="button" class="btn btn-default btn-sm">
                         <i class="icon-plus icon-2x"></i>
@@ -71,6 +76,12 @@
 							<?php } ?>
 		                </tbody>                                      
 		              </table>
+		              <form class="form-inline" method="post" action="<?php echo $action; ?>">
+						<div class="form-group">
+						  <input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" required>
+						</div>
+						<button type="submit" class="btn btn-primary">Hitung</button>
+					  </form>
 		            </div>
 		          </div>
 		        </div>

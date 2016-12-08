@@ -4,6 +4,7 @@ class M_hutangkaryawan extends CI_Model
 {
 
     public $table = 'pr.pr_hutang_karyawan';
+    public $table_gaji = 'pr.pr_riwayat_gaji';
     public $id = 'no_hutang';
     public $order = 'DESC';
 
@@ -44,7 +45,14 @@ class M_hutangkaryawan extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-    }}
+    }
+
+    function getMaxHutang($data_where)
+    {
+        $this->db->where($data_where);
+        return $this->db->get($this->table_gaji)->row()->gaji_pokok;
+    }
+}
 
 /* End of file M_hutangkaryawan.php */
 /* Location: ./application/models/PayrollManagement/TransaksiHutangKaryawan/M_hutangkaryawan.php */

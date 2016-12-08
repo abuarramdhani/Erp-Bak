@@ -46,11 +46,28 @@ class M_transaksiklaimsisacuti extends CI_Model
         $this->db->delete($this->table);
     }
 
-// association
-            function get_pr_jns_transaksi_data()
-            {
-                return $this->db->get('pr.pr_jns_transaksi')->result();
-            }
+    // association
+    function get_pr_jns_transaksi_data()
+    {
+        return $this->db->get('pr.pr_jns_transaksi')->result();
+    }
+
+    // get data hitung
+    function get_hitung_data($periode){
+        $sql="
+            SELECT cu.periode, ga.noind, ga.gaji_pokok, cu.sisa_cuti FROM pr.pr_riwayat_gaji ga
+            LEFT JOIN pr.pr_transaksi_klaim_sisa_cuti cu ON ga.noind = cu.noind
+            WHERE tgl_tberlaku = '9999-12-31'
+            AND cu.periode = '$periode'
+        ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    function update_hitung($ht_where, $ht_data){
+        $this->db->where($ht_where);
+        $this->db->update($this->table, $ht_data);
+    }
 
 }
 

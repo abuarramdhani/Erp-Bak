@@ -46,7 +46,8 @@
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">No Induk</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>" onkeypress="return isNumberKey(event)" maxlength="7" />
+                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())"><option value=""></option>
+                                                </select>
                                             </div>
                                     </div>
 									<div class="form-group">
@@ -58,7 +59,10 @@
 									<div class="form-group">
                                             <label for="txtTotalHutang" class="control-label col-lg-4">Total Hutang</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Total Hutang" name="txtTotalHutang" id="txtTotalHutang" class="form-control" value="<?php echo $total_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="10" />
+                                                <input type="number" placeholder="Total Hutang" name="txtTotalHutang" id="txtTotalHutang" class="form-control" value="<?php echo $total_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="10" />
+                                            </div>
+                                            <div class="col-lg-3" style="padding-top: 0.5em; padding-left: 0">
+                                                <i id="max-hutang">* Max 2x Gaji Pokok ()</i>
                                             </div>
                                     </div>
 									<div class="form-group">

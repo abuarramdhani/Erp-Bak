@@ -194,6 +194,18 @@ class C_HutangKaryawan extends CI_Controller
         }
     }
 
+    public function getMaxHutang(){
+        $data_where = array(
+            'noind' => $this->input->post('noind',TRUE),
+            'tgl_tberlaku' => '9999-12-31',
+        );
+
+        $maxHutang = $this->M_hutangkaryawan->getMaxHutang($data_where);
+        $maxHutang = 2 * $maxHutang;
+        
+        echo $maxHutang;
+    }
+
     public function checkSession(){
         if($this->session->is_logged){
             
