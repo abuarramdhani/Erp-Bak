@@ -56,21 +56,21 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				AND kd_ket = 'PIP') AS FrekIPs,
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR(tgl_cetak + interval '6 month') >= '$periode2')
+					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
 				) AS FrekSP,
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR(tgl_cetak + interval '6 month') >= '$periode2'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs
 
@@ -138,21 +138,21 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				AND kd_ket = 'PIP') AS FrekIPs".$monthName.",
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '6 month') >= '$firstdate' OR(tgl_cetak + interval '6 month') >= '$lastdate')
+					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
 				) AS FrekSP".$monthName.",
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '6 month') >= '$firstdate' OR(tgl_cetak + interval '6 month') >= '$lastdate'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs".$monthName."
 
@@ -221,21 +221,21 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				AND kd_ket = 'PIP') AS FrekIPs,
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR(tgl_cetak + interval '6 month') >= '$periode2')
+					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
 				) AS FrekSP,
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR(tgl_cetak + interval '6 month') >= '$periode2'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs
 
@@ -304,21 +304,21 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				AND kd_ket = 'PIP') AS FrekIPs".$monthName.",
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '6 month') >= '$firstdate' OR(tgl_cetak + interval '6 month') >= '$lastdate')
+					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
 				) AS FrekSP".$monthName.",
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '6 month') >= '$firstdate' OR(tgl_cetak + interval '6 month') >= '$lastdate'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs".$monthName."
 
@@ -387,21 +387,21 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				AND kd_ket = 'PIP') AS FrekIPs,
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR(tgl_cetak + interval '6 month') >= '$periode2')
+					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
 				) AS FrekSP,
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR(tgl_cetak + interval '6 month') >= '$periode2'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs
 
@@ -470,21 +470,21 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				AND kd_ket = 'PIP') AS FrekIPs".$date.",
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '6 month') >= '$firstdate' OR(tgl_cetak + interval '6 month') >= '$lastdate')
+					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
 				) AS FrekSP".$date.",
 
 				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '6 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SPs
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '6 month') >= '$firstdate' OR(tgl_cetak + interval '6 month') >= '$lastdate'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs".$date."
 
@@ -572,12 +572,12 @@ clASs M_rekap_per_pekerja extends CI_Model {
 			SELECT a.noind, a.no_surat, a.tgl_cetak, a.sp_ke, a.nT, a.nIK, a.nM, a.bobot, 'Absensi' as Status FROM \"Surat\".tsp a
 			left join hrd_khs.TPribadi b on a.noind = b.noind
 			where b.nik = '$nik'
-			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR (tgl_cetak + interval '6 month') >= '$periode2')
+			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2')
 			union all
 			SELECT a.noind, a.no_surat, a.tgl_cetak, a.sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen a
 			left join hrd_khs.TPribadi b on a.noind = b.noind
 			where b.nik = '$nik'
-			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '6 month') >= '$periode1' OR (tgl_cetak + interval '6 month') >= '$periode2')
+			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2')
 			order by tgl_cetak DESC
 			
 		";
