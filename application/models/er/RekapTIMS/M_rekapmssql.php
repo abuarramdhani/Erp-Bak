@@ -408,7 +408,7 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function dept()
 	{
-		$sql = "SELECT distinct(rtrim(Dept)) Dept FROM hrd_khs.tseksi WHERE Dept NOT LIKE '%-%'";
+		$sql = "SELECT distinct(rtrim(Dept)) Dept FROM hrd_khs.tseksi WHERE Dept!='-' ";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -422,7 +422,7 @@ clASs M_rekapmssql extends CI_Model {
 			$value = "'$value'";
 		}
 		$this->session->set_userdata('departemen_filter',$value);
-		$sql = "SELECT distinct(rtrim(Bidang)) Bidang FROM hrd_khs.tseksi WHERE Bidang NOT LIKE '%-%' AND Dept = $value";
+		$sql = "SELECT distinct(rtrim(Bidang)) Bidang FROM hrd_khs.tseksi WHERE Bidang!='-' AND Dept = $value";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -437,7 +437,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$this->session->set_userdata('bidang_filter',$value);
 		$dept = $this->session->userdata('departemen_filter');
-		$sql = "SELECT distinct(rtrim(Unit)) Unit FROM hrd_khs.tseksi WHERE Unit NOT LIKE '%-%' AND Bidang = $value AND Dept = $dept ";
+		$sql = "SELECT distinct(rtrim(Unit)) Unit FROM hrd_khs.tseksi WHERE Unit!='-' AND Bidang = $value AND Dept = $dept ";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -452,7 +452,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$dept = $this->session->userdata('departemen_filter');
 		$bid = $this->session->userdata('bidang_filter');
-		$sql = "SELECT distinct(rtrim(Seksi)) Seksi FROM hrd_khs.tseksi WHERE Seksi NOT LIKE '%-%' AND Unit = $value AND Dept = $dept AND Bidang = $bid";
+		$sql = "SELECT distinct(rtrim(Seksi)) Seksi FROM hrd_khs.tseksi WHERE Seksi!='-' AND Unit = $value AND Dept = $dept AND Bidang = $bid";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
