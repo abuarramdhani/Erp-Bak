@@ -205,7 +205,9 @@ class C_Receipt extends CI_Controller {
 					'fine_description'		=> $finedesc[$i],
 					'fine_nominal'			=> $finenominal[$i]
 				);
-				$this->M_receipt->AddReceiptFine($data_fine[$i]);
+				if( !empty($finedate[$i]) && !empty($fineqty[$i]) && !empty($fineprice[$i]) && !empty($finetype[$i]) ){
+					$this->M_receipt->AddReceiptFine($data_fine[$i]);
+				}
 				$i++;
 			}
 		redirect('CateringManagement/Receipt');
@@ -247,15 +249,17 @@ class C_Receipt extends CI_Controller {
 			$i=0;
 			foreach($finedate as $loop){
 				$data_fine[$i] = array(
-					'receipt_id' 			=> $this->input->post('TxtID'),
+					'receipt_id' 		=> $this->input->post('TxtID'),
 					'receipt_fine_date' 	=> $finedate[$i],
-					'receipt_fine_qty'		=> $fineqty[$i],
+					'receipt_fine_qty'	=> $fineqty[$i],
 					'receipt_fine_price'	=> $fineprice[$i],
 					'fine_type_percentage'	=> $finetype[$i],
-					'fine_description'		=> $finedesc[$i],
-					'fine_nominal'			=> $finenominal[$i]
+					'fine_description'	=> $finedesc[$i],
+					'fine_nominal'		=> $finenominal[$i]
 				);
-				$this->M_receipt->AddReceiptFine($data_fine[$i]);
+				if( !empty($finedate[$i]) && !empty($fineqty[$i]) && !empty($fineprice[$i]) && !empty($finetype[$i]) ){
+					$this->M_receipt->AddReceiptFine($data_fine[$i]);
+				}					
 				$i++;
 			}
 		
