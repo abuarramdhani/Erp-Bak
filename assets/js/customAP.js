@@ -23,31 +23,31 @@ $(document).ready(function() {
 		}	
 	});
 
-	$("#slcInvoiceNumber").select2({
-		placeholder: "INVOICE NUMBER",
-		minimumInputLength: 2,
-		ajax: {		
-			url:baseurl+"AccountPayables/C_Invoice/getInvoiceNumber",
-			dataType: 'json',
-			type: "GET",
-			data: function (params) {
-				var queryParameters = {
-					term: params.term,
-					tanggal_awal: $('input[name="tanggal_awal"]').val(),
-					tanggal_akhir: $('input[name="tanggal_akhir"]').val(),
-					supplier: $('select[name="supplier"]').val(),
-				}
-				return queryParameters;
-			},
-			processResults: function (data) {
-				return {
-					results: $.map(data, function(obj) {
-					return { id:obj.INVOICE_NUM, text:obj.INVOICE_NUM};
-					})
-				};
-			}
-		}	
-	});
+	//$("#slcInvoiceNumber").select2({
+	//	placeholder: "INVOICE NUMBER",
+	//	minimumInputLength: 2,
+	//	ajax: {		
+	//		url:baseurl+"AccountPayables/C_Invoice/getInvoiceNumber",
+	//		dataType: 'json',
+	//		type: "GET",
+	//		data: function (params) {
+	//			var queryParameters = {
+	//				term: params.term,
+	//				tanggal_awal: $('input[name="tanggal_awal"]').val(),
+	//				tanggal_akhir: $('input[name="tanggal_akhir"]').val(),
+	//				supplier: $('select[name="supplier"]').val(),
+	//			}
+	//			return queryParameters;
+	//		},
+	//		processResults: function (data) {
+	//			return {
+	//				results: $.map(data, function(obj) {
+	//				return { id:obj.INVOICE_NUM, text:obj.INVOICE_NUM};
+	//				})
+	//			};
+	//		}
+	//	}	
+	//});
 	
 	//GET INVOICE NAME
 	$("#slcnama").select2({
