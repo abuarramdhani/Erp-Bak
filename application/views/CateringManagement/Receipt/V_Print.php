@@ -12,8 +12,8 @@
 	<?php
 		$this->load->helper('terbilang_helper');
 		foreach ($Receipt as $rc) {
-			$total = $rc['order_qty']*$rc['order_price'];
-			$grand = $total-$rc['fine']-$rc['pph'];
+			$total = $rc['payment']-$rc['pph']-$rc['fine'];
+			$grand = $rc['payment'];
 	?>
 	<div style="margin-left:10px;margin-top:10px;">
 		<table style="font-size:12px;">
