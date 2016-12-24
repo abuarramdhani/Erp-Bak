@@ -9,6 +9,7 @@ class C_MasterPekerja extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterPekerja/M_masterpekerja');
+		$this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -408,6 +409,108 @@ class C_MasterPekerja extends CI_Controller
             redirect(site_url('PayrollManagement/MasterPekerja'));
         }
     }
+	
+	//CLICK BUTTON IMPORT THEN LOAD IMPORT INFORMATION PAGE (FM)
+	function importpekerja() {
+       
+		$config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
+		$config['allowed_types'] = 'csv';
+		$config['max_size'] = '1000';
+		$this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+		else {	$file_data 	= $this->upload->data();
+				$filename	= $file_data['file_name'];
+				$file_path 	= 'assets/upload/importPR/masterpekerja/'.$file_data['file_name'];
+				
+			if ($this->csvimport->get_array($file_path)) {
+                $data['csvarray'] = $this->csvimport->get_array($file_path);
+				$data['filename'] = $filename;
+				
+				$this->checkSession();
+				$user_id = $this->session->userid;
+
+				$data['Menu'] = 'Dashboard';
+				$data['SubMenuOne'] = '';
+				
+				$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+				$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+				$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+				
+				$this->load->view('V_Header',$data);
+				$this->load->view('V_Sidemenu',$data);
+				$this->load->view('PayrollManagement/MasterPekerja/V_Upload',$data);
+				$this->load->view('V_Footer',$data);
+            } else {
+                $this->load->view('csvindex');
+			}
+        }
+    }
+	
+	//CONFIRM INFORMATION PAGE THEN EXECUTE UPDATE QUERY (FM)
+	function confirmpekerja(){
+		
+		$filename	= $this->input->POST('TxtFileName');
+        $file_path 	= 'assets/upload/importPR/masterpekerja/'.$filename;
+		$csv_array 	= $this->csvimport->get_array($file_path);
+
+		foreach ($csv_array as $row) {
+			$data = array(
+				'noind' => $row['noind'],
+				'kd_hubungan_kerja' => $row['kd_hubungan_kerja'],
+				'kd_status_kerja' => $row['kd_status_kerja'],
+				'nik' => $row['nik'],
+				'no_kk' => $row['no_kk'],
+				'nama' => $row['nama'],
+				'id_kantor_asal' => $row['id_kantor_asal'],
+				'id_lokasi_kerja' => $row['id_lokasi_kerja'],
+				'jns_kelamin' => $row['jns_kelamin'],
+				'tempat_lahir' => $row['tempat_lahir'],
+				'tgl_lahir' => $row['tgl_lahir'],
+				'alamat' => $row['alamat'],
+				'desa' => $row['desa'],
+				'kecamatan' => $row['kecamatan'],
+				'kabupaten' => $row['kabupaten'],
+				'provinsi' => $row['provinsi'],
+				'kode_pos' => $row['kode_pos'],
+				'no_hp' => $row['no_hp'],
+				'gelar_d' => $row['gelar_d'],
+				'gelar_b' => $row['gelar_b'],
+				'pendidikan' => $row['pendidikan'],
+				'jurusan' => $row['jurusan'],
+				'sekolah' => $row['sekolah'],
+				'stat_nikah' => $row['stat_nikah'],
+				'tgl_nikah' => $row['tgl_nikah'],
+				'jml_anak' => $row['jml_anak'],
+				'jml_sdr' => $row['jml_sdr'],
+				'diangkat' => $row['diangkat'],
+				'masuk_kerja' => $row['masuk_kerja'],
+				'kodesie' => $row['kodesie'],
+				'gol_kerja' => $row['gol_kerja'],
+				'kd_asal_outsourcing' => $row['kd_asal_outsourcing'],
+				'kd_jabatan' => $row['kd_jabatan'],
+				'jabatan' => $row['jabatan'],
+				'npwp' => $row['npwp'],
+				'no_kpj' => $row['no_kpj'],
+				'lm_kontrak' => $row['lm_kontrak'],
+				'akh_kontrak' => $row['akh_kontrak'],
+				'stat_pajak' => $row['stat_pajak'],
+				'jt_anak' => $row['jt_anak'],
+				'jt_bkn_anak' => $row['jt_bkn_anak'],
+				'tgl_spsi' => $row['tgl_spsi'],
+				'no_spsi' => $row['no_spsi'],
+				'tgl_kop' => $row['tgl_kop'],
+				'no_koperasi' => $row['no_koperasi'],
+				'keluar' => $row['keluar'],
+				'tgl_keluar' => $row['tgl_keluar'],
+				'kd_pkj' => $row['kd_pkj'],
+				'angg_jkn' => $row['angg_jkn'],
+			);
+			$this->M_masterpekerja->insert($data);
+		}
+		unlink($file_path);
+        redirect(base_url().'PayrollManagement/MasterPekerja');
+	}
 
     public function checkSession(){
         if($this->session->is_logged){
