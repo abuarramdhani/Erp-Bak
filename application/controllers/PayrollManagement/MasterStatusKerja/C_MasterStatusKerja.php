@@ -185,12 +185,19 @@ class C_MasterStatusKerja extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    
-                    $data = array(
-                        'kd_status_kerja' => $row['kd_status_kerja'],
-                        'status_kerja' => $row['status_kerja'],
-                    );
-                    $this->M_masterstatuskerja->insert($data);
+                    if(array_key_exists('KODE_STATU', $row)){
+                        $data = array(
+                            'kd_status_kerja' => $row['KODE_STATU'],
+                            'status_kerja' => $row['NAMA_STATU'],
+                        );
+                        $this->M_masterstatuskerja->insert($data);
+                    }else{
+                        $data = array(
+                            'kd_status_kerja' => $row['kd_status_kerja'],
+                            'status_kerja' => $row['status_kerja'],
+                        );
+                        $this->M_masterstatuskerja->insert($data);
+                    }
                 }
                 unlink($file_path);
                 redirect(base_url().'PayrollManagement/MasterStatusKerja');
