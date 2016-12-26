@@ -34,7 +34,7 @@
 		          </div>
 		          <div class="box-body">
 					<div class="row">
-						<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/importpekerja')?>" enctype="multipart/form-data">
+						<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/import')?>" enctype="multipart/form-data">
 							<div class="row" style="margin: 10px 10px">
 									<div class="col-lg-offset-7 col-lg-3">
 										<input name="importfile" type="file" class="form-control" readonly required>

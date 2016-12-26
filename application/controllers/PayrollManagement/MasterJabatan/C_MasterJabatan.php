@@ -9,6 +9,7 @@ class C_MasterJabatan extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterJabatan/M_masterjabatan');
+        $this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -156,6 +157,46 @@ class C_MasterJabatan extends CI_Controller
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/MasterJabatan'));
+        }
+    }
+
+    public function import() {
+       
+        $config['upload_path'] = 'assets/upload/importPR/masterjabatan/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterjabatan/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('KODE_JABAT', $row)){ 
+                        $data = array(
+                            'kd_jabatan' => $row['KODE_JABAT'],
+                            'jabatan' => $row['NAMA_JABAT'],
+                        );
+                        $this->M_masterjabatan->insert($data);
+                    }else{
+                        $data = array(
+                            'kd_jabatan' => $row['kd_jabatan'],
+                            'jabatan' => $row['jabatan'],
+                        );
+                        $this->M_masterjabatan->insert($data);
+                    }
+                }
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/MasterJabatan');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 
