@@ -36,9 +36,6 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$periode2',(
-					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
-				)) AS t(age)) AS masa_kerja,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
@@ -153,9 +150,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$lastdate',(
-					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
-				)) AS t(age)) AS masa_kerja,
+				
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -251,9 +246,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$periode2',(
-					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
-				)) AS t(age)) AS masa_kerja,
+				
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -346,9 +339,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$lastdate',(
-					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
-				)) AS t(age)) AS masa_kerja,
+				
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -565,9 +556,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$periode2',(
-					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
-				)) AS t(age)) AS masa_kerja,
+				
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -660,9 +649,7 @@ clASs M_rekapmssql extends CI_Model {
 		}
 		$sql="
 			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT EXTRACT(YEAR FROM age) || ' Tahun ' || EXTRACT(MONTH FROM age) || ' Bulan ' || EXTRACT(DAY FROM age) || ' Hari' FROM age('$lastdate',(
-					SELECT masukkerja from hrd_khs.tpribadi WHERE nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik order by masukkerja LIMIT 1
-				)) AS t(age)) AS masa_kerja,
+				
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$date.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
@@ -744,5 +731,87 @@ clASs M_rekapmssql extends CI_Model {
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
+
+	public function data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$seksi){
+		if ($departemen == 'All' || $departemen == NULL) {
+			$departemen = "rtrim(dept)";
+		}
+		else{
+			$departemen = "rtrim('$departemen')";
+		}
+		if ($bidang == 'All' || $bidang == NULL) {
+			$bidang = "rtrim(bidang)";
+		}
+		else{
+			$bidang = "rtrim('$bidang')";
+		}
+		if ($unit == 'All' || $unit == NULL) {
+			$unit = "rtrim(unit)";
+		}
+		else{
+			$unit = "rtrim('$unit')";
+		}
+		if ($seksi == 'All' || $seksi == NULL) {
+			$section = "rtrim(seksi)";
+		}
+		else{
+			$section = "rtrim('$seksi')";
+		}
+		$sql = "
+			(
+			SELECT a.noind, a.nik, a.nama, a.masukkerja, '$periode2' tglkeluar, a.keluar
+				FROM hrd_khs.tpribadi a
+				INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
+				WHERE
+					a.kode_status_kerja = '$status'
+					AND rtrim(dept) = $departemen
+					AND rtrim(bidang) = $bidang
+					AND rtrim(unit) = $unit
+					AND rtrim(seksi) = $section
+					AND a.keluar = '0'
+			)
+
+			UNION ALL
+
+			(
+			SELECT noind, nik, nama, masukkerja, tglkeluar, keluar
+				FROM hrd_khs.tpribadi a
+				INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
+				WHERE
+					(
+						nama IN (
+							SELECT nama
+								FROM hrd_khs.tpribadi a
+								WHERE
+									a.kode_status_kerja = '$status'
+									AND rtrim(dept) = $departemen
+									AND rtrim(bidang) = $bidang
+									AND rtrim(unit) = $unit
+									AND rtrim(seksi) = $section
+									AND a.keluar = '0'
+						)
+					OR
+						nik IN (
+							SELECT nik
+								FROM hrd_khs.tpribadi a
+								WHERE
+									a.kode_status_kerja = '$status'
+									AND rtrim(dept) = $departemen
+									AND rtrim(bidang) = $bidang
+									AND rtrim(unit) = $unit
+									AND rtrim(seksi) = $section
+									AND a.keluar = '0'
+							)
+					)
+
+					AND keluar = '1'
+			)
+			ORDER BY nik, nama, masukkerja DESC, tglkeluar DESC
+			
+		";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 }
 ?>

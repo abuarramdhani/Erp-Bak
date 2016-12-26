@@ -32,7 +32,7 @@ foreach ($rekap as $rekap_data) {}
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 							</button>
 						</form>
-							<table class="table table-bordered table-hover table-striped" id="rekap-tims" width="100%">
+							<table class="table table-bordered table-hover table-striped" id="rekap-tims-detail" width="100%">
 								<thead>
 									<tr class="bg-primary">
 										<th rowspan="2" width="3%" style="text-align: center;vertical-align:middle;font-size:20px;">
@@ -187,7 +187,33 @@ foreach ($rekap as $rekap_data) {}
 												<td style="text-align:center;">
 													<div style="width: 160px">
 														<?php
-															echo $rekap_data['masa_kerja']
+															$masukkerja_s = '';
+															${'masa_kerja'.$rekap_data['nama']} = array();
+															$index_masakerja = 0;
+															foreach ($rekap_masakerja as $row) {
+																if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+																	
+																	if ($row['masukkerja'] != $masukkerja_s) {
+																		$masukkerja = new DateTime($row['masukkerja']);
+																		$tglkeluar = new DateTime($row['tglkeluar']);
+																		$masa_kerja = $masukkerja->diff($tglkeluar);
+																		${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+																		$index_masakerja++;
+																	}
+
+																	$masukkerja_s = $row['masukkerja'];
+																}
+															}
+
+															$e = new DateTime();
+															$f = clone $e;
+															if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+																$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+															}
+															if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+																$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+															}
+															echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 														?>
 													</div>
 													

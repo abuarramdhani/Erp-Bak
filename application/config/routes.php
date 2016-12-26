@@ -382,9 +382,9 @@ $route['RekapTIMSPromosiPekerja'] = 'er/RekapTIMS/C_Rekap/index';
 $route['RekapTIMSPromosiPekerja/RekapTIMS'] = 'er/RekapTIMS/C_Rekap/rekapMenu';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/select-section'] = 'er/RekapTIMS/C_Rekap/select_section';
 $route['RekapTIMSPromosiPekerja/RekapTIMS/show-data'] = 'er/RekapTIMS/C_Rekap/showData';
-$route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/ExportRekapDetail/$1/$2/$3/$4/$5';
-$route['RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/searchMonth/$1/$2/$3';
-$route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_Rekap/ExportRekapMonthly/$1/$2/$3/';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail'] = 'er/RekapTIMS/C_Rekap/ExportRekapDetail';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan'] = 'er/RekapTIMS/C_Rekap/searchMonth';
+$route['RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan'] = 'er/RekapTIMS/C_Rekap/ExportRekapMonthly';
 
 $route['RekapTIMSPromosiPekerja/RekapPerPekerja'] = 'er/RekapTIMS/C_RekapPerPekerja/index';
 $route['RekapTIMSPromosiPekerja/RekapPerPekerja/show-data'] = 'er/RekapTIMS/C_RekapPerPekerja/show_data_per_pekerja';

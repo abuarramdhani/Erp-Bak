@@ -136,6 +136,7 @@ class C_Rekap extends CI_Controller {
 		$data['periode1']	= $this->input->post('rekapBegin');
 		$data['periode2']	= $this->input->post('rekapEnd');
 		if ($detail==NULL) {
+			$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$section);
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
@@ -155,12 +156,19 @@ class C_Rekap extends CI_Controller {
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
+			$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,$departemen,$bidang,$unit,$section);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);
 		}
 		//$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportRekapDetail($periode1,$periode2,$status,$section,$detail){
+	public function ExportRekapDetail(){
+		$periode1	= $this->input->post('txtPeriode1_export');
+		$periode2	= $this->input->post('txtPeriode2_export');
+		$status 	= $this->input->post('txtStatus_export');
+		$section	= $this->input->post('txtSeksi_export');
+		$detail 	= $this->input->post('txtDetail');
+
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
@@ -178,7 +186,6 @@ class C_Rekap extends CI_Controller {
 			)
 		);
 
-		$section = str_replace('-', ' ', $section);
 		if ($detail == 1) {
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
@@ -187,7 +194,7 @@ class C_Rekap extends CI_Controller {
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
-		$periode_masa_kerja = $period2;
+		$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,NULL,NULL,NULL,$section);
 		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$section);
 
 		if ($detail == 1) {
@@ -316,7 +323,33 @@ class C_Rekap extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-						$total_masa_kerja = $rekap_data['masa_kerja'];
+			$masukkerja_s = '';
+			${'masa_kerja'.$rekap_data['nama']} = array();
+			$index_masakerja = 0;
+			foreach ($rekap_masakerja as $row) {
+				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+					
+					if ($row['masukkerja'] != $masukkerja_s) {
+						$masukkerja = new DateTime($row['masukkerja']);
+						$tglkeluar = new DateTime($row['tglkeluar']);
+						$masa_kerja = $masukkerja->diff($tglkeluar);
+						${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+						$index_masakerja++;
+					}
+
+					$masukkerja_s = $row['masukkerja'];
+				}
+			}
+
+			$e = new DateTime();
+			$f = clone $e;
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+			}
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+			}
+			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
@@ -442,8 +475,12 @@ class C_Rekap extends CI_Controller {
 		$objWriter->save("php://output");
 	}
 
-	public function searchMonth($month,$status,$seksi)
+	public function searchMonth()
 	{
+		$month = $this->input->post("txtPeriode_bulanan");
+		$status = $this->input->post("txtStatus_bulanan");
+		$seksi = $this->input->post("txtSeksi_bulanan");
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -453,7 +490,6 @@ class C_Rekap extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$seksi = str_replace('-', ' ', $seksi);
 		$periode1 = date('Y-m-01 00:00:00', strtotime($month));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($month));
 
@@ -470,6 +506,7 @@ class C_Rekap extends CI_Controller {
 			$lastdate = date('Y-m-d 23:59:59', strtotime($perDay));
 			$data['rekap_'.$date] = $this->M_rekapmssql->dataRekapMonthDetail($firstdate,$lastdate,$status,$seksi,$date);
 		}
+		$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,NULL,NULL,NULL,$seksi);
 		$data['rekapPerMonth'] = $this->M_rekapmssql->dataRekapMonth($periode1,$periode2,$status,$seksi);
 		foreach ($data['rekapPerMonth'] as $rk) {
 		}
@@ -486,7 +523,11 @@ class C_Rekap extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportRekapMonthly($periode,$status,$section){
+	public function ExportRekapMonthly(){
+		$periode = $this->input->post("txtPeriode_bulanan_export");
+		$status = $this->input->post("txtStatus_bulanan_export");
+		$section = $this->input->post("txtSeksi_bulanan_export");
+
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
@@ -508,7 +549,7 @@ class C_Rekap extends CI_Controller {
 		
 		$periode1 = date('Y-m-01 00:00:00', strtotime($periode));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($periode));
-		$periode_masa_kerja = $periode2;
+		$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,NULL,NULL,NULL,$section);
 
 		$begin = new DateTime($periode1);
 		$end = new DateTime($periode2);
@@ -629,7 +670,33 @@ class C_Rekap extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-						$total_masa_kerja = $rekap_data['masa_kerja'];
+			$masukkerja_s = '';
+			${'masa_kerja'.$rekap_data['nama']} = array();
+			$index_masakerja = 0;
+			foreach ($rekap_masakerja as $row) {
+				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+					
+					if ($row['masukkerja'] != $masukkerja_s) {
+						$masukkerja = new DateTime($row['masukkerja']);
+						$tglkeluar = new DateTime($row['tglkeluar']);
+						$masa_kerja = $masukkerja->diff($tglkeluar);
+						${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+						$index_masakerja++;
+					}
+
+					$masukkerja_s = $row['masukkerja'];
+				}
+			}
+
+			$e = new DateTime();
+			$f = clone $e;
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+			}
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+			}
+			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
