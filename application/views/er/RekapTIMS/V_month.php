@@ -13,9 +13,14 @@ foreach ($rekapPerMonth as $rekap_data) {}
 
 ?>
 <section class="content-header">
-	<a class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan/'.$tgl[0].'-'.$tgl[1].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-',$rekap_data['seksi']))?>">
-		<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
-	</a>
+	<form target="_blank" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan") ?>">
+		<input type="hidden" name="txtPeriode_bulanan_export" value="<?php echo $tgl[0].'-'.$tgl[1] ?>">
+		<input type="hidden" name="txtStatus_bulanan_export" value="<?php echo $rekap_data['kode_status_kerja'] ?>">
+		<input type="hidden" name="txtSeksi_bulanan_export" value="<?php echo $rekap_data['seksi'] ?>">
+		<button class="btn btn-default pull-right">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
+		</button>
+	</form>
 	<h1>
 		Rekap TIMS Kebutuhan Promosi Pekerja
 	</h1>
@@ -40,7 +45,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 				</table>
 			</div>
 			<div class="box-body">
-				<table id="rekap-tims" class="table table-striped table-bordered table-responsive table-hover">
+				<table id="rekap-tims-detail" class="table table-striped table-bordered table-responsive table-hover">
 					<thead class="bg-primary">
 						<tr>
 							<th rowspan="2" style="text-align: center;vertical-align:middle;">
@@ -180,7 +185,33 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							<td style="text-align:center;">
 								<div style="width: 160px">
 									<?php
-										echo $rekap_data['masa_kerja']
+										$masukkerja_s = '';
+										${'masa_kerja'.$rekap_data['nama']} = array();
+										$index_masakerja = 0;
+										foreach ($rekap_masakerja as $row) {
+											if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+												
+												if ($row['masukkerja'] != $masukkerja_s) {
+													$masukkerja = new DateTime($row['masukkerja']);
+													$tglkeluar = new DateTime($row['tglkeluar']);
+													$masa_kerja = $masukkerja->diff($tglkeluar);
+													${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+													$index_masakerja++;
+												}
+
+												$masukkerja_s = $row['masukkerja'];
+											}
+										}
+
+										$e = new DateTime();
+										$f = clone $e;
+										if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+											$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+										}
+										if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+											$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+										}
+										echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 									?>
 								</div>
 								
