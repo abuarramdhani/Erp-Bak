@@ -9,6 +9,7 @@ class C_MasterSeksi extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterSeksi/M_masterseksi');
+        $this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -181,6 +182,55 @@ class C_MasterSeksi extends CI_Controller
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/MasterSeksi'));
+        }
+    }
+
+    public function import() {
+        $config['upload_path'] = 'assets/upload/importPR/masterseksi/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterseksi/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('KODESIE', $row)){ 
+                        $data = array(
+                            'kodesie'   => $row['KODESIE'],
+                            'dept'      => $row['DEPT'],
+                            'bidang'    => $row['BIDANG'],
+                            'unit'      => $row['UNIT'],
+                            'seksi'     => $row['SEKSI'],
+                            'pekerjaan' => $row['PEKERJAAN'],
+                            'golkerja'  => $row['GOLKERJA'],
+                        );
+                        $this->M_masterseksi->insert($data);
+                    }else{
+                        $data = array(
+                            'kodesie'   => $row['kodesie'],
+                            'dept'      => $row['dept'],
+                            'bidang'    => $row['bidang'],
+                            'unit'      => $row['unit'],
+                            'seksi'     => $row['seksi'],
+                            'pekerjaan' => $row['pekerjaan'],
+                            'golkerja'  => $row['golkerja'],
+                        );
+                        $this->M_masterseksi->insert($data);
+                    }
+                }
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/MasterJabatan');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 

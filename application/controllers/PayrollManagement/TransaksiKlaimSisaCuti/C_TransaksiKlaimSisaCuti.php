@@ -7,9 +7,9 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/TransaksiKlaimSisaCuti/M_transaksiklaimsisacuti');
+        $this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -29,7 +29,6 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $data['action'] = site_url('PayrollManagement/TransaksiKlaimSisaCuti/hitung');
         $transaksiKlaimSisaCuti = $this->M_transaksiklaimsisacuti->get_all();
 
         $data['transaksiKlaimSisaCuti_data'] = $transaksiKlaimSisaCuti;
@@ -174,7 +173,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 				'sisa_cuti' => $this->input->post('txtSisaCuti',TRUE),
 				'jumlah_klaim' => $this->input->post('txtJumlahKlaim',TRUE),
 				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_jam_record' => $this->input->post('txtTglJamRecord',TRUE),
+				'tgl_jam_record' => date('Y-m-d H:i:s'),
 				'kd_jns_transaksi' => $this->input->post('cmbKdJnsTransaksi',TRUE),
 			);
 
@@ -198,97 +197,38 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         }
     }
 
-    public function import($data = array(), $filename = ''){
-
-        $this->checkSession();
-        $user_id = $this->session->userid;
-
-        $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
-            'SubMenuTwo' => '',
-            'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
-            'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
-            'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            'action' => site_url('PayrollManagement/TransaksiKlaimSisaCuti/import'),
-            'data' => $data,
-            'filename' => $filename,
-        );
-
-        $this->load->view('V_Header',$data);
-        $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/TransaksiKlaimSisaCuti/V_import', $data);
-        $this->load->view('V_Footer',$data);
-    }
-
-    public function upload() {
+    public function import() {
        
-        $config['upload_path'] = 'assets/upload/importPR';
-        $config['file_name'] = 'KlaimSisaCuti-'.time();
+        $config['upload_path'] = 'assets/upload/importPR/klaimsisacuti/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
  
-        if (!$this->upload->do_upload('importfile')) {
-            echo $this->upload->display_errors();
-        }
-        else {
-            $file_data  = $this->upload->data();
-            $filename   = $file_data['file_name'];
-            $file_path  = 'assets/upload/importPR/'.$file_data['file_name'];
-            
-            if ($this->csvimport->get_array($file_path)){
-                $data = $this->csvimport->get_array($file_path);
-                $this->import($data, $filename);
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/klaimsisacuti/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+                    
+                    $data = array(
+                        'noind' => $row['noind'],
+                        'periode' => $row['periode'],
+                        'sisa_cuti' => $row['sisa_cuti'],
+                    );
+                    $this->M_transaksiklaimsisacuti->insert($data);
+                }
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/TransaksiKlaimSisaCuti');
+
+            } else {
+                $this->load->view('csvindex');
             }
-            else {
-                $this->load->view('csvindex', $data);
-            }
         }
-    }
-
-    public function saveImport(){
-        $filename = $this->input->post('txtFileName');
-        $file_path  = 'assets/upload/importPR/'.$filename;
-        $importData = $this->csvimport->get_array($file_path);      
-
-        foreach ($importData as $row) {
-            $data = array(
-                'noind' => $row['noind'],
-                'periode' => $row['periode'],
-                'sisa_cuti' => $row['sisa_cuti'],
-                'jumlah_klaim' => '0',
-                'kode_petugas' => '0000001',
-                'tgl_jam_record' => date('Y-m-d H:i:s'),
-                'kd_jns_transaksi' => '6',
-            );
-            $this->M_transaksiklaimsisacuti->insert($data);
-        }
-
-        $this->session->set_flashdata('message', 'Create Record Success');
-        redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
-    }
-
-    public function hitung(){
-        $periode = $this->input->post('txtPeriodeHitung');
-        $hitung_data = $this->M_transaksiklaimsisacuti->get_hitung_data($periode);
-
-        foreach ($hitung_data as $row) {
-            $ht_where = array(
-                'periode' => $row['periode'], 
-                'noind' => $row['noind'], 
-                'sisa_cuti' => $row['sisa_cuti'], 
-            );
-
-            $ht_data = array(
-                'jumlah_klaim' => round((($row['gaji_pokok']/30) * $row['sisa_cuti']), 2),
-            );
-
-            $this->M_transaksiklaimsisacuti->update_hitung($ht_where, $ht_data);
-        }
-
-        $this->session->set_flashdata('message', 'Update Record Success');
-        redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
     }
 
     public function checkSession(){

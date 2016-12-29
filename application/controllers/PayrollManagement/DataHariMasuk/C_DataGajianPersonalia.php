@@ -9,6 +9,7 @@ class C_DataGajianPersonalia extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/DataHariMasuk/M_datagajianpersonalia');
+        $this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -408,6 +409,141 @@ class C_DataGajianPersonalia extends CI_Controller
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
+        }
+    }
+
+    public function import() {
+       
+        $config['upload_path'] = 'assets/upload/importPR/datagajianpersonalia/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/datagajianpersonalia/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('KODE_JABAT', $row)){
+	                    $data = array(
+	                    	'id_gajian_personalia' 	=> $row['ID'],
+	                    	'tanggal' 				=> $row['PERIODE'],
+	                    	'noind' 				=> $row['NOIND'],
+	                      //'kd_hubungan_kerja' 	=> $row['kd_hubungan_kerja'],
+	                    	'kd_status_kerja' 		=> $row['STATUS_KER'],
+	                    	'kd_jabatan' 			=> str_replace("'","",$row['KODE_JABAT']),
+	                    	'kodesie' 				=> $row['KODESIE'],
+	                    	'ip' 					=> $row['IP'],
+	                    	'ik' 					=> $row['IK'],
+	                    	'i_f' 					=> $row['IF'],
+	                    	'if_htg_bln_lalu' 		=> $row['IF_BL_LALU'],
+	                    	'ubt' 					=> $row['UBT'],
+	                    	'upamk' 				=> $row['UPAMK'],
+	                    	'um' 					=> $row['UM'],
+	                    	'ims' 					=> $row['IMS'],
+	                    	'imm' 					=> $row['IMM'],
+	                    	'lembur' 				=> $row['LEMBUR'],
+	                    	'htm' 					=> $row['HTM'],
+	                    	'ijin' 					=> $row['IJIN'],
+	                      //'htm_htg_bln_lalu' 		=> $row['htm_htg_bln_lalu'],
+	                      //'ijin_htg_bln_lalu' 	=> $row['ijin_htg_bln_lalu'],
+	                    	'pot' 					=> $row['POT'],
+	                    	'tamb_gaji' 			=> $row['TAMB_GAJI'],
+	                    	'hl' 					=> $row['HL'],
+	                    	'ct' 					=> $row['CT'],
+	                    	'putkop' 				=> $row['PUTKOP'],
+	                    	'plain' 				=> $row['PLAIN'],
+	                    	'pikop' 				=> $row['PIKOP'],
+	                    	'pspsi' 				=> $row['PSPSI'],
+	                    	'putang' 				=> $row['PUTANG'],
+	                    	'dl' 					=> $row['DL'],
+	                    	'tkpajak' 				=> $row['TKPAJAK'],
+	                    	'ttpajak' 				=> $row['TTPAJAK'],
+	                    	'pduka' 				=> $row['PDUKA'],
+	                    	'utambahan' 			=> $row['UTAMBAHAN'],
+	                    	'btransfer' 			=> $row['BTRANSFER'],
+	                    	'denda_ik' 				=> $row['DENDA_IK'],
+	                    	'p_lebih_bayar' 		=> $row['P_LEBIH_BA'],
+	                    	'pgp' 					=> $row['PGP'],
+	                    	'tlain' 				=> $row['TLAIN'],
+	                    	'xduka' 				=> $row['XDUKA'],
+	                    	'ket' 					=> $row['KET'],
+	                    	'cicil' 				=> $row['CICIL'],
+	                    	'ubs'				 	=> $row['UBS'],
+	                    	'ubs_rp' 				=> $row['UBS_RP'],
+	                    	'p_um_puasa' 			=> $row['P_UM_PUASA'],
+	                    	'kd_jns_transaksi' 		=> $row['KD_JNS_TRA'],
+	                    	'kode_petugas' 			=> '0000001',
+	                    	'tgl_jam_record' 		=> date('Y-m-d H:i:s'),
+	                    );
+	                    $this->M_datagajianpersonalia->insert($data);
+                	}else{
+                		$data = array(
+	                    	'id_gajian_personalia' 	=> $row['id_gajian_personalia'],
+	                    	'tanggal' 				=> $row['tanggal'],
+	                    	'noind' 				=> $row['noind'],
+	                    	'kd_hubungan_kerja' 	=> $row['kd_hubungan_kerja'],
+	                    	'kd_status_kerja' 		=> $row['kd_status_kerja'],
+	                    	'kd_jabatan' 			=> str_replace("'","",$row['kd_jabatan']),
+	                    	'kodesie' 				=> $row['kodesie'],
+	                    	'ip' 					=> $row['ip'],
+	                    	'ik' 					=> $row['ik'],
+	                    	'i_f' 					=> $row['i_f'],
+	                    	'if_htg_bln_lalu' 		=> $row['if_htg_bln_lalu'],
+	                    	'ubt' 					=> $row['ubt'],
+	                    	'upamk' 				=> $row['upamk'],
+	                    	'um' 					=> $row['um'],
+	                    	'ims' 					=> $row['ims'],
+	                    	'imm' 					=> $row['imm'],
+	                    	'lembur' 				=> $row['lembur'],
+	                    	'htm' 					=> $row['htm'],
+	                    	'ijin' 					=> $row['ijin'],
+	                    	'htm_htg_bln_lalu' 		=> $row['htm_htg_bln_lalu'],
+	                    	'ijin_htg_bln_lalu' 	=> $row['ijin_htg_bln_lalu'],
+	                    	'pot' 					=> $row['pot'],
+	                    	'tamb_gaji' 			=> $row['tamb_gaji'],
+	                    	'hl' 					=> $row['hl'],
+	                    	'ct' 					=> $row['ct'],
+	                    	'putkop' 				=> $row['putkop'],
+	                    	'plain' 				=> $row['plain'],
+	                    	'pikop' 				=> $row['pikop'],
+	                    	'pspsi' 				=> $row['pspsi'],
+	                    	'putang' 				=> $row['putang'],
+	                    	'dl' 					=> $row['dl'],
+	                    	'tkpajak' 				=> $row['tkpajak'],
+	                    	'ttpajak' 				=> $row['ttpajak'],
+	                    	'pduka' 				=> $row['pduka'],
+	                    	'utambahan' 			=> $row['utambahan'],
+	                    	'btransfer' 			=> $row['btransfer'],
+	                    	'denda_ik' 				=> $row['denda_ik'],
+	                    	'p_lebih_bayar' 		=> $row['p_lebih_bayar'],
+	                    	'pgp' 					=> $row['pgp'],
+	                    	'tlain' 				=> $row['tlain'],
+	                    	'xduka' 				=> $row['xduka'],
+	                    	'ket' 					=> $row['ket'],
+	                    	'cicil' 				=> $row['cicil'],
+	                    	'ubs'				 	=> $row['ubs'],
+	                    	'ubs_rp' 				=> $row['ubs_rp'],
+	                    	'p_um_puasa' 			=> $row['p_um_puasa'],
+	                    	'kd_jns_transaksi' 		=> $row['kd_jns_transaksi'],
+	                    	'kode_petugas' 			=> '0000001',
+	                    	'tgl_jam_record' 		=> date('Y-m-d H:i:s'),
+							
+	                    );
+	                    $this->M_datagajianpersonalia->insert($data);
+                	}
+                }
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/DataGajianPersonalia');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 
