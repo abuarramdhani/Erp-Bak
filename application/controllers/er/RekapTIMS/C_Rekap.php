@@ -289,7 +289,7 @@ class C_Rekap extends CI_Controller {
 				$worksheet->setCellValue($IP.'7', 'IP');
 				$worksheet->setCellValue($CT.'7', 'CT');
 				$worksheet->setCellValue($SP.'7', 'SP');
-				$col=$col+6;
+				$col=$col+7;
 			}
 		}
 
@@ -444,14 +444,14 @@ class C_Rekap extends CI_Controller {
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		else{
-			$worksheet->getStyle('A6:J7')->applyFromArray($styleArray);
-			$worksheet	->getStyle('A6:J7')
+			$worksheet->getStyle('A6:K7')->applyFromArray($styleArray);
+			$worksheet	->getStyle('A6:K7')
 						->getFill()
 						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 						->getStartColor()
 						->setARGB('0099ff');
-			$worksheet->getStyle('A6:J7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-			$worksheet->getStyle('A6:J7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$worksheet->getStyle('A6:K7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$worksheet->getStyle('A6:K7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		$worksheet->freezePaneByColumnAndRow(4, 8);
 

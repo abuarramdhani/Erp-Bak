@@ -114,7 +114,7 @@
 
 	$(document).ready(function() {
 		$("#employee_position_table").DataTable({
-			"dom": '<"pull-left"f>tip',
+			"dom": '<"pull-left"f>trip',
 			"info": false,
 			language: {
 				search: "Search : ",

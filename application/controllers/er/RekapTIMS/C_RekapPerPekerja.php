@@ -275,7 +275,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->setCellValue($M.'7', 'M');
 		$worksheet->setCellValue($S.'7', 'S');
 		$worksheet->setCellValue($IP.'7', 'IP');
-		$worksheet->setCellValue($CT.'7', 'SP');
+		$worksheet->setCellValue($CT.'7', 'CT');
 		$worksheet->setCellValue($SP.'7', 'SP');
 
 		$no = 1;
@@ -286,7 +286,6 @@ class C_RekapPerPekerja extends CI_Controller {
 			$index_masakerja = 0;
 			foreach ($rekap_masakerja as $row) {
 				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-					//echo $row['nama'].'->'.$row['masukkerja'].'<br>';
 					
 					if ($row['masukkerja'] != $masukkerja_s) {
 						$masukkerja = new DateTime($row['masukkerja']);
@@ -404,14 +403,14 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		else{
-			$worksheet->getStyle('A6:J7')->applyFromArray($styleArray);
-			$worksheet	->getStyle('A6:J7')
+			$worksheet->getStyle('A6:K7')->applyFromArray($styleArray);
+			$worksheet	->getStyle('A6:K7')
 						->getFill()
 						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 						->getStartColor()
 						->setARGB('0099ff');
-			$worksheet->getStyle('A6:J7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-			$worksheet->getStyle('A6:J7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$worksheet->getStyle('A6:K7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$worksheet->getStyle('A6:K7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		$worksheet->freezePaneByColumnAndRow(4, 8);
 
@@ -857,7 +856,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->setCellValue('A3', 'NAMA');
 		$worksheet->setCellValue('A4', 'SEKSI');
 		$worksheet->setCellValue('A5', 'UNIT');
-		$worksheet->setCellValue('A6', 'UNIT');
+		$worksheet->setCellValue('A6', 'BIDANG');
 
 		$worksheet->mergeCells('C2:G2');
 		$worksheet->mergeCells('C3:G3');
@@ -965,6 +964,40 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->setCellValue('G'.$row, date('Y-m-d', strtotime($ipri['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('H'.$row, $ipri['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('I'.$row, $ipri['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$highestRow = $worksheet->getHighestRow();
+
+		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->applyFromArray($styleArray);
+		$worksheet	->getStyle('A'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('A'.($highestRow+4).':D'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+
+		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$worksheet->mergeCells('A'.($highestRow+3).':D'.($highestRow+3));
+
+		$worksheet->setCellValue('A'.($highestRow+3), 'IJIN PERUSAHAAN');
+		$worksheet->setCellValue('A'.($highestRow+4), 'No');
+		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal');
+		$worksheet->setCellValue('C'.($highestRow+4), 'Masuk');
+		$worksheet->setCellValue('D'.($highestRow+4), 'Keluar');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($CutiTahunan as $cutah) {
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($cutah['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $cutah['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $cutah['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$row++;
 		}
 
