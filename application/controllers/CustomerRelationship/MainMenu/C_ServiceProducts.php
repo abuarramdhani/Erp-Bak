@@ -122,6 +122,10 @@ class C_ServiceProducts extends CI_Controller {
 				$data['ServiceProductAdditionalAct'] = $this->M_serviceproducts->getServiceProductAddAct($plaintext_string);
 				$data['Checklist'] = $this->M_Checklist->getChecklistActive();
 				$data['AdditionalActivity'] = $this->M_additionalactivity->getAdditionalActivity();
+				$data['Province'] 	= $this->M_serviceproducts->province();
+				$data['city'] 		= $this->M_serviceproducts->cityRegency($data['ServiceProducts'][0]['location_province']);
+				$data['district'] 	= $this->M_serviceproducts->district($data['ServiceProducts'][0]['location_city']);
+				$data['village'] 	= $this->M_serviceproducts->village($data['ServiceProducts'][0]['location_district']);
 				
 				$ServiceProductLines = $this->M_serviceproducts->getServiceProductLines($plaintext_string);
 				$a=1;
@@ -175,19 +179,19 @@ class C_ServiceProducts extends CI_Controller {
 						$spare_part = $this->input->post('hdnSparePartId');
 						$line_status = $this->input->post('slcServiceLineStatus');
 						*/
-						$problem = $this->input->post('slcProblem');
-						$problem_description = $this->input->post('txtProblemDescription');
-						$count = count($problem_description);
-						$action = $this->input->post('txtAction');
-						$action_date = $this->input->post('txtActionDate');
-						$finish_date = $this->input->post('txtFinishDate');
-						$tech_id = $this->input->post('slcEmployeeNum');
-						$ownership_id = $this->input->post('hdnOwnershipId');
-						$service_lines_id = $this->input->post('hdnServiceLinesId');
-						$warranty = $this->input->post('txtWarranty');
-						$claim_number = $this->input->post('txtClaimNum');
-						$spare_part = $this->input->post('slcSparePart');
-						$line_status = $this->input->post('slcServiceLineStatus');
+						$problem 				= $this->input->post('slcProblem');
+						$problem_description 	= $this->input->post('txtProblemDescription');
+						$count 					= count($problem_description);
+						$action 				= $this->input->post('txtAction');
+						$action_date 			= $this->input->post('txtActionDate');
+						$finish_date 			= $this->input->post('txtFinishDate');
+						$tech_id 				= $this->input->post('slcEmployeeNum');
+						$ownership_id 			= $this->input->post('hdnOwnershipId');
+						$service_lines_id 		= $this->input->post('hdnServiceLinesId');
+						$warranty 				= $this->input->post('txtWarranty');
+						$claim_number 			= $this->input->post('txtClaimNum');
+						$spare_part 			= $this->input->post('slcSparePart');
+						$line_status 			= $this->input->post('slcServiceLineStatus');
 						
 						for($i=0; $i<$count; $i++) {
 						//foreach($problem_description as $prob => $i):
@@ -312,7 +316,33 @@ class C_ServiceProducts extends CI_Controller {
 							$this->M_serviceproducts->updateConnect($data_connect,$this->input->post('slcConnectNum'));
 							
 						}
-												
+						
+						$customerName 			= $this->input->post('txtCustomerName');
+						$custdata				= $this->M_serviceproducts->customerDataEC($customerName);
+						$custId 				= $custdata[0]['oracle_customer_id'];
+						$own_phone				= $custdata[0]['data'];
+						$own_address			= $custdata[0]['address'];
+						$durationUse 			= $this->input->post('durationUse');
+						$durationUseType 		= $this->input->post('durationUseType');
+							$duration_of_use 	= $durationUse.' '.$durationUseType;
+						$sentDate 				= $this->input->post('sentDate');
+							if ($sentDate==NULL) {$shipped = 'NO';}
+							else {$shipped = 'YES';}
+						$reasonVal 				= $this->input->post('reason');
+							if ($reasonVal == NULL) {$reason = 'NO REASON';}
+							else{$reason = $reasonVal;}
+						if ($sentDate == NULL AND $reasonVal == NULL) {$noEvidence = 'YES';}
+						else{$noEvidence = 'NO';}
+						$area 					= $this->input->post('area');
+							$landCategory 		= implode($area, ', ');
+						$Soil 					= $this->input->post('Soil');
+							$typeOfSoil 		= implode($Soil, ', ');
+						$Depth 					= $this->input->post('Depth');
+							$landDepth 			= implode($Depth, ', ');
+						$Weeds 					= $this->input->post('Weeds');
+							$WeedsItem 			= implode($Weeds, ', ');
+						$Topography 			= $this->input->post('Topography');
+							$TopographyItem 	= implode($Topography, ', ');
 						$data = array(
 							//'service_number'			=> $this->input->post('txtServiceNumber'),
 							'service_status'			=> $result,
@@ -324,9 +354,29 @@ class C_ServiceProducts extends CI_Controller {
 							'customer_id' 				=> $this->input->post('hdnCustomerId'),
 							'connect_id' 				=> $connect_id,
 							'last_update_date' 			=> $this->input->post('hdnDate'),
-							'last_updated_by' 			=> $this->input->post('hdnUser')
-							
-							
+							'last_updated_by' 			=> $this->input->post('hdnUser'),
+							'cust_account_id' 			=> $custId,
+							'owner_name' 				=> $customerName,
+							'owner_address' 			=> $own_address,
+							'owner_phone_number' 		=> $own_phone,
+							'duration_of_use' 			=> $duration_of_use,
+							'location_address' 			=> $this->input->post('AddressIncident'),
+							'location_village' 			=> $this->input->post('VillageIncident'),
+							'location_district' 		=> $this->input->post('DistrictIncident'),
+							'location_city' 			=> $this->input->post('CityIncident'),
+							'location_province' 		=> $this->input->post('provinceIncident'),
+							'shipped' 					=> $shipped,
+							'shipment_date' 			=> $sentDate,
+							'not_shipped_reason' 		=> $reason,
+							'no_evidence' 				=> $noEvidence,
+							'land_category' 			=> $landCategory,
+							'type_of_soil' 				=> $typeOfSoil,
+							'land_depth' 				=> $landDepth,
+							'weeds' 					=> $WeedsItem,
+							'topography' 				=> $TopographyItem,
+							'event_chronology' 			=> $this->input->post('Chronology'),
+							'officer_id'				=> $this->input->post('officer'),
+							'qty'						=> $this->input->post('QtyClaim')
 						);
 				
 						$this->M_serviceproducts->updateServiceProducts($data,$plaintext_string);
@@ -659,8 +709,33 @@ class C_ServiceProducts extends CI_Controller {
 				else
 				{	
 					$con_id = $this->input->post('slcConnectNum');
-					if($con_id == '')
-							{	$con_id = NULL; }
+					$customerName 	= $this->input->post('txtCustomerName');
+					$custdata		= $this->M_serviceproducts->customerDataEC($customerName);
+					$custId 		= $custdata[0]['oracle_customer_id'];
+					$own_phone		= $custdata[0]['data'];
+					$own_address	= $custdata[0]['address'];
+					$durationUse = $this->input->post('durationUse');
+					$durationUseType = $this->input->post('durationUseType');
+						$duration_of_use = $durationUse.' '.$durationUseType;
+					$sentDate 	= $this->input->post('sentDate');
+						if ($sentDate==NULL) {$shipped = 'NO';}
+						else {$shipped = 'YES';}
+					$reasonVal 	= $this->input->post('reason');
+						if ($reasonVal == NULL) {$reason = 'NO REASON';}
+						else{$reason = $reasonVal;}
+					if ($sentDate == NULL AND $reasonVal == NULL) {$noEvidence = 'YES';}
+					else{$noEvidence = 'NO';}
+					$area 				= $this->input->post('area');
+						$landCategory 	= implode($area, ', ');
+					$Soil 				= $this->input->post('Soil');
+						$typeOfSoil 	= implode($Soil, ', ');
+					$Depth 				= $this->input->post('Depth');
+						$landDepth 		= implode($Depth, ', ');
+					$Weeds 				= $this->input->post('Weeds');
+						$WeedsItem 		= implode($Weeds, ', ');
+					$Topography 		= $this->input->post('Topography');
+						$TopographyItem = implode($Topography, ', ');
+					if($con_id == ''){	$con_id = NULL; }
 						$data_headers = array(
 							'service_number'			=> $this->input->post('txtServiceNumber'),
 							'service_status'			=> $this->input->post('txtActivityStatus'),
@@ -672,7 +747,29 @@ class C_ServiceProducts extends CI_Controller {
 							'connect_id' 				=> $con_id,
 							'customer_id' 				=> $this->input->post('hdnCustomerId'),
 							'creation_date' 			=> $this->input->post('hdnDate'),
-							'created_by' 				=> $this->input->post('hdnUser')
+							'created_by' 				=> $this->input->post('hdnUser'),
+							'user_id' 					=> $this->input->post('hdnUser'),
+							'cust_account_id' 			=> $custId,
+							'owner_name' 				=> $customerName,
+							'owner_address' 			=> $own_address,
+							'owner_phone_number' 		=> $own_phone,
+							'duration_of_use' 			=> $duration_of_use,
+							'location_address' 			=> $this->input->post('AddressIncident'),
+							'location_village' 			=> $this->input->post('VillageIncident'),
+							'location_district' 		=> $this->input->post('DistrictIncident'),
+							'location_city' 			=> $this->input->post('CityIncident'),
+							'location_province' 		=> $this->input->post('provinceIncident'),
+							'shipped' 					=> $shipped,
+							'shipment_date' 			=> $sentDate,
+							'not_shipped_reason' 		=> $reason,
+							'no_evidence' 				=> $noEvidence,
+							'land_category' 			=> $landCategory,
+							'type_of_soil' 				=> $typeOfSoil,
+							'land_depth' 				=> $landDepth,
+							'weeds' 					=> $WeedsItem,
+							'topography' 				=> $TopographyItem,
+							'event_chronology' 			=> $this->input->post('Chronology'),
+							'officer_id' 				=> $this->input->post('slcEmployeeNum')
 						);
 
 						//$service_id = 0;
@@ -684,34 +781,35 @@ class C_ServiceProducts extends CI_Controller {
 						//$count = sizeof($_POST['txtProblemDescription']);
 						//if($count = NULL){$count=1;}
 						
-						$problem_description = $this->input->post('txtProblemDescription');
-						$action = $this->input->post('txtAction');
-						$action_date = $this->input->post('txtActionDate');
-						//$finish_date = $this->input->post('txtFinishDate');
-						$ownership_id = $this->input->post('hdnOwnershipId');
-						$tech_id = $this->input->post('slcEmployeeNum');
-						$warranty = $this->input->post('txtWarranty');
-						$claim_number = $this->input->post('txtClaimNum');
-						$spare_part = $this->input->post('slcSparePart');
-						$line_status = $this->input->post('slcServiceLineStatus');
-						$problem = $this->input->post('slcProblem');
-						$count1 = count($ownership_id);
+						$problem_description 	= $this->input->post('txtProblemDescription');
+						$action 				= $this->input->post('txtAction');
+						$action_date 			= $this->input->post('txtActionDate');
+						//$finish_date 			= $this->input->post('txtFinishDate');
+						$ownership_id 			= $this->input->post('hdnOwnershipId');
+						//$tech_id 				= $this->input->post('slcEmployeeNum');
+						$warranty 				= $this->input->post('txtWarranty');
+						$claim_number 			= $this->input->post('txtClaimNum');
+						$spare_part 			= $this->input->post('slcSparePart');
+						$line_status 			= $this->input->post('slcServiceLineStatus');
+						$problem 				= $this->input->post('slcProblem');
+						$actionClaim 			= $this->input->post('actionClaim');
+						$count1 				= count($ownership_id);
 						
 						$data_lines =array();
 						for($i=0; $i<$count1; $i++) {
 						//foreach($problem_description as $prob => $i):
 							if($ownership_id[$i] == '')
 							{	$ownership_id[$i] = NULL; }
-							if($action_date[$i] == '')
-							{	$action_date[$i] = NULL; }
+							//if($action_date[$i] == '')
+							//{	$action_date[$i] = NULL; }
 							//if($finish_date[$i] == '')
 							//{	$finish_date[$i] = NULL; }
-							if($tech_id[$i] == '')
-							{	$tech_id[$i] = NULL; }
+							//if($tech_id[$i] == '')
+							//{	$tech_id[$i] = NULL; }
 							if($spare_part[$i] == '')
 							{	$spare_part[$i] = NULL; }
-							if($line_status[$i] == '')
-							{	$line_status[$i] = NULL; }
+							//if($line_status[$i] == '')
+							//{	$line_status[$i] = NULL; }
 							if($problem[$i] == '')
 							{	$problem[$i] = NULL; }
 							if($claim_number[$i] == '')
@@ -721,17 +819,18 @@ class C_ServiceProducts extends CI_Controller {
 								$data_lines[$i] = array(
 								'problem_description'		=> $problem_description[$i],
 								'action'					=> $action[$i],
-								'action_date' 				=> $action_date[$i],
+								//'action_date' 				=> $action_date[$i],
 								'warranty'					=> $warranty[$i],
 								'claim_number'				=> $claim_number[$i],
-								'technician_id' 			=> $tech_id[$i],
+								//'technician_id' 			=> $tech_id[$i],
 								'service_product_id'		=> $service_aidi,
 								'ownership_id' 				=> $ownership_id[$i],
 								'creation_date' 			=> $this->input->post('hdnDate'),
 								'created_by' 				=> $this->input->post('hdnUser'),
 								'spare_part_id' 			=> $spare_part[$i],
-								'line_status' 				=> $line_status[$i],
-								'problem_id' 				=> $problem[$i]
+								//'line_status' 				=> $line_status[$i],
+								'problem_id' 				=> $problem[$i],
+								'process' 					=> $actionClaim[$i]
 								);							
 							}
 							if(count($data_lines[$i]) != 0){ 
@@ -790,37 +889,6 @@ class C_ServiceProducts extends CI_Controller {
 								$this->M_serviceproducts->setServiceProductAddAct($data_add_act[$i]);
 							}
 						}
-						
-						$actionClaim = $this->input->post('actionClaim');
-						$improcess = implode($actionClaim, " - ");
-						$created_by = $this->input->post('hdnUser');
-						
-						if (stripos($improcess, "PROCESS") !== FALSE) {
-							$customerName 	= $this->input->post('txtCustomerName');
-							$province 		= $this->input->post('provinceIncident');
-							$City 			= $this->input->post('CityIncident');
-							$District 		= $this->input->post('DistrictIncident');
-							$Village 		= $this->input->post('VillageIncident');
-							$saveClaimHeaderP = $this->M_serviceproducts->processClaimHeaderP($customerName,$province,$City,$District,$Village,$created_by);
-							$saveClaimHeaderO = $this->M_serviceproducts->processClaimHeaderO($customerName,$province,$City,$District,$Village,$created_by);
-							$headeridP = $saveClaimHeaderP[0]['ins_id'];
-							$headeridO = $saveClaimHeaderO[0]['INS_ID'];
-						}
-
-						$itemCode = $this->input->post('txtOwnership');
-						//$description = $this->input->post('txtItemDescription');
-						//print_r($description);
-						//exit();
-						$countClaim = count($actionClaim);
-						for ($i=0; $i<$countClaim ; $i++) {
-							if ($actionClaim[$i] == 'PROCESS') {
-								$saveClaimLinesP = $this->M_serviceproducts->processClaimLinesP($headeridP,$itemCode[$i],$created_by);
-								$saveClaimLinesO = $this->M_serviceproducts->processClaimLinesO($headeridO,$itemCode[$i],$created_by);
-							}
-						}
-
-						//print_r($countClaim);
-						//exit;
 						
 						redirect('CustomerRelationship/ServiceProducts');
 						
@@ -1017,6 +1085,72 @@ class C_ServiceProducts extends CI_Controller {
 						//print_r($data_lines[$i]);
 						
 				}
+		}
+
+		public function ProcessClaim()
+		{
+			
+						$actionClaim 	= $this->input->post('actionClaim');
+						$improcess 		= implode($actionClaim, " - ");
+						$itemCode 		= $this->input->post('txtOwnership');
+						$imitemCode		= implode($itemCode, " - ");
+						$created_by 	= $this->input->post('hdnUser');
+						
+						if (stripos($improcess, "PROCESS") !== FALSE) {
+							$customerName 	= $this->input->post('txtCustomerName');
+							$custdata		= $this->M_serviceproducts->customerDataEC($customerName);
+
+							$custId 		= $custdata[0]['oracle_customer_id'];
+							$own_address	= $custdata[0]['address'];
+							$own_phone		= $custdata[0]['data'];
+
+							$province 		= $this->input->post('provinceIncident');
+							$City 			= $this->input->post('CityIncident');
+							$District 		= $this->input->post('DistrictIncident');
+							$Village 		= $this->input->post('VillageIncident');
+							$Address 		= $this->input->post('AddressIncident');
+								$durationUse 	= $this->input->post('durationUse');
+								$durationType 	= $this->input->post('durationUseType');
+							$duration	= $durationUse.' '.$durationType;
+							$sentDate 	= $this->input->post('sentDate');
+								if ($sentDate==NULL) {$shipped = 'NO';}
+								else {$shipped = 'YES';}
+
+							$reasonVal 	= $this->input->post('reason');
+							if ($reasonVal == NULL) {$reason = 'NO REASON';}
+							else{$reason = $reasonVal;}
+
+							if ($sentDate == NULL AND $reasonVal == NULL) {$noEvidence = 'YES';}
+							else{$noEvidence = 'NO';}
+
+							$area 				= $this->input->post('area');
+								$landCategory 	= implode($area, ', ');
+							$Soil 				= $this->input->post('Soil');
+								$typeOfSoil 	= implode($Soil, ', ');
+							$Depth 				= $this->input->post('Depth');
+								$landDepth 		= implode($Depth, ', ');
+							$Weeds 				= $this->input->post('Weeds');
+								$WeedsItem 		= implode($Weeds, ', ');
+							$Topography 		= $this->input->post('Topography');
+								$TopographyItem = implode($Topography, ', ');
+							$Chronology 		= $this->input->post('Chronology');
+
+							$saveClaimHeaderP = $this->M_serviceproducts->processClaimHeaderP($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by);
+							$saveClaimHeaderO = $this->M_serviceproducts->processClaimHeaderO($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by);
+							$headeridP = $saveClaimHeaderP[0]['ins_id'];
+							$headeridO = $saveClaimHeaderO[0]['INS_ID'];
+						}
+
+						//$description = $this->input->post('txtItemDescription');
+						//print_r($description);
+						//exit();
+						$countClaim = count($actionClaim);
+						for ($i=0; $i<$countClaim ; $i++) {
+							if ($actionClaim[$i] == 'PROCESS') {
+								$saveClaimLinesP = $this->M_serviceproducts->processClaimLinesP($headeridP,$itemCode[$i],$created_by);
+								$saveClaimLinesO = $this->M_serviceproducts->processClaimLinesO($headeridO,$itemCode[$i],$created_by);
+							}
+						}
 		}
 		
 		public function Location()
