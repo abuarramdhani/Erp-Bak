@@ -142,7 +142,7 @@
 				"timePicker24Hour": true,
 				"showDropdowns": false,
 				locale: {
-						format: 'DD-MM-YYYY HH:mm:ss'
+						format: 'YYYY-MM-DD HH:mm:ss'
 					},
 			});
 		};
@@ -158,11 +158,31 @@
 		});
 		$('#claimsItem2').click(function(){
 			$('#loadAjax').show();
-			document.getElementById("showClaimsItem").innerHTML = '<div class="form-group"><label>Reason Can Not be Sent</label><div class="input-group"><div class="input-group-addon"><i class="glyphicon glyphicon-home"></i></div><input type="text" class="form-control" name="reason" placeholder="Reason Can Not be Sent" data-toggle="tooltip" data-placement="top" title="Masukkan alasan barang tidak dapat dikirim" required></div></div>';
+			document.getElementById("showClaimsItem").innerHTML = '<div class="form-group"><label>Reason Can Not be Sent</label><input type="text" class="form-control" name="reason" placeholder="Reason Can Not be Sent" data-toggle="tooltip" data-placement="top" title="Masukkan alasan barang tidak dapat dikirim" required></div>';
 		});
 		$('#claimsItem3').click(function(){
 			$('#loadAjax').show();
 			document.getElementById("showClaimsItem").innerHTML = '<p style="text-align:center;"><strong>- No Evidence for The Claim -</strong></p>';
 		});
+		$('#start').datepicker({
+			autoclose: true,
+			format: 'yyyy-mm-dd'
+		});
+		$('#end').datepicker({
+			autoclose: true,
+			format: 'yyyy-mm-dd'
+		});
+		/*$('#slcBranchApproval').change(function(){
+			var value = $('#slcBranchApproval').val();
+			$.ajax({
+				type:'POST',
+				data:{'value':value},
+				url:baseurl+"CustomerRelationship/Setting/ApprovalClaim/Employee",
+				success:function(result)
+				{
+					$('#slcEmployeeApproval').prop('disabled',false).html(result);
+				}
+			});
+		});*/
 	});
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------
