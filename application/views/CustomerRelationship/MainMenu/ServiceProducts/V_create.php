@@ -68,33 +68,28 @@
 															<!--<option value="others">Others</option>-->
 														</select>
 													</div>
-		
 											</div>
 											<div class="form-group">
 												<label for="norm" class="control-label col-lg-4">Officer</label>
 												<div class="col-lg-8">
-													<select name="slcEmployeeNum[]" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
+													<select name="slcEmployeeNum" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
 														<option value=""></option>
 													</select>
 												</div>
 											</div>
 											<div class="form-group">
 													<label class="control-label col-lg-4" for="dp2">Activity Date</label>
-		
 													<div class="col-lg-8">
 														<input type="text" maxlength="11" placeholder="<?php echo date("d-M-Y")?>" name="txtServiceDate" value="<?php echo date("d-M-Y")?>" class="form-control" data-date-format="dd-M-yyyy" id="dp2" />
 													</div>
-		
 											</div>
 											<div class="form-group">
 													<label for="norm" class="control-label col-lg-4">Customer</label>
 													<div class="col-lg-8">
-														<!--<input type="text" placeholder="Customer Name" name="txtCustomerName" id="txtCustomerName" onblur="selectCustomer()" onchange="enadisLineOwner()" class="form-control2"/>-->
 														<div class="input-group">
 															<input type="text" placeholder="Search Customer" name="txtCustomerName" id="txtCustomerName" onfocus="callModal('<?php echo site_url('ajax/ModalCustomer')?>');" onkeypress="return noInput(event)" class="form-control toupper" />
 															<span class="input-group-btn">
 																<a class="btn btn-primary" href="<?php echo site_url('ajax/ModalCustomer')?>" data-toggle="modal" data-target="#myModal"><i class="icon-search"></i></a>
-		
 															</span>
 														</div>
 														<input type="hidden" name="hdnCustomerId" id ="hdnCustomerId" />
@@ -110,7 +105,6 @@
 													</div>
 											</div>
 											<div class="form-group">
-		
 													<label for="norm" class="control-label col-lg-4">Activity Status</label>
 													<div class="col-lg-8">
 														<input type="text" placeholder="Service Status" name="txtActivityStatus" id="txtActivityStatus" value="OPEN" readonly="readonly" class="form-control"/>
@@ -143,10 +137,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Duration of Use</label>
-												<div class="input-group col-lg-8">
-													<div class="input-group-addon">
-														<i class="glyphicon glyphicon-calendar"></i>
-													</div>
+												<div class="col-lg-8">
 													<input type="number" class="form-control" name="durationUse" placeholder="Duration of Use" data-toggle="tooltip" data-placement="top" title="Masukkan lama waktu pemakaian" required>
 													<select style="width:100%;" name="durationUseType" data-placeholder="Duration of Use Type" class="form-control select2" required>
 														<option value="" disabled selected><-- PILIH TIPE SATUAN WAKTU --></option>
@@ -161,6 +152,9 @@
 										<div class="col-md-6">
 											<div class="row">
 												<div class="col-lg-12">
+													<p class="help-block" style="text-align:center;">
+														Choose one action for Item Claims!
+													</p>
 													<div class="btn-group btn-group-justified" role="group">
 														<div class="btn-group" role="group">
 															<button type="button" class="btn btn-default" id="claimsItem1">
@@ -248,7 +242,7 @@
 												<label>Type of Soil</label>
 												<div class="input-group">
 													<input type="checkbox" name="Soil[]" value="Lempung"> Lempung
-													<br><input type="checkbox" name="Soil[]" value="Lempung berpasir"> Lempung berpasir
+													<br><input type="checkbox" name="Soil[]" value="Berpasir"> Lempung berpasir
 													<br><input type="checkbox" name="Soil[]" value="Normal"> Normal
 												</div>
 											</div>
@@ -288,13 +282,8 @@
 									<div role="tabpanel" class="tab-pane" id="Details">
 										<div class="col-md-10 col-md-offset-1">
 											<div class="form-group">
-													<label>Details Chronology of Events</label>
-												<div class="input-group">
-													<div class="input-group-addon">
-														<i class="glyphicon glyphicon-user"></i>
-													</div>
-													<textarea name="Chronology" placeholder="Details Chronology of Events" class="form-control" rows="4" data-toggle="tooltip" data-placement="top" title="Masukkan detail kronologis kejadian" required></textarea>
-												</div>
+												<label>Details Chronology of Events</label>
+												<textarea name="Chronology" placeholder="Details Chronology of Events" class="form-control" rows="4" data-toggle="tooltip" data-placement="top" title="Masukkan detail kronologis kejadian" required></textarea>
 											</div>
 										</div>
 									</div>
@@ -309,7 +298,6 @@
 										Lines
 									</div>
 									<div class="panel-body">
-										
 										<ul class="nav nav-tabs">
 											<li class="active"><a href="#service" data-toggle="tab">Service</a>
 											</li>
@@ -318,13 +306,11 @@
 											<li><a href="#additional" data-toggle="tab">Additional Activity</a>
 											</li>
 										</ul>
-
 										<div class="tab-content">
 											<div class="tab-pane fade in active" id="service">
 												<div class="table-responsive"  style="overflow:hidden;">
 													<div class="row">
 														<div class="col-lg-12" >
-
 															<div class="panel panel-default">
 																<div class="panel-heading text-right">
 																	<a href="javascript:void(0);" id="addSpLine" style="pointer-events:none;cursor: default" title="Tambah Baris" onclick="addRowSpLine('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
@@ -351,10 +337,8 @@
 																			<tbody>
 																				<tr>
 																				<td>
-																					
 																					<input type="text" disabled name="txtOwnership[]" id="txtOwnership" onchange="enadisServiceLine(0);" onfocus="callModal('<?php echo site_url('ajax/ModalItemLines/0/')?>');" placeholder="Product code" class="form-control" />
 																					<input type="hidden" name="hdnOwnershipId[]" id ="hdnOwnershipId" />
-
 																				</td>
 																				<td><input type="text" name="txtItemDescription[]" id="txtItemDescription" class="form-control" readonly="readonly"/></td>
 																				<td><input type="text" name="txtWarranty[]" id="txtWarranty" class="form-control" readonly="readonly" style="text-align:center;"/></td>
@@ -365,15 +349,14 @@
 																					</select>
 																				</td>
 																				<td><select  name="slcProblem[]" id="slcProblem" class="form-control jsProblem" disabled="disabled">
-
 																						<option value="" ></option>
 																					</select></td>
 																				<td><input type="text" name="txtProblemDescription[]" id="txtProblemDescription" class="form-control" disabled="disabled"/></td>
 																				<td>
 																					<select name="actionClaim[]" id="actionClaim" class="form-control select4" data-placeholder="Action Claim" disabled>
 																						<option value="" disabled selected>-- CHOOSE ONE --</option>
-																						<option value="PROCESS">PROCESS</option>
-																						<option value="NO">NO PROCESS</option>
+																						<option value="Y">PROCESS</option>
+																						<option value="N">NO PROCESS</option>
 																					</select>
 																				</td>
 																				<td>
@@ -435,7 +418,6 @@
 												<div class="table-responsive"   style="overflow:hidden;">
 													<div class="row">
 														<div class="col-lg-12" >
-
 															<div class="panel panel-default">
 																<div class="panel-heading text-right">
 																	<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowAddAct('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
@@ -497,9 +479,8 @@
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-
 			</div>
-					</div>
-			</div>
+		</div>
 	</div>
+</div>
 <!-- Modal End -->
