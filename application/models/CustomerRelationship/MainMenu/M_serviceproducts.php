@@ -1,13 +1,13 @@
 <?php
 class M_serviceproducts extends CI_Model {
 
-		var $oracle;
+		//var $oracle;
         public function __construct()
         {
                 $this->load->database();
 				$this->load->library('encrypt');
 				$this->load->helper('url');
-        		$this->oracle = $this->load->database ( 'oracle', TRUE );
+        		//$this->oracle = $this->load->database ( 'oracle', TRUE );
         }
 		
 		public function getActivity($id = FALSE)
@@ -638,7 +638,7 @@ class M_serviceproducts extends CI_Model {
 			}
 		}
 
-		function processClaimHeaderP($customerName,$province,$City,$District,$Village,$created_by)
+		function processClaimHeaderP($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
 		{
 			$sqlpostgre =	"INSERT INTO cr.\"KHS_EXTERNAL_CLAIM_HEADERS\"
 									(\"CLAIM_TYPE\",
@@ -668,27 +668,27 @@ class M_serviceproducts extends CI_Model {
 									VALUES (
 										'HARVESTER',
 										'".$created_by."',
-										'1042',
+										'".$custId."',
 										'".$customerName."',
-										'OWNER_ADDRESS',
-										'OWNER_PHONE_NUMBER',
-										'DURATION_OF_USE',
-										'LOCATION_ADDRESS',
-										'LOCATION_VILLAGE',
-										'LOCATION_DISTRICT',
-										'LOCATION_CITY',
-										'LOCATION_PROVINCE',
-										'SHIPPED',
-										'NOT_SHIPPED_REASON',
-										'NO_EVIDENCE',
-										'LAND_CATEGORY',
-										'TYPE_OF_SOIL',
-										'LAND_DEPTH',
-										'WEEDS',
-										'TOPOGRAPHY',
-										'EVENT_CHRONOLOGY',
+										'".$own_address."',
+										'".$own_phone."',
+										'".$duration."',
+										'".$Address."',
+										'".$Village."',
+										'".$District."',
+										'".$City."',
+										'".$province."',
+										'".$shipped."',
+										'".$reason."',
+										'".$noEvidence."',
+										'".$landCategory."',
+										'".$typeOfSoil."',
+										'".$landDepth."',
+										'".$WeedsItem."',
+										'".$TopographyItem."',
+										'".$Chronology."',
 										'".$created_by."',
-										now(),
+										CURRENT_TIMESTAMP,
 										'NEW'
 									)";
 			$query = $this->db->query($sqlpostgre);
@@ -698,7 +698,7 @@ class M_serviceproducts extends CI_Model {
 			return $query->result_array();
 		}
 
-		function processClaimHeaderO($customerName,$province,$City,$District,$Village,$created_by)
+		function processClaimHeaderO($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
 		{
 			$sqloracle	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
 									(CLAIM_TYPE,
@@ -726,27 +726,27 @@ class M_serviceproducts extends CI_Model {
 									CREATION_DATE,
 									STATUS)
 									VALUES (
-										'HARVESTER'
+										'HARVESTER',
 										'".$created_by."',
-										'1042',
+										'".$custId."',
 										'".$customerName."',
-										'OWNER_ADDRESS',
-										'OWNER_PHONE_NUMBER',
-										'DURATION_OF_USE',
-										'LOCATION_ADDRESS',
+										'".$own_address."',
+										'".$own_phone."',
+										'".$duration."',
+										'".$Address."',
 										'".$Village."',
 										'".$District."',
 										'".$City."',
 										'".$province."',
-										'SHIPPED',
-										'NOT_SHIPPED_REASON',
-										'NO_EVIDENCE',
-										'LAND_CATEGORY',
-										'TYPE_OF_SOIL',
-										'LAND_DEPTH',
-										'WEEDS',
-										'TOPOGRAPHY',
-										'EVENT_CHRONOLOGY',
+										'".$shipped."',
+										'".$reason."',
+										'".$noEvidence."',
+										'".$landCategory."',
+										'".$typeOfSoil."',
+										'".$landDepth."',
+										'".$WeedsItem."',
+										'".$TopographyItem."',
+										'".$Chronology."',
 										'".$created_by."',
 										sysdate,
 										'NEW'
@@ -799,11 +799,13 @@ class M_serviceproducts extends CI_Model {
 
 		public function cityRegency($name)
 		{
-			$sql =	"	SELECT DISTINCT(regency_name)
+			$sql =	"	SELECT regency_name
 						FROM sys.sys_area_city_regency
-						WHERE province_id=(SELECT DISTINCT(province_id)
+						WHERE province_id=(SELECT province_id
 						FROM sys.sys_area_province
-						WHERE province_name='$name')
+						WHERE province_name='$name'
+						GROUP BY province_id)
+						GROUP BY regency_name
 						ORDER BY regency_name
 					";
 			$query = $this->db->query($sql);
@@ -814,9 +816,11 @@ class M_serviceproducts extends CI_Model {
 		{
 			$sql =	"	SELECT district_name
 						FROM sys.sys_area_district
-						WHERE city_regency_id=(SELECT DISTINCT(city_regency_id)
+						WHERE city_regency_id=(SELECT city_regency_id
 						FROM sys.sys_area_city_regency
-						WHERE regency_name='$name')
+						WHERE regency_name='$name'
+						GROUP BY city_regency_id)
+						GROUP BY district_name
 						ORDER BY district_name
 					";
 			$query = $this->db->query($sql);
@@ -827,13 +831,34 @@ class M_serviceproducts extends CI_Model {
 		{
 			$sql =	"	SELECT village_name
 						FROM sys.sys_area_village
-						WHERE district_id=(SELECT DISTINCT(district_id)
+						WHERE district_id=(SELECT district_id
 						FROM sys.sys_area_district
-						WHERE district_name='$name')
+						WHERE district_name='$name'
+						GROUP BY district_id)
+						GROUP BY village_name
 						ORDER BY village_name
 					";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
-		
+
+		public function customerDataEC($customerName)
+		{
+			$sql =	"	SELECT ct.data, cs.oracle_customer_id, cs.address
+						FROM cr.cr_customer_contacts ct, cr.cr_customers cs
+						WHERE ct.connector_id = cs.customer_id AND cs.customer_name = '".$customerName."'
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function getDataCustOwn()
+		{
+			$sql =	"	SELECT *
+						FROM im.im_master_items
+						WHERE oracle_item_id IS NOT NULL AND segment1 = 'AFB0000BA1AZ-0';
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
 }
