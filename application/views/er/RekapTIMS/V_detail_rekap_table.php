@@ -28,7 +28,7 @@ foreach ($rekap as $rekap_data) {}
 								<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 								<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 								<input type="hidden" name="txtStatus_export" value="<?php echo $rekap_data['kode_status_kerja'] ?>">
-								<input type="hidden" name="txtSeksi_export" value="<?php echo $rekap_data['seksi'] ?>">
+								<input type="hidden" name="txtSeksi_export" value="<?php echo $section ?>">
 								<button class="btn btn-default pull-right">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 								</button>
@@ -67,7 +67,7 @@ foreach ($rekap as $rekap_data) {}
 												<form target="_blank" id="rekap_bulanan<?php echo $no ?>" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapTIMS/rekap-bulanan") ?>">
 													<input type="hidden" name="txtPeriode_bulanan" value="<?php echo $monthNum ?>">
 													<input type="hidden" name="txtStatus_bulanan" value="<?php echo $rekap_data['kode_status_kerja']; ?>">
-													<input type="hidden" name="txtSeksi_bulanan" value="<?php echo $rekap_data['seksi']; ?>">
+													<input type="hidden" name="txtSeksi_bulanan" value="<?php echo $section; ?>">
 												</form>
 												<a target="_blank" style="color:#fff;cursor: pointer" onclick="document.getElementById('rekap_bulanan<?php echo $no ?>').submit()">
 													<?php echo $monthName ?>

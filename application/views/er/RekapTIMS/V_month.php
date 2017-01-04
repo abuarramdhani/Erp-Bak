@@ -16,7 +16,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 	<form target="_blank" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-bulanan") ?>">
 		<input type="hidden" name="txtPeriode_bulanan_export" value="<?php echo $tgl[0].'-'.$tgl[1] ?>">
 		<input type="hidden" name="txtStatus_bulanan_export" value="<?php echo $rekap_data['kode_status_kerja'] ?>">
-		<input type="hidden" name="txtSeksi_bulanan_export" value="<?php echo $rekap_data['seksi'] ?>">
+		<input type="hidden" name="txtSeksi_bulanan_export" value="<?php echo $seksi ?>">
 		<button class="btn btn-default pull-right">
 			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 		</button>
