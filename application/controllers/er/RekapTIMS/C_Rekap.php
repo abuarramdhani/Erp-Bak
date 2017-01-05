@@ -248,7 +248,7 @@ class C_Rekap extends CI_Controller {
 		foreach ($rekap_all as $rekap_info) {}
 
 		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
-		$worksheet->setCellValue('C3', $rekap_info['seksi']);
+		$worksheet->setCellValue('C3', $section);
 
 		$worksheet->mergeCells('A6:A7');
 		$worksheet->mergeCells('B6:B7');
