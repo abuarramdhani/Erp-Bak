@@ -60,7 +60,7 @@
                               	<a href="<?php echo base_url('PayrollManagement/HutangKaryawan/update/'.$row->no_hutang.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/HutangKaryawan/delete/'.$row->no_hutang.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->no_hutang ?></td>
+							<td><a href="<?php echo base_url('PayrollManagement/Report/rincianhutang/'.$row->no_hutang)?>"><?php echo $row->no_hutang ?></a></td>
 							<td><?php echo $row->noind ?></td>
 							<td><?php echo $row->tgl_pengajuan ?></td>
 							<td><?php echo $row->total_hutang ?></td>

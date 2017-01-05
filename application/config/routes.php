@@ -687,5 +687,9 @@ $route['PayrollManagement/MasterJabatanUpah'] = 'PayrollManagement/MasterJabatan
 $route['PayrollManagement/MasterJabatanUpah/(:any)'] = 'PayrollManagement/MasterJabatanUpah/C_MasterJabatanUpah/$1';
 $route['PayrollManagement/MasterJabatanUpah/(:any)/(:any)'] = 'PayrollManagement/MasterJabatanUpah/C_MasterJabatanUpah/$1/$2';
 
+$route['PayrollManagement/Report'] = 'PayrollManagement/Report/C_Report';
+$route['PayrollManagement/Report/(:any)'] = 'PayrollManagement/Report/C_Report/$1';
+$route['PayrollManagement/Report/(:any)/(:any)'] = 'PayrollManagement/Report/C_Report/$1/$2';
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
