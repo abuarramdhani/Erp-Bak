@@ -25,6 +25,10 @@
 					<div class="box box-default box-solid">
 						<div class="box-body">
 						<?php foreach ($approval as $a) { ?>
+						<form method="post" action="<?php echo base_url('CustomerRelationship/Setting/ApprovalClaim/UpdateSave'); ?>">
+							<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
+							<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
+							<input type="hidden" name="id" value="<?php echo $a['claim_approval_id']; ?>" />
 							<div class="panel-body">
 								<div class="form-group">
 										<label for="norm" class="control-label col-lg-1 col-lg-offset-3">Branch</label>
@@ -79,9 +83,10 @@
 								<div class="row text-right">
 									<a href="<?php echo site_url('CustomerRelationship/Setting/ApprovalClaim/');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 									&nbsp;&nbsp;
-									<button class="btn btn-primary btn-lg btn-rect" type="submit">Save Data</button>
+									<button class="btn btn-primary btn-lg btn-rect" type="submit">Save Changes</button>
 								</div>
 							</div>
+						</form>
 						<?php } ?>
 						</div>
 					</div>

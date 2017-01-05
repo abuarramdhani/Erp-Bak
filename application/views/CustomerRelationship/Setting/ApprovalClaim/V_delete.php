@@ -30,7 +30,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <a href="<?php echo base_url('CustomerRelationship/Setting/ApprovalClaim/Delete/'.$ac['claim_approval_id']); ?>" class="btn btn-danger">Delete</a>
       </div>
     </div>
   </div>
