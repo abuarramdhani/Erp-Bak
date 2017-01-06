@@ -153,6 +153,13 @@ class C_ServiceProducts extends CI_Controller {
 						$this->load->view('V_Header',$data);
 						$this->load->view('V_Sidemenu',$data);
 						$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_update', $data);
+						if ($data['ServiceProducts'][0]['approval_status'] == NULL) {
+							$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_ask_approval', $data);
+						}elseif ($data['ServiceProducts'][0]['approval_status'] == 'ASK FOR APPROVAL') {
+							$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_branch_approval', $data);
+						}elseif ($data['ServiceProducts'][0]['approval_status'] == 'BRANCH APPROVAL') {
+							$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_central_approval', $data);
+						}
 						$this->load->view('V_Footer',$data);
 
 				}
@@ -1183,5 +1190,19 @@ class C_ServiceProducts extends CI_Controller {
 		}
 		public function shipped(){
 			$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_shipped');
+		}
+
+		public function Approval($id)
+		{	
+			$plaintext_string 	= str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+			$plaintext_string 	= $this->encrypt->decode($plaintext_string);
+			$serviceid 			= $this->input->post('ServiceProductId');
+			$status 			= $this->input->post('status');
+			$approver 			= $this->input->post('hdnUser');
+			$approve_date 		= $this->input->post('hdnDate');
+
+			$this->M_serviceproducts->approval($plaintext_string,$serviceid,$status,$approver,$approve_date);
+
+			redirect('CustomerRelationship/ServiceProducts');
 		}
 }

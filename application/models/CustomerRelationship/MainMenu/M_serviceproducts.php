@@ -852,13 +852,35 @@ class M_serviceproducts extends CI_Model {
 			return $query->result_array();
 		}
 
-		public function getDataCustOwn()
+		/*public function getDataCustOwn()
 		{
 			$sql =	"	SELECT *
 						FROM im.im_master_items
-						WHERE oracle_item_id IS NOT NULL AND segment1 = 'AFB0000BA1AZ-0';
+						WHERE oracle_item_id IS NOT NULL AND segment1 = 'AFB0000BA1AZ-0'
 					";
 			$query = $this->db->query($sql);
 			return $query->result_array();
+		}*/
+
+		public function approval($plaintext_string,$serviceid,$status,$approver,$approve_date)
+		{
+			$sql =	"	UPDATE cr.cr_service_products SET
+							approval_status = '$status',
+							approved_by		= '$approver'
+						WHERE service_product_id = '$plaintext_string'
+					";
+			$query = $this->db->query($sql);
+
+			$sql =	"	INSERT INTO cr.cr_approval_history
+									(service_product_id,
+									approval_status,
+									approved_by,
+									approved_date)
+							VALUES ('".$serviceid."',
+									'$status',
+									'".$approver."',
+									'".$approve_date."')
+					";
+			$query = $this->db->query($sql);
 		}
 }
