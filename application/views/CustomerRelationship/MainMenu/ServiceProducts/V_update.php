@@ -788,8 +788,14 @@
 									<div class="row text-right">
 										<div class="col-lg-12">
 											<a href="<?php echo site_url('CustomerRelationship/ServiceProducts');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
-											<button type="submit" class="btn btn-primary btn-lg btn-rect">Update Data</button>
-											<button type="button" class="btn btn-danger btn-lg btn-rect" data-toggle="modal" data-target="#approve">Approval</button>
+											<?php foreach ($ServiceProducts as $ServiceProducts_item): ?>
+												<?php if ($ServiceProducts_item['approval_status'] !== NULL) { }else{ ?>
+												<button type="submit" class="btn btn-primary btn-lg btn-rect">Update Data</button>
+												<?php }
+													if ($ServiceProducts_item['approval_status'] == 'CENTRAL APPROVAL') { }else{ ?>
+													<button type="button" class="btn btn-danger btn-lg btn-rect" data-toggle="modal" data-target="#approve">Approval</button>
+											<?php }
+											endforeach ?>
 										</div>
 									</div>
 									<br />
