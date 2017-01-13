@@ -184,6 +184,25 @@
 				}
 			});
 		});*/
-		
+		if ($('#approvedis').val() != "" && $('#approvedis').val() !== "NOT APPROVED 1" && $('#approvedis').val() !== "NOT APPROVED 2") {
+			$('input').prop("disabled", true);
+			$('select').prop("disabled", true);
+			$('textarea').prop("disabled", true);
+
+			$('#approvevaly').prop("disabled", false);
+			$('#approvevaln').prop("disabled", false);
+			$('#status').prop("disabled", false);
+			$('#hdnUser').prop("disabled", false);
+			$('#hdnDate').prop("disabled", false);
+			$('#ServiceProductId').prop("disabled", false);
+		}
+		$('input[name="approveval"]').change(function(){
+			if ($(this).val() == 'N') {
+				$('#reasonnotapprove').html('<div class="form-group"><label>Reason Not Approved</label><textarea rows="2" class="form-control" name="reasonnotapprove" placeholder="Reason Not Approved" required></textarea></div>');
+			}
+			else{
+				$('#reasonnotapprove').html('');
+			}
+		});
 	});
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------

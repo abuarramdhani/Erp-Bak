@@ -54,6 +54,7 @@
 								<?php 
 								foreach ($ServiceProducts as $ServiceProducts_item): 
 								?>	
+								<input type="hidden" name="approvedis" id="approvedis" value="<?php echo $ServiceProducts_item['approval_status']; ?>">
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="general">
 										<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
@@ -164,9 +165,14 @@
 												<label class="control-label col-lg-4">Duration of Use</label>
 												<div class="col-lg-8">
 													<?php
-														$imduration 		= explode(" ", $ServiceProducts_item['duration_of_use']);
-														$durationUse 		= $imduration[0];
-														$durationUseType	= $imduration[1];
+														if ($ServiceProducts_item['duration_of_use'] == NULL) {
+															$durationUse 		= '';
+															$durationUseType	= '';
+														}else{
+															$imduration 		= explode(" ", $ServiceProducts_item['duration_of_use']);
+															$durationUse 		= $imduration[0];
+															$durationUseType	= $imduration[1];
+														}
 													?>
 													<input type="number" class="form-control" name="durationUse" placeholder="Duration of Use" data-toggle="tooltip" data-placement="top" title="Masukkan lama waktu pemakaian" required value="<?php echo $durationUse; ?>">
 													<select style="width:100%;" name="durationUseType" data-placeholder="Duration of Use Type" class="form-control select2" required>
@@ -789,12 +795,13 @@
 										<div class="col-lg-12">
 											<a href="<?php echo site_url('CustomerRelationship/ServiceProducts');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 											<?php foreach ($ServiceProducts as $ServiceProducts_item): ?>
-												<?php if ($ServiceProducts_item['approval_status'] !== NULL) { }else{ ?>
-												<button type="submit" class="btn btn-primary btn-lg btn-rect">Update Data</button>
-												<?php }
+												<?php if ($ServiceProducts_item['approval_status'] == NULL or $ServiceProducts_item['approval_status'] == 'NOT APPROVED 1' or $ServiceProducts_item['approval_status'] == 'NOT APPROVED 2') { ?>
+													<button type="submit" class="btn btn-primary btn-lg btn-rect">Update Data</button>
+												<?php }else{ }
 													if ($ServiceProducts_item['approval_status'] == 'CENTRAL APPROVAL') { }else{ ?>
 													<button type="button" class="btn btn-danger btn-lg btn-rect" data-toggle="modal" data-target="#approve">Approval</button>
 											<?php }
+											echo $ServiceProducts_item['approval_status'];
 											endforeach ?>
 										</div>
 									</div>

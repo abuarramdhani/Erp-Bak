@@ -1,13 +1,13 @@
 <?php
 class M_serviceproducts extends CI_Model {
 
-		//var $oracle;
+		var $oracle;
         public function __construct()
         {
                 $this->load->database();
 				$this->load->library('encrypt');
 				$this->load->helper('url');
-        		//$this->oracle = $this->load->database ( 'oracle', TRUE );
+        		$this->oracle = $this->load->database ( 'oracle', TRUE );
         }
 		
 		public function getActivity($id = FALSE)
@@ -880,6 +880,31 @@ class M_serviceproducts extends CI_Model {
 									'$status',
 									'".$approver."',
 									'".$approve_date."')
+					";
+			$query = $this->db->query($sql);
+		}
+
+		public function noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason)
+		{
+			$sql =	"	UPDATE cr.cr_service_products SET
+							approval_status 	= '$status',
+							approved_by			= '$approver',
+							reason_not_approve	= '$reason'
+						WHERE service_product_id = '$plaintext_string'
+					";
+			$query = $this->db->query($sql);
+
+			$sql =	"	INSERT INTO cr.cr_approval_history
+									(service_product_id,
+									approval_status,
+									approved_by,
+									approved_date,
+									reason_not_approve)
+							VALUES ('".$serviceid."',
+									'".$status."',
+									'".$approver."',
+									'".$approve_date."',
+									'".$reason."')
 					";
 			$query = $this->db->query($sql);
 		}

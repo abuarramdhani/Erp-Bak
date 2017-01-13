@@ -153,7 +153,7 @@ class C_ServiceProducts extends CI_Controller {
 						$this->load->view('V_Header',$data);
 						$this->load->view('V_Sidemenu',$data);
 						$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_update', $data);
-						if ($data['ServiceProducts'][0]['approval_status'] == NULL) {
+						if ($data['ServiceProducts'][0]['approval_status'] == NULL or $data['ServiceProducts'][0]['approval_status'] == 'NOT APPROVED 1' or $data['ServiceProducts'][0]['approval_status'] == 'NOT APPROVED 2') {
 							$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_ask_approval', $data);
 						}elseif ($data['ServiceProducts'][0]['approval_status'] == 'ASK FOR APPROVAL') {
 							$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_branch_approval', $data);
@@ -1193,15 +1193,28 @@ class C_ServiceProducts extends CI_Controller {
 		}
 
 		public function Approval($id)
-		{	
+		{
 			$plaintext_string 	= str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 			$plaintext_string 	= $this->encrypt->decode($plaintext_string);
 			$serviceid 			= $this->input->post('ServiceProductId');
-			$status 			= $this->input->post('status');
+			$stat 				= $this->input->post('status');
 			$approver 			= $this->input->post('hdnUser');
 			$approve_date 		= $this->input->post('hdnDate');
-
-			$this->M_serviceproducts->approval($plaintext_string,$serviceid,$status,$approver,$approve_date);
+			$type 				= $this->input->post('approveval');
+			//print_r($stat);
+			//exit();
+			if ($type == 'N' AND $stat == 'BRANCH APPROVAL') {
+				$reason	= $this->input->post('reasonnotapprove');
+				$status = 'NOT APPROVED 1';
+				$this->M_serviceproducts->noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason);
+			}elseif ($type == 'N' AND $stat == 'CENTRAL APPROVAL') {
+				$reason	= $this->input->post('reasonnotapprove');
+				$status = 'NOT APPROVED 2';
+				$this->M_serviceproducts->noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason);
+			}elseif ($type == 'Y' or $type == NULL) {
+				$status = $stat;
+				$this->M_serviceproducts->approval($plaintext_string,$serviceid,$status,$approver,$approve_date);
+			}
 
 			redirect('CustomerRelationship/ServiceProducts');
 		}
