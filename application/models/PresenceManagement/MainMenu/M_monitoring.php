@@ -81,7 +81,10 @@ class M_monitoring extends CI_Model {
 		
 		public function getPerson($q,$loc){
 			$quickcom	= $this->load->database('quickcom',true);
-			$sql		= "SELECT a.noind,a.nama,a.id_lokasi FROM fp_distribusi.tb_fppribadi AS a WHERE ('$loc' NOT IN (SELECT b.id_lokasi FROM fp_distribusi.tb_fppribadi AS b WHERE a.noind=b.noind) OR a.id_lokasi IS NULL) AND  a.keluar='0' AND ( a.noind LIKE '%$q%') GROUP BY noind";
+			$sql		= "SELECT a.noind,a.nama,a.id_lokasi FROM fp_distribusi.tb_fppribadi AS a 
+							left join fp_distribusi.tb_fppribadi AS b on a.noind=b.noind
+							WHERE (b.id_lokasi<>'$loc' OR a.id_lokasi IS NULL) 
+							AND  a.keluar='0' AND ( a.noind LIKE '%$q%') GROUP BY noind";
 			$query		= $quickcom->query($sql);
 			return $query->result_array();
 		}
