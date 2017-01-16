@@ -95,7 +95,7 @@
 											<div class="form-group">
 												<label for="norm" class="control-label col-lg-4">Service Date</label>
 												<div class="col-lg-8">
-													<input type="text" placeholder="<?php echo date("d-M-Y")?>" class="form-control" value="<?php echo date_format(date_create($ServiceProducts_item['service_date']),'d-M-Y')?>" name="txtServiceDate" name="txtServiceDate" data-date-format="dd-M-yyyy" id="dp2" />
+													<input type="text" placeholder="<?php echo date("d-M-Y")?>" class="form-control" value="<?php echo date_format(date_create($ServiceProducts_item['service_date']),'d-M-Y')?>" name="txtServiceDate" name="txtServiceDate" data-date-format="dd-M-yyyy" id="serviceDate" />
 												</div>
 											</div>
 											<div class="form-group">
@@ -147,7 +147,7 @@
 											<div class="form-group">
 													<label for="norm" class="control-label col-lg-4">Description</label>
 													<div class="col-lg-8">
-														<textarea placeholder="Description" name="txtDescription" id="txtDescription" class="form-control"><?php echo $ServiceProducts_item['description']?></textarea>
+														<textarea placeholder="Description" name="txtDescription" id="Description" class="form-control"><?php echo $ServiceProducts_item['description']?></textarea>
 													</div>
 											</div>
 											<div class="form-group">
@@ -174,8 +174,8 @@
 															$durationUseType	= $imduration[1];
 														}
 													?>
-													<input type="number" class="form-control" name="durationUse" placeholder="Duration of Use" data-toggle="tooltip" data-placement="top" title="Masukkan lama waktu pemakaian" required value="<?php echo $durationUse; ?>">
-													<select style="width:100%;" name="durationUseType" data-placeholder="Duration of Use Type" class="form-control select2" required>
+													<input type="number" class="form-control" name="durationUse" id="durationUse" placeholder="Duration of Use" data-toggle="tooltip" data-placement="top" title="Masukkan lama waktu pemakaian" required value="<?php echo $durationUse; ?>">
+													<select style="width:100%;" name="durationUseType" data-placeholder="Duration of Use Type" class="form-control select2" required id="durationUseType">
 														<option value="" disabled selected><-- PILIH TIPE SATUAN WAKTU --></option>
 														<option value="muach" disabled><-- PILIH TIPE SATUAN WAKTU --></option>
 														<?php if ($durationUseType == 'DAYS') { ?>
@@ -235,7 +235,7 @@
 														<?php }elseif ($ServiceProducts_item['shipped'] == 'NO' AND $ServiceProducts_item['no_evidence'] == 'NO') { ?>
 															<div class="form-group">
 																<label>Reason Can Not be Sent</label>
-																<input type="text" class="form-control" name="reason" placeholder="Reason Can Not be Sent" data-toggle="tooltip" data-placement="top" title="Masukkan alasan barang tidak dapat dikirim" required value="<?php echo $ServiceProducts_item['not_shipped_reason']; ?>">
+																<input type="text" class="form-control" name="reason" id="reason" placeholder="Reason Can Not be Sent" data-toggle="tooltip" data-placement="top" title="Masukkan alasan barang tidak dapat dikirim" required value="<?php echo $ServiceProducts_item['not_shipped_reason']; ?>">
 															</div>
 														<?php } elseif ($ServiceProducts_item['shipped'] == 'NO' AND $ServiceProducts_item['not_shipped_reason'] == 'NO REASON') { ?> 
 															<p style="text-align:center;">
@@ -318,7 +318,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Address</label>
 												<div class="col-lg-8">
-													<textarea class="form-control" rows="4" name="AddressIncident" placeholder="Address"><?php echo $ServiceProducts_item['location_address']; ?></textarea>
+													<textarea class="form-control" rows="4" name="AddressIncident" placeholder="Address" id="AddressIncident"><?php echo $ServiceProducts_item['location_address']; ?></textarea>
 												</div>
 											</div>
 										</div>
@@ -442,7 +442,7 @@
 												<div class="table-responsive" style="overflow:hidden;">
 													<div class="row">
 														<div class="panel panel-default">
-															<div class="panel-heading text-right">
+															<div class="panel-heading text-right" id="addDelService1">
 																<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowSpLine('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
 																&nbsp;&nbsp;&nbsp;
 																<a href="javascript:void(0);" title="Hapus Baris" onclick="deleteRow('tblServiceLines')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" title="Delete Row" alt="Delete Row" ></a>
@@ -685,7 +685,7 @@
 													<div class="row">
 														
 														<div class="panel panel-default">
-															<div class="panel-heading text-right">
+															<div class="panel-heading text-right" id="addDelService2">
 																<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowSpFaqs('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
 																&nbsp;&nbsp;&nbsp;
 																<a href="javascript:void(0);" title="Hapus Baris" onclick="deleteRow('tblFaq')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" title="Delete Row" alt="Delete Row" ></a>
@@ -742,7 +742,7 @@
 												<div class="row">
 													
 													<div class="panel panel-default">
-														<div class="panel-heading text-right">
+														<div class="panel-heading text-right" id="addDelService3">
 															<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowAddAct('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
 															&nbsp;&nbsp;&nbsp;
 															<a href="javascript:void(0);" title="Hapus Baris" onclick="deleteRow('tblAddAct')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" title="Delete Row" alt="Delete Row" ></a>

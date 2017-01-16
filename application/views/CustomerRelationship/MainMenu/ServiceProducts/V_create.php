@@ -53,6 +53,7 @@
 							<div class="col-lg-12">
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="general">
+										<input type="hidden" name="approvedis" id="approvedis" value="">
 										<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 										<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
 										<div class="col-lg-6">
@@ -72,7 +73,7 @@
 											<div class="form-group">
 												<label for="norm" class="control-label col-lg-4">Officer</label>
 												<div class="col-lg-8">
-													<select name="slcEmployeeNum" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
+													<select name="Officer" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
 														<option value=""></option>
 													</select>
 												</div>

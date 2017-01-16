@@ -185,16 +185,46 @@
 			});
 		});*/
 		if ($('#approvedis').val() != "" && $('#approvedis').val() !== "NOT APPROVED 1" && $('#approvedis').val() !== "NOT APPROVED 2") {
-			$('input').prop("disabled", true);
-			$('select').prop("disabled", true);
-			$('textarea').prop("disabled", true);
 
-			$('#approvevaly').prop("disabled", false);
-			$('#approvevaln').prop("disabled", false);
-			$('#status').prop("disabled", false);
-			$('#hdnUser').prop("disabled", false);
-			$('#hdnDate').prop("disabled", false);
-			$('#ServiceProductId').prop("disabled", false);
+			$('select[name="officer"]').prop("disabled", true);
+			$('#serviceDate').prop("disabled", true);
+			$('#slcConnectNum').prop("disabled", true);
+			$('#Description').prop("disabled", true);
+			$('#QtyClaim').prop("disabled", true);
+			$('#durationUse').prop("disabled", true);
+			$('#durationUseType').prop("disabled", true);
+			$('#claimsItem1').prop("disabled", true);
+			$('#claimsItem2').prop("disabled", true);
+			$('#claimsItem3').prop("disabled", true);
+			$('#sentDate').prop("disabled", true);
+			$('#reason').prop("disabled", true);
+			$('#provinceIncident').prop("disabled", true);
+			$('#CityIncident').prop("disabled", true);
+			$('#DistrictIncident').prop("disabled", true);
+			$('#VillageIncident').prop("disabled", true);
+			$('#AddressIncident').prop("disabled", true);
+			$('input[name="area[]"]').prop("disabled", true);
+			$('input[name="Soil[]"]').prop("disabled", true);
+			$('input[name="Depth[]"]').prop("disabled", true);
+			$('input[name="Weeds[]"]').prop("disabled", true);
+			$('input[name="Topography[]"]').prop("disabled", true);
+			$('textarea[name="Chronology"]').prop("disabled", true);
+			
+			$('#addDelService1').hide();
+			$('#addDelService2').hide();
+			$('#addDelService3').hide();
+			
+			$('input[name="txtOwnership[]"]').prop("disabled", true);
+			$('input[name="txtClaimNum[]"]').prop("disabled", true);
+			$('select[name="slcSparePart[]"]').prop("disabled", true);
+			$('select[name="slcProblem[]"]').prop("disabled", true);
+			$('input[name="txtProblemDescription[]"]').prop("disabled", true);
+			$('input[name="txtAction[]"]').prop("disabled", true);
+			$('select[name="slcEmployeeNum[]"]').prop("disabled", true);
+			$('select[name="slcServiceLineStatus[]"]').prop("disabled", true);
+			$('input[name="txtActionDate[]"]').prop("disabled", true);
+			$('select[name="actionClaim[]"]').prop("disabled", true);
+
 		}
 		$('input[name="approveval"]').change(function(){
 			if ($(this).val() == 'N') {
@@ -203,6 +233,9 @@
 			else{
 				$('#reasonnotapprove').html('');
 			}
+		});
+		$('#serviceDate').datepicker({
+			autoclose: true,
 		});
 	});
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------
