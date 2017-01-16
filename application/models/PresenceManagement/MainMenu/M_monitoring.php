@@ -84,7 +84,7 @@ class M_monitoring extends CI_Model {
 			$sql		= "SELECT a.noind,a.nama,a.id_lokasi FROM fp_distribusi.tb_fppribadi AS a 
 							left join fp_distribusi.tb_fppribadi AS b on a.noind=b.noind
 							WHERE (b.id_lokasi<>'$loc' OR a.id_lokasi IS NULL) 
-							AND  a.keluar='0' AND ( a.noind LIKE '%$q%') GROUP BY noind";
+							AND  a.keluar='0' AND ( a.noind LIKE '%$q%' or a.nama like '%$q%') GROUP BY noind";
 			$query		= $quickcom->query($sql);
 			return $query->result_array();
 		}
