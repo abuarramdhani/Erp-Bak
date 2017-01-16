@@ -42,6 +42,10 @@ $(document).ready(function() {
 	});
 	
 	$(document).on("click", "#refreshFinger", function () {
+		   window.open('http://quick.com/aplikasi/cronjob/cronjob.fpupdatefingerlocal.php','_blank');
+	});
+	
+	$(document).on("click", "#updateFinger", function () {
 		   window.open('http://quick.com/aplikasi/cronjob/cronjob.fpupdatefingerquickcom.php','_blank');
 	});
 	

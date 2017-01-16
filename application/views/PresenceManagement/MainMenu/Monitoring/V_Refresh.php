@@ -31,19 +31,19 @@
 					<div class="box-body">
 					<div class="box box-primary">
 						<div class="row" style="padding:10px;">
-							<div class="col-lg-1 text-center">
+							<div class="col-lg-1 text-center"> <h3><b style="color:green;">STEP 1</b></h3>
+								<a title="update fingerprint data :: to fpdistribusi" id="updateFinger"  class="btn btn-lg bg-purple btn-rect"><span class="fa fa-hand-stop-o"></span> <br> Update Finger</a>
+							</div>
+							<div class="col-lg-1"></div>
+							<div class="col-lg-1 text-center"><h3><b style="color:green;">STEP 2</b></h3>
 								<a title="Refresh to Update Registered Person :: hrd_khs" id="refreshRegPers" class="btn btn-lg bg-blue btn-rect"><span class="fa fa-refresh"></span> <br> Refresh Person</a>
 							</div>
 							<div class="col-lg-1"></div>
-							<div class="col-lg-1 text-center">
-								<a title="Refresh to Master fingercode" id="refreshFinger"  class="btn btn-lg bg-purple btn-rect disabled"><span class="fa fa-hand-stop-o"></span> <br> Update Finger</a>
+							<div class="col-lg-1 text-center"><h3><b style="color:red;">INACTIVE</b></h3>
+								<a title="Distribute finger from quick.com to local presence :: fingertolocalhost" id="refreshFinger"  class="btn btn-lg bg-maroon btn-rect disabled"><span class="fa fa-sitemap"></span> <br> Distribute Finger</a>
 							</div>
 							<div class="col-lg-1"></div>
-							<div class="col-lg-1 text-center">
-								<a title="Distribute finger from quick.com to local presence :: fingertolocalhost" id="refreshFinger"  class="btn btn-lg bg-maroon btn-rect"><span class="fa fa-sitemap"></span> <br> Distribute Finger</a>
-							</div>
-							<div class="col-lg-1"></div>
-							<div class="col-lg-1 text-center">
+							<div class="col-lg-1 text-center"><h3><b style="color:red;">INACTIVE</b></h3>
 								<a title="Refresh location device" href="<?php echo site_url('PresenceManagement/Monitoring');?>"  class="btn btn-lg bg-navy btn-rect disabled"><span class="fa fa-toggle-on"></span> <br> Refresh Device</a>
 							</div>
 						</div>
