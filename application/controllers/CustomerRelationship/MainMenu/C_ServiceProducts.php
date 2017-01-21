@@ -323,12 +323,7 @@ class C_ServiceProducts extends CI_Controller {
 							$this->M_serviceproducts->updateConnect($data_connect,$this->input->post('slcConnectNum'));
 							
 						}
-						
-						$customerName 			= $this->input->post('txtCustomerName');
-						$custdata				= $this->M_serviceproducts->customerDataEC($customerName);
-						$custId 				= $custdata[0]['oracle_customer_id'];
-						$own_phone				= $custdata[0]['data'];
-						$own_address			= $custdata[0]['address'];
+
 						$durationUse 			= $this->input->post('durationUse');
 						$durationUseType 		= $this->input->post('durationUseType');
 							$duration_of_use 	= $durationUse.' '.$durationUseType;
@@ -362,10 +357,6 @@ class C_ServiceProducts extends CI_Controller {
 							'connect_id' 				=> $connect_id,
 							'last_update_date' 			=> $this->input->post('hdnDate'),
 							'last_updated_by' 			=> $this->input->post('hdnUser'),
-							'cust_account_id' 			=> $custId,
-							'owner_name' 				=> $customerName,
-							'owner_address' 			=> $own_address,
-							'owner_phone_number' 		=> $own_phone,
 							'duration_of_use' 			=> $duration_of_use,
 							'location_address' 			=> $this->input->post('AddressIncident'),
 							'location_village' 			=> $this->input->post('VillageIncident'),
@@ -721,6 +712,8 @@ class C_ServiceProducts extends CI_Controller {
 					$custId 		= $custdata[0]['oracle_customer_id'];
 					$own_phone		= $custdata[0]['data'];
 					$own_address	= $custdata[0]['address'];
+					//print_r($custId);
+					//exit();
 					$durationUse = $this->input->post('durationUse');
 					$durationUseType = $this->input->post('durationUseType');
 						$duration_of_use = $durationUse.' '.$durationUseType;
@@ -776,7 +769,8 @@ class C_ServiceProducts extends CI_Controller {
 							'weeds' 					=> $WeedsItem,
 							'topography' 				=> $TopographyItem,
 							'event_chronology' 			=> $this->input->post('Chronology'),
-							'officer_id' 				=> $this->input->post('slcEmployeeNum')
+							'officer_id' 				=> $this->input->post('officer'),
+							'qty'						=> $this->input->post('QtyClaim')
 						);
 
 						//$service_id = 0;
@@ -1093,72 +1087,6 @@ class C_ServiceProducts extends CI_Controller {
 						
 				}
 		}
-
-		public function ProcessClaim()
-		{
-			
-						$actionClaim 	= $this->input->post('actionClaim');
-						$improcess 		= implode($actionClaim, " - ");
-						$itemCode 		= $this->input->post('txtOwnership');
-						$imitemCode		= implode($itemCode, " - ");
-						$created_by 	= $this->input->post('hdnUser');
-						
-						if (stripos($improcess, "PROCESS") !== FALSE) {
-							$customerName 	= $this->input->post('txtCustomerName');
-							$custdata		= $this->M_serviceproducts->customerDataEC($customerName);
-
-							$custId 		= $custdata[0]['oracle_customer_id'];
-							$own_address	= $custdata[0]['address'];
-							$own_phone		= $custdata[0]['data'];
-
-							$province 		= $this->input->post('provinceIncident');
-							$City 			= $this->input->post('CityIncident');
-							$District 		= $this->input->post('DistrictIncident');
-							$Village 		= $this->input->post('VillageIncident');
-							$Address 		= $this->input->post('AddressIncident');
-								$durationUse 	= $this->input->post('durationUse');
-								$durationType 	= $this->input->post('durationUseType');
-							$duration	= $durationUse.' '.$durationType;
-							$sentDate 	= $this->input->post('sentDate');
-								if ($sentDate==NULL) {$shipped = 'NO';}
-								else {$shipped = 'YES';}
-
-							$reasonVal 	= $this->input->post('reason');
-							if ($reasonVal == NULL) {$reason = 'NO REASON';}
-							else{$reason = $reasonVal;}
-
-							if ($sentDate == NULL AND $reasonVal == NULL) {$noEvidence = 'YES';}
-							else{$noEvidence = 'NO';}
-
-							$area 				= $this->input->post('area');
-								$landCategory 	= implode($area, ', ');
-							$Soil 				= $this->input->post('Soil');
-								$typeOfSoil 	= implode($Soil, ', ');
-							$Depth 				= $this->input->post('Depth');
-								$landDepth 		= implode($Depth, ', ');
-							$Weeds 				= $this->input->post('Weeds');
-								$WeedsItem 		= implode($Weeds, ', ');
-							$Topography 		= $this->input->post('Topography');
-								$TopographyItem = implode($Topography, ', ');
-							$Chronology 		= $this->input->post('Chronology');
-
-							$saveClaimHeaderP = $this->M_serviceproducts->processClaimHeaderP($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by);
-							$saveClaimHeaderO = $this->M_serviceproducts->processClaimHeaderO($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by);
-							$headeridP = $saveClaimHeaderP[0]['ins_id'];
-							$headeridO = $saveClaimHeaderO[0]['INS_ID'];
-						}
-
-						//$description = $this->input->post('txtItemDescription');
-						//print_r($description);
-						//exit();
-						$countClaim = count($actionClaim);
-						for ($i=0; $i<$countClaim ; $i++) {
-							if ($actionClaim[$i] == 'PROCESS') {
-								$saveClaimLinesP = $this->M_serviceproducts->processClaimLinesP($headeridP,$itemCode[$i],$created_by);
-								$saveClaimLinesO = $this->M_serviceproducts->processClaimLinesO($headeridO,$itemCode[$i],$created_by);
-							}
-						}
-		}
 		
 		public function Location()
 		{
@@ -1201,16 +1129,43 @@ class C_ServiceProducts extends CI_Controller {
 			$approver 			= $this->input->post('hdnUser');
 			$approve_date 		= $this->input->post('hdnDate');
 			$type 				= $this->input->post('approveval');
-			//print_r($stat);
-			//exit();
 			if ($type == 'N' AND $stat == 'BRANCH APPROVAL') {
 				$reason	= $this->input->post('reasonnotapprove');
 				$status = 'NOT APPROVED 1';
 				$this->M_serviceproducts->noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason);
+
 			}elseif ($type == 'N' AND $stat == 'CENTRAL APPROVAL') {
 				$reason	= $this->input->post('reasonnotapprove');
 				$status = 'NOT APPROVED 2';
 				$this->M_serviceproducts->noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason);
+
+			}elseif (($type == 'Y' or $type == NULL) AND $stat == 'CENTRAL APPROVAL') {
+				$status = $stat;
+				$header = $this->M_serviceproducts->getServiceProducts($serviceid);
+				$custId 		= $header[0]['cust_account_id'];
+				$customerName	= $header[0]['owner_name'];
+				$own_address 	= $header[0]['owner_address'];
+				$own_phone 		= $header[0]['owner_phone_number'];
+				$province 		= $header[0]['location_province'];
+				$City 			= $header[0]['location_city'];
+				$District 		= $header[0]['location_district'];
+				$Village 		= $header[0]['location_village'];
+				$Address 		= $header[0]['location_address'];
+				$duration 		= $header[0]['duration_of_use'];
+				$shipped 		= $header[0]['shipped'];
+				$shipment_date 	= $header[0]['shipment_date'];
+				$reason 		= $header[0]['not_shipped_reason'];
+				$noEvidence 	= $header[0]['no_evidence'];
+				$landCategory 	= $header[0]['land_category'];
+				$typeOfSoil 	= $header[0]['type_of_soil'];
+				$landDepth 		= $header[0]['land_depth'];
+				$WeedsItem 		= $header[0]['weeds'];
+				$TopographyItem = $header[0]['topography'];
+				$Chronology 	= $header[0]['event_chronology'];
+				$created_by 	= $header[0]['officer_code'];
+				$oraInsert		= $this->M_serviceproducts->processClaimHeader($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$shipment_date,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by);
+				$this->M_serviceproducts->approval($plaintext_string,$serviceid,$status,$approver,$approve_date);
+
 			}elseif ($type == 'Y' or $type == NULL) {
 				$status = $stat;
 				$this->M_serviceproducts->approval($plaintext_string,$serviceid,$status,$approver,$approve_date);
