@@ -638,69 +638,9 @@ class M_serviceproducts extends CI_Model {
 			}
 		}
 
-		function processClaimHeaderP($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
+		function processClaimHeader($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$shipment_date,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
 		{
-			$sqlpostgre =	"INSERT INTO cr.\"KHS_EXTERNAL_CLAIM_HEADERS\"
-									(\"CLAIM_TYPE\",
-									\"USER_ID\",
-									\"CUST_ACCOUNT_ID\",
-									\"OWNER_NAME\",
-									\"OWNER_ADDRESS\",
-									\"OWNER_PHONE_NUMBER\",
-									\"DURATION_OF_USE\",
-									\"LOCATION_ADDRESS\",
-									\"LOCATION_VILLAGE\",
-									\"LOCATION_DISTRICT\",
-									\"LOCATION_CITY\",
-									\"LOCATION_PROVINCE\",
-									\"SHIPPED\",
-									\"NOT_SHIPPED_REASON\",
-									\"NO_EVIDENCE\",
-									\"LAND_CATEGORY\",
-									\"TYPE_OF_SOIL\",
-									\"LAND_DEPTH\",
-									\"WEEDS\",
-									\"TOPOGRAPHY\",
-									\"EVENT_CHRONOLOGY\",
-									\"CREATED_BY\",
-									\"CREATION_DATE\",
-									\"STATUS\")
-									VALUES (
-										'HARVESTER',
-										'".$created_by."',
-										'".$custId."',
-										'".$customerName."',
-										'".$own_address."',
-										'".$own_phone."',
-										'".$duration."',
-										'".$Address."',
-										'".$Village."',
-										'".$District."',
-										'".$City."',
-										'".$province."',
-										'".$shipped."',
-										'".$reason."',
-										'".$noEvidence."',
-										'".$landCategory."',
-										'".$typeOfSoil."',
-										'".$landDepth."',
-										'".$WeedsItem."',
-										'".$TopographyItem."',
-										'".$Chronology."',
-										'".$created_by."',
-										CURRENT_TIMESTAMP,
-										'NEW'
-									)";
-			$query = $this->db->query($sqlpostgre);
-
-			$sql = "SELECT LAST_VALUE(\"HEADER_ID\") OVER (ORDER BY \"HEADER_ID\" DESC) as ins_id FROM cr.\"KHS_EXTERNAL_CLAIM_HEADERS\"";
-			$query = $this->db->query($sql);
-			return $query->result_array();
-		}
-
-		function processClaimHeaderO($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
-		{
-			$sqloracle	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
+			$sql	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
 									(CLAIM_TYPE,
 									USER_ID,
 									CUST_ACCOUNT_ID,
@@ -714,6 +654,7 @@ class M_serviceproducts extends CI_Model {
 									LOCATION_CITY,
 									LOCATION_PROVINCE,
 									SHIPPED,
+									SHIPMENT_DATE,
 									NOT_SHIPPED_REASON,
 									NO_EVIDENCE,
 									LAND_CATEGORY,
@@ -739,6 +680,7 @@ class M_serviceproducts extends CI_Model {
 										'".$City."',
 										'".$province."',
 										'".$shipped."',
+										TO_DATE('".$shipment_date."', 'yyyy-mm-dd HH24:MI:SS'),
 										'".$reason."',
 										'".$noEvidence."',
 										'".$landCategory."',
@@ -749,45 +691,9 @@ class M_serviceproducts extends CI_Model {
 										'".$Chronology."',
 										'".$created_by."',
 										sysdate,
-										'NEW'
+										'APPROVED'
 									)";
-			$query = $this->oracle->query($sqloracle);
-
-			$sql = "SELECT LAST_VALUE(HEADER_ID) OVER (ORDER BY HEADER_ID DESC) as ins_id FROM KHS_EXTERNAL_CLAIM_HEADERS";
 			$query = $this->oracle->query($sql);
-			return $query->result_array();
-		}
-
-		function processClaimLinesP($headeridP,$itemCode,$created_by)
-		{
-			$sqlpostgre =	"INSERT INTO cr.\"KHS_EXTERNAL_CLAIM_LINES\"
-									(\"HEADER_ID\",
-									\"ITEM_CODE\",
-									\"CREATED_BY\",
-									\"CREATION_DATE\")
-									VALUES (
-										'".$headeridP."',
-										'".$itemCode."',
-										'".$created_by."',
-										now()
-									)";
-			$query = $this->db->query($sqlpostgre);
-		}
-
-		function processClaimLinesO($headeridO,$itemCode,$created_by)
-		{
-			$sqloracle	=	"INSERT INTO KHS_EXTERNAL_CLAIM_LINES
-									(HEADER_ID,
-									ITEM_CODE,
-									CREATED_BY,
-									CREATION_DATE)
-									VALUES (
-										'".$headeridO."',
-										'".$itemCode."',
-										'".$created_by."',
-										sysdate
-									)";
-			$query = $this->oracle->query($sqloracle);
 		}
 
 		function province()
