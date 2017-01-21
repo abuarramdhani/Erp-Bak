@@ -73,7 +73,7 @@
 											<div class="form-group">
 												<label for="norm" class="control-label col-lg-4">Officer</label>
 												<div class="col-lg-8">
-													<select name="Officer" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
+													<select name="officer" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
 														<option value=""></option>
 													</select>
 												</div>
