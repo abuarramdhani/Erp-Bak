@@ -134,7 +134,7 @@ class M_invoice extends CI_Model{
 		return $query->result();
 	}
 	
-	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3){
+	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2){
 		
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -176,6 +176,10 @@ class M_invoice extends CI_Model{
 								}
 							}
 						}
+
+		$qtyp		= "faktur_tipe";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
 		
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("
@@ -204,12 +208,13 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
+				and faktur_tipe = $qtyp
 		");
 		return $query->result();
 	}
 	
 	//download data as CSV (compatible)
-	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3)
+	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2)
 	{	
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -251,6 +256,10 @@ class M_invoice extends CI_Model{
 								}
 							}
 						}
+
+		$qtyp		= "faktur_tipe";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
 						
 		$this->load->dbutil();
 		
@@ -281,6 +290,7 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
+				and faktur_tipe = $qtyp
 		"
 		);
 		$delimiter = ",";
