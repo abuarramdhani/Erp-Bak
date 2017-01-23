@@ -177,7 +177,7 @@ class M_invoice extends CI_Model{
 							}
 						}
 
-		$qtyp		= "faktur_tipe";
+		$qtyp		= "faktur_type";
 						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
 						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
 		
@@ -208,7 +208,7 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
-				and faktur_tipe = $qtyp
+				and faktur_type = $qtyp
 		");
 		return $query->result();
 	}
@@ -257,7 +257,7 @@ class M_invoice extends CI_Model{
 							}
 						}
 
-		$qtyp		= "faktur_tipe";
+		$qtyp		= "faktur_type";
 						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
 						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
 						
@@ -290,7 +290,7 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
-				and faktur_tipe = $qtyp
+				and faktur_type = $qtyp
 		"
 		);
 		$delimiter = ",";
