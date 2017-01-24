@@ -180,6 +180,7 @@ class M_invoice extends CI_Model{
 		$qtyp		= "faktur_type";
 						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
 						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
+						else if($typ1=="yes" && $typ2=="yes"){$qtyp="faktur_type";}
 		
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("
