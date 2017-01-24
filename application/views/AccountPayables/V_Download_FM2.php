@@ -18,6 +18,7 @@
 									<th><div style="width:100px;">IS CREDITABLE</div></th>
 									<th><div style="width:90px;">KETERANGAN</div></th>
 									<th><div style="width:100px;">STATUS FAKTUR</div></th>
+									<th><div style="width:100px;">TIPE FAKTUR</div></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -46,6 +47,7 @@
 									<td><?php echo $FF->IS_CREDITABLE_FLAG?></td>
 									<td><?php echo $FF->DESCRIPTION?></td>
 									<td><?php echo $FF->STATUS?></td>
+									<td><?php echo $FF->FAKTUR_TYPE?></td>
 								</tr>
 								<?php 
 										}

@@ -346,7 +346,7 @@ class C_Invoice extends CI_Controller {
 			$filename = 'Faktur-Selected';
 			$this->checkSession();
 
-			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2));
+			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2);
 			
 			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 			$html = $this->load->view('AccountPayables/V_Download_FMPDF', $data, true);
@@ -357,7 +357,7 @@ class C_Invoice extends CI_Controller {
 		
 		} else if ($type=="3") {
 			
-			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2));
+			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2);
 			$this->load->view('AccountPayables/V_Download_FMEXCEL',$data);
 		}
 	}
