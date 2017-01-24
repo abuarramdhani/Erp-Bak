@@ -201,6 +201,7 @@ class M_invoice extends CI_Model{
 				,DESCRIPTION
 				,STATUS
 				,FM
+				,decode(FAKTUR_TYPE,'N','WITHOUT INVOICE','WITH INVOICE')  FAKTUR_TYPE 
 			FROM khs_faktur_web
 			where month=$qmonth
 				and year=$qyear

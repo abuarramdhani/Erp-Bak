@@ -18,7 +18,7 @@
 									<th><div style="width:100px;">IS CREDITABLE</div></th>
 									<th><div style="width:90px;">KETERANGAN</div></th>
 									<th><div style="width:100px;">STATUS FAKTUR</div></th>
-									<th><div style="width:100px;">TIPE FAKTUR</div></th>
+									<th><div style="width:160px;">TIPE FAKTUR</div></th>
 								</tr>
 							</thead>
 							<tbody>
