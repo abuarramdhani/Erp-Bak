@@ -134,7 +134,7 @@ class M_invoice extends CI_Model{
 		return $query->result();
 	}
 	
-	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3){
+	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2){
 		
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -176,6 +176,11 @@ class M_invoice extends CI_Model{
 								}
 							}
 						}
+
+		$qtyp		= "faktur_type";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
+						else if($typ1=="yes" && $typ2=="yes"){$qtyp="faktur_type";}
 		
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("
@@ -197,6 +202,7 @@ class M_invoice extends CI_Model{
 				,DESCRIPTION
 				,STATUS
 				,FM
+				,decode(FAKTUR_TYPE,'N','WITHOUT INVOICE','WITH INVOICE')  FAKTUR_TYPE 
 			FROM khs_faktur_web
 			where month=$qmonth
 				and year=$qyear
@@ -204,12 +210,13 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
+				and faktur_type = $qtyp
 		");
 		return $query->result();
 	}
 	
 	//download data as CSV (compatible)
-	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3)
+	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2)
 	{	
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -251,6 +258,10 @@ class M_invoice extends CI_Model{
 								}
 							}
 						}
+
+		$qtyp		= "faktur_type";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
 						
 		$this->load->dbutil();
 		
@@ -281,6 +292,7 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
+				and faktur_type = $qtyp
 		"
 		);
 		$delimiter = ",";
