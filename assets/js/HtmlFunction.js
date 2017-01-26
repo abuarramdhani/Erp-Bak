@@ -74,20 +74,14 @@ var counter = 0;
 										+"<option value='' select='selected'>"
 									+"</select></td>"
 									+"<td><input type='text' name='txtProblemDescription[]' id='txtProblemDescription'  class='form-control' disabled='disabled'/></td>"
-									+"<td><input type='text' name='txtAction[]' id='txtAction' class='form-control' disabled='disabled'/></td>"
 									+"<td>"
-										//+"<input type='text' name='txtEmployeeNum[]' id='txtEmployeeNum"+counter+"' onblur=selectEmployee('"+counter+"'); class='form-control2' disabled='disabled'/>"
-										//+"<input type='hidden' name='hdnEmployeeId[]' id ='hdnEmployeeId"+counter+"'/>"
-										+"<select name='slcEmployeeNum[]' id='slcEmployeeNum' class='form-control jsEmployeeData' disabled='disabled>"
-											+"<option value='1' selected='selected'></option></select>"
-									+"</td>"
-									+"<td>"
-										+"<select name='slcServiceLineStatus[]' id='slcServiceLineStatus' class='form-control' disabled='disabled'>"
-										  +"<option value='OPEN' selected='selected'>OPEN</option>"
-										  +"<option value='CLOSE' >CLOSE</option>"
+										+"<select name='actionClaim[]' id='actionClaim' class='form-control select4' data-placeholder='Action Claim' disabled>"
+											+"<option value='' disabled selected>-- CHOOSE ONE --</option>"
+											+"<option value='Y'>PROCESS</option>"
+											+"<option value='N'>NO PROCESS</option>"
 										+"</select>"
 									+"</td>"
-									+"<td><input type='text' name='txtActionDate[]' id='txtActionDate'  class='form-control' data-date-format='dd-M-yyyy' disabled='disabled'/></td>"
+									+"<td><input type='file' name='claimImage' id='claimImage' disabled></td>"
 									+"<td></td>"
 							+"</tr>");
 
@@ -544,6 +538,8 @@ function enadisServiceLine(rowid) {
 			document.getElementById('txtActionDate').disabled = true;
 			document.getElementById('txtFinishDate').disabled = true;
 			document.getElementById('txtClaimNum').disabled = true;
+			document.getElementById('actionClaim').disabled = true;
+			document.getElementById('claimImage').disabled = true;
 
 		}
 		else{
@@ -556,6 +552,8 @@ function enadisServiceLine(rowid) {
 			document.getElementById('txtActionDate').disabled = false;
 			document.getElementById('txtFinishDate').disabled = false;
 			document.getElementById('txtClaimNum').disabled = false;
+			document.getElementById('actionClaim').disabled = false;
+			document.getElementById('claimImage').disabled = false;
 		}
 		//document.getElementById('txtDescription').value = id;
 		//alert(id);
@@ -592,6 +590,8 @@ function enadisLineOwner() {
 				document.getElementById('slcServiceLineStatus'+i).disabled = true;
 				document.getElementById('txtActionDate'+i).disabled = true;
 				document.getElementById('txtFinishDate'+i).disabled = true;
+				document.getElementById('actionClaim'+i).disabled = true;
+				document.getElementById('claimImage'+i).disabled = true;
 
 			}
 		}
@@ -730,6 +730,8 @@ function sendValueItem(item_id,item_code,item_name,i,base){
 			$('select#slcServiceLineStatus').eq(i).prop('disabled', false);
 			$('input#txtActionDate').eq(i).prop('disabled', false);
 			$('input#txtFinishDate').eq(i).prop('disabled', false);
+			$('select#actionClaim').eq(i).prop('disabled', false);
+			$('input#claimImage').eq(i).prop('disabled', false);
 		}
 		
 	}
@@ -1182,6 +1184,8 @@ $(document).ready(function() {
 			$("select#slcEmployeeNum").eq(i).prop("disabled", true);
 			$("select#slcServiceLineStatus").eq(i).prop("disabled", true);
 			$("input#txtActionDate").eq(i).prop("disabled", true);
+			$("select#actionClaim").eq(i).prop("disabled", true);
+			$("input#claimImage").eq(i).prop("disabled", true);
 			}
 		}
 		

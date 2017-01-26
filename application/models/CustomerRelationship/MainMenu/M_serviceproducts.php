@@ -1,11 +1,13 @@
 <?php
 class M_serviceproducts extends CI_Model {
 
+		var $oracle;
         public function __construct()
         {
                 $this->load->database();
 				$this->load->library('encrypt');
 				$this->load->helper('url');
+        		$this->oracle = $this->load->database ( 'oracle', TRUE );
         }
 		
 		public function getActivity($id = FALSE)
@@ -635,5 +637,181 @@ class M_serviceproducts extends CI_Model {
 					return 0;
 			}
 		}
-		
+
+		function processClaimHeader($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$shipment_date,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
+		{
+			$sql	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
+									(CLAIM_TYPE,
+									USER_ID,
+									CUST_ACCOUNT_ID,
+									OWNER_NAME,
+									OWNER_ADDRESS,
+									OWNER_PHONE_NUMBER,
+									DURATION_OF_USE,
+									LOCATION_ADDRESS,
+									LOCATION_VILLAGE,
+									LOCATION_DISTRICT,
+									LOCATION_CITY,
+									LOCATION_PROVINCE,
+									SHIPPED,
+									SHIPMENT_DATE,
+									NOT_SHIPPED_REASON,
+									NO_EVIDENCE,
+									LAND_CATEGORY,
+									TYPE_OF_SOIL,
+									LAND_DEPTH,
+									WEEDS,
+									TOPOGRAPHY,
+									EVENT_CHRONOLOGY,
+									CREATED_BY,
+									CREATION_DATE,
+									STATUS)
+									VALUES (
+										'HARVESTER',
+										'".$created_by."',
+										'".$custId."',
+										'".$customerName."',
+										'".$own_address."',
+										'".$own_phone."',
+										'".$duration."',
+										'".$Address."',
+										'".$Village."',
+										'".$District."',
+										'".$City."',
+										'".$province."',
+										'".$shipped."',
+										TO_DATE('".$shipment_date."', 'yyyy-mm-dd HH24:MI:SS'),
+										'".$reason."',
+										'".$noEvidence."',
+										'".$landCategory."',
+										'".$typeOfSoil."',
+										'".$landDepth."',
+										'".$WeedsItem."',
+										'".$TopographyItem."',
+										'".$Chronology."',
+										'".$created_by."',
+										sysdate,
+										'APPROVED'
+									)";
+			$query = $this->oracle->query($sql);
+		}
+
+		function province()
+		{
+			$sql = "select * from sys.sys_area_province";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function cityRegency($name)
+		{
+			$sql =	"	SELECT regency_name
+						FROM sys.sys_area_city_regency
+						WHERE province_id=(SELECT province_id
+						FROM sys.sys_area_province
+						WHERE province_name='$name'
+						GROUP BY province_id)
+						GROUP BY regency_name
+						ORDER BY regency_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+			
+		public function district($name)
+		{
+			$sql =	"	SELECT district_name
+						FROM sys.sys_area_district
+						WHERE city_regency_id=(SELECT city_regency_id
+						FROM sys.sys_area_city_regency
+						WHERE regency_name='$name'
+						GROUP BY city_regency_id)
+						GROUP BY district_name
+						ORDER BY district_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+			
+		public function village($name)
+		{
+			$sql =	"	SELECT village_name
+						FROM sys.sys_area_village
+						WHERE district_id=(SELECT district_id
+						FROM sys.sys_area_district
+						WHERE district_name='$name'
+						GROUP BY district_id)
+						GROUP BY village_name
+						ORDER BY village_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function customerDataEC($customerName)
+		{
+			$sql =	"	SELECT ct.data, cs.oracle_customer_id, cs.address
+						FROM cr.cr_customer_contacts ct, cr.cr_customers cs
+						WHERE ct.connector_id = cs.customer_id AND cs.customer_name = '".$customerName."'
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		/*public function getDataCustOwn()
+		{
+			$sql =	"	SELECT *
+						FROM im.im_master_items
+						WHERE oracle_item_id IS NOT NULL AND segment1 = 'AFB0000BA1AZ-0'
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}*/
+
+		public function approval($plaintext_string,$serviceid,$status,$approver,$approve_date)
+		{
+			$sql =	"	UPDATE cr.cr_service_products SET
+							approval_status = '$status',
+							approved_by		= '$approver'
+						WHERE service_product_id = '$plaintext_string'
+					";
+			$query = $this->db->query($sql);
+
+			$sql =	"	INSERT INTO cr.cr_approval_history
+									(service_product_id,
+									approval_status,
+									approved_by,
+									approved_date)
+							VALUES ('".$serviceid."',
+									'$status',
+									'".$approver."',
+									'".$approve_date."')
+					";
+			$query = $this->db->query($sql);
+		}
+
+		public function noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason)
+		{
+			$sql =	"	UPDATE cr.cr_service_products SET
+							approval_status 	= '$status',
+							approved_by			= '$approver',
+							reason_not_approve	= '$reason'
+						WHERE service_product_id = '$plaintext_string'
+					";
+			$query = $this->db->query($sql);
+
+			$sql =	"	INSERT INTO cr.cr_approval_history
+									(service_product_id,
+									approval_status,
+									approved_by,
+									approved_date,
+									reason_not_approve)
+							VALUES ('".$serviceid."',
+									'".$status."',
+									'".$approver."',
+									'".$approve_date."',
+									'".$reason."')
+					";
+			$query = $this->db->query($sql);
+		}
 }
