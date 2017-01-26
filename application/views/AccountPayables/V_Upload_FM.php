@@ -44,32 +44,12 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php
-											foreach($csvarray as $row) {
-												$ori = str_replace(str_split('.-'), '', $row['FAKTUR_PAJAK']);
-												$typ = substr($ori, 0, 2);
-												$alt = substr($ori, 2, 1);
-												$num = substr($ori, 3);
-										?>
-										<tr>
-											<!--<td><?php echo $row['FM']?></td>-->
-											<td><?php echo $typ?></td>
-											<td><?php echo $alt?></td>
-											<td><?php echo $num?></td>
-											<td><?php echo $row['BULAN_PAJAK']?></td>
-											<td><?php echo $row['TAHUN_PAJAK']?></td>
-											<!--<td><?php echo $row['FAKTUR_DATE']?></td>-->
-											<!--<td><?php echo $row['NPWP']?></td>-->
-											<!--<td><?php echo $row['NAME']?></td>-->
-											<!--<td><?php echo $row['ADDRESS']?></td>-->
-											<!--<td><?php echo $row['DPP']?></td>-->
-											<!--<td><?php echo $row['PPN']?></td>-->
-											<!--<td><?php echo $row['PPN_BM']?></td>-->
-											<!--<td><?php echo $row['IS_CREDITABLE_FLAG']?></td>-->
-											<!--<td><?php echo $row['DESCRIPTION']?></td>-->
-											<td><?php echo $row['STATUS']?></td>
-										</tr>
-										<?php }?>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
 									</tbody>																			
 								</table>
 							</div>

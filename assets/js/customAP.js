@@ -23,31 +23,31 @@ $(document).ready(function() {
 		}	
 	});
 
-	$("#slcInvoiceNumber").select2({
-		placeholder: "INVOICE NUMBER",
-		minimumInputLength: 2,
-		ajax: {		
-			url:baseurl+"AccountPayables/C_Invoice/getInvoiceNumber",
-			dataType: 'json',
-			type: "GET",
-			data: function (params) {
-				var queryParameters = {
-					term: params.term,
-					tanggal_awal: $('input[name="tanggal_awal"]').val(),
-					tanggal_akhir: $('input[name="tanggal_akhir"]').val(),
-					supplier: $('select[name="supplier"]').val(),
-				}
-				return queryParameters;
-			},
-			processResults: function (data) {
-				return {
-					results: $.map(data, function(obj) {
-					return { id:obj.INVOICE_NUM, text:obj.INVOICE_NUM};
-					})
-				};
-			}
-		}	
-	});
+	//$("#slcInvoiceNumber").select2({
+	//	placeholder: "INVOICE NUMBER",
+	//	minimumInputLength: 2,
+	//	ajax: {		
+	//		url:baseurl+"AccountPayables/C_Invoice/getInvoiceNumber",
+	//		dataType: 'json',
+	//		type: "GET",
+	//		data: function (params) {
+	//			var queryParameters = {
+	//				term: params.term,
+	//				tanggal_awal: $('input[name="tanggal_awal"]').val(),
+	//				tanggal_akhir: $('input[name="tanggal_akhir"]').val(),
+	//				supplier: $('select[name="supplier"]').val(),
+	//			}
+	//			return queryParameters;
+	//		},
+	//		processResults: function (data) {
+	//			return {
+	//				results: $.map(data, function(obj) {
+	//				return { id:obj.INVOICE_NUM, text:obj.INVOICE_NUM};
+	//				})
+	//			};
+	//		}
+	//	}	
+	//});
 	
 	//GET INVOICE NAME
 	$("#slcnama").select2({
@@ -141,6 +141,9 @@ $(document).ready(function() {
 			var sta1		= 'no'; if(document.getElementById('sta1').checked){sta1= 'yes';}
 			var sta2		= 'no'; if(document.getElementById('sta2').checked){sta2= 'yes';}
 			var sta3		= 'no'; if(document.getElementById('sta3').checked){sta3= 'yes';}
+
+			var typ1		= 'no'; if(document.getElementById('typ1').checked){typ1= 'yes';}
+			var typ2		= 'no'; if(document.getElementById('typ2').checked){typ2= 'yes';}
 			
 			$.ajax({
 				type: "POST",
@@ -153,7 +156,9 @@ $(document).ready(function() {
 						ket2:ket2,
 						sta1:sta1,
 						sta2:sta2,
-						sta3:sta3 
+						sta3:sta3, 
+						typ1:typ1, 
+						typ2:typ2, 
 					},
 				url:baseurl+"AccountPayables/C_Invoice/FindFaktur",
 				success:function(result)
