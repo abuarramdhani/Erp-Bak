@@ -15,11 +15,12 @@ class C_ServiceProducts extends CI_Controller {
 				$this->load->model('EmployeeRecruitment/MainMenu/M_employee');
 				$this->load->model('SystemAdministration/MainMenu/M_user');
 				$this->load->helper('form');
+				$this->load->library('upload');
+				$this->load->helper('file');
 				$this->load->library('form_validation');
 				$this->load->library('session');
 				$this->load->helper('url');
 				$this->checkSession();
-				
         }
 		
 		public function checkSession(){
@@ -32,6 +33,11 @@ class C_ServiceProducts extends CI_Controller {
 
         public function index()
 		{		$user_id = $this->session->userid;
+				if ($this->session->userdata('tempServiceNumber')) {
+					$id = $this->session->userdata('tempServiceNumber');
+					$this->M_serviceproducts->deleteActivityTemp($id);
+					$this->session->unset_userdata('tempServiceNumber');
+				}else{	}
 		
 				$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 				$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -692,28 +698,95 @@ class C_ServiceProducts extends CI_Controller {
 				 
 				$data['title'] = 'New Service';
 				$data['province']	= $this->M_serviceproducts->province();
+
+				$customerName 	= $this->input->post('txtCustomerName');
+				$config['upload_path']          = './uploads/cr/ServiceProducts/';
+	        	//$config['file_name']         	= $customerName.'_'.date('d-m-Y');
+	        	$config['remove_spaces']        = TRUE;
+	        	$config['allowed_types']        = '*';
+	        	$config['max_size']             = 10000;
+	        	$config['max_width']            = 2562;
+	        	$config['max_height']           = 2050;
+	        	$this->upload->initialize($config);
 				
 				if ($this->form_validation->run() === FALSE)
 				{
 						$data['Menu'] = 'Activity';
 						$data['SubMenuOne'] = '';
+						$data['notif'] 	= '';
+
+						//----Insert data ke table temporary dulu.
+						if ($this->session->userdata('tempServiceNumber')) {}else
+						{
+							$dataTemp = array(
+								'created_by'		=> $user_id,
+								'creation_date'		=> date("Y-m-d H:i:s")
+							);
+							$data['id']	= $this->M_serviceproducts->setNewActivityTemp($dataTemp);
+							$this->session->set_userdata('tempServiceNumber', $data['id']);
+						}
+						
 						//$this->load->view('templates/header', $data);
 						$this->load->view('V_Header',$data);
 						$this->load->view('V_Sidemenu',$data);
 						$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_create', $data);
 						$this->load->view('V_Footer',$data);
 						//$this->load->view('templates/footer');
-				}
+				}/*elseif (! $this->upload->do_upload('claimImage')) {
+					$errorinfo = $this->upload->display_errors();
+					$data['Menu'] = 'Activity';
+					$data['SubMenuOne'] = '';
+					$data['notif'] 	= "
+	                	<div class='alert alert-warning alert-dismissible' role='alert'>
+	  						<button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+	  							<span aria-hidden=true'>&times;</span>
+	  						</button>
+	  						<strong>".$errorinfo."</strong>
+						</div>";
+					$this->load->view('V_Header',$data);
+					$this->load->view('V_Sidemenu',$data);
+					$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_create', $data);
+					$this->load->view('V_Footer',$data);
+				}*/
 				else
-				{	
+				{
+					//$data1 = array('upload_data' => $this->upload->data());
+					$files 	= $_FILES['claimImage'];
+					$no = 1;
+					print_r($files);
+        			foreach ($files['name'] as $key => $image) {
+        				
+        				print_r($image);
+        				//exit();
+            			$_FILES['claimImage']['name']= $files['name'][$key];
+            			$_FILES['claimImage']['type']= $files['type'][$key];
+            			$_FILES['claimImage']['tmp_name']= $files['tmp_name'][$key];
+            			$_FILES['claimImage']['error']= $files['error'][$key];
+            			$_FILES['claimImage']['size']= $files['size'][$key];
+
+        				$typeImage	= substr($_FILES['claimImage']['type'],6);
+        				$fileName 	= $customerName.'_'.date('d/m/Y-Hms').'_'.$key.'.'.$typeImage;
+
+            			$config['file_name'] = $fileName;
+
+            			$this->upload->initialize($config);
+
+            			if ($this->upload->do_upload('claimImage')) {
+                			$this->upload->data();
+            			} else {
+                			echo "COBA LAGI GAN.";
+            			}
+        			}
+					
+					//$data1 = array('upload_data' => $this->upload->data());
+
+					//print_r($_FILES['claimImage']);
+					//exit();
 					$con_id = $this->input->post('slcConnectNum');
-					$customerName 	= $this->input->post('txtCustomerName');
 					$custdata		= $this->M_serviceproducts->customerDataEC($customerName);
 					$custId 		= $custdata[0]['oracle_customer_id'];
 					$own_phone		= $custdata[0]['data'];
 					$own_address	= $custdata[0]['address'];
-					//print_r($custId);
-					//exit();
 					$durationUse = $this->input->post('durationUse');
 					$durationUseType = $this->input->post('durationUseType');
 						$duration_of_use = $durationUse.' '.$durationUseType;
@@ -832,7 +905,9 @@ class C_ServiceProducts extends CI_Controller {
 								//'line_status' 				=> $line_status[$i],
 								'problem_id' 				=> $problem[$i],
 								'process' 					=> $actionClaim[$i]
-								);							
+								);
+
+								//$data_images[];
 							}
 							if(count($data_lines[$i]) != 0){ 
 								$this->M_serviceproducts->setServiceProductLines($data_lines[$i]);
@@ -890,12 +965,10 @@ class C_ServiceProducts extends CI_Controller {
 								$this->M_serviceproducts->setServiceProductAddAct($data_add_act[$i]);
 							}
 						}
-						
+						$id = $this->session->userdata('tempServiceNumber');
+						$this->M_serviceproducts->deleteActivityTemp($id);
+						$this->session->unset_userdata('tempServiceNumber');
 						redirect('CustomerRelationship/ServiceProducts');
-						
-						//print_r($service_aidi);
-						//print_r($data_lines[$i]);
-						
 				}
 		}
 
@@ -1172,5 +1245,52 @@ class C_ServiceProducts extends CI_Controller {
 			}
 
 			redirect('CustomerRelationship/ServiceProducts');
+		}
+
+		public function UploadImage()
+		{
+			$name 	= $this->input->post('txtCustomerName');
+			//print_r($name);
+			if ($name == NULL) {
+				echo "DATA KOSONG!";
+			}else{
+				echo $name;
+			}
+			//exit();
+			$config['upload_path']          = './uploads/cr/ServiceProducts/';
+	       	$config['file_name']         	= 'Claim_Image_'.date('d/m/Y-Hms');
+	       	$config['remove_spaces']        = TRUE;
+	       	$config['allowed_types']        = '*';
+	       	$config['max_size']             = 10000;
+	       	$config['max_width']            = 2562;
+	       	$config['max_height']           = 2050;
+	       	$this->upload->initialize($config);
+	       	if ($this->upload->do_upload('qqfile')) {
+           		$this->upload->data();
+       		} else {
+       			$errorinfo = $this->upload->display_errors();
+           		echo $errorinfo;
+       		}
+			/*print_r($_FILES);
+			exit();
+			$files 	= $_FILES['qqfile'];
+			$no = 1;
+			print_r($files);
+       		/*foreach ($files['name'] as $key => $image) {
+      			$_FILES['claimImage']['name']= $files['name'][$key];
+       			$_FILES['claimImage']['type']= $files['type'][$key];
+       			$_FILES['claimImage']['tmp_name']= $files['tmp_name'][$key];
+       			$_FILES['claimImage']['error']= $files['error'][$key];
+       			$_FILES['claimImage']['size']= $files['size'][$key];
+   				$typeImage	= substr($_FILES['qqfile']['type'],6);
+   				$fileName 	= $customerName.'_'.date('d/m/Y-Hms').'_'.$key.'.'.$typeImage;
+       			$config['file_name'] = $fileName;
+       			$this->upload->initialize($config);
+       			if ($this->upload->do_upload('qqfile')) {
+           			$this->upload->data();
+       			} else {
+           			echo "COBA LAGI GAN.";
+       			}
+   			}*/
 		}
 }
