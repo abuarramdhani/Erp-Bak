@@ -623,10 +623,12 @@ class M_serviceproducts extends CI_Model {
 		
 		function getLastActivityNumber($id){
 			//$sql = "select COALESCE(cch.connect_number,'1') AS connect_number from cr.cr_connect_headers cch where cch.connect_type = '$id' order by cch.connect_number desc limit 1";
-			$sql = "select COALESCE(activity.activity_number,'1') AS activity_number 
-					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch 
-					UNION ALL
-					select csp.service_number activity_number, csp.service_type activity_type from cr.cr_service_products csp) activity
+			$sql = "SELECT COALESCE(activity.activity_number,'1') AS activity_number 
+					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch
+						UNION ALL
+						select csp.service_number activity_number, csp.service_type activity_type from cr.cr_service_products csp
+						UNION ALL
+						select cspnt.activity_number activity_number, cspnt.activity_type activity_type from cr.cr_service_product_number_temporary cspnt) activity
 					where activity.activity_type = '$id' 
 					order by activity.activity_number desc limit 1";
 			$query = $this->db->query($sql);
@@ -813,5 +815,45 @@ class M_serviceproducts extends CI_Model {
 									'".$reason."')
 					";
 			$query = $this->db->query($sql);
+		}
+
+		function setNewActivityNumber($activityNumber,$term,$user_id)
+		{
+			$sql 	= "INSERT 	INTO cr.cr_service_product_number_temporary
+            							(activity_number, activity_type, creation_date, created_by)
+     							VALUES 	('$activityNumber', '$term', current_timestamp, '$user_id')";
+			$query 	= $this->db->query($sql);
+		}
+
+		function setNewActivityTemp($dataTemp)
+		{
+			$save = $this->db->insert('cr.cr_service_product_number_temporary', $dataTemp);
+			$last_insert_id = $this->db->insert_id();
+			return $last_insert_id;
+		}
+
+		function updateActivityData($activityNumber,$term,$user_id,$idTemp)
+		{
+			$sql 	= "	UPDATE cr.cr_service_product_number_temporary SET
+							activity_number 	= '$activityNumber',
+							activity_type 		= '$term',
+							last_updated_by 	= '$user_id',
+							last_update_date 	= current_timestamp
+						WHERE service_number_id = '$idTemp'";
+			$query 	= $this->db->query($sql);
+		}
+
+		function deleteActivityTemp($id)
+		{
+			$this->db->where('service_number_id',$id);
+			$this->db->delete('cr.cr_service_product_number_temporary');
+
+			$sql 	= "DELETE from cr.cr_service_product_number_temporary where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
+			$this->db->query($sql);
+		}
+
+		public function claimImage($data)
+		{	
+			$this->db->insert('cr.cr_service_product_line_images', $data);
 		}
 }
