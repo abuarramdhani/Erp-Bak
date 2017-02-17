@@ -790,7 +790,7 @@ clASs M_rekapmssql extends CI_Model {
 									AND rtrim(seksi) = $section
 									AND a.keluar = '0'
 						)
-					OR
+					AND
 						nik IN (
 							SELECT nik
 								FROM hrd_khs.tpribadi a
