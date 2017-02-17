@@ -603,6 +603,7 @@ function sendValueCustomer(cust_id,cust_name,cat_id,base){
 		$('#txtCustomerName').val(cust_name);
 		$('#hdnCustomerId').val(cust_id);
 		$('#hdnCategoryId').val(cat_id);
+		checkcustomer();
 		
 		var id = document.getElementById('hdnCustomerId').value;
 		var n = $('#tblServiceLines tbody tr').length;
@@ -808,7 +809,7 @@ function enadisDriverOwner(base){
 					$('select#slcCustOwner').prop('disabled', false);
 				}else{
 					$('select#slcCustOwner').prop('disabled', true);
-				}	
+				}
                 //alert(returnedvalue);
             }
         });
@@ -822,7 +823,7 @@ function getLastActivityNumber(base){
        $.ajax({
             type: "POST",
             url: url,
-            data: {term : $('#slcActivityType').val()}, 
+            data: {term : $('#slcActivityType').val()},
             cache: false,
 
             success: function(result) { //just add the result as argument in success anonymous function
@@ -832,7 +833,7 @@ function getLastActivityNumber(base){
 				}else{
 					//$('input#txtServiceNumber').prop('disabled', true);
 					$('input#txtServiceNumber').val(result);
-				}	
+				}
                 //alert(returnedvalue);
             }
         });
@@ -1596,7 +1597,9 @@ $(document).ready(function() {
 });
 
 function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
-		$('#txtCustomerName').val(cust_name);
-		$('#hdnCustomerId').val(cust_id);
-		$('#hdnCategoryId').val(cat_id);
-	}
+	$('#txtCustomerName').val(cust_name);
+	$('#hdnCustomerId').val(cust_id);
+	$('#hdnCategoryId').val(cat_id);
+}
+
+

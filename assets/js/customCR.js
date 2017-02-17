@@ -237,5 +237,26 @@
 		$('#serviceDate').datepicker({
 			autoclose: true,
 		});
+		var uploader = new qq.FineUploader({
+			debug: true,
+			element: document.getElementById('fine-uploader-manual-trigger'),
+			template: 'qq-template-manual-trigger',
+			request: {
+				endpoint: baseurl+'CustomerRelationship/ServiceProducts/UploadImage'
+			}
+		});
 	});
+
+	checkcustomer();
+
+	function checkcustomer(){
+		var CustomerName = $('#hdnCustomerId').val();
+		if (CustomerName == "" || CustomerName == null ) {
+			$('#cust-message').show();
+			$('#fine-uploader-manual-trigger').hide();
+		}else{
+			$('#cust-message').hide();
+			$('#fine-uploader-manual-trigger').show();
+		}
+	}
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------
