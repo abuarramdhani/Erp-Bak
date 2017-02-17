@@ -63,28 +63,6 @@
             </dialog>
         </div>
     </script>
-
-    <style>
-        /*#trigger-upload {
-            color: white;
-            background-color: #00ABC7;
-            font-size: 14px;
-            padding: 7px 20px;
-            background-image: none;
-        }*/
-
-        #fine-uploader-manual-trigger .qq-upload-button {
-            margin-right: 15px;
-        }
-
-        #fine-uploader-manual-trigger .buttons {
-            width: 36%;
-        }
-
-        #fine-uploader-manual-trigger .qq-uploader .qq-total-progress-bar-container {
-            width: 60%;
-        }
-    </style>
 <form id="form-service" method="post" action="<?php echo site_url('CustomerRelationship/ServiceProducts/Create/')?>" class="form-horizontal" enctype="multipart/form-data">
 <section class="content">
 	<div class="inner" >
@@ -193,8 +171,8 @@
 																<a class="btn btn-primary" href="<?php echo site_url('ajax/ModalCustomer')?>" data-toggle="modal" data-target="#myModal"><i class="icon-search"></i></a>
 															</span>
 														</div>
-														<input type="hidden" name="hdnCustomerId" id ="hdnCustomerId" />
-														<input type="hidden" name="hdnCategoryId" id ="hdnCategoryId"  />
+														<input type="hidden" name="hdnCustomerId" id="hdnCustomerId" />
+														<input type="hidden" name="hdnCategoryId" id="hdnCategoryId"  />
 													</div>
 											</div>
 										</div>
@@ -390,41 +368,11 @@
 									</div>
 									<div role="tabpanel" class="tab-pane" id="Images">
 										<div class="col-md-10 col-md-offset-1">
-											<!-- Fine Uploader DOM Element -->
+											<div id="cust-message" class="text-center">
+												<p>You can not Upload any image before you select a Customer.</p>
+												<h4><b>Please Select Customer first!</b></h4>
+											</div>
 											<div id="fine-uploader-manual-trigger"></div><br>
-											<!-- Your code to create an instance of Fine Uploader and bind to the DOM/template -->
-    <script>
-    	var base_url = '<?php echo base_url();?>';
-    	//alert(base_url+'CustomerRelationship/ServiceProducts/UploadImage');
-        /*var manualUploader = new qq.FineUploader({
-            element: document.getElementById('fine-uploader-manual-trigger'),
-            template: 'qq-template-manual-trigger',
-            request: {
-                endpoint: base_url+'CustomerRelationship/ServiceProducts/UploadImage'
-            },
-            thumbnails: {
-                placeholders: {
-                    waitingPath: base_url+"assets/plugins/fine-uploader/placeholders/waiting-generic.png",
-                    notAvailablePath: base_url+"assets/plugins/fine-uploader/placeholders/not_available-generic.png"
-                }
-            },
-            autoUpload: false,
-            debug: true
-        });
-        qq(document.getElementById("trigger-upload")).attach("click", function() {
-            manualUploader.uploadStoredFiles();
-        });*/
-        // Upload automatically
-var uploader = new qq.FineUploader({
-    /* other required config options left out for brevity */
-    debug: true,
-element: document.getElementById('fine-uploader-manual-trigger'),
-template: 'qq-template-manual-trigger',
-    request: {
-        endpoint: base_url+'CustomerRelationship/ServiceProducts/UploadImage'
-    }
-});
-    </script>
 										</div>
 									</div>
 								</div>
@@ -624,3 +572,6 @@ template: 'qq-template-manual-trigger',
 	</div>
 </div>
 <!-- Modal End -->
+<script type="text/javascript">
+	
+</script>
