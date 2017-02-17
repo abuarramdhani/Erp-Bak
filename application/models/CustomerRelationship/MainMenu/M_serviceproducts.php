@@ -623,6 +623,10 @@ class M_serviceproducts extends CI_Model {
 		
 		function getLastActivityNumber($id){
 			//$sql = "select COALESCE(cch.connect_number,'1') AS connect_number from cr.cr_connect_headers cch where cch.connect_type = '$id' order by cch.connect_number desc limit 1";
+			$sqlDelete 	= "DELETE from cr.cr_service_product_number_temporary
+							where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
+			$this->db->query($sqlDelete);
+
 			$sql = "SELECT COALESCE(activity.activity_number,'1') AS activity_number 
 					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch
 						UNION ALL
@@ -850,6 +854,24 @@ class M_serviceproducts extends CI_Model {
 
 			$sql 	= "DELETE from cr.cr_service_product_number_temporary where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
 			$this->db->query($sql);
+		}
+
+		function getServiceNumber($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.vi_cr_service_products');
+						//$this->db->like('upper(service_number)', $id);
+						$this->db->where('service_product_id', $id);
+						$this->db->order_by('creation_date', 'DESC');
+						
+						$query = $this->db->get();
+						return $query->result_array();
+		}
+		function setDataClaimImage()
+		{
+			$sql = "INSERT INTO cr_service_product_images(service_number,image_name,creation_date,created_by)
+					VALUES('VU170003','VU170003',current_timestamp,'42')";
+			$this->db->query($sql); 
 		}
 
 		public function claimImage($data)
