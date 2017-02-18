@@ -1247,17 +1247,23 @@ class C_ServiceProducts extends CI_Controller {
 			redirect('CustomerRelationship/ServiceProducts');
 		}
 
+		function getCustVal()
+		{
+			$idTmp	= $this->session->userdata('tempServiceNumber');
+			$data 	= array(
+				'customer_id'		=> $_POST['id'],
+				'last_updated_by'	=> $this->session->userid,
+				'last_update_date'	=> date("Y-m-d H:i:s")
+			);
+			$saveDbTemporary = $this->M_serviceproducts->updateTempCustId($data,$idTmp);
+		}
 		public function UploadImage()
 		{
-			$name 	= $this->input->post('txtCustomerName');
-			//print_r($name);
-			if ($name == NULL) {
-				echo "DATA KOSONG!";
-			}else{
-				echo $name;
-			}
-			//exit();
-			$config['upload_path']          = './uploads/cr/ServiceProducts/';
+			$id 	= $this->session->userdata('tempServiceNumber');
+			$data 	= $this->M_serviceproducts->getServiceNumber($id);
+			$year	= date("Y");
+
+			$config['upload_path']          = './uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'];
 	       	$config['file_name']         	= 'Claim_Image_'.date('d/m/Y-Hms');
 	       	$config['remove_spaces']        = TRUE;
 	       	$config['allowed_types']        = '*';
@@ -1265,9 +1271,31 @@ class C_ServiceProducts extends CI_Controller {
 	       	$config['max_width']            = 2562;
 	       	$config['max_height']           = 2050;
 	       	$this->upload->initialize($config);
+
+	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id']))
+	       	{
+	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 777, true);
+	       	}
+
+	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year))
+	       	{
+	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 777, true);
+	       	}
+
+	       	$dir_exist = true; // flag for checking the directory exist or not
+
+	       	if (!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']))
+	       	{
+	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 777, true);
+	       		$dir_exist = false; // dir not exist
+	       	}else{}
+	       	
 	       	if ($this->upload->do_upload('qqfile')) {
            		$this->upload->data();
        		} else {
+       			if(!$dir_exist){
+       				rmdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']);
+       			}
        			$errorinfo = $this->upload->display_errors();
            		echo $errorinfo;
        		}
