@@ -1,5 +1,3 @@
-<!-- Fine Uploader Thumbnails template w/ customization
-    ====================================================================== -->
     <script type="text/template" id="qq-template-manual-trigger">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
@@ -11,10 +9,7 @@
             <div class="buttons">
                 <div class="qq-upload-button-selector qq-upload-button">
                     <div>Select files</div>
-                </div><!--
-                <button type="button" id="trigger-upload" class="btn btn-primary">
-                    <i class="icon-upload icon-white"></i> Upload
-                </button>-->
+                </div>
             </div>
             <span class="qq-drop-processing-selector qq-drop-processing">
                 <span>Processing dropped files...</span>
@@ -561,7 +556,6 @@
 	</div>
 <section class="content">
 </form>
-
 <!-- Modal Start -->
 <div class="col-lg-12">
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
@@ -572,6 +566,3 @@
 	</div>
 </div>
 <!-- Modal End -->
-<script type="text/javascript">
-	
-</script>
