@@ -859,13 +859,12 @@ class M_serviceproducts extends CI_Model {
 		function getServiceNumber($id)
 		{
 			$this->db->select('*');
-			$this->db->from('cr.vi_cr_service_products');
-						//$this->db->like('upper(service_number)', $id);
-						$this->db->where('service_product_id', $id);
-						$this->db->order_by('creation_date', 'DESC');
-						
-						$query = $this->db->get();
-						return $query->result_array();
+			$this->db->from('cr.cr_service_product_number_temporary');
+			$this->db->where('service_number_id', $id);
+			$this->db->order_by('service_number_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
 		}
 		function setDataClaimImage()
 		{
@@ -877,5 +876,10 @@ class M_serviceproducts extends CI_Model {
 		public function claimImage($data)
 		{	
 			$this->db->insert('cr.cr_service_product_line_images', $data);
+		}
+
+		function updateTempCustId($data,$idTmp)
+		{		
+				$this->db->update('cr.cr_service_product_number_temporary', $data, array('service_number_id' => $idTmp));
 		}
 }
