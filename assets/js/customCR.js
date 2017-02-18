@@ -259,4 +259,17 @@
 			$('#fine-uploader-manual-trigger').show();
 		}
 	}
+
+	function setCustIdSession(cust_id){
+		$.ajax({
+            type: "POST",
+            url: baseurl+'CustomerRelationship/ServiceProducts/getCustVal',
+            data: {id : cust_id},
+            cache: false,
+
+            success: function(result) {
+                //alert(result);
+            }
+        });
+	}
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------

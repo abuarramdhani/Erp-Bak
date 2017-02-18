@@ -604,6 +604,7 @@ function sendValueCustomer(cust_id,cust_name,cat_id,base){
 		$('#hdnCustomerId').val(cust_id);
 		$('#hdnCategoryId').val(cat_id);
 		checkcustomer();
+		setCustIdSession(cust_id);
 		
 		var id = document.getElementById('hdnCustomerId').value;
 		var n = $('#tblServiceLines tbody tr').length;
