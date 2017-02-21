@@ -133,16 +133,16 @@ class C_Rekap extends CI_Controller {
 		
 		//$this->load->view('V_Header',$data);
 		//$this->load->view('V_Sidemenu',$data);
-		$data['periode1']	= $this->input->post('rekapBegin');
-		$data['periode2']	= $this->input->post('rekapEnd');
 		if ($detail==NULL) {
+			$data['periode1']	= $periode1;
+			$data['periode2']	= $periode2;
 			$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$section);
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
 		else {
-			$begin = new DateTime($periode1);
-			$end = new DateTime($periode2);
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 			$interval = new DateInterval('P1M');
 
 			$p = new DatePeriod($begin, $interval ,$end);
@@ -155,6 +155,8 @@ class C_Rekap extends CI_Controller {
 			}
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$data['periode1']	= $period1;
+			$data['periode2']	= $period2;
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
 			$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,$departemen,$bidang,$unit,$section);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);

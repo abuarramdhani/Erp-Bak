@@ -102,16 +102,16 @@ class C_RekapPerPekerja extends CI_Controller {
 			}
 		}
 
-		$data['periode1']	= $periode1;
-		$data['periode2']	= $periode2;
 		if ($detail==NULL) {
+			$data['periode1']	= $periode1;
+			$data['periode2']	= $periode2;
 			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk);
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk);
 			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
-			$begin = new DateTime($periode1);
-			$end = new DateTime($periode2);
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 			$interval = new DateInterval('P1M');
 
 			$p = new DatePeriod($begin, $interval ,$end);
@@ -124,6 +124,8 @@ class C_RekapPerPekerja extends CI_Controller {
 			}
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$data['periode1']	= $period1;
+			$data['periode2']	= $period2;
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk);
 			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_per_pekerja',$data);
