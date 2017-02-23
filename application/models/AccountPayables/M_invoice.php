@@ -134,7 +134,7 @@ class M_invoice extends CI_Model{
 		return $query->result();
 	}
 	
-	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2){
+	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir){
 		
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -202,6 +202,7 @@ class M_invoice extends CI_Model{
 				,DESCRIPTION
 				,STATUS
 				,FM
+				,COMMENTS
 				,decode(FAKTUR_TYPE,'N','WITHOUT INVOICE','WITH INVOICE')  FAKTUR_TYPE 
 			FROM khs_faktur_web
 			where month=$qmonth
@@ -211,12 +212,14 @@ class M_invoice extends CI_Model{
 				and description = $qket
 				and (status = $qsta)
 				and faktur_type = $qtyp
+				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 		");
+		
 		return $query->result();
 	}
 	
 	//download data as CSV (compatible)
-	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2)
+	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir)
 	{	
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -293,6 +296,7 @@ class M_invoice extends CI_Model{
 				and description = $qket
 				and (status = $qsta)
 				and faktur_type = $qtyp
+				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 		"
 		);
 		$delimiter = ",";
