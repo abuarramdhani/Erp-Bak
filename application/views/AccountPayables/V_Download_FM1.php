@@ -70,6 +70,26 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-2 control-label">Tanggal Faktur</label>
+									<div class="col-lg-2">
+										<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+												<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+										</div>
+									</div>
+									<label class="col-lg-1 control-label">S/D</label>
+									<div class="col-lg-2">
+										<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+												<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+										</div>
+									</div>
+								</div>
+							</div>
+
+														
+
 							<!-- INPUT ROW 4 -->
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">

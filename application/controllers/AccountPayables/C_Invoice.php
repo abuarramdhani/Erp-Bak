@@ -284,6 +284,8 @@ class C_Invoice extends CI_Controller {
 		$year 			= $this->input->POST('year');
 		$invoice_num 	= $this->input->POST('invoice_num');
 		$name 			= $this->input->POST('name');
+		$tanggal_awal = $this->input->post('tanggal_awal');
+		$tanggal_akhir = $this->input->post('tanggal_akhir');
 		
 		$ket1 			= $this->input->POST('ket1');
 		$ket2 			= $this->input->POST('ket2');
@@ -295,7 +297,7 @@ class C_Invoice extends CI_Controller {
 		$typ1 			= $this->input->POST('typ1');
 		$typ2 			= $this->input->POST('typ2');
 
-		$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2);
+		$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir);
 		$this->load->view('AccountPayables/V_Download_FM2',$data);
 	}
 	
@@ -306,6 +308,8 @@ class C_Invoice extends CI_Controller {
 		$year 			= $this->input->POST('TxtTahun');
 		$invoice_num 	= $this->input->POST('TxtInvoiceNumber');
 		$name 			= $this->input->POST('TxtNama');
+		$tanggal_awal = $this->input->post('tanggal_awal');
+		$tanggal_akhir = $this->input->post('tanggal_akhir');
 		
 		//CHECKBOX KETERANGAN
 		$keterangan1	= $this->input->POST('ket1');
@@ -333,7 +337,7 @@ class C_Invoice extends CI_Controller {
 		$type = $this->input->POST('slcFileType');
 		
 		if($type=="1"){
-			$row  = $this->M_Invoice->FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2);
+			$row  = $this->M_Invoice->FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir);
 			$name = 'Faktur-Selected.csv';
 			force_download($name,$row);
 			
@@ -346,7 +350,7 @@ class C_Invoice extends CI_Controller {
 			$filename = 'Faktur-Selected';
 			$this->checkSession();
 
-			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2);
+			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir);
 			
 			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 			$html = $this->load->view('AccountPayables/V_Download_FMPDF', $data, true);
@@ -357,7 +361,7 @@ class C_Invoice extends CI_Controller {
 		
 		} else if ($type=="3") {
 			
-			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2);
+			$data['FilteredFaktur'] = $this->M_Invoice->FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir);
 			$this->load->view('AccountPayables/V_Download_FMEXCEL',$data);
 		}
 	}
