@@ -2,7 +2,7 @@
 	function isNumberKeyAndComma(evt)
 	{
 		var charCode = (evt.which) ? evt.which : event.keyCode
-		if (charCode == 44 || (charCode < 58 && charCode > 47))
+		if ( charCode == 46 ||charCode == 44 || (charCode < 58 && charCode > 47))
 		return true;
 		return false;
 	}

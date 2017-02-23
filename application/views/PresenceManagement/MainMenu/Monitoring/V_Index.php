@@ -24,6 +24,27 @@
 			
 			<div class="row">
 				<div class="col-lg-12">
+				<?php
+				if($this->session->userdata('change_device')){ 
+				?>
+				<div class="alert alert-warning alert-dismissable"  style="width:100%;" >
+							<h4> <li class="fa fa-warning"> </li> Alert!</h4>
+								<b>Device <?php echo $this->session->userdata('name_loc'); ?> Has Change !!!</b>
+						</div>
+				<?php
+				}
+				?>
+				<?php
+				if($this->session->userdata('refresh_db')){ 
+				?>
+				<div class="alert alert-warning alert-dismissable"  style="width:100%;" >
+							<h4> <li class="fa fa-warning"> </li> Alert!</h4>
+								<b>Device <?php echo $this->session->userdata('loc'); ?> Has Change !!!</b>
+						</div>
+				<?php
+				}
+				?>
+				
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
 						<a href="<?php echo site_url('PresenceManagement/Monitoring/Create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
@@ -43,33 +64,46 @@
 										<th style="text-align:center;" width="10%">ID DEVICE</th>
 										<th style="text-align:center;" width="10%">IP ADDRESS</th>
 										<th style="text-align:center;" width="25%">LOCATION</th>
-										<th style="text-align:center;" width="10%">REGISTERED</th>
-										<th style="text-align:center;" width="20%">OFFICE</th>
+										<th style="text-align:center;" width="10%">OFFICE</th>
 										<th style="text-align:center;" width="10%">STATUS</th>
-										<th style="text-align:center;" width="10%">ACTION</th>
+										<th style="text-align:center;" width="20%">ACTION</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php 
 										$no=0; foreach($device as $data_device){ 
-										$no++;
-										 $status="<span class='label bg-red'>Not Active</span>";
-										 if ($data_device['status_']=='1'){$status="<span class='label bg-green'>Active</span>";}										
+										$encrypted_string = $this->encrypt->encode($data_device['id_lokasi']);
+										$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+										$no++;									
 									?>
 									
 										<tr>
 											<td align="center"><?php echo $no ?></td>
 											<td align="center"><?php echo $data_device['sn'] ?></td>
-											<td align="center"><?php echo $data_device['host'] ?></td>
+											<td align="left"><?php echo $data_device['host'] ?></td>
 											<td><?php echo strtoupper($data_device['lokasi']) ?></td>
-											<td align="center"><?php echo $data_device['registered'] ?></td>
-											<td><?php echo $data_device['lokasi_kerja'] ?></td>
-											<td align="center"><?php echo $status ?></td>
+											<td  align="center"><?php echo $data_device['kantor'] ?></td>
 											<td align="center">
-												<a data-toggle="tooltip" title="list registered people" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/Show/<?php echo $data_device['id_lokasi']?>' class="btn bg-navy btn-xs"><i class="fa fa-group"></i></a>
-												<a title="Change Name Location Device" data-toggle="modal" data-filter="<?php echo $data_device['id_lokasi']; ?>" data-id="<?php echo $data_device['lokasi']; ?>" class="modalchangelocationname btn bg-maroon btn-xs"  href="#confirm-change-location"><i class="fa fa-edit"></i></a>
-												<a data-toggle="tooltip" title="Change setting device" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/SettingDev/<?php echo $data_device['id_lokasi']?>' class="btn bg-purple btn-xs"><i class="fa fa-cogs"></i></a>
+											<?php
+													@$loadConSQL = $this->load->database('pg_'.$data_device['id_lokasi'],true);
+													@$checkSQL = $loadConSQL->initialize();
+													if(!$checkSQL){
+														?>
+														<span style="color:red;"  data-toggle="tooltip" title="Connecting to Computer Database" href='#' ><i class="fa fa-exclamation-circle"></i> Disconnected</span> <span id="stat_con" class="hide">0</span>
+														<?php 
+													}else{
+														?>
+														<span style="color:green;" id="stat_con" data-toggle="tooltip" title="Connecting to Computer Database" href='#' ><i class="fa fa-spinner fa-spin"></i> Connected</span><span id="stat_con" class="hide">1</span>
+														<?php
+													}
+											?>
 											</td>
+											<td align="center">
+												<a data-toggle="tooltip" id="btn-reg-person" title="list registered people" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/Connect/<?php echo $encrypted_string ?>' class="btn bg-navy btn-xs"><i class="fa fa-group"></i></a>
+												<a title="Change Name Location Device" data-toggle="modal" data-filter="<?php echo $data_device['id_lokasi']; ?>" data-id="<?php echo $data_device['lokasi']; ?>" class="modalchangelocationname btn bg-maroon btn-xs"  href="#confirm-change-location"><i class="fa fa-edit"></i></a>
+												<a data-toggle="tooltip" id="btn-reg-person" title="Refresh Database" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/Refresh_Database/<?php echo $encrypted_string ?>' class="btn bg-green btn-xs btn-refresh-db"><i class="fa fa-refresh"></i></a>
+												<a data-toggle="tooltip" title="Change setting device" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/SettingDev/<?php echo $encrypted_string ?>' class="btn bg-purple btn-xs"><i class="fa fa-cogs"></i></a>
+											</td> 
 										</tr>
 									<?php }?>
 								</tbody>																			
@@ -107,4 +141,28 @@
 				</form>
             </div>
         </div>
-    </div>		
+    </div>
+	
+	<!-- LOADER -->
+<div class="modal fade" id="modal-loader" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="main">
+			<div class="s1">
+			  <div class="s b sb1"></div>
+			  <div class="s b sb2"></div>
+			  <div class="s b sb3"></div>
+			  <div class="s b sb4"></div>
+			</div>
+			<div class="s2">
+			  <div class="s b sb5"></div>
+			  <div class="s b sb6"></div>
+			  <div class="s b sb7"></div>
+			  <div class="s b sb8"></div>
+			</div>
+			<div class="bigcon">
+			  <div class="big b"></div>
+			</div>
+		  </div>
+    </div>
+	
+	
+
