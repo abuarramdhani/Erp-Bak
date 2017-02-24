@@ -49,6 +49,7 @@
 													</div>
 													<select data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name ="statushubker" required>
 														<option value=""><option>
+														<option value="All">ALL</option>
 														<?php foreach ($status as $status_item){
 														?>
 															<option value="<?php echo $status_item['fs_noind'];?>"><?php echo $status_item['fs_noind'].' - '.$status_item['fs_ket'];?></option>

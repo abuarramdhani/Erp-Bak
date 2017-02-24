@@ -10,6 +10,12 @@ clASs M_rekapmssql extends CI_Model {
 	
 	public function dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$seksi)
 	{
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}
 		if ($departemen == 'All') {
 			$departemen = "rtrim(dept)";
 		}
@@ -110,7 +116,7 @@ clASs M_rekapmssql extends CI_Model {
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 			WHERE keluar = '0'
-				AND a.kode_status_kerja = '$status'
+				AND a.kode_status_kerja = $status
 				AND rtrim(dept) = $departemen
 				AND rtrim(bidang) = $bidang
 				AND rtrim(unit) = $unit
@@ -124,6 +130,12 @@ clASs M_rekapmssql extends CI_Model {
 
 	public function dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$seksi,$monthName)
 	{
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}
 		if ($departemen == 'All') {
 			$departemen = "rtrim(dept)";
 		}
@@ -224,7 +236,7 @@ clASs M_rekapmssql extends CI_Model {
 				inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 				WHERE keluar = '0'
-					AND a.kode_status_kerja = '$status'
+					AND a.kode_status_kerja = $status
 					AND rtrim(dept) = $departemen
 					AND rtrim(bidang) = $bidang
 					AND rtrim(unit) = $unit
@@ -733,6 +745,12 @@ clASs M_rekapmssql extends CI_Model {
 	}
 
 	public function data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$seksi){
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}
 		if ($departemen == 'All' || $departemen == NULL) {
 			$departemen = "rtrim(dept)";
 		}
@@ -763,7 +781,7 @@ clASs M_rekapmssql extends CI_Model {
 				FROM hrd_khs.tpribadi a
 				INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
 				WHERE
-					a.kode_status_kerja = '$status'
+					a.kode_status_kerja = $status
 					AND rtrim(dept) = $departemen
 					AND rtrim(bidang) = $bidang
 					AND rtrim(unit) = $unit
@@ -783,7 +801,7 @@ clASs M_rekapmssql extends CI_Model {
 							SELECT nama
 								FROM hrd_khs.tpribadi a
 								WHERE
-									a.kode_status_kerja = '$status'
+									a.kode_status_kerja = $status
 									AND rtrim(dept) = $departemen
 									AND rtrim(bidang) = $bidang
 									AND rtrim(unit) = $unit
@@ -795,7 +813,7 @@ clASs M_rekapmssql extends CI_Model {
 							SELECT nik
 								FROM hrd_khs.tpribadi a
 								WHERE
-									a.kode_status_kerja = '$status'
+									a.kode_status_kerja = $status
 									AND rtrim(dept) = $departemen
 									AND rtrim(bidang) = $bidang
 									AND rtrim(unit) = $unit
