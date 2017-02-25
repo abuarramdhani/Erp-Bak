@@ -29,17 +29,15 @@
                     <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
                     <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
                     <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
-                    <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                    <!--<span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>-->
                 </li>
             </ul>
-
             <dialog class="qq-alert-dialog-selector">
                 <div class="qq-dialog-message-selector"></div>
                 <div class="qq-dialog-buttons">
                     <button type="button" class="qq-cancel-button-selector">Close</button>
                 </div>
             </dialog>
-
             <dialog class="qq-confirm-dialog-selector">
                 <div class="qq-dialog-message-selector"></div>
                 <div class="qq-dialog-buttons">
@@ -47,7 +45,6 @@
                     <button type="button" class="qq-ok-button-selector">Yes</button>
                 </div>
             </dialog>
-
             <dialog class="qq-prompt-dialog-selector">
                 <div class="qq-dialog-message-selector"></div>
                 <input type="text">
@@ -161,9 +158,9 @@
 													<label for="norm" class="control-label col-lg-4">Customer</label>
 													<div class="col-lg-8">
 														<div class="input-group">
-															<input type="text" placeholder="Search Customer" name="txtCustomerName" id="txtCustomerName" onfocus="callModal('<?php echo site_url('ajax/ModalCustomer')?>');" onkeypress="return noInput(event)" class="form-control toupper" />
+															<input type="text" placeholder="Search Customer" name="txtCustomerName" id="txtCustomerName" onfocus="callModal('<?php echo site_url('ajax/ModalCustomer')?>');" onkeypress="return noInput(event)" class="form-control toupper" disabled />
 															<span class="input-group-btn">
-																<a class="btn btn-primary" href="<?php echo site_url('ajax/ModalCustomer')?>" data-toggle="modal" data-target="#myModal"><i class="icon-search"></i></a>
+																<a class="btn btn-primary" href="<?php echo site_url('ajax/ModalCustomer')?>" data-toggle="modal" data-target="#myModal" disabled id="btnSearchCustomer"><i class="icon-search"></i></a>
 															</span>
 														</div>
 														<input type="hidden" name="hdnCustomerId" id="hdnCustomerId" />
@@ -443,7 +440,7 @@
 																					</select>
 																				</td>
 																				<td>
-																					<input type="file" accept="image/*" name="claimImage[]" id="claimImage" disabled multiple="">
+																					<input type="text" name="claimImage" id="claimImage" onfocus="modalImg()"  class="form-control">
 																				</td>
 																				<td></td>
 																				</tr>
@@ -557,12 +554,35 @@
 <section class="content">
 </form>
 <!-- Modal Start -->
-<div class="col-lg-12">
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			</div>
-		</div>
-	</div>
+<div id="modalImg" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select Item Picture for Line 1</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      		<?php if ($imgClaim !== NULL) {
+      			foreach ($imgClaim as $ic) { ?>
+        	    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        	    	<input type="checkbox" name="imgLineSelect" value="img1">
+        	        <img class="img-responsive" style="width: 400px; height: 300px;" src="<?php echo base_url($ic['image_name']); ?>" alt="">
+        	    </div>
+        	<?php }
+        	}else{ ?>
+        		<div class="text-center">
+        			<b><p>You have not uploaded any images.</p></b>
+					<h3>Please do upload a picture in the upload menu header.</h3>
+        		</div>
+        	<?php } ?>
+        	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- Modal End -->
