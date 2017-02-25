@@ -266,10 +266,13 @@
             url: baseurl+'CustomerRelationship/ServiceProducts/getCustVal',
             data: {id : cust_id},
             cache: false,
-
             success: function(result) {
                 //alert(result);
             }
         });
+	}
+
+	function modalImg(){
+		$('#modalImg').modal();
 	}
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------

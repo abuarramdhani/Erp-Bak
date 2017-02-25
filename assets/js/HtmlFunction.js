@@ -834,6 +834,8 @@ function getLastActivityNumber(base){
 				}else{
 					//$('input#txtServiceNumber').prop('disabled', true);
 					$('input#txtServiceNumber').val(result);
+					$('input#txtCustomerName').prop('disabled', false);
+					$('#btnSearchCustomer').prop('disabled', false);
 				}
                 //alert(returnedvalue);
             }
