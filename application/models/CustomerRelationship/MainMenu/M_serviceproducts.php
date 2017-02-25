@@ -866,11 +866,9 @@ class M_serviceproducts extends CI_Model {
 			$query = $this->db->get();
 			return $query->result_array();
 		}
-		function setDataClaimImage()
+		function setDataClaimImage($img)
 		{
-			$sql = "INSERT INTO cr_service_product_images(service_number,image_name,creation_date,created_by)
-					VALUES('VU170003','VU170003',current_timestamp,'42')";
-			$this->db->query($sql); 
+			$this->db->insert('cr.cr_service_product_images', $img);
 		}
 
 		public function claimImage($data)
@@ -881,5 +879,16 @@ class M_serviceproducts extends CI_Model {
 		function updateTempCustId($data,$idTmp)
 		{		
 				$this->db->update('cr.cr_service_product_number_temporary', $data, array('service_number_id' => $idTmp));
+		}
+		
+		function getDataClaimImage($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $id);
+			$this->db->order_by('service_product_image_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
 		}
 }
