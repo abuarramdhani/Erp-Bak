@@ -167,7 +167,6 @@ class C_ServiceProducts extends CI_Controller {
 							$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_central_approval', $data);
 						}
 						$this->load->view('V_Footer',$data);
-
 				}
 				else
 				{	
@@ -698,16 +697,6 @@ class C_ServiceProducts extends CI_Controller {
 				 
 				$data['title'] = 'New Service';
 				$data['province']	= $this->M_serviceproducts->province();
-
-				$customerName 	= $this->input->post('txtCustomerName');
-				$config['upload_path']          = './uploads/cr/ServiceProducts/';
-	        	//$config['file_name']         	= $customerName.'_'.date('d-m-Y');
-	        	$config['remove_spaces']        = TRUE;
-	        	$config['allowed_types']        = '*';
-	        	$config['max_size']             = 10000;
-	        	$config['max_width']            = 2562;
-	        	$config['max_height']           = 2050;
-	        	$this->upload->initialize($config);
 				
 				if ($this->form_validation->run() === FALSE)
 				{
@@ -716,13 +705,19 @@ class C_ServiceProducts extends CI_Controller {
 						$data['notif'] 	= '';
 
 						//----Insert data ke table temporary dulu.
-						if ($this->session->userdata('tempServiceNumber')) {}else
+						if ($this->session->userdata('tempServiceNumber')) {
+							$id 		= $this->session->userdata('tempServiceNumber');
+							$data 		= $this->M_serviceproducts->getServiceNumber($id);
+							$actNumb 	= $data[0]['activity_number'];
+							$data['imgClaim'] = $this->M_serviceproducts->getDataClaimImage($actNumb);
+						}else
 						{
 							$dataTemp = array(
 								'created_by'		=> $user_id,
 								'creation_date'		=> date("Y-m-d H:i:s")
 							);
 							$data['id']	= $this->M_serviceproducts->setNewActivityTemp($dataTemp);
+							$data['imgClaim'] = NULL;
 							$this->session->set_userdata('tempServiceNumber', $data['id']);
 						}
 						
@@ -732,56 +727,10 @@ class C_ServiceProducts extends CI_Controller {
 						$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_create', $data);
 						$this->load->view('V_Footer',$data);
 						//$this->load->view('templates/footer');
-				}/*elseif (! $this->upload->do_upload('claimImage')) {
-					$errorinfo = $this->upload->display_errors();
-					$data['Menu'] = 'Activity';
-					$data['SubMenuOne'] = '';
-					$data['notif'] 	= "
-	                	<div class='alert alert-warning alert-dismissible' role='alert'>
-	  						<button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-	  							<span aria-hidden=true'>&times;</span>
-	  						</button>
-	  						<strong>".$errorinfo."</strong>
-						</div>";
-					$this->load->view('V_Header',$data);
-					$this->load->view('V_Sidemenu',$data);
-					$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_create', $data);
-					$this->load->view('V_Footer',$data);
-				}*/
+				}
 				else
 				{
-					//$data1 = array('upload_data' => $this->upload->data());
-					$files 	= $_FILES['claimImage'];
-					$no = 1;
-					print_r($files);
-        			foreach ($files['name'] as $key => $image) {
-        				
-        				print_r($image);
-        				//exit();
-            			$_FILES['claimImage']['name']= $files['name'][$key];
-            			$_FILES['claimImage']['type']= $files['type'][$key];
-            			$_FILES['claimImage']['tmp_name']= $files['tmp_name'][$key];
-            			$_FILES['claimImage']['error']= $files['error'][$key];
-            			$_FILES['claimImage']['size']= $files['size'][$key];
-
-        				$typeImage	= substr($_FILES['claimImage']['type'],6);
-        				$fileName 	= $customerName.'_'.date('d/m/Y-Hms').'_'.$key.'.'.$typeImage;
-
-            			$config['file_name'] = $fileName;
-
-            			$this->upload->initialize($config);
-
-            			if ($this->upload->do_upload('claimImage')) {
-                			$this->upload->data();
-            			} else {
-                			echo "COBA LAGI GAN.";
-            			}
-        			}
-					
-					//$data1 = array('upload_data' => $this->upload->data());
-
-					//print_r($_FILES['claimImage']);
-					//exit();
+					$customerName 	= $this->input->post('txtCustomerName');
 					$con_id = $this->input->post('slcConnectNum');
 					$custdata		= $this->M_serviceproducts->customerDataEC($customerName);
 					$custId 		= $custdata[0]['oracle_customer_id'];
@@ -1262,9 +1211,11 @@ class C_ServiceProducts extends CI_Controller {
 			$id 	= $this->session->userdata('tempServiceNumber');
 			$data 	= $this->M_serviceproducts->getServiceNumber($id);
 			$year	= date("Y");
+			$time 	= date('d/m/YHms');
+			$type 	= substr($_FILES['qqfile']['type'],6);
 
 			$config['upload_path']          = './uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'];
-	       	$config['file_name']         	= 'Claim_Image_'.date('d/m/Y-Hms');
+	       	//$config['file_name']         	= 'Claim_Image_';
 	       	$config['remove_spaces']        = TRUE;
 	       	$config['allowed_types']        = '*';
 	       	$config['max_size']             = 10000;
@@ -1272,6 +1223,8 @@ class C_ServiceProducts extends CI_Controller {
 	       	$config['max_height']           = 2050;
 	       	$this->upload->initialize($config);
 
+			//echo $type;
+			//exit();
 	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id']))
 	       	{
 	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 777, true);
@@ -1291,6 +1244,15 @@ class C_ServiceProducts extends CI_Controller {
 	       	}else{}
 	       	
 	       	if ($this->upload->do_upload('qqfile')) {
+	       		$img = array(
+	       			'service_number' 	=> $data[0]['activity_number'],
+	       			'image_name' 		=> 'uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'].'/'.$_FILES['qqfile']['name'],
+	       			'type' 				=> $type,
+	       			'customer_id'		=> $data[0]['customer_id'],
+	       			'creation_date' 	=> 'now()',
+	       			'created_by' 		=> $this->session->userid
+	       			);
+	       		$this->M_serviceproducts->setDataClaimImage($img);
            		$this->upload->data();
        		} else {
        			if(!$dir_exist){
