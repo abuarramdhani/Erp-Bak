@@ -31,7 +31,7 @@ class M_monitoring extends CI_Model {
 			if($checkPostgres === FALSE){
 				return "failed";
 			}else{
-				$sql		= "select * from hrd_khs.tpribadi order by keluar desc, noind asc";
+				$sql		= "select * from hrd_khs.tpribadi order by noind";
 				$query	= $loadConPostgres->query($sql);
 				return $query->result_array();
 			}
@@ -629,6 +629,44 @@ class M_monitoring extends CI_Model {
 			$sql	= "select * from fp_distribusi.tb_cronjob where act='fprefreshhrd'";
 			$query	= $quickcom->query($sql);
 			return $query->result_array();
+		}
+		
+		public function set_to_null($device_old){
+			$quickcom	= $this->load->database("quickcom",true);
+			$sql	= "update fp_distribusi.tb_device set id_lokasi=null where sn='$device_old'";
+			$query	= $quickcom->query($sql);
+			return;
+		}
+		
+		public function loadSection(){
+			$pgPersonalia = $this->load->database("personalia",true);
+			$sql	= "select * from hrd_khs.tseksi";
+			$query	=	$pgPersonalia->query($sql);
+			return $query->result_array();
+		}
+		
+		public function deleteSection($loc){
+			@$loadConPostgres = $this->load->database('pg_'.$loc.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "delete from hrd_khs.tseksi";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+		
+		public function insertSection($loc,$kodesie,$dept,$bidang,$unit,$seksi,$pekerjaan,$golkerja){
+			@$loadConPostgres = $this->load->database('pg_'.$loc.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "insert into hrd_khs.tseksi (kodesie,dept,bidang,unit,seksi,pekerjaan,golkerja) values ('$kodesie','$dept','$bidang','$unit','$seksi','$pekerjaan','$golkerja')";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
 		}
 }
 ?>

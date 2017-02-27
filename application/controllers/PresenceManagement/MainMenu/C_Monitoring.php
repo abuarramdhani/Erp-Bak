@@ -588,6 +588,7 @@ class C_Monitoring extends CI_Controller {
 				$ac	= $data_detail_device['ac'];
 				$change_device_comp	= $this->M_monitoring->change_device_comp($id,$sn,$vc,$ac);
 			}
+			$set_to_null	 = $this->M_monitoring->set_to_null($device_old);
 		}
 		
 		$change_host_mysql	= $this->M_monitoring->change_host_mysql($id,$host);
@@ -689,6 +690,33 @@ class C_Monitoring extends CI_Controller {
 				}
 			}
 			redirect('PresenceManagement/Monitoring/Show/'.$enc_loc.'?id='.$enc_id.'');
+		}
+		
+		public function UpdateSection($enc_loc){
+			$plain_loc = str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_loc);
+			$loc = $this->encrypt->decode($plain_loc);
+			$loadSection 	= $this->M_monitoring->loadSection();
+			foreach($loadSection as $data_loadSection){
+				$kodesie	= $data_loadSection['kodesie'];
+				$dept			= $data_loadSection['dept'];
+				$bidang		= $data_loadSection['bidang'];
+				$unit			= $data_loadSection['unit'];
+				$seksi		= $data_loadSection['seksi'];
+				$pekerjaan	= $data_loadSection['pekerjaan'];
+				$golkerja	= $data_loadSection['golkerja'];
+				
+				$deleteSection	= $this->M_monitoring->deleteSection($loc);
+				$insertSection 	= $this->M_monitoring->insertSection($loc,$kodesie,$dept,$bidang,$unit,$seksi,$pekerjaan,$golkerja);
+			}
+			
+			$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+				$ses=array(
+					 "refresh_db" => 1,
+					 "loc" => $loc
+				);
+
+				$this->session->set_userdata($ses);
+				redirect('PresenceManagement/Monitoring');
 		}
 	
 	//=========================

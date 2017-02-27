@@ -102,6 +102,7 @@
 												<a data-toggle="tooltip" id="btn-reg-person" title="list registered people" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/Connect/<?php echo $encrypted_string ?>' class="btn bg-navy btn-xs"><i class="fa fa-group"></i></a>
 												<a title="Change Name Location Device" data-toggle="modal" data-filter="<?php echo $data_device['id_lokasi']; ?>" data-id="<?php echo $data_device['lokasi']; ?>" class="modalchangelocationname btn bg-maroon btn-xs"  href="#confirm-change-location"><i class="fa fa-edit"></i></a>
 												<a data-toggle="tooltip" id="btn-reg-person" title="Refresh Database" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/Refresh_Database/<?php echo $encrypted_string ?>' class="btn bg-green btn-xs btn-refresh-db"><i class="fa fa-refresh"></i></a>
+												<a data-toggle="tooltip" id="btn-reg-person" title="Update Seksi" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/UpdateSection/<?php echo $encrypted_string ?>' class="btn bg-orange btn-xs btn-refresh-db"><i class="fa fa-sitemap"></i></a>
 												<a data-toggle="tooltip" title="Change setting device" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/SettingDev/<?php echo $encrypted_string ?>' class="btn bg-purple btn-xs"><i class="fa fa-cogs"></i></a>
 											</td> 
 										</tr>
