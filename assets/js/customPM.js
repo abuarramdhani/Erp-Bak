@@ -203,7 +203,17 @@ $(document).ready(function() {
 			}else{
 				window.open("http://localhost/cronjob/cronjob.fpfrontpresensimasuk_erp.php?start="+start+"&end="+end+"", '_blank');
 			}
-			
+		});
+		
+		$(document).on("click", ".btn-distribute-presence-loc", function () {
+			var start	= $("input#txtStart").val();
+			var end		= $("input#txtEnd").val();
+			var loc		= $("input#txtLocation").val();
+			if( start == '' || end == ''){
+				alert('plesae complete your fill data !!!');
+			}else{
+				window.open("http://localhost/cronjob/cronjob.fpfrontpresensimasuk_erp_location.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
+			}
 		});
 		
 	// $(document).on("click", "a[href='"+baseurl+"PresenceManagement/Monitoring']", function () {

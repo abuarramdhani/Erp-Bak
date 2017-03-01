@@ -104,6 +104,7 @@
 												<a data-toggle="tooltip" id="btn-reg-person" title="Refresh Database" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/Refresh_Database/<?php echo $encrypted_string ?>' class="btn bg-green btn-xs btn-refresh-db"><i class="fa fa-refresh"></i></a>
 												<a data-toggle="tooltip" id="btn-reg-person" title="Update Seksi" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/UpdateSection/<?php echo $encrypted_string ?>' class="btn bg-orange btn-xs btn-refresh-db"><i class="fa fa-sitemap"></i></a>
 												<a data-toggle="tooltip" title="Change setting device" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/SettingDev/<?php echo $encrypted_string ?>' class="btn bg-purple btn-xs"><i class="fa fa-cogs"></i></a>
+												<a title="Change Name Location Device" data-toggle="modal" data-filter="<?php echo $data_device['id_lokasi']; ?>" data-id="<?php echo $data_device['lokasi']; ?>" class="modalchangelocationname btn bg-red btn-xs"  href="#distribusi-presensi"><i class="fa fa-history"></i></a>
 											</td> 
 										</tr>
 									<?php }?>
@@ -138,6 +139,31 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>
 					<input type="submit" class="btn bg-orange btn-xs" value="Change">
+                </div>
+				</form>
+            </div>
+        </div>
+    </div>
+	
+	<div class="modal fade" id="distribusi-presensi" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5 class="modal-title" id="myModalLabel"><strong>Manual Presence Distribution</strong></h5>
+                </div>
+            <form class="form-inline" method="post" action="">
+                <div class="modal-body">
+                    <p>You are about to distribute presence, this procedure is irreversible. Please insert periode !</p>
+						<input type="hidden" name="txtLocation" id="txtLocation" value="" class="form-control"></input>
+						<input type="text" name="txtStart" id="txtStart" class="datepicker form-control" placeholder="[ Start Date ]" data-date-format="dd-mm-yyyy"></input>
+						<input type="text" name="txtEnd" id="txtEnd" class="datepicker form-control" placeholder="[ End Date ]"  data-date-format="dd-mm-yyyy"></input>
+					<p>Do you want to proceed?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn bg-orange btn-distribute-presence-loc btn-xs"> Change</button>
                 </div>
 				</form>
             </div>
