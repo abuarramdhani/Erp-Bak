@@ -129,21 +129,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	$(document).on("click", "#execute-cronjob-hrd", function () {
-		$.ajax({
-			url 	: baseurl + 'PresenceManagement/Cronjob/Cronjob_Hrd',
-			beforeSend	: function(){
-									 $("#loading1").slideDown();
-								   },
-			complete		: function(){
-									 $("#loading1").slideUp();
-								   },
-			success:  function (data) {
-				alert(data);
-			}
-		});
-	});
-	
 	$(document).on("click", "#refresh-cronjob-hrd", function () {
 		$.ajax({
 			url 	: baseurl + 'PresenceManagement/Cronjob/CronjobRefreshDatabase',
@@ -201,7 +186,7 @@ $(document).ready(function() {
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://localhost/cronjob/cronjob.fpfrontpresensimasuk_erp.php?start="+start+"&end="+end+"", '_blank');
+				window.open("http://quick.com/aplikasi/cronjob/cronjob.fpfrontpresensimasuk_erp.php?start="+start+"&end="+end+"", '_blank');
 			}
 		});
 		
@@ -212,9 +197,26 @@ $(document).ready(function() {
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://localhost/cronjob/cronjob.fpfrontpresensimasuk_erp_location.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
+				window.open("http://quick.com/aplikasi/cronjob/cronjob.fpfrontpresensimasuk_erp_location.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
 			}
 		});
+		
+		$(document).on("click", "#execute-cronjob-hrd", function () {
+				window.open("http://quick.com/aplikasi/cronjob/dbquickpersonalia/cronjob.dbquickpersonaliahrdkhs.php", '_blank');
+		});
+		
+		$(document).on("click", "#update-fingercode", function () {
+				window.open("http://quick.com/aplikasi/cronjob/cronjob.dbupdatefinger.php", '_blank');
+		});
+		
+		var host	= window.location.origin;
+		var url_loc	= host+"/erp/PresenceManagement/Monitoring";
+		var url_mon	= window.location.href;
+		if(url_mon == url_loc){
+			setTimeout(function(){
+				window.location.href = url_loc;
+			  }, 60000);
+		}
 		
 	// $(document).on("click", "a[href='"+baseurl+"PresenceManagement/Monitoring']", function () {
 		// alert('test');

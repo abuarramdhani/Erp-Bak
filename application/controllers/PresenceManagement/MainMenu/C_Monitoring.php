@@ -310,6 +310,11 @@ class C_Monitoring extends CI_Controller {
 		
 		$dbhrd_sec	= $this->M_monitoring->get_worker_hrd_sec($id);
 		foreach($dbhrd_sec as $data_hrd){
+			if($data_hrd['keluar'] == "true"){
+					$keluar = "1";
+				}else{
+					$keluar = "0";
+				}
 			$noind	= $data_hrd['noind'];
 			$nama			= $data_hrd['nama'];
 			$jenkel			= $data_hrd['jenkel'];
@@ -319,7 +324,6 @@ class C_Monitoring extends CI_Controller {
 			$diangkat		= $data_hrd['diangkat'];
 			$masukkerja	= $data_hrd['masukkerja'];
 			$kodesie		= $data_hrd['kodesie'];
-			$keluar			= $data_hrd['keluar'];
 			$tglkeluar		= $data_hrd['tglkeluar'];
 			$noind_baru	= $data_hrd['noind_baru'];
 			$kodestatus	= $data_hrd['kode_status_kerja'];
@@ -414,6 +418,11 @@ class C_Monitoring extends CI_Controller {
 		}else{
 			$dbworker_hrd	= $this->M_monitoring->get_worker_hrd_svr($id);
 			foreach($dbworker_hrd as $data_worker){
+				if($data_worker['keluar'] == "true"){
+					$keluar = "1";
+				}else{
+					$keluar = "0";
+				}
 				$noind			= $data_worker['noind'];
 				$nama			= $data_worker['nama'];
 				$jenkel			= $data_worker['jenkel'];
@@ -423,7 +432,6 @@ class C_Monitoring extends CI_Controller {
 				$diangkat		= $data_worker['diangkat'];
 				$masukkerja	= $data_worker['masukkerja'];
 				$kodesie		= $data_worker['kodesie'];
-				$keluar			= $data_worker['keluar'];
 				$tglkeluar		= $data_worker['tglkeluar'];
 				$noind_baru	= $data_worker['noind_baru'];
 				$kodestatus	= $data_worker['kode_status_kerja'];

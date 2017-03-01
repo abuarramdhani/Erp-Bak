@@ -39,9 +39,6 @@
 							<div class="col-lg-6">
 								<a class="btn bg-maroon" id="execute-cronjob-hrd"><span class="fa fa-upload"></span> Execute</a>
 							</div>
-							<div class="col-lg-6" id="loading1">
-								<img src="<?php echo site_url('assets/img/loading.gif') ?>"></img>
-							</div>
 						</div>
 					</div>
 					<!-- DISTRIBUSI FRONTPRESENSI DARI LOCAL KE 6.20 -->
@@ -112,7 +109,7 @@
 						</div>
 						<div class="box-body">
 							<div class="col-lg-6">
-								<a class="btn bg-maroon" id="backup-cronjob-hrd"><span class="fa fa-refresh"></span> Update Finger</a>
+								<a class="btn bg-maroon" id="update-fingercode"><span class="fa fa-refresh"></span> Update Finger</a>
 							</div>
 							<div class="col-lg-6" id="loading4">
 								<img src="<?php echo site_url('assets/img/loading.gif') ?>"></img>
