@@ -53,6 +53,13 @@ $(document).ready(function() {
 		 $(".modal-body #txtName").val(name);
 	});
 	
+	$(document).on("click", ".distribusi-presensi", function () {
+		 var loc = $(this).data('filter');
+		 var name = $(this).data('id');
+		 $(".modal-body #txtLocation").val(loc);
+		 $(".modal-body #txtName").val(name);
+	});
+	
 	$(document).on("click", "#refreshRegPers", function () {
 		   window.open('http://quick.com/aplikasi/cronjob/cronjob.fphrdkhs.php','_blank');
 	});
@@ -190,14 +197,14 @@ $(document).ready(function() {
 			}
 		});
 		
-		$(document).on("click", ".btn-distribute-presence-loc", function () {
-			var start	= $("input#txtStart").val();
-			var end		= $("input#txtEnd").val();
-			var loc		= $("input#txtLocation").val();
+		$(document).on("click", ".release_presence", function () {
+			var start	= $("input#txtLoc").val();
+			var end		= $("input#txtStart").val();
+			var loc		= $("input#txtEnd").val();
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://quick.com/aplikasi/cronjob/cronjob.fpfrontpresensimasuk_erp_location.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
+				window.open("http://localhost/cronjob/fingerprint/cronjob.frontpresensi.tpresensi.loc.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
 			}
 		});
 		
@@ -225,4 +232,5 @@ $(document).ready(function() {
 	$(document).on("click", ".btn-refresh-db", function () {
 		$('#modal-loader').modal('show');
 	});
+
 });

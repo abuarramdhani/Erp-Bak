@@ -726,6 +726,33 @@ class C_Monitoring extends CI_Controller {
 				$this->session->set_userdata($ses);
 				redirect('PresenceManagement/Monitoring');
 		}
+		
+		public function CheckPresence(){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Catering List';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$loc = $this->input->post('txtLocation');
+			$dtStart = $this->input->post('txtDateStart');
+			$dtEnd = $this->input->post('txtDateEnd');
+			
+			$data['frontpresensi']	= $this->M_monitoring->checkFrontpresensi($loc,$dtStart,$dtEnd);
+			$data['device'] 		= $this->M_monitoring->GetSpesificDeviceList($loc);
+			$data['sesloc'] 		= $loc;
+			$data['sesdtStart'] 		= $dtStart;
+			$data['sesdtEnd'] 		= $dtEnd;
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_CheckPresence',$data);
+			$this->load->view('V_Footer',$data);
+		}
 	
 	//=========================
 	// 	PRESENCE MANAGEMENT END

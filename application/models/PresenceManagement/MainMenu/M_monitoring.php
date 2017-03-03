@@ -511,7 +511,7 @@ class M_monitoring extends CI_Model {
 			$month	= substr($date,5,2);
 			$postgres_personalia	= $this->load->database("personalia",true);
 			$sql				= "select a.noind,a.nama,a.kodesie,b.dept,b.seksi,b.pekerjaan,
-									(select sum(c.point) from \"Presensi\".tdatatim as c where a.Noind=c.noind and extract(year from c.tanggal)='$year' and extract(month from c.tanggal)='$month') as point
+									coalesce((select sum(c.point) from \"Presensi\".tdatatim as c where a.Noind=c.noind and extract(year from c.tanggal)='$year' and extract(month from c.tanggal)='$month'),0) as point
 									,a.photo,a.path_photo,a.noind_baru 
 									from hrd_khs.tpribadi as a 
 									left join hrd_khs.tseksi as b on a.Kodesie=b.kodesie 
@@ -666,6 +666,18 @@ class M_monitoring extends CI_Model {
 				$sql		= "insert into hrd_khs.tseksi (kodesie,dept,bidang,unit,seksi,pekerjaan,golkerja) values ('$kodesie','$dept','$bidang','$unit','$seksi','$pekerjaan','$golkerja')";
 				$query	= $loadConPostgres->query($sql);
 				return;
+			}
+		}
+		
+		public function checkFrontpresensi($loc,$dtStart,$dtEnd){
+			@$loadConPostgres = $this->load->database('pg_'.$loc.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "select * from frontpresensi.tpresensilokal where tanggal>='$dtStart' and tanggal<='$dtEnd' and transfer='0'";
+				$query	= $loadConPostgres->query($sql);
+				return $query->result_array();
 			}
 		}
 }

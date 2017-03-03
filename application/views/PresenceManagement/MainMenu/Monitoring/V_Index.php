@@ -39,7 +39,7 @@
 				?>
 				<div class="alert alert-warning alert-dismissable"  style="width:100%;" >
 							<h4> <li class="fa fa-warning"> </li> Alert!</h4>
-								<b>Device <?php echo $this->session->userdata('loc'); ?> Has Change !!!</b>
+								<b >Device <?php echo $this->session->userdata('loc'); ?> Has Change !!!</b>
 						</div>
 				<?php
 				}
@@ -89,7 +89,7 @@
 													@$checkSQL = $loadConSQL->initialize();
 													if(!$checkSQL){
 														?>
-														<span style="color:red;"  data-toggle="tooltip" title="Connecting to Computer Database" href='#' ><i class="fa fa-exclamation-circle"></i> Disconnected</span> <span id="stat_con" class="hide">0</span>
+															<span style="color:red;"  data-toggle="tooltip" title="Connecting to Computer Database" href='#' ><i class="fa fa-exclamation-circle"></i> Disconnected</span> <span id="stat_con" class="hide">0</span>
 														<?php 
 													}else{
 														?>
@@ -104,7 +104,7 @@
 												<a data-toggle="tooltip" id="btn-reg-person" title="Refresh Database" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/Refresh_Database/<?php echo $encrypted_string ?>' class="btn bg-green btn-xs btn-refresh-db"><i class="fa fa-refresh"></i></a>
 												<a data-toggle="tooltip" id="btn-reg-person" title="Update Seksi" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/UpdateSection/<?php echo $encrypted_string ?>' class="btn bg-orange btn-xs btn-refresh-db"><i class="fa fa-sitemap"></i></a>
 												<a data-toggle="tooltip" title="Change setting device" href='<?php echo site_URL() ?>PresenceManagement/Monitoring/SettingDev/<?php echo $encrypted_string ?>' class="btn bg-purple btn-xs"><i class="fa fa-cogs"></i></a>
-												<a title="Change Name Location Device" data-toggle="modal" data-filter="<?php echo $data_device['id_lokasi']; ?>" data-id="<?php echo $data_device['lokasi']; ?>" class="modalchangelocationname btn bg-red btn-xs"  href="#distribusi-presensi"><i class="fa fa-history"></i></a>
+												<a title="Change Name Location Device" data-toggle="modal" data-filter="<?php echo $data_device['id_lokasi']; ?>" data-id="<?php echo $data_device['lokasi']; ?>" class="distribusi-presensi btn bg-red btn-xs"  href="#distribusi-presensi"><i class="fa fa-history"></i></a>
 											</td> 
 										</tr>
 									<?php }?>
@@ -145,30 +145,34 @@
         </div>
     </div>
 	
-	<div class="modal fade" id="distribusi-presensi" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- CHECK PRESENCE -->
+<div class="modal fade" id="distribusi-presensi" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h5 class="modal-title" id="myModalLabel"><strong>Manual Presence Distribution</strong></h5>
+                    <h5 class="modal-title" id="myModalLabel"><strong>Check Presence Fingerprint</strong></h5>
                 </div>
-            <form class="form-inline" method="post" action="">
+            <form class="form-inline" method="post" action="<?php echo site_URL() ?>PresenceManagement/Monitoring/CheckPresence">
                 <div class="modal-body">
-                    <p>You are about to distribute presence, this procedure is irreversible. Please insert periode !</p>
+                    <p>You are about to check fingerprint from computer finger, this procedure is irreversible.</p>
 						<input type="hidden" name="txtLocation" id="txtLocation" value="" class="form-control"></input>
-						<input type="text" name="txtStart" id="txtStart" class="datepicker form-control" placeholder="[ Start Date ]" data-date-format="dd-mm-yyyy"></input>
-						<input type="text" name="txtEnd" id="txtEnd" class="datepicker form-control" placeholder="[ End Date ]"  data-date-format="dd-mm-yyyy"></input>
+						<span>Date Start</span>
+						<input style=" text-transform: uppercase;" type="text" name="txtDateStart" data-date-format="yyyy-mm-dd" id="txtDateStart" value="" class="form-control datepicker"></input>
+						<span>Date End</span>
+						<input style=" text-transform: uppercase;" type="text" name="txtDateEnd" data-date-format="yyyy-mm-dd" id="txtDateEnd" value="" class="form-control datepicker"></input>
 					<p>Do you want to proceed?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn bg-orange btn-distribute-presence-loc btn-xs"> Change</button>
+					<input type="submit" class="btn bg-orange btn-xs" value="Show">
                 </div>
 				</form>
             </div>
         </div>
     </div>
+	
 	
 	<!-- LOADER -->
 <div class="modal fade" id="modal-loader" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
