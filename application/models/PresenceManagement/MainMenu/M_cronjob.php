@@ -175,8 +175,21 @@ class M_cronjob extends CI_Model {
 			$quickcom	= $this->load>database("quickcom",true);
 			$sql	= "INSERT INTO fp_distribusi.tb_cronjob
 						(database_, act, id_lokasi, date_, time_start, time_stop, duration, status_)
-						VALUES('$db', '$act', '$location', '$date', '$timeStart', '$timeStop', (time_to_sec('$time_stop') - time_to_sec('$time_start')), '1');
-						";
+						VALUES('$db', '$act', '$location', '$date', '$timeStart', '$timeStop', (time_to_sec('$time_stop') - time_to_sec('$time_start')), '1')";
+			$query	= $quickcom->query($sql);
+			return;
+		}
+		
+		public function checkActiveLoc($loc){
+			$quickcom	= $this->load>database("quickcom",true);
+			$sql	= "select * from fp_distribusi.tb_lokasi where id_lokasi='$loc'";
+			$query	= $quickcom->query($sql);
+			return $query->result_array();
+		}
+		
+		public function changeActive($change,$loc){
+			$quickcom	= $this->load>database("quickcom",true);
+			$sql	= "update fp_distribusi.tb_lokasi set status_='$change' where id_lokasi='$loc'";
 			$query	= $quickcom->query($sql);
 			return;
 		}

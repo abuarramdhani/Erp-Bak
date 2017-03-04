@@ -42,6 +42,33 @@ class C_Cronjob extends CI_Controller {
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
 	
+	public function ActivatedDevice($enc_loc){
+		$plain_loc	= str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_loc);
+		$loc 			= $this->encrypt->decode($plain_loc);
+		
+		$check	= $this->M_cronjob->checkActiveLoc($loc);
+		foreach($check as $data_check){
+			$stat	= $data_check['status_'];
+		}
+		
+		if($stat == 0){
+			$change = 1;
+		}else{
+			$change = 0;
+		}
+		
+		$update	= $this->M_cronjob->changeActive($change,$loc);
+		
+		$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+			$ses=array(
+				 "active" => 1,
+				 "loc" => $change
+			);
+
+			$this->session->set_userdata($ses);
+			redirect('PresenceManagement/Monitoring');
+	}
+	
 	public function Refresh_Database($enc_loc){
 				$date		= date('Y-m-d');
 				$plain_loc	= str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_loc);

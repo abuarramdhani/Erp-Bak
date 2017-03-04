@@ -209,7 +209,7 @@ $(document).ready(function() {
 		});
 		
 		$(document).on("click", "#execute-cronjob-hrd", function () {
-				window.open("http://quick.com/aplikasi/cronjob/dbquickpersonalia/cronjob.dbquickpersonaliahrdkhs.php", '_blank');
+				window.open("http://quick.com/aplikasi/cronjob/fingerprint/cronjob.presence.monitoring.php", '_blank');
 		});
 		
 		$(document).on("click", "#update-fingercode", function () {

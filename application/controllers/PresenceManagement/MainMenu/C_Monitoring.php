@@ -67,6 +67,7 @@ class C_Monitoring extends CI_Controller {
 		$this->session->unset_userdata('change_device');
 		$this->session->unset_userdata('name_loc');
 		$this->session->unset_userdata('refresh_db');
+		$this->session->unset_userdata('active');
 		$this->session->unset_userdata('loc');
 	}
 	
@@ -567,12 +568,16 @@ class C_Monitoring extends CI_Controller {
 		$off	= $this->input->post('txtOffice');
 		$ip	= $this->input->post('txtIP');
 		$check	= $this->M_monitoring->checkDevice($sn);
-		if($check<1){
-			$this->M_monitoring->inserttblokasi($idloc,$loc,$off);
+		if($check->num_rows()<1){
 			$this->M_monitoring->inserttbdevice($sn,$vc,$ac,$idloc);
+		}else{
+			foreach($check->result_array() as $data_device){
+				$this->M_monitoring->updatetbdevice($data_device['sn'],$idloc);
+			}
+		}
+			$this->M_monitoring->inserttblokasi($idloc,$loc,$off);
 			$this->M_monitoring->inserttbmysql($idloc,$ip);
 			$this->M_monitoring->inserttbpostgres($idloc,$ip);
-		}
 		redirect('PresenceManagement/Monitoring');
 	}
 	

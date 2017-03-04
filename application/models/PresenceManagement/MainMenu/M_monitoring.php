@@ -218,12 +218,19 @@ class M_monitoring extends CI_Model {
 			$quickcom	= $this->load->database('quickcom',true);
 			$sql = "SELECT * FROM fp_distribusi.tb_device WHERE sn='$sn'";
 			$query = $quickcom->query($sql);
-			return $query->num_rows();
+			return $query;
 		}
 		
 		public function inserttblokasi($idloc,$loc,$off){
 			$quickcom	= $this->load->database('quickcom',true);
-			$sql = "INSERT INTO fp_distribusi.tb_lokasi (id_lokasi,lokasi,lokasi_kerja) VALUES ('$idloc','$loc','$off')";
+			$sql = "INSERT INTO fp_distribusi.tb_lokasi (id_lokasi,lokasi,lokasi_kerja,status_) VALUES ('$idloc','$loc','$off','1')";
+			$query = $quickcom->query($sql);
+			return;
+		}
+		
+		public function updatetbdevice($sn,$idloc){
+			$quickcom	= $this->load->database('quickcom',true);
+			$sql = "update fp_distribusi.tb_device set id_lokasi='$idloc' where sn='$sn'";
 			$query = $quickcom->query($sql);
 			return;
 		}
@@ -237,7 +244,7 @@ class M_monitoring extends CI_Model {
 		
 		public function inserttbmysql($idloc,$ip){
 			$quickcom	= $this->load->database('quickcom',true);
-			$sql = "INSERT INTO fp_distribusi.tb_mysql (id_lokasi,host,user,pass,db) VALUES ('$idloc','$ip','$ip','123456','coba_jari')";
+			$sql = "INSERT INTO fp_distribusi.tb_mysql (id_lokasi,host,user,pass,db) VALUES ('$idloc','$ip','quick','123456','coba_jari')";
 			$query = $quickcom->query($sql);
 			return;
 		}
