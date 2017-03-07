@@ -155,7 +155,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h5 class="modal-title" id="myModalLabel"><strong>Check Presence Fingerprint</strong></h5>
                 </div>
-            <form class="form-inline" method="post" action="<?php echo site_URL() ?>PresenceManagement/Monitoring/CheckPresence">
+            <form class="form-inline" method="post" action="<?php echo site_URL() ?>PresenceManagement/Monitoring/CheckPresence" target="_blank">
                 <div class="modal-body">
                     <p>You are about to check fingerprint from computer finger, this procedure is irreversible.</p>
 						<input type="hidden" name="txtLocation" id="txtLocation" value="" class="form-control"></input>
