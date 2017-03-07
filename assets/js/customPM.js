@@ -193,7 +193,7 @@ $(document).ready(function() {
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://quick.com/aplikasi/cronjob/cronjob.fpfrontpresensimasuk_erp.php?start="+start+"&end="+end+"", '_blank');
+				window.open("http://personalia.quick.com/cronjob/fingerprint/cronjob.frontpresensi.tpresensi.all.php?start="+start+"&end="+end+"", '_blank');
 			}
 		});
 		
@@ -204,12 +204,12 @@ $(document).ready(function() {
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://localhost/cronjob/fingerprint/cronjob.frontpresensi.tpresensi.loc.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
+				window.open("http://personalia.quick.com/cronjob/fingerprint/cronjob.frontpresensi.tpresensi.loc.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
 			}
 		});
 		
 		$(document).on("click", "#execute-cronjob-hrd", function () {
-				window.open("http://quick.com/aplikasi/cronjob/fingerprint/cronjob.presence.monitoring.php", '_blank');
+				window.open("http://personalia.quick.com/cronjob/fingerprint/cronjob.presence.monitoring.php", '_blank');
 		});
 		
 		$(document).on("click", "#update-fingercode", function () {
@@ -226,7 +226,7 @@ $(document).ready(function() {
 		}
 		
 	// $(document).on("click", "a[href='"+baseurl+"PresenceManagement/Monitoring']", function () {
-		// alert('test');
+		// alert('test'); 
 	// });
 	
 	$(document).on("click", ".btn-refresh-db", function () {

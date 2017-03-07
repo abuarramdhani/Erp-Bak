@@ -682,7 +682,7 @@ class M_monitoring extends CI_Model {
 			if($checlPostgres === FALSE){
 				return "failed";
 			}else{
-				$sql		= "select * from frontpresensi.tpresensilokal where tanggal>='$dtStart' and tanggal<='$dtEnd' and transfer='0'";
+				$sql		= "select * from frontpresensi.tpresensilokal where tanggal>='$dtStart' and tanggal<='$dtEnd' order by transfer, tanggal";
 				$query	= $loadConPostgres->query($sql);
 				return $query->result_array();
 			}

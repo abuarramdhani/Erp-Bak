@@ -65,22 +65,31 @@
 								<thead class="bg-primary">
 									<tr>
 										<th style="text-align:center;" width="7%">TANGGAL</th>
-										<th style="text-align:center;" width="20%">NAMA</th>
+										<th style="text-align:center;" width="10%">NOIND</th>
 										<th style="text-align:center;" width="5%">KODESIE</th>
 										<th style="text-align:center;" width="8%">WAKTU</th>
+										<th style="text-align:center;" width="8%">TRANSFER</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
 									$no = 0;
-									foreach($frontpresensi as $data_frontpresensi){ 
+									foreach($frontpresensi as $data_frontpresensi){
+										if($data_frontpresensi['transfer'] == 0){
+											$stat	= "not yet";
+											$bg	= "background:#ffcccc;";
+										}else{
+											$stat	= "done";
+											$bg	= "";
+										}
 									$no++;
 									?>
-										<tr>
+										<tr style="<?php echo $bg; ?>">
 											<td style="text-align:center;"><?php echo $data_frontpresensi['tanggal']?></td>
-											<td><?php echo $data_frontpresensi['nama']?></td>
+											<td><?php echo $data_frontpresensi['noind']?></td>
 											<td style="text-align:center;"><?php echo $data_frontpresensi['kodesie']?></td>
 											<td style="text-align:center;"><?php echo $data_frontpresensi['waktu']?></td>
+											<td style="text-align:center;"><?php echo $stat?></td>
 										</tr>
 									<?php } ?>
 								</tbody>																			
