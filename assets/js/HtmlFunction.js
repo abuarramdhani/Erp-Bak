@@ -81,7 +81,7 @@ var counter = 0;
 											+"<option value='N'>NO PROCESS</option>"
 										+"</select>"
 									+"</td>"
-									+"<td><input type='file' name='claimImage' id='claimImage' disabled></td>"
+									+"<td><input type='text' name='claimImage' id='claimImage' onfocus='modalImg()'  class='form-control'></td>"
 									+"<td></td>"
 							+"</tr>");
 
