@@ -887,7 +887,15 @@ class M_serviceproducts extends CI_Model {
 			$this->db->from('cr.cr_service_product_images');
 			$this->db->where('service_number', $id);
 			$this->db->order_by('service_product_image_id', 'ASC');
-			
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function getImageData($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $id);
 			$query = $this->db->get();
 			return $query->result_array();
 		}
