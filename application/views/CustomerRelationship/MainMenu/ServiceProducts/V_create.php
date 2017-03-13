@@ -562,16 +562,18 @@
         <h4 class="modal-title">Select Item Picture for Line 1</h4>
       </div>
       <div class="modal-body">
-      	<div class="row">
-      		<?php if ($imgClaim !== NULL) {
-      			foreach ($imgClaim as $ic) { ?>
-        	    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-        	    	<input type="checkbox" name="imgLineSelect" value="img1">
-        	        <img class="img-responsive" style="width: 400px; height: 300px;" src="<?php echo base_url($ic['image_name']); ?>" alt="">
-        	    </div>
-        	<?php }
-        	}else{ ?>
-        		<div class="text-center">
+      	<div class="row" id="modalContent">
+      		<?php if ($imgClaim !== NULL) { ?>
+      			<div id="modalImg-content">
+      				<?php foreach ($imgClaim as $ic) { ?>
+        	    	<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        	    		<input type="checkbox" name="imgLineSelect" value="img1">
+        	        	<img class="img-responsive" style="width: 100%; max-height: 150px;" src="<?php echo base_url($ic['image_name']); ?>" alt="">
+        	    	</div>
+        			<?php } ?>
+      			</div>
+        	<?php }else{ ?>
+        		<div class="text-center" id="modalImg-message">
         			<b><p>You have not uploaded any images.</p></b>
 					<h3>Please do upload a picture in the upload menu header.</h3>
         		</div>
