@@ -1223,8 +1223,6 @@ class C_ServiceProducts extends CI_Controller {
 	       	$config['max_height']           = 2050;
 	       	$this->upload->initialize($config);
 
-			//echo $type;
-			//exit();
 	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id']))
 	       	{
 	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 777, true);
@@ -1283,4 +1281,22 @@ class C_ServiceProducts extends CI_Controller {
        			}
    			}*/
 		}
+
+		public function getImageData(){
+			$id 	= $this->session->userdata('tempServiceNumber');
+			$data 	= $this->M_serviceproducts->getServiceNumber($id);
+			$service_number = $data[0]['activity_number'];
+			$getImageData = $this->M_serviceproducts->getImageData($service_number);
+			echo '<div id="modalImg-content">';
+      		foreach ($getImageData as $ic) {
+        	    echo '
+        	    	<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        	    		<input type="checkbox" name="imgLineSelect" value="img1">
+        	        	<img class="img-responsive" style="width: 100%; max-height: 150px;" src="'.base_url($ic['image_name']).'" alt="">
+        	    	</div>
+        	    ';
+        	}
+      		echo '</div>';
+		}
+
 }
