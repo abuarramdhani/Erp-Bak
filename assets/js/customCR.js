@@ -243,12 +243,20 @@
 			template: 'qq-template-manual-trigger',
 			request: {
 				endpoint: baseurl+'CustomerRelationship/ServiceProducts/UploadImage'
+			},
+			callbacks: {
+				onAllComplete: function(){
+					$.ajax({
+			            url: baseurl+'CustomerRelationship/ServiceProducts/getImageData',
+			            success: function(result) {
+			                $('#modalContent').html(result);
+			            }
+			        });
+				}
 			}
 		});
 	});
-
 	checkcustomer();
-
 	function checkcustomer(){
 		var CustomerName = $('#hdnCustomerId').val();
 		if (CustomerName == "" || CustomerName == null ) {
@@ -259,7 +267,6 @@
 			$('#fine-uploader-manual-trigger').show();
 		}
 	}
-
 	function setCustIdSession(cust_id){
 		$.ajax({
             type: "POST",
@@ -271,7 +278,6 @@
             }
         });
 	}
-
 	function modalImg(){
 		$('#modalImg').modal();
 	}
