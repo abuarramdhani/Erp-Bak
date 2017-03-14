@@ -281,4 +281,13 @@
 	function modalImg(){
 		$('#modalImg').modal();
 	}
+	function checkThis(id){
+		if ($('#img'+id).hasClass('img-selected')) {
+			$('#'+id).attr('checked', false);
+			$('#img'+id).removeClass(' img-selected');
+		}else{
+			$('#'+id).attr('checked', true);
+			$('#img'+id).addClass(' img-selected');
+		}
+	}
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------
