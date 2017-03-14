@@ -40,13 +40,13 @@
 									<div class="form-group">
                                         <label for="txtKdJabatanNew" class="control-label col-lg-4">Kode Jabatan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Jabatan" name="txtKdJabatanNew" id="txtKdJabatanNew" class="form-control" value="<?php echo $kd_jabatan; ?>" maxlength="4"/>
+                                            <input type="text" placeholder="Kode Jabatan" name="txtKdJabatanNew" id="txtKdJabatanNew" class="form-control text-uppercase" value="<?php echo $kd_jabatan; ?>" maxlength="4"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtJabatan" class="control-label col-lg-4">Jabatan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Jabatan" name="txtJabatan" id="txtJabatan" class="form-control" value="<?php echo $jabatan; ?>" maxlength="50"/>
+                                            <input type="text" placeholder="Jabatan" name="txtJabatan" id="txtJabatan" class="form-control text-uppercase" value="<?php echo $jabatan; ?>" maxlength="50"/>
                                         </div>
                                     </div>
 									<input type="hidden" placeholder="Jabatan" name="txtKdJabatan" id="txtKdJabatan" class="form-control" value="<?php echo $kd_jabatan; ?>" maxlength="4"/>

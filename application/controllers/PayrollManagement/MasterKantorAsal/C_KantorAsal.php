@@ -95,8 +95,8 @@ class C_KantorAsal extends CI_Controller
         $this->formValidation();
         
 		$data = array(
-			'id_kantor_asal' => $this->input->post('txtIdKantorAsalNew',TRUE),
-			'kantor_asal' => $this->input->post('txtKantorAsal',TRUE),
+			'id_kantor_asal' => strtoupper($this->input->post('txtIdKantorAsalNew',TRUE)),
+			'kantor_asal' => strtoupper($this->input->post('txtKantorAsal',TRUE)),
 		);
 
         $this->M_kantorasal->insert($data);
@@ -138,11 +138,11 @@ class C_KantorAsal extends CI_Controller
         $this->formValidation();
         
 		$data = array(
-			'id_kantor_asal' => $this->input->post('txtIdKantorAsalNew',TRUE),
-			'kantor_asal' => $this->input->post('txtKantorAsal',TRUE),
+			'id_kantor_asal' => strtoupper($this->input->post('txtIdKantorAsalNew',TRUE)),
+			'kantor_asal' => strtoupper($this->input->post('txtKantorAsal',TRUE)),
 		);
 
-        $this->M_kantorasal->update($this->input->post('txtIdKantorAsal', TRUE), $data);
+        $this->M_kantorasal->update(strtoupper($this->input->post('txtIdKantorAsal', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/KantorAsal'));
     }

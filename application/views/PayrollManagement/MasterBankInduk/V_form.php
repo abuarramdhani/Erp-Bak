@@ -40,16 +40,16 @@
 									<div class="form-group">
                                             <label for="txtKdBankIndukNew" class="control-label col-lg-4">Kode Bank Induk</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Kode Bank Induk" name="txtKdBankIndukNew" id="txtKdBankIndukNew" class="form-control" value="<?php echo $kd_bank_induk; ?>" maxlength="3"/>
+                                                <input type="text" placeholder="Kode Bank Induk" name="txtKdBankIndukNew" id="txtKdBankIndukNew" class="form-control  text-uppercase" value="<?php echo $kd_bank_induk; ?>" maxlength="3"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtBankInduk" class="control-label col-lg-4">Bank Induk</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Bank Induk" name="txtBankInduk" id="txtBankInduk" class="form-control" value="<?php echo $bank_induk; ?>" maxlength="30"/>
+                                                <input type="text" placeholder="Bank Induk" name="txtBankInduk" id="txtBankInduk" class="form-control text-uppercase" value="<?php echo $bank_induk; ?>" maxlength="30"/>
                                             </div>
                                     </div>
-									<input type="hidden" placeholder="Kode Bank Induk" name="txtKdBankInduk" id="txtKdBankInduk" class="form-control" value="<?php echo $kd_bank_induk; ?>" maxlength="3"/>
+									<input type="hidden" placeholder="Kode Bank Induk" name="txtKdBankInduk" id="txtKdBankInduk" class="form-control " value="<?php echo $kd_bank_induk; ?>" maxlength="3"/>
 								</div> 
                             </div>
                             <div class="panel-footer">

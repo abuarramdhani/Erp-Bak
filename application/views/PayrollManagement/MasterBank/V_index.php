@@ -40,12 +40,11 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Kode Bank</th>
-							<th>Bank</th>
-							<th>Pot Transfer</th>
-							<th>Pot Transfer Tg Perusahaan</th>
-							<th>Kd Bank Induk</th>
-
+							<th style='text-align:center'>Kode Bank</th>
+							<th style='text-align:center'>Bank</th>
+							<th style='text-align:center'>Pot Transfer</th>
+							<th style='text-align:center'>Pot Transfer Tg Perusahaan</th>
+							<th style='text-align:center'>Kd Bank Induk</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -57,11 +56,11 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterBank/update/'.$row->kd_bank.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterBank/delete/'.$row->kd_bank.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->kd_bank ?></td>
+							<td align='center'><?php echo $row->kd_bank ?></td>
 							<td><?php echo $row->bank ?></td>
-							<td><?php echo $row->pot_transfer ?></td>
-							<td><?php echo $row->pot_transfer_tg_prshn ?></td>
-							<td><?php echo $row->kd_bank_induk ?></td>
+							<td align='center'><?php echo $row->pot_transfer ?></td>
+							<td align='center'><?php echo $row->pot_transfer_tg_prshn ?></td>
+							<td align='center'><?php echo $row->kd_bank_induk ?></td>
 
 							</tr>
 							<?php } ?>

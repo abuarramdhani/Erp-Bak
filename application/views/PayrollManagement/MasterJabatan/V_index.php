@@ -51,8 +51,8 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Kode Jabatan</th>
-							<th>Jabatan</th>
+							<th style='text-align:center'>Kode Jabatan</th>
+							<th style='text-align:center'>Jabatan</th>
 
 		                  </tr>
 		                </thead>
@@ -65,7 +65,7 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterJabatan/update/'.$row->kd_jabatan.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterJabatan/delete/'.$row->kd_jabatan.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->kd_jabatan ?></td>
+							<td align='center'><?php echo $row->kd_jabatan ?></td>
 							<td><?php echo $row->jabatan ?></td>
 
 							</tr>

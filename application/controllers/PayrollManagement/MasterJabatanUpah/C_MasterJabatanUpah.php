@@ -8,7 +8,7 @@ class C_MasterJabatanUpah extends CI_Controller
         $this->load->library('session');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('PayrollManagement/MainMenu/M_masterjabatanupah');
+        $this->load->model('PayrollManagement/MasterJabatanUpah/M_masterjabatanupah');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -62,7 +62,7 @@ class C_MasterJabatanUpah extends CI_Controller
     function save()
     {
             $data = array(
-				'jabatan_upah' => $this->input->post('txtJabatanUpahHeader',TRUE),
+				'jabatan_upah' => strtoupper($this->input->post('txtJabatanUpahHeader',TRUE)),
 			);
             
 			$this->M_masterjabatanupah->insert_header($data);
@@ -159,7 +159,7 @@ class C_MasterJabatanUpah extends CI_Controller
         $header_id = $this->input->post('txtKdJabatanUpahHeader');
         
             $data = array(
-				'jabatan_upah' => $this->input->post('txtJabatanUpahHeader',TRUE),
+				'jabatan_upah' => strtoupper($this->input->post('txtJabatanUpahHeader',TRUE)),
 			);
             
 			$this->M_masterjabatanupah->update_header($header_id, $data);

@@ -25,11 +25,6 @@
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
 		          <div class="box-header with-border">
-                  <a href="<?php echo site_url('PayrollManagement/RiwayatGaji/import/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
-                      <button type="button" class="btn btn-default btn-sm">
-                        <i class="icon-file icon-2x"></i>
-                      </button>
-                    </a>
                   <a href="<?php echo site_url('PayrollManagement/RiwayatGaji/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
                       <button type="button" class="btn btn-default btn-sm">
                         <i class="icon-plus icon-2x"></i>
@@ -38,7 +33,18 @@
                     <b>Riwayat Gaji</b>
 		          </div>
 		          <div class="box-body">
-
+					<div class="row">
+						<form method="post" action="<?php echo base_url('PayrollManagement/RiwayatGaji/import')?>" enctype="multipart/form-data">
+							<div class="row" style="margin: 10px 10px">
+									<div class="col-lg-offset-7 col-lg-3">
+										<input name="importfile" type="file" class="form-control" readonly required>
+									</div>
+									<div class="col-lg-2">
+										<button class="btn btn-info btn-block">Import</button>
+									</div>
+								</div>
+						</form>
+					</div>
 		            <div class="table-responsive">
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-riwayatGaji" style="font-size:12px;">
 		                <thead class="bg-primary">

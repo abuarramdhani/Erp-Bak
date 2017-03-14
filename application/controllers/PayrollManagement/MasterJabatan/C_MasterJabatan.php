@@ -96,8 +96,8 @@ class C_MasterJabatan extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kd_jabatan' => $this->input->post('txtKdJabatanNew',TRUE),
-			'jabatan' => $this->input->post('txtJabatan',TRUE),
+			'kd_jabatan' => strtoupper($this->input->post('txtKdJabatanNew',TRUE)),
+			'jabatan' => strtoupper($this->input->post('txtJabatan',TRUE)),
 		);
 
         $this->M_masterjabatan->insert($data);
@@ -137,11 +137,11 @@ class C_MasterJabatan extends CI_Controller
 
     public function saveUpdate(){
        $data = array(
-			'kd_jabatan' => $this->input->post('txtKdJabatanNew',TRUE),
-			'jabatan' => $this->input->post('txtJabatan',TRUE),
+			'kd_jabatan' => strtoupper($this->input->post('txtKdJabatanNew',TRUE)),
+			'jabatan' => strtoupper($this->input->post('txtJabatan',TRUE)),
 		);
 
-        $qwer = $this->M_masterjabatan->update($this->input->post('txtKdJabatan', TRUE), $data);
+        $qwer = $this->M_masterjabatan->update(strtoupper($this->input->post('txtKdJabatan', TRUE)), $data);
 		$this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/MasterJabatan'));
     }

@@ -11,6 +11,14 @@ $('#dataTables-masterStatusKerja').DataTable( {
         'excel'
       ]
     });
+	
+$('#dataTables-MasterJabatanUpah').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
 $('#dataTables-masterJabatan').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -25,6 +33,12 @@ $('#dataTables-masterSeksi').DataTable( {
       ]
     });
 $('#dataTables-kantorAsal').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	$('#dataTables-riwayatGaji').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -245,15 +259,14 @@ $(document).ready(function() {
   $('#cmbKdHubunganKerja').select2();
   $('#cmbKdStatusKerja').select2();
   $('#cmbKdJabatan').select2();
-  $('#cmbNoind').select2();
   $('#cmbStat').select2();
   $('#cmbIdLokasiKerja').select2();
-  $('#cmbNoind').select2({
+  $('.select2-getNoind').select2({
     placeholder: "No Induk",
     allowClear: true,
     minimumInputLength: 2,
     ajax: {   
-      url:baseurl+"PayrollManagement/getNoind",
+      url:baseurl+"PayrollManagement/HutangKaryawan/getNoind",
       dataType: 'json',
       type: "GET",
       data: function (params) {

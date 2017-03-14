@@ -38,15 +38,9 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                            <label for="txtNoHutangNew" class="control-label col-lg-4">Nomor Hutang</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Nomor Hutang" name="txtNoHutangNew" id="txtNoHutangNew" class="form-control" value="<?php echo $no_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="11" />
-                                            </div>
-                                    </div>
-									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">No Induk</label>
                                             <div class="col-lg-4">
-                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())"><option value=""></option>
+                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())"><option value=""></option>
                                                 </select>
                                             </div>
                                     </div>

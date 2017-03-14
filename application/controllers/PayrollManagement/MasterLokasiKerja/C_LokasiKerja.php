@@ -95,8 +95,8 @@ class C_LokasiKerja extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'id_lokasi_kerja' => $this->input->post('txtIdLokasiKerjaNew',TRUE),
-			'lokasi_kerja' => $this->input->post('txtLokasiKerja',TRUE),
+			'id_lokasi_kerja' => strtoupper($this->input->post('txtIdLokasiKerjaNew',TRUE)),
+			'lokasi_kerja' => strtoupper($this->input->post('txtLokasiKerja',TRUE)),
 		);
 
         $this->M_lokasikerja->insert($data);
@@ -139,11 +139,11 @@ class C_LokasiKerja extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'id_lokasi_kerja' => $this->input->post('txtIdLokasiKerjaNew',TRUE),
-			'lokasi_kerja' => $this->input->post('txtLokasiKerja',TRUE),
+			'id_lokasi_kerja' => strtoupper($this->input->post('txtIdLokasiKerjaNew',TRUE)),
+			'lokasi_kerja' => strtoupper($this->input->post('txtLokasiKerja',TRUE)),
 		);
 
-		$this->M_lokasikerja->update($this->input->post('txtIdLokasiKerja', TRUE), $data);
+		$this->M_lokasikerja->update(strtoupper($this->input->post('txtIdLokasiKerja', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/LokasiKerja'));
         

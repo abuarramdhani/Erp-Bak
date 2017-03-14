@@ -51,9 +51,9 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Kode Status Kerja</th>
-							<th>Status Kerja</th>
-							<th>Status Kerja Singkat</th>
+							<th style='text-align:center'>Kode Status Kerja</th>
+							<th style='text-align:center'>Status Kerja</th>
+							<th style='text-align:center'>Status Kerja Singkat</th>
 
 		                  </tr>
 		                </thead>
@@ -66,7 +66,7 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterStatusKerja/update/'.$row->kd_status_kerja.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterStatusKerja/delete/'.$row->kd_status_kerja.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->kd_status_kerja ?></td>
+							<td align='center'><?php echo $row->kd_status_kerja ?></td>
 							<td><?php echo $row->status_kerja ?></td>
 							<td><?php echo $row->status_kerja_singkat ?></td>
 

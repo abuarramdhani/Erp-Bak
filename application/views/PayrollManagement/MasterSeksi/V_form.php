@@ -40,13 +40,13 @@
 									<div class="form-group">
                                         <label for="txtKodesieNew" class="control-label col-lg-4">Kodesie</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Bidang" name="txtKodesieNew" id="txtKodesieNew" class="form-control" value="<?php echo $kodesie; ?>" maxlength="9"/>
+                                            <input type="text" placeholder="Bidang" name="txtKodesieNew" id="txtKodesieNew" class="form-control text-uppercase" value="<?php echo $kodesie; ?>" maxlength="9"/>
                                         </div>
                                     </div>
 									<div class="form-group">
 	                                    <label for="cmbDept" class="control-label col-lg-4">Dept</label>
 	                                    <div class="col-lg-4">
-	                                        <select style="width:100%" id="cmbDept" name="cmbDept" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbDept" name="cmbDept" class="select2 text-uppercase" data-placeholder="Choose an option"><option value=""></option>
                                                 <?php
 													$keuangan=''; if($dept=='KEUANGAN'){$keuangan='selected';}
 													$pemasaran=''; if($dept=='PEMASARAN'){$pemasaran='selected';}
@@ -63,31 +63,31 @@
 									<div class="form-group">
                                         <label for="txtBidang" class="control-label col-lg-4">Bidang</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Bidang" name="txtBidang" id="txtBidang" class="form-control" value="<?php echo $bidang; ?>" maxlength="50"/>
+                                            <input type="text" placeholder="Bidang" name="txtBidang" id="txtBidang" class="form-control text-uppercase" value="<?php echo $bidang; ?>" maxlength="50"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtUnit" class="control-label col-lg-4">Unit</label>
 										<div class="col-lg-4">
-                                            <input type="text" placeholder="Unit" name="txtUnit" id="txtUnit" class="form-control" value="<?php echo $unit; ?>" maxlength="50"/>
+                                            <input type="text" placeholder="Unit" name="txtUnit" id="txtUnit" class="form-control  text-uppercase" value="<?php echo $unit; ?>" maxlength="50"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtSeksi" class="control-label col-lg-4">Seksi</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Seksi" name="txtSeksi" id="txtSeksi" class="form-control" value="<?php echo $seksi; ?>" maxlength="50"/>
+                                            <input type="text" placeholder="Seksi" name="txtSeksi" id="txtSeksi" class="form-control  text-uppercase" value="<?php echo $seksi; ?>" maxlength="50"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPekerjaan" class="control-label col-lg-4">Pekerjaan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pekerjaan" name="txtPekerjaan" id="txtPekerjaan" class="form-control" value="<?php echo $pekerjaan; ?>" maxlength="50"/>
+                                            <input type="text" placeholder="Pekerjaan" name="txtPekerjaan" id="txtPekerjaan" class="form-control text-uppercase" value="<?php echo $pekerjaan; ?>" maxlength="50"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtGolkerja" class="control-label col-lg-4">Golkerja</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Golkerja" name="txtGolkerja" id="txtGolkerja" class="form-control" value="<?php echo $golkerja; ?>" maxlength="5"/>
+                                            <input type="text" placeholder="Golkerja" name="txtGolkerja" id="txtGolkerja" class="form-control text-uppercase" value="<?php echo $golkerja; ?>" maxlength="5"/>
                                         </div>
                                     </div>
 									<input type="hidden" name="txtKodesie" value="<?php echo $kodesie; ?>" />

@@ -214,8 +214,11 @@ class C_HutangKaryawan extends CI_Controller
         }
     }
 
-    public function formValidation()
+    public function getNoind()
     {
+        $term = strtoupper($this->input->get('term',TRUE));
+		$result = $this->M_hutangkaryawan->getNoind($term);
+		echo json_encode($result);
 	}
 
 }

@@ -35,7 +35,7 @@
 											<div class="form-group">
                                                 <label for="txtJabatanUpahHeader" class="control-label col-lg-4">Jabatan Upah</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jabatan Upah" name="txtJabatanUpahHeader" id="txtJabatanUpahHeader" class="form-control" />
+                                                    <input type="text" placeholder="Jabatan Upah" name="txtJabatanUpahHeader" id="txtJabatanUpahHeader" class="form-control  text-uppercase" />
                                                 </div>
                                             </div>
 

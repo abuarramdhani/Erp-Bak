@@ -99,9 +99,9 @@ class C_MasterStatusKerja extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'kd_status_kerja' => $this->input->post('txtKdStatusKerjaNew',TRUE),
-				'status_kerja' => $this->input->post('txtStatusKerja',TRUE),
-				'status_kerja_singkat' => $this->input->post('txtStatusKerjaSingkat',TRUE),
+				'kd_status_kerja' => strtoupper($this->input->post('txtKdStatusKerjaNew',TRUE)),
+				'status_kerja' => strtoupper($this->input->post('txtStatusKerja',TRUE)),
+				'status_kerja_singkat' => strtoupper($this->input->post('txtStatusKerjaSingkat',TRUE)),
 			);
 
             $this->M_masterstatuskerja->insert($data);
@@ -144,12 +144,12 @@ class C_MasterStatusKerja extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'kd_status_kerja' => $this->input->post('txtKdStatusKerjaNew',TRUE),
-				'status_kerja' => $this->input->post('txtStatusKerja',TRUE),
-				'status_kerja_singkat' => $this->input->post('txtStatusKerjaSingkat',TRUE),
+				'kd_status_kerja' => strtoupper($this->input->post('txtKdStatusKerjaNew',TRUE)),
+				'status_kerja' => strtoupper($this->input->post('txtStatusKerja',TRUE)),
+				'status_kerja_singkat' => strtoupper($this->input->post('txtStatusKerjaSingkat',TRUE)),
 			);
 
-            $this->M_masterstatuskerja->update($this->input->post('txtKdStatusKerja', TRUE), $data);
+            $this->M_masterstatuskerja->update(strtoupper($this->input->post('txtKdStatusKerja', TRUE)), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/MasterStatusKerja'));
     }
@@ -193,8 +193,8 @@ class C_MasterStatusKerja extends CI_Controller
                         $this->M_masterstatuskerja->insert($data);
                     }else{
                         $data = array(
-                            'kd_status_kerja' => $row['kd_status_kerja'],
-                            'status_kerja' => $row['status_kerja'],
+                            'kd_status_kerja' => strtoupper($row['kd_status_kerja']),
+                            'status_kerja' => strtoupper($row['status_kerja']),
                         );
                         $this->M_masterstatuskerja->insert($data);
                     }

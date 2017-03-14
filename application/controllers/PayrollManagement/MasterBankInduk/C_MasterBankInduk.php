@@ -94,18 +94,18 @@ class C_MasterBankInduk extends CI_Controller
 		
 		//MASTER DELETE CURRENT
 		$md_where = array(
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
 		);
 		
 		//MASTER INSERT NEW
 		$data = array(
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
-			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
+			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
+			'bank_induk' => strtoupper($this->input->post('txtBankInduk',TRUE)),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
@@ -114,8 +114,8 @@ class C_MasterBankInduk extends CI_Controller
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'kd_bank_induk' 		=> $this->input->post('txtKdBankIndukNew',TRUE),
-			'bank_induk' 			=> $this->input->post('txtBankInduk',TRUE),
+			'kd_bank_induk' 		=> strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
+			'bank_induk' 			=> strtoupper($this->input->post('txtBankInduk',TRUE)),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
 			'kode_petugas' 			=> '0001225',
@@ -164,11 +164,11 @@ class C_MasterBankInduk extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'bank_induk' => $this->input->post('txtBankInduk',TRUE),
-			'kd_bank_induk' => $this->input->post('txtKdBankIndukNew',TRUE),
+			'bank_induk' => strtoupper($this->input->post('txtBankInduk',TRUE)),
+			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
 		);
 
-        $this->M_masterbankinduk->update($this->input->post('txtKdBankInduk', TRUE), $data);
+        $this->M_masterbankinduk->update(strtoupper($this->input->post('txtKdBankInduk', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/MasterBankInduk'));
     }

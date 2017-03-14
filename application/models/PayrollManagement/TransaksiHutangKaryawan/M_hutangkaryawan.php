@@ -52,6 +52,12 @@ class M_hutangkaryawan extends CI_Model
         $this->db->where($data_where);
         return $this->db->get($this->table_gaji)->row()->gaji_pokok;
     }
+	
+	function getNoind($term){
+			$sql		= "select noind,nama from pr.pr_master_pekerja where nama like '%$term%' or noind like '%$term%'";
+			$query		= $this->db->query($sql);
+			return $query->result_array();
+	}
 }
 
 /* End of file M_hutangkaryawan.php */

@@ -105,13 +105,13 @@ class C_MasterSeksi extends CI_Controller
     public function save(){
         $this->formValidation();
 		$data = array(
-			'kodesie' => $this->input->post('txtKodesieNew',TRUE),
-			'dept' => $this->input->post('cmbDept',TRUE),
-			'bidang' => $this->input->post('txtBidang',TRUE),
-			'unit' => $this->input->post('txtUnit',TRUE),
-			'seksi' => $this->input->post('txtSeksi',TRUE),
-			'pekerjaan' => $this->input->post('txtPekerjaan',TRUE),
-			'golkerja' => $this->input->post('txtGolkerja',TRUE),
+			'kodesie' => strtoupper($this->input->post('txtKodesieNew',TRUE)),
+			'dept' => strtoupper($this->input->post('cmbDept',TRUE)),
+			'bidang' => strtoupper($this->input->post('txtBidang',TRUE)),
+			'unit' => strtoupper($this->input->post('txtUnit',TRUE)),
+			'seksi' => strtoupper($this->input->post('txtSeksi',TRUE)),
+			'pekerjaan' => strtoupper($this->input->post('txtPekerjaan',TRUE)),
+			'golkerja' => strtoupper($this->input->post('txtGolkerja',TRUE)),
 		);
 
             $this->M_masterseksi->insert($data);
@@ -157,16 +157,16 @@ class C_MasterSeksi extends CI_Controller
     public function saveUpdate(){
         $this->formValidation();
         $data = array(
-			'kodesie' => $this->input->post('txtKodesieNew',TRUE),
-			'dept' => $this->input->post('cmbDept',TRUE),
-			'bidang' => $this->input->post('txtBidang',TRUE),
-			'unit' => $this->input->post('txtUnit',TRUE),
-			'seksi' => $this->input->post('txtSeksi',TRUE),
-			'pekerjaan' => $this->input->post('txtPekerjaan',TRUE),
-			'golkerja' => $this->input->post('txtGolkerja',TRUE),
+			'kodesie' => strtoupper($this->input->post('txtKodesieNew',TRUE)),
+			'dept' => strtoupper($this->input->post('cmbDept',TRUE)),
+			'bidang' => strtoupper($this->input->post('txtBidang',TRUE)),
+			'unit' => strtoupper($this->input->post('txtUnit',TRUE)),
+			'seksi' => strtoupper($this->input->post('txtSeksi',TRUE)),
+			'pekerjaan' => strtoupper($this->input->post('txtPekerjaan',TRUE)),
+			'golkerja' => strtoupper($this->input->post('txtGolkerja',TRUE)),
 			);
 
-            $this->M_masterseksi->update($this->input->post('txtKodesie', TRUE), $data);
+            $this->M_masterseksi->update(strtoupper($this->input->post('txtKodesie', TRUE)), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/MasterSeksi'));
     }
@@ -214,13 +214,13 @@ class C_MasterSeksi extends CI_Controller
                         $this->M_masterseksi->insert($data);
                     }else{
                         $data = array(
-                            'kodesie'   => $row['kodesie'],
-                            'dept'      => $row['dept'],
-                            'bidang'    => $row['bidang'],
-                            'unit'      => $row['unit'],
-                            'seksi'     => $row['seksi'],
-                            'pekerjaan' => $row['pekerjaan'],
-                            'golkerja'  => $row['golkerja'],
+                            'kodesie'   => strtoupper($row['kodesie']),
+                            'dept'      => strtoupper($row['dept']),
+                            'bidang'    => strtoupper($row['bidang']),
+                            'unit'      => strtoupper($row['unit']),
+                            'seksi'     => strtoupper($row['seksi']),
+                            'pekerjaan' => strtoupper($row['pekerjaan']),
+                            'golkerja'  => strtoupper($row['golkerja']),
                         );
                         $this->M_masterseksi->insert($data);
                     }

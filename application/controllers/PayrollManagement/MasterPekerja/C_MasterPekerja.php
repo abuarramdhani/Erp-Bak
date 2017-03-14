@@ -102,6 +102,7 @@ class C_MasterPekerja extends CI_Controller
 				'tgl_keluar' => $row->tgl_keluar,
 				'kd_pkj' => $row->kd_pkj,
 				'angg_jkn' => $row->angg_jkn,
+				'noind_baru' => $row->noind_baru,
 			);
 
             $this->load->view('V_Header',$data);
@@ -129,7 +130,7 @@ class C_MasterPekerja extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterPekerja/save'),
-				'noind' => set_value(''),
+			'noind' => set_value(''),
 			'kd_hubungan_kerja' => set_value('kd_hubungan_kerja'),
 			'pr_master_status_kerja_data' => $this->M_masterpekerja->get_pr_master_status_kerja_data(),
 			'kd_status_kerja' => set_value('kd_status_kerja'),
@@ -182,6 +183,7 @@ class C_MasterPekerja extends CI_Controller
 			'tgl_keluar' => set_value('tgl_keluar'),
 			'kd_pkj' => set_value('kd_pkj'),
 			'angg_jkn' => set_value('angg_jkn'),
+			'noind_baru' => set_value('noind_baru'),
 		);
 
         $this->load->view('V_Header',$data);
@@ -244,6 +246,7 @@ class C_MasterPekerja extends CI_Controller
 				'tgl_keluar' => $this->input->post('txtTglKeluar',TRUE),
 				'kd_pkj' => $this->input->post('txtKdPkj',TRUE),
 				'angg_jkn' => $this->input->post('txtAnggJkn',TRUE),
+				'noind_baru' => $this->input->post('noinD_baru',TRUE),
 			);
 
             $this->M_masterpekerja->insert($data);
@@ -324,6 +327,7 @@ class C_MasterPekerja extends CI_Controller
 				'tgl_keluar' => set_value('txtTglKeluar', $row->tgl_keluar),
 				'kd_pkj' => set_value('txtKdPkj', $row->kd_pkj),
 				'angg_jkn' => set_value('txtAnggJkn', $row->angg_jkn),
+				'noind_baru' => set_value('noind_baru', $row->angg_jkn),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -389,6 +393,7 @@ class C_MasterPekerja extends CI_Controller
 				'tgl_keluar' => $this->input->post('txtTglKeluar',TRUE),
 				'kd_pkj' => $this->input->post('txtKdPkj',TRUE),
 				'angg_jkn' => $this->input->post('txtAnggJkn',TRUE),
+				'noind_baru' => $this->input->post('noinD_baru',TRUE),
 			);
 
             $this->M_masterpekerja->update($this->input->post('txtNoind', TRUE), $data);
@@ -414,7 +419,7 @@ class C_MasterPekerja extends CI_Controller
        
         $config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
         $config['allowed_types'] = 'csv';
-        $config['max_size'] = '1000';
+        $config['max_size'] = '6000';
         $this->load->library('upload', $config);
  
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
@@ -481,10 +486,11 @@ class C_MasterPekerja extends CI_Controller
 							'tgl_keluar' => $row['TGL_KELUAR'],
 							'kd_pkj' => $row['KD_PKJ'],
 							'angg_jkn' => $row['ANGG_JKN'],
+							'noind_baru' => $row['NOIND_BARU'],
 	                    );
 
                     	//CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 7, "0", STR_PAD_LEFT);
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
 	                   	$check = $this->M_masterpekerja->check($noind);
 
 	                    if($check){
@@ -495,7 +501,6 @@ class C_MasterPekerja extends CI_Controller
 	                    }
 
                 	}else{
-
                 		//ROW DATA
                 		$data = array(
 	                    	'noind' => $row['noind'],
@@ -547,10 +552,11 @@ class C_MasterPekerja extends CI_Controller
 							'tgl_keluar' => $row['tgl_keluar'],
 							'kd_pkj' => $row['kd_pkj'],
 							'angg_jkn' => $row['angg_jkn'],
+							'noind_baru' => $row['noind_baru'],
 	                    );
 
 	                    //CHECK IF EXIST
-                    	$noind = str_pad($row['noind'], 7, "0", STR_PAD_LEFT);
+                    	$noind = str_pad($row['noind'], 5, "0", STR_PAD_LEFT);
 	                   	$check = $this->M_masterpekerja->check($noind);
 
 	                    if($check){
@@ -641,6 +647,7 @@ class C_MasterPekerja extends CI_Controller
 		$tgl_keluar = $this->input->post('txtTglKeluar');
 		$kd_pkj = $this->input->post('txtKdPkj');
 		$angg_jkn = $this->input->post('txtAnggJkn');
+		$noind_baru = $this->input->post('noinD_baru');
     	
     	$i=0;
     	foreach($noind as $loop){
@@ -694,6 +701,7 @@ class C_MasterPekerja extends CI_Controller
 					'tgl_keluar' 		=> $tgl_keluar[$i],
 					'kd_pkj'			=> $kd_pkj[$i],
 					'angg_jkn' 			=> $angg_jkn[$i],
+					'noinD_baru' 			=> $noinD_baru[$i],
 				);
 				
 				if($replace[$i] == 'yes'){

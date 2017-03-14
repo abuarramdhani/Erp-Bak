@@ -100,7 +100,7 @@ class C_MasterBank extends CI_Controller
 		
 		//GET LATEST ID RIWAYAT
 		$rs_where = array(
-			'kd_bank' 		=> $this->input->post('txtKdBankNew',TRUE),
+			'kd_bank' 		=> strtoupper($this->input->post('txtKdBankNew',TRUE)),
 			'tgl_tberlaku' 	=> '9999-12-31',
 		);
 
@@ -108,50 +108,50 @@ class C_MasterBank extends CI_Controller
 		$as_num = substr($as, 3);
 		$as_num = $as_num+1;
 		$fix = str_pad($as_num, 4, '0', STR_PAD_LEFT);
-		$id_riwayat_bank_new = $this->input->post('txtKdBankNew',TRUE).$fix;
+		$id_riwayat_bank_new = strtoupper($this->input->post('txtKdBankNew',TRUE)).$fix;
 		
 		//MASTER DELETE CURRENT
 		$md_where = array(
-			'kd_bank' => $this->input->post('txtKdBankNew',TRUE),
-			'bank' => $this->input->post('txtBank',TRUE),
-			'kd_bank_induk' => $this->input->post('cmbKdBankInduk',TRUE),
+			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
+			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
+			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 		
 		//MASTER INSERT NEW
 		$data = array(
-			'kd_bank' => $this->input->post('txtKdBankNew',TRUE),
-			'bank' => $this->input->post('txtBank',TRUE),
-			'pot_transfer' => $this->input->post('txtPotTransfer',TRUE),
-			'pot_transfer_tg_prshn' => $this->input->post('txtPotTransferTgPrshn',TRUE),
-			'kd_bank_induk' => $this->input->post('cmbKdBankInduk',TRUE),
+			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
+			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
+			'pot_transfer' => strtoupper($this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => strtoupper($this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 		
 		//MASTER CHANGE CURRENT
 		$ru_where = array(
-			'kd_bank' 		=> $this->input->post('txtKdBankNew',TRUE),
-			'bank' 			=> $this->input->post('txtBank',TRUE),
-			'kd_bank_induk' => $this->input->post('cmbKdBankInduk',TRUE),
+			'kd_bank' 		=> strtoupper($this->input->post('txtKdBankNew',TRUE)),
+			'bank' 			=> strtoupper($this->input->post('txtBank',TRUE)),
+			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
-			'kd_bank' 		=> $this->input->post('txtKdBankNew',TRUE),
-			'bank' 			=> $this->input->post('txtBank',TRUE),
-			'kd_bank_induk' => $this->input->post('cmbKdBankInduk',TRUE),
+			'kd_bank' 		=> strtoupper($this->input->post('txtKdBankNew',TRUE)),
+			'bank' 			=> strtoupper($this->input->post('txtBank',TRUE)),
+			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
 		
 		//MASTER INSERT NEW
 		$ri_data = array(
 			'id_riwayat_bank'		=> $id_riwayat_bank_new,
-			'kd_bank' 				=> $this->input->post('txtKdBankNew',TRUE),
-			'bank' 					=> $this->input->post('txtBank',TRUE),
+			'kd_bank' 				=> strtoupper($this->input->post('txtKdBankNew',TRUE)),
+			'bank' 					=> strtoupper($this->input->post('txtBank',TRUE)),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'pot_transfer' 			=> $this->input->post('txtPotTransfer',TRUE),
-			'pot_transfer_tg_prshn' => $this->input->post('txtPotTransferTgPrshn',TRUE),
+			'pot_transfer' 			=> strtoupper($this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => strtoupper($this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kode_petugas' 			=> '0001225',
 			'tgl_record' 			=> date('Y-m-d H:i:s'),
-			'kd_bank_induk' 		=> $this->input->post('cmbKdBankInduk',TRUE),
+			'kd_bank_induk' 		=> strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 		
 		$this->M_masterbank->master_delete($md_where);
@@ -203,14 +203,14 @@ class C_MasterBank extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kd_bank' => $this->input->post('txtKdBankNew',TRUE),
-			'bank' => $this->input->post('txtBank',TRUE),
-			'pot_transfer' => $this->input->post('txtPotTransfer',TRUE),
-			'pot_transfer_tg_prshn' => $this->input->post('txtPotTransferTgPrshn',TRUE),
-			'kd_bank_induk' => $this->input->post('cmbKdBankInduk',TRUE),
+			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
+			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
+			'pot_transfer' => strtoupper($this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => strtoupper($this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 
-        $this->M_masterbank->update($this->input->post('txtKdBank', TRUE), $data);
+        $this->M_masterbank->update(strtoupper($this->input->post('txtKdBank', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/MasterBank'));
 	}

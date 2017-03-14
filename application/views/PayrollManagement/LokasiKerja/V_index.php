@@ -40,8 +40,8 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>No ID</th>
-							<th>Lokasi Kerja</th>
+							<th style='text-align:center'>No ID</th>
+							<th style='text-align:center'>Lokasi Kerja</th>
 
 		                  </tr>
 		                </thead>
@@ -54,7 +54,7 @@
                               	<a href="<?php echo base_url('PayrollManagement/LokasiKerja/update/'.$row->id_lokasi_kerja.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/LokasiKerja/delete/'.$row->id_lokasi_kerja.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->id_lokasi_kerja ?></td>
+							<td align='center'><?php echo $row->id_lokasi_kerja ?></td>
 							<td><?php echo $row->lokasi_kerja ?></td>
 
 							</tr>

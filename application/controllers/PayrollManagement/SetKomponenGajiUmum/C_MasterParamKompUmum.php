@@ -24,11 +24,11 @@ class C_MasterParamKompUmum extends CI_Controller
         $data['Menu'] = 'Payroll Management';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
-
+		$dt	= date('Y-m-d');
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $masterParamKompUmum = $this->M_masterparamkompumum->get_all();
+        $masterParamKompUmum = $this->M_masterparamkompumum->get_all($dt);
 
         $data['masterParamKompUmum_data'] = $masterParamKompUmum;
         $this->load->view('V_Header',$data);
@@ -99,8 +99,28 @@ class C_MasterParamKompUmum extends CI_Controller
 				'um' => $this->input->post('txtUmNew',TRUE),
 				'ubt' => $this->input->post('txtUbt',TRUE),
 			);
+			
+			$data_riwayat = array(
+				'id_riwayat' => date('Ymd'),
+				'tgl_berlaku' => date('Y-m-d'),
+				'tgl_tberlaku' => '9999-12-31',
+				'um' => $this->input->post('txtUmNew',TRUE),
+				'ubt' => $this->input->post('txtUbt',TRUE),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
+			);
 
             $this->M_masterparamkompumum->insert($data);
+			$last_insert_id = $this->M_masterparamkompumum->check_riwayat();
+			foreach($last_insert_id as $row){
+				$last_id = $row->id_riwayat;
+			}
+			
+			$data_update = array(
+				'tgl_tberlaku' => date('Y-m-d'),
+			);
+            $this->M_masterparamkompumum->update_riwayat($last_id,$data_update);
+            $this->M_masterparamkompumum->insert_riwayat($data_riwayat);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
     }

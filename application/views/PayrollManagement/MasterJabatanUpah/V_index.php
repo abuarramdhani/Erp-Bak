@@ -30,7 +30,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMasterJabatanUpah" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-MasterJabatanUpah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -43,9 +43,9 @@
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagement/MasterJabatanUpah/read/'.$row["kd_jabatan_upah"].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagement/MasterJabatanUpah/update/'.$row["kd_jabatan_upah"].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('PayrollManagement/MasterJabatanUpah/delete/'.$row["kd_jabatan_upah"].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagement/MasterJabatanUpah/read/'.$row["kd_jabatan_upah"].''); ?>"  class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagement/MasterJabatanUpah/update/'.$row["kd_jabatan_upah"].''); ?>" class="btn btn-xs btn-warning"  data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
+                                                	<a href="<?php echo base_url('PayrollManagement/MasterJabatanUpah/delete/'.$row["kd_jabatan_upah"].''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                                                 </td>
 												<td><?php echo $row['jabatan_upah'] ?></td>
 											</tr>

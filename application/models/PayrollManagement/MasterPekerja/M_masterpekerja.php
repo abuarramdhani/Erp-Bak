@@ -16,11 +16,19 @@ class M_masterpekerja extends CI_Model
     // get all data
     function get_all()
     {
-    	return $this->db->order_by('noind', 'DESC')->get($this->table, 30)->result();
+		$count = $this->db->get($this->table)->num_rows();
+    	return $this->db->order_by('noind', 'ASC')->get($this->table, $count)->result();
     }
 
     // get data by id
     function get_by_id($id)
+    {
+        $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+	
+	// check
+    function check($id)
     {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
