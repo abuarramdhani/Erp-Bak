@@ -567,8 +567,8 @@
       			<div id="modalImg-content">
       				<?php foreach ($imgClaim as $ic) { ?>
         	    	<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-        	    		<input type="checkbox" name="imgLineSelect" value="img1">
-        	        	<img class="img-responsive" style="width: 100%; max-height: 150px;" src="<?php echo base_url($ic['image_name']); ?>" alt="">
+        	    		<input id="<?php echo $ic['service_product_image_id']; ?>" type="checkbox" name="imgLineSelect" value="<?php echo $ic['service_product_image_id']; ?>" class="hidden">
+        	        	<img id="img<?php echo $ic['service_product_image_id']; ?>" onclick="checkThis(<?php echo $ic['service_product_image_id']; ?>)" class="img-responsive" style="width: 100%; max-height: 150px;" src="<?php echo base_url($ic['image_name']); ?>">
         	    	</div>
         			<?php } ?>
       			</div>
