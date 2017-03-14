@@ -95,6 +95,13 @@ a.logo:hover {
 #fine-uploader-manual-trigger .qq-uploader .qq-total-progress-bar-container {
     width: 60%;
 }
-
-
+.img-selected {
+    border-width: 4px;
+    border-color: #4387fd;
+    border-style: solid;
+    opacity: 0.5;
+}
+.hidden {
+    display: none;
+}
 /* ----- Custom Style Customer Relationship . end ----- */
