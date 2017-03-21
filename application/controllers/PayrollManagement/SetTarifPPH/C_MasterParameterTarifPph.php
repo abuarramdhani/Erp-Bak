@@ -107,8 +107,8 @@ class C_MasterParameterTarifPph extends CI_Controller
 		//MASTER INSERT NEW
 		$data = array(
 			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
-			'batas_bawah' => $this->input->post('txtBatasBawah',TRUE),
-			'batas_atas' => $this->input->post('txtBatasAtas',TRUE),
+			'batas_bawah' => str_replace(',','',$this->input->post('txtBatasBawah',TRUE)),
+			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
 		
@@ -126,10 +126,10 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'tgl_berlaku' 		=> date('Y-m-d'),
 			'tgl_tberlaku' 		=> '9999-12-31',
 			'kd_pph' 			=> $this->input->post('txtKdPphNew',TRUE),
-			'batas_bawah' 		=> $this->input->post('txtBatasBawah',TRUE),
-			'batas_atas' 		=> $this->input->post('txtBatasAtas',TRUE),
+			'batas_bawah' 		=> str_replace(',','',$this->input->post('txtBatasBawah',TRUE)),
+			'batas_atas' 		=> str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' 			=> $this->input->post('txtPersen',TRUE),
-			'kode_petugas' 		=> '0000001',
+			'kode_petugas' 		=> $this->session->userdata('userid'),
 			'tgl_jam_record' 	=> date('Y-m-d H:i:s'),
 		);
 		
@@ -180,8 +180,8 @@ class C_MasterParameterTarifPph extends CI_Controller
 
         $data = array(
 			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
-			'batas_bawah' => $this->input->post('txtBatasBawah',TRUE),
-			'batas_atas' => $this->input->post('txtBatasAtas',TRUE),
+			'batas_bawah' => str_replace(',','',$this->input->post('txtBatasBawah',TRUE)),
+			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
 

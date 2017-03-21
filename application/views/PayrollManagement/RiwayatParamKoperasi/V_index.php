@@ -40,11 +40,8 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Tanggal Berlaku</th>
-							<th>Tanggal Tberlaku</th>
-							<th>Ikop</th>
-							<th>Kode Petugas</th>
-							<th>Tanggal Record</th>
+							<th style='text-align:center'>Tanggal Berlaku</th>
+							<th style='text-align:center'>Ikop</th>
 
 		                  </tr>
 		                </thead>
@@ -57,11 +54,8 @@
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatParamKoperasi/update/'.$row->id_riwayat.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatParamKoperasi/delete/'.$row->id_riwayat.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->tgl_berlaku ?></td>
-							<td><?php echo $row->tgl_tberlaku ?></td>
-							<td><?php echo $row->ikop ?></td>
-							<td><?php echo $row->kode_petugas ?></td>
-							<td><?php echo $row->tgl_record ?></td>
+							<td align='center'><?php echo $row->tgl_berlaku ?></td>
+							<td align='right'><?php echo number_format((int)$row->ikop) ?></td>
 
 							</tr>
 							<?php } ?>

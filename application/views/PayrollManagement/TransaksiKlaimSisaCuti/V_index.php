@@ -34,17 +34,16 @@
 		          </div>
 		          <div class="box-body">
 					<div class="row">
-						<form method="post" action="<?php echo base_url('PayrollManagement/TransaksiKlaimSisaCuti/import
-						')?>" enctype="multipart/form-data">
 							<div class="row" style="margin: 10px 10px">
+								<form method="post" action="<?php echo base_url('PayrollManagement/TransaksiKlaimSisaCuti/import')?>" enctype="multipart/form-data">
 									<div class="col-lg-offset-7 col-lg-3">
 										<input name="importfile" type="file" class="form-control" readonly required>
 									</div>
 									<div class="col-lg-2">
 										<button class="btn btn-info btn-block">Import</button>
 									</div>
+									</form>
 								</div>
-						</form>
 					</div>
 		            <div class="table-responsive">
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiKlaimSisaCuti" style="font-size:12px;">
@@ -52,14 +51,11 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Noind</th>
-							<th>Periode</th>
-							<th>Sisa Cuti</th>
-							<th>Jumlah Klaim</th>
-							<th>Kode Petugas</th>
-							<th>Tgl Jam Record</th>
-							<th>Kd Jns Transaksi</th>
-
+							<th style='text-align:center'>Noind</th>
+							<th style='text-align:center'>Periode</th>
+							<th style='text-align:center'>Sisa Cuti</th>
+							<th style='text-align:center'>Jumlah Klaim</th>
+							<th style='text-align:center'>Kd Jns Transaksi</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -71,14 +67,11 @@
                               	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimSisaCuti/update/'.$row->id_cuti.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimSisaCuti/delete/'.$row->id_cuti.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->periode ?></td>
-							<td><?php echo $row->sisa_cuti ?></td>
-							<td><?php echo $row->jumlah_klaim ?></td>
-							<td><?php echo $row->kode_petugas ?></td>
-							<td><?php echo $row->tgl_jam_record ?></td>
-							<td><?php echo $row->kd_jns_transaksi ?></td>
-
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='center'><?php echo $row->periode ?></td>
+							<td align='center'><?php echo $row->sisa_cuti ?></td>
+							<td align='right'><?php echo number_format((int)$row->jumlah_klaim) ?></td>
+							<td align='center'><?php echo $row->kd_jns_transaksi ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

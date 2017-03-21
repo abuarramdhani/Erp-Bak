@@ -96,16 +96,16 @@ class C_MasterParamKompUmum extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'um' => $this->input->post('txtUmNew',TRUE),
-				'ubt' => $this->input->post('txtUbt',TRUE),
+				'um' => str_replace(',','',$this->input->post('txtUmNew',TRUE)),
+				'ubt' => str_replace(',','',$this->input->post('txtUbt',TRUE)),
 			);
 			
 			$data_riwayat = array(
 				'id_riwayat' => date('Ymd'),
 				'tgl_berlaku' => date('Y-m-d'),
 				'tgl_tberlaku' => '9999-12-31',
-				'um' => $this->input->post('txtUmNew',TRUE),
-				'ubt' => $this->input->post('txtUbt',TRUE),
+				'um' => str_replace(',','',$this->input->post('txtUmNew',TRUE)),
+				'ubt' => str_replace(',','',$this->input->post('txtUbt',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
@@ -160,8 +160,8 @@ class C_MasterParamKompUmum extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'um' => $this->input->post('txtUmNew',TRUE),
-				'ubt' => $this->input->post('txtUbt',TRUE),
+				'um' => str_replace(',','',$this->input->post('txtUmNew',TRUE)),
+				'ubt' => str_replace(',','',$this->input->post('txtUbt',TRUE)),
 			);
 
             $this->M_masterparamkompumum->update($this->input->post('txtUm', TRUE), $data);

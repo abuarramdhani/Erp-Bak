@@ -70,7 +70,7 @@
                                                         <?php
                                                         foreach ($pr_master_status_kerja_data as $row) {
 															$slc3='';if($row->kd_status_kerja==$kd_status_kerja){$slc3='selected';}
-                                                            echo '<option '.$slc3.' value="'.$row->kd_status_kerja.'">'.$row->status_kerja.'</option>';
+                                                            echo '<option '.$slc3.' value="'.$row->kd_status_kerja.'"> ('.$row->kd_status_kerja.') '.$row->status_kerja.'</option>';
                                                         }
                                                         ?></select>
 	                                            </div>
@@ -90,40 +90,21 @@
 									<div class="form-group">
                                             <label for="txtMinMasaKerja" class="control-label col-lg-4">Min Masa Kerja</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Min Masa Kerja" name="txtMinMasaKerja" id="txtMinMasaKerja" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $min_masa_kerja; ?>" maxlength="2"/>
+                                                <input type="text" placeholder="Min Masa Kerja" name="txtMinMasaKerja" id="txtMinMasaKerja" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo rtrim($min_masa_kerja); ?>" maxlength="2"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtProsentase" class="control-label col-lg-4">Prosentase</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Prosentase" name="txtProsentase" id="txtProsentase" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $prosentase; ?>" maxlength="5"/>
+                                                <input type="text" placeholder="Prosentase" name="txtProsentase" id="txtProsentase" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo rtrim($prosentase); ?>" maxlength="5"/>
                                             </div>
                                     </div>
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
-									<div class="form-group">
-	                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tgl Tberlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTberlaku" value="<?php echo $tgl_tberlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTberlaku" />
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-                                            <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kode Petugas" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kode_petugas; ?>" maxlength="7"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglRecord" class="control-label col-lg-4">Tgl Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRecord" value="<?php echo $tgl_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRecord" />
-	                                            </div>
-	                                        </div>
-
 	    <input type="hidden" name="txtIdRiwayat" value="<?php echo $id_riwayat; ?>" /> </div>
                                 
                             </div>

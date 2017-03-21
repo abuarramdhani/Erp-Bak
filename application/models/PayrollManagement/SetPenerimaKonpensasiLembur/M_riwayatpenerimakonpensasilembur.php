@@ -16,7 +16,11 @@ class M_riwayatpenerimakonpensasilembur extends CI_Model
     // get all data
     function get_all()
     {
-    	return $this->db->get($this->table)->result();
+		$this->db->select('*');
+		$this->db->from('pr.pr_riwayat_penerima_konpensasi_lembur as a');
+		$this->db->join('pr.pr_master_jabatan as b','a.kd_jabatan=b.kd_jabatan');
+		$this->db->join('pr.pr_lokasi_kerja as c','a.id_lokasi_kerja=c.id_lokasi_kerja');
+    	return $this->db->get()->result();
     }
 
     // get data by id

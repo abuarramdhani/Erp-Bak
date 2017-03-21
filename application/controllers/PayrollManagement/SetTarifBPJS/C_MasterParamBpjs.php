@@ -104,14 +104,12 @@ class C_MasterParamBpjs extends CI_Controller
     public function save(){
         $this->formValidation();
 		
-		
-		
 		//MASTER INSERT NEW
 		$data = array(
-			'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
 			'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
 			'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
-			'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 			'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
 			'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
 		);
@@ -128,10 +126,10 @@ class C_MasterParamBpjs extends CI_Controller
 		$ri_data = array(
 			'tgl_berlaku' 	=> date('Y-m-d'),
 			'tgl_tberlaku' 	=> '9999-12-31',
-			'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
 			'jkn_tg_kary' 	=> $this->input->post('txtJknTgKary',TRUE),
 			'jkn_tg_prshn' 	=> $this->input->post('txtJknTgPrshn',TRUE),
-			'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 			'jpn_tg_kary' 	=> $this->input->post('txtJpnTgKary',TRUE),
 			'jpn_tg_prshn' 	=> $this->input->post('txtJpnTgPrshn',TRUE),
 			'kode_petugas' 	=> '0001225',
@@ -192,10 +190,10 @@ class C_MasterParamBpjs extends CI_Controller
         }
         else{
             $data = array(
-				'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+				'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
 				'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
 				'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
-				'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+				'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 				'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
 				'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
 			);

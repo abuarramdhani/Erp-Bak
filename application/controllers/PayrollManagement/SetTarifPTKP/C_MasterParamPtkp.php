@@ -98,42 +98,40 @@ class C_MasterParamPtkp extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		$status_pajak 	= $this->input->post('txtStatusPajak');
-		$periode 		= $this->input->post('txtPeriode');
-		
+		$status_pajak 	= strtoupper($this->input->post('txtStatusPajak'));
+		$periode 		= str_replace('-','',$this->input->post('txtTglBerlakuPtkp'));
 		//MASTER DELETE CURRENT
 		$md_where = array(
-			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+			'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
 		);
 		
 		//MASTER INSERT NEW
 		$data = array(
-			'periode' => $this->input->post('txtPeriode',TRUE),
-			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
-			'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
+			'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
+			'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
+			'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
-			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+			'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+		$time	= date('His');
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'id_riwayat_ptkp'		=> $status_pajak.$periode,
-			'periode'				=> $this->input->post('txtPeriode',TRUE),
-			'status_pajak' 			=> $this->input->post('txtStatusPajak',TRUE),
-			'ptkp_per_tahun' 		=> $this->input->post('txtPtkpPerTahun',TRUE),
+			'id_riwayat_ptkp'		=> $status_pajak.$periode.$time,
+			'periode'				=> $this->input->post('txtTglBerlakuPtkp',TRUE),
+			'status_pajak' 			=> strtoupper($this->input->post('txtStatusPajak',TRUE)),
+			'ptkp_per_tahun' 		=> str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'kode_petugas' 			=> '0000001',
+			'kode_petugas' 			=> $this->session->userdata('userid'),
 			'tgl_record' 			=> date('Y-m-d H:i:s'),
 		);
-		
 		$this->M_masterparamptkp->master_delete($md_where);
 		$this->M_masterparamptkp->insert($data);
 		$this->M_masterparamptkp->riwayat_update($ru_where,$ru_data);
@@ -186,7 +184,7 @@ class C_MasterParamPtkp extends CI_Controller
         else{
             $data = array(
 				'periode' => $this->input->post('txtPeriode',TRUE),
-				'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+				'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
 				'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
 			);
 

@@ -46,26 +46,30 @@
 									<div class="form-group">
                                             <label for="txtMaxJab" class="control-label col-lg-4">Max Jab</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Max Jab" name="txtMaxJab" id="txtMaxJab" class="form-control" value="<?php echo $max_jab; ?>" maxlength="10"/>
+                                                <input type="text" placeholder="Max Jab" name="txtMaxJab" id="txtMaxJab" class="form-control money" value="<?php echo $max_jab; ?>" maxlength="10" onkeypress="return isNumberKey(event)"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtPersentaseJab" class="control-label col-lg-4">Persentase Jab</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Persentase Jab" name="txtPersentaseJab" id="txtPersentaseJab" class="form-control" value="<?php echo $persentase_jab; ?>" onkeypress="return isNumberKey(event)" maxlength="3"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Persentase Jab" name="txtPersentaseJab" id="txtPersentaseJab" class="form-control" value="<?php echo $persentase_jab; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtMaxPensiun" class="control-label col-lg-4">Max Pensiun</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Max Pensiun" name="txtMaxPensiun" id="txtMaxPensiun" class="form-control" value="<?php echo $max_pensiun; ?>" maxlength="10"/>
+                                                <input type="text" placeholder="Max Pensiun" name="txtMaxPensiun" id="txtMaxPensiun" class="form-control money" value="<?php echo $max_pensiun; ?>" maxlength="10" onkeypress="return isNumberKey(event)"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtPersentasePensiun" class="control-label col-lg-4">Persentase Pensiun</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Persentase Pensiun" name="txtPersentasePensiun" id="txtPersentasePensiun" class="form-control" value="<?php echo $persentase_pensiun; ?>" onkeypress="return isNumberKey(event)" maxlength="3"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Persentase Pensiun" name="txtPersentasePensiun" id="txtPersentasePensiun" class="form-control" value="<?php echo $persentase_pensiun; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 
 	    <input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" /> </div>

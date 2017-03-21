@@ -7,6 +7,7 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
+		$this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterInsKemahalan/M_riwayatinsentifkemahalan');
         if($this->session->userdata('logged_in')!=TRUE) {
@@ -28,7 +29,7 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $riwayatInsentifKemahalan = $this->M_riwayatinsentifkemahalan->get_all();
+        $riwayatInsentifKemahalan = $this->M_riwayatinsentifkemahalan->get_all(date('Y-m-d'));
 
         $data['riwayatInsentifKemahalan_data'] = $riwayatInsentifKemahalan;
         $this->load->view('V_Header',$data);
@@ -188,6 +189,150 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/RiwayatInsentifKemahalan'));
         }
+    }
+	
+	 public function import(){
+		$config['upload_path'] = 'assets/upload/importPR/masterinskemahalan/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '6000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterinskemahalan/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+                $data_exist = array();
+                $i = 0;
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('NOIND', $row)){
+                    	
+ 						//ROW DATA
+	                    $data = array(
+	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'insentif_kemahalan' => $row['INS_KEMAHALAN'],
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_record' => date('Y-m-d H:i:s'),
+	                    );
+
+                    	//CHECK IF EXIST
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_riwayatinsentifkemahalan->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+							);
+							$this->M_riwayatinsentifkemahalan->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatinsentifkemahalan->insert($data);
+	                    }else{
+	                    	$this->M_riwayatinsentifkemahalan->insert($data);
+	                    }
+
+                	}else{
+                		//ROW DATA
+                		$data = array(
+	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'insentif_kemahalan' => $row['INS_KEMAHALAN'],
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_record' => date('Y-m-d H:i:s'),
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_riwayatinsentifkemahalan->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+							);
+							$this->M_riwayatinsentifkemahalan->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatinsentifkemahalan->insert($data);
+	                    }else{
+	                    	$this->M_riwayatinsentifkemahalan->insert($data);
+	                    }
+	                    
+                	}
+                }
+
+                //LOAD EXIST DATA VERIFICATION PAGE
+                $this->checkSession();
+        		$user_id = $this->session->userid;
+        
+        		$data['Menu'] = 'Payroll Management';
+        		$data['SubMenuOne'] = '';
+        		$data['SubMenuTwo'] = '';
+
+		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		        $data['data_exist'] = $data_exist;
+				unlink($file_path);
+				redirect(site_url('PayrollManagement/RiwayatInsentifKemahalan'));
+            } else {
+                $this->load->view('csvindex');
+            }
+        }
+    }
+
+    public function upload() {
+       
+        $config['upload_path'] = 'assets/upload/importPR/masterinskemahalan/';
+        $config['file_name'] = 'MasterInsKemahalan-'.time();
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) {
+            echo $this->upload->display_errors();
+        }
+        else {
+            $file_data  = $this->upload->data();
+            $filename   = $file_data['file_name'];
+            $file_path  = 'assets/upload/importPR/masterinskemahalan/'.$file_data['file_name'];
+            
+            if ($this->csvimport->get_array($file_path)){
+                $data = $this->csvimport->get_array($file_path);
+                $this->import($data, $filename);
+            }
+            else {
+                $this->import($data = array(), $filename = '');
+            }
+        }
+    }
+
+    public function saveImport(){
+        $filename = $this->input->post('txtFileName');
+        $file_path  = 'assets/upload/importPR/'.$filename;
+        $importData = $this->csvimport->get_array($file_path);
+
+        foreach ($importData as $row) {
+            $data = array(
+                'tgl_berlaku' => $row['tgl_berlaku'],
+                'tgl_tberlaku' => $row['tgl_tberlaku'],
+                'periode' => $row['periode'],
+                'noind' => $row['noind'],
+                'upamk' => $row['upamk'],
+                'kode_petugas' => $row['kode_petugas'],
+                'tgl_rec' => $row['tgl_rec'],
+            );
+
+            $this->M_riwayatupamk->insert($data);
+        }
+
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/RiwayatInsentifKemahalan'));
     }
 
     public function checkSession(){

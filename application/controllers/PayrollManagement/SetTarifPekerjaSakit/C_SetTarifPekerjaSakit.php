@@ -103,13 +103,13 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 		
 		//MASTER DELETE CURRENT
 		$md_where = array(
-			'kd_tarif' 	=> $this->input->post('txtKdTarifNew',TRUE),
+			'tingkatan' 	=> $this->input->post('txtTingkatan',TRUE),
 		);
 		
 		//MASTER INSERT NEW
         $data = array(
-			'kd_tarif' 		=> $this->input->post('txtKdTarifNew',TRUE),
-			'tingkatan' 	=> $this->input->post('txtTingkatan',TRUE),
+			'kd_tarif' 		=> date('YmdHis'),
+			'tingkatan' 	    => $this->input->post('txtTingkatan',TRUE),
 			'bulan_awal' 	=> $this->input->post('txtBulanAwal',TRUE),
 			'bulan_akhir' 	=> $this->input->post('txtBulanAkhir',TRUE),
 			'persentase' 	=> $this->input->post('txtPersentase',TRUE),
@@ -117,7 +117,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 		
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
-			'kd_tarif' 		=> $this->input->post('txtKdTarifNew',TRUE),
+			'tingkatan' 	    => $this->input->post('txtTingkatan',TRUE),
 			'tgl_tberlaku' 	=> '9999-12-31',
 		);
 		$ru_data = array(
@@ -126,14 +126,14 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'kd_tarif' 		=> $this->input->post('txtKdTarifNew',TRUE),
+			'kd_tarif' 		=> date('YmdHis'),
 			'tingkatan' 	=> $this->input->post('txtTingkatan',TRUE),
 			'bulan_awal' 	=> $this->input->post('txtBulanAwal',TRUE),
 			'bulan_akhir' 	=> $this->input->post('txtBulanAkhir',TRUE),
 			'persentase' 	=> $this->input->post('txtPersentase',TRUE),
 			'tgl_berlaku' 	=> date('Y-m-d'),
 			'tgl_tberlaku' 	=> '9999-12-31',
-			'kd_petugas' 	=> '0000001',
+			'kd_petugas' 	=> $this->session->userdata('userid'),
 			'tgl_rec' 		=> date('Y-m-d H:i:s'),
 		);
 
@@ -184,13 +184,12 @@ class C_SetTarifPekerjaSakit extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'tingkatan' => $this->input->post('txtTingkatan',TRUE),
 			'bulan_awal' => $this->input->post('txtBulanAwal',TRUE),
 			'bulan_akhir' => $this->input->post('txtBulanAkhir',TRUE),
 			'persentase' => $this->input->post('txtPersentase',TRUE),
 		);
 
-            $this->M_settarifpekerjasakit->update($this->input->post('txtKdTarif', TRUE), $data);
+            $this->M_settarifpekerjasakit->update($this->input->post('txtTingkatan',TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/SetTarifPekerjaSakit'));
     }

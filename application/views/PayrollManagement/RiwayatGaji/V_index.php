@@ -20,7 +20,6 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -51,17 +50,13 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Tgl Berlaku</th>
-							<th>Tgl Tberlaku</th>
-							<th>Noind</th>
-							<th>Kd Hubungan Kerja</th>
-							<th>Kd Status Kerja</th>
-							<th>Kd Jabatan</th>
-							<th>Gaji Pokok</th>
-							<th>I F</th>
-							<th>Kd Petugas</th>
-							<th>Tgl Record</th>
-
+							<th style='text-align:center'>Tgl Berlaku</th>
+							<th style='text-align:center'>Noind</th>
+							<th style='text-align:center'>Kd Hubungan Kerja</th>
+							<th style='text-align:center'>Kd Status Kerja</th>
+							<th style='text-align:center'>Kd Jabatan</th>
+							<th style='text-align:center'>Gaji Pokok</th>
+							<th style='text-align:center'>I F</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -73,17 +68,13 @@
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatGaji/update/'.$row->id_riw_gaji.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatGaji/delete/'.$row->id_riw_gaji.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->tgl_berlaku ?></td>
-							<td><?php echo $row->tgl_tberlaku ?></td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->kd_hubungan_kerja ?></td>
-							<td><?php echo $row->kd_status_kerja ?></td>
-							<td><?php echo $row->kd_jabatan ?></td>
-							<td><?php echo $row->gaji_pokok ?></td>
-							<td><?php echo $row->i_f ?></td>
-							<td><?php echo $row->kd_petugas ?></td>
-							<td><?php echo $row->tgl_record ?></td>
-
+							<td align='center'><?php echo $row->tgl_berlaku ?></td>
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='center'><?php echo $row->kd_hubungan_kerja ?></td>
+							<td align='center'><?php echo $row->kd_status_kerja ?></td>
+							<td align='center'><?php echo $row->kd_jabatan ?></td>
+							<td align='right'><?php echo number_format((int)$row->gaji_pokok) ?></td>
+							<td align='right'><?php echo number_format((int)$row->i_f) ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

@@ -38,21 +38,21 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                            <label for="txtPeriode" class="control-label col-lg-4">Periode</label>
+                                            <label for="txtPeriode" class="control-label col-lg-4">Tanggal Berlaku</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Periode" name="txtPeriode" id="txtPeriode" class="form-control" value="<?php echo $periode; ?>" maxlength="6"/>
+                                                <input type="text" placeholder="Periode" name="txtTglBerlakuPtkp" id="txtTglBerlakuPtkp" class="form-control text-uppercase" value="<?php echo $periode; ?>" maxlength="6"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtStatusPajak" class="control-label col-lg-4">Status Pajak</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Status Pajak" name="txtStatusPajak" id="txtStatusPajak" class="form-control" value="<?php echo $status_pajak; ?>" maxlength="3"/>
+                                                <input type="text" placeholder="Status Pajak" name="txtStatusPajak"  id="txtStatusPajak" class="form-control text-uppercase" value="<?php echo $status_pajak; ?>" maxlength="3"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtPtkpPerTahun" class="control-label col-lg-4">PTKP Per Tahun</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Ptkp Per Tahun" name="txtPtkpPerTahun" id="txtPtkpPerTahun" class="form-control" value="<?php echo $ptkp_per_tahun; ?>" maxlength="10"/>
+                                                <input type="text" placeholder="Ptkp Per Tahun" name="txtPtkpPerTahun" id="txtPtkpPerTahun" class="form-control text-uppercase money" value="<?php echo $ptkp_per_tahun; ?>" maxlength="15"/>
                                             </div>
                                     </div>
 

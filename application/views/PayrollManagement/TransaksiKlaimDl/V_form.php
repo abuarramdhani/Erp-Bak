@@ -46,13 +46,15 @@
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>"/>
+                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option">
+													<option value=""></option>
+												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtKlaimDl" class="control-label col-lg-4">Klaim Dl</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Klaim Dl" name="txtKlaimDl" id="txtKlaimDl" class="form-control" value="<?php echo $klaim_dl; ?>"/>
+                                                <input type="text" placeholder="Klaim Dl" name="txtKlaimDl" id="txtKlaimDl" class="form-control money" value="<?php echo rtrim($klaim_dl); ?>"/>
                                             </div>
                                     </div>
 

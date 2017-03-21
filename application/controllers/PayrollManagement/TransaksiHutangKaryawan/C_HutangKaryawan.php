@@ -108,13 +108,13 @@ class C_HutangKaryawan extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'no_hutang' => $this->input->post('txtNoHutangNew',TRUE),
+			'no_hutang' => str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')),
 			'noind' => $this->input->post('txtNoind',TRUE),
 			'tgl_pengajuan' => $this->input->post('txtTglPengajuan',TRUE),
 			'total_hutang' => $this->input->post('txtTotalHutang',TRUE),
 			'jml_cicilan' => $this->input->post('txtJmlCicilan',TRUE),
 			'status_lunas' => $this->input->post('cmbStatusLunas',TRUE),
-			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'kode_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => date('Y-m-d H:i:s'),
 		);
 
@@ -221,6 +221,9 @@ class C_HutangKaryawan extends CI_Controller
 		echo json_encode($result);
 	}
 
+	public function formValidation()
+    {
+	}
 }
 
 /* End of file C_HutangKaryawan.php */

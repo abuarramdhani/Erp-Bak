@@ -117,7 +117,7 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 			'jkm' => $this->input->post('txtJkm',TRUE),
 			'jpk_lajang' => $this->input->post('txtJpkLajang',TRUE),
 			'jpk_nikah' => $this->input->post('txtJpkNikah',TRUE),
-			'batas_jpk' => $this->input->post('txtBatasJpk',TRUE),
+			'batas_jpk' => str_replace(',','',$this->input->post('txtBatasJpk',TRUE)),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
@@ -136,7 +136,7 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 			'jkm' 					=> $this->input->post('txtJkm',TRUE),
 			'jpk_lajang' 			=> $this->input->post('txtJpkLajang',TRUE),
 			'jpk_nikah' 			=> $this->input->post('txtJpkNikah',TRUE),
-			'batas_jpk' 			=> $this->input->post('txtBatasJpk',TRUE),		
+			'batas_jpk' 			=> str_replace(',','',$this->input->post('txtBatasJpk',TRUE)),		
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
 			'kode_petugas' 			=> '0000001',
@@ -203,7 +203,7 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 				'jkm' => $this->input->post('txtJkm',TRUE),
 				'jpk_lajang' => $this->input->post('txtJpkLajang',TRUE),
 				'jpk_nikah' => $this->input->post('txtJpkNikah',TRUE),
-				'batas_jpk' => $this->input->post('txtBatasJpk',TRUE),
+				'batas_jpk' => str_replace(',','',$this->input->post('txtBatasJpk',TRUE)),
 			);
 
             $this->M_masterparamtarifjamsostek->update($this->input->post('txtPeriodeJst', TRUE), $data);

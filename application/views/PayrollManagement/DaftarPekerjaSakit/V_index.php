@@ -40,10 +40,9 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Tanggal</th>
-							<th>Noind</th>
-							<th>Bulan Sakit</th>
-
+							<th style='text-align:center'>Tanggal</th>
+							<th style='text-align:center'>Noind</th>
+							<th style='text-align:center'>Bulan Sakit</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -55,11 +54,10 @@
                               	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/update/'.$row->id_setting.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/delete/'.$row->id_setting.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->tanggal ?></td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->bulan_sakit ?></td>
-
-							</tr>
+							<td align='center'><?php echo $row->tanggal ?></td>
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='center'><?php echo $row->bulan_sakit ?></td>
+</tr>
 							<?php } ?>
 		                </tbody>                                      
 		              </table>

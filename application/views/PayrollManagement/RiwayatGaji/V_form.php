@@ -40,19 +40,15 @@
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-	                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tgl Tberlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTberlaku" value="<?php echo $tgl_tberlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTberlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>"/>
+                                                <select class="form-control select2-getNoind" id="txtNoind" name="txtNoind" style="width:100%;" required>
+														<option value=""></option>
+												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
@@ -103,27 +99,15 @@
 									<div class="form-group">
                                             <label for="txtGajiPokok" class="control-label col-lg-4">Gaji Pokok</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Gaji Pokok" name="txtGajiPokok" id="txtGajiPokok" class="form-control" value="<?php echo $gaji_pokok; ?>"/>
+                                                <input type="text" placeholder="Gaji Pokok" name="txtGajiPokok" id="txtGajiPokok" class="form-control money" value="<?php echo rtrim($gaji_pokok); ?>"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtIF" class="control-label col-lg-4">I F</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="I F" name="txtIF" id="txtIF" class="form-control" value="<?php echo $i_f; ?>"/>
+                                                <input type="text" placeholder="I F" name="txtIF" id="txtIF" class="form-control money" value="<?php echo rtrim($i_f); ?>"/>
                                             </div>
                                     </div>
-									<div class="form-group">
-                                            <label for="txtKdPetugas" class="control-label col-lg-4">Kd Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kd Petugas" name="txtKdPetugas" id="txtKdPetugas" class="form-control" value="<?php echo $kd_petugas; ?>"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglRecord" class="control-label col-lg-4">Tgl Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRecord" value="<?php echo $tgl_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRecord" />
-	                                            </div>
-	                                        </div>
 
 	    <input type="hidden" name="txtIdRiwGaji" value="<?php echo $id_riw_gaji; ?>" /> </div>
                                 

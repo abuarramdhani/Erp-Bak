@@ -40,9 +40,9 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Id Kantor Asal</th>
-							<th>Id Lokasi Kerja</th>
-							<th>Tarif Jkk</th>
+							<th style='text-align:center'>Id Lokasi</th>
+							<th style='text-align:center'>Lokasi Kerja</th>
+							<th style='text-align:center'>Tarif Jkk</th>
 
 		                  </tr>
 		                </thead>
@@ -55,9 +55,9 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterTarifJkk/update/'.$row->id_tarif_jkk.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterTarifJkk/delete/'.$row->id_tarif_jkk.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->id_kantor_asal ?></td>
-							<td><?php echo $row->id_lokasi_kerja ?></td>
-							<td><?php echo $row->tarif_jkk ?></td>
+							<td align='center'><?php echo $row->id_lokasi_kerja ?></td>
+							<td align='center'><?php echo $row->lokasi_kerja ?></td>
+							<td align='right'><?php echo number_format((int)$row->tarif_jkk) ?></td>
 
 							</tr>
 							<?php } ?>

@@ -40,18 +40,13 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Id Kantor Asal</th>
-							<th>Id Lokasi Kerja</th>
-							<th>Kode Status Kerja</th>
-							<th>Kode Jabatan</th>
-							<th>Min Masa Kerja</th>
-							<th>Prosentase</th>
-							<th>Tgl Berlaku</th>
-							<th>Tgl Tberlaku</th>
-							<th>Kode Petugas</th>
-							<th>Tgl Record</th>
-
-		                  </tr>
+							<th style='text-align:center'>Id Lokasi Kerja</th>
+							<th style='text-align:center'>Kode Status Kerja</th>
+							<th style='text-align:center'>Kode Jabatan</th>
+							<th style='text-align:center'>Min Masa Kerja</th>
+							<th style='text-align:center'>Prosentase</th>
+							<th style='text-align:center'>Tgl Berlaku</th>
+							</tr>
 		                </thead>
 		                <tbody>
 							<?php $no = 1; foreach($riwayatPenerimaKonpensasiLembur_data as $row) { ?>
@@ -62,17 +57,12 @@
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur/update/'.$row->id_riwayat.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur/delete/'.$row->id_riwayat.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->id_kantor_asal ?></td>
-							<td><?php echo $row->id_lokasi_kerja ?></td>
-							<td><?php echo $row->kd_status_kerja ?></td>
-							<td><?php echo $row->kd_jabatan ?></td>
-							<td><?php echo $row->min_masa_kerja ?></td>
-							<td><?php echo $row->prosentase ?></td>
-							<td><?php echo $row->tgl_berlaku ?></td>
-							<td><?php echo $row->tgl_tberlaku ?></td>
-							<td><?php echo $row->kode_petugas ?></td>
-							<td><?php echo $row->tgl_record ?></td>
-
+							<td align='center'><?php echo $row->lokasi_kerja ?></td>
+							<td align='center'><?php echo $row->kd_status_kerja ?></td>
+							<td align='left'><?php echo $row->jabatan ?></td>
+							<td align='center'><?php echo $row->min_masa_kerja ?></td>
+							<td align='center'><?php echo $row->prosentase ?> %</td>
+							<td align='center'><?php echo $row->tgl_berlaku ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

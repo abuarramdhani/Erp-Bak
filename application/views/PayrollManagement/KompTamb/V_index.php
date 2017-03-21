@@ -40,11 +40,11 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Periode</th>
-							<th>Noind</th>
-							<th>Tambahan</th>
-							<th>Stat</th>
-							<th>Desc </th>
+							<th style='text-align:center'>Periode</th>
+							<th style='text-align:center'>Noind</th>
+							<th style='text-align:center'>Tambahan</th>
+							<th style='text-align:center'>Stat</th>
+							<th style='text-align:center'>Desc </th>
 
 		                  </tr>
 		                </thead>
@@ -57,12 +57,11 @@
                               	<a href="<?php echo base_url('PayrollManagement/KompTamb/update/'.$row->id.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/KompTamb/delete/'.$row->id.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->periode ?></td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->tambahan ?></td>
-							<td><?php echo $row->stat ?></td>
+							<td align='center'><?php echo $row->periode ?></td>
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='right'><?php echo number_format((int)$row->tambahan) ?></td>
+							<td align='center'><?php echo $row->stat ?></td>
 							<td><?php echo $row->desc_ ?></td>
-
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

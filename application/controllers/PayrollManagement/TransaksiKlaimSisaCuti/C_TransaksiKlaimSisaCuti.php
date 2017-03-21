@@ -112,7 +112,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 			'periode' => $this->input->post('txtPeriode',TRUE),
 			'sisa_cuti' => $this->input->post('txtSisaCuti',TRUE),
 			'jumlah_klaim' => $this->input->post('txtJumlahKlaim',TRUE),
-			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'kode_petugas' => $this->session->userdata('userid'),
 			'tgl_jam_record' => date('Y-m-d H:i:s'),
 			'kd_jns_transaksi' => $this->input->post('cmbKdJnsTransaksi',TRUE),
 		);
@@ -214,13 +214,52 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    
-                    $data = array(
-                        'noind' => $row['noind'],
-                        'periode' => $row['periode'],
-                        'sisa_cuti' => $row['sisa_cuti'],
-                    );
-                    $this->M_transaksiklaimsisacuti->insert($data);
+					$check = $this->M_transaksiklaimsisacuti->check($row['NOIND'],$row['PERIODE']);
+					if($check){
+						$data_where = array(
+							'noind' => $row['NOIND'],
+							'tgl_tberlaku' => '9999-12-31',
+						);
+
+						$getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
+						if(empty($getGp)){
+							$sisaKlaim = '-';
+						}else{
+							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);	
+						}
+						
+						$data_update = array(
+							'sisa_cuti' => $row['SISA_CUTI'],
+							'jumlah_klaim' => $sisaKlaim,
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+							'kd_jns_transaksi' => '6',
+						);
+						$this->M_transaksiklaimsisacuti->update_import($row['NOIND'],$row['PERIODE'],$data_update);
+					}else{
+						$data_where = array(
+							'noind' => $row['NOIND'],
+							'tgl_tberlaku' => '9999-12-31',
+						);
+
+						$getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
+						if(empty($getGp)){
+							$sisaKlaim = '-';
+						}else{
+							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);	
+						}
+						
+						$data = array(
+							'noind' => $row['NOIND'],
+							'periode' => $row['PERIODE'],
+							'sisa_cuti' => $row['SISA_CUTI'],
+							'jumlah_klaim' => $sisaKlaim,
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+							'kd_jns_transaksi' => '6',
+						);
+						$this->M_transaksiklaimsisacuti->insert($data);
+					}
                 }
                 unlink($file_path);
                 redirect(base_url().'PayrollManagement/TransaksiKlaimSisaCuti');
@@ -229,6 +268,18 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
                 $this->load->view('csvindex');
             }
         }
+    }
+	
+	    public function getKlaimCuti(){
+        $data_where = array(
+            'noind' => $this->input->post('noind',TRUE),
+            'tgl_tberlaku' => '9999-12-31',
+        );
+
+        $getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
+        $sisaKlaim = round($this->input->post('cuti',TRUE) * ($getGp/30),0);
+        
+        echo $sisaKlaim;
     }
 
     public function checkSession(){

@@ -38,28 +38,30 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                        <label for="txtKdPphNew" class="control-label col-lg-4">Kode PPH</label>
+                                        <label for="txtKdPphNew" class="control-label col-lg-4">Tingkatan</label>
                                         <div class="col-lg-4">
-											<input type="text" placeholder="Kode PPH" name="txtKdPphNew" id="txtKdPphNew" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $kd_pph; ?>" />
+											<input type="text" placeholder="Tingkatan PPH" name="txtKdPphNew" id="txtKdPphNew" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $kd_pph; ?>" maxlength="1"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBatasBawah" class="control-label col-lg-4">Batas Bawah</label>
                                         <div class="col-lg-4">
-											<input type="text" placeholder="Batas Bawah" name="txtBatasBawah" id="txtBatasBawah" class="form-control" value="<?php echo $batas_bawah; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
+											<input type="text" placeholder="Batas Bawah" name="txtBatasBawah" id="txtBatasBawah" class="form-control money" value="<?php echo $batas_bawah; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBatasAtas" class="control-label col-lg-4">Batas Atas</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Batas Atas" name="txtBatasAtas" id="txtBatasAtas" class="form-control" value="<?php echo $batas_atas; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
+                                            <input type="text" placeholder="Batas Atas" name="txtBatasAtas" id="txtBatasAtas" class="form-control money" value="<?php echo $batas_atas; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
                                         </div>
                                     </div>
 									<div class="form-group">
-                                        <label for="txtPersen" class="control-label col-lg-4">Persen</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Persen" name="txtPersen" id="txtPersen" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $persen; ?>" maxlength="3"/>
+                                        <label for="txtPersen" class="control-label col-lg-4">Persentase Pph</label>
+                                        <div class="col-lg-2">
+                                            <input type="text" placeholder="Persentase Pph" name="txtPersen" id="txtPersen" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $persen; ?>" maxlength="3"/>
                                         </div>
+										<label for="txtPersen" class="control-label">%</label>
+										<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<input type="hidden" name="txtKdPph" value="<?php echo $kd_pph; ?>" />
 								</div>

@@ -12,6 +12,27 @@ $('#dataTables-masterStatusKerja').DataTable( {
       ]
     });
 	
+	$('#dataTables-riwayatPotDanaPensiun').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+	$('#dataTables-riwayatUpamk').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+	$('#dataTables-riwayatInsentifKemahalan').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
 $('#dataTables-MasterJabatanUpah').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -68,6 +89,7 @@ $('#dataTables-masterSekolahAsal').DataTable( {
         'excel'
       ]
     });
+	
 $('#dataTables-setgajiump').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -129,6 +151,13 @@ $('#dataTables-masterParamKompJab').DataTable( {
         'excel'
       ]
     });
+	
+$('#dataTables-riwayatRekeningPekerja').DataTable( {
+  dom: 'Bfrtip',
+  buttons: [
+	'excel'
+  ]
+});
 
 $('#dataTables-masterParamPengurangPajak').DataTable( {
       dom: 'Bfrtip',
@@ -189,6 +218,13 @@ $('#dataTables-transaksiHitungThrImport').DataTable( {
       ]
     });
 
+$('#dataTables-kompTamb').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
 $('#dataTables-transaksiHutang').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -224,12 +260,7 @@ $('#dataTables-hutangKaryawan').DataTable( {
         'excel'
       ]
     });	
-	
-$('#txtTglPengajuan').datepicker({ autoclose: true });
-$('#txtTanggal').datepicker({ autoclose: true });
 $('#txtTglTransaksi').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 $('#txtTglLahir').datepicker({ autoclose: true });
@@ -240,12 +271,7 @@ $('#txtAkhKontrak').datepicker({ autoclose: true });
 $('#txtTglSpsi').datepicker({ autoclose: true });
 $('#txtTglKop').datepicker({ autoclose: true });
 $('#txtTglKeluar').datepicker({ autoclose: true });
-$('#txtBatasMaxJkn').datepicker({ autoclose: true });
-$('#txtBatasMaxJpn').datepicker({ autoclose: true });
 $('#txtTglJamRecord').datepicker({ autoclose: true });
-$('#txtTglTberlaku').datepicker({ autoclose: true });
-$('#txtTglRec').datepicker({ autoclose: true });
-$('#txtTglBerlaku').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 
 $(document).ready(function() {
@@ -255,6 +281,26 @@ $(document).ready(function() {
     viewMode: "months", 
     minViewMode: "months"
   });
+  $('#txtTglBerlakuPtkp').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtTglPengajuan').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+  $('#txtTanggal').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtTglBerlaku').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+  $('#txtPeriodeJst_new').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
   $('#cmbKdBank').select2();
   $('#cmbKdHubunganKerja').select2();
   $('#cmbKdStatusKerja').select2();
@@ -284,6 +330,8 @@ $(document).ready(function() {
       }
     }
   });
+  
+  $('.money').mask('000,000,000,000,000', {reverse: true});
 });
 
 function getMaxHutang(noind){
@@ -304,4 +352,21 @@ function getMaxHutang(noind){
       $('#max-hutang').text("* Max 2x Gaji Pokok ()");
     }
   });
+}
+
+function getKlaimCuti(){
+	var noind	= $("#txtNoind option:selected").val();
+	var period	= $("#txtPeriodeHitung").val();
+	var cuti	    = $("#txtSisaCuti").val();
+	if(noind.length > 0 && period.length > 0 && cuti.length > 0){
+		 $.ajax({
+			type:'POST',
+			data:{noind: noind, period:period, cuti:cuti},
+			url:baseurl+"PayrollManagement/TransaksiKlaimSisaCuti/getKlaimCuti",
+			success:function(result)
+			{
+			  $('#txtJumlahKlaim').val(result);
+			}
+		  });
+	}
 }

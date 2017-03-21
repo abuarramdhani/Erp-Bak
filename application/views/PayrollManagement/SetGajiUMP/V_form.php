@@ -38,15 +38,21 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                        <label for="txtKodeUMPNew" class="control-label col-lg-4">Kode UMP</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Status Kerja" name="txtKodeUMPNew" id="txtKodeUMPNew" class="form-control" value="<?php echo $kode_ump; ?>" maxlength="8"/>
-                                        </div>
-                                    </div>
+	                                            <label for="txtLokasiKerja" class="control-label col-lg-4">Lokasi Kerja</label>
+	                                            <div class="col-lg-4">
+	                                                <select style="width:100%"  id="txtLokasiKerja" name="txtLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+                                                        <?php
+                                                        foreach ($pr_lokasi_kerja_data as $row) {
+															$slc='';if($row->id_lokasi_kerja==$id_lokasi_kerja){$slc='selected';}
+                                                            echo '<option '.$slc.' value="'.$row->id_lokasi_kerja.'">'.$row->lokasi_kerja.'</option>';
+                                                        }
+                                                        ?></select>
+	                                            </div>
+	                                        </div>
 									<div class="form-group">
                                         <label for="txtUMP" class="control-label col-lg-4">UMP</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Status Kerja" name="txtUMP" id="txtUMP" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $ump; ?>" maxlength="15"/>
+                                            <input type="text" placeholder="Status Kerja" name="txtUMP" id="txtUMP" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $ump; ?>" maxlength="15"/>
                                         </div>
                                     </div>
 									<input type="hidden" name="txtKodeUMP" value="<?php echo $kode_ump; ?>" />

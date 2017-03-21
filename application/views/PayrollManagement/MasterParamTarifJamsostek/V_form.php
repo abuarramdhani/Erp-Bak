@@ -38,51 +38,63 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                            <label for="txtPeriodeJst_new" class="control-label col-lg-4">Periode Jst</label>
+                                            <label for="txtPeriodeJst_new" class="control-label col-lg-4">Periode Jamsostek</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Periode Jst" name="txtPeriodeJst_new" id="txtPeriodeJst_new" class="form-control" value="<?php echo $periode_jst; ?>"/>
+                                                <input type="text" placeholder="Periode Jamsostek" name="txtPeriodeJst_new" id="txtPeriodeJst_new" class="form-control" value="<?php echo $periode_jst; ?>"/>
                                             </div>
                                     </div>
                                     <div class="form-group">
                                             <label for="txtJkk" class="control-label col-lg-4">Jkk</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkk" name="txtJkk" id="txtJkk" class="form-control" value="<?php echo $jkk; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jkk" name="txtJkk" id="txtJkk" class="form-control"onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jkk); ?>" maxlength='3'/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJhtKaryawan" class="control-label col-lg-4">Jht Karyawan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jht Karyawan" name="txtJhtKaryawan" id="txtJhtKaryawan" class="form-control" value="<?php echo $jht_karyawan; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jht Karyawan" name="txtJhtKaryawan" id="txtJhtKaryawan" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jht_karyawan); ?>" maxlength='3'/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJhtPerusahaan" class="control-label col-lg-4">Jht Perusahaan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jht Perusahaan" name="txtJhtPerusahaan" id="txtJhtPerusahaan" class="form-control" value="<?php echo $jht_perusahaan; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jht Perusahaan" name="txtJhtPerusahaan" id="txtJhtPerusahaan" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jht_perusahaan); ?>" maxlength='3'/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJkm" class="control-label col-lg-4">Jkm</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkm" name="txtJkm" id="txtJkm" class="form-control" value="<?php echo $jkm; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jkm" name="txtJkm" id="txtJkm" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jkm); ?>" maxlength='3'/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJpkLajang" class="control-label col-lg-4">Jpk Lajang</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpk Lajang" name="txtJpkLajang" id="txtJpkLajang" class="form-control" value="<?php echo $jpk_lajang; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jpk Lajang" name="txtJpkLajang" id="txtJpkLajang" onkeypress="return isNumberKeyAndDot(event)" class="form-control" value="<?php echo rtrim($jpk_lajang); ?>" maxlength='3'/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJpkNikah" class="control-label col-lg-4">Jpk Nikah</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpk Nikah" name="txtJpkNikah" id="txtJpkNikah" class="form-control" value="<?php echo $jpk_nikah; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jpk Nikah" name="txtJpkNikah" id="txtJpkNikah" onkeypress="return isNumberKeyAndDot(event)" class="form-control" value="<?php echo rtrim($jpk_nikah); ?>"  maxlength='3'/>
                                             </div>
+											<label for="txtPersen" class="control-label">%</label>
+											<label for="txtPersen" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtBatasJpk" class="control-label col-lg-4">Batas Jpk</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Batas Jpk" name="txtBatasJpk" id="txtBatasJpk" class="form-control" value="<?php echo $batas_jpk; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Batas Jpk" name="txtBatasJpk" id="txtBatasJpk" onkeypress="return isNumberKeyAndDot(event)" class="form-control money" value="<?php echo rtrim($batas_jpk); ?>" maxlength='12' />
                                             </div>
                                     </div>
 

@@ -29,7 +29,7 @@ class C_RiwayatUpamk extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $riwayatUpamk = $this->M_riwayatupamk->get_all();
+        $riwayatUpamk = $this->M_riwayatupamk->get_all(date('Y-m-d'));
 
         $data['riwayatUpamk_data'] = $riwayatUpamk;
         $this->load->view('V_Header',$data);
@@ -111,14 +111,17 @@ class C_RiwayatUpamk extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'periode' => $this->input->post('txtPeriode',TRUE),
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'upamk' => $this->input->post('txtUpamk',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
-
+			$data_riwayat	= array(
+				'tgl_tberlaku'	=>	$this->input->post('txtTglBerlaku',TRUE), 
+			);
+            $this->M_riwayatupamk->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
             $this->M_riwayatupamk->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
@@ -196,32 +199,106 @@ class C_RiwayatUpamk extends CI_Controller
         }
     }
 
-    public function import($data = array(), $filename = ''){
+    public function import(){
+		$config['upload_path'] = 'assets/upload/importPR/masterupamk/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '6000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterupamk/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+                $data_exist = array();
+                $i = 0;
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('NOIND', $row)){
+                    	
+ 						//ROW DATA
+	                    $data = array(
+	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+							'tgl_tberlaku' => '9999-12-31',
+							'periode' => date('Y-m',strtotime($row['TGL_BERLAKU'])),
+							'noind' => $row['NOIND'],
+							'upamk' => $row['UPAMK'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_rec' => date('Y-m-d H:i:s'),
+	                    );
 
-        $this->checkSession();
-        $user_id = $this->session->userid;
+                    	//CHECK IF EXIST
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_riwayatupamk->check($noind);
 
-        $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
-            'SubMenuTwo' => '',
-            'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
-            'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
-            'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            'action' => site_url('PayrollManagement/RiwayatUpamk/import'),
-            'data' => $data,
-            'filename' => $filename,
-        );
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+							);
+							$this->M_riwayatupamk->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatupamk->insert($data);
+	                    }else{
+	                    	$this->M_riwayatupamk->insert($data);
+	                    }
 
-        $this->load->view('V_Header',$data);
-        $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/RiwayatUpamk/V_import', $data);
-        $this->load->view('V_Footer',$data);
+                	}else{
+                		//ROW DATA
+                		$data = array(
+	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+							'tgl_tberlaku' => '9999-12-31',
+							'periode' => date('Y-m',strtotime($row['TGL_BERLAKU'])),
+							'noind' => $row['NOIND'],
+							'upamk' => $row['UPAMK'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_rec' => date('Y-m-d H:i:s'),
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_riwayatupamk->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+							);
+							$this->M_riwayatupamk->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatupamk->insert($data);
+	                    }else{
+	                    	$this->M_riwayatupamk->insert($data);
+	                    }
+	                    
+                	}
+                }
+
+                //LOAD EXIST DATA VERIFICATION PAGE
+                $this->checkSession();
+        		$user_id = $this->session->userid;
+        
+        		$data['Menu'] = 'Payroll Management';
+        		$data['SubMenuOne'] = '';
+        		$data['SubMenuTwo'] = '';
+
+		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		        $data['data_exist'] = $data_exist;
+				unlink($file_path);
+				redirect(site_url('PayrollManagement/RiwayatUpamk'));
+            } else {
+                $this->load->view('csvindex');
+            }
+        }
     }
 
     public function upload() {
        
-        $config['upload_path'] = 'assets/upload/importPR';
+        $config['upload_path'] = 'assets/upload/importPR/masterupamk/';
         $config['file_name'] = 'MasterUPAMK-'.time();
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
@@ -233,7 +310,7 @@ class C_RiwayatUpamk extends CI_Controller
         else {
             $file_data  = $this->upload->data();
             $filename   = $file_data['file_name'];
-            $file_path  = 'assets/upload/importPR/'.$file_data['file_name'];
+            $file_path  = 'assets/upload/importPR/masterupamk/'.$file_data['file_name'];
             
             if ($this->csvimport->get_array($file_path)){
                 $data = $this->csvimport->get_array($file_path);
@@ -252,13 +329,13 @@ class C_RiwayatUpamk extends CI_Controller
 
         foreach ($importData as $row) {
             $data = array(
-                'tgl_berlaku' => $row['tgl_berlaku'],
-                'tgl_tberlaku' => $row['tgl_tberlaku'],
-                'periode' => $row['periode'],
-                'noind' => $row['noind'],
-                'upamk' => $row['upamk'],
-                'kd_petugas' => $row['kd_petugas'],
-                'tgl_rec' => $row['tgl_rec'],
+               'tgl_berlaku' => $row['TGL_BERLAKU'],
+				'tgl_tberlaku' => '9999-12-31',
+				'periode' => date('Y-m',strtotime($row['TGL_BERLAKU'])),
+				'noind' => $row['NOIND'],
+				'upamk' => $row['UPAMK'],
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
             );
 
             $this->M_riwayatupamk->insert($data);

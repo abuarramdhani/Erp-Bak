@@ -44,15 +44,11 @@
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
-	                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tgl Tberlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTberlaku" value="<?php echo $tgl_tberlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTberlaku" />
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>"/>
+												<select class="form-control select2-getNoind" id="txtNoind" name="txtNoind" style="width:100%;" required>
+														<option value=""></option>
+												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
@@ -82,19 +78,6 @@
                                                 <input type="text" placeholder="Nama Pemilik Rekening" name="txtNamaPemilikRekening" id="txtNamaPemilikRekening" class="form-control" value="<?php echo $nama_pemilik_rekening; ?>"/>
                                             </div>
                                     </div>
-									<div class="form-group">
-                                            <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kode Petugas" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kode_petugas; ?>"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglRecord" class="control-label col-lg-4">Tgl Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRecord" value="<?php echo $tgl_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRecord" />
-	                                            </div>
-	                                        </div>
-
 	    <input type="hidden" name="txtIdRiwRekPkj" value="<?php echo $id_riw_rek_pkj; ?>" /> </div>
                                 
                             </div>

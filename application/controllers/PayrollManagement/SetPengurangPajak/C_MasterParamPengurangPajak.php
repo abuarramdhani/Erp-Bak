@@ -106,9 +106,9 @@ class C_MasterParamPengurangPajak extends CI_Controller
 		//MASTER INSERT NEW
 		$data = array(
 			'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
-			'max_jab' => $this->input->post('txtMaxJab',TRUE),
+			'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 			'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
-			'max_pensiun' => $this->input->post('txtMaxPensiun',TRUE),
+			'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 			'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 		);
 		
@@ -124,11 +124,11 @@ class C_MasterParamPengurangPajak extends CI_Controller
 		$ri_data = array(
 			'tgl_berlaku' 				=> date('Y-m-d'),
 			'tgl_tberlaku' 				=> '9999-12-31',
-			'max_jab' 					=> $this->input->post('txtMaxJab',TRUE),
+			'max_jab' 					=> str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 			'persentase_jab' 			=> $this->input->post('txtPersentaseJab',TRUE),
-			'max_pensiun' 				=> $this->input->post('txtMaxPensiun',TRUE),
+			'max_pensiun' 				=> str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 			'persentase_pensiun' 		=> $this->input->post('txtPersentasePensiun',TRUE),
-			'kode_petugas' 				=> '0000001',
+			'kode_petugas' 				=> $this->session->userdata('userid'),
 			'tgl_record' 				=> date('Y-m-d H:i:s'),
 		);
 
@@ -181,9 +181,9 @@ class C_MasterParamPengurangPajak extends CI_Controller
 
         $data = array(
 				'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
-				'max_jab' => $this->input->post('txtMaxJab',TRUE),
+				'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 				'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
-				'max_pensiun' => $this->input->post('txtMaxPensiun',TRUE),
+				'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 			);
 

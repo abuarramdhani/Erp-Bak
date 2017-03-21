@@ -95,20 +95,16 @@ class C_StandartJamUmum extends CI_Controller
     {
         $this->formValidation();
 
-		//MASTER DELETE CURRENT
-		$md_where = array(
-			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
-		);
+	
 		
 		//MASTER INSERT NEW
         $data = array(
-			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
+			'kode_standart_jam' => date('YmdHis'),
 			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
-			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
 			'tgl_tberlaku' 			=> '9999-12-31',
 		);
 		$ru_data = array(
@@ -117,11 +113,11 @@ class C_StandartJamUmum extends CI_Controller
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'kode_standart_jam'		=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'kode_standart_jam'		=> date('YmdHis'),
 			'jml_std_jam_per_bln'	=> $this->input->post('txtJmlStdJamPerBln',TRUE),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'kd_petugas' 			=> '0000001',
+			'kd_petugas' 			=> $this->session->userdata('userid'),
 			'tgl_rec' 				=> date('Y-m-d H:i:s'),
 		);
 		
@@ -169,11 +165,10 @@ class C_StandartJamUmum extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
 			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
 		);
 
-        $this->M_standartjamumum->update($this->input->post('txtKodeStandartJam', TRUE), $data);
+        $this->M_standartjamumum->update($data);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/StandartJamUmum'));
     }

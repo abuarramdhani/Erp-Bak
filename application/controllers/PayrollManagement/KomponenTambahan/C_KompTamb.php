@@ -104,14 +104,10 @@ class C_KompTamb extends CI_Controller
     {
         $this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
             $data = array(
 				'periode' => $this->input->post('txtPeriode',TRUE),
-				'noind' => $this->input->post('cmbNoind',TRUE),
-				'tambahan' => $this->input->post('txtTambahan',TRUE),
+				'noind' => $this->input->post('txtNoind',TRUE),
+				'tambahan' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
@@ -119,7 +115,6 @@ class C_KompTamb extends CI_Controller
             $this->M_komptamb->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/KompTamb'));
-        }
     }
 
     public function update($id)
@@ -167,7 +162,7 @@ class C_KompTamb extends CI_Controller
             $data = array(
 				'periode' => $this->input->post('txtPeriode',TRUE),
 				'noind' => $this->input->post('cmbNoind',TRUE),
-				'tambahan' => $this->input->post('txtTambahan',TRUE),
+				'tambahan' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
@@ -202,8 +197,8 @@ class C_KompTamb extends CI_Controller
 
     public function formValidation()
     {
-		$this->form_validation->set_rules('txtTambahan', 'Tambahan', 'integer');
-		$this->form_validation->set_rules('txtDesc', 'Desc ', 'max_length[30]');
+		// $this->form_validation->set_rules('txtTambahan', 'Tambahan', 'integer');
+		// $this->form_validation->set_rules('txtDesc', 'Desc ', 'max_length[30]');
 	}
 
 }

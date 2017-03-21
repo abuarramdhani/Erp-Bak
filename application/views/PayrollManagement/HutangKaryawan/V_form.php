@@ -40,7 +40,8 @@
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">No Induk</label>
                                             <div class="col-lg-4">
-                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())"><option value=""></option>
+                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())">
+													<option value=""></option>
                                                 </select>
                                             </div>
                                     </div>
@@ -61,9 +62,10 @@
                                     </div>
 									<div class="form-group">
                                             <label for="txtJmlCicilan" class="control-label col-lg-4">Jumlah Cicilan</label>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-2">
                                                 <input type="text" placeholder="Jml Cicilan" name="txtJmlCicilan" id="txtJmlCicilan" class="form-control" value="<?php echo $jml_cicilan; ?>" onkeypress="return isNumberKey(event)" maxlength="2" />
                                             </div>
+											  <label for="txtJmlCicilan" class="control-label">Bulan</label>
                                     </div>
 									<div class="form-group">
 	                                            <label for="cmbStatusLunas" class="control-label col-lg-4">Status Lunas</label>
@@ -75,18 +77,6 @@
 														?>
 														<option <?php echo $blm ?> value="0">BELUM LUNAS</option><option value=""></option>
                                                         <option <?php echo $sdh ?> value="1">LUNAS</option></select>
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-                                            <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kode Petugas" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kode_petugas; ?>"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglRecord" class="control-label col-lg-4">Tanggal Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRecord" value="<?php echo $tgl_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRecord" />
 	                                            </div>
 	                                        </div>
 

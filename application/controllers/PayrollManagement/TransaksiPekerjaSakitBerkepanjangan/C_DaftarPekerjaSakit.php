@@ -98,11 +98,6 @@ class C_DaftarPekerjaSakit extends CI_Controller
     public function save()
     {
         $this->formValidation();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
             $data = array(
 				'tanggal' => $this->input->post('txtTanggal',TRUE),
 				'noind' => $this->input->post('txtNoind',TRUE),
@@ -112,7 +107,6 @@ class C_DaftarPekerjaSakit extends CI_Controller
             $this->M_daftarpekerjasakit->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/DaftarPekerjaSakit'));
-        }
     }
 
     public function update($id)

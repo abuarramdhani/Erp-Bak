@@ -18,7 +18,7 @@ class M_masterparamkompumum extends CI_Model
     // get all data
     function get_all($dt)
     {
-		$this->db->select('a.um,a.ubt');    
+		$this->db->select('a.um,a.ubt,b.tgl_berlaku');    
 		$this->db->from('pr.pr_master_param_komp_umum as a ');
 		$this->db->join('pr.pr_riwayat_param_komp_umum as b', 'a.um=b.um and a.ubt=b.ubt');
 		$this->db->where('b.tgl_berlaku <=',$dt);

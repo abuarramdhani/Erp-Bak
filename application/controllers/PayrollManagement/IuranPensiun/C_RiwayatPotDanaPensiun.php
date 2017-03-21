@@ -29,7 +29,7 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $riwayatPotDanaPensiun = $this->M_riwayatpotdanapensiun->get_all();
+        $riwayatPotDanaPensiun = $this->M_riwayatpotdanapensiun->get_all(date('Y-m-d'));
 
         $data['riwayatPotDanaPensiun_data'] = $riwayatPotDanaPensiun;
         $this->load->view('V_Header',$data);
@@ -109,13 +109,17 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'pot_pensiun' => $this->input->post('txtPotPensiun',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_jam_record' => $this->input->post('txtTglJamRecord',TRUE),
+				'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_jam_record' => date('Y-m-d H:i:s'),
 			);
-
+			$data_riwayat = array(
+				'tgl_tberlaku'	=> $this->input->post('txtTglBerlaku',TRUE),
+			);
+			
+			$this->M_riwayatpotdanapensiun->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
             $this->M_riwayatpotdanapensiun->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
@@ -164,11 +168,11 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'pot_pensiun' => $this->input->post('txtPotPensiun',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_jam_record' => $this->input->post('txtTglJamRecord',TRUE),
+				'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_jam_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatpotdanapensiun->update($this->input->post('txtIdRiwPens', TRUE), $data);
@@ -191,32 +195,104 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         }
     }
 
-    public function import($data = array(), $filename = ''){
+    public function import(){
+		$config['upload_path'] = 'assets/upload/importPR/iuranpensiun/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '6000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/iuranpensiun/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+                $data_exist = array();
+                $i = 0;
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('NOIND', $row)){
+                    	
+ 						//ROW DATA
+	                    $data = array(
+	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'pot_pensiun' => $row['POT_PENSIUN'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+	                    );
 
-        $this->checkSession();
-        $user_id = $this->session->userid;
+                    	//CHECK IF EXIST
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
 
-        $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
-            'SubMenuTwo' => '',
-            'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
-            'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
-            'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            'action' => site_url('PayrollManagement/RiwayatPotDanaPensiun/import'),
-            'data' => $data,
-            'filename' => $filename,
-        );
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+							);
+							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatpotdanapensiun->insert($data);
+	                    }else{
+	                    	$this->M_riwayatpotdanapensiun->insert($data);
+	                    }
 
-        $this->load->view('V_Header',$data);
-        $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/RiwayatPotDanaPensiun/V_import', $data);
-        $this->load->view('V_Footer',$data);
+                	}else{
+                		//ROW DATA
+                		$data = array(
+	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'pot_pensiun' => $row['POT_PENSIUN'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+							);
+							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatpotdanapensiun->insert($data);
+	                    }else{
+	                    	$this->M_riwayatpotdanapensiun->insert($data);
+	                    }
+	                    
+                	}
+                }
+
+                //LOAD EXIST DATA VERIFICATION PAGE
+                $this->checkSession();
+        		$user_id = $this->session->userid;
+        
+        		$data['Menu'] = 'Payroll Management';
+        		$data['SubMenuOne'] = '';
+        		$data['SubMenuTwo'] = '';
+
+		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		        $data['data_exist'] = $data_exist;
+				unlink($file_path);
+				redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+            } else {
+                $this->load->view('csvindex');
+            }
+        }
     }
 
     public function upload() {
        
-        $config['upload_path'] = 'assets/upload/importPR';
+        $config['upload_path'] = 'assets/upload/importPR/iuranpensiun';
         $config['file_name'] = 'IuranPensiun-'.time();
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
@@ -228,7 +304,7 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         else {
             $file_data  = $this->upload->data();
             $filename   = $file_data['file_name'];
-            $file_path  = 'assets/upload/importPR/'.$file_data['file_name'];
+            $file_path  = 'assets/upload/importPR/iuranpensiun/'.$file_data['file_name'];
             
             if ($this->csvimport->get_array($file_path)){
                 $data = $this->csvimport->get_array($file_path);
@@ -242,17 +318,17 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
 
     public function saveImport(){
         $filename = $this->input->post('txtFileName');
-        $file_path  = 'assets/upload/importPR/'.$filename;
+        $file_path  = 'assets/upload/importPR/iuranpensiun/'.$filename;
         $importData = $this->csvimport->get_array($file_path);
 
         foreach ($importData as $row) {
            $data = array(
-                'tgl_berlaku' => $row['tgl_berlaku'],
-                'tgl_tberlaku' => $row['tgl_tberlaku'],
-                'noind' => $row['noind'],
-                'pot_pensiun' => $row['pot_pensiun'],
-                'kd_petugas' => $row['kd_petugas'],
-                'tgl_jam_record' => $row['tgl_jam_record'],
+               	'tgl_berlaku' => $row['TGL_BERLAKU'],
+				'tgl_tberlaku' => '9999-12-31',
+				'noind' => $row['NOIND'],
+				'pot_pensiun' => $row['POT_PENSIUN'],
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_jam_record' => date('Y-m-d H:i:s'),
             );
 
             $this->M_riwayatpotdanapensiun->insert($data);

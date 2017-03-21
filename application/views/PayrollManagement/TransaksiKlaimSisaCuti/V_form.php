@@ -40,35 +40,27 @@
 									<div class="form-group">
                                         <label for="txtNoind" class="control-label col-lg-4">No induk</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
-                                            <!--
-                                            <select style="width:100%" id="cmbNoind" name="cmbNoind" class="select2" data-placeholder="Choose an option"><option value=""></option>
-                                            </select>
-                                            -->
+                                            <select style="width:100%" id="txtNoind" name="txtNoind" class="select2-getNoind"  data-placeholder="Choose an option" onchange="getKlaimCuti()">
+													<option value=""></option>
+												</select>
                                         </div>
                                     </div>
 									<div class="form-group">
 	                                    <label for="txtPeriode" class="control-label col-lg-4">Periode</label>
 	                                    <div class="col-lg-4">
-	                                        <input type="text" placeholder="<?php echo date('Y-m')?>" name="txtPeriode" value="<?php echo $periode ?>" class="form-control" onkeypress="return isNumberKeyAndStrip(event)" maxlength="7"/>
+	                                        <input type="text" placeholder="<?php echo date('Y-m')?>" name="txtPeriode" id="txtPeriodeHitung" value="<?php echo $periode ?>" onchange="getKlaimCuti()" class="form-control" onkeypress="return isNumberKeyAndStrip(event)"  maxlength="7"/>
 	                                    </div>
 	                                </div>
 									<div class="form-group">
                                         <label for="txtSisaCuti" class="control-label col-lg-4">Sisa Cuti</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Sisa Cuti" name="txtSisaCuti" id="txtSisaCuti" class="form-control" value="<?php echo $sisa_cuti; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
+                                        <div class="col-lg-2">
+                                            <input type="text" placeholder="Sisa Cuti" name="txtSisaCuti" id="txtSisaCuti" class="form-control" value="<?php echo $sisa_cuti; ?>" onchange="getKlaimCuti()"  onkeypress="return isNumberKey(event)" maxlength="2"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtJumlahKlaim" class="control-label col-lg-4">Jumlah Klaim</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Jumlah Klaim" name="txtJumlahKlaim" id="txtJumlahKlaim" class="form-control" value="<?php echo $jumlah_klaim; ?>" onkeypress="return isNumberKey(event)" maxlength="15"/>
-                                        </div>
-                                    </div>
-									<div class="form-group">
-                                        <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Kode Petugas" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kode_petugas; ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
+                                            <input type="text" placeholder="Jumlah Klaim" name="txtJumlahKlaim" id="txtJumlahKlaim" class="form-control" value="<?php echo $jumlah_klaim; ?>"  onkeypress="return isNumberKey(event)" maxlength="15" readonly />
                                         </div>
                                     </div>
 									<div class="form-group">

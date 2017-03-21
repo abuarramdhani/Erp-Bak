@@ -40,19 +40,22 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Nomor Hutang</th>
-							<th>No Induk</th>
-							<th>Tanggal Pengajuan</th>
-							<th>Total Hutang</th>
-							<th>Jumlah Cicilan</th>
-							<th>Status Lunas</th>
-							<th>Kode Petugas</th>
-							<th>Tanggal Record</th>
-
+							<th style='text-align:center'>Nomor Hutang</th>
+							<th style='text-align:center'>No Induk</th>
+							<th style='text-align:center'>Tanggal Pengajuan</th>
+							<th style='text-align:center'>Total Hutang</th>
+							<th style='text-align:center'>Jumlah Cicilan</th>
+							<th style='text-align:center'>Status Lunas</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($hutangKaryawan_data as $row) { ?>
+							<?php $no = 1; foreach($hutangKaryawan_data as $row) {
+								if($row->status_lunas == 0){
+									$status = "belum lunas";
+								}else{
+									$status = "lunas";
+								}
+							?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
@@ -60,15 +63,12 @@
                               	<a href="<?php echo base_url('PayrollManagement/HutangKaryawan/update/'.$row->no_hutang.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/HutangKaryawan/delete/'.$row->no_hutang.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->no_hutang ?></td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->tgl_pengajuan ?></td>
-							<td><?php echo $row->total_hutang ?></td>
-							<td><?php echo $row->jml_cicilan ?></td>
-							<td><?php echo $row->status_lunas ?></td>
-							<td><?php echo $row->kode_petugas ?></td>
-							<td><?php echo $row->tgl_record ?></td>
-
+							<td align='center'><?php echo $row->no_hutang ?></td>
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='center'><?php echo $row->tgl_pengajuan ?></td>
+							<td align='right'><?php echo number_format((int)$row->total_hutang) ?></td>
+							<td align='center'><?php echo $row->jml_cicilan ?></td>
+							<td align='center'><?php echo $status ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

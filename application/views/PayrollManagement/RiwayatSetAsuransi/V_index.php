@@ -41,7 +41,6 @@
 		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
                             <th style='text-align:center'><div style="width:100px"></div>ACTION</th>
 							<th><div style="width:100px"></div>Tanggal Berlaku</th>
-							<th><div style="width:100px"></div>Tanggal Tberlaku</th>
 							<th><div style="width:40px"></div>Kode Status Kerja</th>
 							<th><div style="width:40px"></div>JKK</th>
 							<th><div style="width:40px"></div>JKM</th>
@@ -51,8 +50,6 @@
 							<th><div style="width:40px"></div>JKN Perusahaan</th>
 							<th><div style="width:40px"></div>JPN Karyawan</th>
 							<th><div style="width:40px"></div>JPN Perusahaan</th>
-							<th><div style="width:100px"></div>Kode Petugas</th>
-							<th><div style="width:100px"></div>Tanggal Record</th>
 
 		                  </tr>
 		                </thead>
@@ -65,20 +62,16 @@
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatSetAsuransi/update/'.$row->id_set_asuransi.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/RiwayatSetAsuransi/delete/'.$row->id_set_asuransi.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->tgl_berlaku ?></td>
-							<td><?php echo $row->tgl_tberlaku ?></td>
-							<td><?php echo $row->kd_status_kerja ?></td>
-							<td><?php echo $row->jkk ?></td>
-							<td><?php echo $row->jkm ?></td>
-							<td><?php echo $row->jht_kary ?></td>
-							<td><?php echo $row->jht_prshn ?></td>
-							<td><?php echo $row->jkn_kary ?></td>
-							<td><?php echo $row->jkn_prshn ?></td>
-							<td><?php echo $row->jpn_kary ?></td>
-							<td><?php echo $row->jpn_prshn ?></td>
-							<td><?php echo $row->kd_petugas ?></td>
-							<td><?php echo $row->tgl_rec ?></td>
-
+							<td align='center'><?php echo $row->tgl_berlaku ?></td>
+							<td align='center'><?php echo $row->kd_status_kerja ?></td>
+							<td align='center'><?php echo $row->jkk ?></td>
+							<td align='center'><?php echo $row->jkm ?></td>
+							<td align='center'><?php echo $row->jht_kary ?></td>
+							<td align='center'><?php echo $row->jht_prshn ?></td>
+							<td align='center'><?php echo $row->jkn_kary ?></td>
+							<td align='center'><?php echo $row->jkn_prshn ?></td>
+							<td align='center'><?php echo $row->jpn_kary ?></td>
+							<td align='center'><?php echo $row->jpn_prshn ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

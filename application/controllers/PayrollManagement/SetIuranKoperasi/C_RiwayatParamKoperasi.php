@@ -28,7 +28,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $riwayatParamKoperasi = $this->M_riwayatparamkoperasi->get_all();
+        $riwayatParamKoperasi = $this->M_riwayatparamkoperasi->get_all(date('Y-m-d'));
 
         $data['riwayatParamKoperasi_data'] = $riwayatParamKoperasi;
         $this->load->view('V_Header',$data);
@@ -104,13 +104,19 @@ class C_RiwayatParamKoperasi extends CI_Controller
         $this->formValidation();
 
             $data = array(
+				'id_riwayat' => date('YmdHis'),
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-				'ikop' => $this->input->post('txtIkop',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
+				'ikop' => str_replace(',','',$this->input->post('txtIkop',TRUE)),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-
+			
+			$data_update = array(
+				'tgl_tberlaku' => $this->input->post('txtTglBerlaku',TRUE),
+			);
+			$exp = '9999-12-31';
+            $this->M_riwayatparamkoperasi->update_riwayat($exp,$data_update);
             $this->M_riwayatparamkoperasi->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
@@ -156,10 +162,10 @@ class C_RiwayatParamKoperasi extends CI_Controller
 
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-				'ikop' => $this->input->post('txtIkop',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'tgl_tberlaku' => '999912-31',
+				'ikop' => str_replace(',','',$this->input->post('txtIkop',TRUE)),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatparamkoperasi->update($this->input->post('txtIdRiwayat', TRUE), $data);

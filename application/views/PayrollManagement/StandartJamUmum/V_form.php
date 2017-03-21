@@ -39,15 +39,9 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                        <label for="txtKodeStandartJamNew" class="control-label col-lg-4">Kode Standart Jam</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Kode Standart Jam" name="txtKodeStandartJamNew" id="txtKodeStandartJamNew" class="form-control" value="<?php echo $kode_standart_jam; ?>" maxlength="9"/>
-                                        </div>
-                                    </div>
-									<div class="form-group">
                                         <label for="txtJmlStdJamPerBln" class="control-label col-lg-4">Jumlah Standart Jam Per Bulan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Jumlah Standart Jam Per Bulan" name="txtJmlStdJamPerBln" id="txtJmlStdJamPerBln" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $jml_std_jam_per_bln; ?>" maxlength="4" />
+                                            <input type="text" placeholder="Jumlah Standart Jam Per Bulan" name="txtJmlStdJamPerBln" id="txtJmlStdJamPerBln" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo rtrim($jml_std_jam_per_bln); ?>" maxlength="4" />
                                         </div>
                                     </div>
 									<input type="hidden" name="txtKodeStandartJam" value="<?php echo $kode_standart_jam; ?>" />

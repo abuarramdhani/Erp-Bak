@@ -99,20 +99,21 @@ class C_TransaksiKlaimDl extends CI_Controller
     {
         $this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
+        // if ($this->form_validation->run() == FALSE) {
+            // $this->create();
+        // }
+        // else{
             $data = array(
+				'id_klaim_dl' => date('YmdHis'),
 				'tanggal' => $this->input->post('txtTanggal',TRUE),
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'klaim_dl' => $this->input->post('txtKlaimDl',TRUE),
+				'klaim_dl' => str_replace(',','',$this->input->post('txtKlaimDl',TRUE)),
 			);
 
             $this->M_transaksiklaimdl->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/TransaksiKlaimDl'));
-        }
+        // }
     }
 
     public function update($id)
@@ -158,7 +159,7 @@ class C_TransaksiKlaimDl extends CI_Controller
             $data = array(
 				'tanggal' => $this->input->post('txtTanggal',TRUE),
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'klaim_dl' => $this->input->post('txtKlaimDl',TRUE),
+				'klaim_dl' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
 			);
 
             $this->M_transaksiklaimdl->update($this->input->post('txtIdKlaimDl', TRUE), $data);
@@ -191,7 +192,7 @@ class C_TransaksiKlaimDl extends CI_Controller
 
     public function formValidation()
     {
-		$this->form_validation->set_rules('txtKlaimDl', 'Klaim Dl', 'integer');
+		// $this->form_validation->set_rules('txtKlaimDl', 'Klaim Dl', 'integer');
 	}
 
 }

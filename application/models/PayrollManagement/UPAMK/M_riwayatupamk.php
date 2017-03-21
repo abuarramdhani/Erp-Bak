@@ -14,8 +14,10 @@ class M_riwayatupamk extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($date)
     {
+		$this->db->where('tgl_berlaku<=',$date);
+		$this->db->where('tgl_tberlaku>',$date);
     	return $this->db->get($this->table)->result();
     }
 
@@ -37,6 +39,20 @@ class M_riwayatupamk extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+	
+	function check($id)
+    {
+        $this->db->where('noind', $id);
+        return $this->db->get($this->table)->row();
+    }
+	
+	// update data riwayat
+    function update_riwayat($id,$date,$data_riwayat)
+    {
+        $this->db->where('noind', $id);
+        $this->db->where('tgl_tberlaku', $date);
+        $this->db->update($this->table, $data_riwayat);
     }
 
     // delete data
