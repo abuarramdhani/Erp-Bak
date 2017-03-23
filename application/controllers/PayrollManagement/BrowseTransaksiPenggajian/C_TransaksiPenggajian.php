@@ -34,6 +34,20 @@ class C_TransaksiPenggajian extends CI_Controller
         $this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_index', $data);
         $this->load->view('V_Footer',$data);
     }
+	
+	public function Hitung(){
+		$this->checkSession();
+        $user_id = $this->session->userid;
+        
+        $data['Menu'] = 'Payroll Management';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+	}
 
     public function checkSession(){
         if($this->session->is_logged){

@@ -44,8 +44,9 @@
 							<th style='text-align:center'>Jht Karyawan</th>
 							<th style='text-align:center'>Jht Perusahaan</th>
 							<th style='text-align:center'>Jkm</th>
-							<th style='text-align:center'>Jpk Lajang</th>
-							<th style='text-align:center'>Jpk Nikah</th>
+							<th style='text-align:center'>Jpk Karyawan</th>
+							<th style='text-align:center'>Jpk Perusahaan</th>
+							<th style='text-align:center'>Batas Umur Jpk</th>
 							<th style='text-align:center'>Batas Jpk</th>
 						</tr>
 		               </thead>
@@ -62,8 +63,9 @@
 							<td align='center'><?php echo $row->jht_karyawan ?> %</td>
 							<td align='center'><?php echo $row->jht_perusahaan ?> %</td>
 							<td align='center'><?php echo $row->jkm ?> %</td>
-							<td align='center'><?php echo $row->jpk_lajang ?> %</td>
-							<td align='center'><?php echo $row->jpk_nikah ?> %</td>
+							<td align='center'><?php echo $row->jpk_karyawan ?> %</td>
+							<td align='center'><?php echo $row->jpk_perusahaan ?> %</td>
+							<td align='center'><?php echo $row->batas_umur_jpk ?></td>
 							<td align='center'><?php echo $row->batas_jpk ?></td>
 						</tr>
 							<?php } ?>

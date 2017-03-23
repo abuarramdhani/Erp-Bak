@@ -7,6 +7,7 @@ class C_MasterJabatanUpah extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
+		$this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterJabatanUpah/M_masterjabatanupah');
         if($this->session->userdata('logged_in')!=TRUE) {
@@ -176,6 +177,127 @@ class C_MasterJabatanUpah extends CI_Controller
         }else{
             redirect(site_url());
         }
+    }
+	
+	  public function import(){
+		$config['upload_path'] = 'assets/upload/importPR/masterjabatanupah/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '6000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+                $data_exist = array();
+                $i = 0;
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('KD_JAB_UPAH', $row)){
+                    	
+ 						//ROW DATA
+	                    $data = array(
+	                    	'kd_jabatan_upah' => $row['KD_JAB_UPAH'],
+							'jabatan_upah' => $row['JAB_UPAH'],
+	                    );
+
+                    	//CHECK IF EXIST
+                    	$jab_upah = str_pad($row['KD_JAB_UPAH'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_masterjabatanupah->check($jab_upah);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+	                    }else{
+	                    	$this->M_masterjabatanupah->insert_header($data);
+	                    }
+
+                	}else{
+                		//ROW DATA
+                		$data = array(
+	                    	'kd_jabatan_upah' => $row['KD_JAB_UPAH'],
+							'jabatan_upah' => $row['JAB_UPAH'],
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$jab_upah = str_pad($row['KD_JAB_UPAH'], 5, "0", STR_PAD_LEFT);
+	                   	$check = $this->M_masterjabatanupah->check($jab_upah);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+	                    }else{
+	                    	$this->M_masterjabatanupah->insert_header($data);
+	                    }
+	                    
+                	}
+                }
+
+                //LOAD EXIST DATA VERIFICATION PAGE
+                $this->checkSession();
+        		$user_id = $this->session->userid;
+        
+        		$data['Menu'] = 'Payroll Management';
+        		$data['SubMenuOne'] = '';
+        		$data['SubMenuTwo'] = '';
+
+		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		        $data['data_exist'] = $data_exist;
+				unlink($file_path);
+				redirect(site_url('PayrollManagement/MasterJabatanUpah'));
+            } else {
+                $this->load->view('csvindex');
+            }
+        }
+    }
+
+    public function upload() {
+       
+        $config['upload_path'] = 'assets/upload/importPR/masterjabatanupah';
+        $config['file_name'] = 'MasterJabatanUpah-'.time();
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '2000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) {
+            echo $this->upload->display_errors();
+        }
+        else {
+            $file_data  = $this->upload->data();
+            $filename   = $file_data['file_name'];
+            $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$file_data['file_name'];
+            
+            if ($this->csvimport->get_array($file_path)){
+                $data = $this->csvimport->get_array($file_path);
+                $this->import($data, $filename);
+            }
+            else {
+                $this->import($data = array(), $filename = '');
+            }
+        }
+    }
+
+    public function saveImport(){
+        $filename = $this->input->post('txtFileName');
+        $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$filename;
+        $importData = $this->csvimport->get_array($file_path);
+
+        foreach ($importData as $row) {
+           $data = array(
+				'kd_jabatan_upah' => $row['KD_JAB_UPAH'],
+				'jabatan_upah' => $row['JAB_UPAH'],
+            );
+
+            $this->M_masterjabatanupah->insert_header($data);
+        }
+
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/RiwayatRekeningPekerja'));
     }
     
 

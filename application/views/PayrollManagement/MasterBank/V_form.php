@@ -40,7 +40,7 @@
 									<div class="form-group">
                                         <label for="txtKdBankNew" class="control-label col-lg-4">Kode Bank</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Bank" name="txtKdBankNew" id="txtKdBankNew" class="form-control text-uppercase" value="<?php echo $kd_bank; ?>" maxlength="3" />
+                                            <input type="text" placeholder="Bank" name="txtKdBankNew" id="txtKdBankNew" class="form-control text-uppercase" value="<?php echo $kd_bank; ?>" maxlength="5" />
                                         </div>
                                     </div>
 									<div class="form-group">
@@ -52,13 +52,13 @@
 									<div class="form-group">
                                         <label for="txtPotTransfer" class="control-label col-lg-4">Pot Transfer</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pot Transfer" name="txtPotTransfer" id="txtPotTransfer" class="form-control text-uppercase" value="<?php echo $pot_transfer; ?>" maxlength="10" />
+                                            <input type="text" placeholder="Pot Transfer" name="txtPotTransfer" id="txtPotTransfer" class="form-control money text-uppercase" onkeypress="return isNumberKey(event)" value="<?php echo $pot_transfer; ?>" maxlength="10" />
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPotTransferTgPrshn" class="control-label col-lg-4">Pot Transfer Tg Perusahaan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pot Transfer Tg Prshn" name="txtPotTransferTgPrshn" id="txtPotTransferTgPrshn" class="form-control text-uppercase" value="<?php echo $pot_transfer_tg_prshn; ?>" maxlength="10" />
+                                            <input type="text" placeholder="Pot Transfer Tg Prshn" name="txtPotTransferTgPrshn" id="txtPotTransferTgPrshn" class="form-control money text-uppercase" onkeypress="return isNumberKey(event)" value="<?php echo $pot_transfer_tg_prshn; ?>" maxlength="10" />
                                         </div>
                                     </div>
 									<div class="form-group">

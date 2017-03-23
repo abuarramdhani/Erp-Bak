@@ -14,10 +14,17 @@ class M_masterpekerja extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($statusKerja)
     {
-		$count = $this->db->get($this->table)->num_rows();
-    	return $this->db->order_by('noind', 'ASC')->get($this->table, $count)->result();
+		$sql = "select * from pr.pr_master_pekerja where left(noind,1) in ($statusKerja) order by noind";
+		$query	= $this->db->query($sql);
+		return $query->result();
+    }
+	
+	// get hubker
+    function get_hubker()
+    {
+    	return $this->db->order_by('kd_status_kerja', 'ASC')->get('pr.pr_master_status_kerja')->result();
     }
 
     // get data by id

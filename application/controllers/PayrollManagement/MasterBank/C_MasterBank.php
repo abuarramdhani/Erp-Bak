@@ -121,8 +121,8 @@ class C_MasterBank extends CI_Controller
 		$data = array(
 			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
 			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
-			'pot_transfer' => strtoupper($this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => strtoupper($this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' => str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 		
@@ -147,8 +147,8 @@ class C_MasterBank extends CI_Controller
 			'bank' 					=> strtoupper($this->input->post('txtBank',TRUE)),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'pot_transfer' 			=> strtoupper($this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => strtoupper($this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' 			=> str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kode_petugas' 			=> '0001225',
 			'tgl_record' 			=> date('Y-m-d H:i:s'),
 			'kd_bank_induk' 		=> strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
@@ -205,8 +205,8 @@ class C_MasterBank extends CI_Controller
         $data = array(
 			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
 			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
-			'pot_transfer' => strtoupper($this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => strtoupper($this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' => str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 

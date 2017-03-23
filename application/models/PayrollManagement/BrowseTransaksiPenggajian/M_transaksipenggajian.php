@@ -3,8 +3,8 @@
 class M_transaksipenggajian extends CI_Model
 {
 
-    public $table = 'pr.pr_transaksi_hutang';
-    public $id = 'id_transaksi_hutang';
+    public $table = 'pr.pr_transaksi_pembayaran_penggajian';
+    public $id = 'id_pembayaran_gaji';
     public $order = 'DESC';
 
     function __construct()

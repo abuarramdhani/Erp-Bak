@@ -185,10 +185,10 @@ class C_MasterStatusKerja extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KODE_STATU', $row)){
+                    if(array_key_exists('KD_STAT', $row)){
                         $data = array(
-                            'kd_status_kerja' => $row['KODE_STATU'],
-                            'status_kerja' => $row['NAMA_STATU'],
+                            'kd_status_kerja' => $row['KD_STAT'],
+                            'status_kerja' => $row['STAT_KER'],
                         );
                         $this->M_masterstatuskerja->insert($data);
                     }else{

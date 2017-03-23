@@ -30,6 +30,32 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
+								<div class="row">
+									  <form method="post" action="<?php echo base_url('PayrollManagement/MasterJabatanUpah/upload')?>" enctype="multipart/form-data">
+										<div class="row" style="margin: 10px 0 10px 10px">
+										  <div class="col-lg-offset-7 col-lg-3">
+											<input name="importfile" type="file" class="form-control" readonly required>
+										  </div>
+										  <div class=" col-lg-2">
+											<button class="btn btn-primary btn-block">Load</button>
+										  </div>
+									  </form>
+								  </div>
+								  <?php
+									if (!empty($data)) {
+								  ?>
+								  <form method="post" action="<?php echo base_url('PayrollManagement/MasterJabatanUpah/saveImport')?>">
+									<div class="row" style="margin: 10px 0 10px 10px">
+									  <div class="col-lg-offset-10 col-lg-2">
+										<input type="hidden" name="txtFileName" value="<?php echo $filename; ?>">
+										<button class="btn btn-primary btn-block">Import</button>
+									  </div>
+									</div>
+								  </form>
+								  <?php
+									}
+								  ?>
+								</div>
                                     <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-MasterJabatanUpah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>

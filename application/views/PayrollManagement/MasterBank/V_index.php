@@ -58,8 +58,8 @@
                               </td>
 							<td align='center'><?php echo $row->kd_bank ?></td>
 							<td><?php echo $row->bank ?></td>
-							<td align='center'><?php echo $row->pot_transfer ?></td>
-							<td align='center'><?php echo $row->pot_transfer_tg_prshn ?></td>
+							<td align='center'><?php echo number_format((int)$row->pot_transfer) ?></td>
+							<td align='center'><?php echo number_format((int)$row->pot_transfer_tg_prshn) ?></td>
 							<td align='center'><?php echo $row->kd_bank_induk ?></td>
 
 							</tr>

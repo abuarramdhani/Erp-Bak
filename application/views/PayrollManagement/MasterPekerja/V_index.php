@@ -34,16 +34,33 @@
 		          </div>
 		          <div class="box-body">
 					<div class="row">
-						<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/import')?>" enctype="multipart/form-data">
-							<div class="row" style="margin: 10px 10px">
-									<div class="col-lg-offset-7 col-lg-3">
-										<input name="importfile" type="file" class="form-control" readonly required>
-									</div>
-									<div class="col-lg-2">
-										<button class="btn btn-info btn-block">Import</button>
-									</div>
+							<div class="row" style="margin: 10px 0px">
+							<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/search')?>" enctype="multipart/form-data">
+								<div class="col-lg-3">
+									  <select style="width:100%" id="txtKodeStatusKerja" name="txtKodeStatusKerja[]" class="select2 text-uppercase" multiple="multiple" data-placeholder="Choose an option" width="300px">
+									  <option value=""></option>
+                                                <?php
+													foreach ($Hubker_data as $row){ 
+                                                    echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">'.$row->kd_status_kerja.'</option>';
+                                                    }
+                                                ?>
+											</select>
 								</div>
-						</form>
+								<div class="col-lg-2">
+									<button class="btn btn-warning btn-block">Search</button>
+								</div>
+							</form>
+								<div class="col-lg-2">
+								</div>
+									<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/import')?>" enctype="multipart/form-data">
+										<div class="col-lg-3">
+											<input name="importfile" type="file" class="form-control" readonly required>
+										</div>
+										<div class="col-lg-2">
+											<button class="btn btn-info btn-block">Import</button>
+										</div>
+									</form>
+							</div>
 					</div>
 		            <div class="table-responsive">
 					  <table class="table table-striped table-bordered table-hover text-left" id="dataTables-masterPekerja" style="font-size:12px;">
@@ -51,59 +68,61 @@
 							<tr>
 								<th style="text-align:center"><div style="width:40px"></div>NO</th>
 								<th style='text-align:center'><div style="width:120px"></div>ACTION</th>
-								<th><div style="width:80px"></div>No Induk</th>
-								<th><div style="width:50px"></div>Kode Hub Kerja</th>
-								<th><div style="width:50px"></div>Kode Status Kerja</th>
-								<th><div style="width:120px"></div>NIK</th>
-								<th><div style="width:120px"></div>No KK</th>
-								<th><div style="width:200px"></div>Nama</th>
-								<th><div style="width:40px"></div>Id Kantor Asal</th>
-								<th><div style="width:40px"></div>Id Lokasi Kerja</th>
-								<th><div style="width:40px"></div>Jenis Kelamin</th>
-								<th><div style="width:100px"></div>Tempat Lahir</th>
-								<th><div style="width:120px"></div>Tanggal Lahir</th>
-								<th><div style="width:350px"></div>Alamat</th>
-								<th><div style="width:150px"></div>Desa</th>
-								<th><div style="width:150px"></div>Kecamatan</th>
-								<th><div style="width:150px"></div>Kabupaten</th>
-								<th><div style="width:150px"></div>Provinsi</th>
-								<th><div style="width:60px"></div>Kode Pos</th>
-								<th><div style="width:120px"></div>No Hp</th>
-								<th><div style="width:50px"></div>Gelar D</th>
-								<th><div style="width:50px"></div>Gelar B</th>
-								<th><div style="width:40px"></div>Pendidikan</th>
-								<th><div style="width:200px"></div>Jurusan</th>
-								<th><div style="width:300px"></div>Sekolah</th>
-								<th><div style="width:50px"></div>Stat Nikah</th>
-								<th><div style="width:120px"></div>Tanggal Nikah</th>
-								<th><div style="width:50px"></div>Jumlah Anak</th>
-								<th><div style="width:50px"></div>Jumlah Saudara</th>
-								<th><div style="width:120px"></div>Diangkat</th>
-								<th><div style="width:120px"></div>Masuk Kerja</th>
-								<th><div style="width:50px"></div>Kodesie</th>
-								<th><div style="width:50px"></div>Gol Kerja</th>
-								<th><div style="width:50px"></div>Kode Asal Outsourcing</th>
-								<th><div style="width:50px"></div>Kode Jabatan</th>
-								<th><div style="width:500px"></div>Jabatan</th>
-								<th><div style="width:200px"></div>NPWP</th>
-								<th><div style="width:200px"></div>No KPJ</th>
-								<th><div style="width:50px"></div>Lama Kontrak</th>
-								<th><div style="width:120px"></div>Akhir Kontrak</th>
-								<th><div style="width:100px"></div>Stat Pajak</th>
-								<th><div style="width:50px"></div>Jt Anak</th>
-								<th><div style="width:50px"></div>Jt Bukan Anak</th>
-								<th><div style="width:120px"></div>Tanggal Spsi</th>
-								<th><div style="width:200px"></div>No Spsi</th>
-								<th><div style="width:120px"></div>Tanggal Kop</th>
-								<th><div style="width:100px"></div>No Koperasi</th>
-								<th><div style="width:40px"></div>Keluar</th>
-								<th><div style="width:120px"></div>Tanggal Keluar</th>
-								<th><div style="width:100px"></div>Kode Pkj</th>
-								<th><div style="width:50px"></div>Angg Jkn</th>
+								<th style="text-align:center"><div style="width:80px"></div>No Induk</th>
+								<th style="text-align:center"><div style="width:50px"></div>Kode Hub Kerja</th>
+								<th style="text-align:center"><div style="width:50px"></div>Kode Status Kerja</th>
+								<th style="text-align:center"><div style="width:120px"></div>NIK</th>
+								<th style="text-align:center"><div style="width:120px"></div>No KK</th>
+								<th style="text-align:center"><div style="width:200px"></div>Nama</th>
+								<th style="text-align:center"><div style="width:40px"></div>Id Kantor Asal</th>
+								<th style="text-align:center"><div style="width:40px"></div>Id Lokasi Kerja</th>
+								<th style="text-align:center"><div style="width:40px"></div>Jenis Kelamin</th>
+								<th style="text-align:center"><div style="width:100px"></div>Tempat Lahir</th>
+								<th style="text-align:center"><div style="width:120px"></div>Tanggal Lahir</th>
+								<th style="text-align:center"><div style="width:350px"></div>Alamat</th>
+								<th style="text-align:center"><div style="width:150px"></div>Desa</th>
+								<th style="text-align:center"><div style="width:150px"></div>Kecamatan</th>
+								<th style="text-align:center"><div style="width:150px"></div>Kabupaten</th>
+								<th style="text-align:center"><div style="width:150px"></div>Provinsi</th>
+								<th style="text-align:center"><div style="width:60px"></div>Kode Pos</th>
+								<th style="text-align:center"><div style="width:120px"></div>No Hp</th>
+								<th style="text-align:center"><div style="width:50px"></div>Gelar D</th>
+								<th style="text-align:center"><div style="width:50px"></div>Gelar B</th>
+								<th style="text-align:center"><div style="width:40px"></div>Pendidikan</th>
+								<th style="text-align:center"><div style="width:200px"></div>Jurusan</th>
+								<th style="text-align:center"><div style="width:300px"></div>Sekolah</th>
+								<th style="text-align:center"><div style="width:50px"></div>Stat Nikah</th>
+								<th style="text-align:center"><div style="width:120px"></div>Tanggal Nikah</th>
+								<th style="text-align:center"><div style="width:50px"></div>Jumlah Anak</th>
+								<th style="text-align:center"><div style="width:50px"></div>Jumlah Saudara</th>
+								<th style="text-align:center"><div style="width:120px"></div>Diangkat</th>
+								<th style="text-align:center"><div style="width:120px"></div>Masuk Kerja</th>
+								<th style="text-align:center"><div style="width:50px"></div>Kodesie</th>
+								<th style="text-align:center"><div style="width:50px"></div>Gol Kerja</th>
+								<th style="text-align:center"><div style="width:50px"></div>Kode Asal Outsourcing</th>
+								<th style="text-align:center"><div style="width:50px"></div>Kode Jabatan</th>
+								<th style="text-align:center"><div style="width:500px"></div>Jabatan</th>
+								<th style="text-align:center"><div style="width:200px"></div>NPWP</th>
+								<th style="text-align:center"><div style="width:200px"></div>No KPJ</th>
+								<th style="text-align:center"><div style="width:50px"></div>Lama Kontrak</th>
+								<th style="text-align:center"><div style="width:120px"></div>Akhir Kontrak</th>
+								<th style="text-align:center"><div style="width:100px"></div>Stat Pajak</th>
+								<th style="text-align:center"><div style="width:50px"></div>Jt Anak</th>
+								<th style="text-align:center"><div style="width:50px"></div>Jt Bukan Anak</th>
+								<th style="text-align:center"><div style="width:120px"></div>Tanggal Spsi</th>
+								<th style="text-align:center"><div style="width:200px"></div>No Spsi</th>
+								<th style="text-align:center"><div style="width:120px"></div>Tanggal Kop</th>
+								<th style="text-align:center"><div style="width:100px"></div>No Koperasi</th>
+								<th style="text-align:center"><div style="width:40px"></div>Keluar</th>
+								<th style="text-align:center"><div style="width:120px"></div>Tanggal Keluar</th>
+								<th style="text-align:center"><div style="width:100px"></div>Kode Pkj</th>
+								<th style="text-align:center"><div style="width:50px"></div>Angg Jkn</th>
 							</tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($masterPekerja_data as $row) { ?>
+							<?php $no = 1; 
+							if(!empty($masterPekerja_data)){
+							foreach($masterPekerja_data as $row) { ?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
@@ -162,7 +181,8 @@
 							<td><?php echo $row->angg_jkn ?></td>
 
 							</tr>
-							<?php } ?>
+							<?php }
+							} ?>
 		                </tbody>                                      
 		              </table>
 		            </div>

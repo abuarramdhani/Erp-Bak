@@ -166,6 +166,15 @@ $('#dataTables-masterParamPengurangPajak').DataTable( {
       ]
     });
 	
+$('#dataTables-transaksiPenggajian').DataTable( {
+  dom: 'Bfrtip',
+  "autoWidth": true,
+  buttons: [
+	'excel'
+  ]
+});
+	
+	
 $('#dataTables-masterPekerja').DataTable( {
 	  "scrollX": true,
       dom: 'Bfrtip',
@@ -285,6 +294,10 @@ $(document).ready(function() {
 	autoclose: true,
 	format: "yyyy-mm-dd",
  });
+ $('#txtPeriodePengurangPajak').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
  $('#txtTglPengajuan').datepicker({ 
 	autoclose: true,
 	format: "yyyy-mm-dd",
@@ -302,6 +315,7 @@ $(document).ready(function() {
 	format: "yyyy-mm-dd",
  });
   $('#cmbKdBank').select2();
+  $('#txtKodeStatusKerja').select2();
   $('#cmbKdHubunganKerja').select2();
   $('#cmbKdStatusKerja').select2();
   $('#cmbKdJabatan').select2();

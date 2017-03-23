@@ -4,6 +4,7 @@ class M_datagajianpersonalia extends CI_Model
 {
 
     public $table = 'pr.pr_data_gajian_personalia';
+    public $table_tmp = 'pr.pr_data_gajian_personalia_tmp';
     public $id = 'id_gajian_personalia';
     public $order = 'DESC';
 
@@ -14,8 +15,10 @@ class M_datagajianpersonalia extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($year,$month)
     {
+		$this->db->where('extract(year from tanggal)=',$year);
+		$this->db->where('extract(month from tanggal)=',$month);
     	return $this->db->get($this->table)->result();
     }
 
@@ -31,6 +34,12 @@ class M_datagajianpersonalia extends CI_Model
     {
         $this->db->insert($this->table, $data);
     }
+	
+	// insert data
+    function insert_tmp($data)
+    {
+        $this->db->insert($this->table_tmp, $data);
+    }
 
     // update data
     function update($id, $data)
@@ -44,7 +53,13 @@ class M_datagajianpersonalia extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
-    }}
+    }
+	
+	function check($id){
+		 $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+	}
+}
 
 /* End of file M_datagajianpersonalia.php */
 /* Location: ./application/models/PayrollManagement/DataHariMasuk/M_datagajianpersonalia.php */

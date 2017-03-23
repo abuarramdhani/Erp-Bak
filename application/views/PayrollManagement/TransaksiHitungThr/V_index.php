@@ -74,8 +74,9 @@
 							<th style='text-align:center'><div style="width:100px">Lama Thn</th>
 							<th style='text-align:center'><div style="width:100px">Lama Bln</th>
 							<th style='text-align:center'><div style="width:100px">Gaji Pokok</th>
+							<th style='text-align:center'><div style="width:100px">THR (%)</th>
 							<th style='text-align:center'><div style="width:100px">THR</th>
-							<th style='text-align:center'><div style="width:100px">Persentase Ubthr</th>
+							<th style='text-align:center'><div style="width:100px">UBTHR (%)</th>
 							<th style='text-align:center'><div style="width:100px">UBTHR</th>
 		                  </tr>
 		                </thead>
@@ -96,6 +97,7 @@
 							<td align='center'><?php echo $row->lama_thn ?></td>
 							<td align='center'><?php echo $row->lama_bln ?></td>
 							<td align='right'><?php echo number_format((int)$row->gaji_pokok) ?></td>
+							<td align='center'><?php echo $row->persentase_thr ?></td>
 							<td align='right'><?php echo number_format((int)$row->thr) ?></td>
 							<td align='center'><?php echo $row->persentase_ubthr ?></td>
 							<td align='right'><?php echo number_format((int)$row->ubthr) ?></td>

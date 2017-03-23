@@ -29,8 +29,38 @@ class C_MasterPekerja extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $masterPekerja = $this->M_masterpekerja->get_all();
+        $hubker = $this->M_masterpekerja->get_hubker();
 
+        $data['Hubker_data'] = $hubker;
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('PayrollManagement/MasterPekerja/V_index', $data);
+        $this->load->view('V_Footer',$data);
+    }
+	
+	public function search()
+    {
+		
+		$statKerja = $this->input->post('txtKodeStatusKerja',TRUE);
+		$prefix = $statusKerja = '';
+		foreach ($statKerja as $t){
+			$statusKerja .= $prefix . "'".str_replace(' ','',$t)."'";
+			$prefix = ', ';
+		}
+        $this->checkSession();
+        $user_id = $this->session->userid;
+        
+        $data['Menu'] = 'Payroll Management';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $masterPekerja = $this->M_masterpekerja->get_all($statusKerja);
+		$hubker = $this->M_masterpekerja->get_hubker();
+
+        $data['Hubker_data'] = $hubker;
         $data['masterPekerja_data'] = $masterPekerja;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
