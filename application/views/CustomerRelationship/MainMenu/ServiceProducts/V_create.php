@@ -121,11 +121,6 @@
 										<input type="hidden" name="approvedis" id="approvedis" value="">
 										<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 										<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" id="hdnUser" />
-										<script type="text/javascript">
-											$(document).ready(function() {
-												alert($('#hdnUser').val());
-											});
-										</script>
 										<div class="col-lg-6">
 											<div class="form-group">
 													<label for="norm" class="control-label col-lg-4">Activity Type</label>
@@ -440,7 +435,8 @@
 																					</select>
 																				</td>
 																				<td>
-																					<input type="text" name="claimImage" id="claimImage" onfocus="modalImg()"  class="form-control">
+																					<input type="text" name="claimImageTotal[]" id="claimImage" onfocus="modalImg(this)"  class="form-control claimImage" row-id="1">
+																					<input type="hidden" name="claimImageData[]" id="claimImageData"  row-id="1">
 																				</td>
 																				<td></td>
 																				</tr>
@@ -561,14 +557,17 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Select Item Picture for Line 1</h4>
       </div>
+      <form method="post" id="formImg" action="javascript:chooseImage('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImage'); ?>');">
       <div class="modal-body">
+      	<input type="hidden" name="txtOwnerId" id="owner_id">
+      	<input type="hidden" name="txtLineId" id="line_id">
       	<div class="row" id="modalContent">
       		<?php if ($imgClaim !== NULL) { ?>
       			<div id="modalImg-content">
       				<?php foreach ($imgClaim as $ic) { ?>
-        	    	<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-        	    		<input id="<?php echo $ic['service_product_image_id']; ?>" type="checkbox" name="imgLineSelect" value="<?php echo $ic['service_product_image_id']; ?>" class="hidden">
-        	        	<img id="img<?php echo $ic['service_product_image_id']; ?>" onclick="checkThis(<?php echo $ic['service_product_image_id']; ?>)" class="img-responsive" style="width: 100%; max-height: 150px;" src="<?php echo base_url($ic['image_name']); ?>">
+        	    	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+        	    		<input id="<?php echo $ic['service_product_image_id']; ?>" type="hidden" name="imgLineSelect[]" value="<?php echo $ic['service_product_image_id']; ?>" disabled>
+        	        	<img id="img<?php echo $ic['service_product_image_id']; ?>" onclick="checkThis(<?php echo $ic['service_product_image_id']; ?>)" class="img-responsive thumb-image" style="width: 100%; height: 150px;" src="<?php echo base_url($ic['image_name']); ?>">
         	    	</div>
         			<?php } ?>
       			</div>
@@ -581,9 +580,13 @@
         	</div>
       </div>
       <div class="modal-footer">
+      	<div class="pull-left">
+      		0 Selected
+      	</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Choose</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
