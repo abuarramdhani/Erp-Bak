@@ -278,16 +278,34 @@
             }
         });
 	}
-	function modalImg(){
+	function modalImg(s){
+		var id = $(s).closest('tr').find('#claimImage').attr('row-id');
+		var ownerId = $(s).closest('tr').find('#hdnOwnershipId').val();
+		$('#owner_id').val(ownerId);
+		$('#line_id').val(id);
 		$('#modalImg').modal();
 	}
 	function checkThis(id){
 		if ($('#img'+id).hasClass('img-selected')) {
-			$('#'+id).attr('checked', false);
+			$('#'+id).attr('disabled', true);
 			$('#img'+id).removeClass(' img-selected');
 		}else{
-			$('#'+id).attr('checked', true);
+			$('#'+id).attr('disabled', false);
 			$('#img'+id).addClass(' img-selected');
 		}
+	}
+	function chooseImage(url){
+		$.ajax({
+            type: "POST",
+            url: url,
+            data: $('#formImg').serialize(),
+            cache: false,
+            success: function(result) {
+            	$('input[id="claimImageData"][row-id="' + $('#line_id').val() + '"]').val(result);
+            	$('input[name="imgLineSelect[]"]').attr('disabled', true);
+            	$('.img-responsive').removeClass('img-selected');
+				$('#modalImg').modal('hide');
+            }
+        });
 	}
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------

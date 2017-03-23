@@ -81,7 +81,10 @@ var counter = 0;
 											+"<option value='N'>NO PROCESS</option>"
 										+"</select>"
 									+"</td>"
-									+"<td><input type='text' name='claimImage' id='claimImage' onfocus='modalImg()'  class='form-control'></td>"
+									+"<td>"
+										+"<input type='text' name='claimImage' id='claimImage' onfocus='modalImg(this)'  class='form-control' row-id='"+counter+"'>"
+										+"<input type='text' name='claimImageData[]'' id='claimImageData' row-id='"+counter+"'>"
+									+"</td>"
 									+"<td></td>"
 							+"</tr>");
 
@@ -521,6 +524,7 @@ function enadisServiceLine(rowid) {
 			document.getElementById('hdnOwnershipId').value = '';
 			document.getElementById('txtItemDescription').value = '';
 			document.getElementById('txtWarranty').value = '';
+			document.getElementById('claimImage').value = '';
 			//document.getElementById('slcSparePart').value = '';
 			//document.getElementById('hdnSparePartId').value = '';
 			//document.getElementById('txtSparePartDescription').value = '';
