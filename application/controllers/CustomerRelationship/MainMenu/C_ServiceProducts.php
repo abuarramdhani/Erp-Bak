@@ -817,6 +817,7 @@ class C_ServiceProducts extends CI_Controller {
 						$problem 				= $this->input->post('slcProblem');
 						$actionClaim 			= $this->input->post('actionClaim');
 						$count1 				= count($ownership_id);
+						$imgLines 				= $this->input->post('claimImageData');
 						
 						$data_lines =array();
 						for($i=0; $i<$count1; $i++) {
@@ -853,21 +854,27 @@ class C_ServiceProducts extends CI_Controller {
 								'spare_part_id' 			=> $spare_part[$i],
 								//'line_status' 				=> $line_status[$i],
 								'problem_id' 				=> $problem[$i],
-								'process' 					=> $actionClaim[$i]
+								'process' 					=> $actionClaim[$i],
+								'service_product_line_image_id'=> $imgLines[$i]
 								);
-
-								//$data_images[];
 							}
-							if(count($data_lines[$i]) != 0){ 
+							if(count($data_lines[$i]) != 0){
 								$this->M_serviceproducts->setServiceProductLines($data_lines[$i]);
 								$lines_id = $this->M_serviceproducts->getServiceProductLinesId();
+								// $idImgLine = explode(',', $imgLines[$i]);
+								// $dataUpdateImgLine =	array(
+								// 							'service_product_line_id' => $lines_id,
+								// 							'last_update_date' => $this->input->post('hdnDate'),
+								// 							'last_updated_by' => $this->input->post('hdnUser')
+								// 						);
+								// $updateImageDataLine 	= $this->M_serviceproducts->updateImageDataLine($dataUpdateImgLine, $id);
 								unset($data_lines[$i]['creation_date']);
 								unset($data_lines[$i]['created_by']);
 								unset($data_lines[$i]['claim_number']);
 								$data_lines[$i]['service_product_line_id'] = $lines_id[0]['service_product_line_id'];
 								$this->M_serviceproducts->setServiceProductLineHistories($data_lines[$i]);
 							}
-						}	
+						}
 						//endforeach;
 						
 						$faq_type = $this->input->post('slcFaqType');
@@ -910,7 +917,7 @@ class C_ServiceProducts extends CI_Controller {
 								);
 								
 							}
-							if(count($data_add_act) != 0){ 						
+							if(count($data_add_act) != 0){
 								$this->M_serviceproducts->setServiceProductAddAct($data_add_act[$i]);
 							}
 						}
@@ -1259,27 +1266,6 @@ class C_ServiceProducts extends CI_Controller {
        			$errorinfo = $this->upload->display_errors();
            		echo $errorinfo;
        		}
-			/*print_r($_FILES);
-			exit();
-			$files 	= $_FILES['qqfile'];
-			$no = 1;
-			print_r($files);
-       		/*foreach ($files['name'] as $key => $image) {
-      			$_FILES['claimImage']['name']= $files['name'][$key];
-       			$_FILES['claimImage']['type']= $files['type'][$key];
-       			$_FILES['claimImage']['tmp_name']= $files['tmp_name'][$key];
-       			$_FILES['claimImage']['error']= $files['error'][$key];
-       			$_FILES['claimImage']['size']= $files['size'][$key];
-   				$typeImage	= substr($_FILES['qqfile']['type'],6);
-   				$fileName 	= $customerName.'_'.date('d/m/Y-Hms').'_'.$key.'.'.$typeImage;
-       			$config['file_name'] = $fileName;
-       			$this->upload->initialize($config);
-       			if ($this->upload->do_upload('qqfile')) {
-           			$this->upload->data();
-       			} else {
-           			echo "COBA LAGI GAN.";
-       			}
-   			}*/
 		}
 
 		public function getImageData(){
@@ -1287,16 +1273,49 @@ class C_ServiceProducts extends CI_Controller {
 			$data 	= $this->M_serviceproducts->getServiceNumber($id);
 			$service_number = $data[0]['activity_number'];
 			$getImageData = $this->M_serviceproducts->getImageData($service_number);
-			echo '<div id="modalImg-content">';
+			echo '<div id="modalImg-content">
+					<div class="col-md-12">
+      					<p><div id="selectedCount">0</div> Selected</p>
+      				</div>';
       		foreach ($getImageData as $ic) {
         	    echo '
-        	    	<div class="col-lg-3 col-md-4 col-xs-6 thumb">
-        	    		<input type="checkbox" name="imgLineSelect" value="img1">
-        	        	<img class="img-responsive" style="width: 100%; max-height: 150px;" src="'.base_url($ic['image_name']).'" alt="">
+        	    	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+        	    		<input id="'.$ic['service_product_image_id'].'" type="hidden" name="imgLineSelect[]" value="'.$ic['service_product_image_id'].'" disabled>
+        	        	<img id="img'.$ic['service_product_image_id'].'" onclick="checkThis('.$ic['service_product_image_id'].')" class="img-responsive" style="width: 100%; height: 150px; padding-top: 15px;" src="'.base_url($ic['image_name']).'">
         	    	</div>
         	    ';
         	}
       		echo '</div>';
 		}
 
+		public function ChooseImage(){
+			$image_id 	= $this->input->post('imgLineSelect');
+			$ownerId 	= $this->input->post('txtOwnerId');
+			$rowId 		= $this->input->post('txtLineId');
+			$no 		= 0;
+			foreach ($image_id as $img) {
+				$dataImg 		= $this->M_serviceproducts->getDataSelectedImg($image_id[$no++]);
+				$dataImgLine	= 	array(
+										'service_product_image_id' => $dataImg[0]['service_product_image_id'],
+										'ownership_id' 	=> $ownerId,
+										'row_id' 		=> $rowId,
+										'creation_date' => 'now()',
+										'created_by' 	=> $this->session->userid
+									);
+				$saveImgData 	= $this->M_serviceproducts->setImageDataLine($dataImgLine);
+				$id_img[] = $saveImgData;
+			}
+			$line 		= "";
+			$i = count($id_img);
+			foreach ($id_img as $imgL) {
+				$i--;
+				if ($i == 0) {
+					$line .= $imgL;
+				}
+				else{
+					$line .= $imgL.',';
+				}
+			}
+			echo $line;
+		}
 }

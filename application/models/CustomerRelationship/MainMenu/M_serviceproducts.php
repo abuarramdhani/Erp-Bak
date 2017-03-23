@@ -128,7 +128,7 @@ class M_serviceproducts extends CI_Model {
 						ORDER BY csp.connect_id,vcspl.service_product_line_id ASC"
 						;
 				}
-							
+
 				$query = $this->db->query($sql);
 				return $query->result_array();
 		}
@@ -899,4 +899,33 @@ class M_serviceproducts extends CI_Model {
 			$query = $this->db->get();
 			return $query->result_array();
 		}
+
+		function getDataSelectedImg($image_id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_product_image_id', $image_id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function setImageDataLine($dataImgLine)
+		{
+			$this->db->insert('cr.cr_service_product_line_images', $dataImgLine);
+			return $this->db->insert_id();
+		}
+
+		function getImageLine($rowId,$ownerId)
+		{
+			$sql = "SELECT service_product_line_image_id
+					from cr.cr_service_product_line_images
+					where row_id = '$rowId' AND ownership_id = '$ownerId'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		/*function updateImageDataLine($data, $id)
+		{
+			$this->db->update('cr.cr_service_product_line_images', $data, array('service_product_line_image_id' => $id));
+		}*/
 }
