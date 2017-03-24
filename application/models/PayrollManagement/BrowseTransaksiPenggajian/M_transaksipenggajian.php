@@ -6,7 +6,11 @@ class M_transaksipenggajian extends CI_Model
     public $table = 'pr.pr_transaksi_pembayaran_penggajian';
     public $id = 'id_pembayaran_gaji';
     public $order = 'DESC';
-
+	
+	// komponen table penggajian
+	public $tb_master_pekerja = 'pr.pr_master_pekerja';
+	public $tb_data_gajian_personalia = 'pr.pr_data_gajian_personalia';
+	//-----------------------------------------
     function __construct()
     {
         parent::__construct();
@@ -25,7 +29,23 @@ class M_transaksipenggajian extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
-
+	
+	// get data periode
+    function checkPeriode($varYear,$varMonth)
+    {
+        $this->db->where('extract(year from tanggal)=', $varYear);
+        $this->db->where('extract(month from tanggal)=', $varMonth);
+        return $this->db->get($this->table)->row();
+    }
+	
+	// get data periode
+    function getDataPenggajian($varYear,$varMonth)
+    {
+        $this->db->where('extract(year from tanggal)=', $varYear);
+        $this->db->where('extract(month from tanggal)=', $varMonth);
+        return $this->db->get($this->table)->result();
+    }
+	
     // insert data
     function insert($data)
     {
@@ -47,10 +67,16 @@ class M_transaksipenggajian extends CI_Model
     }
 
 // association
-            function get_pr_jns_transaksi_data()
-            {
-                return $this->db->get('pr.pr_jns_transaksi')->result();
-            }
+	function get_pr_jns_transaksi_data()
+	{
+		return $this->db->get('pr.pr_jns_transaksi')->result();
+	}
+	
+	// ++++++++++++++++++++++++++++++++ Function Penggajian ++++++++++++++++++++++++++++++++++++
+	function getMasterPekerja(){
+		$this->db->where('keluar','0');
+		return $this->db->get($this->tb_master_pekerja)->result();
+	}
 
 }
 

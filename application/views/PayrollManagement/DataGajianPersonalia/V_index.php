@@ -111,53 +111,53 @@
 								foreach($dataGajianPersonalia_data as $row) { ?>
 								<tr>
 								<td align='center'><?php echo $no++;?></td>
-								<td><?php echo $row->tanggal ?></td>
-								<td><?php echo $row->noind ?></td>
-								<td><?php echo $row->kd_hubungan_kerja ?></td>
-								<td><?php echo $row->kd_status_kerja ?></td>
-								<td><?php echo $row->kd_jabatan ?></td>
-								<td><?php echo $row->kodesie ?></td>
-								<td><?php echo $row->ip ?></td>
-								<td><?php echo $row->ik ?></td>
-								<td><?php echo $row->i_f ?></td>
-								<td><?php echo $row->if_htg_bln_lalu ?></td>
-								<td><?php echo $row->ubt ?></td>
-								<td><?php echo $row->upamk ?></td>
-								<td><?php echo $row->um ?></td>
-								<td><?php echo $row->ims ?></td>
-								<td><?php echo $row->imm ?></td>
-								<td><?php echo $row->lembur ?></td>
-								<td><?php echo $row->htm ?></td>
-								<td><?php echo $row->ijin ?></td>
-								<td><?php echo $row->htm_htg_bln_lalu ?></td>
-								<td><?php echo $row->ijin_htg_bln_lalu ?></td>
-								<td><?php echo $row->pot ?></td>
-								<td><?php echo $row->tamb_gaji ?></td>
-								<td><?php echo $row->hl ?></td>
-								<td><?php echo $row->ct ?></td>
-								<td><?php echo $row->putkop ?></td>
-								<td><?php echo $row->plain ?></td>
-								<td><?php echo $row->pikop ?></td>
-								<td><?php echo $row->pspsi ?></td>
-								<td><?php echo $row->putang ?></td>
-								<td><?php echo $row->dl ?></td>
-								<td><?php echo $row->tkpajak ?></td>
-								<td><?php echo $row->ttpajak ?></td>
-								<td><?php echo $row->pduka ?></td>
-								<td><?php echo $row->utambahan ?></td>
-								<td><?php echo $row->btransfer ?></td>
-								<td><?php echo $row->denda_ik ?></td>
-								<td><?php echo $row->p_lebih_bayar ?></td>
-								<td><?php echo $row->pgp ?></td>
-								<td><?php echo $row->tlain ?></td>
-								<td><?php echo $row->xduka ?></td>
-								<td><?php echo $row->ket ?></td>
-								<td><?php echo $row->cicil ?></td>
-								<td><?php echo $row->ubs ?></td>
-								<td><?php echo $row->ubs_rp ?></td>
-								<td><?php echo $row->p_um_puasa ?></td>
-								<td><?php echo $row->kd_jns_transaksi ?></td>
-								<td><?php echo $row->kd_log_trans ?></td>
+								<td align='center'><?php echo $row->tanggal ?></td>
+								<td align='center'><?php echo $row->noind ?></td>
+								<td align='center'><?php echo $row->kd_hubungan_kerja ?></td>
+								<td align='center'><?php echo $row->kd_status_kerja ?></td>
+								<td align='center'><?php echo $row->kd_jabatan ?></td>
+								<td align='center'><?php echo $row->kodesie ?></td>
+								<td align='center'><?php echo $row->ip ?></td>
+								<td align='center'><?php echo $row->ik ?></td>
+								<td align='center'><?php echo $row->i_f ?></td>
+								<td align='center'><?php echo $row->if_htg_bln_lalu ?></td>
+								<td align='center'><?php echo $row->ubt ?></td>
+								<td align='center'><?php echo $row->upamk ?></td>
+								<td align='center'><?php echo $row->um ?></td>
+								<td align='center'><?php echo $row->ims ?></td>
+								<td align='center'><?php echo $row->imm ?></td>
+								<td align='center'><?php echo $row->lembur ?></td>
+								<td align='center'><?php echo $row->htm ?></td>
+								<td align='center'><?php echo $row->ijin ?></td>
+								<td align='center'><?php echo $row->htm_htg_bln_lalu ?></td>
+								<td align='center'><?php echo $row->ijin_htg_bln_lalu ?></td>
+								<td align='center'><?php echo $row->pot ?></td>
+								<td align='center'><?php echo $row->tamb_gaji ?></td>
+								<td align='center'><?php echo $row->hl ?></td>
+								<td align='center'><?php echo $row->ct ?></td>
+								<td align='center'><?php echo $row->putkop ?></td>
+								<td align='center'><?php echo $row->plain ?></td>
+								<td align='center'><?php echo $row->pikop ?></td>
+								<td align='center'><?php echo $row->pspsi ?></td>
+								<td align='center'><?php echo $row->putang ?></td>
+								<td align='center'><?php echo $row->dl ?></td>
+								<td align='center'><?php echo $row->tkpajak ?></td>
+								<td align='center'><?php echo $row->ttpajak ?></td>
+								<td align='center'><?php echo $row->pduka ?></td>
+								<td align='center'><?php echo $row->utambahan ?></td>
+								<td align='center'><?php echo $row->btransfer ?></td>
+								<td align='center'><?php echo $row->denda_ik ?></td>
+								<td align='center'><?php echo $row->p_lebih_bayar ?></td>
+								<td align='center'><?php echo $row->pgp ?></td>
+								<td align='center'><?php echo $row->tlain ?></td>
+								<td align='center'><?php echo $row->xduka ?></td>
+								<td align='center'><?php echo $row->ket ?></td>
+								<td align='center'><?php echo $row->cicil ?></td>
+								<td align='center'><?php echo $row->ubs ?></td>
+								<td align='center'><?php echo $row->ubs_rp ?></td>
+								<td align='center'><?php echo $row->p_um_puasa ?></td>
+								<td align='center'><?php echo $row->kd_jns_transaksi ?></td>
+								<td align='center'><?php echo $row->kd_log_trans ?></td>
 								</tr>
 								<?php }
 							} ?>

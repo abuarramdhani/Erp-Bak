@@ -37,11 +37,6 @@
                             }
                                 ?>
                                 <div class="row">
-                                    <div class="form-group">
-                                            <label for="txtIdTarifJkk" class="control-label col-lg-4">Id Tarif Jkk</label>
-                                            <div class="col-lg-4">
-                                                <input type="text"  placeholder="Id Tarif Jkk" name="txtIdTarifJkk_new" id="txtIdTarifJkk_new" class="form-control" value="<?php echo $id_tarif_jkk; ?>" /> </div>
-                                            </div>
 									<div class="form-group">
 	                                            <label for="cmbIdKantorAsal" class="control-label col-lg-4">Id Kantor Asal</label>
 	                                            <div class="col-lg-4">
@@ -71,9 +66,11 @@
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtTarifJkk" class="control-label col-lg-4">Tarif Jkk</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Tarif Jkk" name="txtTarifJkk" id="txtTarifJkk" class="form-control" value="<?php echo $tarif_jkk; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Tarif Jkk" name="txtTarifJkk" id="txtTarifJkk" class="form-control" value="<?php echo $tarif_jkk; ?>" maxlength="4"/>
                                             </div>
+											<label for="txtTarifJkk" class="control-label">%</label>
+											<label for="txtTarifJkk" class="control-label">(percent)</label>
                                     </div>
                                 
         <input type="hidden" name="txtIdTarifJkk" value="<?php echo $id_tarif_jkk; ?>" /> </div>

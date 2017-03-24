@@ -47,6 +47,24 @@ class C_TransaksiPenggajian extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+	//Variable yang di gunakan
+		$varPeriode	= $this->input->post('txtPeriodeHitung',TRUE);
+		$varYear		= substr($varPeriode,0,4);
+		$varMonth		= substr($varPeriode,5,2);
+	
+	//Check Periode penggajian sudah di lakukan atau belum
+		$checkPeriode	= $this->M_transaksipenggajian->checkPeriode($varYear,$varMonth);
+		if($checkPeriode){
+			$getDataPenggajian	= $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth);
+		}else{
+			$getMasterPekerja	= $this->M_transaksipenggajian->getMasterPekerja();
+			foreach($getMasterPekerja as $row1){
+					// hitung nomor induk "B"
+					if(substr($row1->noind,0,1)=="B"){
+							echo $row1->noind."<br>";
+					}
+			}
+		}
 	}
 
     public function checkSession(){
