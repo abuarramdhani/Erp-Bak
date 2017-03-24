@@ -101,7 +101,7 @@ class C_MasterParamKompUmum extends CI_Controller
 			);
 			
 			$data_riwayat = array(
-				'id_riwayat' => date('Ymd'),
+				'id_riwayat' => date('YmdHis'),
 				'tgl_berlaku' => date('Y-m-d'),
 				'tgl_tberlaku' => '9999-12-31',
 				'um' => str_replace(',','',$this->input->post('txtUmNew',TRUE)),
@@ -109,8 +109,14 @@ class C_MasterParamKompUmum extends CI_Controller
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-
-            $this->M_masterparamkompumum->insert($data);
+			
+			$check	= $this->M_masterparamkompumum->check();
+			if($check){
+				$this->M_masterparamkompumum->update($data);
+			}else{
+				$this->M_masterparamkompumum->insert($data);
+			}
+            
 			$last_insert_id = $this->M_masterparamkompumum->check_riwayat();
 			foreach($last_insert_id as $row){
 				$last_id = $row->id_riwayat;
@@ -164,7 +170,7 @@ class C_MasterParamKompUmum extends CI_Controller
 				'ubt' => str_replace(',','',$this->input->post('txtUbt',TRUE)),
 			);
 
-            $this->M_masterparamkompumum->update($this->input->post('txtUm', TRUE), $data);
+            $this->M_masterparamkompumum->update($data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
     }

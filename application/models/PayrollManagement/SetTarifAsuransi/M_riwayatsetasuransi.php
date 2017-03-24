@@ -38,6 +38,18 @@ class M_riwayatsetasuransi extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
+	
+	function check_riwayat($id,$date){
+		 $this->db->where('kd_status_kerja', $id);
+		 $this->db->where('tgl_tberlaku=', $date);
+         return $this->db->get($this->table)->row();
+	}
+	
+	function update_riwayat($id,$date,$data_riwayat){
+		$this->db->where('kd_status_kerja',$id);
+		$this->db->where('tgl_tberlaku',$date);
+		$this->db->update($this->table,$data_riwayat);
+	}
 
     // delete data
     function delete($id)

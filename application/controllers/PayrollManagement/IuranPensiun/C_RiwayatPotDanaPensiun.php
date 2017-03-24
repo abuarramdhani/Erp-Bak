@@ -121,6 +121,20 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
 			
 			$this->M_riwayatpotdanapensiun->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
             $this->M_riwayatpotdanapensiun->insert($data);
+			
+			$check = $this->M_riwayatpotdanapensiun->check_master($this->input->post('txtNoind',TRUE));
+			if($check){
+				$data_update_master = array(
+					'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
+				);
+				$this->M_riwayatpotdanapensiun->update_master($this->input->post('txtNoind',TRUE),$data_update_master);
+			}else{
+				$data_insert_master = array(
+					'noind' => $this->input->post('txtNoind',TRUE),
+					'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
+				);
+				$this->M_riwayatpotdanapensiun->insert_master($data_insert_master);
+			}
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
         
@@ -176,6 +190,12 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
 			);
 
             $this->M_riwayatpotdanapensiun->update($this->input->post('txtIdRiwPens', TRUE), $data);
+			
+			$data_update_master = array(
+				'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
+			);
+			$this->M_riwayatpotdanapensiun->update_master($this->input->post('txtNoind',TRUE),$data_update_master);
+			
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
         

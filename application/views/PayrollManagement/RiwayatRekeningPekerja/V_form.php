@@ -75,7 +75,7 @@
 									<div class="form-group">
                                             <label for="txtNamaPemilikRekening" class="control-label col-lg-4">Nama Pemilik Rekening</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Nama Pemilik Rekening" name="txtNamaPemilikRekening" id="txtNamaPemilikRekening" class="form-control" value="<?php echo $nama_pemilik_rekening; ?>"/>
+                                                <input type="text" placeholder="Nama Pemilik Rekening" name="txtNamaPemilikRekening" id="txtNamaPemilikRekening" class="form-control text-uppercase" value="<?php echo $nama_pemilik_rekening; ?>"/>
                                             </div>
                                     </div>
 	    <input type="hidden" name="txtIdRiwRekPkj" value="<?php echo $id_riw_rek_pkj; ?>" /> </div>

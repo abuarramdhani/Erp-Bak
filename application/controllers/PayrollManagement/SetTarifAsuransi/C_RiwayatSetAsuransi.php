@@ -136,11 +136,31 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'kd_petugas' => $this->session->userdata('userid'),
 				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
+			
+			$data_riwayat = array(
+				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
+				'jkk' => $this->input->post('txtJkk',TRUE),
+				'jkm' => $this->input->post('txtJkm',TRUE),
+				'jht_kary' => $this->input->post('txtJhtKary',TRUE),
+				'jht_prshn' => $this->input->post('txtJhtPrshn',TRUE),
+				'jkn_kary' => $this->input->post('txtJknKary',TRUE),
+				'jkn_prshn' => $this->input->post('txtJknPrshn',TRUE),
+				'jpn_kary' => $this->input->post('txtJpnKary',TRUE),
+				'jpn_prshn' => $this->input->post('txtJpnPrshn',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
+			);
 
-            $this->M_riwayatsetasuransi->insert($data);
+			$check = $this->M_riwayatsetasuransi->check_riwayat($this->input->post('cmbKdStatusKerja',TRUE),'9999-12-31');
+			if($check){
+				$this->M_riwayatsetasuransi->update_riwayat($this->input->post('cmbKdStatusKerja',TRUE),'9999-12-31',$data_riwayat);
+				echo "update";
+			}else{
+				echo "insert";
+				$this->M_riwayatsetasuransi->insert($data);
+            }
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
-        
     }
 
     public function update($id)

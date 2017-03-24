@@ -114,7 +114,7 @@ class C_RiwayatUpamk extends CI_Controller
 				'tgl_tberlaku' => '9999-12-31',
 				'periode' => $this->input->post('txtPeriode',TRUE),
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'upamk' => $this->input->post('txtUpamk',TRUE),
+				'upamk' => str_replace(',','',$this->input->post('txtUpamk',TRUE)),
 				'kd_petugas' => $this->session->userdata('userid'),
 				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
@@ -174,7 +174,7 @@ class C_RiwayatUpamk extends CI_Controller
 				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
 				'periode' => $this->input->post('txtPeriode',TRUE),
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'upamk' => $this->input->post('txtUpamk',TRUE),
+				'upamk' => str_replace(',','',$this->input->post('txtUpamk',TRUE)),
 				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
 				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
 			);

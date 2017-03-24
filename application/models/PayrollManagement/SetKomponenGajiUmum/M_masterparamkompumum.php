@@ -25,6 +25,10 @@ class M_masterparamkompumum extends CI_Model
 		$this->db->where('b.tgl_tberlaku >',$dt);
 		return $this->db->get()->result();
 	}
+	
+	function check(){
+        return $this->db->get($this->table)->row();
+	}
 
     // get data by id
     function get_by_id($id)
@@ -53,9 +57,8 @@ class M_masterparamkompumum extends CI_Model
 	}
 	
     // update data
-    function update($id, $data)
+    function update($data)
     {
-        $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
 	

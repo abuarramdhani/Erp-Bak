@@ -115,7 +115,7 @@ class C_RiwayatRekeningPekerja extends CI_Controller
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'kd_bank' => $this->input->post('cmbKdBank',TRUE),
 				'no_rekening' => $this->input->post('txtNoRekening',TRUE),
-				'nama_pemilik_rekening' => $this->input->post('txtNamaPemilikRekening',TRUE),
+				'nama_pemilik_rekening' => strtoupper($this->input->post('txtNamaPemilikRekening',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
@@ -179,7 +179,7 @@ class C_RiwayatRekeningPekerja extends CI_Controller
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'kd_bank' => $this->input->post('cmbKdBank',TRUE),
 				'no_rekening' => $this->input->post('txtNoRekening',TRUE),
-				'nama_pemilik_rekening' => $this->input->post('txtNamaPemilikRekening',TRUE),
+				'nama_pemilik_rekening' => strtoupper($this->input->post('txtNamaPemilikRekening',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);

@@ -109,13 +109,18 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'insentif_kemahalan' => $this->input->post('txtInsentifKemahalan',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-
+			
+			$data_riwayat	= array(
+				'tgl_tberlaku'	=>	$this->input->post('txtTglBerlaku',TRUE), 
+			);
+            $this->M_riwayatinsentifkemahalan->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
+			
             $this->M_riwayatinsentifkemahalan->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatInsentifKemahalan'));
@@ -164,11 +169,11 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'insentif_kemahalan' => $this->input->post('txtInsentifKemahalan',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatinsentifkemahalan->update($this->input->post('txtIdInsentifKemahalan', TRUE), $data);
