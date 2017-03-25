@@ -106,7 +106,7 @@ class M_serviceproducts extends CI_Model {
 		public function getServiceProductLines($id = FALSE)
 		{		//$id = str_replace("~", " ", $id);
 				if ($id === FALSE)
-				{		
+				{
 						/*$this->db->select('*');
 						$this->db->from('cr.vi_cr_service_product_lines');					
 						$this->db->order_by('service_product_line_id', 'ASC');*/
@@ -845,6 +845,28 @@ class M_serviceproducts extends CI_Model {
 							last_update_date 	= current_timestamp
 						WHERE service_number_id = '$idTemp'";
 			$query 	= $this->db->query($sql);
+		}
+
+		function getServiceLineTemp($service_number)
+		{
+			$this->db->select('service_product_image_id, image_name');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $service_number);
+			$this->db->order_by('service_product_image_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function deleteLineImageTemp($id)
+		{
+			$this->db->where('service_product_image_id',$id);
+			$this->db->delete('cr.cr_service_product_line_images');
+		}
+
+		function deleteImageTemp($service_number){
+			$this->db->where('service_number',$service_number);
+			$this->db->delete('cr.cr_service_product_images');
 		}
 
 		function deleteActivityTemp($id)

@@ -35,6 +35,19 @@ class C_ServiceProducts extends CI_Controller {
 		{		$user_id = $this->session->userid;
 				if ($this->session->userdata('tempServiceNumber')) {
 					$id = $this->session->userdata('tempServiceNumber');
+					$dataTemp 		= $this->M_serviceproducts->getServiceNumber($id);
+					$service_number = $dataTemp[0]['activity_number'];
+					$year 			= date('Y', strtotime($dataTemp[0]['creation_date']));
+					$custId 		= $dataTemp[0]['customer_id'];
+					$dataLineTemp 	= $this->M_serviceproducts->getServiceLineTemp($service_number);
+					foreach ($dataLineTemp as $dlt) {
+						unlink('./'.$dlt['image_name']);
+						$this->M_serviceproducts->deleteLineImageTemp($dlt['service_product_image_id']);
+					}
+					if (is_dir('./uploads/cr/ServiceProducts/'.$custId.'/'.$year.'/'.$service_number)) {
+						rmdir('./uploads/cr/ServiceProducts/'.$custId.'/'.$year.'/'.$service_number);
+					}
+					$this->M_serviceproducts->deleteImageTemp($service_number);
 					$this->M_serviceproducts->deleteActivityTemp($id);
 					$this->session->unset_userdata('tempServiceNumber');
 				}else{	}
@@ -123,6 +136,7 @@ class C_ServiceProducts extends CI_Controller {
 				
 				$data['ServiceProducts'] = $this->M_serviceproducts->getServiceProducts($plaintext_string);
 				$data['ServiceProductLines'] = $this->M_serviceproducts->getServiceProductLines($plaintext_string);
+				$data['imgClaim'] = $this->M_serviceproducts->getImageData($data['ServiceProducts'][0]['service_number']);
 				$data['ServiceProductFaqs'] = $this->M_serviceproducts->getServiceProductFaqs($plaintext_string,'cr_service_products');
 				$data['ServiceProductLineHistories'] = $this->M_serviceproducts->getServiceLineHistory($plaintext_string);
 				$data['ServiceProductAdditionalAct'] = $this->M_serviceproducts->getServiceProductAddAct($plaintext_string);
@@ -721,12 +735,10 @@ class C_ServiceProducts extends CI_Controller {
 							$this->session->set_userdata('tempServiceNumber', $data['id']);
 						}
 						
-						//$this->load->view('templates/header', $data);
 						$this->load->view('V_Header',$data);
 						$this->load->view('V_Sidemenu',$data);
 						$this->load->view('CustomerRelationship/MainMenu/ServiceProducts/V_create', $data);
 						$this->load->view('V_Footer',$data);
-						//$this->load->view('templates/footer');
 				}
 				else
 				{
