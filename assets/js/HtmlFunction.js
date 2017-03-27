@@ -83,7 +83,7 @@ var counter = 0;
 									+"</td>"
 									+"<td>"
 										+"<input type='text' name='claimImage' id='claimImage' onfocus='modalImg(this)'  class='form-control' row-id='"+counter+"'>"
-										+"<input type='text' name='claimImageData[]'' id='claimImageData' row-id='"+counter+"'>"
+										+"<input type='hidden' name='claimImageData[]'' id='claimImageData' row-id='"+counter+"'>"
 									+"</td>"
 									+"<td></td>"
 							+"</tr>");

@@ -524,7 +524,7 @@
 																			<td>
 																			<select name="slcEmployeeNum[]" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
 																				<option value="<?php echo $ServiceProductLines_item['technician_id'] ?>">
-																				<?php 
+																				<?php
 																					if($ServiceProductLines_item['technician_id']==''){
 																						echo '';
 																					}
@@ -537,11 +537,9 @@
 																			</td>
 																			<td>
 																				<select name="slcServiceLineStatus[]" id="slcServiceLineStatus" onchange="changeLineStatus(<?php echo $i ?>);" class="form-control">
-																					
 																					<option value="OPEN" <?php if($ServiceProductLines_item['line_status']=='OPEN') echo 'selected="selected"'; ?>>OPEN</option>
 																					<option value="CLOSE" <?php if($ServiceProductLines_item['line_status']=='CLOSE') echo 'selected="selected"'; ?>>CLOSE</option>
 																				</select>
-																				
 																			</td>
 																			<td>
 																			<input type="text" name="txtActionDate[]" id="txtActionDate"  value="<?php echo $tgl_action; ?>" placeholder="<?php echo date("d-M-Y")?>" class="form-control" data-date-format="dd-M-yyyy" required/></td>
@@ -558,12 +556,11 @@
 																						<option value="Y">PROCESS</option>
 																						<option value="N">NO PROCESS</option>
 																					<?php } ?>
-																					
 																				</select>
 																			</td>
 																			<td>
-																				<button class="btn btn-default" data-toggle="modal" data-target="#modal-img-update">Show Claim Image</button>
-																				<input type="hidden" name="claimImageData[]" id="claimImageData"  row-id="1">
+																				<button class="btn btn-default" onclick="modalImgUpdate(this)" row-id="<?php echo $i+1; ?>" id="claimImage">Show Claim Image</button>
+																				<input type="hidden" name="claimImageData[]" id="claimImageData"  row-id="<?php echo $i+1; ?>" value="<?php echo $ServiceProductLines_item['service_product_line_image_id'] ?>">
 																			</td>
 																			<td><a href="#" data-toggle="modal" data-target="#history<?php echo $i+1;?>">
 																					<img src="<?php echo base_url('assets/img/history5.png');?>" width="30px">
@@ -584,7 +581,6 @@
 																							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 																							<h4 class="modal-title" id="myModalLabel">History Service Lines</h4>
 																						</div>
-																						
 																						<div class="modal-body" >
 																							<form class="form-horizontal">
 																							<div class="row">
@@ -656,16 +652,10 @@
 																								<?php
 																									$p++;
 																									}
-																									
 																								}
 																								?>
 																								</tbody>
 																							</table>
-																							<!--
-																							
-																									
-																								
-																							-->
 																						</div>
 																						<div class="modal-footer">
 																							<button type="button" class="btn btn-primary btn-rect" data-dismiss="modal">Close</button>
@@ -686,7 +676,6 @@
 											<div class="tab-pane fade" id="faq">
 												<div class="table-responsive" style="overflow:hidden;">
 													<div class="row">
-														
 														<div class="panel panel-default">
 															<div class="panel-heading text-right" id="addDelService2">
 																<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowSpFaqs('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
@@ -718,9 +707,7 @@
 																				<input type="hidden" name="hdnFaqId[]" id="hdnFaqId" class="id" value="<?php echo $ServiceProductFaqs_item['faq_id'] ?>"/></td>
 																			<td><input type="text" name="txtFaqDescription1[]" id="txtFaqDescription1" class="form-control  faq-descriptions" value="<?php echo $ServiceProductFaqs_item['faq_description1'] ?>" /></td>
 																			<td><input type="text" name="txtFaqDescription2[]" id="txtFaqDescription2" class="form-control" value="<?php echo $ServiceProductFaqs_item['faq_description2'] ?>" /></td>
-																			
 																			</tr>
-																			
 																			<?php 	$i++;
 																					endforeach ?>
 																			<!--<tr> 
@@ -743,7 +730,6 @@
 											<div class="tab-pane fade" id="additional">
 											<div class="table-responsive" style="overflow:hidden;">
 												<div class="row">
-													
 													<div class="panel panel-default">
 														<div class="panel-heading text-right" id="addDelService3">
 															<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowAddAct('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
@@ -821,20 +807,43 @@
 </section>
 </form>
 <!-- Modal -->
-<div class="modal fade" id="modal-img-update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="modalImgUpdate" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content modal-lg">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
+      <form method="post" id="formImg" action="javascript:chooseImage('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImage'); ?>');">
       <div class="modal-body">
-        !@!#!@$&^*&)!~#$
+        <input type="hidden" name="txtOwnerId" id="owner_id">
+      	<input type="hidden" name="txtLineId" id="line_id">
+      	<div class="row" id="modalContent">
+      		<?php if ($imgClaim !== NULL) { ?>
+      			<div id="modalImg-content">
+      				<?php foreach ($imgClaim as $ic) { ?>
+        	    	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+        	    		<input id="<?php echo $ic['service_product_image_id']; ?>" type="hidden" name="imgLineSelect[]" value="<?php echo $ic['service_product_image_id']; ?>" disabled>
+        	        	<img id="img<?php echo $ic['service_product_image_id']; ?>" onclick="checkThis(<?php echo $ic['service_product_image_id']; ?>)" class="img-responsive thumb-image" style="width: 100%; height: 150px;" src="<?php echo base_url($ic['image_name']); ?>">
+        	    	</div>
+        			<?php } ?>
+      			</div>
+        	<?php }else{ ?>
+        		<div class="text-center" id="modalImg-message">
+        			<b><p>You have not uploaded any images.</p></b>
+					<h3>Please do upload a picture in the upload menu header.</h3>
+        		</div>
+        	<?php } ?>
+        </div>
       </div>
       <div class="modal-footer">
+      	<div class="pull-left">
+      		0 Selected
+      	</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Choose</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
