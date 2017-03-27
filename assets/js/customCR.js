@@ -308,4 +308,12 @@
             }
         });
 	}
+	function modalImgUpdate(m){
+		var id = $(m).closest('tr').find('#claimImage').attr('row-id');
+		var ownerId = $(m).closest('tr').find('#hdnOwnershipId').val();
+		alert(id);
+		$('#owner_id').val(ownerId);
+		$('#line_id').val(id);
+		$('#modalImgUpdate').modal();
+	}
 //---------------------------------CLAIMS EXTERNAL.end---------------------------------
