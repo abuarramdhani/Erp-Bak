@@ -1330,4 +1330,38 @@ class C_ServiceProducts extends CI_Controller {
 			}
 			echo $line;
 		}
+
+		function getImageDataUpdate(){
+			$selected 		= $this->input->post('selected');
+			$serviceNumb 	= $this->input->post('serviceNumb');
+			$getImageData 	= $this->M_serviceproducts->getImageData($serviceNumb);
+			$selImg 		= explode(',', $selected);
+			$i=0;
+			print_r($selImg);
+			echo '<div id="modalImg-content">
+					<div class="col-md-12">
+      					<p><div id="selectedCount">0</div> Selected</p>
+      				</div>';
+
+      		$selected_image = array();
+      		foreach ($selImg as $si) {
+      			$imgId = $this->M_serviceproducts->getImgIdSelected($selImg[$i++]);
+      			array_push($selected_image, $imgId[0]['service_product_image_id']);
+      		}
+
+
+      		foreach ($getImageData as $ic) {
+      			$status="";
+      			if(in_array($ic['service_product_image_id'], $selected_image)){
+      				$status="img-selected";
+      			}
+        		echo '
+        		  	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+    	    	   		<input id="'.$ic['service_product_image_id'].'" type="hidden" name="imgLineSelect[]" value="'.$ic['service_product_image_id'].'">
+	        	       	<img id="img'.$ic['service_product_image_id'].'" onclick="checkThis('.$ic['service_product_image_id'].')" class="img-responsive '.$status.' " style="width: 100%; height: 150px; padding-top: 15px;" src="'.base_url($ic['image_name']).'">
+	        	   	</div>
+        	    	';
+      		}
+      		echo '</div>';
+		}
 }

@@ -950,4 +950,12 @@ class M_serviceproducts extends CI_Model {
 		{
 			$this->db->update('cr.cr_service_product_line_images', $data, array('service_product_line_image_id' => $id));
 		}*/
+
+		function getImgIdSelected($id){
+			$this->db->select('service_product_image_id');
+			$this->db->from('cr.cr_service_product_line_images');
+			$this->db->where('service_product_line_image_id', $id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
 }

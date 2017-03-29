@@ -320,19 +320,20 @@ function chooseImage(url) {
 }
 
 function modalImgUpdate(m) {
-    var id = $(m).closest('tr').find('#claimImage').attr('row-id');
+    var rowId = $(m).closest('tr').find('#claimImage').attr('row-id');
     var ownerId = $(m).closest('tr').find('#hdnOwnershipId').val();
     var selected = $(m).closest('tr').find('#claimImageData').val();
-    alert(selected);
+    var serviceNumb = $('#txtServiceNumber').val();
     $('#owner_id').val(ownerId);
-    $('#line_id').val(id);
+    $('#line_id').val(rowId);
     $.ajax({
-    	type: 'POST',
-            data: {
-                data_name: value,
-                modul: 'CityRegency'
-            },
-        url: baseurl + 'CustomerRelationship/ServiceProducts/getImageData',
+        type: 'POST',
+        data: {
+            selected: selected,
+            serviceNumb: serviceNumb
+        },
+        url: baseurl + 'CustomerRelationship/ServiceProducts/getImageDataUpdate',
+        cache: false,
         success: function(result) {
             $('#modalContent').html(result);
             $('#modalImgUpdate').modal();

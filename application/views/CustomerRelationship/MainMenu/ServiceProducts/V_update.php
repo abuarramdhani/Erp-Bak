@@ -117,7 +117,7 @@
 											<div class="form-group">
 													<label for="norm" class="control-label col-lg-4">Service Number</label>
 													<div class="col-lg-8">
-														<input type="text" placeholder="Service Number" name="txtServiceNumber" id="txtServiceNumber" class="form-control" value="<?php echo $ServiceProducts_item['service_number']?>" />
+														<input type="text" placeholder="Service Number" name="txtServiceNumber" id="txtServiceNumber" class="form-control" value="<?php echo $ServiceProducts_item['service_number']?>" readonly/>
 													</div>
 											</div>
 											<div class="form-group">
@@ -814,7 +814,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
-      <form method="post" id="formImg" action="javascript:chooseImage('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImage'); ?>');">
+      <form method="post" id="formImg" action="javascript:chooseImage('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImageUpdate'); ?>');">
       <div class="modal-body">
         <input type="hidden" name="txtOwnerId" id="owner_id">
       	<input type="hidden" name="txtLineId" id="line_id">
