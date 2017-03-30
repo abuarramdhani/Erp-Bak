@@ -10,9 +10,24 @@ class M_hitunggaji extends CI_Model
 
     public function getAllEmployee($kodesie)
     {
-    	$query = $this->db->get_where('er.er_employee_all', array('section_code' => $kodesie));
+    	// $query = $this->db->get_where('er.er_employee_all', array('section_code' => $kodesie));
 
-    	return $query->result_array();
+    	// return $query->result_array();
+
+        $sql = "
+            SELECT
+
+                *
+
+            FROM
+                er.er_employee_all
+
+            WHERE
+                    section_code ILIKE '$kodesie%'
+        ";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
     public function getMasterGaji($noind, $kodesie)

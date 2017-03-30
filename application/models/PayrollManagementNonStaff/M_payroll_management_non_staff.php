@@ -28,12 +28,12 @@ class M_payroll_management_non_staff extends CI_Model
     {
         if ($term === FALSE) {
             $sql = "
-                SELECT * FROM er.er_section ORDER BY section_code ASC
+                SELECT distinct substring(section_code, 0, 7) as section_code, section_name FROM er.er_section ORDER BY section_code ASC
             ";
         }
         else{
             $sql = "
-                SELECT * FROM er.er_section WHERE section_code ILIKE '%$term%' OR section_name ILIKE '%$term%' ORDER BY section_code ASC
+                SELECT distinct substring(section_code, 0, 7) as section_code, section_name FROM er.er_section WHERE section_code ILIKE '%$term%' OR section_name ILIKE '%$term%' ORDER BY section_code ASC
             ";
         }
         $query = $this->db->query($sql);
