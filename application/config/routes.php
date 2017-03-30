@@ -510,5 +510,61 @@ $route['AccountReceivables/CreditLimit/Edit/Save'] = 'AccountReceivables/CreditL
 $route['AccountReceivables/CreditLimit/Delete/(:any)'] = 'AccountReceivables/CreditLimit/C_CreditLimit/Delete/$1';
 //----------------------------------Account Receivables.end------------------------------------------------
 
+
+//-----------------------Payroll Management Non Staff --------------------------------------------
+$route['PayrollManagementNonStaff'] = 'PayrollManagementNonStaff/C_PayrollManagementNonStaff';
+$route['PayrollManagementNonStaff/(:any)'] = 'PayrollManagementNonStaff/C_PayrollManagementNonStaff/$1';
+$route['PayrollManagementNonStaff/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_PayrollManagementNonStaff/$1/$2';
+
+//Data Absensi
+$route['PayrollManagementNonStaff/ProsesGaji/DataAbsensi'] = 'PayrollManagementNonStaff/C_DataAbsensi';
+$route['PayrollManagementNonStaff/ProsesGaji/DataAbsensi/(:any)'] = 'PayrollManagementNonStaff/C_DataAbsensi/$1';
+$route['PayrollManagementNonStaff/ProsesGaji/DataAbsensi/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_DataAbsensi/$1/$2';
+$route['PayrollManagementNonStaff/ProsesGaji/DataAbsensi/(:any)/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_DataAbsensi/$1/$2/$3';
+
+//Data LKH Seksi
+$route['PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi'] = 'PayrollManagementNonStaff/C_DataLKHSeksi';
+$route['PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/(:any)'] = 'PayrollManagementNonStaff/C_DataLKHSeksi/$1';
+$route['PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_DataLKHSeksi/$1/$2';
+$route['PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/(:any)/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_DataLKHSeksi/$1/$2/$3';
+
+//Insentif Kondite
+$route['PayrollManagementNonStaff/ProsesGaji/Kondite'] = 'PayrollManagementNonStaff/C_Kondite';
+$route['PayrollManagementNonStaff/ProsesGaji/Kondite/(:any)'] = 'PayrollManagementNonStaff/C_Kondite/$1';
+$route['PayrollManagementNonStaff/ProsesGaji/Kondite/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_Kondite/$1/$2';
+
+//Input Tambahan
+$route['PayrollManagementNonStaff/ProsesGaji/Tambahan'] = 'PayrollManagementNonStaff/C_Tambahan';
+$route['PayrollManagementNonStaff/ProsesGaji/Tambahan/(:any)'] = 'PayrollManagementNonStaff/C_Tambahan/$1';
+$route['PayrollManagementNonStaff/ProsesGaji/Tambahan/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_Tambahan/$1/$2';
+
+//Input Potongan
+$route['PayrollManagementNonStaff/ProsesGaji/Potongan'] = 'PayrollManagementNonStaff/C_Potongan';
+$route['PayrollManagementNonStaff/ProsesGaji/Potongan/(:any)'] = 'PayrollManagementNonStaff/C_Potongan/$1';
+$route['PayrollManagementNonStaff/ProsesGaji/Potongan/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_Potongan/$1/$2';
+
+//Hitung Gaji
+$route['PayrollManagementNonStaff/ProsesGaji/HitungGaji'] = 'PayrollManagementNonStaff/C_HitungGaji';
+$route['PayrollManagementNonStaff/ProsesGaji/HitungGaji/(:any)'] = 'PayrollManagementNonStaff/C_HitungGaji/$1';
+$route['PayrollManagementNonStaff/ProsesGaji/HitungGaji/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_HitungGaji/$1/$2';
+
+//Data Absensi
+$route['PayrollManagementNonStaff/ImportDBF'] = 'PayrollManagementNonStaff/C_ImportDBF';
+$route['PayrollManagementNonStaff/ImportDBF/(:any)'] = 'PayrollManagementNonStaff/C_ImportDBF/$1';
+$route['PayrollManagementNonStaff/ImportDBF/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_ImportDBF/$1/$2';
+
+//Master Data Gaji
+$route['PayrollManagementNonStaff/MasterData/DataGaji'] = 'PayrollManagementNonStaff/C_MasterGaji';
+$route['PayrollManagementNonStaff/MasterData/DataGaji/(:any)'] = 'PayrollManagementNonStaff/C_MasterGaji/$1';
+$route['PayrollManagementNonStaff/MasterData/DataGaji/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_MasterGaji/$1/$2';
+
+//Master Data Target
+$route['PayrollManagementNonStaff/MasterData/TargetBenda'] = 'PayrollManagementNonStaff/C_TargetBenda';
+$route['PayrollManagementNonStaff/MasterData/TargetBenda/(:any)'] = 'PayrollManagementNonStaff/C_TargetBenda/$1';
+$route['PayrollManagementNonStaff/MasterData/TargetBenda/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_TargetBenda/$1/$2';
+
+
+//-----------------------Payroll Management Non Staff --------------------------------------------
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
