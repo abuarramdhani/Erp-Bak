@@ -51,6 +51,22 @@ class M_datalkhseksi extends CI_Model
 		return $query->result_array();
 	}
 
+    public function clearData($firstdate, $lastdate)
+    {
+        $sql = "
+            DELETE
+
+            FROM
+                pr.pr_lkh_seksi pls
+
+            WHERE
+                pls.\"tgl\" BETWEEN '$firstdate' AND '$lastdate'
+        ";
+
+        $query = $this->db->query($sql);
+        return;
+    }
+
 }
 
 /* End of file M_kondite.php */
