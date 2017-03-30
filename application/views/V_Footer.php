@@ -96,6 +96,7 @@
 	<script src="<?php echo base_url('assets/plugins/colorpicker/js/bootstrap-colorpicker.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/tagsinput/jquery.tagsinput.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validVal/js/jquery.validVal.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dropzone/dropzone.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/daterangepicker-master/moment.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/daterangepicker-master/daterangepicker.js');?>"></script>
