@@ -26,13 +26,20 @@
                                 <h3 class="box-title"><?= $Title ?></h3>
                             </div>
                             <div class="box-body">
-                                <div class="form-horizontal">
+                                <form id="clearData" class="form-horizontal" method="post" action="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/doClearData');?>">
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">
                                             Pilih Periode
                                         </label>
                                         <div class="col-lg-2">
-                                            <input type="text" name="txtBulan" class="form-control" placeholder="Bulan">
+                                            <select name="slcBulan" class="form-control select2" data-placeholder="Select Month" style="width: 100%">
+                                                <option value=""></option>
+                                                <?php
+                                                    for($i = 1; $i <= 12; $i++){
+                                                        echo '<option value="'.$i.'">'.date("F", mktime(0, 0, 0, $i, 1)).'</option>';
+                                                    }
+                                                ?>
+                                            </select>
                                         </div>
                                         <div class="col-lg-2">
                                             <input type="text" name="txtTahun" class="form-control" placeholder="Tahun">
@@ -40,7 +47,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-offset-6 col-sm-2">
-                                            <button type="submit" class="btn btn-primary btn-block" style="float: right;"  data-toggle="modal" data-target="#clear-alert">Kosongkan</button>
+                                            <button type="button" class="btn btn-primary btn-block" style="float: right;"  data-toggle="modal" data-target="#clear-alert">Kosongkan</button>
                                             <div class="modal fade" id="clear-alert">
                                                 <div class="modal-dialog modal-sm">
                                                     <div class="modal-content">
@@ -53,24 +60,14 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-danger">Kosongkan Data</button>
+                                                            <button id="btnClearData" type="button" class="btn btn-danger">Kosongkan Data</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-lg-offset-2 col-lg-8">
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
-                                                    0%
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
