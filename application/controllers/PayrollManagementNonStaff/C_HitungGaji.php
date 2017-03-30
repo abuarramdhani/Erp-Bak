@@ -212,19 +212,19 @@ class C_HitungGaji extends CI_Controller
 	public function doHitungGaji(){
 		$processResultArray = array();
 
-		// $kodesie = $this->input->post('cmbKodesie');
-		$kodesie = '304020';
+		$kodesie = $this->input->post('cmbKodesie');
+		// $kodesie = '304020';
 		$bln_gaji = $this->input->post('cmbBulan');
 		$thn_gaji = $this->input->post('txtTahun');
 
 		$getAllEmployee = $this->M_hitunggaji->getAllEmployee($kodesie);
 
-		// foreach ($getAllEmployee as $dataAllEmployee) {
-			// $noind = $dataAllEmployee['employee_code'];
-			// $nama = $dataAllEmployee['employee_name'];
+		foreach ($getAllEmployee as $dataAllEmployee) {
+			$noind = $dataAllEmployee['employee_code'];
+			$nama = $dataAllEmployee['employee_name'];
 
-			$noind = 'A1390';
-			$nama = 'NGADINO';
+			// $noind = 'A1390';
+			// $nama = 'NGADINO';
 
 			$getMasterGaji = $this->getMasterGaji($noind, $kodesie);
 
@@ -359,7 +359,7 @@ class C_HitungGaji extends CI_Controller
 					'insetifKondite' => $getInsentifKondite,
 				);
 			}
-		// }
+		}
 
 		$data['hasilHitungGaji'] = $processResultArray;
 

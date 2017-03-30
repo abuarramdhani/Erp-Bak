@@ -198,6 +198,80 @@ class C_TargetBenda extends CI_Controller
 		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
     }
 
+    public function import_data(){
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Import Data';
+		$data['Menu'] = 'Master Data';
+		$data['SubMenuOne'] = 'Data Target';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/TargetBenda/V_import', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function doImport(){
+		$this->session->set_userdata('ImportProgress', '0');
+
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+
+		$config['upload_path'] = 'assets/upload/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
+
+		$this->load->library('upload', $config);
+
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
+
+				$data = array(
+					'tgl' => $db_record['TGL'],
+					'noind' => $db_record['NOIND'],
+					'kode_barang' => $db_record['KODEPART'],
+					'kode_proses' => $db_record['KODEPRO'],
+					'jml_barang' => $db_record['JUMLAH'],
+					'reject' => ($db_record['JUMLAH'] - $db_record['BAIK']),
+					'afmat' => $db_record['AFMAT'],
+					'afmch' => $db_record['AFMCH'],
+					'repair' => $db_record['REP'],
+					'setting_time' => $db_record['SETTING'],
+					'shift' => $db_record['SHIFT'],
+					'status' => $db_record['STATUS'],
+					'kode_barang_target_sementara' => $db_record['KODESAMA'],
+					'kode_proses_target_sementara' => $db_record['PROSAMA'],
+				);
+
+				$this->M_datalkhseksi->setLKHSeksi($data);
+
+				$ImportProgress = ($i/$db_rows)*100;
+				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				flush();
+			}
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
+	}
+
 
 
 }
