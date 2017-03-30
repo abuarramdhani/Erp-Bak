@@ -223,6 +223,55 @@ class C_MasterGaji extends CI_Controller
 		$this->load->view('V_Footer',$data);
     }
 
+	public function doImport(){
+		$this->session->set_userdata('ImportProgress', '0');
+
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+
+		$config['upload_path'] = 'assets/upload/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
+
+		$this->load->library('upload', $config);
+
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
+
+				$data = array(
+					'noind' => $db_record['NOIND'],
+					'kodesie' => $db_record['KODESIE'],
+					'kelas' => $db_record['KELAS'],
+					'gaji_pokok' => $db_record['GP'],
+					'insentif_prestasi' => $db_record['IP'],
+					'insentif_masuk_sore' => $db_record['IMS'],
+					'insentif_masuk_malam' => $db_record['IMM'],
+					'ubt' => $db_record['UBT'],
+					'upamk' => $db_record['UPAMK'],
+				);
+
+				$this->M_mastergaji->setMasterGaji($data);
+
+				$ImportProgress = ($i/$db_rows)*100;
+				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				flush();
+			}
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
+	}
+
 }
 
 /* End of file C_MasterGaji.php */

@@ -23,8 +23,11 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda/create/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New Data" title="Add New Data" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
+                                </a>
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda/import_data/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Import Data" title="Import Data" >
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-upload fa-2x"></i></button>
                                 </a>
                             </div>
                             <div class="box-body">

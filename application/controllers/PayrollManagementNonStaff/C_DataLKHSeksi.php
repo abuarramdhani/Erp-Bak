@@ -179,12 +179,10 @@ class C_DataLKHSeksi extends CI_Controller
 		$bln_gaji = $this->input->post('slcBulan');
 		$thn_gaji = $this->input->post('txtTahun');
 
-		$data = array(
-			'bln_gaji' => $bln_gaji,
-			'thn_gaji' => $thn_gaji,
-		);
+		$firstdate = date('Y-m-01', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
+		$lastdate = date('Y-m-t', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
 
-		$this->M_dataabsensi->clearAbsensi($data);
+		$this->M_dataabsensi->clearAbsensi($firstdate, $lastdate);
 	}
 
 }

@@ -242,23 +242,16 @@ class C_TargetBenda extends CI_Controller
 				$db_record = dbase_get_record_with_names($db, $i);
 
 				$data = array(
-					'tgl' => $db_record['TGL'],
-					'noind' => $db_record['NOIND'],
-					'kode_barang' => $db_record['KODEPART'],
+					'kode_barang' => $db_record['KODEBRG'],
+					'nama_barang' => $db_record['NAMABRG'],
 					'kode_proses' => $db_record['KODEPRO'],
-					'jml_barang' => $db_record['JUMLAH'],
-					'reject' => ($db_record['JUMLAH'] - $db_record['BAIK']),
-					'afmat' => $db_record['AFMAT'],
-					'afmch' => $db_record['AFMCH'],
-					'repair' => $db_record['REP'],
-					'setting_time' => $db_record['SETTING'],
-					'shift' => $db_record['SHIFT'],
-					'status' => $db_record['STATUS'],
-					'kode_barang_target_sementara' => $db_record['KODESAMA'],
-					'kode_proses_target_sementara' => $db_record['PROSAMA'],
+					'nama_proses' => $db_record['PROSES'],
+					'jumlah_operator' => $db_record['JMLOPR'],
+					'tgl_berlaku' => $db_record['TG_LAKU'],
+					'tgl_input' => $db_record['TG_INPUT']
 				);
 
-				$this->M_datalkhseksi->setLKHSeksi($data);
+				$this->M_targetbenda->setTargetBenda($data);
 
 				$ImportProgress = ($i/$db_rows)*100;
 				$this->session->set_userdata('ImportProgress', $ImportProgress);

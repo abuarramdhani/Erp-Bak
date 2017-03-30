@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagementNonStaff/MasterData/DataGaji');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -26,14 +26,14 @@
                                 <h3 class="box-title"><?= $Title ?></h3>
                             </div>
                             <div class="box-body">
-                                <form id="ImportDataGaji" class="form-horizontal" method="post" action="<?php echo site_url('PayrollManagementNonStaff/MasterData/DataGaji/doImport');?>" enctype="multipart/form-data">
+                                <form id="ImportDataTarget" class="form-horizontal" method="post" action="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda/doImport');?>" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">
                                             File
                                         </label>
                                         <div class="col-lg-4">
                                             <div class="input-group">
-                                                <input name="file_path" placeholder="Choose File" class="form-control uploadFile" type="text" readonly/>
+                                                <input name="file_path" placeholder="Choose File" class="form-control uploadFile" type="text" required readonly/>
                                                 <span class="input-group-btn">
                                                     <div class="fileUpload btn btn-block btn-primary">
                                                         <span>Browse</span>
@@ -42,16 +42,13 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-lg-1" id="server-status">
-                                            
-                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-offset-4 col-lg-2" id="errorImportData">
                                             
                                         </div>
                                         <div class="col-sm-2">
-                                            <button type="button" id="btnImportDataGaji" class="btn btn-primary btn-block" style="float: right;">Import</button>
+                                            <button type="button" id="btnImportDataTarget" class="btn btn-primary btn-block" style="float: right;">Import</button>
                                         </div>
                                     </div>
                                 </form>
