@@ -450,4 +450,121 @@ $(document).ready(function() {
     }
   });
 
+
+  $('#btnImportDataTarget').click(function(){
+    var loading_full =  '<div class="pace pace-active">'+
+                        ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
+                        '  <div class="pace-progress-inner">'+
+                        '  </div>'+
+                        ' </div>'+
+                        ' <div class="pace-activity">'+
+                        ' </div>'+
+                        '</div>';
+
+    var file = $('input[name="file"]').val();
+
+    $('#errorImportData').html('');
+    $('#btnImportDataTarget').prop('disabled', true);
+
+    if (file == '') {
+      $('#errorImportData').html('<b style="color: red">Data belum lengkap</b>');
+      $('#btnImportDataTarget').prop('disabled', false);
+    }
+    else{
+      $('body').addClass('noscroll');
+      $('#loadingAjax').addClass('overlay_loading');
+      $('#loadingAjax').html(loading_full);
+
+
+      var formDataLKH = new FormData($('#ImportDataTarget')[0]);
+
+      //Import Request
+      $.ajax({
+        type:'POST',
+        data:formDataLKH,
+        url:$('#ImportDataTarget').attr('action'),
+        success:function(result)
+        {
+          $('#errorImportData').html('<b style="color: #3c8dbc">Import Data Berhasil</b>');
+          $('input[name="file_path"]').val('');
+          $('input[name="file"]').val('');
+          $('#btnImportDataTarget').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        error:function()
+        {
+          $('#errorImportData').html('<b style="color: red">Terjadi Kesalahan</b>');
+          $('#btnImportDataTarget').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        contentType: false,
+        processData: false
+      });
+    }
+  });
+
+  $('#btnImportDataGaji').click(function(){
+    var loading_full =  '<div class="pace pace-active">'+
+                        ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
+                        '  <div class="pace-progress-inner">'+
+                        '  </div>'+
+                        ' </div>'+
+                        ' <div class="pace-activity">'+
+                        ' </div>'+
+                        '</div>';
+
+    var file = $('input[name="file"]').val();
+
+    $('#errorImportData').html('');
+    $('#btnImportDataGaji').prop('disabled', true);
+
+    if (file == '') {
+      $('#errorImportData').html('<b style="color: red">Data belum lengkap</b>');
+      $('#btnImportDataGaji').prop('disabled', false);
+    }
+    else{
+      $('body').addClass('noscroll');
+      $('#loadingAjax').addClass('overlay_loading');
+      $('#loadingAjax').html(loading_full);
+
+
+      var formDataLKH = new FormData($('#ImportDataGaji')[0]);
+
+      //Import Request
+      $.ajax({
+        type:'POST',
+        data:formDataLKH,
+        url:$('#ImportDataGaji').attr('action'),
+        success:function(result)
+        {
+          $('#errorImportData').html('<b style="color: #3c8dbc">Import Data Berhasil</b>');
+          $('input[name="file_path"]').val('');
+          $('input[name="file"]').val('');
+          $('#btnImportDataGaji').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        error:function()
+        {
+          $('#errorImportData').html('<b style="color: red">Terjadi Kesalahan</b>');
+          $('#btnImportDataGaji').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        contentType: false,
+        processData: false
+      });
+    }
+  });
+
 });
