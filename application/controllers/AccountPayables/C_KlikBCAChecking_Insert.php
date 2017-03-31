@@ -63,7 +63,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 			$Odd	= $html->find('.clsForm tr td');
 
 			foreach ($Odd as $key => $value) {
-				if (substr($value->plaintext, 0, 1) == ":") {
+				if (substr($value->plaintext, 0, 1) !== ":" AND substr($value->plaintext, 0, 1) !== "&") {
 					$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
 				}
 			}
@@ -71,7 +71,6 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 			//COLLECTED DATA
 			$pengirim			= (explode("/",$collected_data[1]));
 			$penerima 			= (explode("/",$collected_data[2]));
-
 			$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
 			$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
 			$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
@@ -79,7 +78,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 			$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
 			$jumlah				= str_replace(array('Rp&nbsp;', '.00', ',', ' '), '', $collected_data[3]);
 			$berita				= str_replace(array('  '), '', $collected_data[4]);
-			$jenis_transfer		= str_replace(array('  '), '', $collected_data[5]);
+			$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[6]);
 			$user_id 			= $this->session->userid;
 
 			$htmldata = array(
@@ -112,7 +111,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 		$Odd	= $html->find('.clsForm tr td');
 
 		foreach ($Odd as $key => $value) {
-		if (substr($value->plaintext, 0, 1) == ":") {
+		if (substr($value->plaintext, 0, 1) !== ":" AND substr($value->plaintext, 0, 1) !== "&") {
 				$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
 			}
 		}
@@ -128,7 +127,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 		$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
 		$jumlah				= str_replace(array('Rp&nbsp;', '.00', ',', ' '), '', $collected_data[3]);
 		$berita				= str_replace(array('  '), '', $collected_data[4]);
-		$jenis_transfer		= str_replace(array('  '), '', $collected_data[5]);
+		$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[6]);
 		$user_id 			= $this->session->userid;
 
 		$this->M_klikbcachecking_insert->DeleteRecap($no_rek_penerima,$berita);
