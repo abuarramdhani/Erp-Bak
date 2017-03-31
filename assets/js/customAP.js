@@ -236,3 +236,70 @@ $(document).ready(function() {
 	$(".tanggal_cari").data('daterangepicker').setStartDate(startDate);
 	$(".tanggal_cari").data('daterangepicker').setEndDate(startDate)};
 });
+
+//---------------------Account Payable KlikBCA----------------//
+
+$(document).ready(function(){
+	if (document.getElementById('dropzone')) {
+		Dropzone.autoDiscover = false;
+
+		var klik_upload = new Dropzone(".dropzone",{
+		url: baseurl+"AccountPayables/KlikBCAChecking/Insert/proses_upload",
+		maxFilesize: 2,
+		method:"post",
+		acceptedFiles:".htm",
+		paramName:"userfile",
+		dictInvalidFileType:"Type file ini tidak dizinkan",
+		addRemoveLinks:true,
+		});
+
+		//upload
+		klik_upload.on("success",function(file, response){
+			$('#cobaco').append('<tr><td>'+response+'</td></tr>');
+		});
+	}
+
+});
+
+$(document).ready(function() {
+
+		$('#tblrecordbca').DataTable({
+			"filter": false,
+			"lengthChange": false,
+			"ordering": false,
+			"autoWidth": false,
+			"scrollX": true,
+		});
+
+	function tablerecordbca(){
+		$('#tblrecordbca').DataTable({
+			"filter": false,
+			"lengthChange": false,
+			"ordering": false,
+			"autoWidth": false,
+			"scrollX": true,
+		});
+	}
+
+	$('#ShowBCAbydate').click(function(){
+		$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+		
+		var start 		= $('input[name="TxtStartDate"]').val();
+		var end 		= $('input[name="TxtEndDate"]').val();
+
+		$.ajax({
+			type: "POST",
+			data:{
+					start:start,
+					end:end,
+			},
+			url:baseurl+"AccountPayables/KlikBCAChecking/Check/show",
+			success:function(result)
+			{
+				$('#loading').html('');
+				$("#table-full").html(result);
+				tablerecordbca();
+			}
+		});
+	});
+});

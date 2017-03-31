@@ -1,0 +1,146 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class C_KlikBCAchecking_Insert extends CI_Controller {
+
+	public function __construct()
+	{
+		parent::__construct();
+		include APPPATH . 'libraries/simple_html_dom.php';
+		$this->load->helper('form');
+		$this->load->helper('url');
+		$this->load->helper('html');
+		$this->load->library('form_validation');
+		  //load the login model
+		$this->load->library('session');
+		  //$this->load->library('Database');
+		$this->load->model('M_Index');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('AccountPayables/M_klikbcachecking_insert');
+		  
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+				  //redirect('index');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
+		  //$this->load->model('CustomerRelationship/M_Index');
+	}
+
+	//HALAMAN INDEX
+	public function index(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/KlikBCAChecking/Insert/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	function proses_upload(){
+		$fileName = trim(addslashes($_FILES['userfile']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+		$config['upload_path']   = 'upload-bca/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = 'htm';
+		$this->load->library('upload',$config);
+
+		if($this->upload->do_upload('userfile')){
+			sleep(2);
+			$file_data 		= $this->upload->data();
+			$inputFileName 	= 'upload-bca/'.$file_data['file_name'];
+
+			$html	= file_get_html($inputFileName);
+			$Odd	= $html->find('.clsForm tr td');
+
+			foreach ($Odd as $key => $value) {
+				if (substr($value->plaintext, 0, 1) == ":") {
+					$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
+				}
+			}
+			
+			//COLLECTED DATA
+			$pengirim			= (explode("/",$collected_data[1]));
+			$penerima 			= (explode("/",$collected_data[2]));
+
+			$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
+			$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
+			$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
+			$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
+			$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
+			$jumlah				= str_replace(array('Rp&nbsp;', '.00', ',', ' '), '', $collected_data[3]);
+			$berita				= str_replace(array('  '), '', $collected_data[4]);
+			$jenis_transfer		= str_replace(array('  '), '', $collected_data[5]);
+			$user_id 			= $this->session->userid;
+
+			$htmldata = array(
+				'no_referensi' 		=> $no_referensi,
+				'no_rek_pengirim' 	=> $no_rek_pengirim,
+				'no_rek_penerima' 	=> $no_rek_penerima,
+				'nama_pengirim' 	=> $nama_pengirim,
+				'nama_penerima' 	=> $nama_penerima,
+				'jumlah' 			=> $jumlah,
+				'berita' 			=> $berita,
+				'jenis_transfer' 	=> $jenis_transfer,
+			);
+		
+			$filewithoutx		= str_replace(array('.htm'), '', $file_data['file_name']);
+
+			$duplicate 			= $this->M_klikbcachecking_insert->SearchRecap($no_rek_penerima,$berita);
+			if(empty($duplicate)){
+				$this->M_klikbcachecking_insert->InsertRecap($no_referensi,$no_rek_pengirim,$no_rek_penerima,$nama_pengirim,$nama_penerima,$jumlah,$berita,$jenis_transfer,$user_id);
+				print_r('<b>'.$file_data['file_name'].'</b> upload sukses');
+			}else{
+				print_r('<b>'.$file_data['file_name'].'</b> data sudah ada <a href="'.base_url('AccountPayables/KlikBCAChecking/Insert/replace/'.$filewithoutx).'" target="_blank">[REPLACE]</a>');
+			}
+		}
+	}
+
+	function replace($html){
+		$inputFileName 	= 'upload-bca/'.$html.'.htm';
+
+		$html	= file_get_html($inputFileName);
+		$Odd	= $html->find('.clsForm tr td');
+
+		foreach ($Odd as $key => $value) {
+		if (substr($value->plaintext, 0, 1) == ":") {
+				$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
+			}
+		}
+		
+		//COLLECTED DATA
+		$pengirim			= (explode("/",$collected_data[1]));
+		$penerima 			= (explode("/",$collected_data[2]));
+
+		$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
+		$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
+		$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
+		$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
+		$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
+		$jumlah				= str_replace(array('Rp&nbsp;', '.00', ',', ' '), '', $collected_data[3]);
+		$berita				= str_replace(array('  '), '', $collected_data[4]);
+		$jenis_transfer		= str_replace(array('  '), '', $collected_data[5]);
+		$user_id 			= $this->session->userid;
+
+		$this->M_klikbcachecking_insert->DeleteRecap($no_rek_penerima,$berita);
+		$this->M_klikbcachecking_insert->InsertRecap($no_referensi,$no_rek_pengirim,$no_rek_penerima,$nama_pengirim,$nama_penerima,$jumlah,$berita,$jenis_transfer,$user_id);
+		echo "<script>window.close();</script>";
+	}
+
+	public function checkSession(){
+		if($this->session->is_logged){
+
+		}else{
+			redirect('');
+		}
+	}
+}
