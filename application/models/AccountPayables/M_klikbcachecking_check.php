@@ -18,7 +18,7 @@ class M_klikbcachecking_check extends CI_Model {
 				else to_char(checking_date,'DD-MM-YYYY')
 				end as tanggal_cek
 			from ap.ap_klikbca_checking 
-			where upload_date between TO_DATE('$start', 'DD/MM/YYYY') and TO_DATE('$end', 'DD/MM/YYYY')
+			where upload_date between TO_DATE('$start', 'YYYY/MM/DD') and TO_DATE('$end', 'YYYY/MM/DD')
 			order by no_referensi";
 		$query = $this->db->query($sql);
 		return $query->result_array();
