@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_transaksihutang extends CI_Model
+class M_transaksirapel extends CI_Model
 {
 
     public $table = 'pr.pr_transaksi_hutang';

@@ -5,6 +5,7 @@ class M_hutangkaryawan extends CI_Model
 
     public $table = 'pr.pr_hutang_karyawan';
     public $table_gaji = 'pr.pr_riwayat_gaji';
+    public $table_transaksi = 'pr.pr_transaksi_hutang';
     public $id = 'no_hutang';
     public $order = 'DESC';
 
@@ -39,6 +40,10 @@ class M_hutangkaryawan extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
+	
+	function insert_transaksi($data_transaksi){
+		$this->db->insert($this->table_transaksi, $data_transaksi);
+	}
 
     // delete data
     function delete($id)

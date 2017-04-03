@@ -119,6 +119,23 @@ class C_HutangKaryawan extends CI_Controller
 		);
 
         $this->M_hutangkaryawan->insert($data);
+		$jml_cicilan	= $this->input->post('txtJmlCicilan',TRUE);
+		$ttl_hutang	= $this->input->post('txtTotalHutang',TRUE);
+		$cicilan = round($ttl_hutang/ $jml_cicilan,0);
+		$no_id= 1;
+		for($i=0;$i<$jml_cicilan;$i++){
+			$data_transaksi = array(
+				'id_transaksi_hutang'		=> str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')).sprintf('%03s',$no_id),
+				'no_hutang'						=> str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')),
+				'tgl_transaksi'					=> date("Y-m-d", strtotime("+".$no_id." month", strtotime($this->input->post('txtTglPengajuan',TRUE)))),
+				'jenis_transaksi'				=> '1',
+				'jumlah_transaksi'			=> $cicilan,
+				'lunas'								=> $this->input->post('cmbStatusLunas',TRUE),
+			);
+			$this->M_hutangkaryawan->insert_transaksi($data_transaksi);
+			$no_id++;
+		}
+		
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/HutangKaryawan'));
     }

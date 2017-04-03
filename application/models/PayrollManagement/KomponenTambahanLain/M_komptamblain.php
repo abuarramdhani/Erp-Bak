@@ -1,11 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_transaksihutang extends CI_Model
+class M_komptamblain extends CI_Model
 {
 
-    public $table = 'pr.pr_transaksi_hutang';
-    public $id = 'id_transaksi_hutang';
-    public $no = 'no_hutang';
+    public $table = 'pr.pr_komp_pot_tamb';
+    public $id = 'id_komp_pot_lain';
     public $order = 'DESC';
 
     function __construct()
@@ -15,9 +14,8 @@ class M_transaksihutang extends CI_Model
     }
 
     // get all data
-    function get_all($id)
+    function get_all()
     {
-		$this->db->where($this->no,$id);
     	return $this->db->get($this->table)->result();
     }
 
@@ -49,13 +47,13 @@ class M_transaksihutang extends CI_Model
     }
 
 // association
-            function get_pr_jns_transaksi_data()
+            function get_pr_master_pekerja_data()
             {
-                return $this->db->get('pr.pr_jns_transaksi')->result();
+                return $this->db->get('pr.pr_master_pekerja')->result();
             }
 
 }
 
-/* End of file M_transaksihutang.php */
-/* Location: ./application/models/PayrollManagement/TransaksiHutang/M_transaksihutang.php */
-/* Generated automatically on 2016-11-29 08:18:23 */
+/* End of file M_komptamb.php */
+/* Location: ./application/models/PayrollManagement/KomponenTambahan/M_komptamb.php */
+/* Generated automatically on 2016-11-28 14:26:31 */

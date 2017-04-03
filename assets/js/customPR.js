@@ -314,6 +314,11 @@ $(document).ready(function() {
 	autoclose: true,
 	format: "yyyy-mm-dd",
  });
+ 
+   $('#txtPotTambLain').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
   $('#cmbKdBank').select2();
   $('#txtKodeStatusKerja').select2();
   $('#cmbKdHubunganKerja').select2();
