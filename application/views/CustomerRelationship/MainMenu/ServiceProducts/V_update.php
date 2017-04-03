@@ -559,8 +559,8 @@
 																				</select>
 																			</td>
 																			<td>
-																				<button class="btn btn-default" onclick="modalImgUpdate(this)" row-id="<?php echo $i+1; ?>" id="claimImage">Show Claim Image</button>
-																				<input type="hidden" name="claimImageData[]" id="claimImageData"  row-id="<?php echo $i+1; ?>" value="<?php echo $ServiceProductLines_item['service_product_line_image_id'] ?>">
+																				<button class="btn btn-default" onclick="modalImgUpdate(this)" row-id="<?php echo $i+1; ?>" id="claimImage" type="button">Show Claim Image</button>
+																				<input type="text" name="claimImageData[]" id="claimImageData"  row-id="<?php echo $i+1; ?>" value="<?php echo $ServiceProductLines_item['service_product_line_image_id'] ?>">
 																			</td>
 																			<td><a href="#" data-toggle="modal" data-target="#history<?php echo $i+1;?>">
 																					<img src="<?php echo base_url('assets/img/history5.png');?>" width="30px">
@@ -806,7 +806,6 @@
 	</div>
 </section>
 </form>
-<!-- Modal -->
 <div class="modal fade" id="modalImgUpdate" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content modal-lg">
@@ -814,34 +813,15 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
-      <form method="post" id="formImg" action="javascript:chooseImage('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImageUpdate'); ?>');">
+      <form method="post" id="formImg" action="javascript:chooseImageUpdate('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImageUpdate'); ?>');">
       <div class="modal-body">
         <input type="hidden" name="txtOwnerId" id="owner_id">
       	<input type="hidden" name="txtLineId" id="line_id">
-      	<div class="row" id="modalContent">
-      		<?php if ($imgClaim !== NULL) { ?>
-      			<div id="modalImg-content">
-      				<?php foreach ($imgClaim as $ic) { ?>
-        	    	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
-        	    		<input id="<?php echo $ic['service_product_image_id']; ?>" type="hidden" name="imgLineSelect[]" value="<?php echo $ic['service_product_image_id']; ?>" disabled>
-        	        	<img id="img<?php echo $ic['service_product_image_id']; ?>" onclick="checkThis(<?php echo $ic['service_product_image_id']; ?>)" class="img-responsive thumb-image" style="width: 100%; height: 150px;" src="<?php echo base_url($ic['image_name']); ?>">
-        	    	</div>
-        			<?php } ?>
-      			</div>
-        	<?php }else{ ?>
-        		<div class="text-center" id="modalImg-message">
-        			<b><p>You have not uploaded any images.</p></b>
-					<h3>Please do upload a picture in the upload menu header.</h3>
-        		</div>
-        	<?php } ?>
-        </div>
+      	<div class="row" id="modalContent"></div>
       </div>
       <div class="modal-footer">
-      	<div class="pull-left">
-      		0 Selected
-      	</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Choose</button>
+        <button type="submit" class="btn btn-primary" id="btnChooseImg">Choose</button>
       </div>
       </form>
     </div>

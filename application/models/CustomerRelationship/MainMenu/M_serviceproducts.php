@@ -958,4 +958,9 @@ class M_serviceproducts extends CI_Model {
 			$query = $this->db->get();
 			return $query->result_array();
 		}
+
+		function deleteImageDataLine($ownerId,$rowId){
+			$query = "delete from cr.cr_service_product_line_images where ownership_id='$ownerId' AND row_id='$rowId'";
+			$this->db->query($query);
+		}
 }

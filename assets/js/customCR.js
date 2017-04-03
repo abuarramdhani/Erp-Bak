@@ -319,6 +319,20 @@ function chooseImage(url) {
     });
 }
 
+function chooseImageUpdate(url) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: $('#formImg').serialize(),
+        cache: false,
+        success: function(result) {
+        	alert(result);
+            $('input[id="claimImageData"][row-id="' + $('#line_id').val() + '"]').val(result);
+            $('#modalImgUpdate').modal('hide');
+        }
+    });
+}
+
 function modalImgUpdate(m) {
     var rowId = $(m).closest('tr').find('#claimImage').attr('row-id');
     var ownerId = $(m).closest('tr').find('#hdnOwnershipId').val();
@@ -335,7 +349,13 @@ function modalImgUpdate(m) {
         url: baseurl + 'CustomerRelationship/ServiceProducts/getImageDataUpdate',
         cache: false,
         success: function(result) {
-            $('#modalContent').html(result);
+            if (result == 0) {
+            	$('#formImg').submit(function(e){ e.preventDefault(); });
+                $('#btnChooseImg').prop('disabled', true);
+                $('#modalContent').html('<div id="modalImg-content"><div class="text-center" id="modalImg-message"><b><p>You have not uploaded any images.</p></b><h3>Please do upload a picture in the upload menu header.</h3></div></div>');
+            } else {
+                $('#modalContent').html(result);
+            }
             $('#modalImgUpdate').modal();
         }
     });

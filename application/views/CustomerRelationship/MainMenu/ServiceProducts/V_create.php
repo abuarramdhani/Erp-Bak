@@ -580,9 +580,6 @@
         	</div>
       </div>
       <div class="modal-footer">
-      	<div class="pull-left">
-      		0 Selected
-      	</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-primary">Choose</button>
       </div>

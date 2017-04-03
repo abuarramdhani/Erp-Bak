@@ -155,8 +155,7 @@ class C_ServiceProducts extends CI_Controller {
 					$data['tes'.$a] = $a;
 					$a++;
 				}
-				
-				
+								
 				$data['counter'] = count($data['ServiceProductLines']);
 				$data['title'] = 'Update Activity';
 				$data['id'] = $id;
@@ -218,6 +217,8 @@ class C_ServiceProducts extends CI_Controller {
 						$claim_number 			= $this->input->post('txtClaimNum');
 						$spare_part 			= $this->input->post('slcSparePart');
 						$line_status 			= $this->input->post('slcServiceLineStatus');
+						$process 				= $this->input->post('actionClaim');
+						$line_image_id 			= $this->input->post('claimImageData');
 						
 						for($i=0; $i<$count; $i++) {
 						//foreach($problem_description as $prob => $i):
@@ -252,8 +253,10 @@ class C_ServiceProducts extends CI_Controller {
 								'last_update_date' 			=> $this->input->post('hdnDate'),
 								'last_updated_by' 			=> $this->input->post('hdnUser'),
 								'spare_part_id' 			=> $spare_part[$i],
-								'line_status' 			=> $line_status[$i],
-								'problem_id' 				=> $problem[$i]
+								'line_status' 				=> $line_status[$i],
+								'problem_id' 				=> $problem[$i],
+								'process'					=> $process[$i],
+								'service_product_line_image_id'=> $line_image_id[$i]
 							);
 							
 							$data_lines2[$i] = array(
@@ -271,16 +274,18 @@ class C_ServiceProducts extends CI_Controller {
 								'creation_date' 			=> $this->input->post('hdnDate'),
 								'created_by'	 			=> $this->input->post('hdnUser'),
 								'spare_part_id' 			=> $spare_part[$i],
-								'line_status' 			=> $line_status[$i],
-								'problem_id' 				=> $problem[$i]
+								'line_status' 				=> $line_status[$i],
+								'problem_id' 				=> $problem[$i],
+								'process'					=> $process[$i],
+								'service_product_line_image_id'=> $line_image_id[$i]
 							);
 							
 							//////////////////////////////////////////////////////////
-							/*If dibawah untuk melakukan penginputan terhadap service 
+							/*If dibawah untuk melakukan penginputan terhadap service
 							line history. Bila service line baru maka dia akan menginputkan
 							data terlebih dahulu pada table cr_service_product_lines kemudian
 							baru menginputkan pada table cr_service_line_histories. Tetapi
-							bila line service telah ada maka dia langusung menginputkan 
+							bila line service telah ada maka dia langusung menginputkan
 							pada table cr_service_line_histories.
 							*/
 							//////////////////////////////////////////////////////////
@@ -299,7 +304,6 @@ class C_ServiceProducts extends CI_Controller {
 								unset($data_lines2[$i]['claim_number']);
 								$data_lines2[$i]['service_product_line_id'] = $lines_id[0]['service_product_line_id'];
 								$this->M_serviceproducts->setServiceProductLineHistories($data_lines2[$i]);
-								
 								}
 							}
 							else{
@@ -1285,10 +1289,7 @@ class C_ServiceProducts extends CI_Controller {
 			$data 	= $this->M_serviceproducts->getServiceNumber($id);
 			$service_number = $data[0]['activity_number'];
 			$getImageData = $this->M_serviceproducts->getImageData($service_number);
-			echo '<div id="modalImg-content">
-					<div class="col-md-12">
-      					<p><div id="selectedCount">0</div> Selected</p>
-      				</div>';
+			echo '<div id="modalImg-content">';
       		foreach ($getImageData as $ic) {
         	    echo '
         	    	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
@@ -1331,37 +1332,77 @@ class C_ServiceProducts extends CI_Controller {
 			echo $line;
 		}
 
+		public function ChooseImageUpdate(){
+			$image_id 	= $this->input->post('imgLineSelect');
+			$ownerId 	= $this->input->post('txtOwnerId');
+			$rowId 		= $this->input->post('txtLineId');
+			$no 		= 0;
+			$deleteDataLine	= $this->M_serviceproducts->deleteImageDataLine($ownerId,$rowId);
+			foreach ($image_id as $img) {
+				$dataImg 		= $this->M_serviceproducts->getDataSelectedImg($image_id[$no++]);
+				$dataImgLine	= 	array(
+										'service_product_image_id' => $dataImg[0]['service_product_image_id'],
+										'ownership_id' 	=> $ownerId,
+										'row_id' 		=> $rowId,
+										'creation_date' => 'now()',
+										'created_by' 	=> $this->session->userid
+									);
+				$saveImgData 	= $this->M_serviceproducts->setImageDataLine($dataImgLine);
+				$id_img[] = $saveImgData;
+			}
+			$line 		= "";
+			$i = count($id_img);
+			foreach ($id_img as $imgL) {
+				$i--;
+				if ($i == 0) {
+					$line .= $imgL;
+				}
+				else{
+					$line .= $imgL.',';
+				}
+			}
+			echo $line;
+		}
+
 		function getImageDataUpdate(){
 			$selected 		= $this->input->post('selected');
 			$serviceNumb 	= $this->input->post('serviceNumb');
 			$getImageData 	= $this->M_serviceproducts->getImageData($serviceNumb);
-			$selImg 		= explode(',', $selected);
 			$i=0;
-			print_r($selImg);
-			echo '<div id="modalImg-content">
-					<div class="col-md-12">
-      					<p><div id="selectedCount">0</div> Selected</p>
-      				</div>';
-
-      		$selected_image = array();
-      		foreach ($selImg as $si) {
-      			$imgId = $this->M_serviceproducts->getImgIdSelected($selImg[$i++]);
-      			array_push($selected_image, $imgId[0]['service_product_image_id']);
-      		}
-
-
-      		foreach ($getImageData as $ic) {
-      			$status="";
-      			if(in_array($ic['service_product_image_id'], $selected_image)){
-      				$status="img-selected";
+      		if ($getImageData == NULL) {
+      			echo '0';
+      		}elseif ($selected !== '') {
+				$selImg 		= explode(',', $selected);
+				echo '<div id="modalImg-content">';
+      			$selected_image = array();
+      			foreach ($selImg as $si) {
+      				$imgId = $this->M_serviceproducts->getImgIdSelected($selImg[$i++]);
+      				array_push($selected_image, $imgId[0]['service_product_image_id']);
       			}
-        		echo '
-        		  	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
-    	    	   		<input id="'.$ic['service_product_image_id'].'" type="hidden" name="imgLineSelect[]" value="'.$ic['service_product_image_id'].'">
-	        	       	<img id="img'.$ic['service_product_image_id'].'" onclick="checkThis('.$ic['service_product_image_id'].')" class="img-responsive '.$status.' " style="width: 100%; height: 150px; padding-top: 15px;" src="'.base_url($ic['image_name']).'">
-	        	   	</div>
-        	    	';
+      			foreach ($getImageData as $ic) {
+      				$status="";
+      				$disabled="disabled";
+      				if(in_array($ic['service_product_image_id'], $selected_image)){
+      					$status="img-selected";
+      					$disabled="";
+      				}
+        			echo '
+        			  	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+    	 	   	   		<input id="'.$ic['service_product_image_id'].'" type="hidden" name="imgLineSelect[]" value="'.$ic['service_product_image_id'].'"'.$disabled.'>
+	        		       	<img id="img'.$ic['service_product_image_id'].'" onclick="checkThis('.$ic['service_product_image_id'].')" class="img-responsive '.$status.' " style="width: 100%; height: 150px; padding-top: 15px;" src="'.base_url($ic['image_name']).'">
+	        		   	</div>
+        	    		';
+      			}
+      			echo '</div>';
+      		}else{
+      			foreach ($getImageData as $ic) {
+        			echo '
+        			  	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+    	 	   	   		<input id="'.$ic['service_product_image_id'].'" type="hidden" name="imgLineSelect[]" value="'.$ic['service_product_image_id'].'" disabled>
+	        		       	<img id="img'.$ic['service_product_image_id'].'" onclick="checkThis('.$ic['service_product_image_id'].')" class="img-responsive" style="width: 100%; height: 150px; padding-top: 15px;" src="'.base_url($ic['image_name']).'">
+	        		   	</div>
+        	    		';
+      			}
       		}
-      		echo '</div>';
 		}
 }
