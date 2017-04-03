@@ -40,6 +40,7 @@ class C_KlikBCAchecking_Check extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		
 		$data['bca']			= $this->M_klikbcachecking_check->ShowBCAGeneral();
 
 		$this->load->view('V_Header',$data);

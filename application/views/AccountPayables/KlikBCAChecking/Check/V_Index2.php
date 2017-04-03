@@ -21,7 +21,7 @@
 													<td><?php echo $bca_data['nama_pengirim']?></td>
 													<td><?php echo $bca_data['no_rek_penerima']?></td>
 													<td><?php echo $bca_data['nama_penerima']?></td>
-													<td><?php echo $bca_data['jumlah']?></td>
+													<td align="right" >Rp <?php echo number_format($bca_data['jumlah'],2)?></td>
 													<td><?php echo $bca_data['jenis_transfer']?></td>
 													<td><?php echo $bca_data['tanggal']?></td>
 													<td><?php echo $bca_data['checking_status']?></td>

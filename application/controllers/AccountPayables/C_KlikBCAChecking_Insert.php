@@ -76,7 +76,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 			$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
 			$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
 			$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
-			$jumlah				= str_replace(array('Rp&nbsp;', '.00', ',', ' '), '', $collected_data[3]);
+			$jumlah				= str_replace(array('Rp&nbsp;', ',', ' '), '', $collected_data[3]);
 			$berita				= str_replace(array('  '), '', $collected_data[4]);
 			$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[6]);
 			$user_id 			= $this->session->userid;
@@ -125,7 +125,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 		$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
 		$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
 		$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
-		$jumlah				= str_replace(array('Rp&nbsp;', '.00', ',', ' '), '', $collected_data[3]);
+		$jumlah				= str_replace(array('Rp&nbsp;', ',', ' '), '', $collected_data[3]);
 		$berita				= str_replace(array('  '), '', $collected_data[4]);
 		$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[6]);
 		$user_id 			= $this->session->userid;

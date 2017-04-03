@@ -51,9 +51,13 @@
 								$oci_RekTujuan 	= '-';
 								$oci_NamaTujuan	= '-';
 								$oci_Nominal 	= '-';
+
+								if($Ref['oracle_checking'] == 'Y'){
+									$majorcolor= '';
+								}
+
 								foreach ($OracleData as $oci) {
 									if($oci['PAY_NUMBER']==$Ref['berita']){
-										$majorcolor		= '';
 										$oci_PayNum 	= $oci['PAY_NUMBER'];
 										$oci_RekTujuan 	= $oci['REK_TUJUAN'];
 										$oci_NamaTujuan = $oci['ACCT_TUJUAN'];
