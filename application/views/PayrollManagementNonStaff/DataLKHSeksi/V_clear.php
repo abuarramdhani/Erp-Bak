@@ -46,8 +46,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-lg-offset-6 col-sm-2">
-                                            <button type="button" class="btn btn-primary btn-block" style="float: right;"  data-toggle="modal" data-target="#clear-alert">Kosongkan</button>
+                                        <div class="col-lg-offset-4 col-lg-2" id="errorClearData">
+                                            
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" id="btnPreClearData" class="btn btn-primary btn-block" style="float: right;">Kosongkan</button>
                                             <div class="modal fade" id="clear-alert">
                                                 <div class="modal-dialog modal-sm">
                                                     <div class="modal-content">

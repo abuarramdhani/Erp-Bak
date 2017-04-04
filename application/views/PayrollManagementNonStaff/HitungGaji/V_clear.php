@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -26,13 +26,21 @@
                                 <h3 class="box-title"><?= $Title ?></h3>
                             </div>
                             <div class="box-body">
-                                <form id="clearData" class="form-horizontal" method="post" action="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi/doClearData');?>">
+                                <form id="clearData" class="form-horizontal" method="post" action="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/doClearData');?>">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">Seksi</label>
+                                        <div class="col-lg-4">
+                                            <select name="cmbKodesie" class="select cmbKodesie" data-placeholder="Select Section Code" style="width: 100%" required>
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">
                                             Pilih Periode
                                         </label>
                                         <div class="col-lg-2">
-                                            <select name="slcBulan" class="form-control select2" data-placeholder="Select Month" style="width: 100%">
+                                            <select name="cmbBulan" class="form-control select2" data-placeholder="Select Month" style="width: 100%">
                                                 <option value=""></option>
                                                 <?php
                                                     for($i = 1; $i <= 12; $i++){

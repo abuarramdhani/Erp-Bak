@@ -38,52 +38,27 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblDataLKHSeksi" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblDataLKHSeksi" style="font-size:12px;min-width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-                                                <th>Tanggal</th>
-                                                <th>No Induk</th>
-                                                <th>Kode Barang</th>
-                                                <th>Kode Proses</th>
-                                                <th>Jml Barang</th>
-                                                <th>Afmat</th>
-                                                <th>Afmch</th>
-                                                <th>Repair</th>
-                                                <th>Reject</th>
-                                                <th>Setting Time</th>
-                                                <th>Shift</th>
-                                                <th>Status</th>
-                                                <th>Kode Barang Target Sementara</th>
-                                                <th>Kode Proses Target Sementara</th>
+                                                <th class="text-center" width="100px">Tanggal</th>
+                                                <th class="text-center" width="100px">No Induk</th>
+                                                <th class="text-center" width="200px">Nama</th>
+                                                <th class="text-center" width="200px">Kode Barang</th>
+                                                <th class="text-center" width="100px">Kode Proses</th>
+                                                <th class="text-center" width="100px">Jml Barang</th>
+                                                <th class="text-center" width="100px">Afmat</th>
+                                                <th class="text-center" width="100px">Afmch</th>
+                                                <th class="text-center" width="100px">Repair</th>
+                                                <th class="text-center" width="100px">Reject</th>
+                                                <th class="text-center" width="100px">Setting Time</th>
+                                                <th class="text-center" width="100px">Shift</th>
+                                                <th class="text-center" width="100px">Status</th>
+                                                <th class="text-center" width="200px">Kode Barang Target Sementara</th>
+                                                <th class="text-center" width="200px">Kode Proses Target Sementara</th>
 											</tr>
                                         </thead>
-                                        <tbody>
-                                            <?php 
-                                                $no = 1; 
-                                                foreach($LKHSeksi as $row):
-                                                $encrypted_string = $this->encrypt->encode($row['lkh_seksi_id']);
-                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-                                            ?>
-                                            <tr>
-                                                <td align='center'><?php echo $no++;?></td>
-                                                <td><?php echo $row['tgl'] ?></td>
-                                                <td><?php echo $row['noind'] ?></td>
-                                                <td><?php echo $row['kode_barang'] ?></td>
-                                                <td><?php echo $row['kode_proses'] ?></td>
-                                                <td><?php echo $row['jml_barang'] ?></td>
-                                                <td><?php echo $row['afmat'] ?></td>
-                                                <td><?php echo $row['afmch'] ?></td>
-                                                <td><?php echo $row['repair'] ?></td>
-                                                <td><?php echo $row['reject'] ?></td>
-                                                <td><?php echo $row['setting_time'] ?></td>
-                                                <td><?php echo $row['shift'] ?></td>
-                                                <td><?php echo $row['status'] ?></td>
-                                                <td><?php echo $row['kode_barang_target_sementara'] ?></td>
-                                                <td><?php echo $row['kode_proses_target_sementara'] ?></td>
-                                            </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>

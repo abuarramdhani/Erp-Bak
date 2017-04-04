@@ -20,6 +20,73 @@ class M_tambahan extends CI_Model
     	return $query->result_array();
     }
 
+    public function getTambahanDatatables()
+    {
+        $sql = "
+            SELECT * FROM pr.pr_tambahan pta
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = pta.noind
+        ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getTambahanSearch($searchValue)
+    {
+        $numericValue = "";
+        if (is_numeric($searchValue)) {
+            $numericValue = "
+                OR  pta.\"bulan_gaji\" = '$searchValue'
+                OR  pta.\"tahun_gaji\" = '$searchValue'
+                OR  pta.\"kurang_bayar\" = '$searchValue'
+                OR  pta.\"lain_lain\" = '$searchValue'
+            ";
+        }
+        $sql = "
+            SELECT * FROM pr.pr_tambahan pta
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = pta.noind
+            WHERE
+                    pta.\"noind\" ILIKE '%$searchValue%'
+                $numericValue
+                OR  eea.employee_name ILIKE '%$searchValue%'
+                
+        ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getTambahanOrderLimit($searchValue, $order_col, $order_dir, $limit, $offset){
+        if ($searchValue == NULL || $searchValue == "") {
+            $condition = "";
+        }
+        else{
+            $numericValue = "";
+            if (is_numeric($searchValue)) {
+                $numericValue = "
+                    OR  pta.\"bulan_gaji\" = '$searchValue'
+                    OR  pta.\"tahun_gaji\" = '$searchValue'
+                    OR  pta.\"kurang_bayar\" = '$searchValue'
+                    OR  pta.\"lain_lain\" = '$searchValue'
+                ";
+            }
+            $condition = "
+                WHERE
+                    pta.\"noind\" ILIKE '%$searchValue%'
+                $numericValue
+                OR  eea.employee_name ILIKE '%$searchValue%'
+            ";
+        }
+        $sql="
+            SELECT * FROM pr.pr_tambahan pta
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = pta.noind
+
+            $condition
+
+            ORDER BY \"$order_col\" $order_dir LIMIT $limit OFFSET $offset
+            ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
     public function setTambahan($data)
     {
         return $this->db->insert('pr.pr_tambahan', $data);

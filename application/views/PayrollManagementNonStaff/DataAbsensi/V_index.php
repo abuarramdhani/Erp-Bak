@@ -38,176 +38,90 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblDataAbsensi" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblDataAbsensi" style="font-size:12px;min-width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-												<th>No Induk</th>
-                                                <th>Kodesie</th>
-                                                <th>Bulan Gaji</th>
-                                                <th>Tahun Gaji</th>
-                                                <th>HM01</th>
-                                                <th>HM02</th>
-                                                <th>HM03</th>
-                                                <th>HM04</th>
-                                                <th>HM05</th>
-                                                <th>HM06</th>
-                                                <th>HM07</th>
-                                                <th>HM08</th>
-                                                <th>HM09</th>
-                                                <th>HM10</th>
-                                                <th>HM11</th>
-                                                <th>HM12</th>
-                                                <th>HM13</th>
-                                                <th>HM14</th>
-                                                <th>HM15</th>
-                                                <th>HM16</th>
-                                                <th>HM17</th>
-                                                <th>HM18</th>
-                                                <th>HM19</th>
-                                                <th>HM20</th>
-                                                <th>HM21</th>
-                                                <th>HM22</th>
-                                                <th>HM23</th>
-                                                <th>HM24</th>
-                                                <th>HM25</th>
-                                                <th>HM26</th>
-                                                <th>HM27</th>
-                                                <th>HM28</th>
-                                                <th>HM29</th>
-                                                <th>HM30</th>
-                                                <th>HM31</th>
-                                                <th>Jam Lembur</th>
-                                                <th>HMP</th>
-                                                <th>HMU</th>
-                                                <th>HMS</th>
-                                                <th>HMM</th>
-                                                <th>HM</th>
-                                                <th>UBT</th>
-                                                <th>HUPAMK</th>
-                                                <th>IK</th>
-                                                <th>IKSKP</th>
-                                                <th>IKSKU</th>
-                                                <th>IKSKS</th>
-                                                <th>IKSKM</th>
-                                                <th>IKJSP</th>
-                                                <th>IKJSU</th>
-                                                <th>IKJSS</th>
-                                                <th>IKJSM</th>
-                                                <th>ABS</th>
-                                                <th>T</th>
-                                                <th>SKD</th>
-                                                <th>cuti</th>
-                                                <th>HL</th>
-                                                <th>PT</th>
-                                                <th>PI</th>
-                                                <th>PM</th>
-                                                <th>DL</th>
-                                                <th>Tambahan</th>
-                                                <th>Duka</th>
-                                                <th>Potongan</th>
-                                                <th>HC</th>
-                                                <th>Jumlah UM</th>
-                                                <th>Cicil</th>
-                                                <th>Potongan Koperasi</th>
-                                                <th>UBS</th>
-                                                <th>UM Puasa</th>
-                                                <th>SK CT</th>
-                                                <th>POT 2</th>
-                                                <th>TAMB 2</th>
-                                                <th>Kode Lokasi</th>
-                                                <th>Jml Izin</th>
-                                                <th>Jml Mangkir</th>
+                                                <th class="text-center" width="100px">No Induk</th>
+												<th class="text-center" width="100px">Nama</th>
+                                                <th class="text-center" width="100px">Kodesie</th>
+                                                <th class="text-center" width="100px">Nama Unit</th>
+                                                <th class="text-center" width="100px">Bulan Gaji</th>
+                                                <th class="text-center" width="100px">Tahun Gaji</th>
+                                                <th class="text-center" width="50px">HM01</th>
+                                                <th class="text-center" width="50px">HM02</th>
+                                                <th class="text-center" width="50px">HM03</th>
+                                                <th class="text-center" width="50px">HM04</th>
+                                                <th class="text-center" width="50px">HM05</th>
+                                                <th class="text-center" width="50px">HM06</th>
+                                                <th class="text-center" width="50px">HM07</th>
+                                                <th class="text-center" width="50px">HM08</th>
+                                                <th class="text-center" width="50px">HM09</th>
+                                                <th class="text-center" width="50px">HM10</th>
+                                                <th class="text-center" width="50px">HM11</th>
+                                                <th class="text-center" width="50px">HM12</th>
+                                                <th class="text-center" width="50px">HM13</th>
+                                                <th class="text-center" width="50px">HM14</th>
+                                                <th class="text-center" width="50px">HM15</th>
+                                                <th class="text-center" width="50px">HM16</th>
+                                                <th class="text-center" width="50px">HM17</th>
+                                                <th class="text-center" width="50px">HM18</th>
+                                                <th class="text-center" width="50px">HM19</th>
+                                                <th class="text-center" width="50px">HM20</th>
+                                                <th class="text-center" width="50px">HM21</th>
+                                                <th class="text-center" width="50px">HM22</th>
+                                                <th class="text-center" width="50px">HM23</th>
+                                                <th class="text-center" width="50px">HM24</th>
+                                                <th class="text-center" width="50px">HM25</th>
+                                                <th class="text-center" width="50px">HM26</th>
+                                                <th class="text-center" width="50px">HM27</th>
+                                                <th class="text-center" width="50px">HM28</th>
+                                                <th class="text-center" width="50px">HM29</th>
+                                                <th class="text-center" width="50px">HM30</th>
+                                                <th class="text-center" width="50px">HM31</th>
+                                                <th class="text-center" width="100px">Jam Lembur</th>
+                                                <th class="text-center" width="50px">HMP</th>
+                                                <th class="text-center" width="50px">HMU</th>
+                                                <th class="text-center" width="50px">HMS</th>
+                                                <th class="text-center" width="50px">HMM</th>
+                                                <th class="text-center" width="50px">HM</th>
+                                                <th class="text-center" width="100px">UBT</th>
+                                                <th class="text-center" width="100px">HUPAMK</th>
+                                                <th class="text-center" width="100px">IK</th>
+                                                <th class="text-center" width="100px">IKSKP</th>
+                                                <th class="text-center" width="100px">IKSKU</th>
+                                                <th class="text-center" width="100px">IKSKS</th>
+                                                <th class="text-center" width="100px">IKSKM</th>
+                                                <th class="text-center" width="100px">IKJSP</th>
+                                                <th class="text-center" width="100px">IKJSU</th>
+                                                <th class="text-center" width="100px">IKJSS</th>
+                                                <th class="text-center" width="100px">IKJSM</th>
+                                                <th class="text-center" width="100px">ABS</th>
+                                                <th class="text-center" width="100px">T</th>
+                                                <th class="text-center" width="100px">SKD</th>
+                                                <th class="text-center" width="100px">cuti</th>
+                                                <th class="text-center" width="100px">HL</th>
+                                                <th class="text-center" width="100px">PT</th>
+                                                <th class="text-center" width="100px">PI</th>
+                                                <th class="text-center" width="100px">PM</th>
+                                                <th class="text-center" width="100px">DL</th>
+                                                <th class="text-center" width="100px">Tambahan</th>
+                                                <th class="text-center" width="100px">Duka</th>
+                                                <th class="text-center" width="100px">Potongan</th>
+                                                <th class="text-center" width="100px">HC</th>
+                                                <th class="text-center" width="100px">Jumlah UM</th>
+                                                <th class="text-center" width="100px">Cicil</th>
+                                                <th class="text-center" width="100px">Potongan Koperasi</th>
+                                                <th class="text-center" width="100px">UBS</th>
+                                                <th class="text-center" width="100px">UM Puasa</th>
+                                                <th class="text-center" width="100px">SK CT</th>
+                                                <th class="text-center" width="100px">POT 2</th>
+                                                <th class="text-center" width="100px">TAMB 2</th>
+                                                <th class="text-center" width="100px">Kode Lokasi</th>
+                                                <th class="text-center" width="100px">Jml Izin</th>
+                                                <th class="text-center" width="100px">Jml Mangkir</th>
 											</tr>
                                         </thead>
-                                        <tbody>
-                                            <?php 
-                                                $no = 1; 
-                                                foreach($Absensi as $row):
-                                                $encrypted_string = $this->encrypt->encode($row['absensi_id']);
-                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-                                            ?>
-                                            <tr>
-                                                <td align='center'><?php echo $no++;?></td>
-                                                <td><?php echo $row['noind'] ?></td>
-                                                <td><?php echo $row['kodesie'] ?></td>
-                                                <td><?php echo $row['bln_gaji'] ?></td>
-                                                <td><?php echo $row['thn_gaji'] ?></td>
-                                                <td><?php echo $row['HM01'] ?></td>
-                                                <td><?php echo $row['HM02'] ?></td>
-                                                <td><?php echo $row['HM03'] ?></td>
-                                                <td><?php echo $row['HM04'] ?></td>
-                                                <td><?php echo $row['HM05'] ?></td>
-                                                <td><?php echo $row['HM06'] ?></td>
-                                                <td><?php echo $row['HM07'] ?></td>
-                                                <td><?php echo $row['HM08'] ?></td>
-                                                <td><?php echo $row['HM09'] ?></td>
-                                                <td><?php echo $row['HM10'] ?></td>
-                                                <td><?php echo $row['HM11'] ?></td>
-                                                <td><?php echo $row['HM12'] ?></td>
-                                                <td><?php echo $row['HM13'] ?></td>
-                                                <td><?php echo $row['HM14'] ?></td>
-                                                <td><?php echo $row['HM15'] ?></td>
-                                                <td><?php echo $row['HM16'] ?></td>
-                                                <td><?php echo $row['HM17'] ?></td>
-                                                <td><?php echo $row['HM18'] ?></td>
-                                                <td><?php echo $row['HM19'] ?></td>
-                                                <td><?php echo $row['HM20'] ?></td>
-                                                <td><?php echo $row['HM21'] ?></td>
-                                                <td><?php echo $row['HM22'] ?></td>
-                                                <td><?php echo $row['HM23'] ?></td>
-                                                <td><?php echo $row['HM24'] ?></td>
-                                                <td><?php echo $row['HM25'] ?></td>
-                                                <td><?php echo $row['HM26'] ?></td>
-                                                <td><?php echo $row['HM27'] ?></td>
-                                                <td><?php echo $row['HM28'] ?></td>
-                                                <td><?php echo $row['HM29'] ?></td>
-                                                <td><?php echo $row['HM30'] ?></td>
-                                                <td><?php echo $row['HM31'] ?></td>
-                                                <td><?php echo $row['jam_lembur'] ?></td>
-                                                <td><?php echo $row['HMP'] ?></td>
-                                                <td><?php echo $row['HMU'] ?></td>
-                                                <td><?php echo $row['HMS'] ?></td>
-                                                <td><?php echo $row['HMM'] ?></td>
-                                                <td><?php echo $row['HM'] ?></td>
-                                                <td><?php echo $row['UBT'] ?></td>
-                                                <td><?php echo $row['HUPAMK'] ?></td>
-                                                <td><?php echo $row['IK'] ?></td>
-                                                <td><?php echo $row['IKSKP'] ?></td>
-                                                <td><?php echo $row['IKSKU'] ?></td>
-                                                <td><?php echo $row['IKSKS'] ?></td>
-                                                <td><?php echo $row['IKSKM'] ?></td>
-                                                <td><?php echo $row['IKJSP'] ?></td>
-                                                <td><?php echo $row['IKJSU'] ?></td>
-                                                <td><?php echo $row['IKJSS'] ?></td>
-                                                <td><?php echo $row['IKJSM'] ?></td>
-                                                <td><?php echo $row['ABS'] ?></td>
-                                                <td><?php echo $row['T'] ?></td>
-                                                <td><?php echo $row['SKD'] ?></td>
-                                                <td><?php echo $row['cuti'] ?></td>
-                                                <td><?php echo $row['HL'] ?></td>
-                                                <td><?php echo $row['PT'] ?></td>
-                                                <td><?php echo $row['PI'] ?></td>
-                                                <td><?php echo $row['PM'] ?></td>
-                                                <td><?php echo $row['DL'] ?></td>
-                                                <td><?php echo $row['tambahan'] ?></td>
-                                                <td><?php echo $row['duka'] ?></td>
-                                                <td><?php echo $row['potongan'] ?></td>
-                                                <td><?php echo $row['HC'] ?></td>
-                                                <td><?php echo $row['jml_UM'] ?></td>
-                                                <td><?php echo $row['cicil'] ?></td>
-                                                <td><?php echo $row['potongan_koperasi'] ?></td>
-                                                <td><?php echo $row['UBS'] ?></td>
-                                                <td><?php echo $row['UM_puasa'] ?></td>
-                                                <td><?php echo $row['SK_CT'] ?></td>
-                                                <td><?php echo $row['POT_2'] ?></td>
-                                                <td><?php echo $row['TAMB_2'] ?></td>
-                                                <td><?php echo $row['kode_lokasi'] ?></td>
-                                                <td><?php echo $row['jml_izin'] ?></td>
-                                                <td><?php echo $row['jml_mangkir'] ?></td>
-                                            </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>

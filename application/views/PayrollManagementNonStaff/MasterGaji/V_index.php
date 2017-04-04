@@ -32,48 +32,24 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMasterGaji" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMasterGaji" style="font-size:12px;min-width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-												<th>Noind</th>
-												<th>Kodesie</th>
-												<th>Kelas</th>
-												<th>Gaji Pokok</th>
-												<th>Insentif Prestasi</th>
-												<th>Insentif Masuk Sore</th>
-												<th>Insentif Masuk Malam</th>
-												<th>Ubt</th>
-												<th>Upamk</th>
+                                                <th class="text-center" width="100px">Noind</th>
+												<th class="text-center" width="100px">Nama</th>
+                                                <th class="text-center" width="100px">Kodesie</th>
+												<th class="text-center" width="100px">Unit Name</th>
+												<th class="text-center" width="100px">Kelas</th>
+												<th class="text-center" width="100px">Gaji Pokok</th>
+												<th class="text-center" width="100px">Insentif Prestasi</th>
+												<th class="text-center" width="100px">Insentif Masuk Sore</th>
+												<th class="text-center" width="100px">Insentif Masuk Malam</th>
+												<th class="text-center" width="100px">Ubt</th>
+												<th class="text-center" width="100px">Upamk</th>
 											</tr>
                                         </thead>
-                                        <tbody>
-                                            <?php 
-                                            	$no = 1; 
-                                            	foreach($MasterGaji as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['master_gaji_id']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-											?>
-                                            <tr>
-                                                <td align='center'><?php echo $no++;?></td>
-                                                <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagementNonStaff/MasterData/DataGaji/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagementNonStaff/MasterData/DataGaji/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('PayrollManagementNonStaff/MasterData/DataGaji/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
-                                                </td>
-												<td><?php echo $row['noind'] ?></td>
-												<td><?php echo $row['kodesie'] ?></td>
-												<td><?php echo $row['kelas'] ?></td>
-												<td><?php echo $row['gaji_pokok'] ?></td>
-												<td><?php echo $row['insentif_prestasi'] ?></td>
-												<td><?php echo $row['insentif_masuk_sore'] ?></td>
-												<td><?php echo $row['insentif_masuk_malam'] ?></td>
-												<td><?php echo $row['ubt'] ?></td>
-												<td><?php echo $row['upamk'] ?></td>
-											</tr>
-                                            <?php endforeach; ?>
-                                        </tbody>                                      
                                     </table>
                                 </div>
                             </div>

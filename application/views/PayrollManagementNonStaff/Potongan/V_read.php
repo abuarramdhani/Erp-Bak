@@ -33,11 +33,11 @@
                                                     <?php foreach ($Potongan as $headerRow): ?>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Noind</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['noind']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['noind'].' - '.$headerRow['employee_name']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Bulan Gaji</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['bulan_gaji']; ?></td>
+                                                            <td style="border: 0">: <?php echo date("F", mktime(0, 0, 0, $headerRow['bulan_gaji'], 1)); ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Tahun Gaji</strong></td>

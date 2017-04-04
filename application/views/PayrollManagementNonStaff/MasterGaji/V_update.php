@@ -33,7 +33,7 @@
 											<div class="form-group">
                                                 <label for="cmbNoindHeader" class="control-label col-lg-4">Noind</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbNoindHeader" name="cmbNoindHeader" class="select cmbNoindHeader" data-placeholder="No Induk" style="width: 100%">
+                                                    <select id="cmbNoindHeader" name="cmbNoindHeader" class="select cmbNoindHeader" data-placeholder="No Induk" style="width: 100%" required>
                                                         <option value="<?php echo $headerRow['noind']; ?>" selected><?php echo $headerRow['noind'].' - '.$headerRow['employee_name']; ?></option>
                                                     </select>
                                                 </div>
@@ -42,8 +42,8 @@
 											<div class="form-group">
                                                 <label for="cmbKodesieHeader" class="control-label col-lg-4">Kodesie</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Kodesie" style="width: 100%">
-                                                        <option value="<?php echo $headerRow['kodesie']; ?>" selected><?php echo $headerRow['kodesie'].' - '.$headerRow['section_name']; ?></option>
+                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Kodesie" style="width: 100%" required>
+                                                        <option value="<?php echo $headerRow['kodesie']; ?>" selected><?php echo $headerRow['kodesie'].' - '.$headerRow['unit_name']; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -51,49 +51,49 @@
 											<div class="form-group">
                                                 <label for="txtKelasHeader" class="control-label col-lg-4">Kelas</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Kelas" name="txtKelasHeader" id="txtKelasHeader" class="form-control" value="<?php echo $headerRow['kelas']; ?>"/>
+                                                    <input type="text" placeholder="Kelas" name="txtKelasHeader" id="txtKelasHeader" class="form-control" value="<?php echo $headerRow['kelas']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtGajiPokokHeader" class="control-label col-lg-4">Gaji Pokok</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Gaji Pokok" name="txtGajiPokokHeader" id="txtGajiPokokHeader" class="form-control" value="<?php echo $headerRow['gaji_pokok']; ?>"/>
+                                                    <input type="text" placeholder="Gaji Pokok" name="txtGajiPokokHeader" id="txtGajiPokokHeader" class="form-control" value="<?php echo $headerRow['gaji_pokok']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtInsentifPrestasiHeader" class="control-label col-lg-4">Insentif Prestasi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Insentif Prestasi" name="txtInsentifPrestasiHeader" id="txtInsentifPrestasiHeader" class="form-control" value="<?php echo $headerRow['insentif_prestasi']; ?>"/>
+                                                    <input type="text" placeholder="Insentif Prestasi" name="txtInsentifPrestasiHeader" id="txtInsentifPrestasiHeader" class="form-control" value="<?php echo $headerRow['insentif_prestasi']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtInsentifMasukSoreHeader" class="control-label col-lg-4">Insentif Masuk Sore</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Insentif Masuk Sore" name="txtInsentifMasukSoreHeader" id="txtInsentifMasukSoreHeader" class="form-control" value="<?php echo $headerRow['insentif_masuk_sore']; ?>"/>
+                                                    <input type="text" placeholder="Insentif Masuk Sore" name="txtInsentifMasukSoreHeader" id="txtInsentifMasukSoreHeader" class="form-control" value="<?php echo $headerRow['insentif_masuk_sore']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtInsentifMasukMalamHeader" class="control-label col-lg-4">Insentif Masuk Malam</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Insentif Masuk Malam" name="txtInsentifMasukMalamHeader" id="txtInsentifMasukMalamHeader" class="form-control" value="<?php echo $headerRow['insentif_masuk_malam']; ?>"/>
+                                                    <input type="text" placeholder="Insentif Masuk Malam" name="txtInsentifMasukMalamHeader" id="txtInsentifMasukMalamHeader" class="form-control" value="<?php echo $headerRow['insentif_masuk_malam']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtUbtHeader" class="control-label col-lg-4">Ubt</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Ubt" name="txtUbtHeader" id="txtUbtHeader" class="form-control" value="<?php echo $headerRow['ubt']; ?>"/>
+                                                    <input type="text" placeholder="Ubt" name="txtUbtHeader" id="txtUbtHeader" class="form-control" value="<?php echo $headerRow['ubt']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtUpamkHeader" class="control-label col-lg-4">Upamk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Upamk" name="txtUpamkHeader" id="txtUpamkHeader" class="form-control" value="<?php echo $headerRow['upamk']; ?>"/>
+                                                    <input type="text" placeholder="Upamk" name="txtUpamkHeader" id="txtUpamkHeader" class="form-control" value="<?php echo $headerRow['upamk']; ?>" required/>
                                                 </div>
                                             </div>
 

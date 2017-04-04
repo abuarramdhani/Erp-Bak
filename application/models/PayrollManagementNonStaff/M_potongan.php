@@ -20,6 +20,87 @@ class M_potongan extends CI_Model
     	return $query->result_array();
     }
 
+    public function getPotonganDatatables()
+    {
+        $sql = "
+            SELECT * FROM pr.pr_potongan ppo
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = ppo.noind
+        ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getPotonganSearch($searchValue)
+    {
+        $numericValue = "";
+        if (is_numeric($searchValue)) {
+            $numericValue = "
+                OR  ppo.\"bulan_gaji\" = '$searchValue'
+                OR  ppo.\"tahun_gaji\" = '$searchValue'
+                OR  ppo.\"pot_lebih_bayar\" = '$searchValue'
+                OR  ppo.\"pot_gp\" = '$searchValue'
+                OR  ppo.\"pot_dl\" = '$searchValue'
+                OR  ppo.\"pot_spsi\" = '$searchValue'
+                OR  ppo.\"pot_duka\" = '$searchValue'
+                OR  ppo.\"pot_koperasi\" = '$searchValue'
+                OR  ppo.\"pot_hutang_lain\" = '$searchValue'
+                OR  ppo.\"pot_dplk\" = '$searchValue'
+                OR  ppo.\"pot_thp\" = '$searchValue'
+            ";
+        }
+        $sql = "
+            SELECT * FROM pr.pr_potongan ppo
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = ppo.noind
+            WHERE
+                    ppo.\"noind\" ILIKE '%$searchValue%'
+                $numericValue
+                OR  eea.employee_name ILIKE '%$searchValue%'
+                
+        ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getPotonganOrderLimit($searchValue, $order_col, $order_dir, $limit, $offset){
+        if ($searchValue == NULL || $searchValue == "") {
+            $condition = "";
+        }
+        else{
+            $numericValue = "";
+            if (is_numeric($searchValue)) {
+                $numericValue = "
+                    OR  ppo.\"bulan_gaji\" = '$searchValue'
+                    OR  ppo.\"tahun_gaji\" = '$searchValue'
+                    OR  ppo.\"pot_lebih_bayar\" = '$searchValue'
+                    OR  ppo.\"pot_gp\" = '$searchValue'
+                    OR  ppo.\"pot_dl\" = '$searchValue'
+                    OR  ppo.\"pot_spsi\" = '$searchValue'
+                    OR  ppo.\"pot_duka\" = '$searchValue'
+                    OR  ppo.\"pot_koperasi\" = '$searchValue'
+                    OR  ppo.\"pot_hutang_lain\" = '$searchValue'
+                    OR  ppo.\"pot_dplk\" = '$searchValue'
+                    OR  ppo.\"pot_thp\" = '$searchValue'
+                ";
+            }
+            $condition = "
+                WHERE
+                    ppo.\"noind\" ILIKE '%$searchValue%'
+                $numericValue
+                OR  eea.employee_name ILIKE '%$searchValue%'
+            ";
+        }
+        $sql="
+            SELECT * FROM pr.pr_potongan ppo
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = ppo.noind
+
+            $condition
+
+            ORDER BY \"$order_col\" $order_dir LIMIT $limit OFFSET $offset
+            ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
     public function setPotongan($data)
     {
         return $this->db->insert('pr.pr_potongan', $data);

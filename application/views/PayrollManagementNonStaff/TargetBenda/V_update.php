@@ -33,8 +33,8 @@
 											<div class="form-group">
                                                 <label for="cmbKodesieHeader" class="control-label col-lg-4">Kodesie</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Kodesie" style="width: 100%">
-                                                        <option value="<?php echo $headerRow['kodesie']; ?>" selected><?php echo $headerRow['kodesie'].' - '.$headerRow['section_name']; ?></option>
+                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Kodesie" style="width: 100%" required>
+                                                        <option value="<?php echo $headerRow['kodesie']; ?>" selected><?php echo $headerRow['kodesie'].' - '.$headerRow['unit_name']; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -42,63 +42,63 @@
 											<div class="form-group">
                                                 <label for="txtKodeBarangHeader" class="control-label col-lg-4">Kode Barang</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Kode Barang" name="txtKodeBarangHeader" id="txtKodeBarangHeader" class="form-control" value="<?php echo $headerRow['kode_barang']; ?>"/>
+                                                    <input type="text" placeholder="Kode Barang" name="txtKodeBarangHeader" id="txtKodeBarangHeader" class="form-control" value="<?php echo $headerRow['kode_barang']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNamaBarangHeader" class="control-label col-lg-4">Nama Barang</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Nama Barang" name="txtNamaBarangHeader" id="txtNamaBarangHeader" class="form-control" value="<?php echo $headerRow['nama_barang']; ?>"/>
+                                                    <input type="text" placeholder="Nama Barang" name="txtNamaBarangHeader" id="txtNamaBarangHeader" class="form-control" value="<?php echo $headerRow['nama_barang']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtKodeProsesHeader" class="control-label col-lg-4">Kode Proses</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Kode Proses" name="txtKodeProsesHeader" id="txtKodeProsesHeader" class="form-control" value="<?php echo $headerRow['kode_proses']; ?>"/>
+                                                    <input type="text" placeholder="Kode Proses" name="txtKodeProsesHeader" id="txtKodeProsesHeader" class="form-control" value="<?php echo $headerRow['kode_proses']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNamaProsesHeader" class="control-label col-lg-4">Nama Proses</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Nama Proses" name="txtNamaProsesHeader" id="txtNamaProsesHeader" class="form-control" value="<?php echo $headerRow['nama_proses']; ?>"/>
+                                                    <input type="text" placeholder="Nama Proses" name="txtNamaProsesHeader" id="txtNamaProsesHeader" class="form-control" value="<?php echo $headerRow['nama_proses']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtJumlahOperatorHeader" class="control-label col-lg-4">Jumlah Operator</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jumlah Operator" name="txtJumlahOperatorHeader" id="txtJumlahOperatorHeader" class="form-control" value="<?php echo $headerRow['jumlah_operator']; ?>"/>
+                                                    <input type="text" placeholder="Jumlah Operator" name="txtJumlahOperatorHeader" id="txtJumlahOperatorHeader" class="form-control" value="<?php echo $headerRow['jumlah_operator']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaHeader" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama']; ?>"/>
+                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaHeader" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraHeader" id="txtTargetSementaraHeader" class="form-control" value="<?php echo $headerRow['target_sementara']; ?>"/>
+                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraHeader" id="txtTargetSementaraHeader" class="form-control" value="<?php echo $headerRow['target_sementara']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtWaktuSettingHeader" class="control-label col-lg-4">Waktu Setting</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Waktu Setting" name="txtWaktuSettingHeader" id="txtWaktuSettingHeader" class="form-control" value="<?php echo $headerRow['waktu_setting']; ?>"/>
+                                                    <input type="text" placeholder="Waktu Setting" name="txtWaktuSettingHeader" id="txtWaktuSettingHeader" class="form-control" value="<?php echo $headerRow['waktu_setting']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTglBerlakuHeader" class="control-label col-lg-4">Tgl Berlaku</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlakuHeader" value="<?php echo $headerRow['tgl_berlaku'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlakuHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlakuHeader" value="<?php echo $headerRow['tgl_berlaku'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlakuHeader"  required/>
                                                 </div>
                                             </div>
 

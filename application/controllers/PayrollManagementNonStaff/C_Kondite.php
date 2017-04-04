@@ -45,8 +45,6 @@ class C_Kondite extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['Kondite'] = $this->M_kondite->getKondite();
-
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Kondite/V_index', $data);
@@ -94,6 +92,7 @@ class C_Kondite extends CI_Controller
 		if ($term == 'seksi') {
 			$tanggal = $this->input->post('txtTanggalHeader');
 			$kodesie = $this->input->post('cmbKodesie');
+			$kodesie = substr($kodesie, 0, 6);
 			$noind = $this->input->post('txtNoindHeader');
 
 			for ($i=0; $i < count($noind); $i++) {
@@ -124,6 +123,7 @@ class C_Kondite extends CI_Controller
 			$explode = explode(' - ', $noind_kodesie);
 			$noind = $explode[0];
 			$kodesie = $explode[1];
+			$kodesie = substr($kodesie, 0, 6);
 
 			for ($i=0; $i < count($tanggal); $i++) {
 
@@ -196,8 +196,13 @@ class C_Kondite extends CI_Controller
 
 		$data['id'] = $id;
 
+		$noind_kodesie = $this->input->post('cmbNoindHeader');
+		$explode = explode(' - ', $noind_kodesie);
+		$noind = $explode[0];
+		$kodesie = $explode[1];
+
 		$data = array(
-			'noind' => $this->input->post('cmbNoindHeader',TRUE),
+			'noind' => $noind,
 			'kodesie' => $this->input->post('cmbKodesieHeader',TRUE),
 			'tanggal' => $this->input->post('txtTanggalHeader',TRUE),
 			'MK' => $this->input->post('txtMKHeader',TRUE),
@@ -206,10 +211,7 @@ class C_Kondite extends CI_Controller
 			'TKP' => $this->input->post('txtTKPHeader',TRUE),
 			'KB' => $this->input->post('txtKBHeader',TRUE),
 			'KK' => $this->input->post('txtKKHeader',TRUE),
-			'KS' => $this->input->post('txtKSHeader',TRUE),
-			'approval' => $this->input->post('txtApprovalHeader',TRUE),
-			'approve_date' => $this->input->post('txtApproveDateHeader',TRUE),
-			'approved_by' => $this->input->post('txtApprovedByHeader',TRUE),
+			'KS' => $this->input->post('txtKSHeader',TRUE)
 			);
 		$this->M_kondite->updateKondite($data, $plaintext_string);
 
@@ -271,13 +273,13 @@ class C_Kondite extends CI_Controller
 						   		'.$data['employee_code'].' - '.$data['employee_name'].'
 								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['employee_code'].'" required>
 						   </td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" required></td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" required></td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKPHeader[]" placeholder="BKP" required></td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtTKPHeader[]" placeholder="TKP" required></td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtKBHeader[]" placeholder="KB" required></td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtKKHeader[]" placeholder="KK" required></td>
-						   <td width="7%"><input type="text" class="form-control text-center" name="txtKSHeader[]" placeholder="KS" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKPHeader[]" placeholder="BKP" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtTKPHeader[]" placeholder="TKP" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKBHeader[]" placeholder="KB" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKKHeader[]" placeholder="KK" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKSHeader[]" placeholder="KS" maxlength="1" required></td>
 					</tr>
 				';
 			}
@@ -290,6 +292,71 @@ class C_Kondite extends CI_Controller
 			';
 		}
 
+	}
+
+	public function showList(){
+		$requestData= $_REQUEST;
+
+		// print_r($requestData);exit;
+
+		$columns = array(  
+			0 => 'noind', 
+			1 => 'noind', 
+			2 => 'noind', 
+			3 => 'employee_name', 
+			4 => 'kodesie',
+			5 => 'unit_name',
+			6 => 'tanggal',
+			7 => '"MK"',
+			8 => '"BKI"',
+			9 => '"BKP"',
+			10 => '"TKP"',
+			11 => '"KB"',
+			12 => '"KK"',
+			13 => '"KS"'
+		);
+
+		$data_table = $this->M_kondite->getKonditeDatatables();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_kondite->getKonditeSearch($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_kondite->getKonditeOrderLimit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_kondite->getKonditeOrderLimit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$encrypted_string = $this->encrypt->encode($result['kondite_id']);
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+			$count--;
+			if ($count != 0) {
+				$json .= '["'.$no.'","<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>","'.$result['noind'].'","'.$result['employee_name'].'","'.$result['kodesie'].'","'.$result['unit_name'].'","'.$result['tanggal'].'","'.$result['MK'].'","'.$result['BKI'].'","'.$result['BKP'].'","'.$result['TKP'].'","'.$result['KB'].'","'.$result['KK'].'","'.$result['KS'].'"],';
+			}
+			else{
+				$json .= '["'.$no.'","<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>","'.$result['noind'].'","'.$result['employee_name'].'","'.$result['kodesie'].'","'.$result['unit_name'].'","'.$result['tanggal'].'","'.$result['MK'].'","'.$result['BKI'].'","'.$result['BKP'].'","'.$result['TKP'].'","'.$result['KB'].'","'.$result['KK'].'","'.$result['KS'].'"]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
 	}
 
 }

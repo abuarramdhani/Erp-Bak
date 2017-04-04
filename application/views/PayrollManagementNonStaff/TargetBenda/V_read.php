@@ -33,7 +33,7 @@
                                                     <?php foreach ($TargetBenda as $headerRow): ?>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Kodesie</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kodesie']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kodesie'].' - '.$headerRow['unit_name']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Kode Barang</strong></td>

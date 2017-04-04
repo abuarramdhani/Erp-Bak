@@ -45,8 +45,6 @@ class C_DataLKHSeksi extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['LKHSeksi'] = $this->M_datalkhseksi->getLKHSeksi();
-
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/DataLKHSeksi/V_index', $data);
@@ -182,7 +180,71 @@ class C_DataLKHSeksi extends CI_Controller
 		$firstdate = date('Y-m-01', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
 		$lastdate = date('Y-m-t', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
 
-		$this->M_dataabsensi->clearAbsensi($firstdate, $lastdate);
+		$this->M_datalkhseksi->clearData($firstdate, $lastdate);
+	}
+
+	public function showList(){
+		$requestData= $_REQUEST;
+
+		// print_r($requestData);exit;
+
+		$columns = array(   
+			0 => 'noind',
+			1 => 'tgl',
+			2 => 'noind',
+			3 => 'kode_barang',
+			4 => 'kode_proses',
+			5 => 'jml_barang',
+			6 => 'afmat',
+			7 => 'afmch',
+			8 => 'repair',
+			9 => 'reject',
+			10 => 'setting_time',
+			11 => 'shift',
+			12 => 'status',
+			13 => 'kode_barang_target_sementara',
+			14 => 'kode_proses_target_sementara'
+		);
+
+		$data_table = $this->M_datalkhseksi->getLKHSeksiDatatables();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_datalkhseksi->getLKHSeksiSearch($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_datalkhseksi->getLKHSeksiOrderLimit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_datalkhseksi->getLKHSeksiOrderLimit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$count--;
+			if ($count != 0) {
+				$json .= '["'.$no.'", "'.$result['tgl'].'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kode_barang'].'", "'.$result['kode_proses'].'", "'.$result['jml_barang'].'", "'.$result['afmat'].'", "'.$result['afmch'].'", "'.$result['repair'].'", "'.$result['reject'].'", "'.$result['setting_time'].'", "'.$result['shift'].'", "'.$result['status'].'", "'.$result['kode_barang_target_sementara'].'", "'.$result['kode_proses_target_sementara'].'"],';
+			}
+			else{
+				$json .= '["'.$no.'", "'.$result['tgl'].'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kode_barang'].'", "'.$result['kode_proses'].'", "'.$result['jml_barang'].'", "'.$result['afmat'].'", "'.$result['afmch'].'", "'.$result['repair'].'", "'.$result['reject'].'", "'.$result['setting_time'].'", "'.$result['shift'].'", "'.$result['status'].'", "'.$result['kode_barang_target_sementara'].'", "'.$result['kode_proses_target_sementara'].'"]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
 	}
 
 }
