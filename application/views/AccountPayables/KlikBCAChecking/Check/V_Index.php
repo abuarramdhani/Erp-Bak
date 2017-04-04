@@ -35,11 +35,11 @@
 										<form method="post" action="<?php echo base_url('AccountPayables/KlikBCAChecking/Check/Validate')?>">
 											<label class="col-lg-1 control-label">Tanggal</label>
 											<div class="col-lg-2">
-												<input name="TxtStartDate" class="form-control singledate">
+												<input name="TxtStartDate" class="form-control bcacheck">
 											</div>
 											<label class="col-lg-1 control-label" align="center">s/d</label>
 											<div class="col-lg-2">
-												<input name="TxtEndDate" class="form-control singledate">
+												<input name="TxtEndDate" class="form-control bcacheck">
 											</div>
 											<div class="col-lg-2">
 												<a class="btn btn-primary btn-flat btn-block" id="ShowBCAbydate">Tampilkan</a>

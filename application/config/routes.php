@@ -478,6 +478,10 @@ $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
 
+$route['AccountPayables/KlikBCAChecking/Index'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
+$route['AccountPayables/KlikBCAChecking/Index/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Index/$1';
+$route['AccountPayables/KlikBCAChecking/Index/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Index/$1/$2';
+
 $route['AccountPayables/KlikBCAChecking/Insert'] 				= 'AccountPayables/C_KlikBCAChecking_Insert';
 $route['AccountPayables/KlikBCAChecking/Insert/(:any)'] 		= 'AccountPayables/C_KlikBCAChecking_Insert/$1';
 $route['AccountPayables/KlikBCAChecking/Insert/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Insert/$1/$2';

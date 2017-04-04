@@ -22,12 +22,12 @@
 				<tbody>
 					<tr>
 						<td align="center" width="2%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">NO</td>
-						<td align="center" width="15%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">NO.REFERENSI</td>
+						<td align="center" width="11%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">NO.REFERENSI</td>
 						<td align="center" width="15%" colspan="2" style="height:20px;background:#DDDDDD;font-size:9px">PAYMENT NUMBER</td>
 						<td align="center" width="15%" colspan="2" style="height:20px;background:#DDDDDD;font-size:9px">NO.REKENING TUJUAN</td>
 						<td align="center" width="20%" colspan="2" style="height:20px;background:#DDDDDD;font-size:9px">NAMA PEMILIK REKENING</td>
 						<td align="center" width="10%" colspan="2" style="height:20px;background:#DDDDDD;font-size:9px">NOMINAL</td>
-						<td align="center" width="10%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">STATUS CHECK</td>
+						<td align="center" width="8%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">STATUS CHECK</td>
 						<td align="center" width="5%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">TANGGAL CHECK</td>
 						<td align="center" width="5%" rowspan="2" style="height:20px;background:#DDDDDD;font-size:9px">APPROVE</td>
 					</tr>
@@ -36,10 +36,10 @@
 						<td align="center" width="7.5%" style="height:20px;background:#DDDDDD;font-size:9px">ORACLE</td>
 						<td align="center" width="7%" style="height:20px;background:#DDDDDD;font-size:9px">KLIKBCA</td>
 						<td align="center" width="7%" style="height:20px;background:#DDDDDD;font-size:9px">ORACLE</td>
-						<td align="center" width="12%" style="height:20px;background:#DDDDDD;font-size:9px">KLIKBCA</td>
-						<td align="center" width="12%" style="height:20px;background:#DDDDDD;font-size:9px">ORACLE</td>
-						<td align="center" width="5%" style="height:20px;background:#DDDDDD;font-size:9px">KLIKBCA</td>
-						<td align="center" width="5%" style="height:20px;background:#DDDDDD;font-size:9px">ORACLE</td>
+						<td align="center" width="13%" style="height:20px;background:#DDDDDD;font-size:9px">KLIKBCA</td>
+						<td align="center" width="13%" style="height:20px;background:#DDDDDD;font-size:9px">ORACLE</td>
+						<td align="center" width="7%" style="height:20px;background:#DDDDDD;font-size:9px">KLIKBCA</td>
+						<td align="center" width="7%" style="height:20px;background:#DDDDDD;font-size:9px">ORACLE</td>
 					</tr>
 
 					<?php
@@ -61,6 +61,7 @@
 										$oci_PayNum 	= $oci['PAY_NUMBER'];
 										$oci_RekTujuan 	= $oci['REK_TUJUAN'];
 										$oci_NamaTujuan = $oci['ACCT_TUJUAN'];
+										$oci_InisialTujuan = $oci['INISIAL_TUJUAN'];
 										$oci_Nominal 	= $oci['AMOUNT'];
 									}
 								}
@@ -73,8 +74,8 @@
 
 								if($Ref['berita'] !== $oci_PayNum){$col_PayNum = '#FFEE85';}
 								if($Ref['no_rek_penerima'] !== $oci_RekTujuan){$col_RekTujuan = '#FFEE85';}
-								if($Ref['nama_penerima'] !== $oci_NamaTujuan){$col_NamaTujuan = '#FFEE85';}
-								if($Ref['jumlah'] !== $oci_Nominal){$col_Nominal = '#FFEE85';}
+								if($Ref['inisial_penerima'] !== $oci_InisialTujuan){$col_NamaTujuan = '#FFEE85';}
+								if(chr($Ref['jumlah']) !== chr($oci_Nominal)){$col_Nominal = '#FFEE85';}
 
 								$data_StatusChecking='';
 								if($Ref['oracle_checking']=='Y'){$data_StatusChecking='OK';
@@ -87,10 +88,10 @@
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_PayNum ?>;"><?php echo $oci_PayNum ?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_RekTujuan ?>;"><?php echo $Ref['no_rek_penerima']?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_RekTujuan ?>;"><?php echo $oci_RekTujuan?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo $Ref['nama_penerima']?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo $oci_NamaTujuan?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $Ref['jumlah']?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $oci_Nominal?></td>
+						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo str_replace('(Rp)', '', $Ref['nama_penerima']) ?></td>
+						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo $oci_NamaTujuan ?></td>
+						<td align="right" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $Ref['jumlah']?></td>
+						<td align="right" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $oci_Nominal?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo $data_StatusChecking?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo $Ref['tanggal_cek']?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo ''?></td>
