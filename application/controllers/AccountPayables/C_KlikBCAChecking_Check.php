@@ -41,7 +41,7 @@ class C_KlikBCAchecking_Check extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		
-		$data['bca']			= $this->M_klikbcachecking_check->ShowBCAGeneral();
+			$data['bca'] 	= Array();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -93,8 +93,6 @@ class C_KlikBCAchecking_Check extends CI_Controller {
 
 		$data['Referencee'] = $this->M_klikbcachecking_check->ShowBCA($start,$end);
 		$data['OracleData'] = $this->M_klikbcachecking_check->GetOracle();
-
-
 
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		$html = $this->load->view('AccountPayables/KlikBCAChecking/Check/V_Report', $data, true);

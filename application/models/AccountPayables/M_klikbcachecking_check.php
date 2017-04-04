@@ -7,18 +7,29 @@ class M_klikbcachecking_check extends CI_Model {
 	
 	public function ShowBCA($start,$end){
 		$sql = "
-			select *,
-			case when oracle_checking is NULL then '-' else oracle_checking end as checking_status,
-			case when upload_date
-				is NULL then null 	
-				else to_char(upload_date,'DD-MM-YYYY')
-				end as tanggal,
-			case when checking_date
-				is NULL then null 	
-				else to_char(checking_date,'DD-MM-YYYY')
-				end as tanggal_cek
+			select
+				checking_id,
+				no_referensi,
+				no_rek_pengirim,
+				nama_pengirim,
+				no_rek_penerima,
+				nama_penerima,
+				substr(nama_penerima, 1, 5) inisial_penerima,
+				berita,
+				jenis_transfer,
+				oracle_checking,
+				to_char(jumlah, 'FM999,999,999,990D00') as jumlah,
+				case when oracle_checking is NULL then '-' else oracle_checking end as checking_status,
+				case when upload_date
+					is NULL then null 	
+					else to_char(upload_date,'DD MON YY')
+					end as tanggal,
+				case when checking_date
+					is NULL then null 	
+					else to_char(checking_date,'DD MON YY')
+					end as tanggal_cek
 			from ap.ap_klikbca_checking 
-			where upload_date between TO_DATE('$start', 'YYYY/MM/DD') and TO_DATE('$end', 'YYYY/MM/DD')
+			where upload_date between TO_DATE('$start', 'DD/MM/YYYY') and (TO_DATE('$end', 'DD/MM/YYYY')+1)
 			order by no_referensi";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -26,16 +37,26 @@ class M_klikbcachecking_check extends CI_Model {
 
 	public function ShowBCAGeneral(){
 		$sql = "
-			select *,
-			case when oracle_checking is NULL then '-' else oracle_checking end as checking_status,
-			case when upload_date
-				is NULL then null 	
-				else to_char(upload_date,'DD-MM-YYYY')
-				end as tanggal,
-			case when checking_date
-				is NULL then null 	
-				else to_char(checking_date,'DD-MM-YYYY')
-				end as tanggal_cek
+			select
+				checking_id,
+				no_referensi,
+				no_rek_pengirim,
+				nama_pengirim,
+				no_rek_penerima,
+				nama_penerima,
+				berita,
+				jenis_transfer,
+				oracle_checking,
+				to_char(jumlah, 'FM999,999,999,990D00') as jumlah,
+				case when oracle_checking is NULL then '-' else oracle_checking end as checking_status,
+				case when upload_date
+					is NULL then null 	
+					else to_char(upload_date,'DD MON YY')
+					end as tanggal,
+				case when checking_date
+					is NULL then null 	
+					else to_char(checking_date,'DD MON YY')
+					end as tanggal_cek
 			from ap.ap_klikbca_checking";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -52,12 +73,40 @@ class M_klikbcachecking_check extends CI_Model {
 					,VENDOR
 					,DARI_BANK 
 					,BANK_TUJUAN
-					,REK_TUJUAN
+					,SUBSTR(
+						REPLACE(
+							REPLACE(
+								REPLACE(
+									REPLACE(
+										REPLACE(REK_TUJUAN, ' ', '')
+										,'-',''
+									)
+									,'.',''
+								)
+								,',',''
+							)
+							,'(IDR)',''
+						)
+						, 1, 3)||'-'||SUBSTR(REPLACE(
+							REPLACE(
+								REPLACE(
+									REPLACE(
+										REPLACE(REK_TUJUAN, ' ', '')
+										,'-',''
+									)
+									,'.',''
+								)
+								,',',''
+							)
+							,'(IDR)',''
+						)
+						, 4) REK_TUJUAN
 					,ACCT_TUJUAN
+					,SUBSTR(ACCT_TUJUAN, 1, 5) INISIAL_TUJUAN
 					,CREATION_DATE
 					,SITE
 					,NOREK
-					,AMOUNT
+					,TO_CHAR(AMOUNT,'999,999,999,999.99') AMOUNT
 					,AMOUNT * NVL(RATE,1) AMOUNT_PAYMENT
 					,VOUCHER VOCER
 					,CHARGE
@@ -137,7 +186,8 @@ class M_klikbcachecking_check extends CI_Model {
 			WHERE
 				PAY_NUMBER = '$berita'
 				AND REK_TUJUAN = '$no_rek_penerima'
-				AND AMOUNT = '$jumlah'
+				AND AMOUNT LIKE '%$jumlah'
+				
 		");
 		return $query->result_array();
 	}
@@ -151,12 +201,40 @@ class M_klikbcachecking_check extends CI_Model {
 				,VENDOR
 				,DARI_BANK 
 				,BANK_TUJUAN
-				,REK_TUJUAN
+				,SUBSTR(
+					REPLACE(
+						REPLACE(
+							REPLACE(
+								REPLACE(
+									REPLACE(REK_TUJUAN, ' ', '')
+									,'-',''
+								)
+								,'.',''
+							)
+							,',',''
+						)
+						,'(IDR)',''
+					)
+					, 1, 3)||'-'||SUBSTR(REPLACE(
+						REPLACE(
+							REPLACE(
+								REPLACE(
+									REPLACE(REK_TUJUAN, ' ', '')
+									,'-',''
+								)
+								,'.',''
+							)
+							,',',''
+						)
+						,'(IDR)',''
+					)
+					, 4) REK_TUJUAN
 				,ACCT_TUJUAN
+				,SUBSTR(ACCT_TUJUAN, 1, 5) INISIAL_TUJUAN
 				,CREATION_DATE
 				,SITE
 				,NOREK
-				,AMOUNT
+				,TO_CHAR(AMOUNT,'999,999,999,999.99') AMOUNT
 				,AMOUNT * NVL(RATE,1) AMOUNT_PAYMENT
 				,VOUCHER VOCER
 				,CHARGE
