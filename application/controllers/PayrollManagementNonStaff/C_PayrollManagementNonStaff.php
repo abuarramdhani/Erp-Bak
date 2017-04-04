@@ -92,7 +92,7 @@ class C_PayrollManagementNonStaff extends CI_Controller {
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"Kodesie":"'.$data['section_code'].'","Seksi":"'.$data['section_name'].'"}';
+			echo '{"Kodesie":"'.$data['section_code'].'","Seksi":"'.$data['unit_name'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}

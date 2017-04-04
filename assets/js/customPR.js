@@ -1,30 +1,156 @@
 $(document).ready(function() {
-  $('#dataTables-kondite').DataTable( {
+  // alert('working');
+  $('#tblKondite').DataTable( {
         dom: 'Bfrtip',
         buttons: [
           'excel','pdf'
-        ]
-      });
-  $('#dataTables-masterGaji').DataTable({"lengthChange": false});
-  $('#dataTables-potongan').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-          'excel','pdf'
-        ]
-      });
-  $('#dataTables-masterGaji').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-          'excel','pdf'
-        ]
-      });
-  $('#dataTables-tambahan').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-          'excel','pdf'
-        ]
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Kondite/showList",
+          type: "post",
+          error: function(){
+            //$("#tblKondite").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblKondite_processing").css("display","none");
+          }
+        }
       });
 
+  $('#tblDataAbsensi').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataAbsensi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataAbsensi_processing").css("display","none");
+          }
+        }
+      });
+
+  $('#tblDataLKHSeksi').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
+
+  $('#tblTambahan').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Tambahan/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
+
+  $('#tblPotongan').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Potongan/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
+
+  $('#tblTargetBenda').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/MasterData/TargetBenda/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
+
+  $('#tblMasterGaji').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/MasterData/DataGaji/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
+
+  $('#tblHasilGaji').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel','pdf'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/HitungGaji/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
 
   $('#btnCheckServer').click(function(){
     $(this).prop('disabled', true);
@@ -393,6 +519,19 @@ $(document).ready(function() {
     }
   });
 
+  hitungGajiTable();
+  function hitungGajiTable() {
+    $('#tblHitungGaji').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+            'excel'
+          ],
+          "scrollX": true,
+          "paging": false
+          //scrollCollapse: true,
+        });
+  }
+
   $('#btnProsesGaji').click(function(){
     var loading_full =  '<div class="pace pace-active">'+
                         ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
@@ -409,6 +548,7 @@ $(document).ready(function() {
 
     $('#errorProsesGaji').html('');
     $('#btnProsesGaji').prop('disabled', true);
+    $('#btnPrintStrukAll').prop('disabled', true);
 
     if (seksi == '' || bulan == '' || tahun == '') {
       $('#errorProsesGaji').html('<b style="color: red">Data belum lengkap</b>');
@@ -427,11 +567,17 @@ $(document).ready(function() {
         success:function(result)
         {
           $('#errorProsesGaji').html('<b style="color: #3c8dbc">Hitung Gaji Berhasil</b>');
+          $('#tblHitungGaji').DataTable().destroy();
           $('#prosesGaji').html(result);
+          hitungGajiTable();
+          //hitungGajiTable.destroy();
           // $('select[name="cmbKodesie"]').select2('val', null);
           // $('select[name="cmbBulan"]').select2('val', null);
           // $('input[name="txtTahun"]').val('');
           $('#btnProsesGaji').prop('disabled', false);
+          if (result != '') {
+            $('#btnPrintStrukAll').prop('disabled', false);
+          }
 
           $('body').removeClass('noscroll');
           $('#loadingAjax').html('');

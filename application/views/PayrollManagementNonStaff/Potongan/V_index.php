@@ -29,54 +29,26 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblPotongan" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblPotongan" style="font-size:12px;min-width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-												<th>Noind</th>
-												<th>Bulan Gaji</th>
-												<th>Tahun Gaji</th>
-												<th>Pot Lebih Bayar</th>
-												<th>Pot Gp</th>
-												<th>Pot Dl</th>
-												<th>Pot Spsi</th>
-												<th>Pot Duka</th>
-												<th>Pot Koperasi</th>
-												<th>Pot Hutang Lain</th>
-												<th>Pot Dplk</th>
-												<th>Pot Thp</th>
+                                                <th class="text-center" width="100px">Noind</th>
+												<th class="text-center" width="100px">Nama</th>
+												<th class="text-center" width="100px">Bulan Gaji</th>
+												<th class="text-center" width="100px">Tahun Gaji</th>
+												<th class="text-center" width="100px">Pot Lebih Bayar</th>
+												<th class="text-center" width="100px">Pot Gp</th>
+												<th class="text-center" width="100px">Pot Dl</th>
+												<th class="text-center" width="100px">Pot Spsi</th>
+												<th class="text-center" width="100px">Pot Duka</th>
+												<th class="text-center" width="100px">Pot Koperasi</th>
+												<th class="text-center" width="100px">Pot Hutang Lain</th>
+												<th class="text-center" width="100px">Pot Dplk</th>
+												<th class="text-center" width="100px">Pot Thp</th>
 											</tr>
                                         </thead>
-                                        <tbody>
-                                            <?php 
-                                            	$no = 1; 
-                                            	foreach($Potongan as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['potongan_id']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-											?>
-                                            <tr>
-                                                <td align='center'><?php echo $no++;?></td>
-                                                <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
-                                                </td>
-												<td><?php echo $row['noind'] ?></td>
-												<td><?php echo $row['bulan_gaji'] ?></td>
-												<td><?php echo $row['tahun_gaji'] ?></td>
-												<td><?php echo $row['pot_lebih_bayar'] ?></td>
-												<td><?php echo $row['pot_gp'] ?></td>
-												<td><?php echo $row['pot_dl'] ?></td>
-												<td><?php echo $row['pot_spsi'] ?></td>
-												<td><?php echo $row['pot_duka'] ?></td>
-												<td><?php echo $row['pot_koperasi'] ?></td>
-												<td><?php echo $row['pot_hutang_lain'] ?></td>
-												<td><?php echo $row['pot_dplk'] ?></td>
-												<td><?php echo $row['pot_thp'] ?></td>
-											</tr>
-                                            <?php endforeach; ?>
-                                        </tbody>                                      
                                     </table>
                                 </div>
                             </div>

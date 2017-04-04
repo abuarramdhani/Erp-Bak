@@ -35,19 +35,19 @@
                         <td style="width: 1%">:</td>
                         <td>-</td>
                         <td colspan="2">Dept</td>
-                        <td colspan="2">: <?php echo $row['dept'];?></td>
+                        <td colspan="2">: <?php echo $row['department_name'];?></td>
                     </tr>
                     <tr>
                         <td colspan="2">Nama</td>
-                        <td colspan="7">: <?php echo $row['noind'].' - '.$row['nama'];?></td>
+                        <td colspan="7">: <?php echo $row['noind'].' - '.$row['employee_name'];?></td>
                         <td colspan="2">Unit</td>
-                        <td colspan="2">: <?php echo $row['unit'];?></td>
+                        <td colspan="2">: <?php echo $row['unit_name'];?></td>
                     </tr>
                     <tr>
                         <td colspan="2">Sub.Seksi</td>
                         <td colspan="7">: -</td>
                         <td colspan="2">Seksi</td>
-                        <td colspan="2">: <?php echo $row['sect'];?></td>
+                        <td colspan="2">: <?php echo $row['section_name'];?></td>
                     </tr>
                     <tr>
                         <td colspan="4"></td>
@@ -59,9 +59,9 @@
                         <td style="width: 3%">1.</td>
                         <td style="width: 15%">Gaji Pokok</td>
                         <td style="width: 1%">:</td>
-                        <td style="width: 15%"><?php echo $row['gajiPokok'];?></td>
+                        <td style="width: 15%"><?php echo $row['gaji_pokok'];?></td>
                         <td style="width: 1%">:</td>
-                        <td style="width: 15%"><?php echo $row['gajiPokok'];?></td>
+                        <td style="width: 15%"><?php echo $row['gaji_pokok'];?></td>
                         <td colspan="3"></td>
                         <td align="right" colspan="7"><b>LANJUTAN</b></td>
                         <td>:</td>
@@ -73,7 +73,7 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_insentif_prestasi'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['IPTotal'];?></td>
+                        <td><?php echo $row['insentif_prestasi'];?></td>
                         <td style="width: 3%">15.</td>
                         <td style="width: 15%" colspan="3">Denda Ins. Kond.</td>
                         <td style="width: 1%">:</td>
@@ -93,7 +93,7 @@
                         <td>:</td>
                         <td colspan="5"><?php echo $row['hitung_pot_htm'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganHTM'];?></td>
+                        <td><?php echo $row['pot_htm'];?></td>
                     </tr>
                     <tr>
                         <td>4.</td>
@@ -101,13 +101,13 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_insentif_kelebihan'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['IKTotal'];?></td>
+                        <td><?php echo $row['insentif_kelebihan'];?></td>
                         <td>17.</td>
                         <td colspan="3">Pot. Lebih Bayar</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['potonganLebihBayar'];?></td>
+                        <td colspan="5"><?php echo $row['pot_lebih_bayar'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganLebihBayar'];?></td>
+                        <td><?php echo $row['pot_lebih_bayar'];?></td>
                     </tr>
                     <tr>
                         <td>5.</td>
@@ -115,13 +115,13 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_insentif_kondite'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['KonditeTotal'];?></td>
+                        <td><?php echo $row['insentif_kondite'];?></td>
                         <td>18.</td>
                         <td colspan="3">Pot. GP</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['potonganGP'];?></td>
+                        <td colspan="5"><?php echo $row['pot_gp'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganGP'];?></td>
+                        <td><?php echo $row['pot_gp'];?></td>
                     </tr>
                     <tr>
                         <td>6.</td>
@@ -141,11 +141,11 @@
                         <td>:</td>
                         <td><?php echo '('.$row['hitung_ims'].") + (".$row['hitung_imm'].')';?></td>
                         <td>:</td>
-                        <td><?php echo $row['IMSTotal'] + $row['IMMTotal'];?></td>
+                        <td><?php echo $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'];?></td>
                         <td colspan="4"></td>
                         <td align="right" colspan="6"><b>SUB TOTAL 1</b></td>
                         <td>:</td>
-                        <td><?php echo $row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'] - $row['potonganHTM'] - $row['potonganLebihBayar'] - $row['potonganGP'];?></td>
+                        <td><?php echo $row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'] - $row['pot_htm'] - $row['pot_lebih_bayar'] - $row['pot_gp'];?></td>
                     </tr>
                     <tr>
                         <td>8.</td>
@@ -153,7 +153,7 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_ubt'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['UBTTotal'];?></td>
+                        <td><?php echo $row['ubt'];?></td>
                         <td colspan="12"></td>
                     </tr>
                     <tr>
@@ -162,13 +162,13 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_upamk'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['UPAMKTotal'];?></td>
+                        <td><?php echo $row['upamk'];?></td>
                         <td>19.</td>
                         <td colspan="3">Uang DL</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['potonganDL'];?></td>
+                        <td colspan="5"><?php echo $row['pot_uang_dl'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganDL'];?></td>
+                        <td><?php echo $row['pot_uang_dl'];?></td>
                     </tr>
                     <tr>
                         <td>10.</td>
@@ -176,7 +176,7 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_uang_lembur'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['uangLembur'];?></td>
+                        <td><?php echo $row['uang_lembur'];?></td>
                         <td>20.</td>
                         <td colspan="3">Pot. Pajak+SPT</td>
                         <td>:</td>
@@ -190,7 +190,7 @@
                         <td>:</td>
                         <td><?php echo $row['hitung_tambah_kurang_bayar'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['tambahanKurangBayar'];?></td>
+                        <td><?php echo $row['tambah_kurang_bayar'];?></td>
                         <td colspan="9"></td>
                         <td align="right">( - )</td>
                         <td></td>
@@ -200,21 +200,21 @@
                         <td>12.</td>
                         <td>Tamb.Lain</td>
                         <td>:</td>
-                        <td><?php echo $row['tambahanLain'];?></td>
+                        <td><?php echo $row['tambah_lain'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['tambahanLain'];?></td>
+                        <td><?php echo $row['tambah_lain'];?></td>
                         <td colspan="4"></td>
                         <td align="right" colspan="6"><b>SUB TOTAL 2</b></td>
                         <td>:</td>
-                        <td><?php echo $row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'] - $row['potonganHTM'] - $row['potonganLebihBayar'] - $row['potonganGP'] - $row['potonganDL'];?></td>
+                        <td><?php echo $row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'] - $row['pot_htm'] - $row['pot_lebih_bayar'] - $row['pot_gp'] - $row['pot_uang_dl'];?></td>
                     </tr>
                     <tr>
                         <td>13.</td>
                         <td>Uand DL</td>
                         <td>:</td>
-                        <td><?php echo $row['DL'];?></td>
+                        <td><?php echo $row['uang_dl'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['DL'];?></td>
+                        <td><?php echo $row['uang_dl'];?></td>
                         <td colspan="12"></td>
                     </tr>
                     <tr>
@@ -227,9 +227,9 @@
                         <td>21.</td>
                         <td colspan="3">JKN+JHT+JP</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['JKN']." + ".$row['JHT']." + ".$row['JP']; ?></td>
+                        <td colspan="5"><?php echo $row['jkn']." + ".$row['jht']." + ".$row['jp']; ?></td>
                         <td>:</td>
-                        <td><?php echo $row['JKN'] + $row['JHT'] + $row['JP']; ?></td>
+                        <td><?php echo $row['jkn'] + $row['jht'] + $row['jp']; ?></td>
                     </tr>
                     <tr>
                         <td colspan="6" rowspan="5"></td>
@@ -244,25 +244,25 @@
                         <td>23.</td>
                         <td colspan="3">Pot. Koperasi</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['potonganKoperasi'];?></td>
+                        <td colspan="5"><?php echo $row['pot_koperasi'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganKoperasi'];?></td>
+                        <td><?php echo $row['pot_koperasi'];?></td>
                     </tr>
                     <tr>
                         <td>24.</td>
                         <td colspan="3">Pot. Hutang+Lain</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['potonganHutangLain'];?></td>
+                        <td colspan="5"><?php echo $row['pot_hutang_lain'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganHutangLain'];?></td>
+                        <td><?php echo $row['pot_hutang_lain'];?></td>
                     </tr>
                     <tr>
                         <td>25.</td>
                         <td colspan="3">Pot. DPLK</td>
                         <td>:</td>
-                        <td colspan="5"><?php echo $row['potonganDPLK'];?></td>
+                        <td colspan="5"><?php echo $row['pot_dplk'];?></td>
                         <td>:</td>
-                        <td><?php echo $row['potonganDPLK'];?></td>
+                        <td><?php echo $row['pot_dplk'];?></td>
                     </tr>
                     <tr>
                         <td>26.</td>
@@ -288,11 +288,11 @@
                         <td colspan="4"></td>
                         <td align="right" colspan="6"><b>TERIMA BERSIH</b></td>
                         <td>:</td>
-                        <td><?php echo $row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'] - $row['potonganHTM'] - $row['potonganLebihBayar'] - $row['potonganGP'] - $row['potonganDL'] - ($row['JKN'] + $row['JHT'] + $row['JP']) - $row['potonganKoperasi'] - $row['potonganHutangLain'] - $row['potonganDPLK'];?></td>
+                        <td><?php echo $row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'] - $row['pot_htm'] - $row['pot_lebih_bayar'] - $row['pot_gp'] - $row['pot_uang_dl'] - ($row['jkn'] + $row['jht'] + $row['jp']) - $row['pot_koperasi'] - $row['pot_hutang_lain'] - $row['pot_dplk'];?></td>
                     </tr>
                     <tr>
                         <td colspan="5">Gajiku Berasal dari Uang Pelanggan</td>
-                        <td><?php echo $row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'];?></td>
+                        <td><?php echo $row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'];?></td>
                         <td colspan="10"></td>
                         <td></td>
                         <td></td>

@@ -33,18 +33,8 @@
 											<div class="form-group">
                                                 <label for="cmbNoindHeader" class="control-label col-lg-4">Noind</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbNoindHeader" name="cmbNoindHeader" class="select select2" data-placeholder="Choose an option">
-                                                        <option value=""></option>
-                                                        <?php
-                                                            foreach ($EmployeeAll as $row) {
-                                                                if ($headerRow['noind'] == $row['employee_code']) {
-                                                                    $selected_data = "selected";
-                                                                } else {
-                                                                    $selected_data = "";   
-                                                                }
-                                                                echo '<option value="'.$row['employee_code'].'" '.$selected_data.'>'.$row['employee_code'].' - '.$row['employee_name'].'</option>';
-                                                            }
-                                                        ?>
+                                                    <select id="cmbNoindHeader" name="cmbNoindHeader" class="select cmbNoindHeader" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value="<?php echo $headerRow['noind'].' - '.$headerRow['section_code']; ?>"><?php echo $headerRow['noind']." - ".$headerRow['employee_name']; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -52,18 +42,8 @@
 											<div class="form-group">
                                                 <label for="cmbKodesieHeader" class="control-label col-lg-4">Kodesie</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select select2" data-placeholder="Choose an option">
-                                                        <option value=""></option>
-                                                        <?php
-                                                            foreach ($Section as $row) {
-                                                                if ($headerRow['kodesie'] == $row['section_code']) {
-                                                                    $selected_data = "selected";
-                                                                } else {
-                                                                    $selected_data = "";   
-                                                                }
-                                                                echo '<option value="'.$row['section_code'].'" '.$selected_data.'>'.$row['section_code'].'</option>';
-                                                            }
-                                                        ?>
+                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value="<?php echo $headerRow['kodesie']; ?>"><?php echo $headerRow['kodesie']." - ".$headerRow['unit_name']; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -123,28 +103,6 @@
                                                     <input type="text" placeholder="KS" name="txtKSHeader" id="txtKSHeader" class="form-control" value="<?php echo $headerRow['KS']; ?>"/>
                                                 </div>
                                             </div>
-
-											<div class="form-group">
-                                                <label for="txtApprovalHeader" class="control-label col-lg-4">Approval</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Approval" name="txtApprovalHeader" id="txtApprovalHeader" class="form-control" value="<?php echo $headerRow['approval']; ?>"/>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtApproveDateHeader" class="control-label col-lg-4">Approve Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtApproveDateHeader" value="<?php echo $headerRow['approve_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtApproveDateHeader" />
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtApprovedByHeader" class="control-label col-lg-4">Approved By</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Approved By" name="txtApprovedByHeader" id="txtApprovedByHeader" class="form-control" value="<?php echo $headerRow['approved_by']; ?>"/>
-                                                </div>
-                                            </div>
-
 
                                         </div>
 

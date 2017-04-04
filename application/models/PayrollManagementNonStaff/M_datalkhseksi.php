@@ -19,6 +19,91 @@ class M_datalkhseksi extends CI_Model
     	return $query->result_array();
     }
 
+    public function getLKHSeksiDatatables()
+    {
+        $sql = "
+            SELECT * FROM pr.pr_lkh_seksi pls
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = pls.noind
+        ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getLKHSeksiSearch($searchValue)
+    {
+        $numericValue = "";
+        if (is_numeric($searchValue)) {
+            $numericValue = "
+                OR  pls.\"jml_barang\"  = '$searchValue'
+                OR  pls.\"afmat\"  = '$searchValue'
+                OR  pls.\"afmch\"  = '$searchValue'
+                OR  pls.\"repair\"  = '$searchValue'
+                OR  pls.\"reject\"  = '$searchValue'
+                OR  pls.\"setting_time\"  = '$searchValue'
+            ";
+        }
+        $sql = "
+            SELECT * FROM pr.pr_lkh_seksi pls
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = pls.noind
+            WHERE
+                    pls.\"noind\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_barang\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_proses\"  ILIKE '%$searchValue%'
+                OR  pls.\"shift\"  ILIKE '%$searchValue%'
+                OR  pls.\"status\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_barang_target_sementara\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_proses_target_sementara\"  ILIKE '%$searchValue%'
+                OR  eea.employee_name ILIKE '%$searchValue%'
+
+                $numericValue
+                
+        ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getLKHSeksiOrderLimit($searchValue, $order_col, $order_dir, $limit, $offset){
+        if ($searchValue == NULL || $searchValue == "") {
+            $condition = "";
+        }
+        else{
+            $numericValue = "";
+            if (is_numeric($searchValue)) {
+                $numericValue = "
+                    OR  pls.\"jml_barang\"  = '$searchValue'
+                    OR  pls.\"afmat\"  = '$searchValue'
+                    OR  pls.\"afmch\"  = '$searchValue'
+                    OR  pls.\"repair\"  = '$searchValue'
+                    OR  pls.\"reject\"  = '$searchValue'
+                    OR  pls.\"setting_time\"  = '$searchValue'
+                ";
+            }
+            $condition = "
+                WHERE
+                    pls.\"noind\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_barang\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_proses\"  ILIKE '%$searchValue%'
+                OR  pls.\"shift\"  ILIKE '%$searchValue%'
+                OR  pls.\"status\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_barang_target_sementara\"  ILIKE '%$searchValue%'
+                OR  pls.\"kode_proses_target_sementara\"  ILIKE '%$searchValue%'
+                OR  eea.employee_name ILIKE '%$searchValue%'
+
+                $numericValue
+            ";
+        }
+        $sql="
+            SELECT * FROM pr.pr_lkh_seksi pls
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = pls.noind
+
+            $condition
+
+            ORDER BY \"$order_col\" $order_dir LIMIT $limit OFFSET $offset
+            ";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
     public function setLKHSeksi($data)
     {
         return $this->db->insert('pr.pr_lkh_seksi', $data);

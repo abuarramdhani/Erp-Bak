@@ -45,7 +45,7 @@ class C_TargetBenda extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['TargetBenda'] = $this->M_targetbenda->getTargetBenda();
+		// $data['TargetBenda'] = $this->M_targetbenda->getTargetBenda();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -265,7 +265,73 @@ class C_TargetBenda extends CI_Controller
 		}
 	}
 
+	public function showList(){
+		$requestData= $_REQUEST;
 
+		// print_r($requestData);exit;
+
+		$columns = array(   
+			0 => 'kodesie',
+			1 => 'kodesie',
+			2 => 'kodesie',
+			3 => 'kode_barang',
+			4 => 'nama_barang',
+			5 => 'kode_proses',
+			6 => 'nama_proses',
+			7 => 'jumlah_operator',
+			8 => 'target_utama',
+			9 => 'target_sementara',
+			10 => 'waktu_setting',
+			11 => 'tgl_berlaku',
+			12 => 'tgl_input',
+			13 => 'learning_periode',
+
+		);
+
+		$data_table = $this->M_targetbenda->getTargetBendaDatatables();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_targetbenda->getTargetBendaSearch($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_targetbenda->getTargetBendaOrderLimit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_targetbenda->getTargetBendaOrderLimit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$encrypted_string = $this->encrypt->encode($result['target_benda_id']);
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
+			$count--;
+			if ($count != 0) {
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kode_barang'].'", "'.$result['nama_barang'].'", "'.$result['kode_proses'].'", "'.$result['nama_proses'].'", "'.$result['jumlah_operator'].'", "'.$result['target_utama'].'", "'.$result['target_sementara'].'", "'.$result['waktu_setting'].'", "'.$result['tgl_berlaku'].'", "'.$result['tgl_input'].'", "'.$result['learning_periode'].'"],';
+			}
+			else{
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kode_barang'].'", "'.$result['nama_barang'].'", "'.$result['kode_proses'].'", "'.$result['nama_proses'].'", "'.$result['jumlah_operator'].'", "'.$result['target_utama'].'", "'.$result['target_sementara'].'", "'.$result['waktu_setting'].'", "'.$result['tgl_berlaku'].'", "'.$result['tgl_input'].'", "'.$result['learning_periode'].'"
+]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
+	}
 
 }
 

@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="cmbNoindHeader" class="control-label col-lg-4">Noind</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbNoindHeader" name="cmbNoindHeader" class="select cmbNoindHeader" data-placeholder="No Induk" style="width: 100%">
+                                                    <select id="cmbNoindHeader" name="cmbNoindHeader" class="select cmbNoindHeader" data-placeholder="No Induk" style="width: 100%" required>
                                                     </select>
                                                 </div>
                                             </div>
@@ -38,7 +38,7 @@
 											<div class="form-group">
                                                 <label for="cmbKodesieHeader" class="control-label col-lg-4">Kodesie</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Kodesie" style="width: 100%">
+                                                    <select id="cmbKodesieHeader" name="cmbKodesieHeader" class="select cmbKodesie" data-placeholder="Kodesie" style="width: 100%" required>
                                                     </select>
                                                 </div>
                                             </div>
@@ -46,49 +46,49 @@
 											<div class="form-group">
                                                 <label for="txtKelasHeader" class="control-label col-lg-4">Kelas</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Kelas" name="txtKelasHeader" id="txtKelasHeader" class="form-control" />
+                                                    <input type="text" placeholder="Kelas" name="txtKelasHeader" id="txtKelasHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtGajiPokokHeader" class="control-label col-lg-4">Gaji Pokok</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Gaji Pokok" name="txtGajiPokokHeader" id="txtGajiPokokHeader" class="form-control" />
+                                                    <input type="text" placeholder="Gaji Pokok" name="txtGajiPokokHeader" id="txtGajiPokokHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtInsentifPrestasiHeader" class="control-label col-lg-4">Insentif Prestasi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Insentif Prestasi" name="txtInsentifPrestasiHeader" id="txtInsentifPrestasiHeader" class="form-control" />
+                                                    <input type="text" placeholder="Insentif Prestasi" name="txtInsentifPrestasiHeader" id="txtInsentifPrestasiHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtInsentifMasukSoreHeader" class="control-label col-lg-4">Insentif Masuk Sore</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Insentif Masuk Sore" name="txtInsentifMasukSoreHeader" id="txtInsentifMasukSoreHeader" class="form-control" />
+                                                    <input type="text" placeholder="Insentif Masuk Sore" name="txtInsentifMasukSoreHeader" id="txtInsentifMasukSoreHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtInsentifMasukMalamHeader" class="control-label col-lg-4">Insentif Masuk Malam</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Insentif Masuk Malam" name="txtInsentifMasukMalamHeader" id="txtInsentifMasukMalamHeader" class="form-control" />
+                                                    <input type="text" placeholder="Insentif Masuk Malam" name="txtInsentifMasukMalamHeader" id="txtInsentifMasukMalamHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtUbtHeader" class="control-label col-lg-4">Ubt</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Ubt" name="txtUbtHeader" id="txtUbtHeader" class="form-control" />
+                                                    <input type="text" placeholder="Ubt" name="txtUbtHeader" id="txtUbtHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtUpamkHeader" class="control-label col-lg-4">Upamk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Upamk" name="txtUpamkHeader" id="txtUpamkHeader" class="form-control" />
+                                                    <input type="text" placeholder="Upamk" name="txtUpamkHeader" id="txtUpamkHeader" class="form-control"  required/>
                                                 </div>
                                             </div>
 

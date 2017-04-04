@@ -32,56 +32,25 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblKondite" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblKondite" style="font-size:12px;min-width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-												<th>Noind</th>
-												<th>Kodesie</th>
-												<th>Tanggal</th>
-												<th>MK</th>
-												<th>BKI</th>
-												<th>BKP</th>
-												<th>TKP</th>
-												<th>KB</th>
-												<th>KK</th>
-												<th>KS</th>
-												<th>Approval</th>
-												<th>Approve Date</th>
-												<th>Approved By</th>
+                                                <th class="text-center" width="100px">Noind</th>
+                                                <th class="text-center" width="100px">Nama</th>
+                                                <th class="text-center" width="100px">Kodesie</th>
+												<th class="text-center" width="100px">Nama Unit</th>
+												<th class="text-center" width="100px">Tanggal</th>
+												<th class="text-center" width="100px">MK</th>
+												<th class="text-center" width="100px">BKI</th>
+												<th class="text-center" width="100px">BKP</th>
+												<th class="text-center" width="100px">TKP</th>
+												<th class="text-center" width="100px">KB</th>
+												<th class="text-center" width="100px">KK</th>
+												<th class="text-center" width="100px">KS</th>
 											</tr>
                                         </thead>
-                                        <tbody>
-                                            <?php 
-                                            	$no = 1; 
-                                            	foreach($Kondite as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['kondite_id']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-											?>
-                                            <tr>
-                                                <td align='center'><?php echo $no++;?></td>
-                                                <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
-                                                </td>
-												<td><?php echo $row['noind'] ?></td>
-												<td><?php echo $row['kodesie'] ?></td>
-												<td><?php echo $row['tanggal'] ?></td>
-												<td><?php echo $row['MK'] ?></td>
-												<td><?php echo $row['BKI'] ?></td>
-												<td><?php echo $row['BKP'] ?></td>
-												<td><?php echo $row['TKP'] ?></td>
-												<td><?php echo $row['KB'] ?></td>
-												<td><?php echo $row['KK'] ?></td>
-												<td><?php echo $row['KS'] ?></td>
-												<td><?php echo $row['approval'] ?></td>
-												<td><?php echo $row['approve_date'] ?></td>
-												<td><?php echo $row['approved_by'] ?></td>
-											</tr>
-                                            <?php endforeach; ?>
-                                        </tbody>                                      
                                     </table>
                                 </div>
                             </div>

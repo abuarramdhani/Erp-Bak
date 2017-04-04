@@ -38,7 +38,14 @@
 											<div class="form-group">
                                                 <label for="txtBulanGajiHeader" class="control-label col-lg-4">Bulan Gaji</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Bulan Gaji" name="txtBulanGajiHeader" id="txtBulanGajiHeader" class="form-control" />
+                                                    <select name="txtBulanGajiHeader" class="form-control select2" data-placeholder="Select Month" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php
+                                                            for($i = 1; $i <= 12; $i++){
+                                                                echo '<option value="'.$i.'">'.date("F", mktime(0, 0, 0, $i, 1)).'</option>';
+                                                            }
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 

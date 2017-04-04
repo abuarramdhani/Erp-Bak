@@ -195,7 +195,67 @@ class C_Tambahan extends CI_Controller
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Tambahan'));
     }
 
+    public function showList(){
+		$requestData= $_REQUEST;
 
+		// print_r($requestData);exit;
+
+		$columns = array(   
+			0=> 'noind',
+			1=> 'noind',
+			2=> 'noind',
+			3=> 'bulan_gaji',
+			4=> 'tahun_gaji',
+			5=> 'kurang_bayar',
+			6=> 'lain_lain',
+
+		);
+
+		$data_table = $this->M_tambahan->getTambahanDatatables();
+		$totalData = $data_table->num_rows();
+		$totalFiltered = $totalData;
+
+		if(!empty($requestData['search']['value'])) {
+			$data_table = $this->M_tambahan->getTambahanSearch($requestData['search']['value']);
+			$totalFiltered = $data_table->num_rows();
+
+			$data_table = $this->M_tambahan->getTambahanOrderLimit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+		else{
+			$data_table = $this->M_tambahan->getTambahanOrderLimit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+		}
+
+		$data = array();
+		$no = 1;
+		$data_array = $data_table->result_array();
+		
+		$json = "{";
+		$json .= '"draw":'.intval( $requestData['draw'] ).',';
+		$json .= '"recordsTotal":'.intval( $totalData ).',';
+		$json .= '"recordsFiltered":'.intval( $totalFiltered ).',';
+		$json .= '"data":[';
+
+		$count = count($data_array);
+		$no = 1;
+		foreach ($data_array as $result) {
+			$encrypted_string = $this->encrypt->encode($result['tambahan_id']);
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
+			$bulan_gaji = date('F', mktime(0, 0, 0, $result['bulan_gaji'], 1));
+
+			$count--;
+			if ($count != 0) {
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Tambahan/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Tambahan/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Tambahan/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$bulan_gaji.'", "'.$result['tahun_gaji'].'", "'.$result['kurang_bayar'].'", "'.$result['lain_lain'].'"],';
+			}
+			else{
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Tambahan/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Tambahan/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Tambahan/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$bulan_gaji.'", "'.$result['tahun_gaji'].'", "'.$result['kurang_bayar'].'", "'.$result['lain_lain'].'"]';
+			}
+			$no++;
+		}
+		$json .= ']}';
+
+		echo $json;
+	}
 
 }
 
