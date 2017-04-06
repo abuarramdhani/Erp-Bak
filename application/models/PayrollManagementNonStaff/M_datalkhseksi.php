@@ -31,17 +31,6 @@ class M_datalkhseksi extends CI_Model
 
     public function getLKHSeksiSearch($searchValue)
     {
-        $numericValue = "";
-        if (is_numeric($searchValue)) {
-            $numericValue = "
-                OR  pls.\"jml_barang\"  = '$searchValue'
-                OR  pls.\"afmat\"  = '$searchValue'
-                OR  pls.\"afmch\"  = '$searchValue'
-                OR  pls.\"repair\"  = '$searchValue'
-                OR  pls.\"reject\"  = '$searchValue'
-                OR  pls.\"setting_time\"  = '$searchValue'
-            ";
-        }
         $sql = "
             SELECT * FROM pr.pr_lkh_seksi pls
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = pls.noind
@@ -54,8 +43,13 @@ class M_datalkhseksi extends CI_Model
                 OR  pls.\"kode_barang_target_sementara\"  ILIKE '%$searchValue%'
                 OR  pls.\"kode_proses_target_sementara\"  ILIKE '%$searchValue%'
                 OR  eea.employee_name ILIKE '%$searchValue%'
+                OR  CAST(pls.\"jml_barang\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"afmat\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"afmch\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"repair\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"reject\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"setting_time\" AS TEXT) ILIKE '%$searchValue%'
 
-                $numericValue
                 
         ";
         $query = $this->db->query($sql);
@@ -67,17 +61,6 @@ class M_datalkhseksi extends CI_Model
             $condition = "";
         }
         else{
-            $numericValue = "";
-            if (is_numeric($searchValue)) {
-                $numericValue = "
-                    OR  pls.\"jml_barang\"  = '$searchValue'
-                    OR  pls.\"afmat\"  = '$searchValue'
-                    OR  pls.\"afmch\"  = '$searchValue'
-                    OR  pls.\"repair\"  = '$searchValue'
-                    OR  pls.\"reject\"  = '$searchValue'
-                    OR  pls.\"setting_time\"  = '$searchValue'
-                ";
-            }
             $condition = "
                 WHERE
                     pls.\"noind\"  ILIKE '%$searchValue%'
@@ -88,8 +71,13 @@ class M_datalkhseksi extends CI_Model
                 OR  pls.\"kode_barang_target_sementara\"  ILIKE '%$searchValue%'
                 OR  pls.\"kode_proses_target_sementara\"  ILIKE '%$searchValue%'
                 OR  eea.employee_name ILIKE '%$searchValue%'
+                OR  CAST(pls.\"jml_barang\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"afmat\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"afmch\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"repair\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"reject\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pls.\"setting_time\" AS TEXT) ILIKE '%$searchValue%'
 
-                $numericValue
             ";
         }
         $sql="

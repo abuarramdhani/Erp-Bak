@@ -41,19 +41,6 @@ class M_mastergaji extends CI_Model
 
     public function getMasterGajiSearch($searchValue)
     {
-        $numericValue = "";
-        if (is_numeric($searchValue)) {
-            $numericValue = "
-                OR  pmg.\"kelas\" = '$searchValue'
-                OR  pmg.\"gaji_pokok\" = '$searchValue'
-                OR  pmg.\"insentif_prestasi\" = '$searchValue'
-                OR  pmg.\"insentif_masuk_sore\" = '$searchValue'
-                OR  pmg.\"insentif_masuk_malam\" = '$searchValue'
-                OR  pmg.\"ubt\" = '$searchValue'
-                OR  pmg.\"upamk\" = '$searchValue'
-
-            ";
-        }
         $sql = "
             SELECT * FROM pr.pr_master_gaji pmg
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = pmg.noind
@@ -63,8 +50,14 @@ class M_mastergaji extends CI_Model
                 OR  eea.\"employee_name\" ILIKE '%$searchValue%'
                 OR  pmg.\"kodesie\" ILIKE '%$searchValue%'
                 OR  unit_name ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"kelas\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"gaji_pokok\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"insentif_prestasi\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"insentif_masuk_sore\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"insentif_masuk_malam\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"ubt\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"upamk\" AS TEXT) ILIKE '%$searchValue%'
 
-                $numericValue
         ";
         $query = $this->db->query($sql);
         return $query;
@@ -75,26 +68,19 @@ class M_mastergaji extends CI_Model
             $condition = "";
         }
         else{
-            $numericValue = "";
-            if (is_numeric($searchValue)) {
-                $numericValue = "
-                    OR  pmg.\"kelas\" = '$searchValue'
-                    OR  pmg.\"gaji_pokok\" = '$searchValue'
-                    OR  pmg.\"insentif_prestasi\" = '$searchValue'
-                    OR  pmg.\"insentif_masuk_sore\" = '$searchValue'
-                    OR  pmg.\"insentif_masuk_malam\" = '$searchValue'
-                    OR  pmg.\"ubt\" = '$searchValue'
-                    OR  pmg.\"upamk\" = '$searchValue'
-                ";
-            }
             $condition = "
                 WHERE
                     pmg.\"noind\" ILIKE '%$searchValue%'
                 OR  eea.\"employee_name\" ILIKE '%$searchValue%'
                 OR  pmg.\"kodesie\" ILIKE '%$searchValue%'
                 OR  unit_name ILIKE '%$searchValue%'
-
-                $numericValue
+                OR  CAST(pmg.\"kelas\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"gaji_pokok\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"insentif_prestasi\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"insentif_masuk_sore\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"insentif_masuk_malam\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"ubt\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"upamk\" AS TEXT) ILIKE '%$searchValue%'
             ";
         }
         $sql="

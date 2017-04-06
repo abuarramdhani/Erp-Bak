@@ -219,7 +219,6 @@ class C_TargetBenda extends CI_Controller
 	}
 
 	public function doImport(){
-		$this->session->set_userdata('ImportProgress', '0');
 
 		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
 		$fileName = str_replace(' ', '_', $fileName);
@@ -242,21 +241,24 @@ class C_TargetBenda extends CI_Controller
 				$db_record = dbase_get_record_with_names($db, $i);
 
 				$data = array(
-					'kode_barang' => $db_record['KODEBRG'],
-					'nama_barang' => $db_record['NAMABRG'],
-					'kode_proses' => $db_record['KODEPRO'],
-					'nama_proses' => $db_record['PROSES'],
-					'jumlah_operator' => $db_record['JMLOPR'],
-					'tgl_berlaku' => $db_record['TG_LAKU'],
-					'tgl_input' => $db_record['TG_INPUT']
+					'kodesie' => utf8_encode($db_record['KODESIE']),
+					'kode_barang' => utf8_encode($db_record['KODEBRG']),
+					'nama_barang' => utf8_encode($db_record['NAMABRG']),
+					'kode_proses' => utf8_encode($db_record['KODEPRO']),
+					'nama_proses' => utf8_encode($db_record['PROSES']),
+					'jumlah_operator' => utf8_encode($db_record['JMLOPR']),
+					'target_utama_senin_kamis' => utf8_encode($db_record['PSK52']),
+					'target_utama_jumat_sabtu' => utf8_encode($db_record['PJS52']),
+					'waktu_setting' => utf8_encode($db_record['WAKTU_SETTING']),
+					'tgl_berlaku' => utf8_encode($db_record['TG_LAKU']),
+					'tgl_input' => utf8_encode($db_record['TG_INPUT'])
 				);
 
-				$this->M_targetbenda->setTargetBenda($data);
+				// print_r($data);
 
-				$ImportProgress = ($i/$db_rows)*100;
-				$this->session->set_userdata('ImportProgress', $ImportProgress);
-				flush();
+				$this->M_targetbenda->setTargetBenda($data);
 			}
+			// exit;
 			unlink($inputFileName);
 			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
 		}

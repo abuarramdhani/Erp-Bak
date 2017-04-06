@@ -174,15 +174,6 @@ class C_HitungGaji extends CI_Controller
 		return $getMasterGaji;
 	}
 
-	//alternatif
-	//Hitung IMS, IMM, UBT, UPAMK, Uang Lembur, Potongan HTM
-	//Parameter dapat dari getMasterGaji()
-
-	//Hitung Tambahan Kurang Bayar, Tambahan Lain-Lain
-	//Left Join pr_tambahan
-
-	//Hitung Uang DL
-	//Tanpa Parameter
 	public function getKomponenAbsensi($noind, $kodesie, $bln_gaji, $thn_gaji, $gajiPokok, $insentifMasukSore, $insentifMasukMalam, $UBT, $UPAMK){
 		$getKomponenAbsensi = $this->M_hitunggaji->getKomponenAbsensi($noind, $kodesie, $bln_gaji, $thn_gaji, $gajiPokok, $insentifMasukSore, $insentifMasukMalam, $UBT, $UPAMK);
 
@@ -190,12 +181,17 @@ class C_HitungGaji extends CI_Controller
 
 	}
 
-	//Hitung IP, Kelebihan IP
-	//$insentifPrestasi dapat dari getMasterGaji()
 	public function getLKHSeksi($noind, $insentifPrestasi, $bln_gaji, $thn_gaji){
+
+		// $noind = 'A1926';
+		// $bln_gaji = '1';
+		// $thn_gaji = '2017';
+		// $insentifPrestasi = 10000;
+
 		$firstdate = date('Y-m-01', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
 		$lastdate = date('Y-m-t', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
 		$getLKHSeksi = $this->M_hitunggaji->getLKHSeksi($noind, $firstdate, $lastdate);
+		// print_r($getLKHSeksi);exit;
 
 		$begin = new DateTime($firstdate);
 		$end = new DateTime($lastdate);
@@ -207,15 +203,42 @@ class C_HitungGaji extends CI_Controller
 		$ip = 0;
 		$kelebihan = 0;
 		foreach ($p as $d) {
-			$pencapaian = 0;
+			$pencapaian_hari_ini = 0;
 			$tanggal = 0;
 			$day = $d->format('Y-m-d');
 			foreach ($getLKHSeksi as $dataLKHSeksi) {
 				if ($dataLKHSeksi['tgl'] == $day) {
-					$pencapaian = $pencapaian + $dataLKHSeksi['pencapaian'];
+					$jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['reject'];
+					// echo $dataLKHSeksi['tgl']."<br>";
+					if (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Sunday') {
+						$target = 0;
+					}
+					elseif (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Friday' || date('l', strtotime($dataLKHSeksi['tgl'])) == 'Saturday') {
+						$target = $dataLKHSeksi['target_jumat_sabtu'];
+					}
+					else{
+						$target = $dataLKHSeksi['target_senin_kamis'];
+					}
+
+					if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
+						$target = 0;
+					}
+					
+					if ($target == 0 || $target == '') {
+						$proposional_target = 0;
+						$cycle_time = 0;
+					}
+					else{
+						$proposional_target = 100/$target;
+						$cycle_time = $dataLKHSeksi['waktu_setting']/$target;
+					}
+
+					$pencapaian = $jml_baik * $proposional_target;
+					$pencapaian_hari_ini = $pencapaian_hari_ini + $pencapaian;
 					$tanggal = $dataLKHSeksi['tgl'];
 				}
 			}
+
 			if ($tanggal != 0) {
 				if ($pencapaian >= 110) {
 					$ip = $ip + 1;
@@ -231,6 +254,7 @@ class C_HitungGaji extends CI_Controller
 				}
 			}
 		}
+		// exit;
 
 		$resultLKHSeksi[] = array(
 			'IP' => $ip,
@@ -238,6 +262,8 @@ class C_HitungGaji extends CI_Controller
 			'IK' => $kelebihan,
 			'totalInsentifKelebihan' => ($kelebihan/100) * $insentifPrestasi
 		);
+
+		// print_r($resultLKHSeksi);exit;
 
 		return $resultLKHSeksi;
 	}
