@@ -249,6 +249,11 @@ $(document).ready(function(){
 		addRemoveLinks:true,
 		});
 
+		klik_upload.on('sending', function(file, xhr, formData){
+			var type = $('select#type').val();
+            formData.append('fileType', type);
+        });
+
 		//upload
 		klik_upload.on("success",function(file, response){
 			$('#cobaco').append('<tr><td>'+response+'</td></tr>');
