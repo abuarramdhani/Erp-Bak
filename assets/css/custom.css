@@ -45,3 +45,38 @@ a.logo:hover {
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }
 .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
+
+table.spct {
+	border: 2px solid black;
+	border-collapse: collapse;	
+	border-spacing: 10px;
+}
+
+table.spct th{
+	border: 1px solid black;
+	height: 20px;
+	text-align: center;
+	padding: 6px;
+}
+
+table.spct td{
+	border: 1px solid black;
+	height: 18px;
+	padding: 4px;
+}
+
+td.spcfield1{
+	width: 120px;
+}
+
+td.spcfield2{
+	width: 200px;
+}
+
+td.spcsc{
+	width: 10px;
+}
+
+hr.full { width:100%; height:2px; background: #000000 }
+
+hr.part { width: 100%; height:2px; background: #000000 }

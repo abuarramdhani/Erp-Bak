@@ -7,9 +7,9 @@ class C_RincianHutang extends CI_Controller
         parent::__construct();
         $this->load->library('session');
         $this->load->helper('url');
-        $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('PayrollManagement/Report/RincianHutang/M_reportrincianhutang');
+        $this->load->model('PayrollManagement/TransaksiHutangKaryawan/M_hutangkaryawan');
+         $this->load->model('PayrollManagement/Report/RincianHutang/M_reportrincianhutang'); 
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -29,8 +29,9 @@ class C_RincianHutang extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['Hubker_data']	= $this->M_reportrincianhutang->hubker();
-		
+        $hutangKaryawan = $this->M_hutangkaryawan->get_all();
+
+        $data['hutangKaryawan_data'] = $hutangKaryawan;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/Report/RincianHutang/V_index', $data);
@@ -42,7 +43,7 @@ class C_RincianHutang extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $row = $this->M_riwayatpotdanapensiun->get_by_id($id);
+        $row = $this->M_hutangkaryawan->get_by_id($id);
         if ($row) {
             $data = array(
             	'Menu' => 'Payroll Management',
@@ -52,23 +53,24 @@ class C_RincianHutang extends CI_Controller
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             
-				'id_riw_pens' => $row->id_riw_pens,
-				'tgl_berlaku' => $row->tgl_berlaku,
-				'tgl_tberlaku' => $row->tgl_tberlaku,
+				'no_hutang' => $row->no_hutang,
 				'noind' => $row->noind,
-				'pot_pensiun' => $row->pot_pensiun,
-				'kd_petugas' => $row->kd_petugas,
-				'tgl_jam_record' => $row->tgl_jam_record,
+				'tgl_pengajuan' => $row->tgl_pengajuan,
+				'total_hutang' => $row->total_hutang,
+				'jml_cicilan' => $row->jml_cicilan,
+				'status_lunas' => $row->status_lunas,
+				'kode_petugas' => $row->kode_petugas,
+				'tgl_record' => $row->tgl_record,
 			);
 
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('PayrollManagement/RiwayatPotDanaPensiun/V_read', $data);
+            $this->load->view('PayrollManagement/HutangKaryawan/V_read', $data);
             $this->load->view('V_Footer',$data);
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+            redirect(site_url('PayrollManagement/HutangKaryawan'));
         }
     }
 
@@ -85,19 +87,20 @@ class C_RincianHutang extends CI_Controller
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            'action' => site_url('PayrollManagement/RiwayatPotDanaPensiun/save'),
-				'id_riw_pens' => set_value(''),
-			'tgl_berlaku' => set_value('tgl_berlaku'),
-			'tgl_tberlaku' => set_value('tgl_tberlaku'),
+            'action' => site_url('PayrollManagement/HutangKaryawan/save'),
+				'no_hutang' => set_value(''),
 			'noind' => set_value('noind'),
-			'pot_pensiun' => set_value('pot_pensiun'),
-			'kd_petugas' => set_value('kd_petugas'),
-			'tgl_jam_record' => set_value('tgl_jam_record'),
+			'tgl_pengajuan' => set_value('tgl_pengajuan'),
+			'total_hutang' => set_value('total_hutang'),
+			'jml_cicilan' => set_value('jml_cicilan'),
+			'status_lunas' => set_value('status_lunas'),
+			'kode_petugas' => set_value('kode_petugas'),
+			'tgl_record' => set_value('tgl_record'),
 		);
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/RiwayatPotDanaPensiun/V_form', $data);
+        $this->load->view('PayrollManagement/HutangKaryawan/V_form', $data);
         $this->load->view('V_Footer',$data);
     }
 
@@ -105,38 +108,37 @@ class C_RincianHutang extends CI_Controller
     {
         $this->formValidation();
 
-        
-            $data = array(
-				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => '9999-12-31',
-				'noind' => $this->input->post('txtNoind',TRUE),
-				'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
-				'kd_petugas' => $this->session->userdata('userid'),
-				'tgl_jam_record' => date('Y-m-d H:i:s'),
+		$data = array(
+			'no_hutang' => str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')),
+			'noind' => $this->input->post('txtNoind',TRUE),
+			'tgl_pengajuan' => $this->input->post('txtTglPengajuan',TRUE),
+			'total_hutang' => $this->input->post('txtTotalHutang',TRUE),
+			'jml_cicilan' => $this->input->post('txtJmlCicilan',TRUE),
+			'status_lunas' => $this->input->post('cmbStatusLunas',TRUE),
+			'kode_petugas' => $this->session->userdata('userid'),
+			'tgl_record' => date('Y-m-d H:i:s'),
+		);
+
+        $this->M_hutangkaryawan->insert($data);
+		$jml_cicilan	= $this->input->post('txtJmlCicilan',TRUE);
+		$ttl_hutang	= $this->input->post('txtTotalHutang',TRUE);
+		$cicilan = round($ttl_hutang/ $jml_cicilan,0);
+		$no_id= 1;
+		for($i=0;$i<$jml_cicilan;$i++){
+			$data_transaksi = array(
+				'id_transaksi_hutang'		=> str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')).sprintf('%03s',$no_id),
+				'no_hutang'						=> str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')),
+				'tgl_transaksi'					=> date("Y-m-d", strtotime("+".$no_id." month", strtotime($this->input->post('txtTglPengajuan',TRUE)))),
+				'jenis_transaksi'				=> '1',
+				'jumlah_transaksi'			=> $cicilan,
+				'lunas'								=> $this->input->post('cmbStatusLunas',TRUE),
 			);
-			$data_riwayat = array(
-				'tgl_tberlaku'	=> $this->input->post('txtTglBerlaku',TRUE),
-			);
-			
-			$this->M_riwayatpotdanapensiun->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
-            $this->M_riwayatpotdanapensiun->insert($data);
-			
-			$check = $this->M_riwayatpotdanapensiun->check_master($this->input->post('txtNoind',TRUE));
-			if($check){
-				$data_update_master = array(
-					'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
-				);
-				$this->M_riwayatpotdanapensiun->update_master($this->input->post('txtNoind',TRUE),$data_update_master);
-			}else{
-				$data_insert_master = array(
-					'noind' => $this->input->post('txtNoind',TRUE),
-					'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
-				);
-				$this->M_riwayatpotdanapensiun->insert_master($data_insert_master);
-			}
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
-        
+			$this->M_hutangkaryawan->insert_transaksi($data_transaksi);
+			$no_id++;
+		}
+		
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('PayrollManagement/HutangKaryawan'));
     }
 
     public function update($id)
@@ -145,7 +147,7 @@ class C_RincianHutang extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $row = $this->M_riwayatpotdanapensiun->get_by_id($id);
+        $row = $this->M_hutangkaryawan->get_by_id($id);
 
         if ($row) {
             $data = array(
@@ -155,22 +157,23 @@ class C_RincianHutang extends CI_Controller
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-                'action' => site_url('PayrollManagement/RiwayatPotDanaPensiun/saveUpdate'),
-				'id_riw_pens' => set_value('txtIdRiwPens', $row->id_riw_pens),
-				'tgl_berlaku' => set_value('txtTglBerlaku', $row->tgl_berlaku),
-				'tgl_tberlaku' => set_value('txtTglTberlaku', $row->tgl_tberlaku),
+                'action' => site_url('PayrollManagement/HutangKaryawan/saveUpdate'),
+				'no_hutang' => set_value('txtNoHutang', $row->no_hutang),
 				'noind' => set_value('txtNoind', $row->noind),
-				'pot_pensiun' => set_value('txtPotPensiun', $row->pot_pensiun),
-				'kd_petugas' => set_value('txtKdPetugas', $row->kd_petugas),
-				'tgl_jam_record' => set_value('txtTglJamRecord', $row->tgl_jam_record),
+				'tgl_pengajuan' => set_value('txtTglPengajuan', $row->tgl_pengajuan),
+				'total_hutang' => set_value('txtTotalHutang', $row->total_hutang),
+				'jml_cicilan' => set_value('txtJmlCicilan', $row->jml_cicilan),
+				'status_lunas' => set_value('txtStatusLunas', $row->status_lunas),
+				'kode_petugas' => set_value('txtKodePetugas', $row->kode_petugas),
+				'tgl_record' => set_value('txtTglRecord', $row->tgl_record),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('PayrollManagement/RiwayatPotDanaPensiun/V_form', $data);
+            $this->load->view('PayrollManagement/HutangKaryawan/V_form', $data);
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+            redirect(site_url('PayrollManagement/HutangKaryawan'));
         }
     }
 
@@ -178,183 +181,47 @@ class C_RincianHutang extends CI_Controller
     {
         $this->formValidation();
 
-        
-            $data = array(
-				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => '9999-12-31',
-				'noind' => $this->input->post('txtNoind',TRUE),
-				'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
-				'kd_petugas' => $this->session->userdata('userid'),
-				'tgl_jam_record' => date('Y-m-d H:i:s'),
-			);
+        $data = array(
+			'no_hutang' => $this->input->post('txtNoHutangNew',TRUE),
+			'noind' => $this->input->post('txtNoind',TRUE),
+			'tgl_pengajuan' => $this->input->post('txtTglPengajuan',TRUE),
+			'total_hutang' => $this->input->post('txtTotalHutang',TRUE),
+			'jml_cicilan' => $this->input->post('txtJmlCicilan',TRUE),
+			'status_lunas' => $this->input->post('cmbStatusLunas',TRUE),
+			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+		);
 
-            $this->M_riwayatpotdanapensiun->update($this->input->post('txtIdRiwPens', TRUE), $data);
-			
-			$data_update_master = array(
-				'pot_pensiun' => str_replace(',','',$this->input->post('txtPotPensiun',TRUE)),
-			);
-			$this->M_riwayatpotdanapensiun->update_master($this->input->post('txtNoind',TRUE),$data_update_master);
-			
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+        $this->M_hutangkaryawan->update($this->input->post('txtNoHutang', TRUE), $data);
+        $this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('PayrollManagement/HutangKaryawan'));
         
     }
 
     public function delete($id)
     {
-        $row = $this->M_riwayatpotdanapensiun->get_by_id($id);
+        $row = $this->M_hutangkaryawan->get_by_id($id);
 
         if ($row) {
-            $this->M_riwayatpotdanapensiun->delete($id);
+            $this->M_hutangkaryawan->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+            redirect(site_url('PayrollManagement/HutangKaryawan'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+            redirect(site_url('PayrollManagement/HutangKaryawan'));
         }
     }
 
-    public function import(){
-		$config['upload_path'] = 'assets/upload/importPR/iuranpensiun/';
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '6000';
-        $this->load->library('upload', $config);
- 
-        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
-        else {  $file_data  = $this->upload->data();
-                $filename   = $file_data['file_name'];
-                $file_path  = 'assets/upload/importPR/iuranpensiun/'.$file_data['file_name'];
-                
-            if ($this->csvimport->get_array($file_path)) {
-                
-                $csv_array  = $this->csvimport->get_array($file_path);
-                $data_exist = array();
-                $i = 0;
-                foreach ($csv_array as $row) {
-                    if(array_key_exists('NOIND', $row)){
-                    	
- 						//ROW DATA
-	                    $data = array(
-	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
-							'tgl_tberlaku' => '9999-12-31',
-							'noind' => $row['NOIND'],
-							'pot_pensiun' => $row['POT_PENSIUN'],
-							'kd_petugas' => $this->session->userdata('userid'),
-							'tgl_jam_record' => date('Y-m-d H:i:s'),
-	                    );
+    public function getMaxHutang(){
+        $data_where = array(
+            'noind' => $this->input->post('noind',TRUE),
+            'tgl_tberlaku' => '9999-12-31',
+        );
 
-                    	//CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
-	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-							$data_update = array(
-								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
-							);
-							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
-							$this->M_riwayatpotdanapensiun->insert($data);
-	                    }else{
-	                    	$this->M_riwayatpotdanapensiun->insert($data);
-	                    }
-
-                	}else{
-                		//ROW DATA
-                		$data = array(
-	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
-							'tgl_tberlaku' => '9999-12-31',
-							'noind' => $row['NOIND'],
-							'pot_pensiun' => $row['POT_PENSIUN'],
-							'kd_petugas' => $this->session->userdata('userid'),
-							'tgl_jam_record' => date('Y-m-d H:i:s'),
-	                    );
-
-	                    //CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
-	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-							$data_update = array(
-								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
-							);
-							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
-							$this->M_riwayatpotdanapensiun->insert($data);
-	                    }else{
-	                    	$this->M_riwayatpotdanapensiun->insert($data);
-	                    }
-	                    
-                	}
-                }
-
-                //LOAD EXIST DATA VERIFICATION PAGE
-                $this->checkSession();
-        		$user_id = $this->session->userid;
+        $maxHutang = $this->M_hutangkaryawan->getMaxHutang($data_where);
+        $maxHutang = 2 * $maxHutang;
         
-        		$data['Menu'] = 'Payroll Management';
-        		$data['SubMenuOne'] = '';
-        		$data['SubMenuTwo'] = '';
-
-		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		        $data['data_exist'] = $data_exist;
-				unlink($file_path);
-				redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
-            } else {
-                $this->load->view('csvindex');
-            }
-        }
-    }
-
-    public function upload() {
-       
-        $config['upload_path'] = 'assets/upload/importPR/iuranpensiun';
-        $config['file_name'] = 'IuranPensiun-'.time();
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '1000';
-        $this->load->library('upload', $config);
- 
-        if (!$this->upload->do_upload('importfile')) {
-            echo $this->upload->display_errors();
-        }
-        else {
-            $file_data  = $this->upload->data();
-            $filename   = $file_data['file_name'];
-            $file_path  = 'assets/upload/importPR/iuranpensiun/'.$file_data['file_name'];
-            
-            if ($this->csvimport->get_array($file_path)){
-                $data = $this->csvimport->get_array($file_path);
-                $this->import($data, $filename);
-            }
-            else {
-                $this->import($data = array(), $filename = '');
-            }
-        }
-    }
-
-    public function saveImport(){
-        $filename = $this->input->post('txtFileName');
-        $file_path  = 'assets/upload/importPR/iuranpensiun/'.$filename;
-        $importData = $this->csvimport->get_array($file_path);
-
-        foreach ($importData as $row) {
-           $data = array(
-               	'tgl_berlaku' => $row['TGL_BERLAKU'],
-				'tgl_tberlaku' => '9999-12-31',
-				'noind' => $row['NOIND'],
-				'pot_pensiun' => $row['POT_PENSIUN'],
-				'kd_petugas' => $this->session->userdata('userid'),
-				'tgl_jam_record' => date('Y-m-d H:i:s'),
-            );
-
-            $this->M_riwayatpotdanapensiun->insert($data);
-        }
-
-        $this->session->set_flashdata('message', 'Create Record Success');
-        redirect(site_url('PayrollManagement/RiwayatPotDanaPensiun'));
+        echo $maxHutang;
     }
 
     public function checkSession(){
@@ -365,12 +232,49 @@ class C_RincianHutang extends CI_Controller
         }
     }
 
-    public function formValidation()
+    public function getNoind()
+    {
+        $term = strtoupper($this->input->get('term',TRUE));
+		$result = $this->M_hutangkaryawan->getNoind($term);
+		echo json_encode($result);
+	}
+
+	public function formValidation()
     {
 	}
 
+    public function generatePDF() {
+        $this->load->library('pdf');
+        $pdf = $this->pdf->load();
+        $pdf = new mPDF('utf-8', array(210,330), 0, '', 0, 0, 0, 0, 0, 0, 'L');
+        $filename = 'Rincian Hutang Karyawan';
+        $this->checkSession();
+
+        $noind = $this->input->get('noind');
+        $no_hutang = $this->input->get('no_hutang');
+
+        $data['Employee'] = $this->M_reportrincianhutang->getEmployeeData($noind);
+        $data['Loan'] = $this->M_reportrincianhutang->getLoanData($no_hutang);
+        $data['Payment'] = $this->M_reportrincianhutang->getLoanPayment($no_hutang);
+
+        $stylesheet = file_get_contents(base_url('assets/css/custom.css'));
+        $html = $this->load->view('PayrollManagement/Report/RincianHutang/V_report', $data, true);
+
+        $pdf->AddPage('P', // L - landscape, P - portrait 
+            '', '', '', '',
+            20, // margin_left
+            20, // margin right
+            10, // margin top
+            10, // margin bottom
+            0, // margin header
+            0); // margin footer
+
+        $pdf->WriteHTML($stylesheet, 1);
+        $pdf->WriteHTML($html, 2);
+        $pdf->Output($filename, 'D');
+    }
 }
 
-/* End of file C_RiwayatPotDanaPensiun.php */
-/* Location: ./application/controllers/PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun.php */
-/* Generated automatically on 2016-11-26 10:45:31 */
+/* End of file C_HutangKaryawan.php */
+/* Location: ./application/controllers/PayrollManagement/TransaksiHutangKaryawan/C_HutangKaryawan.php */
+/* Generated automatically on 2016-12-01 11:08:18 */
