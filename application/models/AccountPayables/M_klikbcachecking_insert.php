@@ -12,15 +12,10 @@ class M_klikbcachecking_insert extends CI_Model {
 		return $query->result_array();
 	}
 
-	//INSERT RECAP
-	public function InsertRecap($no_referensi,$no_rek_pengirim,$no_rek_penerima,$nama_pengirim,$nama_penerima,$jumlah,$berita,$jenis_transfer,$user_id){
-		$sql = "
-			insert into ap.ap_klikbca_checking
-			(no_referensi,no_rek_pengirim,no_rek_penerima,nama_pengirim,nama_penerima,jumlah,berita,jenis_transfer,upload_date,uploaded_by)values
-			('$no_referensi','$no_rek_pengirim','$no_rek_penerima','$nama_pengirim','$nama_penerima','$jumlah','$berita','$jenis_transfer','now()','$user_id')";
-		$query = $this->db->query($sql);
-		return;
-	}
+
+ 	function InsertRecap($htmldata){
+        $this->db->insert('ap.ap_klikbca_checking', $htmldata);
+    }
 
 	//DELETE RECAP
 		public function DeleteRecap($no_rek_penerima,$berita){
