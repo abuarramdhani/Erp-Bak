@@ -1,5 +1,8 @@
 //---------------------------------CLAIMS EXTERNAL.begin-------------------------------
 $(document).ready(function() {
+        $('input.txtActionDate').datepicker({
+            autoclose: true,
+    });
     //--------------------------------DATA TABLE-------------------------------------
     function datatable() {
         $('#tbNewClaim').DataTable({
