@@ -93,6 +93,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 					'berita' 			=> $berita,
 					'jenis_transfer' 	=> $jenis_transfer,
 					'uploaded_by' 		=> $user_id,
+					'upload_date'		=> 'now()',
 				);
 
 			}elseif($_POST['fileType']=="TYP2"){
@@ -134,6 +135,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 					'biaya' 			=> $biaya,
 					'layanan_transfer' 	=> $layanan_transfer,
 					'uploaded_by' 		=> $user_id,
+					'upload_date'		=> 'now()',
 				);
 			
 			}elseif($_POST['fileType']=="TYP3"){
@@ -166,7 +168,8 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 					'jumlah' 			=> $jumlah,
 					'berita' 			=> $berita,
 					'jenis_transfer' 	=> $jenis_transfer,
-					'uploaded_by' 			=> $user_id,
+					'uploaded_by' 		=> $user_id,
+					'upload_date'		=> 'now()',
 				);
 
 			}
@@ -219,6 +222,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 				'berita' 			=> $berita,
 				'jenis_transfer' 	=> $jenis_transfer,
 				'uploaded_by' 		=> $user_id,
+				'upload_date'		=> 'now()',
 			);
 
 		}elseif($type=="TYP2"){
@@ -260,6 +264,7 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 				'biaya' 			=> $biaya,
 				'layanan_transfer' 	=> $layanan_transfer,
 				'uploaded_by' 		=> $user_id,
+				'upload_date'		=> 'now()',
 			);
 		
 		}elseif($type=="TYP3"){
@@ -292,7 +297,8 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 				'jumlah' 			=> $jumlah,
 				'berita' 			=> $berita,
 				'jenis_transfer' 	=> $jenis_transfer,
-				'uploaded_by' 			=> $user_id,
+				'uploaded_by' 		=> $user_id,
+				'upload_date'		=> 'now()',
 			);
 
 		}
