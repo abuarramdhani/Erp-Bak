@@ -150,6 +150,10 @@ class M_transaksipenggajian extends CI_Model
 		return $sql->result();
 	}
 	
+	function getPekerjaSakit($id){
+		$query	= "";
+	}
+	
 	function getKp($noind,$varYear,$varMonth){
 		$this->db->where('substring(periode,1,4)=',$varYear);
 		$this->db->where('substring(periode,6,2)=',$varMonth);

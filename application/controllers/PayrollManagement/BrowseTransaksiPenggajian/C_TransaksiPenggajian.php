@@ -197,6 +197,7 @@ class C_TransaksiPenggajian extends CI_Controller
 			$presentase = $row1->prosentase;
 			$thr = $row1->thr;
 			$ubthr = $row1->ubthr;
+			$bln_sakit = $row1->bulan_sakit;
 			$klaim_cuti = $row1->klaim_cuti;
 			$klaim_dl = $row1->klaim_dl;
 			$pot_transfer = $row1->pot_transfer;
@@ -232,7 +233,7 @@ class C_TransaksiPenggajian extends CI_Controller
 				$fx_cicilan_hutang = $fx_cicilan_hutang + $row->jumlah_transaksi;
 			}
 			
-			$getPekerjaSakit	= $this->M_transaksipenggajian->getPekerjaSakit($);
+			$getPekerjaSakit	= $this->M_transaksipenggajian->getPekerjaSakit($bln_sakit);
 			
 			$getParameterPPh	= $this->M_transaksipenggajian->getParameterPPh();
 			// PERHITUNGAN KODE STATUS  " B "
@@ -283,7 +284,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						$fx_pot_duka		= $p_pduka;																															//POTONGAN DUKA
 						$fx_um_puasa	= ($p_um_puasa * $r_um);																								//UANG MAKAN PUASA
 						$fx_pot_transfer	= ($pot_transfer - $pot_transfer_tg_prshn);																	//POTONGAN TRANSFER
-						$fx_pot_skt_panjang	= ($pot_transfer - $pot_transfer_tg_prshn);																	//POTONGAN TRANSFER
+						$fx_pot_skt_panjang	= ($r_gaji_pokok - $pot_transfer_tg_prshn);																	//POTONGAN SAKIT BERKEPANJANGAN
 						$pph = 0;
 						$pph21 = 0;
 						
@@ -405,7 +406,7 @@ class C_TransaksiPenggajian extends CI_Controller
 												'p_ikr_htg_bln_lalu' => "0",
 												't_ikr_htg_bln_lalu' => "0",
 												'p_ikmhl' => $p_i_f,
-												't_ikmhl' => "",
+												't_ikmhl' => $fx_insentif_kemahalan,
 												'p_ikmhl_htg_bln_lalu' => "0",
 												't_ikmhl_htg_bln_lalu' => "0",
 												'p_ims' => $p_ims,
