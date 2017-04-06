@@ -178,39 +178,127 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 				$this->M_klikbcachecking_insert->InsertRecap($htmldata);
 				print_r('<b>'.$file_data['file_name'].'</b> upload sukses');
 			}else{
-				print_r('<b>'.$file_data['file_name'].'</b> data sudah ada <a href="'.base_url('AccountPayables/KlikBCAChecking/Insert/replace/'.$filewithoutx).'" target="_blank">[REPLACE]</a>');
+				print_r('<b>'.$file_data['file_name'].'</b> data sudah ada <a href="'.base_url('AccountPayables/KlikBCAChecking/Insert/replace/'.$filewithoutx).'/'.$_POST['fileType'].'" target="_blank">[REPLACE]</a>');
 			}
 		}
 	}
 
-	function replace($html){
+	function replace($html,$type){
 		$inputFileName 	= 'upload-bca/'.$html.'.htm';
 
 		$html	= file_get_html($inputFileName);
 		$Odd	= $html->find('.clsForm tr td');
 
-		foreach ($Odd as $key => $value) {
-		if (substr($value->plaintext, 0, 1) !== ":" AND substr($value->plaintext, 0, 1) !== "&") {
-				$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
+		if($type=="TYP1"){
+				
+			//SESAMA BCA
+			foreach ($Odd as $key => $value) {
+				if (substr($value->plaintext, 0, 1) !== ":" AND substr($value->plaintext, 0, 1) !== "&") {
+					$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
+				}
 			}
-		}
-		
-		//COLLECTED DATA
-		$pengirim			= (explode("/",$collected_data[1]));
-		$penerima 			= (explode("/",$collected_data[2]));
+			$pengirim			= (explode("/",$collected_data[1]));
+			$penerima 			= (explode("/",$collected_data[2]));
+			$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
+			$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
+			$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
+			$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
+			$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
+			$jumlah				= str_replace(array('Rp&nbsp;', ',', ' '), '', $collected_data[3]);
+			$berita				= str_replace(array('  '), '', $collected_data[4]);
+			$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[6]);
+			$user_id 			= $this->session->userid;
+			
+			$htmldata = array(
+				'no_referensi' 		=> $no_referensi,
+				'no_rek_pengirim' 	=> $no_rek_pengirim,
+				'no_rek_penerima' 	=> $no_rek_penerima,
+				'nama_pengirim' 	=> $nama_pengirim,
+				'nama_penerima' 	=> $nama_penerima,
+				'jumlah' 			=> $jumlah,
+				'berita' 			=> $berita,
+				'jenis_transfer' 	=> $jenis_transfer,
+				'uploaded_by' 		=> $user_id,
+			);
 
-		$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
-		$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
-		$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
-		$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
-		$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
-		$jumlah				= str_replace(array('Rp&nbsp;', ',', ' '), '', $collected_data[3]);
-		$berita				= str_replace(array('  '), '', $collected_data[4]);
-		$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[6]);
-		$user_id 			= $this->session->userid;
+		}elseif($type=="TYP2"){
+			
+			//BANK LAIN
+			foreach ($Odd as $key => $value) {
+				if (substr($value->plaintext, 0, 13) == ":&nbsp;&nbsp;") {
+					$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
+				}
+			}
+			$pengirim			= (explode("/",$collected_data[1]));
+			$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
+			$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
+			$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $collected_data[6]);
+			$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
+			$nama_penerima		= str_replace(array('&nbsp;', '  '), '', $collected_data[7]);
+			$jumlah				= str_replace(array('Rp', '&nbsp;', ',', ' '), '', $collected_data[8]);
+			$berita				= str_replace(array('  '), '', $collected_data[11]);
+			$jenis_transfer		= str_replace(array('&nbsp;', '  '), '', $collected_data[12]);
+			$nama_alias			= str_replace(array('&nbsp;', '  '), '', $collected_data[3]);
+			$bank_tujuan		= str_replace(array('&nbsp;', '  '), '', $collected_data[4]);
+			$kota_bank			= str_replace(array('&nbsp;', '  '), '', $collected_data[5]);
+			$biaya				= str_replace(array('Rp', '&nbsp;', ',', ' '), '', $collected_data[8]);
+			$layanan_transfer	= str_replace(array('&nbsp;', '  '), '', $collected_data[10]);
+			$user_id 			= $this->session->userid;
+
+			$htmldata = array(
+				'no_referensi' 		=> $no_referensi,
+				'no_rek_pengirim' 	=> $no_rek_pengirim,
+				'no_rek_penerima' 	=> $no_rek_penerima,
+				'nama_pengirim' 	=> $nama_pengirim,
+				'nama_penerima' 	=> $nama_penerima,
+				'jumlah' 			=> $jumlah,
+				'berita' 			=> $berita,
+				'jenis_transfer' 	=> $jenis_transfer,
+				'nama_alias' 		=> $nama_alias,
+				'bank_tujuan' 		=> $bank_tujuan,
+				'kota_bank' 		=> $kota_bank,
+				'biaya' 			=> $biaya,
+				'layanan_transfer' 	=> $layanan_transfer,
+				'uploaded_by' 		=> $user_id,
+			);
+		
+		}elseif($type=="TYP3"){
+		
+			//CASH MANAGEMENT
+			foreach ($Odd as $key => $value) {
+				if (substr($value->plaintext, 0, 13) == ":&nbsp;&nbsp;") {
+					$collected_data[] = str_replace(':&nbsp;&nbsp;', '', $value->plaintext);
+				}
+			}
+
+			$pengirim			= (explode("/",$collected_data[1]));
+			$penerima 			= (explode("/",$collected_data[2]));
+			$no_referensi 		= str_replace(array(' '), '', $collected_data[0]);
+			$no_rek_pengirim	= str_replace(array('&nbsp;', ' '), '', $pengirim[0]);
+			$no_rek_penerima	= str_replace(array('&nbsp;', ' '), '', $penerima[0]);
+			$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
+			$nama_penerima		= str_replace(array('&nbsp;'), '', $penerima[1]);
+			$jumlah				= str_replace(array('Rp&nbsp;', ',', ' '), '', $collected_data[3]);
+			$berita				= str_replace(array('  '), '', $collected_data[4]);
+			$jenis_transfer		= str_replace(array('  ','&nbsp;'), '', $collected_data[5]);
+			$user_id 			= $this->session->userid;
+
+			$htmldata = array(
+				'no_referensi' 		=> $no_referensi,
+				'no_rek_pengirim' 	=> $no_rek_pengirim,
+				'no_rek_penerima' 	=> $no_rek_penerima,
+				'nama_pengirim' 	=> $nama_pengirim,
+				'nama_penerima' 	=> $nama_penerima,
+				'jumlah' 			=> $jumlah,
+				'berita' 			=> $berita,
+				'jenis_transfer' 	=> $jenis_transfer,
+				'uploaded_by' 			=> $user_id,
+			);
+
+		}
 
 		$this->M_klikbcachecking_insert->DeleteRecap($no_rek_penerima,$berita);
-		$this->M_klikbcachecking_insert->InsertRecap($no_referensi,$no_rek_pengirim,$no_rek_penerima,$nama_pengirim,$nama_penerima,$jumlah,$berita,$jenis_transfer,$user_id);
+		$this->M_klikbcachecking_insert->InsertRecap($htmldata);
 		echo "<script>window.close();</script>";
 	}
 
