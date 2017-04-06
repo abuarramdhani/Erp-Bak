@@ -32,21 +32,15 @@ class M_tambahan extends CI_Model
 
     public function getTambahanSearch($searchValue)
     {
-        $numericValue = "";
-        if (is_numeric($searchValue)) {
-            $numericValue = "
-                OR  pta.\"bulan_gaji\" = '$searchValue'
-                OR  pta.\"tahun_gaji\" = '$searchValue'
-                OR  pta.\"kurang_bayar\" = '$searchValue'
-                OR  pta.\"lain_lain\" = '$searchValue'
-            ";
-        }
         $sql = "
             SELECT * FROM pr.pr_tambahan pta
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = pta.noind
             WHERE
                     pta.\"noind\" ILIKE '%$searchValue%'
-                $numericValue
+                OR  CAST(pta.\"bulan_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pta.\"tahun_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pta.\"kurang_bayar\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pta.\"lain_lain\" AS TEXT) ILIKE '%$searchValue%'
                 OR  eea.employee_name ILIKE '%$searchValue%'
                 
         ";
@@ -59,19 +53,14 @@ class M_tambahan extends CI_Model
             $condition = "";
         }
         else{
-            $numericValue = "";
-            if (is_numeric($searchValue)) {
-                $numericValue = "
-                    OR  pta.\"bulan_gaji\" = '$searchValue'
-                    OR  pta.\"tahun_gaji\" = '$searchValue'
-                    OR  pta.\"kurang_bayar\" = '$searchValue'
-                    OR  pta.\"lain_lain\" = '$searchValue'
-                ";
-            }
             $condition = "
                 WHERE
                     pta.\"noind\" ILIKE '%$searchValue%'
-                $numericValue
+                OR  CAST(pta.\"bulan_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pta.\"tahun_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pta.\"kurang_bayar\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pta.\"lain_lain\" AS TEXT) ILIKE '%$searchValue%'
+
                 OR  eea.employee_name ILIKE '%$searchValue%'
             ";
         }

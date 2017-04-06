@@ -247,15 +247,15 @@ class C_MasterGaji extends CI_Controller
 				$db_record = dbase_get_record_with_names($db, $i);
 
 				$data = array(
-					'noind' => $db_record['NOIND'],
-					'kodesie' => $db_record['KODESIE'],
-					'kelas' => $db_record['KELAS'],
-					'gaji_pokok' => $db_record['GP'],
-					'insentif_prestasi' => $db_record['IP'],
-					'insentif_masuk_sore' => $db_record['IMS'],
-					'insentif_masuk_malam' => $db_record['IMM'],
-					'ubt' => $db_record['UBT'],
-					'upamk' => $db_record['UPAMK'],
+					'noind' => utf8_encode($db_record['NOIND']),
+					'kodesie' => utf8_encode($db_record['KODESIE']),
+					'kelas' => utf8_encode($db_record['KELAS']),
+					'gaji_pokok' => utf8_encode($db_record['GP']),
+					'insentif_prestasi' => utf8_encode($db_record['IP']),
+					'insentif_masuk_sore' => utf8_encode($db_record['IMS']),
+					'insentif_masuk_malam' => utf8_encode($db_record['IMM']),
+					'ubt' => utf8_encode($db_record['UBT']),
+					'upamk' => utf8_encode($db_record['UPAMK']),
 				);
 
 				$this->M_mastergaji->setMasterGaji($data);

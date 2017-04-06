@@ -160,11 +160,9 @@ class M_hitunggaji extends CI_Model
                     (
                     SELECT
                         *,
-                        (pls.jml_barang-pls.reject) as jml_baik,
-                        ptb.target_utama as target,
-                        (100/ptb.target_utama) as proposional_target,
-                        (ptb.waktu_setting/ptb.target_utama) as cycle_time,
-                        ((pls.jml_barang-pls.reject)*(100/ptb.target_utama)) as pencapaian
+                        rtrim(pls.kode_barang) as kd_brg,
+                        ptb.target_utama_senin_kamis as target_senin_kamis,
+                        ptb.target_utama_jumat_sabtu as target_jumat_sabtu
                     FROM
                         pr.pr_lkh_seksi pls
                     LEFT JOIN
@@ -183,11 +181,9 @@ class M_hitunggaji extends CI_Model
                     (
                     SELECT
                         *,
-                        (pls.jml_barang-pls.reject) as jml_baik,
-                        ptb.target_sementara as target,
-                        (100/ptb.target_sementara) as proposional_target,
-                        (ptb.waktu_setting/ptb.target_sementara) as cycle_time,
-                        ((pls.jml_barang-pls.reject)*(100/ptb.target_sementara)) as pencapaian
+                        rtrim(pls.kode_barang) as kd_brg,
+                        ptb.target_sementara_senin_kamis as target_senin_kamis,
+                        ptb.target_sementara_jumat_sabtu as target_jumat_sabtu
                     FROM
                         pr.pr_lkh_seksi pls
                     LEFT JOIN
