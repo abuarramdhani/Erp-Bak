@@ -87,7 +87,7 @@ class M_transaksipenggajian extends CI_Model
 	function getDataGajianPersonalia($varYear,$varMonth,$date){
 		$query	= "
 		select 
-			b.noind,a.kd_status_kerja,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,
+			b.noind,a.kd_status_kerja,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.kd_hubungan_kerja,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,
 			b.tanggal,b.kd_jabatan,b.kodesie,(b.ip) as p_ip,(b.ik) as p_ik,(b.i_f) as p_if,b.if_htg_bln_lalu,(b.ubt) as p_ubt,(b.upamk) as p_upamk,
 			(b.um) as p_um,(b.ims) as p_ims,(b.imm) as p_imm,b.lembur,b.htm,b.ijin,b.htm_htg_bln_lalu,b.ijin_htg_bln_lalu,b.pot,
 			b.tamb_gaji,b.hl,b.ct,b.putkop,b.plain,b.pikop,b.pspsi,b.putang,b.dl,b.tkpajak,b.ttpajak,
@@ -151,7 +151,9 @@ class M_transaksipenggajian extends CI_Model
 	}
 	
 	function getPekerjaSakit($id){
-		$query	= "";
+		$query	= "select * from pr.pr_master_tarif_pekerja_sakit where CAST(coalesce(bulan_awal, '0') AS integer)<='$id' and CAST(coalesce(bulan_akhir, '0') AS integer)>='$id'";
+		$sql			= $this->db->query($query);
+		return $sql->result();
 	}
 	
 	function getKp($noind,$varYear,$varMonth){

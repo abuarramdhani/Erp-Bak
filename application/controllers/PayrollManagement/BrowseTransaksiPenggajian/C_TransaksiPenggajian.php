@@ -99,6 +99,7 @@ class C_TransaksiPenggajian extends CI_Controller
 		foreach($getDataGajianPersonalia as $row1){
 			$noind = $row1->noind;
 			$kd_status_kerja = $row1->kd_status_kerja;
+			$kd_hubungan_kerja = $row1->kd_hubungan_kerja;
 			$stat_pajak = $row1->stat_pajak;
 			if($stat_pajak == "KS"){
 				$stat_pajak	= "TK";
@@ -234,57 +235,76 @@ class C_TransaksiPenggajian extends CI_Controller
 			}
 			
 			$getPekerjaSakit	= $this->M_transaksipenggajian->getPekerjaSakit($bln_sakit);
+			foreach($getPekerjaSakit as $row){
+				$p_sakit = $row->persentase;
+			}
 			
 			$getParameterPPh	= $this->M_transaksipenggajian->getParameterPPh();
 			// PERHITUNGAN KODE STATUS  " B "
-					if(substr($noind,0,1)=="B" or substr($noind,0,1)=="D"){
-						$fx_gaji_pokok	= $r_gaji_pokok;																													//KOMPONEN GAJI POKOK
-						$fx_ik						= $p_ik * $r_ik;																														//KOMPONEN INSENTIF KOGNITE
-						$fx_ip						= $p_ip * $r_ip;																													//KOMPONEN INSENTIF P
-						$fx_if						= $p_i_f * $r_i_f;																													//KOMPONEN INSENTIF FUNGSIONAL
-						$fx_if_htg_bln_lalu	= $p_if_htg_bln_lalu * $r_i_f;																						//KOMPONEN IF HTG BLN LALU
-						$fx_imm				= $p_imm * $r_imm;																											//KOMPONEN INSENTIF MASUK MALAM
-						$fx_ims					= $p_ims * $r_ims;																												//KOMPONEN INSENTIF MASUK SORE
-						$fx_ubt					= $p_ubt * $r_ubt;																												//KOMPONEN UANG BANTU TRANSPORT
-						$fx_upamk			= $p_upamk * $r_upamk;																									//KOMPONEN UPAH PENGHARGAAN ATAS MASA KERJA
-						$fx_lembur			= (((($r_gaji_pokok / 30) + $r_um ) * 30 ) * $std_jam) * $p_lembur;						//KOMPONEN LEMBUR
-						$fx_um					= $p_um * $r_um;																												//KOMPONEN UANG MAKAN
-						$fx_klaim_cuti		= $klaim_cuti;																														//KLAIM SISA CUTI	
-						$fx_klaim_dl			= $klaim_dl;																															//KLAIM DINAS LUAR
-						$fx_kp					= $r_kp;																																	//KOREKSI KENA PAJAK
-						$fx_htm					= (($p_htm + $p_ijin) * ($r_gaji_pokok/30));																		//POTONGAN HARI TIDAK MASUK
-						$fx_tkp					= $r_tkp;																																//KOREKSI TIDAK KENA PAJAK
-						$fx_thr					= $thr;																																	//KOMPONEN THR
-						$fx_ubthr				= $ubthr;																																//KOMPONEN UBTHR
+					if(substr($noind,0,1)=="B" or substr($noind,0,1)=="D" or substr($noind,0,1)=="J" or substr($noind,0,1)=="G"){
+ 						$fx_gaji_pokok	= $r_gaji_pokok;																											//KOMPONEN GAJI POKOK
+						$fx_ik						= $p_ik * $r_ik;																										//KOMPONEN INSENTIF KOGNITE
+						$fx_ip						= $p_ip * $r_ip;
+						if(substr($noind,0,1)=="B" or substr($noind,0,1)=="D"){
+								$fx_if						= $p_i_f * $r_i_f;																										//KOMPONEN INSENTIF FUNGSIONAL
+								$fx_if_htg_bln_lalu	= $p_if_htg_bln_lalu * $r_i_f;																					//KOMPONEN IF HTG BLN LALU
+						}else{
+								$fx_if						= 0;
+								$fx_if_htg_bln_lalu	= 0;
+						}
+						if(substr($noind,0,1)=="J"){
+								$fx_ikr						= $p_i_f * $r_i_f;																										//KOMPONEN INSENTIF KERAJINAN
+								$fx_ikr_htg_bln_lalu	= $p_if_htg_bln_lalu * $r_i_f;																					//KOMPONEN IF HTG BLN LALU
+						}else{
+								$fx_ikr						= 0;
+								$fx_ikr_htg_bln_lalu	= 0;
+						}
+						$fx_imm				= $p_imm * $r_imm;																										//KOMPONEN INSENTIF MASUK MALAM
+						$fx_ims					= $p_ims * $r_ims;																									//KOMPONEN INSENTIF MASUK SORE
+						$fx_ubt					= $p_ubt * $r_ubt;																									//KOMPONEN UANG BANTU TRANSPORT
+						$fx_upamk			= $p_upamk * $r_upamk;																							//KOMPONEN UPAH PENGHARGAAN ATAS MASA KERJA
+						$fx_lembur			= (((($r_gaji_pokok / 30) + $r_um ) * 30 ) * $std_jam) * $p_lembur;							//KOMPONEN LEMBUR
+						$fx_um					= $p_um * $r_um;																									//KOMPONEN UANG MAKAN
+						$fx_klaim_cuti		= $klaim_cuti;																												//KLAIM SISA CUTI	
+						$fx_klaim_dl			= $klaim_dl;																												//KLAIM DINAS LUAR
+						$fx_kp					= $r_kp;																														//KOREKSI KENA PAJAK
+						$fx_htm					= (($p_htm + $p_ijin) * ($r_gaji_pokok/30));															//POTONGAN HARI TIDAK MASUK
+						$fx_tkp					= $r_tkp;																													//KOREKSI TIDAK KENA PAJAK
+						$fx_thr					= $thr;																														//KOMPONEN THR
+						$fx_ubthr				= $ubthr;																													//KOMPONEN UBTHR
 						$fx_insentif_kemahalan				= $r_insentif_kemahalan * $p_i_f;														//KOMPONEN INSENTIF KEMAHALAN
 						$fx_jht_p				= (($r_gaji_pokok * $r_jht_perusahaan)/100) * $p_jht_prshn;									//JAMINAN HARI TUA TANGGUNGAN PERUSAHAAN
 						$fx_jht_k				= (($r_gaji_pokok * $r_jht_karyawan)/100) * $p_jht_kary;											//JAMINAN HARI TUA TANGGUNGAN KARYAWAN
 						if($umur > $r_batas_umur_jp){
 							if($fx_gaji_pokok > $r_batas_jpk){
-								$fx_jpp					= (($r_batas_jpk * $r_jpk_perusahaan)/100) * $p_jpn_prshn;								//JAMINAN PENSIUN TANGGUNGAN PERUSAHAAN
+								$fx_jpp					= (($r_batas_jpk * $r_jpk_perusahaan)/100) * $p_jpn_prshn;						//JAMINAN PENSIUN TANGGUNGAN PERUSAHAAN
 							}else{
-								$fx_jpp					= (($r_gaji_pokok * $r_jpk_perusahaan)/100) * $p_jpn_prshn;								//JAMINAN PENSIUN TANGGUNGAN PERUSAHAAN
+								$fx_jpp					= (($r_gaji_pokok * $r_jpk_perusahaan)/100) * $p_jpn_prshn;						//JAMINAN PENSIUN TANGGUNGAN PERUSAHAAN
 							}
 						}else{
 							$fx_jpp					= 0;
 						}
-						$fx_jpk					= (($r_gaji_pokok * $r_jpk_karyawan)/100) * $p_jpn_kary;										//JAMINAN PENSIUN TANGGUNGAN KARYAWAN
-						$fx_jkm					= (($r_gaji_pokok * $r_jkm)/100) * $p_jkm;																	//JAMINAN KEMATIAN
+						$fx_jpk					= (($r_gaji_pokok * $r_jpk_karyawan)/100) * $p_jpn_kary;									//JAMINAN PENSIUN TANGGUNGAN KARYAWAN
+						$fx_jkm					= (($r_gaji_pokok * $r_jkm)/100) * $p_jkm;																//JAMINAN KEMATIAN
 						if($fx_gaji_pokok>$r_batas_max_jkn){
-							$fx_jkn_p				= (($r_batas_max_jkn * $r_jkn_tg_prshn)/100) * $p_jkn_prshn;								//JAMINAN KESEHATAN (BPJS) TANGGUNGAN PERUSAHAAN
+							$fx_jkn_p				= (($r_batas_max_jkn * $r_jkn_tg_prshn)/100) * $p_jkn_prshn;						//JAMINAN KESEHATAN (BPJS) TANGGUNGAN PERUSAHAAN
 						}else{
-							$fx_jkn_p				= (($r_gaji_pokok * $r_jkn_tg_prshn)/100) * $p_jkn_prshn;										//JAMINAN KESEHATAN (BPJS) TANGGUNGAN PERUSAHAAN
+							$fx_jkn_p				= (($r_gaji_pokok * $r_jkn_tg_prshn)/100) * $p_jkn_prshn;								//JAMINAN KESEHATAN (BPJS) TANGGUNGAN PERUSAHAAN
 						}
-						$fx_jkn_k				= (($r_gaji_pokok * $r_jkn_tg_kary)/100) * $p_jkn_kary;											//JAMINAN KESEHATAN (BPJS) TANGGUNGAN KARYAWAN
-						$fx_jkk					= (($r_gaji_pokok * $r_jkk)/100) * $p_jkk;																		//JAMINAN KECELAKAAN KERJA
-						$fx_pikop				= $p_pikop;																															//POTONGAN KOPERASI
-						$fx_putkop			= $p_putkop;																														//POTONGAN KOPERASI
-						$fx_pot_lain			= $p_plain;																															//POTONGAN LAIN-LAIN
-						$fx_pot_spsi		= $p_pspsi;																															//POTONGAN SPSI
-						$fx_pot_duka		= $p_pduka;																															//POTONGAN DUKA
-						$fx_um_puasa	= ($p_um_puasa * $r_um);																								//UANG MAKAN PUASA
-						$fx_pot_transfer	= ($pot_transfer - $pot_transfer_tg_prshn);																	//POTONGAN TRANSFER
-						$fx_pot_skt_panjang	= ($r_gaji_pokok - $pot_transfer_tg_prshn);																	//POTONGAN SAKIT BERKEPANJANGAN
+						$fx_jkn_k				= (($r_gaji_pokok * $r_jkn_tg_kary)/100) * $p_jkn_kary;										//JAMINAN KESEHATAN (BPJS) TANGGUNGAN KARYAWAN
+						$fx_jkk					= (($r_gaji_pokok * $r_jkk)/100) * $p_jkk;																//JAMINAN KECELAKAAN KERJA
+						$fx_pikop				= $p_pikop;																												//POTONGAN KOPERASI
+						$fx_putkop			= $p_putkop;																												//POTONGAN KOPERASI
+						$fx_pot_lain			= $p_plain;																												//POTONGAN LAIN-LAIN
+						$fx_pot_spsi		= $p_pspsi;																													//POTONGAN SPSI
+						$fx_pot_duka		= $p_pduka;																												//POTONGAN DUKA
+						$fx_um_puasa	= ($p_um_puasa * $r_um);																							//UANG MAKAN PUASA
+						$fx_pot_transfer	= ($pot_transfer - $pot_transfer_tg_prshn);															//POTONGAN TRANSFER
+						if(empty($getPekerjaSakit)){
+							$fx_pot_skt_panjang	= 0;																													//POTONGAN SAKIT BERKEPANJANGAN	
+						}else{
+							$fx_pot_skt_panjang	= (($r_gaji_pokok * $p_sakit)/100);																	//POTONGAN SAKIT BERKEPANJANGAN	
+						}
 						$pph = 0;
 						$pph21 = 0;
 						
@@ -401,8 +421,8 @@ class C_TransaksiPenggajian extends CI_Controller
 												't_ip' => $fx_ip,
 												'p_ik' => $p_ik,
 												't_ik' => $fx_ik,
-												'p_ikr' => "",
-												't_ikr' => "",
+												'p_ikr' => $p_i_f,
+												't_ikr' => $fx_ikr,
 												'p_ikr_htg_bln_lalu' => "0",
 												't_ikr_htg_bln_lalu' => "0",
 												'p_ikmhl' => $p_i_f,
@@ -432,7 +452,7 @@ class C_TransaksiPenggajian extends CI_Controller
 												'htm_htg_bln_lalu' => "0",
 												'ijin_htg_bln_lalu' => "0",
 												'pot_htm_htg_bln_lalu' => "0",
-												'pot_sakit_berkepanjangan' => "",
+												'pot_sakit_berkepanjangan' => $fx_pot_skt_panjang,
 												'subtotal_dibayarkan' => "",
 												'klaim_dl' => $fx_klaim_dl,
 												'thr' => $fx_thr,
@@ -461,9 +481,8 @@ class C_TransaksiPenggajian extends CI_Controller
 						// INSERT PEMBAYARAN PENGGAJIAN
 						$this->M_transaksipenggajian->insert($data);
 						$data_asuransi = array(
-							'id_riw_pekerja'  => ,
 							'masuk_kerja'  => date('Y-m-d',strtotime($masukkerja)),
-							'id_gajian'  => ,
+							'id_gajian'  => str_replace(' ','',$noind.$varMonth.$varYear.date('His')),
 							'tanggal'  => $varDate,
 							'noind'  => $noind,
 							'kd_hubungan_kerja'  => $kd_hubungan_kerja,
