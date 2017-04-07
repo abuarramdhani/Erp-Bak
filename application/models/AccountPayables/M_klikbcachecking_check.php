@@ -258,6 +258,7 @@ class M_klikbcachecking_check extends CI_Model {
 			                where
 			                    aca.vendor_id = aca2.vendor_id
 			                    and aca2.check_number = aca.check_number
+			                    AND rownum = 1
 			                )             
 			        else
 			            aca.VENDOR_NAME            
@@ -303,7 +304,7 @@ class M_klikbcachecking_check extends CI_Model {
 			    and aca.external_bank_account_id = ieba.ext_bank_account_id(+)
 			    and ieba.bank_id = bp.party_id(+) 
 			    and lv.lookup_code = aca.payment_type_flag
-			    and aca.status_lookup_code = 'NEGOTIABLE'
+			    and aca.status_lookup_code <> 'VOID'
 			    and lv.meaning = 'Quick'
 			    and lv.lookup_type = 'PAYMENT TYPE'    
 			    and ieba.branch_id = branch.party_id(+) 
