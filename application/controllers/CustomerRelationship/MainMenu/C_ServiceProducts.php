@@ -1248,20 +1248,23 @@ class C_ServiceProducts extends CI_Controller {
 
 	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id']))
 	       	{
-	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 777, true);
+	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 0777, true);
+	       		chmod('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 0777);
 	       	}
 
 	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year))
 	       	{
-	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 777, true);
+	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 0777, true);
+	       		chmod('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 0777);
 	       	}
 
-	       	$dir_exist = true; // flag for checking the directory exist or not
+	       	$dir_exist = true;
 
 	       	if (!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']))
 	       	{
-	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 777, true);
-	       		$dir_exist = false; // dir not exist
+	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 0777, true);
+	       		chmod('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 0777);
+	       		$dir_exist = false;
 	       	}else{}
 	       	
 	       	if ($this->upload->do_upload('qqfile')) {

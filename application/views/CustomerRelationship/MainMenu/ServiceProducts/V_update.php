@@ -512,13 +512,11 @@
 																				?>
 																				</option>
 																			</select>
-												
 																			</td>
 																			<!--<td><input type="text" name="txtSparePartDescription[]" id="txtSparePartDescription<?php echo $i; ?>" value="<?php echo $ServiceProductLines_item['spare_part_name'] ?>" class="form-control" readonly="readonly"/></td>-->
 																			<td><select  name="slcProblem[]" id="slcProblem" class="form-control js-problem">
 																				<option value="<?php echo $ServiceProductLines_item['service_problem_id'] ?>" selected="selected"><?php echo $ServiceProductLines_item['service_problem_name'] ?></option>
 																			</select></td>
-																			
 																			<td><input type="text" name="txtProblemDescription[]" class="form-control" id="txtProblemDescription" value="<?php echo $ServiceProductLines_item['problem_description'] ?>"/></td>
 																			<td><input type="text" name="txtAction[]" class="form-control" id="txtAction" value="<?php echo $ServiceProductLines_item['action'] ?>"/></td>
 																			<td>
@@ -542,7 +540,7 @@
 																				</select>
 																			</td>
 																			<td>
-																			<input type="text" name="txtActionDate[]" id="txtActionDate"  value="<?php echo $tgl_action; ?>" placeholder="<?php echo date("d-M-Y")?>" class="form-control" data-date-format="dd-M-yyyy" required/></td>
+																			<input type="text" name="txtActionDate[]" id="txtActionDate"  value="<?php echo $tgl_action; ?>" placeholder="<?php echo date("d-M-Y")?>" class="form-control txtActionDate" data-date-format="dd-M-yyyy" required/></td>
 																			<td>
 																				<select name="actionClaim[]" id="actionClaim" class="form-control select4" data-placeholder="Action Claim">
 																					<option value="" disabled>-- CHOOSE ONE --</option>
@@ -746,7 +744,7 @@
 																			<th width="60%">Description</th>
 																		</tr>
 																	</thead>
-																	<tbody>	
+																	<tbody>
 																	<?php $i = 1;
 																		  foreach ($ServiceProductAdditionalAct as $ServiceProductAdditionalAct_item): 
 																			?>
