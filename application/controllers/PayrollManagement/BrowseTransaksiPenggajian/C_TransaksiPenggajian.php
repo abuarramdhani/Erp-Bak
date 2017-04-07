@@ -70,11 +70,6 @@ class C_TransaksiPenggajian extends CI_Controller
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_check_master', $data);
 			$this->load->view('V_Footer',$data);
-			// $getDataGajianPersonalia	= $this->M_transaksipenggajian->getDataGajianPersonalia($varYear,$varMonth);
-			// $no = 0;
-			// foreach($getDataGajianPersonalia as $row1){
-				// $noind	= $row1->noind;
-			// }
 		}
 	}
 	
