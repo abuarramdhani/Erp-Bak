@@ -130,6 +130,7 @@ class M_klikbcachecking_check extends CI_Model {
 				                where
 				                    aca.vendor_id = aca2.vendor_id
 				                    and aca2.check_number = aca.check_number
+				                    and rownum = 1
 				                )             
 				        else
 				            aca.VENDOR_NAME            
