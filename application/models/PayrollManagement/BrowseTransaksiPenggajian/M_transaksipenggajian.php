@@ -4,6 +4,7 @@ class M_transaksipenggajian extends CI_Model
 {
 
     public $table = 'pr.pr_transaksi_pembayaran_penggajian';
+    public $table_asuransi = 'pr.pr_transaksi_asuransi';
     public $id = 'id_pembayaran_gaji';
     public $order = 'DESC';
 	
@@ -89,7 +90,7 @@ class M_transaksipenggajian extends CI_Model
 		select 
 			b.noind,a.kd_status_kerja,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.kd_hubungan_kerja,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,
 			b.tanggal,b.kd_jabatan,b.kodesie,(b.ip) as p_ip,(b.ik) as p_ik,(b.i_f) as p_if,b.if_htg_bln_lalu,(b.ubt) as p_ubt,(b.upamk) as p_upamk,
-			(b.um) as p_um,(b.ims) as p_ims,(b.imm) as p_imm,b.lembur,b.htm,b.ijin,b.htm_htg_bln_lalu,b.ijin_htg_bln_lalu,b.pot,
+			(b.um) as p_um,(b.ims) as p_ims,(b.imm) as p_imm,b.lembur,b.htm,b.ijin,coalesce(b.htm_htg_bln_lalu,'0') as htm_htg_bln_lalu,coalesce(b.ijin_htg_bln_lalu,'0') as ijin_htg_bln_lalu,b.pot,
 			b.tamb_gaji,b.hl,b.ct,b.putkop,b.plain,b.pikop,b.pspsi,b.putang,b.dl,b.tkpajak,b.ttpajak,
 			b.pduka,b.utambahan,b.btransfer,b.denda_ik,b.p_lebih_bayar,b.pgp,b.tlain,b.xduka,b.ket,b.cicil,
 			b.ubs,b.ubs_rp,b.p_um_puasa,b.kd_jns_transaksi,
@@ -112,8 +113,8 @@ class M_transaksipenggajian extends CI_Model
 					(select jml_std_jam_per_bln from pr.pr_standart_jam_umum)
 			end) as std_jam,
 			n.prosentase,
-			o.thr, o.ubthr,
-			(p.jumlah_klaim) as klaim_cuti,
+			coalesce(o.thr,'0') as thr, coalesce(o.ubthr,'0') as ubthr,
+			coalesce((p.jumlah_klaim),'0') as klaim_cuti,
 			(
 				select sum(cast(aa.klaim_dl as float8)) 
 				from pr.pr_transaksi_klaim_dl as aa 
@@ -139,8 +140,8 @@ class M_transaksipenggajian extends CI_Model
 			left join pr.pr_riwayat_penerima_konpensasi_lembur as n on a.kd_status_kerja=n.kd_status_kerja and a.kd_jabatan=n.kd_jabatan and ((date(to_char(now(),'yyyy-mm-dd')) - date(a.masuk_kerja))/30)>='3' and n.tgl_berlaku<='$date' and n.tgl_tberlaku>'$date'
 			left join pr.pr_transaksi_hitung_thr as o on a.noind=o.noind and extract(year from b.tanggal)=extract(month from o.tanggal) and extract(month from b.tanggal)=extract(month from o.tanggal)
 			left join pr.pr_transaksi_klaim_sisa_cuti as p on a.noind=p.noind and p.periode=COALESCE(to_char(b.tanggal, 'YYYY'), '')
-			left join pr.pr_riwayat_bank as q on q.kd_bank_induk=g.kd_bank and q.tgl_berlaku<='$date' and q.tgl_tberlaku>'$date'
-			left join pr.pr_riwayat_insentif_kemahalan as r on a.noind=r.noind and r.tgl_berlaku<='$date' and q.tgl_tberlaku>'$date'
+			left join pr.pr_master_bank as q on q.kd_bank_induk=g.kd_bank
+			left join pr.pr_riwayat_insentif_kemahalan as r on a.noind=r.noind and r.tgl_berlaku<='$date' and r.tgl_tberlaku>'$date'
 			left join pr.pr_daftar_pekerja_sakit as s on a.noind=s.noind and extract(year from b.tanggal)=extract(year from s.tanggal) and extract(month from b.tanggal)>=extract(month from s.tanggal) and extract(month from b.tanggal)<=extract(month from s.tanggal)
 			where k.periode_pengurang_pajak<='$date' and l.periode_jst<='$date' and a.noind='B0616' and
 				extract(year from b.tanggal)='$varYear' and extract(month from b.tanggal)='$varMonth' and a.noind is not null
@@ -175,6 +176,11 @@ class M_transaksipenggajian extends CI_Model
     {
         $this->db->insert($this->table, $data);
     }
+	
+	function insert_asuransi($data_asuransi)
+	{
+		$this->db->insert($this->table_asuransi,$data_asuransi);
+	}
 
     // update data
     function update($id, $data)
