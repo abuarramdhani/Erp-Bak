@@ -67,7 +67,7 @@ class M_klikbcachecking_check extends CI_Model {
 		$query = $oracle->query("
 			SELECT *
 			FROM (
-				SELECT DISTINCT
+				SELECT 
 					PAY_NUMBER
 					,PAY_DATE
 					,VENDOR
@@ -118,13 +118,13 @@ class M_klikbcachecking_check extends CI_Model {
 					--,TOTAL
 					,ORG_ID
 				FROM (
-				select distinct
+				select 
 				    nvl(aia.attribute15,aba.batch_name) voucher
 				    ,aca.check_date pay_date
 				    ,to_date(aca.creation_date,'DD/MM/RRRR') creation_date
 				    ,case when aca.vendor_name in ('KHS Komisi','KHS INSIDENTIL','KHS Employee','KHS Jakarta Eceran')
 				        then
-				            (select distinct
+				            (select 
 				                    aca2.vendor_name ||'-'|| aca2.VENDOR_SITE_CODE
 				                from ap_checks_all aca2
 				                where
@@ -196,7 +196,7 @@ class M_klikbcachecking_check extends CI_Model {
 	public function GetOracle(){
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("
-			SELECT DISTINCT
+			SELECT 
 				PAY_NUMBER
 				,PAY_DATE
 				,VENDOR
@@ -247,13 +247,13 @@ class M_klikbcachecking_check extends CI_Model {
 				--,TOTAL
 				,ORG_ID
 			FROM (
-			select distinct
+			select 
 			    nvl(aia.attribute15,aba.batch_name) voucher
 			    ,aca.check_date pay_date
 			    ,to_date(aca.creation_date,'DD/MM/RRRR') creation_date
 			    ,case when aca.vendor_name in ('KHS Komisi','KHS INSIDENTIL','KHS Employee','KHS Jakarta Eceran')
 			        then
-			            (select distinct
+			            (select 
 			                    aca2.vendor_name ||'-'|| aca2.VENDOR_SITE_CODE
 			                from ap_checks_all aca2
 			                where
