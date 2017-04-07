@@ -195,7 +195,7 @@ var counter = 0;
 		
 		$(".jsEmployeeData").select2({
 			allowClear : true,
-			placeholder: "Employee", 
+			placeholder: "Employee",
 			minimumInputLength: 1,
 			ajax: {
 						url: base+"CustomerRelationship/Search/EmployeeData/",
@@ -544,7 +544,6 @@ function enadisServiceLine(rowid) {
 			document.getElementById('txtClaimNum').disabled = true;
 			document.getElementById('actionClaim').disabled = true;
 			document.getElementById('claimImage').disabled = true;
-
 		}
 		else{
 			//document.getElementById('slcProblem').disabled = false;

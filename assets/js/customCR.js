@@ -1,8 +1,5 @@
 //---------------------------------CLAIMS EXTERNAL.begin-------------------------------
 $(document).ready(function() {
-        $('input.txtActionDate').datepicker({
-            autoclose: true,
-    });
     //--------------------------------DATA TABLE-------------------------------------
     function datatable() {
         $('#tbNewClaim').DataTable({
@@ -184,16 +181,16 @@ $(document).ready(function() {
         format: 'yyyy-mm-dd'
     });
     /*$('#slcBranchApproval').change(function(){
-    	var value = $('#slcBranchApproval').val();
-    	$.ajax({
-    		type:'POST',
-    		data:{'value':value},
-    		url:baseurl+"CustomerRelationship/Setting/ApprovalClaim/Employee",
-    		success:function(result)
-    		{
-    			$('#slcEmployeeApproval').prop('disabled',false).html(result);
-    		}
-    	});
+        var value = $('#slcBranchApproval').val();
+        $.ajax({
+            type:'POST',
+            data:{'value':value},
+            url:baseurl+"CustomerRelationship/Setting/ApprovalClaim/Employee",
+            success:function(result)
+            {
+                $('#slcEmployeeApproval').prop('disabled',false).html(result);
+            }
+        });
     });*/
     if ($('#approvedis').val() != "" && $('#approvedis').val() !== "NOT APPROVED 1" && $('#approvedis').val() !== "NOT APPROVED 2") {
         $('select[name="officer"]').prop("disabled", true);
@@ -243,6 +240,9 @@ $(document).ready(function() {
     $('#serviceDate').datepicker({
         autoclose: true,
     });
+});
+
+function fineuploader() {
     var uploader = new qq.FineUploader({
         debug: true,
         element: document.getElementById('fine-uploader-manual-trigger'),
@@ -261,7 +261,7 @@ $(document).ready(function() {
             }
         }
     });
-});
+}
 checkcustomer();
 
 function checkcustomer() {
@@ -271,6 +271,7 @@ function checkcustomer() {
         $('#fine-uploader-manual-trigger').hide();
     } else {
         $('#cust-message').hide();
+        fineuploader();
         $('#fine-uploader-manual-trigger').show();
     }
 }
@@ -329,7 +330,6 @@ function chooseImageUpdate(url) {
         data: $('#formImg').serialize(),
         cache: false,
         success: function(result) {
-        	alert(result);
             $('input[id="claimImageData"][row-id="' + $('#line_id').val() + '"]').val(result);
             $('#modalImgUpdate').modal('hide');
         }
@@ -353,7 +353,9 @@ function modalImgUpdate(m) {
         cache: false,
         success: function(result) {
             if (result == 0) {
-            	$('#formImg').submit(function(e){ e.preventDefault(); });
+                $('#formImg').submit(function(e) {
+                    e.preventDefault();
+                });
                 $('#btnChooseImg').prop('disabled', true);
                 $('#modalContent').html('<div id="modalImg-content"><div class="text-center" id="modalImg-message"><b><p>You have not uploaded any images.</p></b><h3>Please do upload a picture in the upload menu header.</h3></div></div>');
             } else {
