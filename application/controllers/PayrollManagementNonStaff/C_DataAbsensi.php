@@ -133,7 +133,7 @@ class C_DataAbsensi extends CI_Controller
 
 				for ($y=1; $y <= 31; $y++) {
 					$x = str_pad($y, 2, "0", STR_PAD_LEFT);
-					if (in_array(str_replace(' ', '', utf8_encode($db_record['HM'.$x])), $ket_ijin) || str_replace(' ', '', utf8_encode($db_record['HM'.$x]) == '') {
+					if (in_array(str_replace(' ', '', utf8_encode($db_record['HM'.$x])), $ket_ijin) || str_replace(' ', '', utf8_encode($db_record['HM'.$x]) == '') ){
 						$jml_ijin[] = 0;
 						echo "ijin 0"."<br>";
 					}
@@ -380,7 +380,7 @@ class C_DataAbsensi extends CI_Controller
 			$data_table = $this->M_dataabsensi->getAbsensiSearch($requestData['search']['value']);
 			$totalFiltered = $data_table->num_rows();
 
-			$data_table = $this->M_dataabsensi->getAbsensiOrderLimit($requestData['search']['value']), $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
+			$data_table = $this->M_dataabsensi->getAbsensiOrderLimit($requestData['search']['value'], $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
 		}
 		else{
 			$data_table = $this->M_dataabsensi->getAbsensiOrderLimit($searchValue = NULL, $columns[$requestData['order'][0]['column']], $requestData['order'][0]['dir'], $requestData['length'], $requestData['start']);
