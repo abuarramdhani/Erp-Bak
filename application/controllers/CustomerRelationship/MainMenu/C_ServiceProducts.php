@@ -44,8 +44,8 @@ class C_ServiceProducts extends CI_Controller {
 						unlink('./'.$dlt['image_name']);
 						$this->M_serviceproducts->deleteLineImageTemp($dlt['service_product_image_id']);
 					}
-					if (is_dir('./uploads/cr/ServiceProducts/'.$custId.'/'.$year.'/'.$service_number)) {
-						rmdir('./uploads/cr/ServiceProducts/'.$custId.'/'.$year.'/'.$service_number);
+					if (is_dir('./assets/upload_cr/ServiceProducts/'.$custId.'/'.$year.'/'.$service_number)) {
+						rmdir('./assets/upload_cr/ServiceProducts/'.$custId.'/'.$year.'/'.$service_number);
 					}
 					$this->M_serviceproducts->deleteImageTemp($service_number);
 					$this->M_serviceproducts->deleteActivityTemp($id);
@@ -1237,7 +1237,7 @@ class C_ServiceProducts extends CI_Controller {
 			$time 	= date('d/m/YHms');
 			$type 	= substr($_FILES['qqfile']['type'],6);
 
-			$config['upload_path']          = './uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'];
+			$config['upload_path']          = './assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'];
 	       	//$config['file_name']         	= 'Claim_Image_';
 	       	$config['remove_spaces']        = TRUE;
 	       	$config['allowed_types']        = '*';
@@ -1246,31 +1246,31 @@ class C_ServiceProducts extends CI_Controller {
 	       	$config['max_height']           = 2050;
 	       	$this->upload->initialize($config);
 
-	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id']))
+	       	if(!is_dir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id']))
 	       	{
-	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 0777, true);
-	       		chmod('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'], 0777);
+	       		mkdir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'], 0777, true);
+	       		chmod('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'], 0777);
 	       	}
 
-	       	if(!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year))
+	       	if(!is_dir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year))
 	       	{
-	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 0777, true);
-	       		chmod('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 0777);
+	       		mkdir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 0777, true);
+	       		chmod('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year, 0777);
 	       	}
 
 	       	$dir_exist = true;
 
-	       	if (!is_dir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']))
+	       	if (!is_dir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']))
 	       	{
-	       		mkdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 0777, true);
-	       		chmod('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 0777);
+	       		mkdir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 0777, true);
+	       		chmod('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'], 0777);
 	       		$dir_exist = false;
 	       	}else{}
 	       	
 	       	if ($this->upload->do_upload('qqfile')) {
 	       		$img = array(
 	       			'service_number' 	=> $data[0]['activity_number'],
-	       			'image_name' 		=> 'uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'].'/'.$_FILES['qqfile']['name'],
+	       			'image_name' 		=> '/assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number'].'/'.$_FILES['qqfile']['name'],
 	       			'type' 				=> $type,
 	       			'customer_id'		=> $data[0]['customer_id'],
 	       			'creation_date' 	=> 'now()',
@@ -1280,7 +1280,7 @@ class C_ServiceProducts extends CI_Controller {
            		$this->upload->data();
        		} else {
        			if(!$dir_exist){
-       				rmdir('./uploads/cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']);
+       				rmdir('./assets/upload_cr/ServiceProducts/'.$data[0]['customer_id'].'/'.$year.'/'.$data[0]['activity_number']);
        			}
        			$errorinfo = $this->upload->display_errors();
            		echo $errorinfo;
