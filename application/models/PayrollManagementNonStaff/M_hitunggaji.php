@@ -387,6 +387,15 @@ class M_hitunggaji extends CI_Model
         return $query->result_array();
     }
 
+    public function getSetelan($setelan_name)
+    {
+        $query = $this->db->get_where('pr.pr_setelan', array('setelan_name' => $setelan_name));
+        // return $query->result();
+        foreach ($query->result() as $data) {
+            return $data->setelan_value;
+        }
+    }
+
 }
 
 /* End of file M_kondite.php */

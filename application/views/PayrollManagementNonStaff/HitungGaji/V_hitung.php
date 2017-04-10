@@ -107,6 +107,8 @@
                                                         <th class="text-center" width="150px">Potongan Koperasi</th>
                                                         <th class="text-center" width="150px">Potongan Hutang Lain</th>
                                                         <th class="text-center" width="150px">Potongan DPLK</th>
+                                                        <th class="text-center" width="150px">Potongan SPSI</th>
+                                                        <th class="text-center" width="150px">Potongan Duka</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="prosesGaji">

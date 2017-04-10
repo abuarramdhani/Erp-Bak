@@ -183,7 +183,7 @@ class C_HitungGaji extends CI_Controller
 
 	public function getLKHSeksi($noind, $insentifPrestasi, $bln_gaji, $thn_gaji){
 
-		// $noind = 'A1926';
+		// $noind = 'A1662';
 		// $bln_gaji = '1';
 		// $thn_gaji = '2017';
 		// $insentifPrestasi = 10000;
@@ -234,6 +234,7 @@ class C_HitungGaji extends CI_Controller
 					}
 
 					$pencapaian = $jml_baik * $proposional_target;
+					// echo $pencapaian." pencapaian<br>";
 					$pencapaian_hari_ini = $pencapaian_hari_ini + $pencapaian;
 					$tanggal = $dataLKHSeksi['tgl'];
 				}
@@ -246,7 +247,7 @@ class C_HitungGaji extends CI_Controller
 				}
 				elseif ($pencapaian >= 100 && $pencapaian < 110) {
 					$ip = $ip + 1;
-					$kelebihan = $kelebihan + (100 - $pencapaian);
+					$kelebihan = $kelebihan + $pencapaian - 100;
 				}
 				else{
 					$ip = $ip + 0;
@@ -254,13 +255,12 @@ class C_HitungGaji extends CI_Controller
 				}
 			}
 		}
-		// exit;
 
 		$resultLKHSeksi[] = array(
 			'IP' => $ip,
 			'totalInsentifPrestasi' => $ip * $insentifPrestasi,
-			'IK' => $kelebihan,
-			'totalInsentifKelebihan' => ($kelebihan/100) * $insentifPrestasi
+			'IK' => number_format($kelebihan, 2, '.', ''),
+			'totalInsentifKelebihan' => number_format($kelebihan / 100 * $insentifPrestasi, 0, '.', '')
 		);
 
 		// print_r($resultLKHSeksi);exit;
@@ -329,24 +329,31 @@ class C_HitungGaji extends CI_Controller
 
 			if ($gol == 'A') {
 				$golA++;
-				$hasil_temp = 1150;
+				$setelan_name = 'insentif_kondite_1';
+				// $hasil_temp = 1150;
 			}
 			elseif ($gol == 'B') {
 				$golB++;
-				$hasil_temp = 739;
+				$setelan_name = 'insentif_kondite_2';
+				// $hasil_temp = 739;
 			}
 			elseif ($gol == 'C') {
 				$golC++;
-				$hasil_temp = 493;
+				$setelan_name = 'insentif_kondite_3';
+				// $hasil_temp = 493;
 			}
 			elseif ($gol == 'D') {
 				$golD++;
-				$hasil_temp = 325;
+				$setelan_name = 'insentif_kondite_4';
+				// $hasil_temp = 325;
 			}
 			else{
 				$golE++;
-				$hasil_temp = 0;
+				$setelan_name = 'insentif_kondite_5';
+				// $hasil_temp = 0;
 			}
+
+			$hasil_temp = $this->M_hitunggaji->getSetelan($setelan_name);
 
 			$hasil_akhir = $hasil_akhir + $hasil_temp;
 
@@ -393,6 +400,13 @@ class C_HitungGaji extends CI_Controller
 		$getHitungGaji = $this->M_hitunggaji->getHitungGaji($kodesie, $bln_gaji, $thn_gaji);
 
 		// print_r($getHitungGaji);exit;
+
+		$pembagi_lembur = $this->M_hitunggaji->getSetelan('pembagi_lembur');
+		$pembagi_gp_bulanan = $this->M_hitunggaji->getSetelan('pembagi_gp');
+		$pembagi_upamk = $this->M_hitunggaji->getSetelan('pembagi_upamk');
+		$persenan_jht = $this->M_hitunggaji->getSetelan('jht');
+		$persenan_jkn = $this->M_hitunggaji->getSetelan('jkn');
+		$persenan_jp = $this->M_hitunggaji->getSetelan('jp');
 
 		$GP = 0;
 		$IPNominal = 0;
@@ -442,9 +456,9 @@ class C_HitungGaji extends CI_Controller
 			$UBTNilai = $dataHitungGaji['UBTNilai'] + 0;
 			$UPAMKNilai = $dataHitungGaji['UPAMKNilai'] + 0;
 
-			$JHT = (2/100) * $GP;
-			$JKN = (1/100) * $GP;
-			$JP = (1/100) * $GP;
+			$JHT = ($persenan_jht/100) * $GP;
+			$JKN = ($persenan_jkn/100) * $GP;
+			$JP = ($persenan_jp/100) * $GP;
 
 			$jamLembur = $dataHitungGaji['jam_lembur'] + 0;
 			$jmlIzin = $dataHitungGaji['jml_izin'] + 0;
@@ -466,9 +480,9 @@ class C_HitungGaji extends CI_Controller
 			$IMSTotal = $IMSNilai*$IMSNominal;
 			$IMMTotal = $IMMNilai*$IMMNominal;
 			$UBTTotal = $UBTNilai*$UBTNominal;
-			$UPAMKTotal = $UPAMKNilai*$UPAMKNominal;
-			$uangLembur = $jamLembur*$GP/173;
-			$potonganHTM = ($jmlIzin+$jmlMangkir)*$GP/30;
+			$UPAMKTotal = $UPAMKNilai*$UPAMKNominal/$pembagi_upamk;
+			$uangLembur = $jamLembur*$GP/$pembagi_lembur;
+			$potonganHTM = ($jmlIzin+$jmlMangkir)*$GP/$pembagi_gp_bulanan;
 			$tambahanKurangBayar = $Tambahan+$KurangBayar;
 
 			$getLKHSeksi = $this->getLKHSeksi($noind, $IPNominal, $bln_gaji, $thn_gaji);
@@ -506,44 +520,44 @@ class C_HitungGaji extends CI_Controller
 			$processResultArray[] = array(
 				'tgl_pembayaran' => $tgl_bayar,
 				'noind' => $noind,
-				'nama' => $nama,
-				'dept' => $dept,
-				'unit' => $unit,
-				'sect' => $sect,
-				'gajiPokok' => $GP,
-				'JHT' => $JHT,
-				'JKN' => $JKN,
-				'JP' => $JP,
-				'IMSTotal' => $IMSTotal,
-				'IMMTotal' => $IMMTotal,
-				'UBTTotal' => $UBTTotal,
-				'UPAMKTotal' => $UPAMKTotal,
-				'uangLembur' => $uangLembur,
-				'potonganHTM' => $potonganHTM,
-				'DL' => $DL,
-				'tambahanKurangBayar' => $tambahanKurangBayar,
-				'tambahanLain' => $tambahanLain,
-				'potonganLebihBayar' => $potonganLebihBayar,
-				'potonganGP' => $potonganGP,
-				'potonganDL' => $potonganDL,
-				'potonganSPSI' => $potonganSPSI,
-				'potonganDuka' => $potonganDuka,
-				'potonganKoperasi' => $potonganKoperasi,
-				'potonganHutangLain' => $potonganHutangLain,
-				'potonganDPLK' => $potonganDPLK,
-				'IPTotal' => $IPTotal,
-				'IKTotal' => $IKTotal,
-				'KonditeTotal' => $KonditeTotal,
-				'hitung_insentif_prestasi' => $IPNilai.' X '.$IPNominal,
-				'hitung_insentif_kelebihan' => '('.$IKNilai.'/100) X '.$IPNominal,
+				'employee_name' => rtrim($nama),
+				'department_name' => rtrim($dept),
+				'unit_name' => rtrim($unit),
+				'section_name' => rtrim($sect),
+				'gaji_pokok' => $GP,
+				'jht' => $JHT,
+				'jkn' => $JKN,
+				'jp' => $JP,
+				'insentif_masuk_sore' => $IMSTotal,
+				'insentif_masuk_malam' => $IMMTotal,
+				'ubt' => $UBTTotal,
+				'upamk' => $UPAMKTotal,
+				'uang_lembur' => $uangLembur,
+				'pot_htm' => $potonganHTM,
+				'uang_dl' => $DL,
+				'tambah_kurang_bayar' => $tambahanKurangBayar,
+				'tambah_lain' => $tambahanLain,
+				'pot_lebih_bayar' => $potonganLebihBayar,
+				'pot_gp' => $potonganGP,
+				'pot_uang_dl' => $potonganDL,
+				'spsi' => $potonganSPSI,
+				'duka' => $potonganDuka,
+				'pot_koperasi' => $potonganKoperasi,
+				'pot_hutang_lain' => $potonganHutangLain,
+				'pot_dplk' => $potonganDPLK,
+				'insentif_prestasi' => $IPTotal,
+				'insentif_kelebihan' => $IKTotal,
+				'insentif_kondite' => $KonditeTotal,
+				'hitung_insentif_prestasi' => $IPNilai.' X '.number_format($IPNominal, 0, '', '.'),
+				'hitung_insentif_kelebihan' => '('.$IKNilai.'/100) X '.number_format($IPNominal, 0, '', '.'),
 				'hitung_insentif_kondite' => $golA.'A +'.$golB.'B +'.$golC.'C +'.$golD.'D +'.$golE.'E',
-				'hitung_ims' => $IMSNilai.' X '.$IMSNominal,
-				'hitung_imm' => $IMMNilai.' X '.$IMMNominal,
-				'hitung_ubt' => $UBTNilai.' X '.$UBTNominal,
-				'hitung_upamk' => $UPAMKNilai.' X '.$UPAMKNominal,
-				'hitung_tambah_kurang_bayar' => $Tambahan.' + '.$tambahanKurangBayar,
-				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.$GP.'/30)',
-				'hitung_uang_lembur' => $jamLembur.' jam X ('.$GP.'/173)',
+				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
+				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
+				'hitung_ubt' => $UBTNilai.' X '.number_format($UBTNominal, 0, '', '.'),
+				'hitung_upamk' => $UPAMKNilai.' X '.number_format($UPAMKNominal, 0, '', '.'),
+				'hitung_tambah_kurang_bayar' => number_format($Tambahan, 0, '', '.').' + '.number_format($tambahanKurangBayar, 0, '', '.'),
+				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.number_format($GP, 0, '', '.').'/'.$pembagi_gp_bulanan.')',
+				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/'.$pembagi_lembur.')',
 			);
 
 			$dataInsert = array(
@@ -579,16 +593,16 @@ class C_HitungGaji extends CI_Controller
 				'pot_hutang_lain' => $potonganHutangLain,
 				'pot_dplk' => $potonganDPLK,
 				'tkp' => $potonganTKP,
-				'hitung_insentif_prestasi' => $IPNilai.' X '.$IPNominal,
-				'hitung_insentif_kelebihan' => '('.$IKNilai.'/100) X '.$IPNominal,
+				'hitung_insentif_prestasi' => $IPNilai.' X '.number_format($IPNominal, 0, '', '.'),
+				'hitung_insentif_kelebihan' => '('.$IKNilai.'/100) X '.number_format($IPNominal, 0, '', '.'),
 				'hitung_insentif_kondite' => $golA.'A +'.$golB.'B +'.$golC.'C +'.$golD.'D +'.$golE.'E',
-				'hitung_ims' => $IMSNilai.' X '.$IMSNominal,
-				'hitung_imm' => $IMMNilai.' X '.$IMMNominal,
-				'hitung_ubt' => $UBTNilai.' X '.$UBTNominal,
-				'hitung_upamk' => $UPAMKNilai.' X '.$UPAMKNominal,
-				'hitung_tambah_kurang_bayar' => $Tambahan.' + '.$tambahanKurangBayar,
-				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.$GP.'/30)',
-				'hitung_uang_lembur' => $jamLembur.' jam X ('.$GP.'/173)',
+				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
+				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
+				'hitung_ubt' => $UBTNilai.' X '.number_format($UBTNominal, 0, '', '.'),
+				'hitung_upamk' => $UPAMKNilai.' X '.number_format($UPAMKNominal, 0, '', '.'),
+				'hitung_tambah_kurang_bayar' => number_format($Tambahan, 0, '', '.').' + '.number_format($tambahanKurangBayar, 0, '', '.'),
+				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.number_format($GP, 0, '', '.').'/30)',
+				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/173)',
 			);
 
 			$this->M_hitunggaji->setHasilHitung($dataInsert);
@@ -817,7 +831,7 @@ class C_HitungGaji extends CI_Controller
 		if ($data['HitungHasil'] != '') {
 			
 			$data['strukData'] = $this->M_hitunggaji->getHitungGajiById($data['HitungHasil']);
-			$html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk_by_id', $data, true);
+			// $html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk_by_id', $data, true);
 		}
 		else{
 			if ($data['noind'] == 'NULL') {
@@ -830,34 +844,34 @@ class C_HitungGaji extends CI_Controller
 						$filterData[] = array (
 							'tgl_pembayaran' => $row['tgl_pembayaran'],
 							'noind' => $row['noind'],
-							'nama' => $row['nama'],
-							'dept' => $row['dept'],
-							'unit' => $row['unit'],
-							'sect' => $row['sect'],
-							'gajiPokok' => $row['gajiPokok'],
-							'JHT' => $row['JHT'],
-							'JKN' => $row['JKN'],
-							'JP' => $row['JP'],
-							'IMSTotal' => $row['IMSTotal'],
-							'IMMTotal' => $row['IMMTotal'],
-							'UBTTotal' => $row['UBTTotal'],
-							'UPAMKTotal' => $row['UPAMKTotal'],
-							'uangLembur' => $row['uangLembur'],
-							'potonganHTM' => $row['potonganHTM'],
-							'DL' => $row['DL'],
-							'tambahanKurangBayar' => $row['tambahanKurangBayar'],
-							'tambahanLain' => $row['tambahanLain'],
-							'potonganLebihBayar' => $row['potonganLebihBayar'],
-							'potonganGP' => $row['potonganGP'],
-							'potonganDL' => $row['potonganDL'],
-							'potonganSPSI' => $row['potonganSPSI'],
-							'potonganDuka' => $row['potonganDuka'],
-							'potonganKoperasi' => $row['potonganKoperasi'],
-							'potonganHutangLain' => $row['potonganHutangLain'],
-							'potonganDPLK' => $row['potonganDPLK'],
-							'IPTotal' => $row['IPTotal'],
-							'IKTotal' => $row['IKTotal'],
-							'KonditeTotal' => $row['KonditeTotal'],
+							'employee_name' => $row['employee_name'],
+							'department_name' => $row['department_name'],
+							'unit_name' => $row['unit_name'],
+							'section_name' => $row['section_name'],
+							'gaji_pokok' => $row['gaji_pokok'],
+							'jht' => $row['jht'],
+							'jkn' => $row['jkn'],
+							'jp' => $row['jp'],
+							'insentif_masuk_sore' => $row['insentif_masuk_sore'],
+							'insentif_masuk_malam' => $row['insentif_masuk_malam'],
+							'ubt' => $row['ubt'],
+							'upamk' => $row['upamk'],
+							'uang_lembur' => $row['uang_lembur'],
+							'pot_htm' => $row['pot_htm'],
+							'uang_dl' => $row['uang_dl'],
+							'tambah_kurang_bayar' => $row['tambah_kurang_bayar'],
+							'tambah_lain' => $row['tambah_lain'],
+							'pot_lebih_bayar' => $row['pot_lebih_bayar'],
+							'pot_gp' => $row['pot_gp'],
+							'pot_uang_dl' => $row['pot_uang_dl'],
+							'spsi' => $row['spsi'],
+							'duka' => $row['duka'],
+							'pot_koperasi' => $row['pot_koperasi'],
+							'pot_hutang_lain' => $row['pot_hutang_lain'],
+							'pot_dplk' => $row['pot_dplk'],
+							'insentif_prestasi' => $row['insentif_prestasi'],
+							'insentif_kelebihan' => $row['insentif_kelebihan'],
+							'insentif_kondite' => $row['insentif_kondite'],
 							'hitung_insentif_prestasi' => $row['hitung_insentif_prestasi'],
 							'hitung_insentif_kelebihan' => $row['hitung_insentif_kelebihan'],
 							'hitung_insentif_kondite' => $row['hitung_insentif_kondite'],
@@ -874,9 +888,9 @@ class C_HitungGaji extends CI_Controller
 				}
 				$data['strukData'] = $filterData;
 			}
-			$html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk', $data, true);
 		}
 
+		$html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk', $data, true);
 		// print_r($data['strukData']);exit;
 
 		$this->load->library('pdf');

@@ -138,6 +138,9 @@ $(document).ready(function() {
         buttons: [
           'excel','pdf'
         ],
+        fixedColumns:{
+            leftColumns: 5
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
