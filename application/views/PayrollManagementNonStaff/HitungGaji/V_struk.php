@@ -35,19 +35,19 @@
                         <td style="width: 1%">:</td>
                         <td>-</td>
                         <td colspan="2">Dept</td>
-                        <td colspan="2">: <?php echo $row['dept'];?></td>
+                        <td colspan="2">: <?php echo $row['department_name'];?></td>
                     </tr>
                     <tr>
                         <td colspan="2">Nama</td>
-                        <td colspan="7">: <?php echo $row['noind'].' - '.$row['nama'];?></td>
+                        <td colspan="7">: <?php echo $row['noind'].' - '.$row['employee_name'];?></td>
                         <td colspan="2">Unit</td>
-                        <td colspan="2">: <?php echo $row['unit'];?></td>
+                        <td colspan="2">: <?php echo $row['unit_name'];?></td>
                     </tr>
                     <tr>
                         <td colspan="2">Sub.Seksi</td>
                         <td colspan="7">: -</td>
                         <td colspan="2">Seksi</td>
-                        <td colspan="2">: <?php echo $row['sect'];?></td>
+                        <td colspan="2">: <?php echo $row['section_name'];?></td>
                     </tr>
                     <tr>
                         <td colspan="4"></td>
@@ -59,14 +59,14 @@
                         <td style="vertical-align: top;width: 3%">1.</td>
                         <td style="vertical-align: top;width: 15%">Gaji Pokok</td>
                         <td style="vertical-align: top;width: 1%">:</td>
-                        <td style="vertical-align: top;width: 15%"><?php echo number_format($row['gajiPokok'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;width: 15%"><?php echo number_format($row['gaji_pokok'], 0, '', '.');?></td>
                         <td style="vertical-align: top;width: 1%">:</td>
                         <td style="vertical-align: top;width: 15%">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['gajiPokok'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['gaji_pokok'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -87,7 +87,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['IPTotal'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['insentif_prestasi'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -116,7 +116,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganHTM'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['pot_htm'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -133,7 +133,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['IKTotal'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['insentif_kelebihan'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -141,14 +141,14 @@
                         <td style="vertical-align: top;">17.</td>
                         <td style="vertical-align: top;" colspan="3">Pot. Lebih Bayar</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['potonganLebihBayar'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo $row['pot_lebih_bayar'];?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganLebihBayar'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['pot_lebih_bayar'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -165,7 +165,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['KonditeTotal'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['insentif_kondite'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -173,14 +173,14 @@
                         <td style="vertical-align: top;">18.</td>
                         <td style="vertical-align: top;" colspan="3">Pot. GP</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['potonganGP'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo $row['pot_gp'];?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganGP'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['pot_gp'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -209,7 +209,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['IMSTotal'] + $row['IMMTotal'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['insentif_masuk_sore'] + $row['insentif_masuk_malam'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -222,7 +222,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'] - $row['potonganHTM'] - $row['potonganLebihBayar'] - $row['potonganGP'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'] - $row['pot_htm'] - $row['pot_lebih_bayar'] - $row['pot_gp'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -239,7 +239,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['UBTTotal'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['ubt'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -257,7 +257,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['UPAMKTotal'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['upamk'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -265,14 +265,14 @@
                         <td style="vertical-align: top;">19.</td>
                         <td style="vertical-align: top;" colspan="3">Uang DL</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['potonganDL'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['pot_uang_dl'], 0, '', '.');?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganDL'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['pot_uang_dl'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -289,7 +289,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['uangLembur'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['uang_lembur'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -312,7 +312,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['tambahanKurangBayar'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['tambah_kurang_bayar'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -326,14 +326,14 @@
                         <td style="vertical-align: top;">12.</td>
                         <td style="vertical-align: top;">Tamb.Lain</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;"><?php echo number_format($row['tambahanLain'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;"><?php echo number_format($row['tambah_lain'], 0, '', '.');?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['tambahanLain'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['tambah_lain'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -346,7 +346,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'] - $row['potonganHTM'] - $row['potonganLebihBayar'] - $row['potonganGP'] - $row['potonganDL'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'] - $row['pot_htm'] - $row['pot_lebih_bayar'] - $row['pot_gp'] - $row['pot_uang_dl'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -356,14 +356,14 @@
                         <td style="vertical-align: top;">13.</td>
                         <td style="vertical-align: top;">Uand DL</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;"><?php echo number_format($row['DL'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;"><?php echo number_format($row['uang_dl'], 0, '', '.');?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['DL'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['uang_dl'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -380,14 +380,14 @@
                         <td style="vertical-align: top;">21.</td>
                         <td style="vertical-align: top;" colspan="3">JKN+JHT+JP</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['JKN'], 0, '', '.')." + ".number_format($row['JHT'], 0, '', '.')." + ".number_format($row['JP'], 0, '', '.'); ?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['jkn'], 0, '', '.')." + ".number_format($row['jht'], 0, '', '.')." + ".number_format($row['jp'], 0, '', '.'); ?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['JKN'] + $row['JHT'] + $row['JP'], 0, '', '.').",-"; ?>
+                                        <?php echo number_format($row['jkn'] + $row['jht'] + $row['jp'], 0, '', '.').",-"; ?>
                                     </td>
                                 </tr>
                             </table>
@@ -398,22 +398,31 @@
                         <td style="vertical-align: top;">22.</td>
                         <td style="vertical-align: top;" colspan="3">SPSI+Duka</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5">-</td>
-                        <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;">-</td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align: top;">23.</td>
-                        <td style="vertical-align: top;" colspan="3">Pot. Koperasi</td>
-                        <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['potonganKoperasi'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['spsi'], 0, '', '.')." + ".number_format($row['duka'], 0, '', '.'); ?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganKoperasi'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['spsi'] + $row['duka'], 0, '', '.').",-"; ?>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;">23.</td>
+                        <td style="vertical-align: top;" colspan="3">Pot. Koperasi</td>
+                        <td style="vertical-align: top;">:</td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['pot_koperasi'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;">:</td>
+                        <td style="vertical-align: top;">
+                            <table width="100%">
+                                <tr>
+                                    <td align="left">Rp.</td>
+                                    <td style="padding-right: 50px" align="right">
+                                        <?php echo number_format($row['pot_koperasi'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -423,14 +432,14 @@
                         <td style="vertical-align: top;">24.</td>
                         <td style="vertical-align: top;" colspan="3">Pot. Hutang+Lain</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['potonganHutangLain'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['pot_hutang_lain'], 0, '', '.');?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganHutangLain'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['pot_hutang_lain'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -440,14 +449,14 @@
                         <td style="vertical-align: top;">25.</td>
                         <td style="vertical-align: top;" colspan="3">Pot. DPLK</td>
                         <td style="vertical-align: top;">:</td>
-                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['potonganDPLK'], 0, '', '.');?></td>
+                        <td style="vertical-align: top;" colspan="5"><?php echo number_format($row['pot_dplk'], 0, '', '.');?></td>
                         <td style="vertical-align: top;">:</td>
                         <td style="vertical-align: top;">
                             <table width="100%">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['potonganDPLK'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['pot_dplk'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -482,7 +491,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'] - $row['potonganHTM'] - $row['potonganLebihBayar'] - $row['potonganGP'] - $row['potonganDL'] - ($row['JKN'] + $row['JHT'] + $row['JP']) - $row['potonganKoperasi'] - $row['potonganHutangLain'] - $row['potonganDPLK'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'] - $row['pot_htm'] - $row['pot_lebih_bayar'] - $row['pot_gp'] - $row['pot_uang_dl'] - ($row['jkn'] + $row['jht'] + $row['jp']) - $row['pot_koperasi'] - $row['pot_hutang_lain'] - $row['pot_dplk'] - ($row['spsi'] + $row['duka']), 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>
@@ -495,7 +504,7 @@
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
-                                        <?php echo number_format($row['gajiPokok'] + $row['IPTotal'] + $row['IKTotal'] + $row['KonditeTotal'] + $row['IMSTotal'] + $row['IMMTotal'] + $row['UBTTotal'] + $row['UPAMKTotal'] + $row['uangLembur'] + $row['tambahanKurangBayar'] + $row['tambahanLain'] + $row['DL'], 0, '', '.').",-";?>
+                                        <?php echo number_format($row['gaji_pokok'] + $row['insentif_prestasi'] + $row['insentif_kelebihan'] + $row['insentif_kondite'] + $row['insentif_masuk_sore'] + $row['insentif_masuk_malam'] + $row['ubt'] + $row['upamk'] + $row['uang_lembur'] + $row['tambah_kurang_bayar'] + $row['tambah_lain'] + $row['uang_dl'], 0, '', '.').",-";?>
                                     </td>
                                 </tr>
                             </table>

@@ -23,6 +23,7 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.print.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/dataTables.buttons.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
