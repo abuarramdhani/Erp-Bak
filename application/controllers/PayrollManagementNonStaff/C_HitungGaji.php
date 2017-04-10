@@ -256,11 +256,13 @@ class C_HitungGaji extends CI_Controller
 			}
 		}
 
+		$insentif_prestasi_mask = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
+
 		$resultLKHSeksi[] = array(
 			'IP' => $ip,
 			'totalInsentifPrestasi' => $ip * $insentifPrestasi,
 			'IK' => number_format($kelebihan, 2, '.', ''),
-			'totalInsentifKelebihan' => number_format($kelebihan / 100 * $insentifPrestasi, 0, '.', '')
+			'totalInsentifKelebihan' => number_format($kelebihan / 10 * ($insentif_prestasi_mask - $insentifPrestasi), 0, '.', '')
 		);
 
 		// print_r($resultLKHSeksi);exit;
@@ -407,6 +409,7 @@ class C_HitungGaji extends CI_Controller
 		$persenan_jht = $this->M_hitunggaji->getSetelan('jht');
 		$persenan_jkn = $this->M_hitunggaji->getSetelan('jkn');
 		$persenan_jp = $this->M_hitunggaji->getSetelan('jp');
+		$insentif_prestasi_mask = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
 
 		$GP = 0;
 		$IPNominal = 0;
@@ -549,7 +552,7 @@ class C_HitungGaji extends CI_Controller
 				'insentif_kelebihan' => $IKTotal,
 				'insentif_kondite' => $KonditeTotal,
 				'hitung_insentif_prestasi' => $IPNilai.' X '.number_format($IPNominal, 0, '', '.'),
-				'hitung_insentif_kelebihan' => '('.$IKNilai.'/100) X '.number_format($IPNominal, 0, '', '.'),
+				'hitung_insentif_kelebihan' => '('.$IKNilai.'/10) X ('.number_format($insentif_prestasi_mask, 0, '', '.').' - '.number_format($IPNominal, 0, '', '.').')',
 				'hitung_insentif_kondite' => $golA.'A +'.$golB.'B +'.$golC.'C +'.$golD.'D +'.$golE.'E',
 				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
 				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
@@ -594,7 +597,7 @@ class C_HitungGaji extends CI_Controller
 				'pot_dplk' => $potonganDPLK,
 				'tkp' => $potonganTKP,
 				'hitung_insentif_prestasi' => $IPNilai.' X '.number_format($IPNominal, 0, '', '.'),
-				'hitung_insentif_kelebihan' => '('.$IKNilai.'/100) X '.number_format($IPNominal, 0, '', '.'),
+				'hitung_insentif_kelebihan' => '('.$IKNilai.'/10) X ('.number_format($insentif_prestasi_mask, 0, '', '.').' - '.number_format($IPNominal, 0, '', '.').')',
 				'hitung_insentif_kondite' => $golA.'A +'.$golB.'B +'.$golC.'C +'.$golD.'D +'.$golE.'E',
 				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
 				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
@@ -905,6 +908,27 @@ class C_HitungGaji extends CI_Controller
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
+	}
+
+	public function detail_perhitungan()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Detail Perhitungan';
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Hitung Gaji';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/HitungGaji/V_detail_perhitungan', $data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function clear_data(){
