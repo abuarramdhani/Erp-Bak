@@ -45,6 +45,8 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/inputlimiter/jquery.inputlimiter.1.0.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/chosen/chosen.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/colorpicker/css/colorpicker.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dropzone/basic.min.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dropzone/dropzone.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/tagsinput/jquery.tagsinput.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/daterangepicker-master/daterangepicker.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/datepicker/css/datepicker.css');?>" />

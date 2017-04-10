@@ -1,0 +1,186 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class C_MasterTraining extends CI_Controller {
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see http://codeigniter.com/user_guide/general/urls.html
+	 */
+	public function __construct()
+    {
+        parent::__construct();
+		  
+        $this->load->helper('form');
+        $this->load->helper('url');
+        $this->load->helper('html');
+        $this->load->library('form_validation');
+          //load the login model
+		$this->load->library('session');
+		  //$this->load->library('Database');
+		$this->load->model('M_Index');
+		$this->load->model('ADMPelatihan/M_mastertraining');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		  
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+				  //redirect('index');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
+		  //$this->load->model('CustomerRelationship/M_Index');
+    }
+	
+	//HALAMAN INDEKS
+	public function index(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Master Pelatihan';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['training'] = $this->M_mastertraining->GetTraining();
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/MasterTraining/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+		
+	}
+	
+	//HALAMAN CREATE
+	public function create(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Master Pelatihan';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['questionnaire'] = $this->M_mastertraining->GetQuestionnaire();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/MasterTraining/V_Create',$data);
+		$this->load->view('V_Footer',$data);	
+	}
+
+	//MENYIMPAN DATA BARU
+	public function add(){
+		$tname 		= $this->input->post('txtNamaPelatihan');
+		$limit 		= $this->input->post('txtBatas');
+		$status		= $this->input->post('slcStatus');
+		$questionnaire		= $this->input->post('slcQuestionnaire');
+		$questionnaires 	= implode(',', $questionnaire);
+		$this->M_mastertraining->AddMaster($tname,$limit,$status,$questionnaires);
+		
+		if($status==1){
+			$maxid		= $this->M_mastertraining->GetMaxIdTraining();
+			$pkgid		= $maxid[0]->training_id;
+			$objective	= $this->input->post('slcObjective');
+				$i=0;
+				foreach($objective as $loop){
+					$data_objective[$i] = array(
+						'training_id' 	=> $pkgid,
+						'objective' 	=> $objective[$i],
+					);
+					if( !empty($objective[$i]) ){
+						$this->M_mastertraining->AddObjective($data_objective[$i]);
+					}
+					$i++;
+				}
+		}
+
+		redirect('ADMPelatihan/MasterTraining');
+	}
+
+	//MENGHAPUS DATA YANG SUDAH ADA
+	public function delete($id){
+		$this->M_mastertraining->DeleteTraining($id);
+		redirect('ADMPelatihan/MasterTraining');
+	}
+	
+	//HALAMAN EDIT
+	public function edit($id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Master Pelatihan';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['training'] = $this->M_mastertraining->GetTrainingId($id);
+		$data['objective'] = $this->M_mastertraining->GetObjectiveId($id);
+		$data['questionnaire'] = $this->M_mastertraining->GetQuestionnaire();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/MasterTraining/V_Edit',$data);
+		$this->load->view('V_Footer',$data);
+		
+	}
+	
+	//MENYIMPAN PERUBAHAN DATA
+	public function update(){
+		$id 		= $this->input->post('txtId');
+		$tname 		= $this->input->post('txtNamaPelatihan');
+		$limit		= $this->input->post('txtBatas');
+		$status		= $this->input->post('slcStatus');
+		$questionnaire		= $this->input->post('slcQuestionnaire');
+		$questionnaires 	= implode(',', $questionnaire);
+		
+		if($status==1){
+
+			$pkgid		= $id;
+			$this->M_mastertraining->DelObjective($id);
+			$objective	= $this->input->post('slcObjective');
+				$i=0;
+				foreach($objective as $loop){
+					$data_objective[$i] = array(
+						'training_id' 	=> $pkgid,
+						'objective' 	=> $objective[$i],
+					);
+					if( !empty($objective[$i]) ){
+						$this->M_mastertraining->AddObjective($data_objective[$i]);
+					}
+					$i++;
+				}
+		}
+
+
+		$this->M_mastertraining->UpdateTraining($id,$tname,$limit,$status,$questionnaires);
+		redirect('ADMPelatihan/MasterTraining');
+	}
+	
+	public function checkSession(){
+		if($this->session->is_logged){
+			
+		}else{
+			redirect('');
+		}
+	}
+}

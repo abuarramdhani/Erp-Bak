@@ -134,8 +134,6 @@ $(document).ready(function() {
 			var year 		= $('input[name="TxtTahun"]').val();
 			var invoice_num = $('input[name="TxtInvoiceNumber"]').val();
 			var name 		= $('select[name="TxtNama"]').val();
-			var tanggal_awal 		= $('input[name="tanggal_awal"]').val();
-			var tanggal_akhir 		= $('input[name="tanggal_akhir"]').val();
 			
 			var ket1		= 'no'; if(document.getElementById('ket1').checked){ket1= 'yes';}
 			var ket2		= 'no'; if(document.getElementById('ket2').checked){ket2= 'yes';}
@@ -161,8 +159,6 @@ $(document).ready(function() {
 						sta3:sta3, 
 						typ1:typ1, 
 						typ2:typ2, 
-						tanggal_awal:tanggal_awal,
-						tanggal_akhir:tanggal_akhir,
 					},
 				url:baseurl+"AccountPayables/C_Invoice/FindFaktur",
 				success:function(result)
@@ -235,4 +231,96 @@ $(document).ready(function() {
 	var startDate = $('#tanggal_asli').val()
 	$(".tanggal_cari").data('daterangepicker').setStartDate(startDate);
 	$(".tanggal_cari").data('daterangepicker').setEndDate(startDate)};
+});
+
+//---------------------Account Payable KlikBCA----------------//
+
+$(document).ready(function(){
+	if (document.getElementById('dropzone')) {
+		Dropzone.autoDiscover = false;
+
+		var klik_upload = new Dropzone(".dropzone",{
+		url: baseurl+"AccountPayables/KlikBCAChecking/Insert/proses_upload",
+		maxFilesize: 2,
+		method:"post",
+		acceptedFiles:".htm",
+		paramName:"userfile",
+		dictInvalidFileType:"Type file ini tidak dizinkan",
+		addRemoveLinks:true,
+		});
+
+		klik_upload.on('sending', function(file, xhr, formData){
+			var type = $('select#type').val();
+            formData.append('fileType', type);
+        });
+
+		//upload
+		klik_upload.on("success",function(file, response){
+			$('#cobaco').append('<tr><td>'+response+'</td></tr>');
+		});
+	}
+
+});
+
+
+$(document).ready(function() {
+
+	//DATEPICKER CHECK DATA
+	$('.bcacheck').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Clear'
+		}
+	});
+	
+	$('.bcacheck').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD/MM/YYYY'));
+	});
+
+	$('.bcacheck').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+  	});
+
+	//TABEL CHECK DATA
+	$('#tblrecordbca').DataTable({	
+		"lengthChange": false,
+		"ordering": false,
+		"autoWidth": false,
+		"scrollX": true,
+	});
+
+	function tablerecordbca(){
+		$('#tblrecordbca').DataTable({
+			"lengthChange": false,
+			"ordering": false,
+			"autoWidth": false,
+			"scrollX": true,
+		});
+	}
+
+	$('#ShowBCAbydate').click(function(){
+		$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+		
+		var start 		= $('input[name="TxtStartDate"]').val();
+		var end 		= $('input[name="TxtEndDate"]').val();
+
+		$.ajax({
+			type: "POST",
+			data:{
+					start:start,
+					end:end,
+			},
+			url:baseurl+"AccountPayables/KlikBCAChecking/Check/show",
+			success:function(result)
+			{
+				$('#loading').html('');
+				$("#table-full").html(result);
+				tablerecordbca();
+			}
+		});
+	});
 });

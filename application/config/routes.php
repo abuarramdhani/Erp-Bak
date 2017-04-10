@@ -478,6 +478,67 @@ $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
 
+$route['AccountPayables/KlikBCAChecking/Index'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
+$route['AccountPayables/KlikBCAChecking/Index/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Index/$1';
+$route['AccountPayables/KlikBCAChecking/Index/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Index/$1/$2';
+
+$route['AccountPayables/KlikBCAChecking/Insert'] 				= 'AccountPayables/C_KlikBCAChecking_Insert';
+$route['AccountPayables/KlikBCAChecking/Insert/(:any)'] 		= 'AccountPayables/C_KlikBCAChecking_Insert/$1';
+$route['AccountPayables/KlikBCAChecking/Insert/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Insert/$1/$2';
+$route['AccountPayables/KlikBCAChecking/Insert/(:any)/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Insert/$1/$2/$3';
+
+$route['AccountPayables/KlikBCAChecking/Check'] 				= 'AccountPayables/C_KlikBCAChecking_Check';
+$route['AccountPayables/KlikBCAChecking/Check/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Check/$1';
+$route['AccountPayables/KlikBCAChecking/Check/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Check/$1/$2';
+
+//---------------------------------------- ADM PELATIHAN ----------------------------------------
+$route['ADMPelatihan'] 									= 'ADMPelatihan/C_ADMPelatihan';
+
+$route['ADMPelatihan/MasterPackage'] 					= 'ADMPelatihan/C_MasterPackage';
+$route['ADMPelatihan/MasterPackage/(:any)'] 			= 'ADMPelatihan/C_MasterPackage/$1';
+$route['ADMPelatihan/MasterPackage/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterPackage/$1/$2';
+
+$route['ADMPelatihan/MasterTraining'] 					= 'ADMPelatihan/C_MasterTraining';
+$route['ADMPelatihan/MasterTraining/(:any)'] 			= 'ADMPelatihan/C_MasterTraining/$1';
+$route['ADMPelatihan/MasterTraining/(:any)/(:any)'] 	= 'ADMPelatihan/C_MasterTraining/$1/$2';
+
+$route['ADMPelatihan/MasterQuestionnaire'] 				= 'ADMPelatihan/C_MasterQuestionnaire';
+$route['ADMPelatihan/MasterQuestionnaire/(:any)'] 		= 'ADMPelatihan/C_MasterQuestionnaire/$1';
+$route['ADMPelatihan/MasterQuestionnaire/(:any)/(:any)']= 'ADMPelatihan/C_MasterQuestionnaire/$1/$2';
+
+$route['ADMPelatihan/InputQuestionnaire'] 				= 'ADMPelatihan/C_InputQuestionnaire';
+$route['ADMPelatihan/InputQuestionnaire/(:any)'] 		= 'ADMPelatihan/C_InputQuestionnaire/$1';
+$route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)']	= 'ADMPelatihan/C_InputQuestionnaire/$1/$2';
+$route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)/(:any)']	= 'ADMPelatihan/C_InputQuestionnaire/$1/$2/$3';
+
+$route['ADMPelatihan/MasterTrainer'] 					= 'ADMPelatihan/C_MasterTrainer';
+$route['ADMPelatihan/MasterTrainer/(:any)'] 			= 'ADMPelatihan/C_MasterTrainer/$1';
+$route['ADMPelatihan/MasterTrainer/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2';
+
+$route['ADMPelatihan/MasterRoom'] 						= 'ADMPelatihan/C_MasterRoom';
+$route['ADMPelatihan/MasterRoom/(:any)'] 				= 'ADMPelatihan/C_MasterRoom/$1';
+$route['ADMPelatihan/MasterRoom/(:any)/(:any)']			= 'ADMPelatihan/C_MasterRoom/$1/$2';
+
+$route['ADMPelatihan/Penjadwalan'] 						= 'ADMPelatihan/C_Penjadwalan';
+$route['ADMPelatihan/Penjadwalan/(:any)'] 				= 'ADMPelatihan/C_Penjadwalan/$1';
+$route['ADMPelatihan/Penjadwalan/(:any)/(:any)'] 		= 'ADMPelatihan/C_Penjadwalan/$1/$2';
+$route['ADMPelatihan/Penjadwalan/(:any)/(:any)/(:any)'] = 'ADMPelatihan/C_Penjadwalan/$1/$2/$3';
+
+$route['ADMPelatihan/PenjadwalanPackage']				= 'ADMPelatihan/C_PenjadwalanPackage';
+$route['ADMPelatihan/PenjadwalanPackage/(:any)']		= 'ADMPelatihan/C_PenjadwalanPackage/$1';
+$route['ADMPelatihan/PenjadwalanPackage/(:any)/(:any)']	= 'ADMPelatihan/C_PenjadwalanPackage/$1/$2';
+
+$route['ADMPelatihan/Record'] 							= 'ADMPelatihan/C_Record';
+$route['ADMPelatihan/Record/(:any)'] 					= 'ADMPelatihan/C_Record/$1';
+$route['ADMPelatihan/Record/(:any)/(:any)']				= 'ADMPelatihan/C_Record/$1/$2';
+$route['ADMPelatihan/Record/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Record/$1/$2/$3';
+
+$route['ADMPelatihan/Report']							= 'ADMPelatihan/C_Report';
+$route['ADMPelatihan/Report/(:any)']					= 'ADMPelatihan/C_Report/$1';
+$route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Repord/$1/$2';
+$route['ADMPelatihan/Report/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Report/$1/$2/$3';
+
+
 //------------------------------------External Claim.begin---------------------------------------------------
 $route['SalesOrder/BranchApproval'] 						= 'CustomerRelationship/MainMenu/C_BranchApproval/index';
 $route['SalesOrder/BranchApproval/NewClaims'] 				= 'CustomerRelationship/MainMenu/C_BranchApproval/newClaim';
