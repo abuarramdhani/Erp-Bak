@@ -313,7 +313,9 @@ class C_TransaksiPenggajian extends CI_Controller
 						}
 						$std_insentif		= ($r_ik * 25) + ($r_ip * 25) + ($r_i_f * 25) + ($r_ubt * 25) + $pr_upamk;
 						$std_gaji				=  $fx_gaji_pokok + $std_insentif ;
-						$gaji_sbln			= ($fx_gaji_pokok - $fx_htm) + $fx_klaim_dl + $fx_thr + $fx_ubthr + $fx_lembur + $fx_imm + $fx_ims + $fx_kp + $pph21 + $fx_klaim_cuti + $fx_klaim_dl;
+						$gp_bln_ini			= ($fx_gaji_pokok - $fx_htm);
+						$insentif_bln_ini	= 
+						$gaji_sbln			= $gp_bln_ini + $fx_klaim_dl + $fx_thr + $fx_ubthr + $fx_lembur + $fx_imm + $fx_ims + $fx_kp + $pph21 + $fx_klaim_cuti + $fx_klaim_dl;
 						$ttl_premi				= $fx_jkk + $fx_jkm + $fx_jkn_p + $fx_jht_p + $fx_jpp ;
 						$gaji_bruto			= $gaji_sbln + $ttl_premi;
 						if(($gaji_bruto * $p_persentase_jab) > $p_max_jab){
@@ -474,7 +476,7 @@ class C_TransaksiPenggajian extends CI_Controller
 												'kd_jns_transaksi' => "1",
 										);
 						// INSERT PEMBAYARAN PENGGAJIAN
-						$this->M_transaksipenggajian->insert($data);
+						// $this->M_transaksipenggajian->insert($data);
 						$data_asuransi = array(
 							'id_riw_pekerja' => str_replace(' ','',"ASR".$noind.$varMonth.$varYear.date('His')),
 							'masuk_kerja'  => date('Y-m-d',strtotime($masukkerja)),
@@ -504,7 +506,76 @@ class C_TransaksiPenggajian extends CI_Controller
 							'trf_jpn_prshn'  => $p_jpn_prshn,
 							'jpn_prshn'  => $fx_jpp,
 						);
-						$this->M_transaksipenggajian->insert_asuransi($data_asuransi);
+						// $this->M_transaksipenggajian->insert_asuransi($data_asuransi);
+						
+						$data_pajak = array(
+							'tanggal'	=> $varDate,
+							'noind'	=> $noind,
+							'kd_area_pajak'	=> '',
+							'status_pajak'	=> $fx_stat_pajak,
+							'id_riwayat_ptkp'	=> $fx_ptkp,
+							'penghasilan_tetap_per_bln' => $std_gaji,
+							'penghasilan_bruto' => round($gaji_bruto,2),
+							'periode_jst' => round($fx_jht_p,2),
+							'premi_jkk' => round($fx_jkk,2),
+							'premi_jk' => round($fx_jkm,2),
+							'premi_jkn' => round($fx_jkn_p,2),
+							'premi_jpensiun_prshn' => round($fx_jpp,2),
+							'biaya_jabatan' => round($fx_bea_jab,2),
+							'iuran_pensiun' =>round( $p_max_pensiun,2),
+							'iuran_jht' => round($fx_jht_k,2),
+							'iuran_jkn' => round($fx_jkn_k,2),
+							'iuran_jpensiun_kar' => round($fx_jpk,2),
+							'penghasilan_neto' => round($gaji_netto,2),
+							'penghasilan_sd_bln_tsb' => round($gaji_sd_bln_tsb,2),
+							'gaji_disetahunkan' => round($gaji_setahun,2),
+							'ptkp_setahun' => round($fx_ptkp,2),
+							'pkp_setahun' => round($gaji_kena_ptkp,2),
+							'pkp_setahun_pembulatan' => round($pemb_gaji_kena_ptkp,2),
+							'id_pph' => "",
+							'id_bbn_pengurang' => "",
+							'bayar_pph' => round($pajak_setahun,2),
+							'pajak_disetahunkan' => round($pajak_setahun,2),
+							'pajak_per_bln' => round($pajak_sebulan,2),
+							'pajak_yang_dibayar_bln_tsb' => round($fx_pajak,2),
+							'kelebihan_bayar' => "",
+						);
+						
+						// $this->M_transaksipenggajian->insert_transaksi_pajak($data_pajak);
+					
+						//REVIEW PERHITUNGAN 
+						echo "<table>";
+						echo "<tr><td>gaji pokok</td><td>= ".$fx_gaji_pokok."</td></tr>";
+						echo "<tr><td>insentif</td><td>= ".$std_insentif."</td></tr>";
+						echo "<tr><td>gaji pokok bln ini</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>insentif bln ini</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>perjalanan dinas</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>thr</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>ubthr</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>lembur</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>koreksi</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>penghasilan sebulan</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>premi jkk</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>premi jk</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>premi jkn</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>premi jht</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>premi jp</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>total premi</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>jumlah penghasilan bruto</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>biaya jabatan</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>pot jht</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>pot jkn</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>pot jp</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>total pengurangan</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>penghasilan netto sebulan</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>penghasilan netto setahun</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>PTKP</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>penghasilan kena pajak setahun</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>pembulatan</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>pph21 setahun</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>pph21 sebulan</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>yang harus di bayar</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "</table>";
 					}
 		}
 	}
