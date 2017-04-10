@@ -26,29 +26,96 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
-						<b>Control Panel Execute Presence</b>
+						<b>Control Panel Distributing Presence</b>
 					</div>
 					<div class="box-body">
-					<div class="box box-primary">
-						<div class="row" style="padding:10px;">
-							<div class="col-lg-1 text-center"> <h3><b style="color:green;">STEP 1</b></h3>
-								<a title="update fingerprint data :: to fpdistribusi" id="updateFinger"  class="btn btn-lg bg-purple btn-rect"><span class="fa fa-hand-stop-o"></span> <br> Update Finger</a>
-							</div>
-							<div class="col-lg-1"></div>
-							<div class="col-lg-1 text-center"><h3><b style="color:green;">STEP 2</b></h3>
-								<a title="Refresh to Update Registered Person :: hrd_khs" id="refreshRegPers" class="btn btn-lg bg-blue btn-rect"><span class="fa fa-refresh"></span> <br> Refresh Person</a>
-							</div>
-							<div class="col-lg-1"></div>
-							<div class="col-lg-1 text-center"><h3><b style="color:red;">INACTIVE</b></h3>
-								<a title="Distribute finger from quick.com to local presence :: fingertolocalhost" id="refreshFinger"  class="btn btn-lg bg-maroon btn-rect disabled"><span class="fa fa-sitemap"></span> <br> Distribute Finger</a>
-							</div>
-							<div class="col-lg-1"></div>
-							<div class="col-lg-1 text-center"><h3><b style="color:red;">INACTIVE</b></h3>
-								<a title="Refresh location device" href="<?php echo site_url('PresenceManagement/Monitoring');?>"  class="btn btn-lg bg-navy btn-rect disabled"><span class="fa fa-toggle-on"></span> <br> Refresh Device</a>
+					<br>
+					<!-- DISTRIBUSI DATABASE POSTGRES PERSONALIA DARI 6.20 -->
+					<div class="box box-primary box-solid">
+						<div class="box-header with-border">
+							Distribute Database of Personal Data
+						</div>
+						<div class="box-body">
+							<div class="col-lg-6">
+								<a class="btn bg-maroon" id="execute-cronjob-hrd"><span class="fa fa-upload"></span> Execute</a>
 							</div>
 						</div>
 					</div>
-						<hr>
+					<!-- DISTRIBUSI FRONTPRESENSI DARI LOCAL KE 6.20 -->
+					<div class="box box-primary box-solid">
+						<div class="box-header with-border">
+							Re-distribution Presence
+						</div>
+						<div class="box-body">
+							<div class="col-lg-12">
+								<form class="form-inline" method="post" action="">
+									<div class="form-group">
+										  <input type="text" class="form-control" name="fr_start" id="fr_start" placeholder="[ Start Date ]">
+									</div>
+									<div class="form-group">
+										  <input type="text" class="form-control" name="fr_end" id="fr_end" placeholder="[ End Date ]">
+									</div>
+									<button type="submit" class="btn btn-distribute-presence bg-maroon"><span class="fa fa-send"></span> Distribute</button>
+								  </form>
+							</div>
+						</div>
+					</div>
+					<!-- DISTRIBUSI DATABASE POSTGRES PERSONALIA DARI 6.20 -->
+					<div class="box box-primary box-solid">
+						<div class="box-header with-border">
+							Refresh Database Local
+						</div>
+						<div class="box-body">
+							<div class="col-lg-6">
+								<a class="btn bg-maroon" id="refresh-cronjob-hrd"><span class="fa fa-refresh"></span> Refresh</a>
+							</div>
+							<div class="col-lg-6" id="loading2">
+								<img src="<?php echo site_url('assets/img/loading.gif') ?>"></img>
+							</div>
+						</div>
+					</div>
+					<!-- UPDATE SEKSI -->
+					<div class="box box-primary box-solid">
+						<div class="box-header with-border">
+							Update Section to Computer Finger
+						</div>
+						<div class="box-body">
+							<div class="col-lg-6">
+								<a class="btn bg-maroon" id="update-section-cronjob-hrd"><span class="fa fa-upload"></span> Update</a>
+							</div>
+							<div class="col-lg-6" id="loading3">
+								<img src="<?php echo site_url('assets/img/loading.gif') ?>"></img>
+							</div>
+						</div>
+					</div>
+					<!-- BACK UP -->
+					<div class="box box-primary box-solid">
+						<div class="box-header with-border">
+							Back Up Data Finger Local
+						</div>
+						<div class="box-body">
+							<div class="col-lg-6">
+								<a class="btn bg-maroon" id="backup-cronjob-hrd"><span class="fa fa-download"></span> Back Up</a>
+							</div>
+							<div class="col-lg-6" id="loading4">
+								<img src="<?php echo site_url('assets/img/loading.gif') ?>"></img>
+							</div>
+						</div>
+					</div>
+					<!-- UPDATE FINGER -->
+					<div class="box box-primary box-solid">
+						<div class="box-header with-border">
+							Update Finger Server
+						</div>
+						<div class="box-body">
+							<div class="col-lg-6">
+								<a class="btn bg-maroon" id="update-fingercode"><span class="fa fa-refresh"></span> Update Finger</a>
+							</div>
+							<div class="col-lg-6" id="loading4">
+								<img src="<?php echo site_url('assets/img/loading.gif') ?>"></img>
+							</div>
+						</div>
+					</div>
 						<div class="form-group">
 							<div class="col-lg-12 text-right">
 								<a href="<?php echo site_url('PresenceManagement/Monitoring');?>"  class="btn btn-success btn-lg btn-rect">Back</a>

@@ -639,7 +639,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 									noind IN ($noinduk)
 									AND keluar = '0'
 						)
-					OR
+					AND
 						nik IN (
 							SELECT nik
 								FROM hrd_khs.tpribadi a
