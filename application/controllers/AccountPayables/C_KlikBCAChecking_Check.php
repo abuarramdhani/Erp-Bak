@@ -69,11 +69,31 @@ class C_KlikBCAchecking_Check extends CI_Controller {
 			$checking_id		= $rf['checking_id'];
 			$berita				= $rf['berita'];
 			$no_rek_penerima	= $rf['no_rek_penerima'];
+			$nama_penerima		= $rf['nama_penerima'];
 			$jumlah				= $rf['jumlah'];
 
-			if($rf['oracle_checking'] !== 'Y'){
-				$oc = $this->M_klikbcachecking_check->MatchWithOracle($berita,$no_rek_penerima,$jumlah);
+			if($rf['oracle_checking'] !== 'Y' AND $rf['oracle_checking'] !== 'T' ){
+				$oc = $this->M_klikbcachecking_check->GetOcracleMatch($berita);
 				if(!empty($oc)){
+					$oracle_berita				= $oc[0]['PAY_NUMBER'];
+					$oracle_no_rek_penerima		= $oc[0]['REK_TUJUAN'];
+					$oracle_nama_penerima		= $oc[0]['ACCT_TUJUAN'];
+					$oracle_jumlah				= $oc[0]['AMOUNT'];
+				}else{
+					$oracle_berita				= '-';
+					$oracle_no_rek_penerima		= '-';
+					$oracle_nama_penerima		= '-';
+					$oracle_jumlah				= '0';
+				}
+				$this->M_klikbcachecking_check->InsertOracleToPostgre($checking_id,$oracle_berita,$oracle_no_rek_penerima,$oracle_nama_penerima,$oracle_jumlah);
+				
+				$ck = $this->M_klikbcachecking_check->GetOracleInPostgre($checking_id);
+				print_r($ck);
+				if( $ck[0]['berita']			== $ck[0]['pay_num_oracle'] AND
+					$ck[0]['no_rek_penerima']	== $ck[0]['rek_tujuan'] AND
+					$ck[0]['inisial_penerima']	== $ck[0]['inisial_tujuan'] AND
+					$ck[0]['jumlah']			== $ck[0]['jumlah_oracle']
+				){
 					$oracle_checking = 'Y';
 				}else{
 					$oracle_checking = 'T';
@@ -86,19 +106,22 @@ class C_KlikBCAchecking_Check extends CI_Controller {
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', array(210,330), 0, '', 0, 0, 0, 0, 0, 0, 'L');
+		$pdf = new mPDF('utf-8', array(210,330), 0, '', 0, 0, 25, 0, 0, 0, 'L');
 
 		$filename = 'KlikBCA-Checking-Report';
 		$this->checkSession();
 
 		$data['Referencee'] = $this->M_klikbcachecking_check->ShowBCA($start,$end);
-		$data['OracleData'] = $this->M_klikbcachecking_check->GetOracle();
 
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		$head = $this->load->view('AccountPayables/KlikBCAChecking/Check/V_ReportHeader', $data, true);
 		$html = $this->load->view('AccountPayables/KlikBCAChecking/Check/V_Report', $data, true);
+		$foot = $this->load->view('AccountPayables/KlikBCAChecking/Check/V_ReportFooter', $data, true);
 
+		$pdf->SetHTMLHeader($head);
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($html,2);
+		$pdf->SetHTMLFooter($foot);
 		$pdf->Output($filename, 'I');
 	}
 
