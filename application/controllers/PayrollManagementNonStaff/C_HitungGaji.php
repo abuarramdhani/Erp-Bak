@@ -256,11 +256,13 @@ class C_HitungGaji extends CI_Controller
 			}
 		}
 
+		$insentif_prestasi_mask = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
+
 		$resultLKHSeksi[] = array(
 			'IP' => $ip,
 			'totalInsentifPrestasi' => $ip * $insentifPrestasi,
 			'IK' => number_format($kelebihan, 2, '.', ''),
-			'totalInsentifKelebihan' => number_format($kelebihan / 100 * $insentifPrestasi, 0, '.', '')
+			'totalInsentifKelebihan' => number_format($kelebihan / 100 * ($insentif_prestasi_mask - $insentifPrestasi), 0, '.', '')
 		);
 
 		// print_r($resultLKHSeksi);exit;
