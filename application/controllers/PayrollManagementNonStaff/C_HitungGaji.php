@@ -602,7 +602,7 @@ class C_HitungGaji extends CI_Controller
 				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
 				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
 				'hitung_ubt' => $UBTNilai.' X '.number_format($UBTNominal, 0, '', '.'),
-				'hitung_upamk' => $UPAMKNilai.' X '.number_format($UPAMKNominal, 0, '', '.'),
+				'hitung_upamk' => $UPAMKNilai.' X '.number_format($UPAMKNominal, 0, '', '.').' / '.$pembagi_upamk,
 				'hitung_tambah_kurang_bayar' => number_format($Tambahan, 0, '', '.').' + '.number_format($tambahanKurangBayar, 0, '', '.'),
 				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.number_format($GP, 0, '', '.').'/30)',
 				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/173)',
