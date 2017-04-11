@@ -32,7 +32,7 @@
 								<div class="row" style="margin: 10px 0px">
 									<form method="post" action="<?php echo base_url('PayrollManagement/KlaimGajiIndividual/search')?>" enctype="multipart/form-data">
 										<div class="col-lg-2">
-											<input name="txtPeriodeHitung" id="txtPeriodeHitung-keluar" type="text" class="form-control">
+											<input name="txtPeriodeHitung" id="txtPeriodeHitung" type="text" class="form-control">
 										</div>
 										<div class="col-lg-2">
 											<button class="btn btn-warning btn-block">Search</button>
@@ -64,7 +64,6 @@
 							<th style="text-align:center"><div style="width:100px"></div>Ip</th>
 							<th style="text-align:center"><div style="width:100px"></div>Ik</th>
 							<th style="text-align:center"><div style="width:100px"></div>I F</th>
-							<th style="text-align:center"><div style="width:100px"></div>If Htg Bln Lalu</th>
 							<th style="text-align:center"><div style="width:100px"></div>Ubt</th>
 							<th style="text-align:center"><div style="width:100px"></div>Upamk</th>
 							<th style="text-align:center"><div style="width:100px"></div>Um</th>
@@ -73,8 +72,6 @@
 							<th style="text-align:center"><div style="width:100px"></div>Lembur</th>
 							<th style="text-align:center"><div style="width:100px"></div>Htm</th>
 							<th style="text-align:center"><div style="width:100px"></div>Ijin</th>
-							<th style="text-align:center"><div style="width:100px"></div>Htm Htg Bln Lalu</th>
-							<th style="text-align:center"><div style="width:100px"></div>Ijin Htg Bln Lalu</th>
 							<th style="text-align:center"><div style="width:100px"></div>Pot</th>
 							<th style="text-align:center"><div style="width:100px"></div>Tamb Gaji</th>
 							<th style="text-align:center"><div style="width:100px"></div>Hl</th>
@@ -103,7 +100,61 @@
 							<th style="text-align:center"><div style="width:100px"></div>Kd Jns Transaksi</th>
 							<th style="text-align:center"><div style="width:100px"></div>Kd Log Trans</th>
 		                  </tr>
-		                </thead>                                   
+		                </thead>   
+  <tbody>
+							<?php $no = 1; 
+							if(!empty($KlaimGajiIndividual_data)){
+								foreach($KlaimGajiIndividual_data as $row) { ?>
+								<tr>
+								<td align='center'><?php echo $no++;?></td>
+								<td align='center'><?php echo $row->tanggal ?></td>
+								<td align='center'><?php echo $row->noind ?></td>
+								<td align='center'><?php echo $row->kd_hubungan_kerja ?></td>
+								<td align='center'><?php echo $row->kd_status_kerja ?></td>
+								<td align='center'><?php echo $row->kd_jabatan ?></td>
+								<td align='center'><?php echo $row->kodesie ?></td>
+								<td align='center'><?php echo $row->ip ?></td>
+								<td align='center'><?php echo $row->ik ?></td>
+								<td align='center'><?php echo $row->i_f ?></td>
+								<td align='center'><?php echo $row->ubt ?></td>
+								<td align='center'><?php echo $row->upamk ?></td>
+								<td align='center'><?php echo $row->um ?></td>
+								<td align='center'><?php echo $row->ims ?></td>
+								<td align='center'><?php echo $row->imm ?></td>
+								<td align='center'><?php echo $row->lembur ?></td>
+								<td align='center'><?php echo $row->htm ?></td>
+								<td align='center'><?php echo $row->ijin ?></td>
+								<td align='center'><?php echo $row->pot ?></td>
+								<td align='center'><?php echo $row->tamb_gaji ?></td>
+								<td align='center'><?php echo $row->hl ?></td>
+								<td align='center'><?php echo $row->ct ?></td>
+								<td align='center'><?php echo $row->putkop ?></td>
+								<td align='center'><?php echo $row->plain ?></td>
+								<td align='center'><?php echo $row->pikop ?></td>
+								<td align='center'><?php echo $row->pspsi ?></td>
+								<td align='center'><?php echo $row->putang ?></td>
+								<td align='center'><?php echo $row->dl ?></td>
+								<td align='center'><?php echo $row->tkpajak ?></td>
+								<td align='center'><?php echo $row->ttpajak ?></td>
+								<td align='center'><?php echo $row->pduka ?></td>
+								<td align='center'><?php echo $row->utambahan ?></td>
+								<td align='center'><?php echo $row->btransfer ?></td>
+								<td align='center'><?php echo $row->denda_ik ?></td>
+								<td align='center'><?php echo $row->p_lebih_bayar ?></td>
+								<td align='center'><?php echo $row->pgp ?></td>
+								<td align='center'><?php echo $row->tlain ?></td>
+								<td align='center'><?php echo $row->xduka ?></td>
+								<td align='center'><?php echo $row->ket ?></td>
+								<td align='center'><?php echo $row->cicil ?></td>
+								<td align='center'><?php echo $row->ubs ?></td>
+								<td align='center'><?php echo $row->ubs_rp ?></td>
+								<td align='center'><?php echo $row->p_um_puasa ?></td>
+								<td align='center'><?php echo $row->kd_jns_transaksi ?></td>
+								<td align='center'><?php echo $row->kd_log_trans ?></td>
+								</tr>
+								<?php }
+							} ?>
+		                </tbody>                                      						
 		              </table>
 		            </div>
 		          </div>
