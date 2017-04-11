@@ -46,37 +46,129 @@ a.logo:hover {
 .autocomplete-selected { background: #f0f0f0; }
 .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
 
-table.spct {
+table.t_riwayat_gaji
+{
+	margin: 0px auto;
 	border: 2px solid black;
 	border-collapse: collapse;	
 	border-spacing: 10px;
 }
 
-table.spct th{
+table.t_riwayat_gaji th
+{
+	border: 1px solid black;
+	text-align: center;
+	padding: 3px;
+}
+
+table.t_riwayat_gaji td
+{
+	border: 1px solid black;
+	padding: 3px;
+}
+
+table.t_riwayat_gaji td#nama
+{
+	border: 1px solid black;
+	width: 300px;
+	padding: 3px;
+}
+
+table.t_rincian_hutang
+{
+	margin: 0px auto;
+	border: 2px solid black;
+	border-collapse: collapse;	
+	border-spacing: 10px;
+}
+
+table.t_rincian_hutang th
+{
 	border: 1px solid black;
 	height: 20px;
 	text-align: center;
-	padding: 6px;
+	padding: 3px;
 }
 
-table.spct td{
+table.t_rincian_hutang th#cicilan
+{
+	width: 100px;
+}
+
+table.t_rincian_hutang td
+{
 	border: 1px solid black;
 	height: 18px;
-	padding: 4px;
+	padding: 3px;
 }
 
-td.spcfield1{
-	width: 120px;
+td.c_rincian_hutang_a{ width: 120px; }
+
+td.c_rincian_hutang_b{ width: 160px; }
+
+td.c_rincian_hutang_space{ width: 10px; }
+
+hr.hl_rincian_hutang { width:100%; height:2px; background: #000000 }
+
+table.t_bawah_ptkp
+{
+	margin: 0px auto;
+	border: 2px solid black;
+	border-collapse: collapse;	
+	border-spacing: 10px;
 }
 
-td.spcfield2{
-	width: 200px;
+table.t_bawah_ptkp th
+{
+	border: 1px solid black;
+	height: 20px;
+	text-align: center;
 }
 
-td.spcsc{
-	width: 10px;
+table.t_bawah_ptkp td
+{
+	border: 1px solid black;
+	height: 16px;
 }
 
-hr.full { width:100%; height:2px; background: #000000 }
+table.t_bawah_ptkp td#nama
+{
+	padding-left: 10px;
+}
 
-hr.part { width: 100%; height:2px; background: #000000 }
+table.t_master_gaji
+{
+	margin: 0px auto;
+	border: 2px solid black;
+	border-collapse: collapse;	
+	border-spacing: 10px;
+}
+
+table.t_master_gaji th
+{
+	border: 1px solid black;
+	height: 20px;
+	text-align: center;
+}
+
+table.t_master_gaji td
+{
+	border: 1px solid black;
+	height: 16px;
+}
+
+table.t_master_gaji td#nama
+{
+	padding-left: 10px;
+}
+
+table.t_master_gaji td#uang
+{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.h_master_gaji
+{
+	line-height: 10px;
+}

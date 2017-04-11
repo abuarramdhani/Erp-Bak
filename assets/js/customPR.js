@@ -268,7 +268,16 @@ $('#dataTables-hutangKaryawan').DataTable( {
       buttons: [
         'excel'
       ]
-    });	
+    });
+
+$('#dataTables-reportMasterGaji').DataTable( {
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
