@@ -431,6 +431,41 @@ table.t_dana_pensiun td#total
 	font-size: 14px; 
 	font-weight: bold;
 }
+
+table.t_potongan
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_potongan th
+{
+    border: 1px solid black;
+    text-align: center;
+}
+
+table.t_potongan td
+{
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+table.t_potongan td#uang
+{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+table.t_potongan td#total
+{
+    height: 25px;
+    padding-right: 20px;
+    font-size: 14px; 
+    font-weight: bold;
+}
 =======
 =======
 .hidden {

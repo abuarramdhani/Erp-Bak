@@ -326,6 +326,14 @@ $('#dataTables-reportDanaPensiun').DataTable( {
         'excel'
       ]
     });
+
+$('#dataTables-reportPotonganKoperasi').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
