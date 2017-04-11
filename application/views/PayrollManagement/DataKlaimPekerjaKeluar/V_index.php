@@ -6,7 +6,7 @@
 	        <div class="col-lg-12">
 	          <div class="col-lg-11">
 	            <div class="text-right">
-	            <h1><b>Browse Transaksi Penggajian</b></h1>
+	            <h1><b>Browse Transaksi Klaim / Pekerja Keluar</b></h1>
 	            </div>
 	          </div>
 	          <div class="col-lg-1">
@@ -25,7 +25,7 @@
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
 		          <div class="box-header with-border">
-                    <b>Transaksi Penggajian</b>
+                    <b>Transaksi  Klaim / Pekerja Keluar</b>
 		          </div>
 		          <div class="box-body">
 		           <div class="table-responsive"> 

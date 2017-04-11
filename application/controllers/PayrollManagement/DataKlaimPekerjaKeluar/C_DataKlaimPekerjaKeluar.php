@@ -38,7 +38,7 @@ class C_DataKlaimPekerjaKeluar extends CI_Controller
 	public function Check(){
 		$this->checkSession();
         $user_id = $this->session->userid;
-        
+        $kd_transaksi = "2";
         $data['Menu'] = 'Payroll Management';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -51,9 +51,9 @@ class C_DataKlaimPekerjaKeluar extends CI_Controller
 		$varYear		= substr($varPeriode,0,4);
 		$varMonth		= substr($varPeriode,5,2);
 	
-		$checkPeriode	= $this->M_dataklaimpekerjakeluar->checkPeriode($varYear,$varMonth);
+		$checkPeriode	= $this->M_dataklaimpekerjakeluar->checkPeriode($varYear,$varMonth,$kd_transaksi);
 		if($checkPeriode){
-			$getDataPenggajian	= $this->M_dataklaimpekerjakeluar->getDataPenggajian($varYear,$varMonth);
+			$getDataPenggajian	= $this->M_dataklaimpekerjakeluar->getDataPenggajian($varYear,$varMonth,$kd_transaksi);
 			
 			$data['getDataPenggajian_data'] = $getDataPenggajian;
 			$this->load->view('V_Header',$data);

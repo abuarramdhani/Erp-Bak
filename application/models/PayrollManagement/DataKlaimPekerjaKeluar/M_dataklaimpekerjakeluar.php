@@ -30,18 +30,20 @@ class M_dataklaimpekerjakeluar extends CI_Model
     }
 	
 	// get data periode
-    function checkPeriode($varYear,$varMonth)
+    function checkPeriode($varYear,$varMonth,$kd_jns_transaksi)
     {
         $this->db->where('extract(year from tanggal)=', $varYear);
         $this->db->where('extract(month from tanggal)=', $varMonth);
+		$this->db->where('kd_jns_transaksi=', $kd_transaksi);
         return $this->db->get($this->table)->row();
     }
 	
 	// get data periode
-    function getDataPenggajian($varYear,$varMonth)
+    function getDataPenggajian($varYear,$varMonth,$kd_transaksi)
     {
         $this->db->where('extract(year from tanggal)=', $varYear);
         $this->db->where('extract(month from tanggal)=', $varMonth);
+		$this->db->where('kd_jns_transaksi=', $kd_transaksi);
         return $this->db->get($this->table)->result();
     }
 	
