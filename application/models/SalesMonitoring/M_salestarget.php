@@ -73,7 +73,7 @@ class M_salestarget extends CI_Model {
 		}
 		
 		//update (updated)
-		public function updateSalestarget($id,$orgid,$ordertype,$target,$month,$year)
+		public function updateSalestarget($id,$orgid,$ordertype,$target,$month,$year,$lastupdateby)
 		{
 			$sql = "update sf.sales_target set org_id='$orgid', order_type='$ordertype', target='$target',month='$month',year='$year', last_updated=now(), last_update_by=$lastupdateby where sales_target_id=$id";
 			$query = $this->db->query($sql);

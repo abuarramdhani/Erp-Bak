@@ -53,7 +53,7 @@
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Nomor Faktur</label>
 									<div class="col-lg-5">
-										<input id="slcInvoiceNumber2_deactive" name="TxtInvoiceNumber" class="form-control select2_deactive" style="width:265px;">
+										<input id="slcInvoiceNumber2_deactive" name="TxtInvoiceNumber" class="form-control select2_deactive" style="width:100%;">
 											
 									</div>
 								</div>
@@ -63,13 +63,33 @@
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Nama</label>
 									<div class="col-lg-5">
-										<select id="slcnama" name="TxtNama" class="form-control select2" style="width:265px;">
+										<select id="slcnama" name="TxtNama" class="form-control select2" style="width:100%;">
 											<option value="">- pilih -</option>
 										</select >
 										<!--<input name="TxtNama" id="TxtNama" class="form-control" placeholder="Nama">-->
 									</div>
 								</div>
 							</div>
+
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-2 control-label">Tanggal Faktur</label>
+									<div class="col-lg-2">
+										<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+												<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+										</div>
+									</div>
+									<label class="col-lg-1 control-label">S/D</label>
+									<div class="col-lg-2">
+										<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
+												<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+										</div>
+									</div>
+								</div>
+							</div>
+
+														
+
 							<!-- INPUT ROW 4 -->
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
@@ -86,8 +106,18 @@
 									</div>
 								</div>
 							</div>
-							<br>
 							<!-- INPUT ROW 5 -->
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-2 control-label">Faktur Type</label>
+									<div class="col-lg-5">
+										<input type="checkbox" name="typ1" id="typ1"> Faktur With Invoice<br>
+										<input type="checkbox" name="typ2" id="typ2"> Faktur Without Invoice<br>
+									</div>
+								</div>
+							</div>
+							<br>
+							<!-- INPUT ROW 6 -->
 							<div class="row" style="margin: 10px 10px">
 								<div class="col-lg-offset-2 col-lg-2">
 									<a id="FindFakturButton" class="btn btn-info btn-block btn-rect">find</a>
@@ -110,7 +140,7 @@
 								</div>
 							</div>
 						</form>
-						<!-- INPUT ROW 6 -->
+						<!-- INPUT ROW 7 -->
 						<form method="post" action="<?php echo base_url('AccountPayables/C_Invoice/importfm')?>" enctype="multipart/form-data">
 							<div class="row" style="margin: 10px 10px">
 								<div class=" col-lg-offset-7 col-lg-3">
@@ -123,7 +153,7 @@
 								</div>
 							</div>
 						</form>
-						<!-- INPUT ROW 7 -->
+						<!-- INPUT ROW 8 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="col-lg-offset-7 col-lg-5">
 								<a href="#"  class="btn btn-primary btn-block">Input Manual</a>

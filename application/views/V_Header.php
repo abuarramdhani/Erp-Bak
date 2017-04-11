@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome/3.2.0/css/font-awesome.css');?>" />
 	<!-- FontAwesome 4.3.0 -->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome/4.3.0/css/font-awesome.min.css');?>" type="text/css" />
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome/4.3.0/css/font-awesome-animation.css');?>" type="text/css" />
 	<!-- Ionicons 2.0.0 -->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/ionicons/css/ionicons.min.css');?>" type="text/css" />
     <!--END GLOBAL STYLES -->
@@ -36,6 +37,7 @@
   <!-- PAGE LEVEL STYLES FOR DATATABLES-->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />	
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
@@ -44,6 +46,8 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/inputlimiter/jquery.inputlimiter.1.0.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/chosen/chosen.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/colorpicker/css/colorpicker.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dropzone/basic.min.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dropzone/dropzone.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/tagsinput/jquery.tagsinput.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/daterangepicker-master/daterangepicker.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/datepicker/css/datepicker.css');?>" />
@@ -51,9 +55,18 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/switch/static/stylesheets/bootstrap-switch.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.css');?>" />
-	
+	<!-- Fine Uploader New/Modern CSS file -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader-new.min.css');?>" />
+
 	<!-- END PAGE LEVEL  STYLES -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
+
+	<!-- GLOBAL SCRIPTS -->
+    <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
+    <!-- END GLOBAL SCRIPTS -->
 	
 </head>
      <!-- END HEAD -->
@@ -139,3 +152,4 @@
 		<!-- Modal End -->
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
+	

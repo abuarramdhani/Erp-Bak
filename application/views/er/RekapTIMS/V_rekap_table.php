@@ -17,9 +17,16 @@ foreach ($rekap as $rekap_data) {}
 		<div class="col-lg-12">	
 			<div class="box box-primary">
 						<div class="box-body with-border">-->
-							<a target="_blank" class="btn btn-default pull-right" href="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail/'.$ex_period1[0].'/'.$ex_period2[0].'/'.$rekap_data['kode_status_kerja'].'/'.str_replace(' ', '-', $rekap_data['seksi']))?>/0">
-								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
-							</a>
+							<form target="_blank" id="export_detail_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail") ?>">
+								<input type="hidden" name="txtDetail" value="0">
+								<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
+								<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
+								<input type="hidden" name="txtStatus_export" value="<?php echo $rekap_data['kode_status_kerja'] ?>">
+								<input type="hidden" name="txtSeksi_export" value="<?php echo $section ?>">
+								<button class="btn btn-default pull-right">
+									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
+								</button>
+							</form>
 							<table id="rekap-tims" class="table table-bordered table-hover table-striped">
 								<thead>
 									<tr class="bg-primary">
@@ -27,7 +34,7 @@ foreach ($rekap as $rekap_data) {}
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NIK</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NAMA</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">Masa Kerja</th>
-										<th colspan="6" style="text-align: center">REKAP</th>
+										<th colspan="7" style="text-align: center">REKAP</th>
 									</tr>
 									<tr class="bg-primary">
 										<th style="text-align: center">T</th>
@@ -35,6 +42,7 @@ foreach ($rekap as $rekap_data) {}
 										<th style="text-align: center">M</th>
 										<th style="text-align: center">S</th>
 										<th style="text-align: center">IP</th>
+										<th style="text-align: center">CT</th>
 										<th style="text-align: center">SP</th>
 									</tr>
 								</thead>
@@ -54,7 +62,33 @@ foreach ($rekap as $rekap_data) {}
 											</td>
 											<td style="text-align:center;">
 												<?php
-													echo $rekap_data['masa_kerja']
+													$masukkerja_s = '';
+													${'masa_kerja'.$rekap_data['nama']} = array();
+													$index_masakerja = 0;
+													foreach ($rekap_masakerja as $row) {
+														if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+															
+															if ($row['masukkerja'] != $masukkerja_s) {
+																$masukkerja = new DateTime($row['masukkerja']);
+																$tglkeluar = new DateTime($row['tglkeluar']);
+																$masa_kerja = $masukkerja->diff($tglkeluar);
+																${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+																$index_masakerja++;
+															}
+
+															$masukkerja_s = $row['masukkerja'];
+														}
+													}
+
+													$e = new DateTime();
+													$f = clone $e;
+													if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+														$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+													}
+													if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+														$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+													}
+													echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 												?>
 											</td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?></td>
@@ -62,6 +96,7 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo $rekap_data['frekm']+$rekap_data['frekms']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['freksk']+$rekap_data['freksks']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekip']+$rekap_data['frekips'] ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekct']+$rekap_data['frekcts'] ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['freksp']+$rekap_data['freksps'] ?></td>
 										</tr>
 									<?php } ?>
@@ -75,6 +110,7 @@ foreach ($rekap as $rekap_data) {}
 									M : Mangkir&emsp;
 									S : Sakit&emsp;
 									IP : Izin Perusahaan&emsp;
+									CT : Cuti Tahunan&emsp;
 									SP : Surat Peringatan
 								</strong>
 							</p>
