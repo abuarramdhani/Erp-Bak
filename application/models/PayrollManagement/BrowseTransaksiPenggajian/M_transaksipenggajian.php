@@ -6,6 +6,7 @@ class M_transaksipenggajian extends CI_Model
     public $table = 'pr.pr_transaksi_pembayaran_penggajian';
     public $table_asuransi = 'pr.pr_transaksi_asuransi';
     public $table_pajak = 'pr.pr_transaksi_hitung_pajak';
+    public $table_kemahalan = 'pr.pr_transaksi_insentif_kemahalan';
     public $id = 'id_pembayaran_gaji';
     public $order = 'DESC';
 	
@@ -181,6 +182,10 @@ class M_transaksipenggajian extends CI_Model
 	function insert_asuransi($data_asuransi)
 	{
 		$this->db->insert($this->table_asuransi,$data_asuransi);
+	}
+	
+	function insert_transaksi_insentif_kemahalan($data_insentif_kemahalan){
+		$this->db->insert($this->table_kemahalan,$data_insentif_kemahalan);
 	}
 	
 	function insert_transaksi_pajak($data_pajak)

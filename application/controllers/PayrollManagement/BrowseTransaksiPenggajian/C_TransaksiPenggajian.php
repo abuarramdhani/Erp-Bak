@@ -544,7 +544,22 @@ class C_TransaksiPenggajian extends CI_Controller
 						);
 						
 						$this->M_transaksipenggajian->insert_transaksi_pajak($data_pajak);
+						
+						$data_insentif_kemahalan = array(
+							'tanggal'		=> $varDate,
+							'noind'			=> $noind,
+							'kd_hubungan_kerja'	=> $kd_hubungan_kerja,
+							'kd_status_kerja'		=> $kd_status_kerja,
+							'kd_jabatan'		=> $kd_jabatan,
+							'kodesie'		=> $kodesie,
+							'p_if'			=> $p_i_f,
+							'n_kmh'		=> $r_insentif_kemahalan,
+							't_kmh'			=> $fx_insentif_kemahalan,
+						);
+						
+						
 					
+						$this->M_transaksipenggajian->insert_transaksi_insentif_kemahalan($data_insentif_kemahalan);
 						//REVIEW PERHITUNGAN 
 						// echo "<table>";
 						// echo "<tr><td>gaji pokok</td><td>= ".$fx_gaji_pokok."</td></tr>";
