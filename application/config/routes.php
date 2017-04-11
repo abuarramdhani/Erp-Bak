@@ -722,9 +722,9 @@ $route['PayrollManagement/Report/PotonganSPSI'] = 'PayrollManagement/Report/Poto
 $route['PayrollManagement/Report/PotonganSPSI/(:any)'] = 'PayrollManagement/Report/PotonganSPSI/C_RapelPremiAsuransi/$1';
 $route['PayrollManagement/Report/PotonganSPSI/(:any)/(:any)'] = 'PayrollManagement/Report/PotonganSPSI/C_RapelPremiAsuransi/$1/$2';
 
-$route['PayrollManagement/Report/PotonganDanaPensiun'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_RapelPremiAsuransi';
-$route['PayrollManagement/Report/PotonganDanaPensiun/(:any)'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_RapelPremiAsuransi/$1';
-$route['PayrollManagement/Report/PotonganDanaPensiun/(:any)/(:any)'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_RapelPremiAsuransi/$1/$2';
+$route['PayrollManagement/Report/PotonganDanaPensiun'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_PotonganDanaPensiun';
+$route['PayrollManagement/Report/PotonganDanaPensiun/(:any)'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_PotonganDanaPensiun/$1';
+$route['PayrollManagement/Report/PotonganDanaPensiun/(:any)/(:any)'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_PotonganDanaPensiun/$1/$2';
 
 $route['PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan'] = 'PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/C_RapelPremiAsuransi';
 $route['PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/(:any)'] = 'PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/C_RapelPremiAsuransi/$1';

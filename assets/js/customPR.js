@@ -277,6 +277,14 @@ $('#dataTables-reportMasterGaji').DataTable( {
         'excel'
       ]
     });
+
+$('#dataTables-reportDanaPensiun').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
@@ -329,6 +337,7 @@ $(document).ready(function() {
 	format: "yyyy-mm-dd",
  });
   $('#cmbKdBank').select2();
+  $('.select2-txtDept').select2();
   $('#txtKodeStatusKerja').select2();
   $('#cmbKdHubunganKerja').select2();
   $('#cmbKdStatusKerja').select2();

@@ -32,11 +32,11 @@
 						<div class="row" style="margin: 10px 0px">
 							<form method="post" action="<?php echo base_url('PayrollManagement/Report/MasterGajiKaryawan/search')?>" enctype="multipart/form-data">
 								<div class="col-lg-2">
-									<input name="txtPeriodeHitung" id="txtPeriodeHitung" type="text" class="form-control">
+									<input name="txtPeriodeHitung" placeholder="Periode" id="txtPeriodeHitung" type="text" class="form-control">
 								</div>
 
-								<div class="col-lg-2">
-									<select name="txtDept">
+								<div class="col-lg-3">
+									<select name="txtDept" class="select2-txtDept">
 									<?php 
 										if(!empty($departments)){
 											foreach($departments as $row) { ?>
@@ -55,11 +55,6 @@
 											}
 										}
 									?>
-<!-- 										<option value="Internet Explorer">
-										<option value="Firefox">
-										<option value="Chrome">
-										<option value="Opera">
-										<option value="Safari"> -->
 									</select>
 								</div>
 								<div class="col-lg-2">
