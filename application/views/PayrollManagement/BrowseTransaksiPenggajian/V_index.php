@@ -100,19 +100,20 @@
 							<th style='text-align:center;'><div style="width:100px"></div>UBTH</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Klaim Sdh Bayar</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Tamb Subs Pajak</th>
-							<th style='text-align:center;'><div style="width:100px;font:red;"></div>Subtotal 1</th>
+							<th style='text-align:center;'><div style="width:100px;font:red;">"></div>Subtotal 1</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Klaim DL</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. THR</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. UBTHR</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Klaim Sdh Bayar</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Subs Pajak</th>
-		                    <th style='text-align:center;'><div style="width:100px;font:red;"></div>Subtotal 2</th>
+		                    <th style='text-align:center;'><div style="width:100px;font:red;">"></div>Subtotal 2</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Koreksi Pot. Bln Lalu</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. JHT</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. JKN</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. JPN</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Putkop</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pikop</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Potkop</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Potkop</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Hutang</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Duka</th>
@@ -125,92 +126,6 @@
 						  </tr>
 		                </thead>
 		                <tbody>
-							<?php
-								if(!empty($getDataPenggajian_data)){
-									$no = 0;
-									foreach($getDataPenggajian_data as $row){
-									$no++;
-							?>
-								<td style="text-align:center; width:30px"><div style="width:40px"><?php echo $no; ?></td>
-								<td style='text-align:center'><?php echo $row->tanggal ?></td>
-								<td><?php echo $row->tanggal ?></td>
-								<td style='text-align:center;'><?php echo $row->kd_jabatan ?></td>
-								<td style='text-align:center;'>Jabatan Upah</td>
-								<td style='text-align:center;'><?php echo $row->kodesie ?></td>
-								<td style='text-align:center;'><?php echo $row->kd_bank ?></td>
-								<td style='text-align:center;'><?php echo $row->gaji_pokok ?></td>
-								<td style='text-align:center;'><?php echo $row->gaji_asuransi ?></td>
-								<td style='text-align:center;'><?php echo $row->gaji_bln_ini ?></td>
-								<td style='text-align:center;'><?php echo $row->p_if ?></td>
-								<td style='text-align:center;'><?php echo $row->t_if ?></td>
-								<td style='text-align:center;'><?php echo $row->p_ikr ?></td>
-								<td style='text-align:center;'>N IKR</td>
-								<td style='text-align:center;'><?php echo $row->t_ikr ?></td>
-								<td style='text-align:center;'><?php echo $row->p_ikmhl ?></td>
-								<td style='text-align:center;'>N IKMHL</td>
-								<td style='text-align:center;'><?php echo $row->t_ikmhl ?></td>
-								<td style='text-align:center;'><?php echo $row->p_ip ?></td>
-								<td style='text-align:center;'>N IP</td>
-								<td style='text-align:center;'><?php echo $row->t_ip ?></td>
-								<td style='text-align:center;'><?php echo $row->p_ik ?></td>
-								<td style='text-align:center;'>N IK</td>
-								<td style='text-align:center;'><?php echo $row->t_ik ?></td>
-								<td style='text-align:center;'><?php echo $row->p_ims ?></td>
-								<td style='text-align:center;'>N IMS</td>
-								<td style='text-align:center;'><?php echo $row->t_ims ?></td>
-								<td style='text-align:center;'><?php echo $row->p_imm ?></td>
-								<td style='text-align:center;'>N IMM</td>
-								<td style='text-align:center;'><?php echo $row->t_imm ?></td>
-								<td style='text-align:center;'><?php echo $row->p_lembur ?></td>
-								<td style='text-align:center;'>N Lembur</td>
-								<td style='text-align:center;'><?php echo $row->t_lembur ?></td>
-								<td style='text-align:center;'><?php echo $row->p_ubt ?></td>
-								<td style='text-align:center;'><?php echo $row->n_ubt ?></td>
-								<td style='text-align:center;'><?php echo $row->t_ubt ?></td>
-								<td style='text-align:center;'><?php echo $row->p_upamk ?></td>
-								<td style='text-align:center;'>N UPAMK</td>
-								<td style='text-align:center;'><?php echo $row->t_upamk ?></td>
-								<td style='text-align:center;'><?php echo $row->klaim_bln_lalu ?></td>
-								<td style='text-align:center;'><?php echo $row->klaim_pengangkatan ?></td>
-								<td style='text-align:center;'><?php echo $row->klaim_sisa_cuti ?></td>
-								<td style='text-align:center;'><?php echo $row->tkena_pajak ?></td>
-								<td style='text-align:center;'><?php echo $row->konpensasi_lembur ?></td>
-								<td style='text-align:center;'><?php echo $row->rapel_gaji ?></td>
-								<td style='text-align:center;'>HTM</td>
-								<td style='text-align:center;'>Ijin</td>
-								<td style='text-align:center;'>Pot. HTM</td>
-								<td style='text-align:center;'><?php echo $row->pot_sakit_berkepanjangan ?></td>
-								<td style='text-align:center;'><?php echo $row->subtotal_dibayarkan ?><div style="width:100px;font:red;"></td>
-								<td style='text-align:center;'><?php echo $row->klaim_dl ?></td>
-								<td style='text-align:center;'><?php echo $row->thr ?></td>
-								<td style='text-align:center;'><?php echo $row->ubthr ?></td>
-								<td style='text-align:center;'><?php echo $row->klaim_sdh_byr ?></td>
-								<td style='text-align:center;'><?php echo $row->pajak ?></td>
-								<td style='text-align:center;'><?php echo $row->subtotal1 ?><div style="width:100px;font:red;"></td>
-								<td style='text-align:center;'>Pot. Klaim DL</td>
-								<td style='text-align:center;'>Pot. THR</td>
-								<td style='text-align:center;'>Pot. UBTHR</td>
-								<td style='text-align:center;'>Pot. Klaim Sdh Bayar</td>
-								<td style='text-align:center;'>Pot. Subs Pajak</td>
-								<td style='text-align:center;'><?php echo $row->subtotal2 ?><div style="width:100px;font:red;"></td>
-								<td style='text-align:center;'>Koreksi Pot. Bln Lalu</td>
-								<td style='text-align:center;'><?php echo $row->pot_jht ?></td>
-								<td style='text-align:center;'><?php echo $row->pot_jkn ?></td>
-								<td style='text-align:center;'><?php echo $row->pot_jpn ?></td>
-								<td style='text-align:center;'><?php echo $row->putkop ?></td>
-								<td style='text-align:center;'><?php echo $row->pikop ?></td>
-								<td style='text-align:center;'><?php echo $row->pot_kop ?></td>
-								<td style='text-align:center;'><?php echo $row->putang ?></td>
-								<td style='text-align:center;'><?php echo $row->pduka ?></td>
-								<td style='text-align:center;'><?php echo $row->pspsi ?></td>
-								<td style='text-align:center;'><?php echo $row->pot_pensiun ?></td>
-								<td style='text-align:center;'><?php echo $row->plain ?></td>
-								<td style='text-align:center;'><?php echo $row->btransfer ?></td>
-								<td style='text-align:center;'><?php echo $row->subtotal3 ?><div style="width:100px;font:red;"></td>
-								<td style='text-align:center;'><?php echo $row->kd_jns_transaksi ?><div style="width:100px;"></td>
-							<?php } 
-									}
-							?>
 		                </tbody>                                      
 		              </table>
 		           </div> 
