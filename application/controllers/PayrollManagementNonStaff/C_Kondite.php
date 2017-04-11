@@ -85,7 +85,7 @@ class C_Kondite extends CI_Controller
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
 
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doCreate($term){
@@ -262,16 +262,54 @@ class C_Kondite extends CI_Controller
 
 	public function getPekerja(){
 		$kodesie = $this->input->post('kodesie');
-
-		$data = $this->M_kondite->getPekerja($kodesie);
+		$date = $this->input->post('date');
+		
+		$data = $this->M_kondite->getPekerja($kodesie,$date);
 
 		if (count($data) > 0) {
 			foreach ($data as $data) {
 				echo '
 					<tr>
 						   <td width="30%">
-						   		'.$data['employee_code'].' - '.$data['employee_name'].'
-								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['employee_code'].'" required>
+						   		'.$data['noind'].' - '.$data['nama'].'
+								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['noind'].'" required>
+						   </td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKPHeader[]" placeholder="BKP" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtTKPHeader[]" placeholder="TKP" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKBHeader[]" placeholder="KB" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKKHeader[]" placeholder="KK" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKSHeader[]" placeholder="KS" maxlength="1" required></td>
+					</tr>
+				';
+			}
+		}
+		else{
+			echo '
+				<tr>
+					<td colspan="8" class="text-center"><h4>No Data Found, Please select other Section Code</h4></td>
+				</tr>
+			';
+		}
+
+	}
+
+	public function getTglShift(){
+		$noind = $this->input->post('noind');
+		$noind = substr($noind, 0, 5);
+		$tgl1 = $this->input->post('tgl1');
+		$tgl2 = $this->input->post('tgl2');
+
+		$data = $this->M_kondite->getTglShift($noind,$tgl1,$tgl2);
+
+		if (count($data) > 0) {
+			foreach ($data as $data) {
+				echo '
+					<tr>
+						   <td width="30%" class="text-center">
+						   		'.$data['tanggal'].'
+								  <input type="hidden" class="form-control" name="txtTanggalHeader[]" value="'.$data['tanggal'].'" required>
 						   </td>
 						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" maxlength="1" required></td>
 						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" maxlength="1" required></td>
