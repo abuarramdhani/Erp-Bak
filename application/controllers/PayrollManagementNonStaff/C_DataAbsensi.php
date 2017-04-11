@@ -118,7 +118,7 @@ class C_DataAbsensi extends CI_Controller
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
 
-			$ket_ijin = array("SKD", "M", "CT", "S1", "S2", "S3", "SU");
+			$ket_ijin = array("SKD", "M", "CT", "S1", "S2", "S3", "SU", "T3");
 
 			//$inputFileName = 'assets/upload/1490317033-AHK0117_1234.dbf';
 			$db = dbase_open($inputFileName, 0);
@@ -134,21 +134,25 @@ class C_DataAbsensi extends CI_Controller
 				for ($y=1; $y <= 31; $y++) {
 					$x = str_pad($y, 2, "0", STR_PAD_LEFT);
 					if (in_array(str_replace(' ', '', utf8_encode($db_record['HM'.$x])), $ket_ijin) || str_replace(' ', '', utf8_encode($db_record['HM'.$x]) == '') ){
+						$waktuijin=utf8_encode($db_record['HM'.$x]);
+						$waktuijin=(float)$waktuijin;
 						$jml_ijin[] = 0;
-						echo "ijin 0"."<br>";
+						echo "ijin ".$waktuijin."<br>";
 					}
 					else{
-						$jml_ijin[] = 1;
-						echo "ijin 1"."<br>";
+						$waktuijin=utf8_encode($db_record['HM'.$x]);
+						$waktuijin=(float)$waktuijin;
+						$jml_ijin[] = $waktuijin;
+						echo "ijin ".$waktuijin."<br>";
 					}
 
 					if (str_replace(' ', '', utf8_encode($db_record['HM'.$x])) == 'M') {
 						$jml_mangkir[] = 1;
-						echo "mangkir 1"."<br>";
+						echo "mangkir ".utf8_encode($db_record['HM'.$x])."<br>";
 					}
 					else{
 						$jml_mangkir[] = 0;
-						echo "mangkir 0"."<br><br>";
+						echo "mangkir ".utf8_encode($db_record['HM'.$x])."<br><br>";
 					}
 				}
 
