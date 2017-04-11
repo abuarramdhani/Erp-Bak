@@ -38,7 +38,7 @@ class C_TransaksiPenggajian extends CI_Controller
 	public function Check(){
 		$this->checkSession();
         $user_id = $this->session->userid;
-        
+        $kd_transaksi = "1";
         $data['Menu'] = 'Payroll Management';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -51,9 +51,9 @@ class C_TransaksiPenggajian extends CI_Controller
 		$varYear		= substr($varPeriode,0,4);
 		$varMonth		= substr($varPeriode,5,2);
 	
-		$checkPeriode	= $this->M_transaksipenggajian->checkPeriode($varYear,$varMonth);
+		$checkPeriode	= $this->M_transaksipenggajian->checkPeriode($varYear,$varMonth,$kd_transaksi);
 		if($checkPeriode){
-			$getDataPenggajian	= $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth);
+			$getDataPenggajian	= $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth,$kd_transaksi);
 			
 			$data['getDataPenggajian_data'] = $getDataPenggajian;
 			$this->load->view('V_Header',$data);
@@ -93,6 +93,7 @@ class C_TransaksiPenggajian extends CI_Controller
 		$no = 0;
 		foreach($getDataGajianPersonalia as $row1){
 			$noind = $row1->noind;
+			echo $noind."<br>";
 			$kd_status_kerja = $row1->kd_status_kerja;
 			$kd_hubungan_kerja = $row1->kd_hubungan_kerja;
 			$stat_pajak = $row1->stat_pajak;
@@ -550,7 +551,7 @@ class C_TransaksiPenggajian extends CI_Controller
 							'noind'			=> $noind,
 							'kd_hubungan_kerja'	=> $kd_hubungan_kerja,
 							'kd_status_kerja'		=> $kd_status_kerja,
-							'kd_jabatan'		=> $kd_jabatan,
+							'kd_jabatan'		=> $p_kd_jabatan,
 							'kodesie'		=> $kodesie,
 							'p_if'			=> $p_i_f,
 							'n_kmh'		=> $r_insentif_kemahalan,

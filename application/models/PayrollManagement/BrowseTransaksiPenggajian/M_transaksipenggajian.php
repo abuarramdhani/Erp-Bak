@@ -4,6 +4,9 @@ class M_transaksipenggajian extends CI_Model
 {
 
     public $table = 'pr.pr_transaksi_pembayaran_penggajian';
+    public $table_asuransi = 'pr.pr_transaksi_asuransi';
+    public $table_pajak = 'pr.pr_transaksi_hitung_pajak';
+    public $table_kemahalan = 'pr.pr_transaksi_insentif_kemahalan';
     public $id = 'id_pembayaran_gaji';
     public $order = 'DESC';
 	
@@ -27,18 +30,20 @@ class M_transaksipenggajian extends CI_Model
     }
 	
 	// get data periode
-    function checkPeriode($varYear,$varMonth)
+    function checkPeriode($varYear,$varMonth,$kd_transaksi)
     {
         $this->db->where('extract(year from tanggal)=', $varYear);
         $this->db->where('extract(month from tanggal)=', $varMonth);
+        $this->db->where('kd_jns_transaksi=', $kd_transaksi);
         return $this->db->get($this->table)->row();
     }
 	
 	// get data periode
-    function getDataPenggajian($varYear,$varMonth)
+    function getDataPenggajian($varYear,$varMonth,$kd_transaksi)
     {
         $this->db->where('extract(year from tanggal)=', $varYear);
         $this->db->where('extract(month from tanggal)=', $varMonth);
+		$this->db->where('kd_jns_transaksi=', $kd_transaksi);
         return $this->db->get($this->table)->result();
     }
 	
@@ -87,7 +92,7 @@ class M_transaksipenggajian extends CI_Model
 	function getDataGajianPersonalia($varYear,$varMonth,$date){
 		$query	= "
 		select 
-			b.noind,a.kd_status_kerja,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,
+			b.noind,a.kd_status_kerja,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,a.kd_hubungan_kerja,
 			b.tanggal,b.kd_jabatan,b.kodesie,(b.ip) as p_ip,(b.ik) as p_ik,(b.i_f) as p_if,b.if_htg_bln_lalu,(b.ubt) as p_ubt,(b.upamk) as p_upamk,
 			(b.um) as p_um,(b.ims) as p_ims,(b.imm) as p_imm,b.lembur,b.htm,b.ijin,b.htm_htg_bln_lalu,b.ijin_htg_bln_lalu,b.pot,
 			b.tamb_gaji,b.hl,b.ct,b.putkop,b.plain,b.pikop,b.pspsi,b.putang,b.dl,b.tkpajak,b.ttpajak,
@@ -151,7 +156,9 @@ class M_transaksipenggajian extends CI_Model
 	}
 	
 	function getPekerjaSakit($id){
-		$query	= "";
+		$query	= "select persentase from pr.pr_riwayat_tarif_pekerja_sakit where cast(bulan_awal as integer)<=cast('$id' as integer) and cast(bulan_akhir as integer)>=cast('$id' as integer)";
+		$sql			= $this->db->query($query);
+		return $sql->result();
 	}
 	
 	function getKp($noind,$varYear,$varMonth){
@@ -172,6 +179,21 @@ class M_transaksipenggajian extends CI_Model
     function insert($data)
     {
         $this->db->insert($this->table, $data);
+    }
+	
+	function insert_asuransi($data)
+    {
+        $this->db->insert($this->table_asuransi, $data);
+    }
+	
+	function insert_transaksi_pajak($data)
+    {
+        $this->db->insert($this->table_pajak, $data);
+    }
+	
+	function insert_transaksi_insentif_kemahalan($data)
+    {
+        $this->db->insert($this->table_kemahalan, $data);
     }
 
     // update data
