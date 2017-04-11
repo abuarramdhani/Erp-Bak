@@ -34,8 +34,16 @@
 						<?php
 							$this->load->helper('terbilang_helper');
 							foreach ($Receipt as $rc) {
-								$total = $rc['order_qty']*$rc['order_price'];
-								$grand = $total-$rc['fine']-$rc['pph'];
+
+								$bonus_qty= 0; 
+								if($rc['order_type_id']==2){
+									$bonus_qty = floor($rc['order_qty']/50);
+								}else {
+									$bonus_qty = 0;}
+
+								$total_qty 	= $rc['order_qty']-$bonus_qty;
+								$total 		= $total_qty*$rc['order_price'];
+								$grand 		= $rc['payment'];
 						?>
 						<div class="col-md-12">
 							<a href="<?php echo base_url('CateringManagement/Receipt/Edit/'.$rc['receipt_id'])?>" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>

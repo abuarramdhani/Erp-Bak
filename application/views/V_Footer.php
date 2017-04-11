@@ -10,12 +10,7 @@
 		</footer>
 		<!--END FOOTER -->
      
-		<!-- GLOBAL SCRIPTS -->
-    <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>" type="text/javascript"></script>
-    <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
-    <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
-    <!-- END GLOBAL SCRIPTS -->
+	
 	
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
@@ -28,18 +23,33 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.print.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/dataTables.buttons.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+<<<<<<< HEAD
 	<script src="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
+=======
+	<!--<script src="<?php echo base_url('assets/plugins/jquery-autocomplete/jquery.autocomplete.min.js');?>"></script>-->
+	<!-- Fine Uploader JS file -->
+	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/jquery.fine-uploader.min.js');?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader.min.js');?>"></script>
+>>>>>>> 4308c4aae216c774d68ec98023ac27b3f8af409b
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+<<<<<<< HEAD
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+=======
+	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
+>>>>>>> 4308c4aae216c774d68ec98023ac27b3f8af409b
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
@@ -97,6 +107,7 @@
 	<script src="<?php echo base_url('assets/plugins/colorpicker/js/bootstrap-colorpicker.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/tagsinput/jquery.tagsinput.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validVal/js/jquery.validVal.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dropzone/dropzone.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/daterangepicker-master/moment.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/daterangepicker-master/daterangepicker.js');?>"></script>

@@ -30,7 +30,7 @@
 					<div class="box-body">
 						<div class="row">
 							<div class="col-lg-12">
-						<form method="post" action="<?php echo site_url('CustomerRelationship/Ownership/New/'.$id)?>" class="form-horizontal">
+						<form method="post" action="<?php echo site_url('CustomerRelationship/Ownership/Create/'.$id)?>" class="form-horizontal">
 						<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 						<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
 						

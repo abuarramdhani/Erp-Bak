@@ -174,3 +174,95 @@ $db['quickcom'] = array(
 	'save_queries' => TRUE,
 	'port' => 3306
 );
+
+$efg="";
+		$data = explode('.',$_SERVER['SERVER_NAME']);
+		if (!empty($data[0])) {
+			$efg = $data[0];
+		}
+		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
+		$user = 'amri';
+		$password = 'amri';
+
+		try {
+			$dbh = new PDO($dsn, $user, $password);
+		} catch (PDOException $e) {
+			echo 'Connection failed: ' . $e->getMessage();
+		}
+
+		$sql = "SELECT a.id_lokasi,a.lokasi,a.lokasi_kerja,b.host,b.user,b.pass,b.db FROM fp_distribusi.tb_lokasi AS a
+					LEFT JOIN fp_distribusi.tb_mysql AS b ON a.id_lokasi=b.id_lokasi 
+					WHERE a.status_ = '1'";
+
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array($efg));
+		$d_result= $sth->fetchAll(PDO::FETCH_ASSOC);
+		foreach( $d_result as $row ) {
+			$db['my_'.$row['id_lokasi'].'']['hostname'] = ''.$row['host'].'';
+			$db['my_'.$row['id_lokasi'].'']['username'] = ''.$row['user'].'';
+			$db['my_'.$row['id_lokasi'].'']['password'] = ''.$row['pass'].'';
+			$db['my_'.$row['id_lokasi'].'']['database'] = ''.$row['db'].'';
+			$db['my_'.$row['id_lokasi'].'']['dbdriver'] = 'mysqli';
+			$db['my_'.$row['id_lokasi'].'']['dbprefix'] = '';
+			$db['my_'.$row['id_lokasi'].'']['pconnect'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['db_debug'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['cache_on'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['cachedir'] = '';
+			$db['my_'.$row['id_lokasi'].'']['char_set'] = 'utf8';
+			$db['my_'.$row['id_lokasi'].'']['dbcollat'] = 'utf8_general_ci';
+			$db['my_'.$row['id_lokasi'].'']['swap_pre'] = '';
+			$db['my_'.$row['id_lokasi'].'']['autoinit'] = TRUE;
+			$db['my_'.$row['id_lokasi'].'']['stricton'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['encrypt'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['compress'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['failover'] = array();
+			$db['my_'.$row['id_lokasi'].'']['save_queries'] = TRUE;
+			$db['my_'.$row['id_lokasi'].'']['port'] = 3306;
+			$db['my_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
+		}
+		
+		$efg="";
+		$data = explode('.',$_SERVER['SERVER_NAME']);
+		if (!empty($data[0])) {
+			$efg = $data[0];
+		}
+		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
+		$user = 'amri';
+		$password = 'amri';
+
+		try {
+			$dbh = new PDO($dsn, $user, $password);
+		} catch (PDOException $e) {
+			echo 'Connection failed: ' . $e->getMessage();
+		}
+
+		$sql = "SELECT a.id_lokasi,a.lokasi,a.lokasi_kerja,b.host,b.user,b.pass,b.db FROM fp_distribusi.tb_lokasi AS a
+					LEFT JOIN fp_distribusi.tb_postgres AS b ON a.id_lokasi=b.id_lokasi 
+					WHERE a.status_ = '1'";
+
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array($efg));
+		$d_result= $sth->fetchAll(PDO::FETCH_ASSOC);
+		foreach( $d_result as $row ) {
+			$db['pg_'.$row['id_lokasi'].'']['hostname'] = ''.$row['host'].'';
+			$db['pg_'.$row['id_lokasi'].'']['username'] = ''.$row['user'].'';
+			$db['pg_'.$row['id_lokasi'].'']['password'] = ''.$row['pass'].'';
+			$db['pg_'.$row['id_lokasi'].'']['database'] = ''.$row['db'].'';
+			$db['pg_'.$row['id_lokasi'].'']['dbdriver'] = 'postgre';
+			$db['pg_'.$row['id_lokasi'].'']['dbprefix'] = '';
+			$db['pg_'.$row['id_lokasi'].'']['pconnect'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['db_debug'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['cache_on'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['cachedir'] = '';
+			$db['pg_'.$row['id_lokasi'].'']['char_set'] = 'utf8';
+			$db['pg_'.$row['id_lokasi'].'']['dbcollat'] = 'utf8_general_ci';
+			$db['pg_'.$row['id_lokasi'].'']['swap_pre'] = '';
+			$db['pg_'.$row['id_lokasi'].'']['autoinit'] = TRUE;
+			$db['pg_'.$row['id_lokasi'].'']['stricton'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['encrypt'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['compress'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['failover'] = array();
+			$db['pg_'.$row['id_lokasi'].'']['save_queries'] = TRUE;
+			$db['pg_'.$row['id_lokasi'].'']['port'] = 5432;
+			$db['pg_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
+		}
