@@ -246,7 +246,7 @@ class C_RincianHutang extends CI_Controller
     public function generatePDF() {
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
-        $pdf = new mPDF('utf-8', array(210,330), 0, '', 0, 0, 0, 0, 0, 0, 'L');
+        $pdf = new mPDF('utf-8', 'A4', 9, '', 20, 20, 10, 10, 0, 0, 'P');
         $filename = 'Rincian Hutang Karyawan';
         $this->checkSession();
 
@@ -259,15 +259,6 @@ class C_RincianHutang extends CI_Controller
 
         $stylesheet = file_get_contents(base_url('assets/css/custom.css'));
         $html = $this->load->view('PayrollManagement/Report/RincianHutang/V_report', $data, true);
-
-        $pdf->AddPage('P', // L - landscape, P - portrait 
-            '', '', '', '',
-            20, // margin_left
-            20, // margin right
-            10, // margin top
-            10, // margin bottom
-            0, // margin header
-            0); // margin footer
 
         $pdf->WriteHTML($stylesheet, 1);
         $pdf->WriteHTML($html, 2);
