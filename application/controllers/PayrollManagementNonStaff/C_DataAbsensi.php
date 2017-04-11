@@ -156,6 +156,8 @@ class C_DataAbsensi extends CI_Controller
 					}
 				}
 
+				print_r($jml_ijin);
+
 				$sum_ijin = array_sum($jml_ijin);
 				$sum_mangkir = array_sum($jml_mangkir);
 
