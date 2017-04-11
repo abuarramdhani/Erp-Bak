@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 //INCREMENT FORM
 	$('.increment-form').TouchSpin({
       verticalbuttons: true,
@@ -7,6 +7,7 @@
     });
 
 $('#dataTables-masterStatusKerja').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -14,6 +15,7 @@ $('#dataTables-masterStatusKerja').DataTable( {
     });
 	
 	$('#dataTables-riwayatPotDanaPensiun').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -21,6 +23,7 @@ $('#dataTables-masterStatusKerja').DataTable( {
     });
 	
 	$('#dataTables-riwayatUpamk').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -28,6 +31,7 @@ $('#dataTables-masterStatusKerja').DataTable( {
     });
 	
 	$('#dataTables-riwayatInsentifKemahalan').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -35,6 +39,7 @@ $('#dataTables-masterStatusKerja').DataTable( {
     });
 	
 $('#dataTables-MasterJabatanUpah').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -42,12 +47,15 @@ $('#dataTables-MasterJabatanUpah').DataTable( {
     });
 	
 $('#dataTables-masterJabatan').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
-$('#dataTables-masterSeksi').DataTable( {
+
+	$('#dataTables-masterSeksi').DataTable( {
+	  "destroy": true,
 	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
@@ -55,36 +63,42 @@ $('#dataTables-masterSeksi').DataTable( {
       ]
     });
 $('#dataTables-kantorAsal').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 	$('#dataTables-riwayatGaji').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 $('#dataTables-lokasiKerja').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 $('#dataTables-masterBankInduk').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 $('#dataTables-masterBank').DataTable({
+	  "destroy": true,
 	  dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
 	});
 $('#dataTables-masterSekolahAsal').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -92,12 +106,14 @@ $('#dataTables-masterSekolahAsal').DataTable( {
     });
 	
 $('#dataTables-setgajiump').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 $('#dataTables-settarifpekerjasakit').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -105,12 +121,14 @@ $('#dataTables-settarifpekerjasakit').DataTable( {
     });
 	
 $('#dataTables-standartJamTkpw').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 $('#dataTables-standartJamUmum').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -118,12 +136,14 @@ $('#dataTables-standartJamUmum').DataTable( {
     });
 
 $('#dataTables-masterParamBpjs').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
 $('#dataTables-masterParamPtkp').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -131,6 +151,7 @@ $('#dataTables-masterParamPtkp').DataTable( {
     });
 	
 $('#dataTables-masterParameterTarifPph').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -139,6 +160,7 @@ $('#dataTables-masterParameterTarifPph').DataTable( {
 	
 
 $('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
+	  "destroy": true,
 	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
@@ -147,6 +169,7 @@ $('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
     });
 	
 $('#dataTables-masterParamKompJab').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -154,6 +177,7 @@ $('#dataTables-masterParamKompJab').DataTable( {
     });
 	
 $('#dataTables-riwayatRekeningPekerja').DataTable( {
+	  "destroy": true,
   dom: 'Bfrtip',
   buttons: [
 	'excel'
@@ -161,6 +185,7 @@ $('#dataTables-riwayatRekeningPekerja').DataTable( {
 });
 
 $('#dataTables-masterParamPengurangPajak').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -168,6 +193,7 @@ $('#dataTables-masterParamPengurangPajak').DataTable( {
     });
 	
 $('#dataTables-transaksiPenggajian').DataTable( {
+	  "destroy": true,
   dom: 'Bfrtip',
   "autoWidth": true,
   buttons: [
@@ -177,6 +203,7 @@ $('#dataTables-transaksiPenggajian').DataTable( {
 	
 	
 $('#dataTables-masterPekerja').DataTable( {
+	  "destroy": true,
 	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
@@ -185,6 +212,7 @@ $('#dataTables-masterPekerja').DataTable( {
     });
 
 $('#dataTables-riwayatSetAsuransi').DataTable( {
+	  "destroy": true,
 	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
@@ -193,6 +221,7 @@ $('#dataTables-riwayatSetAsuransi').DataTable( {
     });	
 
 $('#dataTables-masterParamKompUmum').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -200,6 +229,7 @@ $('#dataTables-masterParamKompUmum').DataTable( {
     });
 
 $('#dataTables-riwayatParamKoperasi').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -207,6 +237,7 @@ $('#dataTables-riwayatParamKoperasi').DataTable( {
     });
 	
 $('#dataTables-transaksiKlaimSisaCuti').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -214,6 +245,7 @@ $('#dataTables-transaksiKlaimSisaCuti').DataTable( {
     });
 
 $('#dataTables-transaksiHitungThr').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       "scrollX": true,
       buttons: [
@@ -222,6 +254,7 @@ $('#dataTables-transaksiHitungThr').DataTable( {
     });
 
 $('#dataTables-transaksiHitungThrImport').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -229,6 +262,7 @@ $('#dataTables-transaksiHitungThrImport').DataTable( {
     });
 
 $('#dataTables-kompTamb').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -236,6 +270,7 @@ $('#dataTables-kompTamb').DataTable( {
     });
 	
 $('#dataTables-transaksiHutang').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -243,6 +278,7 @@ $('#dataTables-transaksiHutang').DataTable( {
     });
 
 $('#dataTables-daftarPekerjaSakit').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -250,7 +286,8 @@ $('#dataTables-daftarPekerjaSakit').DataTable( {
     });
 
 $('#dataTables-dataGajianPersonalia').DataTable( {
-	  "scrollX": true,
+	  "destroy": true,
+	  "scrollX" : true,
       dom: 'Bfrtip',
       buttons: [
         'excel','pdf'
@@ -258,6 +295,7 @@ $('#dataTables-dataGajianPersonalia').DataTable( {
     });
 
 $('#dataTables-transaksiKlaimDl').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -265,6 +303,7 @@ $('#dataTables-transaksiKlaimDl').DataTable( {
     });
 
 $('#dataTables-hutangKaryawan').DataTable( {
+	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
@@ -272,6 +311,7 @@ $('#dataTables-hutangKaryawan').DataTable( {
     });
 
 $('#dataTables-reportMasterGaji').DataTable( {
+	  "destroy": true,
 	  "scrollX": true,
       dom: 'Bfrtip',
       buttons: [
@@ -399,7 +439,6 @@ function getKlaimCuti(){
 		  });
 	}
 }
-=======
 $(document).ready(function() {
   // alert('working');
   $('#tblKondite').DataTable( {
@@ -1119,4 +1158,3 @@ $(document).ready(function() {
   });
 
 });
->>>>>>> 4308c4aae216c774d68ec98023ac27b3f8af409b

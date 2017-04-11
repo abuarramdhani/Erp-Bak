@@ -50,7 +50,7 @@ class C_KlaimGajiIndividual extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $KlaimGajiIndividual = $this->M_KlaimGajiIndividual->get_all($year,$month);
+        $KlaimGajiIndividual = $this->M_klaimgajiindividual->get_all($year,$month);
 
         $data['KlaimGajiIndividual_data'] = $KlaimGajiIndividual;
         $this->load->view('V_Header',$data);
@@ -64,7 +64,7 @@ class C_KlaimGajiIndividual extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $row = $this->M_KlaimGajiIndividual->get_by_id($id);
+        $row = $this->M_klaimgajiindividual->get_by_id($id);
         if ($row) {
             $data = array(
             	'Menu' => 'Payroll Management',
@@ -74,7 +74,7 @@ class C_KlaimGajiIndividual extends CI_Controller
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             
-				'id_gajian_personalia' => $row->id_gajian_personalia,
+				'id_gajian_pkj_klr' => $row->id_gajian_pkj_klr,
 				'tanggal' => $row->tanggal,
 				'noind' => $row->noind,
 				'kd_hubungan_kerja' => $row->kd_hubungan_kerja,
@@ -151,7 +151,7 @@ class C_KlaimGajiIndividual extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/KlaimGajiIndividual/save'),
-				'id_gajian_personalia' => set_value(''),
+				'id_gajian_pkj_klr' => set_value(''),
 			'tanggal' => set_value('tanggal'),
 			'noind' => set_value('noind'),
 			'kd_hubungan_kerja' => set_value('kd_hubungan_kerja'),
@@ -269,7 +269,7 @@ class C_KlaimGajiIndividual extends CI_Controller
 				'kd_log_trans' => $this->input->post('txtKdLogTrans',TRUE),
 			);
 
-            $this->M_KlaimGajiIndividual->insert($data);
+            $this->M_klaimgajiindividual->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
@@ -281,7 +281,7 @@ class C_KlaimGajiIndividual extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $row = $this->M_KlaimGajiIndividual->get_by_id($id);
+        $row = $this->M_klaimgajiindividual->get_by_id($id);
 
         if ($row) {
             $data = array(
@@ -292,7 +292,7 @@ class C_KlaimGajiIndividual extends CI_Controller
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/KlaimGajiIndividual/saveUpdate'),
-				'id_gajian_personalia' => set_value('txtIdGajianPersonalia', $row->id_gajian_personalia),
+				'id_gajian_pkj_klr' => set_value('txtIdGajianPersonalia', $row->id_gajian_pkj_klr),
 				'tanggal' => set_value('txtTanggal', $row->tanggal),
 				'noind' => set_value('txtNoind', $row->noind),
 				'kd_hubungan_kerja' => set_value('txtKdHubunganKerja', $row->kd_hubungan_kerja),
@@ -371,7 +371,6 @@ class C_KlaimGajiIndividual extends CI_Controller
 				'ip' => $this->input->post('txtIp',TRUE),
 				'ik' => $this->input->post('txtIk',TRUE),
 				'i_f' => $this->input->post('txtIF',TRUE),
-				'if_htg_bln_lalu' => $this->input->post('txtIfHtgBlnLalu',TRUE),
 				'ubt' => $this->input->post('txtUbt',TRUE),
 				'upamk' => $this->input->post('txtUpamk',TRUE),
 				'um' => $this->input->post('txtUm',TRUE),
@@ -411,9 +410,10 @@ class C_KlaimGajiIndividual extends CI_Controller
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_jam_record' => date('Y-m-d H:i:s'),
 				'kd_log_trans' => $this->input->post('txtKdLogTrans',TRUE),
+				
 			);
 
-            $this->M_KlaimGajiIndividual->update($this->input->post('txtIdGajianPersonalia', TRUE), $data);
+            $this->M_klaimgajiindividual->update($this->input->post('txtIdGajianPersonalia', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
@@ -421,10 +421,10 @@ class C_KlaimGajiIndividual extends CI_Controller
 
     public function delete($id)
     {
-        $row = $this->M_KlaimGajiIndividual->get_by_id($id);
+        $row = $this->M_klaimgajiindividual->get_by_id($id);
 
         if ($row) {
-            $this->M_KlaimGajiIndividual->delete($id);
+            $this->M_klaimgajiindividual->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         } else {
@@ -450,7 +450,7 @@ class C_KlaimGajiIndividual extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-						$check = $this->M_KlaimGajiIndividual->check($row['ID']);
+						$check = $this->M_klaimgajiindividual->check($row['ID']);
 	                    if($check){
 							 $data_update = array(
 									'tanggal' 				=> $row['PERIODE'],
@@ -461,7 +461,6 @@ class C_KlaimGajiIndividual extends CI_Controller
 									'ip' 					=> $row['IP'],
 									'ik' 					=> $row['IK'],
 									'i_f' 					=> $row['IF'],
-									'if_htg_bln_lalu' 	=> $row['IF_BL_LALU'],
 									'ubt' 					=> $row['UBT'],
 									'upamk' 			=> $row['UPAMK'],
 									'um' 					=> $row['UM'],
@@ -496,14 +495,14 @@ class C_KlaimGajiIndividual extends CI_Controller
 									'ubs_rp' 				=> $row['UBS_RP'],
 									'p_um_puasa' 			=> $row['P_UM_PUASA'],
 									'kd_jns_transaksi' 		=> $row['KD_JNS_TRA'],
-									'noind_baru' 		=> $row['NOIND_BARU'],
 									'kode_petugas' 			=> $this->session->userdata('userid'),
 									'tgl_jam_record' 		=> date('Y-m-d H:i:s'),
+									'noind_baru' 		=> $row['NOIND_BARU'],
 								);
-								$this->M_KlaimGajiIndividual->update($row['ID'],$data_update);
+								$this->M_klaimgajiindividual->update($row['ID'],$data_update);
 						}else{
 							 $data = array(
-									'id_gajian_personalia' 	=> $row['ID'],
+									'id_gajian_pkj_klr' 	=> $row['ID'],
 									'tanggal' 				=> $row['PERIODE'],
 									'noind' 					=> $row['NOIND'],
 									'kd_status_kerja' 	=> $row['STATUS_KER'],
@@ -512,7 +511,6 @@ class C_KlaimGajiIndividual extends CI_Controller
 									'ip' 					=> $row['IP'],
 									'ik' 					=> $row['IK'],
 									'i_f' 					=> $row['IF'],
-									'if_htg_bln_lalu' 	=> $row['IF_BL_LALU'],
 									'ubt' 					=> $row['UBT'],
 									'upamk' 			=> $row['UPAMK'],
 									'um' 					=> $row['UM'],
@@ -547,11 +545,11 @@ class C_KlaimGajiIndividual extends CI_Controller
 									'ubs_rp' 				=> $row['UBS_RP'],
 									'p_um_puasa' 			=> $row['P_UM_PUASA'],
 									'kd_jns_transaksi' 		=> $row['KD_JNS_TRA'],
-									'noind_baru' 		=> $row['NOIND_BARU'],
 									'kode_petugas' 			=> $this->session->userdata('userid'),
 									'tgl_jam_record' 		=> date('Y-m-d H:i:s'),
+									'noind_baru' 		=> $row['NOIND_BARU'],
 								);
-								$this->M_KlaimGajiIndividual->insert($data);
+								$this->M_klaimgajiindividual->insert($data);
 						}
                 }
                 unlink($file_path);
