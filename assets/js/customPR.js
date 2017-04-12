@@ -364,6 +364,12 @@ $(document).ready(function() {
     viewMode: "months", 
     minViewMode: "months"
   });
+  $('#txtPeriodeTahun').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+  });
   $('#txtTglBerlakuPtkp').datepicker({ 
 	autoclose: true,
 	format: "yyyy-mm-dd",
