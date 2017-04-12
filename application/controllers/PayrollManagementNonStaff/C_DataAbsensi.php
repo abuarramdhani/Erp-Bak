@@ -133,7 +133,8 @@ class C_DataAbsensi extends CI_Controller
 
 				for ($y=1; $y <= 31; $y++) {
 					$x = str_pad($y, 2, "0", STR_PAD_LEFT);
-					if (in_array(str_replace(' ', '', utf8_encode($db_record['HM'.$x])), $ket_ijin) || str_replace(' ', '', utf8_encode($db_record['HM'.$x]) == '') ){
+					echo "<br>".utf8_encode($db_record['HM'.$x])."<br>";
+					if (in_array(str_replace(' ', '', utf8_encode($db_record['HM'.$x])), $ket_ijin) || str_replace(' ', '', utf8_encode($db_record['HM'.$x])) == '') {
 						$jml_ijin[] = 0;
 						echo "ijin 0"."<br>";
 					}
