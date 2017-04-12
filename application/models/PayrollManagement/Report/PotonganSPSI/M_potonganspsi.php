@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-    class M_potongankoperasi extends CI_Model
+    class M_potonganspsi extends CI_Model
     {
 
         function __construct()
@@ -9,7 +9,7 @@
             $this->load->database();
         }
 
-        // Retrieve all employees koperasi fees
+        // Retrieve all employees SPSI fees
         function get_all($year, $month)
         {
             $sql = "
@@ -22,7 +22,7 @@
                 SELECT pr.pr_master_pekerja.noind AS no_induk,
                     pr.pr_master_pekerja.nama AS nama,
                     COALESCE(pr.pr_master_seksi.seksi, '-') AS seksi,
-                    COALESCE(CAST(tabel_penggajian.pikop AS float), 0) AS jumlah
+                    COALESCE(CAST(tabel_penggajian.pspsi AS float), 0) AS jumlah
                 FROM pr.pr_master_pekerja
                 LEFT JOIN pr.pr_master_seksi
                     ON pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie
@@ -35,7 +35,7 @@
             return $query->result_array();
         }
 
-        // Retrieve the sum of all employees koperasi fees
+        // Retrieve the sum of all employees SPSI fees
         function get_sum($year, $month)
         {
             $sql = "
@@ -45,7 +45,7 @@
                     WHERE EXTRACT(YEAR FROM pr.pr_transaksi_pembayaran_penggajian.tanggal) = $year 
                         AND EXTRACT (MONTH FROM pr.pr_transaksi_pembayaran_penggajian.tanggal) = $month
                 )
-                SELECT SUM(COALESCE(CAST(tabel_penggajian.pikop AS float), 0)) AS total
+                SELECT SUM(COALESCE(CAST(tabel_penggajian.pspsi AS float), 0)) AS total
                 FROM pr.pr_master_pekerja
                 LEFT JOIN pr.pr_master_seksi
                     ON pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie
