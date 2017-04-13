@@ -503,6 +503,36 @@ table.t_rekap_pembayaran td#total
     font-size: 14px; 
     font-weight: bold;
 }
+
+table.t_summary_dept
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_summary_dept th
+{
+    border: 1px solid black;
+    text-align: center;
+    width: 140px;
+    height: 30px;
+}
+
+table.t_summary_dept td
+{
+    border-left: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 22px;
+}
+
+table.t_summary_dept td#total
+{
+    height: 30px;
+    border: 1px solid black;
+}
 =======
 =======
 .hidden {
