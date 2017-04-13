@@ -549,6 +549,10 @@ $(document).ready(function() {
     var bulan = $('select[name="cmbBulan"]').val();
     var tahun = $('input[name="txtTahun"]').val();
 
+    $("#dbfsection").val(seksi);
+    $("#dbfmonth").val(bulan);
+    $("#dbfyear").val(tahun);
+
     $('#errorProsesGaji').html('');
     $('#btnProsesGaji').prop('disabled', true);
     $('#btnPrintStrukAll').prop('disabled', true);

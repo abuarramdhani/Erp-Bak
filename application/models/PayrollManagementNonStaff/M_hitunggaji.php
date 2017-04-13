@@ -436,6 +436,18 @@ class M_hitunggaji extends CI_Model
         }
     }
 
+    public function getHitungGajiDBF($section,$month,$year)
+    {
+       $sql = "
+            SELECT * FROM pr.pr_hasil_perhitungan_gaji php
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
+            LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
+            where kodesie='$section' and bln_gaji='$month' and thn_gaji='$year'
+        ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
 }
 
 /* End of file M_kondite.php */

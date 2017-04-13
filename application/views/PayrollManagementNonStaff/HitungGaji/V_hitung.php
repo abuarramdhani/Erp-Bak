@@ -73,6 +73,14 @@
                                                 <button id="btnPrintStrukAll" type="submit" class="btn btn-primary btn-block" disabled><i class="fa fa-print"></i> Struk Semua</button>
                                             </form>
                                         </div>
+                                        <div class="col-lg-2">
+                                            <form method="post" target="_blank" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/exportperhitungan'); ?>">
+                                                <input type="hidden" name="section" id="dbfsection" value="304020">
+                                                <input type="hidden" name="month" id="dbfmonth" value="1">
+                                                <input type="hidden" name="year" id="dbfyear" value="2017">
+                                                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-file-text-o"></i>  Eksport DBF</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
