@@ -309,12 +309,12 @@
                                                         <tr>
                                                             <td width="30%"><b>Insentif Prestasi</b></td>
                                                             <td width="2%">:</td>
-                                                            <td width="68%"><?php echo $ip * $dataDetailPekerja['insentif_prestasi']; ?></td>
+                                                            <td width="68%"><?php echo 'Rp '.number_format($ip * $dataDetailPekerja['insentif_prestasi'], 0, '', '.').',-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>Insentif Kelebihan</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo number_format($kelebihan / 10 * ($insentif_prestasi_mask - $dataDetailPekerja['insentif_prestasi']), 0, '.', ''); ?></td>
+                                                            <td><?php echo 'Rp '.number_format($kelebihan / 10 * ($insentif_prestasi_mask - $dataDetailPekerja['insentif_prestasi']), 0, '', '.').',-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 <?php
@@ -372,6 +372,141 @@
                                                                 <th class="text-center">Hasil</th>
                                                             </tr>
                                                         </thead>
+                                                        <tbody>
+                                                        <?php
+                                                            $hasil_akhir = '0';
+                                                            $golA = 0;
+                                                            $golB = 0;
+                                                            $golC = 0;
+                                                            $golD = 0;
+                                                            $golE = 0;
+                                                            $no = 1;
+                                                            foreach ($getDetailKondite as $dataInsentifKondite) {
+                                                                $PK_p = 0;
+                                                                $PK = 'P1';
+                                                                foreach ($pk_kondite as $pk_kon) {
+                                                                    if (date('j', strtotime($dataInsentifKondite['tanggal'])) == $pk_kon['tanggal']) {
+                                                                        $PK_p = $pk_kon['PK_p'];
+                                                                        if ($PK_p == 50) {
+                                                                            $PK = 'P4';
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                $MK = $dataInsentifKondite['MK'];
+                                                                $BKI = $dataInsentifKondite['BKI'];
+                                                                $BKP = $dataInsentifKondite['BKP'];
+                                                                $TKP = $dataInsentifKondite['TKP'];
+                                                                $KB = $dataInsentifKondite['KB'];
+                                                                $KK = $dataInsentifKondite['KK'];
+                                                                $KS = $dataInsentifKondite['KS'];
+
+                                                                if ($MK == 'A') {$MK_p = 8; }elseif ($MK == 'B') {$MK_p = 4; }else{$MK_p = 0; }
+
+                                                                if ($BKI == 'A') {$BKI_p = 10; }elseif ($BKI == 'B') {$BKI_p = 5; }elseif ($BKI == 'C') {$BKI_p = 2; }else{$BKI_p = 0; }
+
+                                                                if ($BKP == 'A') {$BKP_p = 8; }elseif ($BKP == 'B') {$BKP_p = 4; }else{$BKP_p = 0; }
+
+                                                                if ($TKP == 'A') {$TKP_p = 8; }elseif ($TKP == 'B') {$TKP_p = 4; }else{$TKP_p = 0; }
+
+                                                                if ($KB == 'A') {$KB_p = 7; }elseif ($TKP == 'B') {$KB_p = 3; }else{$KB_p = 0; }
+
+                                                                if ($KK == 'A') {$KK_p = 5; }elseif ($KK == 'B') {$KK_p = 3; }elseif ($KK == 'C') {$KK_p = 1;}else{$KK_p = 0; }
+
+                                                                if ($KS == 'A') {$KS_p = 4; }elseif ($TKP == 'B') {$KS_p = 2; }else{$KS_p = 0; }
+
+                                                                $nilai = $MK_p + $BKI_p + $BKP_p + $TKP_p + $KB_p + $KK_p + $KS_p + $PK_p;
+
+                                                                if ($nilai >= 91 && $nilai <= 100) {
+                                                                    $gol = 'A';
+                                                                }
+                                                                elseif ($nilai >= 71 && $nilai <= 90) {
+                                                                    $gol = 'B';
+                                                                }
+                                                                elseif ($nilai >= 30 && $nilai <= 70) {
+                                                                    $gol = 'C';
+                                                                }
+                                                                elseif ($nilai >= 10 && $nilai <= 29) {
+                                                                    $gol = 'D';
+                                                                }
+                                                                else{
+                                                                    $gol = 'E';
+                                                                }
+
+                                                                if ($gol == 'A') {
+                                                                    $golA++;
+                                                                    $setelan_name = 'insentif_kondite_1';
+                                                                    // $hasil_temp = 1150;
+                                                                }
+                                                                elseif ($gol == 'B') {
+                                                                    $golB++;
+                                                                    $setelan_name = 'insentif_kondite_2';
+                                                                    // $hasil_temp = 739;
+                                                                }
+                                                                elseif ($gol == 'C') {
+                                                                    $golC++;
+                                                                    $setelan_name = 'insentif_kondite_3';
+                                                                    // $hasil_temp = 493;
+                                                                }
+                                                                elseif ($gol == 'D') {
+                                                                    $golD++;
+                                                                    $setelan_name = 'insentif_kondite_4';
+                                                                    // $hasil_temp = 325;
+                                                                }
+                                                                else{
+                                                                    $golE++;
+                                                                    $setelan_name = 'insentif_kondite_5';
+                                                                    // $hasil_temp = 0;
+                                                                }
+
+                                                                $hasil_temp = $this->M_hitunggaji->getSetelan($setelan_name);
+
+                                                                $hasil_akhir = $hasil_akhir + $hasil_temp;
+                                                        ?>
+                                                            <tr>
+                                                                <td><?php echo $no++; ?></td>
+                                                                <td><?php echo $dataInsentifKondite['tanggal']; ?></td>
+                                                                <td><?php echo $MK; ?></td>
+                                                                <td><?php echo $MK_p; ?></td>
+                                                                <td><?php echo $BKI; ?></td>
+                                                                <td><?php echo $BKI_p; ?></td>
+                                                                <td><?php echo $BKP; ?></td>
+                                                                <td><?php echo $BKP_p; ?></td>
+                                                                <td><?php echo $TKP; ?></td>
+                                                                <td><?php echo $TKP_p; ?></td>
+                                                                <td><?php echo $KB; ?></td>
+                                                                <td><?php echo $KB_p; ?></td>
+                                                                <td><?php echo $KK; ?></td>
+                                                                <td><?php echo $KK_p; ?></td>
+                                                                <td><?php echo $KS; ?></td>
+                                                                <td><?php echo $KS_p; ?></td>
+                                                                <td><?php echo $PK; ?></td>
+                                                                <td><?php echo $PK_p; ?></td>
+                                                                <td><?php echo $nilai; ?></td>
+                                                                <td><?php echo $gol; ?></td>
+                                                                <td><?php echo $hasil_temp; ?></td>
+                                                            </tr>
+                                                        <?php
+
+                                                            }
+                                                            $resultKondite[] = array(
+                                                                'golA' => $golA,
+                                                                'golB' => $golB,
+                                                                'golC' => $golC,
+                                                                'golD' => $golD,
+                                                                'golE' => $golE,
+                                                                'konditeAkhir' => $hasil_akhir
+                                                            );
+                                                        ?>
+                                                        </tbody>
+                                                    </table>
+                                                    <hr>
+                                                    <table class="table" style="width: 50%">
+                                                        <tr>
+                                                            <td width="30%"><b>Insentif Kondite</b></td>
+                                                            <td width="2%">:</td>
+                                                            <td width="68%"><?php echo 'Rp '.number_format($hasil_akhir, 0, '', '.').',-'; ?></td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>
@@ -380,18 +515,24 @@
 
                                     <div class="row2">
                                         <div class="col-md-12">
+                                        <?php
+                                            foreach ($getDetailPekerja as $dataDetailPekerja) {
+                                        ?>
                                             <table class="table">
                                                 <tr>
                                                     <td width="15%"><b>Ins. Masuk Sore</b></td>
                                                     <td width="1%">:</td>
-                                                    <td width="84%"></td>
+                                                    <td width="84%"><?php echo 'Rp '.number_format($dataDetailPekerja['IMSNilai'] * $dataDetailPekerja['insentif_masuk_sore'], 0, '', '.').',-'; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <td><b>Ins. Masuk Sore</b></td>
                                                     <td>:</td>
-                                                    <td></td>
+                                                    <td><?php echo 'Rp '.number_format($dataDetailPekerja['IMMNilai'] * $dataDetailPekerja['insentif_masuk_malam'], 0, '', '.').',-'; ?></td>
                                                 </tr>   
                                             </table>
+                                        <?php
+                                            }
+                                        ?>
                                         </div>
                                     </div>
 
@@ -412,7 +553,7 @@
                                                         <tr>
                                                             <td width="15%"><b>Kurang Bayar</b></td>
                                                             <td width="1%">:</td>
-                                                            <td width="34%"><?php echo $dataDetailPekerja['kurang_bayar'];?></td>
+                                                            <td width="34%"><?php echo 'Rp '.number_format($dataDetailPekerja['kurang_bayar'], 0, '', '.').',-';?></td>
                                                             <td width="15%"></td>
                                                             <td width="1%"></td>
                                                             <td width="34%"></td>
@@ -420,7 +561,7 @@
                                                         <tr>
                                                             <td><b>Lain-Lain</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo $dataDetailPekerja['tambahan_lain'];?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['tambahan_lain'], 0, '', '.').',-';?></td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>

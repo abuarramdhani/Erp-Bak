@@ -1,9 +1,19 @@
 $(document).ready(function() {
   // alert('working');
+  $('.datatables').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel'
+        ],
+        "scrollX": true,
+        responsive: true,
+      });
+
+
   $('#tblKondite').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -22,7 +32,7 @@ $(document).ready(function() {
   $('#tblDataAbsensi').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -41,7 +51,7 @@ $(document).ready(function() {
   $('#tblDataLKHSeksi').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -60,7 +70,7 @@ $(document).ready(function() {
   $('#tblTambahan').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -79,7 +89,7 @@ $(document).ready(function() {
   $('#tblPotongan').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -98,7 +108,7 @@ $(document).ready(function() {
   $('#tblTargetBenda').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -114,10 +124,29 @@ $(document).ready(function() {
         }
       });
 
+  $('#tblMasterPekerja').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+          'excel'
+        ],
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/MasterData/MasterPekerja/showList",
+          type: "post",
+          error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
+          }
+        }
+      });
+
   $('#tblMasterGaji').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         "processing": true,
         "serverSide": true,
@@ -136,7 +165,7 @@ $(document).ready(function() {
   $('#tblHasilGaji').DataTable( {
         dom: 'Bfrtip',
         buttons: [
-          'excel','pdf'
+          'excel'
         ],
         fixedColumns:{
             leftColumns: 5

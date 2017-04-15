@@ -37,8 +37,8 @@ class C_Setelan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Setelan';
-		$data['Menu'] = 'Payroll Management';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Setting';
+		$data['SubMenuOne'] = 'Parameter';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -59,8 +59,8 @@ class C_Setelan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Setelan';
-		$data['Menu'] = 'Payroll Management';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Setting';
+		$data['SubMenuOne'] = 'Parameter';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -105,8 +105,8 @@ class C_Setelan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Setelan';
-		$data['Menu'] = 'Payroll Management';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Setting';
+		$data['SubMenuOne'] = 'Parameter';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
