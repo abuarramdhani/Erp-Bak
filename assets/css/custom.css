@@ -533,6 +533,36 @@ table.t_summary_dept td#total
     height: 30px;
     border: 1px solid black;
 }
+
+table.t_rekap_gaji_bank
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_rekap_gaji_bank th
+{
+    font-size: 11px;
+    border: 1px solid black;
+    text-align: center;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+table.t_rekap_gaji_bank td
+{
+    font-size: 11px;
+    border: 1px solid black;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+td.garis_bawah
+{
+    border-bottom: 1px solid black;
+}
 =======
 =======
 .hidden {

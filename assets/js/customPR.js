@@ -401,6 +401,7 @@ $(document).ready(function() {
  });
   $('#cmbKdBank').select2();
   $('.select2-txtDept').select2();
+  $('.select2-txtBank').select2();
   $('#txtKodeStatusKerja').select2();
   $('#cmbKdHubunganKerja').select2();
   $('#cmbKdStatusKerja').select2();
