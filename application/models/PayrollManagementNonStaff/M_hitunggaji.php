@@ -254,6 +254,23 @@ class M_hitunggaji extends CI_Model
         return $query->result_array();
     }
 
+    public function cekTglDiangkat($noind,$date)
+    {
+        $sql = "SELECT
+
+                employee_code, worker_recruited_date
+
+            FROM
+                er.er_employee_all eea
+
+            WHERE
+                    eea.\"employee_code\" = '$noind'
+                AND eea.\"worker_recruited_date\" <= '$date'
+        ";
+        $query = $this->db->query($sql);
+        return $query->num_rows();
+    }
+
     public function getInsentifKondite($noind, $kodesie = '', $firstdate, $lastdate)
     {
 
