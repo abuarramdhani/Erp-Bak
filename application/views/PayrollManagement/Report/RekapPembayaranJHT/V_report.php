@@ -65,9 +65,9 @@
 						<td align='center'><?php echo $num ?></td>
 						<td align='center'><?php echo $row['bulan'] ?></td>
 						<td align='center' id='uang'><?php echo 'Rp '.number_format($row['gaji_pokok'],0,",",".") ?></td>
-						<td align='center'><?php echo $row['tarif_karyawan'].'%' ?></td>
+						<td align='center'><?php echo $row['tarif_karyawan'] ?></td>
 						<td align='center' id='uang'><?php echo 'Rp '.number_format($row['jht_karyawan'],0,",",".") ?></td>	
-						<td align='center'><?php echo $row['tarif_perusahaan'].'%' ?></td>
+						<td align='center'><?php echo $row['tarif_perusahaan'] ?></td>
 						<td align='center' id='uang'><?php echo 'Rp '.number_format($row['jht_perusahaan'],0,",",".") ?></td>
 						<td align='center' id='uang'><?php echo 'Rp '.number_format($row['total_jht'],0,",",".") ?></td>
 					</tr>

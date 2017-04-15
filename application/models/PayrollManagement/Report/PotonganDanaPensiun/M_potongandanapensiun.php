@@ -28,7 +28,7 @@
                     pr.pr_master_pekerja.nama AS nama,
                     COALESCE(pr.pr_master_seksi.seksi, '-') AS seksi,
                     COALESCE(tabel_rekening.no_rekening, '') AS norek,
-                    COALESCE(CAST(tabel_penggajian.pot_pensiun AS float), 0) AS jumlah
+                    COALESCE(CAST(NULLIF(tabel_penggajian.pot_pensiun, '') AS NUMERIC), 0) AS jumlah
                 FROM pr.pr_master_pekerja
                 LEFT JOIN pr.pr_master_seksi
                     ON pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie
@@ -58,7 +58,7 @@
                     WHERE pr.pr_riwayat_rekening_pekerja.tgl_tberlaku > DATE(CONCAT('$year','-','$month','-','01')) 
                         AND pr.pr_riwayat_rekening_pekerja.tgl_berlaku <= DATE(CONCAT('$year','-','$month','-','01'))
                 )
-                SELECT SUM(COALESCE(CAST(tabel_penggajian.pot_pensiun AS float), 0)) AS total
+                SELECT SUM(COALESCE(CAST(NULLIF(tabel_penggajian.pot_pensiun, '') AS NUMERIC), 0)) AS total
                 FROM pr.pr_master_pekerja
                 LEFT JOIN pr.pr_master_seksi
                     ON pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie

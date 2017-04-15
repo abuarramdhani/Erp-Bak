@@ -22,7 +22,7 @@
                 SELECT pr.pr_master_pekerja.noind AS no_induk,
                     pr.pr_master_pekerja.nama AS nama,
                     COALESCE(pr.pr_master_seksi.seksi, '-') AS seksi,
-                    COALESCE(CAST(tabel_penggajian.pspsi AS float), 0) AS jumlah
+                    COALESCE(CAST(NULLIF(tabel_penggajian.pspsi, '') AS NUMERIC), 0) AS jumlah
                 FROM pr.pr_master_pekerja
                 LEFT JOIN pr.pr_master_seksi
                     ON pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie
@@ -45,7 +45,7 @@
                     WHERE EXTRACT(YEAR FROM pr.pr_transaksi_pembayaran_penggajian.tanggal) = $year 
                         AND EXTRACT (MONTH FROM pr.pr_transaksi_pembayaran_penggajian.tanggal) = $month
                 )
-                SELECT SUM(COALESCE(CAST(tabel_penggajian.pspsi AS float), 0)) AS total
+                SELECT SUM(COALESCE(CAST(NULLIF(tabel_penggajian.pspsi, '') AS NUMERIC), 0)) AS total
                 FROM pr.pr_master_pekerja
                 LEFT JOIN pr.pr_master_seksi
                     ON pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie
