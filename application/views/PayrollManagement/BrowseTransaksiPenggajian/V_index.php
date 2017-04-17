@@ -37,7 +37,7 @@
 									<input type="text" name="txtPeriodeHitung" id="txtPeriodeHitung" class="form-control" placeholder="[ Periode Hitung ]"></input>
 							  </div>
 							  <div class=" col-lg-2">
-							    <button class="btn btn-primary btn-block">Check</button>
+							    <button class="btn btn-primary btn-block">Proses Gaji</button>
 							  </div>
 						  </form>
 			          </div>
@@ -85,29 +85,29 @@
 							<th style='text-align:center;'><div style="width:100px"></div>N UPAMK</th>
 							<th style='text-align:center;'><div style="width:100px"></div>T UPAMK</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Klaim Bln Lalu</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Klaim Pengangkatan</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Klaim Angkat</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Klaim Sisa Cuti</th>
 							<th style='text-align:center;'><div style="width:100px"></div>TK Pajak</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Kompensasi Lembur</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Komp. Lembur</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Rapel Gaji</th>
 							<th style='text-align:center;'><div style="width:100px"></div>HTM</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Ijin</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. HTM</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Pot. Sakit Kepanjangan</th>
-							<th style='text-align:center;'><div style="width:100px;font:red;"></div>Subtotal Dibayarkan</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Pot. Sakit</th>
+							<th style='text-align:center;'><div style="width:100px;font:red;"></div>Sub. Dibayarkan</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Klaim DL</th>
 							<th style='text-align:center;'><div style="width:100px"></div>THR</th>
 							<th style='text-align:center;'><div style="width:100px"></div>UBTH</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Klaim Sdh Bayar</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Tamb Subs Pajak</th>
-							<th style='text-align:center;'><div style="width:100px;font:red;">"></div>Subtotal 1</th>
+							<th style='text-align:center;'><div style="width:100px;font:red;"></div>Subtotal 1</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Klaim DL</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. THR</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. UBTHR</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Pot. Klaim Sdh Bayar</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Pot. Klaim Sdh Byr</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Subs Pajak</th>
-		                    <th style='text-align:center;'><div style="width:100px;font:red;">"></div>Subtotal 2</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Koreksi Pot. Bln Lalu</th>
+		                    <th style='text-align:center;'><div style="width:100px;font:red;"></div>Subtotal 2</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Kor. Pot. Bln Lalu</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. JHT</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. JKN</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. JPN</th>

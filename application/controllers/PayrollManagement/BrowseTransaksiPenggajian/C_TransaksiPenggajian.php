@@ -93,7 +93,6 @@ class C_TransaksiPenggajian extends CI_Controller
 		$no = 0;
 		foreach($getDataGajianPersonalia as $row1){
 			$noind = $row1->noind;
-			echo $noind."<br>";
 			$kd_status_kerja = $row1->kd_status_kerja;
 			$kd_hubungan_kerja = $row1->kd_hubungan_kerja;
 			$stat_pajak = $row1->stat_pajak;

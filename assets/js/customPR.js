@@ -194,6 +194,7 @@ $('#dataTables-masterParamPengurangPajak').DataTable( {
 	
 $('#dataTables-transaksiPenggajian').DataTable( {
 	  "destroy": true,
+	  "scrollX": true,
   dom: 'Bfrtip',
   "autoWidth": true,
   buttons: [
@@ -339,6 +340,12 @@ $(document).ready(function() {
     format: "yyyy-mm",
     viewMode: "months", 
     minViewMode: "months"
+  });
+  $('.txtPeriodeTahun').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
   });
   $('#txtTglBerlakuPtkp').datepicker({ 
 	autoclose: true,
