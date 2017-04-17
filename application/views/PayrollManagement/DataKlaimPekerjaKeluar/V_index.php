@@ -31,7 +31,7 @@
 		           <div class="table-responsive"> 
 				   
 				    <div class="row">
-			              <form method="post" action="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/Check')?>" enctype="multipart/form-data">
+			              <form method="post" action="<?php echo base_url('PayrollManagement/DataKlaimPekerjaKeluar/Check')?>" enctype="multipart/form-data">
 						    <div class="row" style="margin: 10px 0 10px 0px">
 							  <div class="col-lg-2">
 									<input type="text" name="txtPeriodeHitung" id="txtPeriodeHitung" class="form-control" placeholder="[ Periode Hitung ]"></input>

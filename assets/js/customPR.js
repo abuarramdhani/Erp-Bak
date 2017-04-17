@@ -194,6 +194,7 @@ $('#dataTables-masterParamPengurangPajak').DataTable( {
 	
 $('#dataTables-transaksiPenggajian').DataTable( {
 	  "destroy": true,
+	  "scrollX": true,
   dom: 'Bfrtip',
   "autoWidth": true,
   buttons: [
@@ -393,7 +394,11 @@ $(document).ready(function() {
     viewMode: "months", 
     minViewMode: "months"
   });
+<<<<<<< HEAD
+  $('.txtPeriodeTahun').datepicker({
+=======
   $('#txtPeriodeTahun').datepicker({
+>>>>>>> 8d3ee2e30e203ff46a28a4819f0b5b112b16447b
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 
