@@ -265,7 +265,7 @@ class M_hitunggaji extends CI_Model
 
             WHERE
                     eea.\"employee_code\" = '$noind'
-                AND eea.\"worker_recruited_date\" <= '$date'
+                AND eea.\"worker_recruited_date\" + interval '3 month' <= '$date'
         ";
         $query = $this->db->query($sql);
         return $query->num_rows();
@@ -286,6 +286,9 @@ class M_hitunggaji extends CI_Model
                     pko.\"noind\" = '$noind'
                 AND (pko.\"kodesie\" = '$kodesie' OR '$kodesie' = '')
                 AND pko.\"tanggal\" BETWEEN '$firstdate' AND '$lastdate'
+
+            ORDER BY
+                pko.\"tanggal\"
         ";
 
         $query = $this->db->query($sql);

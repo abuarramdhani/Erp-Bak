@@ -245,7 +245,43 @@ class C_HitungGaji extends CI_Controller
 			}
 
 			if ($tanggal != 0) {
-				if ($cekTglDiangkat != 0) {
+				if (strtoupper(substr($noind, 0, 1)) == 'E') {
+					if ($cekTglDiangkat != 0) {
+						if ($pencapaian_hari_ini >= 110) {
+							$ip = $ip + 1;
+							$kelebihan = $kelebihan + 10;
+							$pk_kondite[] = array(
+								'tanggal' => date('j', strtotime($tanggal)),
+								'PK_p' => 50,
+							);
+						}
+						elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110) {
+							$ip = $ip + 1;
+							$kelebihan = $kelebihan + $pencapaian_hari_ini - 100;
+							$pk_kondite[] = array(
+								'tanggal' => date('j', strtotime($tanggal)),
+								'PK_p' => 50,
+							);
+						}
+						else{
+							$ip = $ip + 0;
+							$kelebihan = $kelebihan + 0;
+							$pk_kondite[] = array(
+								'tanggal' => date('j', strtotime($tanggal)),
+								'PK_p' => 5,
+							);
+						}
+					}
+					else{
+						$ip = $ip + 0;
+						$kelebihan = $kelebihan + 0;
+						$pk_kondite[] = array(
+							'tanggal' => date('j', strtotime($tanggal)),
+							'PK_p' => 5,
+						);
+					}
+				}
+				else{
 					if ($pencapaian_hari_ini >= 110) {
 						$ip = $ip + 1;
 						$kelebihan = $kelebihan + 10;
@@ -270,14 +306,6 @@ class C_HitungGaji extends CI_Controller
 							'PK_p' => 5,
 						);
 					}
-				}
-				else{
-					$ip = $ip + 0;
-					$kelebihan = $kelebihan + 0;
-					$pk_kondite[] = array(
-						'tanggal' => date('j', strtotime($tanggal)),
-						'PK_p' => 5,
-					);
 				}
 			}
 		}

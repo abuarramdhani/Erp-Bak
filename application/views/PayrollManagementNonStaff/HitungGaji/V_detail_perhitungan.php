@@ -383,12 +383,18 @@
                                                             $no = 1;
                                                             foreach ($getDetailKondite as $dataInsentifKondite) {
                                                                 $PK_p = 0;
-                                                                $PK = 'P1';
+                                                                $PK = '-';
                                                                 foreach ($pk_kondite as $pk_kon) {
                                                                     if (date('j', strtotime($dataInsentifKondite['tanggal'])) == $pk_kon['tanggal']) {
                                                                         $PK_p = $pk_kon['PK_p'];
                                                                         if ($PK_p == 50) {
                                                                             $PK = 'P4';
+                                                                        }
+                                                                        elseif ($PK_p == 5) {
+                                                                            $PK = 'P1';
+                                                                        }
+                                                                        else{
+                                                                            $PK = '-';
                                                                         }
                                                                     }
                                                                 }
