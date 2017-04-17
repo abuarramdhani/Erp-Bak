@@ -77,13 +77,14 @@
 	    {
 		}
 
-		public function generatePDF() {
+		public function generatePDF() 
+		{
 	        $this->checkSession();
 
 	        $this->load->library('pdf');
 	        $pdf = $this->pdf->load();
 	        $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 15, 15, 0, 0, 'P');
-	        $filename = 'Riwayat Kenaikan Gaji';
+	        $filename = 'Riwayat Kenaikan Gaji.pdf';
 	        $this->checkSession();
 
 			$year	 = $this->input->get('year');

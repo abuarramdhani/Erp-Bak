@@ -72,7 +72,7 @@
 	        $pdf = $this->pdf->load();
 	        $pdf = new mPDF('utf-8', 'A4', 9, '', 5, 5, 15, 15, 0, 0, 'P');
 	        $pdf->setFooter('{PAGENO}');
-	        $filename = 'Karyawan dengan Penghasilan di Bawah PTKP';
+	        $filename = 'Karyawan dengan Penghasilan di Bawah PTKP.pdf';
 	        $this->checkSession();
 
 			$year = $this->input->get('year');

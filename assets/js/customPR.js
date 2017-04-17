@@ -319,6 +319,30 @@ $('#dataTables-reportMasterGaji').DataTable( {
         'excel'
       ]
     });
+
+$('#dataTables-reportDanaPensiun').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportPotonganKoperasi').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportPotonganSPSI').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
@@ -341,7 +365,11 @@ $(document).ready(function() {
     viewMode: "months", 
     minViewMode: "months"
   });
+<<<<<<< HEAD
   $('.txtPeriodeTahun').datepicker({
+=======
+  $('#txtPeriodeTahun').datepicker({
+>>>>>>> 8d3ee2e30e203ff46a28a4819f0b5b112b16447b
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 
@@ -377,6 +405,8 @@ $(document).ready(function() {
 	format: "yyyy-mm-dd",
  });
   $('#cmbKdBank').select2();
+  $('.select2-txtDept').select2();
+  $('.select2-txtBank').select2();
   $('#txtKodeStatusKerja').select2();
   $('#cmbKdHubunganKerja').select2();
   $('#cmbKdStatusKerja').select2();

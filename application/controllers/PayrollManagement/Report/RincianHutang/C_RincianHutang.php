@@ -247,7 +247,7 @@ class C_RincianHutang extends CI_Controller
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 20, 20, 10, 10, 0, 0, 'P');
-        $filename = 'Rincian Hutang Karyawan';
+        $filename = 'Rincian Hutang Karyawan.pdf';
         $this->checkSession();
 
         $noind = $this->input->get('noind');

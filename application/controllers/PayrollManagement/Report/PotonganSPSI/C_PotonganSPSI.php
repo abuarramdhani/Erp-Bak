@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_MasterGajiKaryawan extends CI_Controller
+class C_PotonganSPSI extends CI_Controller
 {
     function __construct()
     {
@@ -8,9 +8,8 @@ class C_MasterGajiKaryawan extends CI_Controller
         $this->load->library('session');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('PayrollManagement/Report/MasterGajiKaryawan/M_mastergajikaryawan');
-        if($this->session->userdata('logged_in')!=TRUE) 
-        {
+        $this->load->model('PayrollManagement/Report/PotonganSPSI/M_potonganspsi');
+        if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
@@ -29,16 +28,12 @@ class C_MasterGajiKaryawan extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
 
-        $data['departments'] = $this->M_mastergajikaryawan->get_departments();
-        $data['dept_selected'] = "-";
-
-		$data['ShowPeriod'] = FALSE;
+		$data['period_shown'] = FALSE;
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/Report/MasterGajiKaryawan/V_index', $data);
+        $this->load->view('PayrollManagement/Report/PotonganSPSI/V_index', $data);
         $this->load->view('V_Footer',$data);
     }
 
@@ -46,10 +41,7 @@ class C_MasterGajiKaryawan extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
-		$periode = $this->input->post('txtPeriodeHitung',TRUE);
-		$year	 = substr($periode,0,4);
-		$month	 = substr($periode,5,2);
+        			
         $data['Menu'] = 'Payroll Management';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -58,56 +50,49 @@ class C_MasterGajiKaryawan extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-        $data['departments'] = $this->M_mastergajikaryawan->get_departments();
-        $selected = $this->input->post('txtDept', TRUE);
+        $periode = $this->input->post('txtPeriodeHitung',TRUE);
+        $year    = substr($periode,0,4);
+        $month   = substr($periode,5,2);
 
-        $data['dept_selected'] = $selected;
-
-        $data['master_gaji'] = $this->M_mastergajikaryawan->get_all($year, $month, $selected);
+        $data['potongan_spsi'] = $this->M_potonganspsi->get_all($year, $month);
+        $data['total'] = $this->M_potonganspsi->get_sum($year, $month);
         $data['year'] = $year;
         $data['month'] = $month;
-        $data['ShowPeriod'] = TRUE;
+        $data['period_shown'] = TRUE;
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/Report/MasterGajiKaryawan/V_index', $data);
+        $this->load->view('PayrollManagement/Report/PotonganSPSI/V_index', $data);
         $this->load->view('V_Footer',$data);
     }
 
-	public function generatePDF() 
-    {
+	public function generatePDF() {
         $this->checkSession();
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
-        $pdf = new mPDF('utf-8', 'A4', 8, '', '', '', '', '', '', '', 'L');
-        $pdf->AddPage('L', '', '', '', '', 15, 15, 10, 10, 0, 0);
+        $pdf = new mPDF('utf-8', 'A4', 9, '', 5, 5, 15, 15, 0, 0, 'P');
+        
+        $filename = 'Potongan SPSI.pdf';
         $pdf->setFooter('{PAGENO}');
-        $filename = 'Master Gaji Karyawan.pdf';
-        $this->checkSession();
 
         $year	 = $this->input->get('year');
 		$month	 = $this->input->get('month');
-        $selected = $this->input->get('dept');
 
-        $data['dept_selected'] = $selected;
-
-        $data['master_gaji'] = $this->M_mastergajikaryawan->get_all($year, $month, $selected);
+        $data['potongan_spsi'] = $this->M_potonganspsi->get_all($year, $month);
+        $data['total'] = $this->M_potonganspsi->get_sum($year, $month);
         $data['year'] = $year;
 	    $data['month'] = $month;
 
         $stylesheet = file_get_contents(base_url('assets/css/custom.css'));
-        $html = $this->load->view('PayrollManagement/Report/MasterGajiKaryawan/V_report', $data, true);
-
-
+        $html = $this->load->view('PayrollManagement/Report/PotonganSPSI/V_report', $data, true);
 
         $pdf->WriteHTML($stylesheet, 1);
         $pdf->WriteHTML($html, 2);
         $pdf->Output($filename, 'D');
     }
 
-    public function checkSession()
-    {
+    public function checkSession(){
         if($this->session->is_logged){
             
         }else{

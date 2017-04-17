@@ -24,8 +24,8 @@
 					<div class="row">
 								<div class="row" style="margin: 10px 0px">
 									<form method="post" action="<?php echo base_url('PayrollManagement/Report/PenghasilanBawahPTKP/search')?>" enctype="multipart/form-data">
-										<div class="col-lg-2" align="center">
-											<input name="txtPeriodeTahun" type="number" min="1900" max="2099" step="1" value="<?php echo $current_year ?>" />
+										<div class="col-lg-2">
+											<input name="txtPeriodeTahun" placeholder="Periode" id="txtPeriodeTahun" type="text" class="form-control">
 										</div>
 										<div class="col-lg-2">
 											<button class="btn btn-warning btn-block">Search</button>

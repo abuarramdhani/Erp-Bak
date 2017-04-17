@@ -395,8 +395,178 @@ table.t_master_gaji td#uang
 {
 	line-height: 10px;
 }
+<<<<<<< HEAD
+
+table.t_dana_pensiun
+{
+	margin: 0px auto;
+	border: 2px solid black;
+	border-collapse: collapse;	
+	border-spacing: 10px;
+}
+
+table.t_dana_pensiun th
+{
+	border: 1px solid black;
+	text-align: center;
+}
+
+table.t_dana_pensiun td
+{
+	border: 1px solid black;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+table.t_dana_pensiun td#uang
+{
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+table.t_dana_pensiun td#total
+{
+	height: 25px;
+	padding-right: 20px;
+	font-size: 14px; 
+	font-weight: bold;
+}
+
+table.t_potongan
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_potongan th
+{
+    border: 1px solid black;
+    text-align: center;
+}
+
+table.t_potongan td
+{
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+table.t_potongan td#uang
+{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+table.t_potongan td#total
+{
+    height: 25px;
+    padding-right: 20px;
+    font-size: 14px; 
+    font-weight: bold;
+}
+
+table.t_rekap_pembayaran
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_rekap_pembayaran th
+{
+    border: 1px solid black;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;    
+}
+
+table.t_rekap_pembayaran td
+{
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+table.t_rekap_pembayaran td#uang
+{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+table.t_rekap_pembayaran td#total
+{
+    height: 25px;
+    padding-right: 20px;
+    font-size: 14px; 
+    font-weight: bold;
+}
+
+table.t_summary_dept
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_summary_dept th
+{
+    border: 1px solid black;
+    text-align: center;
+    width: 140px;
+    height: 30px;
+}
+
+table.t_summary_dept td
+{
+    border-left: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 22px;
+}
+
+table.t_summary_dept td#total
+{
+    height: 30px;
+    border: 1px solid black;
+}
+
+table.t_rekap_gaji_bank
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_rekap_gaji_bank th
+{
+    font-size: 11px;
+    border: 1px solid black;
+    text-align: center;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+table.t_rekap_gaji_bank td
+{
+    font-size: 11px;
+    border: 1px solid black;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+td.garis_bawah
+{
+    border-bottom: 1px solid black;
+}
+=======
 =======
 .hidden {
     display: none;
 }
 >>>>>>> 4308c4aae216c774d68ec98023ac27b3f8af409b
+>>>>>>> 40c1228eca81feba7937710286900f7a8e89d0f5
