@@ -342,6 +342,15 @@ $('#dataTables-reportPotonganSPSI').DataTable( {
         'excel'
       ]
     });
+
+$('#dataTables-reportRiwayatMutasi').DataTable( {
+    "scrollX": true,
+	"bRetrieve": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
@@ -358,6 +367,26 @@ $('#txtTglJamRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 
 $(document).ready(function() {
+	//DATEPICKER CHECK DATA
+	$('.periode_mutasi').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Clear'
+		}
+	});
+
+	$('.periode_mutasi').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('MM/DD/YYYY'));
+	});
+
+	$('.periode_mutasi').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
   $('#txtPeriodeHitung').datepicker({
     autoclose: true,
     format: "yyyy-mm",
