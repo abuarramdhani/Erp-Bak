@@ -394,16 +394,13 @@ $(document).ready(function() {
     viewMode: "months", 
     minViewMode: "months"
   });
-<<<<<<< HEAD
   $('.txtPeriodeTahun').datepicker({
-=======
-  $('#txtPeriodeTahun').datepicker({
->>>>>>> 8d3ee2e30e203ff46a28a4819f0b5b112b16447b
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 
     minViewMode: "years"
   });
+
   $('#txtTglBerlakuPtkp').datepicker({ 
 	autoclose: true,
 	format: "yyyy-mm-dd",
