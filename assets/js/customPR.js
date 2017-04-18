@@ -522,6 +522,180 @@ $(document).ready(function() {
     }
   });
 
+  $('#btnImportDataKondite').click(function(){
+    var loading_full =  '<div class="pace pace-active">'+
+                        ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
+                        '  <div class="pace-progress-inner">'+
+                        '  </div>'+
+                        ' </div>'+
+                        ' <div class="pace-activity">'+
+                        ' </div>'+
+                        '</div>';
+
+    var file = $('input[name="file"]').val();
+
+    $('#errorImportData').html('');
+    $('#btnImportDataKondite').prop('disabled', true);
+
+    if (file == '') {
+      $('#errorImportData').html('<b style="color: red">Data belum lengkap</b>');
+      $('#btnImportDataKondite').prop('disabled', false);
+    }
+    else{
+      $('body').addClass('noscroll');
+      $('#loadingAjax').addClass('overlay_loading');
+      $('#loadingAjax').html(loading_full);
+
+
+      var formDataKondite = new FormData($('#ImportDataKondite')[0]);
+
+      //Import Request
+      $.ajax({
+        type:'POST',
+        data:formDataKondite,
+        url:$('#ImportDataKondite').attr('action'),
+        success:function(result)
+        {
+          $('#errorImportData').html('<b style="color: #3c8dbc">Import Data Berhasil</b>');
+          $('input[name="file_path"]').val('');
+          $('input[name="file"]').val('');
+          $('#btnImportDataKondite').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        error:function()
+        {
+          $('#errorImportData').html('<b style="color: red">Terjadi Kesalahan</b>');
+          $('#btnImportDataKondite').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        contentType: false,
+        processData: false
+      });
+    }
+  });
+
+  $('#btnImportDataPotongan').click(function(){
+    var loading_full =  '<div class="pace pace-active">'+
+                        ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
+                        '  <div class="pace-progress-inner">'+
+                        '  </div>'+
+                        ' </div>'+
+                        ' <div class="pace-activity">'+
+                        ' </div>'+
+                        '</div>';
+
+    var file = $('input[name="file"]').val();
+
+    $('#errorImportData').html('');
+    $('#btnImportDataPotongan').prop('disabled', true);
+
+    if (file == '') {
+      $('#errorImportData').html('<b style="color: red">Data belum lengkap</b>');
+      $('#btnImportDataPotongan').prop('disabled', false);
+    }
+    else{
+      $('body').addClass('noscroll');
+      $('#loadingAjax').addClass('overlay_loading');
+      $('#loadingAjax').html(loading_full);
+
+
+      var formDataPotongan = new FormData($('#ImportDataPotongan')[0]);
+
+      //Import Request
+      $.ajax({
+        type:'POST',
+        data:formDataPotongan,
+        url:$('#ImportDataPotongan').attr('action'),
+        success:function(result)
+        {
+          $('#errorImportData').html('<b style="color: #3c8dbc">Import Data Berhasil</b>');
+          $('input[name="file_path"]').val('');
+          $('input[name="file"]').val('');
+          $('#btnImportDataPotongan').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        error:function()
+        {
+          $('#errorImportData').html('<b style="color: red">Terjadi Kesalahan</b>');
+          $('#btnImportDataPotongan').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        contentType: false,
+        processData: false
+      });
+    }
+  });
+
+  $('#btnImportDataTambahan').click(function(){
+    var loading_full =  '<div class="pace pace-active">'+
+                        ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
+                        '  <div class="pace-progress-inner">'+
+                        '  </div>'+
+                        ' </div>'+
+                        ' <div class="pace-activity">'+
+                        ' </div>'+
+                        '</div>';
+
+    var file = $('input[name="file"]').val();
+
+    $('#errorImportData').html('');
+    $('#btnImportDataTambahan').prop('disabled', true);
+
+    if (file == '') {
+      $('#errorImportData').html('<b style="color: red">Data belum lengkap</b>');
+      $('#btnImportDataTambahan').prop('disabled', false);
+    }
+    else{
+      $('body').addClass('noscroll');
+      $('#loadingAjax').addClass('overlay_loading');
+      $('#loadingAjax').html(loading_full);
+
+
+      var formDataTambahan = new FormData($('#ImportDataTambahan')[0]);
+
+      //Import Request
+      $.ajax({
+        type:'POST',
+        data:formDataTambahan,
+        url:$('#ImportDataTambahan').attr('action'),
+        success:function(result)
+        {
+          $('#errorImportData').html('<b style="color: #3c8dbc">Import Data Berhasil</b>');
+          $('input[name="file_path"]').val('');
+          $('input[name="file"]').val('');
+          $('#btnImportDataTambahan').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        error:function()
+        {
+          $('#errorImportData').html('<b style="color: red">Terjadi Kesalahan</b>');
+          $('#btnImportDataTambahan').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        contentType: false,
+        processData: false
+      });
+    }
+  });
+
   hitungGajiTable();
   function hitungGajiTable() {
     $('#tblHitungGaji').DataTable( {

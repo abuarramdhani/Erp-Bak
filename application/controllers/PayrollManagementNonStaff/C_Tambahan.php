@@ -78,6 +78,28 @@ class C_Tambahan extends CI_Controller
 		$this->load->view('V_Footer',$data);	
 	}
 
+	public function Import()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Tambahan';
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Input Tambahan';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		/* LINES DROPDOWN DATA */
+		$data['Title'] = 'Import Data Tambahan';
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/Tambahan/V_import', $data);
+		$this->load->view('V_Footer',$data);	
+	}
+
 	public function doCreate(){
 		$noind_kodesie = $this->input->post('cmbNoindHeader');
 		$explode = explode(' - ', $noind_kodesie);
@@ -94,6 +116,58 @@ class C_Tambahan extends CI_Controller
 		$header_id = $this->db->insert_id();
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Tambahan'));
+	}
+
+	public function doImport(){
+		$this->session->set_userdata('ImportProgress', '0');
+
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+
+		$config['upload_path'] = 'assets/upload/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
+
+		$this->load->library('upload', $config);
+
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
+
+				$data = array(
+					'bulan_gaji' => utf8_encode($db_record['BLN_GJ']),
+					'tahun_gaji' => utf8_encode($db_record['THN_GJ']),
+					'noind' => utf8_encode($db_record['NOIND']),
+					'kurang_bayar' => utf8_encode($db_record['TAMBAHAN']),
+				);
+
+				$data2 = array(
+					'bulan_gaji' => utf8_encode($db_record['BLN_GJ']),
+					'tahun_gaji' => utf8_encode($db_record['THN_GJ']),
+					'noind' => utf8_encode($db_record['NOIND']),
+					'pot_lebih_bayar' => utf8_encode($db_record['POT']),
+				);
+
+				$this->M_tambahan->setTambahan($data);
+				$this->M_tambahan->setPotongan($data2);
+
+				$ImportProgress = ($i/$db_rows)*100;
+				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				flush();
+			}
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
 	}
 
 	/* UPDATE DATA */
