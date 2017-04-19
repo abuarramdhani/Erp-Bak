@@ -57,7 +57,9 @@ class C_KompensasiLembur extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$varYear	= $this->input->post('txtPeriodeTahun',TRUE);
+		$varYear	= $this->input->post('txtPeriodeCheck',TRUE);
+		$varYear 	= substr($varYear,0,4);
+		// echo $varYear;
 		$getKomLembur	= $this->M_kompensasilembur->getKomLembur($varYear);
 		
 		$data['konpensasi_lembur'] = $getKomLembur;
@@ -81,7 +83,7 @@ class C_KompensasiLembur extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$varYear	= $this->input->post('txtPeriodeTahun',TRUE);
-		$getMasterPekerja	= $this->M_kompensasilembur->getMasterPekerja();
+		$getMasterPekerja	= $this->M_kompensasilembur->getMasterPekerja($varYear);
 		foreach($getMasterPekerja as $row){
 			$noind = $row->noind;
 			$count	= $this->M_kompensasilembur->hitungKompLembur($noind,$varYear);

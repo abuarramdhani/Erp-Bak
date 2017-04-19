@@ -22,9 +22,9 @@ class M_kompensasilembur extends CI_Model
 
 	
 	// ++++++++++++++++++++++++++++++++ Function Penggajian ++++++++++++++++++++++++++++++++++++
-	function getMasterPekerja(){
+	function getMasterPekerja($varYear){
 		$this->db->where('keluar=','0');
-		$this->db->where('diangkat<=','2017-09-30');
+		$this->db->where('diangkat<=',$varYear.'-09-30');
 		return $this->db->get($this->table_master_pekerja)->result();
 	}
 	
@@ -57,7 +57,10 @@ class M_kompensasilembur extends CI_Model
 	}
 	
 	function getKomLembur($varYear){
-		$query	= "select * from pr.pr_transaksi_konpensasi_lembur where extract(year from tanggal)='$varYear'";
+		$query	= "select a.noind,a.nama,a.kd_status_kerja,a.kodesie,coalesce(b.jumlah_konpensasi,'0') as jumlah_konpensasi,b.tanggal from pr.pr_master_pekerja as a
+					left join pr.pr_transaksi_konpensasi_lembur as b on a.noind=b.noind and extract(year from b.tanggal)='$varYear'
+					where a.keluar='0' and a.diangkat<='$varYear-09-30' and left(a.noind,1) in ('B','J')
+					order by b.tanggal,a.noind";
 		$sql		= $this->db->query($query);
 		return $sql->result();
 	}
