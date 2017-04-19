@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner" >
 	<div class="row">
-		<form method="post" action="<?php echo site_url('CustomerRelationship/Setting/BuyingType/New/')?>" class="form-horizontal">
+		<form method="post" action="<?php echo site_url('CustomerRelationship/Setting/BuyingType/Create/')?>" class="form-horizontal">
 				<!-- action merupakan halaman yang dituju ketika tombol submit dalam suatu form ditekan -->
 				<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 				<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />

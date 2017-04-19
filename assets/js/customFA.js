@@ -111,14 +111,15 @@ $(document).ready(function() {
 		$("#frmDataAsset").submit(function(event){
 			event.preventDefault();
 			var tag = $('#txtTagNumber').val();
+			var old = $('#txtOldNumber').val();
 			var id_asset = $('#hdnTemp').val() || "0";
 			var form = this;
-			var url = base+"FixedAsset/DataAssets/GetTagNumberInfo";
+			var url = base+"FixedAsset/DataAssets/CheckDuplicateAll";
 			
 		   $.ajax({
 				type: "POST",
 				url: url,
-				data: {term : tag,id : id_asset}, 
+				data: {tag : tag,old : old,id : id_asset}, 
 				cache: false,
 
 				success: function(result) { //just add the result as argument in success anonymous function
@@ -126,30 +127,7 @@ $(document).ready(function() {
 				   if(result !== 'DANGER'){
 						form.submit();
 					}
-					// alert(result);
-				}
-			});
-		});
-		
-		$("#frmDataAsset").submit(function(event){
-			event.preventDefault();
-			var tag = $('#txtOldNumber').val();
-			var id_asset = $('#hdnTemp').val() || "0";
-			var form = this;
-			var url = base+"FixedAsset/DataAssets/GetOldNumberInfo";
-			
-		   $.ajax({
-				type: "POST",
-				url: url,
-				data: {term : tag,id : id_asset}, 
-				cache: false,
-
-				success: function(result) { //just add the result as argument in success anonymous function
-				   //$('#txtDescription').val(result) ;
-				   if(result !== 'DANGER'){
-						form.submit();
-					}
-					// alert(result);
+					 // alert(result);
 				}
 			});
 		});
@@ -382,15 +360,23 @@ $(document).ready(function() {
 
 		});
 		
-		$('#dataTables').DataTable({
-          // "paging": true,
+		$('#dataAssetdataTables').DataTable({
+		   // "paging": true,
           // "lengthChange": true,
           // "searching": true,
           // "ordering": true,
           // "info": true,
           // "autoWidth": false,
+		"processing": true,
+		"serverSide": true,
+        "ajax": base+"FixedAsset/DataAssets/LoadDataAsset",
+		 "order": [[ 24, "desc" ]],
+		"columnDefs": [
+            { "targets": [ 0 ], "searchable": false },
+            { "visible": false,  "targets": [ 1 ], "searchable": false }
+        ],
 		  dom: 'Blfrtip',
-		  lengthMenu : [ 10, 25, 50, 75, 100, 500, 1000, 10000000 ],
+		  lengthMenu : [ 10, 25, 50, 75, 100, 500, 1000, 5000, 10000, 10000000 ],
 			buttons: [
 				'copy', 'csv', 'excel', 'pdf', 'print'
 			]

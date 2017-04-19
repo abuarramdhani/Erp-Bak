@@ -74,20 +74,17 @@ var counter = 0;
 										+"<option value='' select='selected'>"
 									+"</select></td>"
 									+"<td><input type='text' name='txtProblemDescription[]' id='txtProblemDescription'  class='form-control' disabled='disabled'/></td>"
-									+"<td><input type='text' name='txtAction[]' id='txtAction' class='form-control' disabled='disabled'/></td>"
 									+"<td>"
-										//+"<input type='text' name='txtEmployeeNum[]' id='txtEmployeeNum"+counter+"' onblur=selectEmployee('"+counter+"'); class='form-control2' disabled='disabled'/>"
-										//+"<input type='hidden' name='hdnEmployeeId[]' id ='hdnEmployeeId"+counter+"'/>"
-										+"<select name='slcEmployeeNum[]' id='slcEmployeeNum' class='form-control jsEmployeeData' disabled='disabled>"
-											+"<option value='1' selected='selected'></option></select>"
-									+"</td>"
-									+"<td>"
-										+"<select name='slcServiceLineStatus[]' id='slcServiceLineStatus' class='form-control' disabled='disabled'>"
-										  +"<option value='OPEN' selected='selected'>OPEN</option>"
-										  +"<option value='CLOSE' >CLOSE</option>"
+										+"<select name='actionClaim[]' id='actionClaim' class='form-control select4' data-placeholder='Action Claim' disabled>"
+											+"<option value='' disabled selected>-- CHOOSE ONE --</option>"
+											+"<option value='Y'>PROCESS</option>"
+											+"<option value='N'>NO PROCESS</option>"
 										+"</select>"
 									+"</td>"
-									+"<td><input type='text' name='txtActionDate[]' id='txtActionDate'  class='form-control' data-date-format='dd-M-yyyy' disabled='disabled'/></td>"
+									+"<td>"
+										+"<input type='text' name='claimImage' id='claimImage' onfocus='modalImg(this)'  class='form-control' row-id='"+counter+"'>"
+										+"<input type='hidden' name='claimImageData[]'' id='claimImageData' row-id='"+counter+"'>"
+									+"</td>"
 									+"<td></td>"
 							+"</tr>");
 
@@ -198,7 +195,7 @@ var counter = 0;
 		
 		$(".jsEmployeeData").select2({
 			allowClear : true,
-			placeholder: "Employee", 
+			placeholder: "Employee",
 			minimumInputLength: 1,
 			ajax: {
 						url: base+"CustomerRelationship/Search/EmployeeData/",
@@ -527,6 +524,7 @@ function enadisServiceLine(rowid) {
 			document.getElementById('hdnOwnershipId').value = '';
 			document.getElementById('txtItemDescription').value = '';
 			document.getElementById('txtWarranty').value = '';
+			document.getElementById('claimImage').value = '';
 			//document.getElementById('slcSparePart').value = '';
 			//document.getElementById('hdnSparePartId').value = '';
 			//document.getElementById('txtSparePartDescription').value = '';
@@ -544,7 +542,8 @@ function enadisServiceLine(rowid) {
 			document.getElementById('txtActionDate').disabled = true;
 			document.getElementById('txtFinishDate').disabled = true;
 			document.getElementById('txtClaimNum').disabled = true;
-
+			document.getElementById('actionClaim').disabled = true;
+			document.getElementById('claimImage').disabled = true;
 		}
 		else{
 			//document.getElementById('slcProblem').disabled = false;
@@ -556,6 +555,8 @@ function enadisServiceLine(rowid) {
 			document.getElementById('txtActionDate').disabled = false;
 			document.getElementById('txtFinishDate').disabled = false;
 			document.getElementById('txtClaimNum').disabled = false;
+			document.getElementById('actionClaim').disabled = false;
+			document.getElementById('claimImage').disabled = false;
 		}
 		//document.getElementById('txtDescription').value = id;
 		//alert(id);
@@ -592,6 +593,8 @@ function enadisLineOwner() {
 				document.getElementById('slcServiceLineStatus'+i).disabled = true;
 				document.getElementById('txtActionDate'+i).disabled = true;
 				document.getElementById('txtFinishDate'+i).disabled = true;
+				document.getElementById('actionClaim'+i).disabled = true;
+				document.getElementById('claimImage'+i).disabled = true;
 
 			}
 		}
@@ -603,6 +606,8 @@ function sendValueCustomer(cust_id,cust_name,cat_id,base){
 		$('#txtCustomerName').val(cust_name);
 		$('#hdnCustomerId').val(cust_id);
 		$('#hdnCategoryId').val(cat_id);
+		checkcustomer();
+		setCustIdSession(cust_id);
 		
 		var id = document.getElementById('hdnCustomerId').value;
 		var n = $('#tblServiceLines tbody tr').length;
@@ -730,6 +735,8 @@ function sendValueItem(item_id,item_code,item_name,i,base){
 			$('select#slcServiceLineStatus').eq(i).prop('disabled', false);
 			$('input#txtActionDate').eq(i).prop('disabled', false);
 			$('input#txtFinishDate').eq(i).prop('disabled', false);
+			$('select#actionClaim').eq(i).prop('disabled', false);
+			$('input#claimImage').eq(i).prop('disabled', false);
 		}
 		
 	}
@@ -806,7 +813,7 @@ function enadisDriverOwner(base){
 					$('select#slcCustOwner').prop('disabled', false);
 				}else{
 					$('select#slcCustOwner').prop('disabled', true);
-				}	
+				}
                 //alert(returnedvalue);
             }
         });
@@ -820,7 +827,7 @@ function getLastActivityNumber(base){
        $.ajax({
             type: "POST",
             url: url,
-            data: {term : $('#slcActivityType').val()}, 
+            data: {term : $('#slcActivityType').val()},
             cache: false,
 
             success: function(result) { //just add the result as argument in success anonymous function
@@ -830,7 +837,9 @@ function getLastActivityNumber(base){
 				}else{
 					//$('input#txtServiceNumber').prop('disabled', true);
 					$('input#txtServiceNumber').val(result);
-				}	
+					$('input#txtCustomerName').prop('disabled', false);
+					$('#btnSearchCustomer').prop('disabled', false);
+				}
                 //alert(returnedvalue);
             }
         });
@@ -1182,6 +1191,8 @@ $(document).ready(function() {
 			$("select#slcEmployeeNum").eq(i).prop("disabled", true);
 			$("select#slcServiceLineStatus").eq(i).prop("disabled", true);
 			$("input#txtActionDate").eq(i).prop("disabled", true);
+			$("select#actionClaim").eq(i).prop("disabled", true);
+			$("input#claimImage").eq(i).prop("disabled", true);
 			}
 		}
 		
@@ -1592,7 +1603,9 @@ $(document).ready(function() {
 });
 
 function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
-		$('#txtCustomerName').val(cust_name);
-		$('#hdnCustomerId').val(cust_id);
-		$('#hdnCategoryId').val(cat_id);
-	}
+	$('#txtCustomerName').val(cust_name);
+	$('#hdnCustomerId').val(cust_id);
+	$('#hdnCategoryId').val(cat_id);
+}
+
+
