@@ -117,17 +117,18 @@ class M_transaksipenggajian extends CI_Model
 					(select jml_std_jam_per_bln from pr.pr_standart_jam_umum)
 			end) as std_jam,
 			n.prosentase,
-			o.thr, o.ubthr,
-			(p.jumlah_klaim) as klaim_cuti,
+			coalesce(o.thr,'0') as thr ,coalesce(o.ubthr, '0') as ubthr ,
+			coalesce(p.jumlah_klaim , '0') as klaim_cuti,
 			(
 				select sum(cast(aa.klaim_dl as float8)) 
 				from pr.pr_transaksi_klaim_dl as aa 
 				where aa.noind=a.noind and extract(year from aa.tanggal)=extract(year from b.tanggal) and extract(month from aa.tanggal)=extract(month from b.tanggal)
 				group by aa.noind,COALESCE(to_char(aa.tanggal, 'YYYY-MM'), '') 
 			) as klaim_dl,
-			q.pot_transfer,q.pot_transfer_tg_prshn,
-			r.insentif_kemahalan,
-			s.bulan_sakit
+			coalesce(q.pot_transfer,'0') as pot_transfer,coalesce(q.pot_transfer_tg_prshn,'0') as pot_transfer_tg_prshn ,
+			coalesce(r.insentif_kemahalan,'0') as insentif_kemahalan,
+			s.bulan_sakit,
+			coalesce(t.jumlah_konpensasi,'0') as jml_konpensasi
 			from pr.pr_data_gajian_personalia as b
 			left join pr.pr_master_pekerja as a on a.noind=b.noind
 			left join pr.pr_riwayat_gaji as c on a.noind=c.noind and c.tgl_berlaku<='$date' and c.tgl_tberlaku>'$date'
@@ -147,10 +148,10 @@ class M_transaksipenggajian extends CI_Model
 			left join pr.pr_riwayat_bank as q on q.kd_bank_induk=g.kd_bank and q.tgl_berlaku<='$date' and q.tgl_tberlaku>'$date'
 			left join pr.pr_riwayat_insentif_kemahalan as r on a.noind=r.noind and r.tgl_berlaku<='$date' and q.tgl_tberlaku>'$date'
 			left join pr.pr_daftar_pekerja_sakit as s on a.noind=s.noind and extract(year from b.tanggal)=extract(year from s.tanggal) and extract(month from b.tanggal)>=extract(month from s.tanggal) and extract(month from b.tanggal)<=extract(month from s.tanggal)
+			left join pr.pr_transaksi_konpensasi_lembur as t on a.noind=t.noind and extract(year from b.tanggal)=extract(year from t.tanggal) and extract(month from b.tanggal)=extract(month from t.tanggal)
 			where k.periode_pengurang_pajak<='$date' and l.periode_jst<='$date' and a.noind='B0616' and
 				extract(year from b.tanggal)='$varYear' and extract(month from b.tanggal)='$varMonth' and a.noind is not null
-				order by b.noind
-		";
+				order by b.noind";
 		$sql	= $this->db->query($query);
 		return $sql->result();
 	}

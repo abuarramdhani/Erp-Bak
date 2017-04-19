@@ -28,13 +28,12 @@
                     <b>Kompensasi Lembur</b>
 		          </div>
 		          <div class="box-body">
-		           <div class="table-responsive"> 
-				   
+		   <!--        <div class="table-responsive">   -->
 				    <div class="row">
 						 <div class="row" style="margin: 10px 0 10px 0px">
 							<form method="post" action="<?php echo base_url('PayrollManagement/KompensasiLembur/check_kompensasi')?>" enctype="multipart/form-data">
 							<div class="col-lg-2">
-									<input type="text" name="txtPeriodeTahun" id="txtPeriodeTahun" class="form-control" placeholder="[ Periode Hitung ]"></input>
+									<input type="text" name="txtPeriodeCheck" id="txtPeriodeCheck" class="form-control" placeholder="[ Periode Hitung ]"></input>
 							  </div>
 							  <div class=" col-lg-1">
 							    <button class="btn btn-primary btn-block">Check</button>
@@ -52,28 +51,39 @@
 							</form>
 						</div>
 		            </div>
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiPenggajian" style="font-size:12px;">
+		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-konpensasiLembur" style="font-size:12px;width:100%;">
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
-                            <th style='text-align:center'><div style="width:100px"></div>Tanggal</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Nama</th>
-							<th style='text-align:center;'><div style="width:100px">Stat. Kerja</div></th>
+                            <th style='text-align:center'><div style="width:100px"></div>Tanggal</th>
+							<th style='text-align:center;'><div style="width:100px">Stat.Kerja</div></th>
 							<th style='text-align:center;'><div style="width:100px"></div>Seksi</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Gaji Pokok</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Potongan</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Gaji  ini</th>
-							<th style='text-align:center;'><div style="width:100px"></div>N IF</th>
-							<th style='text-align:center;'><div style="width:100px"></div>N IKR</th>
-							<th style='text-align:center;'><div style="width:100px"></div>N IKMHL</th>
-							<th style='text-align:center;'><div style="width:100px"></div>N IP</th>
-							<th style='text-align:center;'><div style="width:100px"></div>N IK</th>
-							<th style='text-align:center;'><div style="width:100px"></div>(%)</th>
 							<th style='text-align:center;'><div style="width:100px;font:red;"></div>Komp. Lembur</th>
 						  </tr>
 		                </thead>
+						<tbody>
+							<?php if(!empty($konpensasi_lembur)){
+									$no = 0;
+									foreach($konpensasi_lembur as $row){
+									$no++;
+							?>
+								<tr>
+									<td align='center'><?php echo $no++;?></td>
+									<td align='left'><?php echo $row->nama?></td>
+									<td align='center'><?php echo $row->tanggal?></td>
+									<td align='center'><?php echo $row->kd_status_kerja?></td>
+									<td align='center'><?php echo $row->kodesie?></td>
+									<td align='center'><?php echo number_format((int)$row->jumlah_konpensasi) ?></td>
+								</tr>
+							<?php 
+									}
+								}	
+							?>
+						</tbody>
+						
 		              </table>
-		           </div> 
+		      <!--     </div>   -->
 		          </div>
 		        </div>
 	        </div>

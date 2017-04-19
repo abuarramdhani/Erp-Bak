@@ -198,6 +198,7 @@ class C_TransaksiPenggajian extends CI_Controller
 			$klaim_dl = $row1->klaim_dl;
 			$pot_transfer = $row1->pot_transfer;
 			$pot_transfer_tg_prshn = $row1->pot_transfer_tg_prshn;
+			$konpensasi_lembur = $row1->jml_konpensasi;
 			
 			$r_kp = 0;
 			$r_tkp = 0;
@@ -300,6 +301,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						}else{
 							$fx_pot_skt_panjang	= (($r_gaji_pokok * $p_sakit)/100);																	//POTONGAN SAKIT BERKEPANJANGAN	
 						}
+						$fx_konpensasi_lembur	= $konpensasi_lembur;																				//NILAI KONPENSASI LEMBUR
 						$pph = 0;
 						$pph21 = 0;
 						
@@ -315,7 +317,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						$std_gaji				=  $fx_gaji_pokok + $std_insentif ;
 						$gp_bln_ini			= ($fx_gaji_pokok - $fx_htm);
 						$insentif_bln_ini	= $fx_if + $fx_ip + $fx_ik + $fx_ims + $fx_imm + $fx_ubt + $fx_upamk ;
-						$gaji_sbln			= $gp_bln_ini + $insentif_bln_ini + $fx_klaim_dl + $fx_thr + $fx_ubthr + $fx_lembur + $fx_kp + $pph21 + $fx_klaim_cuti;
+						$gaji_sbln			= $gp_bln_ini + $insentif_bln_ini + $fx_klaim_dl + $fx_thr + $fx_ubthr + $fx_lembur + $fx_kp + $pph21 + $fx_klaim_cuti + $fx_konpensasi_lembur;
 						$ttl_premi			= $fx_jkk + $fx_jkm + $fx_jkn_p + $fx_jht_p + $fx_jpp ;
 						$gaji_bruto			= $gaji_sbln + $ttl_premi;
 						if(($gaji_bruto * $p_persentase_jab) > $p_max_jab){

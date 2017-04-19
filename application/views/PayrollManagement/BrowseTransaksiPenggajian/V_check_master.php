@@ -36,7 +36,7 @@
 							  </div>
 			          </div>
 		            </div>
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiPenggajian" style="font-size:12px;">
+		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiPenggajian" style="font-size:12px;width:100%;">
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>

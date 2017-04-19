@@ -201,6 +201,16 @@ $('#dataTables-transaksiPenggajian').DataTable( {
 	'excel'
   ]
 });
+
+$('#dataTables-konpensasiLembur').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+  dom: 'Bfrtip',
+  "autoWidth": true,
+  buttons: [
+	'excel'
+  ]
+});
 	
 	
 $('#dataTables-masterPekerja').DataTable( {
@@ -359,17 +369,21 @@ $('#txtTglJamRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 
 $(document).ready(function() {
-  $('#txtPeriodeHitung').datepicker({
+  $('#txtPeriodeCheck').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+  });
+  
+    $('#txtPeriodeHitung').datepicker({
     autoclose: true,
     format: "yyyy-mm",
     viewMode: "months", 
     minViewMode: "months"
   });
-<<<<<<< HEAD
-  $('.txtPeriodeTahun').datepicker({
-=======
+
   $('#txtPeriodeTahun').datepicker({
->>>>>>> 8d3ee2e30e203ff46a28a4819f0b5b112b16447b
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 
