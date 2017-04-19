@@ -563,6 +563,31 @@ td.garis_bawah
 {
     border-bottom: 1px solid black;
 }
+
+table.t_riwayat_mutasi
+{
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;  
+    border-spacing: 10px;
+}
+
+table.t_riwayat_mutasi th
+{
+    font-size: 11px;
+    border: 1px solid black;
+    text-align: center;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+table.t_riwayat_mutasi td
+{
+    font-size: 11px;
+    border: 1px solid black;
+    padding-left: 8px;
+    padding-right: 8px;
+}
 =======
 =======
 .hidden {

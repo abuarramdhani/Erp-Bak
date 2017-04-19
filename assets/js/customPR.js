@@ -353,6 +353,15 @@ $('#dataTables-reportPotonganSPSI').DataTable( {
         'excel'
       ]
     });
+
+$('#dataTables-reportRiwayatMutasi').DataTable( {
+    "scrollX": true,
+	"bRetrieve": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 	
 $('#txtTglTransaksi').datepicker({ autoclose: true });
 $('#txtTglRecord').datepicker({ autoclose: true });
@@ -369,6 +378,7 @@ $('#txtTglJamRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 
 $(document).ready(function() {
+<<<<<<< HEAD
   $('#txtPeriodeCheck').datepicker({
     autoclose: true,
     format: "yyyy",
@@ -377,18 +387,46 @@ $(document).ready(function() {
   });
   
     $('#txtPeriodeHitung').datepicker({
+=======
+	//DATEPICKER CHECK DATA
+	$('.periode_mutasi').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Clear'
+		}
+	});
+
+	$('.periode_mutasi').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('MM/DD/YYYY'));
+	});
+
+	$('.periode_mutasi').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
+  $('#txtPeriodeHitung').datepicker({
+>>>>>>> 7ca22ecfecea81c1beff19719a1f6c060b570a99
     autoclose: true,
     format: "yyyy-mm",
     viewMode: "months", 
     minViewMode: "months"
   });
+<<<<<<< HEAD
 
   $('#txtPeriodeTahun').datepicker({
+=======
+  $('.txtPeriodeTahun').datepicker({
+>>>>>>> 7ca22ecfecea81c1beff19719a1f6c060b570a99
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 
     minViewMode: "years"
   });
+
   $('#txtTglBerlakuPtkp').datepicker({ 
 	autoclose: true,
 	format: "yyyy-mm-dd",
