@@ -286,8 +286,10 @@ $(document).ready(function() {
   }
 
   $('#btnCetakForm').click(function(){
-    var tgl1 = new Date($('#txtTanggal1').val());
-    var tgl2 = new Date($('#txtTanggal2').val());
+    var noind = $('#cmbNoindHeader').val();
+    var tgl1  = $('#txtTanggal1').val();
+    var tgl2  = $('#txtTanggal2').val();
+
     var form = '';
     if (tgl1 > tgl2) {
       form += '<tr>'
@@ -295,30 +297,48 @@ $(document).ready(function() {
             + '</tr>';
     }
     else{
-      while(tgl1 <= tgl2){
-        var day = ("0" + tgl1.getDate()).slice(-2);
-        var month = ("0" + (tgl1.getMonth() + 1)).slice(-2);
-        var year = tgl1.getFullYear();
-        var full_date = year + '-' + month + '-' + day;
-        form += '<tr>'
-              +   '<td width="30%" class="text-center">'
-              +     full_date
-              +     '<input type="hidden" class="form-control" name="txtTanggalHeader[]" value="' + full_date + '" required>'
-              +   '</td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" required></td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" required></td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtBKPHeader[]" placeholder="BKP" required></td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtTKPHeader[]" placeholder="TKP" required></td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtKBHeader[]" placeholder="KB" required></td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtKKHeader[]" placeholder="KK" required></td>'
-              +   '<td width="7%"><input type="text" class="form-control text-center" name="txtKSHeader[]" placeholder="KS" required></td>'
+      $('#cmbKodesie-loading').html('<i class="fa fa-spinner fa-2x faa-spin animated" style="color: #3c8dbc"></i>'); // spinner
+      $.ajax({
+        type:'POST',
+        data:{noind:noind, tgl1:tgl1, tgl2:tgl2},
+        url:baseurl+"PayrollManagementNonStaff/ProsesGaji/Kondite/getTglShift",
+        success:function(result)
+        {
+          $('#FormWrapper').html(result);
+        },
+        error:function()
+        {
+          var form = '';
+          form += '<tr>'
+              +   '<td colspan="8" class="text-center"><h4>Something Error, Please try again</h4></td>'
               + '</tr>';
+          $('#FormWrapper').html(form);
+        }
+      });
+      // while(tgl1 <= tgl2){
+      //   var day = ("0" + tgl1.getDate()).slice(-2);
+      //   var month = ("0" + (tgl1.getMonth() + 1)).slice(-2);
+      //   var year = tgl1.getFullYear();
+      //   var full_date = year + '-' + month + '-' + day;
+      //   form += '<tr>'
+      //         +   '<td width="30%" class="text-center">'
+      //         +     full_date
+      //         +     '<input type="hidden" class="form-control" name="txtTanggalHeader[]" value="' + full_date + '" required>'
+      //         +   '</td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" required></td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" required></td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtBKPHeader[]" placeholder="BKP" required></td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtTKPHeader[]" placeholder="TKP" required></td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtKBHeader[]" placeholder="KB" required></td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtKKHeader[]" placeholder="KK" required></td>'
+      //         +   '<td width="7%"><input type="text" class="form-control text-center" name="txtKSHeader[]" placeholder="KS" required></td>'
+      //         + '</tr>';
 
-        var newDate = tgl1.setDate(tgl1.getDate() + 1);
-        tgl1 = new Date(newDate);
-      }
+      //   var newDate = tgl1.setDate(tgl1.getDate() + 1);
+      //   tgl1 = new Date(newDate);
+      // }
     }
-    $('#FormWrapper').html(form);
+    // $('#FormWrapper').html(form);
     date_picker_non_staff();
     date_picker_non_staff_with_time();
 
@@ -338,13 +358,16 @@ $(document).ready(function() {
 
   })
 
-  $('#cmbKodesie').change(function(){
-    var val = $(this).val();
+  $('#cmbKodesie, #txtTanggal').change(function(){
+    var val = $('#cmbKodesie').val();
+    var tgl = $('#txtTanggal').val();
     $('#cmbKodesie').prop('disabled', true);
     $('#cmbKodesie-loading').html('<i class="fa fa-spinner fa-2x faa-spin animated" style="color: #3c8dbc"></i>');
     $.ajax({
       type:'POST',
-      data:{kodesie:val},
+      data:{kodesie:val,
+            date:tgl,
+      },
       url:baseurl+"PayrollManagementNonStaff/ProsesGaji/Kondite/getPekerja",
       success:function(result)
       {

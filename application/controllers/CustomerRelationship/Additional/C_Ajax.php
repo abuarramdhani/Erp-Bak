@@ -373,11 +373,12 @@ class C_Ajax extends CI_Controller {
 		}
 		
 		public function GetLastActivityNumber()
-		{		
+		{
+				$user_id 	= $this->session->userid;
+				$idTemp		= $this->session->userdata('tempServiceNumber');
 				if (isset($_POST['term'])){
 					$term = $_POST['term'];//term = id dari karakter yang kita ketikkan
-					if($term == '')
-					{	$term = NULL; }
+					if($term == ''){ $term = NULL; }
 					$data = $this->M_serviceproducts->getLastActivityNumber($term);
 				//echo json_encode($data['AdditionalActivity']);
 				}
@@ -406,13 +407,18 @@ class C_Ajax extends CI_Controller {
 					$running_number = intval($year_now.substr($data[0]['activity_number'],4,4))+1;
 					
 					if($year_now == $year_activity){
-						echo $head.$running_number;
+						$activityNumber = $head.$running_number;
+						$saveTemporary	= $this->M_serviceproducts->updateActivityData($activityNumber,$term,$user_id,$idTemp);
+						echo $activityNumber;
 					}else{
-						echo $head.$year_now."0001";
+						$activityNumber = $head.$year_now."0001";
+						$saveTemporary	= $this->M_serviceproducts->updateActivityData($activityNumber,$term,$user_id,$idTemp);
+						echo $activityNumber;
 					}
-					//echo $data[0]['activity_number']." ".$year_now." ".$running_number;
 				}else{
-					echo $head.$year_now."0001";;
+					$activityNumber = $head.$year_now."0001";
+					$saveTemporary	= $this->M_serviceproducts->updateActivityData($activityNumber,$term,$user_id,$idTemp);
+					echo $activityNumber;
 				}
 				
 		}

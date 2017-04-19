@@ -6,6 +6,7 @@ class M_kondite extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->personalia = $this->load->database ( 'personalia', TRUE );
     }
 
     public function getKondite($id = FALSE)
@@ -127,12 +128,20 @@ class M_kondite extends CI_Model
         return $query->result_array();
     }
 
-    public function getPekerja($kodesie)
+    public function getPekerja($kodesie,$date)
     {
         $sql = "
-                SELECT * FROM er.er_employee_all WHERE resign = '0' AND substr(section_code, 0, 7) = '$kodesie' ORDER BY employee_code ASC
+                select b.noind, b.nama from \"Presensi\".tshiftpekerja a left join \"hrd_khs\".tpribadi b on a.noind=b.noind where (to_date(a.tanggal, 'YYYY-MM-DD')='$date') AND (substr(a.kodesie, 0, 7)='$kodesie') ORDER BY a.noind
             ";
-        $query = $this->db->query($sql);
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
+
+     public function getTglShift($noind,$tgl1,$tgl2)
+    {
+        $sql = "select to_date(tanggal, 'YYYY-MM-DD') as tanggal from \"Presensi\".tshiftpekerja where (noind='$noind') AND (to_date(tanggal, 'YYYY-MM-DD') between '$tgl1' and '$tgl2')
+            ";
+        $query = $this->personalia->query($sql);
         return $query->result_array();
     }
 
