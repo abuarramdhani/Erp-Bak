@@ -44,12 +44,8 @@
 												<th class="text-center" width="100px">Kode Proses</th>
 												<th class="text-center" width="100px">Nama Proses</th>
 												<th class="text-center" width="100px">Jumlah Operator</th>
-                                                <th class="text-center" width="150px">Target Utama Senin Kamis</th>
-                                                <th class="text-center" width="150px">Target Utama Senin Kamis 4</th>
-                                                <th class="text-center" width="200px">Target Sementara Senin Kamis</th>
-                                                <th class="text-center" width="150px">Target Utama Jumat Sabtu</th>
-                                                <th class="text-center" width="160px">Target Utama Jumat Sabtu 4</th>
-                                                <th class="text-center" width="200px">Target Sementara Jumat Sabtu</th>
+												<th class="text-center" width="100px">Target Utama</th>
+												<th class="text-center" width="100px">Target Sementara</th>
 												<th class="text-center" width="100px">Waktu Setting</th>
 												<th class="text-center" width="100px">Tgl Berlaku</th>
 												<th class="text-center" width="100px">Tgl Input</th>

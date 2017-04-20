@@ -71,44 +71,16 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Senin Kamis</label>
+                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaSeninKamis" id="txtTargetUtamaHeader" class="form-control" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Senin Kamis Kelas 4</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaSeninKamis4" id="txtTargetUtamaHeader" class="form-control" required />
+                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaHeader" id="txtTargetUtamaHeader" class="form-control" required />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara Senin Kamis</label>
+                                                <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraSeninKamis" id="txtTargetSementaraHeader" class="form-control" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Jumat Sabtu</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaJumatSabtu" id="txtTargetUtamaHeader" class="form-control" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Jumat Sabtu Kelas 4</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaJumatSabtu4" id="txtTargetUtamaHeader" class="form-control" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara Jumat Sabtu</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraJumatSabtu" id="txtTargetSementaraHeader" class="form-control" required />
+                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraHeader" id="txtTargetSementaraHeader" class="form-control" required />
                                                 </div>
                                             </div>
 
@@ -122,7 +94,7 @@
 											<div class="form-group">
                                                 <label for="txtTglBerlakuHeader" class="control-label col-lg-4">Tgl Berlaku</label>
                                                 <div class="col-lg-4">
-                                                    <input type="date" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlakuHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlakuHeader" required />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlakuHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlakuHeader" required />
                                                 </div>
                                             </div>
 
