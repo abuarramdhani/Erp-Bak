@@ -32,47 +32,63 @@
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($TargetBenda as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kodesie</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Kodesie</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['kodesie'].' - '.$headerRow['unit_name']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kode Barang</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Kode Barang</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['kode_barang']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Nama Barang</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Nama Barang</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['nama_barang']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kode Proses</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Kode Proses</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['kode_proses']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Nama Proses</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Nama Proses</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['nama_proses']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jumlah Operator</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Jumlah Operator</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['jumlah_operator']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Target Utama</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['target_utama']; ?></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Target Utama Senin Kamis</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['target_utama_senin_kamis']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Target Utama Senin Kamis Kelas 4</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['target_utama_senin_kamis_4']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Target Sementara</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['target_sementara']; ?></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Target Sementara Senin Kamis</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['target_sementara_senin_kamis']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Target Utama Jumat Sabtu</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['target_utama_jumat_sabtu']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Target Utama Jumat Sabtu Kelas 4</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['target_utama_jumat_sabtu_4']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Target Sementara Jumat Sabtu</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['target_sementara_jumat_sabtu']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Setting</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Waktu Setting</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['waktu_setting']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tgl Berlaku</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Tgl Berlaku</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['tgl_berlaku']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tgl Input</strong></td>
+                                                            <td class="col-lg-3" style="border: 0"><strong>Tgl Input</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['tgl_input']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>

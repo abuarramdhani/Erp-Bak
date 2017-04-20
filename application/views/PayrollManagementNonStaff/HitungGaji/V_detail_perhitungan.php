@@ -238,7 +238,7 @@
                                                             <tr>
                                                                 <td><?php echo $no++;?></td>
                                                                 <td><?php echo $dataLKHSeksi['tgl'];?></td>
-                                                                <td><?php echo $dataLKHSeksi['kode_barang'];?></td>
+                                                                <td><?php echo $dataLKHSeksi['kd_brg'];?></td>
                                                                 <td><?php echo $dataLKHSeksi['nama_barang'];?></td>
                                                                 <td><?php echo $dataLKHSeksi['kode_proses'];?></td>
                                                                 <td><?php echo $dataLKHSeksi['nama_proses'];?></td>
