@@ -8,7 +8,7 @@ class M_hitunggaji extends CI_Model
         $this->load->database();
     }
 
-    public function getHitungGaji($kodesie, $bln_gaji, $thn_gaji){
+    public function getHitungGaji($noind = '', $kodesie = '', $bln_gaji, $thn_gaji){
         $sql = "
             SELECT
                 pab.\"HMS\" as \"IMSNilai\",
@@ -45,9 +45,49 @@ class M_hitunggaji extends CI_Model
                     AND ppo.\"tahun_gaji\" = pab.\"thn_gaji\"
 
             WHERE
-                    pma.\"kodesie\" = '$kodesie'
+                    (pma.\"kodesie\" = '$kodesie' OR '$kodesie' = '')
+                AND (pma.\"noind\" = '$noind' OR '$noind' = '')
                 AND pab.\"bln_gaji\" = '$bln_gaji'
                 AND pab.\"thn_gaji\" = '$thn_gaji'
+        ";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function getEmployee($noind)
+    {
+
+        $sql = "
+            SELECT
+
+                *
+
+            FROM
+                er.er_employee_all eea
+            LEFT JOIN er.er_section ese ON eea.section_code = ese.section_code
+
+            WHERE
+                    eea.employee_code ILIKE '$noind%'
+        ";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function getDetailMasterGaji($noind)
+    {
+
+        $sql = "
+            SELECT
+
+                *
+
+            FROM
+                pr.pr_master_gaji 
+
+            WHERE
+                noind ILIKE '$noind%'
         ";
 
         $query = $this->db->query($sql);
@@ -214,7 +254,24 @@ class M_hitunggaji extends CI_Model
         return $query->result_array();
     }
 
-    public function getInsentifKondite($noind, $kodesie, $firstdate, $lastdate)
+    public function cekTglDiangkat($noind,$date)
+    {
+        $sql = "SELECT
+
+                employee_code, worker_recruited_date
+
+            FROM
+                er.er_employee_all eea
+
+            WHERE
+                    eea.\"employee_code\" = '$noind'
+                AND eea.\"worker_recruited_date\" + interval '3 month' <= '$date'
+        ";
+        $query = $this->db->query($sql);
+        return $query->num_rows();
+    }
+
+    public function getInsentifKondite($noind, $kodesie = '', $firstdate, $lastdate)
     {
 
         $sql = "
@@ -227,8 +284,11 @@ class M_hitunggaji extends CI_Model
 
             WHERE
                     pko.\"noind\" = '$noind'
-                AND pko.\"kodesie\" = '$kodesie'
+                AND (pko.\"kodesie\" = '$kodesie' OR '$kodesie' = '')
                 AND pko.\"tanggal\" BETWEEN '$firstdate' AND '$lastdate'
+
+            ORDER BY
+                pko.\"tanggal\"
         ";
 
         $query = $this->db->query($sql);

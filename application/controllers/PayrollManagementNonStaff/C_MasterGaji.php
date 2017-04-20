@@ -250,7 +250,7 @@ class C_MasterGaji extends CI_Controller
 					'noind' => utf8_encode($db_record['NOIND']),
 					'kodesie' => utf8_encode($db_record['KODESIE']),
 					'kelas' => utf8_encode($db_record['KELAS']),
-					'gaji_pokok' => utf8_encode($db_record['GP']),
+					'gaji_pokok' => utf8_encode($db_record['GAJI_POKOK']),
 					'insentif_prestasi' => utf8_encode($db_record['IP']),
 					'insentif_masuk_sore' => utf8_encode($db_record['IMS']),
 					'insentif_masuk_malam' => utf8_encode($db_record['IMM']),
