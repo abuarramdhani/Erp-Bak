@@ -96,6 +96,11 @@ class M_potongan extends CI_Model
         return $this->db->insert('pr.pr_potongan', $data);
     }
 
+    public function setTambahan($data)
+    {
+        return $this->db->insert('pr.pr_tambahan', $data);
+    }
+
     public function updatePotongan($data, $id)
     {
         $this->db->where('potongan_id', $id);

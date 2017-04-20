@@ -80,12 +80,31 @@ class C_Kondite extends CI_Controller
 		elseif ($term == 'pekerja') {
 			$data['Title'] = 'Input Insentif Kondite Per Pekerja';
 			$this->load->view('PayrollManagementNonStaff/Kondite/V_create', $data);
-		}
-		else{
+		}else{
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
 
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function Import()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Insentif Kondite';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['Title'] = 'Import Data Insentif Kondite';
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/Kondite/V_import', $data);
+		$this->load->view('V_Footer',$data);	
 	}
 
 	public function doCreate($term){
@@ -151,6 +170,57 @@ class C_Kondite extends CI_Controller
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
 		
+	}
+
+	public function doImport(){
+		$this->session->set_userdata('ImportProgress', '0');
+
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+
+		$config['upload_path'] = 'assets/upload/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
+
+		$this->load->library('upload', $config);
+
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
+
+				$data = array(
+					'tanggal' => utf8_encode($db_record['TGL']),
+					'noind' => utf8_encode($db_record['NOIND']),
+					'MK' => utf8_encode($db_record['KONDITE1']),
+					'BKI' => utf8_encode($db_record['KONDITE2']),
+					'BKP' => utf8_encode($db_record['KONDITE3']),
+					'TKP' => utf8_encode($db_record['KONDITE4']),
+					'KB' => utf8_encode($db_record['KONDITE5']),
+					'KK' => utf8_encode($db_record['KONDITE6']),
+					'KS' => utf8_encode($db_record['KONDITE7']),
+					'creation_date' => 'NOW()',
+					'created_by' => $this->session->userid,
+				);
+
+				$this->M_kondite->setKondite($data);
+
+				$ImportProgress = ($i/$db_rows)*100;
+				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				flush();
+			}
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
 	}
 
 	/* UPDATE DATA */

@@ -23,6 +23,9 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/Kondite/Import') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" class="btn btn-default btn-sm" alt="Import Data" title="Import Data" data-toggle="tooltip" data-placement="left" >
+                                    <i class="fa fa-upload fa-2x"></i>
+                                </a>
                                 <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/Kondite/create/seksi') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" class="btn btn-default btn-sm" alt="Input Per Seksi" title="Input Per Seksi" data-toggle="tooltip" data-placement="left" >
                                     <i class="fa fa-users fa-2x"></i>
                                 </a>
