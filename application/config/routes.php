@@ -624,6 +624,17 @@ $route['PayrollManagementNonStaff/MasterData/TargetBenda'] = 'PayrollManagementN
 $route['PayrollManagementNonStaff/MasterData/TargetBenda/(:any)'] = 'PayrollManagementNonStaff/C_TargetBenda/$1';
 $route['PayrollManagementNonStaff/MasterData/TargetBenda/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_TargetBenda/$1/$2';
 
+//Master Pekerja
+$route['PayrollManagementNonStaff/MasterData/MasterPekerja'] = 'PayrollManagementNonStaff/C_MasterPekerja';
+$route['PayrollManagementNonStaff/MasterData/MasterPekerja/(:any)'] = 'PayrollManagementNonStaff/C_MasterPekerja/$1';
+$route['PayrollManagementNonStaff/MasterData/MasterPekerja/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_MasterPekerja/$1/$2';
+
+//Setelan
+$route['PayrollManagementNonStaff/Setelan'] = 'PayrollManagementNonStaff/C_Setelan';
+$route['PayrollManagementNonStaff/Setelan/(:any)'] = 'PayrollManagementNonStaff/C_Setelan/$1';
+$route['PayrollManagementNonStaff/Setelan/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_Setelan/$1/$2';
+
+
 
 //-----------------------Payroll Management Non Staff --------------------------------------------
 
