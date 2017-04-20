@@ -6,7 +6,7 @@
       verticaldownclass: 'glyphicon glyphicon-minus'
     });
 
-$('#dataTables-masterStatusKerja').DataTable( {
+  $('#dataTables-masterStatusKerja').DataTable( {
 	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
@@ -378,7 +378,6 @@ $('#txtTglJamRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 
 $(document).ready(function() {
-<<<<<<< HEAD
   $('#txtPeriodeCheck').datepicker({
     autoclose: true,
     format: "yyyy",
@@ -386,8 +385,6 @@ $(document).ready(function() {
     minViewMode: "years"
   });
   
-    $('#txtPeriodeHitung').datepicker({
-=======
 	//DATEPICKER CHECK DATA
 	$('.periode_mutasi').daterangepicker({
 		"singleDatePicker": true,
@@ -409,18 +406,13 @@ $(document).ready(function() {
 	});
 
   $('#txtPeriodeHitung').datepicker({
->>>>>>> 7ca22ecfecea81c1beff19719a1f6c060b570a99
     autoclose: true,
     format: "yyyy-mm",
     viewMode: "months", 
     minViewMode: "months"
   });
-<<<<<<< HEAD
 
-  $('#txtPeriodeTahun').datepicker({
-=======
   $('.txtPeriodeTahun').datepicker({
->>>>>>> 7ca22ecfecea81c1beff19719a1f6c060b570a99
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 
