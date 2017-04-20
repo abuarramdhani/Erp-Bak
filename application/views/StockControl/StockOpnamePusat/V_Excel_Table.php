@@ -1,3 +1,9 @@
+<?php 
+	header("Content-type: application/octet-stream");
+	header("Content-Disposition: attachment; filename=exceldata.xlsx");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+?>
 <?php
 	if (!empty($item_classification)) {
 		$count = sizeof($item_classification);
@@ -104,7 +110,7 @@
 		<?php
 		if(!(empty($stock_opname_pusat))){
 			$no=0;
-			foreach($stock_opname_pusat as $data) {
+			foreach($stock_opname_pusat as $data) {;
 				if ($data['io_name'] == $ic['io_name'] && $data['sub_inventory'] == $ic['sub_inventory'] && $data['area'] == $ic['area'] && $data['locator'] == $ic['locator']) {
 					$no++
 		?>
@@ -132,10 +138,7 @@
 	</tbody>																				
 </table>
 <?php
-			if($count != '1'){
-				echo "<pagebreak>";
-				$count--;
-			}
+			
 		}
 	}
 ?>
