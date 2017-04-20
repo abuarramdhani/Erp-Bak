@@ -259,7 +259,7 @@ class C_TargetBenda extends CI_Controller
 					'target_utama_senin_kamis_4' => utf8_encode($db_record['PSK44']),
 					'target_utama_jumat_sabtu' => utf8_encode($db_record['PJS54']),
 					'target_utama_jumat_sabtu_4' => utf8_encode($db_record['PJS44']),
-					'waktu_setting' => utf8_encode($db_record['WAKTU_SETTING']),
+					'waktu_setting' => utf8_encode($db_record['WAKTU_SETT']),
 					'tgl_berlaku' => utf8_encode($db_record['TG_LAKU']),
 					'tgl_input' => utf8_encode($db_record['TG_INPUT'])
 				);
