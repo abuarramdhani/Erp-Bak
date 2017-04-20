@@ -75,16 +75,44 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama</label>
+                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Senin Kamis</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaHeader" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama']; ?>" required/>
+                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaSeninKamis" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama_senin_kamis']; ?>" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Senin Kamis Kelas 4</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaSeninKamis4" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama_senin_kamis_4']; ?>" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara</label>
+                                                <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara Senin Kamis</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraHeader" id="txtTargetSementaraHeader" class="form-control" value="<?php echo $headerRow['target_sementara']; ?>" required/>
+                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraSeninKamis" id="txtTargetSementaraHeader" class="form-control" value="<?php echo $headerRow['target_sementara_senin_kamis']; ?>" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Jumat Sabtu</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaJumatSabtu" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama_jumat_sabtu']; ?>" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtTargetUtamaHeader" class="control-label col-lg-4">Target Utama Jumat Sabtu Kelas 4</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Target Utama" name="txtTargetUtamaJumatSabtu4" id="txtTargetUtamaHeader" class="form-control" value="<?php echo $headerRow['target_utama_jumat_sabtu_4']; ?>" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtTargetSementaraHeader" class="control-label col-lg-4">Target Sementara Jumat Sabtu</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Target Sementara" name="txtTargetSementaraJumatSabtu" id="txtTargetSementaraHeader" class="form-control" value="<?php echo $headerRow['target_sementara_jumat_sabtu']; ?>" required/>
                                                 </div>
                                             </div>
 
@@ -98,7 +126,7 @@
 											<div class="form-group">
                                                 <label for="txtTglBerlakuHeader" class="control-label col-lg-4">Tgl Berlaku</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlakuHeader" value="<?php echo $headerRow['tgl_berlaku'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlakuHeader"  required/>
+                                                    <input type="date" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlakuHeader" value="<?php echo $headerRow['tgl_berlaku'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlakuHeader"  required/>
                                                 </div>
                                             </div>
 
