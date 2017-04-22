@@ -210,7 +210,7 @@ class C_HitungGaji extends CI_Controller
 			$cekTglDiangkat = $this->M_hitunggaji->cekTglDiangkat($noind,$day);
 			foreach ($getLKHSeksi as $dataLKHSeksi) {
 				if ($dataLKHSeksi['tgl'] == $day) {
-					$jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['reject'];
+					$jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['repair'] - (1,5*$dataLKHSeksi['reject']);
 					// echo $dataLKHSeksi['tgl']."<br>";
 					if (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Sunday') {
 						$target = 0;
