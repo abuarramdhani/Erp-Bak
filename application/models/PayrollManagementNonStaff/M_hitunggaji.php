@@ -481,7 +481,13 @@ class M_hitunggaji extends CI_Model
     public function getHitungGajiDBF($section,$month,$year)
     {
        $sql = "
-            SELECT * FROM pr.pr_hasil_perhitungan_gaji php
+            SELECT  php.*,eea.*,ese.*,erl.*,pa.*,
+pmg.gaji_pokok as m_gaji_pokok,
+pmg.insentif_prestasi as m_insentif_prestasi,
+pmg.insentif_masuk_sore as m_insentif_masuk_sore,
+pmg.insentif_masuk_malam as m_insentif_masuk_malam,
+pmg.ubt as m_ubt,
+pmg.upamk as m_upamk FROM pr.pr_hasil_perhitungan_gaji php
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
             LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
             LEFT JOIN er.er_location erl on eea.location_code=erl.location_code
