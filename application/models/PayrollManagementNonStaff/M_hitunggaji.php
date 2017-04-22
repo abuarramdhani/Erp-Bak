@@ -484,6 +484,9 @@ class M_hitunggaji extends CI_Model
             SELECT * FROM pr.pr_hasil_perhitungan_gaji php
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
             LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
+            LEFT JOIN er.er_location erl on eea.location_code=erl.location_code
+            left join pr.pr_master_gaji pmg on pmg.noind=php.noind
+            left join pr.pr_absensi pa on pa.noind=php.noind
             where kodesie='$section' and bln_gaji='$month' and thn_gaji='$year'
         ";
         $query = $this->db->query($sql);

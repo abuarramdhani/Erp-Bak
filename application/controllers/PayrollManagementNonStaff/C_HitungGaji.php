@@ -210,7 +210,7 @@ class C_HitungGaji extends CI_Controller
 			$cekTglDiangkat = $this->M_hitunggaji->cekTglDiangkat($noind,$day);
 			foreach ($getLKHSeksi as $dataLKHSeksi) {
 				if ($dataLKHSeksi['tgl'] == $day) {
-					$jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['repair'] - (1,5*$dataLKHSeksi['reject']);
+					$jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['repair'] - (1.5*$dataLKHSeksi['reject']);
 					// echo $dataLKHSeksi['tgl']."<br>";
 					if (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Sunday') {
 						$target = 0;
@@ -1034,8 +1034,12 @@ class C_HitungGaji extends CI_Controller
 		$section = $this->input->post('section');
 		$month = $this->input->post('month');
 		$year = $this->input->post('year');
+		$tgl_bayar = $this->input->post('txtTglPembayaran');
 
 		$data['hitung'] = $this->M_hitunggaji->getHitungGajiDBF($section,$month,$year);
+		$pembagi_gp = $this->M_hitunggaji->getSetelan('pembagi_gp');
+		$pembagi_lembur = $this->M_hitunggaji->getSetelan('pembagi_lembur');
+		
 		//print_r($data['hitung']);exit;
 		$col = array(
 			// array("id","N",3,0),
@@ -1209,7 +1213,23 @@ class C_HitungGaji extends CI_Controller
 		dbase_create($dir.$filename, $col);
 		$db = dbase_open($dir.$filename, 2);
 
+		//variabel untuk perhitungan 
+		$jmlSKD=0;
+		$jmlIjin=0;
+		$jmlABS=0;
+		$jmlTerlambat=0;
+		$jmlCT=0;
+
 		foreach ($data['hitung'] as $htg) {
+
+			//hitung gaji pokok perhari
+
+			$gaji_pokok_per_hari=$htg['gaji_pokok']/$pembagi_gp;
+			$uang_lembur_per_jam=$htg['gaji_pokok']/$pembagi_lembur;
+			$jml_hari_ip=substr($htg['hitung_insentif_prestasi'],0,strpos($htg['hitung_insentif_prestasi'],"X"));
+
+
+
 			$data1 = array(
 				// $htg['hasil_perhitungan_id'], 
 				// $htg['noind'], 
@@ -1246,11 +1266,11 @@ class C_HitungGaji extends CI_Controller
 				// $htg['tkp'],
 
 				'',
+				$htg['location_name'],
 				'',
 				'',
 				'',
-				'',
-				'',
+				$tgl_bayar,
 				$htg['department_name'],
 				$htg['unit_name'],
 				$htg['section_name'],
@@ -1262,41 +1282,54 @@ class C_HitungGaji extends CI_Controller
 				'',
 				$htg['noind'],
 				$htg['employee_name'],
-				'',
+				$htg['kelas'],
 				substr($htg['noind'], 0, 1),
-				'',
-				'',
-				'',
+				$gaji_pokok_per_hari,
+				$uang_lembur_per_jam,
+				$htg['jht'],
 				'',
 				$htg['jkn'],
 				$htg['jp'],
-				'',
 				$htg['spsi'],
 				'',
+				$htg['HMP'],
+				$htg['HMS'],
+				$htg['HMM'],
 				'',
 				'',
 				'',
 				'',
+				$htg['denda_insentif_kondite'],
+				$htg['insentif_prestasi'],
 				'',
 				'',
 				'',
 				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
+				$htg['insentif_kelebihan'],
+				$htg['insentif_kondite'],
 				'',
 				'',
 				substr($htg['hitung_uang_lembur'], 0, 2),
-				'',
-				'',
-				'',
+				$htg['tambahan'],
+				$htg['tambah_lain'],
+				$htg['jml_UM'],
 				'',
 				$htg['duka'],
-				'',
+				$htg['cicil'],
 				$htg['pot_koperasi'],
+				$htg['pot_lebih_bayar'],
+				$htg['pot_hutang_lain'],
+				$htg['pot_gp'],
+				'',
+				/*$htg[]*/'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				'',
+				$jml_hari_ip,
+				/*$htg[]*/'',
 				'',
 				'',
 				'',
@@ -1306,70 +1339,57 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
+				$htg[''],
+				$htg[''],
+				$htg[''],
+				$htg[''],
+				$htg[''],
+				$jmlIjin,
+				$jmlABS,
+				$jmlTerlambat,
+				$jmlSKD,
+				$jmlCT,
 				'',
 				'',
 				'',
 				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
+				/*$htg[]*/'';
+				/*$htg[]*/'',
 				'',
 				$htg['ubt'],
+				$htg['m_insentif_masuk_malam'],
+				$htg['m_insentif_masuk_sore'],
+				$htg[],
 				'',
 				'',
-				'',
-				'',
-				'',
-				'',
+				$htg['HUPAMK'],
 				$htg['upamk'],
+				$htg[''],
+				$htg[''],
+				$htg[''],
 				'',
 				'',
 				'',
+				$htg['uang_dl'],
+				$htg[''],
 				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
+				$htg[''],
 				'',
 				'',
 				$htg['pot_dplk'],
 				'',
 				'',
+				$htg[''],
 				'',
 				'',
 				'',
 				'',
 				'',
-				$htg['gaji_pokok'],
 				'',
 				'',
 				'',
 				'',
-				'',
+				$htg[''],
 				'',
 				'',
 				''
