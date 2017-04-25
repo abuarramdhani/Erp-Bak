@@ -193,8 +193,8 @@ class C_HitungGaji extends CI_Controller
 		$getLKHSeksi = $this->M_hitunggaji->getLKHSeksi($noind, $firstdate, $lastdate);
 		// print_r($getLKHSeksi);exit;
 
-		$begin = new DateTime($firstdate);
-		$end = new DateTime($lastdate);
+		$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($thn_gaji.'-'.$bln_gaji.'-01')));
+		$end = new DateTime(date('Y-m-t 23:59:59', strtotime($thn_gaji.'-'.$bln_gaji.'-01')));
 
 		$interval = new DateInterval('P1D');
 
@@ -247,7 +247,17 @@ class C_HitungGaji extends CI_Controller
                             $equivalent = 0;
                         }
                         else{
-                            $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+
+                        	//bila waktu setting melebih target maka equivalentnya adalah waktu setting dibagi target.
+                        	//$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+                        	 if ($dataLKHSeksi['waktu_setting']>$dataLKHSeksi['setting_time']) {
+                                $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+	                            }
+	                            else
+	                            {
+	                                $equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
+	                            }
+                        
                         }
 					}
 
@@ -1019,7 +1029,8 @@ class C_HitungGaji extends CI_Controller
 
 		$data['firstdate'] = $firstdate;
 		$data['lastdate'] = $lastdate;
-
+		//echo $data['firstdate'].' and '.$data['lastdate'];
+		 
 		$data['getDetailPekerja'] = $this->M_hitunggaji->getHitungGaji($noind, $kodesie = '', $bln_gaji, $thn_gaji);
 		// $data['getDetailMasterGaji'] = $this->M_hitunggaji->getDetailMasterGaji($noind);
 		$data['getDetailLKHSeksi'] = $this->M_hitunggaji->getLKHSeksi($noind, $firstdate, $lastdate);
