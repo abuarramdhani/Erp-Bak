@@ -628,13 +628,13 @@ class C_HitungGaji extends CI_Controller
 				'insentif_kondite' => $KonditeTotal,
 				'hitung_insentif_prestasi' => $IPNilai.' X '.number_format($IPNominal, 0, '', '.'),
 				'hitung_insentif_kelebihan' => '('.$IKNilai.'/10) X ('.number_format($insentif_prestasi_mask, 0, '', '.').' - '.number_format($IPNominal, 0, '', '.').')',
-				'hitung_insentif_kondite' => $golA.'A +'.$golB.'B +'.$golC.'C +'.$golD.'D +'.$golE.'E',
+				'hitung_insentif_kondite' => $golA.'A+'.$golB.'B+'.$golC.'C+'.$golD.'D+'.$golE.'E',
 				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
 				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
 				'hitung_ubt' => $UBTNilai.' X '.number_format($UBTNominal, 0, '', '.'),
 				'hitung_upamk' => $UPAMKNilai.' X '.number_format($UPAMKNominal, 0, '', '.').' / '.$pembagi_upamk,
 				'hitung_tambah_kurang_bayar' => number_format($Tambahan, 0, '', '.').' + '.number_format($tambahanKurangBayar, 0, '', '.'),
-				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.number_format($GP, 0, '', '.').'/'.$pembagi_gp_bulanan.')',
+				'hitung_pot_htm' => '('.$jmlIzin.'I + '.$jmlMangkir.'M) X ('.number_format($GP, 0, '', '.').'/'.$pembagi_gp_bulanan.')',
 				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/'.$pembagi_lembur.')',
 			);
 
