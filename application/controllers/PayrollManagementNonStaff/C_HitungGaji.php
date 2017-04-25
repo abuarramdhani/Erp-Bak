@@ -217,9 +217,13 @@ class C_HitungGaji extends CI_Controller
 					}
 					elseif (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Friday' || date('l', strtotime($dataLKHSeksi['tgl'])) == 'Saturday') {
 						$target = $dataLKHSeksi['target_jumat_sabtu'];
+						$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time_jumat_sabtu');
+						
 					}
 					else{
 						$target = $dataLKHSeksi['target_senin_kamis'];
+						$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time_senin_kamis');
+						
 					}
 
 					if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
@@ -235,7 +239,7 @@ class C_HitungGaji extends CI_Controller
 					}
 					else{
 
-						$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time');
+						//$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time');
 						$proposional_target = 100/$target;
 						//$cycle_time = $dataLKHSeksi['waktu_setting']/$target;
 						$cycle_time = $waktu_cycletime/$target;
@@ -1027,7 +1031,9 @@ class C_HitungGaji extends CI_Controller
 		$data['persenan_jht'] = $this->M_hitunggaji->getSetelan('jht');
 		$data['persenan_jkn'] = $this->M_hitunggaji->getSetelan('jkn');
 		$data['persenan_jp'] = $this->M_hitunggaji->getSetelan('jp');
-		$data['waktu_cycletime'] = $this->M_hitunggaji->getSetelan('cycle_time');
+		$data['waktu_cycletime_jumat_sabtu'] = $this->M_hitunggaji->getSetelan('cycle_time_jumat_sabtu');
+		$data['waktu_cycletime_senin_kamis'] = $this->M_hitunggaji->getSetelan('cycle_time_senin_kamis');
+		
 						
 		$data['insentif_prestasi_mask'] = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
 		$data['insentif_kondite_1'] = $this->M_hitunggaji->getSetelan('insentif_kondite_1');
