@@ -150,6 +150,8 @@
                                                                 <th class="text-center" width="100px">Status</th>
                                                                 <th class="text-center" width="200px">Kode Barang Target Sementara</th>
                                                                 <th class="text-center" width="200px">Kode Proses Target Sementara</th>
+                                                                <th class="text-center" width="150px">Target</th>
+                                                                <th class="text-center" width="150px">Target Setting</th>
                                                                 <th class="text-center" width="150px">Equivalent Setting</th>
                                                                 <th class="text-center" width="150px">Proposional Target</th>
                                                                 <th class="text-center" width="100px">Cycle Time</th>
@@ -177,9 +179,16 @@
                                                                 $pencapaian_hari_ini = 0;
                                                                 $tanggal = 0;
                                                                 $day = $d->format('Y-m-d');
+                                                                $checkjmlpengerjaan=0;
+                                                                $historijmlpengerjaan=0;
+                                                                $tglpengerjaan=0;
+
                                                                 foreach ($getDetailLKHSeksi as $dataLKHSeksi) {
+                                                                    //get tanggal sebelumnya
+
                                                                     if ($dataLKHSeksi['tgl'] == $day) {
-                                                                        $jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['reject'];
+                                                                        //$jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['reject'];
+                                                                        $jml_baik = $dataLKHSeksi['jml_barang'] - $dataLKHSeksi['repair'] - (1.5*$dataLKHSeksi['reject']);
                                                                         // echo $dataLKHSeksi['tgl']."<br>";
                                                                         if (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Sunday') {
                                                                             $target = 0;
@@ -195,12 +204,8 @@
                                                                             $target = 0;
                                                                         }
 
-                                                                        if ($dataLKHSeksi['waktu_setting'] != 0) {
-                                                                            $targe_proposional = $target/360 * (360-$dataLKHSeksi['waktu_setting']);
-                                                                        }
-                                                                        else{
-                                                                            $targe_proposional = 0;
-                                                                        }
+                                                                        $targe_proposional = $target/360 * (360-$dataLKHSeksi['setting_time']);
+                                                                        
                                                                         
                                                                         if ($target == 0 || $target == '') {
                                                                             $proposional_target = 0;
@@ -209,26 +214,32 @@
                                                                         }
                                                                         else{
                                                                             $proposional_target = 100/$target;
-                                                                            $cycle_time = $dataLKHSeksi['waktu_setting']/$target;
+                                                                            $cycle_time = $waktu_cycletime/$target;
                                                                             if ($cycle_time == 0) {
                                                                                 $equivalent = 0;
                                                                             }
                                                                             else{
-                                                                                $equivalent = $target/$cycle_time;
+                                                                                $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
                                                                             }
                                                                         }
 
                                                                         $pencapaian = ($jml_baik + $equivalent) * $proposional_target;
                                                                         // echo $pencapaian." pencapaian<br>";
                                                                         $pencapaian_hari_ini = $pencapaian_hari_ini + $pencapaian;
+                                                                        //check pencapaian
+                                                                        if ($dataLKHSeksi['tgl']!=$tglpengerjaan) {
                                                                         $tanggal = $dataLKHSeksi['tgl'];
-                                                                        if ($pencapaian_hari_ini >= 110) {
+                                                                        }
+
+                                                                        if ($pencapaian_hari_ini >= 110 ) {
                                                                             $ip_table = 1;
                                                                             $ik_table = 10;
+                                                                            $historijmlpengerjaan++;
                                                                         }
-                                                                        elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110) {
+                                                                        elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110 ) {
                                                                             $ip_table = 1;
-                                                                            $ik_table = $pencapaian_hari_ini - 100;;
+                                                                            $ik_table = $pencapaian_hari_ini - 100;
+                                                                            $historijmlpengerjaan++;
                                                                         }
                                                                         else{
                                                                             $ip_table = 0;
@@ -252,6 +263,8 @@
                                                                 <td><?php echo $dataLKHSeksi['status'];?></td>
                                                                 <td><?php echo $dataLKHSeksi['kode_barang_target_sementara'];?></td>
                                                                 <td><?php echo $dataLKHSeksi['kode_proses_target_sementara'];?></td>
+                                                                <td><?php echo $target;?></td>
+                                                                <td><?php echo $dataLKHSeksi['waktu_setting'];?></td>
                                                                 <td><?php echo $equivalent;?></td>
                                                                 <td><?php echo $proposional_target;?></td>
                                                                 <td><?php echo $cycle_time;?></td>

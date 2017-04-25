@@ -195,7 +195,93 @@ class M_hitunggaji extends CI_Model
     {
 
         $sql = "
-            SELECT * FROM
+            SELECT * ,
+            (
+SELECT count(tgl) FROM
+            (
+                    (
+                    SELECT
+                        *,
+                        pls.noind as nomor_induk,
+                        pls.tgl as tanggal_lkh,
+                        rtrim(pls.kode_barang) as kd_brg,
+                        rtrim(pls.kode_proses) as kd_proses,
+                        (CASE
+                            WHEN kelas = '5'
+                            THEN ptb.target_utama_senin_kamis
+                            WHEN kelas = '4'
+                            THEN ptb.target_utama_senin_kamis_4
+                            ELSE NULL
+                        END) AS target_senin_kamis,
+                        (CASE
+                            WHEN kelas = '5'
+                            THEN ptb.target_utama_jumat_sabtu
+                            WHEN kelas = '4'
+                            THEN ptb.target_utama_jumat_sabtu_4
+                            ELSE NULL
+                        END) AS target_jumat_sabtu
+                    FROM
+                        pr.pr_lkh_seksi pls
+                    LEFT JOIN
+                        pr.pr_target_benda ptb
+                            ON
+                                rtrim(pls.kode_barang) = rtrim(ptb.kode_barang)
+                            AND rtrim(pls.kode_proses) = rtrim(ptb.kode_proses)
+                    LEFT JOIN
+                        pr.pr_master_gaji pmg
+                            ON
+                                pls.noind = pmg.noind
+                    WHERE
+                            rtrim(pls.kode_barang_target_sementara) = ''
+                        OR  rtrim(pls.kode_proses_target_sementara) = ''
+                    )
+
+                UNION
+
+                    (
+                    SELECT
+                        *,
+                        pls.noind as nomor_induk,
+                        pls.tgl as tanggal_lkh,
+                        rtrim(pls.kode_barang) as kd_brg,
+                        rtrim(pls.kode_proses) as kd_proses,
+                        ptb.target_sementara_senin_kamis as target_senin_kamis,
+                        ptb.target_sementara_jumat_sabtu as target_jumat_sabtu
+                    FROM
+                        pr.pr_lkh_seksi pls
+                    LEFT JOIN
+                        pr.pr_target_benda ptb
+                            ON
+                                rtrim(pls.kode_barang_target_sementara) = rtrim(ptb.kode_barang)
+                            AND rtrim(pls.kode_proses_target_sementara) = rtrim(ptb.kode_proses)
+                    LEFT JOIN
+                        pr.pr_master_gaji pmg
+                            ON
+                                pls.noind = pmg.noind
+                    WHERE
+                            rtrim(pls.kode_barang_target_sementara) != ''
+                        OR  rtrim(pls.kode_proses_target_sementara) != ''
+                    )
+            )
+
+            AS
+
+            t(lkhSeksi)
+
+            WHERE
+                    \"nomor_induk\" = '$noind'
+                AND \"tanggal_lkh\" = tlkhseksi.tgl
+
+ group by tgl
+            ORDER BY
+                tgl asc
+
+) as jml_pengerjaan
+
+
+
+            FROM
+            (select * from
             (
                     (
                     SELECT
@@ -270,6 +356,7 @@ class M_hitunggaji extends CI_Model
 
             ORDER BY
                 tgl ASC
+) as tlkhseksi
         ";
 
         $query = $this->db->query($sql);

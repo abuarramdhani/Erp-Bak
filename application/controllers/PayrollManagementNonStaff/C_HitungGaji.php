@@ -226,15 +226,25 @@ class C_HitungGaji extends CI_Controller
 						$target = 0;
 					}
 					
+					$targe_proposional = $target/360 * (360-$dataLKHSeksi['setting_time']);
+
 					if ($target == 0 || $target == '') {
 						$proposional_target = 0;
 						$cycle_time = 0;
 						$equivalent = 0;
 					}
 					else{
+
+						$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time');
 						$proposional_target = 100/$target;
-						$cycle_time = $dataLKHSeksi['waktu_setting']/$target;
-						$equivalent = $target/$cycle_time;
+						//$cycle_time = $dataLKHSeksi['waktu_setting']/$target;
+						$cycle_time = $waktu_cycletime/$target;
+						if ($cycle_time == 0) {
+                            $equivalent = 0;
+                        }
+                        else{
+                            $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+                        }
 					}
 
 					$pencapaian = ($jml_baik + $equivalent) * $proposional_target;
@@ -1017,6 +1027,8 @@ class C_HitungGaji extends CI_Controller
 		$data['persenan_jht'] = $this->M_hitunggaji->getSetelan('jht');
 		$data['persenan_jkn'] = $this->M_hitunggaji->getSetelan('jkn');
 		$data['persenan_jp'] = $this->M_hitunggaji->getSetelan('jp');
+		$data['waktu_cycletime'] = $this->M_hitunggaji->getSetelan('cycle_time');
+						
 		$data['insentif_prestasi_mask'] = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
 		$data['insentif_kondite_1'] = $this->M_hitunggaji->getSetelan('insentif_kondite_1');
 		$data['insentif_kondite_2'] = $this->M_hitunggaji->getSetelan('insentif_kondite_2');
