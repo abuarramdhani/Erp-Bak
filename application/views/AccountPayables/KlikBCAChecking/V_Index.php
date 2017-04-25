@@ -5,9 +5,9 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 					<div class="row">
-						<div class="col-lg-3">
+						<div class="col-lg-5">
 							<br />
-							<h1>ADM Pelatihan </h1>
+							<h1>Account Payables </h1>
 						</div>
 					</div>
 			</section>
@@ -20,7 +20,7 @@
 						
 						<center> 
 							
-							<img  src="<?php echo base_url('assets/img/cs.png');?>" style="max-width:27%;" />
+							<img  src="<?php echo base_url('assets/img/logo.png');?>" style="max-width:27%;" />
 						
 						</center>
 						<br /><br />
