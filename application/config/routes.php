@@ -473,7 +473,7 @@ $route['PresenceManagement/Cronjob/(:any)']	= 'PresenceManagement/MainMenu/C_Cro
 $route['PresenceManagement/Cronjob/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Cronjob/$1/$2';
 
 //------------------------------------Account Payables---------------------------------------------------
-$route['AccountPayables'] 				= 'AccountPayables/C_Invoice';
+$route['AccountPayables'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';

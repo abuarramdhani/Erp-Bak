@@ -195,9 +195,11 @@
                                                                         }
                                                                         elseif (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Friday' || date('l', strtotime($dataLKHSeksi['tgl'])) == 'Saturday') {
                                                                             $target = $dataLKHSeksi['target_jumat_sabtu'];
+                                                                            $waktu_cycletime=$waktu_cycletime_jumat_sabtu;
                                                                         }
                                                                         else{
                                                                             $target = $dataLKHSeksi['target_senin_kamis'];
+                                                                            $waktu_cycletime=$waktu_cycletime_senin_kamis;
                                                                         }
 
                                                                         if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
