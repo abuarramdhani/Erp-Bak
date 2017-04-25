@@ -164,8 +164,9 @@
                                                         </thead>
                                                         <tbody>
                                                         <?php
-                                                            $begin = new DateTime($firstdate);
-                                                            $end = new DateTime($lastdate);
+
+                                                            $begin = new DateTime(date('Y-m-01 00:00:00', strtotime($firstdate)));
+                                                            $end = new DateTime(date('Y-m-t 23:59:59', strtotime($lastdate)));
 
                                                             $interval = new DateInterval('P1D');
 
@@ -221,7 +222,15 @@
                                                                                 $equivalent = 0;
                                                                             }
                                                                             else{
-                                                                                $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+                                                                                //bila waktu setting melebih target maka equivalentnya adalah waktu setting dibagi target.
+                                                                                //$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+                                                                                if ($dataLKHSeksi['waktu_setting']>$dataLKHSeksi['setting_time']) {
+                                                                                    $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    $equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
+                                                                                }
                                                                             }
                                                                         }
 
