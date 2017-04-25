@@ -55,7 +55,11 @@ class C_TransaksiPenggajian extends CI_Controller
 		if($checkPeriode){
 			$getDataPenggajian	= $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth,$kd_transaksi);
 			
+			$encrypted_string = $this->encrypt->encode($varPeriode);
+			$encDate = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+			
 			$data['getDataPenggajian_data'] = $getDataPenggajian;
+			$data['encDate'] = $encDate;
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_index', $data);
@@ -606,6 +610,39 @@ class C_TransaksiPenggajian extends CI_Controller
         }else{
             redirect(site_url());
         }
+    }
+	
+	public function CetakStruk($id){
+        $plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$periode = $this->encrypt->decode($plaintext_string);
+		$this->checkSession();
+		$kd_transaksi	= "1";
+		$varYear		= substr($periode,0,4);
+		$varMonth		= substr($periode,5,2);
+		if ($periode != '') {
+			
+			$data['strukData'] = $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth,$kd_transaksi);
+			// $html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk_by_id', $data, true);
+		}
+		else{
+			echo "";
+		}
+
+		$html = $this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_struk', $data, true);
+		// print_r($data['strukData']);exit;
+
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+
+		$pdf = new mPDF('utf-8', array(215,140), 0, 'A4-P', 0, 0, 0, 0);
+
+		$filename = 'Struk_Gaji'.time();
+
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
     }
 
     public function formValidation()

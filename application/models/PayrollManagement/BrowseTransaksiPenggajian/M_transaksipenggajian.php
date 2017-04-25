@@ -44,6 +44,7 @@ class M_transaksipenggajian extends CI_Model
         $this->db->where('extract(year from tanggal)=', $varYear);
         $this->db->where('extract(month from tanggal)=', $varMonth);
 		$this->db->where('kd_jns_transaksi=', $kd_transaksi);
+		$this->db->join('pr.pr_master_pekerja', 'pr.pr_master_pekerja.noind = pr.pr_transaksi_pembayaran_penggajian.noind', 'left');
         return $this->db->get($this->table)->result();
     }
 	
@@ -222,6 +223,7 @@ class M_transaksipenggajian extends CI_Model
 		$this->db->where('keluar','0');
 		return $this->db->get($this->tb_master_pekerja)->result();
 	}
+	
 
 }
 

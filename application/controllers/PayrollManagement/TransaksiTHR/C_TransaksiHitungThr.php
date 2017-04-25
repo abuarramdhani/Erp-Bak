@@ -30,9 +30,7 @@ class C_TransaksiHitungThr extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
-        $transaksiHitungThr = $this->M_transaksihitungthr->get_all();
 
-        $data['transaksiHitungThr_data'] = $transaksiHitungThr;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/TransaksiHitungThr/V_index', $data);

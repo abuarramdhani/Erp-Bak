@@ -36,12 +36,20 @@
 
 		            <div class="table-responsive">
 					 <div class="row">
-			              <form method="post" action="<?php echo base_url('PayrollManagement/TransaksiHitungThr/upload')?>" enctype="multipart/form-data">
-						    <div class="row" style="margin: 10px 0 10px 10px">
-							  <div class="col-lg-offset-7 col-lg-3">
+					  <div class="row" style="margin: 10px 0 10px 0">
+						 <form class="form-inline" method="post" action="<?php echo $action; ?>">
+							  <div class="col-lg-2">
+									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" style="width:155px;" required>
+							  </div>
+							  <div class=" col-lg-1">
+							    <button type="submit" style="margin-left:25px;" class="btn btn-primary">Hitung</button>
+							  </div>
+						</form>			             
+						 <form method="post" action="<?php echo base_url('PayrollManagement/TransaksiHitungThr/upload')?>" enctype="multipart/form-data">
+							  <div class="col-lg-offset-5 col-lg-3">
 							    <input name="importfile" type="file" class="form-control" readonly required>
 							  </div>
-							  <div class=" col-lg-2">
+							  <div class=" col-lg-1">
 							    <button class="btn btn-primary btn-block">Load</button>
 							  </div>
 						  </form>
@@ -81,7 +89,7 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($transaksiHitungThr_data as $row) { ?>
+							<?php if(!empty($transaksiHitungThr_data)){ $no = 1; foreach($transaksiHitungThr_data as $row) { ?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
@@ -102,14 +110,14 @@
 							<td align='center'><?php echo $row->persentase_ubthr ?></td>
 							<td align='right'><?php echo number_format((int)$row->ubthr) ?></td>
 							</tr>
-							<?php } ?>
+							<?php } } ?>
 		                </tbody>                                      
 		              </table>
 		              <form class="form-inline" method="post" action="<?php echo $action; ?>">
 						<div class="form-group">
-						  <input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" required>
+						  <input type="text" class="form-control" name="txtPeriodeHitung" style="width:155px;" required>
 						</div>
-						<button type="submit" class="btn btn-primary">Hitung</button>
+							<button type="submit" style="margin-left:25px;" class="btn btn-success">Cetak Struk</button>
 					  </form>
 		            </div>
 		          </div>

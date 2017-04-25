@@ -28,8 +28,7 @@
                     <b>Transaksi Penggajian</b>
 		          </div>
 		          <div class="box-body">
-		           <div class="table-responsive"> 
-				   
+		         <!--  <div class="table-responsive">  -->
 				    <div class="row">
 			              <form method="post" action="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/Check')?>" enctype="multipart/form-data">
 						    <div class="row" style="margin: 10px 0 10px 0px">
@@ -39,6 +38,12 @@
 							  <div class=" col-lg-2">
 							    <button class="btn btn-primary btn-block">Proses Gaji</button>
 							  </div>
+							  <div class=" col-lg-6">
+							  </div>
+							  <div class=" col-lg-2">
+							    <a data-toggle="tooltip" id="btn-reg-person" title="Cetak Struk" href='<?php echo site_URL() ?>PayrollManagement/BrowseTransaksiPenggajian/CetakStruk/<?php echo $encDate; ?>' class="btn btn-success btn-md btn-refresh-db" target="blank_">Cetak Struk</a>
+								<a data-toggle="tooltip" id="btn-reg-person" title="Delete Record" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/UpdateSection/<?php echo $encrypted_string ?>' class="btn bg-red btn-md btn-refresh-db"><i class="fa fa-remove"></i></a>
+							  </div>
 						  </form>
 			          </div>
 		            </div>
@@ -47,6 +52,7 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
                             <th style='text-align:center'><div style="width:100px"></div>Tanggal</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Noind</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Nama</th>
 							<th style='text-align:center;'><div style="width:100px">Jabatan</div></th>
 							<th style='text-align:center;'><div style="width:100px"></div>Jabatan Upah</th>
@@ -114,7 +120,6 @@
 							<th style='text-align:center;'><div style="width:100px"></div>Putkop</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pikop</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Potkop</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Potkop</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Hutang</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. Duka</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Pot. SPSI</th>
@@ -126,9 +131,97 @@
 						  </tr>
 		                </thead>
 		                <tbody>
+						<?php 
+							if(!empty($getDataPenggajian_data)){ 
+							$no= 0;
+							foreach($getDataPenggajian_data as $row){
+							$no++;
+						?>
+							<td align="center"><?php echo $no; ?></td>
+							<td align="center"><?php echo $row->tanggal ?></td>
+							<td align="center"><?php echo $row->noind ?></td>
+							<td align="left"><?php echo $row->nama ?></td>
+							<td align="center"><?php echo $row->kd_jabatan; ?></div></td>
+							<td align="center">-</td>
+							<td align="center"><?php echo $row->kodesie; ?></td>
+							<td align="center"><?php echo $row->kd_bank; ?></td>
+							<td align="center"><?php echo number_format((int)$row->gaji_pokok); ?></td>
+							<td align="center"><?php echo number_format((int)$row->gaji_asuransi); ?></td>
+							<td align="center"><?php echo number_format((int)$row->gaji_bln_ini); ?></td>
+							<td align="center"><?php echo number_format((int)$row->p_if); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_if); ?></td>
+							<td align="center"><?php echo number_format((int)$row->p_ikr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_ikr); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_ikmhl); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_ikmhl); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_ip); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_ip); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_ik); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_ik); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_ims); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_ims); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_imm); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_imm); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_lembur); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_lembur); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->p_ubt); ?></td>
+							<td align="center"><?php echo number_format((int)$row->n_ubt); ?></td>
+							<td align="center"><?php echo number_format((int)$row->t_ubt); ?></td>
+							<td align="center"><?php echo number_format((int)$row->p_upamk); ?></td>
+							<td align="center">0</td>
+							<td align="center"><?php echo number_format((int)$row->t_upamk); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_bln_lalu); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_pengangkatan); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_sisa_cuti); ?></td>
+							<td align="center"><?php echo number_format((int)$row->tkena_pajak); ?></td>
+							<td align="center"><?php echo number_format((int)$row->konpensasi_lembur); ?></td>
+							<td align="center"><?php echo number_format((int)$row->rapel_gaji); ?></td>
+							<td align="center"><?php echo number_format((int)$row->htm); ?></td>
+							<td align="center"><?php echo number_format((int)$row->ijin); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_htm); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_sakit_berkepanjangan); ?></td>
+							<td align="center"><div style="width:100px);font:red);"></div><?php echo number_format((int)$row->subtotal_dibayarkan); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_dl); ?></td>
+							<td align="center"><?php echo number_format((int)$row->thr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->ubthr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_sdh_byr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pajak); ?></td>
+							<td align="center"><div style="width:100px);font:red);"></div><?php echo number_format((int)$row->subtotal1); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_dl); ?></td>
+							<td align="center"><?php echo number_format((int)$row->thr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->ubthr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_sdh_byr); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pajak); ?></td>
+		                    <td align="center"><div style="width:100px);font:red);"></div><?php echo number_format((int)$row->subtotal2); ?></td>
+							<td align="center"><?php echo number_format((int)$row->klaim_bln_lalu); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_jht); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_jkn); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_jpn); ?></td>
+							<td align="center"><?php echo number_format((int)$row->putkop); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pikop); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_kop); ?></td>
+							<td align="center"><?php echo number_format((int)$row->putang); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pduka); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pspsi); ?></td>
+							<td align="center"><?php echo number_format((int)$row->pot_pensiun); ?></td>
+							<td align="center"><?php echo number_format((int)$row->plain); ?></td>
+							<td align="center"><?php echo number_format((int)$row->btransfer); ?></td>
+							<td align="center"><div style="width:100px);font:red);"></div><?php echo number_format((int)$row->subtotal3); ?></td>
+							<td align="center"><?php echo $row->kd_jns_transaksi ?></td>
+						<?php
+								} 
+							} 
+						?>
 		                </tbody>                                      
 		              </table>
-		           </div> 
+		          <!-- </div>   -->
 		          </div>
 		        </div>
 	        </div>
