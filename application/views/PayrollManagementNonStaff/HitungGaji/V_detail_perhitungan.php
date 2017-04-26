@@ -154,6 +154,7 @@
                                                                 <th class="text-center" width="150px">Target Setting</th>
                                                                 <th class="text-center" width="150px">Equivalent Setting</th>
                                                                 <th class="text-center" width="150px">Proposional Target</th>
+                                                                <th class="text-center" width="100px">Waktu Efektif</th>
                                                                 <th class="text-center" width="100px">Cycle Time</th>
                                                                 <th class="text-center" width="100px">Pencapaian</th>
                                                                 <th class="text-center" width="150px">Pencapaian Total</th>
@@ -202,6 +203,17 @@
                                                                             $waktu_cycletime=$waktu_cycletime_senin_kamis;
                                                                         }
 
+                                                                        /*hasil rapat 26 April :
+                                                                        LKH             Target Benda        
+                                                                        Waktu setting   Target setting      Waktu Efektif
+                                                                        0               20                  Hari Panjang : 390 & Hari Pendek 330
+                                                                        10              20                  Hari Panjang : 370 & Hari Pendek 310
+                                                                        30              20                  Hari Panjang : 370 & Hari Pendek 310
+                                                                        */
+                                                                        if (0 != $dataLKHSeksi['setting_time']) {
+                                                                            $waktu_cycletime=$waktu_cycletime-$dataLKHSeksi['waktu_setting'];
+                                                                        }
+
                                                                         if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
                                                                             $target = 0;
                                                                         }
@@ -221,18 +233,14 @@
                                                                                 $equivalent = 0;
                                                                             }
                                                                             else{
-                                                                                //bila waktu setting melebih target maka pencapaianannya 0
-                                                                                //$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
-                                                                                if ($dataLKHSeksi['setting_time']<=$dataLKHSeksi['waktu_setting']) {
-                                                                                    $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    //$equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
-                                                                                    $equivalent=0;
-                                                                                    $proposional_target = 0;
-                                                                                    $jml_baik=0;
-                                                                                }
+                                                                                //bila waktu setting 0 maka equivalent 0
+                                                                            if (0==$dataLKHSeksi['setting_time']) {
+                                                                                $equivalent = 0;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                $equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
+                                                                            }
                                                                             }
                                                                         }
 
@@ -280,6 +288,7 @@
                                                                 <td><?php echo $dataLKHSeksi['waktu_setting'];?></td>
                                                                 <td><?php echo $equivalent;?></td>
                                                                 <td><?php echo $proposional_target;?></td>
+                                                                <td><?php echo $waktu_cycletime;?></td>
                                                                 <td><?php echo $cycle_time;?></td>
                                                                 <td><?php echo $pencapaian;?></td>
                                                                 <td><?php echo $pencapaian_hari_ini;?></td>
