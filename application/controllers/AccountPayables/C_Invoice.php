@@ -284,8 +284,8 @@ class C_Invoice extends CI_Controller {
 		$year 			= $this->input->POST('year');
 		$invoice_num 	= $this->input->POST('invoice_num');
 		$name 			= $this->input->POST('name');
-		$tanggal_awal = $this->input->post('tanggal_awal');
-		$tanggal_akhir = $this->input->post('tanggal_akhir');
+		$tanggal_awal = $this->input->POST('tanggal_awal');
+		$tanggal_akhir = $this->input->POST('tanggal_akhir');
 		
 		$ket1 			= $this->input->POST('ket1');
 		$ket2 			= $this->input->POST('ket2');
