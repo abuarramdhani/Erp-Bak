@@ -48,7 +48,7 @@
 						:
 					</td>
 					<td style="width:9%;font-size:12px;vertical-align:top; ">
-						B0689
+						<?php echo $row->noind; ?>
 					</td>
 				</tr>
 				<tr>
@@ -63,7 +63,7 @@
 						:
 					</td>
 					<td style="width:9%;font-size:12px;vertical-align:top; ">
-						ALFIAN AFIEF NURTAMSA
+						<?php echo $row->nama;  ?>
 					</td>
 				</tr>
 				<tr>
@@ -74,7 +74,7 @@
 						:
 					</td>
 					<td style="width:9%;font-size:12px;vertical-align:top; ">
-						<?php echo substr("PROGRAM KOMPUTER",0,14); ?>/<?php echo substr("PROGRAM KOMPUTER",0,14); ?>
+						<?php echo substr($row->seksi ,0,14); ?> / <?php echo substr($row->unit,0,14); ?>
 					</td>
 				</tr>
 				<tr>
@@ -94,7 +94,7 @@
             </table>
         </div>
 		<div class="row" style="margin-left:3px;margin-right:3px;padding-top:10px;">
-            <table style="width: 100%;">
+            <table style="width: 100%;font-size:12px;">
                 <tr>
                     <td style="width:15%;">
 						Gaji Pokok
@@ -106,7 +106,7 @@
 						1 Bulan
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->gaji_pokok); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -115,7 +115,7 @@
 						Lanjutan Sub.Total 1 ...........
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->subtotal1); ?>
 					</td>
 				</tr>
 				<tr>
@@ -126,13 +126,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo $row->p_ik; ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_ik); ?>
 					</td>
 					<td style="width:3%;" colspan="5">
 						&nbsp;
@@ -146,13 +146,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo $row->p_ip ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_ip); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -167,7 +167,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->pajak);?>
 					</td>
 				</tr>
 				<tr>
@@ -178,13 +178,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo $row->p_if ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_if); ?>
 					</td>
 					<td style="width:3%;" colspan="3">
 						&nbsp;
@@ -198,13 +198,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						0/0
+						<?php echo $row->p_ims; ?>/ <?php echo $row->p_imm; ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format(((int)$row->t_ims)+(int)($row->t_imm)) ?>
 					</td>
 					<td style="width:3%;" colspan="3">
 						&nbsp;
@@ -224,13 +224,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo $row->p_lembur; ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_lembur); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -245,7 +245,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->subtotal2); ?>
 					</td>
 				</tr>
 				<tr>
@@ -258,11 +258,11 @@
 					<td style="width:8%;text-align:right;">
 						24.25
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_um_puasa); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -277,7 +277,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->pot_jht + (int)$row->pot_jkn + (int)$row->pot_jpn); ?>
 					</td>
 				</tr>
 				<tr>
@@ -288,13 +288,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo $row->p_ubt; ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_ubt); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -309,7 +309,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->pikop + (int)$row->putkop); ?>
 					</td>
 				</tr>
 				<tr>
@@ -320,13 +320,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo $row->t_upamk; ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->t_upamk); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -341,12 +341,33 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->putang); ?>
 					</td>
 				</tr>
 				<tr>
-                    <td style="width:15%;" colspan="6">
-					</td>
+					<?php if($row->thr == 0 and $row->ubthr==0){ ?>
+						<td style="width:15%;" colspan="6">
+						</td>
+					<?php }else{ ?>
+						<td style="width:15%;">
+							THR + UBTHR
+						</td>
+						<td style="width:2%;text-align:center;">
+							:
+						</td>
+						<td style="width:8%;text-align:right;">
+							&nbsp;
+						</td>
+						 <td style="width:8%;">
+							&nbsp;
+						</td>
+						<td style="width:20%;text-align:right;">
+							<?php echo number_format((int)$row->thr + (int)$row->ubthr); ?>
+						</td>
+						<td style="width:3%;">
+							&nbsp;
+						</td>
+					<?php } ?>
 					<td style="width:15%;">
 						Pot. Duka + SPSI
 					</td>
@@ -357,7 +378,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->pduka+(int)$row->pspsi); ?>
 					</td>
 				</tr>
 				<tr>
@@ -373,12 +394,33 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->btransfer); ?>
 					</td>
 				</tr>
 				<tr>
-                    <td style="width:15%;" colspan="6">
-					</td>
+					<?php if($row->klaim_dl==0){ ?>
+						<td style="width:15%;" colspan="6">
+						</td>
+					<?php }else{?>
+						<td style="width:15%;">
+							Koreksi I
+						</td>
+						<td style="width:2%;text-align:center;">
+							:
+						</td>
+						<td style="width:8%;text-align:right;">
+							&nbsp;
+						</td>
+						 <td style="width:8%;">
+							&nbsp;
+						</td>
+						<td style="width:20%;text-align:right;">
+							<?php echo number_format((int)$row->tkena_pajak); ?>
+						</td>
+						<td style="width:3%;">
+							&nbsp;
+						</td>
+					<?php } ?>
 					<td style="width:15%;">
 						Pot. Lain-lain
 					</td>
@@ -389,7 +431,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->plain); ?>
 					</td>
 				</tr>
 				<tr>
@@ -400,13 +442,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						&nbsp;
 					</td>
 					 <td style="width:8%;">
-					  Hari
+					  &nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->pajak); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -421,12 +463,35 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->pot_pensiun); ?>
 					</td>
 				</tr>
 				<tr>
-                    <td style="width:15%;" colspan="8">
-					</td>
+					<?php if($row->klaim_dl==0){ ?>
+						<td style="width:15%;" colspan="8">
+						</td>
+					<?php }else{?>
+						<td style="width:15%;">
+							U. Klaim DL
+						</td>
+						<td style="width:2%;text-align:center;">
+							:
+						</td>
+						<td style="width:8%;text-align:right;">
+							&nbsp;
+						</td>
+						 <td style="width:8%;">
+							&nbsp;
+						</td>
+						<td style="width:20%;text-align:right;">
+							<?php echo number_format((int)$row->klaim_dl); ?>
+						</td>
+						<td style="width:3%;">
+							&nbsp;
+						</td>
+						<td style="width:15%;" colspan="2">
+						</td>
+					<?php } ?>
 					<td style="width:7%;text-align:right;">
 						&nbsp;
 					</td>
@@ -435,8 +500,29 @@
 					</td>
 				</tr>
 				<tr>
-                    <td style="width:15%;" colspan="6">
-					</td>
+                    <?php if($row->klaim_sisa_cuti==0){ ?>
+						<td style="width:15%;" colspan="6">
+						</td>
+					<?php }else{?>
+						<td style="width:15%;">
+							U. Sisa Cuti
+						</td>
+						<td style="width:2%;text-align:center;">
+							:
+						</td>
+						<td style="width:8%;text-align:right;">
+							&nbsp;
+						</td>
+						 <td style="width:8%;">
+							&nbsp;
+						</td>
+						<td style="width:20%;text-align:right;">
+							<?php echo number_format((int)$row->klaim_sisa_cuti); ?>
+						</td>
+						<td style="width:3%;">
+							&nbsp;
+						</td>
+					<?php } ?>
 					<td style="width:15%;">
 						Sub. Total 3
 					</td>
@@ -447,7 +533,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->subtotal3); ?>
 					</td>
 				</tr>
 				<tr>
@@ -458,13 +544,13 @@
 						:
 					</td>
 					<td style="width:8%;text-align:right;">
-						24.25
+						<?php echo (float)$row->ijin + (int)$row->htm; ?>
 					</td>
-					 <td style="width:8%;">
+					 <td style="width:8%;text-align:center;">
 					  Hari
 					</td>
 					<td style="width:20%;text-align:right;">
-						( 9.000.000 )
+						- ( <?php echo number_format((int)$row->pot_htm); ?> )
 					</td>
 					<td style="width:3%;" colspan="5">
 						&nbsp;
@@ -494,7 +580,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						9.000.000
+						<?php echo number_format((int)$row->subtotal1); ?>
 					</td>
 					<td style="width:3%;">
 						&nbsp;
@@ -509,7 +595,7 @@
 						&nbsp;
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.000.000
+						<?php echo number_format((int)$row->subtotal3); ?>
 					</td>
 				</tr>
 				<tr>

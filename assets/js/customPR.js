@@ -258,6 +258,7 @@ $('#dataTables-transaksiKlaimSisaCuti').DataTable( {
 $('#dataTables-transaksiHitungThr').DataTable( {
 	  "destroy": true,
       dom: 'Bfrtip',
+	  "autoWidth": true,
       "scrollX": true,
       buttons: [
         'excel'
@@ -378,10 +379,6 @@ $('#txtTglJamRecord').datepicker({ autoclose: true });
 $('#txtTglRec').datepicker({ autoclose: true });
 
 $(document).ready(function() {
-<<<<<<< HEAD
-
-=======
->>>>>>> 760015bffb48ae0681a6c316682ad866b1f6a861
   $('#txtPeriodeCheck').datepicker({
     autoclose: true,
     format: "yyyy",
@@ -415,14 +412,9 @@ $(document).ready(function() {
     viewMode: "months", 
     minViewMode: "months"
   });
-<<<<<<< HEAD
   
 
   $('#txtPeriodeTahun').datepicker({
-=======
-
-  $('.txtPeriodeTahun').datepicker({
->>>>>>> 760015bffb48ae0681a6c316682ad866b1f6a861
     autoclose: true,
     format: "yyyy",
     viewMode: "years", 

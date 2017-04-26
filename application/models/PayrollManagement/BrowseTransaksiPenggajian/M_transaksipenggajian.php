@@ -45,7 +45,8 @@ class M_transaksipenggajian extends CI_Model
         $this->db->where('extract(month from tanggal)=', $varMonth);
 		$this->db->where('kd_jns_transaksi=', $kd_transaksi);
 		$this->db->join('pr.pr_master_pekerja', 'pr.pr_master_pekerja.noind = pr.pr_transaksi_pembayaran_penggajian.noind', 'left');
-        return $this->db->get($this->table)->result();
+        $this->db->join('pr.pr_master_seksi','pr.pr_master_pekerja.kodesie=pr.pr_master_seksi.kodesie');
+		return $this->db->get($this->table)->result();
     }
 	
 	function checkAvailNoind(){
@@ -90,10 +91,10 @@ class M_transaksipenggajian extends CI_Model
 		return $sql->result();
 	}
 	
-	function getDataGajianPersonalia($varYear,$varMonth,$date){
+	function getDataGajianPersonalia($varYear,$varMonth,$date,$id){
 		$query	= "
 		select 
-			b.noind,a.kd_status_kerja,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,a.kd_hubungan_kerja,
+			b.noind,a.kd_status_kerja,a.nama ,a.stat_pajak,a.jt_anak,a.jt_bkn_anak,a.no_koperasi, extract(year from age(to_date(a.tgl_lahir,'YYYY-MM-DD'))) as umur,a.masuk_kerja,a.kd_hubungan_kerja,
 			b.tanggal,b.kd_jabatan,b.kodesie,(b.ip) as p_ip,(b.ik) as p_ik,(b.i_f) as p_if,b.if_htg_bln_lalu,(b.ubt) as p_ubt,(b.upamk) as p_upamk,
 			(b.um) as p_um,(b.ims) as p_ims,(b.imm) as p_imm,b.lembur,b.htm,b.ijin,b.htm_htg_bln_lalu,b.ijin_htg_bln_lalu,b.pot,
 			b.tamb_gaji,b.hl,b.ct,b.putkop,b.plain,b.pikop,b.pspsi,b.putang,b.dl,b.tkpajak,b.ttpajak,
@@ -128,8 +129,9 @@ class M_transaksipenggajian extends CI_Model
 			) as klaim_dl,
 			coalesce(q.pot_transfer,'0') as pot_transfer,coalesce(q.pot_transfer_tg_prshn,'0') as pot_transfer_tg_prshn ,
 			coalesce(r.insentif_kemahalan,'0') as insentif_kemahalan,
-			s.bulan_sakit,
-			coalesce(t.jumlah_konpensasi,'0') as jml_konpensasi
+			coalesce(s.bulan_sakit,'0') as bulan_sakit,
+			coalesce(t.jumlah_konpensasi,'0') as jml_konpensasi,
+			u.seksi,u.unit,u.dept
 			from pr.pr_data_gajian_personalia as b
 			left join pr.pr_master_pekerja as a on a.noind=b.noind
 			left join pr.pr_riwayat_gaji as c on a.noind=c.noind and c.tgl_berlaku<='$date' and c.tgl_tberlaku>'$date'
@@ -150,7 +152,8 @@ class M_transaksipenggajian extends CI_Model
 			left join pr.pr_riwayat_insentif_kemahalan as r on a.noind=r.noind and r.tgl_berlaku<='$date' and q.tgl_tberlaku>'$date'
 			left join pr.pr_daftar_pekerja_sakit as s on a.noind=s.noind and extract(year from b.tanggal)=extract(year from s.tanggal) and extract(month from b.tanggal)>=extract(month from s.tanggal) and extract(month from b.tanggal)<=extract(month from s.tanggal)
 			left join pr.pr_transaksi_konpensasi_lembur as t on a.noind=t.noind and extract(year from b.tanggal)=extract(year from t.tanggal) and extract(month from b.tanggal)=extract(month from t.tanggal)
-			where k.periode_pengurang_pajak<='$date' and l.periode_jst<='$date' and a.noind='B0616' and
+			left join pr.pr_master_seksi as u on a.kodesie=u.kodesie
+			where k.periode_pengurang_pajak<='$date' and l.periode_jst<='$date' $id and
 				extract(year from b.tanggal)='$varYear' and extract(month from b.tanggal)='$varMonth' and a.noind is not null
 				order by b.noind";
 		$sql	= $this->db->query($query);
@@ -223,7 +226,6 @@ class M_transaksipenggajian extends CI_Model
 		$this->db->where('keluar','0');
 		return $this->db->get($this->tb_master_pekerja)->result();
 	}
-	
 
 }
 

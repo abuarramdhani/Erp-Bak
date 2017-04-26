@@ -21,32 +21,54 @@
 	      </div>
 	      <br/>
 	      
+	    <?php
+			if($this->session->userdata('failed')){ 
+		?>
+			<div class="alert alert-danger alert-dismissable" id="lama" style="width:100%;">
+				<b> Import Gagal ! </b> Terjadi kesalahan saat melakukan import data
+			</div>
+		<?php
+			}
+		?>
+		<?php
+			if($this->session->userdata('success')){ 
+		?>
+			<div class="alert alert-success alert-dismissable" id="lama" style="width:100%;">
+				<b> Import Sukses ! </b> Import data THR berhasil
+			</div>
+		<?php
+			}
+		?>
+		<?php
+			if($this->session->userdata('empty')){ 
+		?>
+			<div class="alert alert-warning alert-dismissable" id="lama" style="width:100%;">
+				<b> Data Kosong ! </b> Tidak ada data pada periode tersebut
+			</div>
+		<?php
+			}
+		?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
 		          <div class="box-header with-border">
-                  <a href="<?php echo site_url('PayrollManagement/TransaksiHitungThr/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
-                      <button type="button" class="btn btn-default btn-sm">
-                        <i class="icon-plus icon-2x"></i>
-                      </button>
-                    </a>
                     <b>Transaksi Hitung Thr</b>
 		          </div>
 		          <div class="box-body">
 
-		            <div class="table-responsive">
+		          <!--  <div class="table-responsive">  -->
 					 <div class="row">
 					  <div class="row" style="margin: 10px 0 10px 0">
 						 <form class="form-inline" method="post" action="<?php echo $action; ?>">
-							  <div class="col-lg-2">
-									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" style="width:155px;" required>
+							  <div class="col-lg-1">
+									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" style="width:100px;" required>
 							  </div>
 							  <div class=" col-lg-1">
 							    <button type="submit" style="margin-left:25px;" class="btn btn-primary">Hitung</button>
 							  </div>
 						</form>			             
 						 <form method="post" action="<?php echo base_url('PayrollManagement/TransaksiHitungThr/upload')?>" enctype="multipart/form-data">
-							  <div class="col-lg-offset-5 col-lg-3">
+							  <div class="col-lg-offset-6 col-lg-3">
 							    <input name="importfile" type="file" class="form-control" readonly required>
 							  </div>
 							  <div class=" col-lg-1">
@@ -69,34 +91,32 @@
 				 	    }
 					  ?>
 		            </div>
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiHitungThr" style="font-size:12px;">
+		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiHitungThr" style="font-size:12px;width:100%;">
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
-                            <th style='text-align:center'><div style="width:100px"></div>ACTION</th>
-							<th style='text-align:center'><div style="width:100px">Tanggal</th>
-							<th style='text-align:center'><div style="width:100px">Periode</th>
-							<th style='text-align:center'><div style="width:100px">Noind</th>
-							<th style='text-align:center'><div style="width:100px">Kd Status Kerja</th>
-							<th style='text-align:center'><div style="width:100px">Diangkat</th>
-							<th style='text-align:center'><div style="width:100px">Lama Thn</th>
-							<th style='text-align:center'><div style="width:100px">Lama Bln</th>
-							<th style='text-align:center'><div style="width:100px">Gaji Pokok</th>
-							<th style='text-align:center'><div style="width:100px">THR (%)</th>
-							<th style='text-align:center'><div style="width:100px">THR</th>
-							<th style='text-align:center'><div style="width:100px">UBTHR (%)</th>
-							<th style='text-align:center'><div style="width:100px">UBTHR</th>
+                            <th style='text-align:center'>ACTION</th>
+							<th style='text-align:center'>Tanggal</th>
+							<th style='text-align:center'>Periode</th>
+							<th style='text-align:center'>Noind</th>
+							<th style='text-align:center'>Kd Status Kerja</th>
+							<th style='text-align:center'>Diangkat</th>
+							<th style='text-align:center'>Lama Thn</th>
+							<th style='text-align:center'>Lama Bln</th>
+							<th style='text-align:center'>Gaji Pokok</th>
+							<th style='text-align:center'>THR (%)</th>
+							<th style='text-align:center'>THR</th>
+							<th style='text-align:center'>UBTHR (%)</th>
+							<th style='text-align:center'>UBTHR</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
 							<?php if(!empty($transaksiHitungThr_data)){ $no = 1; foreach($transaksiHitungThr_data as $row) { ?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
-                              <td align='center' width='200px'>
+                              <td align='center'>
                               	<a href="<?php echo base_url('PayrollManagement/TransaksiHitungThr/read/'.$row->id_transaksi_thr.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHitungThr/update/'.$row->id_transaksi_thr.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHitungThr/delete/'.$row->id_transaksi_thr.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
-                              </td>
+                               </td>
 							<td align='center'><?php echo $row->tanggal ?></td>
 							<td align='center'><?php echo $row->periode ?></td>
 							<td align='center'><?php echo $row->noind ?></td>
@@ -113,13 +133,10 @@
 							<?php } } ?>
 		                </tbody>                                      
 		              </table>
-		              <form class="form-inline" method="post" action="<?php echo $action; ?>">
-						<div class="form-group">
-						  <input type="text" class="form-control" name="txtPeriodeHitung" style="width:155px;" required>
-						</div>
-							<button type="submit" style="margin-left:25px;" class="btn btn-success">Cetak Struk</button>
-					  </form>
-		            </div>
+					  <?php if(!empty($enc_dt)){?>
+		              <a data-toggle="tooltip" id="btn-reg-person" title="Cetak Struk" href='<?php echo site_URL() ?>PayrollManagement/TransaksiHitungThr/CetakStruk/<?php echo $enc_dt; ?>' class="btn btn-success btn-md btn-refresh-db" target="blank_">Cetak Struk</a>
+					  <?php } ?>
+					<!-- </div>  -->
 		          </div>
 		        </div>
 	        </div>

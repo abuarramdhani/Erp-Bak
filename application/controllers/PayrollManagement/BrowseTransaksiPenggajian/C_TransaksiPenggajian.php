@@ -93,7 +93,8 @@ class C_TransaksiPenggajian extends CI_Controller
 		$varMonth	= $this->input->post('txtMonth',TRUE);
 		$varDate	= $varYear."-".$varMonth."-20";
 		$date			= date('Y-m-d');
-		$getDataGajianPersonalia	= $this->M_transaksipenggajian->getDataGajianPersonalia($varYear,$varMonth,$date);
+		$spc = "";
+		$getDataGajianPersonalia	= $this->M_transaksipenggajian->getDataGajianPersonalia($varYear,$varMonth,$date,$spc);
 		$no = 0;
 		foreach($getDataGajianPersonalia as $row1){
 			$noind = $row1->noind;
@@ -263,7 +264,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						$fx_ims					= $p_ims * $r_ims;																									//KOMPONEN INSENTIF MASUK SORE
 						$fx_ubt					= $p_ubt * $r_ubt;																									//KOMPONEN UANG BANTU TRANSPORT
 						$fx_upamk				= $p_upamk * $r_upamk;																						//KOMPONEN UPAH PENGHARGAAN ATAS MASA KERJA
-						$fx_lembur				= (((($r_gaji_pokok / 30) + $r_um ) * 30 ) * $std_jam) * $p_lembur;						//KOMPONEN LEMBUR
+						$fx_lembur				= round(($r_gaji_pokok / $std_jam) * $p_lembur,1);											//KOMPONEN LEMBUR
 						$fx_um					= $p_um * $r_um;																									//KOMPONEN UANG MAKAN
 						$fx_klaim_cuti			= $klaim_cuti;																											//KLAIM SISA CUTI	
 						$fx_klaim_dl			= $klaim_dl;																												//KLAIM DINAS LUAR
@@ -403,9 +404,9 @@ class C_TransaksiPenggajian extends CI_Controller
 						$fx_pajak				= $pajak_dibayar;																																			//UANG TAMBAHAN PAJAK
 						
 						//SUBTOTAL
-						$subtotal1	= round($fx_gaji_pokok + $fx_ik + $fx_ip + $fx_if  + $fx_imm + $fx_ims + $fx_lembur + $fx_um + $fx_ubt + $fx_upamk + $fx_pajak + $fx_kp + $fx_insentif_kemahalan  - $fx_htm,0);
-						$subtotal2	= round($subtotal1 + $fx_klaim_dl + $fx_thr + $fx_ubthr,2);
-						$subtotal3	= round($subtotal2 - $fx_jht_k - $fx_jkn_k - $fx_jpk - $fx_pikop - $fx_putkop - $fx_cicilan_hutang - $fx_pot_duka - $fx_pot_spsi - $fx_pot_lain,0);
+						$subtotal1	= round($fx_gaji_pokok + $fx_ik + $fx_ip + $fx_if  + $fx_imm + $fx_ims + $fx_lembur + $fx_um + $fx_ubt + $fx_upamk + $fx_pajak + $fx_kp + $fx_insentif_kemahalan + $fx_klaim_dl + $fx_thr + $fx_ubthr - $fx_htm,0);
+						$subtotal2	= round($subtotal1 ,2);
+						$subtotal3	= round($subtotal2 - $fx_jht_k - $fx_jkn_k - $fx_jkm - $fx_jpk - $fx_pikop - $fx_putkop - $fx_cicilan_hutang - $fx_pot_duka - $fx_pot_spsi - $fx_pot_lain,0);
 						//INSERT PEMBAYARAN PENGGAJIAN
 						$data = array(
 												'id_pembayaran_gaji' => str_replace(' ','',$noind.$varMonth.$varYear.date('His')),
@@ -566,7 +567,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						
 					
 						$this->M_transaksipenggajian->insert_transaksi_insentif_kemahalan($data_insentif_kemahalan);
-						//REVIEW PERHITUNGAN 
+						// REVIEW PERHITUNGAN
 						// echo "<table>";
 						// echo "<tr><td>gaji pokok</td><td>= ".$fx_gaji_pokok."</td></tr>";
 						// echo "<tr><td>insentif</td><td>= ".$std_insentif."</td></tr>";
@@ -602,6 +603,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						// echo "</table>";
 					}
 		}
+		redirect('PayrollManagement/BrowseTransaksiPenggajian/index');
 	}
 
     public function checkSession(){
@@ -644,6 +646,31 @@ class C_TransaksiPenggajian extends CI_Controller
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
     }
+	
+	public function read($id){
+		$noind 		=  substr($id,0,5);
+		$varMonth	=  substr($id,5,2);
+		$varYear	=  substr($id,7,4);
+		$date		= date('Y-m-d');
+		$id = "and a.noind='".$noind."'";
+		$this->checkSession();
+        $user_id = $this->session->userid;
+        
+        $data['Menu'] = 'Payroll Management';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$getDataGajianPersonalia	= $this->M_transaksipenggajian->getDataGajianPersonalia($varYear,$varMonth,$date,$id);
+		$data['strukData'] = $getDataGajianPersonalia;
+		
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_Read', $data);
+        $this->load->view('V_Footer',$data);
+	}
 
     public function formValidation()
     {

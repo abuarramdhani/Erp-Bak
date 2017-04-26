@@ -16,8 +16,9 @@ class M_transaksihitungthr extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($dt)
     {
+		$this->db->where('periode=',$dt);
     	return $this->db->get($this->table)->result();
     }
 
@@ -94,6 +95,13 @@ class M_transaksihitungthr extends CI_Model
         $this->db->where($ht_where);
         $this->db->update($this->table, $ht_data);
     }
+	
+	function getTransaksiTHR($dt){
+		$this->db->where('periode=',$dt);
+		$this->db->join('pr.pr_master_pekerja', 'pr.pr_master_pekerja.noind = pr.pr_transaksi_hitung_thr.noind', 'left');
+		$this->db->join('pr.pr_master_seksi', 'pr.pr_master_pekerja.kodesie = pr.pr_transaksi_hitung_thr.kodesie', 'left');
+    	return $this->db->get($this->table)->result();
+	}
 
 }
 

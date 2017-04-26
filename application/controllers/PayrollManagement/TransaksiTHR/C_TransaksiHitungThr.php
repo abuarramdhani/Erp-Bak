@@ -25,16 +25,28 @@ class C_TransaksiHitungThr extends CI_Controller
         $data['Menu'] = 'Payroll Management';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
-
+		
+		$enc_dt	= $this->input->get('id');
+		
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
+		if(!empty($enc_dt)){
+			$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_dt);
+			$dt = $this->encrypt->decode($plaintext_string);
+			$data['transaksiHitungThr_data'] = $this->M_transaksihitungthr->get_all($dt);
+			$data['dt'] = $dt;
+			$data['enc_dt'] = $enc_dt;
+		}
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/TransaksiHitungThr/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata("success");
+		$this->session->unset_userdata("failed");
+		$this->session->unset_userdata("empty");
     }
 
 	public function read($id)
@@ -318,9 +330,22 @@ class C_TransaksiHitungThr extends CI_Controller
         		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		        $data['data_exist'] = $data_exist;
 				unlink($file_path);
+				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+				$ses=array(
+					 "success" => 1
+				);
+		
+				$this->session->set_userdata($ses);
 				redirect(site_url('PayrollManagement/TransaksiHitungThr'));
             } else {
-                $this->load->view('csvindex');
+                // $this->load->view('csvindex');
+				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+				$ses=array(
+					 "failed" => 1
+				);
+		
+				$this->session->set_userdata($ses);
+				redirect(site_url('PayrollManagement/TransaksiHitungThr'));
             }
         }
     }
@@ -379,44 +404,82 @@ class C_TransaksiHitungThr extends CI_Controller
     public function hitung(){
         $periode = $this->input->post('txtPeriodeHitung');
         $hitung_data = $this->M_transaksihitungthr->get_hitung_data($periode);
+		
+		if(!empty($hitung_data)){
+			foreach ($hitung_data as $row) {
+				$ht_where = array(
+					'id_transaksi_thr' => $row['id_transaksi_thr'], 
+				);
 
-        foreach ($hitung_data as $row) {
-            $ht_where = array(
-                'id_transaksi_thr' => $row['id_transaksi_thr'], 
-            );
+				$lama_thn = $row['lama_thn'];
+				$lama_bln = $row['lama_bln'];
+				$gaji_pokok = $row['gaji_pokok'];
+				$persentase_thr = $row['persentase_thr'];
+				$persentase_ubthr = $row['persentase_ubthr'];
 
-            $lama_thn = $row['lama_thn'];
-            $lama_bln = $row['lama_bln'];
-            $gaji_pokok = $row['gaji_pokok'];
-            $persentase_thr = $row['persentase_thr'];
-            $persentase_ubthr = $row['persentase_ubthr'];
+				if ($lama_thn > 0) {
+					$thr_awal = $gaji_pokok * 1;
+					$ubthr_awal = $gaji_pokok * 1;
+				}
+				else{
+					$thr_awal = $gaji_pokok * ($lama_bln/12);
+					$ubthr_awal = $gaji_pokok * ($lama_bln/12);
+				}
 
-            if ($lama_thn > 0) {
-                $thr_awal = $gaji_pokok * 1;
-                $ubthr_awal = $gaji_pokok * 1;
-            }
-            else{
-                $thr_awal = $gaji_pokok * ($lama_bln/12);
-                $ubthr_awal = $gaji_pokok * ($lama_bln/12);
-            }
+				$thr_akhir = $thr_awal * ($persentase_thr/100);
+				$ubthr_akhir = $ubthr_awal * ($persentase_ubthr/100);
 
-            $thr_akhir = $thr_awal * ($persentase_thr/100);
-            $ubthr_akhir = $ubthr_awal * ($persentase_ubthr/100);
+				$ht_data = array(
+					'gaji_pokok' => $gaji_pokok,
+					'tanggal' => date('Y-m-d'),
+					'persentase_thr' => $persentase_thr,
+					'thr' => round($thr_akhir, 2),
+					'persentase_ubthr' => $persentase_ubthr,
+					'ubthr' => round($ubthr_akhir, 2),
+				);
 
-            $ht_data = array(
-                'gaji_pokok' => $gaji_pokok,
-                'tanggal' => date('Y-m-d'),
-				'persentase_thr' => $persentase_thr,
-                'thr' => round($thr_akhir, 2),
-                'persentase_ubthr' => $persentase_ubthr,
-                'ubthr' => round($ubthr_akhir, 2),
-            );
+				$this->M_transaksihitungthr->update_hitung($ht_where, $ht_data);
+			}
 
-            $this->M_transaksihitungthr->update_hitung($ht_where, $ht_data);
-        }
+			$enc_str = $this->encrypt->encode($periode);
+			$enc_str = str_replace(array('+', '/', '='), array('-', '_', '~'), $enc_str);
+			redirect(site_url('PayrollManagement/TransaksiHitungThr?id='.$enc_str.''));
+		}else{
+			$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+			$ses=array(
+				 "empty" => 1
+			);
+			redirect(site_url('PayrollManagement/TransaksiHitungThr'));
+		}
+	}
+	
+	public function CetakStruk($id){
+        $plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$periode = $this->encrypt->decode($plaintext_string);
+		$this->checkSession();
+		if ($periode != '') {
+			
+			$data['strukData'] = $this->M_transaksihitungthr->getTransaksiTHR($periode);
+		}
+		else{
+			echo "";
+		}
 
-        $this->session->set_flashdata('message', 'Update Record Success');
-        redirect(site_url('PayrollManagement/TransaksiHitungThr'));
+		$html = $this->load->view('PayrollManagement/TransaksiHitungThr/V_struk', $data, true);
+		// print_r($data['strukData']);exit;
+
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+
+		$pdf = new mPDF('utf-8', array(215,140), 0, 'A4-P', 0, 0, 0, 0);
+
+		$filename = 'Struk_THR'.time();
+
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
     }
 
     public function checkSession(){

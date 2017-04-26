@@ -51,6 +51,7 @@
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
+		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>Act</th>
                             <th style='text-align:center'><div style="width:100px"></div>Tanggal</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Noind</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Nama</th>
@@ -138,6 +139,9 @@
 							$no++;
 						?>
 							<td align="center"><?php echo $no; ?></td>
+							<td align='center'>
+								<a href="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/read/'.$row->id_pembayaran_gaji.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+							</td>
 							<td align="center"><?php echo $row->tanggal ?></td>
 							<td align="center"><?php echo $row->noind ?></td>
 							<td align="left"><?php echo $row->nama ?></td>
