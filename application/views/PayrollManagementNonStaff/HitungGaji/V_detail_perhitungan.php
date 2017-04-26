@@ -224,7 +224,7 @@
                                                                             else{
                                                                                 //bila waktu setting melebih target maka equivalentnya adalah waktu setting dibagi target.
                                                                                 //$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
-                                                                                if ($dataLKHSeksi['waktu_setting']>$dataLKHSeksi['setting_time']) {
+                                                                                if ($dataLKHSeksi['waktu_setting']>=$dataLKHSeksi['setting_time']) {
                                                                                     $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
                                                                                 }
                                                                                 else
