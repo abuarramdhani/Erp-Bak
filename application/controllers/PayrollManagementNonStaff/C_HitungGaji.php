@@ -248,17 +248,18 @@ class C_HitungGaji extends CI_Controller
                         }
                         else{
 
-                        	//bila waktu setting melebih target maka equivalentnya adalah waktu setting dibagi target.
-                        	//$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
-                        	 if ($dataLKHSeksi['waktu_setting']>=$dataLKHSeksi['setting_time']) {
+                        	//bila waktu setting melebih target maka pencapaianannya 0
+                            //$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
+                            if ($dataLKHSeksi['setting_time']<=$dataLKHSeksi['waktu_setting']) {
                                 $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
-	                            }
-	                            else
-	                            {
-	                                //$equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
+                            }
+                            else
+                            {
+                                //$equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
                                 $equivalent=0;
-	                            }
-                        
+                                $proposional_target = 0;
+                                $jml_baik=0;
+                            }
                         }
 					}
 

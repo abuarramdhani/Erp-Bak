@@ -141,21 +141,20 @@
                                                                 <th class="text-center" width="100px">Kode Proses</th>
                                                                 <th class="text-center" width="100px">Nama Proses</th>
                                                                 <th class="text-center" width="100px">Jml Barang</th>
-                                                                <th class="text-center" width="100px">Afmat</th>
-                                                                <th class="text-center" width="100px">Afmch</th>
-                                                                <th class="text-center" width="100px">Repair</th>
-                                                                <th class="text-center" width="100px">Reject</th>
-                                                                <th class="text-center" width="100px">Setting Time</th>
-                                                                <th class="text-center" width="100px">Shift</th>
-                                                                <th class="text-center" width="100px">Status</th>
+                                                                <th class="text-center" width="70px">Afmat</th>
+                                                                <th class="text-center" width="70px">Afmch</th>
+                                                                <th class="text-center" width="70px">Repair</th>
+                                                                <th class="text-center" width="70px">Reject</th>
+                                                                <th class="text-center" width="70px">Setting Time</th>
+                                                                <th class="text-center" width="70px">Shift</th>
+                                                                <th class="text-center" width="70px">Status</th>
                                                                 <th class="text-center" width="200px">Kode Barang Target Sementara</th>
                                                                 <th class="text-center" width="200px">Kode Proses Target Sementara</th>
-                                                                <th class="text-center" width="150px">Target</th>
+                                                                <th class="text-center" width="100px">Target</th>
                                                                 <th class="text-center" width="150px">Target Setting</th>
                                                                 <th class="text-center" width="150px">Equivalent Setting</th>
                                                                 <th class="text-center" width="150px">Proposional Target</th>
                                                                 <th class="text-center" width="100px">Cycle Time</th>
-                                                                <th class="text-center" width="150px">Target Porposional</th>
                                                                 <th class="text-center" width="100px">Pencapaian</th>
                                                                 <th class="text-center" width="150px">Pencapaian Total</th>
                                                                 <th class="text-center" width="150px">Insentif Prestasi</th>
@@ -222,15 +221,17 @@
                                                                                 $equivalent = 0;
                                                                             }
                                                                             else{
-                                                                                //bila waktu setting melebih target maka equivalentnya adalah waktu setting dibagi target.
+                                                                                //bila waktu setting melebih target maka pencapaianannya 0
                                                                                 //$equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
-                                                                                if ($dataLKHSeksi['waktu_setting']>=$dataLKHSeksi['setting_time']) {
+                                                                                if ($dataLKHSeksi['setting_time']<=$dataLKHSeksi['waktu_setting']) {
                                                                                     $equivalent = $dataLKHSeksi['setting_time']/$cycle_time;
                                                                                 }
                                                                                 else
                                                                                 {
                                                                                     //$equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
                                                                                     $equivalent=0;
+                                                                                    $proposional_target = 0;
+                                                                                    $jml_baik=0;
                                                                                 }
                                                                             }
                                                                         }
@@ -280,7 +281,6 @@
                                                                 <td><?php echo $equivalent;?></td>
                                                                 <td><?php echo $proposional_target;?></td>
                                                                 <td><?php echo $cycle_time;?></td>
-                                                                <td><?php echo $targe_proposional;?></td>
                                                                 <td><?php echo $pencapaian;?></td>
                                                                 <td><?php echo $pencapaian_hari_ini;?></td>
                                                                 <td><?php echo $ip_table;?></td>
