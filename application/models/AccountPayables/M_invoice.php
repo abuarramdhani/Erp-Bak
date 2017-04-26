@@ -183,37 +183,7 @@ class M_invoice extends CI_Model{
 						else if($typ1=="yes" && $typ2=="yes"){$qtyp="faktur_type";}
 		
 		$oracle = $this->load->database("oracle",true);
-		echo "
-			SELECT FAKTUR_WEB_ID
-				,FAKTUR_PAJAK
-				,MONTH
-				,YEAR
-				,case when faktur_date
-					is NULL then null 	
-					else to_char(faktur_date, 'DD/MM/YY')
-					end as faktur_date
-				,NPWP
-				,NAME
-				,ADDRESS
-				,DPP
-				,PPN
-				,PPN_BM
-				,IS_CREDITABLE_FLAG
-				,DESCRIPTION
-				,STATUS
-				,FM
-				,COMMENTS
-				,decode(FAKTUR_TYPE,'N','WITHOUT INVOICE','WITH INVOICE')  FAKTUR_TYPE 
-			FROM khs_faktur_web
-			where month=$qmonth
-				and year=$qyear
-				and faktur_pajak = $qinvnum
-				and name = $qname
-				and description = $qket
-				and (status = $qsta)
-				and faktur_type = $qtyp
-				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
-		";
+		
 		$query = $oracle->query("
 			SELECT FAKTUR_WEB_ID
 				,FAKTUR_PAJAK
