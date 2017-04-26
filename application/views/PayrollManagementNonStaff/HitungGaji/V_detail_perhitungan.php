@@ -209,10 +209,10 @@
                                                                         0               20                  Hari Panjang : 390 & Hari Pendek 330
                                                                         10              20                  Hari Panjang : 370 & Hari Pendek 310
                                                                         30              20                  Hari Panjang : 370 & Hari Pendek 310
-                                                                        */
+                                                                        
                                                                         if (0 != $dataLKHSeksi['setting_time']) {
                                                                             $waktu_cycletime=$waktu_cycletime-$dataLKHSeksi['waktu_setting'];
-                                                                        }
+                                                                        }*/
 
                                                                         if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
                                                                             $target = 0;
