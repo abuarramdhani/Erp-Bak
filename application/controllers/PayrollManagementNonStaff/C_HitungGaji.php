@@ -255,7 +255,8 @@ class C_HitungGaji extends CI_Controller
 	                            }
 	                            else
 	                            {
-	                                $equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
+	                                //$equivalent = $dataLKHSeksi['waktu_setting']/$cycle_time;
+                                $equivalent=0;
 	                            }
                         
                         }
