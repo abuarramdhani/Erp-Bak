@@ -133,7 +133,7 @@ class C_PermintaanDana extends CI_Controller {
 			$this->load->view('V_Footer',$data);
 		} else {
 			$data_demand_h = array(
-				'SEGMENT1' 		=> 123456,
+				'SEGMENT1' 		=> date('Ymd'),
 				'NEED_BY_DATE'	=> date("d-M-Y H:i:s", strtotime($this->input->post('txtNeedByDate', true))),
 				'CASH_AMOUNT'	=> $this->input->post('txtCashBalance', true),
 				'CASH_LIMIT'	=> $this->input->post('txtCashLimit', true),
