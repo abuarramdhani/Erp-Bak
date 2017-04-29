@@ -491,6 +491,11 @@ $route['AccountPayables/KlikBCAChecking/Check'] 				= 'AccountPayables/C_KlikBCA
 $route['AccountPayables/KlikBCAChecking/Check/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Check/$1';
 $route['AccountPayables/KlikBCAChecking/Check/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Check/$1/$2';
 
+$route['AccountPayables'] 						= 'AccountPayables/C_PermintaanDana';
+$route['AccountPayables/Dana'] 					= 'AccountPayables/C_PermintaanDana';
+$route['AccountPayables/Dana/(:any)'] 			= 'AccountPayables/C_PermintaanDana/$1';
+$route['AccountPayables/Dana/(:any)/(:any)'] 	= 'AccountPayables/C_PermintaanDana/$1/$2';
+
 //---------------------------------------- ADM PELATIHAN ----------------------------------------
 $route['ADMPelatihan'] 									= 'ADMPelatihan/C_ADMPelatihan';
 
