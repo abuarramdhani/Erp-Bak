@@ -52,9 +52,9 @@
 							</form>
 								<div class="col-lg-2">
 								</div>
-									<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/import')?>" enctype="multipart/form-data">
+									<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/doImport')?>" enctype="multipart/form-data">
 										<div class="col-lg-3">
-											<input name="importfile" type="file" class="form-control" readonly required>
+											<input name="file" type="file" class="form-control" readonly required>
 										</div>
 										<div class="col-lg-2">
 											<button class="btn btn-info btn-block">Import</button>

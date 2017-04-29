@@ -90,6 +90,23 @@ class M_masterpekerja extends CI_Model
             {
                 return $this->db->get('pr.pr_master_jabatan')->result();
             }
+			
+			
+			 public function setMasterPekerja($data)
+			{
+				return $this->db->insert('pr.pr_master_pekerja', $data);
+			}
+
+			public function updateMasterPekerja($data, $id)
+			{
+				$this->db->where('noind', $id);
+				$this->db->update('pr.pr_master_pekerja', $data);
+			}
+
+			public function cekUpdate($dataCekUpdate){
+				$query = $this->db->get_where('pr.pr_master_pekerja', $dataCekUpdate);
+				return $query;
+			}
 
 }
 

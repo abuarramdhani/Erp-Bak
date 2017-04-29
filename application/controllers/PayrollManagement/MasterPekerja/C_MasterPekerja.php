@@ -445,310 +445,415 @@ class C_MasterPekerja extends CI_Controller
         }
     }
 	
-    public function import() {
-       
-        $config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '6000';
-        $this->load->library('upload', $config);
- 
-        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
-        else {  $file_data  = $this->upload->data();
-                $filename   = $file_data['file_name'];
-                $file_path  = 'assets/upload/importPR/masterpekerja/'.$file_data['file_name'];
-                
-            if ($this->csvimport->get_array($file_path)) {
-                
-                $csv_array  = $this->csvimport->get_array($file_path);
-                $data_exist = array();
-                $i = 0;
-                foreach ($csv_array as $row) {
-                    if(array_key_exists('KD_HUB_KER', $row)){
-                    	
- 						//ROW DATA
-	                    $data = array(
-	                    	'noind' => $row['NOIND'],
-							'kd_hubungan_kerja' => $row['KD_HUB_KER'],
-							'kd_status_kerja' => $row['KD_STATUS_'],
-							'nik' => $row['NIK'],
-							'no_kk' => $row['NO_KK'],
-							'nama' => $row['NAMA'],
-							'id_kantor_asal' => $row['ID_KANT_AS'],
-							'id_lokasi_kerja' => $row['ID_LOK_KER'],
-							'jns_kelamin' => $row['JENKEL'],
-							'tempat_lahir' => $row['TEMPAT_LHR'],
-							'tgl_lahir' => $row['TGL_LHR'],
-							'alamat' => $row['ALAMAT'],
-							'desa' => $row['DESA'],
-							'kecamatan' => $row['KEC'],
-							'kabupaten' => $row['KAB'],
-							'provinsi' => $row['PROVINSI'],
-							'kode_pos' => $row['KODE_POS'],
-							'no_hp' => $row['NO_HP'],
-							'gelar_d' => $row['GELARD'],
-							'gelar_b' => $row['GELARB'],
-							'pendidikan' => $row['PENDIDIKAN'],
-							'jurusan' => $row['JURUSAN'],
-							'sekolah' => $row['SEKOLAH'],
-							'stat_nikah' => $row['STAT_NIKAH'],
-							'tgl_nikah' => $row['TGL_NIKAH'],
-							'jml_anak' => $row['JML_ANAK'],
-							'jml_sdr' => $row['JML_SDR'],
-							'diangkat' => $row['DIANGKAT'],
-							'masuk_kerja' => $row['MASUK_KERJ'],
-							'kodesie' => $row['KODESIE'],
-							'gol_kerja' => $row['GOL_KERJA'],
-							'kd_asal_outsourcing' => $row['KD_ASAL_OS'],
-							'kd_jabatan' => str_replace("'","",$row['KD_JABATAN']),
-							'jabatan' => $row['JABATAN'],
-							'npwp' => $row['NPWP'],
-							'no_kpj' => $row['NO_KPJ'],
-							'lm_kontrak' => $row['LM_KONTRAK'],
-							'akh_kontrak' => $row['AKH_KONTRA'],
-							'stat_pajak' => $row['STAT_PAJAK'],
-							'jt_anak' => $row['JT_ANAK'],
-							'jt_bkn_anak' => $row['JT_BKN_ANA'],
-							'tgl_spsi' => $row['TGL_SPSI'],
-							'no_spsi' => $row['NO_SPSI'],
-							'tgl_kop' => $row['TGL_KOP'],
-							'no_koperasi' => $row['NO_KOPERAS'],
-							'keluar' => $row['KELUAR'],
-							'tgl_keluar' => $row['TGL_KELUAR'],
-							'kd_pkj' => $row['KD_PKJ'],
-							'angg_jkn' => $row['ANGG_JKN'],
-							'noind_baru' => $row['NOIND_BARU'],
-	                    );
+   public function doImport(){
 
-                    	//CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
-	                   	$check = $this->M_masterpekerja->check($noind);
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
 
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-	                    }else{
-	                    	$this->M_masterpekerja->insert($data);
-	                    }
+		$config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
 
-                	}else{
-                		//ROW DATA
-                		$data = array(
-	                    	'noind' => $row['noind'],
-							'kd_hubungan_kerja' => $row['kd_hubungan_kerja'],
-							'kd_status_kerja' => $row['kd_status_kerja'],
-							'nik' => $row['nik'],
-							'no_kk' => $row['no_kk'],
-							'nama' => $row['nama'],
-							'id_kantor_asal' => $row['id_kantor_asal'],
-							'id_lokasi_kerja' => $row['id_lokasi_kerja'],
-							'jns_kelamin' => $row['jns_kelamin'],
-							'tempat_lahir' => $row['tempat_lahir'],
-							'tgl_lahir' => $row['tgl_lahir'],
-							'alamat' => $row['alamat'],
-							'desa' => $row['desa'],
-							'kecamatan' => $row['kecamatan'],
-							'kabupaten' => $row['kabupaten'],
-							'provinsi' => $row['provinsi'],
-							'kode_pos' => $row['kode_pos'],
-							'no_hp' => $row['no_hp'],
-							'gelar_d' => $row['gelar_d'],
-							'gelar_b' => $row['gelar_b'],
-							'pendidikan' => $row['pendidikan'],
-							'jurusan' => $row['jurusan'],
-							'sekolah' => $row['sekolah'],
-							'stat_nikah' => $row['stat_nikah'],
-							'tgl_nikah' => $row['tgl_nikah'],
-							'jml_anak' => $row['jml_anak'],
-							'jml_sdr' => $row['jml_sdr'],
-							'diangkat' => $row['diangkat'],
-							'masuk_kerja' => $row['masuk_kerja'],
-							'kodesie' => $row['kodesie'],
-							'gol_kerja' => $row['gol_kerja'],
-							'kd_asal_outsourcing' => $row['kd_asal_outsourcing'],
-							'kd_jabatan' => str_replace("'","",$row['kd_jabatan']),
-							'jabatan' => $row['jabatan'],
-							'npwp' => $row['npwp'],
-							'no_kpj' => $row['no_kpj'],
-							'lm_kontrak' => $row['lm_kontrak'],
-							'akh_kontrak' => $row['akh_kontrak'],
-							'stat_pajak' => $row['stat_pajak'],
-							'jt_anak' => $row['jt_anak'],
-							'jt_bkn_anak' => $row['jt_bkn_anak'],
-							'tgl_spsi' => $row['tgl_spsi'],
-							'no_spsi' => $row['no_spsi'],
-							'tgl_kop' => $row['tgl_kop'],
-							'no_koperasi' => $row['no_koperasi'],
-							'keluar' => $row['keluar'],
-							'tgl_keluar' => $row['tgl_keluar'],
-							'kd_pkj' => $row['kd_pkj'],
-							'angg_jkn' => $row['angg_jkn'],
-							'noind_baru' => $row['noind_baru'],
-	                    );
+		$this->load->library('upload', $config);
 
-	                    //CHECK IF EXIST
-                    	$noind = str_pad($row['noind'], 5, "0", STR_PAD_LEFT);
-	                   	$check = $this->M_masterpekerja->check($noind);
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/importPR/masterpekerja/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
 
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-	                    }else{
-	                    	$this->M_masterpekerja->insert($data);
-	                    }
-	                    
-                	}
-                }
-
-                //LOAD EXIST DATA VERIFICATION PAGE
-                $this->checkSession();
-        		$user_id = $this->session->userid;
-        
-        		$data['Menu'] = 'Payroll Management';
-        		$data['SubMenuOne'] = '';
-        		$data['SubMenuTwo'] = '';
-
-		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		        $data['data_exist'] = $data_exist;
-        		$masterPekerja = $this->M_masterpekerja->get_all();
-
-		        $this->load->view('V_Header',$data);
-		        $this->load->view('V_Sidemenu',$data);
-		        $this->load->view('PayrollManagement/MasterPekerja/V_Upload', $data);
-		        $this->load->view('V_Footer',$data);
-                unlink($file_path);
-
-            } else {
-                $this->load->view('csvindex');
-            }
-        }
-    }
-
-    public function importexist()
-    {
-        $noind = $this->input->post('txtNoind');
-        $replace = $this->input->post('replace');
-		$kd_hubungan_kerja = $this->input->post('txtKdHubunganKerja');
-		$kd_status_kerja = $this->input->post('txtKdStatusKerja');
-		$nik = $this->input->post('txtNik');
-		$no_kk = $this->input->post('txtNoKk');
-		$nama = $this->input->post('txtNama');
-		$id_kantor_asal = $this->input->post('txtIdKantorAsal');
-		$id_lokasi_kerja = $this->input->post('txtIdLokasiKerja');
-		$jns_kelamin = $this->input->post('txtJnsKelamin');
-		$tempat_lahir = $this->input->post('txtTempatLahir');
-		$tgl_lahir = $this->input->post('txtTglLahir');
-		$alamat = $this->input->post('txtAlamat');
-		$desa = $this->input->post('txtDesa');
-		$kecamatan = $this->input->post('txtKecamatan');
-		$kabupaten = $this->input->post('txtKabupaten');
-		$provinsi = $this->input->post('txtProvinsi');
-		$kode_pos = $this->input->post('txtKodePos');
-		$no_hp = $this->input->post('txtNoHp');
-		$gelar_d = $this->input->post('txtGelarD');
-		$gelar_b = $this->input->post('txtGelarB');
-		$pendidikan = $this->input->post('txtPendidikan');
-		$jurusan = $this->input->post('txtJurusan');
-		$sekolah = $this->input->post('txtSekolah');
-		$stat_nikah = $this->input->post('txtStatNikah');
-		$tgl_nikah = $this->input->post('txtTglNikah');
-		$jml_anak = $this->input->post('txtJmlAnak');
-		$jml_sdr = $this->input->post('txtJmlSdr');
-		$diangkat = $this->input->post('txtDiangkat');
-		$masuk_kerja = $this->input->post('txtMasukKerja');
-		$kodesie = $this->input->post('txtKodesie');
-		$gol_kerja = $this->input->post('txtGolKerja');
-		$kd_asal_outsourcing = $this->input->post('txtKdAsalOutsourcing');
-		$kd_jabatan = $this->input->post('txtKdJabatan');
-		$jabatan = $this->input->post('txtJabatan');
-		$npwp = $this->input->post('txtNpwp');
-		$no_kpj = $this->input->post('txtNoKpj');
-		$lm_kontrak = $this->input->post('txtLmKontrak');
-		$akh_kontrak = $this->input->post('txtAkhKontrak');
-		$stat_pajak = $this->input->post('txtStatPajak');
-		$jt_anak = $this->input->post('txtJtAnak');
-		$jt_bkn_anak = $this->input->post('txtJtBknAnak');
-		$tgl_spsi = $this->input->post('txtTglSpsi');
-		$no_spsi = $this->input->post('txtNoSpsi');
-		$tgl_kop = $this->input->post('txtTglKop');
-		$no_koperasi = $this->input->post('txtNoKoperasi');
-		$keluar = $this->input->post('txtKeluar');
-		$tgl_keluar = $this->input->post('txtTglKeluar');
-		$kd_pkj = $this->input->post('txtKdPkj');
-		$angg_jkn = $this->input->post('txtAnggJkn');
-		$noind_baru = $this->input->post('noinD_baru');
-    	
-    	$i=0;
-    	foreach($noind as $loop){
-				$data_exist[$i] = array(
-					'noind' 			=> $noind[$i],
-					'kd_hubungan_kerja' => $kd_hubungan_kerja[$i],
-					'kd_status_kerja' 	=> $kd_status_kerja[$i],
-					'nik' 				=> $nik[$i],
-					'no_kk' 			=> $no_kk[$i],
-					'nama' 				=> $nama[$i],
-					'id_kantor_asal' 	=> $id_kantor_asal[$i],
-					'id_lokasi_kerja' 	=> $id_lokasi_kerja[$i],
-					'jns_kelamin' 		=> $jns_kelamin[$i],
-					'tempat_lahir' 		=> $tempat_lahir[$i],
-					'tgl_lahir' 		=> $tgl_lahir[$i],
-					'alamat' 			=> $alamat[$i],
-					'desa'				=> $desa[$i],
-					'kecamatan' 		=> $kecamatan[$i],
-					'kabupaten' 		=> $kabupaten[$i],
-					'provinsi' 			=> $provinsi[$i],
-					'kode_pos' 			=> $kode_pos[$i],
-					'no_hp' 			=> $no_hp[$i],
-					'gelar_d' 			=> $gelar_d[$i],
-					'gelar_b' 			=> $gelar_b[$i],
-					'pendidikan' 		=> $pendidikan[$i],
-					'jurusan' 			=> $jurusan[$i],
-					'sekolah' 			=> $sekolah[$i],
-					'stat_nikah' 		=> $stat_nikah[$i],
-					'tgl_nikah' 		=> $tgl_nikah[$i],
-					'jml_anak' 			=> $jml_anak[$i],
-					'jml_sdr' 			=> $jml_sdr[$i],
-					'diangkat' 			=> $diangkat[$i],
-					'masuk_kerja' 		=> $masuk_kerja[$i],
-					'kodesie' 			=> $kodesie[$i],
-					'gol_kerja' 		=> $gol_kerja[$i],
-					'kd_asal_outsourcing' => $kd_asal_outsourcing[$i],
-					'kd_jabatan' 		=> $kd_jabatan[$i],
-					'jabatan' 			=> $jabatan[$i],
-					'npwp' 				=> $npwp[$i],
-					'no_kpj' 			=> $no_kpj[$i],
-					'lm_kontrak' 		=> $lm_kontrak[$i],
-					'akh_kontrak' 		=> $akh_kontrak[$i],
-					'stat_pajak' 		=> $stat_pajak[$i],
-					'jt_anak' 			=> $jt_anak[$i],
-					'jt_bkn_anak' 		=> $jt_bkn_anak[$i],
-					'tgl_spsi' 			=> $tgl_spsi[$i],
-					'no_spsi' 			=> $no_spsi[$i],
-					'tgl_kop' 			=> $tgl_kop[$i],
-					'no_koperasi' 		=> $no_koperasi[$i],
-					'keluar' 			=> $keluar[$i],
-					'tgl_keluar' 		=> $tgl_keluar[$i],
-					'kd_pkj'			=> $kd_pkj[$i],
-					'angg_jkn' 			=> $angg_jkn[$i],
-					'noinD_baru' 			=> $noinD_baru[$i],
+				$dataCekUpdate = array(
+					'rtrim(employee_code)' => rtrim(utf8_encode($db_record['NOIND'])),
 				);
-				
-				if($replace[$i] == 'yes'){
-					$id = $noind[$i];
-					$this->M_masterpekerja->delete($noind[$i]);
-					$this->M_masterpekerja->insert($data_exist[$i]);
-				}else{
 
+				$data = array(
+					'noind' => utf8_encode($db_record['NOIND']),
+							'kd_hubungan_kerja' => utf8_encode($db_record['KD_HUB_KER']),
+							'kd_status_kerja' => utf8_encode($db_record['KD_STATUS_']),
+							'nik' => utf8_encode($db_record['NIK']),
+							'no_kk' => utf8_encode($db_record['NO_KK']),
+							'nama' => utf8_encode($db_record['NAMA']),
+							'id_kantor_asal' => utf8_encode($db_record['ID_KANT_AS']),
+							'id_lokasi_kerja' => utf8_encode($db_record['ID_LOK_KER']),
+							'jns_kelamin' => utf8_encode($db_record['JENKEL']),
+							'tempat_lahir' => utf8_encode($db_record['TEMPAT_LHR']),
+							'tgl_lahir' => utf8_encode($db_record['TGL_LHR']),
+							'alamat' => utf8_encode($db_record['ALAMAT']),
+							'desa' => utf8_encode($db_record['DESA']),
+							'kecamatan' => utf8_encode($db_record['KEC']),
+							'kabupaten' => utf8_encode($db_record['KAB']),
+							'provinsi' => utf8_encode($db_record['PROVINSI']),
+							'kode_pos' => utf8_encode($db_record['KODE_POS']),
+							'no_hp' => utf8_encode($db_record['NO_HP']),
+							'gelar_d' => utf8_encode($db_record['GELARD']),
+							'gelar_b' => utf8_encode($db_record['GELARB']),
+							'pendidikan' => utf8_encode($db_record['PENDIDIKAN']),
+							'jurusan' => utf8_encode($db_record['JURUSAN']),
+							'sekolah' => utf8_encode($db_record['SEKOLAH']),
+							'stat_nikah' => utf8_encode($db_record['STAT_NIKAH']),
+							'tgl_nikah' => utf8_encode($db_record['TGL_NIKAH']),
+							'jml_anak' => utf8_encode($db_record['JML_ANAK']),
+							'jml_sdr' => utf8_encode($db_record['JML_SDR']),
+							'diangkat' => utf8_encode($db_record['DIANGKAT']),
+							'masuk_kerja' => utf8_encode($db_record['MASUK_KERJ']),
+							'kodesie' => utf8_encode($db_record['KODESIE']),
+							'gol_kerja' => utf8_encode($db_record['GOL_KERJA']),
+							'kd_asal_outsourcing' => utf8_encode($db_record['KD_ASAL_OS']),
+							'kd_jabatan' => str_replace("'","",utf8_encode($db_record['KD_JABATAN'])),
+							'jabatan' => utf8_encode($db_record['JABATAN']),
+							'npwp' => utf8_encode($db_record['NPWP']),
+							'no_kpj' => utf8_encode($db_record['NO_KPJ']),
+							'lm_kontrak' => utf8_encode($db_record['LM_KONTRAK']),
+							'akh_kontrak' => utf8_encode($db_record['AKH_KONTRA']),
+							'stat_pajak' => utf8_encode($db_record['STAT_PAJAK']),
+							'jt_anak' => utf8_encode($db_record['JT_ANAK']),
+							'jt_bkn_anak' => utf8_encode($db_record['JT_BKN_ANA']),
+							'tgl_spsi' => utf8_encode($db_record['TGL_SPSI']),
+							'no_spsi' => utf8_encode($db_record['NO_SPSI']),
+							'tgl_kop' => utf8_encode($db_record['TGL_KOP']),
+							'no_koperasi' => utf8_encode($db_record['NO_KOPERAS']),
+							'keluar' => utf8_encode($db_record['KELUAR']),
+							'tgl_keluar' => utf8_encode($db_record['TGL_KELUAR']),
+							'kd_pkj' => utf8_encode($db_record['KD_PKJ']),
+							'angg_jkn' => utf8_encode($db_record['ANGG_JKN']),
+							'noind_baru' => utf8_encode($db_record['NOIND_BARU']),
+				);
+
+				$cekUpdate = $this->M_masterpekerja->cekUpdate($dataCekUpdate);
+				if ($cekUpdate->num_rows() != 0) {
+					foreach ($cekUpdate->result() as $dataUpdateOld) {
+						$employee_id = $dataUpdateOld->employee_id;
+					}
+					$this->M_masterpekerja->updateMasterPekerja($data, $employee_id);
+				}
+				else{
+					$this->M_masterpekerja->setMasterPekerja($data);
 				}
 
-				$i++;
+
+				// print_r($data);
+
 			}
-			redirect(site_url('PayrollManagement/MasterPekerja'));
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
+	}
+	
+	
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
+	
+	 // public function import() {
+       
+        // $config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
+        // $config['allowed_types'] = 'csv';
+        // $config['max_size'] = '6000';
+        // $this->load->library('upload', $config);
+ 
+        // if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        // else {  $file_data  = $this->upload->data();
+                // $filename   = $file_data['file_name'];
+                // $file_path  = 'assets/upload/importPR/masterpekerja/'.$file_data['file_name'];
+                
+            // if ($this->csvimport->get_array($file_path)) {
+                
+                // $csv_array  = $this->csvimport->get_array($file_path);
+                // $data_exist = array();
+                // $i = 0;
+                // foreach ($csv_array as $row) {
+                    // if(array_key_exists('KD_HUB_KER', $row)){
+                    	
+ 						
+	                    // $data = array(
+	                    	// 'noind' => $row['NOIND'],
+							// 'kd_hubungan_kerja' => $row['KD_HUB_KER'],
+							// 'kd_status_kerja' => $row['KD_STATUS_'],
+							// 'nik' => $row['NIK'],
+							// 'no_kk' => $row['NO_KK'],
+							// 'nama' => $row['NAMA'],
+							// 'id_kantor_asal' => $row['ID_KANT_AS'],
+							// 'id_lokasi_kerja' => $row['ID_LOK_KER'],
+							// 'jns_kelamin' => $row['JENKEL'],
+							// 'tempat_lahir' => $row['TEMPAT_LHR'],
+							// 'tgl_lahir' => $row['TGL_LHR'],
+							// 'alamat' => $row['ALAMAT'],
+							// 'desa' => $row['DESA'],
+							// 'kecamatan' => $row['KEC'],
+							// 'kabupaten' => $row['KAB'],
+							// 'provinsi' => $row['PROVINSI'],
+							// 'kode_pos' => $row['KODE_POS'],
+							// 'no_hp' => $row['NO_HP'],
+							// 'gelar_d' => $row['GELARD'],
+							// 'gelar_b' => $row['GELARB'],
+							// 'pendidikan' => $row['PENDIDIKAN'],
+							// 'jurusan' => $row['JURUSAN'],
+							// 'sekolah' => $row['SEKOLAH'],
+							// 'stat_nikah' => $row['STAT_NIKAH'],
+							// 'tgl_nikah' => $row['TGL_NIKAH'],
+							// 'jml_anak' => $row['JML_ANAK'],
+							// 'jml_sdr' => $row['JML_SDR'],
+							// 'diangkat' => $row['DIANGKAT'],
+							// 'masuk_kerja' => $row['MASUK_KERJ'],
+							// 'kodesie' => $row['KODESIE'],
+							// 'gol_kerja' => $row['GOL_KERJA'],
+							// 'kd_asal_outsourcing' => $row['KD_ASAL_OS'],
+							// 'kd_jabatan' => str_replace("'","",$row['KD_JABATAN']),
+							// 'jabatan' => $row['JABATAN'],
+							// 'npwp' => $row['NPWP'],
+							// 'no_kpj' => $row['NO_KPJ'],
+							// 'lm_kontrak' => $row['LM_KONTRAK'],
+							// 'akh_kontrak' => $row['AKH_KONTRA'],
+							// 'stat_pajak' => $row['STAT_PAJAK'],
+							// 'jt_anak' => $row['JT_ANAK'],
+							// 'jt_bkn_anak' => $row['JT_BKN_ANA'],
+							// 'tgl_spsi' => $row['TGL_SPSI'],
+							// 'no_spsi' => $row['NO_SPSI'],
+							// 'tgl_kop' => $row['TGL_KOP'],
+							// 'no_koperasi' => $row['NO_KOPERAS'],
+							// 'keluar' => $row['KELUAR'],
+							// 'tgl_keluar' => $row['TGL_KELUAR'],
+							// 'kd_pkj' => $row['KD_PKJ'],
+							// 'angg_jkn' => $row['ANGG_JKN'],
+							// 'noind_baru' => $row['NOIND_BARU'],
+	                    // );
 
-    }
+                    	
+                    	// $noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+	                   	// $check = $this->M_masterpekerja->check($noind);
 
+	                    // if($check){
+	                    	// $data_exist[$i] = $data;
+	                    	// $i++;
+	                    // }else{
+	                    	// $this->M_masterpekerja->insert($data);
+	                    // }
 
+                	// }else{
+                		
+                		// $data = array(
+	                    	// 'noind' => $row['noind'],
+							// 'kd_hubungan_kerja' => $row['kd_hubungan_kerja'],
+							// 'kd_status_kerja' => $row['kd_status_kerja'],
+							// 'nik' => $row['nik'],
+							// 'no_kk' => $row['no_kk'],
+							// 'nama' => $row['nama'],
+							// 'id_kantor_asal' => $row['id_kantor_asal'],
+							// 'id_lokasi_kerja' => $row['id_lokasi_kerja'],
+							// 'jns_kelamin' => $row['jns_kelamin'],
+							// 'tempat_lahir' => $row['tempat_lahir'],
+							// 'tgl_lahir' => $row['tgl_lahir'],
+							// 'alamat' => $row['alamat'],
+							// 'desa' => $row['desa'],
+							// 'kecamatan' => $row['kecamatan'],
+							// 'kabupaten' => $row['kabupaten'],
+							// 'provinsi' => $row['provinsi'],
+							// 'kode_pos' => $row['kode_pos'],
+							// 'no_hp' => $row['no_hp'],
+							// 'gelar_d' => $row['gelar_d'],
+							// 'gelar_b' => $row['gelar_b'],
+							// 'pendidikan' => $row['pendidikan'],
+							// 'jurusan' => $row['jurusan'],
+							// 'sekolah' => $row['sekolah'],
+							// 'stat_nikah' => $row['stat_nikah'],
+							// 'tgl_nikah' => $row['tgl_nikah'],
+							// 'jml_anak' => $row['jml_anak'],
+							// 'jml_sdr' => $row['jml_sdr'],
+							// 'diangkat' => $row['diangkat'],
+							// 'masuk_kerja' => $row['masuk_kerja'],
+							// 'kodesie' => $row['kodesie'],
+							// 'gol_kerja' => $row['gol_kerja'],
+							// 'kd_asal_outsourcing' => $row['kd_asal_outsourcing'],
+							// 'kd_jabatan' => str_replace("'","",$row['kd_jabatan']),
+							// 'jabatan' => $row['jabatan'],
+							// 'npwp' => $row['npwp'],
+							// 'no_kpj' => $row['no_kpj'],
+							// 'lm_kontrak' => $row['lm_kontrak'],
+							// 'akh_kontrak' => $row['akh_kontrak'],
+							// 'stat_pajak' => $row['stat_pajak'],
+							// 'jt_anak' => $row['jt_anak'],
+							// 'jt_bkn_anak' => $row['jt_bkn_anak'],
+							// 'tgl_spsi' => $row['tgl_spsi'],
+							// 'no_spsi' => $row['no_spsi'],
+							// 'tgl_kop' => $row['tgl_kop'],
+							// 'no_koperasi' => $row['no_koperasi'],
+							// 'keluar' => $row['keluar'],
+							// 'tgl_keluar' => $row['tgl_keluar'],
+							// 'kd_pkj' => $row['kd_pkj'],
+							// 'angg_jkn' => $row['angg_jkn'],
+							// 'noind_baru' => $row['noind_baru'],
+	                    // );
+
+	                   
+                    	// $noind = str_pad($row['noind'], 5, "0", STR_PAD_LEFT);
+	                   	// $check = $this->M_masterpekerja->check($noind);
+
+	                    // if($check){
+	                    	// $data_exist[$i] = $data;
+	                    	// $i++;
+	                    // }else{
+	                    	// $this->M_masterpekerja->insert($data);
+	                    // }
+	                    
+                	// }
+                // }
+
+                
+                // $this->checkSession();
+        		// $user_id = $this->session->userid;
+        
+        		// $data['Menu'] = 'Payroll Management';
+        		// $data['SubMenuOne'] = '';
+        		// $data['SubMenuTwo'] = '';
+
+		        // $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        		// $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        		// $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		        // $data['data_exist'] = $data_exist;
+        		// $masterPekerja = $this->M_masterpekerja->get_all();
+
+		        // $this->load->view('V_Header',$data);
+		        // $this->load->view('V_Sidemenu',$data);
+		        // $this->load->view('PayrollManagement/MasterPekerja/V_Upload', $data);
+		        // $this->load->view('V_Footer',$data);
+                // unlink($file_path);
+
+            // } else {
+                // $this->load->view('csvindex');
+            // }
+        // }
+    // }
+
+    // public function importexist()
+    // {
+        // $noind = $this->input->post('txtNoind');
+        // $replace = $this->input->post('replace');
+		// $kd_hubungan_kerja = $this->input->post('txtKdHubunganKerja');
+		// $kd_status_kerja = $this->input->post('txtKdStatusKerja');
+		// $nik = $this->input->post('txtNik');
+		// $no_kk = $this->input->post('txtNoKk');
+		// $nama = $this->input->post('txtNama');
+		// $id_kantor_asal = $this->input->post('txtIdKantorAsal');
+		// $id_lokasi_kerja = $this->input->post('txtIdLokasiKerja');
+		// $jns_kelamin = $this->input->post('txtJnsKelamin');
+		// $tempat_lahir = $this->input->post('txtTempatLahir');
+		// $tgl_lahir = $this->input->post('txtTglLahir');
+		// $alamat = $this->input->post('txtAlamat');
+		// $desa = $this->input->post('txtDesa');
+		// $kecamatan = $this->input->post('txtKecamatan');
+		// $kabupaten = $this->input->post('txtKabupaten');
+		// $provinsi = $this->input->post('txtProvinsi');
+		// $kode_pos = $this->input->post('txtKodePos');
+		// $no_hp = $this->input->post('txtNoHp');
+		// $gelar_d = $this->input->post('txtGelarD');
+		// $gelar_b = $this->input->post('txtGelarB');
+		// $pendidikan = $this->input->post('txtPendidikan');
+		// $jurusan = $this->input->post('txtJurusan');
+		// $sekolah = $this->input->post('txtSekolah');
+		// $stat_nikah = $this->input->post('txtStatNikah');
+		// $tgl_nikah = $this->input->post('txtTglNikah');
+		// $jml_anak = $this->input->post('txtJmlAnak');
+		// $jml_sdr = $this->input->post('txtJmlSdr');
+		// $diangkat = $this->input->post('txtDiangkat');
+		// $masuk_kerja = $this->input->post('txtMasukKerja');
+		// $kodesie = $this->input->post('txtKodesie');
+		// $gol_kerja = $this->input->post('txtGolKerja');
+		// $kd_asal_outsourcing = $this->input->post('txtKdAsalOutsourcing');
+		// $kd_jabatan = $this->input->post('txtKdJabatan');
+		// $jabatan = $this->input->post('txtJabatan');
+		// $npwp = $this->input->post('txtNpwp');
+		// $no_kpj = $this->input->post('txtNoKpj');
+		// $lm_kontrak = $this->input->post('txtLmKontrak');
+		// $akh_kontrak = $this->input->post('txtAkhKontrak');
+		// $stat_pajak = $this->input->post('txtStatPajak');
+		// $jt_anak = $this->input->post('txtJtAnak');
+		// $jt_bkn_anak = $this->input->post('txtJtBknAnak');
+		// $tgl_spsi = $this->input->post('txtTglSpsi');
+		// $no_spsi = $this->input->post('txtNoSpsi');
+		// $tgl_kop = $this->input->post('txtTglKop');
+		// $no_koperasi = $this->input->post('txtNoKoperasi');
+		// $keluar = $this->input->post('txtKeluar');
+		// $tgl_keluar = $this->input->post('txtTglKeluar');
+		// $kd_pkj = $this->input->post('txtKdPkj');
+		// $angg_jkn = $this->input->post('txtAnggJkn');
+		// $noind_baru = $this->input->post('noinD_baru');
+    	
+    	// $i=0;
+    	// foreach($noind as $loop){
+				// $data_exist[$i] = array(
+					// 'noind' 			=> $noind[$i],
+					// 'kd_hubungan_kerja' => $kd_hubungan_kerja[$i],
+					// 'kd_status_kerja' 	=> $kd_status_kerja[$i],
+					// 'nik' 				=> $nik[$i],
+					// 'no_kk' 			=> $no_kk[$i],
+					// 'nama' 				=> $nama[$i],
+					// 'id_kantor_asal' 	=> $id_kantor_asal[$i],
+					// 'id_lokasi_kerja' 	=> $id_lokasi_kerja[$i],
+					// 'jns_kelamin' 		=> $jns_kelamin[$i],
+					// 'tempat_lahir' 		=> $tempat_lahir[$i],
+					// 'tgl_lahir' 		=> $tgl_lahir[$i],
+					// 'alamat' 			=> $alamat[$i],
+					// 'desa'				=> $desa[$i],
+					// 'kecamatan' 		=> $kecamatan[$i],
+					// 'kabupaten' 		=> $kabupaten[$i],
+					// 'provinsi' 			=> $provinsi[$i],
+					// 'kode_pos' 			=> $kode_pos[$i],
+					// 'no_hp' 			=> $no_hp[$i],
+					// 'gelar_d' 			=> $gelar_d[$i],
+					// 'gelar_b' 			=> $gelar_b[$i],
+					// 'pendidikan' 		=> $pendidikan[$i],
+					// 'jurusan' 			=> $jurusan[$i],
+					// 'sekolah' 			=> $sekolah[$i],
+					// 'stat_nikah' 		=> $stat_nikah[$i],
+					// 'tgl_nikah' 		=> $tgl_nikah[$i],
+					// 'jml_anak' 			=> $jml_anak[$i],
+					// 'jml_sdr' 			=> $jml_sdr[$i],
+					// 'diangkat' 			=> $diangkat[$i],
+					// 'masuk_kerja' 		=> $masuk_kerja[$i],
+					// 'kodesie' 			=> $kodesie[$i],
+					// 'gol_kerja' 		=> $gol_kerja[$i],
+					// 'kd_asal_outsourcing' => $kd_asal_outsourcing[$i],
+					// 'kd_jabatan' 		=> $kd_jabatan[$i],
+					// 'jabatan' 			=> $jabatan[$i],
+					// 'npwp' 				=> $npwp[$i],
+					// 'no_kpj' 			=> $no_kpj[$i],
+					// 'lm_kontrak' 		=> $lm_kontrak[$i],
+					// 'akh_kontrak' 		=> $akh_kontrak[$i],
+					// 'stat_pajak' 		=> $stat_pajak[$i],
+					// 'jt_anak' 			=> $jt_anak[$i],
+					// 'jt_bkn_anak' 		=> $jt_bkn_anak[$i],
+					// 'tgl_spsi' 			=> $tgl_spsi[$i],
+					// 'no_spsi' 			=> $no_spsi[$i],
+					// 'tgl_kop' 			=> $tgl_kop[$i],
+					// 'no_koperasi' 		=> $no_koperasi[$i],
+					// 'keluar' 			=> $keluar[$i],
+					// 'tgl_keluar' 		=> $tgl_keluar[$i],
+					// 'kd_pkj'			=> $kd_pkj[$i],
+					// 'angg_jkn' 			=> $angg_jkn[$i],
+					// 'noinD_baru' 			=> $noinD_baru[$i],
+				// );
+				
+				// if($replace[$i] == 'yes'){
+					// $id = $noind[$i];
+					// $this->M_masterpekerja->delete($noind[$i]);
+					// $this->M_masterpekerja->insert($data_exist[$i]);
+				// }else{
+
+				// }
+
+				// $i++;
+			// }
+			// redirect(site_url('PayrollManagement/MasterPekerja'));
+
+    // }
+	
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
 	
     public function checkSession(){
         if($this->session->is_logged){
