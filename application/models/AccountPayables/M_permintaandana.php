@@ -247,10 +247,10 @@ class M_Permintaandana extends CI_Model
 									and gjl.je_line_num = 1
   									AND gjl.description is not null"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -262,10 +262,10 @@ class M_Permintaandana extends CI_Model
 								where acra.receipt_number like '%BON%'
 									AND acra.receipt_date+1 <= to_date('$tanggal','DD-MON-RR')"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -289,10 +289,10 @@ class M_Permintaandana extends CI_Model
 										and gjl.je_line_num = 1
 									  	AND gjl.description is not null"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -319,10 +319,10 @@ class M_Permintaandana extends CI_Model
                    						AND aipa1.accounting_date < to_date('$tanggal','DD-MON-RR')
     								)"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -340,10 +340,10 @@ class M_Permintaandana extends CI_Model
 							        AND CC.CLEARED_AMOUNT IS NOT NULL
 							        AND cc.cashflow_date = to_date('$tanggal','DD-MON-RR')"
 		);
-		if(empty($query->result())){
-		    return 0+$setor;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0+$setor;
 		}
 	}
 
@@ -369,10 +369,10 @@ class M_Permintaandana extends CI_Model
 									and gjl.je_line_num = 1
   									AND gjl.description is not null"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -391,10 +391,10 @@ class M_Permintaandana extends CI_Model
 									AND cpt.TRXN_STATUS_CODE = 'SETTLED'
 									AND cc.cashflow_date = to_date('$tanggal','DD-MON-RR')"
 		);
-		if(empty($query->result())){
-		    return 0+$aug+$receiptIn;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0+$aug+$receiptIn;
 		}
 	}
 
@@ -420,10 +420,10 @@ class M_Permintaandana extends CI_Model
 									and gjl.je_line_num = 1
   									AND gjl.description is not null"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -435,10 +435,10 @@ class M_Permintaandana extends CI_Model
 									where acra.receipt_number like '%BON%'
 									AND acra.receipt_date = to_date('$tanggal','DD-MON-RR')"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
@@ -464,10 +464,10 @@ class M_Permintaandana extends CI_Model
 							                   AND aipa1.accounting_date = to_date('$tanggal','DD-MON-RR')
 							    )"
 		);
-		if(empty($query->result())){
-		    return 0;
-		} else {
+		if(!($query->result())){
 		    return $query->result_array();
+		} else {
+		    return 0;
 		}
 	}
 
