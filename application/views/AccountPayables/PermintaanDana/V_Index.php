@@ -259,7 +259,7 @@ $(document).on('click', '#btnBalanceDate', function(){
 
   	$.ajax({
 	    type: 'POST',
-	    url: baseurl+'AccountPayables/Dana/saldo/',
+	    url: baseurl+'AccountPayables/PermintaanDana/saldo/',
 	    data: {date : date},
 	    dataType: 'json',
 	    success: function (data) {
