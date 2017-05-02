@@ -574,13 +574,51 @@ pmg.insentif_prestasi as m_insentif_prestasi,
 pmg.insentif_masuk_sore as m_insentif_masuk_sore,
 pmg.insentif_masuk_malam as m_insentif_masuk_malam,
 pmg.ubt as m_ubt,
-pmg.upamk as m_upamk FROM pr.pr_hasil_perhitungan_gaji php
+pmg.upamk as m_upamk,
+pmg.kelas,
+ (
+select replace(concat(
+\"HM01\",
+\"HM02\",
+\"HM03\",
+\"HM04\",
+\"HM05\",
+\"HM06\",
+\"HM07\",
+\"HM08\",
+\"HM09\",
+\"HM10\",
+\"HM11\",
+\"HM12\",
+\"HM13\",
+\"HM14\",
+\"HM15\",
+\"HM16\",
+\"HM17\",
+\"HM18\",
+\"HM19\",
+\"HM20\",
+\"HM21\",
+\"HM22\",
+\"HM23\",
+\"HM24\",
+\"HM25\",
+\"HM26\",
+\"HM27\",
+\"HM28\",
+\"HM29\",
+\"HM30\",
+\"HM31\"
+), ' ','') from pr.pr_absensi where noind=php.noind) as kehadiran,
+(select count(*) from (
+select tgl from pr.pr_lkh_seksi where noind=php.noind and extract(month from tgl)='$month' and extract(year from tgl)='$year' group by tgl order by tgl ) tabel ) as jmlharilkh
+FROM pr.pr_hasil_perhitungan_gaji php
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
             LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
             LEFT JOIN er.er_location erl on eea.location_code=erl.location_code
             left join pr.pr_master_gaji pmg on pmg.noind=php.noind
             left join pr.pr_absensi pa on pa.noind=php.noind
-            where kodesie='$section' and bln_gaji='$month' and thn_gaji='$year'
+            where php.kodesie='$section' and php.bln_gaji='$month' and php.thn_gaji='$year'
         ";
         $query = $this->db->query($sql);
         return $query->result_array();
