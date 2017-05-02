@@ -112,6 +112,27 @@
 					</table>
 				</div>
 			</div>
+			<br />
+			<br />
+			<br />
+			<div class="row">
+				<div class="col-lg-12">
+					<table style="font-size: 12px;" width="100%">
+						<tr>
+							<td style="padding-bottom: 30px;" width="70%"><?php echo date('d M Y'); ?></td>
+							<td style="padding-bottom: 30px;" width="30%">Mengetahui</td>
+						</tr>
+						<tr>
+							<td width="70%">Yuning</td>
+							<td width="30%">Arnanda</td>
+						</tr>
+						<tr>
+							<td width="70%">Kasir</td>
+							<td width="30%">Keuangan</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</fieldset>
 </div>
