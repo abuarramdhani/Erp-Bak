@@ -774,10 +774,12 @@ $(document).ready(function() {
     var seksi = $('select[name="cmbKodesie"]').val();
     var bulan = $('select[name="cmbBulan"]').val();
     var tahun = $('input[name="txtTahun"]').val();
+    var tanggal = $('input[name="txtTglPembayaran"]').val();    
 
     $("#dbfsection").val(seksi);
     $("#dbfmonth").val(bulan);
     $("#dbfyear").val(tahun);
+    $("#dbftanggal").val(tanggal);
 
     $('#errorProsesGaji').html('');
     $('#btnProsesGaji').prop('disabled', true);
@@ -828,7 +830,6 @@ $(document).ready(function() {
       });
     }
   });
-
 
   $('#btnImportDataTarget').click(function(){
     var loading_full =  '<div class="pace pace-active">'+

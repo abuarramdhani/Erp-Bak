@@ -75,10 +75,11 @@
                                         </div>
                                         <div class="col-lg-2">
                                             <form method="post" target="_blank" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/exportperhitungan'); ?>">
-                                                <input type="hidden" name="section" id="dbfsection" value="304020">
-                                                <input type="hidden" name="month" id="dbfmonth" value="1">
-                                                <input type="hidden" name="year" id="dbfyear" value="2017">
-                                                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-file-text-o"></i>  Eksport DBF</button>
+                                                <input type="hidden" name="section" id="dbfsection">
+                                                <input type="hidden" name="month" id="dbfmonth">
+                                                <input type="hidden" name="year" id="dbfyear">                                                
+                                                <input type="hidden" name="tanggal" id="dbftanggal">
+                                                <button type="submit" class="btn btn-success btn-block"><i class="fa fa-file-text-o"></i>  Eksport DBF</button>
                                             </form>
                                         </div>
                                     </div>
