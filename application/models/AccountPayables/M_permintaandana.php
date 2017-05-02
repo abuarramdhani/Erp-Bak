@@ -248,9 +248,9 @@ class M_Permintaandana extends CI_Model
   									AND gjl.description is not null"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -263,9 +263,9 @@ class M_Permintaandana extends CI_Model
 									AND acra.receipt_date+1 <= to_date('$tanggal','DD-MON-RR')"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -290,9 +290,9 @@ class M_Permintaandana extends CI_Model
 									  	AND gjl.description is not null"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -320,9 +320,9 @@ class M_Permintaandana extends CI_Model
     								)"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -341,9 +341,9 @@ class M_Permintaandana extends CI_Model
 							        AND cc.cashflow_date = to_date('$tanggal','DD-MON-RR')"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0+$setor;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -370,9 +370,9 @@ class M_Permintaandana extends CI_Model
   									AND gjl.description is not null"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -392,9 +392,9 @@ class M_Permintaandana extends CI_Model
 									AND cc.cashflow_date = to_date('$tanggal','DD-MON-RR')"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0+$aug+$receiptIn;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -421,9 +421,9 @@ class M_Permintaandana extends CI_Model
   									AND gjl.description is not null"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -436,9 +436,9 @@ class M_Permintaandana extends CI_Model
 									AND acra.receipt_date = to_date('$tanggal','DD-MON-RR')"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
@@ -465,9 +465,9 @@ class M_Permintaandana extends CI_Model
 							    )"
 		);
 		if(!($query->result())){
-		    return $query->result_array();
-		} else {
 		    return 0;
+		} else {
+		    return $query->result_array();
 		}
 	}
 
