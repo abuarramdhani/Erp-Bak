@@ -202,6 +202,7 @@ class C_HitungGaji extends CI_Controller
 		$harike = 0;
 		$ip = 0;
 		$kelebihan = 0;
+		$jmlkelebihan = 0;
 		$pk_kondite = array();
 		foreach ($p as $d) {
 			$pencapaian_hari_ini = 0;
@@ -283,6 +284,7 @@ class C_HitungGaji extends CI_Controller
 						if ($pencapaian_hari_ini >= 110) {
 							$ip = $ip + 1;
 							$kelebihan = $kelebihan + 10;
+							$jmlkelebihan++;
 							$pk_kondite[] = array(
 								'tanggal' => date('j', strtotime($tanggal)),
 								'PK_p' => 50,
@@ -291,6 +293,7 @@ class C_HitungGaji extends CI_Controller
 						elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110) {
 							$ip = $ip + 1;
 							$kelebihan = $kelebihan + $pencapaian_hari_ini - 100;
+							$jmlkelebihan++;
 							$pk_kondite[] = array(
 								'tanggal' => date('j', strtotime($tanggal)),
 								'PK_p' => 50,
@@ -318,6 +321,7 @@ class C_HitungGaji extends CI_Controller
 					if ($pencapaian_hari_ini >= 110) {
 						$ip = $ip + 1;
 						$kelebihan = $kelebihan + 10;
+						$jmlkelebihan++;
 						$pk_kondite[] = array(
 							'tanggal' => date('j', strtotime($tanggal)),
 							'PK_p' => 50,
@@ -326,6 +330,7 @@ class C_HitungGaji extends CI_Controller
 					elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110) {
 						$ip = $ip + 1;
 						$kelebihan = $kelebihan + $pencapaian_hari_ini - 100;
+						$jmlkelebihan++;
 						$pk_kondite[] = array(
 							'tanggal' => date('j', strtotime($tanggal)),
 							'PK_p' => 50,
@@ -351,6 +356,7 @@ class C_HitungGaji extends CI_Controller
 			'IK' => number_format($kelebihan, 2, '.', ''),
 			'totalInsentifKelebihan' => number_format($kelebihan / 10 * ($insentif_prestasi_mask - $insentifPrestasi), 0, '.', ''),
 			'pk_kondite' => $pk_kondite,
+			'jmlkelebihan' => $jmlkelebihan,
 		);
 
 		// print_r($resultLKHSeksi);exit;
@@ -616,6 +622,10 @@ class C_HitungGaji extends CI_Controller
 				$KonditeTotal = $dataInsentifKondite['konditeAkhir'];
 			}
 
+			$terima_bersih=0;
+
+			$terima_bersih=$GP + $IPTotal + $IKTotal + $KonditeTotal + $IMSTotal + $IMMTotal + $UBTTotal + $UPAMKTotal + $uangLembur + $tambahanKurangBayar + $tambahanLain + $DL - $potonganHTM - $potonganLebihBayar - $potonganGP - $potonganDL - ($JKN + $JHT + $JP) - $potonganKoperasi - $potonganHutangLain - $potonganDPLK - ($potonganSPSI + $potonganDuka);
+
 			$processResultArray[] = array(
 				'tgl_pembayaran' => $tgl_bayar,
 				'noind' => $noind,
@@ -659,6 +669,7 @@ class C_HitungGaji extends CI_Controller
 				'hitung_tambah_kurang_bayar' => number_format($Tambahan, 0, '', '.').' + '.number_format($tambahanKurangBayar, 0, '', '.'),
 				'hitung_pot_htm' => '('.$jmlIzin.'I + '.$jmlMangkir.'M) X ('.number_format($GP, 0, '', '.').'/'.$pembagi_gp_bulanan.')',
 				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/'.$pembagi_lembur.')',
+				'terima_bersih' => $terima_bersih,
 			);
 
 			$dataInsert = array(
@@ -696,7 +707,7 @@ class C_HitungGaji extends CI_Controller
 				'tkp' => $potonganTKP,
 				'hitung_insentif_prestasi' => $IPNilai.' X '.number_format($IPNominal, 0, '', '.'),
 				'hitung_insentif_kelebihan' => '('.$IKNilai.'/10) X ('.number_format($insentif_prestasi_mask, 0, '', '.').' - '.number_format($IPNominal, 0, '', '.').')',
-				'hitung_insentif_kondite' => $golA.'A +'.$golB.'B +'.$golC.'C +'.$golD.'D +'.$golE.'E',
+				'hitung_insentif_kondite' => $golA.'A+'.$golB.'B+'.$golC.'C+'.$golD.'D+'.$golE.'E',
 				'hitung_ims' => $IMSNilai.' X '.number_format($IMSNominal, 0, '', '.'),
 				'hitung_imm' => $IMMNilai.' X '.number_format($IMMNominal, 0, '', '.'),
 				'hitung_ubt' => $UBTNilai.' X '.number_format($UBTNominal, 0, '', '.'),
@@ -704,6 +715,7 @@ class C_HitungGaji extends CI_Controller
 				'hitung_tambah_kurang_bayar' => number_format($Tambahan, 0, '', '.').' + '.number_format($tambahanKurangBayar, 0, '', '.'),
 				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.number_format($GP, 0, '', '.').'/30)',
 				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/173)',
+				'terima_bersih' => $terima_bersih,
 			);
 
 			$this->M_hitunggaji->setHasilHitung($dataInsert);
@@ -1257,6 +1269,8 @@ class C_HitungGaji extends CI_Controller
 		$jmlABS=0;
 		$jmlTerlambat=0;
 		$jmlCT=0;
+		$jmlmangkirgp=0;
+		$jmlijingp=0;
 
 		foreach ($data['hitung'] as $htg) {
 
@@ -1266,7 +1280,41 @@ class C_HitungGaji extends CI_Controller
 			$uang_lembur_per_jam=$htg['gaji_pokok']/$pembagi_lembur;
 			$jml_hari_ip=substr($htg['hitung_insentif_prestasi'],0,strpos($htg['hitung_insentif_prestasi'],"X"));
 
+			//ambil hari jumlah hari insentif kondite
+			$hariinsentifkondite=explode("+", $htg['hitung_insentif_kondite']);
+			$hariinsentifkonditeA=substr($hariinsentifkondite[0], 0, -1);
+			$hariinsentifkonditeB=substr($hariinsentifkondite[1], 0, -1);
+			$hariinsentifkonditeC=substr($hariinsentifkondite[2], 0, -1);
+			$hariinsentifkonditeD=substr($hariinsentifkondite[3], 0, -1);
+			$hariinsentifkonditeE=substr($hariinsentifkondite[4], 0, -1);
 
+			//hitungjumlah mangkir
+			$posplus = strpos($htg['hitung_insentif_kondite'], '+', 1)+1; 
+			$posm = strpos($htg['hitung_insentif_kondite'], 'm', 1)-1; 
+			$jmlmangkirgp=substr($htg['hitung_insentif_kondite'], $posplus, $posm);
+
+			//menghitung jumlah izin
+			$jmlijingp=substr_count($htg['kehadiran'],'.');
+
+			//
+			$subtotal1=$htg['gaji_pokok'] + $htg['insentif_prestasi'] + $htg['insentif_kelebihan'] + $htg['insentif_kondite'] + $htg['insentif_masuk_sore'] + $htg['insentif_masuk_malam'] + $htg['ubt'] + $htg['upamk'] + $htg['uang_lembur'] + $htg['tambah_kurang_bayar'] + $htg['tambah_lain'] + $htg['uang_dl'] - $htg['pot_htm'] - $htg['pot_lebih_bayar'] - $htg['pot_gp'];
+			$subtotal1plus=$htg['gaji_pokok'] + $htg['insentif_prestasi'] + $htg['insentif_kelebihan'] + $htg['insentif_kondite'] + $htg['insentif_masuk_sore'] + $htg['insentif_masuk_malam'] + $htg['ubt'] + $htg['upamk'] + $htg['uang_lembur'] + $htg['tambah_kurang_bayar'] + $htg['tambah_lain'] + $htg['uang_dl'] - $htg['pot_htm'] - $htg['pot_lebih_bayar'] - $htg['pot_gp']+$htg['jht']+$htg['jkn']+$htg['jp'];
+
+			$jmlIjin=$htg['IK']+$htg['IKSKP']+$htg['IKSKU']+$htg['IKSKS']+$htg['IKSKM']+$htg['IKJSP']+$htg['IKJSU']+$htg['IKJSS']+$htg['IKJSM'];
+			$jmlABS=$htg['ABS'];
+			$jmlTerlambat=$htg['T'];
+			$jmlSKD=$htg['SKD'];
+			$jmlCT=$htg['cuti'];
+			$jmlharitidaktarget=$htg['jmlharilkh']-$jml_hari_ip;
+
+			//cari hari mencapai kelebihan
+			$getLKHSeksi = $this->getLKHSeksi($htg['noind'] , $htg['insentif_prestasi'] , $month, $year);
+
+			$jmlkelebihan = 0;
+
+			foreach ($getLKHSeksi as $dataLKHSeksi) {
+				$jmlkelebihan = $dataLKHSeksi['jmlkelebihan'];
+			}
 
 			$data1 = array(
 				// $htg['hasil_perhitungan_id'], 
@@ -1359,7 +1407,7 @@ class C_HitungGaji extends CI_Controller
 				$htg['pot_hutang_lain'],
 				$htg['pot_gp'],
 				'',
-				/*$htg[]*/'',
+				$jmlharitidaktarget,
 				'',
 				'',
 				'',
@@ -1367,7 +1415,7 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				$jml_hari_ip,
-				/*$htg[]*/'',
+				$jmlkelebihan,
 				'',
 				'',
 				'',
@@ -1377,11 +1425,11 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
-				$htg[''],
-				$htg[''],
-				$htg[''],
-				$htg[''],
-				$htg[''],
+				$hariinsentifkonditeA,
+				$hariinsentifkonditeB,
+				$hariinsentifkonditeC,
+				$hariinsentifkonditeD,
+				$hariinsentifkonditeE,
 				$jmlIjin,
 				$jmlABS,
 				$jmlTerlambat,
@@ -1391,33 +1439,33 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
-				/*$htg[]*/'',
-				/*$htg[]*/'',
+				$jmlijingp,
+				$jmlmangkirgp,
 				'',
 				$htg['ubt'],
 				$htg['m_insentif_masuk_malam'],
 				$htg['m_insentif_masuk_sore'],
-				/*$htg[]*/'',
+				$htg['terima_bersih'],
 				'',
 				'',
 				$htg['HUPAMK'],
 				$htg['upamk'],
-				$htg[''],
-				$htg[''],
-				$htg[''],
+				'0',
+				'0',
+				'0',
 				'',
 				'',
 				'',
 				$htg['uang_dl'],
-				$htg[''],
+				'12',
 				'',
-				$htg[''],
+				'0',
 				'',
 				'',
 				$htg['pot_dplk'],
 				'',
 				'',
-				$htg[''],
+				$subtotal1,
 				'',
 				'',
 				'',
@@ -1427,7 +1475,7 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
-				$htg[''],
+				$subtotal1plus,
 				'',
 				'',
 				''
