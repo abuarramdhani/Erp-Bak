@@ -111,13 +111,26 @@ class C_KlikBCAchecking_Insert extends CI_Controller {
 				$nama_pengirim		= str_replace(array('&nbsp;'), '', $pengirim[1]);
 				$nama_penerima		= str_replace(array('&nbsp;', '  '), '', $collected_data[7]);
 				$jumlah				= str_replace(array('Rp', '&nbsp;', ',', ' '), '', $collected_data[8]);
-				$berita				= str_replace(array('  '), '', $collected_data[11]);
-				$jenis_transfer		= str_replace(array('&nbsp;', '  '), '', $collected_data[12]);
 				$nama_alias			= str_replace(array('&nbsp;', '  '), '', $collected_data[3]);
 				$bank_tujuan		= str_replace(array('&nbsp;', '  '), '', $collected_data[4]);
 				$kota_bank			= str_replace(array('&nbsp;', '  '), '', $collected_data[5]);
-				$biaya				= str_replace(array('Rp', '&nbsp;', ',', ' '), '', $collected_data[8]);
+				if ('RTGS'!=$collected_data[10])
+				{
+				$biaya				= '0';
+				$layanan_transfer	= str_replace(array('&nbsp;', '  '), '', $collected_data[9]);
+				$berita				= str_replace(array('  '), '', $collected_data[10]);
+				$jenis_transfer		= str_replace(array('&nbsp;', '  '), '', $collected_data[11]);
+				}
+				else
+				{
+
+				$biaya				= str_replace(array('Rp', '&nbsp;', ',', ' '), '', $collected_data[9]);
 				$layanan_transfer	= str_replace(array('&nbsp;', '  '), '', $collected_data[10]);
+				$berita				= str_replace(array('  '), '', $collected_data[11]);
+				$jenis_transfer		= str_replace(array('&nbsp;', '  '), '', $collected_data[12]);
+
+				}
+
 				$user_id 			= $this->session->userid;
 
 				$htmldata = array(
