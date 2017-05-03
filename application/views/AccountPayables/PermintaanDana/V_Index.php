@@ -32,7 +32,7 @@
 				                     				<div class="input-group">
 													<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 													<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
-														<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+														<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off" autoclose="true">
 													</div>
 													</div>
 				                     			</td>
@@ -54,7 +54,7 @@
 								Hasil Pencarian
 							</div>
 							<div class="box-body">
-								<form method="post" action="<?php echo base_url('AccountPayables/Dana/create') ?>" id="formDemand">
+								<form method="post" action="<?php echo base_url('AccountPayables/PermintaanDana/create') ?>" id="formDemand">
 									<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 									<input type="hidden" value="<?php echo $this->session->user; ?>" name="hdnUser" />
 									<input type="hidden" name="hdnBalanceDate" id="hdnBalanceDate" />
