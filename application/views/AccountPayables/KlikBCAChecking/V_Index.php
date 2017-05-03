@@ -20,7 +20,7 @@
 						
 						<center> 
 							
-							<img  src="<?php echo base_url('assets/img/logo.png');?>" style="max-width:27%;" />
+							 <img src="<?=base_url('assets/img/erp.png')?>" style="width:45%;height:45%;"/>
 						
 						</center>
 						<br /><br />
