@@ -491,7 +491,6 @@ $route['AccountPayables/KlikBCAChecking/Check'] 				= 'AccountPayables/C_KlikBCA
 $route['AccountPayables/KlikBCAChecking/Check/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Check/$1';
 $route['AccountPayables/KlikBCAChecking/Check/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Check/$1/$2';
 
-$route['AccountPayables'] 								= 'AccountPayables/C_PermintaanDana';
 $route['AccountPayables/PermintaanDana'] 				= 'AccountPayables/C_PermintaanDana';
 $route['AccountPayables/PermintaanDana/(:any)'] 		= 'AccountPayables/C_PermintaanDana/$1';
 $route['AccountPayables/PermintaanDana/(:any)/(:any)'] 	= 'AccountPayables/C_PermintaanDana/$1/$2';
