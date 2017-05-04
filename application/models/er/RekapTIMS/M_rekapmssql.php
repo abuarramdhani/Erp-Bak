@@ -108,7 +108,15 @@ clASs M_rekapmssql extends CI_Model {
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+				) AS FrekSPs,
+
+				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2') AS TotalHK,
+
+				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
+					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+				) AS TotalHKs
 
 			FROM hrd_khs.tpribadi a
 
@@ -324,7 +332,15 @@ clASs M_rekapmssql extends CI_Model {
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+				) AS FrekSPs,
+
+				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2') AS TotalHK,
+
+				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
+					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+				) AS TotalHKs
 
 			FROM hrd_khs.tpribadi a
 
