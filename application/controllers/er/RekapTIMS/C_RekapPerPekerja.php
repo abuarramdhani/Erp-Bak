@@ -261,6 +261,13 @@ class C_RekapPerPekerja extends CI_Controller {
 		$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
 		$CT = PHPExcel_Cell::stringFromColumnIndex($col+5);
 		$SP = PHPExcel_Cell::stringFromColumnIndex($col+6);
+		$THK = PHPExcel_Cell::stringFromColumnIndex($col+7);
+		$P_T = PHPExcel_Cell::stringFromColumnIndex($col+8);
+		$P_I = PHPExcel_Cell::stringFromColumnIndex($col+9);
+		$P_M = PHPExcel_Cell::stringFromColumnIndex($col+10);
+		$P_S = PHPExcel_Cell::stringFromColumnIndex($col+11);
+		$P_IP = PHPExcel_Cell::stringFromColumnIndex($col+12);
+		$P_CT = PHPExcel_Cell::stringFromColumnIndex($col+13);
 		$worksheet->getColumnDimension($T)->setWidth(3);
 		$worksheet->getColumnDimension($I)->setWidth(3);
 		$worksheet->getColumnDimension($M)->setWidth(3);
@@ -268,9 +275,19 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->getColumnDimension($IP)->setWidth(3);
 		$worksheet->getColumnDimension($SP)->setWidth(3);
 		$worksheet->getColumnDimension($CT)->setWidth(3);
+		$worksheet->getColumnDimension($THK)->setWidth(18);
+		$worksheet->getColumnDimension($P_T)->setWidth(10);
+		$worksheet->getColumnDimension($P_I)->setWidth(10);
+		$worksheet->getColumnDimension($P_M)->setWidth(10);
+		$worksheet->getColumnDimension($P_S)->setWidth(10);
+		$worksheet->getColumnDimension($P_IP)->setWidth(10);
+		$worksheet->getColumnDimension($P_CT)->setWidth(10);
 		$head_merge = $col+6;
 		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 		$worksheet->mergeCells($T.'6:'.$headCol.'6');
+		$head_merge = $col+13;
+		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
+		$worksheet->mergeCells($P_T.'6:'.$headCol.'6');
 		$worksheet->setCellValue($T.'6', 'REKAP');
 		$worksheet->setCellValue($T.'7', 'T');
 		$worksheet->setCellValue($I.'7', 'I');
@@ -279,6 +296,15 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->setCellValue($IP.'7', 'IP');
 		$worksheet->setCellValue($CT.'7', 'CT');
 		$worksheet->setCellValue($SP.'7', 'SP');
+		$worksheet->mergeCells($THK.'6:'.$THK.'7');
+		$worksheet->setCellValue($THK.'6', 'TOTAL HARI KERJA');
+		$worksheet->setCellValue($P_T.'6', 'PERSENTASE');
+		$worksheet->setCellValue($P_T.'7', 'T');
+		$worksheet->setCellValue($P_I.'7', 'I');
+		$worksheet->setCellValue($P_M.'7', 'M');
+		$worksheet->setCellValue($P_S.'7', 'S');
+		$worksheet->setCellValue($P_IP.'7', 'IP');
+		$worksheet->setCellValue($P_CT.'7', 'CT');
 
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
@@ -380,6 +406,13 @@ class C_RekapPerPekerja extends CI_Controller {
 			$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
 			$CT = PHPExcel_Cell::stringFromColumnIndex($col+5);
 			$SP = PHPExcel_Cell::stringFromColumnIndex($col+6);
+			$THK = PHPExcel_Cell::stringFromColumnIndex($col+7);
+			$P_T = PHPExcel_Cell::stringFromColumnIndex($col+8);
+			$P_I = PHPExcel_Cell::stringFromColumnIndex($col+9);
+			$P_M = PHPExcel_Cell::stringFromColumnIndex($col+10);
+			$P_S = PHPExcel_Cell::stringFromColumnIndex($col+11);
+			$P_IP = PHPExcel_Cell::stringFromColumnIndex($col+12);
+			$P_CT = PHPExcel_Cell::stringFromColumnIndex($col+13);
 
 			$worksheet->setCellValue($T.$highestRow, $rekap_data['frekt']+$rekap_data['frekts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($I.$highestRow, $rekap_data['freki']+$rekap_data['frekis'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -388,6 +421,13 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->setCellValue($IP.$highestRow, $rekap_data['frekip']+$rekap_data['frekips'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($CT.$highestRow, $rekap_data['frekct']+$rekap_data['frekcts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($SP.$highestRow, $rekap_data['freksp']+$rekap_data['freksps'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($THK.$highestRow, $rekap_data['totalhk']+$rekap_data['totalhks'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_T.$highestRow, sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_I.$highestRow, sprintf("%.2f%%", (($rekap_data['freki']+$rekap_data['frekis']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_M.$highestRow, sprintf("%.2f%%", (($rekap_data['frekm']+$rekap_data['frekms']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_S.$highestRow, sprintf("%.2f%%", (($rekap_data['freksk']+$rekap_data['freksks']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_IP.$highestRow, sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_CT.$highestRow, sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
 
 			$highestRow++;
 		}
@@ -405,14 +445,14 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		else{
-			$worksheet->getStyle('A6:K7')->applyFromArray($styleArray);
-			$worksheet	->getStyle('A6:K7')
+			$worksheet->getStyle('A6:R7')->applyFromArray($styleArray);
+			$worksheet	->getStyle('A6:R7')
 						->getFill()
 						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 						->getStartColor()
 						->setARGB('0099ff');
-			$worksheet->getStyle('A6:K7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-			$worksheet->getStyle('A6:K7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$worksheet->getStyle('A6:R7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$worksheet->getStyle('A6:R7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		$worksheet->freezePaneByColumnAndRow(4, 8);
 
