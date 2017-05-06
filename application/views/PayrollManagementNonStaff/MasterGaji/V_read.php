@@ -67,6 +67,10 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Upamk</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['upamk']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Bank Code</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['bank_code']; ?></td>
+                                                        </tr>
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>

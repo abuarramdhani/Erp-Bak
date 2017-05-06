@@ -94,6 +94,7 @@ class C_MasterGaji extends CI_Controller
 			'insentif_masuk_malam' => $this->input->post('txtInsentifMasukMalamHeader'),
 			'ubt' => $this->input->post('txtUbtHeader'),
 			'upamk' => $this->input->post('txtUpamkHeader'),
+			'bank_code' => $this->input->post('txtBankCodeHeader'),
 		);
 		$this->M_mastergaji->setMasterGaji($data);
 		$header_id = $this->db->insert_id();
@@ -157,6 +158,7 @@ class C_MasterGaji extends CI_Controller
 			'insentif_masuk_malam' => $this->input->post('txtInsentifMasukMalamHeader',TRUE),
 			'ubt' => $this->input->post('txtUbtHeader',TRUE),
 			'upamk' => $this->input->post('txtUpamkHeader',TRUE),
+			'bank_code' => $this->input->post('txtBankCodeHeader',TRUE),
 			);
 		$this->M_mastergaji->updateMasterGaji($data, $plaintext_string);
 
@@ -250,12 +252,13 @@ class C_MasterGaji extends CI_Controller
 					'noind' => utf8_encode($db_record['NOIND']),
 					'kodesie' => utf8_encode($db_record['KODESIE']),
 					'kelas' => utf8_encode($db_record['KELAS']),
-					'gaji_pokok' => utf8_encode($db_record['GAJI_POKOK']),
+					'gaji_pokok' => utf8_encode($db_record['GAJIP']),
 					'insentif_prestasi' => utf8_encode($db_record['IP']),
 					'insentif_masuk_sore' => utf8_encode($db_record['IMS']),
 					'insentif_masuk_malam' => utf8_encode($db_record['IMM']),
 					'ubt' => utf8_encode($db_record['UBT']),
 					'upamk' => utf8_encode($db_record['UPAMK']),
+					'bank_code' => utf8_encode($db_record['BANK']),
 				);
 
 				$this->M_mastergaji->setMasterGaji($data);
@@ -290,8 +293,8 @@ class C_MasterGaji extends CI_Controller
 			9=> 'insentif_masuk_sore',
 			10=> 'insentif_masuk_malam',
 			11=> 'ubt',
-			12=> 'upamk'
-
+			12=> 'upamk',
+			13=> 'bank_code'
 		);
 
 		$data_table = $this->M_mastergaji->getMasterGajiDatatables();
@@ -326,10 +329,10 @@ class C_MasterGaji extends CI_Controller
 
 			$count--;
 			if ($count != 0) {
-				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kelas'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'"],';
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kelas'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'", "'.$result['bank_code'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kelas'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'"]';
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/DataGaji/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kelas'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'", "'.$result['bank_code'].'"]';
 			}
 			$no++;
 		}
