@@ -59,7 +59,8 @@ class C_RekapPerPekerja extends CI_Controller {
 	//------------------------show the filtering menu-----------------------------
 	public function GetNoInduk(){
 		$term = $this->input->get("term");
-		$data = $this->M_rekap_per_pekerja->GetNoInduk($term);
+		$status = $this->input->get("stat");
+		$data = $this->M_rekap_per_pekerja->GetNoInduk($term, $status);
 		$count = count($data);
 		echo "[";
 		foreach ($data as $data) {
@@ -88,6 +89,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
 		$noinduk 	= $this->input->post('slcNoInduk');
+		$status     = $this->input->post('slcStatus');
 		$detail 	= $this->input->post('detail');
 		
 		$count = count($noinduk);
@@ -105,8 +107,9 @@ class C_RekapPerPekerja extends CI_Controller {
 		if ($detail==NULL) {
 			$data['periode1']	= $periode1;
 			$data['periode2']	= $periode2;
-			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk);
-			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk);
+			$data['status']	= $status;
+			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);
 			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
@@ -120,14 +123,15 @@ class C_RekapPerPekerja extends CI_Controller {
 				$monthName = $d->format('M_y');
 				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
 				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName);
+				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName, $status);
 			}
 			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
 			$data['periode1']	= $period1;
 			$data['periode2']	= $period2;
-			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk);
-			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk);
+			$data['status']	= $status;
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
+			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_per_pekerja',$data);
 		}
 	}
@@ -137,6 +141,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode1 = $this->input->post("txtPeriode1_export");
 		$periode2 = $this->input->post("txtPeriode2_export");
 		$NoInduk = $this->input->post("txtNoInduk_export");
+		$status = $this->input->post("txtStatus");
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -163,8 +168,8 @@ class C_RekapPerPekerja extends CI_Controller {
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
-		$rekap_masakerja = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$NoInduk);
-		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk);
+		$rekap_masakerja = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$NoInduk,$status);
+		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk,$status);
 
 		if ($detail == 1) {
 			$begin = new DateTime($periode1);
@@ -179,7 +184,7 @@ class C_RekapPerPekerja extends CI_Controller {
 				$monthName = $d->format('M_y');
 				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
 				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName);
+				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName, $status);
 			}
 		}
 
