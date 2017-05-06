@@ -398,7 +398,6 @@ $route['RekapTIMSPromosiPekerja/RekapTIMS/employee/(:any)/(:any)/(:any)'] = 'er/
 $route['RekapTIMSPromosiPekerja/RekapTIMS/export-employee/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_RekapPerPekerja/ExportEmployee/$1/$2/$3';
 
 $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/GetNoInduk';
-$route['RekapTIMSPromosiPekerja/GetNoIndukNonAktif'] = 'er/RekapTIMS/C_RekapPerPekerja/GetNoIndukNonAktif';
 
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
