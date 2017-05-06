@@ -568,7 +568,52 @@ SELECT count(tgl) FROM
     public function getHitungGajiDBF($section,$month,$year)
     {
        $sql = "
-            SELECT  php.*,eea.*,ese.*,erl.*,pa.*,
+            SELECT  
+php.hasil_perhitungan_id,
+php.noind,
+php.kodesie,
+php.bln_gaji,
+php.thn_gaji,
+php.gaji_pokok,
+php.insentif_prestasi,
+php.insentif_kelebihan,
+php.insentif_kondite,
+php.insentif_masuk_sore,
+php.insentif_masuk_malam,
+php.ubt,
+php.upamk,
+round(php.uang_lembur) as uang_lembur,
+php.tambah_kurang_bayar,
+php.tambah_lain,
+php.uang_dl,
+php.tambah_pajak,
+php.denda_insentif_kondite,
+php.pot_htm,
+php.pot_lebih_bayar,
+php.pot_gp,
+php.pot_uang_dl,
+round(php.jht) as jht,
+round(php.jkn) as jkn,
+round(php.jp) as jp,
+round(php.spsi) as spsi,
+php.duka,
+php.pot_koperasi,
+php.pot_hutang_lain,
+php.pot_dplk,
+php.tkp,
+php.hitung_insentif_prestasi,
+php.hitung_insentif_kelebihan,
+php.hitung_insentif_kondite,
+php.hitung_ims,
+php.hitung_imm,
+php.hitung_ubt,
+php.hitung_upamk,
+php.hitung_tambah_kurang_bayar,
+php.hitung_pot_htm,
+php.hitung_uang_lembur,
+php.tgl_pembayaran,
+php.terima_bersih,
+eea.*,ese.*,erl.*,pa.*,
 pmg.gaji_pokok as m_gaji_pokok,
 pmg.insentif_prestasi as m_insentif_prestasi,
 pmg.insentif_masuk_sore as m_insentif_masuk_sore,
@@ -611,7 +656,8 @@ select replace(concat(
 \"HM31\"
 ), ' ','') from pr.pr_absensi where noind=php.noind) as kehadiran,
 (select count(*) from (
-select tgl from pr.pr_lkh_seksi where noind=php.noind and extract(month from tgl)='$month' and extract(year from tgl)='$year' group by tgl order by tgl ) tabel ) as jmlharilkh
+select tgl from pr.pr_lkh_seksi where noind=php.noind and extract(month from tgl)='$month' and extract(year from tgl)='$year' group by tgl order by tgl ) tabel ) as jmlharilkh,
+pmg.bank_code
 FROM pr.pr_hasil_perhitungan_gaji php
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
             LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code

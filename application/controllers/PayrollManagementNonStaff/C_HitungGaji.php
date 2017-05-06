@@ -293,7 +293,12 @@ class C_HitungGaji extends CI_Controller
 						elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110) {
 							$ip = $ip + 1;
 							$kelebihan = $kelebihan + $pencapaian_hari_ini - 100;
+							$pencapaian_tambahan=$pencapaian_hari_ini - 100;
+							if ($pencapaian_tambahan>0)
+							{
 							$jmlkelebihan++;
+							}
+
 							$pk_kondite[] = array(
 								'tanggal' => date('j', strtotime($tanggal)),
 								'PK_p' => 50,
@@ -330,7 +335,11 @@ class C_HitungGaji extends CI_Controller
 					elseif ($pencapaian_hari_ini >= 100 && $pencapaian_hari_ini < 110) {
 						$ip = $ip + 1;
 						$kelebihan = $kelebihan + $pencapaian_hari_ini - 100;
-						$jmlkelebihan++;
+						$pencapaian_tambahan=$pencapaian_hari_ini - 100;
+							if ($pencapaian_tambahan>0)
+							{
+							$jmlkelebihan++;
+							}
 						$pk_kondite[] = array(
 							'tanggal' => date('j', strtotime($tanggal)),
 							'PK_p' => 50,
@@ -1277,7 +1286,8 @@ class C_HitungGaji extends CI_Controller
 			//hitung gaji pokok perhari
 
 			$gaji_pokok_per_hari=$htg['gaji_pokok']/$pembagi_gp;
-			$uang_lembur_per_jam=$htg['gaji_pokok']/$pembagi_lembur;
+			$gaji_pokok_per_hari=number_format($gaji_pokok_per_hari, 5, '.', '');
+			$uang_lembur_per_jam=round($htg['gaji_pokok']/$pembagi_lembur);
 			$jml_hari_ip=substr($htg['hitung_insentif_prestasi'],0,strpos($htg['hitung_insentif_prestasi'],"X"));
 
 			//ambil hari jumlah hari insentif kondite
@@ -1329,7 +1339,7 @@ class C_HitungGaji extends CI_Controller
 				$htg['kodesie'],
 				$htg['kodesie'],
 				$htg['job_name'],
-				'',
+				$htg['bank_code'],
 				'',
 				'',
 				$htg['noind'],
@@ -1344,14 +1354,14 @@ class C_HitungGaji extends CI_Controller
 				$htg['jp'],
 				$htg['spsi'],
 				'',
+				'',
+				'',
+				'',
 				$htg['HMP'],
 				$htg['HMS'],
 				$htg['HMM'],
-				'',
-				'',
-				'',
-				'',
 				$htg['denda_insentif_kondite'],
+				'',
 				$htg['insentif_prestasi'],
 				'',
 				'',
