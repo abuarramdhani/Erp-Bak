@@ -92,6 +92,13 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="txtBankCodeHeader" class="control-label col-lg-4">Bank Code</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Bank Code" name="txtBankCodeHeader" id="txtBankCodeHeader" class="form-control" />
+                                                </div>
+                                            </div>
+
 
                                         </div>
 

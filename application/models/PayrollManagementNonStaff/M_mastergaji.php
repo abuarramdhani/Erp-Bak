@@ -57,6 +57,7 @@ class M_mastergaji extends CI_Model
                 OR  CAST(pmg.\"insentif_masuk_malam\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(pmg.\"ubt\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(pmg.\"upamk\" AS TEXT) ILIKE '%$searchValue%'
+                OR  pmg.\"bank_code\" ILIKE '%$searchValue%'
 
         ";
         $query = $this->db->query($sql);
@@ -81,6 +82,7 @@ class M_mastergaji extends CI_Model
                 OR  CAST(pmg.\"insentif_masuk_malam\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(pmg.\"ubt\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(pmg.\"upamk\" AS TEXT) ILIKE '%$searchValue%'
+                OR  pmg.\"bank_code\" ILIKE '%$searchValue%'
             ";
         }
         $sql="
