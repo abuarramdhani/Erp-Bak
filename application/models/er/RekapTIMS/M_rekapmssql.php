@@ -110,13 +110,29 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs,
 
-				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2') AS TotalHK,
-
-				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
-					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
-					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS TotalHKs
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
+				END AS TotalHK,
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi 
+								WHERE 
+									keluar = '1' 
+									AND masukkerja >= '2016-01-01 00:00:00' 
+									AND nama = a.nama 
+									AND tgllahir = a.tgllahir 
+									AND nik = a.nik
+							)  AND tanggal BETWEEN '$periode1' AND '$periode2'
+						)
+				END AS TotalHKs
 
 			FROM hrd_khs.tpribadi a
 
@@ -334,13 +350,29 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs,
 
-				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2') AS TotalHK,
-
-				(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
-					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
-					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS TotalHKs
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
+				END AS TotalHK,
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi 
+								WHERE 
+									keluar = '1' 
+									AND masukkerja >= '2016-01-01 00:00:00' 
+									AND nama = a.nama 
+									AND tgllahir = a.tgllahir 
+									AND nik = a.nik
+							)  AND tanggal BETWEEN '$periode1' AND '$periode2'
+						)
+				END AS TotalHKs
 
 			FROM hrd_khs.tpribadi a
 
