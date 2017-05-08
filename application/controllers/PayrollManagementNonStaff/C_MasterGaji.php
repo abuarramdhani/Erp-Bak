@@ -95,6 +95,13 @@ class C_MasterGaji extends CI_Controller
 			'ubt' => $this->input->post('txtUbtHeader'),
 			'upamk' => $this->input->post('txtUpamkHeader'),
 			'bank_code' => $this->input->post('txtBankCodeHeader'),
+			'status_pajak' => $this->input->post('txtStatusPajakHeader'),
+			'tanggungan_pajak' => $this->input->post('txtTanggunganPajakHeader'),
+			'ptkp' => $this->input->post('txtPtkpHeader'),
+			'bulan_kerja' => $this->input->post('txtBulanKerjaHeader'),
+			'potongan_dplk' => $this->input->post('txtPotonganDplkHeader'),
+			'potongan_spsi' => $this->input->post('txtPotonganSpsiHeader'),
+			'kpph' => $this->input->post('txtKpphHeader'),
 		);
 		$this->M_mastergaji->setMasterGaji($data);
 		$header_id = $this->db->insert_id();
@@ -159,6 +166,13 @@ class C_MasterGaji extends CI_Controller
 			'ubt' => $this->input->post('txtUbtHeader',TRUE),
 			'upamk' => $this->input->post('txtUpamkHeader',TRUE),
 			'bank_code' => $this->input->post('txtBankCodeHeader',TRUE),
+			'status_pajak' => $this->input->post('txtStatusPajakHeader',TRUE),
+			'tanggungan_pajak' => $this->input->post('txtTanggunganPajakHeader',TRUE),
+			'ptkp' => $this->input->post('txtPtkpHeader',TRUE),
+			'bulan_kerja' => $this->input->post('txtBulanKerjaHeader',TRUE),
+			'potongan_dplk' => $this->input->post('txtPotonganDplkHeader',TRUE),
+			'potongan_spsi' => $this->input->post('txtPotonganSpsiHeader',TRUE),
+			'kpph' => $this->input->post('txtKpphHeader',TRUE),
 			);
 		$this->M_mastergaji->updateMasterGaji($data, $plaintext_string);
 
@@ -259,7 +273,15 @@ class C_MasterGaji extends CI_Controller
 					'ubt' => utf8_encode($db_record['UBT']),
 					'upamk' => utf8_encode($db_record['UPAMK']),
 					'bank_code' => utf8_encode($db_record['BANK']),
+					'status_pajak' => utf8_encode($db_record['STPJK']),
+					'tanggungan_pajak' => utf8_encode($db_record['TGPJK']),
+					'ptkp' => utf8_encode($db_record['PTKP']),
+					'bulan_kerja' => utf8_encode($db_record['BLNKRJ']),
+					'potongan_dplk' => utf8_encode($db_record['POT_DPLK']),
+					'potongan_spsi' => utf8_encode($db_record['POT_SPSI']),
+					'kpph' => utf8_encode($db_record['KPPH']),
 				);
+
 
 				$this->M_mastergaji->setMasterGaji($data);
 

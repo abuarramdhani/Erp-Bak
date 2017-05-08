@@ -42,11 +42,9 @@ class M_potongan extends CI_Model
                 OR  CAST(ppo.\"pot_lebih_bayar\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_gp\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_dl\" AS TEXT) ILIKE '%$searchValue%'
-                OR  CAST(ppo.\"pot_spsi\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_duka\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_koperasi\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_hutang_lain\" AS TEXT) ILIKE '%$searchValue%'
-                OR  CAST(ppo.\"pot_dplk\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_tkp\" AS TEXT) ILIKE '%$searchValue%'
 
                 OR  eea.employee_name ILIKE '%$searchValue%'
@@ -69,11 +67,9 @@ class M_potongan extends CI_Model
                 OR  CAST(ppo.\"pot_lebih_bayar\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_gp\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_dl\" AS TEXT) ILIKE '%$searchValue%'
-                OR  CAST(ppo.\"pot_spsi\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_duka\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_koperasi\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_hutang_lain\" AS TEXT) ILIKE '%$searchValue%'
-                OR  CAST(ppo.\"pot_dplk\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(ppo.\"pot_tkp\" AS TEXT) ILIKE '%$searchValue%'
 
                 OR  eea.employee_name ILIKE '%$searchValue%'

@@ -583,11 +583,11 @@ class C_HitungGaji extends CI_Controller
 			$potonganLebihBayar = $dataHitungGaji['pot_lebih_bayar'] + 0;
 			$potonganGP = $dataHitungGaji['pot_gp'] + 0;
 			$potonganDL = $dataHitungGaji['pot_dl'] + 0;
-			$potonganSPSI = $dataHitungGaji['pot_spsi'] + 0;
+			$potonganSPSI = $dataHitungGaji['potongan_spsi'] + 0;
 			$potonganDuka = $dataHitungGaji['pot_duka'] + 0;
 			$potonganKoperasi = $dataHitungGaji['pot_koperasi'] + 0;
 			$potonganHutangLain = $dataHitungGaji['pot_hutang_lain'] + 0;
-			$potonganDPLK = $dataHitungGaji['pot_dplk'] + 0;
+			$potonganDPLK = $dataHitungGaji['potongan_dplk'] + 0;
 			$potonganTKP = $dataHitungGaji['pot_tkp'] + 0;
 
 			$IMSTotal = $IMSNilai*$IMSNominal;
@@ -1316,7 +1316,7 @@ class C_HitungGaji extends CI_Controller
 			$jmlSKD=$htg['SKD'];
 			$jmlCT=$htg['cuti'];
 			$jmlharitidaktarget=$htg['jmlharilkh']-$jml_hari_ip;
-
+			$jmlharihanyaip=$jml_hari_ip-$jmlkelebihan;
 			//cari hari mencapai kelebihan
 			$getLKHSeksi = $this->getLKHSeksi($htg['noind'] , $htg['insentif_prestasi'] , $month, $year);
 
@@ -1390,7 +1390,7 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
-				(string)$jml_hari_ip,
+				(string)$jmlharihanyaip,
 				(string)$jmlkelebihan,
 				'',
 				'',

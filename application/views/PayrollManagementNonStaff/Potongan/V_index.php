@@ -44,11 +44,9 @@
 												<th class="text-center" width="100px">Pot Lebih Bayar</th>
 												<th class="text-center" width="100px">Pot Gp</th>
 												<th class="text-center" width="100px">Pot Dl</th>
-												<th class="text-center" width="100px">Pot Spsi</th>
 												<th class="text-center" width="100px">Pot Duka</th>
 												<th class="text-center" width="100px">Pot Koperasi</th>
 												<th class="text-center" width="100px">Pot Hutang Lain</th>
-												<th class="text-center" width="100px">Pot Dplk</th>
 												<th class="text-center" width="100px">Pot Thp</th>
 											</tr>
                                         </thead>

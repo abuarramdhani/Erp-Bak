@@ -105,6 +105,57 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="txtStatusPajakHeader" class="control-label col-lg-4">Status Pajak</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Status Pajak" name="txtStatusPajakHeader" id="txtStatusPajakHeader" class="form-control" value="<?php echo $headerRow['status_pajak']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtTanggunganPajakHeader" class="control-label col-lg-4">Tanggungan Pajak</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Tanggungan Pajak" name="txtTanggunganPajakHeader" id="txtTanggunganPajakHeader" class="form-control" value="<?php echo $headerRow['tanggungan_pajak']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtPtkpHeader" class="control-label col-lg-4">Ptkp</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Ptkp" name="txtPtkpHeader" id="txtPtkpHeader" class="form-control" value="<?php echo $headerRow['ptkp']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtBulanKerjaHeader" class="control-label col-lg-4">Bulan Kerja</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Bulan Kerja" name="txtBulanKerjaHeader" id="txtBulanKerjaHeader" class="form-control" value="<?php echo $headerRow['bulan_kerja']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtKpphHeader" class="control-label col-lg-4">Kpph</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Kpph" name="txtKpphHeader" id="txtKpphHeader" class="form-control" value="<?php echo $headerRow['kpph']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtPotonganDplkHeader" class="control-label col-lg-4">Potongan Dplk</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Potongan Dplk" name="txtPotonganDplkHeader" id="txtPotonganDplkHeader" class="form-control" value="<?php echo $headerRow['potongan_dplk']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtPotonganSpsiHeader" class="control-label col-lg-4">Potongan Spsi</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Potongan Spsi" name="txtPotonganSpsiHeader" id="txtPotonganSpsiHeader" class="form-control" value="<?php echo $headerRow['potongan_spsi']; ?>"/>
+                                                </div>
+                                            </div>
+
+                                            
+
                                         </div>
 
                                         <div class="col-lg-12">
