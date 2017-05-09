@@ -1395,7 +1395,7 @@ class C_HitungGaji extends CI_Controller
 				(string)$hariinsentifkonditeD,
 				(string)$hariinsentifkonditeE,
 				number_format($jmlIjin, 0, '.', ''),
-				$jmlABS,
+				$htg['ABS'],
 				(string)$jmlTerlambat,
 				(string)$jmlSKD,
 				(string)$jmlCT,
