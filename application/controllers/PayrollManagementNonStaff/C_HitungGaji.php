@@ -1189,7 +1189,7 @@ class C_HitungGaji extends CI_Controller
 			array("CT","N",2,0),
 			array("HL","N",2,0),
 			array("I","N",5,2),
-			array("ABS","N",2,0),
+			array("ABS","N",5,0),
 			array("GAJI","N",10,0),
 			array("UBT","N",5,2),
 			array("IMM","N",4,0),
@@ -1286,6 +1286,28 @@ class C_HitungGaji extends CI_Controller
 
 			$jmlkelebihan = 0;
 
+			//get hmp, hms, hmm
+			$gethariIP['hariip'] = $this->M_hitunggaji->getHariIP($htg['noind'],$month,$year);
+			$harimp=0;
+			$harims=0;
+			$harimm=0;
+
+			foreach ($gethariIP['hariip'] as $datahariIP) {
+
+				if ($datahariIP['shift']=='HMP')
+				{
+					$harimp=$harimp+$datahariIP['jml'];
+				}
+				if ($datahariIP['shift']=='HMS')
+				{
+					$harims=$harimp+$datahariIP['jml'];
+				}
+				if ($datahariIP['shift']=='HMM')
+				{
+					$harimm=$harimp+$datahariIP['jml'];
+				}
+			}
+
 			foreach ($getLKHSeksi as $dataLKHSeksi) {
 				$jmlkelebihan = $dataLKHSeksi['jmlkelebihan'];
 			}
@@ -1320,12 +1342,12 @@ class C_HitungGaji extends CI_Controller
 				$htg['jp'],
 				$htg['spsi'],
 				'',
+				$harimp, //number_format($htg['bhmp'], 2, '.', ''),
+				$harims, //number_format($htg['bhms'], 2, '.', ''),
+				$harimm, //number_format($htg['bhmm'], 2, '.', ''),
 				number_format($htg['HMP'], 2, '.', ''),
 				number_format($htg['HMS'], 2, '.', ''),
 				number_format($htg['HMM'], 2, '.', ''),
-				number_format($htg['bhmp'], 2, '.', ''),
-				number_format($htg['bhms'], 2, '.', ''),
-				number_format($htg['bhmm'], 2, '.', ''),
 				$htg['denda_insentif_kondite'],
 				'',
 				$htg['insentif_prestasi'],
@@ -1372,7 +1394,7 @@ class C_HitungGaji extends CI_Controller
 				(string)$hariinsentifkonditeC,
 				(string)$hariinsentifkonditeD,
 				(string)$hariinsentifkonditeE,
-				number_format($htg['jml_izin'], 2, '.', ''),
+				number_format($jmlIjin, 0, '.', ''),
 				number_format($jmlABS, 0, '.', ''),
 				(string)$jmlTerlambat,
 				(string)$jmlSKD,
@@ -1381,7 +1403,7 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
-				(string)$jmlijingp,
+				number_format($htg['jml_izin'], 2, '.', ''),
 				(string)$jmlmangkirgp,
 				'',
 				number_format($htg['ubt'], 2, '.', ''),

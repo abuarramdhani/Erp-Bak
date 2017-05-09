@@ -425,6 +425,25 @@ SELECT count(tgl) FROM
         return $query;
     }
 
+    public function getHariIP($noind,$bulan,$tahun)
+    {
+        $sql = "
+           select case 
+                when trim(from shift)='SHIFT 2' then 'HMS'
+                when trim(from shift)='SHIFT 1' then 'HMP'
+                when trim(from shift)='SHIFT 3' then 'HMM'
+                when trim(from shift)='SHIFT UMUM' then 'HMP'
+                else shift
+                end as shift,
+                count(*) as jml from 
+                (select tgl,shift from pr.pr_lkh_seksi where noind='$noind' and extract(month from tgl)='$bulan' and extract(year from tgl)='$tahun'
+                group by tgl,shift order by tgl) tabel
+                group by shift
+        ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function getHasilHitungSearch($searchValue)
     {
         $sql = "
