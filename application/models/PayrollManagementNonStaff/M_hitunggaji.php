@@ -657,7 +657,14 @@ select replace(concat(
 ), ' ','') from pr.pr_absensi where noind=php.noind) as kehadiran,
 (select count(*) from (
 select tgl from pr.pr_lkh_seksi where noind=php.noind and extract(month from tgl)='$month' and extract(year from tgl)='$year' group by tgl order by tgl ) tabel ) as jmlharilkh,
-pmg.bank_code
+pmg.bank_code,
+pmg.status_pajak, 
+pmg.tanggungan_pajak, 
+pmg.ptkp, 
+pmg.bulan_kerja, 
+pmg.potongan_dplk, 
+pmg.potongan_spsi, 
+pmg.kpph
 FROM pr.pr_hasil_perhitungan_gaji php
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
             LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code

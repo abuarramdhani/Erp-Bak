@@ -56,10 +56,6 @@
                                                             <td style="border: 0">: <?php echo $headerRow['pot_dl']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Pot Spsi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['pot_spsi']; ?></td>
-                                                        </tr>
-														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Pot Duka</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['pot_duka']; ?></td>
                                                         </tr>
@@ -70,10 +66,6 @@
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Pot Hutang Lain</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['pot_hutang_lain']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Pot Dplk</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['pot_dplk']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Pot Thp</strong></td>

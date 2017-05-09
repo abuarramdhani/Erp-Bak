@@ -58,7 +58,13 @@ class M_mastergaji extends CI_Model
                 OR  CAST(pmg.\"ubt\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(pmg.\"upamk\" AS TEXT) ILIKE '%$searchValue%'
                 OR  pmg.\"bank_code\" ILIKE '%$searchValue%'
-
+                OR  pmg.\"status_pajak\" ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"tanggungan_pajak\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"ptkp\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"bulan_kerja\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"potongan_dplk\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"potongan_spsi\" AS TEXT) ILIKE '%$searchValue%'
+                OR  pmg.\"kpph\" ILIKE '%$searchValue%'
         ";
         $query = $this->db->query($sql);
         return $query;
@@ -83,6 +89,13 @@ class M_mastergaji extends CI_Model
                 OR  CAST(pmg.\"ubt\" AS TEXT) ILIKE '%$searchValue%'
                 OR  CAST(pmg.\"upamk\" AS TEXT) ILIKE '%$searchValue%'
                 OR  pmg.\"bank_code\" ILIKE '%$searchValue%'
+                OR  pmg.\"status_pajak\" ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"tanggungan_pajak\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"ptkp\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"bulan_kerja\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"potongan_dplk\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(pmg.\"potongan_spsi\" AS TEXT) ILIKE '%$searchValue%'
+                OR  pmg.\"kpph\" ILIKE '%$searchValue%'
             ";
         }
         $sql="

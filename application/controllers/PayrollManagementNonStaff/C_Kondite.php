@@ -330,6 +330,35 @@ class C_Kondite extends CI_Controller
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 	}
 
+
+	public function clear_data(){
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Clear Data';
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Insentif Kondite';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/Kondite/V_clear', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function doClearData(){
+		$bln_gaji = $this->input->post('slcBulan');
+		$thn_gaji = $this->input->post('txtTahun');
+
+		$this->M_kondite->clearKondite($bln_gaji,$thn_gaji);
+		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
+	}
+
 	public function getPekerja(){
 		$kodesie = $this->input->post('kodesie');
 		$date = $this->input->post('date');

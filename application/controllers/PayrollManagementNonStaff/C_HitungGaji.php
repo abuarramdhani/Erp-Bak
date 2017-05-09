@@ -583,11 +583,11 @@ class C_HitungGaji extends CI_Controller
 			$potonganLebihBayar = $dataHitungGaji['pot_lebih_bayar'] + 0;
 			$potonganGP = $dataHitungGaji['pot_gp'] + 0;
 			$potonganDL = $dataHitungGaji['pot_dl'] + 0;
-			$potonganSPSI = $dataHitungGaji['pot_spsi'] + 0;
+			$potonganSPSI = $dataHitungGaji['potongan_spsi'] + 0;
 			$potonganDuka = $dataHitungGaji['pot_duka'] + 0;
 			$potonganKoperasi = $dataHitungGaji['pot_koperasi'] + 0;
 			$potonganHutangLain = $dataHitungGaji['pot_hutang_lain'] + 0;
-			$potonganDPLK = $dataHitungGaji['pot_dplk'] + 0;
+			$potonganDPLK = $dataHitungGaji['potongan_dplk'] + 0;
 			$potonganTKP = $dataHitungGaji['pot_tkp'] + 0;
 
 			$IMSTotal = $IMSNilai*$IMSNominal;
@@ -1099,42 +1099,7 @@ class C_HitungGaji extends CI_Controller
 		$pembagi_gp = $this->M_hitunggaji->getSetelan('pembagi_gp');
 		$pembagi_lembur = $this->M_hitunggaji->getSetelan('pembagi_lembur');
 		
-		//print_r($data['hitung']);exit;
 		$col = array(
-			// array("id","N",3,0),
-			// array("noind","C",5),
-			// array("nama","C",50),
-			// array("kodesie","C",6),
-			// array("bln_gaji","N",2,0),
-			// array("thn_gaji","N",4,0),
-			// array("gaji_pokok","N",10,2),
-			// array("instf_pres","N",10,2),
-			// array("instf_klbh","N",10,2),
-			// array("instf_kndt","N",10,2),
-			// array("instf_sore","N",10,2),
-			// array("instf_mlam","N",10,2),
-			// array("ubt","N",10,2),
-			// array("upamk","N",10,2),
-			// array("uang_lmbur","N",10,2),
-			// array("tbh_kr_byr","N",10,2),
-			// array("tbh_lain","N",10,2),
-			// array("uang_dl","N",10,2),
-			// array("tbh_pajak","N",10,2),
-			// array("denda_kndt","N",10,2),
-			// array("pot_htm","N",10,2),
-			// array("pot_lb_byr","N",10,2),
-			// array("pot_gp","N",10,2),
-			// array("pot_uag_dl","N",10,2),
-			// array("jht","N",10,2),
-			// array("jkn","N",10,2),
-			// array("jp","N",10,2),
-			// array("spsi","N",10,2),
-			// array("duka","N",10,2),
-			// array("pot_koprsi","N",10,2),
-			// array("pot_htg_ln","N",10,2),
-			// array("pot_dplk","N",10,2),
-			// array("tkp","N",10,2),
-
 			array("KELUAR","C",1),
 			array("PAYED_ON","C",12),
 			array("COA","C",28),
@@ -1316,7 +1281,6 @@ class C_HitungGaji extends CI_Controller
 			$jmlSKD=$htg['SKD'];
 			$jmlCT=$htg['cuti'];
 			$jmlharitidaktarget=$htg['jmlharilkh']-$jml_hari_ip;
-
 			//cari hari mencapai kelebihan
 			$getLKHSeksi = $this->getLKHSeksi($htg['noind'] , $htg['insentif_prestasi'] , $month, $year);
 
@@ -1326,13 +1290,15 @@ class C_HitungGaji extends CI_Controller
 				$jmlkelebihan = $dataLKHSeksi['jmlkelebihan'];
 			}
 
+			$jmlharihanyaip=$jml_hari_ip-$jmlkelebihan;
+			
 			$data1 = array(
 				'',
 				$htg['location_name'],
 				'',
 				'',
 				'',
-				(string)$tgl_bayar,
+				$htg['tgl_pembayaran'],
 				$htg['department_name'],
 				$htg['unit_name'],
 				$htg['section_name'],
@@ -1354,12 +1320,12 @@ class C_HitungGaji extends CI_Controller
 				$htg['jp'],
 				$htg['spsi'],
 				'',
-				'',
-				'',
-				'',
-				$htg['HMP'],
-				$htg['HMS'],
-				$htg['HMM'],
+				number_format($htg['HMP'], 2, '.', ''),
+				number_format($htg['HMS'], 2, '.', ''),
+				number_format($htg['HMM'], 2, '.', ''),
+				number_format($htg['bhmp'], 2, '.', ''),
+				number_format($htg['bhms'], 2, '.', ''),
+				number_format($htg['bhmm'], 2, '.', ''),
 				$htg['denda_insentif_kondite'],
 				'',
 				$htg['insentif_prestasi'],
@@ -1371,7 +1337,7 @@ class C_HitungGaji extends CI_Controller
 				$htg['insentif_kondite'],
 				'',
 				'',
-				substr($htg['hitung_uang_lembur'], 0, 2),
+				number_format(floatval(substr($htg['hitung_uang_lembur'], 0, 2)), 2, '.', ''),
 				$htg['tambahan'],
 				$htg['tambah_lain'],
 				$htg['jml_UM'],
@@ -1390,7 +1356,7 @@ class C_HitungGaji extends CI_Controller
 				'',
 				'',
 				'',
-				(string)$jml_hari_ip,
+				(string)$jmlharihanyaip,
 				(string)$jmlkelebihan,
 				'',
 				'',
@@ -1406,8 +1372,8 @@ class C_HitungGaji extends CI_Controller
 				(string)$hariinsentifkonditeC,
 				(string)$hariinsentifkonditeD,
 				(string)$hariinsentifkonditeE,
-				(string)$jmlIjin,
-				(string)$jmlABS,
+				number_format($htg['jml_izin'], 2, '.', ''),
+				number_format($jmlABS, 0, '.', ''),
 				(string)$jmlTerlambat,
 				(string)$jmlSKD,
 				(string)$jmlCT,
@@ -1418,30 +1384,30 @@ class C_HitungGaji extends CI_Controller
 				(string)$jmlijingp,
 				(string)$jmlmangkirgp,
 				'',
-				$htg['ubt'],
+				number_format($htg['ubt'], 2, '.', ''),
 				$htg['m_insentif_masuk_malam'],
 				$htg['m_insentif_masuk_sore'],
-				$htg['terima_bersih'],
+				round($htg['terima_bersih']),
 				'',
 				'',
-				$htg['HUPAMK'],
+				number_format($htg['HUPAMK'], 2, '.', ''),
 				$htg['upamk'],
-				'0',
-				'0',
-				'0',
+				$htg['status_pajak'],
+				$htg['tanggungan_pajak'],
+				$htg['ptkp'],
 				'',
 				'',
 				'',
 				$htg['uang_dl'],
-				'12',
+				$htg['bulan_kerja'],
+				$htg['tanggungan_pajak'],
 				'',
-				'0',
 				'',
 				'',
 				$htg['pot_dplk'],
 				'',
 				'',
-				(string)$subtotal1,
+				number_format($subtotal1, 2, '.', ''),
 				'',
 				'',
 				'',

@@ -86,13 +86,6 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtPotSpsiHeader" class="control-label col-lg-4">Pot Spsi</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Pot Spsi" name="txtPotSpsiHeader" id="txtPotSpsiHeader" class="form-control" value="<?php echo $headerRow['pot_spsi']; ?>"/>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
                                                 <label for="txtPotDukaHeader" class="control-label col-lg-4">Pot Duka</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Pot Duka" name="txtPotDukaHeader" id="txtPotDukaHeader" class="form-control" value="<?php echo $headerRow['pot_duka']; ?>"/>
@@ -110,13 +103,6 @@
                                                 <label for="txtPotHutangLainHeader" class="control-label col-lg-4">Pot Hutang Lain</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Pot Hutang Lain" name="txtPotHutangLainHeader" id="txtPotHutangLainHeader" class="form-control" value="<?php echo $headerRow['pot_hutang_lain']; ?>"/>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtPotDplkHeader" class="control-label col-lg-4">Pot Dplk</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Pot Dplk" name="txtPotDplkHeader" id="txtPotDplkHeader" class="form-control" value="<?php echo $headerRow['pot_dplk']; ?>"/>
                                                 </div>
                                             </div>
 
