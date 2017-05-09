@@ -205,6 +205,7 @@ class C_Kondite extends CI_Controller
 					'KB' => utf8_encode($db_record['KONDITE5']),
 					'KK' => utf8_encode($db_record['KONDITE6']),
 					'KS' => utf8_encode($db_record['KONDITE7']),
+					'kodesie' => utf8_encode($db_record['KODESIE']),
 					'creation_date' => 'NOW()',
 					'created_by' => $this->session->userid,
 				);
