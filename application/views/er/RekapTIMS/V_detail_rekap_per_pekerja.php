@@ -1,8 +1,8 @@
 <?php
 $ex_period1 = explode(' ', $periode1);
 $ex_period2 = explode(' ', $periode2);
-$begin = new DateTime($periode1);
-$end = new DateTime($periode2);
+$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 $interval = new DateInterval('P1M');
 
 $p = new DatePeriod($begin, $interval ,$end);

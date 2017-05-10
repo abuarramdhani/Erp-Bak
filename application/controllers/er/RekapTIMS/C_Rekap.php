@@ -123,9 +123,13 @@ class C_Rekap extends CI_Controller {
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
 		$status 	= $this->input->post('statushubker');
+		$data['statusExport'] = $status;
 		$departemen	= $this->input->post('departemen');
+		$data['departemen'] = $departemen;
 		$bidang 	= $this->input->post('bidang');
+		$data['bidang'] = $bidang;
 		$unit 		= $this->input->post('unit');
+		$data['unit'] = $unit;
 		$section 	= $this->input->post('section');
 		$data['section'] = $section;
 		$detail 	= $this->input->post('detail');
@@ -143,18 +147,32 @@ class C_Rekap extends CI_Controller {
 		else {
 			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
 			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
+			$start_year_month = date('Y-m', strtotime($periode1));
+			$start_date = date('d', strtotime($periode1));
+			$end_year_month = date('Y-m', strtotime($periode2));
+			$end_date = date('d', strtotime($periode2));
 			$interval = new DateInterval('P1M');
 
 			$p = new DatePeriod($begin, $interval ,$end);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+
+				if ($perMonth == $start_year_month) {
+					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
+				} else {
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+				}
+
+				if ($perMonth == $end_year_month) {
+					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
+				} else {
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+				}
 				$data['rekap_'.$monthName] = $this->M_rekapmssql->dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);
 			}
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 			$data['periode1']	= $period1;
 			$data['periode2']	= $period2;
 			$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
@@ -168,6 +186,9 @@ class C_Rekap extends CI_Controller {
 		$periode1	= $this->input->post('txtPeriode1_export');
 		$periode2	= $this->input->post('txtPeriode2_export');
 		$status 	= $this->input->post('txtStatus_export');
+		$departemen	= $this->input->post('txtDepartemen_export');
+		$bidang		= $this->input->post('txtBidang_export');
+		$unit		= $this->input->post('txtUnit_export');
 		$section	= $this->input->post('txtSeksi_export');
 		$detail 	= $this->input->post('txtDetail');
 
@@ -189,20 +210,26 @@ class C_Rekap extends CI_Controller {
 		);
 
 		if ($detail == 1) {
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
 		else{
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
 		$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,NULL,NULL,NULL,$section);
-		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$section);
+		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
 
 		if ($detail == 1) {
 
-			$begin = new DateTime($periode1);
-			$end = new DateTime($periode2);
+			// $begin = new DateTime($periode1);
+			// $end = new DateTime($periode2);
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
+			$start_year_month = date('Y-m', strtotime($periode1));
+			$start_date = date('d', strtotime($periode1));
+			$end_year_month = date('Y-m', strtotime($periode2));
+			$end_date = date('d', strtotime($periode2));
 
 			$interval = new DateInterval('P1M');
 
@@ -211,9 +238,18 @@ class C_Rekap extends CI_Controller {
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				${'rekap_'.$monthName} = $this->M_rekapmssql->ExportDetail($firstdate,$lastdate,$status,$section,$monthName);
+				if ($perMonth == $start_year_month) {
+					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
+				} else {
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+				}
+
+				if ($perMonth == $end_year_month) {
+					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
+				} else {
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+				}
+				${'rekap_'.$monthName} = $this->M_rekapmssql->ExportDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);
 			}
 		}
 
@@ -454,13 +490,13 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue($IP.$highestRow, $rekap_data['frekip']+$rekap_data['frekips'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($CT.$highestRow, $rekap_data['frekct']+$rekap_data['frekcts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($SP.$highestRow, $rekap_data['freksp']+$rekap_data['freksps'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($THK.$highestRow, $rekap_data['totalhk']+$rekap_data['totalhks'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($P_T.$highestRow, sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($P_I.$highestRow, sprintf("%.2f%%", (($rekap_data['freki']+$rekap_data['frekis']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($P_M.$highestRow, sprintf("%.2f%%", (($rekap_data['frekm']+$rekap_data['frekms']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($P_S.$highestRow, sprintf("%.2f%%", (($rekap_data['freksk']+$rekap_data['freksks']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($P_IP.$highestRow, sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue($P_CT.$highestRow, sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100)), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($THK.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : ($rekap_data['totalhk']+$rekap_data['totalhks'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_T.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_I.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freki']+$rekap_data['frekis']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_M.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekm']+$rekap_data['frekms']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_S.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freksk']+$rekap_data['freksks']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_IP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_CT.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 
 			$highestRow++;
 		}

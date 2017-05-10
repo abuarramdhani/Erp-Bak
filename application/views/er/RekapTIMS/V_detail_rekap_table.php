@@ -1,8 +1,8 @@
 <?php
 $ex_period1 = explode(' ', $periode1);
 $ex_period2 = explode(' ', $periode2);
-$begin = new DateTime($periode1);
-$end = new DateTime($periode2);
+$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 $interval = new DateInterval('P1M');
 
 $p = new DatePeriod($begin, $interval ,$end);
@@ -27,7 +27,10 @@ foreach ($rekap as $rekap_data) {}
 								<input type="hidden" name="txtDetail" value="1">
 								<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 								<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
-								<input type="hidden" name="txtStatus_export" value="<?php echo $rekap_data['kode_status_kerja'] ?>">
+								<input type="hidden" name="txtStatus_export" value="<?php echo $statusExport ?>">
+								<input type="hidden" name="txtDepartemen_export" value="<?php echo $departemen ?>">
+								<input type="hidden" name="txtBidang_export" value="<?php echo $bidang ?>">
+								<input type="hidden" name="txtUnit_export" value="<?php echo $unit ?>">
 								<input type="hidden" name="txtSeksi_export" value="<?php echo $section ?>">
 								<button class="btn btn-default pull-right">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL

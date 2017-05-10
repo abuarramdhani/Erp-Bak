@@ -272,8 +272,32 @@ clASs M_rekapmssql extends CI_Model {
 			return $query->result_array();
 	}
 
-	public function ExportRekap($periode1,$periode2,$status,$seksi)
+	public function ExportRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$seksi)
 	{
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}
+		if ($departemen == 'All') {
+			$departemen = "rtrim(dept)";
+		}
+		else{
+			$departemen = "rtrim('$departemen')";
+		}
+		if ($bidang == 'All') {
+			$bidang = "rtrim(bidang)";
+		}
+		else{
+			$bidang = "rtrim('$bidang')";
+		}
+		if ($unit == 'All') {
+			$unit = "rtrim(unit)";
+		}
+		else{
+			$unit = "rtrim('$unit')";
+		}
 		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
@@ -380,7 +404,10 @@ clASs M_rekapmssql extends CI_Model {
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 			WHERE keluar = '0'
-				AND a.kode_status_kerja = '$status'
+				AND a.kode_status_kerja = $status
+				AND rtrim(dept) = $departemen
+				AND rtrim(bidang) = $bidang
+				AND rtrim(unit) = $unit
 				AND rtrim(seksi) = $section
 
 			ORDER BY noind
@@ -389,8 +416,32 @@ clASs M_rekapmssql extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function ExportDetail($firstdate,$lastdate,$status,$seksi,$monthName)
+	public function ExportDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$seksi,$monthName)
 	{
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}		
+		if ($departemen == 'All') {
+			$departemen = "rtrim(dept)";
+		}
+		else{
+			$departemen = "rtrim('$departemen')";
+		}
+		if ($bidang == 'All') {
+			$bidang = "rtrim(bidang)";
+		}
+		else{
+			$bidang = "rtrim('$bidang')";
+		}
+		if ($unit == 'All') {
+			$unit = "rtrim(unit)";
+		}
+		else{
+			$unit = "rtrim('$unit')";
+		}
 		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
@@ -473,7 +524,10 @@ clASs M_rekapmssql extends CI_Model {
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 			WHERE keluar = '0'
-				AND a.kode_status_kerja = '$status'
+				AND a.kode_status_kerja = $status
+				AND rtrim(dept) = $departemen
+				AND rtrim(bidang) = $bidang
+				AND rtrim(unit) = $unit
 				AND rtrim(seksi) = $section
 
 			ORDER BY noind

@@ -117,16 +117,32 @@ class C_RekapPerPekerja extends CI_Controller {
 			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 			$interval = new DateInterval('P1M');
 
+			$start_year_month = date('Y-m', strtotime($periode1));
+			$start_date = date('d', strtotime($periode1));
+			$end_year_month = date('Y-m', strtotime($periode2));
+			$end_date = date('d', strtotime($periode2));
+
 			$p = new DatePeriod($begin, $interval ,$end);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+
+				if ($perMonth == $start_year_month) {
+					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
+				} else {
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+				}
+
+				if ($perMonth == $end_year_month) {
+					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
+				} else {
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+				}
+
 				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName, $status);
 			}
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 			$data['periode1']	= $period1;
 			$data['periode2']	= $period2;
 			$data['status']	= $status;
@@ -161,8 +177,8 @@ class C_RekapPerPekerja extends CI_Controller {
 		);
 
 		if ($detail == 1) {
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
 		else{
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
@@ -172,18 +188,34 @@ class C_RekapPerPekerja extends CI_Controller {
 		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk,$status);
 
 		if ($detail == 1) {
-			$begin = new DateTime($periode1);
-			$end = new DateTime($periode2);
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 
 			$interval = new DateInterval('P1M');
+
+			$start_year_month = date('Y-m', strtotime($periode1));
+			$start_date = date('d', strtotime($periode1));
+			$end_year_month = date('Y-m', strtotime($periode2));
+			$end_date = date('d', strtotime($periode2));
 
 			$p = new DatePeriod($begin, $interval ,$end);
 
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+
+				if ($perMonth == $start_year_month) {
+					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
+				} else {
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+				}
+
+				if ($perMonth == $end_year_month) {
+					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
+				} else {
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+				}
+
 				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName, $status);
 			}
 		}
