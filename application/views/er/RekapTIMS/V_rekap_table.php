@@ -21,7 +21,7 @@ foreach ($rekap as $rekap_data) {}
 								<input type="hidden" name="txtDetail" value="0">
 								<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 								<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
-								<input type="hidden" name="txtStatus_export" value="<?php echo $rekap_data['kode_status_kerja'] ?>">
+								<input type="hidden" name="txtStatus_export" value="<?php echo $statusExport ?>">
 								<input type="hidden" name="txtDepartemen_export" value="<?php echo $departemen ?>">
 								<input type="hidden" name="txtBidang_export" value="<?php echo $bidang ?>">
 								<input type="hidden" name="txtUnit_export" value="<?php echo $unit ?>">
