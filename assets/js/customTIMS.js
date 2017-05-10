@@ -101,7 +101,8 @@
 				data: function (params) {
 					var queryParameters = {
 						term: params.term,
-						type: $('select#slcNoInduk').val()
+						type: $('select#slcNoInduk').val(),
+						stat: $('select#slcStatus').val()
 					}
 					return queryParameters;
 				},
@@ -113,9 +114,7 @@
 					};
 				}
 			}	
-		});
-			
-			
+		});	
 			
 		$('#submit-filter-no-induk').click(function(){
 			$('.alert').alert('close');
