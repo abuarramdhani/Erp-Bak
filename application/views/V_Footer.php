@@ -34,7 +34,6 @@
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader.min.js');?>"></script>
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
-
 	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
