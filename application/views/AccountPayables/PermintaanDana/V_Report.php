@@ -109,6 +109,30 @@
 							</b></td>
 							<td width="16%"></td>
 						</tr>
+						<tr>
+							<td width="68%"><b>Pembulatan</b></td>
+							<td width="3%">Rp </td>
+							<td width="15%" class="text-right"><b>
+							<?php 
+								$total = 0;
+								foreach ($DemandLine as $value){
+									$total += $value['AMOUNT'];
+								}
+								$endTotal = $DemandHeader['CASH_LIMIT']-$DemandHeader['CASH_AMOUNT'])+$total;
+								$endTotal = round($endTotal, 0);
+								$millionVal = substr($endTotal, -7);
+								if($millionVal == 5000000) {
+									$finalTotal = $endTotal;
+								} elseif($millionVal < 5000000) {
+									$finalTotal = $endTotal+(10000000-$millionVal);
+								} elseif ($millionVal > 5000000) {
+									$finalTotal = $endTotal-$millionVal;
+								}
+								echo number_format($finalTotal,0,",",".");
+							?>
+							</b></td>
+							<td width="16%"></td>
+						</tr>
 					</table>
 				</div>
 			</div>
