@@ -118,7 +118,7 @@
 								foreach ($DemandLine as $value){
 									$total += $value['AMOUNT'];
 								}
-								$endTotal = $DemandHeader['CASH_LIMIT']-$DemandHeader['CASH_AMOUNT'])+$total;
+								$endTotal = ($DemandHeader['CASH_LIMIT']-$DemandHeader['CASH_AMOUNT'])+$total;
 								$endTotal = round($endTotal, 0);
 								$millionVal = substr($endTotal, -7);
 								if($millionVal == 5000000) {
