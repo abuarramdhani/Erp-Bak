@@ -612,6 +612,8 @@ $route['PayrollManagementNonStaff/ProsesGaji/Potongan/(:any)/(:any)'] = 'Payroll
 $route['PayrollManagementNonStaff/ProsesGaji/HitungGaji'] = 'PayrollManagementNonStaff/C_HitungGaji';
 $route['PayrollManagementNonStaff/ProsesGaji/HitungGaji/(:any)'] = 'PayrollManagementNonStaff/C_HitungGaji/$1';
 $route['PayrollManagementNonStaff/ProsesGaji/HitungGaji/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_HitungGaji/$1/$2';
+$route['PayrollManagementNonStaff/ProsesGaji/HitungGaji/(:any)/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_HitungGaji/$1/$2/$3';
+$route['PayrollManagementNonStaff/ProsesGaji/HitungGaji/(:any)/(:any)/(:any)/(:any)'] = 'PayrollManagementNonStaff/C_HitungGaji/$1/$2/$3/$4';
 
 //Data Absensi
 $route['PayrollManagementNonStaff/ImportDBF'] = 'PayrollManagementNonStaff/C_ImportDBF';
