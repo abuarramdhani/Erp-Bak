@@ -123,9 +123,9 @@
 								$millionVal = substr($endTotal, -7);
 								if($millionVal == 5000000) {
 									$finalTotal = $endTotal;
-								} elseif($millionVal < 5000000) {
+								} elseif($millionVal > 5000000) {
 									$finalTotal = $endTotal+(10000000-$millionVal);
-								} elseif ($millionVal > 5000000) {
+								} elseif ($millionVal < 5000000) {
 									$finalTotal = $endTotal-$millionVal;
 								}
 								echo number_format($finalTotal,0,",",".");
