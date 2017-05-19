@@ -1409,8 +1409,8 @@ class C_HitungGaji extends CI_Controller
 		$pdf = new mPDF('utf-8', 'Letter', 0, '', /*margin left*/ 4, /*margin right*/ 4, /*margin top*/ 10,/*margin bottom*/  10,/*margin header*/ 5,/*margin footer*/ 5,'P');
 
 
-
-		$filename = 'CrossCheck '.$noind.'-'.time().'.pdf';
+		$pdf->SetTitle('CrossCheck '.$noind.' - '.$data['namapkj'].' - '.$bln_gaji.' - '.$thn_gaji.' - '.time().'.pdf');
+		$filename = 'CrossCheck '.$noind.' - '.$data['namapkj'].' - '.$bln_gaji.' - '.$thn_gaji.' - '.time().'.pdf';
 
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		//$pdf->setFooter('{PAGENO}');
