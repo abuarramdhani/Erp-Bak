@@ -37,6 +37,7 @@
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th class="text-center" width="100px">Action</th>
+                                                <th class="text-center" width="100px">Error ?</th>
                                                 <th class="text-center" width="150px">Tanggal Pembayaran</th>
                                                 <th class="text-center" width="100px">No Induk</th>
                                                 <th class="text-center" width="200px">Nama</th>
