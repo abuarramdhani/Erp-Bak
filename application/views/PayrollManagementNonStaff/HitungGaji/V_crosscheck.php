@@ -1,4 +1,6 @@
- <body>
+<head>
+  <title><?php echo $unit_name.' - '.$noinduk.' - '.$namapkj;?></title>
+</head>
     <div style="margin-left:20px;margin-right:20px;">
         <div class="row" style="margin-left:3px;margin-right:3px;">
             <table style="margin: 0 auto;width: 100%">

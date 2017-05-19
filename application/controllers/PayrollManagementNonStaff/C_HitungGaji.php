@@ -136,12 +136,13 @@ class C_HitungGaji extends CI_Controller
 		$no = 1;
 		foreach ($data_array as $result) {
 			$count--;
+			$pesanError=$result['keterangan'];
 			$bulan_gaji = date('F', mktime(0, 0, 0, $result['bln_gaji'], 1));
 			if ($count != 0) {
-				$json .= '["'.$no.'", "<form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakStruk').'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-primary btn-block\'><i class=\'fa fa-print\'></i> Struk</button></form> <form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$result['noind'].'/'.$result['bln_gaji'].'/'.$result['thn_gaji']).'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-warning btn-block\'><i class=\'fa fa-list-alt\'></i> Cross Check</button></form>", "'.$result['tgl_pembayaran'].'", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['noind'].'</a>", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['employee_name'].'</a>", "'.$result['section_code'].'", "'.$result['section_name'].'", "'.$bulan_gaji.'", "'.$result['thn_gaji'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_kelebihan'].'", "'.$result['insentif_kondite'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'", "'.$result['uang_lembur'].'", "'.$result['tambah_kurang_bayar'].'", "'.$result['tambah_lain'].'", "'.$result['uang_dl'].'", "'.$result['tambah_pajak'].'", "'.$result['denda_insentif_kondite'].'", "'.$result['pot_htm'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_uang_dl'].'", "'.$result['jht'].'", "'.$result['jkn'].'", "'.$result['jp'].'", "'.$result['spsi'].'", "'.$result['duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_dplk'].'", "'.$result['tkp'].'"],';
+				$json .= '["'.$no.'", "<form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakStruk').'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-primary btn-block\'><i class=\'fa fa-print\'></i> Struk</button></form> <form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$result['noind'].'/'.$result['bln_gaji'].'/'.$result['thn_gaji']).'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-warning btn-block\'><i class=\'fa fa-list-alt\'></i> Cross Check</button></form><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$result['noind'].'/'.$result['bln_gaji'].'/'.$result['thn_gaji']).'\' >CrossCheck '.$result['noind'].' PDF</a>", "'.$pesanError.'","'.$result['tgl_pembayaran'].'", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['noind'].'</a>", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['employee_name'].'</a>", "'.$result['section_code'].'", "'.$result['section_name'].'", "'.$bulan_gaji.'", "'.$result['thn_gaji'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_kelebihan'].'", "'.$result['insentif_kondite'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'", "'.$result['uang_lembur'].'", "'.$result['tambah_kurang_bayar'].'", "'.$result['tambah_lain'].'", "'.$result['uang_dl'].'", "'.$result['tambah_pajak'].'", "'.$result['denda_insentif_kondite'].'", "'.$result['pot_htm'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_uang_dl'].'", "'.$result['jht'].'", "'.$result['jkn'].'", "'.$result['jp'].'", "'.$result['spsi'].'", "'.$result['duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_dplk'].'", "'.$result['tkp'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'", "<form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakStruk').'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-primary btn-block\'><i class=\'fa fa-print\'></i> Struk</button></form> <form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$result['noind'].'/'.$result['bln_gaji'].'/'.$result['thn_gaji']).'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-warning btn-block\'><i class=\'fa fa-list-alt\'></i> Cross Check</button></form>", "'.$result['tgl_pembayaran'].'", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['noind'].'</a>", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['employee_name'].'</a>", "'.$result['section_code'].'", "'.$result['section_name'].'", "'.$bulan_gaji.'", "'.$result['thn_gaji'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_kelebihan'].'", "'.$result['insentif_kondite'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'", "'.$result['uang_lembur'].'", "'.$result['tambah_kurang_bayar'].'", "'.$result['tambah_lain'].'", "'.$result['uang_dl'].'", "'.$result['tambah_pajak'].'", "'.$result['denda_insentif_kondite'].'", "'.$result['pot_htm'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_uang_dl'].'", "'.$result['jht'].'", "'.$result['jkn'].'", "'.$result['jp'].'", "'.$result['spsi'].'", "'.$result['duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_dplk'].'", "'.$result['tkp'].'"]';
+				$json .= '["'.$no.'", "<form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakStruk').'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-primary btn-block\'><i class=\'fa fa-print\'></i> Struk</button></form> <form target=\'_blank\' method=\'post\' action=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$result['noind'].'/'.$result['bln_gaji'].'/'.$result['thn_gaji']).'\'><input type=\'hidden\' name=\'txtHitungHasil\' value=\''.$result['hasil_perhitungan_id'].'\'><button type=\'submit\' class=\'btn btn-warning btn-block\'><i class=\'fa fa-list-alt\'></i> Cross Check</button></form><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$result['noind'].'/'.$result['bln_gaji'].'/'.$result['thn_gaji']).'\' >CrossCheck '.$result['noind'].' PDF</a>", "'.$pesanError.'","'.$result['tgl_pembayaran'].'", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['noind'].'</a>", "<form class=\"detail-form\" target=\"_blank\" method=\"post\" action=\"'.base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan').'\"><input type=\"hidden\" name=\"txtNoind\" value=\"'.$result['noind'].'\"><input type=\"hidden\" name=\"txtBulan\" value=\"'.$result['bln_gaji'].'\"><input type=\"hidden\" name=\"txtTahun\" value=\"'.$result['thn_gaji'].'\"></form><a href=\"#\" onclick=\"$(this).closest(\'td\').find(\'.detail-form\').submit()\">'.$result['employee_name'].'</a>", "'.$result['section_code'].'", "'.$result['section_name'].'", "'.$bulan_gaji.'", "'.$result['thn_gaji'].'", "'.$result['gaji_pokok'].'", "'.$result['insentif_prestasi'].'", "'.$result['insentif_kelebihan'].'", "'.$result['insentif_kondite'].'", "'.$result['insentif_masuk_sore'].'", "'.$result['insentif_masuk_malam'].'", "'.$result['ubt'].'", "'.$result['upamk'].'", "'.$result['uang_lembur'].'", "'.$result['tambah_kurang_bayar'].'", "'.$result['tambah_lain'].'", "'.$result['uang_dl'].'", "'.$result['tambah_pajak'].'", "'.$result['denda_insentif_kondite'].'", "'.$result['pot_htm'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_uang_dl'].'", "'.$result['jht'].'", "'.$result['jkn'].'", "'.$result['jp'].'", "'.$result['spsi'].'", "'.$result['duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_dplk'].'", "'.$result['tkp'].'"]';
 			}
 			$no++;
 		}
@@ -214,9 +215,11 @@ class C_HitungGaji extends CI_Controller
 		$kelebihan = 0;
 		$jmlkelebihan = 0;
 		$pk_kondite = array();
+		$pesanerror='';
 		foreach ($p as $d) {
 			$pencapaian_hari_ini = 0;
 			$tanggal = 0;
+			$pesanerror='';
 			$day = $d->format('Y-m-d');
 			$cekTglDiangkat = $this->M_hitunggaji->cekTglDiangkat($noind,$day);
 			foreach ($getLKHSeksi as $dataLKHSeksi) {
@@ -247,6 +250,28 @@ class C_HitungGaji extends CI_Controller
 					if (0 != $dataLKHSeksi['setting_time']) {
 						$waktu_cycletime=$waktu_cycletime-$dataLKHSeksi['waktu_setting'];
 					}*/
+
+					if ($dataLKHSeksi['kode_barang'] == '')  {
+						$pesanerror='Kode Barang kosong di LKH.<br>';
+					}
+					
+
+					if (($dataLKHSeksi['kode_barang'] != 'ABSEN') && ($dataLKHSeksi['kode_proses']==''))  {
+						$pesanerror='Kode Proses kosong di LKH.<br>';
+					}
+
+					if (''==$target) {
+						$pesanerror='Target '.$dataLKHSeksi['kode_barang'].' - '.$dataLKHSeksi['kode_proses'].' tidak ditemukan.<br>';
+					}
+
+					if ((''==$target)  && ((''!=$dataLKHSeksi['kode_barang_target_sementara']) || (''!=$dataLKHSeksi['kode_proses_target_sementara']))) {
+						$pesanerror='Target sementara di LKH '.$dataLKHSeksi['kode_barang'].' - '.$dataLKHSeksi['kode_proses'].' tidak ditemukan di data target.<br>';
+					}
+
+					if (''!=trim($pesanerror)) {
+						$pesanerror='Error LKH Seksi : Tanggal '.$dataLKHSeksi['tgl'].'<br>'.$pesanerror.'<br>';
+					}
+
 
 					if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
 						$target = 0;
@@ -286,7 +311,7 @@ class C_HitungGaji extends CI_Controller
 					$pencapaian_hari_ini = $pencapaian_hari_ini + $pencapaian;
 					$tanggal = $dataLKHSeksi['tgl'];
 				}
-			}
+			} //end foreach 
 
 			if ($tanggal != 0) {
 				if (strtoupper(substr($noind, 0, 1)) == 'E') {
@@ -376,6 +401,7 @@ class C_HitungGaji extends CI_Controller
 			'totalInsentifKelebihan' => number_format($kelebihan / 10 * ($insentif_prestasi_mask - $insentifPrestasi), 0, '.', ''),
 			'pk_kondite' => $pk_kondite,
 			'jmlkelebihan' => $jmlkelebihan,
+			'pesanError' => $pesanerror,
 		);
 
 		// print_r($resultLKHSeksi);exit;
@@ -416,6 +442,35 @@ class C_HitungGaji extends CI_Controller
 			$KB = $dataInsentifKondite['KB'];
 			$KK = $dataInsentifKondite['KK'];
 			$KS = $dataInsentifKondite['KS'];
+
+			$pesanerror='';
+			//checkerror
+			if (''==$MK ) {
+				$pesanerror=$pesanerror.'MK=kosong,';
+			}
+			if (''==$BKI ) {
+				$pesanerror=$pesanerror.'BKI=kosong,';
+			}
+			if (''==$BKP ) {
+				$pesanerror=$pesanerror.'BKP=kosong,';
+			}
+			if (''==$TKP ) {
+				$pesanerror=$pesanerror.'TKP=kosong,';
+			}
+			if (''==$KB ) {
+				$pesanerror=$pesanerror.'KB=kosong,';
+			}
+			if (''==$KK ) {
+				$pesanerror=$pesanerror.'KK=kosong,';
+			}
+			if (''==$KS ) {
+				$pesanerror=$pesanerror.'KS=kosong,';
+			}
+
+			if (''!=trim($pesanerror))
+			{
+				$pesanerror='Error Kondite Tanggal:'.$dataInsentifKondite['tanggal'].' '.$pesanerror.'<br>';
+			}
 
 			if ($MK == 'A') {$MK_p = 8; }elseif ($MK == 'B') {$MK_p = 4; }else{$MK_p = 0; }
 
@@ -486,7 +541,8 @@ class C_HitungGaji extends CI_Controller
 			'golC' => $golC,
 			'golD' => $golD,
 			'golE' => $golE,
-			'konditeAkhir' => $hasil_akhir
+			'konditeAkhir' => $hasil_akhir,
+			'pesanError' => $pesanerror
 		);
 
 		return $resultKondite;
@@ -559,6 +615,7 @@ class C_HitungGaji extends CI_Controller
 		$potonganHutangLain = 0;
 		$potonganDPLK = 0;
 		$potonganTKP = 0;
+		$pesanError='';
 
 		foreach ($getHitungGaji as $dataHitungGaji) {
 			$noind = $dataHitungGaji['employee_code'];
@@ -621,6 +678,7 @@ class C_HitungGaji extends CI_Controller
 				$IPTotal = $dataLKHSeksi['totalInsentifPrestasi'];
 				$IKTotal = $dataLKHSeksi['totalInsentifKelebihan'];
 				$pk_kondite = $dataLKHSeksi['pk_kondite'];
+				$pesanError = $pesanError.$dataLKHSeksi['pesanError'];
 			}
 			
 			$getInsentifKondite = $this->getInsentifKondite($noind, $kodesie, $bln_gaji, $thn_gaji, $pk_kondite);
@@ -639,6 +697,7 @@ class C_HitungGaji extends CI_Controller
 				$golD = $dataInsentifKondite['golD'];
 				$golE = $dataInsentifKondite['golE'];
 				$KonditeTotal = $dataInsentifKondite['konditeAkhir'];
+				$pesanError = $pesanError.$dataInsentifKondite['pesanError'];
 			}
 
 			$terima_bersih=0;
@@ -689,6 +748,7 @@ class C_HitungGaji extends CI_Controller
 				'hitung_pot_htm' => '('.$jmlIzin.'I + '.$jmlMangkir.'M) X ('.number_format($GP, 0, '', '.').'/'.$pembagi_gp_bulanan.')',
 				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/'.$pembagi_lembur.')',
 				'terima_bersih' => $terima_bersih,
+				'keterangan' =>$pesanError,
 			);
 
 			$dataInsert = array(
@@ -735,6 +795,7 @@ class C_HitungGaji extends CI_Controller
 				'hitung_pot_htm' => '('.$jmlIzin.' ijin + '.$jmlMangkir.' mangkir) X ('.number_format($GP, 0, '', '.').'/30)',
 				'hitung_uang_lembur' => $jamLembur.' jam X ('.number_format($GP, 0, '', '.').'/173)',
 				'terima_bersih' => $terima_bersih,
+				'keterangan' => $pesanError,
 			);
 
 			$this->M_hitunggaji->setHasilHitung($dataInsert);
@@ -1361,89 +1422,6 @@ class C_HitungGaji extends CI_Controller
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
 	}
-
-	public function cetakCrosscheckAll(){
-
-		set_time_limit(0);
-		//$this->checkSession();
-
-		$section = $this->input->post('section');
-		$month = $this->input->post('month');
-		$year = $this->input->post('year');
-		$tgl_bayar = $this->input->post('tanggal');
-        
-		$datapekerja = $this->M_mastergaji->getMasterGaji();
-
-		$data['dataMasterGaji'] = array();
-		foreach ($datapekerja as $key => $value) {
-			$data['dataMasterGaji'][]=$value;
-		}
-
-		//ambil data pekerja
-		$pkj=$this->M_hitunggaji->getEmployee($noind);
-		foreach ($pkj as $d) {
-			$data['namapkj']=$d['employee_name'];
-			$data['noinduk']=$d['employee_code'];
-			$data['unit_name']=$d['unit_name'];
-		}
-
-		//ambil data kelas
-		$kls=$this->M_hitunggaji->getDetailMasterGaji($noind);
-		foreach ($kls as $d) {
-			$klsv=$this->M_setelan->getSetelanName('kelas'.$d['kelas']);
-			foreach ( $klsv as $klsas) {
-			$data['kelas']=$klsas['setelan_value'];
-			}
-		}
-
-		$firstdate = date('Y-m-01', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
-		$lastdate = date('Y-m-t', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
-
-		$data['firstdate'] = $firstdate;
-		$data['lastdate'] = $lastdate;
-		//echo $data['firstdate'].' and '.$data['lastdate'];
-		$data['getDetailPekerja'] = $this->M_hitunggaji->getHitungGaji($noind, $kodesie = '', $bln_gaji, $thn_gaji);
-		$data['getDetailLKHSeksi'] = $this->M_hitunggaji->getLKHSeksi($noind, $firstdate, $lastdate);
-		$data['getDetailKondite'] = $this->M_hitunggaji->getInsentifKondite($noind, $kodesie = '', $firstdate, $lastdate);
-
-		$data['pembagi_lembur'] = $this->M_hitunggaji->getSetelan('pembagi_lembur');
-		$data['pembagi_gp_bulanan'] = $this->M_hitunggaji->getSetelan('pembagi_gp');
-		$data['pembagi_upamk'] = $this->M_hitunggaji->getSetelan('pembagi_upamk');
-		$data['persenan_jht'] = $this->M_hitunggaji->getSetelan('jht');
-		$data['persenan_jkn'] = $this->M_hitunggaji->getSetelan('jkn');
-		$data['persenan_jp'] = $this->M_hitunggaji->getSetelan('jp');
-		$data['waktu_cycletime_jumat_sabtu'] = $this->M_hitunggaji->getSetelan('cycle_time_jumat_sabtu');
-		$data['waktu_cycletime_senin_kamis'] = $this->M_hitunggaji->getSetelan('cycle_time_senin_kamis');
-		$data['insentif_prestasi_mask'] = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
-
-
-		//get hasil pengerjaan 
-
-		$html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_crosscheck', $data, true);
-		//$this->load->view('PayrollManagementNonStaff/HitungGaji/V_crosscheck', $data);
-		
-		$this->load->library('pdf');
-		$pdf = $this->pdf->load();
-
-		$pdf = new mPDF('utf-8', 'Letter', 0, '', /*margin left*/ 4, /*margin right*/ 4, /*margin top*/ 10,/*margin bottom*/  10,/*margin header*/ 5,/*margin footer*/ 5,'P');
-
-
-
-		$filename = 'CrossCheck '.$noind.'-'.time().'.pdf';
-
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
-		//$pdf->setFooter('{PAGENO}');
-		
-		$pdf->setFooter("dicetak : {DATE j-m-Y}  ---  Hal : {PAGENO} ");
-		$pdf->use_kwt = true;
-		$pdf->shrink_tables_to_fit=1;
-		$pdf->WriteHTML($stylesheet,1);
-		$pdf->WriteHTML($html,2);
-		$pdf->Output($filename, 'I');		
-
-
-
-		}
 
 }
 

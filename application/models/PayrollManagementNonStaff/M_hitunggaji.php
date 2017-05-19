@@ -425,6 +425,18 @@ SELECT count(tgl) FROM
         return $query;
     }
 
+    public function getHasilHitungByFilter($kodesie,$bulan,$tahun)
+    {
+        $sql = "
+            SELECT * FROM pr.pr_hasil_perhitungan_gaji php
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
+            LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
+            where php.kodesie='$kodesie' and php.bln_gaji='$bulan' and php.thn_gaji='$tahun'
+        ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function getHariIP($noind,$bulan,$tahun)
     {
         $sql = "
