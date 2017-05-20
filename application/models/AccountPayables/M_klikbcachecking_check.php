@@ -230,7 +230,55 @@ class M_klikbcachecking_check extends CI_Model {
 				    and lv.meaning = 'Quick'
 				    and lv.lookup_type = 'PAYMENT TYPE'    
 				    and ieba.branch_id = branch.party_id(+) 
-				   	
+				union all --cm only    
+				select distinct
+				    cpt.bank_trxn_number voucher
+				    ,ipa.payment_date pay_date
+				    ,to_date(ipa.creation_date,'DD/MM/RRRR') creation_date
+				    ,cba2.bank_account_name vendor
+				    ,'' site
+				    ,cba.bank_account_name dari_bank
+				    ,cba.bank_account_num norek
+				    ,ipa.payment_amount amount
+				    ,max(ipa.bank_charge_amount) over (partition by cba.bank_account_name, ipa.payment_date) charge
+				    ,case when
+				        max(ipa.payment_currency_code) over (partition by cba2.bank_account_name) = min(ipa.payment_currency_code) over (partition by cba2.bank_account_name)
+				        then sum(ipa.payment_amount) over (partition by cba2.bank_account_name,ieba.bank_account_num_electronic)
+				     end enuma
+				    ,ipa.payment_currency_code curr
+				    ,bp.party_name bank_tujuan
+				    ,ieba.bank_account_num_electronic rek_tujuan
+				    ,branch.party_name branch_tujuan
+				    ,ieba.bank_account_name acct_tujuan
+				    ,to_char(ipa.paper_document_number) pay_number
+				    ,1 rate
+				    ,ipa.payment_amount * 1 total
+				    ,to_number('') org_id
+				    ,0 invoice_id
+				    ,0 check_id
+				from        
+				    ce_cashflows cc_pay
+				    ,ce_payment_transactions cpt
+				    ,ce_bank_accounts cba
+				    ,ce_bank_accounts cba2
+				    ,iby_pay_service_requests ipsr
+				    ,iby_payments_all ipa
+				    ,iby_ext_bank_accounts ieba
+				    ,hz_parties bp
+				    ,hz_parties branch
+				where
+				    cc_pay.trxn_reference_number = cpt.trxn_reference_number(+)
+				    and cc_pay.cashflow_bank_account_id = cba.bank_account_id
+				    and cc_pay.cashflow_legal_entity_id = cba.account_owner_org_id
+				    and cc_pay.counterparty_bank_account_id = cba2.bank_account_id(+)
+				    and instr (cc_pay.cashflow_status_code, 'CANCELED', 1, 1) = 0
+				    and cc_pay.cashflow_direction = 'PAYMENT'
+				    and ipa.payment_status != 'VOID'
+				    and ieba.bank_id = bp.party_id(+)
+				    and ieba.branch_id = branch.party_id(+)
+				    and ipa.external_bank_account_id = ieba.ext_bank_account_id(+)
+				    and ipsr.call_app_pay_service_req_code = to_char(cpt.payment_request_number) 
+				    and ipa.payment_service_request_id = ipsr.payment_service_request_id   				
 				) L
 				ORDER BY PAY_NUMBER
 			)
@@ -333,7 +381,55 @@ class M_klikbcachecking_check extends CI_Model {
 				    and lv.meaning = 'Quick'
 				    and lv.lookup_type = 'PAYMENT TYPE'    
 				    and ieba.branch_id = branch.party_id(+) 
-				   	
+				union all --cm only    
+				select distinct
+				    cpt.bank_trxn_number voucher
+				    ,ipa.payment_date pay_date
+				    ,to_date(ipa.creation_date,'DD/MM/RRRR') creation_date
+				    ,cba2.bank_account_name vendor
+				    ,'' site
+				    ,cba.bank_account_name dari_bank
+				    ,cba.bank_account_num norek
+				    ,ipa.payment_amount amount
+				    ,max(ipa.bank_charge_amount) over (partition by cba.bank_account_name, ipa.payment_date) charge
+				    ,case when
+				        max(ipa.payment_currency_code) over (partition by cba2.bank_account_name) = min(ipa.payment_currency_code) over (partition by cba2.bank_account_name)
+				        then sum(ipa.payment_amount) over (partition by cba2.bank_account_name,ieba.bank_account_num_electronic)
+				     end enuma
+				    ,ipa.payment_currency_code curr
+				    ,bp.party_name bank_tujuan
+				    ,ieba.bank_account_num_electronic rek_tujuan
+				    ,branch.party_name branch_tujuan
+				    ,ieba.bank_account_name acct_tujuan
+				    ,to_char(ipa.paper_document_number) pay_number
+				    ,1 rate
+				    ,ipa.payment_amount * 1 total
+				    ,to_number('') org_id
+				    ,0 invoice_id
+				    ,0 check_id
+				from        
+				    ce_cashflows cc_pay
+				    ,ce_payment_transactions cpt
+				    ,ce_bank_accounts cba
+				    ,ce_bank_accounts cba2
+				    ,iby_pay_service_requests ipsr
+				    ,iby_payments_all ipa
+				    ,iby_ext_bank_accounts ieba
+				    ,hz_parties bp
+				    ,hz_parties branch
+				where
+				    cc_pay.trxn_reference_number = cpt.trxn_reference_number(+)
+				    and cc_pay.cashflow_bank_account_id = cba.bank_account_id
+				    and cc_pay.cashflow_legal_entity_id = cba.account_owner_org_id
+				    and cc_pay.counterparty_bank_account_id = cba2.bank_account_id(+)
+				    and instr (cc_pay.cashflow_status_code, 'CANCELED', 1, 1) = 0
+				    and cc_pay.cashflow_direction = 'PAYMENT'
+				    and ipa.payment_status != 'VOID'
+				    and ieba.bank_id = bp.party_id(+)
+				    and ieba.branch_id = branch.party_id(+)
+				    and ipa.external_bank_account_id = ieba.ext_bank_account_id(+)
+				    and ipsr.call_app_pay_service_req_code = to_char(cpt.payment_request_number) 
+				    and ipa.payment_service_request_id = ipsr.payment_service_request_id   	
 				) L
 				ORDER BY PAY_NUMBER
 			)
@@ -461,7 +557,55 @@ class M_klikbcachecking_check extends CI_Model {
 			    and lv.meaning = 'Quick'
 			    and lv.lookup_type = 'PAYMENT TYPE'    
 			    and ieba.branch_id = branch.party_id(+) 
-			   	
+		   	union all --cm only    
+			select distinct
+			    cpt.bank_trxn_number voucher
+			    ,ipa.payment_date pay_date
+			    ,to_date(ipa.creation_date,'DD/MM/RRRR') creation_date
+			    ,cba2.bank_account_name vendor
+			    ,'' site
+			    ,cba.bank_account_name dari_bank
+			    ,cba.bank_account_num norek
+			    ,ipa.payment_amount amount
+			    ,max(ipa.bank_charge_amount) over (partition by cba.bank_account_name, ipa.payment_date) charge
+			    ,case when
+			        max(ipa.payment_currency_code) over (partition by cba2.bank_account_name) = min(ipa.payment_currency_code) over (partition by cba2.bank_account_name)
+			        then sum(ipa.payment_amount) over (partition by cba2.bank_account_name,ieba.bank_account_num_electronic)
+			     end enuma
+			    ,ipa.payment_currency_code curr
+			    ,bp.party_name bank_tujuan
+			    ,ieba.bank_account_num_electronic rek_tujuan
+			    ,branch.party_name branch_tujuan
+			    ,ieba.bank_account_name acct_tujuan
+			    ,to_char(ipa.paper_document_number) pay_number
+			    ,1 rate
+			    ,ipa.payment_amount * 1 total
+			    ,to_number('') org_id
+			    ,0 invoice_id
+			    ,0 check_id
+			from        
+			    ce_cashflows cc_pay
+			    ,ce_payment_transactions cpt
+			    ,ce_bank_accounts cba
+			    ,ce_bank_accounts cba2
+			    ,iby_pay_service_requests ipsr
+			    ,iby_payments_all ipa
+			    ,iby_ext_bank_accounts ieba
+			    ,hz_parties bp
+			    ,hz_parties branch
+			where
+			    cc_pay.trxn_reference_number = cpt.trxn_reference_number(+)
+			    and cc_pay.cashflow_bank_account_id = cba.bank_account_id
+			    and cc_pay.cashflow_legal_entity_id = cba.account_owner_org_id
+			    and cc_pay.counterparty_bank_account_id = cba2.bank_account_id(+)
+			    and instr (cc_pay.cashflow_status_code, 'CANCELED', 1, 1) = 0
+			    and cc_pay.cashflow_direction = 'PAYMENT'
+			    and ipa.payment_status != 'VOID'
+			    and ieba.bank_id = bp.party_id(+)
+			    and ieba.branch_id = branch.party_id(+)
+			    and ipa.external_bank_account_id = ieba.ext_bank_account_id(+)
+			    and ipsr.call_app_pay_service_req_code = to_char(cpt.payment_request_number) 
+			    and ipa.payment_service_request_id = ipsr.payment_service_request_id   	
 			) L
 			ORDER BY PAY_NUMBER
 		");
