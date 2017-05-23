@@ -183,6 +183,7 @@ class M_invoice extends CI_Model{
 						else if($typ1=="yes" && $typ2=="yes"){$qtyp="faktur_type";}
 		
 		$oracle = $this->load->database("oracle",true);
+		
 		$query = $oracle->query("
 			SELECT FAKTUR_WEB_ID
 				,FAKTUR_PAJAK

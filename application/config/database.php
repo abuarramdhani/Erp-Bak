@@ -175,6 +175,50 @@ $db['quickcom'] = array(
 	'port' => 3306
 );
 
+$db['oracle_dev'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.7.3:1522/DEV',
+	'username' => 'apps',
+	'password' => 'apps',
+	'database' => 'KHS_DEV',
+	'dbdriver' => 'oci8',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['quickerpdev'] = array(
+	'dsn'	=> '',
+	'hostname' => 'db.quick.com',
+	'username' => 'postgres',
+	'password' => 'password',
+	'database' => 'quickerpdev',
+	'dbdriver' => 'postgre',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
 $efg="";
 		$data = explode('.',$_SERVER['SERVER_NAME']);
 		if (!empty($data[0])) {

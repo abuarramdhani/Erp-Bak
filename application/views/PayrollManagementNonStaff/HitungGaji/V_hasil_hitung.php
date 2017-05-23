@@ -9,9 +9,28 @@
 					<input type="hidden" name="noind" value="<?php echo $dataHasil['noind']; ?>">
 					<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-print"></i> Struk</button>
 				</form>
+				<form class="detail-form" target="_blank" method="post" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$dataHasil['noind'].'/'.$dataHasil['bln_gaji'].'/'.$dataHasil['thn_gaji']); ?>">
+					<button type='submit' class='btn btn-warning btn-block'><i class='fa fa-list-alt'></i> Cross Check</button>
+					<a href="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckById/'.$dataHasil['noind'].'/'.$dataHasil['bln_gaji'].'/'.$dataHasil['thn_gaji']); ?>"> CrossCheck <?php echo $dataHasil['noind']; ?> PDF</a>
+				</form>
 			</td>
-			<td><?php echo $dataHasil['noind']; ?></td>
-			<td><?php echo $dataHasil['employee_name']; ?></td>
+			<td><?php echo $dataHasil['keterangan']; ?></td>
+			<td>
+				<form class="detail-form" target="_blank" method="post" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan'); ?>">
+					<input type="hidden" name="txtNoind" value="<?php echo $dataHasil['noind']; ?>">
+					<input type="hidden" name="txtBulan" value="<?php echo $dataHasil['bln_gaji']; ?>">
+					<input type="hidden" name="txtTahun" value="<?php echo $dataHasil['thn_gaji']; ?>">
+				</form>
+				<a href="#" onclick="$(this).closest('td').find('.detail-form').submit()"><?php echo $dataHasil['noind']; ?></a>	
+			</td>
+			<td>
+				<form class="detail-form" target="_blank" method="post" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/detail_perhitungan'); ?>">
+					<input type="hidden" name="txtNoind" value="<?php echo $dataHasil['noind']; ?>">
+					<input type="hidden" name="txtBulan" value="<?php echo $dataHasil['bln_gaji']; ?>">
+					<input type="hidden" name="txtTahun" value="<?php echo $dataHasil['thn_gaji']; ?>">
+				</form>
+				<a href="#" onclick="$(this).closest('td').find('.detail-form').submit()"><?php echo $dataHasil['employee_name']; ?></a>
+			</td>
 			<td><?php echo $dataHasil['gaji_pokok']; ?></td>
 			<td><?php echo $dataHasil['insentif_prestasi']; ?></td>
 			<td><?php echo $dataHasil['insentif_kelebihan']; ?></td>

@@ -21,6 +21,7 @@ foreach ($rekap as $rekap_data) {}
 							<input type="hidden" name="txtDetail" value="0">
 							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
+							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">
 							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($rekap); foreach ($rekap as $rkp_export) { $count--; if ($count !== 0) { echo "'".$rkp_export['noind']."'".",";} else { echo "'".$rkp_export['noind']."'";} } ?>">
 							<button class="btn btn-default pull-right">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
@@ -34,16 +35,26 @@ foreach ($rekap as $rekap_data) {}
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NIK</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NAMA</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">MASA KERJA</th>
-										<th colspan="7" style="text-align: center">REKAP</th>
+										<th colspan="8" style="text-align: center">REKAP</th>
+										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">TOTAL HARI KERJA</th>
+										<th colspan="7" style="text-align: center">PERSENTASE</th>
 									</tr>
 									<tr class="bg-primary">
 										<th style="text-align: center">T</th>
 										<th style="text-align: center">I</th>
 										<th style="text-align: center">M</th>
 										<th style="text-align: center">S</th>
+										<th style="text-align: center">PSP</th>
 										<th style="text-align: center">IP</th>
 										<th style="text-align: center">CT</th>
 										<th style="text-align: center">SP</th>
+										<th style="text-align: center">T</th>
+										<th style="text-align: center">I</th>
+										<th style="text-align: center">M</th>
+										<th style="text-align: center">S</th>
+										<th style="text-align: center">PSP</th>
+										<th style="text-align: center">IP</th>
+										<th style="text-align: center">CT</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -99,9 +110,18 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo $rekap_data['freki']+$rekap_data['frekis']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekm']+$rekap_data['frekms']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['freksk']+$rekap_data['freksks']; ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['frekpsp']+$rekap_data['frekpsps']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekip']+$rekap_data['frekips'] ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekct']+$rekap_data['frekcts'] ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['freksp']+$rekap_data['freksps'] ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : ($rekap_data['totalhk']+$rekap_data['totalhks'])) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freki']+$rekap_data['frekis']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekm']+$rekap_data['frekms']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freksk']+$rekap_data['freksks']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekpsp']+$rekap_data['frekpsps']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 										</tr>
 									<?php } ?>
 								</tbody>
@@ -113,6 +133,7 @@ foreach ($rekap as $rekap_data) {}
 									I : Izin Pribadi&emsp;
 									M : Mangkir&emsp;
 									S : Sakit&emsp;
+									PSP : Pulang Sakit dari Perusahaan&emsp;
 									IP : Izin Perusahaan&emsp;
 									CT : Cuti Tahunan&emsp;
 									SP : Surat Peringatan

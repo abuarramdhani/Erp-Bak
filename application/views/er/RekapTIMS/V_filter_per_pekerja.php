@@ -14,6 +14,21 @@
 								<div class="form-group">
 									<div class="row" style="margin: 10px 10px">
 										<div class="col-md-2">
+											<label class="control-label">Status Karyawan</label>
+										</div>
+										<div class="col-md-10">
+											<div class="form-group">
+												<div class="input-group">
+													<select class="form-control" name="slcStatus" id="slcStatus" required>
+														<option value="0" selected>Aktif</option>
+														<option value="1">Keluar</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>								
+									<div class="row" style="margin: 10px 10px">
+										<div class="col-md-2">
 											<label class="control-label">Periode</label>
 										</div>
 										<div class="col-md-5">

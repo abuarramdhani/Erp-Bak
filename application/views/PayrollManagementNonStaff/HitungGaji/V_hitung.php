@@ -62,15 +62,33 @@
                                 </form>
                                 <div class="form-horizontal">
                                     <div class="form-group">
-                                        <div id="errorProsesGaji" class="col-lg-2 col-lg-offset-4">
+                                        <div id="errorProsesGaji" class="col-lg-2 col-lg-offset-12">
                                         </div>
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-3">
                                             <button type="button" id="btnProsesGaji" class="btn btn-primary btn-block">Proses Gaji</button>
                                         </div>
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-3">
                                             <form method="post" target="_blank" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakStruk'); ?>">
                                                 <input type="hidden" name="noind" value="NULL">
                                                 <button id="btnPrintStrukAll" type="submit" class="btn btn-primary btn-block" disabled><i class="fa fa-print"></i> Struk Semua</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <form method="post" target="_blank" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/exportperhitungan'); ?>">
+                                                <input type="hidden" name="section" id="dbfsection">
+                                                <input type="hidden" name="month" id="dbfmonth">
+                                                <input type="hidden" name="year" id="dbfyear">                                                
+                                                <input type="hidden" name="tanggal" id="dbftanggal">
+                                                <button type="submit" class="btn btn-success btn-block"><i class="fa fa-file-text-o"></i>  Eksport DBF</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <form method="post" target="_blank" action="<?php echo base_url('PayrollManagementNonStaff/ProsesGaji/HitungGaji/cetakCrosscheckAll/'); ?>">
+                                                <input type="hidden" name="section" id="dbfsection">
+                                                <input type="hidden" name="month" id="dbfmonth">
+                                                <input type="hidden" name="year" id="dbfyear">                                                
+                                                <input type="hidden" name="tanggal" id="dbftanggal">
+                                                <button type="submit" class="btn btn-warning btn-block" disabled=""><i class="fa fa-list-alt"></i>  Cross Check</button>
                                             </form>
                                         </div>
                                     </div>
@@ -83,6 +101,7 @@
                                                     <tr>
                                                         <th class="text-center" width="50px">No</th>
                                                         <th class="text-center" width="100px">Action</th>
+                                                        <th class="text-center" width="100px">Error ?</th>
                                                         <th class="text-center" width="100px">No Induk</th>
                                                         <th class="text-center" width="250px">Nama</th>
                                                         <th class="text-center" width="150px">Gaji Pokok</th>

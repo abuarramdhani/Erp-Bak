@@ -86,8 +86,12 @@ class C_TargetBenda extends CI_Controller
 			'kode_proses' => $this->input->post('txtKodeProsesHeader'),
 			'nama_proses' => $this->input->post('txtNamaProsesHeader'),
 			'jumlah_operator' => $this->input->post('txtJumlahOperatorHeader'),
-			'target_utama' => $this->input->post('txtTargetUtamaHeader'),
-			'target_sementara' => $this->input->post('txtTargetSementaraHeader'),
+			'target_utama_senin_kamis' => $this->input->post('txtTargetUtamaSeninKamis'),
+			'target_utama_senin_kamis_4' => $this->input->post('txtTargetUtamaSeninKamis4'),
+			'target_sementara_senin_kamis' => $this->input->post('txtTargetSementaraSeninKamis'),
+			'target_utama_jumat_sabtu' => $this->input->post('txtTargetUtamaJumatSabtu'),
+			'target_utama_jumat_sabtu_4' => $this->input->post('txtTargetUtamaJumatSabtu4'),
+			'target_sementara_jumat_sabtu' => $this->input->post('txtTargetSementaraJumatSabtu'),
 			'waktu_setting' => $this->input->post('txtWaktuSettingHeader'),
 			'tgl_berlaku' => $this->input->post('txtTglBerlakuHeader'),
 			'tgl_input' => 'NOW()',
@@ -146,8 +150,12 @@ class C_TargetBenda extends CI_Controller
 			'kode_proses' => $this->input->post('txtKodeProsesHeader',TRUE),
 			'nama_proses' => $this->input->post('txtNamaProsesHeader',TRUE),
 			'jumlah_operator' => $this->input->post('txtJumlahOperatorHeader',TRUE),
-			'target_utama' => $this->input->post('txtTargetUtamaHeader',TRUE),
-			'target_sementara' => $this->input->post('txtTargetSementaraHeader',TRUE),
+			'target_utama_senin_kamis' => $this->input->post('txtTargetUtamaSeninKamis',TRUE),
+			'target_utama_senin_kamis_4' => $this->input->post('txtTargetUtamaSeninKamis4',TRUE),
+			'target_sementara_senin_kamis' => $this->input->post('txtTargetSementaraSeninKamis',TRUE),
+			'target_utama_jumat_sabtu' => $this->input->post('txtTargetUtamaJumatSabtu',TRUE),
+			'target_utama_jumat_sabtu_4' => $this->input->post('txtTargetUtamaJumatSabtu4',TRUE),
+			'target_sementara_jumat_sabtu' => $this->input->post('txtTargetSementaraJumatSabtu',TRUE),
 			'waktu_setting' => $this->input->post('txtWaktuSettingHeader',TRUE),
 			'tgl_berlaku' => $this->input->post('txtTglBerlakuHeader',TRUE),
 			);
@@ -247,9 +255,11 @@ class C_TargetBenda extends CI_Controller
 					'kode_proses' => utf8_encode($db_record['KODEPRO']),
 					'nama_proses' => utf8_encode($db_record['PROSES']),
 					'jumlah_operator' => utf8_encode($db_record['JMLOPR']),
-					'target_utama_senin_kamis' => utf8_encode($db_record['PSK52']),
-					'target_utama_jumat_sabtu' => utf8_encode($db_record['PJS52']),
-					'waktu_setting' => utf8_encode($db_record['WAKTU_SETTING']),
+					'target_utama_senin_kamis' => utf8_encode($db_record['PSK54']),
+					'target_utama_senin_kamis_4' => utf8_encode($db_record['PSK44']),
+					'target_utama_jumat_sabtu' => utf8_encode($db_record['PJS54']),
+					'target_utama_jumat_sabtu_4' => utf8_encode($db_record['PJS44']),
+					'waktu_setting' => utf8_encode($db_record['WAKTU_SETT']),
 					'tgl_berlaku' => utf8_encode($db_record['TG_LAKU']),
 					'tgl_input' => utf8_encode($db_record['TG_INPUT'])
 				);
@@ -322,11 +332,10 @@ class C_TargetBenda extends CI_Controller
 
 			$count--;
 			if ($count != 0) {
-				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kode_barang'].'", "'.$result['nama_barang'].'", "'.$result['kode_proses'].'", "'.$result['nama_proses'].'", "'.$result['jumlah_operator'].'", "'.$result['target_utama'].'", "'.$result['target_sementara'].'", "'.$result['waktu_setting'].'", "'.$result['tgl_berlaku'].'", "'.$result['tgl_input'].'", "'.$result['learning_periode'].'"],';
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kode_barang'].'", "'.$result['nama_barang'].'", "'.$result['kode_proses'].'", "'.$result['nama_proses'].'", "'.$result['jumlah_operator'].'", "'.$result['target_utama_senin_kamis'].'", "'.$result['target_utama_senin_kamis_4'].'", "'.$result['target_sementara_senin_kamis'].'", "'.$result['target_utama_jumat_sabtu'].'", "'.$result['target_utama_jumat_sabtu_4'].'", "'.$result['target_sementara_jumat_sabtu'].'", "'.$result['waktu_setting'].'", "'.$result['tgl_berlaku'].'", "'.$result['tgl_input'].'", "'.$result['learning_periode'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kode_barang'].'", "'.$result['nama_barang'].'", "'.$result['kode_proses'].'", "'.$result['nama_proses'].'", "'.$result['jumlah_operator'].'", "'.$result['target_utama'].'", "'.$result['target_sementara'].'", "'.$result['waktu_setting'].'", "'.$result['tgl_berlaku'].'", "'.$result['tgl_input'].'", "'.$result['learning_periode'].'"
-]';
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/MasterData/TargetBenda/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\'return confirm(\'Are you sure you want to delete this item?\');\'><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['kode_barang'].'", "'.$result['nama_barang'].'", "'.$result['kode_proses'].'", "'.$result['nama_proses'].'", "'.$result['jumlah_operator'].'", "'.$result['target_utama_senin_kamis'].'", "'.$result['target_utama_senin_kamis_4'].'", "'.$result['target_sementara_senin_kamis'].'", "'.$result['target_utama_jumat_sabtu'].'", "'.$result['target_utama_jumat_sabtu_4'].'", "'.$result['target_sementara_jumat_sabtu'].'", "'.$result['waktu_setting'].'", "'.$result['tgl_berlaku'].'", "'.$result['tgl_input'].'", "'.$result['learning_periode'].'"]';
 			}
 			$no++;
 		}

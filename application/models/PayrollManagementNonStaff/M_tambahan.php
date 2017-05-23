@@ -81,6 +81,11 @@ class M_tambahan extends CI_Model
         return $this->db->insert('pr.pr_tambahan', $data);
     }
 
+     public function setPotongan($data)
+    {
+        return $this->db->insert('pr.pr_potongan', $data);
+    }
+
     public function updateTambahan($data, $id)
     {
         $this->db->where('tambahan_id', $id);

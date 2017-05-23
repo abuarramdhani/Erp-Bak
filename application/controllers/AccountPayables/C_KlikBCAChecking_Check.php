@@ -78,7 +78,7 @@ class C_KlikBCAchecking_Check extends CI_Controller {
 					$oracle_berita				= $oc[0]['PAY_NUMBER'];
 					$oracle_no_rek_penerima		= $oc[0]['REK_TUJUAN'];
 					$oracle_nama_penerima		= $oc[0]['ACCT_TUJUAN'];
-					$oracle_jumlah				= $oc[0]['AMOUNT'];
+					$oracle_jumlah				= round($oc[0]['AMOUNT']);
 				}else{
 					$oracle_berita				= '-';
 					$oracle_no_rek_penerima		= '-';
