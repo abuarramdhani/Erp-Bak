@@ -15,7 +15,8 @@ class M_kantorasal extends CI_Model
 
     // get all data
     function get_all()
-    {
+    {	
+		$this->db->order_by('id_kantor_asal','asc');
     	return $this->db->get($this->table)->result();
     }
 

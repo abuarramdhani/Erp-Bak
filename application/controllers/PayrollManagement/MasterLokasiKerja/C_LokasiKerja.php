@@ -35,6 +35,11 @@ class C_LokasiKerja extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/LokasiKerja/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -63,6 +68,10 @@ class C_LokasiKerja extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         }
     }
@@ -101,6 +110,10 @@ class C_LokasiKerja extends CI_Controller
 
         $this->M_lokasikerja->insert($data);
         $this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+					 "success_insert" => 1
+				);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/LokasiKerja'));
 
     }
@@ -131,6 +144,10 @@ class C_LokasiKerja extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         }
     }
@@ -145,6 +162,10 @@ class C_LokasiKerja extends CI_Controller
 
 		$this->M_lokasikerja->update(strtoupper($this->input->post('txtIdLokasiKerja', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
+		$ses=array(
+				 "success_update" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/LokasiKerja'));
         
     }
@@ -156,9 +177,17 @@ class C_LokasiKerja extends CI_Controller
         if ($row) {
             $this->M_lokasikerja->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         }
     }

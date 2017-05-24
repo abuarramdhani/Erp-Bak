@@ -59,6 +59,7 @@ class M_masterparamkompjab extends CI_Model
             {
                 return $this->db->get('pr.pr_master_jabatan')->result();
             }
+			
 
 }
 

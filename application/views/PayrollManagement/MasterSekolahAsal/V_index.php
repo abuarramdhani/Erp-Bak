@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -33,7 +35,20 @@
                     <b>Master Sekolah Asal</b>
 		          </div>
 		          <div class="box-body">
-
+				   <?php
+						if (!empty($masterSekolahAsal_data)) {
+					  ?>
+					  <form method="post" action="<?php echo base_url('PayrollManagement/MasterJabatanUpah/saveImport')?>">
+						<div class="row" style="margin: 10px 0 10px 10px">
+						  <div class="col-lg-offset-10 col-lg-2">
+							<input type="hidden" name="txtFileName" value="<?php echo $filename; ?>">
+							<button class="btn btn-primary btn-block">Import</button>
+						  </div>
+						</div>
+					  </form>
+					  <?php
+						}
+					  ?>
 		            <div class="table-responsive">
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-masterSekolahAsal" style="font-size:12px;">
 		                <thead class="bg-primary">
@@ -44,7 +59,6 @@
 							<th style='text-align:center'>Pendidikan</th>
 							<th style='text-align:center'>Sekolah</th>
 							<th style='text-align:center'>Jurusan</th>
-
 		                  </tr>
 		                </thead>
 		                <tbody>

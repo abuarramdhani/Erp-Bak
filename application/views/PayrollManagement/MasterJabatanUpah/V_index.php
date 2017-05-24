@@ -18,7 +18,9 @@
                     </div>
                 </div>
                 <br/>
-          
+          <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -60,7 +62,7 @@
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-                                                <th style="text-align:center; min-width:80px">Action</th>
+                                                <th style="text-align:center; min-width:120px">Action</th>
 												<th>Jabatan Upah</th>
 											</tr>
                                         </thead>

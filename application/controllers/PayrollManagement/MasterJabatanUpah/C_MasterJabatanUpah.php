@@ -36,6 +36,11 @@ class C_MasterJabatanUpah extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterJabatanUpah/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	/* NEW DATA */
@@ -68,10 +73,11 @@ class C_MasterJabatanUpah extends CI_Controller
             
 			$this->M_masterjabatanupah->insert_header($data);
             $header_id = $this->db->insert_id();
-
-
-
 			$this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterJabatanUpah'));
         
     }
@@ -115,9 +121,17 @@ class C_MasterJabatanUpah extends CI_Controller
         if ($row) {
             $this->M_masterjabatanupah->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterJabatanUpah'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterJabatanUpah'));
         }
     }
@@ -149,6 +163,10 @@ class C_MasterJabatanUpah extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterJabatanUpah'));
         }
     }
@@ -162,12 +180,12 @@ class C_MasterJabatanUpah extends CI_Controller
             $data = array(
 				'jabatan_upah' => strtoupper($this->input->post('txtJabatanUpahHeader',TRUE)),
 			);
-            
 			$this->M_masterjabatanupah->update_header($header_id, $data);
-
-
-
 			$this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterJabatanUpah'));
     }
 
@@ -205,7 +223,7 @@ class C_MasterJabatanUpah extends CI_Controller
 	                    );
 
                     	//CHECK IF EXIST
-                    	$jab_upah = str_pad($row['KD_JAB_UPAH'], 5, "0", STR_PAD_LEFT);
+                    	$jab_upah = $row['KD_JAB_UPAH'];
 	                   	$check = $this->M_masterjabatanupah->check($jab_upah);
 
 	                    if($check){
@@ -223,7 +241,7 @@ class C_MasterJabatanUpah extends CI_Controller
 	                    );
 
 	                    //CHECK IF EXIST
-                    	$jab_upah = str_pad($row['KD_JAB_UPAH'], 5, "0", STR_PAD_LEFT);
+                    	$jab_upah = $row['KD_JAB_UPAH'];
 	                   	$check = $this->M_masterjabatanupah->check($jab_upah);
 
 	                    if($check){
@@ -248,6 +266,11 @@ class C_MasterJabatanUpah extends CI_Controller
         		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		        $data['data_exist'] = $data_exist;
+				$this->session->set_flashdata('message', 'Record Not Found');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
 				unlink($file_path);
 				redirect(site_url('PayrollManagement/MasterJabatanUpah'));
             } else {
@@ -297,6 +320,11 @@ class C_MasterJabatanUpah extends CI_Controller
         }
 
         $this->session->set_flashdata('message', 'Create Record Success');
+		$this->session->set_flashdata('message', 'Record Not Found');
+		$ses=array(
+				 "success_import" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/RiwayatRekeningPekerja'));
     }
     

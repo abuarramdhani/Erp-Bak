@@ -9,6 +9,7 @@ class C_MasterParamKompJab extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetKomponenGajiJabatan/M_masterparamkompjab');
+		$this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -35,6 +36,11 @@ class C_MasterParamKompJab extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamKompJab/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -198,6 +204,67 @@ class C_MasterParamKompJab extends CI_Controller
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
+        }
+    }
+	
+	  public function import() {
+        $config['upload_path'] = 'assets/upload/importPR/masterparamkompjab/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterparamkompjab/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+					$check = $this->M_masterparamkompjab->get_by_id($row['ID_KOMP_JAB']);
+                    if($check){
+                        $data = array(
+                            'kd_status_kerja' => $row['KD_STATUS_KERJA'],
+                            'kd_jabatan' => $row['KD_JABATAN'],
+                            'ip' => $row['IP'],
+                            'ik' => $row['IK'],
+                            'ims' => $row['IMS'],
+                            'imm' => $row['IMM'],
+                            'pot_duka' => $row['POT_DUKA'],
+                            'spsi' => $row['SPSI'],
+                        );
+						// echo $row['ID_KOMP_JAB']."update";
+                        $this->M_masterparamkompjab->update($row['ID_KOMP_JAB'],$data);
+                    }else{
+                        $data = array(
+                            'id_komp_jab' => $row['ID_KOMP_JAB'],
+                            'kd_status_kerja' => $row['KD_STATUS_KERJA'],
+                            'kd_jabatan' => $row['KD_JABATAN'],
+                            'ip' => $row['IP'],
+                            'ik' => $row['IK'],
+                            'ims' => $row['IMS'],
+                            'imm' => $row['IMM'],
+                            'pot_duka' => $row['POT_DUKA'],
+                            'spsi' => $row['SPSI'],
+                        );
+						// echo $row['ID_KOMP_JAB']."insert";
+                        $this->M_masterparamkompjab->insert($data);
+                    }
+                }
+				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+				$ses=array(
+					 "success_import" => 1
+				);
+
+				$this->session->set_userdata($ses);
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/MasterParamKompJab');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 
