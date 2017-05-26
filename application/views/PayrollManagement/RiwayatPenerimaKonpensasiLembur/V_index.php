@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	       <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -35,7 +37,7 @@
 		          <div class="box-body">
 
 		            <div class="table-responsive">
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-riwayatPenerimaKonpensasiLembur" style="font-size:12px;">
+		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-riwayatPenerimaKonpensasiLembur" style="font-size:12px;width:100%;">
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>

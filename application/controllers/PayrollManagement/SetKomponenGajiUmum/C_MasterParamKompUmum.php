@@ -35,6 +35,11 @@ class C_MasterParamKompUmum extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamKompUmum/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -63,6 +68,9 @@ class C_MasterParamKompUmum extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
         }
     }
@@ -128,6 +136,9 @@ class C_MasterParamKompUmum extends CI_Controller
             $this->M_masterparamkompumum->update_riwayat($last_id,$data_update);
             $this->M_masterparamkompumum->insert_riwayat($data_riwayat);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+				 "success_insert" => 1
+			);
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
     }
 
@@ -157,6 +168,9 @@ class C_MasterParamKompUmum extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+				 "not_found" => 1
+			);
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
         }
     }
@@ -172,6 +186,9 @@ class C_MasterParamKompUmum extends CI_Controller
 
             $this->M_masterparamkompumum->update($data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+				 "success_update" => 1
+			);
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
     }
 
@@ -182,9 +199,15 @@ class C_MasterParamKompUmum extends CI_Controller
         if ($row) {
             $this->M_masterparamkompumum->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+				 "success_delete" => 1
+			);
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+				 "not_found" => 1
+			);
             redirect(site_url('PayrollManagement/MasterParamKompUmum'));
         }
     }

@@ -36,6 +36,11 @@ class C_RiwayatUpamk extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/RiwayatUpamk/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -70,6 +75,10 @@ class C_RiwayatUpamk extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         }
     }
@@ -124,6 +133,10 @@ class C_RiwayatUpamk extends CI_Controller
             $this->M_riwayatupamk->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
             $this->M_riwayatupamk->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         
     }
@@ -160,6 +173,10 @@ class C_RiwayatUpamk extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         }
     }
@@ -181,6 +198,10 @@ class C_RiwayatUpamk extends CI_Controller
 
             $this->M_riwayatupamk->update($this->input->post('txtIdUpamk', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         
     }
@@ -192,9 +213,17 @@ class C_RiwayatUpamk extends CI_Controller
         if ($row) {
             $this->M_riwayatupamk->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
         }
     }
@@ -220,7 +249,7 @@ class C_RiwayatUpamk extends CI_Controller
                     	
  						//ROW DATA
 	                    $data = array(
-	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							'tgl_tberlaku' => '9999-12-31',
 							'periode' => date('Y-m',strtotime($row['TGL_BERLAKU'])),
 							'noind' => $row['NOIND'],
@@ -230,14 +259,14 @@ class C_RiwayatUpamk extends CI_Controller
 	                    );
 
                     	//CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+                    	$noind = $row['NOIND'];
 	                   	$check = $this->M_riwayatupamk->check($noind);
 
 	                    if($check){
 	                    	$data_exist[$i] = $data;
 	                    	$i++;
 							$data_update = array(
-								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							);
 							$this->M_riwayatupamk->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
 							$this->M_riwayatupamk->insert($data);
@@ -248,7 +277,7 @@ class C_RiwayatUpamk extends CI_Controller
                 	}else{
                 		//ROW DATA
                 		$data = array(
-	                    	'tgl_berlaku' => $row['TGL_BERLAKU'],
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							'tgl_tberlaku' => '9999-12-31',
 							'periode' => date('Y-m',strtotime($row['TGL_BERLAKU'])),
 							'noind' => $row['NOIND'],
@@ -258,14 +287,14 @@ class C_RiwayatUpamk extends CI_Controller
 	                    );
 
 	                    //CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 5, "0", STR_PAD_LEFT);
+                    	$noind = $row['NOIND'];
 	                   	$check = $this->M_riwayatupamk->check($noind);
 
 	                    if($check){
 	                    	$data_exist[$i] = $data;
 	                    	$i++;
 							$data_update = array(
-								'tgl_tberlaku'	=> $row['TGL_BERLAKU'],
+								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							);
 							$this->M_riwayatupamk->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
 							$this->M_riwayatupamk->insert($data);
@@ -288,6 +317,11 @@ class C_RiwayatUpamk extends CI_Controller
         		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		        $data['data_exist'] = $data_exist;
+				$this->session->set_flashdata('message', 'Create Record Success');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
 				unlink($file_path);
 				redirect(site_url('PayrollManagement/RiwayatUpamk'));
             } else {
@@ -320,31 +354,8 @@ class C_RiwayatUpamk extends CI_Controller
                 $this->import($data = array(), $filename = '');
             }
         }
-    }
-
-    public function saveImport(){
-        $filename = $this->input->post('txtFileName');
-        $file_path  = 'assets/upload/importPR/'.$filename;
-        $importData = $this->csvimport->get_array($file_path);
-
-        foreach ($importData as $row) {
-            $data = array(
-               'tgl_berlaku' => $row['TGL_BERLAKU'],
-				'tgl_tberlaku' => '9999-12-31',
-				'periode' => date('Y-m',strtotime($row['TGL_BERLAKU'])),
-				'noind' => $row['NOIND'],
-				'upamk' => $row['UPAMK'],
-				'kd_petugas' => $this->session->userdata('userid'),
-				'tgl_rec' => date('Y-m-d H:i:s'),
-            );
-
-            $this->M_riwayatupamk->insert($data);
-        }
-
-        $this->session->set_flashdata('message', 'Create Record Success');
-        redirect(site_url('PayrollManagement/RiwayatUpamk'));
-    }
-
+	}	
+	
     public function checkSession(){
         if($this->session->is_logged){
             

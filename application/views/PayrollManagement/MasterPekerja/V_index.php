@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -52,7 +54,7 @@
 							</form>
 								<div class="col-lg-2">
 								</div>
-									<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/doImport')?>" enctype="multipart/form-data">
+									<form method="post" action="<?php echo base_url('PayrollManagement/MasterPekerja/import')?>" enctype="multipart/form-data">
 										<div class="col-lg-3">
 											<input name="file" type="file" class="form-control" readonly required>
 										</div>

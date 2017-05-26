@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -30,7 +32,7 @@
                         <i class="icon-plus icon-2x"></i>
                       </button>
                     </a>
-                    <b>Set Tarif BBPJS</b>
+                    <b>Set Tarif BPJS</b>
 		          </div>
 		          <div class="box-body">
 

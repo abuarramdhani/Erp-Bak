@@ -217,6 +217,10 @@ class C_MasterJabatan extends CI_Controller
                 }
 				$this->session->set_flashdata('message', 'Record Not Found');
 				$ses=array(
+					 "not_found" => 1
+				);
+				$this->session->set_userdata($ses);
+				$ses=array(
 						 "success_import" => 1
 					);
 				$this->session->set_userdata($ses);

@@ -76,6 +76,10 @@ class C_MasterParamKompJab extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         }
     }
@@ -130,6 +134,10 @@ class C_MasterParamKompJab extends CI_Controller
 
         $this->M_masterparamkompjab->insert($data);
         $this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+				 "success_insert" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamKompJab'));
     }
 
@@ -169,6 +177,10 @@ class C_MasterParamKompJab extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         }
     }
@@ -190,6 +202,10 @@ class C_MasterParamKompJab extends CI_Controller
 
         $this->M_masterparamkompjab->update($this->input->post('txtIdKompJab', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
+		$ses=array(
+				 "success_update" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamKompJab'));
     }
 
@@ -200,9 +216,17 @@ class C_MasterParamKompJab extends CI_Controller
         if ($row) {
             $this->M_masterparamkompjab->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         }
     }

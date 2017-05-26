@@ -496,12 +496,12 @@ function getMaxHutang(noind){
       $('#txtTotalHutang').attr("placeholder",result);
       $('#txtTotalHutang').attr("max",result);
       $('#max-hutang').text("* Max 2x Gaji Pokok ("+result+")");
-    },
-    error:function()
-    {
-      $('#txtTotalHutang').attr("placeholder",'Error Occured');
-      $('#txtTotalHutang').attr("max",'0');
-      $('#max-hutang').text("* Max 2x Gaji Pokok ()");
+	  
+	  if(result == 0){
+		  $('#save_hutang').attr('disabled','disabled');
+	  }else{
+		  $('#save_hutang').removeattr('disabled','disabled');
+	  }
     }
   });
 }

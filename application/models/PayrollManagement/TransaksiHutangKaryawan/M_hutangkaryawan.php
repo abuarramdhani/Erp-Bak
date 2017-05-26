@@ -51,11 +51,18 @@ class M_hutangkaryawan extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
     }
+	
+	// delete data
+    function delete_transac($id)
+    {
+        $this->db->where('no_hutang', $id);
+        $this->db->delete($this->table_transaksi);
+    }
 
     function getMaxHutang($data_where)
     {
         $this->db->where($data_where);
-        return $this->db->get($this->table_gaji)->row()->gaji_pokok;
+        return $this->db->get($this->table_gaji)->result();
     }
 	
 	function getNoind($term){
