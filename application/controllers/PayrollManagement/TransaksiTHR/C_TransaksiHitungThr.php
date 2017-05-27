@@ -44,9 +44,12 @@ class C_TransaksiHitungThr extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/TransaksiHitungThr/V_index', $data);
         $this->load->view('V_Footer',$data);
-		$this->session->unset_userdata("success");
-		$this->session->unset_userdata("failed");
-		$this->session->unset_userdata("empty");
+		$this->session->unset_userdata("failed_import");
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -87,6 +90,10 @@ class C_TransaksiHitungThr extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiHitungThr'));
         }
     }
@@ -151,6 +158,10 @@ class C_TransaksiHitungThr extends CI_Controller
 
             $this->M_transaksihitungthr->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiHitungThr'));
     }
 
@@ -193,6 +204,10 @@ class C_TransaksiHitungThr extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiHitungThr'));
         }
     }
@@ -219,6 +234,10 @@ class C_TransaksiHitungThr extends CI_Controller
 
         $this->M_transaksihitungthr->update($this->input->post('txtIdTransaksiThr', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/TransaksiHitungThr'));
     }
 
@@ -229,9 +248,17 @@ class C_TransaksiHitungThr extends CI_Controller
         if ($row) {
             $this->M_transaksihitungthr->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiHitungThr'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiHitungThr'));
         }
     }
@@ -253,13 +280,12 @@ class C_TransaksiHitungThr extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
- 						//ROW DATA
 	                    $data = array(
 	                    	'id_data_thr' => $row['ID_THR'],
 							'periode' => $row['PERIODE'],
 							'noind' => $row['NOIND'],
 							'kd_status_kerja' => $row['KD_STATUS'],
-							'diangkat' => $row['DIANGKAT'],
+							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
 							'lama_thn' => $row['LM_THN'],
 							'lama_bln' => $row['LM_BLN'],
 							'kode_petugas' => $this->session->userdata('userid'),
@@ -271,7 +297,7 @@ class C_TransaksiHitungThr extends CI_Controller
 							'periode' => $row['PERIODE'],
 							'noind' => $row['NOIND'],
 							'kd_status_kerja' => $row['KD_STATUS'],
-							'diangkat' => $row['DIANGKAT'],
+							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
 							'lama_thn' => $row['LM_THN'],
 							'lama_bln' => $row['LM_BLN'],
 							'kode_petugas' => $this->session->userdata('userid'),
@@ -286,7 +312,7 @@ class C_TransaksiHitungThr extends CI_Controller
 								'periode' => $row['PERIODE'],
 								'noind' => $row['NOIND'],
 								'kd_status_kerja' => $row['KD_STATUS'],
-								'diangkat' => $row['DIANGKAT'],
+								'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
 								'lama_thn' => $row['LM_THN'],
 								'lama_bln' => $row['LM_BLN'],
 								'kode_petugas' => $this->session->userdata('userid'),
@@ -305,7 +331,7 @@ class C_TransaksiHitungThr extends CI_Controller
 								'periode' => $row['PERIODE'],
 								'noind' => $row['NOIND'],
 								'kd_status_kerja' => $row['KD_STATUS'],
-								'diangkat' => $row['DIANGKAT'],
+								'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
 								'lama_thn' => $row['LM_THN'],
 								'lama_bln' => $row['LM_BLN'],
 								'kode_petugas' => $this->session->userdata('userid'),
@@ -332,18 +358,16 @@ class C_TransaksiHitungThr extends CI_Controller
 				unlink($file_path);
 				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
 				$ses=array(
-					 "success" => 1
-				);
-		
+						 "success_import" => 1
+					);
 				$this->session->set_userdata($ses);
 				redirect(site_url('PayrollManagement/TransaksiHitungThr'));
             } else {
                 // $this->load->view('csvindex');
 				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
 				$ses=array(
-					 "failed" => 1
-				);
-		
+						 "failed_import" => 1
+					);
 				$this->session->set_userdata($ses);
 				redirect(site_url('PayrollManagement/TransaksiHitungThr'));
             }
@@ -398,6 +422,10 @@ class C_TransaksiHitungThr extends CI_Controller
         }
 
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_import" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/TransaksiHitungThr'));
     }
 
@@ -447,8 +475,9 @@ class C_TransaksiHitungThr extends CI_Controller
 		}else{
 			$this->session->set_flashdata('flashSuccess', 'This is a success message.');
 			$ses=array(
-				 "empty" => 1
-			);
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
 			redirect(site_url('PayrollManagement/TransaksiHitungThr'));
 		}
 	}

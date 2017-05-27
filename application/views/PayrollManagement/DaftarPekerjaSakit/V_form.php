@@ -47,7 +47,7 @@
                                         <label for="txtNoind" class="control-label col-lg-4">No induk</label>
                                         <div class="col-lg-4">
                                              <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())">
-													<option value=""></option>
+													<option value="<?php echo $noind ?>"><?php echo $noind ?></option>
 												</select>
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@
                                             <input type="text" placeholder="Bulan Sakit" name="txtBulanSakit" id="txtBulanSakit" class="form-control" value="<?php echo $bulan_sakit; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
                                         </div>
                                     </div>
-									<input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" />
+									<input type="text" name="txtIdSetting" value="<?php echo $id_setting; ?>" />
 								</div>
                             </div>
                             <div class="panel-footer">

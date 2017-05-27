@@ -99,7 +99,7 @@ class M_transaksihitungthr extends CI_Model
 	function getTransaksiTHR($dt){
 		$this->db->where('periode=',$dt);
 		$this->db->join('pr.pr_master_pekerja', 'pr.pr_master_pekerja.noind = pr.pr_transaksi_hitung_thr.noind', 'left');
-		$this->db->join('pr.pr_master_seksi', 'pr.pr_master_pekerja.kodesie = pr.pr_transaksi_hitung_thr.kodesie', 'left');
+		$this->db->join('pr.pr_master_seksi', 'pr.pr_master_pekerja.kodesie = pr.pr_master_seksi.kodesie', 'left');
     	return $this->db->get($this->table)->result();
 	}
 

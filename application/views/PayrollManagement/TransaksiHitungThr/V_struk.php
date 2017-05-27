@@ -34,7 +34,7 @@
 						:
 					</td>
 					<td style="width:20%;font-size:12px;vertical-align:top; ">
-						31 Maret 2017
+						<?php echo date('d F Y') ?>
 					</td>
 				</tr>
 				<tr>
@@ -48,7 +48,7 @@
 						:
 					</td>
 					<td style="width:9%;font-size:12px;vertical-align:top; ">
-						B0689
+						<?php echo $row->noind; ?>
 					</td>
 				</tr>
 				<tr>
@@ -103,13 +103,18 @@
 						:
 					</td>
 					<td style="width:18%">
-						<?php
-							
-						?>
-						12 / 12 x <?php echo $row->gaji_pokok?> 
+						<?php 
+						
+						if($row->lama_bln >= 12){
+							echo 12;
+						}else{
+							echo $row->lama_bln;
+						}
+						
+						?> / 12 x <?php echo $row->gaji_pokok?> 
 					</td>
 					<td style="width:15%;text-align:right;">
-						2.222.220
+						<?php echo $row->thr?>
 					</td>
 					<td style="width:6%;">
 						&nbsp;
@@ -118,7 +123,7 @@
 						Lanjutan Sub.Total 1 ...........
 					</td>
 					<td style="width:20%;text-align:right;">
-						4.498.640
+						<?php echo ($row->thr + $row->ubthr); ?>
 					</td>
 				</tr>
 				<tr>
@@ -129,15 +134,18 @@
 						:
 					</td>
 					<td>
-					<?php
-						if(<?php ?>){
+						<?php 
+						
+						if($row->lama_bln >= 12){
+							echo 12;
 						}else{
+							echo $row->lama_bln;
 						}
-					?>
-						12 / 12 x 2.249.320 
+						
+						?> / 12 x <?php echo $row->gaji_pokok?> 
 					</td>
 					<td style="text-align:right;">
-						2.222.220
+						<?php echo $row->ubthr?>
 					</td>
 					<td>
 						&nbsp;
@@ -170,7 +178,7 @@
 						&nbsp;
 					</td>
 					<td style="text-align:right;">
-						2.222.220
+						<?php echo ($row->thr + $row->ubthr); ?>
 					</td>
 					<td colspan="3">
 						&nbsp;
@@ -190,12 +198,12 @@
 						&nbsp;
 					</td>
 					<td style="text-align:right;">
-						4.498.640
+						<?php echo ($row->thr + $row->ubthr); ?>
 					</td>
 				</tr>
 			</table>
 		</div>
-		 <div class="row" style="margin-left:3px;margin-right:3px;padding-top:10px;">
+		 <div class="row" style="margin-left:3px;margin-right:3px;padding-top:20px;">
             <table style="width: 100%;font-size:12px;">
                 <tr>
                     <td style="text-align:center;">

@@ -36,6 +36,11 @@ class C_MasterPekerja extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterPekerja/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 	
 	public function search()
@@ -142,6 +147,10 @@ class C_MasterPekerja extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
         }
     }
@@ -281,6 +290,10 @@ class C_MasterPekerja extends CI_Controller
 
             $this->M_masterpekerja->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
         
     }
@@ -365,6 +378,10 @@ class C_MasterPekerja extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
         }
     }
@@ -428,6 +445,10 @@ class C_MasterPekerja extends CI_Controller
 
             $this->M_masterpekerja->update($this->input->post('txtNoind', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
     }
 
@@ -438,9 +459,17 @@ class C_MasterPekerja extends CI_Controller
         if ($row) {
             $this->M_masterpekerja->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
         }
     }
@@ -582,7 +611,7 @@ class C_MasterPekerja extends CI_Controller
 							'id_lokasi_kerja' => $row['ID_LOK_KER'],
 							'jns_kelamin' => $row['JENKEL'],
 							'tempat_lahir' => $row['TEMPAT_LHR'],
-							'tgl_lahir' => $row['TGL_LHR'],
+							'tgl_lahir' => date("Y-m-d",strtotime($row['TGL_LHR'])),
 							'alamat' => $row['ALAMAT'],
 							'desa' => $row['DESA'],
 							'kecamatan' => $row['KEC'],
@@ -596,11 +625,11 @@ class C_MasterPekerja extends CI_Controller
 							'jurusan' => $row['JURUSAN'],
 							'sekolah' => $row['SEKOLAH'],
 							'stat_nikah' => $row['STAT_NIKAH'],
-							'tgl_nikah' => $row['TGL_NIKAH'],
+							'tgl_nikah' => date("Y-m-d",strtotime($row['TGL_NIKAH'])),
 							'jml_anak' => $row['JML_ANAK'],
 							'jml_sdr' => $row['JML_SDR'],
-							'diangkat' => $row['DIANGKAT'],
-							'masuk_kerja' => $row['MASUK_KERJ'],
+							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
+							'masuk_kerja' => date("Y-m-d",strtotime($row['MASUK_KERJ'])),
 							'kodesie' => $row['KODESIE'],
 							'gol_kerja' => $row['GOL_KERJA'],
 							'kd_asal_outsourcing' => $row['KD_ASAL_OS'],
@@ -609,22 +638,22 @@ class C_MasterPekerja extends CI_Controller
 							'npwp' => $row['NPWP'],
 							'no_kpj' => $row['NO_KPJ'],
 							'lm_kontrak' => $row['LM_KONTRAK'],
-							'akh_kontrak' => $row['AKH_KONTRA'],
+							'akh_kontrak' => date("Y-m-d",strtotime($row['AKH_KONTRA'])),
 							'stat_pajak' => $row['STAT_PAJAK'],
 							'jt_anak' => $row['JT_ANAK'],
 							'jt_bkn_anak' => $row['JT_BKN_ANA'],
-							'tgl_spsi' => $row['TGL_SPSI'],
+							'tgl_spsi' => date("Y-m-d",strtotime($row['TGL_SPSI'])),
 							'no_spsi' => $row['NO_SPSI'],
-							'tgl_kop' => $row['TGL_KOP'],
+							'tgl_kop' => date("Y-m-d",strtotime($row['TGL_KOP'])),
 							'no_koperasi' => $row['NO_KOPERAS'],
 							'keluar' => $row['KELUAR'],
-							'tgl_keluar' => $row['TGL_KELUAR'],
+							'tgl_keluar' => date("Y-m-d",strtotime($row['TGL_KELUAR'])),
 							'kd_pkj' => $row['KD_PKJ'],
 							'angg_jkn' => $row['ANGG_JKN'],
 	                    );
 
                     	//CHECK IF EXIST
-                    	$noind = str_pad($row['NOIND'], 7, "0", STR_PAD_LEFT);
+                    	$noind = $row['NOIND'];
 	                   	$check = $this->M_masterpekerja->check($noind);
 
 	                    if($check){
@@ -648,7 +677,7 @@ class C_MasterPekerja extends CI_Controller
 							'id_lokasi_kerja' => $row['id_lokasi_kerja'],
 							'jns_kelamin' => $row['jns_kelamin'],
 							'tempat_lahir' => $row['tempat_lahir'],
-							'tgl_lahir' => $row['tgl_lahir'],
+							'tgl_lahir' => date("Y-m-d",strtotime($row['tgl_lahir'])),
 							'alamat' => $row['alamat'],
 							'desa' => $row['desa'],
 							'kecamatan' => $row['kecamatan'],
@@ -662,11 +691,11 @@ class C_MasterPekerja extends CI_Controller
 							'jurusan' => $row['jurusan'],
 							'sekolah' => $row['sekolah'],
 							'stat_nikah' => $row['stat_nikah'],
-							'tgl_nikah' => $row['tgl_nikah'],
+							'tgl_nikah' => date("Y-m-d",strtotime($row['tgl_nikah'])),
 							'jml_anak' => $row['jml_anak'],
 							'jml_sdr' => $row['jml_sdr'],
-							'diangkat' => $row['diangkat'],
-							'masuk_kerja' => $row['masuk_kerja'],
+							'diangkat' => date("Y-m-d",strtotime($row['diangkat'])),
+							'masuk_kerja' => date("Y-m-d",strtotime($row['masuk_kerja'])),
 							'kodesie' => $row['kodesie'],
 							'gol_kerja' => $row['gol_kerja'],
 							'kd_asal_outsourcing' => $row['kd_asal_outsourcing'],
@@ -675,22 +704,22 @@ class C_MasterPekerja extends CI_Controller
 							'npwp' => $row['npwp'],
 							'no_kpj' => $row['no_kpj'],
 							'lm_kontrak' => $row['lm_kontrak'],
-							'akh_kontrak' => $row['akh_kontrak'],
+							'akh_kontrak' => date("Y-m-d",strtotime($row['akh_kontrak'])),
 							'stat_pajak' => $row['stat_pajak'],
 							'jt_anak' => $row['jt_anak'],
 							'jt_bkn_anak' => $row['jt_bkn_anak'],
-							'tgl_spsi' => $row['tgl_spsi'],
+							'tgl_spsi' => date("Y-m-d",strtotime($row['tgl_spsi'])),
 							'no_spsi' => $row['no_spsi'],
-							'tgl_kop' => $row['tgl_kop'],
+							'tgl_kop' => date("Y-m-d",strtotime($row['tgl_kop'])),
 							'no_koperasi' => $row['no_koperasi'],
 							'keluar' => $row['keluar'],
-							'tgl_keluar' => $row['tgl_keluar'],
+							'tgl_keluar' => date("Y-m-d",strtotime($row['tgl_keluar'])),
 							'kd_pkj' => $row['kd_pkj'],
 							'angg_jkn' => $row['angg_jkn'],
 	                    );
 
 	                    //CHECK IF EXIST
-                    	$noind = str_pad($row['noind'], 7, "0", STR_PAD_LEFT);
+                    	$noind = $row['noind'];
 	                   	$check = $this->M_masterpekerja->check($noind);
 
 	                    if($check){
@@ -721,6 +750,10 @@ class C_MasterPekerja extends CI_Controller
 		        $this->load->view('V_Sidemenu',$data);
 		        $this->load->view('PayrollManagement/MasterPekerja/V_Upload', $data);
 		        $this->load->view('V_Footer',$data);
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
                 unlink($file_path);
 
             } else {

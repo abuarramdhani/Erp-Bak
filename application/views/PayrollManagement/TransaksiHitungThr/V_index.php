@@ -20,34 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
-	    <?php
-			if($this->session->userdata('failed')){ 
-		?>
-			<div class="alert alert-danger alert-dismissable" id="lama" style="width:100%;">
-				<b> Import Gagal ! </b> Terjadi kesalahan saat melakukan import data
-			</div>
-		<?php
-			}
-		?>
-		<?php
-			if($this->session->userdata('success')){ 
-		?>
-			<div class="alert alert-success alert-dismissable" id="lama" style="width:100%;">
-				<b> Import Sukses ! </b> Import data THR berhasil
-			</div>
-		<?php
-			}
-		?>
-		<?php
-			if($this->session->userdata('empty')){ 
-		?>
-			<div class="alert alert-warning alert-dismissable" id="lama" style="width:100%;">
-				<b> Data Kosong ! </b> Tidak ada data pada periode tersebut
-			</div>
-		<?php
-			}
-		?>
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">

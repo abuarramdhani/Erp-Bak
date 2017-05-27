@@ -43,3 +43,12 @@
 			<?php
 				}
 			?>
+			<?php
+				if($this->session->userdata('failed_import')){ 
+			?>
+				<div class="alert alert-danger alert-dismissable" style="width:100%;">
+					<b> Import Gagal ! </b> Terjadi kesalahan saat melakukan import data
+				</div>
+			<?php
+				}
+			?>
