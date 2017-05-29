@@ -157,7 +157,7 @@
 						:
 					</td>
 					<td style="text-align:right;">
-						4.498.640
+						
 					</td>
 				</tr>
 				<tr>

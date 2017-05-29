@@ -33,6 +33,11 @@ class C_DataKlaimPekerjaKeluar extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/DataKlaimPekerjaKeluar/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 	
 	public function Check(){

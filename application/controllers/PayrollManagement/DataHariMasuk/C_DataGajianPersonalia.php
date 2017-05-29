@@ -5,6 +5,7 @@ class C_DataGajianPersonalia extends CI_Controller
     function __construct()
     {
         parent::__construct();
+		ini_set('max_execution_time', 0); //no limit
         $this->load->library('session');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -33,6 +34,11 @@ class C_DataGajianPersonalia extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/DataGajianPersonalia/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 	
 	public function search()
@@ -51,12 +57,21 @@ class C_DataGajianPersonalia extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $dataGajianPersonalia = $this->M_datagajianpersonalia->get_all($year,$month);
-
-        $data['dataGajianPersonalia_data'] = $dataGajianPersonalia;
-        $this->load->view('V_Header',$data);
-        $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/DataGajianPersonalia/V_index', $data);
-        $this->load->view('V_Footer',$data);
+		
+		if($dataGajianPersonalia){
+			$data['dataGajianPersonalia_data'] = $dataGajianPersonalia;
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PayrollManagement/DataGajianPersonalia/V_index', $data);
+			$this->load->view('V_Footer',$data);
+		} else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
+            redirect(site_url('PayrollManagement/DataGajianPersonalia'));
+        }
     }
 
 	public function read($id)
@@ -133,6 +148,10 @@ class C_DataGajianPersonalia extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
         }
     }
@@ -271,6 +290,10 @@ class C_DataGajianPersonalia extends CI_Controller
 
             $this->M_datagajianpersonalia->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
         }
     }
@@ -349,6 +372,10 @@ class C_DataGajianPersonalia extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
         }
     }
@@ -415,6 +442,10 @@ class C_DataGajianPersonalia extends CI_Controller
 
             $this->M_datagajianpersonalia->update($this->input->post('txtIdGajianPersonalia', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
         }
     }
@@ -426,15 +457,22 @@ class C_DataGajianPersonalia extends CI_Controller
         if ($row) {
             $this->M_datagajianpersonalia->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/DataGajianPersonalia'));
         }
     }
 
     public function import() {
-       
         $config['upload_path'] = 'assets/upload/importPR/datagajianpersonalia/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
@@ -554,6 +592,11 @@ class C_DataGajianPersonalia extends CI_Controller
 								$this->M_datagajianpersonalia->insert($data);
 						}
                 }
+				$this->session->set_flashdata('message', 'Success Import');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
                 unlink($file_path);
                 redirect(base_url().'PayrollManagement/DataGajianPersonalia');
 

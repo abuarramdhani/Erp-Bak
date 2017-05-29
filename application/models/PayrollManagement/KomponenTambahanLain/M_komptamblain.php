@@ -4,7 +4,7 @@ class M_komptamblain extends CI_Model
 {
 
     public $table = 'pr.pr_komp_pot_tamb';
-    public $id = 'id_komp_pot_lain';
+    public $id = 'id_komp_pot_tam';
     public $order = 'DESC';
 
     function __construct()

@@ -33,6 +33,11 @@ class C_KlaimGajiIndividual extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/KlaimGajiIndividual/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 	
 	public function search()
@@ -133,6 +138,10 @@ class C_KlaimGajiIndividual extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
     }
@@ -271,6 +280,10 @@ class C_KlaimGajiIndividual extends CI_Controller
 
             $this->M_klaimgajiindividual->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
     }
@@ -349,6 +362,10 @@ class C_KlaimGajiIndividual extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
     }
@@ -415,6 +432,10 @@ class C_KlaimGajiIndividual extends CI_Controller
 
             $this->M_klaimgajiindividual->update($this->input->post('txtIdGajianPersonalia', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
     }
@@ -426,9 +447,17 @@ class C_KlaimGajiIndividual extends CI_Controller
         if ($row) {
             $this->M_klaimgajiindividual->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KlaimGajiIndividual'));
         }
     }
@@ -454,15 +483,15 @@ class C_KlaimGajiIndividual extends CI_Controller
 	                    if($check){
 							 $data_update = array(
 									'tanggal' 				=> $row['PERIODE'],
-									'noind' 					=> $row['NOIND'],
-									'kd_status_kerja' 	=> $row['STATUS_KER'],
+									'noind' 				=> $row['NOIND'],
+									'kd_status_kerja' 		=> $row['STATUS_KER'],
 									'kd_jabatan' 			=> str_replace("'","",$row['KODE_JABAT']),
 									'kodesie' 				=> $row['KODESIE'],
 									'ip' 					=> $row['IP'],
 									'ik' 					=> $row['IK'],
 									'i_f' 					=> $row['IF'],
 									'ubt' 					=> $row['UBT'],
-									'upamk' 			=> $row['UPAMK'],
+									'upamk' 				=> $row['UPAMK'],
 									'um' 					=> $row['UM'],
 									'ims' 					=> $row['IMS'],
 									'imm' 					=> $row['IMM'],
@@ -504,15 +533,15 @@ class C_KlaimGajiIndividual extends CI_Controller
 							 $data = array(
 									'id_gajian_pkj_klr' 	=> $row['ID'],
 									'tanggal' 				=> $row['PERIODE'],
-									'noind' 					=> $row['NOIND'],
-									'kd_status_kerja' 	=> $row['STATUS_KER'],
+									'noind' 				=> $row['NOIND'],
+									'kd_status_kerja' 		=> $row['STATUS_KER'],
 									'kd_jabatan' 			=> str_replace("'","",$row['KODE_JABAT']),
 									'kodesie' 				=> $row['KODESIE'],
 									'ip' 					=> $row['IP'],
 									'ik' 					=> $row['IK'],
 									'i_f' 					=> $row['IF'],
 									'ubt' 					=> $row['UBT'],
-									'upamk' 			=> $row['UPAMK'],
+									'upamk' 				=> $row['UPAMK'],
 									'um' 					=> $row['UM'],
 									'ims' 					=> $row['IMS'],
 									'imm' 					=> $row['IMM'],
@@ -552,6 +581,11 @@ class C_KlaimGajiIndividual extends CI_Controller
 								$this->M_klaimgajiindividual->insert($data);
 						}
                 }
+				$this->session->set_flashdata('message', 'Import Data Success');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
                 unlink($file_path);
                 redirect(base_url().'PayrollManagement/KlaimGajiIndividual');
 

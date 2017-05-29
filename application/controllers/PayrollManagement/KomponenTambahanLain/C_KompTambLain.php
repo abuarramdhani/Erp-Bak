@@ -35,6 +35,11 @@ class C_KompTambLain extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/KompTambLain/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -68,6 +73,10 @@ class C_KompTambLain extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTambLain'));
         }
     }
@@ -86,14 +95,12 @@ class C_KompTambLain extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/KompTambLain/save'),
-				'id_komp_pot_lain' => set_value(''),
-			'periode' => set_value('tanggal'),
-			'pr_master_pekerja_data' => $this->M_komptamblain->get_pr_master_pekerja_data(),
+			'id_komp_pot_tam' => set_value(''),
+			'tanggal' => set_value('tanggal'),
 			'noind' => set_value('noind'),
-			'tambahan' => set_value('tamb_lain'),
-			'potongan' => set_value('pot_lain'),
-			'stat' => set_value('stat'),
-			'desc_' => set_value('ket'),
+			'tamb_lain' => set_value('tamb_lain'),
+			'pot_lain' => set_value('pot_lain'),
+			'ket' => set_value('ket'),
 		);
 
         $this->load->view('V_Header',$data);
@@ -117,6 +124,10 @@ class C_KompTambLain extends CI_Controller
 
             $this->M_komptamblain->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTambLain'));
     }
 
@@ -137,12 +148,12 @@ class C_KompTambLain extends CI_Controller
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/KompTambLain/saveUpdate'),
-				'id_komp_pot_lain' => set_value('txtId', $row->id_komp_pot_tam),
-				'periode' => set_value('txtPeriode', $row->tanggal),
+				'id_komp_pot_tam' => set_value('txtId', $row->id_komp_pot_tam),
+				'tanggal' => set_value('txtPeriode', $row->tanggal),
 				'noind' => set_value('txtNoind', $row->noind),
-				'tambahan' => set_value('txtTambahan', $row->tamb_lain),
-				'potongan' => set_value('txtPotongan',$row->pot_lain),
-				'desc_' => set_value('txtDesc', $row->desc_),
+				'pot_lain' => set_value('txtTambahan', $row->tamb_lain),
+				'tamb_lain' => set_value('txtPotongan',$row->pot_lain),
+				'ket' => set_value('txtDesc', $row->ket),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -150,6 +161,10 @@ class C_KompTambLain extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTambLain'));
         }
     }
@@ -165,7 +180,7 @@ class C_KompTambLain extends CI_Controller
             $data = array(
 				'id_komp_pot_tam'	=> date('YmdHis'),
 				'tanggal' => $this->input->post('txtPeriode',TRUE),
-				'noind' => $this->input->post('cmbNoind',TRUE),
+				'noind' => $this->input->post('txtNoind',TRUE),
 				'tamb_lain' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
 				'pot_lain' => str_replace(',','',$this->input->post('txtPotongan',TRUE)),
 				'ket' => $this->input->post('txtDesc',TRUE),
@@ -173,6 +188,10 @@ class C_KompTambLain extends CI_Controller
 
             $this->M_komptamblain->update($this->input->post('txtId', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTambLain'));
         }
     }
@@ -184,9 +203,17 @@ class C_KompTambLain extends CI_Controller
         if ($row) {
             $this->M_komptamblain->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTambLain'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTambLain'));
         }
     }
@@ -201,8 +228,7 @@ class C_KompTambLain extends CI_Controller
 
     public function formValidation()
     {
-		// $this->form_validation->set_rules('txtTambahan', 'Tambahan', 'integer');
-		// $this->form_validation->set_rules('txtDesc', 'Desc ', 'max_length[30]');
+		$this->form_validation->set_rules('txtTambahan', 'char');
 	}
 
 }
