@@ -648,6 +648,8 @@ class C_TransaksiPenggajian extends CI_Controller
     }
 	
 	public function read($id){
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
 		$noind 		=  substr($id,0,5);
 		$varMonth	=  substr($id,5,2);
 		$varYear	=  substr($id,7,4);

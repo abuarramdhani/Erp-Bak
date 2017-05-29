@@ -137,10 +137,13 @@
 							$no= 0;
 							foreach($getDataPenggajian_data as $row){
 							$no++;
+							$enc_id = $this->encrypt->encode($row->id_pembayaran_gaji);
+							$enc_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $enc_id);
 						?>
+						<tr>
 							<td align="center"><?php echo $no; ?></td>
 							<td align='center'>
-								<a href="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/read/'.$row->id_pembayaran_gaji.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+								<a href="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/read/'.$enc_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
 							</td>
 							<td align="center"><?php echo $row->tanggal ?></td>
 							<td align="center"><?php echo $row->noind ?></td>
@@ -219,6 +222,7 @@
 							<td align="center"><?php echo number_format((int)$row->btransfer); ?></td>
 							<td align="center"><div style="width:100px);font:red);"></div><?php echo number_format((int)$row->subtotal3); ?></td>
 							<td align="center"><?php echo $row->kd_jns_transaksi ?></td>
+						</tr>
 						<?php
 								} 
 							} 

@@ -580,7 +580,7 @@ class C_MasterPekerja extends CI_Controller
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
 	
 	  public function import() {
-       
+		error_reporting(E_ALL ^ E_NOTICE);
         $config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '5000';
@@ -597,159 +597,118 @@ class C_MasterPekerja extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KD_HUB_KER', $row)){
-                    	
- 						//ROW DATA
-	                    $data = array(
-	                    	'noind' => $row['NOIND'],
-							'kd_hubungan_kerja' => $row['KD_HUB_KER'],
-							'kd_status_kerja' => $row['KD_STATUS_'],
-							'nik' => $row['NIK'],
-							'no_kk' => $row['NO_KK'],
-							'nama' => $row['NAMA'],
-							'id_kantor_asal' => $row['ID_KANT_AS'],
-							'id_lokasi_kerja' => $row['ID_LOK_KER'],
-							'jns_kelamin' => $row['JENKEL'],
-							'tempat_lahir' => $row['TEMPAT_LHR'],
+					$noind = $row['noind'];
+	                $check = $this->M_masterpekerja->check($noind);
+					if($check){
+						$data = array(
+							'kd_hubungan_kerja' => substr($row['KD_HUB_KER'],0,3),
+							'kd_status_kerja' => substr($row['KD_STATUS_'],0,1),
+							'nik' => substr($row['NIK'],0,20),
+							'no_kk' => substr($row['NO_KK'],0,20),
+							'nama' => substr($row['NAMA'],0,50),
+							'id_kantor_asal' => substr($row['ID_KANT_AS'],0,3),
+							'id_lokasi_kerja' => substr($row['ID_LOK_KER'],0,3),
+							'jns_kelamin' => substr($row['JENKEL'],0,1),
+							'tempat_lahir' => substr($row['TEMPAT_LHR'],0,30),
 							'tgl_lahir' => date("Y-m-d",strtotime($row['TGL_LHR'])),
-							'alamat' => $row['ALAMAT'],
-							'desa' => $row['DESA'],
-							'kecamatan' => $row['KEC'],
-							'kabupaten' => $row['KAB'],
-							'provinsi' => $row['PROVINSI'],
-							'kode_pos' => $row['KODE_POS'],
-							'no_hp' => $row['NO_HP'],
-							'gelar_d' => $row['GELARD'],
-							'gelar_b' => $row['GELARB'],
-							'pendidikan' => $row['PENDIDIKAN'],
-							'jurusan' => $row['JURUSAN'],
-							'sekolah' => $row['SEKOLAH'],
-							'stat_nikah' => $row['STAT_NIKAH'],
+							'alamat' => substr($row['ALAMAT'],0,100),
+							'desa' => substr($row['DESA'],0,30),
+							'kecamatan' => substr($row['KEC'],0,30),
+							'kabupaten' => substr($row['KAB'],0,30),
+							'provinsi' => substr($row['PROVINSI'],0,30),
+							'kode_pos' => substr($row['KODE_POS'],0,6),
+							'no_hp' => substr($row['NO_HP'],0,16),
+							'gelar_d' => substr($row['GELARD'],0,6),
+							'gelar_b' => substr($row['GELARB'],0,6),
+							'pendidikan' => substr($row['PENDIDIKAN'],0,7),
+							'jurusan' => substr($row['JURUSAN'],0,30),
+							'sekolah' => substr($row['SEKOLAH'],0,60),
+							'stat_nikah' => substr($row['STAT_NIKAH'],0,2),
 							'tgl_nikah' => date("Y-m-d",strtotime($row['TGL_NIKAH'])),
-							'jml_anak' => $row['JML_ANAK'],
-							'jml_sdr' => $row['JML_SDR'],
+							'jml_anak' => substr($row['JML_ANAK'],0,2),
+							'jml_sdr' => substr($row['JML_SDR'],0,2),
 							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
 							'masuk_kerja' => date("Y-m-d",strtotime($row['MASUK_KERJ'])),
-							'kodesie' => $row['KODESIE'],
-							'gol_kerja' => $row['GOL_KERJA'],
-							'kd_asal_outsourcing' => $row['KD_ASAL_OS'],
-							'kd_jabatan' => str_replace("'","",$row['KD_JABATAN']),
-							'jabatan' => $row['JABATAN'],
-							'npwp' => $row['NPWP'],
-							'no_kpj' => $row['NO_KPJ'],
-							'lm_kontrak' => $row['LM_KONTRAK'],
+							'kodesie' => substr($row['KODESIE'],0,9),
+							'gol_kerja' => substr($row['GOL_KERJA'],0,7),
+							'kd_asal_outsourcing' => substr($row['KD_ASAL_OS'],0,4),
+							'kd_jabatan' => substr(str_replace("'","",$row['KD_JABATAN']),0,4),
+							'jabatan' => substr($row['JABATAN'],0,80),
+							'npwp' => substr($row['NPWP'],0,20),
+							'no_kpj' => substr($row['NO_KPJ'],0,20),
+							'lm_kontrak' => substr($row['LM_KONTRAK'],0,2),
 							'akh_kontrak' => date("Y-m-d",strtotime($row['AKH_KONTRA'])),
-							'stat_pajak' => $row['STAT_PAJAK'],
-							'jt_anak' => $row['JT_ANAK'],
-							'jt_bkn_anak' => $row['JT_BKN_ANA'],
+							'stat_pajak' => substr($row['STAT_PAJAK'],0,3),
+							'jt_anak' => substr($row['JT_ANAK'],0,1),
+							'jt_bkn_anak' => substr($row['JT_BKN_ANA'],0,1),
 							'tgl_spsi' => date("Y-m-d",strtotime($row['TGL_SPSI'])),
-							'no_spsi' => $row['NO_SPSI'],
+							'no_spsi' => substr($row['NO_SPSI'],0,11),
 							'tgl_kop' => date("Y-m-d",strtotime($row['TGL_KOP'])),
-							'no_koperasi' => $row['NO_KOPERAS'],
-							'keluar' => $row['KELUAR'],
+							'no_koperasi' => substr($row['NO_KOPERAS'],0,11),
+							'keluar' => substr($row['KELUAR'],0,1),
 							'tgl_keluar' => date("Y-m-d",strtotime($row['TGL_KELUAR'])),
-							'kd_pkj' => $row['KD_PKJ'],
-							'angg_jkn' => $row['ANGG_JKN'],
+							'kd_pkj' => substr($row['KD_PKJ'],0,9),
+							'angg_jkn' => substr($row['ANGG_JKN'],0,1),
+							'noind_baru' => substr($row['NOIND_BARU'],0,7),
 	                    );
-
-                    	//CHECK IF EXIST
-                    	$noind = $row['NOIND'];
-	                   	$check = $this->M_masterpekerja->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-	                    }else{
-	                    	$this->M_masterpekerja->insert($data);
-	                    }
-
-                	}else{
-
-                		//ROW DATA
-                		$data = array(
-	                    	'noind' => $row['noind'],
-							'kd_hubungan_kerja' => $row['kd_hubungan_kerja'],
-							'kd_status_kerja' => $row['kd_status_kerja'],
-							'nik' => $row['nik'],
-							'no_kk' => $row['no_kk'],
-							'nama' => $row['nama'],
-							'id_kantor_asal' => $row['id_kantor_asal'],
-							'id_lokasi_kerja' => $row['id_lokasi_kerja'],
-							'jns_kelamin' => $row['jns_kelamin'],
-							'tempat_lahir' => $row['tempat_lahir'],
-							'tgl_lahir' => date("Y-m-d",strtotime($row['tgl_lahir'])),
-							'alamat' => $row['alamat'],
-							'desa' => $row['desa'],
-							'kecamatan' => $row['kecamatan'],
-							'kabupaten' => $row['kabupaten'],
-							'provinsi' => $row['provinsi'],
-							'kode_pos' => $row['kode_pos'],
-							'no_hp' => $row['no_hp'],
-							'gelar_d' => $row['gelar_d'],
-							'gelar_b' => $row['gelar_b'],
-							'pendidikan' => $row['pendidikan'],
-							'jurusan' => $row['jurusan'],
-							'sekolah' => $row['sekolah'],
-							'stat_nikah' => $row['stat_nikah'],
-							'tgl_nikah' => date("Y-m-d",strtotime($row['tgl_nikah'])),
-							'jml_anak' => $row['jml_anak'],
-							'jml_sdr' => $row['jml_sdr'],
-							'diangkat' => date("Y-m-d",strtotime($row['diangkat'])),
-							'masuk_kerja' => date("Y-m-d",strtotime($row['masuk_kerja'])),
-							'kodesie' => $row['kodesie'],
-							'gol_kerja' => $row['gol_kerja'],
-							'kd_asal_outsourcing' => $row['kd_asal_outsourcing'],
-							'kd_jabatan' => str_replace("'","",$row['kd_jabatan']),
-							'jabatan' => $row['jabatan'],
-							'npwp' => $row['npwp'],
-							'no_kpj' => $row['no_kpj'],
-							'lm_kontrak' => $row['lm_kontrak'],
-							'akh_kontrak' => date("Y-m-d",strtotime($row['akh_kontrak'])),
-							'stat_pajak' => $row['stat_pajak'],
-							'jt_anak' => $row['jt_anak'],
-							'jt_bkn_anak' => $row['jt_bkn_anak'],
-							'tgl_spsi' => date("Y-m-d",strtotime($row['tgl_spsi'])),
-							'no_spsi' => $row['no_spsi'],
-							'tgl_kop' => date("Y-m-d",strtotime($row['tgl_kop'])),
-							'no_koperasi' => $row['no_koperasi'],
-							'keluar' => $row['keluar'],
-							'tgl_keluar' => date("Y-m-d",strtotime($row['tgl_keluar'])),
-							'kd_pkj' => $row['kd_pkj'],
-							'angg_jkn' => $row['angg_jkn'],
+						$this->M_masterpekerja->update($noind,$data);
+					}else{
+						$data = array(
+	                    	'noind' => substr($row['NOIND'],0,7),
+							'kd_hubungan_kerja' => substr($row['KD_HUB_KER'],0,5),
+							'kd_status_kerja' => substr($row['KD_STATUS_'],0,1),
+							'nik' => substr($row['NIK'],0,20),
+							'no_kk' => substr($row['NO_KK'],0,20),
+							'nama' => substr($row['NAMA'],0,50),
+							'id_kantor_asal' => substr($row['ID_KANT_AS'],0,3),
+							'id_lokasi_kerja' => substr($row['ID_LOK_KER'],0,3),
+							'jns_kelamin' => substr($row['JENKEL'],0,1),
+							'tempat_lahir' => substr($row['TEMPAT_LHR'],0,30),
+							'tgl_lahir' => date("Y-m-d",strtotime($row['TGL_LHR'])),
+							'alamat' => substr($row['ALAMAT'],0,100),
+							'desa' => substr($row['DESA'],0,30),
+							'kecamatan' => substr($row['KEC'],0,30),
+							'kabupaten' => substr($row['KAB'],0,30),
+							'provinsi' => substr($row['PROVINSI'],0,30),
+							'kode_pos' => substr($row['KODE_POS'],0,6),
+							'no_hp' => substr($row['NO_HP'],0,16),
+							'gelar_d' => substr($row['GELARD'],0,6),
+							'gelar_b' => substr($row['GELARB'],0,6),
+							'pendidikan' => substr($row['PENDIDIKAN'],0,7),
+							'jurusan' => substr($row['JURUSAN'],0,30),
+							'sekolah' => substr($row['SEKOLAH'],0,60),
+							'stat_nikah' => substr($row['STAT_NIKAH'],0,2),
+							'tgl_nikah' => date("Y-m-d",strtotime($row['TGL_NIKAH'])),
+							'jml_anak' => substr($row['JML_ANAK'],0,2),
+							'jml_sdr' => substr($row['JML_SDR'],0,2),
+							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
+							'masuk_kerja' => date("Y-m-d",strtotime($row['MASUK_KERJ'])),
+							'kodesie' => substr($row['KODESIE'],0,9),
+							'gol_kerja' => substr($row['GOL_KERJA'],0,7),
+							'kd_asal_outsourcing' => substr($row['KD_ASAL_OS'],0,4),
+							'kd_jabatan' => substr(str_replace("'","",$row['KD_JABATAN']),0,4),
+							'jabatan' => substr($row['JABATAN'],0,80),
+							'npwp' => substr($row['NPWP'],0,20),
+							'no_kpj' => substr($row['NO_KPJ'],0,20),
+							'lm_kontrak' => substr($row['LM_KONTRAK'],0,2),
+							'akh_kontrak' => date("Y-m-d",strtotime($row['AKH_KONTRA'])),
+							'stat_pajak' => substr($row['STAT_PAJAK'],0,3),
+							'jt_anak' => substr($row['JT_ANAK'],0,1),
+							'jt_bkn_anak' => substr($row['JT_BKN_ANA'],0,1),
+							'tgl_spsi' => date("Y-m-d",strtotime($row['TGL_SPSI'])),
+							'no_spsi' => substr($row['NO_SPSI'],0,11),
+							'tgl_kop' => date("Y-m-d",strtotime($row['TGL_KOP'])),
+							'no_koperasi' => substr($row['NO_KOPERAS'],0,11),
+							'keluar' => substr($row['KELUAR'],0,1),
+							'tgl_keluar' => date("Y-m-d",strtotime($row['TGL_KELUAR'])),
+							'kd_pkj' => substr($row['KD_PKJ'],0,9),
+							'angg_jkn' => substr($row['ANGG_JKN'],0,1),
+							'noind_baru' => substr($row['NOIND_BARU'],0,7),
 	                    );
-
-	                    //CHECK IF EXIST
-                    	$noind = $row['noind'];
-	                   	$check = $this->M_masterpekerja->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-	                    }else{
-	                    	$this->M_masterpekerja->insert($data);
-	                    }
-	                    
-                	}
+						$this->M_masterpekerja->insert($data);
+					}
                 }
-
-                //LOAD EXIST DATA VERIFICATION PAGE
-                $this->checkSession();
-        		$user_id = $this->session->userid;
-        
-        		$data['Menu'] = 'Payroll Management';
-        		$data['SubMenuOne'] = '';
-        		$data['SubMenuTwo'] = '';
-
-		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		        $data['data_exist'] = $data_exist;
-        		$masterPekerja = $this->M_masterpekerja->get_all();
-
-		        $this->load->view('V_Header',$data);
-		        $this->load->view('V_Sidemenu',$data);
-		        $this->load->view('PayrollManagement/MasterPekerja/V_Upload', $data);
-		        $this->load->view('V_Footer',$data);
+				$this->session->set_flashdata('message', 'Record Not Found');
 				$ses=array(
 						 "success_import" => 1
 					);
