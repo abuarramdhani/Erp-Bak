@@ -28,11 +28,19 @@ class C_TransaksiPenggajian extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+		if(!empty($this->session->userdata('session_date'))){
+			$varDate 			= $this->session->userdata('session_date');
+			$in	= array(
+				"tanggal" => $varDate,
+			);
+			$data['getDataPenggajian_data']	= $this->M_transaksipenggajian->browse_transaksi_penggajian($in);
+		}
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_insert');
+		// $this->session->unset_userdata('session_date');
     }
 	
 	public function Check(){
@@ -52,19 +60,19 @@ class C_TransaksiPenggajian extends CI_Controller
 		$varMonth		= substr($varPeriode,5,2);
 	
 		$checkPeriode	= $this->M_transaksipenggajian->checkPeriode($varYear,$varMonth,$kd_transaksi);
-		if($checkPeriode){
-			$getDataPenggajian	= $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth,$kd_transaksi);
+		// if($checkPeriode){
+			// $getDataPenggajian	= $this->M_transaksipenggajian->getDataPenggajian($varYear,$varMonth,$kd_transaksi);
 			
-			$encrypted_string = $this->encrypt->encode($varPeriode);
-			$encDate = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+			// $encrypted_string = $this->encrypt->encode($varPeriode);
+			// $encDate = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 			
-			$data['getDataPenggajian_data'] = $getDataPenggajian;
-			$data['encDate'] = $encDate;
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_index', $data);
-			$this->load->view('V_Footer',$data);
-		}else{
+			// $data['getDataPenggajian_data'] = $getDataPenggajian;
+			// $data['encDate'] = $encDate;
+			// $this->load->view('V_Header',$data);
+			// $this->load->view('V_Sidemenu',$data);
+			// $this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_index', $data);
+			// $this->load->view('V_Footer',$data);
+		// }else{
 			$checkAvailNoind	= $this->M_transaksipenggajian->checkAvailNoind();
 			
 			$data['checkAvailNoind_data'] = $checkAvailNoind;
@@ -74,7 +82,7 @@ class C_TransaksiPenggajian extends CI_Controller
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_check_master', $data);
 			$this->load->view('V_Footer',$data);
-		}
+		// }
 	}
 	
 		public function Hitung(){
@@ -240,6 +248,15 @@ class C_TransaksiPenggajian extends CI_Controller
 				$p_sakit = $row->persentase;
 			}
 			
+			// Convert
+				if(empty($r_gaji_pokok)){
+					$r_gaji_pokok = 0;
+				}
+				if(empty($klaim_dl)){
+					$klaim_dl = 0;
+				}
+			//---------
+			
 			$getParameterPPh	= $this->M_transaksipenggajian->getParameterPPh();
 			// PERHITUNGAN KODE STATUS  " B "
 					if(substr($noind,0,1)=="B" or substr($noind,0,1)=="D" or substr($noind,0,1)=="J" or substr($noind,0,1)=="G"){
@@ -268,7 +285,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						$fx_um					= $p_um * $r_um;																									//KOMPONEN UANG MAKAN
 						$fx_klaim_cuti			= $klaim_cuti;																											//KLAIM SISA CUTI	
 						$fx_klaim_dl			= $klaim_dl;																												//KLAIM DINAS LUAR
-						$fx_kp						= $r_kp;																													//KOREKSI KENA PAJAK
+						$fx_kp					= $r_kp;																													//KOREKSI KENA PAJAK
 						$fx_htm					= (($p_htm + $p_ijin) * ($r_gaji_pokok/30));															//POTONGAN HARI TIDAK MASUK
 						$fx_tkp					= $r_tkp;																													//KOREKSI TIDAK KENA PAJAK
 						$fx_thr					= $thr;																														//KOMPONEN THR
@@ -319,10 +336,11 @@ class C_TransaksiPenggajian extends CI_Controller
 							$pr_upamk = $r_upamk * 25;
 						}
 						$std_insentif		= ($r_ik * 25) + ($r_ip * 25) + ($r_i_f * 25) + ($r_ubt * 25) + $pr_upamk;
-						$std_gaji				=  $fx_gaji_pokok + $std_insentif ;
+						$std_gaji			=  $fx_gaji_pokok + $std_insentif ;
 						$gp_bln_ini			= ($fx_gaji_pokok - $fx_htm);
 						$insentif_bln_ini	= $fx_if + $fx_ip + $fx_ik + $fx_ims + $fx_imm + $fx_ubt + $fx_upamk ;
 						$gaji_sbln			= $gp_bln_ini + $insentif_bln_ini + $fx_klaim_dl + $fx_thr + $fx_ubthr + $fx_lembur + $fx_kp + $pph21 + $fx_klaim_cuti + $fx_konpensasi_lembur;
+						
 						$ttl_premi			= $fx_jkk + $fx_jkm + $fx_jkn_p + $fx_jht_p + $fx_jpp ;
 						$gaji_bruto			= $gaji_sbln + $ttl_premi;
 						if(($gaji_bruto * $p_persentase_jab) > $p_max_jab){
@@ -341,6 +359,7 @@ class C_TransaksiPenggajian extends CI_Controller
 						}
 						$gaji_sd_bln_tsb= $gaji_netto + $r_gaji_sd_bln_tsb;
 						$gaji_setahun		= $gaji_sd_bln_tsb+((12 - ((int)01)) * (($std_gaji + $ttl_premi)-$ttl_pot));
+						$test =  $gaji_netto + $r_gaji_sd_bln_tsb;
 						$gaji_kena_ptkp	= $gaji_setahun - $fx_ptkp;
 						if($gaji_kena_ptkp <= 0){
 							$gaji_kena_ptkp = 0;
@@ -409,166 +428,211 @@ class C_TransaksiPenggajian extends CI_Controller
 						$subtotal3	= round($subtotal2 - $fx_jht_k - $fx_jkn_k - $fx_jkm - $fx_jpk - $fx_pikop - $fx_putkop - $fx_cicilan_hutang - $fx_pot_duka - $fx_pot_spsi - $fx_pot_lain,0);
 						//INSERT PEMBAYARAN PENGGAJIAN
 						$data = array(
-												'id_pembayaran_gaji' => str_replace(' ','',$noind.$varMonth.$varYear.date('His')),
-												'tanggal' => $varDate,
-												'noind' => $noind,
-												'kd_status_kerja' => $kd_status_kerja,
-												'kd_jabatan' => $p_kd_jabatan,
-												'kodesie' => $kodesie,
-												'kd_bank' => $kd_bank,
-												'gaji_pokok' => $fx_gaji_pokok,
-												'gaji_asuransi' => round($gaji_bruto,0),
-												'gaji_bln_ini' => round($gaji_netto,0),
-												'p_if' => $p_i_f,
-												't_if' => $fx_if,
-												'p_if_htg_bln_lalu' => "0",
-												't_if_htg_bln_lalu' => "0",
-												'p_ip' => $p_ip,
-												't_ip' => $fx_ip,
-												'p_ik' => $p_ik,
-												't_ik' => $fx_ik,
-												'p_ikr' => $p_i_f,
-												't_ikr' => $fx_ikr,
-												'p_ikr_htg_bln_lalu' => "0",
-												't_ikr_htg_bln_lalu' => "0",
-												'p_ikmhl' => $p_i_f,
-												't_ikmhl' => $fx_insentif_kemahalan,
-												'p_ikmhl_htg_bln_lalu' => "0",
-												't_ikmhl_htg_bln_lalu' => "0",
-												'p_ims' => $p_ims,
-												't_ims' => $fx_ims,
-												't_imm' => $p_imm,
-												't_ims' => $fx_imm,
-												'p_lembur' => $p_lembur,
-												't_lembur' => round($fx_lembur,0),
-												'p_ubt' => $p_ubt,
-												'n_ubt' => $p_ubt,
-												't_ubt' => $fx_ubt,
-												'p_upamk' => $p_upamk,
-												't_upamk' => $fx_upamk,
-												'klaim_bln_lalu' => "",
-												'klaim_pengangkatan' => "",
-												'klaim_sisa_cuti' => $fx_klaim_cuti,
-												'tkena_pajak' => $fx_kp,
-												'konpensasi_lembur' => "",
-												'rapel_gaji' => "",
-												'htm' => $p_htm,
-												'ijin' => $p_ijin,
-												'pot_htm' => round($fx_htm,0),
-												'htm_htg_bln_lalu' => "0",
-												'ijin_htg_bln_lalu' => "0",
-												'pot_htm_htg_bln_lalu' => "0",
+												'id_pembayaran_gaji' 	=> str_replace(' ','',$noind.$varMonth.$varYear.date('His')),
+												'tanggal' 				=> $varDate,
+												'noind' 				=> $noind,
+												'kd_status_kerja' 		=> $kd_status_kerja,
+												'kd_jabatan' 			=> $p_kd_jabatan,
+												'kodesie' 				=> $kodesie,
+												'kd_bank' 				=> $kd_bank,
+												'gaji_pokok' 			=> $fx_gaji_pokok,
+												'gaji_asuransi' 		=> round($gaji_bruto,0),
+												'gaji_bln_ini' 			=> round($gaji_netto,0),
+												'p_if' 					=> $p_i_f,
+												't_if' 					=> $fx_if,
+												'p_if_htg_bln_lalu' 	=> "0",
+												't_if_htg_bln_lalu' 	=> "0",
+												'p_ip' 					=> $p_ip,
+												't_ip' 					=> $fx_ip,
+												'p_ik' 					=> $p_ik,
+												't_ik' 					=> $fx_ik,
+												'p_ikr' 				=> $p_i_f,
+												't_ikr' 				=> $fx_ikr,
+												'p_ikr_htg_bln_lalu' 	=> "0",
+												't_ikr_htg_bln_lalu' 	=> "0",
+												'p_ikmhl' 				=> $p_i_f,
+												't_ikmhl' 				=> $fx_insentif_kemahalan,
+												'p_ikmhl_htg_bln_lalu' 	=> "0",
+												't_ikmhl_htg_bln_lalu' 	=> "0",
+												'p_ims' 				=> $p_ims,
+												't_ims' 				=> $fx_ims,
+												't_imm' 				=> $p_imm,
+												't_ims' 				=> $fx_imm,
+												'p_lembur' 				=> $p_lembur,
+												't_lembur' 				=> round($fx_lembur,0),
+												'p_ubt' 				=> $p_ubt,
+												'n_ubt' 				=> $p_ubt,
+												't_ubt' 				=> $fx_ubt,
+												'p_upamk' 				=> $p_upamk,
+												't_upamk' 				=> $fx_upamk,
+												'klaim_bln_lalu' 		=> "",
+												'klaim_pengangkatan' 	=> "",
+												'klaim_sisa_cuti' 		=> $fx_klaim_cuti,
+												'tkena_pajak' 			=> $fx_kp,
+												'konpensasi_lembur' 	=> "",
+												'rapel_gaji' 			=> "",
+												'htm' 					=> $p_htm,
+												'ijin' 					=> $p_ijin,
+												'pot_htm'				=> round($fx_htm,0),
+												'htm_htg_bln_lalu' 		=> "0",
+												'ijin_htg_bln_lalu' 	=> "0",
+												'pot_htm_htg_bln_lalu' 	=> "0",
 												'pot_sakit_berkepanjangan' => round($fx_pot_skt_panjang,0),
-												'subtotal_dibayarkan' => "",
-												'klaim_dl' => $fx_klaim_dl,
-												'thr' => $fx_thr,
-												'ubthr' => $fx_ubthr,
-												'klaim_sdh_byr' => "",
-												'pajak' => $fx_pajak,
-												'subtotal1' => $subtotal1,
-												'subtotal2' => $subtotal2,
-												'tt_pajak' => $fx_tkp,
-												'pot_jht' => $fx_jht_k,
-												'pot_jkn' => $fx_jkn_k,
-												'pot_jpn' => $fx_jkm,
-												'putkop' => $fx_putkop,
-												'pikop' => $fx_pikop,
-												'pot_kop' => "",
-												'putang' => $fx_cicilan_hutang,
-												'pduka' => $fx_pot_duka,
-												'pspsi' => $fx_pot_spsi,
-												'pot_pensiun' => $fx_jpk,
-												'plain' => $fx_pot_lain,
-												't_um_puasa' => $fx_um_puasa,
-												'btransfer' => $fx_pot_transfer,
-												'subtotal3' => $subtotal3,
-												'kd_jns_transaksi' => "1",
+												'subtotal_dibayarkan' 	=> "",
+												'klaim_dl' 				=> $fx_klaim_dl,
+												'thr' 					=> $fx_thr,
+												'ubthr' 				=> $fx_ubthr,
+												'klaim_sdh_byr'			=> "",
+												'pajak' 				=> $fx_pajak,
+												'subtotal1' 			=> $subtotal1,
+												'subtotal2' 			=> $subtotal2,
+												'tt_pajak' 				=> $fx_tkp,
+												'pot_jht' 				=> $fx_jht_k,
+												'pot_jkn' 				=> $fx_jkn_k,
+												'pot_jpn' 				=> $fx_jkm,
+												'putkop' 				=> $fx_putkop,
+												'pikop' 				=> $fx_pikop,
+												'pot_kop' 				=> "",
+												'putang' 				=> $fx_cicilan_hutang,
+												'pduka' 				=> $fx_pot_duka,
+												'pspsi' 				=> $fx_pot_spsi,
+												'pot_pensiun' 			=> $fx_jpk,
+												'plain' 				=> $fx_pot_lain,
+												't_um_puasa' 			=> $fx_um_puasa,
+												'btransfer' 			=> $fx_pot_transfer,
+												'subtotal3' 			=> $subtotal3,
+												'kd_jns_transaksi' 		=> "1",
 										);
 						// INSERT PEMBAYARAN PENGGAJIAN
-						$this->M_transaksipenggajian->insert($data);
+						$ck_transac_gaji = $this->M_transaksipenggajian->ck_transac_gaji($noind,$varDate);
+						if($ck_transac_gaji){
+							unset($data['tanggal'],$data['noind']);
+							$where = array(
+								'tanggal' 	=> $varDate,
+								'noind' 	=> $noind,
+							);
+							$this->M_transaksipenggajian->update_transac($where,$data);
+						}else{
+							$this->M_transaksipenggajian->insert($data);
+						}
+						
 						$data_asuransi = array(
-							'id_riw_pekerja' => str_replace(' ','',"ASR".$noind.$varMonth.$varYear.date('His')),
-							'masuk_kerja'  => date('Y-m-d',strtotime($masukkerja)),
-							'id_gajian'  => str_replace(' ','',$noind.$varMonth.$varYear.date('His')),
-							'tanggal'  => $varDate,
-							'noind'  => $noind,
-							'kd_hubungan_kerja'  => $kd_hubungan_kerja,
-							'kd_status_kerja'  => $kd_status_kerja,
-							'gaji_asuransi'  => $fx_gaji_pokok,
-							'trf_jkk'  => $r_jkk."%",
-							'jkk'  => $fx_jkk,
-							'trf_jht_kary'  => $p_jht_kary."%",
-							'jht_kary'  => $fx_jht_k,
-							'trf_jht_prshn'  => $p_jht_prshn."%",
-							'jht_prshn'  => $fx_jht_p,
-							'trf_jkm'  => $r_jkm."%",
-							'jkm'  => $fx_jkm,
-							'batas_max_jkn'  => $r_batas_max_jkn,
-							'trf_jkn_kary'  => $p_jkn_kary."%",
-							'jkn_kary'  => $fx_jkn_k,
-							'trf_jkn_prshn'  => $p_jkn_prshn."%",
-							'jkn_prshn'  => $fx_jkn_p,
-							'kelas_perawatan'  => "",
-							'batas_max_jpn'  => $r_batas_jpk,
-							'trf_jpn_kary'  => $p_jpn_kary,
-							'jpn_kary'  => $fx_jpk,
-							'trf_jpn_prshn'  => $p_jpn_prshn,
-							'jpn_prshn'  => $fx_jpp,
+							'id_riw_pekerja' 		=> str_replace(' ','',"ASR".$noind.$varMonth.$varYear.date('His')),
+							'masuk_kerja'  			=> date('Y-m-d',strtotime($masukkerja)),
+							'id_gajian'  			=> str_replace(' ','',$noind.$varMonth.$varYear.date('His')),
+							'tanggal'  				=> $varDate,
+							'noind'  				=> $noind,
+							'kd_hubungan_kerja'  	=> $kd_hubungan_kerja,
+							'kd_status_kerja'		=> $kd_status_kerja,
+							'gaji_asuransi' 		=> $fx_gaji_pokok,
+							'trf_jkk'  				=> $r_jkk."%",
+							'jkk'  					=> $fx_jkk,
+							'trf_jht_kary'  		=> $p_jht_kary."%",
+							'jht_kary'  			=> $fx_jht_k,
+							'trf_jht_prshn'  		=> $p_jht_prshn."%",
+							'jht_prshn'  			=> $fx_jht_p,
+							'trf_jkm'  				=> $r_jkm."%",
+							'jkm'  					=> $fx_jkm,
+							'batas_max_jkn'  		=> $r_batas_max_jkn,
+							'trf_jkn_kary'  		=> $p_jkn_kary."%",
+							'jkn_kary'  			=> $fx_jkn_k,
+							'trf_jkn_prshn' 		=> $p_jkn_prshn."%",
+							'jkn_prshn'  			=> $fx_jkn_p,
+							'kelas_perawatan'  		=> "",
+							'batas_max_jpn'  		=> $r_batas_jpk,
+							'trf_jpn_kary'  		=> $p_jpn_kary,
+							'jpn_kary'  			=> $fx_jpk,
+							'trf_jpn_prshn'  		=> $p_jpn_prshn,
+							'jpn_prshn'  			=> $fx_jpp,
 						);
-						$this->M_transaksipenggajian->insert_asuransi($data_asuransi);
+						
+						//INSERT TRANSAKSI ASURANSI
+						$ck_transac_asuransi = $this->M_transaksipenggajian->ck_transac_asuransi($noind,$varDate);
+						if($ck_transac_asuransi){
+							unset($data['tanggal'],$data['noind']);
+							$where_asuransi = array(
+								'tanggal' 	=> $varDate,
+								'noind' 	=> $noind,
+							);
+							$this->M_transaksipenggajian->update_transac_asuransi($where_asuransi,$data_asuransi);
+						}else{
+							$this->M_transaksipenggajian->insert_asuransi($data_asuransi);
+						}
 						
 						$data_pajak = array(
-							'tanggal'	=> $varDate,
-							'noind'	=> $noind,
-							'kd_area_pajak'	=> '',
-							'status_pajak'	=> $fx_stat_pajak,
-							'id_riwayat_ptkp'	=> $fx_ptkp,
-							'penghasilan_tetap_per_bln' => $std_gaji,
-							'penghasilan_bruto' => round($gaji_bruto,2),
-							'periode_jst' => round($fx_jht_p,2),
-							'premi_jkk' => round($fx_jkk,2),
-							'premi_jk' => round($fx_jkm,2),
-							'premi_jkn' => round($fx_jkn_p,2),
-							'premi_jpensiun_prshn' => round($fx_jpp,2),
-							'biaya_jabatan' => round($fx_bea_jab,2),
-							'iuran_pensiun' =>round( $p_max_pensiun,2),
-							'iuran_jht' => round($fx_jht_k,2),
-							'iuran_jkn' => round($fx_jkn_k,2),
-							'iuran_jpensiun_kar' => round($fx_jpk,2),
-							'penghasilan_neto' => round($gaji_netto,2),
-							'penghasilan_sd_bln_tsb' => round($gaji_sd_bln_tsb,2),
-							'gaji_disetahunkan' => round($gaji_setahun,2),
-							'ptkp_setahun' => round($fx_ptkp,2),
-							'pkp_setahun' => round($gaji_kena_ptkp,2),
-							'pkp_setahun_pembulatan' => round($pemb_gaji_kena_ptkp,2),
-							'id_pph' => "",
-							'id_bbn_pengurang' => "",
-							'bayar_pph' => round($pajak_setahun,2),
-							'pajak_disetahunkan' => round($pajak_setahun,2),
-							'pajak_per_bln' => round($pajak_sebulan,2),
-							'pajak_yang_dibayar_bln_tsb' => round($fx_pajak,2),
-							'kelebihan_bayar' => "",
+							'tanggal'						=> $varDate,
+							'noind'							=> $noind,
+							'kd_area_pajak'					=> '',
+							'status_pajak'					=> $fx_stat_pajak,
+							'id_riwayat_ptkp'				=> $fx_ptkp,
+							'penghasilan_tetap_per_bln' 	=> $std_gaji,
+							'penghasilan_bruto' 			=> round($gaji_bruto,2),
+							'periode_jst' 					=> round($fx_jht_p,2),
+							'premi_jkk' 					=> round($fx_jkk,2),
+							'premi_jk' 						=> round($fx_jkm,2),
+							'premi_jkn' 					=> round($fx_jkn_p,2),
+							'premi_jpensiun_prshn'			=> round($fx_jpp,2),
+							'biaya_jabatan' 				=> round($fx_bea_jab,2),
+							'iuran_pensiun' 				=> round( $p_max_pensiun,2),
+							'iuran_jht' 					=> round($fx_jht_k,2),
+							'iuran_jkn' 					=> round($fx_jkn_k,2),
+							'iuran_jpensiun_kar' 			=> round($fx_jpk,2),
+							'penghasilan_neto' 				=> round($gaji_netto,2),
+							'penghasilan_sd_bln_tsb' 		=> round($gaji_sd_bln_tsb,2),
+							'gaji_disetahunkan' 			=> round($gaji_setahun,2),
+							'ptkp_setahun' 					=> round($fx_ptkp,2),
+							'pkp_setahun' 					=> round($gaji_kena_ptkp,2),
+							'pkp_setahun_pembulatan' 		=> round($pemb_gaji_kena_ptkp,2),
+							'id_pph' 						=> "",
+							'id_bbn_pengurang'				=> "",
+							'bayar_pph' 					=> round($pajak_setahun,2),
+							'pajak_disetahunkan' 			=> round($pajak_setahun,2),
+							'pajak_per_bln' 				=> round($pajak_sebulan,2),
+							'pajak_yang_dibayar_bln_tsb' 	=> round($fx_pajak,2),
+							'kelebihan_bayar' 				=> "",
 						);
 						
-						$this->M_transaksipenggajian->insert_transaksi_pajak($data_pajak);
+						//INSERT TRANSAKSI PAJAK
+						$ck_transac_pajak = $this->M_transaksipenggajian->ck_transac_pajak($noind,$varDate);
+						if($ck_transac_pajak){
+							unset($data['tanggal'],$data['noind']);
+							$where_pajak = array(
+								'tanggal' 	=> $varDate,
+								'noind' 	=> $noind,
+							);
+							$this->M_transaksipenggajian->update_transac_pajak($where_pajak,$data_pajak);
+						}else{
+							$this->M_transaksipenggajian->insert_transaksi_pajak($data_pajak);
+						}
 						
 						$data_insentif_kemahalan = array(
-							'tanggal'		=> $varDate,
-							'noind'			=> $noind,
+							'tanggal'			=> $varDate,
+							'noind'				=> $noind,
 							'kd_hubungan_kerja'	=> $kd_hubungan_kerja,
-							'kd_status_kerja'		=> $kd_status_kerja,
+							'kd_status_kerja'	=> $kd_status_kerja,
 							'kd_jabatan'		=> $p_kd_jabatan,
-							'kodesie'		=> $kodesie,
-							'p_if'			=> $p_i_f,
-							'n_kmh'		=> $r_insentif_kemahalan,
-							't_kmh'			=> $fx_insentif_kemahalan,
+							'kodesie'			=> $kodesie,
+							'p_if'				=> $p_i_f,
+							'n_kmh'				=> $r_insentif_kemahalan,
+							't_kmh'				=> $fx_insentif_kemahalan,
 						);
 						
+						//INSERT TRANSAKSI INSENTIF KEMAHALAN
+						$ck_transac_kemahalan = $this->M_transaksipenggajian->ck_transac_kemahalan($noind,$varDate);
+						if($ck_transac_kemahalan){
+							unset($data['tanggal'],$data['noind']);
+							$where_kemahalan = array(
+								'tanggal' 	=> $varDate,
+								'noind' 	=> $noind,
+							);
+							$this->M_transaksipenggajian->update_transac_kemahalan($where_kemahalan,$data_insentif_kemahalan);
+						}else{
+							$this->M_transaksipenggajian->insert_transaksi_insentif_kemahalan($data_insentif_kemahalan);
+						}
 						
-					
-						$this->M_transaksipenggajian->insert_transaksi_insentif_kemahalan($data_insentif_kemahalan);
 						// REVIEW PERHITUNGAN
 						// echo "<table>";
+						// echo "<tr><td>trial</td><td>= ".$test."</td></tr>";
 						// echo "<tr><td>gaji pokok</td><td>= ".$fx_gaji_pokok."</td></tr>";
 						// echo "<tr><td>insentif</td><td>= ".$std_insentif."</td></tr>";
 						// echo "<tr><td>gaji pokok bln ini</td><td>= ".$gp_bln_ini."</td></tr>";
@@ -596,13 +660,18 @@ class C_TransaksiPenggajian extends CI_Controller
 						// echo "<tr><td>PTKP</td><td>= ".$fx_ptkp."</td></tr>";
 						// echo "<tr><td>penghasilan kena pajak setahun</td><td>= ".$gaji_kena_ptkp."</td></tr>";
 						// echo "<tr><td>pembulatan</td><td>= ".$pemb_gaji_kena_ptkp."</td></tr>";
-						// echo "<tr><td>pph21 setahun</td><td>= ((".$gaji_kena_ptkp." -  ".$pph_bef.") * ".$pph_percent.")/100</td></tr>";
 						// echo "<tr><td>pph21 setahun</td><td>= ".$Pph21_setahun."</td></tr>";
 						// echo "<tr><td>pph21 sebulan</td><td>= ".$pajak_sebulan."</td></tr>";
 						// echo "<tr><td>yang harus di bayar</td><td>= ".$fx_pajak."</td></tr>";
 						// echo "</table>";
 					}
 		}
+		$this->session->set_flashdata('message', 'Session registered');
+		$ses=array(
+				 "success_insert" => 1,
+				 "session_date" => $varDate
+			);
+		$this->session->set_userdata($ses);
 		redirect('PayrollManagement/BrowseTransaksiPenggajian/index');
 	}
 

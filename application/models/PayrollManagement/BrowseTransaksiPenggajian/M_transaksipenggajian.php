@@ -21,6 +21,13 @@ class M_transaksipenggajian extends CI_Model
     {
     	return $this->db->get($this->table)->result();
     }
+	
+	function browse_transaksi_penggajian($where){
+		$this->db->where($where);
+		$this->db->join('pr.pr_master_pekerja','pr.pr_master_pekerja.noind = pr.pr_transaksi_pembayaran_penggajian.noind');
+		$this->db->order_by('pr.pr_master_pekerja.noind','asc');
+		return $this->db->get($this->table)->result();
+	}
 
     // get data by id
     function get_by_id($id)
@@ -37,6 +44,30 @@ class M_transaksipenggajian extends CI_Model
         $this->db->where('kd_jns_transaksi=', $kd_transaksi);
         return $this->db->get($this->table)->row();
     }
+	
+	function ck_transac_gaji($noind,$varDate){
+		$this->db->where('tanggal=', $varDate);
+        $this->db->where('noind=', $noind);
+        return $this->db->get($this->table)->result_array();
+	}
+	
+	function ck_transac_asuransi($noind,$varDate){
+		$this->db->where('tanggal=', $varDate);
+        $this->db->where('noind=', $noind);
+        return $this->db->get($this->table_asuransi)->result_array();
+	}
+	
+	function ck_transac_pajak($noind,$varDate){
+		$this->db->where('tanggal=', $varDate);
+        $this->db->where('noind=', $noind);
+        return $this->db->get($this->table_pajak)->result_array();
+	}
+	
+	function ck_transac_kemahalan($noind,$varDate){
+		$this->db->where('tanggal=', $varDate);
+        $this->db->where('noind=', $noind);
+        return $this->db->get($this->table_kemahalan)->result_array();
+	}
 	
 	// get data periode
     function getDataPenggajian($varYear,$varMonth,$kd_transaksi)
@@ -101,12 +132,21 @@ class M_transaksipenggajian extends CI_Model
 			b.pduka,b.utambahan,b.btransfer,b.denda_ik,b.p_lebih_bayar,b.pgp,b.tlain,b.xduka,b.ket,b.cicil,
 			b.ubs,b.ubs_rp,b.p_um_puasa,b.kd_jns_transaksi,
 			c.gaji_pokok,c.i_f,
-			d.upamk,
+			(case
+				when 
+					left(a.noind,1)='B' and to_timestamp(a.masuk_kerja, 'YYYY-MM-DD') < (date('now') -  interval '3 year')
+				then d.upamk
+				else '0'
+			end) as upamk,
 			e.insentif_kemahalan,
 			f.pot_pensiun,
 			g.kd_bank,g.no_rekening,g.nama_pemilik_rekening,
 			h.ip,h.ik,h.ims,h.imm,h.pot_duka,h.spsi,
-			i.ubt,i.um,
+			(case
+				when left(a.noind,1)='B'
+				then i.ubt
+				else '0'
+			end) as ubt,i.um,
 			(j.jkk) as set_jkk,(j.jkm) as set_jkm,j.jht_kary,j.jht_prshn,j.jkn_kary,j.jkn_prshn,j.jpn_kary,j.jpn_prshn,
 			k.max_jab,k.persentase_jab,k.max_pensiun,k.persentase_pensiun,
 			l.jkk,l.jkm,l.jht_karyawan,l.jht_perusahaan,l.jpk_karyawan,l.jpk_perusahaan,l.batas_umur_jpk,l.batas_jpk,
@@ -167,6 +207,7 @@ class M_transaksipenggajian extends CI_Model
 	}
 	
 	function getKp($noind,$varYear,$varMonth){
+		$this->db->where('noind',$noind);
 		$this->db->where('substring(periode,1,4)=',$varYear);
 		$this->db->where('substring(periode,6,2)=',$varMonth);
 		$this->db->where('stat','KP');
@@ -206,6 +247,34 @@ class M_transaksipenggajian extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+	
+	// update data transac
+    function update_transac($where,$data)
+    {
+        $this->db->where($where);
+        $this->db->update($this->table, $data);
+    }
+	
+	// update data transac
+    function update_transac_asuransi($where,$data)
+    {
+        $this->db->where($where);
+        $this->db->update($this->table_asuransi, $data);
+    }
+	
+	// update data transac
+    function update_transac_pajak($where,$data)
+    {
+        $this->db->where($where);
+        $this->db->update($this->table_pajak, $data);
+    }
+	
+	// update data transac
+    function update_transac_kemahalan($where,$data)
+    {
+        $this->db->where($where);
+        $this->db->update($this->table_kemahalan, $data);
     }
 
     // delete data

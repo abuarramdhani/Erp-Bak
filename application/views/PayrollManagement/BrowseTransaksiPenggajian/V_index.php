@@ -41,8 +41,7 @@
 							  <div class=" col-lg-6">
 							  </div>
 							  <div class=" col-lg-2">
-							    <a data-toggle="tooltip" id="btn-reg-person" title="Cetak Struk" href='<?php echo site_URL() ?>PayrollManagement/BrowseTransaksiPenggajian/CetakStruk/<?php echo $encDate; ?>' class="btn btn-success btn-md btn-refresh-db" target="blank_">Cetak Struk</a>
-								<a data-toggle="tooltip" id="btn-reg-person" title="Delete Record" href='<?php echo site_URL() ?>PresenceManagement/Cronjob/UpdateSection/<?php echo $encrypted_string ?>' class="btn bg-red btn-md btn-refresh-db"><i class="fa fa-remove"></i></a>
+							    <a data-toggle="tooltip" id="btn-reg-person" title="Cetak Struk" href='<?php echo site_URL() ?>PayrollManagement/BrowseTransaksiPenggajian/CetakStruk/<?php echo $encDate; ?>' class="btn btn-success btn-md btn-refresh-db" style="float:right;" target="blank_">Cetak Struk</a>
 							  </div>
 						  </form>
 			          </div>
@@ -143,7 +142,7 @@
 						<tr>
 							<td align="center"><?php echo $no; ?></td>
 							<td align='center'>
-								<a href="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/read/'.$enc_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+								<a href="<?php echo base_url('PayrollManagement/BrowseTransaksiPenggajian/read/'.$enc_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data" target="blank_"><span class="fa fa-eye"></span></a>
 							</td>
 							<td align="center"><?php echo $row->tanggal ?></td>
 							<td align="center"><?php echo $row->noind ?></td>
