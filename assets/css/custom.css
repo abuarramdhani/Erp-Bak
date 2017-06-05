@@ -263,7 +263,6 @@ a.logo:hover {
     opacity: 0.5;
 }
 
-<<<<<<< HEAD
 .autocomplete-suggestions { width: 100% }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }
@@ -395,7 +394,6 @@ table.t_master_gaji td#uang
 {
 	line-height: 10px;
 }
-<<<<<<< HEAD
 
 table.t_dana_pensiun
 {
@@ -588,10 +586,11 @@ table.t_riwayat_mutasi td
     padding-left: 8px;
     padding-right: 8px;
 }
-=======
-=======
+
 .hidden {
     display: none;
 }
->>>>>>> 4308c4aae216c774d68ec98023ac27b3f8af409b
->>>>>>> 40c1228eca81feba7937710286900f7a8e89d0f5
+
+#res .input-sm {
+    max-width: 100px;
+}

@@ -79,7 +79,10 @@ class C_DataAssets extends CI_Controller {
             'db' => 'asset_data_id', 
             'dt' => 0,
             'formatter' => function( $d, $row ) {
-                $buttons='<a style="margin-right:8px;margin-left:4px;" href="'.site_url("FixedAsset/DataAssets/DeleteData/".$row['asset_data_id']).'"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?" class="confirm">
+            		if ($this->session->user == 'B0269' || $this->session->user == 'P0255') {
+                		return '<p style="text-align:center;">-</p>';
+            		}else{
+                		$buttons='<a style="margin-right:8px;margin-left:4px;" href="'.site_url("FixedAsset/DataAssets/DeleteData/".$row['asset_data_id']).'"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?" class="confirm">
 							<i class="fa fa-trash fa-2x"></i>
 						</a>
 						<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Update/".$row['asset_data_id']).'"  alt="Update" title="Update" >
@@ -90,7 +93,8 @@ class C_DataAssets extends CI_Controller {
 						</a>
 						<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmDeleteAsset"/>
 						<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmUpdateAsset"/>';
-                return $buttons;
+                		return $buttons;
+					}
 				}
 			),
 			array( 'db' => 'asset_data_id', 	'dt' => 1 ),
