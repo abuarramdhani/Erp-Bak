@@ -160,6 +160,13 @@ class M_monitoring extends CI_Model {
 			return $query->result_array();
 		}
 		
+		public function getLocationJson($q){
+			$pgPersonalia	= $this->load->database('quickcom',true);
+			$sql		= "select * from fp_distribusi.tb_lokasi where lokasi like '%$q%'";
+			$query		= $pgPersonalia->query($sql);
+			return $query->result_array();
+		}
+		
 		public function checkloc($id,$loc){
 			@$loadConPostgres = $this->load->database('pg_'.$loc.'',TRUE);
 			@$checlPostgres = $loadConPostgres->initialize();
