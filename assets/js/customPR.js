@@ -1,3 +1,527 @@
+
+//INCREMENT FORM
+	$('.increment-form').TouchSpin({
+      verticalbuttons: true,
+      verticalupclass: 'glyphicon glyphicon-plus',
+      verticaldownclass: 'glyphicon glyphicon-minus'
+    });
+
+  $('#dataTables-masterStatusKerja').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+	$('#dataTables-riwayatPotDanaPensiun').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+	$('#dataTables-riwayatUpamk').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+	$('#dataTables-riwayatInsentifKemahalan').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-MasterJabatanUpah').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-masterJabatan').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+	$('#dataTables-masterSeksi').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-kantorAsal').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	$('#dataTables-riwayatGaji').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-lokasiKerja').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-masterBankInduk').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-masterBank').DataTable({
+	  "destroy": true,
+	  dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+	});
+$('#dataTables-masterSekolahAsal').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-setgajiump').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-settarifpekerjasakit').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-standartJamTkpw').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-standartJamUmum').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-masterParamBpjs').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+$('#dataTables-masterParamPtkp').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-masterParameterTarifPph').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+
+$('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-masterParamKompJab').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-riwayatRekeningPekerja').DataTable( {
+	  "destroy": true,
+  dom: 'Bfrtip',
+  buttons: [
+	'excel'
+  ]
+});
+
+$('#dataTables-masterParamPengurangPajak').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-transaksiPenggajian').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+  dom: 'Bfrtip',
+  "autoWidth": true,
+  buttons: [
+	'excel'
+  ]
+});
+
+$('#dataTables-konpensasiLembur').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+  dom: 'Bfrtip',
+  "autoWidth": true,
+  buttons: [
+	'excel'
+  ]
+});
+	
+	
+$('#dataTables-masterPekerja').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-riwayatSetAsuransi').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });	
+
+$('#dataTables-masterParamKompUmum').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-riwayatParamKoperasi').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-transaksiKlaimSisaCuti').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-transaksiHitungThr').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+	  "autoWidth": true,
+      "scrollX": true,
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-transaksiHitungThrImport').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-kompTamb').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#dataTables-transaksiHutang').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-daftarPekerjaSakit').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-dataGajianPersonalia').DataTable( {
+	  "destroy": true,
+	  "scrollX" : true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel','pdf'
+      ]
+    });
+
+$('#dataTables-transaksiKlaimDl').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-hutangKaryawan').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportMasterGaji').DataTable( {
+	  "destroy": true,
+	  "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportDanaPensiun').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportPotonganKoperasi').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportPotonganSPSI').DataTable( {
+    "scrollX": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+
+$('#dataTables-reportRiwayatMutasi').DataTable( {
+    "scrollX": true,
+	"bRetrieve": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+$('#txtTglTransaksi').datepicker({ autoclose: true });
+$('#txtTglRecord').datepicker({ autoclose: true });
+$('#txtTglRec').datepicker({ autoclose: true });
+$('#txtTglLahir').datepicker({ autoclose: true });
+$('#txtTglNikah').datepicker({ autoclose: true });
+$('#txtDiangkat').datepicker({ autoclose: true });
+$('#txtMasukKerja').datepicker({ autoclose: true });
+$('#txtAkhKontrak').datepicker({ autoclose: true });
+$('#txtTglSpsi').datepicker({ autoclose: true });
+$('#txtTglKop').datepicker({ autoclose: true });
+$('#txtTglKeluar').datepicker({ autoclose: true });
+$('#txtTglJamRecord').datepicker({ autoclose: true });
+$('#txtTglRec').datepicker({ autoclose: true });
+
+$(document).ready(function() {
+  $('#txtPeriodeCheck').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+  });
+  
+	//DATEPICKER CHECK DATA
+	$('.periode_mutasi').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Clear'
+		}
+	});
+
+	$('.periode_mutasi').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('MM/DD/YYYY'));
+	});
+
+	$('.periode_mutasi').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
+  $('#txtPeriodeHitung').datepicker({
+    autoclose: true,
+    format: "yyyy-mm",
+    viewMode: "months", 
+    minViewMode: "months"
+  });
+  
+
+  $('#txtPeriodeTahun').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+  });
+
+  $('#txtTglBerlakuPtkp').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtPeriodePengurangPajak').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtTglPengajuan').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+  $('#txtTanggal').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtTglBerlaku').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+  $('#txtPeriodeJst_new').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ 
+   $('#txtPotTambLain').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+  $('#cmbKdBank').select2();
+  $('.select2-txtDept').select2();
+  $('.select2-txtBank').select2();
+  $('#txtKodeStatusKerja').select2();
+  $('#cmbKdHubunganKerja').select2();
+  $('#cmbKdStatusKerja').select2();
+  $('#cmbKdJabatan').select2();
+  $('#cmbStat').select2();
+  $('#cmbIdLokasiKerja').select2();
+  $('.select2-getNoind').select2({
+    placeholder: "No Induk",
+    allowClear: true,
+    minimumInputLength: 2,
+    ajax: {   
+      url:baseurl+"PayrollManagement/HutangKaryawan/getNoind",
+      dataType: 'json',
+      type: "GET",
+      data: function (params) {
+        var queryParameters = {
+          term: params.term
+        }
+        return queryParameters;
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function(obj) {
+            return { id:obj.noind, text:obj.noind+' - '+obj.nama};
+          })
+        };
+      }
+    }
+  });
+  
+  $('.money').mask('000,000,000,000,000', {reverse: true});
+});
+
+function getMaxHutang(noind){
+  $.ajax({
+    type:'POST',
+    data:{noind: noind},
+    url:baseurl+"PayrollManagement/HutangKaryawan/getMaxHutang",
+    success:function(result)
+    {
+      $('#txtTotalHutang').attr("placeholder",result);
+      $('#txtTotalHutang').attr("max",result);
+      $('#max-hutang').text("* Max 2x Gaji Pokok ("+result+")");
+	  
+	  if(result == 0){
+		  $('#save_hutang').attr('disabled','disabled');
+	  }else{
+		  $('#save_hutang').removeattr('disabled','disabled');
+	  }
+    }
+  });
+}
+
+function getKlaimCuti(){
+	var noind	= $("#txtNoind option:selected").val();
+	var period	= $("#txtPeriodeHitung").val();
+	var cuti	    = $("#txtSisaCuti").val();
+	if(noind.length > 0 && period.length > 0 && cuti.length > 0){
+		 $.ajax({
+			type:'POST',
+			data:{noind: noind, period:period, cuti:cuti},
+			url:baseurl+"PayrollManagement/TransaksiKlaimSisaCuti/getKlaimCuti",
+			success:function(result)
+			{
+			  $('#txtJumlahKlaim').val(result);
+			}
+		  });
+	}
+}
 $(document).ready(function() {
   // alert('working');
   $('.datatables').DataTable( {
@@ -352,9 +876,7 @@ $(document).ready(function() {
         $(this).closest('tr').find('.approval-date').prop('readonly', true);
         $(this).closest('tr').find('.approval-by').prop('readonly', true);
       }
-    })
-
-    cmbNoind();
+    });
 
   })
 
