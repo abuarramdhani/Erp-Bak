@@ -33,12 +33,16 @@
 						<div class="box box-primary">
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
-									<label class="col-lg-2 control-label">Serial Number</label>
-									<label class="col-lg-1 control-label">:</label>
+									<label class="col-lg-1 control-label">Location</label>
+									<label class="col-lg-1 control-label" style="text-align:center;">:</label>
 									<div class="col-lg-4">
 										<select class="form-control select2-location-single-access" name="txtLocation" id="txtLocation">
 											</option value=""></option>
 										</select>
+									</div>
+									<div class="col-lg-3" style="float:right;">
+										<a style="float:right;margin-right:1%;margin-top:-0.5%;" title="Add Personal Data" id="modaladdperson" data-toggle="modal" data-target="#confirm-add" class="btn btn-default btn-xs"><i class="icon-plus icon-2x"></i> Person</a>
+										<a style="float:right;margin-right:1%;margin-top:-0.5%;" title="Add Data Worker by Section" id="modaladdsection" data-toggle="modal" data-target="#confirm-add-section" class="btn btn-default btn-xs"><i class="icon-plus icon-2x"></i> Section</a>
 									</div>
 								</div>
 							</div>
@@ -144,7 +148,7 @@
 						<select class="form-control select-presence" id="txtID" name="txtID" style="width:100%;" required>
 								<option value=""></option>
 						</select>
-						<input type="hidden" name="txtLocation" id="txtLocation" value="<?php echo $location; ?>" class="form-control"></input>
+						<input type="hidden" name="txtLocation" id="desLocationPerson" value="" class="form-control"></input>
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>
@@ -170,7 +174,7 @@
 						<select class="form-control select-presence-section" id="txtID" name="txtID" style="width:100%;" required>
 								<option value=""></option>
 						</select>
-						<input type="hidden" name="txtLocation" id="txtLocation" value="<?php echo $location; ?>" class="form-control"></input>
+						<input type="hidden" name="txtLocation" id="desLocationSection" value="" class="form-control"></input>
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Cancel</button>

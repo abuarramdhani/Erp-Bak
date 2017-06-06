@@ -267,6 +267,8 @@ $(document).ready(function() {
 			  data: {loc:loc},
 			  success: function(data) {
 				$('#datatable-presensi-presence-management tbody').html(data);
+				$('#desLocationSection').val(loc);
+				$('#desLocationPerson').val(loc);
 			  }
 			});
 	});
