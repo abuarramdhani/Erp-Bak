@@ -40,7 +40,7 @@ class C_DataCatKeluar extends CI_Controller {
 		
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		$data['action'] = 'QuickDataCat/DataCatKeluar/insert_act';
+		$data['action'] = 'QuickDataCat/DataCatKeluar/TambahDataCatKeluar';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -53,6 +53,7 @@ class C_DataCatKeluar extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('QuickDataCat/MainMenu/V_InputDataCatKeluar', $data);
 		$this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_insert');
 	}
 	
 	public function getKodeCatKeluar()
@@ -152,7 +153,7 @@ class C_DataCatKeluar extends CI_Controller {
 		$kode_cat					= $this->input->post('slcKodeCat');
 		$cat 						= $this->input->post('txtDescription');
         $bukti				 		= $this->input->post('txtBukti');
-        $petugas					= $this->input->post('txtPetugas');
+        $petugas					= strtoupper($this->input->post('txtPetugas'));
 		$row = sizeof($tglexpired);
 		for($i=0;$i<$row;$i++){
 			if ($quantity[$i]==""  ){
@@ -181,7 +182,12 @@ class C_DataCatKeluar extends CI_Controller {
 			$this->M_inputdatacatkeluar->HapusDataCatKeluar($data,$kode_cat);
 					//	elseif ($quantity[$i]>$onhand[$i])
 		}
-			redirect('C_InputDataCatKeluar'); 
+			$this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+						 "success_insert" => 1
+					);
+			$this->session->set_userdata($ses);
+			redirect('QuickDataCat/C_InputDataCatKeluar'); 
 }
 	
 }

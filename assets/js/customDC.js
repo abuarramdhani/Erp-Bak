@@ -246,6 +246,10 @@ var paint_desc = $("#txtPaintDesc").val();
     });     
 }
 
+function formReset(){
+	document.getElementById("form1").reset();
+}
+
 $(document).ready(function() {
     $('#tabelcat_all').DataTable( {
     	"searching" : false,

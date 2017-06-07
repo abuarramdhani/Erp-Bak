@@ -152,8 +152,8 @@
 							</table>
 								<table align="left">
 									<td width="20%"><a id="modalDel" class="btn btn-danger btn-ls col-md-10" style="background:#fff;color:#ff1a1a;"><b> DELETE <b></a></td>
-									<td width="20%"><a href="<?php echo site_url('exportpdfDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> PDF <b></a></td>
-									<td width="20%"><a href="<?php echo site_url('exportexcelDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> EXCEL <b></a></td>
+									<td width="20%"><a href="<?php echo site_url('QuickDataCat/LihatStokCat/exportpdfDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> PDF <b></a></td>
+									<td width="20%"><a href="<?php echo site_url('QuickDataCat/LihatStokCat/exportexcelDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> EXCEL <b></a></td>
 								</table>
 							</div>
 							<br>

@@ -86,7 +86,7 @@ public function exportpdfDataStock(){
 		$filename= 'datastockcat'.time().'.pdf';
 		$data['page_title'] = 'datastockcat';
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('export/V_PDFExportDataStock', $data, true);
+		$html = $this->load->view('QuickDataCat/Report/V_PDFExportDataStock', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->AddPage('L','', '', '', '',10,10,10,10,6,3);
@@ -96,7 +96,7 @@ public function exportpdfDataStock(){
 
 public function exportexcelDataStock(){
 		$data['data_cat_masuk_keluar'] = $this->M_lihatstockcat->getDataCatKeluarMasuk();
-		$this->load->view('export/V_EXCELExportDataStock',$data);
+		$this->load->view('QuickDataCat/Report/V_EXCELExportDataStock',$data);
 
 }
 
@@ -115,7 +115,7 @@ public function exportpdfDataStockPeriode(){
 		$filename= 'datacatperiode.pdf';
 		$data['page_title'] = 'Data Stock Periode';
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('export/V_PDFExportDataStockPeriode', $data, true);
+		$html = $this->load->view('QuickDataCat/Report/V_PDFExportDataStockPeriode', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->AddPage('L','', '', '', '',10,10,10,10,6,3);
@@ -126,7 +126,7 @@ public function exportpdfDataStockPeriode(){
 function excelOnHand()
 	{
 		$data['data_onhand'] = $this->M_lihatstockcat->getDataCatOnHand();
-		$this->load->view('V_exportexcel',$data);
+		$this->load->view('QuickDataCat/Report/V_exportexcel',$data);
 	}
 
 public function ajaxSearching()

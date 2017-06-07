@@ -64,7 +64,7 @@ class C_DataCatMasuk extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('QuickDataCat/MainMenu/V_InputDataCatMasuk', $data);
 		$this->load->view('V_Footer',$data);
-		
+		$this->session->unset_userdata('success_insert');
 	}
 	
 	public function insert_act(){
@@ -80,7 +80,7 @@ class C_DataCatMasuk extends CI_Controller {
 		$tglexpired             = $this->input->post('txtExpiredDate');
 		$quantity               = $this->input->post('txtQuantity');
         $bukti					= $this->input->post('txtBukti');
-        $petugas				= $this->input->post('txtPetugas');
+        $petugas				= strtoupper($this->input->post('txtPetugas'));
 		
 		$i=0;
 		foreach($tglexpired as $loop){
@@ -106,7 +106,11 @@ class C_DataCatMasuk extends CI_Controller {
 
 			$i++;
 		}
-		// print_r($data);
+		$this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+					 "success_insert" => 1
+				);
+		$this->session->set_userdata($ses);
 		redirect('QuickDataCat/DataCatMasuk');
 	}
 	

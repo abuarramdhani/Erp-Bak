@@ -24,11 +24,20 @@
 			
 			<div class="row">
 				<div class="col-lg-12">
-				
+					<?php
+						if($this->session->userdata('success_insert')){ 
+					?>
+						<div class="alert alert-success alert-dismissable"  style="width:100%;" >
+								 <li class="fa fa-warning"> </li> Simpan Data Berhasil !!!
+						</div>
+					<?php
+						}
+					?>
 					<div class="box box-primary box-solid">
 						<div class="box-header with-border">
 							<b>Insert Data Cat</b>
 						</div>
+					
 						<form method="post" action="<?php echo site_url($action)?>" class="form-horizontal" id="form1">	
 						<div class="box-body">					
 							<tr>
@@ -122,7 +131,7 @@
 								</div>
 								<div class="col-md-5">	
 									<div class="form-group">
-										<input class="form-control" type="text" id="txtPetugas" name="txtPetugas" onkeyup="disabledButtonIn()" placeholder="Input Petugas">
+										<input class="form-control" type="text" id="txtPetugas" name="txtPetugas" style="text-transform:uppercase;" onkeyup="disabledButtonIn()" placeholder="Input Petugas">
 										</input>
 									</div><!-- /.form group -->
 								</div>

@@ -23,6 +23,15 @@
 			<br/>
 			<div class="row">
 				<div class="col-lg-12">
+					<?php
+						if($this->session->userdata('success_insert')){ 
+					?>
+						<div class="alert alert-success alert-dismissable"  style="width:100%;" >
+								 <li class="fa fa-warning"> </li> Check Out Data Berhasil !!!
+						</div>
+					<?php
+						}
+					?>
 					<div class="box box-primary box-solid">
 						<div class="box-header with-border">
 							<b>Insert Data Cat Keluar</b>
@@ -90,7 +99,7 @@
 								</div>
 								<div class="col-md-5">	
 									<div class="form-group">
-													<input type="text" class="form-control" onkeyup="disabledButtonOut()" id="txtPetugas" name="txtPetugas" placeholder="Input Petugas">
+													<input type="text" style="text-transform:uppercase;" class="form-control" onkeyup="disabledButtonOut()" id="txtPetugas" name="txtPetugas" placeholder="Input Petugas">
 										</input>
 									</div><!-- /.form group -->
 								</div>
@@ -99,7 +108,7 @@
 							<div class="box-footer">
 								<table align="center">
 									<td width="20%"><a href="<?php echo site_url('DataCatKeluar');?>" class="btn btn-primary btn-ls col-md-10" style="background:#2E6DA4;"> BACK </a></td>
-									<td width="20%"><a href="<?php echo site_url('BtnTambahDataCatKeluar');?>" class="btn btn-primary btn-ls col-md-10" style="background:#2E6DA4;"> RESET </a></td>
+									<td width="20%"><a href="" class="btn btn-primary btn-ls col-md-10" onClick="formReset()" style="background:#2E6DA4;"> RESET </a></td>
 									<td width="20%"><button class="btn btn-primary btn-ls col-md-10" id="txtBtnSave" style="background:#2E6DA4;" type="SUBMIT" name="SUBMIT" id="SUBMIT" disabled> SAVE </button></td>
 								</table>
 							</div>

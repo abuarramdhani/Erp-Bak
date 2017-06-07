@@ -32,8 +32,8 @@
 
 				<tr class="table_row">
 					<td><input class="form-control" type="text" name="txtExpiredDate[]" id="txtExpiredDate" readonly value="<?php echo $Data_Expired['expired_date']  ?>"></td>
-					<td><input class="form-control check_qty" type="text" name="txtQuantity[]" id="txtQuantity" placeholder="Quantity"> </td>
-					<td><input class="form-control check_ohm" type="text" name="txtOnHand[]" id="txtOnHand" readonly value="<?php echo $Data_Expired['on_hand']?>" ></td>
+					<td><input class="form-control check_qty" type="number" name="txtQuantity[]" id="txtQuantity" placeholder="Quantity"> </td>
+					<td><input class="form-control check_ohm" type="number" name="txtOnHand[]" id="txtOnHand" readonly value="<?php echo $Data_Expired['on_hand']?>" ></td>
 					<?php  $sum = $sum + $Data_Expired['on_hand']; ?>						
 				</tr>
 			<?php  } ?> 
