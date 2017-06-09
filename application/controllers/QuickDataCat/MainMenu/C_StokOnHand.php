@@ -54,4 +54,9 @@ class C_StokOnHand extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 	
+	public function exportExcelOnHand(){
+		$data['data_stok_onhand'] = $this->M_lihatstockcat->getDataCatOnHand2();
+		$this->load->view('QuickDataCat/Report/V_EXCELExportDataOnHand',$data);
+	}
+	
 }

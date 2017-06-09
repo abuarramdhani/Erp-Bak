@@ -79,7 +79,9 @@
 					}
 						?>
 						<br>
-						<a href="<?php base_url()?>exportExcelOnHand"  class="btn btn-primary btn-ls col-md-2" style="background:#fff;color:#06f;"> <b>EXCEL</b> </a>
+							<table align="left">
+								<a href="<?php base_url()?>LihatStokOnHand/exportExcelOnHand"  class="btn btn-primary btn-ls col-md-2" style="background:#fff;color:#06f;"> <b>EXCEL</b> </a>
+							</table>
 						</div>
 						</div><!-- /.box-body -->
 					</div><!-- /.box -->

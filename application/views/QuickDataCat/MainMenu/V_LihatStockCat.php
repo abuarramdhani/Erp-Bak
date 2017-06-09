@@ -151,7 +151,7 @@
 								</tbody>
 							</table>
 								<table align="left">
-									<td width="20%"><a id="modalDelOnHand" class="btn btn-danger btn-ls col-md-10" style="background:#fff;color:#ff1a1a;"><b> DELETE <b></a></td>
+									<td width="20%"><a id="modalDelStokCat" class="btn btn-danger btn-ls col-md-10" style="background:#fff;color:#ff1a1a;"><b> DELETE <b></a></td>
 									<td width="20%"><a href="<?php echo site_url('QuickDataCat/LihatStokCat/exportpdfDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> PDF <b></a></td>
 									<td width="20%"><a href="<?php echo site_url('QuickDataCat/LihatStokCat/exportexcelDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> EXCEL <b></a></td>
 								</table>
@@ -164,7 +164,7 @@
 	</form>		
 </section>
 <!-- Modal -->
-<div id="modalOnHandConfirmationDel" class="modal fade" role="dialog">
+<div id="modalStokCatConfirmationDel" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
@@ -173,7 +173,7 @@
         <b>Are you sure will delete all data ?</b>
       </div>
       <div class="modal-body">
-        <button type="button" class="btn btn-primary btn-s" id="executeDel" style="background:#fff;color:#06f;width:45%;">Execute</button>
+        <button type="button" class="btn btn-primary btn-s" id="executeDelStokCat" style="background:#fff;color:#06f;width:45%;">Execute</button>
         <button type="button" class="btn btn-danger btn-s" style="background:#fff;color:#ff1a1a;float:right;width:45%;" data-dismiss="modal">Close</button>
       </div>
     </div>

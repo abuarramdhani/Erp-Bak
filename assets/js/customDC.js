@@ -109,14 +109,34 @@ $(document).ready(function() {
           "autoWidth": false,
 		});
 
+	$('#modalDelStokCat').click(function(){
+		$('#modalStokCatConfirmationDel').modal('show'); 
+	});
+	
 	$('#modalDelOnHand').click(function(){
 		$('#modalOnHandConfirmationDel').modal('show'); 
 	});
 	
-	$('#executeDel').click(function(){
+	$('#executeDelStokCat').click(function(){
 		$.ajax({
 			type: "POST",
-			url: baseUrl+"/erp/QuickDataCat/LihatStokCat/ajaxDel", 
+			url: baseUrl+"/erp/QuickDataCat/LihatStokCat/ajaxDelStokCat", 
+			dataType:'JSON',
+			success: function(data){
+			   if(data == "success"){
+				   location.reload();
+			   }else{
+				   alert('empty');
+				   $('#myModal').modal('toggle'); 
+			   }
+			} 
+		});
+	});
+	
+	$('#executeDelOnHand').click(function(){
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/erp/QuickDataCat/LihatStokOnHand/ajaxDelOnHand", 
 			dataType:'JSON',
 			success: function(data){
 			   if(data == "success"){

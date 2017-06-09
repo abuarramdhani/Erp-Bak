@@ -169,6 +169,12 @@ function ins_del_out(
 		return;
 	}
 
+function del_on_hand(){
+	$sql  = "delete from dc.dc_data_paint_onhand";
+	$query = $this->db->query($sql);
+	return;
+}
+
 function del_im_out(){
 	$sql = $this->db->query("delete from dc.dc_data_paint_out");
 	return;

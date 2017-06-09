@@ -149,7 +149,7 @@ public function ajaxSearching()
 		$this->load->view('V_LihatStockCat2',$data);
 	}
 	
-public function ajaxDel(){
+public function ajaxDelStokCat(){
 	$paint_in	= $this->M_lihatstockcat->getPaintIn();
 	$paint_out	= $this->M_lihatstockcat->getPaintOut();
 	if(empty($paint_in) && empty($paint_out)){
@@ -174,6 +174,7 @@ public function ajaxDel(){
 		}
 		$this->M_lihatstockcat->del_im_out();
 		$this->M_lihatstockcat->del_im_in();
+		$this->M_lihatstockcat->del_on_hand();
 		$rates = "success";
 		$this->output->set_output(json_encode($rates));
 	}
