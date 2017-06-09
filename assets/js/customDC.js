@@ -109,8 +109,8 @@ $(document).ready(function() {
           "autoWidth": false,
 		});
 
-	$('#modalDel').click(function(){
-		$('#myModal').modal('show'); 
+	$('#modalDelOnHand').click(function(){
+		$('#modalOnHandConfirmationDel').modal('show'); 
 	});
 	
 	$('#executeDel').click(function(){

@@ -139,7 +139,7 @@
 										<td><?php echo $msk['paint_description'] ?></td>
 										<td style="text-align:center;"><?php echo $msk['expired_date'] ?></td>
 										<td style="text-align:center;"><?php echo $msk['quantity'] ?></td>
-										<td style="text-align:center;">pcs</td>
+										<td style="text-align:center;">kg</td>
 										<td style="text-align:center;"><?php echo $msk['evidence_number'] ?></td>
 										<td><?php echo $msk['employee'] ?></td>
 										<td style="text-align:center;"><?php echo $msk['sysdate'] ?></td>
@@ -151,7 +151,7 @@
 								</tbody>
 							</table>
 								<table align="left">
-									<td width="20%"><a id="modalDel" class="btn btn-danger btn-ls col-md-10" style="background:#fff;color:#ff1a1a;"><b> DELETE <b></a></td>
+									<td width="20%"><a id="modalDelOnHand" class="btn btn-danger btn-ls col-md-10" style="background:#fff;color:#ff1a1a;"><b> DELETE <b></a></td>
 									<td width="20%"><a href="<?php echo site_url('QuickDataCat/LihatStokCat/exportpdfDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> PDF <b></a></td>
 									<td width="20%"><a href="<?php echo site_url('QuickDataCat/LihatStokCat/exportexcelDataStock');?>" class="btn btn-primary btn-ls col-md-10" style="background:#fff;color:#06f;"><b> EXCEL <b></a></td>
 								</table>
@@ -164,7 +164,7 @@
 	</form>		
 </section>
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="modalOnHandConfirmationDel" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">

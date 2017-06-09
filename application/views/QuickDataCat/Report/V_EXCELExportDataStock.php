@@ -44,7 +44,7 @@ header('Content-Disposition:attachment; filename="datastockcat.xls"');
 										<td><?php echo $msk['paint_description'] ?></td>
 										<td><?php echo $msk['expired_date'] ?></td>
 										<td><?php echo $msk['quantity'] ?></td>
-										<td>pcs</td>
+										<td>kg</td>
 										<td><?php echo $msk['evidence_number'] ?></td>
 										<td><?php echo $msk['employee'] ?></td>
 										<td><?php echo $keterangan ?></td>
