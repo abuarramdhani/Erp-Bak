@@ -58,11 +58,11 @@
 					                     	<table>	
 					                     		<tr>
 					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">Invoice Date</label>
+					                     				<label for="exampleInputPassword1">Faktur Date</label>
 					                     			</td>
 					                     			<td>
 														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
-															<input id="tanggal_cari" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $data[0]->TODATE;  ?>" data-date-format="dd-M-yyyy" type="text" name="invoice_date" riquaite placeholder=" Date" autocomplete="off">
+															<input id="tanggal_cari" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo $data[0]->FAKTUR_DATE;  ?>" data-date-format="dd-M-yyyy" type="text" name="invoice_date" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 													</td>
 					                     		</tr>

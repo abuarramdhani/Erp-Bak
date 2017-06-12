@@ -30,13 +30,16 @@
 						<b>Add new fingerprint device</b>
 					</div>
 					<div class="box-body">
-					<form method="post" action="<?php echo base_url('PresenceManagement/Monitoring/SaveDevice')?>">
+					<form method="post" action="<?php echo base_url('PresenceManagement/Monitoring/UpdateDevice')?>">
+						
+					
 						<!-- INPUT GROUP 1 ROW 1 -->
+						<?php foreach( $device as $data_device){ ?>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Serial Number</label>
 								<div class="col-lg-4">
-									<input name="txtSN" class="form-control toupper" placeholder="[ Enter the serial number of fingerprint ]" value="" >
+									<input name="txtSN" class="form-control toupper" placeholder="[ Enter the serial number of fingerprint ]" value="<?php echo $data_device['sn']?>" readonly>
 								</div>
 							</div>
 						</div>
@@ -45,7 +48,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Verifivation Code</label>
 								<div class="col-lg-5">
-									<input name="txtVC" class="form-control toupper" placeholder="[ Enter the verification code of fingerprint ]"  >
+									<input name="txtVC" class="form-control toupper" placeholder="[ Enter the verification code of fingerprint ]" value="<?php echo $data_device['vc'] ?>"  disabled>
 								</div>
 							</div>
 						</div>
@@ -54,7 +57,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Activation Code</label>
 								<div class="col-lg-5">
-									<input name="txtAC" class="form-control toupper" placeholder="[ Enter the activation code of fingerprint ]"  >
+									<input name="txtAC" class="form-control toupper" placeholder="[ Enter the activation code of fingerprint ]" value="<?php echo $data_device['ac'] ?>"  disabled >
 								</div>
 							</div>
 						</div>
@@ -64,7 +67,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Id Location</label>
 								<div class="col-lg-6">
-									<input name="txtIdLocation" class="form-control toupper" value="" placeholder=""  readonly>
+									<input name="txtIdLocation" class="form-control toupper" value="<?php echo $data_device['id_lokasi'] ?>" placeholder=""  readonly>
 								</div>
 							</div>
 						</div>
@@ -73,7 +76,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Location</label>
 								<div class="col-lg-6">
-									<input name="txtLocation" class="form-control toupper" placeholder="[ Enter the location device ]"  >
+									<input name="txtLocation" class="form-control toupper" placeholder="[ Enter the location device ]" value="<?php echo $data_device['lokasi'] ?>"  readonly  >
 								</div>
 							</div>
 						</div>
@@ -82,11 +85,15 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Office</label>
 								<div class="col-lg-3">
-									<select class="form-control" name="txtOffice" placeholder="[ Enter the location device ]">
-									<option value="">[ Select Office ]</option>
+									<select class="form-control" name="txtOffice" placeholder="[ Enter the location device ]" disabled>
 										<?php
 											foreach($office as $data_office){
-												echo "<option value='".$data_office['id_lokasi']."'>".$data_office['lokasi_kerja']."</option>";
+												if($data_device['kd_lokasi'] == $data_office['kd_lokasi']){
+													$select	= "selected";
+												}else{
+													$select = "";
+												}
+												echo "<option value='".$data_office['kd_lokasi']."' ".$select.">".$data_office['lokasi_kerja']."</option>";
 											}
 										?>
 									</select>
@@ -95,17 +102,32 @@
 						</div>
 						<hr>
 						
-						
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Device</label>
+								<div class="col-lg-3">
+									<select class="form-control" name="txt_device_tgt" placeholder="[ Enter the location device ]">
+									<option value=""> [ Select Target Device ] </option>
+										<?php
+											foreach($tgt_device as $data_tgt_device){
+												echo "<option value='".$data_tgt_device['sn']."'>".$data_tgt_device['sn']."</option>";
+											}
+										?>
+									</select>
+								</div>	
+							</div>
+						</div>
 						<!-- INPUT GROUP 3 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">IP Address</label>
 								<div class="col-lg-3">
-									<input id="calc" name="txtIP" class="form-control ip_address" onkeypress="return isNumberKey(event)" placeholder="Calc">
+									<input id="calc" name="txt_host_tgt" class="form-control" onkeypress="return isNumberKeyAndComma(event)" placeholder="Calc" value="<?php echo $data_device['host'] ?>">
 								</div>								
 							</div>
 						</div>
 						<hr>
+						<?php } ?>
 						<!-- submit -->
 						<div class="form-group">
 							<div class="col-lg-12 text-right">

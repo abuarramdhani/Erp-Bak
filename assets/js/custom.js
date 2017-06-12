@@ -2,7 +2,27 @@
 	function isNumberKeyAndComma(evt)
 	{
 		var charCode = (evt.which) ? evt.which : event.keyCode
-		if (charCode == 44 || (charCode < 58 && charCode > 47))
+		if ( charCode == 46 ||charCode == 44 || (charCode < 58 && charCode > 47))
+		return true;
+		return false;
+	}
+	
+	function isNumberKeyAndDot(evt)
+	{
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode == 46 || (charCode < 58 && charCode > 47))
+		return true;
+		return false;
+	}
+	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+	
+	function isNumberKeyAndPoint(evt)
+	{
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode == 45 || (charCode < 58 && charCode > 47))
 		return true;
 		return false;
 	}
@@ -114,7 +134,7 @@
 
 	$(document).ready(function() {
 		$("#employee_position_table").DataTable({
-			"dom": '<"pull-left"f>tip',
+			"dom": '<"pull-left"f>trip',
 			"info": false,
 			language: {
 				search: "Search : ",
@@ -651,199 +671,6 @@
 		});
 	});
 
-	//------------------------REKAP TIMS.begin------------------
-	//Date Picker
-	$( document ).ready(function() {
-		//-------begin.REKAP TIMS---------------
-		$('#rekapBegin').daterangepicker({
-			"singleDatePicker": true,
-			"timePicker": true,
-			"timePicker24Hour": true,
-			"showDropdowns": true,
-			locale: {
-					format: 'YYYY-MM-DD HH:mm:ss'
-				},
-		});
-
-		$('#rekapEnd').daterangepicker({
-			"singleDatePicker": true,
-			"timePicker": true,
-			"timePicker24Hour": true,
-			"showDropdowns": true,
-			locale: {
-					format: 'YYYY-MM-DD HH:mm:ss'
-				},
-		});
-	});
-
-	//DATA TABLE
-	$(document).ready(function(){
-		$('.data-tims-personal').DataTable({
-			"dom": '<"pull-left"f>t<"pull-right"p>',
-        	"info"		: false,
-        	"searching"	: false,
-        	"lengthChange": false,
-        	"pageLength": 5
-		});
-	});
-	//-------------------------- Ambil Data Seksi.Rekap TIMS -----------------------------
-	//AJAX JAVASCRIPT
-	$(document).ready(function() {
-		$('#departemen_select').change(function(){
-			$('#bidang_select').select2("val", "");
-			$('#unit_select').select2("val", "");
-			$('#section_select').select2("val", "");
-			$('#bidang_select').select2("data", null);
-			$('#unit_select').select2("data", null);
-			$('#section_select').select2("data", null);
-			$('#bidang_select').prop("disabled", false);
-			$('#unit_select').prop("disabled", true);
-			$('#section_select').prop("disabled", true);
-			var value = $('#departemen_select').val();
-			$.ajax({
-				type:'POST',
-				data:{data_name:value,modul:'bidang'},
-				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
-				success:function(result)
-				{
-					$('#bidang_select').html(result);
-				}
-			});
-		});
-		$('#bidang_select').change(function(){
-			$('#unit_select').select2("val", "");
-			$('#section_select').select2("val", "");
-			$('#unit_select').select2("data", null);
-			$('#section_select').select2("data", null);
-			$('#unit_select').prop("disabled", false);
-			$('#section_select').prop("disabled", true);
-			var value = $('#bidang_select').val();
-			$.ajax({
-				type:'POST',
-				data:{data_name:value,modul:'unit'},
-				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
-				success:function(result)
-				{
-					$('#unit_select').html(result);
-				}
-			});
-		});
-		$('#unit_select').change(function(){
-			$('#section_select').select2("val", "");
-			$('#section_select').select2("data", null);
-			$('#section_select').prop("disabled", false);
-			var value = $('#unit_select').val();
-			$.ajax({
-				type:'POST',
-				data:{data_name:value,modul:'seksi'},
-				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
-				success:function(result)
-				{
-					$('#section_select').html(result);
-				}
-			});
-		});
-
-		$(".js-slcNoInduk").select2({
-			placeholder: "No Induk",
-			minimumInputLength: 0,
-			ajax: {		
-				url:baseurl+"RekapTIMSPromosiPekerja/GetNoInduk",
-				dataType: 'json',
-				type: "GET",
-				data: function (params) {
-					var queryParameters = {
-						term: params.term,
-						type: $('select#slcNoInduk').val()
-					}
-					return queryParameters;
-				},
-				processResults: function (data) {
-					return {
-						results: $.map(data, function(obj) {
-							return { id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
-						})
-					};
-				}
-			}	
-		});
-			
-			
-			
-		$('#submit-filter-no-induk').click(function(){
-			$('.alert').alert('close');
-			$('body').addClass('noscroll');
-			$('#loadingAjax').addClass('overlay_loading');
-			$('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
-			$.ajax({
-				type:'POST',
-				data:$("#filter-rekap").serialize(),
-				url:baseurl+"RekapTIMSPromosiPekerja/RekapPerPekerja/show-data",
-				success:function(result)
-				{
-					$('#table-div').html(result);
-					$('body').removeClass('noscroll');
-					$('#loadingAjax').html('');
-					$('#loadingAjax').removeClass('overlay_loading');
-					rekap_datatable();
-				},
-				error: function() {
-					$('body').removeClass('noscroll');
-					$('#loadingAjax').html('');
-					$('#loadingAjax').removeClass('overlay_loading');
-					document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
-				}
-			});
-		});
-	});
-
-	//---------------------------------REKAP TIMS.end-------------------------------
-function rekap_datatable() {
-	var rekap_table = $('#rekap-tims').DataTable({
-		responsive: true,
-		"scrollX": true,
-		scrollCollapse: true,
-		"lengthChange": false,
-		"dom": '<"pull-left"f>tp',
-		"info": false,
-		language: {
-			search: "_INPUT_",
-		},
-	});
-	$('.dataTables_filter input[type="search"]').css(
-		{'width':'400px','display':'inline-block'}
-	);
-	$('#rekap-tims_filter input').attr("placeholder", "Search...")
-}
-//$(document).ready(function(){
-	rekap_datatable();
-	$('#submit-filter-rekap').click(function(e){
-		$('.alert').alert('close');
-		$('body').addClass('noscroll');
-		$('#loadingAjax').addClass('overlay_loading');
-		$('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
-		$.ajax({
-			type:'POST',
-			data:$("#filter-rekap").serialize(),
-			url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/show-data",
-			success:function(result)
-			{
-				$('#table-div').html(result);
-				$('body').removeClass('noscroll');
-				$('#loadingAjax').html('');
-				$('#loadingAjax').removeClass('overlay_loading');
-				rekap_datatable();
-			},
-			error: function() {
-				$('#loadingAjax').html('');
-				$('body').removeClass('noscroll');
-				$('#loadingAjax').removeClass('overlay_loading');
-				document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
-			}
-		});
-	});
-//});
-
 
 //Stock Control
 $(document).ready(function(){
@@ -996,67 +823,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-
-
-
-	
-//========
-	// JAVASCRIPT & JQUERY PRESENCE MANAGEMENT > PIC : ALFIAN AFIEF N
-	//======== START
-	$('#datatable-presensi').dataTable({
-	 "bLengthChange": false
-	});
-	$('#confirm-delete').on('show.bs.modal', function(e) {
-		$(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-	});
-	
-	$(document).on("click", ".modalmutation", function () {
-		 var id = $(this).data('id');
-		 var name = $(this).data('filter');
-		 $(".modal-body #txtID").val(id);
-		 $(".modal-body #txtNoind").text(id);
-		 $(".modal-body #txtName").text(name);
-	});
-	
-	$(document).on("click", "#modaladd", function () {
-		 var id = $(this).data('id');
-		 $(".modal-body #txtID").val(id);
-	});
-	
-	$(document).on("click", ".modalchangelocationname", function () {
-		 var loc = $(this).data('filter');
-		 var name = $(this).data('id');
-		 $(".modal-body #txtLocation").val(loc);
-		 $(".modal-body #txtName").val(name);
-	});
-	
-	$(".select-presence").select2({
-			allowClear: true,
-			placeholder: "[ Select Noind or Name ]",
-			minimumInputLength: 1,
-			ajax: {
-				url:baseurl+"PresenceManagement/Monitoring/JsonNoind",
-				dataType: 'json',
-				type: "GET",
-				data: function (params) {
-					var queryParameters = {
-						term: params.term
-					}
-					return queryParameters;
-				},
-				processResults: function (data) {
-					return {
-						results: $.map(data, function(obj) {
-							return { id: obj.noind, text: obj.noind +" / "+ obj.nama.toUpperCase() };
-						})
-					};
-				}
-			}
-		});
-		
-	$('.ip_address').mask('099.099.099.099');
-	//========================
-	// END PRESENCE MANAGEMENT
-	//========================
 });

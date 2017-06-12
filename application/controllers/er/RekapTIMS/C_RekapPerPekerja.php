@@ -39,6 +39,7 @@ class C_RekapPerPekerja extends CI_Controller {
 	//------------------------show the dashboard-----------------------------
 	public function index()
 	{
+		
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -53,13 +54,13 @@ class C_RekapPerPekerja extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_filter_per_pekerja',$data);
 		$this->load->view('V_Footer',$data);
-		
 	}
 
 	//------------------------show the filtering menu-----------------------------
 	public function GetNoInduk(){
 		$term = $this->input->get("term");
-		$data = $this->M_rekap_per_pekerja->GetNoInduk($term);
+		$status = $this->input->get("stat");
+		$data = $this->M_rekap_per_pekerja->GetNoInduk($term, $status);
 		$count = count($data);
 		echo "[";
 		foreach ($data as $data) {
@@ -88,6 +89,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
 		$noinduk 	= $this->input->post('slcNoInduk');
+		$status     = $this->input->post('slcStatus');
 		$detail 	= $this->input->post('detail');
 		
 		$count = count($noinduk);
@@ -102,28 +104,50 @@ class C_RekapPerPekerja extends CI_Controller {
 			}
 		}
 
-		$data['periode1']	= $periode1;
-		$data['periode2']	= $periode2;
 		if ($detail==NULL) {
-			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk);
+			$data['periode1']	= $periode1;
+			$data['periode2']	= $periode2;
+			$data['status']	= $status;
+			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);
 			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
-			$begin = new DateTime($periode1);
-			$end = new DateTime($periode2);
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 			$interval = new DateInterval('P1M');
+
+			$start_year_month = date('Y-m', strtotime($periode1));
+			$start_date = date('d', strtotime($periode1));
+			$end_year_month = date('Y-m', strtotime($periode2));
+			$end_date = date('d', strtotime($periode2));
 
 			$p = new DatePeriod($begin, $interval ,$end);
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName);
+
+				if ($perMonth == $start_year_month) {
+					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
+				} else {
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+				}
+
+				if ($perMonth == $end_year_month) {
+					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
+				} else {
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+				}
+
+				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName, $status);
 			}
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
-			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk);
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
+			$data['periode1']	= $period1;
+			$data['periode2']	= $period2;
+			$data['status']	= $status;
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
+			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_per_pekerja',$data);
 		}
 	}
@@ -133,6 +157,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode1 = $this->input->post("txtPeriode1_export");
 		$periode2 = $this->input->post("txtPeriode2_export");
 		$NoInduk = $this->input->post("txtNoInduk_export");
+		$status = $this->input->post("txtStatus");
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -152,31 +177,46 @@ class C_RekapPerPekerja extends CI_Controller {
 		);
 
 		if ($detail == 1) {
-			$period1 = date('Y-m-01 00:00:00', strtotime($periode1));
-			$period2 = date('Y-m-t 23:59:59', strtotime($periode2));
+			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
 		else{
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
-		$periode_masa_kerja = $period2;
-
-		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk);
+		$rekap_masakerja = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$NoInduk,$status);
+		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk,$status);
 
 		if ($detail == 1) {
-			$begin = new DateTime($periode1);
-			$end = new DateTime($periode2);
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 
 			$interval = new DateInterval('P1M');
+
+			$start_year_month = date('Y-m', strtotime($periode1));
+			$start_date = date('d', strtotime($periode1));
+			$end_year_month = date('Y-m', strtotime($periode2));
+			$end_date = date('d', strtotime($periode2));
 
 			$p = new DatePeriod($begin, $interval ,$end);
 
 			foreach ($p as $d) {
 				$perMonth = $d->format('Y-m');
 				$monthName = $d->format('M_y');
-				$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
-				$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
-				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName);
+
+				if ($perMonth == $start_year_month) {
+					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
+				} else {
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
+				}
+
+				if ($perMonth == $end_year_month) {
+					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
+				} else {
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
+				}
+
+				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName, $status);
 			}
 		}
 
@@ -225,15 +265,19 @@ class C_RekapPerPekerja extends CI_Controller {
 				$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 				$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 				$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
-				$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-				$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+				$PSP = PHPExcel_Cell::stringFromColumnIndex($col+4);
+				$IP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+				$CT = PHPExcel_Cell::stringFromColumnIndex($col+6);
+				$SP = PHPExcel_Cell::stringFromColumnIndex($col+7);
 				$worksheet->getColumnDimension($T)->setWidth(3);
 				$worksheet->getColumnDimension($I)->setWidth(3);
 				$worksheet->getColumnDimension($M)->setWidth(3);
 				$worksheet->getColumnDimension($S)->setWidth(3);
+				$worksheet->getColumnDimension($PSP)->setWidth(8);
 				$worksheet->getColumnDimension($IP)->setWidth(3);
+				$worksheet->getColumnDimension($CT)->setWidth(3);
 				$worksheet->getColumnDimension($SP)->setWidth(3);
-				$head_merge = $col+5;
+				$head_merge = $col+7;
 				$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 				$worksheet->mergeCells($T.'6:'.$headCol.'6');
 				$monthName = $d->format('M/Y');
@@ -242,9 +286,11 @@ class C_RekapPerPekerja extends CI_Controller {
 				$worksheet->setCellValue($I.'7', 'I');
 				$worksheet->setCellValue($M.'7', 'M');
 				$worksheet->setCellValue($S.'7', 'S');
+				$worksheet->setCellValue($PSP.'7', 'PSP');
 				$worksheet->setCellValue($IP.'7', 'IP');
+				$worksheet->setCellValue($CT.'7', 'CT');
 				$worksheet->setCellValue($SP.'7', 'SP');
-				$col=$col+6;
+				$col=$col+8;
 			}
 		}
 
@@ -252,29 +298,90 @@ class C_RekapPerPekerja extends CI_Controller {
 		$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 		$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 		$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
-		$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-		$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+		$PSP = PHPExcel_Cell::stringFromColumnIndex($col+4);
+		$IP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+		$CT = PHPExcel_Cell::stringFromColumnIndex($col+6);
+		$SP = PHPExcel_Cell::stringFromColumnIndex($col+7);
+		$THK = PHPExcel_Cell::stringFromColumnIndex($col+8);
+		$P_T = PHPExcel_Cell::stringFromColumnIndex($col+9);
+		$P_I = PHPExcel_Cell::stringFromColumnIndex($col+10);
+		$P_M = PHPExcel_Cell::stringFromColumnIndex($col+11);
+		$P_S = PHPExcel_Cell::stringFromColumnIndex($col+12);
+		$P_PSP = PHPExcel_Cell::stringFromColumnIndex($col+13);
+		$P_IP = PHPExcel_Cell::stringFromColumnIndex($col+14);
+		$P_CT = PHPExcel_Cell::stringFromColumnIndex($col+15);
 		$worksheet->getColumnDimension($T)->setWidth(3);
 		$worksheet->getColumnDimension($I)->setWidth(3);
 		$worksheet->getColumnDimension($M)->setWidth(3);
 		$worksheet->getColumnDimension($S)->setWidth(3);
+		$worksheet->getColumnDimension($PSP)->setWidth(8);
 		$worksheet->getColumnDimension($IP)->setWidth(3);
 		$worksheet->getColumnDimension($SP)->setWidth(3);
-		$head_merge = $col+5;
+		$worksheet->getColumnDimension($CT)->setWidth(3);
+		$worksheet->getColumnDimension($THK)->setWidth(18);
+		$worksheet->getColumnDimension($P_T)->setWidth(10);
+		$worksheet->getColumnDimension($P_I)->setWidth(10);
+		$worksheet->getColumnDimension($P_M)->setWidth(10);
+		$worksheet->getColumnDimension($P_S)->setWidth(10);
+		$worksheet->getColumnDimension($P_PSP)->setWidth(10);
+		$worksheet->getColumnDimension($P_IP)->setWidth(10);
+		$worksheet->getColumnDimension($P_CT)->setWidth(10);
+		$head_merge = $col+7;
 		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 		$worksheet->mergeCells($T.'6:'.$headCol.'6');
+		$head_merge = $col+14;
+		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
+		$worksheet->mergeCells($P_T.'6:'.$headCol.'6');
 		$worksheet->setCellValue($T.'6', 'REKAP');
 		$worksheet->setCellValue($T.'7', 'T');
 		$worksheet->setCellValue($I.'7', 'I');
 		$worksheet->setCellValue($M.'7', 'M');
 		$worksheet->setCellValue($S.'7', 'S');
+		$worksheet->setCellValue($PSP.'7', 'PSP');
 		$worksheet->setCellValue($IP.'7', 'IP');
+		$worksheet->setCellValue($CT.'7', 'CT');
 		$worksheet->setCellValue($SP.'7', 'SP');
+		$worksheet->mergeCells($THK.'6:'.$THK.'7');
+		$worksheet->setCellValue($THK.'6', 'TOTAL HARI KERJA');
+		$worksheet->setCellValue($P_T.'6', 'PERSENTASE');
+		$worksheet->setCellValue($P_T.'7', 'T');
+		$worksheet->setCellValue($P_I.'7', 'I');
+		$worksheet->setCellValue($P_M.'7', 'M');
+		$worksheet->setCellValue($P_S.'7', 'S');
+		$worksheet->setCellValue($P_PSP.'7', 'PSP');
+		$worksheet->setCellValue($P_IP.'7', 'IP');
+		$worksheet->setCellValue($P_CT.'7', 'CT');
 
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-						$total_masa_kerja = $rekap_data['masa_kerja'];
+			$masukkerja_s = '';
+			${'masa_kerja'.$rekap_data['nama']} = array();
+			$index_masakerja = 0;
+			foreach ($rekap_masakerja as $row) {
+				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+					
+					if ($row['masukkerja'] != $masukkerja_s) {
+						$masukkerja = new DateTime($row['masukkerja']);
+						$tglkeluar = new DateTime($row['tglkeluar']);
+						$masa_kerja = $masukkerja->diff($tglkeluar);
+						${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+						$index_masakerja++;
+					}
+
+					$masukkerja_s = $row['masukkerja'];
+				}
+			}
+
+			$e = new DateTime();
+			$f = clone $e;
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+			}
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+			}
+			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -292,7 +399,9 @@ class C_RekapPerPekerja extends CI_Controller {
 							$IjinPribadi = ${'rek'.$monthName}['freki'.strtolower($monthName)]+${'rek'.$monthName}['frekis'.strtolower($monthName)];
 							$Mangkir = ${'rek'.$monthName}['frekm'.strtolower($monthName)]+${'rek'.$monthName}['frekms'.strtolower($monthName)];
 							$SuratKeterangan = ${'rek'.$monthName}['freksk'.strtolower($monthName)]+${'rek'.$monthName}['freksks'.strtolower($monthName)];
+							$SakitPerusahaan = ${'rek'.$monthName}['frekpsp'.strtolower($monthName)]+${'rek'.$monthName}['frekpsps'.strtolower($monthName)];
 							$IjinPerusahaan = ${'rek'.$monthName}['frekip'.strtolower($monthName)]+${'rek'.$monthName}['frekips'.strtolower($monthName)];
+							$CutiTahunan = ${'rek'.$monthName}['frekct'.strtolower($monthName)]+${'rek'.$monthName}['frekcts'.strtolower($monthName)];
 							$SuratPeringatan = ${'rek'.$monthName}['freksp'.strtolower($monthName)]+${'rek'.$monthName}['freksps'.strtolower($monthName)];
 							if ($Terlambat == '0') {
 								$Terlambat = '-';
@@ -306,8 +415,14 @@ class C_RekapPerPekerja extends CI_Controller {
 							if ($SuratKeterangan == '0') {
 								$SuratKeterangan = '-';
 							}
+							if ($SakitPerusahaan == '0') {
+								$SakitPerusahaan = '-';
+							}
 							if ($IjinPerusahaan == '0') {
 								$IjinPerusahaan = '-';
+							}
+							if ($CutiTahunan == '0') {
+								$CutiTahunan = '-';
 							}
 							if ($SuratPeringatan == '0') {
 								$SuratPeringatan = '-';
@@ -318,17 +433,21 @@ class C_RekapPerPekerja extends CI_Controller {
 					$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 					$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 					$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
-					$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-					$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+					$PSP = PHPExcel_Cell::stringFromColumnIndex($col+4);
+					$IP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+					$CT = PHPExcel_Cell::stringFromColumnIndex($col+6);
+					$SP = PHPExcel_Cell::stringFromColumnIndex($col+7);
 
 					$worksheet->setCellValue($T.$highestRow, $Terlambat, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($I.$highestRow, $IjinPribadi, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($M.$highestRow, $Mangkir, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($S.$highestRow, $SuratKeterangan, PHPExcel_Cell_DataType::TYPE_STRING);
+					$worksheet->setCellValue($PSP.$highestRow, $SakitPerusahaan, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($IP.$highestRow, $IjinPerusahaan, PHPExcel_Cell_DataType::TYPE_STRING);
+					$worksheet->setCellValue($CT.$highestRow, $CutiTahunan, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($SP.$highestRow, $SuratPeringatan, PHPExcel_Cell_DataType::TYPE_STRING);
 
-					$col=$col+6;
+					$col=$col+8;
 				}
 			}
 
@@ -336,15 +455,35 @@ class C_RekapPerPekerja extends CI_Controller {
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 			$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 			$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
-			$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-			$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+			$PSP = PHPExcel_Cell::stringFromColumnIndex($col+4);
+			$IP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+			$CT = PHPExcel_Cell::stringFromColumnIndex($col+6);
+			$SP = PHPExcel_Cell::stringFromColumnIndex($col+7);
+			$THK = PHPExcel_Cell::stringFromColumnIndex($col+8);
+			$P_T = PHPExcel_Cell::stringFromColumnIndex($col+9);
+			$P_I = PHPExcel_Cell::stringFromColumnIndex($col+10);
+			$P_M = PHPExcel_Cell::stringFromColumnIndex($col+11);
+			$P_S = PHPExcel_Cell::stringFromColumnIndex($col+12);
+			$P_PSP = PHPExcel_Cell::stringFromColumnIndex($col+13);
+			$P_IP = PHPExcel_Cell::stringFromColumnIndex($col+14);
+			$P_CT = PHPExcel_Cell::stringFromColumnIndex($col+15);
 
 			$worksheet->setCellValue($T.$highestRow, $rekap_data['frekt']+$rekap_data['frekts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($I.$highestRow, $rekap_data['freki']+$rekap_data['frekis'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($M.$highestRow, $rekap_data['frekm']+$rekap_data['frekms'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($S.$highestRow, $rekap_data['freksk']+$rekap_data['freksks'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($PSP.$highestRow, $rekap_data['frekpsp']+$rekap_data['frekpsps'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($IP.$highestRow, $rekap_data['frekip']+$rekap_data['frekips'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($CT.$highestRow, $rekap_data['frekct']+$rekap_data['frekcts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($SP.$highestRow, $rekap_data['freksp']+$rekap_data['freksps'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($THK.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : ($rekap_data['totalhk']+$rekap_data['totalhks'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_T.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_I.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freki']+$rekap_data['frekis']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_M.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekm']+$rekap_data['frekms']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_S.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freksk']+$rekap_data['freksks']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_PSP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekpsp']+$rekap_data['frekpsps']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_IP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($P_CT.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 
 			$highestRow++;
 		}
@@ -362,14 +501,14 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		else{
-			$worksheet->getStyle('A6:J7')->applyFromArray($styleArray);
-			$worksheet	->getStyle('A6:J7')
+			$worksheet->getStyle('A6:R7')->applyFromArray($styleArray);
+			$worksheet	->getStyle('A6:R7')
 						->getFill()
 						->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 						->getStartColor()
 						->setARGB('0099ff');
-			$worksheet->getStyle('A6:J7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-			$worksheet->getStyle('A6:J7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$worksheet->getStyle('A6:R7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$worksheet->getStyle('A6:R7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		}
 		$worksheet->freezePaneByColumnAndRow(4, 8);
 
@@ -410,7 +549,6 @@ class C_RekapPerPekerja extends CI_Controller {
 		
 		$periode1 = date('Y-m-01 00:00:00', strtotime($month));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($month));
-
 		$begin = new DateTime($periode1);
 		$end = new DateTime($periode2);
 
@@ -425,6 +563,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['rekap_'.$date] = $this->M_rekap_per_pekerja->dataRekapMonthDetail($firstdate,$lastdate,$NoInduk,$date);
 		}
 		$data['rekapPerMonth'] = $this->M_rekap_per_pekerja->dataRekapMonth($periode1,$periode2,$NoInduk);
+		$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$NoInduk);
 
 		$data['periode1'] = $periode1;
 		$data['periode2'] = $periode2;
@@ -458,7 +597,7 @@ class C_RekapPerPekerja extends CI_Controller {
 
 		$periode1 = date('Y-m-01 00:00:00', strtotime($periode));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($periode));
-		$periode_masa_kerja = $periode2;
+		$rekap_masakerja = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$NoInduk);
 
 		$begin = new DateTime($periode1);
 		$end = new DateTime($periode2);
@@ -518,14 +657,16 @@ class C_RekapPerPekerja extends CI_Controller {
 				$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 				$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
 				$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-				$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+				$CT = PHPExcel_Cell::stringFromColumnIndex($col+5);
+				$SP = PHPExcel_Cell::stringFromColumnIndex($col+6);
 				$worksheet->getColumnDimension($T)->setWidth(3);
 				$worksheet->getColumnDimension($I)->setWidth(3);
 				$worksheet->getColumnDimension($M)->setWidth(3);
 				$worksheet->getColumnDimension($S)->setWidth(3);
 				$worksheet->getColumnDimension($IP)->setWidth(3);
+				$worksheet->getColumnDimension($CT)->setWidth(3);
 				$worksheet->getColumnDimension($SP)->setWidth(3);
-				$head_merge = $col+5;
+				$head_merge = $col+6;
 				$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 				$worksheet->mergeCells($T.'6:'.$headCol.'6');
 				$dateName = $d->format('d-m-Y');
@@ -535,8 +676,9 @@ class C_RekapPerPekerja extends CI_Controller {
 				$worksheet->setCellValue($M.'7', 'M');
 				$worksheet->setCellValue($S.'7', 'S');
 				$worksheet->setCellValue($IP.'7', 'IP');
+				$worksheet->setCellValue($CT.'7', 'CT');
 				$worksheet->setCellValue($SP.'7', 'SP');
-				$col=$col+6;
+				$col=$col+7;
 			}
 		
 
@@ -545,14 +687,16 @@ class C_RekapPerPekerja extends CI_Controller {
 		$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 		$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
 		$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-		$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+		$CT = PHPExcel_Cell::stringFromColumnIndex($col+5);
+		$SP = PHPExcel_Cell::stringFromColumnIndex($col+6);
 		$worksheet->getColumnDimension($T)->setWidth(3);
 		$worksheet->getColumnDimension($I)->setWidth(3);
 		$worksheet->getColumnDimension($M)->setWidth(3);
 		$worksheet->getColumnDimension($S)->setWidth(3);
 		$worksheet->getColumnDimension($IP)->setWidth(3);
+		$worksheet->getColumnDimension($CT)->setWidth(3);
 		$worksheet->getColumnDimension($SP)->setWidth(3);
-		$head_merge = $col+5;
+		$head_merge = $col+6;
 		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 		$worksheet->mergeCells($T.'6:'.$headCol.'6');
 		$worksheet->setCellValue($T.'6', 'REKAP');
@@ -561,12 +705,41 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->setCellValue($M.'7', 'M');
 		$worksheet->setCellValue($S.'7', 'S');
 		$worksheet->setCellValue($IP.'7', 'IP');
+		$worksheet->setCellValue($CT.'7', 'CT');
 		$worksheet->setCellValue($SP.'7', 'SP');
 
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-						$total_masa_kerja = $rekap_data['masa_kerja'];
+			
+			$masukkerja_s = '';
+			${'masa_kerja'.$rekap_data['nama']} = array();
+			$index_masakerja = 0;
+			foreach ($rekap_masakerja as $row) {
+				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+					
+					if ($row['masukkerja'] != $masukkerja_s) {
+						$masukkerja = new DateTime($row['masukkerja']);
+						$tglkeluar = new DateTime($row['tglkeluar']);
+						$masa_kerja = $masukkerja->diff($tglkeluar);
+						${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+						$index_masakerja++;
+					}
+
+					$masukkerja_s = $row['masukkerja'];
+				}
+			}
+
+			$e = new DateTime();
+			$f = clone $e;
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+			}
+			if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+				$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+			}
+			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
+
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
@@ -584,6 +757,7 @@ class C_RekapPerPekerja extends CI_Controller {
 							$Mangkir = ${'rek'.$dateName}['frekm'.strtolower($dateName)]+${'rek'.$dateName}['frekms'.strtolower($dateName)];
 							$SuratKeterangan = ${'rek'.$dateName}['freksk'.strtolower($dateName)]+${'rek'.$dateName}['freksks'.strtolower($dateName)];
 							$IjinPerusahaan = ${'rek'.$dateName}['frekip'.strtolower($dateName)]+${'rek'.$dateName}['frekips'.strtolower($dateName)];
+							$CutiTahunan = ${'rek'.$dateName}['frekct'.strtolower($dateName)]+${'rek'.$dateName}['frekcts'.strtolower($dateName)];
 							$SuratPeringatan = ${'rek'.$dateName}['freksp'.strtolower($dateName)]+${'rek'.$dateName}['freksps'.strtolower($dateName)];
 							if ($Terlambat == '0') {
 								$Terlambat = '-';
@@ -600,6 +774,9 @@ class C_RekapPerPekerja extends CI_Controller {
 							if ($IjinPerusahaan == '0') {
 								$IjinPerusahaan = '-';
 							}
+							if ($CutiTahunan == '0') {
+								$CutiTahunan = '-';
+							}
 							if ($SuratPeringatan == '0') {
 								$SuratPeringatan = '-';
 							}
@@ -610,16 +787,18 @@ class C_RekapPerPekerja extends CI_Controller {
 					$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 					$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
 					$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-					$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+					$CT = PHPExcel_Cell::stringFromColumnIndex($col+5);
+					$SP = PHPExcel_Cell::stringFromColumnIndex($col+6);
 
 					$worksheet->setCellValue($T.$highestRow, $Terlambat, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($I.$highestRow, $IjinPribadi, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($M.$highestRow, $Mangkir, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($S.$highestRow, $SuratKeterangan, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($IP.$highestRow, $IjinPerusahaan, PHPExcel_Cell_DataType::TYPE_STRING);
+					$worksheet->setCellValue($CT.$highestRow, $CutiTahunan, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->setCellValue($SP.$highestRow, $SuratPeringatan, PHPExcel_Cell_DataType::TYPE_STRING);
 
-					$col=$col+6;
+					$col=$col+7;
 				}
 			
 
@@ -628,13 +807,15 @@ class C_RekapPerPekerja extends CI_Controller {
 			$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
 			$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
 			$IP = PHPExcel_Cell::stringFromColumnIndex($col+4);
-			$SP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+			$CT = PHPExcel_Cell::stringFromColumnIndex($col+5);
+			$SP = PHPExcel_Cell::stringFromColumnIndex($col+6);
 
 			$worksheet->setCellValue($T.$highestRow, $rekap_data['frekt']+$rekap_data['frekts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($I.$highestRow, $rekap_data['freki']+$rekap_data['frekis'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($M.$highestRow, $rekap_data['frekm']+$rekap_data['frekms'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($S.$highestRow, $rekap_data['freksk']+$rekap_data['freksks'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($IP.$highestRow, $rekap_data['frekip']+$rekap_data['frekips'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue($CT.$highestRow, $rekap_data['frekct']+$rekap_data['frekcts'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($SP.$highestRow, $rekap_data['freksp']+$rekap_data['freksps'], PHPExcel_Cell_DataType::TYPE_STRING);
 
 			$highestRow++;
@@ -691,6 +872,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$data['IjinPribadi'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TIK');
 		$data['Mangkir'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TM');
 		$data['IjinPerusahaan'] = $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'PIP');
+		$data['CutiTahunan'] = $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'CT');
 		$data['SuratPeringatan'] = $this->M_rekap_per_pekerja->rekapPersonSP($data['periode1'],$data['periode2'],$nik);
 		
 		$this->load->view('V_Header',$data);
@@ -709,6 +891,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$IjinPribadi = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TIK');
 		$Mangkir = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TM');
 		$IjinPerusahaan = $this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'PIP');
+		$CutiTahunan = $this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'CT');
 		$SuratPeringatan = $this->M_rekap_per_pekerja->rekapPersonSP($periode1,$periode2,$nik);
 		$objPHPExcel->setActiveSheetIndex(0);
 
@@ -771,7 +954,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->setCellValue('A3', 'NAMA');
 		$worksheet->setCellValue('A4', 'SEKSI');
 		$worksheet->setCellValue('A5', 'UNIT');
-		$worksheet->setCellValue('A6', 'UNIT');
+		$worksheet->setCellValue('A6', 'BIDANG');
 
 		$worksheet->mergeCells('C2:G2');
 		$worksheet->mergeCells('C3:G3');
@@ -879,6 +1062,40 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->setCellValue('G'.$row, date('Y-m-d', strtotime($ipri['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('H'.$row, $ipri['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('I'.$row, $ipri['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$highestRow = $worksheet->getHighestRow();
+
+		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->applyFromArray($styleArray);
+		$worksheet	->getStyle('A'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('A'.($highestRow+4).':D'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
+
+		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+		$worksheet->mergeCells('A'.($highestRow+3).':D'.($highestRow+3));
+
+		$worksheet->setCellValue('A'.($highestRow+3), 'IJIN PERUSAHAAN');
+		$worksheet->setCellValue('A'.($highestRow+4), 'No');
+		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal');
+		$worksheet->setCellValue('C'.($highestRow+4), 'Masuk');
+		$worksheet->setCellValue('D'.($highestRow+4), 'Keluar');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($CutiTahunan as $cutah) {
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($cutah['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, $cutah['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $cutah['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$row++;
 		}
 

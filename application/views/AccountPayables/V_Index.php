@@ -77,9 +77,7 @@
 					                     				<label for="exampleInputPassword1">Invoice Number</label>
 					                     			</td>
 					                     			<td>
-					                     				<select id="slcInvoiceNumber" name="invoice_number" class="form-control select2" style="width:265px;">
-															<option value="">- pilih -</option>
-														</select >
+					                     				<input type="text" id="slcInvoiceNumber" name="invoice_number" class="form-control" style="width:265px;" placeholder="INVOICE NUMBER"></input>
 					                     			</td>
 					                     		</tr>
 					                     		<tr>
@@ -113,9 +111,7 @@
 					                     				<label for="exampleInputPassword1">Voucher Number</label>
 					                     			</td>
 					                     			<td>
-					                     				<select id="slcVoucherNumber" name="voucher_number" class="form-control select2" style="width:265px;">
-															<option value="">- pilih -</option>
-														</select >
+					                     				<input id="slcVoucherNumber" name="voucher_number" class="form-control" style="width:265px;" placeholder="VOUCHER NUMBER"></input>
 					                     			</td>
 					                     		</tr>
 					                     	</table>

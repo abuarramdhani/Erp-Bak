@@ -62,7 +62,7 @@
 							<div class="col-lg-9">
 								<select class="form-control select2" name="txt_io_name" data-placeholder="Pilih Salah Satu!">
 									<option></option>
-									<option>All</option>
+									<option>ALL</option>
 									<?php
 										foreach ($io_name as $io_name) {
 									?>
@@ -79,7 +79,6 @@
 							</div>
 							<div class="col-lg-9">
 								<select class="form-control select2" name="txt_sub_inventory" data-placeholder="Pilih Salah Satu!" disabled>
-									<option></option>
 								</select>
 							</div>
 						</div>

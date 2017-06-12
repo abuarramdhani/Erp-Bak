@@ -1,6 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-
 /**
  * CodeIgniter CSV Import Class
  *
@@ -41,7 +40,7 @@ class Csvimport {
     public function get_array($filepath=FALSE, $column_headers=FALSE, $detect_line_endings=FALSE, $initial_line=FALSE, $delimiter=FALSE)
     {
         // Raise memory limit (for big files)
-        ini_set('memory_limit', '20M');
+        ini_set('memory_limit', '512M');
         
         // File path
         if(! $filepath)

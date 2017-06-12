@@ -115,7 +115,7 @@ class M_invoice extends CI_Model{
 									ass.vendor_name,
 									aia.invoice_num,
 									TO_CHAR (aia.invoice_date, 'DD-MON-YYYY') AS TODATE,
-									aia.invoice_date,
+									TO_CHAR(TO_DATE(aia.ATTRIBUTE4 , 'YYYY/MM/DD hh24:mi:ss'),'DD-MON-YYYY') AS FAKTUR_DATE,
 									aila.description,
 									aia.invoice_amount - NVL( aia.total_tax_amount, 0 ) DPP,
 									NVL( aia.total_tax_amount, 0 ) PPN,
@@ -134,7 +134,7 @@ class M_invoice extends CI_Model{
 		return $query->result();
 	}
 	
-	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3){
+	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir){
 		
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -176,8 +176,14 @@ class M_invoice extends CI_Model{
 								}
 							}
 						}
+
+		$qtyp		= "faktur_type";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
+						else if($typ1=="yes" && $typ2=="yes"){$qtyp="faktur_type";}
 		
 		$oracle = $this->load->database("oracle",true);
+		
 		$query = $oracle->query("
 			SELECT FAKTUR_WEB_ID
 				,FAKTUR_PAJAK
@@ -197,6 +203,8 @@ class M_invoice extends CI_Model{
 				,DESCRIPTION
 				,STATUS
 				,FM
+				,COMMENTS
+				,decode(FAKTUR_TYPE,'N','WITHOUT INVOICE','WITH INVOICE')  FAKTUR_TYPE 
 			FROM khs_faktur_web
 			where month=$qmonth
 				and year=$qyear
@@ -204,12 +212,15 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
+				and faktur_type = $qtyp
+				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 		");
+		
 		return $query->result();
 	}
 	
 	//download data as CSV (compatible)
-	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3)
+	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir)
 	{	
 		//VARIABLES
 		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
@@ -251,6 +262,10 @@ class M_invoice extends CI_Model{
 								}
 							}
 						}
+
+		$qtyp		= "faktur_type";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
 						
 		$this->load->dbutil();
 		
@@ -258,8 +273,8 @@ class M_invoice extends CI_Model{
 		$q=$oracle->query("
 			SELECT FM
 				,SUBSTR(FAKTUR_PAJAK,0,2) AS KODE_JENIS_TRANS
-				,SUBSTR(FAKTUR_PAJAK,2,1) AS FG_PENGGANTI
-				,SUBSTR(FAKTUR_PAJAK,3) AS NOMOR_FAKTUR
+				,SUBSTR(FAKTUR_PAJAK,3,1) AS FG_PENGGANTI
+				,SUBSTR(FAKTUR_PAJAK,4) AS NOMOR_FAKTUR
 				,MONTH AS MASA_PAJAK
 				,YEAR AS TAHUN_PAJAK
 				,case when faktur_date
@@ -281,6 +296,8 @@ class M_invoice extends CI_Model{
 				and name = $qname
 				and description = $qket
 				and (status = $qsta)
+				and faktur_type = $qtyp
+				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 		"
 		);
 		$delimiter = ",";
@@ -291,10 +308,12 @@ class M_invoice extends CI_Model{
 	public function saveTaxNumber($invoice_id, $invoice_date, $tax_number_awal, $tax_number_akhir){
 		$oracle = $this->load->database("oracle",true);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
+		$date=date_create($invoice_date);
+		$invoice_date_fix = date_format($date,"Y/m/d H:i:s");
 		$query = $oracle->query("UPDATE ap_invoices_all
 								SET ATTRIBUTE5 = '$tax_number_awal',
 									ATTRIBUTE3 = '$tax_number_akhir',
-									ATTRIBUTE4 = '$invoice_date'
+									ATTRIBUTE4 = '$invoice_date_fix'
 								WHERE INVOICE_ID = '$invoice_id'
 		");
 		return $query;
