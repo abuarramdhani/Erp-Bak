@@ -1026,3 +1026,13 @@ $route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_Inpu
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
+
+//------------------------------------ KHS Save Location ----------------------------------------
+$route['SaveLocation'] = 'SaveLocation/C_SaveLocation/index';
+$route['SaveLocation/AddressMonitoring'] = 'SaveLocation/MainMenu/C_Monitoring/index';
+$route['SaveLocation/AddressMonitoring/(:any)'] = 'SaveLocation/C_Setelan/$1';
+$route['SaveLocation/AddressMonitoring/(:any)/(:any)'] = 'SaveLocation/C_Setelan/$1/$2';
+$route['SaveLocation/FileUpload'] = 'SaveLocation/MainMenu/C_InputData/upload';
+$route['SaveLocation/InputSubAssy'] = 'SaveLocation/MainMenu/C_InputData/input_assy';
+$route['SaveLocation/InputComponent'] = 'SaveLocation/MainMenu/C_InputData/input_comp';
+$route['SaveLocation/Correction'] = 'SaveLocation/MainMenu/C_InputData/Correction';
