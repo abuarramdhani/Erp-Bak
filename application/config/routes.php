@@ -1028,11 +1028,17 @@ $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManageme
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
 
 //------------------------------------ KHS Save Location ----------------------------------------
-$route['SaveLocation'] = 'SaveLocation/C_SaveLocation/index';
-$route['SaveLocation/AddressMonitoring'] = 'SaveLocation/MainMenu/C_Monitoring/index';
-$route['SaveLocation/AddressMonitoring/(:any)'] = 'SaveLocation/C_Setelan/$1';
-$route['SaveLocation/AddressMonitoring/(:any)/(:any)'] = 'SaveLocation/C_Setelan/$1/$2';
-$route['SaveLocation/FileUpload'] = 'SaveLocation/MainMenu/C_InputData/upload';
-$route['SaveLocation/InputSubAssy'] = 'SaveLocation/MainMenu/C_InputData/input_assy';
-$route['SaveLocation/InputComponent'] = 'SaveLocation/MainMenu/C_InputData/input_comp';
-$route['SaveLocation/Correction'] = 'SaveLocation/MainMenu/C_InputData/Correction';
+$route['StorageLocation'] 									= 'StorageLocation/C_StorageLocation/index';
+$route['StorageLocation/InputComponent'] 					= 'StorageLocation/MainMenu/C_InputComponent/index';
+$route['StorageLocation/InputComponent/(:any)'] 			= 'StorageLocation/MainMenu/C_InputComponent/$1';
+$route['StorageLocation/InputSubAssy'] 						= 'StorageLocation/MainMenu/C_InputAssy/index';
+$route['StorageLocation/InputSubAssy/(:any)'] 			= 'StorageLocation/MainMenu/C_InputAssy/$1';
+$route['StorageLocation/FileUpload'] 						= 'StorageLocation/MainMenu/C_InputFileUpload/index';
+$route['StorageLocation/FileUpload/(:any)'] 			= 'StorageLocation/MainMenu/C_InputFileUpload/$1';
+$route['StorageLocation/Correction'] 						= 'StorageLocation/MainMenu/C_Correction/index';
+$route['StorageLocation/Correction/(:any)'] 			= 'StorageLocation/MainMenu/C_Correction/$1';
+$route['StorageLocation/AddressMonitoring'] 				= 'StorageLocation/MainMenu/C_Monitoring/index';
+$route['StorageLocation/AddressMonitoring/(:any)'] 			= 'StorageLocation/MainMenu/C_Monitoring/$1';
+$route['StorageLocation/AddressMonitoring/(:any)/(:any)'] 	= 'StorageLocation/MainMenu/C_Monitoring/$1/$2';
+$route['StorageLocation/Ajax/(:any)'] 						= 'StorageLocation/Additional/C_Ajax/$1';
+$route['StorageLocation/Ajax/(:any)/(:any)'] 				= 'StorageLocation/Additional/C_Ajax/$1/$2';
