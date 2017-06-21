@@ -1,31 +1,32 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_SaveLocation extends CI_Controller {
-
+class C_Correction extends CI_Controller 
+{
 	public function __construct()
-    {
+	{
 		parent::__construct();
+		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
 		$this->load->library('session');
-		$this->load->model('M_Index');
-		$this->load->model('SystemAdministration/MainMenu/M_user');
-		if($this->session->userdata('logged_in')!=TRUE) {
-			$this->load->helper('url');
-			$this->session->set_userdata('last_page', current_url());
-			$this->session->set_userdata('Responsbility', 'some_value');
+		$this->checkSession();
+	}
+
+	public function checkSession(){
+		if($this->session->is_logged){
+		}else{
+			redirect('index');
 		}
-    }
+	}
 
 	public function index()
 	{
-		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
+		$data['title'] = 'Correction Save Location';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -33,16 +34,7 @@ class C_SaveLocation extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SaveLocation/V_Index',$data);
+		$this->load->view('StorageLocation/MainMenu/V_koreksi');
 		$this->load->view('V_Footer',$data);
 	}
-
-	public function checkSession(){
-		if($this->session->is_logged){
-			
-		}else{
-			redirect();
-		}
-	}
-
 }

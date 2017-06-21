@@ -6,7 +6,7 @@ class C_Monitoring extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('SaveLocation/MainMenu/M_Monitoring');
+		$this->load->model('StorageLocation/MainMenu/M_Monitoring');
 		$this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -36,18 +36,18 @@ class C_Monitoring extends CI_Controller
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SaveLocation/MainMenu/V_Monitoring',$data);
+		$this->load->view('StorageLocation/MainMenu/V_Monitoring',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
 	public function searchByKomp()
 	{
-		$sub_inv = $this->input->get('sub_inv');
-		$locator = $this->input->get('locator');
-		$kode_item = $this->input->get('kode_item');
-		$org_id = $this->input->get('org_id');
+		$sub_inv 	= $this->input->post('sub_inv');
+		$locator 	= $this->input->post('locator');
+		$kode_item 	= $this->input->post('kode_item');
+		$org_id 	= $this->input->post('org');
 		$data['ByKomp'] = $this->M_Monitoring->searchByKomp($sub_inv,$locator,$kode_item,$org_id);
-		$this->load->view('lokasi-simpan/monitoring/V_SearchByComponent',$data);
+		$this->load->view('StorageLocation/MainMenu/V_SearchByComponent',$data);
 	}
 
 	public function searchBySA()
@@ -57,7 +57,7 @@ class C_Monitoring extends CI_Controller
 		$kode_assy = $this->input->get('kode_assy');
 		$org_id = $this->input->get('org_id');
 		$data['BySA'] = $this->M_Monitoring->searchBySA($sub_inv,$locator,$kode_assy,$org_id);
-		$this->load->view('lokasi-simpan/monitoring/V_SearchByAssembly',$data);
+		$this->load->view('StorageLocation/MainMenu/V_SearchByAssembly',$data);
 	}
 
 	public function searchByAll()
@@ -66,7 +66,6 @@ class C_Monitoring extends CI_Controller
 		$locator = $this->input->get('locator');
 		$alamat = $this->input->get('alamat');
 		$data['ByKomp'] = $this->M_Monitoring->searchByAll($sub_inv,$locator,$alamat);
-		$this->load->view('lokasi-simpan/monitoring/V_SearchByComponent',$data);
+		$this->load->view('StorageLocation/MainMenu/V_SearchByComponent',$data);
 	}
-
 }
