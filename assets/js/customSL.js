@@ -10,7 +10,7 @@ $(document).ready(function() {
         allowClear: true,
         minimumInputLength: 0,
         ajax: {
-            url: baseurl + "GetSubinventori",
+            url: baseurl + "StorageLocation/Ajax/GetSubinventori",
             dataType: 'json',
             type: "GET",
             data: function(params) {
@@ -40,13 +40,13 @@ $(document).ready(function() {
         allowClear: true,
         placeholder: " Pilih item",
         ajax: {
-            url: baseurl + "GetItem",
+            url: baseurl + "StorageLocation/Ajax/getComponentCode",
             dataType: 'json',
             type: "post",
             data: function(params) {
                 var queryParameters = {
                     term: params.term,
-                    org_id: $('select#txtOrgId').val(),
+                    org_id: $('select#IdOrganization').val(),
                     assy: $('select[name="SlcKodeAssy2"]').val()
                 }
                 return queryParameters;
@@ -68,13 +68,13 @@ $(document).ready(function() {
         placeholder: " Pilih Kode Assembly",
         allowClear: true,
         ajax: {
-            url: baseurl + "GetAssy",
+            url: baseurl + "StorageLocation/Ajax/GetAssy",
             dataType: 'json',
             type: "GET",
             data: function(params) {
                 var queryParameters = {
                     term: params.term,
-                    org: $('select#txtOrgId').val(),
+                    org: $('select#IdOrganization').val(),
                     item: $('select[name="SlcItem"]').val()
                 }
                 return queryParameters;
@@ -119,7 +119,7 @@ $(document).ready(function() {
 
 function GetDescription(base) {
     var kode_item = $("select#SlcItem option:selected").attr('value');
-    $.post(base + "lokasi-simpan/C_Input_Alamat/getDescriptionItem", {
+    $.post(base + "StorageLocation/Ajax/getDescriptionItem", {
         id: kode_item
     }, function(data) {
         $("input#txtDesc").val(data);
@@ -128,12 +128,12 @@ function GetDescription(base) {
 
 function GetDescAssy(base) {
     var kode_assy = $("select#SlcKodeAssy option:selected").attr('value');
-    $.post(base + "lokasi-simpan/C_Input_Alamat/getDescriptionAssy", {
+    $.post(base + "StorageLocation/Ajax/getDescriptionAssy", {
         id: kode_assy
     }, function(data) {
         $("input#txtNameAssy").val(data);
     });
-    $.post(base + "lokasi-simpan/C_Input_Alamat/getTypeAssy", {
+    $.post(base + "StorageLocation/Ajax/getTypeAssy", {
         id: kode_assy
     }, function(data) {
         $("input#txtTypeAssy").val(data);
@@ -142,7 +142,7 @@ function GetDescAssy(base) {
 
 function GetName(base, en, th) {
     var kode_item = $(th).val();
-    $.post(base + "lokasi-simpan/C_Input_Alamat/getDescriptionItem", {
+    $.post(base + "StorageLocation/Ajax/getDescriptionItem", {
         id: kode_item
     }, function(data) {
         $(th).closest('tr').find('.nama_input').val(data);
@@ -165,12 +165,12 @@ function perSA(base) {
 
 function searchComponent(base) {
     var base_url = base;
-    var org = $('#txtOrgId').val();
+    var org = $('#IdOrganization').val();
     var sub_inv = $("#SlcSubInventori").val();
     var item = $("#SlcItem").val();
     var locator = $("#SlcLocator").val();
     var request = $.ajax({
-        url: base_url + "searchComponent",
+        url: base_url + "StorageLocation/Ajax/searchComponent",
         data: "org=" + org + "&sub_inv=" + sub_inv + "&item=" + item + "&locator=" + locator,
         type: "GET",
         dataType: "html"
@@ -190,7 +190,7 @@ function searchAssy(base) {
     var kode_assy = $("#SlcKodeAssy").val();
     var sub_inv = $("#SlcSubInventori2").val();
     var request = $.ajax({
-        url: base_url + "searchAssy",
+        url: base_url + "StorageLocation/Ajax/searchAssy",
         data: "org=" + org + "&sub_inv=" + sub_inv + "&kode_assy=" + kode_assy,
         type: "GET",
         dataType: "html"
@@ -248,9 +248,14 @@ function searchByKomp(base) {
     var kode_item = $("#SlcItem").val();
     var org = $('input[name="txtOrg"]:checked').val()
     var request = $.ajax({
-        url: base_url + "searchByKomp",
-        data: "&sub_inv=" + sub_inv + "&locator=" + locator + "&kode_item=" + kode_item + "&org_id=" + org,
-        type: "GET",
+        url: base_url + "StorageLocation/AddressMonitoring/searchByKomp",
+        data: {
+            sub_inv:sub_inv,
+            locator:locator,
+            kode_item:kode_item,
+            org:org
+        },
+        type: "post",
         dataType: "html"
     });
     $('#result').html("<center><img id='loading' style='margin-top: 2%; ' src='" + base_url + "assets/img/gif/loading5.gif'/><p style='color:#575555;'>Searching Data</p></center><br />");
@@ -271,7 +276,7 @@ function searchBySA(base) {
     //var org = $('input[name="org"]:checked').val()
     //meminta request ajax
     var request = $.ajax({
-        url: base_url + "searchBySA",
+        url: base_url + "StorageLocation/AddressMonitoring/searchBySA",
         data: "&sub_inv=" + sub_inv + "&locator=" + locator + "&kode_assy=" + kode_assy + "&org_id=" + org,
         type: "GET",
         dataType: "html"
@@ -297,7 +302,7 @@ function searchByAll(base) {
     //var org = $('input[name="org"]:checked').val()
     //meminta request ajax
     var request = $.ajax({
-        url: base_url + "searchByAll",
+        url: base_url + "StorageLocation/AddressMonitoring/searchByAll",
         data: "&sub_inv=" + sub_inv + "&locator=" + locator + "&alamat=" + alamat,
         type: "GET",
         dataType: "html"
@@ -407,7 +412,7 @@ $('#SlcSubInventori').change(function() {
     $('#SlcLocator').prop('disabled', true);
     $.ajax({
         type: 'POST',
-        url: baseurl + "locator",
+        url: baseurl + "StorageLocation/Ajax/locator",
         data: {
             sub_inv: sub_inv
         },
@@ -440,7 +445,7 @@ $('#SlcSubInventori2').change(function() {
     $('#SlcLocator2').prop('disabled', true);
     $.ajax({
         type: 'POST',
-        url: baseurl + "locator",
+        url: baseurl + "StorageLocation/Ajax/locator",
         data: {
             sub_inv: sub_inv
         },
@@ -459,27 +464,28 @@ function inputKomp() {
 function inputAssy() {
     document.location = baseurl + "inputAssy";
 }
-function addRow(tableID) {
+function add_row(tableID) {
     var table = document.getElementById(tableID);
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
     var colCount = table.rows[0].cells.length;
     for (var i = 0; i < colCount; i++) {
         var newcell = row.insertCell(i);
-        $('.jsItem').select2("destroy");
+        $('.jsItem').select2('destroy');
+        $('.select-2').select2('destroy');
         newcell.innerHTML = table.rows[1].cells[i].innerHTML;
         $(".jsItem").select2({
             tags: true,
             allowClear: true,
             placeholder: " Pilih item",
             ajax: {
-                url: baseurl+"GetItem",
+                url: baseurl+"StorageLocation/Ajax/GetItem",
                 dataType: 'json',
                 type: "POST",
                 data: function(params) {
                     var queryParameters = {
                         term: params.term,
-                        org_id: $('select#txtOrgId').val(),
+                        org_id: $('select#IdOrganization').val(),
                         assy: $('select[name="SlcKodeAssy2"]').val()
                     }
                     return queryParameters;
@@ -496,6 +502,7 @@ function addRow(tableID) {
                 }
             }
         });
+        $('.select-2').select2();
         switch (newcell.childNodes[0].type) {
             case "text":
                 newcell.childNodes[0].value = "";
@@ -507,7 +514,7 @@ function addRow(tableID) {
     }
 }
 
-function deleteRow(tableID) {
+function delete_row(tableID) {
     try {
         var table = document.getElementById(tableID);
         var rowCount = table.rows.length;
@@ -523,13 +530,13 @@ function deleteRow(tableID) {
 }
 
 function getSubInvent() {
-    var org_id = $('#txtOrgId').val();
+    var org_id = $('select#IdOrganization').val();
     $.ajax({
         type: 'POST',
         data: {
             org_id: org_id
         },
-        url: baseurl + 'GetSubinventori',
+        url: baseurl + 'StorageLocation/Ajax/GetSubinventori',
         cache: false,
         success: function(result) {
             $('select#SlcSubInventori').prop('disabled', false);
@@ -539,8 +546,8 @@ function getSubInvent() {
 }
 
 function getKodeKomp() {
-    var org_id = $('#txtOrgId').val();
-    var sub_inv = $('#SlcSubInventori').val();
+    var org_id = $('select#IdOrganization').val();
+    var sub_inv = $('select#SlcSubInventori').val();
     $('select#SlcItem').prop('disabled', true);
     $('select#SlcItem').html('');
     $.ajax({
@@ -549,7 +556,7 @@ function getKodeKomp() {
             org_id: org_id,
             sub_inv: sub_inv
         },
-        url: baseurl + 'GetItem',
+        url: baseurl + 'StorageLocation/Ajax/getComponentCode',
         cache: false,
         success: function(result) {
             $('select#SlcItem').prop('disabled', false);
