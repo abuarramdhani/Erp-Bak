@@ -1,13 +1,36 @@
 <?php
 class M_Monitoring extends CI_Model {
 
+	var $oracle;
     public function __construct()
     {
-	   parent::__construct();
-        $this->load->database('oracle');
-		$this->load->library('encrypt');
-		$this->load->helper('url');
+    	parent::__construct();
+      	$this->load->database();
+      	$this->oracle = $this->load->database('oracle', TRUE);
+  		$this->load->library('encrypt');
+  		$this->load->helper('url');
     }
+
+    function getSubinventori($org_id=FALSE)
+    {
+    	if ($org_id===FALSE){
+    		$sql = "SELECT SECONDARY_INVENTORY_NAME FROM mtl_secondary_inventories";
+    	}else {
+    		$sql = "SELECT SECONDARY_INVENTORY_NAME FROM mtl_secondary_inventories WHERE ORGANIZATION_ID = '$org_id'";
+    	}
+    	$query = $this->oracle->query($sql);
+    	return $query->result_array();
+    }
+
+    function locator($sub_inv)
+    {
+    	$sql ="SELECT mil.segment1 SEGMENT1
+	                  FROM mtl_item_locations mil, mtl_secondary_inventories msi
+	                  WHERE msi.SECONDARY_INVENTORY_NAME = '$sub_inv'
+	                  AND msi.SECONDARY_INVENTORY_NAME = mil.SUBINVENTORY_CODE ";
+	    $query=$this->oracle->query($sql);
+	    return $query->result_array();
+	}
 
     function searchByKomp($sub_inv,$locator,$kode_item,$org_id)
     {
@@ -60,9 +83,7 @@ class M_Monitoring extends CI_Model {
 				}
 			}
 
-
-			$db2= $this->load->database('oracle', TRUE);
-			$sql= $db2->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
+			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
 						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
 						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
 						            from mtl_system_items_b msib ,khs.khslokasisimpan kls , mtl_system_items_b msib2 
@@ -124,9 +145,7 @@ class M_Monitoring extends CI_Model {
 				}
 			}
 
-
-			$db2= $this->load->database('oracle', TRUE);
-			$sql= $db2->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
+			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
 						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
 						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
 						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
@@ -176,8 +195,7 @@ class M_Monitoring extends CI_Model {
 				}
 			}
 
-			$db2= $this->load->database('oracle', TRUE);
-			$sql= $db2->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
+			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
 						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
 						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
 						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
@@ -185,7 +203,6 @@ class M_Monitoring extends CI_Model {
            								 and msib2.segment1 = kls.assembly
 						             	 $p $a $p1 $b $p2 $c");
 			return $sql->result_array();			
-
     }
 
 }
