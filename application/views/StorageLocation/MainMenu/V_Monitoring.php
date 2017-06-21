@@ -66,7 +66,7 @@
                                         ID ORGANIZATION
                                     </label>
                                     <div class="col-md-9">
-                                        <select class="form-control select-2" id="txtOrgId" name="txtOrg" onchange="getSubInvent()" required="">
+                                        <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
                                             <option disabled="" selected="" value="">
                                                 -- Choose One --
                                             </option>
@@ -84,7 +84,7 @@
                                         SUB INVENTORY
                                     </label>
                                     <div class="col-lg-9">
-                                        <select class="form-control jsSubinventori" id="SlcSubInventori" name="SlcSubInventori">
+                                        <select class="form-control select-2" id="SlcSubInventori" name="SlcSubInventori" onchange="getKodeKomp()" disabled="">
                                         </select>
                                     </div>
                                 </div>
@@ -103,7 +103,7 @@
                                             KODE ITEM
                                         </label>
                                         <div class="col-lg-9">
-                                            <select class="form-control jsItem" id="SlcItem" name="SlcItem" onchange="GetDescription('<?php echo base_url(); ?>')" required="">
+                                            <select class="form-control select-2" id="SlcItem" name="SlcItem" onchange="GetDescription('<?php echo base_url(); ?>')" required="" disabled>
                                             </select>
                                         </div>
                                     </div>

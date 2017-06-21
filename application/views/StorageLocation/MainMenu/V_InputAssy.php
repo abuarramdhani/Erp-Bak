@@ -42,7 +42,7 @@
                                                         ID Organization
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select-2" id="txtOrgId" name="txtOrg" onchange="getSubInvent()" required="">
+                                                        <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
                                                             <option disabled="" selected="" value="">
                                                                 -- Choose One --
                                                             </option>
@@ -114,9 +114,9 @@
                                                             Lines
                                                         </div>
                                                         <div class="pull-right">
-                                                            <button class="btn btn-primary fa fa-plus min" onclick="addRow('table_input')" type="button">
+                                                            <button class="btn btn-primary fa fa-plus min" onclick="add_row('table_input')" type="button">
                                                             </button>
-                                                            <button class="btn btn-primary fa fa-minus" onclick="deleteRow('table_input')" type="button">
+                                                            <button class="btn btn-primary fa fa-minus" onclick="delete_row('table_input')" type="button">
                                                             </button>
                                                         </div>
                                                     </div>
@@ -134,10 +134,10 @@
                                                                         <td>
                                                                             Alamat Simpan
                                                                         </td>
-                                                                        <td style="width: 100px;">
+                                                                        <td style="width: 200px;">
                                                                             LPPB/MO/KIB
                                                                         </td>
-                                                                        <td style="width: 100px;">
+                                                                        <td style="width: 200px;">
                                                                             PICKLIST
                                                                         </td>
                                                                     </tr>
@@ -156,14 +156,36 @@
                                                                             <input class="form-control" name="txtAlamat2[]" type="text"/>
                                                                         </td>
                                                                         <td>
-                                                                            <input class="lmk_check" hidden="" name="txtLmk2[]" type="text" value="0">
+                                                                            <select class="form-control select-2" id="txtLmk" name="txtLmk[]" required="">
+                                                                                <option selected="" value="">
+                                                                                    -- Choose One --
+                                                                                </option>
+                                                                                <option value="1">
+                                                                                    YES
+                                                                                </option>
+                                                                                <option value="0">
+                                                                                    NO
+                                                                                </option>
+                                                                            </select>
+                                                                            <!-- <input class="lmk_check" hidden="" name="txtLmk2[]" type="text" value="0">
                                                                                 <input class="ceklmk" id="txtLmk2[]" name="txtLmk2[]" onchange="lmkcheck(event,this)" type="checkbox" value="1"/>
-                                                                            </input>
+                                                                            </input> -->
                                                                         </td>
                                                                         <td>
-                                                                            <input class="pick_check" hidden="" name="txtPicklist2[]" type="text" value="0">
+                                                                            <select class="form-control select-2" id="txtPicklist" name="txtPicklist[]" required="">
+                                                                                <option selected="" value="">
+                                                                                    -- Choose One --
+                                                                                </option>
+                                                                                <option value="1">
+                                                                                    YES
+                                                                                </option>
+                                                                                <option value="0">
+                                                                                    NO
+                                                                                </option>
+                                                                            </select>
+                                                                            <!-- <input class="pick_check" hidden="" name="txtPicklist2[]" type="text" value="0">
                                                                                 <input class="cekpicklist" id="txtPicklist2[]" name="txtPicklist2[]" onchange="pickcheck(event,this)" type="checkbox" value="1"/>
-                                                                            </input>
+                                                                            </input> -->
                                                                         </td>
                                                                     </tr>
                                                                 </table>

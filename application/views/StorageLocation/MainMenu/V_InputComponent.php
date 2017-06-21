@@ -41,7 +41,7 @@
                                                 ID Organization
                                             </label>
                                             <div class="col-md-8">
-                                                <select class="form-control select-2" id="txtOrgId" name="txtOrg" onchange="getSubInvent()" required="">
+                                                <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
                                                     <option disabled="" selected="" value="">
                                                         -- Choose One --
                                                     </option>
@@ -137,10 +137,16 @@
                                                 LPPB/MO/KIB
                                             </label>
                                             <div class="col-md-8">
-                                                <select name="txtLmk" class="form-control select-2" id="txtLmk">
-                                                    <option value="" selected="">-- Choose One --</option>
-                                                    <option value="1">YES</option>
-                                                    <option value="0">NO</option>
+                                                <select class="form-control select-2" id="txtLmk" name="txtLmk" required>
+                                                    <option selected="" value="">
+                                                        -- Choose One --
+                                                    </option>
+                                                    <option value="1">
+                                                        YES
+                                                    </option>
+                                                    <option value="0">
+                                                        NO
+                                                    </option>
                                                 </select>
                                                 <!-- <input id="txtLmk" name="txtLmk" type="checkbox" value="1">
                                                 </input> -->
@@ -151,15 +157,36 @@
                                                 PICKLIST
                                             </label>
                                             <div class="col-md-8">
-                                                <select id="txtPicklist" name="txtPicklist" class="form-control select-2">
-                                                    <option value="" selected="">-- Choose One --</option>
-                                                    <option value="1">YES</option>
-                                                    <option value="0">NO</option>
+                                                <select class="form-control select-2" id="txtPicklist" name="txtPicklist" required="">
+                                                    <option selected="" value="">
+                                                        -- Choose One --
+                                                    </option>
+                                                    <option value="1">
+                                                        YES
+                                                    </option>
+                                                    <option value="0">
+                                                        NO
+                                                    </option>
                                                 </select>
                                                 <!-- <input id="txtPicklist" name="txtPicklist" type="checkbox" value="1">
                                                 </input> -->
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="text-align: right; margin-top: 10px">
+                                                <button class="btn btn-default btn-lg" id="clear" onclick="window.location.reload()">
+                                                    CLEAR
+                                                </button>
+                                                <button class="btn btn-primary btn-lg">
+                                                    SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div align="center">
+                                        <?php echo $message; ?>
                                     </div>
                                 </form>
                             </div>
@@ -170,18 +197,3 @@
         </div>
     </div>
 </section>
-<div class="col-md-12">
-    <div class="form-group">
-        <div class="col-md-12" style="text-align: right; margin-top: 10px">
-            <button class="btn btn-success glyphicon glyphicon-check ">
-                SAVE
-            </button>
-            <button class="btn btn-primary" id="clear" onclick="window.location.reload()">
-                CLEAR
-            </button>
-        </div>
-    </div>
-</div>
-<div align="center">
-    <?php echo $message; ?>
-</div>
