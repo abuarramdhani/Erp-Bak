@@ -211,7 +211,7 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'CT') AS FrekCTs".$monthName.",
 
-				(SELECT count(*) FROM
+				(SELECT max(sp_ke) FROM
 					(SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -219,7 +219,7 @@ clASs M_rekapmssql extends CI_Model {
 					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR (tgl_cetak + interval '5 month') >= '$lastdate')
 				) AS FrekSP".$monthName.",
 
-				(SELECT count(*) FROM
+				(SELECT max(sp_ke) FROM
 					(SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -400,7 +400,7 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'CT' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekCTs".$monthName.",
 
-				(SELECT count(*) FROM
+				(SELECT max(sp_ke) FROM
 					(SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -408,7 +408,7 @@ clASs M_rekapmssql extends CI_Model {
 					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR (tgl_cetak + interval '5 month') >= '$lastdate')
 				) AS FrekSP".$monthName.",
 
-				(SELECT count(*) FROM
+				(SELECT max(sp_ke) FROM
 					(SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
