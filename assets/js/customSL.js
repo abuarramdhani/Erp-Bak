@@ -4,9 +4,13 @@ $(document).ready(function() {
             $(this).attr('checked', true).val(0);
         });
     });
+    $(".select-2").select2({
+        allowClear: true,
+        placeholder: "Choose Option"
+    });
     $(".jsSubinventori").select2({
         tags: true,
-        placeholder: " Pilih Sub Inventory",
+        placeholder: "Choose Sub Inventory",
         allowClear: true,
         minimumInputLength: 0,
         ajax: {
@@ -32,13 +36,9 @@ $(document).ready(function() {
             }
         }
     });
-    $(".select-2").select2({
-        allowClear: true
-    });
     $(".jsItem").select2({
-        tags: true,
         allowClear: true,
-        placeholder: " Pilih item",
+        placeholder: "Choose Component Code",
         ajax: {
             url: baseurl + "StorageLocation/Ajax/getComponentCode",
             dataType: 'json',
@@ -46,8 +46,7 @@ $(document).ready(function() {
             data: function(params) {
                 var queryParameters = {
                     term: params.term,
-                    org_id: $('select#IdOrganization').val(),
-                    assy: $('select[name="SlcKodeAssy2"]').val()
+                    org_id: $('select#IdOrganization').val()
                 }
                 return queryParameters;
             },
@@ -55,13 +54,14 @@ $(document).ready(function() {
                 return {
                     results: $.map(data, function(obj) {
                         return {
-                            id: obj.SEGMENT1,
-                            text: obj.SEGMENT1 + " - " + obj.DESCRIPTION
+                            id: obj.SEGMENT1+'|'+obj.DESCRIPTION,
+                            text: obj.SEGMENT1 + " | " + obj.DESCRIPTION
                         };
                     })
                 };
             }
-        }
+        },
+        minimumInputLength: 3
     });
     $(".jsAssembly").select2({
         tags: true,
@@ -406,23 +406,6 @@ function enter2(en, th) {
         }
     })
 }
-$('#SlcSubInventori').change(function() {
-    var sub_inv = $(this).val();
-    $('#SlcLocator').select2('val', null);
-    $('#SlcLocator').prop('disabled', true);
-    $.ajax({
-        type: 'POST',
-        url: baseurl + "StorageLocation/Ajax/locator",
-        data: {
-            sub_inv: sub_inv
-        },
-        success: function(result) {
-            if (result != '<option></option>') {
-                $('#SlcLocator').prop('disabled', false).html(result);
-            }
-        }
-    });
-});
 
 function lmkcheck(en, th) {
     if ($(th).is(':checked')) {
@@ -541,6 +524,7 @@ function getSubInvent() {
         success: function(result) {
             $('select#SlcSubInventori').prop('disabled', false);
             $('select#SlcSubInventori').html(result);
+            $('select#SlcItem').prop('disabled', false);
         }
     });
 }
@@ -550,22 +534,63 @@ function getKodeKomp() {
     var sub_inv = $('select#SlcSubInventori').val();
     $('select#SlcItem').prop('disabled', true);
     $('select#SlcItem').html('');
+    $('select#SlcLocator').select2('val', null);
+    $('select#SlcLocator').prop('disabled', true);
     $.ajax({
         type: 'POST',
+        url: baseurl + "StorageLocation/Ajax/locator",
         data: {
-            org_id: org_id,
             sub_inv: sub_inv
         },
-        url: baseurl + 'StorageLocation/Ajax/getComponentCode',
-        cache: false,
         success: function(result) {
-            $('select#SlcItem').prop('disabled', false);
-            $('select#SlcItem').html(result);
+            if (result != 0) {
+                $('#SlcLocator').prop('disabled', false).html(result);
+            }
         }
     });
 }
 
 function getKodeAssem() {
-    var desc = $("select#SlcItem option:selected").attr('data-desc');
-    $("input#txtDesc").val(desc);
+    var val = $("select#SlcItem option:selected").val();
+    var desc = val.split('|',);
+    $("input#txtDesc").val(desc[1]);
+    $.ajax({
+        type: 'POST',
+        url: baseurl + "StorageLocation/Ajax/GetAssy",
+        data: {
+            org_id: $('select#IdOrganization').val(),
+            item: $('select#SlcItem').val()
+        },
+        success: function(result) {
+            if (result != 0) {
+                $('select#SlcKodeAssy').prop('disabled', false).html(result);
+            }
+        }
+    });
 }
+
+function getDescTypeAssy(){
+    var desc = $('select#SlcKodeAssy option:selected').attr('data-desc');
+    var type = $('select#SlcKodeAssy option:selected').attr('data-type');
+    $("input#txtNameAssy").val(desc);
+    if (type == '' || type == null) {
+        $("input#txtTypeAssy").val('-');
+    }else{
+        $("input#txtTypeAssy").val(type);
+    }
+
+}
+
+
+    // $.ajax({
+    //     type: 'POST',
+    //     data: {
+    //         org_id: org_id
+    //     },
+    //     url: baseurl + 'StorageLocation/Ajax/getComponentCode',
+    //     cache: false,
+    //     success: function(result) {
+    //         $('select#SlcItem').prop('disabled', false);
+    //         $('select#SlcItem').html(result);
+    //     }
+    // })
