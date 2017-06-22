@@ -1,9 +1,4 @@
 $(document).ready(function() {
-    $("#form").submit(function() {
-        $(this + 'input[type=checkbox]:not(:checked)').each(function() {
-            $(this).attr('checked', true).val(0);
-        });
-    });
     $(".select-2").select2({
         allowClear: true,
         placeholder: "Choose Option"
@@ -529,11 +524,8 @@ function getSubInvent() {
     });
 }
 
-function getKodeKomp() {
-    var org_id = $('select#IdOrganization').val();
+function getLocator() {
     var sub_inv = $('select#SlcSubInventori').val();
-    $('select#SlcItem').prop('disabled', true);
-    $('select#SlcItem').html('');
     $('select#SlcLocator').select2('val', null);
     $('select#SlcLocator').prop('disabled', true);
     $.ajax({
@@ -559,7 +551,7 @@ function getKodeAssem() {
         url: baseurl + "StorageLocation/Ajax/GetAssy",
         data: {
             org_id: $('select#IdOrganization').val(),
-            item: $('select#SlcItem').val()
+            item: desc[0]
         },
         success: function(result) {
             if (result != 0) {
