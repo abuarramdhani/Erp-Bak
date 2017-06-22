@@ -42,9 +42,7 @@
                                             </label>
                                             <div class="col-md-8">
                                                 <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
-                                                    <option disabled="" selected="" value="">
-                                                        -- Choose One --
-                                                    </option>
+                                                    <option></option>
                                                     <option value="102">
                                                         ODM
                                                     </option>
@@ -59,7 +57,8 @@
                                                 SubInventory
                                             </label>
                                             <div class="col-md-8">
-                                                <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori" onchange="getKodeKomp()" required="">
+                                                <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori" required="">
+                                                    <option></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -68,7 +67,8 @@
                                                 Kode Komponen
                                             </label>
                                             <div class="col-md-8">
-                                                <select class="form-control select-2" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
+                                                <select class="form-control jsItem" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
+                                                    <option></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -108,7 +108,7 @@
                                                 Kode Assembly
                                             </label>
                                             <div class="col-md-8">
-                                                <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy('<?php echo base_url(); ?>')" style="width: 100%">
+                                                <select class="form-control select-2" id="SlcKodeAssy" name="SlcKodeAssy" onchange="getDescTypeAssy()" style="width: 100%" disabled>
                                                     <option value="">
                                                     </option>
                                                 </select>
@@ -148,8 +148,6 @@
                                                         NO
                                                     </option>
                                                 </select>
-                                                <!-- <input id="txtLmk" name="txtLmk" type="checkbox" value="1">
-                                                </input> -->
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -168,8 +166,6 @@
                                                         NO
                                                     </option>
                                                 </select>
-                                                <!-- <input id="txtPicklist" name="txtPicklist" type="checkbox" value="1">
-                                                </input> -->
                                             </div>
                                         </div>
                                     </div>
