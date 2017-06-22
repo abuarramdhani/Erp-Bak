@@ -32,16 +32,19 @@
                         Save Location Monitoring
                     </div>
                     <div class="box-body">
+                        <div align="center">
+                            <?php echo $message; ?>
+                        </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <form action="<?php echo site_url('saveinput')?>" method="post">
+                                <form action="<?php echo site_url('StorageLocation/InputComponent/Create')?>" method="post">
                                     <div class="col-lg-6">
                                         <div class="form-group row">
                                             <label class="col-md-4 control-label">
                                                 ID Organization
                                             </label>
                                             <div class="col-md-8">
-                                                <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
+                                                <select class="form-control select-2" id="IdOrganization" name="IdOrganization" onchange="getSubInvent()" required="">
                                                     <option></option>
                                                     <option value="102">
                                                         ODM
@@ -57,7 +60,7 @@
                                                 SubInventory
                                             </label>
                                             <div class="col-md-8">
-                                                <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori" required="">
+                                                <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori" required="" onchange="getLocator()">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -67,6 +70,7 @@
                                                 Kode Komponen
                                             </label>
                                             <div class="col-md-8">
+                                                <!-- <input type="text" name="SlcItem" onfocus="callModal(<?php echo site_url('StorageLocation/Search/ModGetComponent')?>)"> -->
                                                 <select class="form-control jsItem" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
                                                     <option></option>
                                                 </select>
@@ -180,9 +184,6 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div align="center">
-                                        <?php echo $message; ?>
                                     </div>
                                 </form>
                             </div>
