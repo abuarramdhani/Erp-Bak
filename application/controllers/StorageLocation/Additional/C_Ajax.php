@@ -9,14 +9,14 @@ class C_Ajax extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->helper('url');
-		$this->load->model('StorageLocation/MainMenu/M_Ajax');
-		$this->load->model('StorageLocation/MainMenu/M_Monitoring');
+		$this->load->model('StorageLocation/MainMenu/M_ajax');
+		$this->load->model('StorageLocation/MainMenu/M_monitoring');
 	}
 
 	public function GetSubinventori()
 	{
 		$org_id = $this->input->post('org_id');
-		$data 	= $this->M_Monitoring->getSubinventori($org_id);
+		$data 	= $this->M_monitoring->getSubinventori($org_id);
 		echo '<option value="muach" disabled selected>-- Choose One --</option>';
 		foreach ($data as $d) {
 			echo '<option value="'.$d['SECONDARY_INVENTORY_NAME'].'">'.$d['SECONDARY_INVENTORY_NAME'].'</option>';
@@ -26,41 +26,37 @@ class C_Ajax extends CI_Controller
 	public function locator()
 	{
 		$sub_inv 	= $this->input->post('sub_inv');
-		$loc 		= $this->M_Monitoring->locator($sub_inv);
-		echo '<option value="muach" disabled selected>-- Choose One --</option>';
-		foreach ($loc as $location ) {
-			echo '<option value="'.$location['SEGMENT1'].'" >'.$location['SEGMENT1'].'</option>';
+		$loc 		= $this->M_monitoring->locator($sub_inv);
+		if ($loc == NULL) {
+			echo 0;
+		}else{
+			echo '<option value="muach" disabled selected>-- Choose One --</option>';
+			foreach ($loc as $location ) {
+				echo '<option value="'.$location['SEGMENT1'].'" >'.$location['SEGMENT1'].'</option>';
+			}
 		}
 	}
 
 	public function getComponentCode()
 	{
-		$assy 	=$this->input->post('assy');
+		$term	= $this->input->post('term');
 		$org_id	= $this->input->post('org_id');
-		if ($assy == '') {
-			$sub_inv 	= $this->input->post('sub_inv');
-			$data 		= $this->M_Ajax->getComponentCode($org_id,$sub_inv);
-			echo '
-				<option value="muach" disabled selected>-- Choose One --</option>
-			';
-			foreach ($data as $d) {
-				echo '<option value="'.$d['SEGMENT1'].'" data-desc="'.$d['DESCRIPTION'].'">'.$d['SEGMENT1'].' | '.$d['DESCRIPTION'].'</option>';
-			}
-		}else{
-			$id = strtoupper($this->input->get('term'));
-			$data = $this->M_Ajax->getItem($id,$org_id,$assy);
-			echo json_encode($data);
-		}
+		$data 	= $this->M_ajax->getComponentCode($term,$org_id);
+		echo json_encode($data);
 	}
 
 
-	public function getAssy()
+	public function GetAssy()
 	{
-		$id = strtoupper($this->input->get('term'));
-		$org =$this->input->get('org');
-		$item =$this->input->get('item');
-		$data = $this->M_Input_Alamat->getAssy($id,$org,$item);
-		echo json_encode($data);
+		$org_id	= $this->input->post('org_id');
+		$item 	= $this->input->post('item');
+		$data 	= $this->M_ajax->getAssy($org_id,$item);
+		echo '
+			<option value="muach" disabled selected>-- Choose One --</option>
+		';
+		foreach ($data as $d) {
+			echo '<option value="'.$d['SEGMENT1'].'" data-desc="'.$d['DESCRIPTION'].'" data-type="'.$d['ASSTYPE'].'">'.$d['SEGMENT1'].' | '.$d['DESCRIPTION'].'</option>';
+		}
 	}
 
 	public function getDescriptionItem()
