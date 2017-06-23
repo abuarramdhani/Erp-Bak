@@ -8,11 +8,74 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		$this->personalia = $this->load->database ( 'personalia', TRUE );
     }
 	
-	public function data_per_pekerja($periode1,$periode2,$noinduk){
+	public function data_per_pekerja($periode1,$periode2,$noinduk,$status){
 
-		$sql = "
-			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
+		if ($status == '0') {
+			$sql = "
+				SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TT' AND point<>'0') AS FrekTs,
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekI,
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TIK' AND point<>'0') AS FrekIs,
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekM,
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TM' AND point<>'0') AS FrekMs,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSK,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PSK') AS FrekSKs,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekPSP,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PSP') AS FrekPSPs,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIP,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PIP') AS FrekIPs,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekCT,
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'CT') AS FrekCTs,
+
+					(SELECT count(*) FROM
+						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+						UNION ALL
+						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+						) AS SP
+						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
+					) AS FrekSP,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -20,7 +83,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TT' AND point<>'0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekTs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekI,
+				FROM hrd_khs.tpribadi a
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -28,7 +91,11 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TIK' AND point<>'0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekM,
+				WHERE keluar = '0'
+					AND a.noind IN
+						(
+							$noinduk
+						)
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -36,7 +103,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TM' AND point<>'0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekMs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSK,
+					'0' AS FrekTs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -44,7 +111,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSKs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIP,
+					'0' AS FrekIs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -52,7 +119,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIPs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekCT,
+					'0' AS FrekMs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -60,46 +127,125 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'CT' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekCTs,
 
-				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
-				) AS FrekSP,
+					'0' AS FrekSKs,
 
-				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-					) AS SP
-				WHERE noind IN
-					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
-					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekPSP,
 
-			FROM hrd_khs.tpribadi a
+					'0' AS FrekPSPs,
 
-			inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
-			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIP,
 
-			WHERE keluar = '0'
-				AND a.noind IN
-					(
-						$noinduk
-					)
+					'0' AS FrekIPs,
 
-			ORDER BY noind
-			";
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekCT,
+
+					'0' AS FrekCTs,
+
+					(SELECT count(*) FROM
+						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+						UNION ALL
+						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+						) AS SP
+						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
+					) AS FrekSP,
+
+					'0' AS FrekSPs,
+
+					CASE
+						WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+						THEN
+							'0'
+						ELSE 
+							(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
+					END AS TotalHK,
+
+					'0' AS TotalHKs
+
+				FROM hrd_khs.tpribadi a
+
+				inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
+
+				WHERE keluar = '1'
+					AND a.noind IN
+						(
+							$noinduk
+						)
+
+				ORDER BY noind
+				";
+		}
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
-	public function data_per_pekerja_detail($firstdate,$lastdate,$noinduk,$monthName){
-		$sql="
-			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
+	public function data_per_pekerja_detail($firstdate,$lastdate,$noinduk,$monthName,$status){
+		if ($status == '0') {
+			$sql="
+				SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TT' AND point<>'0') AS FrekTs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekI".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TIK' AND point<>'0') AS FrekIs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekM".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TM' AND point<>'0') AS FrekMs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSK".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PSK') AS FrekSKs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekPSP".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PSP') AS FrekPSPs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIP".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PIP') AS FrekIPs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekCT".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'CT') AS FrekCTs".$monthName.",
+
+					(SELECT count(*) FROM
+						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+						UNION ALL
+						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+						) AS SP
+						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
+					) AS FrekSP".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -107,7 +253,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TT' AND point<>'0'  AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekTs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekI".$monthName.",
+					FROM hrd_khs.tpribadi a
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -115,7 +261,11 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TIK' AND point<>'0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekM".$monthName.",
+					WHERE keluar = '0'
+						AND a.noind IN
+						(
+							$noinduk
+						)
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -123,7 +273,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TM' AND point<>'0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekMs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSK".$monthName.",
+					'0' AS FrekTs".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -131,7 +281,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSKs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIP".$monthName.",
+					'0' AS FrekIs".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -139,7 +289,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIPs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekCT".$monthName.",
+					'0' AS FrekMs".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -172,22 +322,19 @@ clASs M_rekap_per_pekerja extends CI_Model {
 				inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 				WHERE keluar = '0'
-					AND a.noind IN
-					(
-						$noinduk
-					)
+						AND a.noind IN
+						(
+							$NoInduk
+						)
 
 				ORDER BY noind
 			";
-			$query = $this->personalia->query($sql);
-			return $query->result_array();
-	}
+		} else {
+			$sql="
+				SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
 
-	public function ExportRekap($periode1,$periode2,$NoInduk)
-	{
-		$sql="
-			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekT,
+					'0' AS FrekTs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -195,7 +342,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TT' AND point<>'0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekTs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekI,
+					'0' AS FrekIs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -203,7 +350,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TIK' AND point<>'0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekM,
+					'0' AS FrekMs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -211,7 +358,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TM' AND point<>'0'  AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekMs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSK,
+					'0' AS FrekSKs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -219,7 +366,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSKs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIP,
+					'0' AS FrekPSPs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -227,7 +374,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIPs,
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekCT,
+					'0' AS FrekIPs,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -235,47 +382,125 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'CT' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekCTs,
 
-				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
-				) AS FrekSP,
+					'0' AS FrekCTs,
 
-				(SELECT count(*) FROM
-					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-					UNION ALL
-					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-					) AS SP
-				WHERE noind IN
-					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
-					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+					(SELECT count(*) FROM
+						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+						UNION ALL
+						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+						) AS SP
+						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
+					) AS FrekSP,
 
-			FROM hrd_khs.tpribadi a
+					'0' AS FrekSPs,
 
-			inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
-			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
+					CASE
+						WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+						THEN
+							'0'
+						ELSE 
+							(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
+					END AS TotalHK,
 
-			WHERE keluar = '0'
-					AND a.noind IN
-					(
-						$NoInduk
-					)
+					'0' AS TotalHKs
 
-			ORDER BY noind
-		";
+				FROM hrd_khs.tpribadi a
+
+				inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
+
+				WHERE keluar = '1'
+						AND a.noind IN
+						(
+							$NoInduk
+						)
+
+				ORDER BY noind
+			";
+		}
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
-	public function ExportDetail($firstdate,$lastdate,$NoInduk,$monthName)
+	public function ExportDetail($firstdate,$lastdate,$NoInduk,$monthName, $status)
 	{
-		$sql="
-			SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
+		if ($status == '0') {
+			$sql="
+				SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TT' AND point<>'0') AS FrekTs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekI".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TIK' AND point<>'0') AS FrekIs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekM".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'TM' AND point<>'0') AS FrekMs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSK".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PSK') AS FrekSKs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekPSP".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PSP') AS FrekPSPs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIP".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'PIP') AS FrekIPs".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekCT".$monthName.",
+
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					AND kd_ket = 'CT') AS FrekCTs".$monthName.",
+
+					(SELECT count(*) FROM
+						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+						UNION ALL
+						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+						) AS SP
+						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
+					) AS FrekSP".$monthName.",
+
+					(SELECT count(*) FROM
+						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
+						UNION ALL
+						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
+							) AS SP
+					WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate'))
+						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					) AS FrekSPs".$monthName."
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -283,7 +508,8 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TT' AND point<>'0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekTs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekI".$monthName.",
+				inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -291,7 +517,12 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TIK' AND point<>'0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekM".$monthName.",
+				ORDER BY noind
+			";
+		} else {
+			$sql="
+				SELECT a.noind,a.nama,a.tgllahir,a.nik,b.dept,b.bidang,b.unit,b.seksi,a.masukkerja,a.kode_status_kerja,c.fs_ket,
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TT' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekT".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -299,7 +530,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'TM' AND point<>'0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekMs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSK".$monthName.",
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TIK' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekI".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -307,7 +538,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSKs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIP".$monthName.",
+					(SELECT count(*) FROM \"Presensi\".tdatatim WHERE noind = a.noind AND kd_ket = 'TM' AND point <> '0' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekM".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -315,7 +546,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PIP'  AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIPs".$monthName.",
 
-				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'CT' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekCT".$monthName.",
+					(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSK".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
@@ -336,25 +567,25 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
-				WHERE noind IN
-					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate'))
-					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs".$monthName."
+						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
+					) AS FrekSP".$monthName.",
 
-			FROM hrd_khs.tpribadi a
+					'0' AS FrekSPs".$monthName."
 
-			inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
-			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
+				FROM hrd_khs.tpribadi a
 
-			WHERE keluar = '0'
-					AND a.noind IN
-					(
-						$NoInduk
-					)
+				inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
-			ORDER BY noind
-		";
+				WHERE keluar = '1'
+						AND a.noind IN
+						(
+							$NoInduk
+						)
+
+				ORDER BY noind
+			";
+		}
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -535,16 +766,50 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function GetNoInduk($term){
-		if ($term === FALSE) {
-			$sql = "
-				SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' ORDER BY noind ASC
-			";
-		}
-		else{
-			$sql = "
-				SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' AND (noind ILIKE '%$term%' OR nama ILIKE '%$term%') ORDER BY noind ASC
-			";
+	public function GetNoInduk($term, $status){
+		if ($status == '0'){			
+			if ($term === FALSE) {
+				$sql = "
+					SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' ORDER BY noind ASC
+				";
+			}
+			else{
+				$sql = "
+					SELECT * FROM hrd_khs.tpribadi WHERE keluar = '0' AND (noind ILIKE '%$term%' OR nama ILIKE '%$term%') ORDER BY noind ASC
+				";
+			}
+		} else {
+			if ($term === FALSE) {
+				$sql = "
+					SELECT *
+					FROM hrd_khs.tpribadi 
+					WHERE keluar = '1'
+					AND nik NOT IN 
+						(
+							SELECT nik
+							FROM hrd_khs.tpribadi
+							WHERE keluar = '0'
+							and nik not in ('', '-')
+						)
+					ORDER BY noind ASC
+				";
+			}
+			else{
+				$sql = "
+					SELECT *
+					FROM hrd_khs.tpribadi 
+					WHERE keluar = '1'
+					AND (noind ILIKE '%$term%' OR nama ILIKE '%$term%' )
+					AND nik NOT IN 
+						(
+							SELECT nik
+							FROM hrd_khs.tpribadi
+							WHERE keluar = '0'
+							and nik not in ('', '-')
+						)
+					ORDER BY noind ASC
+				";
+			}
 		}
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -615,39 +880,40 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function data_rekap_masakerja($periode2, $noinduk){
-		$sql = "
-			(
-			SELECT noind, nik, nama, masukkerja, '$periode2' tglkeluar, keluar
-				FROM hrd_khs.tpribadi a
-				WHERE
-					noind IN ($noinduk)
-					AND keluar = '0'
-			)
+	public function data_rekap_masakerja($periode2, $noinduk, $status){
+		if ($status == '0') {
+			$sql = "
+				(
+				SELECT noind, nik, nama, masukkerja, '$periode2' tglkeluar, keluar
+					FROM hrd_khs.tpribadi a
+					WHERE
+						noind IN ($noinduk)
+						AND keluar = '0'
+				)
 
-			UNION ALL
+				UNION ALL
 
-			(
-			SELECT noind, nik, nama, masukkerja, tglkeluar, keluar
-				FROM hrd_khs.tpribadi a
-				WHERE
-					(
-						nama IN (
-							SELECT nama
-								FROM hrd_khs.tpribadi a
-								WHERE
-									noind IN ($noinduk)
-									AND keluar = '0'
-						)
-					AND
-						nik IN (
-							SELECT nik
-								FROM hrd_khs.tpribadi a
-								WHERE
-									noind IN ($noinduk)
-									AND keluar = '0'
+				(
+				SELECT noind, nik, nama, masukkerja, tglkeluar, keluar
+					FROM hrd_khs.tpribadi a
+					WHERE
+						(
+							nama IN (
+								SELECT nama
+									FROM hrd_khs.tpribadi a
+									WHERE
+										noind IN ($noinduk)
+										AND keluar = '0'
 							)
-					)
+						AND
+							nik IN (
+								SELECT nik
+									FROM hrd_khs.tpribadi a
+									WHERE
+										noind IN ($noinduk)
+										AND keluar = '0'
+								)
+						)
 
 					AND keluar = '1'
 			)

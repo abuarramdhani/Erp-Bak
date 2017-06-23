@@ -468,15 +468,339 @@ $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Moni
 $route['PresenceManagement/Monitoring/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1';
 $route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
 
+//---------------------------------Payroll Management----------------------------------
+
+$route['PayrollManagement/RiwayatPotDanaPensiun'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun';
+$route['PayrollManagement/RiwayatPotDanaPensiun/(:any)'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun/$1';
+$route['PayrollManagement/RiwayatPotDanaPensiun/(:any)/(:any)'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun/$1/$2';
+
+$route['PayrollManagement/RiwayatInsentifKemahalan'] = 'PayrollManagement/MasterInsKemahalan/C_RiwayatInsentifKemahalan';
+$route['PayrollManagement/RiwayatInsentifKemahalan/(:any)'] = 'PayrollManagement/MasterInsKemahalan/C_RiwayatInsentifKemahalan/$1';
+$route['PayrollManagement/RiwayatInsentifKemahalan/(:any)/(:any)'] = 'PayrollManagement/MasterInsKemahalan/C_RiwayatInsentifKemahalan/$1/$2';
+
+$route['PayrollManagement/RiwayatUpamk'] = 'PayrollManagement/UPAMK/C_RiwayatUpamk';
+$route['PayrollManagement/RiwayatUpamk/(:any)'] = 'PayrollManagement/UPAMK/C_RiwayatUpamk/$1';
+$route['PayrollManagement/RiwayatUpamk/(:any)/(:any)'] = 'PayrollManagement/UPAMK/C_RiwayatUpamk/$1/$2';
+
+$route['PayrollManagement/RiwayatGaji'] = 'PayrollManagement/MasterGaji/C_RiwayatGaji';
+$route['PayrollManagement/RiwayatGaji/(:any)'] = 'PayrollManagement/MasterGaji/C_RiwayatGaji/$1';
+$route['PayrollManagement/RiwayatGaji/(:any)/(:any)'] = 'PayrollManagement/MasterGaji/C_RiwayatGaji/$1/$2';
+
+$route['PayrollManagement/RiwayatSetAsuransi'] = 'PayrollManagement/SetTarifAsuransi/C_RiwayatSetAsuransi';
+$route['PayrollManagement/RiwayatSetAsuransi/(:any)'] = 'PayrollManagement/SetTarifAsuransi/C_RiwayatSetAsuransi/$1';
+$route['PayrollManagement/RiwayatSetAsuransi/(:any)/(:any)'] = 'PayrollManagement/SetTarifAsuransi/C_RiwayatSetAsuransi/$1/$2';
+
+$route['PayrollManagement/MasterTarifJkk'] = 'PayrollManagement/SetTarifJKKBerdasarkanLokasiKerja/C_MasterTarifJkk';
+$route['PayrollManagement/MasterTarifJkk/(:any)'] = 'PayrollManagement/SetTarifJKKBerdasarkanLokasiKerja/C_MasterTarifJkk/$1';
+$route['PayrollManagement/MasterTarifJkk/(:any)/(:any)'] = 'PayrollManagement/SetTarifJKKBerdasarkanLokasiKerja/C_MasterTarifJkk/$1/$2';
+
+$route['PayrollManagement/MasterParamTarifJamsostek'] = 'PayrollManagement/SetTarifJamsostek/C_MasterParamTarifJamsostek';
+$route['PayrollManagement/MasterParamTarifJamsostek/(:any)'] = 'PayrollManagement/SetTarifJamsostek/C_MasterParamTarifJamsostek/$1';
+$route['PayrollManagement/MasterParamTarifJamsostek/(:any)/(:any)'] = 'PayrollManagement/SetTarifJamsostek/C_MasterParamTarifJamsostek/$1/$2';
+
+$route['PayrollManagement/RiwayatTarifJkk'] = 'PayrollManagement/SetTarifJKK/C_RiwayatTarifJkk';
+$route['PayrollManagement/RiwayatTarifJkk/(:any)'] = 'PayrollManagement/SetTarifJKK/C_RiwayatTarifJkk/$1';
+$route['PayrollManagement/RiwayatTarifJkk/(:any)/(:any)'] = 'PayrollManagement/SetTarifJKK/C_RiwayatTarifJkk/$1/$2';
+
 $route['PresenceManagement/Cronjob'] 			= 'PresenceManagement/MainMenu/C_Cronjob/index';
 $route['PresenceManagement/Cronjob/(:any)']	= 'PresenceManagement/MainMenu/C_Cronjob/$1';
 $route['PresenceManagement/Cronjob/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Cronjob/$1/$2';
+
 
 //------------------------------------Account Payables---------------------------------------------------
 $route['AccountPayables'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
+
+
+//------------------------------------Payroll Management---------------------------------------------------
+$route['PayrollManagement'] = 'PayrollManagement/C_Index';
+
+$route['PayrollManagement/RiwayatRekeningPekerja'] = 'PayrollManagement/DataNoRecPekerja/C_RiwayatRekeningPekerja';
+$route['PayrollManagement/RiwayatRekeningPekerja/(:any)'] = 'PayrollManagement/DataNoRecPekerja/C_RiwayatRekeningPekerja/$1';
+$route['PayrollManagement/RiwayatRekeningPekerja/(:any)/(:any)'] = 'PayrollManagement/DataNoRecPekerja/C_RiwayatRekeningPekerja/$1/$2';
+
+$route['PayrollManagement/RiwayatPotDanaPensiun'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun';
+$route['PayrollManagement/RiwayatPotDanaPensiun/(:any)'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun/$1';
+$route['PayrollManagement/RiwayatPotDanaPensiun/(:any)/(:any)'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun/$1/$2';
+
+$route['PayrollManagement/RiwayatInsentifKemahalan'] = 'PayrollManagement/MasterInsKemahalan/C_RiwayatInsentifKemahalan';
+$route['PayrollManagement/RiwayatInsentifKemahalan/(:any)'] = 'PayrollManagement/MasterInsKemahalan/C_RiwayatInsentifKemahalan/$1';
+$route['PayrollManagement/RiwayatInsentifKemahalan/(:any)/(:any)'] = 'PayrollManagement/MasterInsKemahalan/C_RiwayatInsentifKemahalan/$1/$2';
+
+$route['PayrollManagement/RiwayatUpamk'] = 'PayrollManagement/UPAMK/C_RiwayatUpamk';
+$route['PayrollManagement/RiwayatUpamk/(:any)'] = 'PayrollManagement/UPAMK/C_RiwayatUpamk/$1';
+$route['PayrollManagement/RiwayatUpamk/(:any)/(:any)'] = 'PayrollManagement/UPAMK/C_RiwayatUpamk/$1/$2';
+
+$route['PayrollManagement/RiwayatGaji'] = 'PayrollManagement/MasterGaji/C_RiwayatGaji';
+$route['PayrollManagement/RiwayatGaji/(:any)'] = 'PayrollManagement/MasterGaji/C_RiwayatGaji/$1';
+$route['PayrollManagement/RiwayatGaji/(:any)/(:any)'] = 'PayrollManagement/MasterGaji/C_RiwayatGaji/$1/$2';
+
+$route['PayrollManagement/RiwayatSetAsuransi'] = 'PayrollManagement/SetTarifAsuransi/C_RiwayatSetAsuransi';
+$route['PayrollManagement/RiwayatSetAsuransi/(:any)'] = 'PayrollManagement/SetTarifAsuransi/C_RiwayatSetAsuransi/$1';
+$route['PayrollManagement/RiwayatSetAsuransi/(:any)/(:any)'] = 'PayrollManagement/SetTarifAsuransi/C_RiwayatSetAsuransi/$1/$2';
+
+$route['PayrollManagement/RiwayatSetTarifAsuransi'] = 'PayrollManagement/SetPenerimaAsuransi/C_RiwayatSetAsuransi';
+$route['PayrollManagement/RiwayatSetTarifAsuransi/(:any)'] = 'PayrollManagement/SetPenerimaAsuransi/C_RiwayatSetAsuransi/$1';
+$route['PayrollManagement/RiwayatSetTarifAsuransi/(:any)/(:any)'] = 'PayrollManagement/SetPenerimaAsuransi/C_RiwayatSetAsuransi/$1/$2';
+
+$route['PayrollManagement/MasterTarifJkk'] = 'PayrollManagement/SetTarifJKKBerdasarkanLokasiKerja/C_MasterTarifJkk';
+$route['PayrollManagement/MasterTarifJkk/(:any)'] = 'PayrollManagement/SetTarifJKKBerdasarkanLokasiKerja/C_MasterTarifJkk/$1';
+$route['PayrollManagement/MasterTarifJkk/(:any)/(:any)'] = 'PayrollManagement/SetTarifJKKBerdasarkanLokasiKerja/C_MasterTarifJkk/$1/$2';
+
+$route['PayrollManagement/MasterStatusKerja'] = 'PayrollManagement/MasterStatusKerja/C_MasterStatusKerja';
+$route['PayrollManagement/MasterStatusKerja/(:any)'] = 'PayrollManagement/MasterStatusKerja/C_MasterStatusKerja/$1';
+$route['PayrollManagement/MasterStatusKerja/(:any)/(:any)'] = 'PayrollManagement/MasterStatusKerja/C_MasterStatusKerja/$1/$2';
+
+$route['PayrollManagement/MasterJabatan'] = 'PayrollManagement/MasterJabatan/C_MasterJabatan';
+$route['PayrollManagement/MasterJabatan/(:any)'] = 'PayrollManagement/MasterJabatan/C_MasterJabatan/$1';
+$route['PayrollManagement/MasterJabatan/(:any)/(:any)'] = 'PayrollManagement/MasterJabatan/C_MasterJabatan/$1/$2';
+
+$route['PayrollManagement/MasterSeksi'] = 'PayrollManagement/MasterSeksi/C_MasterSeksi';
+$route['PayrollManagement/MasterSeksi/(:any)'] = 'PayrollManagement/MasterSeksi/C_MasterSeksi/$1';
+$route['PayrollManagement/MasterSeksi/(:any)/(:any)'] = 'PayrollManagement/MasterSeksi/C_MasterSeksi/$1/$2';
+
+$route['PayrollManagement/KantorAsal'] = 'PayrollManagement/MasterKantorAsal/C_KantorAsal';
+$route['PayrollManagement/KantorAsal/(:any)'] = 'PayrollManagement/MasterKantorAsal/C_KantorAsal/$1';
+$route['PayrollManagement/KantorAsal/(:any)/(:any)'] = 'PayrollManagement/MasterKantorAsal/C_KantorAsal/$1/$2';
+
+$route['PayrollManagement/LokasiKerja'] = 'PayrollManagement/MasterLokasiKerja/C_LokasiKerja';
+$route['PayrollManagement/LokasiKerja/(:any)'] = 'PayrollManagement/MasterLokasiKerja/C_LokasiKerja/$1';
+$route['PayrollManagement/LokasiKerja/(:any)/(:any)'] = 'PayrollManagement/MasterLokasiKerja/C_LokasiKerja/$1/$2';
+
+$route['PayrollManagement/MasterBankInduk'] = 'PayrollManagement/MasterBankInduk/C_MasterBankInduk';
+$route['PayrollManagement/MasterBankInduk/(:any)'] = 'PayrollManagement/MasterBankInduk/C_MasterBankInduk/$1';
+$route['PayrollManagement/MasterBankInduk/(:any)/(:any)'] = 'PayrollManagement/MasterBankInduk/C_MasterBankInduk/$1/$2';
+
+$route['PayrollManagement/MasterBank'] = 'PayrollManagement/MasterBank/C_MasterBank';
+$route['PayrollManagement/MasterBank/(:any)'] = 'PayrollManagement/MasterBank/C_MasterBank/$1';
+$route['PayrollManagement/MasterBank/(:any)/(:any)'] = 'PayrollManagement/MasterBank/C_MasterBank/$1/$2';
+
+$route['PayrollManagement/MasterSekolahAsal'] = 'PayrollManagement/MasterSekolahAsal/C_MasterSekolahAsal';
+$route['PayrollManagement/MasterSekolahAsal/(:any)'] = 'PayrollManagement/MasterSekolahAsal/C_MasterSekolahAsal/$1';
+$route['PayrollManagement/MasterSekolahAsal/(:any)/(:any)'] = 'PayrollManagement/MasterSekolahAsal/C_MasterSekolahAsal/$1/$2';
+
+$route['PayrollManagement/SetGajiUMP'] = 'PayrollManagement/SetGajiUMP/C_SetGajiUMP';
+$route['PayrollManagement/SetGajiUMP/(:any)'] = 'PayrollManagement/SetGajiUMP/C_SetGajiUMP/$1';
+$route['PayrollManagement/SetGajiUMP/(:any)/(:any)'] = 'PayrollManagement/SetGajiUMP/C_SetGajiUMP/$1/$2';
+
+$route['PayrollManagement/SetTarifPekerjaSakit'] = 'PayrollManagement/SetTarifPekerjaSakit/C_SetTarifPekerjaSakit';
+$route['PayrollManagement/SetTarifPekerjaSakit/(:any)'] = 'PayrollManagement/SetTarifPekerjaSakit/C_SetTarifPekerjaSakit/$1';
+$route['PayrollManagement/SetTarifPekerjaSakit/(:any)/(:any)'] = 'PayrollManagement/SetTarifPekerjaSakit/C_SetTarifPekerjaSakit/$1/$2';
+
+$route['PayrollManagement/SetPenerimaUBTHR'] = 'PayrollManagement/SetPenerimaUBTHR/C_SetPenerimaUBTHR';
+$route['PayrollManagement/SetPenerimaUBTHR/(:any)'] = 'PayrollManagement/SetPenerimaUBTHR/C_SetPenerimaUBTHR/$1';
+$route['PayrollManagement/SetPenerimaUBTHR/(:any)/(:any)'] = 'PayrollManagement/SetPenerimaUBTHR/C_SetPenerimaUBTHR/$1/$2';
+
+$route['PayrollManagement/StandartJamTkpw'] = 'PayrollManagement/SetStandartJamTKPW/C_StandartJamTkpw';
+$route['PayrollManagement/StandartJamTkpw/(:any)'] = 'PayrollManagement/SetStandartJamTKPW/C_StandartJamTkpw/$1';
+$route['PayrollManagement/StandartJamTkpw/(:any)/(:any)'] = 'PayrollManagement/SetStandartJamTKPW/C_StandartJamTkpw/$1/$2';
+
+$route['PayrollManagement/StandartJamUmum'] = 'PayrollManagement/SetStandartJamUmum/C_StandartJamUmum';
+$route['PayrollManagement/StandartJamUmum/(:any)'] = 'PayrollManagement/SetStandartJamUmum/C_StandartJamUmum/$1';
+$route['PayrollManagement/StandartJamUmum/(:any)/(:any)'] = 'PayrollManagement/SetStandartJamUmum/C_StandartJamUmum/$1/$2';
+
+$route['PayrollManagement/MasterParamBpjs'] = 'PayrollManagement/SetTarifBPJS/C_MasterParamBpjs';
+$route['PayrollManagement/MasterParamBpjs/(:any)'] = 'PayrollManagement/SetTarifBPJS/C_MasterParamBpjs/$1';
+$route['PayrollManagement/MasterParamBpjs/(:any)/(:any)'] = 'PayrollManagement/SetTarifBPJS/C_MasterParamBpjs/$1/$2';
+
+$route['PayrollManagement/MasterParamPtkp'] = 'PayrollManagement/SetTarifPTKP/C_MasterParamPtkp';
+$route['PayrollManagement/MasterParamPtkp/(:any)'] = 'PayrollManagement/SetTarifPTKP/C_MasterParamPtkp/$1';
+$route['PayrollManagement/MasterParamPtkp/(:any)/(:any)'] = 'PayrollManagement/SetTarifPTKP/C_MasterParamPtkp/$1/$2';
+
+$route['PayrollManagement/MasterParameterTarifPph'] = 'PayrollManagement/SetTarifPPH/C_MasterParameterTarifPph';
+$route['PayrollManagement/MasterParameterTarifPph/(:any)'] = 'PayrollManagement/SetTarifPPH/C_MasterParameterTarifPph/$1';
+$route['PayrollManagement/MasterParameterTarifPph/(:any)/(:any)'] = 'PayrollManagement/SetTarifPPH/C_MasterParameterTarifPph/$1/$2';
+
+$route['PayrollManagement/RiwayatPenerimaKonpensasiLembur'] = 'PayrollManagement/SetPenerimaKonpensasiLembur/C_RiwayatPenerimaKonpensasiLembur';
+$route['PayrollManagement/RiwayatPenerimaKonpensasiLembur/(:any)'] = 'PayrollManagement/SetPenerimaKonpensasiLembur/C_RiwayatPenerimaKonpensasiLembur/$1';
+$route['PayrollManagement/RiwayatPenerimaKonpensasiLembur/(:any)/(:any)'] = 'PayrollManagement/SetPenerimaKonpensasiLembur/C_RiwayatPenerimaKonpensasiLembur/$1/$2';
+
+$route['PayrollManagement/MasterParamKompJab'] = 'PayrollManagement/SetKomponenGajiJabatan/C_MasterParamKompJab';
+$route['PayrollManagement/MasterParamKompJab/(:any)'] = 'PayrollManagement/SetKomponenGajiJabatan/C_MasterParamKompJab/$1';
+$route['PayrollManagement/MasterParamKompJab/(:any)/(:any)'] = 'PayrollManagement/SetKomponenGajiJabatan/C_MasterParamKompJab/$1/$2';
+
+$route['PayrollManagement/MasterParamKompUmum'] = 'PayrollManagement/SetKomponenGajiUmum/C_MasterParamKompUmum';
+$route['PayrollManagement/MasterParamKompUmum/(:any)'] = 'PayrollManagement/SetKomponenGajiUmum/C_MasterParamKompUmum/$1';
+$route['PayrollManagement/MasterParamKompUmum/(:any)/(:any)'] = 'PayrollManagement/SetKomponenGajiUmum/C_MasterParamKompUmum/$1/$2';
+
+$route['PayrollManagement/MasterParamPengurangPajak'] = 'PayrollManagement/SetPengurangPajak/C_MasterParamPengurangPajak';
+$route['PayrollManagement/MasterParamPengurangPajak/(:any)'] = 'PayrollManagement/SetPengurangPajak/C_MasterParamPengurangPajak/$1';
+$route['PayrollManagement/MasterParamPengurangPajak/(:any)/(:any)'] = 'PayrollManagement/SetPengurangPajak/C_MasterParamPengurangPajak/$1/$2';
+
+$route['PayrollManagement/MasterPekerja'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja';
+$route['PayrollManagement/MasterPekerja/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1';
+$route['PayrollManagement/MasterPekerja/(:any)/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1/$2';
+
+$route['PayrollManagement/TransaksiRapel'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel';
+$route['PayrollManagement/TransaksiRapel/(:any)'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel/$1';
+$route['PayrollManagement/TransaksiRapel/(:any)/(:any)'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel/$1/$2';
+
+$route['PayrollManagement/RiwayatParamKoperasi'] = 'PayrollManagement/SetIuranKoperasi/C_RiwayatParamKoperasi';
+$route['PayrollManagement/RiwayatParamKoperasi/(:any)'] = 'PayrollManagement/SetIuranKoperasi/C_RiwayatParamKoperasi/$1';
+$route['PayrollManagement/RiwayatParamKoperasi/(:any)/(:any)'] = 'PayrollManagement/SetIuranKoperasi/C_RiwayatParamKoperasi/$1/$2';
+
+$route['PayrollManagement/KompTamb'] = 'PayrollManagement/KomponenTambahan/C_KompTamb';
+$route['PayrollManagement/KompTamb/(:any)'] = 'PayrollManagement/KomponenTambahan/C_KompTamb/$1';
+$route['PayrollManagement/KompTamb/(:any)/(:any)'] = 'PayrollManagement/KomponenTambahan/C_KompTamb/$1/$2';
+
+$route['PayrollManagement/KompTambLain'] = 'PayrollManagement/KomponenTambahanLain/C_KompTambLain';
+$route['PayrollManagement/KompTambLain/(:any)'] = 'PayrollManagement/KomponenTambahanLain/C_KompTambLain/$1';
+$route['PayrollManagement/KompTambLain/(:any)/(:any)'] = 'PayrollManagement/KomponenTambahanLain/C_KompTambLain/$1/$2';
+
+$route['PayrollManagement/TransaksiKlaimSisaCuti'] = 'PayrollManagement/TransaksiKlaimSisaCuti/C_TransaksiKlaimSisaCuti';
+$route['PayrollManagement/TransaksiKlaimSisaCuti/(:any)'] = 'PayrollManagement/TransaksiKlaimSisaCuti/C_TransaksiKlaimSisaCuti/$1';
+$route['PayrollManagement/TransaksiKlaimSisaCuti/(:any)/(:any)'] = 'PayrollManagement/TransaksiKlaimSisaCuti/C_TransaksiKlaimSisaCuti/$1/$2';
+
+$route['PayrollManagement/TransaksiHitungThr'] = 'PayrollManagement/TransaksiTHR/C_TransaksiHitungThr';
+$route['PayrollManagement/TransaksiHitungThr/(:any)'] = 'PayrollManagement/TransaksiTHR/C_TransaksiHitungThr/$1';
+$route['PayrollManagement/TransaksiHitungThr/(:any)/(:any)'] = 'PayrollManagement/TransaksiTHR/C_TransaksiHitungThr/$1/$2';
+
+$route['PayrollManagement/TransaksiHutang'] = 'PayrollManagement/TransaksiHutang/C_TransaksiHutang';
+$route['PayrollManagement/TransaksiHutang/(:any)'] = 'PayrollManagement/TransaksiHutang/C_TransaksiHutang/$1';
+$route['PayrollManagement/TransaksiHutang/(:any)/(:any)'] = 'PayrollManagement/TransaksiHutang/C_TransaksiHutang/$1/$2';
+
+$route['PayrollManagement/MasterParamKompUmum'] = 'PayrollManagement/SetKomponenGajiUmum/C_MasterParamKompUmum';
+$route['PayrollManagement/MasterParamKompUmum/(:any)'] = 'PayrollManagement/SetKomponenGajiUmum/C_MasterParamKompUmum/$1';
+$route['PayrollManagement/MasterParamKompUmum/(:any)/(:any)'] = 'PayrollManagement/SetKomponenGajiUmum/C_MasterParamKompUmum/$1/$2';
+
+$route['PayrollManagement/RiwayatParamKoperasi'] = 'PayrollManagement/SetIuranKoperasi/C_RiwayatParamKoperasi';
+$route['PayrollManagement/RiwayatParamKoperasi/(:any)'] = 'PayrollManagement/SetIuranKoperasi/C_RiwayatParamKoperasi/$1';
+$route['PayrollManagement/RiwayatParamKoperasi/(:any)/(:any)'] = 'PayrollManagement/SetIuranKoperasi/C_RiwayatParamKoperasi/$1/$2';
+
+$route['PayrollManagement/TransaksiKlaimSisaCuti'] = 'PayrollManagement/TransaksiKlaimSisaCuti/C_TransaksiKlaimSisaCuti';
+$route['PayrollManagement/TransaksiKlaimSisaCuti/(:any)'] = 'PayrollManagement/TransaksiKlaimSisaCuti/C_TransaksiKlaimSisaCuti/$1';
+$route['PayrollManagement/TransaksiKlaimSisaCuti/(:any)/(:any)'] = 'PayrollManagement/TransaksiKlaimSisaCuti/C_TransaksiKlaimSisaCuti/$1/$2';
+
+$route['PayrollManagement/TransaksiHitungThr'] = 'PayrollManagement/TransaksiTHR/C_TransaksiHitungThr';
+$route['PayrollManagement/TransaksiHitungThr/(:any)'] = 'PayrollManagement/TransaksiTHR/C_TransaksiHitungThr/$1';
+$route['PayrollManagement/TransaksiHitungThr/(:any)/(:any)'] = 'PayrollManagement/TransaksiTHR/C_TransaksiHitungThr/$1/$2';
+
+$route['PayrollManagement/TransaksiHutang'] = 'PayrollManagement/TransaksiHutang/C_TransaksiHutang';
+$route['PayrollManagement/TransaksiHutang/(:any)'] = 'PayrollManagement/TransaksiHutang/C_TransaksiHutang/$1';
+$route['PayrollManagement/TransaksiHutang/(:any)/(:any)'] = 'PayrollManagement/TransaksiHutang/C_TransaksiHutang/$1/$2';
+
+$route['PayrollManagement/HutangKaryawan'] = 'PayrollManagement/TransaksiHutangKaryawan/C_HutangKaryawan';
+$route['PayrollManagement/HutangKaryawan/(:any)'] = 'PayrollManagement/TransaksiHutangKaryawan/C_HutangKaryawan/$1';
+$route['PayrollManagement/HutangKaryawan/(:any)/(:any)'] = 'PayrollManagement/TransaksiHutangKaryawan/C_HutangKaryawan/$1/$2';
+
+$route['PayrollManagement/DaftarPekerjaSakit'] = 'PayrollManagement/TransaksiPekerjaSakitBerkepanjangan/C_DaftarPekerjaSakit';
+$route['PayrollManagement/DaftarPekerjaSakit/(:any)'] = 'PayrollManagement/TransaksiPekerjaSakitBerkepanjangan/C_DaftarPekerjaSakit/$1';
+$route['PayrollManagement/DaftarPekerjaSakit/(:any)/(:any)'] = 'PayrollManagement/TransaksiPekerjaSakitBerkepanjangan/C_DaftarPekerjaSakit/$1/$2';
+
+$route['PayrollManagement/DataGajianPersonalia'] = 'PayrollManagement/DataHariMasuk/C_DataGajianPersonalia';
+$route['PayrollManagement/DataGajianPersonalia/(:any)'] = 'PayrollManagement/DataHariMasuk/C_DataGajianPersonalia/$1';
+$route['PayrollManagement/DataGajianPersonalia/(:any)/(:any)'] = 'PayrollManagement/DataHariMasuk/C_DataGajianPersonalia/$1/$2';
+
+$route['PayrollManagement/TransaksiKlaimDl'] = 'PayrollManagement/TransaksiKlaimDinas/C_TransaksiKlaimDl';
+$route['PayrollManagement/TransaksiKlaimDl/(:any)'] = 'PayrollManagement/TransaksiKlaimDinas/C_TransaksiKlaimDl/$1';
+$route['PayrollManagement/TransaksiKlaimDl/(:any)/(:any)'] = 'PayrollManagement/TransaksiKlaimDinas/C_TransaksiKlaimDl/$1/$2';
+
+$route['PayrollManagement/MasterJabatanUpah'] = 'PayrollManagement/MasterJabatanUpah/C_MasterJabatanUpah';
+$route['PayrollManagement/MasterJabatanUpah/(:any)'] = 'PayrollManagement/MasterJabatanUpah/C_MasterJabatanUpah/$1';
+$route['PayrollManagement/MasterJabatanUpah/(:any)/(:any)'] = 'PayrollManagement/MasterJabatanUpah/C_MasterJabatanUpah/$1/$2';
+
+$route['PayrollManagement/BrowseTransaksiPenggajian'] = 'PayrollManagement/BrowseTransaksiPenggajian/C_TransaksiPenggajian';
+$route['PayrollManagement/BrowseTransaksiPenggajian/(:any)'] = 'PayrollManagement/BrowseTransaksiPenggajian/C_TransaksiPenggajian/$1';
+$route['PayrollManagement/BrowseTransaksiPenggajian/(:any)/(:any)'] = 'PayrollManagement/BrowseTransaksiPenggajian/C_TransaksiPenggajian/$1/$2';
+
+$route['PayrollManagement/KlaimGajiIndividual'] = 'PayrollManagement/KlaimGajiIndividual/C_KlaimGajiIndividual';
+$route['PayrollManagement/KlaimGajiIndividual/(:any)'] = 'PayrollManagement/KlaimGajiIndividual/C_KlaimGajiIndividual/$1';
+$route['PayrollManagement/KlaimGajiIndividual/(:any)/(:any)'] = 'PayrollManagement/KlaimGajiIndividual/C_KlaimGajiIndividual/$1/$2';
+
+$route['PayrollManagement/DataKlaimPekerjaKeluar'] = 'PayrollManagement/DataKlaimPekerjaKeluar/C_DataKlaimPekerjaKeluar';
+$route['PayrollManagement/DataKlaimPekerjaKeluar/(:any)'] = 'PayrollManagement/DataKlaimPekerjaKeluar/C_DataKlaimPekerjaKeluar/$1';
+$route['PayrollManagement/DataKlaimPekerjaKeluar/(:any)/(:any)'] = 'PayrollManagement/DataKlaimPekerjaKeluar/C_DataKlaimPekerjaKeluar/$1/$2';
+
+$route['PayrollManagement/KompensasiLembur'] = 'PayrollManagement/KompensasiLembur/C_KompensasiLembur';
+$route['PayrollManagement/KompensasiLembur/(:any)'] = 'PayrollManagement/KompensasiLembur/C_KompensasiLembur/$1';
+$route['PayrollManagement/KompensasiLembur/(:any)/(:any)'] = 'PayrollManagement/KompensasiLembur/C_KompensasiLembur/$1/$2';
+
+$route['PayrollManagement/Database/Backup'] = 'PayrollManagement/Setting/C_Setting/BackUp';
+$route['PayrollManagement/Database/Restore'] = 'PayrollManagement/Setting/C_Setting/Restore';
+$route['PayrollManagement/Database/ClearDatabase'] = 'PayrollManagement/Setting/C_Setting/ClearData';
+//Report Penggajian Staff
+
+$route['PayrollManagement/Report/RapelPremiAsuransi'] = 'PayrollManagement/Report/RapelPremiAsuransi/C_RapelPremiAsuransi';
+$route['PayrollManagement/Report/RapelPremiAsuransi/(:any)'] = 'PayrollManagement/Report/RapelPremiAsuransi/C_RapelPremiAsuransi/$1';
+$route['PayrollManagement/Report/RapelPremiAsuransi/(:any)/(:any)'] = 'PayrollManagement/Report/RapelPremiAsuransi/C_RapelPremiAsuransi/$1/$2';
+
+$route['PayrollManagement/Report/SummaryGajiStaff'] = 'PayrollManagement/Report/SummaryGajiStaff/C_SummaryGajiStaff';
+$route['PayrollManagement/Report/SummaryGajiStaff/(:any)'] = 'PayrollManagement/Report/SummaryGajiStaff/C_SummaryGajiStaff/$1';
+$route['PayrollManagement/Report/SummaryGajiStaff/(:any)/(:any)'] = 'PayrollManagement/Report/SummaryGajiStaff/C_SummaryGajiStaff/$1/$2';
+
+$route['PayrollManagement/Report/PenghasilanBawahPTKP'] = 'PayrollManagement/Report/PenghasilanBawahPTKP/C_PenghasilanBawahPTKP';
+$route['PayrollManagement/Report/PenghasilanBawahPTKP/(:any)'] = 'PayrollManagement/Report/PenghasilanBawahPTKP/C_PenghasilanBawahPTKP/$1';
+$route['PayrollManagement/Report/PenghasilanBawahPTKP/(:any)/(:any)'] = 'PayrollManagement/Report/PenghasilanBawahPTKP/C_PenghasilanBawahPTKP/$1/$2';
+
+$route['PayrollManagement/Report/RincianRapelGaji'] = 'PayrollManagement/Report/RincianRapelGaji/C_RincianRapelGaji';
+$route['PayrollManagement/Report/RincianRapelGaji/(:any)'] = 'PayrollManagement/Report/RincianRapelGaji/C_RincianRapelGaji/$1';
+$route['PayrollManagement/Report/RincianRapelGaji/(:any)/(:any)'] = 'PayrollManagement/Report/RincianRapelGaji/C_RincianRapelGaji/$1/$2';
+
+$route['PayrollManagement/Report/DataRiwayatPekerja'] = 'PayrollManagement/Report/DataRiwayatPekerja/C_DataRiwayatPekerja';
+$route['PayrollManagement/Report/DataRiwayatPekerja/(:any)'] = 'PayrollManagement/Report/DataRiwayatPekerja/C_DataRiwayatPekerja/$1';
+$route['PayrollManagement/Report/DataRiwayatPekerja/(:any)/(:any)'] = 'PayrollManagement/Report/DataRiwayatPekerja/C_DataRiwayatPekerja/$1/$2';
+
+$route['PayrollManagement/Report/PotonganSPSI'] = 'PayrollManagement/Report/PotonganSPSI/C_PotonganSPSI';
+$route['PayrollManagement/Report/PotonganSPSI/(:any)'] = 'PayrollManagement/Report/PotonganSPSI/C_PotonganSPSI/$1';
+$route['PayrollManagement/Report/PotonganSPSI/(:any)/(:any)'] = 'PayrollManagement/Report/PotonganSPSI/C_PotonganSPSI/$1/$2';
+
+$route['PayrollManagement/Report/PotonganDanaPensiun'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_PotonganDanaPensiun';
+$route['PayrollManagement/Report/PotonganDanaPensiun/(:any)'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_PotonganDanaPensiun/$1';
+$route['PayrollManagement/Report/PotonganDanaPensiun/(:any)/(:any)'] = 'PayrollManagement/Report/PotonganDanaPensiun/C_PotonganDanaPensiun/$1/$2';
+
+$route['PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan'] = 'PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/C_PerhitunganIuranJKNBPJSKesehatan';
+$route['PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/(:any)'] = 'PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/C_PerhitunganIuranJKNBPJSKesehatan/$1';
+$route['PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/(:any)/(:any)'] = 'PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/C_PerhitunganIuranJKNBPJSKesehatan/$1/$2';
+
+$route['PayrollManagement/Report/RiwayatKenaikanGaji'] = 'PayrollManagement/Report/RiwayatKenaikanGaji/C_RiwayatKenaikanGaji';
+$route['PayrollManagement/Report/RiwayatKenaikanGaji/(:any)'] = 'PayrollManagement/Report/RiwayatKenaikanGaji/C_RiwayatKenaikanGaji/$1';
+$route['PayrollManagement/Report/RiwayatKenaikanGaji/(:any)/(:any)'] = 'PayrollManagement/Report/RiwayatKenaikanGaji/C_RiwayatKenaikanGaji/$1/$2';
+
+$route['PayrollManagement/Report/RincianPembayaranPajakPekerja'] = 'PayrollManagement/Report/RincianPembayaranPajakPekerja/C_RincianPembayaranPajakPekerja';
+$route['PayrollManagement/Report/RincianPembayaranPajakPekerja/(:any)'] = 'PayrollManagement/Report/RincianPembayaranPajakPekerja/C_RincianPembayaranPajakPekerja/$1';
+$route['PayrollManagement/Report/RincianPembayaranPajakPekerja/(:any)/(:any)'] = 'PayrollManagement/Report/RincianPembayaranPajakPekerja/C_RincianPembayaranPajakPekerja/$1/$2';
+
+$route['PayrollManagement/Report/PotonganKoperasi'] = 'PayrollManagement/Report/PotonganKoperasi/C_PotonganKoperasi';
+$route['PayrollManagement/Report/PotonganKoperasi/(:any)'] = 'PayrollManagement/Report/PotonganKoperasi/C_PotonganKoperasi/$1';
+$route['PayrollManagement/Report/PotonganKoperasi/(:any)/(:any)'] = 'PayrollManagement/Report/PotonganKoperasi/C_PotonganKoperasi/$1/$2';
+
+$route['PayrollManagement/Report/JamsostekPerubahanDataPekerja'] = 'PayrollManagement/Report/JamsostekPerubahanDataPekerja/C_JamsostekPerubahanDataPekerja';
+$route['PayrollManagement/Report/JamsostekPerubahanDataPekerja/(:any)'] = 'PayrollManagement/Report/JamsostekPerubahanDataPekerja/C_JamsostekPerubahanDataPekerja/$1';
+$route['PayrollManagement/Report/JamsostekPerubahanDataPekerja/(:any)/(:any)'] = 'PayrollManagement/Report/JamsostekPerubahanDataPekerja/C_JamsostekPerubahanDataPekerja/$1/$2';
+
+$route['PayrollManagement/Report/RekapPembayaranJHT'] = 'PayrollManagement/Report/RekapPembayaranJHT/C_RekapPembayaranJHT';
+$route['PayrollManagement/Report/RekapPembayaranJHT/(:any)'] = 'PayrollManagement/Report/RekapPembayaranJHT/C_RekapPembayaranJHT/$1';
+$route['PayrollManagement/Report/RekapPembayaranJHT/(:any)/(:any)'] = 'PayrollManagement/Report/RekapPembayaranJHT/C_RekapPembayaranJHT/$1/$2';
+
+$route['PayrollManagement/Report/RekapPenerimaanGajiStaff'] = 'PayrollManagement/Report/RekapPenerimaanGajiStaff/C_RekapPenerimaanGajiStaff';
+$route['PayrollManagement/Report/RekapPenerimaanGajiStaff/(:any)'] = 'PayrollManagement/Report/RekapPenerimaanGajiStaff/C_RekapPenerimaanGajiStaff/$1';
+$route['PayrollManagement/Report/RekapPenerimaanGajiStaff/(:any)/(:any)'] = 'PayrollManagement/Report/RekapPenerimaanGajiStaff/C_RekapPenerimaanGajiStaff/$1/$2';
+
+$route['PayrollManagement/Report/MasterGajiKaryawan'] = 'PayrollManagement/Report/MasterGajiKaryawan/C_MasterGajiKaryawan';
+$route['PayrollManagement/Report/MasterGajiKaryawan/(:any)'] = 'PayrollManagement/Report/MasterGajiKaryawan/C_MasterGajiKaryawan/$1';
+$route['PayrollManagement/Report/MasterGajiKaryawan/(:any)/(:any)'] = 'PayrollManagement/Report/MasterGajiKaryawan/C_MasterGajiKaryawan/$1/$2';
+
+$route['PayrollManagement/Report/DataMutasiPekerja'] = 'PayrollManagement/Report/DataMutasiPekerja/C_DataMutasiPekerja';
+$route['PayrollManagement/Report/DataMutasiPekerja/(:any)'] = 'PayrollManagement/Report/DataMutasiPekerja/C_DataMutasiPekerja/$1';
+$route['PayrollManagement/Report/DataMutasiPekerja/(:any)/(:any)'] = 'PayrollManagement/Report/DataMutasiPekerja/C_DataMutasiPekerja/$1/$2';
+
+$route['PayrollManagement/Report/BuktiPotonganPajakPekerja'] = 'PayrollManagement/Report/BuktiPotonganPajakPekerja/C_BuktiPotonganPajakPekerja';
+$route['PayrollManagement/Report/BuktiPotonganPajakPekerja/(:any)'] = 'PayrollManagement/Report/BuktiPotonganPajakPekerja/C_BuktiPotonganPajakPekerja/$1';
+$route['PayrollManagement/Report/BuktiPotonganPajakPekerja/(:any)/(:any)'] = 'PayrollManagement/Report/BuktiPotonganPajakPekerja/C_BuktiPotonganPajakPekerja/$1/$2';
+
+$route['PayrollManagement/Report/RekapPembayaranJKN'] = 'PayrollManagement/Report/RekapPembayaranJKN/C_RekapPembayaranJKN';
+$route['PayrollManagement/Report/RekapPembayaranJKN/(:any)'] = 'PayrollManagement/Report/RekapPembayaranJKN/C_RekapPembayaranJKN/$1';
+$route['PayrollManagement/Report/RekapPembayaranJKN/(:any)/(:any)'] = 'PayrollManagement/Report/RekapPembayaranJKN/C_RekapPembayaranJKN/$1/$2';
+
+$route['PayrollManagement/Report/SummaryKlaimGajiDept'] = 'PayrollManagement/Report/SummaryKlaimGajiDept/C_SummaryKlaimGajiDept';
+$route['PayrollManagement/Report/SummaryKlaimGajiDept/(:any)'] = 'PayrollManagement/Report/SummaryKlaimGajiDept/C_SummaryKlaimGajiDept/$1';
+$route['PayrollManagement/Report/SummaryKlaimGajiDept/(:any)/(:any)'] = 'PayrollManagement/Report/SummaryKlaimGajiDept/C_SummaryKlaimGajiDept/$1/$2';
+
+$route['PayrollManagement/Report/RincianHutang'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang';
+$route['PayrollManagement/Report/RincianHutang/(:any)'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang/$1';
+$route['PayrollManagement/Report/RincianHutang/(:any)/(:any)'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang/$1/$2';
 
 $route['AccountPayables/KlikBCAChecking/Index'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/KlikBCAChecking/Index/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Index/$1';
@@ -490,6 +814,10 @@ $route['AccountPayables/KlikBCAChecking/Insert/(:any)/(:any)/(:any)'] 	= 'Accoun
 $route['AccountPayables/KlikBCAChecking/Check'] 				= 'AccountPayables/C_KlikBCAChecking_Check';
 $route['AccountPayables/KlikBCAChecking/Check/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Check/$1';
 $route['AccountPayables/KlikBCAChecking/Check/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Check/$1/$2';
+
+$route['AccountPayables/PermintaanDana'] 				= 'AccountPayables/C_PermintaanDana';
+$route['AccountPayables/PermintaanDana/(:any)'] 		= 'AccountPayables/C_PermintaanDana/$1';
+$route['AccountPayables/PermintaanDana/(:any)/(:any)'] 	= 'AccountPayables/C_PermintaanDana/$1/$2';
 
 //---------------------------------------- ADM PELATIHAN ----------------------------------------
 $route['ADMPelatihan'] 									= 'ADMPelatihan/C_ADMPelatihan';
@@ -640,5 +968,61 @@ $route['PayrollManagementNonStaff/Setelan/(:any)/(:any)'] = 'PayrollManagementNo
 
 //-----------------------Payroll Management Non Staff --------------------------------------------
 
+
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
+
+//------------------------------------ Quick Data Cat --------------------------------------------
+$route['QuickDataCat'] = 'QuickDataCat/C_QuickDataCat';
+$route['QuickDataCat/DataCatMasuk'] = 'QuickDataCat/MainMenu/C_DataCatMasuk';
+$route['QuickDataCat/DataCatMasuk/(:any)'] = 'QuickDataCat/MainMenu/C_DataCatMasuk/$1';
+
+$route['QuickDataCat/DataCatKeluar'] = 'QuickDataCat/MainMenu/C_DataCatKeluar';
+$route['QuickDataCat/DataCatKeluar/(:any)'] = 'QuickDataCat/MainMenu/C_DataCatKeluar/$1';
+
+$route['QuickDataCat/LihatStokCat'] = 'QuickDataCat/MainMenu/C_StokCat';
+$route['QuickDataCat/LihatStokCat/(:any)'] = 'QuickDataCat/MainMenu/C_StokCat/$1';
+
+$route['QuickDataCat/LihatStokOnHand'] = 'QuickDataCat/MainMenu/C_StokOnHand';
+$route['QuickDataCat/LihatStokOnHand/(:any)'] = 'QuickDataCat/MainMenu/C_StokOnHand/$1';
+
+//------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
+$route['ItemManagement'] = 'ItemManagement/C_Index/index';
+$route['ItemManagement/MasterItem']  = 'ItemManagement/Admin/C_MasterItem/index';
+$route['ItemManagement/MasterItem/(:any)']  = 'ItemManagement/Admin/C_MasterItem/$1';
+$route['ItemManagement/MasterItem/(:any)/(:any)']  = 'ItemManagement/Admin/C_MasterItem/$1/$2';
+$route['ItemManagement/SetupKebutuhan']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhan/index';
+$route['ItemManagement/SetupKebutuhan/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhan/$1';
+$route['ItemManagement/SetupKebutuhan/Kodesie']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/index';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1/$2';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1/$2/$3';
+$route['ItemManagement/SetupKebutuhan/Kodesie/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanKodesie/$1/$2/$3/$4';
+$route['ItemManagement/SetupKebutuhan/Individu']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/index';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2/$3';
+$route['ItemManagement/SetupKebutuhan/Individu/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/SetupKebutuhan/C_SetupKebutuhanIndv/$1/$2/$3/$4';
+$route['ItemManagement/Hitung/HitungKebutuhan']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/index';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1/$2';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1/$2/$3';
+$route['ItemManagement/Hitung/HitungKebutuhan/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_HitungKebutuhan/$1/$2/$3/$4';
+$route['ItemManagement/Hitung/MonitoringKebutuhan']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/index';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1/$2';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1/$2/$3';
+$route['ItemManagement/Hitung/MonitoringKebutuhan/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/Hitung/C_MonitoringKebutuhan/$1/$2/$3/$4';
+$route['ItemManagement/MonitoringBon']  = 'ItemManagement/Admin/C_MonitoringBon/index';
+$route['ItemManagement/MonitoringBon/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1';
+$route['ItemManagement/MonitoringBon/(:any)/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1/$2';
+$route['ItemManagement/MonitoringBon/(:any)/(:any)/(:any)']  = 'ItemManagement/Admin/C_MonitoringBon/$1/$2/$3';
+$route['ItemManagement/User/MonitoringBon']  = 'ItemManagement/User/C_MonitoringBon/index';
+$route['ItemManagement/User/MonitoringBon/(:any)']  = 'ItemManagement/User/C_MonitoringBon/$1';
+$route['ItemManagement/User/MonitoringBon/(:any)/(:any)']  = 'ItemManagement/User/C_MonitoringBon/$1/$2';
+$route['ItemManagement/User/MonitoringBon/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_MonitoringBon/$1/$2/$3';
+$route['ItemManagement/User/InputPekerja']  = 'ItemManagement/User/C_InputPekerja/index';
+$route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1';
+$route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
+$route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
+$route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';

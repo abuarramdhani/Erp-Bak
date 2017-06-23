@@ -75,6 +75,14 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSKs,
 
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekPSP,
+
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+				AND kd_ket = 'PSP') AS FrekPSPs,
+
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIP,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
@@ -108,7 +116,31 @@ clASs M_rekapmssql extends CI_Model {
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+				) AS FrekSPs,
+
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
+				END AS TotalHK,
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi 
+								WHERE 
+									keluar = '1' 
+									AND masukkerja >= '2016-01-01 00:00:00' 
+									AND nama = a.nama 
+									AND tgllahir = a.tgllahir 
+									AND nik = a.nik
+							)  AND tanggal BETWEEN '$periode1' AND '$periode2'
+						)
+				END AS TotalHKs
 
 			FROM hrd_khs.tpribadi a
 
@@ -195,6 +227,14 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSKs".$monthName.",
 
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekPSP".$monthName.",
+
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+				AND kd_ket = 'PSP') AS FrekPSPs".$monthName.",
+
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIP".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
@@ -248,8 +288,32 @@ clASs M_rekapmssql extends CI_Model {
 			return $query->result_array();
 	}
 
-	public function ExportRekap($periode1,$periode2,$status,$seksi)
+	public function ExportRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$seksi)
 	{
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}
+		if ($departemen == 'All') {
+			$departemen = "rtrim(dept)";
+		}
+		else{
+			$departemen = "rtrim('$departemen')";
+		}
+		if ($bidang == 'All') {
+			$bidang = "rtrim(bidang)";
+		}
+		else{
+			$bidang = "rtrim('$bidang')";
+		}
+		if ($unit == 'All') {
+			$unit = "rtrim(unit)";
+		}
+		else{
+			$unit = "rtrim('$unit')";
+		}
 		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
@@ -291,6 +355,14 @@ clASs M_rekapmssql extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekSKs,
 
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekPSP,
+
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$periode1' AND '$periode2')
+					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+				AND kd_ket = 'PSP') AS FrekPSPs,
+
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$periode1' AND '$periode2') AS FrekIP,
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
@@ -324,7 +396,31 @@ clASs M_rekapmssql extends CI_Model {
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+				) AS FrekSPs,
+
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
+				END AS TotalHK,
+				CASE
+					WHEN  ('$periode1' < '2016-01-01 00:00:00' AND a.masukkerja < '2016-01-01 00:00:00')
+					THEN
+						'0'
+					ELSE 
+						(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
+							(SELECT noind FROM hrd_khs.tpribadi 
+								WHERE 
+									keluar = '1' 
+									AND masukkerja >= '2016-01-01 00:00:00' 
+									AND nama = a.nama 
+									AND tgllahir = a.tgllahir 
+									AND nik = a.nik
+							)  AND tanggal BETWEEN '$periode1' AND '$periode2'
+						)
+				END AS TotalHKs
 
 			FROM hrd_khs.tpribadi a
 
@@ -332,7 +428,10 @@ clASs M_rekapmssql extends CI_Model {
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 			WHERE keluar = '0'
-				AND a.kode_status_kerja = '$status'
+				AND a.kode_status_kerja = $status
+				AND rtrim(dept) = $departemen
+				AND rtrim(bidang) = $bidang
+				AND rtrim(unit) = $unit
 				AND rtrim(seksi) = $section
 
 			ORDER BY noind
@@ -341,8 +440,32 @@ clASs M_rekapmssql extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function ExportDetail($firstdate,$lastdate,$status,$seksi,$monthName)
+	public function ExportDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$seksi,$monthName)
 	{
+		if ($status == 'All') {
+			$status = "a.kode_status_kerja";
+		}
+		else{
+			$status = "'$status'";
+		}		
+		if ($departemen == 'All') {
+			$departemen = "rtrim(dept)";
+		}
+		else{
+			$departemen = "rtrim('$departemen')";
+		}
+		if ($bidang == 'All') {
+			$bidang = "rtrim(bidang)";
+		}
+		else{
+			$bidang = "rtrim('$bidang')";
+		}
+		if ($unit == 'All') {
+			$unit = "rtrim(unit)";
+		}
+		else{
+			$unit = "rtrim('$unit')";
+		}
 		if ($seksi == 'All') {
 			$section = "rtrim(seksi)";
 		}
@@ -383,6 +506,14 @@ clASs M_rekapmssql extends CI_Model {
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' )
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'PSK' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekSKs".$monthName.",
+
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PSP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekPSP".$monthName.",
+
+				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind IN
+					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND tanggal BETWEEN '$firstdate' AND '$lastdate')
+					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+				AND kd_ket = 'PSP') AS FrekPSPs".$monthName.",
 
 				(SELECT count(*) FROM \"Presensi\".tdatapresensi WHERE noind = a.noind AND kd_ket = 'PIP' AND tanggal BETWEEN '$firstdate' AND '$lastdate') AS FrekIP".$monthName.",
 
@@ -425,7 +556,10 @@ clASs M_rekapmssql extends CI_Model {
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
 
 			WHERE keluar = '0'
-				AND a.kode_status_kerja = '$status'
+				AND a.kode_status_kerja = $status
+				AND rtrim(dept) = $departemen
+				AND rtrim(bidang) = $bidang
+				AND rtrim(unit) = $unit
 				AND rtrim(seksi) = $section
 
 			ORDER BY noind

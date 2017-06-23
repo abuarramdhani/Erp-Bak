@@ -134,7 +134,8 @@ $(document).ready(function() {
 			var year 		= $('input[name="TxtTahun"]').val();
 			var invoice_num = $('input[name="TxtInvoiceNumber"]').val();
 			var name 		= $('select[name="TxtNama"]').val();
-			
+			var tanggal_awal 	= $('input[name="tanggal_awal"]').val();
+    		var tanggal_akhir 	= $('input[name="tanggal_akhir"]').val();
 			var ket1		= 'no'; if(document.getElementById('ket1').checked){ket1= 'yes';}
 			var ket2		= 'no'; if(document.getElementById('ket2').checked){ket2= 'yes';}
 			
@@ -159,6 +160,9 @@ $(document).ready(function() {
 						sta3:sta3, 
 						typ1:typ1, 
 						typ2:typ2, 
+						tanggal_awal:tanggal_awal,
+    					tanggal_akhir:tanggal_akhir,
+
 					},
 				url:baseurl+"AccountPayables/C_Invoice/FindFaktur",
 				success:function(result)

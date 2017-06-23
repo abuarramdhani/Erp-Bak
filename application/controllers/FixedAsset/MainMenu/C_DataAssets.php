@@ -73,25 +73,15 @@ class C_DataAssets extends CI_Controller {
 		// The `db` parameter represents the column name in the database, while the `dt`
 		// parameter represents the DataTables column identifier. In this case simple
 		// indexes
-		$columns = array(
+		if ($this->session->user == 'B0269' || $this->session->user == 'P0255') {
+			$columns = array(
 			
 			array( 
             'db' => 'asset_data_id', 
             'dt' => 0,
             'formatter' => function( $d, $row ) {
-                $buttons='<a style="margin-right:8px;margin-left:4px;" href="'.site_url("FixedAsset/DataAssets/DeleteData/".$row['asset_data_id']).'"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?" class="confirm">
-							<i class="fa fa-trash fa-2x"></i>
-						</a>
-						<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Update/".$row['asset_data_id']).'"  alt="Update" title="Update" >
-							<i class="fa fa-pencil-square-o fa-2x"></i>
-						</a>
-						<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Copy/".$row['asset_data_id']).'"  alt="Copy" title="Copy">
-							<i class="fa fa-files-o fa-2x"></i>
-						</a>
-						<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmDeleteAsset"/>
-						<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmUpdateAsset"/>';
-                return $buttons;
-				}
+                	return '<p style="text-align:center;">-</p>';
+            	},
 			),
 			array( 'db' => 'asset_data_id', 	'dt' => 1 ),
 			array( 'db' => 'tag_number', 		'dt' => 2 ),
@@ -221,6 +211,156 @@ class C_DataAssets extends CI_Controller {
 			array( 'db' => 'asset_group',     	'dt' => 34 ),
 			
 		);
+		} else {
+			$columns = array(
+			
+			array( 
+            'db' => 'asset_data_id', 
+            'dt' => 0,
+            'formatter' => function( $d, $row ) {
+	        		$buttons='<a style="margin-right:8px;margin-left:4px;" href="'.site_url("FixedAsset/DataAssets/DeleteData/".$row['asset_data_id']).'"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?" class="confirm">
+						<i class="fa fa-trash fa-2x"></i>
+					</a>
+					<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Update/".$row['asset_data_id']).'"  alt="Update" title="Update" >
+						<i class="fa fa-pencil-square-o fa-2x"></i>
+					</a>
+					<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Copy/".$row['asset_data_id']).'"  alt="Copy" title="Copy">
+						<i class="fa fa-files-o fa-2x"></i>
+					</a>
+					<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmDeleteAsset"/>
+					<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmUpdateAsset"/>';
+	        		return $buttons;
+	        	},
+			),
+			array( 'db' => 'asset_data_id', 	'dt' => 1 ),
+			array( 'db' => 'tag_number', 		'dt' => 2 ),
+			array( 'db' => 'location',  		'dt' => 3 ),
+			array( 'db' => 'asset_category',   	'dt' => 4 ),
+			array( 'db' => 'item_code',     	'dt' => 5 ),
+			array( 'db' => 'specification',     'dt' => 6 ),
+			array( 'db' => 'serial_number',     'dt' => 7 ),
+			array( 'db' => 'power',     		'dt' => 8 ),
+			array( 'db' => 'old_number',     	'dt' => 9 ),
+			array(
+				'db'        => 'ownership_date',
+				'dt'        => 10,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'person_in_charge',  'dt' => 11 ),
+			array( 'db' => 'bppba_number',     	'dt' => 12 ),
+			array(
+				'db'        => 'bppba_date',
+				'dt'        => 13,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+					
+				}
+			),
+			array( 'db' => 'lpa_number',     	'dt' => 14),
+			array(
+				'db'        => 'lpa_date',
+				'dt'        => 15,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'transfer_number',    'dt' => 16 ),
+			array(
+				'db'        => 'transfer_date',
+				'dt'        => 17,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'retirement_number', 'dt' => 18 ),
+			array(
+				'db'        => 'retirement_date',
+				'dt'        => 19,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'pp_number',     	'dt' => 20 ),
+			array( 'db' => 'po_number',     	'dt' => 21 ),
+			array( 'db' => 'pr_number',     	'dt' => 22 ),
+			array( 'db' => 'add_by',     		'dt' => 23 ),
+			array(
+				'db'        => 'add_by_date',
+				'dt'        => 24,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return strtoupper(date( 'd-M-Y', strtotime($d)));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'upload_oracle',     'dt' => 25),
+			array(
+				'db'        => 'upload_oracle_date',
+				'dt'        => 26,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'description',     	'dt' => 27 ),
+			array( 'db' => 'insurance',     	'dt' => 28 ),
+			array( 'db' => 'appraisal',     	'dt' => 29 ),
+			array( 'db' => 'stock_opname',      'dt' => 30 ),
+			array( 'db' => 'sticker',     		'dt' => 31 ),
+			array(
+				'db'        => 'asset_value',
+				'dt'        => 32,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return number_format($d);
+					}else{
+						return '';
+					}
+					
+				}
+			),
+			array(
+				'db'        => 'asset_age',
+				'dt'        => 33,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return number_format($d);
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'asset_group',     	'dt' => 34 ),
+			
+		);
+		}
 		 
 		// SQL server connection information
 		$sql_details = array(

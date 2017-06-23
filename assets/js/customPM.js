@@ -122,7 +122,31 @@ $(document).ready(function() {
 			}
 		});
 		
-	
+	$(".select2-location-single-access").select2({
+			allowClear: true,
+			tags: true,
+			placeholder: "[ Select Location Device ]",
+			minimumInputLength: 0,
+			ajax: {
+				url:baseurl+"PresenceManagement/Monitoring/JsonLocation",
+				dataType: 'json',
+				type: "GET",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term
+					}
+					return queryParameters;
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id: obj.id_lokasi, text: obj.lokasi };
+						})
+					};
+				}
+			}
+		});
+		
 	//========================
 	// END PRESENCE MANAGEMENT
 	//========================
@@ -231,6 +255,22 @@ $(document).ready(function() {
 	
 	$(document).on("click", ".btn-refresh-db", function () {
 		$('#modal-loader').modal('show');
+	});
+	
+	$(document).on("change", "#txtLocation", function () {
+		 var loc = $('#txtLocation').val();
+		 var host	= window.location.origin;
+		 $.ajax({
+			  type:"POST",
+			  dataType: 'html',
+			  url: host+"/erp/PresenceManagement/Monitoring/SwitchTable",
+			  data: {loc:loc},
+			  success: function(data) {
+				$('#datatable-presensi-presence-management tbody').html(data);
+				$('#desLocationSection').val(loc);
+				$('#desLocationPerson').val(loc);
+			  }
+			});
 	});
 
 });

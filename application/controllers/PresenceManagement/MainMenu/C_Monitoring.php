@@ -510,6 +510,75 @@ class C_Monitoring extends CI_Controller {
 		echo json_encode($result);
 	}
 	
+	public function JsonLocation(){
+		$q = strtoupper($this->input->get('term')); //variabel kode lokasi
+		$result = $this->M_monitoring->getLocationJson($q);
+		echo json_encode($result);
+	}
+	
+	public function SwitchTable(){
+		$loc = $this->input->post('loc');
+		$dataLocal	= $this->M_monitoring->getDataLocalComputer($loc);
+		$no = 0;
+		$enc_loc = $this->encrypt->encode($loc);
+		$enc_loc = str_replace(array('+', '/', '='), array('-', '_', '~'), $enc_loc);
+		foreach($dataLocal as $row){
+			$enc_id = $this->encrypt->encode($row['noind']);
+			$enc_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $enc_id);											
+				if($row['lokasi_kerja'] == "01"){
+					$lokasikerja = "KHS PUSAT";
+				}elseif($row['lokasi_kerja'] == "02"){
+					$lokasikerja = "KHS TUKSONO";
+				}else{
+					$lokasikerja = "UNREGISTERED";
+				}
+				
+				if($row['keluar'] == 0){
+						$status = "no";
+						$color	= "green";
+					}else{
+						$status = "yes";
+						$color	= "red";
+				}
+			$no++;
+			echo "<tr>";
+				echo "<td align='center'>".$no."</td>";
+				echo "<td align='center'>".$row['noind']."</td>";
+				echo "<td>".$row['nama']."</td>";
+				echo "<td align='center'>".$row['jenkel']."</td>";
+				echo "<td align='center'>".$row['kodesie']."</td>";
+				echo "<td align='center' style='color:".$color."'>".strtoupper($status)."</td>";
+				echo "<td align='center'>".$lokasikerja."</td>";
+				echo "<td align='center'>".strtoupper($row['noind_baru'])."</td>";
+				echo "<td align='center'>
+						<a target='blank_' title='Check Data Fingercode' class='modalcheckfinger btn bg-green btn-xs' href='".site_url('PresenceManagement/Monitoring/Show/'.$enc_loc.'?id='.$enc_id.'')."'><i class='fa fa-hand-paper-o'></i></a>
+						<a title='Mutation / Change to another device' data-toggle='modal' data-filter='".$row['nama']."' data-id='".$row['noind']."' class='modalmutation btn bg-orange btn-xs' href='#confirm-mutation'><i class='fa fa-random'></i></a>
+						<a title='remove person from this device' href='' data-href='".site_url('PresenceManagement/Monitoring/Delete/'.$enc_loc.'?id='.$enc_id.'')."' data-toggle='modal' data-target='#confirm-delete' class='btn bg-red btn-xs'><i class='fa fa-remove'></i></a>
+					 </td>";
+			echo "</tr>";
+			
+			
+			
+			/*
+			
+			<td align="center"><?php echo $no ?></td>
+			<td align="center"><?php echo $data_registered['noind'] ?></td>
+			<td><?php echo $data_registered['nama'] ?></td>
+			<td align="center"><?php echo $data_registered['jenkel'] ?></td>
+			<td align="center"><?php echo $data_registered['kodesie'] ?></td>
+			<td align="center" style="color:<?php echo $color; ?>"><?php echo strtoupper($status) ?></td>
+			<td align="center"><?php echo $lokasikerja; ?></td>
+			<td align="center"><?php echo strtoupper($data_registered['noind_baru']) ?></td>
+			<td align="center">
+				<a title="Check Data Fingercode" class="modalcheckfinger btn bg-green btn-xs"  href="<?php echo site_URL('PresenceManagement/Monitoring/Show/'.$enc_loc.'?id='.$enc_id.'') ?>"><i class="fa fa-hand-paper-o"></i> </a> 
+				<a title="Mutation / Change to another device" data-toggle="modal" data-filter="<?php echo $data_registered['nama']; ?>" data-id="<?php echo $data_registered['noind']; ?>" class="modalmutation btn bg-orange btn-xs"  href="#confirm-mutation"><i class="fa fa-random"></i></a>
+				<a title="remove person from this device" href="" data-href="<?php echo site_URL('PresenceManagement/Monitoring/Delete/'.$enc_loc.'?id='.$enc_id.'') ?>" data-toggle="modal" data-target="#confirm-delete" class="btn bg-red btn-xs"><i class="fa fa-remove"></i></a>
+			</td>
+			
+			*/
+		}
+	}
+	
 	public function Access(){
 		
 		$this->checkSession();
@@ -756,6 +825,24 @@ class C_Monitoring extends CI_Controller {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_CheckPresence',$data);
+			$this->load->view('V_Footer',$data);
+		}
+		
+		public function PresenceAccess(){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Single Access';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_SingleAccess',$data);
 			$this->load->view('V_Footer',$data);
 		}
 	
