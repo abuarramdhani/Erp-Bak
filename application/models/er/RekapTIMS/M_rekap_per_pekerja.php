@@ -553,7 +553,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		public function rekapPersonInfo($nik)
 	{
 		$sql = "
-			SELECT a.nik,a.nama,b.seksi,b.unit,b.bidang,b.dept,a.kode_status_kerja,c.fs_ket
+			SELECT a.noind,a.nik,a.nama,b.seksi,b.unit,b.bidang,b.dept,a.kode_status_kerja,c.fs_ket
 			FROM hrd_khs.tpribadi a
 			INNER join hrd_khs.tseksi b on a.kodesie=b.kodesie
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
@@ -568,7 +568,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	public function rekapPersonTIM($periode1,$periode2,$nik,$keterangan)
 	{
 		$sql = "
-			SELECT a.nama, b.tanggal, b.masuk, b.keluar, b.kd_ket
+			SELECT a.noind,a.nama, b.tanggal, b.masuk, b.keluar, b.kd_ket
 				FROM \"Presensi\".TDataTIM b
 				LEFT JOIN hrd_khs.TPribadi a on b.noind = a.noind
 				WHERE a.nik = '$nik'
@@ -584,7 +584,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 	public function rekapPersonSIP($periode1,$periode2,$nik,$keterangan)
 	{
 		$sql = "
-			SELECT a.nama, b.tanggal, b.masuk, b.keluar, b.kd_ket
+			SELECT a.noind,a.nama, b.tanggal, b.masuk, b.keluar, b.kd_ket
 				FROM \"Presensi\".TDataPresensi b
 				LEFT JOIN hrd_khs.TPribadi a on b.noind = a.noind
 				WHERE a.nik = '$nik'
@@ -651,7 +651,8 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 					AND keluar = '1'
 			)
-			ORDER BY nik, nama, masukkerja DESC, tglkeluar DESC
+			ORDER BY nik,nama,masukkerja, keluar desc
+			
 			
 		";
 		$query = $this->personalia->query($sql);

@@ -824,7 +824,7 @@ clASs M_rekapmssql extends CI_Model {
 
 					AND keluar = '1'
 			)
-			ORDER BY nik, nama, masukkerja DESC, tglkeluar DESC
+			ORDER BY nik,nama,masukkerja, keluar desc
 			
 		";
 		$query = $this->personalia->query($sql);
