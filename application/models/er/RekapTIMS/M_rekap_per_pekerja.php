@@ -924,6 +924,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
-
 }
+}
+
 ?>
