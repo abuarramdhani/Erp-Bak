@@ -269,6 +269,12 @@ function searchByKomp(base) {
         window.setTimeout(function() {
             $('#result').html('');
             $('#result').html(output);
+            $('#tableMonitor').dataTable({
+                "dom": '<"pull-left"f>tp',
+                "paging": true,
+                "searching": true,
+                "ordering": false,
+            });
         }, 1000);
     });
 }
@@ -290,6 +296,12 @@ function searchBySA(base) {
         window.setTimeout(function() {
             $('#result').html('');
             $('#result').html(output);
+            $('#tableMonitor').dataTable({
+                "dom": '<"pull-left"f>tp',
+                "paging": true,
+                "searching": true,
+                "ordering": false,
+            });
         }, 1000);
     });
 }

@@ -1,23 +1,4 @@
-<script src="<?php echo BASE_URL('assets/plugins/jQuery/jQuery-2.1.4.min.js');?>"></script>
-<script src="<?php echo base_url('assets/plugins/datatables/jquery.dataTables.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/datatables/dataTables.bootstrap.js');?>"></script>
-     <script>
-         $(document).ready(function () {
-             $('#dataTables-example').dataTable({
-			  "bSort" : false
-			});
-			
-			$('#dataTables-table').dataTable({
-			  "bSort" : false,
-			   "searching": false,
-			   "bLengthChange": false
-			});
-         });
-    </script>
-	<script type="text/javascript">
-	
-	</script>
-<table class="table table-striped table-bordered table-hover text-center" id="myTables" style="font-size:12px;min-width:1500px;table-layout: fixed;">
+<table class="table table-striped table-bordered table-hover text-center" id="tableMonitor" style="font-size:12px;min-width:1500px;table-layout: fixed;">
 	<thead>
 		<tr class="bg-primary">
 			<td width="4%">NO</td>
