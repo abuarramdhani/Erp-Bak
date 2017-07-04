@@ -52,7 +52,7 @@
                                         ID Organization
                                     </label>
                                     <div class="col-md-8">
-                                        <select class="form-control select-2" id="txtOrgId" name="txtOrg" onchange="getSubInvent()" required="">
+                                        <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
                                             <option disabled="" selected="" value="">
                                                 -- Choose One --
                                             </option>
@@ -65,26 +65,23 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="formPerKopm">
-                                    <div class="form-group row">
-                                        <label class="col-md-4 control-label">
-                                            Sub Inventory
-                                        </label>
-                                        <div class="col-md-8">
-                                            <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori" onchange="getKodeKomp()" required="">
-                                            </select>
-                                        </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 control-label">
+                                        Sub Inventory
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori" onchange="getLocator()" required="">
+                                        </select>
                                     </div>
+                                </div>
+                                <div id="formPerKopm">
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
                                             Item
                                         </label>
                                         <div class="col-md-8">
-                                            <select class="form-control select-2" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
+                                            <select class="form-control jsComponent" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
                                             </select>
-                                            <!-- <select class="form-control jsItem" id="SlcItem" name="SlcItem" onchange="GetDescription('<?php echo base_url(); ?>')">
-						<option value=""></option>
-						</select> -->
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -119,17 +116,6 @@
                                     </div>
                                 </div>
                                 <div hidden="" id="formPerSA">
-                                    <div class="form-group row">
-                                        <label class="col-md-4 control-label">
-                                            Sub Inventory
-                                        </label>
-                                        <div class="col-md-8">
-                                            <select class="form-control jsSubinventori" id="SlcSubInventori2" name="SlcSubInventori2" style="width: 100%">
-                                                <option value="">
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
                                             Kode Assembly

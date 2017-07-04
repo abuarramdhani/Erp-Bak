@@ -71,7 +71,7 @@
                                             </label>
                                             <div class="col-md-8">
                                                 <!-- <input type="text" name="SlcItem" onfocus="callModal(<?php echo site_url('StorageLocation/Search/ModGetComponent')?>)"> -->
-                                                <select class="form-control jsItem" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
+                                                <select class="form-control jsComponent" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
                                                     <option></option>
                                                 </select>
                                             </div>

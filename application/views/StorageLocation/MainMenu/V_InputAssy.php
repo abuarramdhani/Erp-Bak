@@ -29,12 +29,15 @@
                 <br>
                     <div class="box box-primary box-solid">
                         <div class="box-header with-border">
-                            Input New Component Data
+                            Input Sub Assy Data
                         </div>
                         <div class="box-body">
+                            <div align="center">
+                                <?php echo $message; ?>
+                            </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form action="saveinputassy" method="post">
+                                    <form action="<?php echo base_url('StorageLocation/InputSubAssy/Create'); ?>" method="post">
                                         <div class="row">
                                             <div class="col-lg-8 col-lg-push-2">
                                                 <div class="form-group row">
@@ -42,10 +45,8 @@
                                                         ID Organization
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
-                                                            <option disabled="" selected="" value="">
-                                                                -- Choose One --
-                                                            </option>
+                                                        <select class="form-control select-2" id="IdOrganization" name="IdOrganization" onchange="getSubInvent()" required="">
+                                                            <option></option>
                                                             <option value="102">
                                                                 ODM
                                                             </option>
@@ -60,7 +61,8 @@
                                                         Sub Inventory
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori2">
+                                                        <select class="form-control select-2" disabled="" id="SlcSubInventori" name="SlcSubInventori2" onchange="getLocator()">
+                                                        <option></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -69,9 +71,8 @@
                                                         Kode Assembly
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy2" onchange="GetDescAssy('<?php echo base_url(); ?>')">
-                                                            <option value="">
-                                                            </option>
+                                                        <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy()">
+                                                            <option></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -80,7 +81,7 @@
                                                         Nama Assembly
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" id="txtNameAssy" name="txtNameAssy2" placeholder="Nama Assembly" readonly="">
+                                                        <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Nama Assembly" readonly="">
                                                         </input>
                                                     </div>
                                                 </div>
@@ -89,7 +90,7 @@
                                                         Tipe Assembly
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" id="txtTypeAssy" name="txtTypeAssy2" placeholder="Input Tipe Assembly" readonly="" type="text">
+                                                        <input class="form-control" id="txtTypeAssy" name="txtTypeAssy" placeholder="Input Tipe Assembly" readonly="" type="text">
                                                         </input>
                                                     </div>
                                                 </div>
@@ -98,7 +99,7 @@
                                                         Locator
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select-2" data-placeholder="Pilih Locator" disabled="" id="SlcLocator" name="txtLocator2">
+                                                        <select class="form-control select-2" data-placeholder="Pilih Locator" disabled="" id="SlcLocator" name="txtLocator">
                                                             <option value="">
                                                             </option>
                                                         </select>
@@ -111,7 +112,7 @@
                                                 <div class="box box-default box-solid">
                                                     <div class="box-header with-border">
                                                         <div class="pull-left">
-                                                            Lines
+                                                            Input Component Data
                                                         </div>
                                                         <div class="pull-right">
                                                             <button class="btn btn-primary fa fa-plus min" onclick="add_row('table_input')" type="button">
@@ -134,17 +135,17 @@
                                                                         <td>
                                                                             Alamat Simpan
                                                                         </td>
-                                                                        <td style="width: 200px;">
+                                                                        <td style="width: 100px;">
                                                                             LPPB/MO/KIB
                                                                         </td>
-                                                                        <td style="width: 200px;">
+                                                                        <td style="width: 100px;">
                                                                             PICKLIST
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="tr_clone">
                                                                         <td>
-                                                                            <select class="form-control jsItem select_input" id="SlcItem2" name="SlcItem2[]" onchange="GetName('<?php echo base_url(); ?>',event,this)" style="width: 100%;">
-                                                                                <option value="">
+                                                                            <select class="form-control jsCompByAssy select_input" id="SlcItem2" name="SlcItem[]" onchange="GetName(this)" style="width: 100%">
+                                                                                <option>
                                                                                 </option>
                                                                             </select>
                                                                         </td>
@@ -153,13 +154,11 @@
                                                                             </input>
                                                                         </td>
                                                                         <td>
-                                                                            <input class="form-control" name="txtAlamat2[]" type="text"/>
+                                                                            <input class="form-control" name="txtAlamat[]" type="text"/>
                                                                         </td>
                                                                         <td>
                                                                             <select class="form-control select-2" id="txtLmk" name="txtLmk[]" required="">
-                                                                                <option selected="" value="">
-                                                                                    -- Choose One --
-                                                                                </option>
+                                                                                <option></option>
                                                                                 <option value="1">
                                                                                     YES
                                                                                 </option>
@@ -167,15 +166,10 @@
                                                                                     NO
                                                                                 </option>
                                                                             </select>
-                                                                            <!-- <input class="lmk_check" hidden="" name="txtLmk2[]" type="text" value="0">
-                                                                                <input class="ceklmk" id="txtLmk2[]" name="txtLmk2[]" onchange="lmkcheck(event,this)" type="checkbox" value="1"/>
-                                                                            </input> -->
                                                                         </td>
                                                                         <td>
                                                                             <select class="form-control select-2" id="txtPicklist" name="txtPicklist[]" required="">
-                                                                                <option selected="" value="">
-                                                                                    -- Choose One --
-                                                                                </option>
+                                                                                <option></option>
                                                                                 <option value="1">
                                                                                     YES
                                                                                 </option>
@@ -183,9 +177,6 @@
                                                                                     NO
                                                                                 </option>
                                                                             </select>
-                                                                            <!-- <input class="pick_check" hidden="" name="txtPicklist2[]" type="text" value="0">
-                                                                                <input class="cekpicklist" id="txtPicklist2[]" name="txtPicklist2[]" onchange="pickcheck(event,this)" type="checkbox" value="1"/>
-                                                                            </input> -->
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -205,9 +196,6 @@
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-                            <div align="center">
-                                <?php echo $message; ?>
                             </div>
                         </div>
                     </div>

@@ -66,10 +66,8 @@
                                         ID ORGANIZATION
                                     </label>
                                     <div class="col-md-9">
-                                        <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
-                                            <option disabled="" selected="" value="">
-                                                -- Choose One --
-                                            </option>
+                                        <select class="form-control select-2" id="IdOrganization" name="IdOrganization" onchange="getSubInvent()" required="">
+                                            <option></option>
                                             <option value="102">
                                                 ODM
                                             </option>
@@ -84,7 +82,8 @@
                                         SUB INVENTORY
                                     </label>
                                     <div class="col-lg-9">
-                                        <select class="form-control select-2" id="SlcSubInventori" name="SlcSubInventori" onchange="getKodeKomp()" disabled="">
+                                        <select class="form-control select-2" id="SlcSubInventori" name="SlcSubInventori" onchange="getLocator()" disabled="">
+                                            <option></option>
                                         </select>
                                     </div>
                                 </div>
@@ -94,6 +93,7 @@
                                     </label>
                                     <div class="col-lg-9">
                                         <select class="form-control select-2" data-placeholder="Pilih Locator" disabled="" id="SlcLocator" name="SlcLocator">
+                                            <option></option>
                                         </select>
                                     </div>
                                 </div>
@@ -103,7 +103,8 @@
                                             KODE ITEM
                                         </label>
                                         <div class="col-lg-9">
-                                            <select class="form-control select-2" id="SlcItem" name="SlcItem" onchange="GetDescription('<?php echo base_url(); ?>')" required="" disabled>
+                                            <select class="form-control jsComponent" id="SlcItem" name="SlcItem" onchange="GetDescription(this)" required="" disabled>
+                                                <option></option>
                                             </select>
                                         </div>
                                     </div>
@@ -125,8 +126,8 @@
                                             </b>
                                         </label>
                                         <div class="col-lg-9">
-                                            <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy('<?php echo base_url(); ?>')" required="" style="width: 100%">
-                                                <option value="">
+                                            <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy()" required="" style="width: 100%">
+                                                <option>
                                                 </option>
                                             </select>
                                         </div>
