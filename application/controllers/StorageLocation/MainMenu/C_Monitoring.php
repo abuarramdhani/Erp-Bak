@@ -42,29 +42,31 @@ class C_Monitoring extends CI_Controller
 
 	public function searchByKomp()
 	{
+		$org_id 	= $this->input->post('org');
 		$sub_inv 	= $this->input->post('sub_inv');
 		$locator 	= $this->input->post('locator');
-		$kode_item 	= $this->input->post('kode_item');
-		$org_id 	= $this->input->post('org');
+		$component 	= $this->input->post('kode_item');
+		$a 			= explode('|', $component);
+		$kode_item 	= $a[0];
 		$data['ByKomp'] = $this->M_Monitoring->searchByKomp($sub_inv,$locator,$kode_item,$org_id);
 		$this->load->view('StorageLocation/MainMenu/V_SearchByComponent',$data);
 	}
 
 	public function searchBySA()
 	{
-		$sub_inv = $this->input->get('sub_inv');
-		$locator = $this->input->get('locator');
-		$kode_assy = $this->input->get('kode_assy');
-		$org_id = $this->input->get('org_id');
+		$sub_inv 	= $this->input->get('sub_inv');
+		$locator 	= $this->input->get('locator');
+		$kode_assy 	= $this->input->get('kode_assy');
+		$org_id 	= $this->input->get('org_id');
 		$data['BySA'] = $this->M_Monitoring->searchBySA($sub_inv,$locator,$kode_assy,$org_id);
 		$this->load->view('StorageLocation/MainMenu/V_SearchByAssembly',$data);
 	}
 
 	public function searchByAll()
 	{
-		$sub_inv = $this->input->get('sub_inv');
-		$locator = $this->input->get('locator');
-		$alamat = $this->input->get('alamat');
+		$sub_inv 	= $this->input->post('sub_inv');
+		$locator 	= $this->input->post('locator');
+		$alamat 	= $this->input->post('alamat');
 		$data['ByKomp'] = $this->M_Monitoring->searchByAll($sub_inv,$locator,$alamat);
 		$this->load->view('StorageLocation/MainMenu/V_SearchByComponent',$data);
 	}
