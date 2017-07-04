@@ -83,9 +83,9 @@ class M_monitoring extends CI_Model {
 				}
 			}
 
-			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
+			$sql= $this->oracle->query("SELECT distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION
 						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
+						                , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
 						            from mtl_system_items_b msib ,khs.khslokasisimpan kls , mtl_system_items_b msib2 
 						            where kls.COMPONENT = msib.SEGMENT1
            								 and msib2.segment1 = kls.assembly
@@ -145,9 +145,9 @@ class M_monitoring extends CI_Model {
 				}
 			}
 
-			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
+			$sql= $this->oracle->query("SELECT distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION
 						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
+						                , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
 						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
 						            where kls.COMPONENT = msib.SEGMENT1
            								 and msib2.segment1 = kls.assembly
@@ -195,14 +195,15 @@ class M_monitoring extends CI_Model {
 				}
 			}
 
-			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
+			$sql= "SELECT distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION
 						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
+						                , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
 						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
 						            where kls.COMPONENT = msib.SEGMENT1
            								 and msib2.segment1 = kls.assembly
-						             	 $p $a $p1 $b $p2 $c");
-			return $sql->result_array();			
+						             	 $p $a $p1 $b $p2 $c";
+			$query = $this->oracle->query($sql);
+			return $query->result_array();			
     }
 
 }
