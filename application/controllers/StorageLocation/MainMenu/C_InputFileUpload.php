@@ -87,6 +87,7 @@ class C_InputFileUpload extends CI_Controller
             $sheet 			= $objPHPExcel->getSheet(0);
             $highestRow 	= $sheet->getHighestRow();
             $highestColumn 	= $sheet->getHighestColumn();
+            $errStock       = 0;
 
             for ($row = 3; $row <= $highestRow; $row++){
             	$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
@@ -102,11 +103,27 @@ class C_InputFileUpload extends CI_Controller
                     $lppbmokib      = $rowData[0][8];
                     $picklist       = $rowData[0][9];
                     $username_save  = $user_name;
+
+                    if (!is_numeric($lppbmokib)) {
+                        $errStock++;
+                    }elseif (strlen($lppbmokib)>1) {
+                        $errStock++;
+                    }
+
+                    if (!is_numeric($picklist)) {
+                        $errStock++;
+                    }elseif (strlen($picklist)>1) {
+                        $errStock++;
+                    }
+
+                    if (empty($org_id)||empty($sub_inv) || empty($kode_assy) || empty($type_assy) || empty($kode_item)) {
+                        $errStock++;
+                    }
                 }else {
                 	$data = null;
                 }
 
-                if ($data !=null) {
+                if ($data !=null && $errStock == 0) {
                 	$checkData = $this->M_inputfileupload->cekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator);
                 	if ($checkData>0) {
                 		$this->M_inputfileupload->updateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator,$alamat_simpan,$lppbmokib,$picklist,$username_save);
@@ -116,18 +133,31 @@ class C_InputFileUpload extends CI_Controller
                 }
             }
             unlink($inputFileName);
-
-            $message = '<div class="row">
-            				<div class="col-md-12">
-            					<div id="eror" class="alert alert-dismissible alert-success" role="alert">
-            						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            							<span aria-hidden="true">&times;</span>
-            						</button>
-            						Upload Completed!
-            					</div>
-            				</div>
-            			</div>';
+            if ($errStock > 0) {
+                $message = '<div class="row">
+                                <div class="col-md-12">
+                                    <div id="eror" class="alert alert-dismissible alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        Format pengisian data tidak sesuai format!
+                                    </div>
+                                </div>
+                            </div>';
+            }else{
+                $message = '<div class="row">
+                                <div class="col-md-12">
+                                    <div id="eror" class="alert alert-dismissible alert-success" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        Upload Completed!
+                                    </div>
+                                </div>
+                            </div>';
+            }
             $this->index($message);
+            // redirect('StorageLocation/FileUpload/index/'.$message);
         }
     }
 }
