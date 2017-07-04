@@ -41,7 +41,14 @@ class C_Ajax extends CI_Controller
 	{
 		$term	= $this->input->post('term');
 		$org_id	= $this->input->post('org_id');
-		$data 	= $this->M_ajax->getComponentCode($term,$org_id);
+		$as 	= $this->input->post('assy');
+		if (!empty($as)) {
+			$a = explode('|', $as);
+			$assy = $a[0];
+			$data 	= $this->M_ajax->getCompCodeByAssy($term,$org_id,$assy);
+		}else{
+			$data 	= $this->M_ajax->getComponentCode($term,$org_id);
+		}
 		echo json_encode($data);
 	}
 
@@ -50,12 +57,18 @@ class C_Ajax extends CI_Controller
 	{
 		$org_id	= $this->input->post('org_id');
 		$item 	= $this->input->post('item');
-		$data 	= $this->M_ajax->getAssy($org_id,$item);
-		echo '
-			<option value="muach" disabled selected>-- Choose One --</option>
-		';
-		foreach ($data as $d) {
-			echo '<option value="'.$d['SEGMENT1'].'" data-desc="'.$d['DESCRIPTION'].'" data-type="'.$d['ASSTYPE'].'">'.$d['SEGMENT1'].' | '.$d['DESCRIPTION'].'</option>';
+		if ($item == '' || $item == NULL) {
+			$term = $this->input->post('term');
+			$data 	= $this->M_ajax->getRemoteAssy($org_id,$term);
+			echo json_encode($data);
+		}else{
+			$data 	= $this->M_ajax->getAssy($org_id,$item);
+			echo '
+				<option value="muach" disabled selected>-- Choose One --</option>
+			';
+			foreach ($data as $d) {
+				echo '<option value="'.$d['SEGMENT1'].'" data-desc="'.$d['DESCRIPTION'].'" data-type="'.$d['ASSTYPE'].'">'.$d['SEGMENT1'].' | '.$d['DESCRIPTION'].'</option>';
+			}
 		}
 	}
 
