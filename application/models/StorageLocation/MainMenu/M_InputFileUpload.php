@@ -1,5 +1,5 @@
 <?php
-class M_Monitoring extends CI_Model {
+class M_inputfileupload extends CI_Model {
 
 	var $oracle;
     public function __construct()
@@ -11,198 +11,106 @@ class M_Monitoring extends CI_Model {
   		$this->load->helper('url');
     }
 
-    function getSubinventori($org_id=FALSE)
+    function cekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator)
     {
-    	if ($org_id===FALSE){
-    		$sql = "SELECT SECONDARY_INVENTORY_NAME FROM mtl_secondary_inventories";
-    	}else {
-    		$sql = "SELECT SECONDARY_INVENTORY_NAME FROM mtl_secondary_inventories WHERE ORGANIZATION_ID = '$org_id'";
-    	}
-    	$query = $this->oracle->query($sql);
-    	return $query->result_array();
-    }
+    	if ($sub_inv == "") {
+	        $a = "sub_inv is null";
+	    }else{
+	        $a = "sub_inv ='$sub_inv'";
+	    }
 
-    function locator($sub_inv)
-    {
-    	$sql ="SELECT mil.segment1 SEGMENT1
-	                  FROM mtl_item_locations mil, mtl_secondary_inventories msi
-	                  WHERE msi.SECONDARY_INVENTORY_NAME = '$sub_inv'
-	                  AND msi.SECONDARY_INVENTORY_NAME = mil.SUBINVENTORY_CODE ";
-	    $query=$this->oracle->query($sql);
-	    return $query->result_array();
+	    if ($kode_assy == "") {
+	        $b = "assembly is null";
+	    }else{
+	        $b = "assembly ='$kode_assy'";
+	    }
+
+	    if ($type_assy == "") {
+	        $c = "assembly_type is null";
+	    }else{
+	        $c = "assembly_type ='$type_assy'";
+	    }
+
+	    if ($kode_item == "") {
+	        $d = "component is null";
+	    }else{
+	        $d = "component = '$kode_item'";
+	    }
+
+	    if ($locator == "") {
+	        $f = "LOCATOR is null";
+	    }else{
+	        $f = "LOCATOR ='$locator'";
+	    }
+	    
+	    $sql	= "SELECT * from khs.khslokasisimpan  where ORGANIZATION_ID ='$org_id' and $a and $b and $c and $d and $f";
+	    $query 	= $this->oracle->query($sql);
+	    $result = $query->num_rows();
+	    return $result;
 	}
 
-    function searchByKomp($sub_inv,$locator,$kode_item,$org_id)
-    {
-    	if(($sub_inv == "") and  ($locator == "") and ($kode_item == "") and ($org_id == "")){
-				$p = "";
-				
-			}else{
-				$p = "and";
-			}
-			
-			if($sub_inv == ""){
-				$a = "";
-			}else{
-				$a = "kls.sub_inv = '$sub_inv'";
-			}
+	function updateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator,$alamat_simpan,$lppbmokib,$picklist,$username_save)
+	{
+		if ($sub_inv == "") {
+	        $a2 = "sub_inv is null";
+	    }else{
+	        $a2 = "sub_inv ='$sub_inv'";
+	    }
 
-			if($locator == ""){
-				$b = "";
-				$p1 = "";
-			}else{
-				$b = "kls.LOCATOR like upper('%$locator%')";
-				if(($sub_inv == "")){
-					$p1 = "";
-				}else{
-					$p1 = "and";
-				}
-			}
+	    if ($kode_assy == "") {
+	        $b2 = "assembly is null";
+	    }else{
+	        $b2 = "assembly ='$kode_assy'";
+	    }
 
-			if($kode_item == ""){
-				$c = "";
-				$p2 = "";
-			}else{
-				$c = "kls.COMPONENT like upper('%$kode_item%')";
-				if(($sub_inv == "") and  ($locator == "")){
-					$p2 = "";
-				}else{
-					$p2 = "and";
-				}
-			}
+	    if ($type_assy == "") {
+	        $c2 = "assembly_type is null";
+	    }else{
+	        $c2 = "assembly_type ='$type_assy'";
+	    }
 
-			if($org_id == ""){
-				$d = "";
-				$p3 = "";
-			}else{
-				$d = "kls.organization_id = '$org_id'";
-				if(($sub_inv == "") and  ($locator == "") and ($kode_item == "")){
-					$p3 = "";
-				}else{
-					$p3 = "and";
-				}
-			}
+	    if ($kode_item == "") {
+	        $d2 = "component is null";
+	    }else{
+	        $d2 = "component = '$kode_item'";
+	    }
 
-			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
-						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
-						            from mtl_system_items_b msib ,khs.khslokasisimpan kls , mtl_system_items_b msib2 
-						            where kls.COMPONENT = msib.SEGMENT1
-           								 and msib2.segment1 = kls.assembly
-						             	 $p $a $p1 $b $p2 $c $p3 $d ");
-			return $sql->result_array();			
+	    $sql = "UPDATE khs.khslokasisimpan
+	    		SET ALAMAT_SIMPAN ='$alamat_simpan',
+	    			LPPB_MO_KIB ='$lppbmokib',
+	    			PICKLIST ='$picklist',
+	    			LAST_UPDATED_BY ='$username_save',
+	    			LAST_UPDATE_DATE = sysdate
+	    		WHERE ORGANIZATION_ID ='$org_id' and $a2 and $b2 and $c2 and $d2";
+	    $query = $this->oracle->query($sql);
+	}
 
-    }
-
-     function searchBySA($sub_inv,$locator,$kode_assy,$org_id)
-    {
-    	if(($sub_inv == "") and  ($locator == "") and ($kode_assy == "") and ($org_id == "")){
-				$p = "";
-				
-			}else{
-				$p = "and";
-			}
-			
-			if($sub_inv == ""){
-				$a = "";
-			}else{
-				$a = "kls.sub_inv = '$sub_inv'";
-			}
-
-			if($locator == ""){
-				$b = "";
-				$p1 = "";
-			}else{
-				$b = "kls.LOCATOR like upper('%$locator%')";
-				if(($sub_inv == "")){
-					$p1 = "";
-				}else{
-					$p1 = "and";
-				}
-			}
-
-			if($kode_assy == ""){
-				$c = "";
-				$p2 = "";
-			}else{
-				$c = "kls.assembly like upper('%$kode_assy%')";
-				if(($sub_inv == "") and  ($locator == "")){
-					$p2 = "";
-				}else{
-					$p2 = "and";
-				}
-			}
-
-			if($org_id == ""){
-				$d = "";
-				$p3 = "";
-			}else{
-				$d = "kls.organization_id = '$org_id'";
-				if(($sub_inv == "") and  ($locator == "") and ($kode_assy == "")){
-					$p3 = "";
-				}else{
-					$p3 = "and";
-				}
-			}
-
-			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
-						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
-						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
-						            where kls.COMPONENT = msib.SEGMENT1
-           								 and msib2.segment1 = kls.assembly
-						             	 $p $a $p1 $b $p2 $c $p3 $d ");
-			return $sql->result_array();			
-
-    }
-      function searchByAll($sub_inv,$locator,$alamat)
-    {
-    	
-    	if(($sub_inv == "") and  ($locator == "") and ($alamat == "")){
-				$p = "";
-				
-			}else{
-				$p = "and";
-			}
-			
-			if($sub_inv == ""){
-				$a = "";
-			}else{
-				$a = "kls.sub_inv = '$sub_inv'";
-			}
-
-			if($locator == ""){
-				$b = "";
-				$p1 = "";
-			}else{
-				$b = "kls.LOCATOR like upper('%$locator%')";
-				if(($sub_inv == "")){
-					$p1 = "";
-				}else{
-					$p1 = "and";
-				}
-			}
-
-			if($alamat == ""){
-				$c = "";
-				$p2 = "";
-			}else{
-				$c = "kls.ALAMAT_SIMPAN like upper('%$alamat%')";
-				if(($sub_inv == "") and  ($locator == "")){
-					$p2 = "";
-				}else{
-					$p2 = "and";
-				}
-			}
-
-			$sql= $this->oracle->query("select distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION , kls.component_type TYPE 
-						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                ,kls.quantity_item QUANTITY , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
-						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
-						            where kls.COMPONENT = msib.SEGMENT1
-           								 and msib2.segment1 = kls.assembly
-						             	 $p $a $p1 $b $p2 $c");
-			return $sql->result_array();			
-    }
-
+	function insertData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator,$alamat_simpan,$lppbmokib,$picklist,$username_save)
+	{
+		$sql = "INSERT INTO KHS.KHSLOKASISIMPAN
+					(ORGANIZATION_ID,
+					SUB_INV,
+					ASSEMBLY,
+					ASSEMBLY_TYPE,
+					COMPONENT,
+					LOCATOR,
+					ALAMAT_SIMPAN,
+					LPPB_MO_KIB,
+					PICKLIST,
+					CREATED_BY,
+					CREATION_DATE)
+				VALUES
+					('$org_id',
+					'$sub_inv',
+					'$kode_assy',
+					'$type_assy',
+					'$kode_item',
+					'$locator',
+					'$alamat_simpan',
+					'$lppbmokib',
+					'$picklist',
+					'$username_save',
+					sysdate)";
+		$query = $this->oracle->query($sql);
+	}
 }

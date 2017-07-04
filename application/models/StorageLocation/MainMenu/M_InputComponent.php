@@ -11,7 +11,7 @@ class M_inputcomponent extends CI_Model {
   		$this->load->helper('url');
     }
 
-    function cekData2($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator)
+    function cekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator)
     {
     	if ($sub_inv == "") {
 	        $a = "sub_inv is null";
@@ -50,13 +50,13 @@ class M_inputcomponent extends CI_Model {
 	    return $result;
 	}
 
-    function insertData2($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user_name){
+    function insertData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user_name){
         $sql="INSERT INTO KHS.KHSLOKASISIMPAN (ORGANIZATION_ID, SUB_INV, ASSEMBLY, ASSEMBLY_TYPE, COMPONENT, LOCATOR, ALAMAT_SIMPAN, LPPB_MO_KIB, PICKLIST, CREATED_BY, CREATION_DATE) VALUES ('$org_id', '$sub_inv', '$kode_assy', '$type_assy', '$kode_item_save', '$locator', '$alamat_simpan_save', '$lppbmokib_save', '$picklist_save', '$user_name', sysdate)";
         $query = $this->oracle->query($sql);
         return;
     }
 
-    function updateData2($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user_name){
+    function updateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user_name){
         if ($sub_inv == "") {
             $a2 = "sub_inv is null";
         }else{
