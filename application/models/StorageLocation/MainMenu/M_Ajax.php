@@ -37,6 +37,38 @@ class M_ajax extends CI_Model {
       return $query->result();
     }
 
+    function getCompCodeByAssy($term = FALSE,$org_id,$assy)
+    {
+      if ($term == FALSE) {
+        $sql = "SELECT DISTINCT msib.segment1,msib.description
+             FROM mtl_system_items_b msib,
+                  mtl_system_items_b msib2,
+                  bom_inventory_components bic,
+                  bom_bill_of_materials bom
+            WHERE msib2.segment1 = '$assy'
+              AND msib2.organization_id = $org_id 
+              AND msib.inventory_item_id = bic.component_item_id
+              AND bom.bill_sequence_id = bic.bill_sequence_id
+              AND bom.assembly_item_id = msib2.inventory_item_id
+              AND bom.organization_id = msib2.organization_id";
+      }else{
+        $sql = "SELECT DISTINCT msib.segment1,msib.description
+             FROM mtl_system_items_b msib,
+                  mtl_system_items_b msib2,
+                  bom_inventory_components bic,
+                  bom_bill_of_materials bom
+            WHERE msib2.segment1 = '$assy'
+              AND msib2.organization_id = $org_id 
+              AND msib.inventory_item_id = bic.component_item_id
+              AND bom.bill_sequence_id = bic.bill_sequence_id
+              AND bom.assembly_item_id = msib2.inventory_item_id
+              AND bom.organization_id = msib2.organization_id
+              AND msib.segment1 LIKE '%$term%'";
+      }
+      $query = $this->oracle->query($sql);
+      return $query->result();
+    }
+
     function getAssy($org_id=FALSE,$item=NULL)
     {
       $sql = "SELECT DISTINCT msib2.segment1, msib2.description,
@@ -64,5 +96,34 @@ class M_ajax extends CI_Model {
               ";
       $query = $this->oracle->query($sql);
       return $query->result_array();
+    }
+
+    function getRemoteAssy($org_id,$term)
+    {
+      $sql = "SELECT DISTINCT msib2.segment1, msib2.description,
+              ( SELECT  mc.segment1
+                FROM mtl_system_items_b msib4
+                  ,mtl_item_categories mic
+                  ,mtl_categories mc
+                WHERE msib4.SEGMENT1 = msib2.segment1
+                  AND msib4.inventory_item_id = mic.INVENTORY_ITEM_ID
+                  AND mic.organization_id = msib2.organization_id
+                  AND mic.category_set_id = 1100000042
+                  AND mc.category_id = mic.category_id
+                  AND msib4.organization_id = mic.organization_id) AS asstype
+              FROM  mtl_system_items_b msib,
+                    mtl_system_items_b msib2,
+                    bom_inventory_components bic,
+                    bom_bill_of_materials bom
+              WHERE msib.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                AND msib2.organization_id = $org_id
+                AND msib2.inventory_item_id = bom.ASSEMBLY_ITEM_ID
+                AND msib2.inventory_item_status_code = 'Active'
+                AND bom.organization_id = msib2.organization_id
+                AND bom.bill_sequence_id = bic.bill_sequence_id
+                AND msib2.segment1 LIKE '%$term%'
+              ";
+      $query = $this->oracle->query($sql);
+      return $query->result();
     }
 }
