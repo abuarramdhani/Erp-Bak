@@ -44,7 +44,7 @@ class C_InputComponent extends CI_Controller
 
 	public function Create()
 	{
-		$user 		= $this->session->userdata('username');
+		$user 		= $this->session->userdata('user');
 		$org_id 	= $this->input->post('IdOrganization');
 		$sub_inv 	= $this->input->post('SlcSubInventori');
 		$comp_code_data 	= $this->input->post('SlcItem');
@@ -68,11 +68,11 @@ class C_InputComponent extends CI_Controller
 			$picklist  ="1";
 		}
 
-		$checkData = $this->M_inputcomponent->CekData2($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator);
+		$checkData = $this->M_inputcomponent->CekData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator);
 		if ($checkData>0) {
-			$this->M_inputcomponent->UpdateData2($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
+			$this->M_inputcomponent->UpdateData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
 		}else{
-			$this->M_inputcomponent->insertData2($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
+			$this->M_inputcomponent->insertData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
 		}
 		 $message = '<div class="row">
 		 				<div class="col-md-10 col-md-offset-1 col-sm-12">
@@ -85,6 +85,5 @@ class C_InputComponent extends CI_Controller
 		 				</div>
                     </div>';
          $this->index($message);
-
 	}
 }
