@@ -256,7 +256,7 @@ clASs M_rekapmssql extends CI_Model {
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR (tgl_cetak + interval '5 month') >= '$lastdate')
+					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate')
 				) AS FrekSP".$monthName.",
 
 				(SELECT max(sp_ke) FROM
@@ -266,7 +266,7 @@ clASs M_rekapmssql extends CI_Model {
 					) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR (tgl_cetak + interval '5 month') >= '$lastdate'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs".$monthName."
 
@@ -536,7 +536,7 @@ clASs M_rekapmssql extends CI_Model {
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak, (tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 					) AS SP
-					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR (tgl_cetak + interval '5 month') >= '$lastdate')
+					WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate')
 				) AS FrekSP".$monthName.",
 
 				(SELECT max(sp_ke) FROM
@@ -546,7 +546,7 @@ clASs M_rekapmssql extends CI_Model {
 						) AS SP
 				WHERE noind IN
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR (tgl_cetak + interval '5 month') >= '$lastdate'))
+						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				) AS FrekSPs".$monthName."
 
