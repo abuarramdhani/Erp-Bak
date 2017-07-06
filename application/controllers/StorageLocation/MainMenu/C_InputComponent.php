@@ -30,7 +30,7 @@ class C_InputComponent extends CI_Controller
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		$data['title'] = 'Component Data Input';
+		$data['title'] = 'Input Data Component';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);

@@ -28,7 +28,7 @@ class C_Monitoring extends CI_Controller
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		$data['title'] = 'Save Location Monitoring';
+		$data['title'] = 'Monitoring';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -54,10 +54,10 @@ class C_Monitoring extends CI_Controller
 
 	public function searchBySA()
 	{
-		$sub_inv 	= $this->input->get('sub_inv');
-		$locator 	= $this->input->get('locator');
-		$kode_assy 	= $this->input->get('kode_assy');
-		$org_id 	= $this->input->get('org_id');
+		$sub_inv 	= $this->input->post('sub_inv');
+		$locator 	= $this->input->post('locator');
+		$kode_assy 	= $this->input->post('kode_assy');
+		$org_id 	= $this->input->post('org_id');
 		$data['BySA'] = $this->M_Monitoring->searchBySA($sub_inv,$locator,$kode_assy,$org_id);
 		$this->load->view('StorageLocation/MainMenu/V_SearchByAssembly',$data);
 	}

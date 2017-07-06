@@ -27,7 +27,7 @@ class C_Correction extends CI_Controller
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		$data['title'] = 'Correction Save Location';
+		$data['title'] = 'Correction Storage Location';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);

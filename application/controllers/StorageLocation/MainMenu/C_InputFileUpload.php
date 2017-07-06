@@ -32,7 +32,7 @@ class C_InputFileUpload extends CI_Controller
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		$data['title'] = 'Upload From File';
+		$data['title'] = 'Input Data From File';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -88,6 +88,7 @@ class C_InputFileUpload extends CI_Controller
             $highestRow 	= $sheet->getHighestRow();
             $highestColumn 	= $sheet->getHighestColumn();
             $errStock       = 0;
+            $dataErr        = array();
 
             for ($row = 3; $row <= $highestRow; $row++){
             	$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
@@ -106,14 +107,18 @@ class C_InputFileUpload extends CI_Controller
 
                     if (!is_numeric($lppbmokib)) {
                         $errStock++;
+                        // array_push($dataErr[$row][], 'LPPB  / MO / KIB', $row, $lppbmokib);
                     }elseif (strlen($lppbmokib)>1) {
                         $errStock++;
+                        // array_push($dataErr[$row][], 'LPPB  / MO / KIB', $row, $lppbmokib);
                     }
 
                     if (!is_numeric($picklist)) {
                         $errStock++;
+                        // array_push($dataErr[$row][], 'PICKLIST', $row, $picklist);
                     }elseif (strlen($picklist)>1) {
                         $errStock++;
+                        // array_push($dataErr[$row][], 'PICKLIST', $row, $picklist);
                     }
 
                     if (empty($org_id)||empty($sub_inv) || empty($kode_assy) || empty($type_assy) || empty($kode_item)) {
@@ -134,16 +139,70 @@ class C_InputFileUpload extends CI_Controller
             }
             unlink($inputFileName);
             if ($errStock > 0) {
-                $message = '<div class="row">
-                                <div class="col-md-12">
-                                    <div id="eror" class="alert alert-dismissible alert-danger" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        Format pengisian data tidak sesuai format!
+                $message = '
+                    <div class="modal fade" id="uploadMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <h2 class="modal-title" id="myModalLabel"><b>Format Data Tidak Sesuai!</b></h2>
+                                        <small>Mohon sesuaikan format data yg akan diinputkan, berikut contoh yang benar.</small>
                                     </div>
+                                    <br>
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <thead class="bg-warning text-center" style="font-weight:bold; vertical-align:middle;">
+                                            <td>No</td>
+                                            <td>Organization ID</td>
+                                            <td>Sub Inventory</td>
+                                            <td>Assembly</td>
+                                            <td>Type Assembly</td>
+                                            <td>Item</td>
+                                            <td>Locator</td>
+                                            <td>Alamat</td>
+                                            <td>LPPB  / MO / KIB</td>
+                                            <td>PICKLIST</td>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>102</td>
+                                                <td>KOM2-DM</td>
+                                                <td>AAG1000AA1AZ-6</td>
+                                                <td>BOXER</td>
+                                                <td>AAF1BA0391AY-0</td>
+                                                <td>SELATAN</td>
+                                                <td>PANGGUNG TIMUR</td>
+                                                <td>1                                    *(1 untuk Yes, 0 untuk No)
+</td>
+                                                <td>0                                    *(1 untuk Yes, 0 untuk No)</td>
+                                            </tr>
+                                            <tr style="color:red;">
+                                                <td>(Harus Diisi)</td>
+                                                <td>(Not Null)</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>(1 untuk Yes, 0 untuk No)
+</td>
+                                                <td>(1 untuk Yes, 0 untuk No)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>';
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("#uploadMessage").modal("show");
+                        });
+                    </script>';
             }else{
                 $message = '<div class="row">
                                 <div class="col-md-12">
@@ -157,7 +216,6 @@ class C_InputFileUpload extends CI_Controller
                             </div>';
             }
             $this->index($message);
-            // redirect('StorageLocation/FileUpload/index/'.$message);
         }
     }
 }
