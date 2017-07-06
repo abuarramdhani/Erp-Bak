@@ -137,6 +137,12 @@ class C_DataLKHSeksi extends CI_Controller
 					'status' => utf8_encode($db_record['STATUS']),
 					'kode_barang_target_sementara' => utf8_encode($db_record['KODESAMA']),
 					'kode_proses_target_sementara' => utf8_encode($db_record['PROSAMA']),
+					'dies' => utf8_encode($db_record['DIES']),
+					'non_dies' => utf8_encode($db_record['NONDIES']),
+					'stopper' => utf8_encode($db_record['STOPPER']),
+					'pisau' => utf8_encode($db_record['PISAU']),
+					'lain_lain' => utf8_encode($db_record['LAIN2']),
+					'non_sett' => utf8_encode($db_record['NONSETT']),
 				);
 
 				$this->M_datalkhseksi->setLKHSeksi($data);
