@@ -59,7 +59,7 @@ $(document).ready(function() {
         minimumInputLength: 0
     });
     $(".jsAssembly").select2({
-        placeholder: " Pilih Kode Assembly",
+        placeholder: " Choose Assembly Code",
         allowClear: true,
         ajax: {
             url: baseurl + "StorageLocation/Ajax/GetAssy",
@@ -133,7 +133,7 @@ function searchComponent(base) {
     var org = $('#IdOrganization').val();
     var sub_inv = $("#SlcSubInventori").val();
     var item = $("#SlcItem").val();
-    if (!item == null) {
+    if (item !== null) {
         var compnt = item.split('|');
     } else {
         var compnt = '';
@@ -177,7 +177,7 @@ function searchAssy(base) {
     var org = $('#IdOrganization').val()
     var sub_inv = $("#SlcSubInventori").val();
     var a = $("#SlcKodeAssy").val();
-    if (!a == null) {
+    if (a !== null) {
         var kode_assy = a.split('|');
     } else {
         var kode_assy = '';
@@ -287,8 +287,13 @@ function searchBySA(base) {
     var org = $('select#IdOrganization').val()
     var request = $.ajax({
         url: base + "StorageLocation/AddressMonitoring/searchBySA",
-        data: "&sub_inv=" + sub_inv + "&locator=" + locator + "&kode_assy=" + assy + "&org_id=" + org,
-        type: "GET",
+        data: {
+            sub_inv:sub_inv,
+            locator:locator,
+            kode_assy:assym,
+            org_id:org
+        },
+        type: "post",
         dataType: "html"
     });
     $('#result').html("<center><img id='loading' style='margin-top: 2%; ' src='" + base + "assets/img/gif/loading5.gif'/><p style='color:#575555;'>Searching Data</p></center><br />");
@@ -527,6 +532,7 @@ function getSubInvent() {
             $('select#SlcSubInventori').prop('disabled', false);
             $('select#SlcSubInventori').html(result);
             $('select#SlcItem').prop('disabled', false);
+            $('select#SlcKodeAssy').prop('disabled', false);
         }
     });
 }
