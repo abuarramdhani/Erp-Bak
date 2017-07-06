@@ -39,7 +39,7 @@ class C_Ajax extends CI_Controller
 
 	public function getComponentCode()
 	{
-		$term	= $this->input->post('term');
+		$term	= strtoupper($this->input->post('term'));
 		$org_id	= $this->input->post('org_id');
 		$as 	= $this->input->post('assy');
 		if (!empty($as)) {
@@ -58,7 +58,7 @@ class C_Ajax extends CI_Controller
 		$org_id	= $this->input->post('org_id');
 		$item 	= $this->input->post('item');
 		if ($item == '' || $item == NULL) {
-			$term = $this->input->post('term');
+			$term 	= strtoupper($this->input->post('term'));
 			$data 	= $this->M_ajax->getRemoteAssy($org_id,$term);
 			echo json_encode($data);
 		}else{
