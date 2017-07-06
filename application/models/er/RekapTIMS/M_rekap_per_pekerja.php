@@ -878,8 +878,8 @@ clASs M_rekap_per_pekerja extends CI_Model {
 			FROM hrd_khs.tpribadi a
 			INNER join hrd_khs.tseksi b on a.kodesie=b.kodesie
 			inner join hrd_khs.tnoind c on a.kode_status_kerja = c.fs_noind
-			WHERE a.keluar='0'
-				AND a.nik = '$nik'
+			WHERE
+				 a.nik = '$nik'
 			ORDER BY a.noind
 		";
 		$query = $this->personalia->query($sql);
