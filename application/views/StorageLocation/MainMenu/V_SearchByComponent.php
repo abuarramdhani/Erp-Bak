@@ -2,13 +2,13 @@
 	<thead>
 		<tr class="bg-primary">
 			<td width="4%">NO</td>
-			<td width="10%">ITEM</td>
+			<td width="10%">COMPONENT</td>
 			<td width="15%">DESCRIPTION</td>
-			<td width="10%">KODE ASSEMBLY</td>
-			<td width="15%">NAMA ASSEMBLY</td>
-			<td width="10%">TYPE ASSEMBLY</td>
+			<td width="10%">ASSEMBLY CODE</td>
+			<td width="15%">ASSEMBLY NAME</td>
+			<td width="10%">ASSEMBLY TYPE</td>
 			<td width="10%">SUBINVENTORY</td>
-			<td width="10%">ALAMAT</td>
+			<td width="10%">STORAGE LOCATION</td>
 			<td width="10%">LPPB/MO/KIB</td>
 			<td width="10%">PICKLIST</td>
 		</tr>

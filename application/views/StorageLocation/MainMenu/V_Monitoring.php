@@ -16,7 +16,7 @@
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <a class="btn btn-default btn-lg" href="<?php echo site_url('SaveLocation/AddressMonitoring');?>">
-                                    <i aria-hidden="true" class="fa fa-2x fa-map-marker">
+                                    <i aria-hidden="true" class="fa fa-2x fa-search">
                                     </i>
                                     <span>
                                         <br/>
@@ -29,7 +29,7 @@
                 <br/>
                 <div class="box box-primary box-solid">
                     <div class="box-header with-border">
-                        Save Location Monitoring
+                        Storage Location Monitoring
                     </div>
                     <div class="box-body">
                         <div class="row">
@@ -40,12 +40,12 @@
                                             <div class="btn-group btn-group-justified" role="group">
                                                 <div class="btn-group" role="group">
                                                     <button class="btn btn-default active " id="monkomp" onclick="monkompactive('<?php echo base_url() ?>')" type="button">
-                                                        MONITORING KOMPONEN
+                                                        MONITORING BY COMPONENT
                                                     </button>
                                                 </div>
                                                 <div class="btn-group" role="group">
                                                     <button class="btn btn-default " id="monsa" onclick="monsaactive('<?php echo base_url() ?>')" type="button">
-                                                        MONITORING PER SUB ASSY
+                                                        MONITORING BY SUB ASSY
                                                     </button>
                                                 </div>
                                                 <div class="btn-group" role="group">
@@ -63,7 +63,7 @@
                             <div class="col-lg-8 col-lg-push-2 col-sm-12">
                                 <div class="form-group row">
                                     <label class="col-md-3 control-label">
-                                        ID ORGANIZATION
+                                        ORGANIZATION ID
                                     </label>
                                     <div class="col-md-9">
                                         <select class="form-control select-2" id="IdOrganization" name="IdOrganization" onchange="getSubInvent()" required="">
@@ -92,7 +92,7 @@
                                         LOCATOR
                                     </label>
                                     <div class="col-lg-9">
-                                        <select class="form-control select-2" data-placeholder="Pilih Locator" disabled="" id="SlcLocator" name="SlcLocator">
+                                        <select class="form-control select-2" data-placeholder="Choose Locator" disabled="" id="SlcLocator" name="SlcLocator">
                                             <option></option>
                                         </select>
                                     </div>
@@ -100,7 +100,7 @@
                                 <div id="findbyKomp">
                                     <div class="form-group row">
                                         <label class="control-label col-lg-3" for="norm">
-                                            KODE ITEM
+                                            COMPONENT CODE
                                         </label>
                                         <div class="col-lg-9">
                                             <select class="form-control jsComponent" id="SlcItem" name="SlcItem" onchange="GetDescription(this)" required="" disabled>
@@ -110,10 +110,10 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="control-label col-lg-3" for="norm">
-                                            NAMA ITEM
+                                            COMPONENT NAME
                                         </label>
                                         <div class="col-lg-9">
-                                            <input class="form-control" id="txtDesc" name="txtDesc" placeholder="Nama Komponen" readonly="" type="text">
+                                            <input class="form-control" id="txtDesc" name="txtDesc" placeholder="Component Name" readonly="" type="text">
                                             </input>
                                         </div>
                                     </div>
@@ -122,7 +122,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-lg-3" for="norm">
                                             <b>
-                                                KODE ASSEMBLY
+                                                ASSEMBLY CODE
                                             </b>
                                         </label>
                                         <div class="col-lg-9">
@@ -135,11 +135,11 @@
                                     <div class="form-group row">
                                         <label class="control-label col-lg-3" for="norm">
                                             <b>
-                                                NAMA ASSEMBLY
+                                                ASSEMBLY NAME
                                             </b>
                                         </label>
                                         <div class="col-lg-9">
-                                            <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Nama Assembly" readonly="">
+                                            <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Assembly Name" readonly="">
                                             </input>
                                         </div>
                                     </div>
@@ -147,10 +147,10 @@
                                 <div hidden="" id="findbyAll">
                                     <div class="form-group row">
                                         <label class="control-label col-lg-3" for="norm">
-                                            ALAMAT
+                                            STORAGE LOCATION
                                         </label>
                                         <div class="col-lg-9">
-                                            <input class="form-control toupper" id="txtAlamat" name="txtAlamat" placeholder="Masukkan Alamat" type="text"/>
+                                            <input class="form-control toupper" id="txtAlamat" name="txtAlamat" placeholder="Input Location" type="text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -204,31 +204,25 @@
                                                             NO
                                                         </td>
                                                         <td width="10%">
-                                                            ITEM
+                                                            COMPONENT
                                                         </td>
                                                         <td width="15%">
                                                             DESCRIPTION
                                                         </td>
                                                         <td width="10%">
-                                                            TYPE
-                                                        </td>
-                                                        <td width="10%">
-                                                            KODE ASSEMBLY
+                                                            ASSEMBLY CODE
                                                         </td>
                                                         <td width="15%">
-                                                            NAMA ASSEMBLY
+                                                            ASSEMBLY NAME
                                                         </td>
                                                         <td width="10%">
-                                                            TYPE ASSEMBLY
+                                                            ASSEMBLY TYPE
                                                         </td>
                                                         <td width="10%">
                                                             SUBINVENTORY
                                                         </td>
-                                                        <td width="5%">
-                                                            PER/UNIT
-                                                        </td>
                                                         <td width="10%">
-                                                            ALAMAT
+                                                            ADDRESS
                                                         </td>
                                                         <td width="5%">
                                                             LPPB/MO/KIB
@@ -240,12 +234,6 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>
-                                                        </td>
-                                                        <td>
-                                                        </td>
-                                                        <td>
-                                                        </td>
                                                         <td>
                                                         </td>
                                                         <td>

@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('SaveLocation/InputComponent');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('StorageLocation/Correction');?>">
                                     <i aria-hidden="true" class="fa fa-2x fa-pencil">
                                     </i>
                                     <span>
@@ -29,27 +29,27 @@
                 <br/>
                 <div class="box box-primary box-solid">
                     <div class="box-header with-border">
-                        Find Data Save Location
+                        Find Data Storage Location
                     </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-8 col-md-push-2">
                                 <div class="form-group row">
                                     <label class="col-md-4 control-label">
-                                        Jenis Input
+                                        Input Type
                                     </label>
                                     <div class="col-md-8">
                                         <input checked="checked" name="jns_input" onclick="perKopm('<?php echo base_url();?>')" type="radio" value="perKomp">
-                                            Per Komponen
+                                            By Component
                                         </input>
                                         <input name="jns_input" onclick="perSA('<?php echo base_url();?>')" type="radio" value="perSA">
-                                            Per Sub Assy
+                                            By Sub Assy
                                         </input>
                                     </div>
                                 </div>
                                 <div class="form-group row"">
                                     <label class="col-md-4 control-label">
-                                        ID Organization
+                                        Organization ID
                                     </label>
                                     <div class="col-md-8">
                                         <select class="form-control select-2" id="IdOrganization" name="txtOrg" onchange="getSubInvent()" required="">
@@ -77,7 +77,7 @@
                                 <div id="formPerKopm">
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
-                                            Item
+                                            Component Code
                                         </label>
                                         <div class="col-md-8">
                                             <select class="form-control jsComponent" disabled="" id="SlcItem" name="SlcItem" onchange="getKodeAssem()" required="">
@@ -86,10 +86,10 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
-                                            Nama Item
+                                            Component Name
                                         </label>
                                         <div class="col-md-8">
-                                            <input class="form-control" id="txtDesc" name="txtDesc" placeholder="Nama Item" readonly="" type="text">
+                                            <input class="form-control" id="txtDesc" name="txtDesc" placeholder="Item Name" readonly="" type="text">
                                             </input>
                                         </div>
                                     </div>
@@ -98,7 +98,7 @@
                                             Locator
                                         </label>
                                         <div class="col-md-8">
-                                            <select class="form-control select-2" data-placeholder="Pilih Locator" disabled="" id="SlcLocator" name="SlcLocator">
+                                            <select class="form-control select-2" data-placeholder="Choose Locator" disabled="" id="SlcLocator" name="SlcLocator">
                                                 <option value="">
                                                 </option>
                                             </select>
@@ -118,30 +118,30 @@
                                 <div hidden="" id="formPerSA">
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
-                                            Kode Assembly
+                                            Assembly Code
                                         </label>
                                         <div class="col-md-8">
-                                            <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy('<?php echo base_url(); ?>')" style="width: 100%">
-                                                <option value="">
-                                                </option>
+                                            <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy('<?php echo base_url(); ?>')" style="width: 100%" disabled>
+                                                <!-- <option>
+                                                </option> -->
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
-                                            Nama Assembly
+                                            Assembly Name
                                         </label>
                                         <div class="col-md-8">
-                                            <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Nama Assembly" readonly="" type="text">
+                                            <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Assembly Name" readonly="" type="text">
                                             </input>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 control-label">
-                                            Tipe Assembly
+                                            Assembly Type
                                         </label>
                                         <div class="col-md-8">
-                                            <input class="form-control" id="txtTypeAssy" name="txtTypeAssy" placeholder="Tipe Assembly" readonly="" type="text">
+                                            <input class="form-control" id="txtTypeAssy" name="txtTypeAssy" placeholder="Assembly Type" readonly="" type="text">
                                             </input>
                                         </div>
                                     </div>
@@ -163,7 +163,7 @@
                 <br>
                     <div class="box box-primary box-solid">
                         <div class="box-header with-border">
-                            Correction Save Location
+                            Correction Storage Location
                         </div>
                         <div class="box-body">
                             <div class="table-responsive col-md-12 " id="res">
@@ -174,25 +174,25 @@
                                                 No
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
-                                                Item
+                                                Component Code
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
                                                 Description
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
-                                                Kode Assembly
+                                                Assembly Code
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
-                                                Nama Assembly
+                                                Assembly Name
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
-                                                Type Assembly
+                                                Assembly Type
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
                                                 Subinventory
                                             </th>
                                             <th style="vertical-align: middle; text-align:center">
-                                                Alamat
+                                                Storage Location
                                             </th>
                                             <th style="vertical-align: middle; text-align:center" width="5%">
                                                 LPPB / MO / KIB

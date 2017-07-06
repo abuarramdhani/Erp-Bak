@@ -29,7 +29,7 @@
                 <br>
                     <div class="box box-primary box-solid">
                         <div class="box-header with-border">
-                            Input Sub Assy Data
+                            Input Data Sub Assy
                         </div>
                         <div class="box-body">
                             <div align="center">
@@ -42,7 +42,7 @@
                                             <div class="col-lg-8 col-lg-push-2">
                                                 <div class="form-group row">
                                                     <label class="col-md-4 control-label">
-                                                        ID Organization
+                                                        Organization ID
                                                     </label>
                                                     <div class="col-md-8">
                                                         <select class="form-control select-2" id="IdOrganization" name="IdOrganization" onchange="getSubInvent()" required="">
@@ -68,7 +68,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-md-4 control-label">
-                                                        Kode Assembly
+                                                        Assembly Code
                                                     </label>
                                                     <div class="col-md-8">
                                                         <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy()">
@@ -78,19 +78,19 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-md-4 control-label">
-                                                        Nama Assembly
+                                                        Assembly Name
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Nama Assembly" readonly="">
+                                                        <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Assembly Name" readonly="">
                                                         </input>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-md-4 control-label">
-                                                        Tipe Assembly
+                                                        Assembly Type
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" id="txtTypeAssy" name="txtTypeAssy" placeholder="Input Tipe Assembly" readonly="" type="text">
+                                                        <input class="form-control" id="txtTypeAssy" name="txtTypeAssy" placeholder="Input Assembly Type" readonly="" type="text">
                                                         </input>
                                                     </div>
                                                 </div>
@@ -99,7 +99,7 @@
                                                         Locator
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <select class="form-control select-2" data-placeholder="Pilih Locator" disabled="" id="SlcLocator" name="txtLocator">
+                                                        <select class="form-control select-2" data-placeholder="Choose Locator" disabled="" id="SlcLocator" name="txtLocator">
                                                             <option value="">
                                                             </option>
                                                         </select>
@@ -112,7 +112,7 @@
                                                 <div class="box box-default box-solid">
                                                     <div class="box-header with-border">
                                                         <div class="pull-left">
-                                                            Input Component Data
+                                                            Input Data Component
                                                         </div>
                                                         <div class="pull-right">
                                                             <button class="btn btn-primary fa fa-plus min" onclick="add_row('table_input')" type="button">
@@ -127,13 +127,13 @@
                                                                 <table class="table table-bordered table-striped" id="table_input">
                                                                     <tr class="text-center" style="font-weight: bold;">
                                                                         <td>
-                                                                            Kode Komponen
+                                                                            Component Code
                                                                         </td>
                                                                         <td>
-                                                                            Nama Komponen
+                                                                            Component Name
                                                                         </td>
                                                                         <td>
-                                                                            Alamat Simpan
+                                                                            Storage Location
                                                                         </td>
                                                                         <td style="width: 100px;">
                                                                             LPPB/MO/KIB

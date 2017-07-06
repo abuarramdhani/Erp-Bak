@@ -2,13 +2,13 @@
 	<thead class="bg-primary">
 		<tr>
 			<th style="vertical-align: middle; text-align:center; width: 3%">No</th>
-			<th style="vertical-align: middle; text-align:center">Kode Assembly</th>
-			<th style="vertical-align: middle; text-align:center">Nama Assembly</th>
-			<th style="vertical-align: middle; text-align:center">Type Assembly</th>
-			<th style="vertical-align: middle; text-align:center">Item</th>
+			<th style="vertical-align: middle; text-align:center">Assembly Code</th>
+			<th style="vertical-align: middle; text-align:center">Assembly Name</th>
+			<th style="vertical-align: middle; text-align:center">Assembly Type</th>
+			<th style="vertical-align: middle; text-align:center">Component Code</th>
 			<th style="vertical-align: middle; text-align:center">Description</th>
 			<th style="vertical-align: middle; text-align:center">Subinventory</th>
-			<th style="vertical-align: middle; text-align:center">Alamat</th>
+			<th style="vertical-align: middle; text-align:center">Storage Location</th>
 			<th style="vertical-align: middle; text-align:center; width: 5%;">LPPB / MO / KIB</th>
 			<th style="vertical-align: middle; text-align:center; width: 5%;">Picklist</th>
 		</tr>
