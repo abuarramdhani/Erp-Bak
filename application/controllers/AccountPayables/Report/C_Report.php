@@ -47,11 +47,19 @@ class C_Report extends CI_Controller {
 
 		$startDate = $this->input->post('tanggal_awal', true);
 		$endDate = $this->input->post('tanggal_akhir', true);
+		$status = $this->input->post('invoice_status', true);
 		$vendor = $this->input->post('supplier', true);
 
-		$dataInvoice = $this->M_report->getInvoiceFaktur($startDate, $endDate, $vendor);
+		$dataInvoice = $this->M_report->getInvoiceFaktur($startDate, $endDate, $vendor, $status);
 
-		if($vendor == '') $vendor = 'ALL';
+		if($vendor == '') $vendor = 'All';
+		if($status == 1){
+			$attribute = 'All';
+		} else if($status == 2){
+			$attribute = 'Dengan';
+		} else if($status == 3){
+			$attribute = 'Tanpa';
+		}
 
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator("ICT")->setTitle("Invoice Tanpa Faktur");
@@ -109,7 +117,7 @@ class C_Report extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->setTitle('Invoice Tanpa Faktur');
 		$objPHPExcel->setActiveSheetIndex(0);
 
-		$filename = "Invoice_Tanpa_Faktur_".$startDate."_".$endDate."_".$vendor.".xls";
+		$filename = "Invoice_".$attribute."_Faktur_".$startDate."_".$endDate."_".$vendor.".xls";
 
 		header("Content-Type: application/vnd.ms-excel");   
 		header('Content-Disposition: attachment; filename="'.$filename.'"');
