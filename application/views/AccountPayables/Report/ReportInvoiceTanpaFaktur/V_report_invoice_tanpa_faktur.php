@@ -6,7 +6,7 @@
 					<div class="col-lg-12">
 						<div class="col-lg-11">
 							<div class="text-right">
-								<h1><b>Report Invoice Tanpa Faktur</b></h1>
+								<h1><b>Report Invoice</b></h1>
 							</div>
 						</div>
 						<div class="col-lg-1 ">
@@ -61,6 +61,25 @@
 					                     				<br/>
 					                     			</td>
 					                     		</tr>
+					                     	</table>
+					                     	<table>	
+					                     		<tr>
+					                     			<td width="150px">
+					                     				<label for="exampleInputPassword1">Invoice Status</label>
+					                     			</td>
+					                     			<td>
+					                     				<select id="invoice_status" name="invoice_status" class="select2 form-control" style="width:265px;">
+															<option value="1">All Invoice</option>
+															<option value="2">With Tax Invoice</option>
+															<option value="3">Without Tax Invoice</option>
+														</select>
+					                     			</td>
+					                     		</tr>
+												<tr>
+													<td>
+														<br>
+													</td>
+												</tr>
 					                     	</table>
 					                     	<table>	
 					                     		<tr>

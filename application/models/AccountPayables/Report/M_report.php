@@ -7,9 +7,16 @@ class M_report extends CI_Model {
 				$this->load->library('encrypt');
         }
 		
-		public function getInvoiceFaktur($startDate, $endDate, $vendor)
+		public function getInvoiceFaktur($startDate, $endDate, $vendor, $status)
 		{
 			if($vendor == '') $vendor = '%';
+			if($status == 1){
+				$attribute = '';
+			} else if($status == 2){
+				$attribute = 'and aia.attribute3 is NOT NULL ';
+			} else if($status == 3){
+				$attribute = 'and aia.attribute3 is NULL ';
+			}
 			$oracle = $this->load->database("oracle",true);
 			$query = $oracle->query("
 				select
@@ -48,7 +55,7 @@ class M_report extends CI_Model {
 					AND asa.vendor_name LIKE '$vendor'
 				    AND aia.invoice_num LIKE '%'
 				    AND aia.attribute15 LIKE '%'
-				    and aia.attribute3 is NULL
+				    $attribute
 			");
 			return $query->result_array();
 		}
