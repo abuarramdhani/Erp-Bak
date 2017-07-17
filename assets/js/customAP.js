@@ -126,6 +126,26 @@ $(document).ready(function() {
 		});
 	}
 	
+	//ONCHANGE QRCODE
+	$(document).ready(function() {	
+		$('#qr_code').change(function(){
+
+			var qr = document.getElementById("qr_code").value;
+			$.post( "http://localhost/khs-erp/AccountPayables/C_Invoice/qrcode/", { url: qr},function( data ) {
+			  	// console.log(data);
+			  	var data_faktur = JSON.parse(data);
+			  	console.log(data_faktur['nama'] );
+			  	$( "#nomorFaktur" ).val( data_faktur['kdJenisTransaksi']+data_faktur['fgPengganti']+data_faktur['nomorFaktur'] );
+			  	$( "#namaPenjual" ).val( data_faktur['namaPenjual'] );
+			  	$( "#tanggalFaktur" ).val( data_faktur['tanggalFaktur'] );
+			  	$( "#jumlahDpp" ).val( data_faktur['jumlahDpp'] );
+			  	$( "#jumlahPpn" ).val( data_faktur['jumlahPpn'] );
+			  	$( "#npwpPenjual" ).val( data_faktur['npwpPenjual'] );
+			  	$( "#alamatPenjual" ).val( data_faktur['alamatPenjual'] );
+			  	$( "#nama" ).val( data_faktur['nama'] );
+			});
+		});
+	});	
 	//CLICK BTN
 	$(document).ready(function() {	
 		$('#FindFakturButton').click(function(){

@@ -176,9 +176,13 @@ class C_Invoice extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		
+
 
 		$query = $this->M_Invoice->getDetail($invoice_id);
+		$query2 = $this->M_Invoice->findSingleFaktur($invoice_id);
 		$data['data']=$query;
+		$data['data_faktur']=$query2;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_Input',$data);
@@ -192,12 +196,18 @@ class C_Invoice extends CI_Controller {
 
 		$invoice_id = $this->input->post('invoice_id');
 		
-		$invoice_date = $this->input->post('invoice_date');
-		$tax_number = $this->input->post('tax_number');
-		$tax_number_awal = substr($tax_number, 0, 11);
-		$tax_number_akhir = substr($tax_number, 11, strlen($tax_number)-11);
+		$tanggalFaktur = $this->input->post('tanggalFaktur');
+		$npwpPenjual = $this->input->post('npwpPenjual');
+		$namaPenjual = $this->input->post('namaPenjual');
+		$alamatPenjual = $this->input->post('alamatPenjual');
+		$dpp = $this->input->post('dpp');
+		$ppn = $this->input->post('ppn');
+		$ppnbm = $this->input->post('ppnbm');
+		$tax_number = $this->input->post('nomorFaktur');
+		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
+		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
 		
-		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $invoice_date, $tax_number_awal, $tax_number_akhir);
+		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tanggalFaktur, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm );
 		if($query){
 			echo "
 				<script>
@@ -421,6 +431,63 @@ class C_Invoice extends CI_Controller {
 		}
 		unlink($file_path);
         redirect(base_url().'AccountPayables/C_Invoice/downloadfm');
+	}
+
+	function qrcode(){
+		$doc = new DOMDocument();
+		$url = $_POST['url'];
+		$doc->load($url);//xml file loading here
+		$xml = $doc->getElementsByTagName( "resValidateFakturPm" );
+		$xml1 = $doc->getElementsByTagName( "detailTransaksi" );
+		$i=0;
+		foreach ($xml1 as $xml1) {
+			$namas = $xml1->getElementsByTagName( "nama" );
+			$nama = $namas->item(0)->nodeValue;
+			if($i>0){
+				$data['nama'] = $data['nama'].'/n'.$nama;
+			}else{
+			  	$data['nama'] = $nama;
+			}
+			$i=$i+1;
+		}
+		foreach( $xml as $xml ){
+			  $nomorFakturs = $xml->getElementsByTagName( "nomorFaktur" );
+			  $nomorFaktur = $nomorFakturs->item(0)->nodeValue;
+			  $data['nomorFaktur'] = $nomorFaktur;
+
+			  $namaPenjuals = $xml->getElementsByTagName( "namaPenjual" );
+			  $namaPenjual = $namaPenjuals->item(0)->nodeValue;
+			  $data['namaPenjual'] = $namaPenjual;
+
+			  $tanggalFakturs = $xml->getElementsByTagName( "tanggalFaktur" );
+			  $tanggalFaktur = $tanggalFakturs->item(0)->nodeValue;
+			  $data['tanggalFaktur'] = $tanggalFaktur;
+
+			  $jumlahDpps = $xml->getElementsByTagName( "jumlahDpp" );
+			  $jumlahDpp = $jumlahDpps->item(0)->nodeValue;
+			  $data['jumlahDpp'] = $jumlahDpp;
+
+			  $jumlahPpns = $xml->getElementsByTagName( "jumlahPpn" );
+			  $jumlahPpn = $jumlahPpns->item(0)->nodeValue;
+			  $data['jumlahPpn'] = $jumlahPpn;
+
+			  $npwpPenjuals = $xml->getElementsByTagName( "npwpPenjual" );
+			  $npwpPenjual = $npwpPenjuals->item(0)->nodeValue;
+			  $data['npwpPenjual'] = $npwpPenjual;
+
+			  $alamatPenjuals = $xml->getElementsByTagName( "alamatPenjual" );
+			  $alamatPenjual = $alamatPenjuals->item(0)->nodeValue;
+			  $data['alamatPenjual'] = $alamatPenjual;
+
+			  $kdJenisTransaksis = $xml->getElementsByTagName( "kdJenisTransaksi" );
+			  $kdJenisTransaksi = $kdJenisTransaksis->item(0)->nodeValue;
+			  $data['kdJenisTransaksi'] = $kdJenisTransaksi;
+
+			  $fgPenggantis = $xml->getElementsByTagName( "fgPengganti" );
+			  $fgPengganti = $fgPenggantis->item(0)->nodeValue;
+			  $data['fgPengganti'] = $fgPengganti;	  
+		}
+		echo json_encode($data);
 	}
 
 }
