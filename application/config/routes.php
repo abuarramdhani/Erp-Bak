@@ -1030,3 +1030,8 @@ $route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_Inpu
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
+
+//------------------------------------ Production Planning ----------------------------------------
+$route['ProductionPlanning']  = 'ProductionPlanning/C_Index/index';
+$route['ProductionPlanning/Monitoring']  = 'ProductionPlanning/MainMenu/C_Monitoring/index';
+$route['ProductionPlanning/Monitoring/Open']  = 'ProductionPlanning/MainMenu/C_Monitoring1/index';
