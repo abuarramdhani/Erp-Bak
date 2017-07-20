@@ -972,7 +972,7 @@ $route['PayrollManagementNonStaff/Setelan/(:any)/(:any)'] = 'PayrollManagementNo
 $route['(:any)'] = 'C_Index/$1';
 $route['(:any)/(:any)'] = 'C_Index/$1/$2';
 
-//------------------------------------ Quick Data Cat --------------------------------------------
+//------------------------------------ Quick Data Cat -----------------------------------------------------
 $route['QuickDataCat'] = 'QuickDataCat/C_QuickDataCat';
 $route['QuickDataCat/DataCatMasuk'] = 'QuickDataCat/MainMenu/C_DataCatMasuk';
 $route['QuickDataCat/DataCatMasuk/(:any)'] = 'QuickDataCat/MainMenu/C_DataCatMasuk/$1';
@@ -985,6 +985,16 @@ $route['QuickDataCat/LihatStokCat/(:any)'] = 'QuickDataCat/MainMenu/C_StokCat/$1
 
 $route['QuickDataCat/LihatStokOnHand'] = 'QuickDataCat/MainMenu/C_StokOnHand';
 $route['QuickDataCat/LihatStokOnHand/(:any)'] = 'QuickDataCat/MainMenu/C_StokOnHand/$1';
+
+//------------------------------------ Monitoring Komponen Simpan Barang Gudang ----------------------------
+$route['MonitoringKomponen'] = 'MonitoringKomponen/C_MonitoringKomponen';
+$route['MonitoringKomponen/Monitoring'] = 'MonitoringKomponen/MainMenu/C_Monitoring';
+$route['MonitoringKomponen/Monitoring/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring/$1';
+$route['MonitoringKomponen/Monitoring/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring/$1/$2';
+
+$route['MonitoringKomponen/MonitoringSeksi'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi';
+$route['MonitoringKomponen/MonitoringSeksi/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1';
+$route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1/$2';
 
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
 $route['ItemManagement'] = 'ItemManagement/C_Index/index';
@@ -1026,3 +1036,9 @@ $route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_Inpu
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
+
+//------------------------------------ Calibration Report ----------------------------
+$route['CalibrationReport'] = 'CalibrationReport/C_Index';
+$route['CalibrationReport/Calibration'] = 'CalibrationReport/MainMenu/C_Component';
+$route['CalibrationReport/Calibration/(:any)'] = 'CalibrationReport/MainMenu/C_Component/$1';
+$route['CalibrationReport/Calibration/(:any)/(:any)'] = 'CalibrationReport/MainMenu/C_Component/$1/$2';
