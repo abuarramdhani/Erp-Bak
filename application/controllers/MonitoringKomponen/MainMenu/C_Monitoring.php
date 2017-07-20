@@ -81,7 +81,7 @@ class C_Monitoring extends CI_Controller {
 	
 	public function tableView(){
 		
-		 $tgl 		= $this->input->post('date',true);
+		$tgl 		= $this->input->post('date',true);
 		 $sub_sour	= $this->input->post('subinv_from',true);
 		 $loc_sour	= $this->input->post('locator_from',true);
 		 $sub_des	= $this->input->post('subinv_to',true);
@@ -96,10 +96,10 @@ class C_Monitoring extends CI_Controller {
 			 $inv_from = "and bor.COMPLETION_SUBINVENTORY='$sub_sour'";
 		 }
 		 
-		 if(empty($sub_sour)){
-			 $comp = "";
+		 if(empty($loc_sour)){
+			 $q_loc_sour = "";
 		 }else{
-			 $comp = "and msi.SEGMENT1='$cd_kom'";
+			 $q_loc_sour = "and mil.INVENTORY_LOCATION_ID='$loc_sour'";
 		 }
 		 
 		 if(empty($sub_des)){
@@ -108,28 +108,73 @@ class C_Monitoring extends CI_Controller {
 			 $inv_to = "and bor.ATTRIBUTE1='$sub_des'";
 		 }
 		 
-		 if(empty($loc_sour)){
-			 $loc_from = "";
+		 if(empty($loc_des)){
+			 $q_loc_des = "";
 		 }else{
-			 $loc_from = "and bor.COMPLETION_LOCATOR_ID='$loc_sour'";
+			 $q_loc_des = "and bor.COMPLETION_LOCATOR_ID='$loc_des'";
 		 }
-		 $separated = ",";
+		 
+		 if(empty($cd_kom)){
+			 $comp = "";
+		 }else{
+			 $comp = "and msib.SEGMENT1='$cd_kom'";
+		 }
+		 
 		 switch ($sort) {
 				case 1:
-					$sorting = "bor.COMPLETION_SUBINVENTORY, msi.SEGMENT1";
+					$order = "min((case when (select (select flv.DESCRIPTION from FND_LOOKUP_Values flv where flv.LOOKUP_TYPE = 'ITEM_TYPE' and flv.LOOKUP_CODE = msib_type.ITEM_TYPE) ITEM_TYPE 
+							  from mtl_system_items_b msib_type where msib_type.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID and msib_type.ORGANIZATION_ID = msib.ORGANIZATION_ID) like 'KHS%Buy%' then 'Suplier'
+							  when ((select msib2.SEGMENT1 from mtl_system_items_b msib2 where msib2.SEGMENT1 like (select 'JAC'||substr(msib3.SEGMENT1,1,(LENGTH(msib3.SEGMENT1))-2)||'%' from mtl_system_items_b msib3 where msib3.SEGMENT1 = msib.SEGMENT1 AND msib3.ORGANIZATION_ID = 102 AND ROWNUM = 1 ) and rownum = 1)) is not null then 'Subkon'
+							  else
+							  (NVL((select fm.ATTRIBUTE2 || fm.ATTRIBUTE3 from FM_MATL_DTL fm 
+							  where fm.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+							  and rownum =1),(NVL((select mil.SEGMENT1 from mtl_item_locations mil
+							  where mil.INVENTORY_LOCATION_ID = (select bor.COMPLETION_LOCATOR_ID 
+														   from bom_operational_routings bor 
+														   where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+														   and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+														   and rownum = 1)),(select bor.COMPLETION_SUBINVENTORY 
+							  from bom_operational_routings bor 
+							  where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+							  and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+							  and rownum = 1)))))end)), msib.SEGMENT1 asc";
 					break;
 				case 2:
-					$sorting = "msi.SEGMENT1";
-					break;
-				case 3:
-					$sorting = "msi.SEGMENT1";
+					$order = "min((case when (select (select flv.DESCRIPTION from FND_LOOKUP_Values flv where flv.LOOKUP_TYPE = 'ITEM_TYPE' and flv.LOOKUP_CODE = msib_type.ITEM_TYPE) ITEM_TYPE 
+							  from mtl_system_items_b msib_type where msib_type.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID and msib_type.ORGANIZATION_ID = msib.ORGANIZATION_ID) like 'KHS%Buy%' then 'Suplier'
+							  when ((select msib2.SEGMENT1 from mtl_system_items_b msib2 where msib2.SEGMENT1 like (select 'JAC'||substr(msib3.SEGMENT1,1,(LENGTH(msib3.SEGMENT1))-2)||'%' from mtl_system_items_b msib3 where msib3.SEGMENT1 = msib.SEGMENT1 AND msib3.ORGANIZATION_ID = 102 AND ROWNUM = 1 ) and rownum = 1)) is not null then 'Subkon'
+							  else
+							  (NVL((select fm.ATTRIBUTE2 || fm.ATTRIBUTE3 from FM_MATL_DTL fm 
+							  where fm.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+							  and rownum =1),(NVL((select mil.SEGMENT1 from mtl_item_locations mil
+							  where mil.INVENTORY_LOCATION_ID = (select bor.COMPLETION_LOCATOR_ID 
+														   from bom_operational_routings bor 
+														   where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+														   and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+														   and rownum = 1)),(select bor.COMPLETION_SUBINVENTORY 
+							  from bom_operational_routings bor 
+							  where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+							  and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+							  and rownum = 1)))))end)),(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY), msib.SEGMENT1 asc";
 					break;
 				default:
-					$sorting = "msi.SEGMENT1";
+					$order = "bor.COMPLETION_SUBINVENTORY,msib.SEGMENT1";
 					break;
 			}
 		
-		$data = $this->M_monitoring->MonitoringKomponen($tgl,$inv_from,$loc_from,$inv_to,$loc_des,$comp,$sorting,$lap,$separated);
+		switch($lap){
+			case 1:
+				$lap = "and having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				break;
+			case 2:
+				$lap = "and having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				break;
+			default:
+				$lap = "";
+				break;
+		}
+		
+		$data = $this->M_monitoring_seksi->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap);
 		$output = array();
 		$a=1;
 		$i=0;

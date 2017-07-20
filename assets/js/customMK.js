@@ -145,7 +145,8 @@ $(document).ready(function() {
 				var name = $('#txtNamaKomponen').val();
 				var sort = $('#txsSort').val();
 				var report = $('#txsJenisLaporan').val();
-				
+				var nm_date = new Date(date);
+				var new_date = nm_date.getDate() + '/' + nm_date.getMonth() + '/' +  nm_date.getFullYear();
 				 $('#table_kirim_komponen').DataTable({
 						  "paging": true,
 						  "lengthChange": false,
@@ -186,7 +187,7 @@ $(document).ready(function() {
 							'copy',  
 							{
 								extend: 'csv',
-								title: 'KapasitasSimpanGudang'
+								title: 'kirim_komp'+new_date
 								  
 							}, 
 							'excel', 'pdf', 'print'
