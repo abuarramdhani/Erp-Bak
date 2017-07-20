@@ -819,6 +819,10 @@ $route['AccountPayables/PermintaanDana'] 				= 'AccountPayables/C_PermintaanDana
 $route['AccountPayables/PermintaanDana/(:any)'] 		= 'AccountPayables/C_PermintaanDana/$1';
 $route['AccountPayables/PermintaanDana/(:any)/(:any)'] 	= 'AccountPayables/C_PermintaanDana/$1/$2';
 
+$route['AccountPayables/Report/(:any)'] 						= 'AccountPayables/Report/C_Report/$1';
+$route['AccountPayables/Report/(:any)/(:any)'] 					= 'AccountPayables/Report/C_Report/$1/$2';
+$route['AccountPayables/Report/(:any)/(:any)/(:any)'] 			= 'AccountPayables/Report/C_Report/$1/$2/$3';
+
 //---------------------------------------- ADM PELATIHAN ----------------------------------------
 $route['ADMPelatihan'] 									= 'ADMPelatihan/C_ADMPelatihan';
 
