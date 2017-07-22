@@ -27,7 +27,7 @@
 			<td> <?php echo $SA['DESCRIPTION']; ?> </td>
 			<td> <?php echo $SA['SUB_INV']; ?> </td>
 			<td align="center">
-				<input type="text" class="alamat form-control" onkeypress="entir(event, this)"  value="<?php echo $SA['ALAMAT'];?>"  data-toggle="tooltip" data-placement="top" title="Press Enter to save!"> 
+				<input type="text" class="alamat form-control" onkeypress="entir(event, this)" value="<?php echo $SA['ALAMAT'];?>" data-toggle="tooltip" data-placement="top" title="Press Enter to save!"> 
 				<input type="hidden" class="item form-control" value="<?php echo $SA['ITEM']; ?>" > 
 				<input type="hidden" class="kode_assy form-control" value="<?php echo $SA['KODE_ASSEMBLY']; ?>"> 
 				<input type="hidden" class="type_assy form-control" value="<?php echo $SA['TYPE_ASSEMBLY']; ?>"> 
