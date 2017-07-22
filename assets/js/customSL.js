@@ -89,7 +89,7 @@ $(document).ready(function() {
         "paging": true,
         "lengthChange": false,
         "searching": true,
-        "ordering": false,
+        // "ordering": false,
         "info": false,
         "autoWidth": false,
     });
@@ -160,7 +160,7 @@ function searchComponent(base) {
                 "paging": true,
                 "lengthChange": false,
                 "searching": true,
-                "ordering": false,
+                // "ordering": false,
                 "info": false,
                 "autoWidth": false,
             });
@@ -178,7 +178,8 @@ function searchAssy(base) {
     var sub_inv = $("#SlcSubInventori").val();
     var a = $("#SlcKodeAssy").val();
     if (a !== null) {
-        var kode_assy = a.split('|');
+        var b = a.split('|');
+        var kode_assy = b[0];
     } else {
         var kode_assy = '';
     }
@@ -188,7 +189,7 @@ function searchAssy(base) {
         data: {
             org: org,
             sub_inv: sub_inv,
-            kode_assy: kode_assy[0]
+            kode_assy: kode_assy
         },
         dataType: "html"
     });
@@ -202,7 +203,7 @@ function searchAssy(base) {
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                "ordering": false,
+                // "ordering": false,
             });
             $(".select-2").select2({
                 allowClear: false,
@@ -273,7 +274,7 @@ function searchByKomp(base) {
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                "ordering": false,
+                // "ordering": false,
             });
         }, 1000);
     });
@@ -283,14 +284,15 @@ function searchBySA(base) {
     var sub_inv = $("#SlcSubInventori").val();
     var locator = $("#SlcLocator").val();
     var a = $("#SlcKodeAssy").val();
-    var assy = a.split('|', 1);
+    var b = a.split('|', 1);
+    var assy = b[0];
     var org = $('select#IdOrganization').val()
     var request = $.ajax({
         url: base + "StorageLocation/AddressMonitoring/searchBySA",
         data: {
             sub_inv:sub_inv,
             locator:locator,
-            kode_assy:assym,
+            kode_assy:assy,
             org_id:org
         },
         type: "post",
@@ -305,7 +307,7 @@ function searchBySA(base) {
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                "ordering": false,
+                // "ordering": false,
             });
         }, 1000);
     });
@@ -335,7 +337,7 @@ function searchByAll(base) {
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                "ordering": false,
+                // "ordering": false,
             });
         }, 1000);
     });
