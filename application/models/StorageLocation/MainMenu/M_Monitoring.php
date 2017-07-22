@@ -98,7 +98,6 @@ class M_monitoring extends CI_Model {
     {
     	if(($sub_inv == "") and  ($locator == "") and ($kode_assy == "") and ($org_id == "")){
 				$p = "";
-				
 			}else{
 				$p = "and";
 			}
@@ -145,14 +144,20 @@ class M_monitoring extends CI_Model {
 				}
 			}
 
-			$sql= $this->oracle->query("SELECT distinct kls.component ITEM , msib.DESCRIPTION DESCRIPTION
-						        ,kls.assembly KODE_ASSEMBLY , msib2.DESCRIPTION NAMA_ASSEMBLY , kls.assembly_type TYPE_ASSEMBLY , kls.sub_inv SUB_INV
-						                , kls.alamat_simpan ALAMAT , kls.LPPB_MO_KIB LMK, kls.picklist PICKLIST
-						            from mtl_system_items_b msib ,khs.khslokasisimpan kls, mtl_system_items_b msib2 
-						            where kls.COMPONENT = msib.SEGMENT1
-           								 and msib2.segment1 = kls.assembly
-						             	 $p $a $p1 $b $p2 $c $p3 $d ");
-			return $sql->result_array();			
+			$sql = "SELECT distinct kls.component ITEM,
+						msib.DESCRIPTION DESCRIPTION,
+						kls.assembly KODE_ASSEMBLY,
+						msib2.DESCRIPTION NAMA_ASSEMBLY,
+						kls.assembly_type TYPE_ASSEMBLY,
+						kls.sub_inv SUB_INV,
+						kls.alamat_simpan ALAMAT,
+						kls.LPPB_MO_KIB LMK,
+						kls.picklist PICKLIST
+					FROM mtl_system_items_b msib,
+						mtl_system_items_b msib2 RIGHT JOIN khs.khslokasisimpan kls ON msib2.segment1 = kls.assembly
+					WHERE kls.COMPONENT = msib.SEGMENT1 $p $a $p1 $b $p2 $c $p3 $d ";
+			$query= $this->oracle->query($sql);
+			return $query->result_array();			
 
     }
       function searchByAll($sub_inv,$locator,$alamat)

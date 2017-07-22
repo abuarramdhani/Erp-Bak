@@ -114,19 +114,20 @@ class M_correction extends CI_Model {
     		}
     	}
 
-    	$sql= $this->oracle->query("SELECT distinct kls.component ITEM,
-    									msib.DESCRIPTION DESCRIPTION,
-    									kls.assembly KODE_ASSEMBLY,
-    									msib2.DESCRIPTION NAMA_ASSEMBLY,
-    									kls.assembly_type TYPE_ASSEMBLY,
-    									kls.sub_inv SUB_INV,
-    									kls.alamat_simpan ALAMAT,
-    									kls.LPPB_MO_KIB LMK,
-    									kls.picklist PICKLIST
-    								FROM mtl_system_items_b msib, khs.khslokasisimpan kls, mtl_system_items_b msib2 
-    								WHERE kls.COMPONENT = msib.SEGMENT1
-    									AND msib2.segment1 = kls.assembly $p $a $p1 $b $p2 $c");
-    	return $sql->result_array();
+        $sql = "SELECT distinct kls.component ITEM,
+                        msib.DESCRIPTION DESCRIPTION,
+                        kls.assembly KODE_ASSEMBLY,
+                        msib2.DESCRIPTION NAMA_ASSEMBLY,
+                        kls.assembly_type TYPE_ASSEMBLY,
+                        kls.sub_inv SUB_INV,
+                        kls.alamat_simpan ALAMAT,
+                        kls.LPPB_MO_KIB LMK,
+                        kls.picklist PICKLIST
+                FROM    mtl_system_items_b msib,
+                        mtl_system_items_b msib2 RIGHT JOIN khs.khslokasisimpan kls ON msib2.segment1 = kls.assembly
+                WHERE kls.COMPONENT = msib.SEGMENT1 $p $a $p1 $b $p2 $c";
+    	$query= $this->oracle->query($sql);
+    	return $query->result_array();
     }
 
     function save_alamat($user, $alamat, $item, $kode_assy, $type_assy, $sub_inv)
