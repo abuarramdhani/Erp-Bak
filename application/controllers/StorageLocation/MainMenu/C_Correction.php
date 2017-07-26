@@ -46,7 +46,8 @@ class C_Correction extends CI_Controller
 		$item 	= $this->input->post('item');
 		$locator= $this->input->post('locator');
 		
-		$data['Component'] = $this->M_correction->getSearchComponent($org_id,$sub_inv,$item,$locator);
+		$data['Component'] 	= $this->M_correction->getSearchComponent($org_id,$sub_inv,$item,$locator);
+		$data['SubInv'] 	= $this->M_correction->getSubInv();
 		$this->load->view('StorageLocation/MainMenu/V_tablesearchcomponent',$data);
 	}
 
@@ -55,43 +56,53 @@ class C_Correction extends CI_Controller
 		$org_id		= $this->input->post('org');
 		$sub_inv	= $this->input->post('sub_inv');
 		$kode_assy	= $this->input->post('kode_assy');
+		
 		$data['Assy'] = $this->M_correction->getSearchAssy($org_id,$sub_inv,$kode_assy);
+		$data['SubInv'] 	= $this->M_correction->getSubInv();
 		$this->load->view('StorageLocation/MainMenu/V_tablesearchassy',$data);
 	}
 
 	public function saveAlamat()
 	{
-		$user 		= $this->session->userdata('user');
-		$alamat		= $this->input->post('alamat');
-		$item		= $this->input->post('item');
-		$kode_assy	= $this->input->post('kode_assy');
-		$type_assy	= $this->input->post('type_assy');
-		$sub_inv	= $this->input->post('sub_inv');
+		$user 	= $this->session->userdata('user');
+		$alamat	= $this->input->post('alamat');
+		$ID		= $this->input->post('ID');
 
-		$this->M_correction->save_alamat($user, $alamat, $item, $kode_assy, $type_assy, $sub_inv);
+		$this->M_correction->save_alamat($user,$alamat,$ID);
 	}
 
 	public function saveLmk()
 	{
-		$user 		= $this->session->userdata('user');
-		$lmk		= $this->input->post('lmk');
-		$item		= $this->input->post('item');
-		$kode_assy	= $this->input->post('kode_assy');
-		$type_assy	= $this->input->post('type_assy');
-		$sub_inv	= $this->input->post('sub_inv');
+		$user 	= $this->session->userdata('user');
+		$lmk 	= $this->input->post('lmk');
+		$ID		= $this->input->post('ID');
 
-		$this->M_correction->save_lmk($user, $lmk, $item, $kode_assy, $type_assy, $sub_inv);
+		$this->M_correction->save_lmk($user,$lmk,$ID);
 	}
 
 	public function savePicklist()
 	{
 		$user 		= $this->session->userdata('user');
 		$picklist	= $this->input->post('picklist');
-		$item		= $this->input->post('item');
-		$kode_assy	= $this->input->post('kode_assy');
-		$type_assy	= $this->input->post('type_assy');
-		$sub_inv	= $this->input->post('sub_inv');
+		$ID			= $this->input->post('ID');
+		$this->M_correction->save_picklist($user,$picklist,$ID);
+	}
 
-		$this->M_correction->save_picklist($user, $picklist, $item, $kode_assy, $type_assy, $sub_inv);
+	public function compCodeSave()
+	{
+		$user 		= $this->session->userdata('user');
+		$ID 		= $this->input->post('ID');
+		$compCode 	= $this->input->post('compCode');
+
+		$this->M_correction->compCodeSave($user,$ID,$compCode);
+	}
+
+	public function subInvSave()
+	{
+		$user 		= $this->session->userdata('user');
+		$ID 		= $this->input->post('ID');
+		$sub_inv 	= $this->input->post('sub_inv');
+
+		$this->M_correction->subInvSave($user,$ID,$sub_inv);
 	}
 }
