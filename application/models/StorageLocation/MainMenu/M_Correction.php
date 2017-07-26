@@ -63,13 +63,15 @@ class M_correction extends CI_Model {
 
     	$sql= $this->oracle->query("SELECT distinct kls.component ITEM,
     									msib.DESCRIPTION DESCRIPTION,
+                                        kls.ORGANIZATION_ID ORGANIZATION_ID,
     									kls.assembly KODE_ASSEMBLY,
     									msib2.DESCRIPTION NAMA_ASSEMBLY,
     									kls.assembly_type TYPE_ASSEMBLY,
     									kls.sub_inv SUB_INV,
     									kls.alamat_simpan ALAMAT,
     									kls.LPPB_MO_KIB LMK,
-    									kls.picklist PICKLIST
+                                        kls.picklist PICKLIST,
+    									kls.khslokasisimpan_id ID
     								FROM mtl_system_items_b msib, khs.khslokasisimpan kls, mtl_system_items_b msib2 
     								WHERE kls.COMPONENT = msib.SEGMENT1
     								AND msib2.segment1 = kls.assembly $p $a $p1 $b $p2 $c $p3 $d" );
@@ -122,7 +124,9 @@ class M_correction extends CI_Model {
                         kls.sub_inv SUB_INV,
                         kls.alamat_simpan ALAMAT,
                         kls.LPPB_MO_KIB LMK,
-                        kls.picklist PICKLIST
+                        kls.picklist PICKLIST,
+                        kls.ORGANIZATION_ID ORGANIZATION_ID,
+                        kls.khslokasisimpan_id ID
                 FROM    mtl_system_items_b msib,
                         mtl_system_items_b msib2 RIGHT JOIN khs.khslokasisimpan kls ON msib2.segment1 = kls.assembly
                 WHERE kls.COMPONENT = msib.SEGMENT1 $p $a $p1 $b $p2 $c";
@@ -130,90 +134,45 @@ class M_correction extends CI_Model {
     	return $query->result_array();
     }
 
-    function save_alamat($user, $alamat, $item, $kode_assy, $type_assy, $sub_inv)
+    function save_alamat($user,$alamat,$ID)
     {
-    	if ($item == "") {
-    		$a1 = "component is null";
-    	}else{
-    		$a1 = "component = '$item'";
-    	}
-
-    	if ($kode_assy == "") {
-    	    $c1 = "assembly is null";
-    	}else{
-    	    $c1 = "assembly ='$kode_assy'";
-    	}
-
-    	if ($type_assy == "") {
-    	    $d1 = "assembly_type is null";
-    	}else{
-    	    $d1 = "assembly_type ='$type_assy'";
-    	}
-
-    	if ($sub_inv == "") {
-    	    $e1 = "sub_inv is null";
-    	}else{
-    	    $e1 = "sub_inv ='$sub_inv'";
-    	}
-
     	$sql =" UPDATE khs.khslokasisimpan SET alamat_simpan = '$alamat' , LAST_UPDATED_BY = '$user', LAST_UPDATE_DATE = sysdate
-    			WHERE $a1 and $c1 and $d1 and $e1";
+    			WHERE KHSLOKASISIMPAN_ID = $ID";
 	   	$this->oracle->query($sql);
 	}
 
-	function save_lmk($user, $lmk, $item, $kode_assy, $type_assy, $sub_inv)
+	function save_lmk($user, $lmk, $ID)
 	{
-    	if ($item == "") {
-    	    $a2 = "component is null";
-    	}else{
-    	    $a2 = "component = '$item'";
-    	}
-    	if ($kode_assy == "") {
-    	    $c2 = "assembly is null";
-    	}else{
-    	    $c2 = "assembly ='$kode_assy'";
-    	}
-    	if ($type_assy == "") {
-    	    $d2 = "assembly_type is null";
-    	}else{
-    	    $d2 = "assembly_type ='$type_assy'";
-    	}
-    	if ($sub_inv == "") {
-    	    $e2 = "sub_inv is null";
-    	}else{
-    	    $e2 = "sub_inv ='$sub_inv'";
-    	}
-
     	$sql ="UPDATE khs.khslokasisimpan SET LPPB_MO_KIB = '$lmk' , LAST_UPDATED_BY = '$user', LAST_UPDATE_DATE = sysdate 
-            where $a2 and $c2 and $d2 and $e2 ";
+            where KHSLOKASISIMPAN_ID = $ID";
         $query= $this->oracle->query($sql);
     }
 
-    function save_picklist($user, $picklist, $item, $kode_assy, $type_assy, $sub_inv)
-    {
-        if ($item == "") {
-    	    $a3 = "component is null";
-    	}else{
-    	    $a3 = "component = '$item'";
-    	}
-    	if ($kode_assy == "") {
-    	    $c3 = "assembly is null";
-    	}else{
-    	    $c3 = "assembly ='$kode_assy'";
-    	}
-    	if ($type_assy == "") {
-    	    $d3 = "assembly_type is null";
-    	}else{
-    	    $d3 = "assembly_type ='$type_assy'";
-    	}
-    	if ($sub_inv == "") {
-    	    $e3 = "sub_inv is null";
-    	}else{
-    	    $e3 = "sub_inv ='$sub_inv'";
-    	}
-	
+    function save_picklist($user,$picklist,$ID)
+    {	
 	    $sql ="UPDATE khs.khslokasisimpan SET PICKLIST = '$picklist' , LAST_UPDATED_BY = '$user', LAST_UPDATE_DATE = sysdate
-	    	        where $a3 and $c3 and $d3 and $e3 ";
+	    	        where KHSLOKASISIMPAN_ID = $ID";
+        $query= $this->oracle->query($sql);
+    }
+
+    public function getSubInv()
+    {
+        $sql = "SELECT SECONDARY_INVENTORY_NAME, ORGANIZATION_ID FROM mtl_secondary_inventories WHERE ORGANIZATION_ID = '101' OR ORGANIZATION_ID = '102'";
     	$query= $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function compCodeSave($user,$ID,$compCode)
+    {
+        $sql    = " UPDATE khs.khslokasisimpan SET COMPONENT = '$compCode' , LAST_UPDATED_BY = '$user', LAST_UPDATE_DATE = sysdate
+                    WHERE KHSLOKASISIMPAN_ID = $ID";
+        $query  = $this->oracle->query($sql);
+    }
+
+    public function subInvSave($user,$ID,$sub_inv)
+    {
+        $sql    = " UPDATE khs.khslokasisimpan SET SUB_INV = '$sub_inv' , LAST_UPDATED_BY = '$user', LAST_UPDATE_DATE = sysdate
+                    WHERE KHSLOKASISIMPAN_ID = $ID";
+        $query  = $this->oracle->query($sql);
     }
 }
