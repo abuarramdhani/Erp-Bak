@@ -155,14 +155,87 @@ function searchComponent(base) {
         window.setTimeout(function() {
             $('#res').html('');
             $('#res').html(output);
+            $(".jsComponent").select2({
+                allowClear: true,
+                placeholder: "Choose Component Code",
+                ajax: {
+                    url: baseurl + "StorageLocation/Ajax/getComponentCode",
+                    dataType: 'json',
+                    type: "post",
+                    data: function(params) {
+                        var queryParameters = {
+                            term: params.term,
+                            org_id: $(this).closest('tr').find('input.org_id').val()
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                                return {
+                                    id: obj.SEGMENT1 + '|' + obj.DESCRIPTION,
+                                    text: obj.SEGMENT1 + " | " + obj.DESCRIPTION
+                                };
+                            })
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
+            $(".slcSubInv").select2({
+                ajax: {
+                    url: baseurl + "StorageLocation/Ajax/GetSubinventori",
+                    dataType: 'json',
+                    type: "post",
+                    data: function(params) {
+                        var queryParameters = {
+                            term: params.term,
+                            org_id: $(this).closest('tr').find('input.org_id').val()
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                                return {
+                                    id: obj.SEGMENT1 + '|' + obj.DESCRIPTION,
+                                    text: obj.SEGMENT1 + " | " + obj.DESCRIPTION
+                                };
+                            })
+                        };
+                    }
+                }
+            });
+            $.fn.dataTable.ext.order['dom-select'] = function(settings, col) {
+                return this.api().column(col, {
+                    order: 'index'
+                }).nodes().map(function(td, i) {
+                    return $('select', td).val();
+                });
+            };
             $('#table_comp').DataTable({
                 "dom": '<"pull-left"f>tip',
                 "paging": true,
                 "lengthChange": false,
                 "searching": true,
-                // "ordering": false,
                 "info": false,
                 "autoWidth": false,
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null, {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    }, {
+                        "orderDataType": "dom-select"
+                    }, {
+                        "orderDataType": "dom-select"
+                    }
+                ]
             });
             $(".select-2").select2({
                 allowClear: false,
@@ -199,11 +272,84 @@ function searchAssy(base) {
         window.setTimeout(function() {
             $('#res').html('');
             $('#res').html(output);
+            $(".jsComponent").select2({
+                allowClear: true,
+                placeholder: "Choose Component Code",
+                ajax: {
+                    url: baseurl + "StorageLocation/Ajax/getComponentCode",
+                    dataType: 'json',
+                    type: "post",
+                    data: function(params) {
+                        var queryParameters = {
+                            term: params.term,
+                            org_id: $(this).closest('tr').find('input.org_id').val()
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                                return {
+                                    id: obj.SEGMENT1 + '|' + obj.DESCRIPTION,
+                                    text: obj.SEGMENT1 + " | " + obj.DESCRIPTION
+                                };
+                            })
+                        };
+                    }
+                },
+                minimumInputLength: 3
+            });
+            $(".slcSubInv").select2({
+                ajax: {
+                    url: baseurl + "StorageLocation/Ajax/GetSubinventori",
+                    dataType: 'json',
+                    type: "post",
+                    data: function(params) {
+                        var queryParameters = {
+                            term: params.term,
+                            org_id: $(this).closest('tr').find('input.org_id').val()
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                                return {
+                                    id: obj.SEGMENT1 + '|' + obj.DESCRIPTION,
+                                    text: obj.SEGMENT1 + " | " + obj.DESCRIPTION
+                                };
+                            })
+                        };
+                    }
+                }
+            });
+            $.fn.dataTable.ext.order['dom-select'] = function(settings, col) {
+                return this.api().column(col, {
+                    order: 'index'
+                }).nodes().map(function(td, i) {
+                    return $('select', td).val();
+                });
+            };
             $('#table_SA').DataTable({
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                // "ordering": false,
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null, {
+                        "orderDataType": "dom-text",
+                        type: 'string'
+                    }, {
+                        "orderDataType": "dom-select"
+                    }, {
+                        "orderDataType": "dom-select"
+                    }
+                ]
             });
             $(".select-2").select2({
                 allowClear: false,
@@ -270,11 +416,31 @@ function searchByKomp(base) {
         window.setTimeout(function() {
             $('#result').html('');
             $('#result').html(output);
+            $.fn.dataTable.ext.order['dom-checkbox'] = function(settings, col) {
+                return this.api().column(col, {
+                    order: 'index'
+                }).nodes().map(function(td, i) {
+                    return $('input', td).prop('checked') ? '1' : '0';
+                });
+            };
             $('#tableMonitor').dataTable({
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                // "ordering": false,
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null, {
+                        "orderDataType": "dom-checkbox"
+                    }, {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ]
             });
         }, 1000);
     });
@@ -290,10 +456,10 @@ function searchBySA(base) {
     var request = $.ajax({
         url: base + "StorageLocation/AddressMonitoring/searchBySA",
         data: {
-            sub_inv:sub_inv,
-            locator:locator,
-            kode_assy:assy,
-            org_id:org
+            sub_inv: sub_inv,
+            locator: locator,
+            kode_assy: assy,
+            org_id: org
         },
         type: "post",
         dataType: "html"
@@ -303,11 +469,31 @@ function searchBySA(base) {
         window.setTimeout(function() {
             $('#result').html('');
             $('#result').html(output);
+            $.fn.dataTable.ext.order['dom-checkbox'] = function(settings, col) {
+                return this.api().column(col, {
+                    order: 'index'
+                }).nodes().map(function(td, i) {
+                    return $('input', td).prop('checked') ? '1' : '0';
+                });
+            };
             $('#tableMonitor').dataTable({
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                // "ordering": false,
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null, {
+                        "orderDataType": "dom-checkbox"
+                    }, {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ]
             });
         }, 1000);
     });
@@ -333,32 +519,46 @@ function searchByAll(base) {
         window.setTimeout(function() {
             $('#result').html('');
             $('#result').html(output);
+            $.fn.dataTable.ext.order['dom-checkbox'] = function(settings, col) {
+                return this.api().column(col, {
+                    order: 'index'
+                }).nodes().map(function(td, i) {
+                    return $('input', td).prop('checked') ? '1' : '0';
+                });
+            };
             $('#tableMonitor').dataTable({
                 "dom": '<"pull-left"f>tp',
                 "paging": true,
                 "searching": true,
-                // "ordering": false,
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null, {
+                        "orderDataType": "dom-checkbox"
+                    }, {
+                        "orderDataType": "dom-checkbox"
+                    }
+                ]
             });
         }, 1000);
     });
 }
 
-function entir(e, t) {
+function updateStorage(e, th) {
     if (e.keyCode === 13) {
-        var alamat = $(t).closest('td').find('.alamat').val();
-        var item = $(t).closest('td').find('.item').val();
-        var kode_assy = $(t).closest('td').find('.kode_assy').val();
-        var type_assy = $(t).closest('td').find('.type_assy').val();
-        var sub_inv = $(t).closest('td').find('.sub_inv').val();
+        var ID  = $(th).closest('tr').find('.ID').val();
+        var alamat = $(th).val();
         $.ajax({
             type: 'POST',
             url: baseurl + "StorageLocation/Correction/saveAlamat",
             data: {
                 alamat: alamat,
-                item: item,
-                kode_assy: kode_assy,
-                type_assy: type_assy,
-                sub_inv: sub_inv,
+                ID: ID
             },
             success: function(result) {
                 alert('edit berhasil!');
@@ -370,21 +570,15 @@ function entir(e, t) {
     }
 }
 
-function enter(en, th) {
-    var item = $(th).closest('tr').find('.item').val();
-    var kode_assy = $(th).closest('tr').find('.kode_assy').val();
-    var type_assy = $(th).closest('tr').find('.type_assy').val();
-    var sub_inv = $(th).closest('tr').find('.sub_inv').val();
+function updateLMK(th) {
+    var ID  = $(th).closest('tr').find('.ID').val();
     var lmk = $(th).val();
     $.ajax({
         type: 'POST',
         url: baseurl + "StorageLocation/Correction/saveLmk",
         data: {
             lmk: lmk,
-            item: item,
-            kode_assy: kode_assy,
-            type_assy: type_assy,
-            sub_inv: sub_inv,
+            ID: ID
         },
         success: function(result) {
             alert('edit berhasil!');
@@ -395,21 +589,15 @@ function enter(en, th) {
     });
 }
 
-function enter2(en, th) {
-    var item = $(th).closest('tr').find('.item').val();
-    var kode_assy = $(th).closest('tr').find('.kode_assy').val();
-    var type_assy = $(th).closest('tr').find('.type_assy').val();
-    var sub_inv = $(th).closest('tr').find('.sub_inv').val();
+function updatePicklist(th) {
+    var ID        = $(th).closest('tr').find('.ID').val();
     var picklist = $(th).val();
     $.ajax({
         type: 'POST',
         url: baseurl + "StorageLocation/Correction/savePicklist",
         data: {
             picklist: picklist,
-            item: item,
-            kode_assy: kode_assy,
-            type_assy: type_assy,
-            sub_inv: sub_inv,
+            ID: ID
         },
         success: function(result) {
             alert('edit berhasil!');
@@ -585,4 +773,45 @@ function getDescTypeAssy() {
     } else {
         $("input#txtTypeAssy").val(type);
     }
+}
+
+function updateCompCode(th) {
+    var a           = $(th).val();
+    var b           = a.split('|');
+    var compCode    = b[0];
+    var ID          = $(th).closest('tr').find('.ID').val();
+    $.ajax({
+        type: 'POST',
+        url: baseurl + "StorageLocation/Correction/compCodeSave",
+        data: {
+            compCode: compCode,
+            ID: ID
+        },
+        success: function(result) {
+            $(th).closest('tr').find('td.compDescArea').html(b[1]);
+            alert('edit berhasil!');
+        },
+        error: function() {
+            alert('terjadi kesalahan');
+        }
+    });
+}
+
+function updateSubInv(th) {
+    var sub_inv     = $(th).val();
+    var ID        = $(th).closest('tr').find('.ID').val();
+    $.ajax({
+        type: 'POST',
+        url: baseurl + "StorageLocation/Correction/subInvSave",
+        data: {
+            sub_inv: sub_inv,
+            ID: ID
+        },
+        success: function(result) {
+            alert('edit berhasil!');
+        },
+        error: function() {
+            alert('terjadi kesalahan');
+        }
+    });
 }
