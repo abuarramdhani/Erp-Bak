@@ -21,7 +21,7 @@ class M_ajax extends CI_Model {
                 AND MMT.ORGANIZATION_ID = $org_id
                 AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
                 group by msib.SEGMENT1, msib.DESCRIPTION
-                order by segment1";
+                order by MSIB.segment1";
       }else{
         $sql = "SELECT MSIB.SEGMENT1, MSIB.DESCRIPTION
                 FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
@@ -31,7 +31,7 @@ class M_ajax extends CI_Model {
                 AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
                 AND MSIB.SEGMENT1 LIKE '%$term%'
                 group by msib.SEGMENT1, msib.DESCRIPTION
-                order by segment1";
+                order by MSIB.segment1";
       }
       $query = $this->oracle->query($sql);
       return $query->result();
@@ -50,7 +50,8 @@ class M_ajax extends CI_Model {
               AND msib.inventory_item_id = bic.component_item_id
               AND bom.bill_sequence_id = bic.bill_sequence_id
               AND bom.assembly_item_id = msib2.inventory_item_id
-              AND bom.organization_id = msib2.organization_id";
+              AND bom.organization_id = msib2.organization_id
+            ORDER BY MSIB.segment1";
       }else{
         $sql = "SELECT DISTINCT msib.segment1,msib.description
              FROM mtl_system_items_b msib,
@@ -63,7 +64,8 @@ class M_ajax extends CI_Model {
               AND bom.bill_sequence_id = bic.bill_sequence_id
               AND bom.assembly_item_id = msib2.inventory_item_id
               AND bom.organization_id = msib2.organization_id
-              AND msib.segment1 LIKE '%$term%'";
+              AND msib.segment1 LIKE '%$term%'
+            ORDER BY MSIB.segment1";
       }
       $query = $this->oracle->query($sql);
       return $query->result();
@@ -122,6 +124,7 @@ class M_ajax extends CI_Model {
                 AND bom.organization_id = msib2.organization_id
                 AND bom.bill_sequence_id = bic.bill_sequence_id
                 AND msib2.segment1 LIKE '%$term%'
+              ORDER BY msib2.segment1
               ";
       $query = $this->oracle->query($sql);
       return $query->result();
