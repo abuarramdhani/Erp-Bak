@@ -175,4 +175,10 @@ class M_correction extends CI_Model {
                     WHERE KHSLOKASISIMPAN_ID = $ID";
         $query  = $this->oracle->query($sql);
     }
+
+    public function Delete($ID)
+    {
+            $this->oracle->where('KHSLOKASISIMPAN_ID',$ID);
+            $this->oracle->delete('KHS.KHSLOKASISIMPAN');
+    }
 }
