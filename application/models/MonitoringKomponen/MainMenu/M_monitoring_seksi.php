@@ -65,7 +65,8 @@ class M_monitoring_seksi extends CI_Model {
 										from khsinvlokasisimpan mil
 										where mil.SUBINV = nvl(bor.ATTRIBUTE1 ,bor.ATTRIBUTE2)
 										and mil.KELOMPOK is null
-										and mil.inventory_item_id = msib.INVENTORY_ITEM_ID ) lokasi, moqd.SUBINVENTORY_CODE
+										and mil.inventory_item_id = msib.INVENTORY_ITEM_ID
+										and rownum = 1 ) lokasi, moqd.SUBINVENTORY_CODE
 								from
 									mtl_system_items_b msib,
 									bom_operational_routings bor,
