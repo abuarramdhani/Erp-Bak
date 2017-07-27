@@ -105,4 +105,11 @@ class C_Correction extends CI_Controller
 
 		$this->M_correction->subInvSave($user,$ID,$sub_inv);
 	}
+
+	public function Delete()
+	{
+		$ID 		= $this->input->post('ID');
+		$this->M_correction->Delete($ID);
+		redirect('StorageLocation/Correction');
+	}
 }
