@@ -227,6 +227,7 @@ function searchComponent(base) {
                     null,
                     null,
                     null,
+                    null,
                     null, {
                         "orderDataType": "dom-text",
                         type: 'string'
@@ -335,6 +336,7 @@ function searchAssy(base) {
                 "paging": true,
                 "searching": true,
                 "columns": [
+                    null,
                     null,
                     null,
                     null,
@@ -814,4 +816,33 @@ function updateSubInv(th) {
             alert('terjadi kesalahan');
         }
     });
+}
+
+function DeleteConfir(th,no){
+    var id          = $(th).closest('tr').find('.ID').val();
+    var assCode     = $(th).attr('data-assCode');
+    var compCode    = $(th).closest('tr').find('.item').val();
+    var sub_inv     = $(th).closest('tr').find('.sub_inv').val();
+    var alamat      = $(th).closest('tr').find('.alamat').val();
+    var lmk         = $(th).closest('tr').find('.lmk').val();
+    var picklist    = $(th).closest('tr').find('.picklist').val();
+    if (lmk == '1') {
+        var ctkLMK = "YES";
+    }else{
+        var ctkLMK = "NO";
+    }
+    if (picklist == '1') {
+        var ctkPick = "YES";
+    }else{
+        var ctkPick = "NO";
+    }
+    $('#mdlStrgLoc #deleteIdData').val(id);
+    $('#mdlStrgLoc #tdno').html(no);
+    $('#mdlStrgLoc #tdassCode').html(assCode);
+    $('#mdlStrgLoc #tdcompCode').html(compCode);
+    $('#mdlStrgLoc #tdsubInv').html(sub_inv);
+    $('#mdlStrgLoc #tdstrgLoc').html(alamat);
+    $('#mdlStrgLoc #tdLMK').html(ctkLMK);
+    $('#mdlStrgLoc #tdpick').html(ctkPick);
+    $('#mdlStrgLoc').modal();
 }
