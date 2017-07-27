@@ -22,10 +22,11 @@ class C_InputComponent extends CI_Controller
 		}
 	}
 
-	public function index($message=NULL)
+	public function index($message=NULL,$showData=NULL)
 	{
 		$data = array (
 			'message' => $message,
+			'lastInsert' => $showData,
         );
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Dashboard';
@@ -71,19 +72,71 @@ class C_InputComponent extends CI_Controller
 		$checkData = $this->M_inputcomponent->CekData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator);
 		if ($checkData>0) {
 			$this->M_inputcomponent->UpdateData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
+			$id = 'UPDATE';
 		}else{
 			$this->M_inputcomponent->insertData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
+			$id = $this->M_inputcomponent->getLastInserted('KHS.KHSLOKASISIMPAN', 'KHSLOKASISIMPAN_ID');
 		}
-		 $message = '<div class="row">
-		 				<div class="col-md-10 col-md-offset-1 col-sm-12">
-		 					<div class="alert alert-success" role="alert">
-		 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		 							<span aria-hidden="true">&times;</span>
-		 						</button>
-		 						Input Success!
-		 					</div>
-		 				</div>
-                    </div>';
-         $this->index($message);
+		if ($id == 'UPDATE') {
+			$messContent 	= "Data Already Exist. Update Data Success!";
+	        $showData 		= "";
+		}else{
+			$messContent = "Input Data Success!";
+			$data = $this->M_inputcomponent->getLastData($id);
+	        $showData = "
+    	    	<div class='box box-primary box-solid'>
+        	        <div class='box-header with-border'>
+            	        Last Inserted Data
+                	</div>
+	                <div class='box-body'>
+    	                <table class='table table-striped table-bordered'>
+        	                <thead>
+            	                <tr class='bg-primary'>
+                	            	<td width='10%'>COMPONENT</td>
+                    	        	<td width='15%'>DESCRIPTION</td>
+                        	    	<td width='10%'>ASSEMBLY CODE</td>
+                            		<td width='15%'>ASSEMBLY NAME</td>
+                            		<td width='10%'>ASSEMBLY TYPE</td>
+	                            	<td width='10%'>SUBINVENTORY</td>
+    	                        	<td width='10%'>STORAGE LOCATION</td>
+        	                    	<td width='10%'>LPPB/MO/KIB</td>
+            	                	<td width='10%'>PICKLIST</td>
+                	            </tr>
+                    	    </thead>
+	                        <tbody>";
+    	                    	foreach ($data as $dt) { ;
+        	                	$showData .= "
+            	            	<tr>
+                	        		<td>".$dt['COMPONENT']."</td>
+                    	    		<td>".$dt['DESCRIPTION']."</td>
+                        			<td>".$dt['ASSEMBLY']."</td>
+                        			<td>".$dt['NAMA_ASSEMBLY']."</td>
+                        			<td>".$dt['ASSEMBLY_TYPE']."</td>
+	                        		<td>".$dt['SUB_INV']."</td>
+    	                    		<td>".$dt['ALAMAT_SIMPAN']."</td>
+        	                		<td>".$dt['LPPB_MO_KIB']."</td>
+            	            		<td>".$dt['PICKLIST']."</td>
+        						</tr>";
+        						} ;
+        					$showData .= "
+        					</tbody>
+        				</table>
+        			</div>
+        		</div>
+        	";
+		}
+
+			$message = '<div class="row">
+		 					<div class="col-md-10 col-md-offset-1 col-sm-12">
+		 						<div class="alert alert-success" role="alert">
+		 							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		 								<span aria-hidden="true">&times;</span>
+		 							</button>';
+			 						$message .= $messContent;
+			 						$message .='
+			 					</div>
+			 				</div>
+            	        </div>';
+        $this->index($message,$showData);
 	}
 }
