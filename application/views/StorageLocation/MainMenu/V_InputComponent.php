@@ -190,6 +190,7 @@
                         </div>
                     </div>
                 </div>
+                <?php echo $lastInsert; ?>
             </div>
         </div>
     </div>
