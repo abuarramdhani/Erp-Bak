@@ -22,7 +22,7 @@ class C_InputComponent extends CI_Controller
 		}
 	}
 
-	public function index($message=NULL,$showData=NULL)
+	public function index($message = NULL , $showData = NULL)
 	{
 		$data = array (
 			'message' => $message,
@@ -48,13 +48,13 @@ class C_InputComponent extends CI_Controller
 		$user 		= $this->session->userdata('user');
 		$org_id 	= $this->input->post('IdOrganization');
 		$sub_inv 	= $this->input->post('SlcSubInventori');
-		$comp_code_data 	= $this->input->post('SlcItem');
-		$ex = explode('|', $comp_code_data);
-		$comp_code = $ex[0];
+		$comp_code_data = $this->input->post('SlcItem');
+		$ex 		= explode('|', $comp_code_data);
+		$comp_code 	= $ex[0];
 		$assy_code 	= $this->input->post('SlcKodeAssy');
 		$type_assy 	= $this->input->post('txtTypeAssy');
 		$locator 	= $this->input->post('txtLocator');
-		$address	= $this->input->post('txtAlamat');
+		$address	= strtoupper($this->input->post('txtAlamat'));
 		$lmk 		= $this->input->post('txtLmk');
 		$picklist 	= $this->input->post('txtPicklist');
 		if ($lmk == 'NO') {
@@ -77,6 +77,7 @@ class C_InputComponent extends CI_Controller
 			$this->M_inputcomponent->insertData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
 			$id = $this->M_inputcomponent->getLastInserted('KHS.KHSLOKASISIMPAN', 'KHSLOKASISIMPAN_ID');
 		}
+
 		if ($id == 'UPDATE') {
 			$messContent 	= "Data Already Exist. Update Data Success!";
 	        $showData 		= "";
