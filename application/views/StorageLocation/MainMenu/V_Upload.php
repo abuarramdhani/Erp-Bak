@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('SaveLocation/FileUpload');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('StorageLocation/FileUpload');?>">
                                     <i aria-hidden="true" class="fa fa-2x fa-cloud-upload">
                                     </i>
                                     <span>
