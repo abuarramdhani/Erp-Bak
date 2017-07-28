@@ -101,7 +101,7 @@
                                                 Storage Location
                                             </label>
                                             <div class="col-md-8">
-                                                <input class="form-control" id="txtAlamat" name="txtAlamat" placeholder="Input Storage Location" type="text">
+                                                <input class="form-control toupper" id="txtAlamat" name="txtAlamat" placeholder="Input Storage Location" type="text">
                                                 </input>
                                             </div>
                                         </div>

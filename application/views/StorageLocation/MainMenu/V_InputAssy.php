@@ -154,7 +154,7 @@
                                                                             </input>
                                                                         </td>
                                                                         <td>
-                                                                            <input class="form-control" name="txtAlamat[]" type="text"/>
+                                                                            <input class="form-control toupper" name="txtAlamat[]" type="text"/>
                                                                         </td>
                                                                         <td>
                                                                             <select class="form-control select-2" id="txtLmk" name="txtLmk[]" required="">
@@ -200,6 +200,7 @@
                         </div>
                     </div>
                 </br>
+                <?php echo $lastInsert; ?>
             </div>
         </div>
     </div>
