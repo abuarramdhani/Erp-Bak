@@ -1,4 +1,4 @@
-</div>
+			</div>
 		</div>
 		
 	   <!-- FOOTER -->
@@ -23,11 +23,19 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.print.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/dataTables.buttons.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+
+	<script src="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
+
 	<!--<script src="<?php echo base_url('assets/plugins/jquery-autocomplete/jquery.autocomplete.min.js');?>"></script>-->
+	<!-- Fine Uploader JS file -->
+	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/jquery.fine-uploader.min.js');?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader.min.js');?>"></script>
+
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
@@ -37,6 +45,9 @@
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/formValidation.js');?>" type="text/javascript"></script>
@@ -88,7 +99,6 @@
 		  //-->
 	</script>
 	<!-- PAGE LEVEL SCRIPTS FOR FORM-->
-	
 	
 	<script src="<?php echo base_url('assets/plugins/jquery.number.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/uniform/jquery.uniform.min.js');?>"></script>

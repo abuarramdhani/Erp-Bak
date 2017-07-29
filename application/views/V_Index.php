@@ -10,7 +10,7 @@
         <section class="content">
 
           <div class="row">
-		  <img src="<?=base_url('assets/img/page-is-under-construction-transparent.png')?>" /><!-- /.direct-chat-img -->
+		  <img src="<?=base_url('assets/img/erp.png')?>" style="width:45%;height:45%;"/><!-- /.direct-chat-img -->
             
           </div><!-- /.row -->
 

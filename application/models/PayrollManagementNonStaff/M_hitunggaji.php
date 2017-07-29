@@ -8,7 +8,7 @@ class M_hitunggaji extends CI_Model
         $this->load->database();
     }
 
-    public function getHitungGaji($kodesie, $bln_gaji, $thn_gaji){
+    public function getHitungGaji($noind = '', $kodesie = '', $bln_gaji, $thn_gaji){
         $sql = "
             SELECT
                 pab.\"HMS\" as \"IMSNilai\",
@@ -45,9 +45,49 @@ class M_hitunggaji extends CI_Model
                     AND ppo.\"tahun_gaji\" = pab.\"thn_gaji\"
 
             WHERE
-                    pma.\"kodesie\" = '$kodesie'
+                    (pma.\"kodesie\" = '$kodesie' OR '$kodesie' = '')
+                AND (pma.\"noind\" = '$noind' OR '$noind' = '')
                 AND pab.\"bln_gaji\" = '$bln_gaji'
                 AND pab.\"thn_gaji\" = '$thn_gaji'
+        ";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function getEmployee($noind)
+    {
+
+        $sql = "
+            SELECT
+
+                *
+
+            FROM
+                er.er_employee_all eea
+            LEFT JOIN er.er_section ese ON eea.section_code = ese.section_code
+
+            WHERE
+                    eea.employee_code ILIKE '$noind%'
+        ";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function getDetailMasterGaji($noind)
+    {
+
+        $sql = "
+            SELECT
+
+                *
+
+            FROM
+                pr.pr_master_gaji 
+
+            WHERE
+                noind ILIKE '$noind%'
         ";
 
         $query = $this->db->query($sql);
@@ -155,16 +195,31 @@ class M_hitunggaji extends CI_Model
     {
 
         $sql = "
-            SELECT * FROM
+            SELECT * ,
+            (
+SELECT count(tgl) FROM
             (
                     (
                     SELECT
                         *,
-                        (pls.jml_barang-pls.reject) as jml_baik,
-                        ptb.target_utama as target,
-                        (100/ptb.target_utama) as proposional_target,
-                        (ptb.waktu_setting/ptb.target_utama) as cycle_time,
-                        ((pls.jml_barang-pls.reject)*(100/ptb.target_utama)) as pencapaian
+                        pls.noind as nomor_induk,
+                        pls.tgl as tanggal_lkh,
+                        rtrim(pls.kode_barang) as kd_brg,
+                        rtrim(pls.kode_proses) as kd_proses,
+                        (CASE
+                            WHEN kelas = '5'
+                            THEN ptb.target_utama_senin_kamis
+                            WHEN kelas = '4'
+                            THEN ptb.target_utama_senin_kamis_4
+                            ELSE NULL
+                        END) AS target_senin_kamis,
+                        (CASE
+                            WHEN kelas = '5'
+                            THEN ptb.target_utama_jumat_sabtu
+                            WHEN kelas = '4'
+                            THEN ptb.target_utama_jumat_sabtu_4
+                            ELSE NULL
+                        END) AS target_jumat_sabtu
                     FROM
                         pr.pr_lkh_seksi pls
                     LEFT JOIN
@@ -172,7 +227,10 @@ class M_hitunggaji extends CI_Model
                             ON
                                 rtrim(pls.kode_barang) = rtrim(ptb.kode_barang)
                             AND rtrim(pls.kode_proses) = rtrim(ptb.kode_proses)
-
+                    LEFT JOIN
+                        pr.pr_master_gaji pmg
+                            ON
+                                pls.noind = pmg.noind
                     WHERE
                             rtrim(pls.kode_barang_target_sementara) = ''
                         OR  rtrim(pls.kode_proses_target_sementara) = ''
@@ -183,11 +241,12 @@ class M_hitunggaji extends CI_Model
                     (
                     SELECT
                         *,
-                        (pls.jml_barang-pls.reject) as jml_baik,
-                        ptb.target_sementara as target,
-                        (100/ptb.target_sementara) as proposional_target,
-                        (ptb.waktu_setting/ptb.target_sementara) as cycle_time,
-                        ((pls.jml_barang-pls.reject)*(100/ptb.target_sementara)) as pencapaian
+                        pls.noind as nomor_induk,
+                        pls.tgl as tanggal_lkh,
+                        rtrim(pls.kode_barang) as kd_brg,
+                        rtrim(pls.kode_proses) as kd_proses,
+                        ptb.target_sementara_senin_kamis as target_senin_kamis,
+                        ptb.target_sementara_jumat_sabtu as target_jumat_sabtu
                     FROM
                         pr.pr_lkh_seksi pls
                     LEFT JOIN
@@ -195,7 +254,10 @@ class M_hitunggaji extends CI_Model
                             ON
                                 rtrim(pls.kode_barang_target_sementara) = rtrim(ptb.kode_barang)
                             AND rtrim(pls.kode_proses_target_sementara) = rtrim(ptb.kode_proses)
-
+                    LEFT JOIN
+                        pr.pr_master_gaji pmg
+                            ON
+                                pls.noind = pmg.noind
                     WHERE
                             rtrim(pls.kode_barang_target_sementara) != ''
                         OR  rtrim(pls.kode_proses_target_sementara) != ''
@@ -207,18 +269,118 @@ class M_hitunggaji extends CI_Model
             t(lkhSeksi)
 
             WHERE
-                    \"noind\" = '$noind'
-                AND \"tgl\" BETWEEN '$firstdate' AND '$lastdate'
+                    \"nomor_induk\" = '$noind'
+                AND \"tanggal_lkh\" = tlkhseksi.tgl
+
+ group by tgl
+            ORDER BY
+                tgl asc
+
+) as jml_pengerjaan
+
+
+
+            FROM
+            (select * from
+            (
+                    (
+                    SELECT
+                        *,
+                        pls.noind as nomor_induk,
+                        pls.tgl as tanggal_lkh,
+                        rtrim(pls.kode_barang) as kd_brg,
+                        (CASE
+                            WHEN kelas = '5'
+                            THEN ptb.target_utama_senin_kamis
+                            WHEN kelas = '4'
+                            THEN ptb.target_utama_senin_kamis_4
+                            ELSE NULL
+                        END) AS target_senin_kamis,
+                        (CASE
+                            WHEN kelas = '5'
+                            THEN ptb.target_utama_jumat_sabtu
+                            WHEN kelas = '4'
+                            THEN ptb.target_utama_jumat_sabtu_4
+                            ELSE NULL
+                        END) AS target_jumat_sabtu
+                    FROM
+                        pr.pr_lkh_seksi pls
+                    LEFT JOIN
+                        pr.pr_target_benda ptb
+                            ON
+                                rtrim(pls.kode_barang) = rtrim(ptb.kode_barang)
+                            AND rtrim(pls.kode_proses) = rtrim(ptb.kode_proses)
+                    LEFT JOIN
+                        pr.pr_master_gaji pmg
+                            ON
+                                pls.noind = pmg.noind
+                    WHERE
+                            rtrim(pls.kode_barang_target_sementara) = ''
+                        OR  rtrim(pls.kode_proses_target_sementara) = ''
+                    )
+
+                UNION
+
+                    (
+                    SELECT
+                        *,
+                        pls.noind as nomor_induk,
+                        pls.tgl as tanggal_lkh,
+                        rtrim(pls.kode_barang) as kd_brg,
+                        ptb.target_sementara_senin_kamis as target_senin_kamis,
+                        ptb.target_sementara_jumat_sabtu as target_jumat_sabtu
+                    FROM
+                        pr.pr_lkh_seksi pls
+                    LEFT JOIN
+                        pr.pr_target_benda ptb
+                            ON
+                                rtrim(pls.kode_barang_target_sementara) = rtrim(ptb.kode_barang)
+                            AND rtrim(pls.kode_proses_target_sementara) = rtrim(ptb.kode_proses)
+                    LEFT JOIN
+                        pr.pr_master_gaji pmg
+                            ON
+                                pls.noind = pmg.noind
+                    WHERE
+                            rtrim(pls.kode_barang_target_sementara) != ''
+                        OR  rtrim(pls.kode_proses_target_sementara) != ''
+                    )
+            )
+
+            AS
+
+            t(lkhSeksi)
+
+            WHERE
+                    \"nomor_induk\" = '$noind'
+                AND \"tanggal_lkh\" BETWEEN '$firstdate' AND '$lastdate'
 
             ORDER BY
                 tgl ASC
+) as tlkhseksi
         ";
 
         $query = $this->db->query($sql);
         return $query->result_array();
     }
 
-    public function getInsentifKondite($noind, $kodesie, $firstdate, $lastdate)
+    public function cekTglDiangkat($noind,$date)
+    {
+        $sql = "SELECT
+
+                employee_code, worker_recruited_date
+
+            FROM
+                er.er_employee_all eea
+
+            WHERE
+                    eea.\"employee_code\" = '$noind'
+                AND eea.\"worker_recruited_date\" + interval '3 month' <= '$date'
+        ";
+        $query = $this->db->query($sql);
+        return $query->num_rows();
+    }
+
+    public function getInsentifKondite($noind, $kodesie = '', $firstdate, $lastdate)
     {
 
         $sql = "
@@ -231,8 +393,11 @@ class M_hitunggaji extends CI_Model
 
             WHERE
                     pko.\"noind\" = '$noind'
-                AND pko.\"kodesie\" = '$kodesie'
+                AND (pko.\"kodesie\" = '$kodesie' OR '$kodesie' = '')
                 AND pko.\"tanggal\" BETWEEN '$firstdate' AND '$lastdate'
+
+            ORDER BY
+                pko.\"tanggal\"
         ";
 
         $query = $this->db->query($sql);
@@ -258,6 +423,37 @@ class M_hitunggaji extends CI_Model
         ";
         $query = $this->db->query($sql);
         return $query;
+    }
+
+    public function getHasilHitungByFilter($kodesie,$bulan,$tahun)
+    {
+        $sql = "
+            SELECT * FROM pr.pr_hasil_perhitungan_gaji php
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
+            LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
+            where php.kodesie='$kodesie' and php.bln_gaji='$bulan' and php.thn_gaji='$tahun'
+        ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function getHariIP($noind,$bulan,$tahun)
+    {
+        $sql = "
+           select case 
+                when trim(from shift)='SHIFT 2' then 'HMS'
+                when trim(from shift)='SHIFT 1' then 'HMP'
+                when trim(from shift)='SHIFT 3' then 'HMM'
+                when trim(from shift)='SHIFT UMUM' then 'HMP'
+                else shift
+                end as shift,
+                count(*) as jml from 
+                (select tgl,shift from pr.pr_lkh_seksi where noind='$noind' and extract(month from tgl)='$bulan' and extract(year from tgl)='$tahun'
+                group by tgl,shift order by tgl) tabel
+                group by shift
+        ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
     public function getHasilHitungSearch($searchValue)
@@ -388,6 +584,127 @@ class M_hitunggaji extends CI_Model
     public function getHitungGajiById($id)
     {
         $query = $this->db->select('*')->from('pr.pr_hasil_perhitungan_gaji')->join('er.er_employee_all', 'er.er_employee_all.employee_code=pr.pr_hasil_perhitungan_gaji.noind')->join('er.er_section', 'er.er_section.section_code=er.er_employee_all.section_code')->where('hasil_perhitungan_id', $id)->get();
+        return $query->result_array();
+    }
+
+    public function getSetelan($setelan_name)
+    {
+        $query = $this->db->get_where('pr.pr_setelan', array('setelan_name' => $setelan_name));
+        // return $query->result();
+        foreach ($query->result() as $data) {
+            return $data->setelan_value;
+        }
+    }
+
+    public function getHitungGajiDBF($section,$month,$year)
+    {
+       $sql = "
+            SELECT  
+php.hasil_perhitungan_id,
+php.noind,
+php.kodesie,
+php.bln_gaji,
+php.thn_gaji,
+php.gaji_pokok,
+php.insentif_prestasi,
+php.insentif_kelebihan,
+php.insentif_kondite,
+php.insentif_masuk_sore,
+php.insentif_masuk_malam,
+php.ubt,
+php.upamk,
+round(php.uang_lembur) as uang_lembur,
+php.tambah_kurang_bayar,
+php.tambah_lain,
+php.uang_dl,
+php.tambah_pajak,
+php.denda_insentif_kondite,
+php.pot_htm,
+php.pot_lebih_bayar,
+php.pot_gp,
+php.pot_uang_dl,
+round(php.jht) as jht,
+round(php.jkn) as jkn,
+round(php.jp) as jp,
+round(php.spsi) as spsi,
+php.duka,
+php.pot_koperasi,
+php.pot_hutang_lain,
+php.pot_dplk,
+php.tkp,
+php.hitung_insentif_prestasi,
+php.hitung_insentif_kelebihan,
+php.hitung_insentif_kondite,
+php.hitung_ims,
+php.hitung_imm,
+php.hitung_ubt,
+php.hitung_upamk,
+php.hitung_tambah_kurang_bayar,
+php.hitung_pot_htm,
+php.hitung_uang_lembur,
+php.tgl_pembayaran,
+php.terima_bersih,
+eea.*,ese.*,erl.*,pa.*,
+pmg.gaji_pokok as m_gaji_pokok,
+pmg.insentif_prestasi as m_insentif_prestasi,
+pmg.insentif_masuk_sore as m_insentif_masuk_sore,
+pmg.insentif_masuk_malam as m_insentif_masuk_malam,
+pmg.ubt as m_ubt,
+pmg.upamk as m_upamk,
+pmg.kelas,
+ (
+select replace(concat(
+\"HM01\",
+\"HM02\",
+\"HM03\",
+\"HM04\",
+\"HM05\",
+\"HM06\",
+\"HM07\",
+\"HM08\",
+\"HM09\",
+\"HM10\",
+\"HM11\",
+\"HM12\",
+\"HM13\",
+\"HM14\",
+\"HM15\",
+\"HM16\",
+\"HM17\",
+\"HM18\",
+\"HM19\",
+\"HM20\",
+\"HM21\",
+\"HM22\",
+\"HM23\",
+\"HM24\",
+\"HM25\",
+\"HM26\",
+\"HM27\",
+\"HM28\",
+\"HM29\",
+\"HM30\",
+\"HM31\"
+), ' ','') from pr.pr_absensi where noind=php.noind) as kehadiran,
+(select count(*) from (
+select tgl from pr.pr_lkh_seksi where noind=php.noind and extract(month from tgl)='$month' and extract(year from tgl)='$year' group by tgl order by tgl ) tabel ) as jmlharilkh,
+pmg.bank_code,
+pmg.status_pajak, 
+pmg.tanggungan_pajak, 
+pmg.ptkp, 
+pmg.bulan_kerja, 
+pmg.potongan_dplk, 
+pmg.potongan_spsi, 
+pmg.kpph
+FROM pr.pr_hasil_perhitungan_gaji php
+            LEFT JOIN er.er_employee_all eea ON eea.employee_code = php.noind
+            LEFT JOIN er.er_section ese ON ese.section_code = eea.section_code
+            LEFT JOIN er.er_location erl on eea.location_code=erl.location_code
+            left join pr.pr_master_gaji pmg on pmg.noind=php.noind
+            left join pr.pr_absensi pa on pa.noind=php.noind
+            where php.kodesie='$section' and php.bln_gaji='$month' and php.thn_gaji='$year'
+        ";
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 

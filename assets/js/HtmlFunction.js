@@ -81,7 +81,10 @@ var counter = 0;
 											+"<option value='N'>NO PROCESS</option>"
 										+"</select>"
 									+"</td>"
-									+"<td><input type='file' name='claimImage' id='claimImage' disabled></td>"
+									+"<td>"
+										+"<input type='text' name='claimImage' id='claimImage' onfocus='modalImg(this)'  class='form-control' row-id='"+counter+"'>"
+										+"<input type='hidden' name='claimImageData[]'' id='claimImageData' row-id='"+counter+"'>"
+									+"</td>"
 									+"<td></td>"
 							+"</tr>");
 
@@ -192,7 +195,7 @@ var counter = 0;
 		
 		$(".jsEmployeeData").select2({
 			allowClear : true,
-			placeholder: "Employee", 
+			placeholder: "Employee",
 			minimumInputLength: 1,
 			ajax: {
 						url: base+"CustomerRelationship/Search/EmployeeData/",
@@ -521,6 +524,7 @@ function enadisServiceLine(rowid) {
 			document.getElementById('hdnOwnershipId').value = '';
 			document.getElementById('txtItemDescription').value = '';
 			document.getElementById('txtWarranty').value = '';
+			document.getElementById('claimImage').value = '';
 			//document.getElementById('slcSparePart').value = '';
 			//document.getElementById('hdnSparePartId').value = '';
 			//document.getElementById('txtSparePartDescription').value = '';
@@ -540,7 +544,6 @@ function enadisServiceLine(rowid) {
 			document.getElementById('txtClaimNum').disabled = true;
 			document.getElementById('actionClaim').disabled = true;
 			document.getElementById('claimImage').disabled = true;
-
 		}
 		else{
 			//document.getElementById('slcProblem').disabled = false;
@@ -603,6 +606,8 @@ function sendValueCustomer(cust_id,cust_name,cat_id,base){
 		$('#txtCustomerName').val(cust_name);
 		$('#hdnCustomerId').val(cust_id);
 		$('#hdnCategoryId').val(cat_id);
+		checkcustomer();
+		setCustIdSession(cust_id);
 		
 		var id = document.getElementById('hdnCustomerId').value;
 		var n = $('#tblServiceLines tbody tr').length;
@@ -808,7 +813,7 @@ function enadisDriverOwner(base){
 					$('select#slcCustOwner').prop('disabled', false);
 				}else{
 					$('select#slcCustOwner').prop('disabled', true);
-				}	
+				}
                 //alert(returnedvalue);
             }
         });
@@ -822,7 +827,7 @@ function getLastActivityNumber(base){
        $.ajax({
             type: "POST",
             url: url,
-            data: {term : $('#slcActivityType').val()}, 
+            data: {term : $('#slcActivityType').val()},
             cache: false,
 
             success: function(result) { //just add the result as argument in success anonymous function
@@ -832,7 +837,9 @@ function getLastActivityNumber(base){
 				}else{
 					//$('input#txtServiceNumber').prop('disabled', true);
 					$('input#txtServiceNumber').val(result);
-				}	
+					$('input#txtCustomerName').prop('disabled', false);
+					$('#btnSearchCustomer').prop('disabled', false);
+				}
                 //alert(returnedvalue);
             }
         });
@@ -1596,7 +1603,9 @@ $(document).ready(function() {
 });
 
 function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
-		$('#txtCustomerName').val(cust_name);
-		$('#hdnCustomerId').val(cust_id);
-		$('#hdnCategoryId').val(cat_id);
-	}
+	$('#txtCustomerName').val(cust_name);
+	$('#hdnCustomerId').val(cust_id);
+	$('#hdnCategoryId').val(cat_id);
+}
+
+

@@ -30,18 +30,29 @@
 								<b>KlikBCA Checking</b>
 							</div>
 							<div class="box-body">
-								<div class="col-lg-6">
-					    			<div id="dropzone" class="dropzone" style="margin-top:30px;margin-bottom:30px;border:2px dashed #0087F7;">
-										<div class="dz-message">
-											<h3>Klik atau Drop folder disini</h3>
+					    		<div class="row">
+					    			<div class="col-lg-6">
+						    			<select class="form-control" id="type" name="type">
+							    			<option value="TYP1">Ke Sesama BCA</option>
+							    			<option value="TYP2">Ke Bank Lain</option>
+							    			<option value="TYP3">Cash Management</option>
+						    			</select>
+					    			</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+						    			<div id="dropzone" class="dropzone" style="margin-top:30px;margin-bottom:30px;border:2px dashed #0087F7;">
+											<div class="dz-message">
+												<h3>Klik atau Drop folder disini</h3>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="col-lg-6">
-									<div style="margin-top:30px">
-										<table id="cobaco">
-											<tr><td><b>keterangan :</b></td></tr>
-										</table>
+									<div class="col-lg-6">
+										<div style="margin-top:30px">
+											<table id="cobaco">
+												<tr><td><b>keterangan :</b></td></tr>
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>

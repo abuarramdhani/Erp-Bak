@@ -117,7 +117,7 @@
 											<div class="form-group">
 													<label for="norm" class="control-label col-lg-4">Service Number</label>
 													<div class="col-lg-8">
-														<input type="text" placeholder="Service Number" name="txtServiceNumber" id="txtServiceNumber" class="form-control" value="<?php echo $ServiceProducts_item['service_number']?>" />
+														<input type="text" placeholder="Service Number" name="txtServiceNumber" id="txtServiceNumber" class="form-control" value="<?php echo $ServiceProducts_item['service_number']?>" readonly/>
 													</div>
 											</div>
 											<div class="form-group">
@@ -465,6 +465,7 @@
 																				<th width="5%">Status</th>
 																				<th width="4%">Action Date</th>
 																				<th width="5%">Process</th>
+																				<th width="5%">Image</th>
 																				<th width="3%">History</th>
 																			</tr>
 																		</thead>
@@ -511,19 +512,17 @@
 																				?>
 																				</option>
 																			</select>
-												
 																			</td>
 																			<!--<td><input type="text" name="txtSparePartDescription[]" id="txtSparePartDescription<?php echo $i; ?>" value="<?php echo $ServiceProductLines_item['spare_part_name'] ?>" class="form-control" readonly="readonly"/></td>-->
 																			<td><select  name="slcProblem[]" id="slcProblem" class="form-control js-problem">
 																				<option value="<?php echo $ServiceProductLines_item['service_problem_id'] ?>" selected="selected"><?php echo $ServiceProductLines_item['service_problem_name'] ?></option>
 																			</select></td>
-																			
 																			<td><input type="text" name="txtProblemDescription[]" class="form-control" id="txtProblemDescription" value="<?php echo $ServiceProductLines_item['problem_description'] ?>"/></td>
 																			<td><input type="text" name="txtAction[]" class="form-control" id="txtAction" value="<?php echo $ServiceProductLines_item['action'] ?>"/></td>
 																			<td>
 																			<select name="slcEmployeeNum[]" id="slcEmployeeNum" class="form-control jsEmployeeData" data-placeholder="Employee">
 																				<option value="<?php echo $ServiceProductLines_item['technician_id'] ?>">
-																				<?php 
+																				<?php
 																					if($ServiceProductLines_item['technician_id']==''){
 																						echo '';
 																					}
@@ -536,14 +535,12 @@
 																			</td>
 																			<td>
 																				<select name="slcServiceLineStatus[]" id="slcServiceLineStatus" onchange="changeLineStatus(<?php echo $i ?>);" class="form-control">
-																					
 																					<option value="OPEN" <?php if($ServiceProductLines_item['line_status']=='OPEN') echo 'selected="selected"'; ?>>OPEN</option>
 																					<option value="CLOSE" <?php if($ServiceProductLines_item['line_status']=='CLOSE') echo 'selected="selected"'; ?>>CLOSE</option>
 																				</select>
-																				
 																			</td>
 																			<td>
-																			<input type="text" name="txtActionDate[]" id="txtActionDate"  value="<?php echo $tgl_action; ?>" placeholder="<?php echo date("d-M-Y")?>" class="form-control" data-date-format="dd-M-yyyy" required/></td>
+																			<input type="text" name="txtActionDate[]" id="txtActionDate"  value="<?php echo $tgl_action; ?>" placeholder="<?php echo date("d-M-Y")?>" class="form-control txtActionDate" data-date-format="dd-M-yyyy" required/></td>
 																			<td>
 																				<select name="actionClaim[]" id="actionClaim" class="form-control select4" data-placeholder="Action Claim">
 																					<option value="" disabled>-- CHOOSE ONE --</option>
@@ -557,16 +554,17 @@
 																						<option value="Y">PROCESS</option>
 																						<option value="N">NO PROCESS</option>
 																					<?php } ?>
-																					
 																				</select>
+																			</td>
+																			<td>
+																				<button class="btn btn-default" onclick="modalImgUpdate(this)" row-id="<?php echo $i+1; ?>" id="claimImage" type="button">Show Claim Image</button>
+																				<input type="text" name="claimImageData[]" id="claimImageData"  row-id="<?php echo $i+1; ?>" value="<?php echo $ServiceProductLines_item['service_product_line_image_id'] ?>">
 																			</td>
 																			<td><a href="#" data-toggle="modal" data-target="#history<?php echo $i+1;?>">
 																					<img src="<?php echo base_url('assets/img/history5.png');?>" width="30px">
 																				</a>
 																			</td>
-										
 																			</tr>
-																			
 																			<?php $i++; endforeach ?>
 																		</tbody>
 																	</table>
@@ -581,7 +579,6 @@
 																							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 																							<h4 class="modal-title" id="myModalLabel">History Service Lines</h4>
 																						</div>
-																						
 																						<div class="modal-body" >
 																							<form class="form-horizontal">
 																							<div class="row">
@@ -653,16 +650,10 @@
 																								<?php
 																									$p++;
 																									}
-																									
 																								}
 																								?>
 																								</tbody>
 																							</table>
-																							<!--
-																							
-																									
-																								
-																							-->
 																						</div>
 																						<div class="modal-footer">
 																							<button type="button" class="btn btn-primary btn-rect" data-dismiss="modal">Close</button>
@@ -683,7 +674,6 @@
 											<div class="tab-pane fade" id="faq">
 												<div class="table-responsive" style="overflow:hidden;">
 													<div class="row">
-														
 														<div class="panel panel-default">
 															<div class="panel-heading text-right" id="addDelService2">
 																<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowSpFaqs('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
@@ -715,9 +705,7 @@
 																				<input type="hidden" name="hdnFaqId[]" id="hdnFaqId" class="id" value="<?php echo $ServiceProductFaqs_item['faq_id'] ?>"/></td>
 																			<td><input type="text" name="txtFaqDescription1[]" id="txtFaqDescription1" class="form-control  faq-descriptions" value="<?php echo $ServiceProductFaqs_item['faq_description1'] ?>" /></td>
 																			<td><input type="text" name="txtFaqDescription2[]" id="txtFaqDescription2" class="form-control" value="<?php echo $ServiceProductFaqs_item['faq_description2'] ?>" /></td>
-																			
 																			</tr>
-																			
 																			<?php 	$i++;
 																					endforeach ?>
 																			<!--<tr> 
@@ -740,7 +728,6 @@
 											<div class="tab-pane fade" id="additional">
 											<div class="table-responsive" style="overflow:hidden;">
 												<div class="row">
-													
 													<div class="panel panel-default">
 														<div class="panel-heading text-right" id="addDelService3">
 															<a href="javascript:void(0);" title="Tambah Baris" onclick="addRowAddAct('<?php echo site_url();?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
@@ -757,7 +744,7 @@
 																			<th width="60%">Description</th>
 																		</tr>
 																	</thead>
-																	<tbody>	
+																	<tbody>
 																	<?php $i = 1;
 																		  foreach ($ServiceProductAdditionalAct as $ServiceProductAdditionalAct_item): 
 																			?>
@@ -817,3 +804,24 @@
 	</div>
 </section>
 </form>
+<div class="modal fade" id="modalImgUpdate" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <form method="post" id="formImg" action="javascript:chooseImageUpdate('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImageUpdate'); ?>');">
+      <div class="modal-body">
+        <input type="hidden" name="txtOwnerId" id="owner_id">
+      	<input type="hidden" name="txtLineId" id="line_id">
+      	<div class="row" id="modalContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="btnChooseImg">Choose</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

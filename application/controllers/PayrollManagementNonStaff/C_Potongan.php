@@ -77,6 +77,28 @@ class C_Potongan extends CI_Controller
 		$this->load->view('V_Footer',$data);	
 	}
 
+	public function Import()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Potongan';
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Input Potongan';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		/* LINES DROPDOWN DATA */
+		$data['Title'] = 'Import Data Potongan';
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/Potongan/V_import', $data);
+		$this->load->view('V_Footer',$data);	
+	}
+
 	public function doCreate(){
 		$noind_kodesie = $this->input->post('cmbNoindHeader');
 		$explode = explode(' - ', $noind_kodesie);
@@ -90,17 +112,67 @@ class C_Potongan extends CI_Controller
 			'pot_lebih_bayar' => $this->input->post('txtPotLebihBayarHeader'),
 			'pot_gp' => $this->input->post('txtPotGpHeader'),
 			'pot_dl' => $this->input->post('txtPotDlHeader'),
-			'pot_spsi' => $this->input->post('txtPotSpsiHeader'),
 			'pot_duka' => $this->input->post('txtPotDukaHeader'),
 			'pot_koperasi' => $this->input->post('txtPotKoperasiHeader'),
 			'pot_hutang_lain' => $this->input->post('txtPotHutangLainHeader'),
-			'pot_dplk' => $this->input->post('txtPotDplkHeader'),
 			'pot_tkp' => $this->input->post('txtPotThpHeader'),
 		);
 		$this->M_potongan->setPotongan($data);
 		$header_id = $this->db->insert_id();
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Potongan'));		
+	}
+
+	public function doImport(){
+		$this->session->set_userdata('ImportProgress', '0');
+
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+
+		$config['upload_path'] = 'assets/upload/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
+
+		$this->load->library('upload', $config);
+
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
+
+				$data = array(
+					'bulan_gaji' => utf8_encode($db_record['BLN_GJ']),
+					'tahun_gaji' => utf8_encode($db_record['THN_GJ']),
+					'noind' => utf8_encode($db_record['NOIND']),
+					'pot_lebih_bayar' => utf8_encode($db_record['POT']),
+				);
+
+				$data2 = array(
+					'bulan_gaji' => utf8_encode($db_record['BLN_GJ']),
+					'tahun_gaji' => utf8_encode($db_record['THN_GJ']),
+					'noind' => utf8_encode($db_record['NOIND']),
+					'kurang_bayar' => utf8_encode($db_record['TAMBAHAN']),
+				);
+
+				$this->M_potongan->setPotongan($data);
+				$this->M_potongan->setTambahan($data2);
+
+				$ImportProgress = ($i/$db_rows)*100;
+				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				flush();
+			}
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
 	}
 
 	/* UPDATE DATA */
@@ -156,11 +228,9 @@ class C_Potongan extends CI_Controller
 			'pot_lebih_bayar' => $this->input->post('txtPotLebihBayarHeader',TRUE),
 			'pot_gp' => $this->input->post('txtPotGpHeader',TRUE),
 			'pot_dl' => $this->input->post('txtPotDlHeader',TRUE),
-			'pot_spsi' => $this->input->post('txtPotSpsiHeader',TRUE),
 			'pot_duka' => $this->input->post('txtPotDukaHeader',TRUE),
 			'pot_koperasi' => $this->input->post('txtPotKoperasiHeader',TRUE),
 			'pot_hutang_lain' => $this->input->post('txtPotHutangLainHeader',TRUE),
-			'pot_dplk' => $this->input->post('txtPotDplkHeader',TRUE),
 			'pot_tkp' => $this->input->post('txtPotThpHeader',TRUE),
 			);
 		$this->M_potongan->updatePotongan($data, $plaintext_string);
@@ -223,12 +293,10 @@ class C_Potongan extends CI_Controller
 			5 => 'pot_lebih_bayar',
 			6 => 'pot_gp',
 			7 => 'pot_dl',
-			8 => 'pot_spsi',
 			9 => 'pot_duka',
-			10 => 'pot_koperasi',
-			11 => 'pot_hutang_lain',
-			12 => 'pot_dplk',
-			13 => 'pot_tkp'
+			9 => 'pot_koperasi',
+			10 => 'pot_hutang_lain',
+			11 => 'pot_tkp'
 		);
 
 		$data_table = $this->M_potongan->getPotonganDatatables();
@@ -265,10 +333,10 @@ class C_Potongan extends CI_Controller
 
 			$count--;
 			if ($count != 0) {
-				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$bulan_gaji.'", "'.$result['tahun_gaji'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_dl'].'", "'.$result['pot_spsi'].'", "'.$result['pot_duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_dplk'].'", "'.$result['pot_tkp'].'"],';
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$bulan_gaji.'", "'.$result['tahun_gaji'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_dl'].'", "'.$result['pot_duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_tkp'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$bulan_gaji.'", "'.$result['tahun_gaji'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_dl'].'", "'.$result['pot_spsi'].'", "'.$result['pot_duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_dplk'].'", "'.$result['pot_tkp'].'"]';
+				$json .= '["'.$no.'", "<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Potongan/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$bulan_gaji.'", "'.$result['tahun_gaji'].'", "'.$result['pot_lebih_bayar'].'", "'.$result['pot_gp'].'", "'.$result['pot_dl'].'", "'.$result['pot_duka'].'", "'.$result['pot_koperasi'].'", "'.$result['pot_hutang_lain'].'", "'.$result['pot_tkp'].'"]';
 			}
 			$no++;
 		}

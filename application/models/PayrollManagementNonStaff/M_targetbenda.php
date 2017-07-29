@@ -39,17 +39,6 @@ class M_targetbenda extends CI_Model
 
     public function getTargetBendaSearch($searchValue)
     {
-        $numericValue = "";
-        if (is_numeric($searchValue)) {
-            $numericValue = "
-                OR  ptb.\"jumlah_operator\" = '$searchValue'
-                OR  ptb.\"target_utama\" = '$searchValue'
-                OR  ptb.\"target_sementara\" = '$searchValue'
-                OR  ptb.\"waktu_setting\" = '$searchValue'
-                OR  ptb.\"learning_periode\" = '$searchValue'
-
-            ";
-        }
         $sql = "
             SELECT * FROM pr.pr_target_benda ptb
             LEFT JOIN (SELECT distinct substring(section_code, 0, 7) as section_code, rtrim(unit_name) FROM er.er_section WHERE unit_name != '-') as t(section_code_substr, unit_name) ON section_code_substr = ptb.kodesie
@@ -62,8 +51,12 @@ class M_targetbenda extends CI_Model
                 OR  ptb.\"kode_proses\" ILIKE '%$searchValue%'
                 OR  ptb.\"nama_proses\" ILIKE '%$searchValue%'
                 OR  unit_name ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"jumlah_operator\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"target_utama\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"target_sementara\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"waktu_setting\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"learning_periode\" AS TEXT) ILIKE '%$searchValue%'
 
-                $numericValue
                 
         ";
         $query = $this->db->query($sql);
@@ -75,16 +68,6 @@ class M_targetbenda extends CI_Model
             $condition = "";
         }
         else{
-            $numericValue = "";
-            if (is_numeric($searchValue)) {
-                $numericValue = "
-                    OR  ptb.\"jumlah_operator\" = '$searchValue'
-                    OR  ptb.\"target_utama\" = '$searchValue'
-                    OR  ptb.\"target_sementara\" = '$searchValue'
-                    OR  ptb.\"waktu_setting\" = '$searchValue'
-                    OR  ptb.\"learning_periode\" = '$searchValue'
-                ";
-            }
             $condition = "
                 WHERE
                     ptb.\"kodesie\" ILIKE '%$searchValue%'
@@ -95,8 +78,12 @@ class M_targetbenda extends CI_Model
                 OR  ptb.\"kode_proses\" ILIKE '%$searchValue%'
                 OR  ptb.\"nama_proses\" ILIKE '%$searchValue%'
                 OR  unit_name ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"jumlah_operator\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"target_utama\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"target_sementara\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"waktu_setting\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ptb.\"learning_periode\" AS TEXT) ILIKE '%$searchValue%'
 
-                $numericValue
             ";
         }
         $sql="

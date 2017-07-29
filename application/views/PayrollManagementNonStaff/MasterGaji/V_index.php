@@ -48,6 +48,7 @@
 												<th class="text-center" width="100px">Insentif Masuk Malam</th>
 												<th class="text-center" width="100px">Ubt</th>
 												<th class="text-center" width="100px">Upamk</th>
+                                                <th class="text-center" width="100px">Bank Code</th>
 											</tr>
                                         </thead>
                                     </table>

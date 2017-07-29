@@ -80,11 +80,30 @@ class C_Kondite extends CI_Controller
 		elseif ($term == 'pekerja') {
 			$data['Title'] = 'Input Insentif Kondite Per Pekerja';
 			$this->load->view('PayrollManagementNonStaff/Kondite/V_create', $data);
-		}
-		else{
+		}else{
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
 
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function Import()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Insentif Kondite';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['Title'] = 'Import Data Insentif Kondite';
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/Kondite/V_import', $data);
 		$this->load->view('V_Footer',$data);	
 	}
 
@@ -151,6 +170,58 @@ class C_Kondite extends CI_Controller
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
 		
+	}
+
+	public function doImport(){
+		$this->session->set_userdata('ImportProgress', '0');
+
+		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
+		$fileName = str_replace(' ', '_', $fileName);
+
+		$config['upload_path'] = 'assets/upload/';
+		$config['file_name'] = $fileName;
+		$config['allowed_types'] = '*';
+
+		$this->load->library('upload', $config);
+
+		$data['upload_data'] = '';
+		if ($this->upload->do_upload('file')) {
+			$uploadData = $this->upload->data();
+			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
+			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
+			$db = dbase_open($inputFileName, 0);
+			// print_r(dbase_get_header_info($db));
+			$db_rows = dbase_numrecords($db);
+			for ($i=1; $i <= $db_rows; $i++) {
+				$db_record = dbase_get_record_with_names($db, $i);
+
+				$data = array(
+					'tanggal' => utf8_encode($db_record['TGL']),
+					'noind' => utf8_encode($db_record['NOIND']),
+					'MK' => utf8_encode($db_record['KONDITE1']),
+					'BKI' => utf8_encode($db_record['KONDITE2']),
+					'BKP' => utf8_encode($db_record['KONDITE3']),
+					'TKP' => utf8_encode($db_record['KONDITE4']),
+					'KB' => utf8_encode($db_record['KONDITE5']),
+					'KK' => utf8_encode($db_record['KONDITE6']),
+					'KS' => utf8_encode($db_record['KONDITE7']),
+					'kodesie' => utf8_encode($db_record['KODESIE']),
+					'creation_date' => 'NOW()',
+					'created_by' => $this->session->userid,
+				);
+
+				$this->M_kondite->setKondite($data);
+
+				$ImportProgress = ($i/$db_rows)*100;
+				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				flush();
+			}
+			unlink($inputFileName);
+			//redirect(site_url('PayrollManagementNonStaff/ProsesGaji/DataAbsensi'));
+		}
+		else{
+			echo $this->upload->display_errors();
+		}
 	}
 
 	/* UPDATE DATA */
@@ -260,18 +331,85 @@ class C_Kondite extends CI_Controller
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 	}
 
+
+	public function clear_data(){
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Clear Data';
+		$data['Menu'] = 'Proses Gaji';
+		$data['SubMenuOne'] = 'Insentif Kondite';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PayrollManagementNonStaff/Kondite/V_clear', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function doClearData(){
+		$bln_gaji = $this->input->post('slcBulan');
+		$thn_gaji = $this->input->post('txtTahun');
+
+		$this->M_kondite->clearKondite($bln_gaji,$thn_gaji);
+		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
+	}
+
 	public function getPekerja(){
 		$kodesie = $this->input->post('kodesie');
-
-		$data = $this->M_kondite->getPekerja($kodesie);
+		$date = $this->input->post('date');
+		
+		$data = $this->M_kondite->getPekerja($kodesie,$date);
 
 		if (count($data) > 0) {
 			foreach ($data as $data) {
 				echo '
 					<tr>
 						   <td width="30%">
-						   		'.$data['employee_code'].' - '.$data['employee_name'].'
-								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['employee_code'].'" required>
+						   		'.$data['noind'].' - '.$data['nama'].'
+								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['noind'].'" required>
+						   </td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKPHeader[]" placeholder="BKP" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtTKPHeader[]" placeholder="TKP" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKBHeader[]" placeholder="KB" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKKHeader[]" placeholder="KK" maxlength="1" required></td>
+						   <td width="7%"><input type="text" class="form-control text-center" name="txtKSHeader[]" placeholder="KS" maxlength="1" required></td>
+					</tr>
+				';
+			}
+		}
+		else{
+			echo '
+				<tr>
+					<td colspan="8" class="text-center"><h4>No Data Found, Please select other Section Code</h4></td>
+				</tr>
+			';
+		}
+
+	}
+
+	public function getTglShift(){
+		$noind = $this->input->post('noind');
+		$noind = substr($noind, 0, 5);
+		$tgl1 = $this->input->post('tgl1');
+		$tgl2 = $this->input->post('tgl2');
+
+		$data = $this->M_kondite->getTglShift($noind,$tgl1,$tgl2);
+
+		if (count($data) > 0) {
+			foreach ($data as $data) {
+				echo '
+					<tr>
+						   <td width="30%" class="text-center">
+						   		'.$data['tanggal'].'
+								  <input type="hidden" class="form-control" name="txtTanggalHeader[]" value="'.$data['tanggal'].'" required>
 						   </td>
 						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" maxlength="1" required></td>
 						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" maxlength="1" required></td>

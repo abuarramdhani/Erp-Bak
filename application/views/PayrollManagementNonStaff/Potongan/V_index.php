@@ -23,6 +23,9 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/Potongan/Import') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" class="btn btn-default btn-sm" alt="Import Data" title="Import Data" data-toggle="tooltip" data-placement="left" >
+                                    <i class="fa fa-upload fa-2x"></i>
+                                </a>
                                 <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/Potongan/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
                                 </a>
@@ -41,11 +44,9 @@
 												<th class="text-center" width="100px">Pot Lebih Bayar</th>
 												<th class="text-center" width="100px">Pot Gp</th>
 												<th class="text-center" width="100px">Pot Dl</th>
-												<th class="text-center" width="100px">Pot Spsi</th>
 												<th class="text-center" width="100px">Pot Duka</th>
 												<th class="text-center" width="100px">Pot Koperasi</th>
 												<th class="text-center" width="100px">Pot Hutang Lain</th>
-												<th class="text-center" width="100px">Pot Dplk</th>
 												<th class="text-center" width="100px">Pot Thp</th>
 											</tr>
                                         </thead>

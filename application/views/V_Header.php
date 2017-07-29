@@ -37,7 +37,9 @@
   <!-- PAGE LEVEL STYLES FOR DATATABLES-->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />	
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.css');?>" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/uniform/themes/default/css/uniform.default.css');?>" />
@@ -53,7 +55,9 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/switch/static/stylesheets/bootstrap-switch.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.css');?>" />
-	
+	<!-- Fine Uploader New/Modern CSS file -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader-new.min.css');?>" />
+
 	<!-- END PAGE LEVEL  STYLES -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
 
