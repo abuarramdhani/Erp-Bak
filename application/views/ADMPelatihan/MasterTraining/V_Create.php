@@ -44,17 +44,17 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Standar Nilai</label>
 								<div class="col-lg-8">
-									<input name="txtBatas" class="form-control" placeholder="Standar Nilai" required >
+									<input name="txtBatas" class="form-control"  type="number" placeholder="Standar Nilai" required >
 								</div>
 							</div>
 						</div>
-						<div class="row" style="margin: 10px 10px">
+						<div class="row" style="margin: 10px 10px" hidden>
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Status Pelatihan</label>
-								<div class="col-lg-8">
-									<select name="slcStatus" class="select4 form-control" data-placeholder="Status Pelatihan" id="slcStatus" required>
+								<div class="col-lg-8" >
+									<select name="slcStatus" class="select4 form-control" data-placeholder="Status Pelatihan" id="slcStatus" value="REGULER" >
 										<option></option>
-										<option value="0">REGULER</option>
+										<option value="0" selected="true">REGULER</option>
 										<option value="1">PAKET</option>
 									</select>
 								</div>
@@ -62,7 +62,7 @@
 						</div>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">Kuesioner </label>
+								<label class="col-lg-2 control-label"> Kuesioner </label>
 								<div class="col-lg-8">
 									<select class="form-control select4" name="slcQuestionnaire[]" data-placeholder="Kuesioner" multiple="multiple" required>
 										<option></option>
@@ -99,43 +99,44 @@
 							</div>
 						</div>
 						-->
-						<div class="row" style="margin: 10px 10px" id="divobjective">
-							<div class="col-lg-12">
-								<div class="panel panel-default">
-									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddObjective" title="Tambah Baris" onclick="AddObjective('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelObjective" title="Hapus Baris" onclick="deleteRow('tblObjective')"><i class="fa fa-remove"></i></a>
-										<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
-									</div>
-									<div class="panel-body">
-										<div class="table-responsive" >
-											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblObjective" id="tblObjective">
-												<thead>
-													<tr class="bg-primary">
-														<th width="100%">Tujuan Pelatihan</th>
-													</tr>
-												</thead>
-												<tbody id="tbodyObjective">
-													<tr class="obclone">
-														<td>
-															<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective">
-																	<option value=""></option>
-															</select>
-														</td>
-													</tr>
-												</tbody>
-											</table>
+						<div class="row" style="margin: 10px 10px">
+								<div class="col-lg-12">
+									<div class="panel panel-default">
+										<div class="panel-heading text-right">
+											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddObjective" title="Tambah Baris" onclick="AddObjective('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelObjective" title="Hapus Baris" onclick="deleteRow('tblObjective')"><i class="fa fa-remove"></i></a>
+											<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
+										</div>
+										<div class="panel-body">
+											<div class="table-responsive" >
+												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblObjective" id="tblObjective">
+													<form onkeyup="searchHistory(this)">
+													<thead>
+														<tr class="bg-primary">
+															<th width="100%">Tujuan Pelatihan</th>
+														</tr>
+													</thead>
+													<tbody id="tbodyObjective">
+														<tr class="obclone">
+															<td>
+																<select class="form-control js-slcObjective search_form" name="slcObjective[]" id="slcObjective" required>
+																</select>
+															</td>
+														</tr>
+													</tbody>
+													</form>
+												</table>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 						
 
 						<div class="form-group">
 							<div class="col-lg-10 text-right">
-								<a href="<?php echo site_url('ADMPelatihan/MasterTraining');?>"  class="btn btn-primary btn btn-flat">Back</a>
-								&nbsp;&nbsp;
+								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>
 						</div>

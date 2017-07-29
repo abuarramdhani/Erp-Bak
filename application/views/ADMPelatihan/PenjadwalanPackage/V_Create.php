@@ -68,8 +68,8 @@
 					<?php } ?>
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
-								&nbsp;&nbsp;
+								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>
 						</div>

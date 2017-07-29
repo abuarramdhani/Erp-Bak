@@ -203,7 +203,8 @@
 								<div class="col-lg-12 text-right">
 									<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-success">Confirm</a>
 									<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger">Delete</a>
-									<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
+									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								</div>
 							</div>
 							<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$rc['scheduling_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

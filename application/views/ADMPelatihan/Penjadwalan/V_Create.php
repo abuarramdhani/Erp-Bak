@@ -57,6 +57,7 @@
 										<div class="panel-body">
 											<div class="table-responsive" >
 												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblObjective" id="tblObjective">
+												<form onkeyup="searchHistory(this)">
 													<thead>
 														<tr class="bg-primary">
 															<th width="100%">Tujuan Pelatihan</th>
@@ -65,12 +66,12 @@
 													<tbody id="tbodyObjective">
 														<tr class="obclone">
 															<td>
-																<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective" required>
-																		<option value=""></option>
+																<select class="form-control js-slcObjective search_form" name="slcObjective[]" id="slcObjective" required>
 																</select>
 															</td>
 														</tr>
 													</tbody>
+													</form>
 												</table>
 											</div>
 										</div>
@@ -177,12 +178,14 @@
 												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblParticipant" id="tblParticipant">
 													<thead>
 														<tr class="bg-primary">
+															<th width="5%" class="sorting_disabled" rowspan="1" colspan="1" style="width: 48.7778px;">NO</th>
 															<th width="90%">Daftar Peserta</th>
 															<th width="10%"></th>
 														</tr>
 													</thead>
 													<tbody id="tbodyParticipant">
 														<tr class="clone">
+															<td ><?php echo $no++;?></td>
 															<td>
 																<div class="input-group">
 																	<div class="input-group-addon">
@@ -208,13 +211,13 @@
 							<hr>
 							<div class="form-group">
 								<div class="col-lg-12 text-right">
-									<a href="<?php echo site_url('ADMPelatihan/Penjadwalan');?>"  class="btn btn-primary btn btn-flat">Back</a>
+									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 									<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 								</div>
 							</div>
 						</div>
-					<form>
+					</form>
 					<?php } ?>
 					</div>
 				</div>
@@ -223,6 +226,4 @@
 		</div>		
 	</div>
 	</div>
-</section>			
-			
-				
+</section>

@@ -9,7 +9,9 @@ class M_penjadwalan extends CI_Model {
 		//AMBIL DATA TRAINING
 		public function GetTraining(){
 			$sql = "select * from pl.pl_master_training where status=0";
+			$sql2 = "select * from pl.pl_master_training_purpose";
 			$query = $this->db->query($sql);
+			$query2 = $this->db->query($sql2);
 			return $query->result_array();
 		}
 
@@ -62,11 +64,11 @@ class M_penjadwalan extends CI_Model {
 		public function GetObjective($term){
 			if ($term === FALSE) {
 				$sql = "
-					SELECT DISTINCT(objective) FROM pl.pl_objective ORDER BY objective ASC
+					SELECT * FROM pl.pl_master_training_purpose ORDER BY purpose ASC
 				";
 			}else{
 				$sql = "
-					SELECT DISTINCT(objective) FROM pl.pl_objective WHERE (objective ILIKE '%$term%') ORDER BY objective ASC 
+					SELECT * FROM pl.pl_master_training_purpose WHERE (purpose LIKE '%$term%') ORDER BY purpose ASC 
 				";
 			}
 			$query = $this->db->query($sql);
@@ -148,9 +150,9 @@ class M_penjadwalan extends CI_Model {
 			return $this->db->insert('pl.pl_scheduling_training', $data);
 		}
 
-		//Insert Master Objective
+		//Insert Objective -> Training Purpose
 		public function AddObjective($data){
-			return $this->db->insert('pl.pl_objective', $data);
+			return $this->db->insert('pl.pl_master_training_purpose', $data);
 		}
 
 		//Insert Master Objective
@@ -205,6 +207,13 @@ class M_penjadwalan extends CI_Model {
 			";
 			$query = $this->db->query($sql);
 			return;
+		}
+
+		public function pp($objective)
+		{
+			$sql = "select count(*) from pl.pl_master_training_purpose WHERE purpose LIKE '%$objective%'; ";
+			$query = $this->db->query($sql);
+			return $query->result_array();
 		}
 
 }

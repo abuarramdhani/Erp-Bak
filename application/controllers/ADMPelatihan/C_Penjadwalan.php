@@ -79,12 +79,15 @@ class C_Penjadwalan extends CI_Controller {
 		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['trainer'] = $this->M_penjadwalan->GetTrainer();
+		$data['no'] = 1;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Penjadwalan/V_Create',$data);
 		$this->load->view('V_Footer',$data);	
 	}
+
+	
 
 	//HALAMAN CREATE PENJADWALAN PAKET VERSI BARU
 	public function createbypackage($pse){
@@ -162,7 +165,8 @@ class C_Penjadwalan extends CI_Controller {
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"objective":"'.$data['objective'].'"}';
+			echo '{"objective":"'.$data['purpose'].'"}';
+			// echo '{"objective":"'.$data['objective'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}
@@ -193,25 +197,30 @@ class C_Penjadwalan extends CI_Controller {
 		
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
-		
 		$this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi,$trainers);
+		
 		
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;
 		
 		$objective		= $this->input->post('slcObjective');
-				
 			$i=0;
 			foreach($objective as $loop){
 				$data_objective[$i] = array(
-					'scheduling_id' 	=> $pkgid,
-					'objective' 		=> $objective[$i],
+					'training_id' 	=> $pkgid,
+					'purpose' 		=> $objective[$i],
+					// 'scheduling_id' 	=> $pkgid,
+					// 'objective' 		=> $objective[$i],
 				);
-				if( !empty($objective[$i]) ){
+
+		$pp		= $this->M_penjadwalan->pp($objective[$i]);
+					// if( !empty($objective[$i]) )
+				if( $pp[0]['count']==NULL or $pp[0]['count']==0 ){
 					$this->M_penjadwalan->AddObjective($data_objective[$i]);
 				}
 				$i++;
 			}
+
 
 		$participant	= $this->input->post('slcEmployee');
 			

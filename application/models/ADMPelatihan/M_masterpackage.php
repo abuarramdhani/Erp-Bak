@@ -15,7 +15,7 @@ class M_masterpackage extends CI_Model {
 
 		//AMBIL SEMUA PELATIHAN
 		public function GetTraining(){
-			$sql = "select * from pl.pl_master_training where status=1 order by training_name";
+			$sql = "select * from pl.pl_master_training order by training_name";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

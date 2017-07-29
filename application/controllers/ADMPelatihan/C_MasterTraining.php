@@ -63,7 +63,25 @@ class C_MasterTraining extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 		
 	}
-	
+
+	//MENGAMBIL DAFTAR TUJUAN PELATIHAN (BERHUBUNGAN DENGAN AJAX/JAVASCRIPT)
+	public function GetObjective(){
+		$term = $this->input->get("term");
+		$data = $this->M_mastertraining->GetObjective($term);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{"objective":"'.$data['purpose'].'"}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
+
+
 	//HALAMAN CREATE
 	public function create(){
 		$this->checkSession();
@@ -76,7 +94,6 @@ class C_MasterTraining extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
 		$data['questionnaire'] = $this->M_mastertraining->GetQuestionnaire();
 
 		$this->load->view('V_Header',$data);
@@ -90,9 +107,10 @@ class C_MasterTraining extends CI_Controller {
 		$tname 		= $this->input->post('txtNamaPelatihan');
 		$limit 		= $this->input->post('txtBatas');
 		$status		= $this->input->post('slcStatus');
-		$questionnaire		= $this->input->post('slcQuestionnaire');
+		$questionnaire		= $this->input->post('slcQuestionnaire[]');
 		$questionnaires 	= implode(',', $questionnaire);
-		$this->M_mastertraining->AddMaster($tname,$limit,$status,$questionnaires);
+
+		$this->M_mastertraining->AddMaster($tname,$limit,$questionnaires);
 		
 		if($status==1){
 			$maxid		= $this->M_mastertraining->GetMaxIdTraining();
@@ -102,13 +120,32 @@ class C_MasterTraining extends CI_Controller {
 				foreach($objective as $loop){
 					$data_objective[$i] = array(
 						'training_id' 	=> $pkgid,
-						'objective' 	=> $objective[$i],
+						'purpose' 		=> $objective[$i],
+						// 'objective' 	=> $objective[$i],
 					);
 					if( !empty($objective[$i]) ){
 						$this->M_mastertraining->AddObjective($data_objective[$i]);
 					}
 					$i++;
 				}
+		}
+
+		else {
+			$maxid		= $this->M_mastertraining->GetMaxIdTraining();
+			$pkgid		= $maxid[0]->training_id;
+			$objective	= $this->input->post('slcObjective');
+				$i=0;
+				foreach($objective as $loop){
+					$data_objective[$i] = array(
+						'training_id' 	=> $pkgid,
+						'purpose'	 	=> $objective[$i],
+					);
+				$pp = $this->M_mastertraining->pp($objective[$i]);
+					if( $pp[0]['count']==NULL or $pp[0]['count']==0 ){
+					$this->M_mastertraining->AddObjective($data_objective[$i]);
+					}
+					$i++;
+			}
 		}
 
 		redirect('ADMPelatihan/MasterTraining');
