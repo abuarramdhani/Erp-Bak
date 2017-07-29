@@ -35,32 +35,48 @@
 						<b>Form Edit Master Kuesioner</b>
 					</div>
 					<div class="box-body">
-						<form method="post" action="<?php echo site_url('ADMPelatihan/MasterQuestionnaire/editSave/'.$id);?>">					
-						<?php foreach($questionnaire as $qs) {?>
+					<?php 	foreach($title as $questionnaire) 
+							{
+								foreach($segment_title as $segment)
+									{
+										$Qs_id=$questionnaire['questionnaire_id'];
+										$Sg_id=$segment['segment_id'];
+					?>
+						<form method="post" action="<?php echo site_url('ADMPelatihan/MasterQuestionnaire/EditSaveStatement')."/".$Qs_id."/".$Sg_id;?>">			
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Judul Kuesioner</label>
 								<div class="col-lg-6">
-									<input name="txtQuestionnaireName" class="form-control" value="<?php echo $qs['questionnaire_title'] ?>" >
-									<input name="txtQuestionnaireId" value="<?php $Qs_id=$qs['questionnaire_id'];echo $qs['questionnaire_id'] ?>" hidden>
+								<input name="txtQuestionnaireId" value="<?php echo $questionnaire['questionnaire_id']; ?>" hidden>
+								<input name="txtQuestionnaireName" class="form-control" value="<?php echo $questionnaire['questionnaire_title']; ?>" readonly>
 								</div>
 							</div>
 						</div>
-						<?php }?>
-						<?php foreach($segment as $sg){?>
-						<?php }?>
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Segment Kuesioner</label>
+								<div class="col-lg-6">
+								<input name="txtSegmentId" value="<?php echo $segment['segment_id']; ?>" hidden>
+								<input name="txtSegment" class="form-control" value="<?php echo $segment['segment_description']; ?>" readonly>
+								</div>
+							</div>
+						</div>
+						<?php 
+									}
+							}
+						?>
 						<hr>
 							<div class="row" style="margin: 10px 10px">
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegment('<?php echo base_url(''); ?>')"><i class="fa fa-plus"></i></a>
-										<b style="float:left;">Edit Segment</b>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddStatement" title="Tambah Baris" onclick="AddStatement('<?php echo base_url(''); ?>')"><i class="fa fa-plus"></i></a>
+										<b style="float:left;">Edit Statement</b>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
-										<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblQuestionnaireSegment" id="tblQuestionnaireSegment">
-											 <form method="post" action="<?php echo base_url('ADMPelatihan/MasterQuestionnaire/Add')?>">
+										<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblQuestionnaireStatement" id="tblQuestionnaireStatement">
+											 <form method="post" action="<?php echo base_url('ADMPelatihan/MasterQuestionnaire/EditStatementAdd')?>">
 												<thead>
 													<tr class="bg-primary">
 														<th width="10%">No</th>
@@ -68,25 +84,24 @@
 														<th width="30%">Action</th>
 													</tr>
 												</thead>
-												<tbody id="tbodyQuestionnaireSegment">
+												<tbody id="tbodyStatement">
 														<?php 
 															$no=1;
-															foreach($segment as $sg){
-															$Sg_id=$sg['segment_id'];
-														?>
+															foreach($statement as $st){
+																$St_id=$st['statement_id'];
+														?> 
 													<tr class="clone" row-id="<?php echo $no; ?>">
 														<td ><?php echo $no; ?></td>
 														<td>
-															<input id="segment" name="txtSegment[]" class="form-control segment" value="<?php echo $sg['segment_description']?>">
-															<input type="hidden" name="idSegment[]" value="<?php echo $sg['segment_id'] ?>">
+															
+															<input id="statement<?php echo $no; ?>" name="txtStatement[]" class="form-control statement" value="<?php echo $st['statement_description']?>">
+															<input type="hidden" name="idStatement[]" value="<?php echo $st['statement_id'] ?>">
 														</td>
 														<td>
-															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSegment" title="Hapus Baris" onclick="delSpesifikRow(<?php echo $no++.','.$sg['segment_id']; ?>)"><i class="fa fa-remove"></i>Delete</a>
-															<a href="<?php echo base_url('ADMPelatihan/MasterQuestionnaire/EditStatement')."/".$Qs_id."/".$Sg_id;?>" data-toggle="modal" data-target="<?php echo base_url('')?>" class="btn btn-xs btn-warning"><i class="fa fa-search"></i></i> Statement</a>
+															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSegment" title="Hapus Baris" onclick="delSpesifikRowSt(<?php echo $no++.','.$st['statement_id']; ?>)"><i class="fa fa-remove"></i>Delete</a>
 														</td>
 													</tr>
-													<?php } ?>
-												</tbody>
+												<?php } ?> 			
 											</form>
 										</table>
 									</div>

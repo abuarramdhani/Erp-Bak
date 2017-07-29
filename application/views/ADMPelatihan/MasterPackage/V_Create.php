@@ -96,7 +96,7 @@
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="<?php echo site_url('ADMPelatihan/MasterPackage');?>"  class="btn btn-primary btn btn-flat">Back</a>
 								&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>

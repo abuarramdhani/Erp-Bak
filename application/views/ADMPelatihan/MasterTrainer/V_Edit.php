@@ -48,7 +48,7 @@
 										<input name="txtNoind" class="form-control toupper" placeholder="Nomor Induk" value="<?php echo $dt['noind'] ?>" maxlength="5" required>
 									</div>
 								</div>
-							</div>->
+							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Nama Trainer</label>
@@ -76,7 +76,7 @@
 							<hr>
 							<div class="form-group">
 								<div class="col-lg-8 text-right">
-									<a href="<?php echo site_url('ADMPelatihan/MasterTrainer');?>"  class="btn btn-primary btn btn-flat">Back</a>
+									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 									<button type="submit" class="btn btn-success btn btn-flat">Save Change</button>
 								</div>

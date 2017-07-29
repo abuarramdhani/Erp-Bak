@@ -50,7 +50,7 @@
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegment('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegment('<?php echo base_url(''); ?>')"><i class="fa fa-plus"></i></a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelSegment" title="Hapus Baris" onclick="deleteRow('tblQuestionnaireSegment')"><i class="fa fa-remove"></i></a>
 										<b style="float:left;">Bagian Pilihan</b>
 									</div>
@@ -80,8 +80,8 @@
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary"title="Tambah Baris" onclick="AddSegmentEssay()"><i class="fa fa-plus"></i></a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-danger"title="Hapus Baris" onclick="deleteRow('tblQuestionnaireSegmentEssay')"><i class="fa fa-remove"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddSegmentEssay()"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Hapus Baris" onclick="deleteRow('tblQuestionnaireSegmentEssay')"><i class="fa fa-remove"></i></a>
 										<b style="float:left;">Bagian Essay</b>
 									</div>
 									<div class="panel-body">
@@ -109,6 +109,8 @@
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
+							<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn-flat">Save Data</button>
 							</div>
 						</div>

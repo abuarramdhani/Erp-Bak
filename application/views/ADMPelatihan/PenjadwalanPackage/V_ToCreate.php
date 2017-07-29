@@ -56,7 +56,8 @@
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 							<div class="col-lg-offset-2 col-lg-8 text-right">
-								<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 							</div>
 						</div>
 					</div>
