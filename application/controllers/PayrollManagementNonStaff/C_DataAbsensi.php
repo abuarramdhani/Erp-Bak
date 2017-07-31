@@ -118,7 +118,7 @@ class C_DataAbsensi extends CI_Controller
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
 
-			$ket_ijin = array("SKD", "M", "CT", "S1", "S2", "S3", "SU");
+			$ket_ijin = array("SKD", "M", "CT", "S1", "S2", "S3", "SU", "T3");
 
 			//$inputFileName = 'assets/upload/1490317033-AHK0117_1234.dbf';
 			$db = dbase_open($inputFileName, 0);
@@ -133,25 +133,30 @@ class C_DataAbsensi extends CI_Controller
 
 				for ($y=1; $y <= 31; $y++) {
 					$x = str_pad($y, 2, "0", STR_PAD_LEFT);
-					echo "<br>".$db_record['HM'.$x]."<br>";
-					if (in_array(str_replace(' ', '', $db_record['HM'.$x]), $ket_ijin)) {
+					if (in_array(str_replace(' ', '', utf8_encode($db_record['HM'.$x])), $ket_ijin) || str_replace(' ', '', utf8_encode($db_record['HM'.$x]) == '') ){
+						$waktuijin=utf8_encode($db_record['HM'.$x]);
+						$waktuijin=(float)$waktuijin;
 						$jml_ijin[] = 0;
-						echo "ijin 0"."<br>";
+						echo "ijin ".$waktuijin."<br>";
 					}
 					else{
-						$jml_ijin[] = 1;
-						echo "ijin 1"."<br>";
+						$waktuijin=utf8_encode($db_record['HM'.$x]);
+						$waktuijin=(float)$waktuijin;
+						$jml_ijin[] = $waktuijin;
+						echo "ijin ".$waktuijin."<br>";
 					}
 
-					if (str_replace(' ', '', $db_record['HM'.$x]) == 'M') {
+					if (str_replace(' ', '', utf8_encode($db_record['HM'.$x])) == 'M') {
 						$jml_mangkir[] = 1;
-						echo "mangkir 1"."<br>";
+						echo "mangkir ".utf8_encode($db_record['HM'.$x])."<br>";
 					}
 					else{
 						$jml_mangkir[] = 0;
-						echo "mangkir 0"."<br><br>";
+						echo "mangkir ".utf8_encode($db_record['HM'.$x])."<br><br>";
 					}
 				}
+
+				print_r($jml_ijin);
 
 				$sum_ijin = array_sum($jml_ijin);
 				$sum_mangkir = array_sum($jml_mangkir);
@@ -159,80 +164,83 @@ class C_DataAbsensi extends CI_Controller
 				$data = array(
 					'bln_gaji' => $bln_gaji,
 					'thn_gaji' => $thn_gaji,
-					'noind' => $db_record['NOIND'],
-					'kodesie' => $db_record['KODESIE'],
-					'HM01' => $db_record['HM01'],
-					'HM02' => $db_record['HM02'],
-					'HM03' => $db_record['HM03'],
-					'HM04' => $db_record['HM04'],
-					'HM05' => $db_record['HM05'],
-					'HM06' => $db_record['HM06'],
-					'HM07' => $db_record['HM07'],
-					'HM08' => $db_record['HM08'],
-					'HM09' => $db_record['HM09'],
-					'HM10' => $db_record['HM10'],
-					'HM11' => $db_record['HM11'],
-					'HM12' => $db_record['HM12'],
-					'HM13' => $db_record['HM13'],
-					'HM14' => $db_record['HM14'],
-					'HM15' => $db_record['HM15'],
-					'HM16' => $db_record['HM16'],
-					'HM17' => $db_record['HM17'],
-					'HM18' => $db_record['HM18'],
-					'HM19' => $db_record['HM19'],
-					'HM20' => $db_record['HM20'],
-					'HM21' => $db_record['HM21'],
-					'HM22' => $db_record['HM22'],
-					'HM23' => $db_record['HM23'],
-					'HM24' => $db_record['HM24'],
-					'HM25' => $db_record['HM25'],
-					'HM26' => $db_record['HM26'],
-					'HM27' => $db_record['HM27'],
-					'HM28' => $db_record['HM28'],
-					'HM29' => $db_record['HM29'],
-					'HM30' => $db_record['HM30'],
-					'HM31' => $db_record['HM31'],
-					'jam_lembur' => $db_record['JLB'],
-					'HMP' => $db_record['HMP'],
-					'HMU' => $db_record['HMU'],
-					'HMS' => $db_record['HMS'],
-					'HMM' => $db_record['HMM'],
-					'HM' => $db_record['HM'],
-					'UBT' => $db_record['UBT'],
-					'HUPAMK' => $db_record['HUPAMK'],
-					'IK' => $db_record['IK'],
-					'IKSKP' => $db_record['IKSKP'],
-					'IKSKU' => $db_record['IKSKU'],
-					'IKSKS' => $db_record['IKSKS'],
-					'IKSKM' => $db_record['IKSKM'],
-					'IKJSP' => $db_record['IKJSP'],
-					'IKJSU' => $db_record['IKJSU'],
-					'IKJSS' => $db_record['IKJSS'],
-					'IKJSM' => $db_record['IKJSM'],
-					'ABS' => $db_record['ABS'],
-					'T' => $db_record['T'],
-					'SKD' => $db_record['SKD'],
-					'cuti' => $db_record['CTI'],
-					'HL' => $db_record['HL'],
-					'PT' => $db_record['PT'],
-					'PI' => $db_record['PI'],
-					'PM' => $db_record['PM'],
-					'DL' => $db_record['DL'],
-					'tambahan' => $db_record['TAMBAHAN'],
-					'potongan' => $db_record['POTONGAN'],
-					'duka' => $db_record['DUKA'],
-					'HC' => $db_record['HC'],
-					'jml_UM' => $db_record['JML_UM'],
-					'cicil' => $db_record['CICIL'],
-					'potongan_koperasi' => $db_record['POTKOP'],
-					'UBS' => $db_record['UBS'],
-					'UM_puasa' => $db_record['UM_PUASA'],
-					'SK_CT' => $db_record['SK_CT'],
-					'POT_2' => $db_record['POT_2'],
-					'TAMB_2' => $db_record['TAMB_2'],
-					'kode_lokasi' => $db_record['KD_LKS'],
+					'noind' => utf8_encode($db_record['NOIND']),
+					'kodesie' => utf8_encode($db_record['KODESIE']),
+					'HM01' => utf8_encode($db_record['HM01']),
+					'HM02' => utf8_encode($db_record['HM02']),
+					'HM03' => utf8_encode($db_record['HM03']),
+					'HM04' => utf8_encode($db_record['HM04']),
+					'HM05' => utf8_encode($db_record['HM05']),
+					'HM06' => utf8_encode($db_record['HM06']),
+					'HM07' => utf8_encode($db_record['HM07']),
+					'HM08' => utf8_encode($db_record['HM08']),
+					'HM09' => utf8_encode($db_record['HM09']),
+					'HM10' => utf8_encode($db_record['HM10']),
+					'HM11' => utf8_encode($db_record['HM11']),
+					'HM12' => utf8_encode($db_record['HM12']),
+					'HM13' => utf8_encode($db_record['HM13']),
+					'HM14' => utf8_encode($db_record['HM14']),
+					'HM15' => utf8_encode($db_record['HM15']),
+					'HM16' => utf8_encode($db_record['HM16']),
+					'HM17' => utf8_encode($db_record['HM17']),
+					'HM18' => utf8_encode($db_record['HM18']),
+					'HM19' => utf8_encode($db_record['HM19']),
+					'HM20' => utf8_encode($db_record['HM20']),
+					'HM21' => utf8_encode($db_record['HM21']),
+					'HM22' => utf8_encode($db_record['HM22']),
+					'HM23' => utf8_encode($db_record['HM23']),
+					'HM24' => utf8_encode($db_record['HM24']),
+					'HM25' => utf8_encode($db_record['HM25']),
+					'HM26' => utf8_encode($db_record['HM26']),
+					'HM27' => utf8_encode($db_record['HM27']),
+					'HM28' => utf8_encode($db_record['HM28']),
+					'HM29' => utf8_encode($db_record['HM29']),
+					'HM30' => utf8_encode($db_record['HM30']),
+					'HM31' => utf8_encode($db_record['HM31']),
+					'jam_lembur' => utf8_encode($db_record['JLB']),
+					'HMP' => utf8_encode($db_record['HMP']),
+					'HMU' => utf8_encode($db_record['HMU']),
+					'HMS' => utf8_encode($db_record['HMS']),
+					'HMM' => utf8_encode($db_record['HMM']),
+					'HM' => utf8_encode($db_record['HM']),
+					'UBT' => utf8_encode($db_record['UBT']),
+					'HUPAMK' => utf8_encode($db_record['HUPAMK']),
+					'IK' => utf8_encode($db_record['IK']),
+					'IKSKP' => utf8_encode($db_record['IKSKP']),
+					'IKSKU' => utf8_encode($db_record['IKSKU']),
+					'IKSKS' => utf8_encode($db_record['IKSKS']),
+					'IKSKM' => utf8_encode($db_record['IKSKM']),
+					'IKJSP' => utf8_encode($db_record['IKJSP']),
+					'IKJSU' => utf8_encode($db_record['IKJSU']),
+					'IKJSS' => utf8_encode($db_record['IKJSS']),
+					'IKJSM' => utf8_encode($db_record['IKJSM']),
+					'ABS' => utf8_encode($db_record['ABS']),
+					'T' => utf8_encode($db_record['T']),
+					'SKD' => utf8_encode($db_record['SKD']),
+					'cuti' => utf8_encode($db_record['CTI']),
+					'HL' => utf8_encode($db_record['HL']),
+					'PT' => utf8_encode($db_record['PT']),
+					'PI' => utf8_encode($db_record['PI']),
+					'PM' => utf8_encode($db_record['PM']),
+					'DL' => utf8_encode($db_record['DL']),
+					'tambahan' => utf8_encode($db_record['TAMBAHAN']),
+					'potongan' => utf8_encode($db_record['POTONGAN']),
+					'duka' => utf8_encode($db_record['DUKA']),
+					'HC' => utf8_encode($db_record['HC']),
+					'jml_UM' => utf8_encode($db_record['JML_UM']),
+					'cicil' => utf8_encode($db_record['CICIL']),
+					'potongan_koperasi' => utf8_encode($db_record['POTKOP']),
+					'UBS' => utf8_encode($db_record['UBS']),
+					'UM_puasa' => utf8_encode($db_record['UM_PUASA']),
+					'SK_CT' => utf8_encode($db_record['SK_CT']),
+					'POT_2' => utf8_encode($db_record['POT_2']),
+					'TAMB_2' => utf8_encode($db_record['TAMB_2']),
+					'kode_lokasi' => utf8_encode($db_record['KD_LKS']),
 					'jml_izin' => $sum_ijin,
 					'jml_mangkir' => $sum_mangkir,
+					'bhmp' => utf8_encode($db_record['BHMP']),
+					'bhms' => utf8_encode($db_record['BHMS']),
+					'bhmm' => utf8_encode($db_record['BHMM']),
 				);
 				$this->M_dataabsensi->setAbsensi($data);
 
@@ -404,10 +412,10 @@ class C_DataAbsensi extends CI_Controller
 		foreach ($data_array as $result) {
 			$count--;
 			if ($count != 0) {
-				$json .= '["'.$no.'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['bln_gaji'].'", "'.$result['thn_gaji'].'", "'.$result['HM01'].'", "'.$result['HM02'].'", "'.$result['HM03'].'", "'.$result['HM04'].'", "'.$result['HM05'].'", "'.$result['HM06'].'", "'.$result['HM07'].'", "'.$result['HM08'].'", "'.$result['HM09'].'", "'.$result['HM10'].'", "'.$result['HM11'].'", "'.$result['HM12'].'", "'.$result['HM13'].'", "'.$result['HM14'].'", "'.$result['HM15'].'", "'.$result['HM16'].'", "'.$result['HM17'].'", "'.$result['HM18'].'", "'.$result['HM19'].'", "'.$result['HM20'].'", "'.$result['HM21'].'", "'.$result['HM22'].'", "'.$result['HM23'].'", "'.$result['HM24'].'", "'.$result['HM25'].'", "'.$result['HM26'].'", "'.$result['HM27'].'", "'.$result['HM28'].'", "'.$result['HM29'].'", "'.$result['HM30'].'", "'.$result['HM31'].'", "'.$result['jam_lembur'].'", "'.$result['HMP'].'", "'.$result['HMU'].'", "'.$result['HMS'].'", "'.$result['HMM'].'", "'.$result['HM'].'", "'.$result['UBT'].'", "'.$result['HUPAMK'].'", "'.$result['IK'].'", "'.$result['IKSKP'].'", "'.$result['IKSKU'].'", "'.$result['IKSKS'].'", "'.$result['IKSKM'].'", "'.$result['IKJSP'].'", "'.$result['IKJSU'].'", "'.$result['IKJSS'].'", "'.$result['IKJSM'].'", "'.$result['ABS'].'", "'.$result['T'].'", "'.$result['SKD'].'", "'.$result['cuti'].'", "'.$result['HL'].'", "'.$result['PT'].'", "'.$result['PI'].'", "'.$result['PM'].'", "'.$result['DL'].'", "'.$result['tambahan'].'", "'.$result['duka'].'", "'.$result['potongan'].'", "'.$result['HC'].'", "'.$result['jml_UM'].'", "'.$result['cicil'].'", "'.$result['potongan_koperasi'].'", "'.$result['UBS'].'", "'.$result['UM_puasa'].'", "'.$result['SK_CT'].'", "'.$result['POT_2'].'", "'.$result['TAMB_2'].'", "'.$result['kode_lokasi'].'", "'.$result['jml_izin'].'", "'.$result['jml_mangkir'].'"],';
+				$json .= '["'.$no.'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['bln_gaji'].'", "'.$result['thn_gaji'].'", "'.$result['HM01'].'", "'.$result['HM02'].'", "'.$result['HM03'].'", "'.$result['HM04'].'", "'.$result['HM05'].'", "'.$result['HM06'].'", "'.$result['HM07'].'", "'.$result['HM08'].'", "'.$result['HM09'].'", "'.$result['HM10'].'", "'.$result['HM11'].'", "'.$result['HM12'].'", "'.$result['HM13'].'", "'.$result['HM14'].'", "'.$result['HM15'].'", "'.$result['HM16'].'", "'.$result['HM17'].'", "'.$result['HM18'].'", "'.$result['HM19'].'", "'.$result['HM20'].'", "'.$result['HM21'].'", "'.$result['HM22'].'", "'.$result['HM23'].'", "'.$result['HM24'].'", "'.$result['HM25'].'", "'.$result['HM26'].'", "'.$result['HM27'].'", "'.$result['HM28'].'", "'.$result['HM29'].'", "'.$result['HM30'].'", "'.$result['HM31'].'", "'.$result['jam_lembur'].'", "'.$result['HMP'].'", "'.$result['HMU'].'", "'.$result['HMS'].'", "'.$result['HMM'].'", "'.$result['HM'].'", "'.$result['UBT'].'", "'.$result['HUPAMK'].'", "'.$result['IK'].'", "'.$result['IKSKP'].'", "'.$result['IKSKU'].'", "'.$result['IKSKS'].'", "'.$result['IKSKM'].'", "'.$result['IKJSP'].'", "'.$result['IKJSU'].'", "'.$result['IKJSS'].'", "'.$result['IKJSM'].'", "'.$result['ABS'].'", "'.$result['T'].'", "'.$result['SKD'].'", "'.$result['cuti'].'", "'.$result['HL'].'", "'.$result['PT'].'", "'.$result['PI'].'", "'.$result['PM'].'", "'.$result['DL'].'", "'.$result['tambahan'].'", "'.$result['duka'].'", "'.$result['potongan'].'", "'.$result['HC'].'", "'.$result['jml_UM'].'", "'.$result['cicil'].'", "'.$result['potongan_koperasi'].'", "'.$result['UBS'].'", "'.$result['UM_puasa'].'", "'.$result['SK_CT'].'", "'.$result['POT_2'].'", "'.$result['TAMB_2'].'", "'.$result['kode_lokasi'].'", "'.$result['jml_izin'].'", "'.$result['jml_mangkir'].'", "'.$result['bhmp'].'", "'.$result['bhms'].'", "'.$result['bhmm'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['bln_gaji'].'", "'.$result['thn_gaji'].'", "'.$result['HM01'].'", "'.$result['HM02'].'", "'.$result['HM03'].'", "'.$result['HM04'].'", "'.$result['HM05'].'", "'.$result['HM06'].'", "'.$result['HM07'].'", "'.$result['HM08'].'", "'.$result['HM09'].'", "'.$result['HM10'].'", "'.$result['HM11'].'", "'.$result['HM12'].'", "'.$result['HM13'].'", "'.$result['HM14'].'", "'.$result['HM15'].'", "'.$result['HM16'].'", "'.$result['HM17'].'", "'.$result['HM18'].'", "'.$result['HM19'].'", "'.$result['HM20'].'", "'.$result['HM21'].'", "'.$result['HM22'].'", "'.$result['HM23'].'", "'.$result['HM24'].'", "'.$result['HM25'].'", "'.$result['HM26'].'", "'.$result['HM27'].'", "'.$result['HM28'].'", "'.$result['HM29'].'", "'.$result['HM30'].'", "'.$result['HM31'].'", "'.$result['jam_lembur'].'", "'.$result['HMP'].'", "'.$result['HMU'].'", "'.$result['HMS'].'", "'.$result['HMM'].'", "'.$result['HM'].'", "'.$result['UBT'].'", "'.$result['HUPAMK'].'", "'.$result['IK'].'", "'.$result['IKSKP'].'", "'.$result['IKSKU'].'", "'.$result['IKSKS'].'", "'.$result['IKSKM'].'", "'.$result['IKJSP'].'", "'.$result['IKJSU'].'", "'.$result['IKJSS'].'", "'.$result['IKJSM'].'", "'.$result['ABS'].'", "'.$result['T'].'", "'.$result['SKD'].'", "'.$result['cuti'].'", "'.$result['HL'].'", "'.$result['PT'].'", "'.$result['PI'].'", "'.$result['PM'].'", "'.$result['DL'].'", "'.$result['tambahan'].'", "'.$result['duka'].'", "'.$result['potongan'].'", "'.$result['HC'].'", "'.$result['jml_UM'].'", "'.$result['cicil'].'", "'.$result['potongan_koperasi'].'", "'.$result['UBS'].'", "'.$result['UM_puasa'].'", "'.$result['SK_CT'].'", "'.$result['POT_2'].'", "'.$result['TAMB_2'].'", "'.$result['kode_lokasi'].'", "'.$result['jml_izin'].'", "'.$result['jml_mangkir'].'"]';
+				$json .= '["'.$no.'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kodesie'].'", "'.$result['unit_name'].'", "'.$result['bln_gaji'].'", "'.$result['thn_gaji'].'", "'.$result['HM01'].'", "'.$result['HM02'].'", "'.$result['HM03'].'", "'.$result['HM04'].'", "'.$result['HM05'].'", "'.$result['HM06'].'", "'.$result['HM07'].'", "'.$result['HM08'].'", "'.$result['HM09'].'", "'.$result['HM10'].'", "'.$result['HM11'].'", "'.$result['HM12'].'", "'.$result['HM13'].'", "'.$result['HM14'].'", "'.$result['HM15'].'", "'.$result['HM16'].'", "'.$result['HM17'].'", "'.$result['HM18'].'", "'.$result['HM19'].'", "'.$result['HM20'].'", "'.$result['HM21'].'", "'.$result['HM22'].'", "'.$result['HM23'].'", "'.$result['HM24'].'", "'.$result['HM25'].'", "'.$result['HM26'].'", "'.$result['HM27'].'", "'.$result['HM28'].'", "'.$result['HM29'].'", "'.$result['HM30'].'", "'.$result['HM31'].'", "'.$result['jam_lembur'].'", "'.$result['HMP'].'", "'.$result['HMU'].'", "'.$result['HMS'].'", "'.$result['HMM'].'", "'.$result['HM'].'", "'.$result['UBT'].'", "'.$result['HUPAMK'].'", "'.$result['IK'].'", "'.$result['IKSKP'].'", "'.$result['IKSKU'].'", "'.$result['IKSKS'].'", "'.$result['IKSKM'].'", "'.$result['IKJSP'].'", "'.$result['IKJSU'].'", "'.$result['IKJSS'].'", "'.$result['IKJSM'].'", "'.$result['ABS'].'", "'.$result['T'].'", "'.$result['SKD'].'", "'.$result['cuti'].'", "'.$result['HL'].'", "'.$result['PT'].'", "'.$result['PI'].'", "'.$result['PM'].'", "'.$result['DL'].'", "'.$result['tambahan'].'", "'.$result['duka'].'", "'.$result['potongan'].'", "'.$result['HC'].'", "'.$result['jml_UM'].'", "'.$result['cicil'].'", "'.$result['potongan_koperasi'].'", "'.$result['UBS'].'", "'.$result['UM_puasa'].'", "'.$result['SK_CT'].'", "'.$result['POT_2'].'", "'.$result['TAMB_2'].'", "'.$result['kode_lokasi'].'", "'.$result['jml_izin'].'", "'.$result['jml_mangkir'].'", "'.$result['bhmp'].'", "'.$result['bhms'].'", "'.$result['bhmm'].'"]';
 			}
 			$no++;
 		}

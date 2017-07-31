@@ -32,28 +32,21 @@ class M_potongan extends CI_Model
 
     public function getPotonganSearch($searchValue)
     {
-        $numericValue = "";
-        if (is_numeric($searchValue)) {
-            $numericValue = "
-                OR  ppo.\"bulan_gaji\" = '$searchValue'
-                OR  ppo.\"tahun_gaji\" = '$searchValue'
-                OR  ppo.\"pot_lebih_bayar\" = '$searchValue'
-                OR  ppo.\"pot_gp\" = '$searchValue'
-                OR  ppo.\"pot_dl\" = '$searchValue'
-                OR  ppo.\"pot_spsi\" = '$searchValue'
-                OR  ppo.\"pot_duka\" = '$searchValue'
-                OR  ppo.\"pot_koperasi\" = '$searchValue'
-                OR  ppo.\"pot_hutang_lain\" = '$searchValue'
-                OR  ppo.\"pot_dplk\" = '$searchValue'
-                OR  ppo.\"pot_thp\" = '$searchValue'
-            ";
-        }
         $sql = "
             SELECT * FROM pr.pr_potongan ppo
             LEFT JOIN er.er_employee_all eea ON eea.employee_code = ppo.noind
             WHERE
                     ppo.\"noind\" ILIKE '%$searchValue%'
-                $numericValue
+                OR  CAST(ppo.\"bulan_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"tahun_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_lebih_bayar\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_gp\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_dl\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_duka\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_koperasi\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_hutang_lain\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_tkp\" AS TEXT) ILIKE '%$searchValue%'
+
                 OR  eea.employee_name ILIKE '%$searchValue%'
                 
         ";
@@ -66,26 +59,19 @@ class M_potongan extends CI_Model
             $condition = "";
         }
         else{
-            $numericValue = "";
-            if (is_numeric($searchValue)) {
-                $numericValue = "
-                    OR  ppo.\"bulan_gaji\" = '$searchValue'
-                    OR  ppo.\"tahun_gaji\" = '$searchValue'
-                    OR  ppo.\"pot_lebih_bayar\" = '$searchValue'
-                    OR  ppo.\"pot_gp\" = '$searchValue'
-                    OR  ppo.\"pot_dl\" = '$searchValue'
-                    OR  ppo.\"pot_spsi\" = '$searchValue'
-                    OR  ppo.\"pot_duka\" = '$searchValue'
-                    OR  ppo.\"pot_koperasi\" = '$searchValue'
-                    OR  ppo.\"pot_hutang_lain\" = '$searchValue'
-                    OR  ppo.\"pot_dplk\" = '$searchValue'
-                    OR  ppo.\"pot_thp\" = '$searchValue'
-                ";
-            }
             $condition = "
                 WHERE
                     ppo.\"noind\" ILIKE '%$searchValue%'
-                $numericValue
+                OR  CAST(ppo.\"bulan_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"tahun_gaji\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_lebih_bayar\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_gp\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_dl\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_duka\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_koperasi\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_hutang_lain\" AS TEXT) ILIKE '%$searchValue%'
+                OR  CAST(ppo.\"pot_tkp\" AS TEXT) ILIKE '%$searchValue%'
+
                 OR  eea.employee_name ILIKE '%$searchValue%'
             ";
         }
@@ -104,6 +90,11 @@ class M_potongan extends CI_Model
     public function setPotongan($data)
     {
         return $this->db->insert('pr.pr_potongan', $data);
+    }
+
+    public function setTambahan($data)
+    {
+        return $this->db->insert('pr.pr_tambahan', $data);
     }
 
     public function updatePotongan($data, $id)

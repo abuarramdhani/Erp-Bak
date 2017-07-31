@@ -26,6 +26,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td width="10%"><b>No Induk</b></td>
+					<td>: 
+						<?php 
+							echo $info_item['noind']; 	
+						?>
+					</td>
+				</tr>
+				<tr>
 					<td width="10%"><b>NAMA</b></td>
 					<td>: 
 						<?php 
@@ -84,6 +92,7 @@
 									<thead class="bg-primary">
 										<tr>
 											<td style="text-align:center;">NO</td>
+											<td style="text-align:center;">No Induk</td>
 											<td style="text-align:center;">Tanggal</td>
 											<td style="text-align:center;">Masuk</td>
 											<td style="text-align:center;">Keluar</td>
@@ -93,6 +102,12 @@
 										<?php $no=1; foreach ($Terlambat as $T) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
+											<td style="text-align:center;"><?php echo $T['noind']; 
+											if ($info_item['noind']!=$T['noind'])
+												{
+													echo " - Lama";
+												}
+											?></td>
 											<td style="text-align:center;"><?php echo date('Y-m-d',strtotime($T['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $T['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $T['keluar']; ?></td>
@@ -118,6 +133,7 @@
 									<thead class="bg-primary">
 										<tr>
 											<td style="text-align:center;">NO</td>
+											<td style="text-align:center;">No Induk</td>
 											<td style="text-align:center;">Tanggal</td>
 											<td style="text-align:center;">Masuk</td>
 											<td style="text-align:center;">Keluar</td>
@@ -127,6 +143,12 @@
 										<?php $no=1; foreach ($IjinPribadi as $IPb) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
+											<td style="text-align:center;"><?php echo $IPb['noind']; 
+											if ($info_item['noind']!=$IPb['noind'])
+												{
+													echo " - Lama";
+												}
+												?></td>
 											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($IPb['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $IPb['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $IPb['keluar']; ?></td>
@@ -154,6 +176,7 @@
 									<thead class="bg-primary">
 										<tr>
 											<td style="text-align:center;">NO</td>
+											<td style="text-align:center;">No Induk</td>
 											<td style="text-align:center;">Tanggal</td>
 											<td style="text-align:center;">Masuk</td>
 											<td style="text-align:center;">Keluar</td>
@@ -163,6 +186,12 @@
 										<?php $no=1; foreach ($Mangkir as $M) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
+											<td style="text-align:center;"><?php echo $M['noind']; 
+											if ($info_item['noind']!=$M['noind'])
+												{
+													echo " - Lama";
+												}
+												?></td>
 											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($M['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $M['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $M['keluar']; ?></td>
@@ -188,6 +217,7 @@
 									<thead class="bg-primary">
 										<tr>
 											<td style="text-align:center;">NO</td>
+											<td style="text-align:center;">No Induk</td>
 											<td style="text-align:center;">Tanggal</td>
 											<td style="text-align:center;">Masuk</td>
 											<td style="text-align:center;">Keluar</td>
@@ -197,6 +227,12 @@
 										<?php $no=1; foreach ($IjinPerusahaan as $IP) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
+											<td style="text-align:center;"><?php echo $IP['noind']; 
+											if ($info_item['noind']!=$IP['noind'])
+												{
+													echo " - Lama";
+												}
+												?></td>
 											<td style="text-align:center;"><?php echo date('Y-m-g', strtotime($IP['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $IP['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $IP['keluar']; ?></td>
@@ -222,6 +258,7 @@
 									<thead class="bg-primary">
 										<tr>
 											<td style="text-align:center;">NO</td>
+											<td style="text-align:center;">No Induk</td>
 											<td style="text-align:center;">Tanggal</td>
 											<td style="text-align:center;">Masuk</td>
 											<td style="text-align:center;">Keluar</td>
@@ -231,6 +268,12 @@
 										<?php $no=1; foreach ($CutiTahunan as $CT) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
+											<td style="text-align:center;"><?php echo $CT['noind']; 
+											if ($info_item['noind']!=$CT['noind'])
+												{
+													echo " - Lama";
+												}
+												?></td>
 											<td style="text-align:center;"><?php echo date('Y-m-g', strtotime($CT['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $CT['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $CT['keluar']; ?></td>
@@ -258,6 +301,7 @@
 							<thead class="bg-primary">
 								<tr>
 									<td width="5%" style="text-align:center;">No</td>
+									<td width="15%" style="text-align:center;">No Induk</td>
 									<td width="15%" style="text-align:center;">No SP</td>
 									<td width="15%" style="text-align:center;">Tanggal Cetak</td>
 									<td width="5%" style="text-align:center;">T</td>
@@ -299,6 +343,12 @@
 								?>
 								<tr>
 									<td style="text-align:center;"><?php echo $no++ ?></td>
+									<td style="text-align:center;"><?php echo $SP['noind'];
+									if ($info_item['noind']!=$SP['noind'])
+												{
+													echo " - Lama";
+												}
+												?></td>
 									<td style="text-align:center;"><?php echo $SP['no_surat']?></td>
 									<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($SP['tgl_cetak'])); ?></td>
 									<td style="text-align:center;"><?php echo $T; ?></td>

@@ -120,6 +120,9 @@
                                                 <th class="text-center" width="100px">Kode Lokasi</th>
                                                 <th class="text-center" width="100px">Jml Izin</th>
                                                 <th class="text-center" width="100px">Jml Mangkir</th>
+                                                <th class="text-center" width="50px">BHMP</th>
+                                                <th class="text-center" width="50px">BHMS</th>
+                                                <th class="text-center" width="50px">BHMM</th>
 											</tr>
                                         </thead>
                                     </table>

@@ -2,10 +2,12 @@
 
 class M_kondite extends CI_Model
 {
+
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
+
     }
 
     public function getKondite($id = FALSE)
@@ -168,6 +170,22 @@ class M_kondite extends CI_Model
 		return $query->result_array();
 	}
 
+    public function clearKondite($bulan,$tahun)
+    {
+        $sql = "delete from pr.pr_kondite where extract(month from tanggal)='$bulan' and extract(year from tanggal)='$tahun'  
+        ";
+        $query = $this->db->query($sql);
+    }
+
+    public function getTglShift($noind,$tgl1,$tgl2)
+    {
+        $koneksipersonalia=$this->load->database('personalia',TRUE);
+        $sql = "
+                select tanggal from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal between '$tgl1' and '$tgl2' group by tanggal order by tanggal
+            ";
+        $query = $koneksipersonalia->query($sql);
+        return $query->result_array();
+    }
 }
 
 /* End of file M_kondite.php */

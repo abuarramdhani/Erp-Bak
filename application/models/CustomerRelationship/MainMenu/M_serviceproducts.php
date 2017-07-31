@@ -106,7 +106,7 @@ class M_serviceproducts extends CI_Model {
 		public function getServiceProductLines($id = FALSE)
 		{		//$id = str_replace("~", " ", $id);
 				if ($id === FALSE)
-				{		
+				{
 						/*$this->db->select('*');
 						$this->db->from('cr.vi_cr_service_product_lines');					
 						$this->db->order_by('service_product_line_id', 'ASC');*/
@@ -128,7 +128,7 @@ class M_serviceproducts extends CI_Model {
 						ORDER BY csp.connect_id,vcspl.service_product_line_id ASC"
 						;
 				}
-							
+
 				$query = $this->db->query($sql);
 				return $query->result_array();
 		}
@@ -623,10 +623,16 @@ class M_serviceproducts extends CI_Model {
 		
 		function getLastActivityNumber($id){
 			//$sql = "select COALESCE(cch.connect_number,'1') AS connect_number from cr.cr_connect_headers cch where cch.connect_type = '$id' order by cch.connect_number desc limit 1";
-			$sql = "select COALESCE(activity.activity_number,'1') AS activity_number 
-					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch 
-					UNION ALL
-					select csp.service_number activity_number, csp.service_type activity_type from cr.cr_service_products csp) activity
+			$sqlDelete 	= "DELETE from cr.cr_service_product_number_temporary
+							where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
+			$this->db->query($sqlDelete);
+
+			$sql = "SELECT COALESCE(activity.activity_number,'1') AS activity_number 
+					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch
+						UNION ALL
+						select csp.service_number activity_number, csp.service_type activity_type from cr.cr_service_products csp
+						UNION ALL
+						select cspnt.activity_number activity_number, cspnt.activity_type activity_type from cr.cr_service_product_number_temporary cspnt) activity
 					where activity.activity_type = '$id' 
 					order by activity.activity_number desc limit 1";
 			$query = $this->db->query($sql);
@@ -813,5 +819,148 @@ class M_serviceproducts extends CI_Model {
 									'".$reason."')
 					";
 			$query = $this->db->query($sql);
+		}
+
+		function setNewActivityNumber($activityNumber,$term,$user_id)
+		{
+			$sql 	= "INSERT 	INTO cr.cr_service_product_number_temporary
+            							(activity_number, activity_type, creation_date, created_by)
+     							VALUES 	('$activityNumber', '$term', current_timestamp, '$user_id')";
+			$query 	= $this->db->query($sql);
+		}
+
+		function setNewActivityTemp($dataTemp)
+		{
+			$save = $this->db->insert('cr.cr_service_product_number_temporary', $dataTemp);
+			$last_insert_id = $this->db->insert_id();
+			return $last_insert_id;
+		}
+
+		function updateActivityData($activityNumber,$term,$user_id,$idTemp)
+		{
+			$sql 	= "	UPDATE cr.cr_service_product_number_temporary SET
+							activity_number 	= '$activityNumber',
+							activity_type 		= '$term',
+							last_updated_by 	= '$user_id',
+							last_update_date 	= current_timestamp
+						WHERE service_number_id = '$idTemp'";
+			$query 	= $this->db->query($sql);
+		}
+
+		function getServiceLineTemp($service_number)
+		{
+			$this->db->select('service_product_image_id, image_name');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $service_number);
+			$this->db->order_by('service_product_image_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function deleteLineImageTemp($id)
+		{
+			$this->db->where('service_product_image_id',$id);
+			$this->db->delete('cr.cr_service_product_line_images');
+		}
+
+		function deleteImageTemp($service_number){
+			$this->db->where('service_number',$service_number);
+			$this->db->delete('cr.cr_service_product_images');
+		}
+
+		function deleteActivityTemp($id)
+		{
+			$this->db->where('service_number_id',$id);
+			$this->db->delete('cr.cr_service_product_number_temporary');
+
+			$sql 	= "DELETE from cr.cr_service_product_number_temporary where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
+			$this->db->query($sql);
+		}
+
+		function getServiceNumber($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_number_temporary');
+			$this->db->where('service_number_id', $id);
+			$this->db->order_by('service_number_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+		function setDataClaimImage($img)
+		{
+			$this->db->insert('cr.cr_service_product_images', $img);
+		}
+
+		public function claimImage($data)
+		{	
+			$this->db->insert('cr.cr_service_product_line_images', $data);
+		}
+
+		function updateTempCustId($data,$idTmp)
+		{		
+				$this->db->update('cr.cr_service_product_number_temporary', $data, array('service_number_id' => $idTmp));
+		}
+		
+		function getDataClaimImage($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $id);
+			$this->db->order_by('service_product_image_id', 'ASC');
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function getImageData($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function getDataSelectedImg($image_id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_product_image_id', $image_id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function setImageDataLine($dataImgLine)
+		{
+			$this->db->insert('cr.cr_service_product_line_images', $dataImgLine);
+			return $this->db->insert_id();
+		}
+
+		function getImageLine($rowId,$ownerId)
+		{
+			$sql = "SELECT service_product_line_image_id
+					from cr.cr_service_product_line_images
+					where row_id = '$rowId' AND ownership_id = '$ownerId'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		/*function updateImageDataLine($data, $id)
+		{
+			$this->db->update('cr.cr_service_product_line_images', $data, array('service_product_line_image_id' => $id));
+		}*/
+
+		function getImgIdSelected($id){
+			$this->db->select('service_product_image_id');
+			$this->db->from('cr.cr_service_product_line_images');
+			$this->db->where('service_product_line_image_id', $id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function deleteImageDataLine($ownerId,$rowId){
+			$query = "delete from cr.cr_service_product_line_images where ownership_id='$ownerId' AND row_id='$rowId'";
+			$this->db->query($query);
 		}
 }

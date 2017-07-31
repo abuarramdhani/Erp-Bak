@@ -1,6 +1,68 @@
-<form id="form-service" method="post" action="<?php echo site_url('CustomerRelationship/ServiceProducts/Create/')?>" class="form-horizontal">
+    <script type="text/template" id="qq-template-manual-trigger">
+        <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
+            <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+            </div>
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                <span class="qq-upload-drop-area-text-selector"></span>
+            </div>
+            <div class="buttons">
+                <div class="qq-upload-button-selector qq-upload-button">
+                    <div>Select files</div>
+                </div>
+            </div>
+            <span class="qq-drop-processing-selector qq-drop-processing">
+                <span>Processing dropped files...</span>
+                <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+            </span>
+            <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
+                <li>
+                    <div class="qq-progress-bar-container-selector">
+                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                    </div>
+                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                    <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+                    <span class="qq-upload-file-selector qq-upload-file"></span>
+                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
+                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                    <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
+                    <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                    <!--<span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>-->
+                </li>
+            </ul>
+            <dialog class="qq-alert-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Close</button>
+                </div>
+            </dialog>
+            <dialog class="qq-confirm-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">No</button>
+                    <button type="button" class="qq-ok-button-selector">Yes</button>
+                </div>
+            </dialog>
+            <dialog class="qq-prompt-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <input type="text">
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                    <button type="button" class="qq-ok-button-selector">Ok</button>
+                </div>
+            </dialog>
+        </div>
+    </script>
+<form id="form-service" method="post" action="<?php echo site_url('CustomerRelationship/ServiceProducts/Create/')?>" class="form-horizontal" enctype="multipart/form-data">
 <section class="content">
 	<div class="inner" >
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<?php echo $notif;?>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="row">
@@ -45,6 +107,9 @@
 										<li role="presentation">
 											<a href="#Details" aria-controls="Details" role="tab" data-toggle="tab">Details</a>
 										</li>
+										<li role="presentation">
+											<a href="#Images" aria-controls="Images" role="tab" data-toggle="tab">Images</a>
+										</li>
 									</ul>
 								</div>
 							</div>
@@ -55,7 +120,7 @@
 									<div role="tabpanel" class="tab-pane active" id="general">
 										<input type="hidden" name="approvedis" id="approvedis" value="">
 										<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
-										<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
+										<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" id="hdnUser" />
 										<div class="col-lg-6">
 											<div class="form-group">
 													<label for="norm" class="control-label col-lg-4">Activity Type</label>
@@ -88,13 +153,13 @@
 													<label for="norm" class="control-label col-lg-4">Customer</label>
 													<div class="col-lg-8">
 														<div class="input-group">
-															<input type="text" placeholder="Search Customer" name="txtCustomerName" id="txtCustomerName" onfocus="callModal('<?php echo site_url('ajax/ModalCustomer')?>');" onkeypress="return noInput(event)" class="form-control toupper" />
+															<input type="text" placeholder="Search Customer" name="txtCustomerName" id="txtCustomerName" onfocus="callModal('<?php echo site_url('ajax/ModalCustomer')?>');" onkeypress="return noInput(event)" class="form-control toupper" disabled />
 															<span class="input-group-btn">
-																<a class="btn btn-primary" href="<?php echo site_url('ajax/ModalCustomer')?>" data-toggle="modal" data-target="#myModal"><i class="icon-search"></i></a>
+																<a class="btn btn-primary" href="<?php echo site_url('ajax/ModalCustomer')?>" data-toggle="modal" data-target="#myModal" disabled id="btnSearchCustomer"><i class="icon-search"></i></a>
 															</span>
 														</div>
-														<input type="hidden" name="hdnCustomerId" id ="hdnCustomerId" />
-														<input type="hidden" name="hdnCategoryId" id ="hdnCategoryId"  />
+														<input type="hidden" name="hdnCustomerId" id="hdnCustomerId" />
+														<input type="hidden" name="hdnCategoryId" id="hdnCategoryId"  />
 													</div>
 											</div>
 										</div>
@@ -288,6 +353,15 @@
 											</div>
 										</div>
 									</div>
+									<div role="tabpanel" class="tab-pane" id="Images">
+										<div class="col-md-10 col-md-offset-1">
+											<div id="cust-message" class="text-center">
+												<p>You can not Upload any image before you select a Customer.</p>
+												<h4><b>Please Select Customer first!</b></h4>
+											</div>
+											<div id="fine-uploader-manual-trigger"></div><br>
+										</div>
+									</div>
 								</div>
 								
 							</div>
@@ -361,7 +435,8 @@
 																					</select>
 																				</td>
 																				<td>
-																					<input type="file" name="claimImage" id='claimImage' disabled>
+																					<input type="text" name="claimImageTotal[]" id="claimImage" onfocus="modalImg(this)"  class="form-control claimImage" row-id="1">
+																					<input type="hidden" name="claimImageData[]" id="claimImageData"  row-id="1">
 																				</td>
 																				<td></td>
 																				</tr>
@@ -474,14 +549,42 @@
 	</div>
 <section class="content">
 </form>
-
 <!-- Modal Start -->
-<div class="col-lg-12">
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			</div>
-		</div>
-	</div>
+<div id="modalImg" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select Item Picture for Line 1</h4>
+      </div>
+      <form method="post" id="formImg" action="javascript:chooseImage('<?php echo base_url('CustomerRelationship/ServiceProducts/ChooseImage'); ?>');">
+      <div class="modal-body">
+      	<input type="hidden" name="txtOwnerId" id="owner_id">
+      	<input type="hidden" name="txtLineId" id="line_id">
+      	<div class="row" id="modalContent">
+      		<?php if ($imgClaim !== NULL) { ?>
+      			<div id="modalImg-content">
+      				<?php foreach ($imgClaim as $ic) { ?>
+        	    	<div class="col-lg-3 col-md-4 col-xs-6" style="padding-top: 15px;">
+        	    		<input id="<?php echo $ic['service_product_image_id']; ?>" type="hidden" name="imgLineSelect[]" value="<?php echo $ic['service_product_image_id']; ?>" disabled>
+        	        	<img id="img<?php echo $ic['service_product_image_id']; ?>" onclick="checkThis(<?php echo $ic['service_product_image_id']; ?>)" class="img-responsive thumb-image" style="width: 100%; height: 150px;" src="<?php echo base_url($ic['image_name']); ?>">
+        	    	</div>
+        			<?php } ?>
+      			</div>
+        	<?php }else{ ?>
+        		<div class="text-center" id="modalImg-message">
+        			<b><p>You have not uploaded any images.</p></b>
+					<h3>Please do upload a picture in the upload menu header.</h3>
+        		</div>
+        	<?php } ?>
+        	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Choose</button>
+      </div>
+      </form>
+    </div>
+  </div>
 </div>
 <!-- Modal End -->

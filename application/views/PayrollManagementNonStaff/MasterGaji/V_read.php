@@ -67,6 +67,38 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Upamk</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['upamk']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Bank Code</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['bank_code']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Status Pajak</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['status_pajak']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggungan Pajak</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggungan_pajak']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Ptkp</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['ptkp']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Bulan Kerja</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['bulan_kerja']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kpph</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kpph']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Potongan Dplk</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['potongan_dplk']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Potongan Spsi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['potongan_spsi']; ?></td>
+                                                        </tr>
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>

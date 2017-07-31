@@ -1,21 +1,4 @@
-
-<div>
-	<div style="margin-left:20px;margin-right:20px;padding-top:10px;">
-		<div class="row" style="margin-left:3px;margin-right:3px;padding-top:10px;">
-			<table>
-				<tr>
-					<td><img src="<?php echo base_url('assets/img/logo.png')?>" style="width:60px;"></td>
-					<td>&nbsp;&nbsp;</td>
-					<td>
-						<h3><b>CV. KARYA HIDUP SENTOSA</b><br>
-						<small style="font-size:12px;">Jl. Magelang No. 144 Yogyakarta 55241</small><br>
-						<small style="font-size:12px;">Telp: (0274)512095,563217 Fax: (0274) 563523</small>
-						</h3>
-					</td>
-				</tr>
-			</table>
-		</div>
-
+	<div style="margin-left:20px;margin-right:20px;padding-top:0px">
 		<div class="row" style="margin-left:3px;margin-right:3px">
 			<h5 align="center"><b>DATA HASIL PENGECEKAN KLIKBCA-ORACLE</b></h5>
 			<table border="1" style="border-collapse: collapse;margin: 0 auto;">
@@ -47,23 +30,9 @@
 							$no=0;
 							foreach($Referencee as $Ref) { $no++;
 								$majorcolor		= '#DE7575';
-								$oci_PayNum 	= '-';
-								$oci_RekTujuan 	= '-';
-								$oci_NamaTujuan	= '-';
-								$oci_Nominal 	= '-';
 
 								if($Ref['oracle_checking'] == 'Y'){
 									$majorcolor= '';
-								}
-
-								foreach ($OracleData as $oci) {
-									if($oci['PAY_NUMBER']==$Ref['berita']){
-										$oci_PayNum 	= $oci['PAY_NUMBER'];
-										$oci_RekTujuan 	= $oci['REK_TUJUAN'];
-										$oci_NamaTujuan = $oci['ACCT_TUJUAN'];
-										$oci_InisialTujuan = $oci['INISIAL_TUJUAN'];
-										$oci_Nominal 	= $oci['AMOUNT'];
-									}
 								}
 
 								$col_PayNum		= $majorcolor;
@@ -72,10 +41,10 @@
 								$col_NamaTujuan	= $majorcolor;
 								$col_Nominal	= $majorcolor;
 
-								if($Ref['berita'] !== $oci_PayNum){$col_PayNum = '#FFEE85';}
-								if($Ref['no_rek_penerima'] !== $oci_RekTujuan){$col_RekTujuan = '#FFEE85';}
-								if($Ref['inisial_penerima'] !== $oci_InisialTujuan){$col_NamaTujuan = '#FFEE85';}
-								if(chr($Ref['jumlah']) !== chr($oci_Nominal)){$col_Nominal = '#FFEE85';}
+								if($Ref['berita'] !== $Ref['pay_num_oracle']){$col_PayNum = '#FFEE85';}
+								if($Ref['no_rek_penerima'] !== $Ref['rek_tujuan']){$col_RekTujuan = '#FFEE85';}
+								if($Ref['inisial_penerima'] !== $Ref['inisial_tujuan']){$col_NamaTujuan = '#FFEE85';}
+								if(chr($Ref['jumlah']) !== chr($Ref['jumlah_oracle'])){$col_Nominal = '#FFEE85';}
 
 								$data_StatusChecking='';
 								if($Ref['oracle_checking']=='Y'){$data_StatusChecking='OK';
@@ -85,13 +54,13 @@
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo $no?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo $Ref['no_referensi']?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_PayNum ?>;"><?php echo $Ref['berita']?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_PayNum ?>;"><?php echo $oci_PayNum ?></td>
+						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_PayNum ?>;"><?php echo $Ref['pay_num_oracle'] ?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_RekTujuan ?>;"><?php echo $Ref['no_rek_penerima']?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_RekTujuan ?>;"><?php echo $oci_RekTujuan?></td>
+						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_RekTujuan ?>;"><?php echo $Ref['rek_tujuan']?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo str_replace('(Rp)', '', $Ref['nama_penerima']) ?></td>
-						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo $oci_NamaTujuan ?></td>
+						<td align="center" style="height:20px;font-size:9px;background:<?php echo $col_NamaTujuan; ?>;"><?php echo $Ref['nama_penerima_oracle'] ?></td>
 						<td align="right" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $Ref['jumlah']?></td>
-						<td align="right" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $oci_Nominal?></td>
+						<td align="right" style="height:20px;font-size:9px;background:<?php echo $col_Nominal ?>;"><?php echo $Ref['jumlah_oracle']?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo $data_StatusChecking?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo $Ref['tanggal_cek']?></td>
 						<td align="center" style="height:20px;font-size:9px;background:<?php echo $majorcolor ?>;"><?php echo ''?></td>
@@ -100,27 +69,3 @@
 				</tbody>
 			</table>
 			<br>
-			<table width="100%">
-				<tr>
-					<td width="80%" ></td>
-					<td width="20%" >
-						Yogyakarta, &nbsp;&nbsp; <?php echo date("F Y"); ?>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<br><br>
-						<br><br>
-					</tr>
-				<tr>
-				<tr>
-					<td></td>
-					<td>
-						(........................................)
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-</div>
