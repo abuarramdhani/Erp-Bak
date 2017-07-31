@@ -173,7 +173,7 @@ class C_MasterTraining extends CI_Controller {
 		$data['training'] = $this->M_mastertraining->GetTrainingId($id);
 		$data['objective'] = $this->M_mastertraining->GetObjectiveId($id);
 		$data['questionnaire'] = $this->M_mastertraining->GetQuestionnaire();
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/MasterTraining/V_Edit',$data);
@@ -190,7 +190,7 @@ class C_MasterTraining extends CI_Controller {
 		$questionnaire		= $this->input->post('slcQuestionnaire');
 		$questionnaires 	= implode(',', $questionnaire);
 		
-		if($status==1){
+		
 
 			$pkgid		= $id;
 			$this->M_mastertraining->DelObjective($id);
@@ -199,13 +199,13 @@ class C_MasterTraining extends CI_Controller {
 				foreach($objective as $loop){
 					$data_objective[$i] = array(
 						'training_id' 	=> $pkgid,
-						'objective' 	=> $objective[$i],
+						'purpose' 		=> $objective[$i],
 					);
 					if( !empty($objective[$i]) ){
 						$this->M_mastertraining->AddObjective($data_objective[$i]);
 					}
 					$i++;
-				}
+			
 		}
 
 

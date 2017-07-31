@@ -302,8 +302,6 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$idStatement=	$this->input->post('idStatement');
 		$SgID 		= 	$this->input->post('segment_id');
 		$StID 		= 	$this->input->post('statement_id');
-		print_r($SgDes);
-		exit();
 		$n = 0;
 		foreach ($SgDes as $Des) {
 			if ($idSegment[$n] == '0') {
