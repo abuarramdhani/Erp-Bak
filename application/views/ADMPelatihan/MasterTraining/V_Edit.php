@@ -85,7 +85,7 @@
 							</div>
 						</div>
 						<hr>
-						<?php if($tm['status']==1){?>
+						<?php {?>
 							<div class="row" style="margin: 10px 10px">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
@@ -106,8 +106,8 @@
 													<?php foreach($objective as $ob){?>
 													<tr class="obclone">
 														<td>
-															<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective">
-																	<option selected><?php echo $ob['objective']?></option>
+															<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective" data-placeholder="Tujuan Pelatihan">
+																	<option selected><?php echo $ob['purpose']?></option>
 															</select>
 														</td>
 													</tr>
@@ -131,7 +131,7 @@
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-10 text-right">
-								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="<?php echo site_url('ADMPelatihan/MasterTraining/index');?>" class="btn btn-primary btn btn-flat" class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>

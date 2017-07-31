@@ -45,7 +45,7 @@ class M_mastertraining extends CI_Model {
 
 		//HALAMAN EDIT
 		public function GetObjectiveId($id){
-			$sql = "select * from pl.pl_objective_master where training_id='$id'";
+			$sql = "select * from pl.pl_master_training_purpose where training_id='$id'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -86,7 +86,7 @@ class M_mastertraining extends CI_Model {
 
 		//UPDATE DATA
 		public function DelObjective($id){
-			$sql = "delete from pl.pl_objective_master, pl.pl_master_training_purpose where training_id='$id'";
+			$sql = "delete from pl.pl_master_training_purpose where training_id='$id'";
 			$query = $this->db->query($sql);
 			return;
 		}

@@ -65,7 +65,7 @@
 					<?php } ?>
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="<?php echo site_url('ADMPelatihan/PenjadwalanPackage');?>"  class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 							</div>
 						</div>
