@@ -3,8 +3,8 @@
 								<thead class="bg-primary">
 									<tr>
 										<th width="5%" style="text-align:center;">NO</th>
-										<th width="10%">Action</th>
-										<th width="20%">Trainer</th>
+										<th width="15%">Action</th>
+										<th width="15%">Trainer</th>
 										<th width="20%">Nama Pelatihan</th>
 										<th width="10%">Tanggal</th>
 										<th width="20%">Nama Paket</th>
@@ -38,7 +38,7 @@
 										<td>
 											<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>
 											<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
-											<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
+											<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip" title="Input Kuesioner	"><i class="fa fa-file-text-o"></i></a>
 											
 
 											<?php if($rc['status']==0){ ?>

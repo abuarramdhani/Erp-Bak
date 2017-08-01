@@ -35,7 +35,7 @@ class M_record extends CI_Model {
 				end as date_format
 			from pl.pl_scheduling_training a
 			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
-			where a.date >= now()::date AND a.status = 0
+			where a.date >= now()::date 
 			order by a.date asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
