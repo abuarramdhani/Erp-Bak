@@ -192,16 +192,18 @@ $(document).ready(function() {
 				$('#jumlahPpn').val(ppnfres);
 
 			  	if ($("#npwp").val() != undefined) {
-					var hppn = $('#hppn').val();
-					var hppn1 = $('#hppn1').val();
+					var hppn = $('#hppn').val();//invoice
+					var hppn1 = $('#hppn1').val();//faktur
 					var ppnplus = hppn1 - hppn;
-	
-			  		if (ppnplus > 100 || ppnplus < -100) {
-			  			$("#jumlahPpn").css('background-color','#FCBF22');
-			  			$("#ppn1").css('background-color','#FCBF22');
-			  		}else{
-			  			$("#jumlahPpn").css('background-color','');
-			  			$("#ppn1").css('background-color','');
+// 
+					if (parseFloat(hppn) > parseFloat(hppn1)) {
+			  			if (ppnplus > 100 || ppnplus < -100) {
+			  				$("#jumlahPpn").css('background-color','#FCBF22');
+			  				$("#ppn1").css('background-color','#FCBF22');
+			  			}else{
+			  				$("#jumlahPpn").css('background-color','');
+			  				$("#ppn1").css('background-color','');
+			  			};
 			  		};
 			  		if ($("#npwpPenjual").val() != $("#npwp").val()) {
 			  			$("#npwpPenjual").css('background-color','#FCBF22');
@@ -458,7 +460,7 @@ $(document).ready(function(){
 
 	$('#btnConfirm').click(function(){
 		var pass = $('#passwd').val();
-		if (pass == 123456) {
+		if (pass == '110993') {
 			// alert('HAUHAU');
         	$('#pph').submit();
 		}else{
@@ -486,13 +488,16 @@ $(document).ready(function(){
 		var ppn1v = ppn1.replace(/[\D]/g, '');
 		$('#ppn1').val(ppn1v);
 
-
-		if (ppnplus > 100 || npwp != npwp1) {
-        	// alert('NAAAH');
-			$('#comentModal').modal('show');
-		}else{
-			// alert('HAUHAU');
-        	$('#pph').submit();
+		if (parseFloat(ppn1v) > parseFloat(ppnv)) {
+			if (ppnplus > 100 || npwp != npwp1) {
+        		// alert('NAAAH');
+				$('#comentModal').modal('show');
+			}else{
+				// alert('HAUHAU');
+        		$('#pph').submit();
+			};
+		}else if (parseFloat(ppn1v) <= parseFloat(ppnv) && npwp == npwp1) {
+			$('#pph').submit();
 		};
 	});
 
