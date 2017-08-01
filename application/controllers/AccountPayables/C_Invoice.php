@@ -69,7 +69,8 @@ class C_Invoice extends CI_Controller {
 		$tanggal_awal = $this->input->post('tanggal_awal');
 		$tanggal_akhir = $this->input->post('tanggal_akhir');
 		$supplier = $this->input->post('supplier');
-		$invoice_number = $this->input->post('invoice_number');
+		$inum = $this->input->post('invoice_number');
+		$invoice_number = strtoupper($inum);
 		$invoice_status = $this->input->post('invoice_status');
 		$voucher_number = $this->input->post('voucher_number');
 
@@ -111,7 +112,8 @@ class C_Invoice extends CI_Controller {
 	}	
 	
 	public function getSupplier(){
-		$supplier = $this->input->GET('term');
+		$supply = $this->input->GET('term');
+		$supplier = strtoupper($supply);
 		$query = $this->M_Invoice->getSupplier($supplier);
 		echo json_encode($query);
 		// print_r($query);
@@ -188,26 +190,81 @@ class C_Invoice extends CI_Controller {
 		$this->load->view('AccountPayables/V_Input',$data);
 		$this->load->view('V_Footer',$data);
 	}
+	public function inputTaxManual($invoice_id){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+
+
+		$query = $this->M_Invoice->getDetail($invoice_id);
+		$query2 = $this->M_Invoice->findSingleFaktur($invoice_id);
+		$data['data']=$query;
+		$data['data_faktur']=$query2;
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_Manual',$data);
+		$this->load->view('V_Footer',$data);
+	}
 
 	public function saveTaxNumber(){
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$invoice_id = $this->input->post('invoice_id');
-		
-		$tanggalFaktur = $this->input->post('tanggalFaktur');
-		$npwpPenjual = $this->input->post('npwpPenjual');
-		$namaPenjual = $this->input->post('namaPenjual');
-		$alamatPenjual = $this->input->post('alamatPenjual');
-		$dpp = $this->input->post('dpp');
-		$ppn = $this->input->post('ppn');
-		$ppnbm = $this->input->post('ppnbm');
-		$tax_number = $this->input->post('nomorFaktur');
+		$invoice_id = $this->input->post('invoice_id');//kanan
+		$faktur_type = $this->input->post('faktur_type');//hidden
+		$tanggalFaktur = $this->input->post('tanggalFaktur');//kiri
+		$tanggalFakturCon = $this->input->post('tanggalFakturCon');//hide
+		$npwpPenjual = $this->input->post('npwpPenjual');//kiri
+		$namaPenjual = $this->input->post('namaPenjual');//kiri
+		$alamatPenjual = $this->input->post('alamatPenjual');//kiri
+		$dpp = $this->input->post('jumlahDpp');//kiri
+		$ppn = $this->input->post('jumlahPpn');//kiri
+		$ppnbm = $this->input->post('ppnbm');//entah
+		$comment = $this->input->post('txaCmt');//modal 2-2 nya
+		$tax_number = $this->input->post('nomorFaktur');//kiri
 		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
 		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
+
+		$checkInv = $this->M_Invoice->checkInvoice($invoice_id);
+		if ($checkInv[0]['ATTRIBUTE3'] != NULL || $checkInv[0]['ATTRIBUTE3'] != '') {
+		$invoice_id = $this->input->post('invoice_id');
+			echo"
+				<script>
+				var inv = confirm('Data sudah ada di faktur oracle. Tetap simpan[replace]?');
+				if(inv != true) {
+					window.stop();
+					window.location.assign('".base_url()."/AccountPayables/C_Invoice/inputTaxNumber/".$invoice_id."');
+				};
+				</script>
+			";
+		};
+
+		$checkFak = $this->M_Invoice->checkFaktur($tax_number);
+		if ($checkFak) {
+		$invoice_id = $this->input->post('invoice_id');
+			echo"
+				<script>
+				var fak = confirm('Data sudah ada di faktur aplikasi. Tetap simpan[replace]?');
+				if(fak != true) {
+					window.stop();
+					window.location.assign('".base_url()."/AccountPayables/C_Invoice/inputTaxNumber/".$invoice_id."');
+				};
+				</script>
+			";
+		};
 		
-		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tanggalFaktur, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm );
+		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment );
+		
 		if($query){
 			echo "
 				<script>
@@ -221,13 +278,18 @@ class C_Invoice extends CI_Controller {
 			</script>
 			";
 		}
-		$this->inputTaxNumber($invoice_id);
+
+		if ($invoice_id != NULL || $invoice_id != '') {
+			$this->inputTaxNumber($invoice_id);
+		}else if ($invoice_id == NULL || $invoice_id == '') {
+			redirect('AccountPayables/Invoice/faktursa');
+		}
+
 	}	
 
 	public function deleteTaxNumber($invoice_id,$invoice_num){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-
 		$query = $this->M_Invoice->deleteTaxNumber($invoice_id,$invoice_num);
 		if($query>0){
 			echo "
@@ -444,7 +506,7 @@ class C_Invoice extends CI_Controller {
 			$namas = $xml1->getElementsByTagName( "nama" );
 			$nama = $namas->item(0)->nodeValue;
 			if($i>0){
-				$data['nama'] = $data['nama'].'/n'.$nama;
+				$data['nama'] = $data['nama']."\n".$nama;
 			}else{
 			  	$data['nama'] = $nama;
 			}
@@ -488,6 +550,26 @@ class C_Invoice extends CI_Controller {
 			  $data['fgPengganti'] = $fgPengganti;	  
 		}
 		echo json_encode($data);
+	}
+
+	public function faktursa(){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/V_Faktursa',$data);
+		$this->load->view('V_Footer',$data);
+		
+
 	}
 
 }
