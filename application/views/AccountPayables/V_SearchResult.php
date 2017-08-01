@@ -85,7 +85,7 @@
 					                     				<label for="exampleInputPassword1">Invoice Number</label>
 					                     			</td>
 					                     			<td>
-					                     				<input id="slcInvoiceNumber_deactive" name="invoice_number" class="form-control select2_deactive" style="width:265px;" value="<?php echo $invoice_number;?>">
+					                     				<input id="slcInvoiceNumber_deactive" name="invoice_number" class="form-control select2_deactive" style="width:265px; text-transform: uppercase;" value="<?php echo $invoice_number;?>">
 														
 					                     			</td>
 					                     		</tr>
@@ -101,7 +101,7 @@
 					                     				<label for="exampleInputPassword1">Invoice Status</label>
 					                     			</td>
 					                     			<td>
-					                     				<select id="" name="invoice_status" class="form-control" style="width:265px;">
+					                     				<select id="invStat" name="invoice_status" class="form-control" style="width:265px;">
 					                     					<?php
 					                     						if($invoice_status == 1){
 					                     							echo '<option value="1" selected>All Invoice</option>';
@@ -148,9 +148,12 @@
 										</div>
 							 	</fieldset>
 							 	<div class="box-footer">
-									<button type="submit" class="btn btn-primary btn-sm" id="save"><b>Cari Data</b></button>
+									<button type="submit" class="btn btn-primary btn-sm" id="sbmt"><b>Cari Data</b></button>
 									<a id="ClearSearch" class="btn btn-danger btn-sm"><b>Clear</b></a>
 									<!-- <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
+									<div style="float: right;">
+									<a href="<?php echo base_URL('AccountPayables/Invoice/faktursa') ?>" id="fti" class="btn btn-info btn-lg">Faktur tanpa Invoice</a>
+									</div>
 				            	</div>
 
 				            	<div class="table-responsive">
@@ -210,7 +213,8 @@
 												<td rowspan="<?php echo $row->JML?>"><?php echo $TaxInvNum?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $row->VOUCHER_NUMBER?></td>
 												<td rowspan="<?php echo $row->JML?>">											
-													<a class="btn btn-warning btn-sm" title="Input" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxNumber/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-edit"></i></a>
+													<a class="btn btn-info btn-sm" title="Input QR" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxNumber/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-qrcode"></i></a>		
+													<a class="btn btn-warning btn-sm" title="Input Manual" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxManual/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-edit"></i></a>
 													<?php $fkp = str_replace(str_split('.-'), '', $TaxInvNum); ?>
 													<a class="btn btn-danger btn-sm" title="Delete" href="<?php echo base_URL('AccountPayables/C_Invoice/deleteTaxNumber/'.$row->INVOICE_ID.'/'.$fkp)?>" onclick="return confirm('Anda YAKIN menghapus data \n (<?php echo $row->INVOICE_NUM?>)..?');" target="blank"><i class="glyphicon glyphicon-trash"></i></a>					
 												</td>
