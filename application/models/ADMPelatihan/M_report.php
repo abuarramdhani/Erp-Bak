@@ -30,7 +30,8 @@ class M_report extends CI_Model {
 				is NULL then null 	
 				else to_char(b.date,'DD MONTH YYYY')
 				end as date_format
-	
+			, a.score_eval3_post1
+			, b.standar_kelulusan
 			from pl.pl_participant a
 			left join pl.pl_scheduling_training b on a.scheduling_id = b.scheduling_id
 			where a.participant_name ilike '%$name%'
@@ -61,6 +62,13 @@ class M_report extends CI_Model {
 					 end as training_date
 					,a.trainer
 					,a.participant_number
+					,(select 
+						sum(case when c.score_eval3_post1>=d.standar_kelulusan then 1
+						else 0 
+						end) as lulus
+						from pl.pl_participant c
+						left join pl.pl_scheduling_training d on c.scheduling_id=d.scheduling_id 
+						where c.scheduling_id=a.scheduling_id) as kelulusan
 					,b.Nilai_Maximum
 					,b.Nilai_Minimum
 					,b.Nilai_Rerata
