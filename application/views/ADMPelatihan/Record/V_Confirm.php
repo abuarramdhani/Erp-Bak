@@ -118,8 +118,8 @@
 											<b>Tujuan Pelatihan :</b>
 										</div>
 										<div class="panel-body">
-											<?php foreach($objective as $ob){ ?>
-											<i class="fa fa-angle-right"></i><?php echo ' '.$ob['objective'] ?><br>
+											<?php foreach($purpose as $pr){ ?>
+											<i class="fa fa-angle-right"></i><?php echo ' '.$pr['purpose'] ?><br>
 											<?php } ?>
 										</div>
 									</div>
@@ -194,7 +194,20 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php $no=0;foreach ($participant as $pt){ $no++ ?>
+											<?php $no=0;foreach ($participant as $pt){ $no++; 
+
+												if('2'==$pt['status'])
+												{
+													$hadir='';
+													$tidakhadir='selected';
+												}
+												else
+												{
+													$hadir='selected';
+													$tidakhadir='';
+												}
+
+												?>
 											<tr>
 												<td><?php echo $no ?></td>
 												<td><?php echo $pt['noind'] ?></td>
@@ -202,29 +215,29 @@
 												<td>
 													<input type="text" name="txtId[]" value="<?php echo $pt['participant_id']?>" hidden>
 													<select class="form-control select4" name="slcStatus[]">
-														<option value="1" selected >Hadir</option>
-														<option value="2">Tidak Hadir</option>
+														<option value="1" <?php echo $hadir;?> >Hadir</option>
+														<option value="2" <?php echo $tidakhadir;?> >Tidak Hadir</option>
 													</select>
 												</td>
 													<?php if($ev2=='Y'){ ?>
 												<td>
-													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onkeypress="return isNumberKey(event)">
+													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
 												</td>
 													<?php } if($ev3=='Y'){ ?>
 												<td>
-													<input type="text" class="form-control" name="txtPerilakuPre[]" Placeholder="Perilaku (pre)" onkeypress="return isNumberKey(event)">
+													<input type="text" class="form-control" name="txtPerilakuPre[]" Placeholder="Perilaku (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_pre'];?>">
 												</td>
 												<td>
-													<input type="text" class="form-control" name="txtPerilakuPost[]" Placeholder="Perilaku (Post)" onkeypress="return isNumberKey(event)">
+													<input type="text" class="form-control" name="txtPerilakuPost[]" Placeholder="Perilaku (Post)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post1'];?>">
 												</td>
 												<td>
-													<input type="text" class="form-control" name="txtPerilakuPostRem1[]" Placeholder="R1" onkeypress="return isNumberKey(event)">
+													<input type="text" class="form-control" name="txtPerilakuPostRem1[]" Placeholder="R1" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post2'];?>">
 												</td>
 												<td>
-													<input type="text" class="form-control" name="txtPerilakuPostRem2[]" Placeholder="R2" onkeypress="return isNumberKey(event)">
+													<input type="text" class="form-control" name="txtPerilakuPostRem2[]" Placeholder="R2" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post3'];?>">
 												</td>
 												<td>
-													<input type="text" class="form-control" name="txtPerilakuPostRem3[]" Placeholder="R3" onkeypress="return isNumberKey(event)">
+													<input type="text" class="form-control" name="txtPerilakuPostRem3[]" Placeholder="R3" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post4'];?>">
 												</td>
 													<?php } ?>
 											</tr>

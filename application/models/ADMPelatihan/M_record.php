@@ -41,6 +41,14 @@ class M_record extends CI_Model {
 		return $query->result_array();
 	}
 
+
+	//Ambil Data Tujuan 
+	public function GetPurpose($id){
+		$sql = "select * from pl.pl_master_training_purpose where training_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	//Ambil Data Penjadwalan Untuk Finished
 	public function GetRecordFinished(){
 		$sql = "
