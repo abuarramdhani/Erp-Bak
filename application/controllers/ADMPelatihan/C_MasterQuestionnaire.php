@@ -105,6 +105,7 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaireId($id);
+		$data['segment'] 		= $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -327,13 +328,11 @@ class C_MasterQuestionnaire extends CI_Controller {
 	{		
 			
 			$delete = $this->M_masterquestionnaire->deleteSeg($SgID);
-			echo "DELETE SUKSES!";
 	}
 	public function delSt($StID)
 		{		
 			
 				$delete = $this->M_masterquestionnaire->deleteSt($StID);
-				echo "DELETE SUKSES!";
 		}
 
 	public function checkSession(){

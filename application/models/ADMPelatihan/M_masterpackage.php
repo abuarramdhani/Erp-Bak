@@ -21,16 +21,44 @@ class M_masterpackage extends CI_Model {
 		}
 
 		//AMBIL PAKET PELATIHAN DENGAN NOMOR SPESIFIK
-		public function GetPackageId($id){
+		public function GetPackageId($id = FALSE){
+			if ($id == FALSE) {
 			$sql = "
-				select *
+				SELECT *
 				from pl.pl_master_package a
 				left join pl.pl_participant_type b on a.participant_type = b.participant_type_id
 				left join pl.pl_training_type c on a.training_type = c.training_type_id
-				where a.package_id='$id'";
+				";
+			}else{
+			$sql = "
+				SELECT *
+				from pl.pl_master_package a
+				left join pl.pl_participant_type b on a.participant_type = b.participant_type_id
+				left join pl.pl_training_type c on a.training_type = c.training_type_id
+				where a.package_id=".$id.";";
+			}
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
+
+		public function GetTrainingType()
+		{
+			$sql = "
+					SELECT * FROM pl.pl_training_type ORDER BY training_type_id ASC 
+				";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetParticipantType()
+		{
+			$sql = "
+					SELECT * FROM pl.pl_participant_type ORDER BY participant_type_id ASC 
+				";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
 
 		//AMBIL DAFTAR PELATIHAN UNTUK PAKET PELATIHAN DENGAN NOMOR SPESIFIK
 		public function GetPackageTrainingId($id){
@@ -71,11 +99,12 @@ class M_masterpackage extends CI_Model {
 		}
 
 		//UBAH DATA PAKET PELATIHAN
-		public function UpdatePackage($id,$pkgname,$ptctype){
+		public function UpdatePackage($id,$pkgname,$trgtype,$ptctype){
 			$sql = "
-			update pl.pl_master_package set 
-				package_name='$pkgname',
-				participant_type='$ptctype'
+			UPDATE pl.pl_master_package set 
+				package_name='".$pkgname."',
+				training_type='".$trgtype."',
+				participant_type='".$ptctype."'
 			where package_id=$id
 			";
 			$query = $this->db->query($sql);

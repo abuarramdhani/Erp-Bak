@@ -47,27 +47,29 @@
 						<?php }?>
 						
 						<?php 
-							$no = 0;foreach($segment as $sg){ 
-								$no++; $placeholder='Pernyataan';
+								$no=1;foreach($segment as $sg){ $placeholder='Pernyataan';
 								if($sg['segment_type']==0){$placeholder='Pertanyaan Essay';}
 						?>
 						<div class="row" style="margin: 10px 10px">
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddStatement(<?php echo $no; ?>)"><i class="fa fa-plus"></i></a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Hapus Baris" onclick="delStatRow(<?php echo $no; ?>)"><i class="fa fa-remove"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddStatementC('<?php echo $sg['segment_id']; ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Hapus Baris" onclick="delStatRow('<?php echo $sg['segment_id']; ?>')"><i class="fa fa-remove"></i></a>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
 											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" id="tblStatement<?php echo $no; ?>">
 												<thead>
 													<tr class="bg-primary">
-														<th width="100%"><?php echo 'Bagian '.$no.' - '.$sg['segment_description']?></th>
+														<th width="10%">No</th>
+														<th width="90%"><?php echo 'Bagian '.' - '.$sg['segment_description']?></th>
+														<!-- <th width="90%"><?php echo 'Bagian '.$no.' - '.$sg['segment_description']?></th> -->
 													</tr>
 												</thead>
-												<tbody id="tbodyStatement<?php echo $no; ?>">
-													<tr class="clone<?php echo $no; ?>">
+												<tbody id="tbodyStatementC<?php echo $sg['segment_id']; ?>">
+													<tr class="clone" >
+														<td ><?php echo $no; ?></td>
 														<td>
 															<input id="idstatement<?php echo $no; ?>" name="txtSegmentId[]" value="<?php echo $sg['segment_id']?>" hidden>
 															<input id="statement<?php echo $no; ?>" name="txtStatement[]" class="form-control statement" placeholder="<?php echo $placeholder?>">

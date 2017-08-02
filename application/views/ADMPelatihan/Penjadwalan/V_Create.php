@@ -40,7 +40,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Nama Pelatihan</label>
 									<div class="col-lg-9">
-										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>">
+										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>" readonly>
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
 									</div>
 								</div>

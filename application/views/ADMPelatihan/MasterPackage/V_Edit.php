@@ -46,7 +46,13 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Jenis Paket Pelatihan</label>
 								<div class="col-lg-2">
-									<input class="form-control" value="ORIENTASI" readonly>
+									<select class="form-control select2" name="slcJenisPaket">
+										<?php foreach ($trgtype as $ty) { ?>
+											<option value="<?php echo $ty['training_type_id']?>" selected>
+												<?php echo $ty['training_type_description']?>
+											</option>
+										<?php } ?>
+									</select>
 								</div>
 								<label class="col-lg-1 control-label">Peserta</label>
 								<div class="col-lg-3">
@@ -56,8 +62,10 @@
 										if($gp['participant_type']== 1){$pt2='checked';}
 
 									?>
-									<input type="radio" name="txtPeserta" value="0" <?php echo $pt1?> > Staff<br>
-									<input type="radio" name="txtPeserta" value="1" <?php echo $pt2?> > Non-Staff<br>
+									<select class="form-control select2" name="slcPeserta">
+										<option value="0" <?php echo $pt1?> selected> Staff<br></option>
+										<option value="1" <?php echo $pt2?> selected> Non-Staff<br></option>
+									</select>
 								</div>
 							</div>
 						</div>
