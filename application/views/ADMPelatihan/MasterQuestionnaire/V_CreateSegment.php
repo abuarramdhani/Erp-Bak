@@ -50,7 +50,7 @@
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegment('<?php echo base_url(''); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegmentCreate('<?php echo base_url(''); ?>')"><i class="fa fa-plus"></i></a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelSegment" title="Hapus Baris" onclick="deleteRow('tblQuestionnaireSegment')"><i class="fa fa-remove"></i></a>
 										<b style="float:left;">Bagian Pilihan</b>
 									</div>
@@ -59,15 +59,23 @@
 											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblQuestionnaireSegment" id="tblQuestionnaireSegment">
 												<thead>
 													<tr class="bg-primary">
-														<th width="100%">Nama Bagian</th>
+														<th width="10%">No</th>
+														<th width="90%">Nama Bagian</th>
 													</tr>
 												</thead>
-												<tbody id="tbodyQuestionnaireSegment">
-													<tr class="clone">
+												<tbody id="tbodyQuestionnaireSegmentC">
+														<?php 
+															$no=1;
+															foreach($segment as $sg){
+															$Sg_id=$sg['segment_id'];
+														?>
+													<tr class="clone" row-id="<?php echo $no; ?>">
+														<td><?php echo $no; ?></td>
 														<td>
 															<input id="segment" name="txtSegment[]" class="form-control segment" placeholder="Nama Bagian">
 														</td>
 													</tr>
+													<?php } ?>
 												</tbody>
 											</table>
 										</div>
@@ -80,7 +88,7 @@
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddSegmentEssay()"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddSegmentEssayC()"><i class="fa fa-plus"></i></a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Hapus Baris" onclick="deleteRow('tblQuestionnaireSegmentEssay')"><i class="fa fa-remove"></i></a>
 										<b style="float:left;">Bagian Essay</b>
 									</div>
@@ -89,15 +97,23 @@
 											<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblQuestionnaireSegmentEssay" id="tblQuestionnaireSegmentEssay">
 												<thead>
 													<tr class="bg-primary">
-														<th width="100%">Nama Bagian</th>
+														<th width="10%">No</th>
+														<th width="90%">Nama Bagian</th>
 													</tr>
 												</thead>
 												<tbody id="tbodyQuestionnaireSegmentEssay">
-													<tr class="cclone">
+														<?php 
+															$no=1;
+															foreach($segment as $sg){
+															$Sg_id=$sg['segment_id'];
+														?>
+													<tr class="clone" row-id="<?php echo $no; ?>">
+														<td><?php echo $no; ?></td>
 														<td>
 															<input id="segmentessay" name="txtSegmentEssay[]" class="form-control segmentessay" placeholder="Nama Bagian">
 														</td>
 													</tr>
+												<?php } ?>
 												</tbody>
 											</table>
 										</div>

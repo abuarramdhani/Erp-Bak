@@ -375,7 +375,7 @@ $(document).ready(function(){
 									+"<td >"+ counter +" </td>"
 									+"<td>"
 										+"<input id='segment' name='txtSegment[]' class='form-control segment'> "
-										+'<input type="hidden" name="idSegment[]" value="0">'
+										+"<input type='hidden' name='idSegment[]'' value='0'>"
 									+"</td>"
 									+"<td>"
 										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
@@ -385,27 +385,64 @@ $(document).ready(function(){
 			jQuery("#tbodyQuestionnaireSegment").append(newRow);
 			
 	}
+	function AddSegmentCreate(base){
+			var e = jQuery.Event( "click" );
+			var n = $('#tbodyQuestionnaireSegmentC tr').length;
+			counter = n+1;
+
+	        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+										+"<td >"+ counter +" </td>"
+										+"<td>"
+											+"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
+											+"<input type='hidden' name='idSegment[]'' value='0'>"
+										+"</td>"
+										+"</tr>");
+				jQuery("#tbodyQuestionnaireSegmentC").append(newRow);
+				
+		}
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
-	function AddSegmentEssay(base){
-		var newgroup = $('<tr>').addClass('cclone');
-		var e = jQuery.Event( "click" );
-		e.preventDefault();
+	// function AddSegmentEssay(base){
+	// 	var newgroup = $('<tr>').addClass('cclone');
+	// 	var e = jQuery.Event( "click" );
+	// 	e.preventDefault();
 		
-		$('.cclone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegmentEssay');
+	// 	$('.cclone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegmentEssay');
 
-		$("input#segmentessay:last").val("").change();
+	// 	$("input#segmentessay:last").val("").change();
+	// }
+	function  AddSegmentEssayC(base){
+			var e = jQuery.Event( "click" );
+			var n = $('#tbodyQuestionnaireSegmentEssay tr').length;
+			counter = n+1;
+
+			var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+									+"<td >"+ counter +" </td>"
+									+"<td>"
+										+"<input id='segmentessay' name='txtSegmentEssay[]' class='form-control segmentessay' placeholder='Nama Bagian'>"
+									+"</td>"
+									+"</tr>");
+			jQuery("#tbodyQuestionnaireSegmentEssay").append(newRow);
 	}
+
 
 	//MENGHAPUS ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
+	// function delStatRow(id){
+	// 	var rowCount = $("#tbodyStatement"+id+" tr").size();
+	// 	if(rowCount > 1){
+	// 		$("#tbodyStatement"+id+" tr:last").remove();
+	// 	}else{
+	// 		alert('Minimal harus ada satu baris tersisa');
+	// 	}
+	// }
 	function delStatRow(id){
-		var rowCount = $("#tbodyStatement"+id+" tr").size();
-		if(rowCount > 1){
-			$("#tbodyStatement"+id+" tr:last").remove();
-		}else{
-			alert('Minimal harus ada satu baris tersisa');
+			var rowCount = $("#tbodyStatementC"+id+" tr").size();
+			if(rowCount > 1){
+				$("#tbodyStatementC"+id+" tr:last").remove();
+			}else{
+				alert('Minimal harus ada satu baris tersisa');
+			}
 		}
-	}
 
 	//MENAMBAH ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
 	function AddStatement(id){
@@ -422,7 +459,7 @@ $(document).ready(function(){
 									+"<td >"+ counter +" </td>"
 									+"<td>"
 										+"<input id='statement' name='txtStatement[]' class='form-control statement'> "
-										+'<input type="hidden" name="idStatement[]" value="0">'
+										+"<input type='hidden' name='idStatement[]' value='0'>"
 									+"</td>"
 									+"<td>"
 										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelStatement' title='Hapus Baris' onclick='delSpesifikRowSt("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
@@ -430,6 +467,21 @@ $(document).ready(function(){
 									+"</tr>");
 			jQuery("#tbodyStatement").append(newRow);
 	}
+
+	function AddStatementC(id){
+			// var e = jQuery.Event( "click" );
+			var n = $('#tbodyStatementC'+id+' tr').length;
+			// alert(n);
+			counter = n+1;
+	        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+										+"<td >"+ counter +" </td>"
+										+"<td>"
+											+"<input id='statement' name='txtStatement[]' class='form-control statement'> "
+											+"<input type='hidden' name='idStatement[]' value='0'>"
+										+"</td>"
+										+"</tr>");
+				jQuery("#tbodyStatementC"+id).append(newRow);
+		}
 
 	//MENAMBAH ROW UNTUK OBJECTIVE (MASTER TRAINING)
 	function AddObjective(base){
@@ -680,7 +732,6 @@ $(document).ready(function(){
 	});
 
 function delSpesifikRow(rowid,segmentid) {
-	alert(segmentid);
 	if (segmentid == '0') {
 		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 	}else{
@@ -689,7 +740,6 @@ function delSpesifikRow(rowid,segmentid) {
 			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
 			success:function(result)
 			{
-				alert(result);
 				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 				// $('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
 			}
@@ -708,7 +758,6 @@ function delSpesifikRowSt(rowid,statementid) {
 			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSt/"+statementid,
 			success:function(result)
 			{
-				alert(result);
 				$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
 			}
 		});
