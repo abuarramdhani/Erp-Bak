@@ -46,25 +46,34 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Jenis Paket Pelatihan</label>
 								<div class="col-lg-2">
-									<select class="form-control select2" name="slcJenisPaket">
-										<?php foreach ($trgtype as $ty) { ?>
-											<option value="<?php echo $ty['training_type_id']?>" selected>
-												<?php echo $ty['training_type_description']?>
+									<select class="form-control select2" name="slcJenisPaket" value="<?php echo $gp['training_type_description']?>">
+										<?php foreach ($trgtype as $ty) { 
+											if ($gp['training_type'] == $ty['training_type_id']) {
+												$jenis='selected';
+											}else{
+												$jenis='';
+											}
+										?>
+											<option value="<?php echo $ty['training_type_id']?>" <?php echo $jenis; ?> >
+												<?php echo $ty['training_type_description']; ?>
 											</option>
 										<?php } ?>
 									</select>
 								</div>
 								<label class="col-lg-1 control-label">Peserta</label>
 								<div class="col-lg-3">
-									<?php
-										$pt1='';$pt2='';$pt3='';
-										if($gp['participant_type']== 0){$pt1='checked';}
-										if($gp['participant_type']== 1){$pt2='checked';}
-
-									?>
 									<select class="form-control select2" name="slcPeserta">
-										<option value="0" <?php echo $pt1?> selected> Staff<br></option>
-										<option value="1" <?php echo $pt2?> selected> Non-Staff<br></option>
+									<?php foreach($ptctype as $py){
+										if ($gp['participant_type'] == $py['participant_type_id']) {
+												$Peserta='selected';
+											}else{
+												$Peserta='';
+											}
+										?>
+											<option value="<?php echo $py['participant_type_id']?>"<?php echo $Peserta; ?> >
+												<?php echo $py['participant_type_description']?>
+											</option>
+									<?php }?>
 									</select>
 								</div>
 							</div>
