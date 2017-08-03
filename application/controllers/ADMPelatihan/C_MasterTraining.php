@@ -106,31 +106,32 @@ class C_MasterTraining extends CI_Controller {
 	public function add(){
 		$tname 		= $this->input->post('txtNamaPelatihan');
 		$limit 		= $this->input->post('txtBatas');
-		$status		= $this->input->post('slcStatus');
+		// $status		= $this->input->post('slcStatus');
+		$kapasitas	= $this->input->post('kapasitas');
 		$questionnaire		= $this->input->post('slcQuestionnaire[]');
 		$questionnaires 	= implode(',', $questionnaire);
 
-		$this->M_mastertraining->AddMaster($tname,$limit,$questionnaires);
+		$this->M_mastertraining->AddMaster($tname,$limit,$questionnaires,$kapasitas);
 		
-		if($status==1){
-			$maxid		= $this->M_mastertraining->GetMaxIdTraining();
-			$pkgid		= $maxid[0]->training_id;
-			$objective	= $this->input->post('slcObjective');
-				$i=0;
-				foreach($objective as $loop){
-					$data_objective[$i] = array(
-						'training_id' 	=> $pkgid,
-						'purpose' 		=> $objective[$i],
-						// 'objective' 	=> $objective[$i],
-					);
-					if( !empty($objective[$i]) ){
-						$this->M_mastertraining->AddObjective($data_objective[$i]);
-					}
-					$i++;
-				}
-		}
+		// if($status==1){
+		// 	$maxid		= $this->M_mastertraining->GetMaxIdTraining();
+		// 	$pkgid		= $maxid[0]->training_id;
+		// 	$objective	= $this->input->post('slcObjective');
+		// 		$i=0;
+		// 		foreach($objective as $loop){
+		// 			$data_objective[$i] = array(
+		// 				'training_id' 	=> $pkgid,
+		// 				'purpose' 		=> $objective[$i],
+		// 				// 'objective' 	=> $objective[$i],
+		// 			);
+		// 			if( !empty($objective[$i]) ){
+		// 				$this->M_mastertraining->AddObjective($data_objective[$i]);
+		// 			}
+		// 			$i++;
+		// 		}
+		// }
 
-		else {
+		// else {
 			$maxid		= $this->M_mastertraining->GetMaxIdTraining();
 			$pkgid		= $maxid[0]->training_id;
 			$objective	= $this->input->post('slcObjective');
@@ -141,12 +142,13 @@ class C_MasterTraining extends CI_Controller {
 						'purpose'	 	=> $objective[$i],
 					);
 				$pp = $this->M_mastertraining->pp($objective[$i]);
-					if( $pp[0]['count']==NULL or $pp[0]['count']==0 ){
-					$this->M_mastertraining->AddObjective($data_objective[$i]);
+					// if( $pp[0]['count']==NULL or $pp[0]['count']==0 ){
+					if( !empty($objective[$i] )){
+						$this->M_mastertraining->AddObjective($data_objective[$i]);
 					}
 					$i++;
 			}
-		}
+		// }
 
 		redirect('ADMPelatihan/MasterTraining');
 	}
@@ -187,6 +189,7 @@ class C_MasterTraining extends CI_Controller {
 		$tname 		= $this->input->post('txtNamaPelatihan');
 		$limit		= $this->input->post('txtBatas');
 		$status		= $this->input->post('slcStatus');
+		$kapasitas	= $this->input->post('kapasitas');
 		$questionnaire		= $this->input->post('slcQuestionnaire');
 		$questionnaires 	= implode(',', $questionnaire);
 		
@@ -209,7 +212,7 @@ class C_MasterTraining extends CI_Controller {
 		}
 
 
-		$this->M_mastertraining->UpdateTraining($id,$tname,$limit,$status,$questionnaires);
+		$this->M_mastertraining->UpdateTraining($id,$tname,$limit,$status,$questionnaires,$kapasitas);
 		redirect('ADMPelatihan/MasterTraining');
 	}
 	

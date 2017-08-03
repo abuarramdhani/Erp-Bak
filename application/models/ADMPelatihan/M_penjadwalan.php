@@ -64,11 +64,11 @@ class M_penjadwalan extends CI_Model {
 		public function GetObjective($term){
 			if ($term === FALSE) {
 				$sql = "
-					SELECT * FROM pl.pl_master_training_purpose ORDER BY purpose ASC
+					SELECT purpose FROM pl.pl_master_training_purpose GROUP BY purpose ORDER BY purpose ASC
 				";
 			}else{
 				$sql = "
-					SELECT * FROM pl.pl_master_training_purpose WHERE (purpose LIKE '%$term%') ORDER BY purpose ASC 
+					SELECT purpose FROM pl.pl_master_training_purpose WHERE (purpose LIKE '%$term%') GROUP BY purpose ORDER BY purpose ASC 
 				";
 			}
 			$query = $this->db->query($sql);

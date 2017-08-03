@@ -34,7 +34,8 @@
 								<thead class="bg-primary">
 									<tr>
 										<th width="5%" align="center">NO</th>
-										<th width="85%">Pelatihan</th>
+										<th width="55%">Pelatihan</th>
+										<th width="25%">Informasi Peserta</th>
 										<th width="10%" align="center">Action</th>
 									</tr>
 								</thead>
@@ -43,6 +44,7 @@
 									<tr>
 										<td align="center"><?php echo $no ?></td>
 										<td><?php echo $mt['training_name']?></td>
+										<td></td>
 										<td width="10%" align="center">
 											<a data-toogle="tooltip" title="add new" href="<?php echo site_url('ADMPelatihan/Penjadwalan/Create/'.$mt['training_id']);?>" class="btn btn-flat btn-sm btn-success"><i class="fa fa-plus"></i></a>
 										</td>

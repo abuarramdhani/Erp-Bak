@@ -84,6 +84,14 @@
 								</div>
 							</div>
 						</div>
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label"> Kapasitas Kelas </label>
+								<div class="col-lg-8">
+									<input class="form-control" name="kapasitas"  type="number"  placeholder="Kapasitas Peserta" value="<?php echo $tm['kapasitas_kelas'] ?>" required>
+								</div>
+							</div>
+						</div>
 						<hr>
 						<?php {?>
 							<div class="row" style="margin: 10px 10px">
