@@ -10,8 +10,20 @@ class M_penjadwalan extends CI_Model {
 		public function GetTraining(){
 			$sql = "select * from pl.pl_master_training where status=0";
 			$sql2 = "select * from pl.pl_master_training_purpose";
+			$sql3 = "SELECT
+						SUM(tr.kapasitas_kelas) jumlah, 
+						pc.package_id,
+						pc.package_name
+					FROM
+						pl.pl_master_training tr,
+						pl.pl_master_package pc,
+						pl.pl_master_package_training pt
+					WHERE tr.training_id = pt.training_id 
+						and pt.package_id = pc.package_id
+					group by pc.package_id, pc.package_name;";
 			$query = $this->db->query($sql);
 			$query2 = $this->db->query($sql2);
+			$query3 = $this->db->query($sql3);
 			return $query->result_array();
 		}
 

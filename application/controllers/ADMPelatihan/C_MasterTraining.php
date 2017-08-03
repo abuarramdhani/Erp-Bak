@@ -111,7 +111,7 @@ class C_MasterTraining extends CI_Controller {
 		$questionnaire		= $this->input->post('slcQuestionnaire[]');
 		$questionnaires 	= implode(',', $questionnaire);
 
-		$this->M_mastertraining->AddMaster($tname,$limit,$questionnaires,$kapasitas);
+		$insertId = $this->M_mastertraining->AddMaster($tname,$limit,$questionnaires,$kapasitas);
 		
 		// if($status==1){
 		// 	$maxid		= $this->M_mastertraining->GetMaxIdTraining();

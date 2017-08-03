@@ -73,7 +73,9 @@ class M_mastertraining extends CI_Model {
 				(training_name,\"limit\",status,questionnaire,kapasitas_kelas) values
 				('$tname',$limit,0,'$questionnaires','$kapasitas')";
 			$query = $this->db->query($sql);
-			return;
+
+			$insert_id = $this->db->insert_id();
+			return  $insert_id;
 		}
 		
 
