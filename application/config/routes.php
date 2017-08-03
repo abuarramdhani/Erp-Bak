@@ -1043,5 +1043,5 @@ $route['StorageLocation/AddressMonitoring/(:any)'] 			= 'StorageLocation/MainMen
 $route['StorageLocation/AddressMonitoring/(:any)/(:any)'] 	= 'StorageLocation/MainMenu/C_Monitoring/$1/$2';
 $route['StorageLocation/Ajax/(:any)'] 						= 'StorageLocation/Additional/C_Ajax/$1';
 $route['StorageLocation/Ajax/(:any)/(:any)'] 				= 'StorageLocation/Additional/C_Ajax/$1/$2';
-// $route['StorageLocation/Search/(:any)'] 					= 'StorageLocation/Additional/C_Search/$1';
-// $route['StorageLocation/Search/(:any)/(:any)'] 				= 'StorageLocation/Additional/C_Search/$1/$2';
+$route['StorageLocation/Report'] 							= 'StorageLocation/Report/C_Report/index';
+$route['StorageLocation/Report/(:any)'] 							= 'StorageLocation/Report/C_Report/$1';
