@@ -40,6 +40,7 @@
 									<tr>
 										<th width="5%">NO</th>
 										<th width="55%">Nama Pelatihan</th>
+										<th width="10%">Kapasitas Kelas</th>
 										<th width="10%">Standar Nilai</th>
 										<!-- <th width="10%" style="text-align:center;">Status</th> -->
 										<th width="20%">Action</th>
@@ -50,6 +51,7 @@
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $tr['training_name'] ?></td>
+										<td><?php echo $tr['kapasitas_kelas']?></td>
 										<td><?php echo $tr['limit'] ?></td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/MasterTraining/Edit/'.$tr['training_id'])?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
