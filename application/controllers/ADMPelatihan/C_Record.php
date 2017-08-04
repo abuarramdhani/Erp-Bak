@@ -140,7 +140,7 @@ class C_Record extends CI_Controller {
 		
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['record'] = $this->M_record->GetRecordId($id);
-		$data['purpose'] = $this->M_record->GetObjectiveId($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 
@@ -190,7 +190,7 @@ class C_Record extends CI_Controller {
 
 
 		$data['record'] = $this->M_record->GetRecordId($id);
-		$data['purpose'] = $this->M_record->GetObjectiveId($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 
