@@ -34,11 +34,13 @@
 			<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
+						<?php if($this->session->userdata['user'] != 'B0269' && $this->session->userdata['user'] != 'P0255'): ?>
 						<a href="<?php echo site_url('FixedAsset/DataAssets/Create') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
 							<button type="button" class="btn btn-default btn-sm">
 							  <i class="fa fa-plus fa-2x"></i>
 							</button>
 						</a>
+						<?php endif; ?>
 						Assets Data List 
 					</div>
 					

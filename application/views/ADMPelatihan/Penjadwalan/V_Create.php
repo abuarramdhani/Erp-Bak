@@ -49,31 +49,13 @@
 							<div class="row" style="margin: 10px 10px">
 								<div class="col-lg-12">
 									<div class="panel panel-default">
-										<div class="panel-heading text-right">
-											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddObjective" title="Tambah Baris" onclick="AddObjective('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
-											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelObjective" title="Hapus Baris" onclick="deleteRow('tblObjective')"><i class="fa fa-remove"></i></a>
-											<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
+										<div class="panel-heading">
+											<b>Tujuan Pelatihan :</b>
 										</div>
 										<div class="panel-body">
-											<div class="table-responsive" >
-												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblObjective" id="tblObjective">
-												<form onkeyup="searchHistory(this)">
-													<thead>
-														<tr class="bg-primary">
-															<th width="100%">Tujuan Pelatihan</th>
-														</tr>
-													</thead>
-													<tbody id="tbodyObjective">
-														<tr class="obclone">
-															<td>
-																<select class="form-control js-slcObjective search_form" name="slcObjective[]" id="slcObjective" required>
-																</select>
-															</td>
-														</tr>
-													</tbody>
-													</form>
-												</table>
-											</div>
+											<?php foreach($purpose as $pr){ ?>
+											<i class="fa fa-angle-right"></i><?php echo ' '.$pr['purpose'] ?><br>
+											<?php } ?>
 										</div>
 									</div>
 								</div>

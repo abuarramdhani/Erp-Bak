@@ -31,6 +31,7 @@ class C_Penjadwalan extends CI_Controller {
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('ADMPelatihan/M_penjadwalan');
+		$this->load->model('ADMPelatihan/M_record');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -78,6 +79,7 @@ class C_Penjadwalan extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
+		$data['purpose'] = $this->M_record->GetPurpose($id);
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['trainer'] = $this->M_penjadwalan->GetTrainer();
 		$data['no'] = 1;

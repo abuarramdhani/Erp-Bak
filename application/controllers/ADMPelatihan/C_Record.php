@@ -186,6 +186,7 @@ class C_Record extends CI_Controller {
 				}
 			}
 		}
+
 		//---GET NOINDUK
 
 
@@ -193,6 +194,7 @@ class C_Record extends CI_Controller {
 		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['purpose'] = $this->M_record->GetPurpose($id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

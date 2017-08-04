@@ -28,6 +28,8 @@ class M_report extends CI_Model {
 				    ,aia.invoice_amount-aia.total_tax_amount dpp
 				    ,aia.total_tax_amount ppn
 				    ,aia.invoice_amount total
+				    ,aia.attribute5
+				    ,aia.attribute3
 				from
 				    ap_invoices_all aia
 				    ,ap_invoice_payments_all aipa
