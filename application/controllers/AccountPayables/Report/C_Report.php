@@ -114,7 +114,7 @@ class C_Report extends CI_Controller {
 			$objset->setCellValue("H".$baris, $frow['TOTAL']);
 			$faktur = $frow['ATTRIBUTE5'].$frow['ATTRIBUTE3'];
 			$numfaktur = preg_replace("/[^0-9]/", "", $faktur );
-			if ($numfaktur == NULL) {
+			if ($frow['ATTRIBUTE3'] == NULL) {
 				$numfaktur = '-';
 			};
 			$objset->setCellValue("I".$baris, $numfaktur);
