@@ -118,8 +118,8 @@
 											<b>Tujuan Pelatihan :</b>
 										</div>
 										<div class="panel-body">
-											<?php foreach($purpose as $pr){ ?>
-											<i class="fa fa-angle-right"></i><?php echo ' '.$pr['purpose'] ?><br>
+											<?php foreach($purpose as $pp){ ?>
+											<i class="fa fa-angle-right"></i><?php echo ' '.$pp['purpose'] ?><br>
 											<?php } ?>
 										</div>
 									</div>

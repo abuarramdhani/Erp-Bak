@@ -107,20 +107,15 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['record'] = $this->M_record->GetRecordId($id);
-		
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
+
 		//MENENTUKAN SOURCE OBJECTIVE BERDASARKAN STATUS PELATIHAN (PAKET/NON-PAKET)
 		$trainingdt		= $data['record'][0];
 		$trainingid 	= $trainingdt['training_id'];
 		$trainingst		= $this->M_record->GetTrainingType($trainingid);
 		$status 		= $trainingst[0]->status;
-
-		if($status==0){
-			$data['objective'] = $this->M_record->GetObjectiveId($id);
-		}elseif($status==1){
-			$data['objective'] = $this->M_record->GetMasterObjectiveId($trainingid);
-		}
-		//------------------------------------------------------------------------//
-
+		
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 
@@ -145,7 +140,7 @@ class C_Record extends CI_Controller {
 		
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['record'] = $this->M_record->GetRecordId($id);
-		$data['objective'] = $this->M_record->GetObjectiveId($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 
@@ -196,7 +191,7 @@ class C_Record extends CI_Controller {
 
 
 		$data['record'] = $this->M_record->GetRecordId($id);
-		$data['objective'] = $this->M_record->GetObjectiveId($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$data['purpose'] = $this->M_record->GetPurpose($id);

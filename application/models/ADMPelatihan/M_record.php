@@ -163,18 +163,11 @@ class M_record extends CI_Model {
 
 	//Ambil data Objective dari Record Tertentu
 	public function GetObjectiveId($id){
-		$sql = " select * from pl.pl_objective where scheduling_id='$id'";
+		// $sql = " select * from pl.pl_objective where scheduling_id='$id'";
+		$sql = " select * from pl.pl_master_training_purpose where training_id='$id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-
-	//Ambil data Objective dari Record Tertentu
-	public function GetMasterObjectiveId($id){
-		$sql = " select * from pl.pl_objective_master where training_id='$id'";
-		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
-
 
 	//Ambil tipe Training
 	public function GetTrainingType($id){

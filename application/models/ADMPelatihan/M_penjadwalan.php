@@ -27,6 +27,29 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
+		public function GetEvaluation()
+		{
+			$sql = "select evaluation from pl.pl_scheduling_training";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetEvaluationType()
+		{
+			$sql = "select * from pl.pl_evaluation_type";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetParticipantType()
+		{
+			$sql = "
+					SELECT * FROM pl.pl_participant_type ORDER BY participant_type_id ASC 
+				";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
 		//select Receipt All
 		public function GetTrainingId($id){
 			$sql = "select * from pl.pl_master_training	where training_id = $id";
@@ -144,7 +167,8 @@ class M_penjadwalan extends CI_Model {
 			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer)values
 			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi','$trainers')";
 			$query = $this->db->query($sql);
-			return;
+			$insert_id = $this->db->insert_id();
+			return  $insert_id;
 		}
 
 		//Create New Master
