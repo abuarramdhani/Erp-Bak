@@ -285,7 +285,35 @@ SELECT count(tgl) FROM
             (
                     (
                     SELECT
-                        *,
+                        pls.*,
+                        ptb.target_benda_id, 
+                        ptb.kodesie, 
+                        ptb.kode_barang, 
+                        ptb.nama_barang, 
+                        ptb.kode_proses, 
+                        ptb.nama_proses, 
+                        ptb.jumlah_operator, 
+                        ptb.target_utama, 
+                        ptb.target_sementara, 
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.dies,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_dies,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.stopper,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.pisau,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.lain_lain,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_sett,4))),0) as waktu_setting                 
+                        , 
+                        ptb.tgl_berlaku, 
+                        ptb.tgl_input, 
+                        ptb.learning_periode, 
+                        ptb.target_utama_senin_kamis, 
+                        ptb.target_sementara_senin_kamis, 
+                        ptb.target_utama_jumat_sabtu, 
+                        ptb.target_sementara_jumat_sabtu, 
+                        ptb.target_utama_senin_kamis_4, 
+                        ptb.target_utama_jumat_sabtu_4
+                        ,
+                        pmg.*,
+                        
                         pls.noind as nomor_induk,
                         pls.tgl as tanggal_lkh,
                         rtrim(pls.kode_barang) as kd_brg,
@@ -323,7 +351,35 @@ SELECT count(tgl) FROM
 
                     (
                     SELECT
-                        *,
+                        pls.*,
+                        ptb.target_benda_id, 
+                        ptb.kodesie, 
+                        ptb.kode_barang, 
+                        ptb.nama_barang, 
+                        ptb.kode_proses, 
+                        ptb.nama_proses, 
+                        ptb.jumlah_operator, 
+                        ptb.target_utama, 
+                        ptb.target_sementara, 
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.dies,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_dies,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.stopper,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.pisau,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.lain_lain,4))),0) +
+                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_sett,4))),0) as waktu_setting                 
+                        , 
+                        ptb.tgl_berlaku, 
+                        ptb.tgl_input, 
+                        ptb.learning_periode, 
+                        ptb.target_utama_senin_kamis, 
+                        ptb.target_sementara_senin_kamis, 
+                        ptb.target_utama_jumat_sabtu, 
+                        ptb.target_sementara_jumat_sabtu, 
+                        ptb.target_utama_senin_kamis_4, 
+                        ptb.target_utama_jumat_sabtu_4
+                        ,
+                        pmg.*,
+                        
                         pls.noind as nomor_induk,
                         pls.tgl as tanggal_lkh,
                         rtrim(pls.kode_barang) as kd_brg,

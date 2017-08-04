@@ -43,16 +43,13 @@
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
-
-	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
-
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/formValidation.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){

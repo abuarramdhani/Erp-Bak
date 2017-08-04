@@ -209,7 +209,13 @@ class C_DataLKHSeksi extends CI_Controller
 			11 => 'shift',
 			12 => 'status',
 			13 => 'kode_barang_target_sementara',
-			14 => 'kode_proses_target_sementara'
+			14 => 'kode_proses_target_sementara',
+			15 => 'dies',
+			16 => 'non_dies',
+			17 => 'stopper',
+			18 => 'pisau',
+			19 => 'lain_lain',
+			20 => 'non_sett'
 		);
 
 		$data_table = $this->M_datalkhseksi->getLKHSeksiDatatables();
@@ -241,10 +247,10 @@ class C_DataLKHSeksi extends CI_Controller
 		foreach ($data_array as $result) {
 			$count--;
 			if ($count != 0) {
-				$json .= '["'.$no.'", "'.$result['tgl'].'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kode_barang'].'", "'.$result['kode_proses'].'", "'.$result['jml_barang'].'", "'.$result['afmat'].'", "'.$result['afmch'].'", "'.$result['repair'].'", "'.$result['reject'].'", "'.$result['setting_time'].'", "'.$result['shift'].'", "'.$result['status'].'", "'.$result['kode_barang_target_sementara'].'", "'.$result['kode_proses_target_sementara'].'"],';
+				$json .= '["'.$no.'", "'.$result['tgl'].'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kode_barang'].'", "'.$result['kode_proses'].'", "'.$result['jml_barang'].'", "'.$result['afmat'].'", "'.$result['afmch'].'", "'.$result['repair'].'", "'.$result['reject'].'", "'.$result['setting_time'].'", "'.$result['shift'].'", "'.$result['status'].'", "'.$result['kode_barang_target_sementara'].'", "'.$result['kode_proses_target_sementara'].'", "'.$result['dies'].'", "'.$result['non_dies'].'", "'.$result['stopper'].'", "'.$result['pisau'].'", "'.$result['lain_lain'].'", "'.$result['non_sett'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'", "'.$result['tgl'].'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kode_barang'].'", "'.$result['kode_proses'].'", "'.$result['jml_barang'].'", "'.$result['afmat'].'", "'.$result['afmch'].'", "'.$result['repair'].'", "'.$result['reject'].'", "'.$result['setting_time'].'", "'.$result['shift'].'", "'.$result['status'].'", "'.$result['kode_barang_target_sementara'].'", "'.$result['kode_proses_target_sementara'].'"]';
+				$json .= '["'.$no.'", "'.$result['tgl'].'", "'.$result['noind'].'", "'.$result['employee_name'].'", "'.$result['kode_barang'].'", "'.$result['kode_proses'].'", "'.$result['jml_barang'].'", "'.$result['afmat'].'", "'.$result['afmch'].'", "'.$result['repair'].'", "'.$result['reject'].'", "'.$result['setting_time'].'", "'.$result['shift'].'", "'.$result['status'].'", "'.$result['kode_barang_target_sementara'].'", "'.$result['kode_proses_target_sementara'].'", "'.$result['dies'].'", "'.$result['non_dies'].'", "'.$result['stopper'].'", "'.$result['pisau'].'", "'.$result['lain_lain'].'", "'.$result['non_sett'].'"]';
 			}
 			$no++;
 		}
