@@ -1406,7 +1406,7 @@ class C_HitungGaji extends CI_Controller
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', 'Letter', 0, '', /*margin left*/ 4, /*margin right*/ 4, /*margin top*/ 10,/*margin bottom*/  10,/*margin header*/ 5,/*margin footer*/ 5,'P');
+		$pdf = new mPDF('utf-8', array(215,330), 0, '', /*margin left*/ 4, /*margin right*/ 4, /*margin top*/ 10,/*margin bottom*/  10,/*margin header*/ 5,/*margin footer*/ 5,'P');
 
 
 		$pdf->SetTitle('CrossCheck '.$noind.' - '.$data['namapkj'].' - '.$bln_gaji.' - '.$thn_gaji.' - '.time().'.pdf');
@@ -1415,7 +1415,7 @@ class C_HitungGaji extends CI_Controller
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		//$pdf->setFooter('{PAGENO}');
 		
-		$pdf->setFooter("dicetak : {DATE j-m-Y}  ---  Hal : {PAGENO} ");
+		$pdf->setFooter("dicetak : {DATE j-m-Y} -".$noind." ".$data['namapkj']."- Hal : {PAGENO} ");
 		$pdf->use_kwt = true;
 		$pdf->shrink_tables_to_fit=1;
 		$pdf->WriteHTML($stylesheet,1);
