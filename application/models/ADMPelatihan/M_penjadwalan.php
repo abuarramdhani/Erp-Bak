@@ -29,24 +29,24 @@ class M_penjadwalan extends CI_Model {
 
 		public function GetAlert($date,$start_time,$end_time,$room,$training_id)
 		{
-			// $sql="	SELECT date,start_time,end_time,room,trainer
-			// 		from pl.pl_scheduling_training
-			// 		WHERE date = to_date('$date','DD-MM-YYYY')
-			// 			-- AND start_time BETWEEN to_timestamp('09:00', 'h24:mi')
-			// 				--AND to_timestamp('13:15', 'h24:mi')
-			// 			--AND end_time BETWEEN '09:00:00' AND'13:15:00'
-			// 			AND room = '$room'
-			// 		order by room";
-			$sql="	SELECT pst.date,pst.start_time,pst.end_time,pst.room,pmt.training_name,pst.trainer
+			// $sql="	SELECT pst.date,pst.start_time,pst.end_time,pst.room,pmt.training_name,pst.trainer
+			// 		from pl.pl_scheduling_training pst, pl.pl_master_training pmt
+			// 		WHERE date = to_date('$date','DD-MM-YYYY') 
+			// 		AND
+			// 		pst.training_id = pmt.training_id
+			// 		AND room = '$room'
+			// 		order by room;";
+
+			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
 					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
-					-- pl.pl_master_trainer mtr 
-					WHERE date = to_date('$date','DD-MM-YYYY') 
-					AND
-					pst.training_id = pmt.training_id
-					-- AND
-					-- pst.trainer = mtr.trainer_id 
-					AND room = '$room'
-					order by room;";
+					where pst.training_id = pmt.training_id 
+						AND pst.date = to_date('$date','DD-MM-YYYY')
+						and (pst.start_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
+							AND to_timestamp('$end_time', 'HH24:MI')::time without time zone
+						OR end_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
+							and to_timestamp('$end_time', 'HH24:MI')::time without time zone)
+						AND pst.room = '$room'
+					order by pst.room";
 			$query=$this->db->query($sql);
 			return $query->result_array();
 		}
@@ -97,14 +97,6 @@ class M_penjadwalan extends CI_Model {
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
-
-		// public function alerttrainer(){
-		// 	$sql = "SELECT trainer, trainer_name
-		// 			FROM pl.pl_scheduling_training st
-		// 			JOIN pl.pl_master_trainer mt on st.trainer = mt.trainer_id";
-		// 	$query = $this->db->query($sql);
-		// 	return $query->result_array();
-		// }
 
 		public function GetTrainerDirect($term){
 			if ($term === FALSE) {
