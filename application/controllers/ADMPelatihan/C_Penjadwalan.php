@@ -66,7 +66,7 @@ class C_Penjadwalan extends CI_Controller {
 	}
 	
 	//HALAMAN CREATE PENJADWALAN
-	public function create($id){
+	public function create($id, $alert = FALSE){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -85,6 +85,7 @@ class C_Penjadwalan extends CI_Controller {
 		$data['no'] = 1;
 		$data['ptctype'] = $this->M_penjadwalan->GetParticipantType();
 		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['alert'] = $alert;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -195,12 +196,18 @@ class C_Penjadwalan extends CI_Controller {
 		
 		$participant_type		= $this->input->post('slcPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
-		
 
 		$evaluasi		= $this->input->post('slcEvaluasi');
 		$evaluasi2 		= implode(',', $evaluasi);
 
 		
+		$GetAlert 		= $this->M_penjadwalan->GetAlert($date,$start_time,$end_time,$room,$training_id);
+		$GetTrainerAlert		= $this->M_penjadwalan->GetTrainer();
+		$count 			= count($GetAlert);
+		$alerttrainer	= explode(',', $GetAlert[0]['trainer']);
+		$trainerName 	= array();
+
+		if ($count == 0) {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 		$insertId 		= $this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$trainers);
@@ -248,6 +255,39 @@ class C_Penjadwalan extends CI_Controller {
 			}
 			
 		redirect('ADMPelatihan/Record');
+		}else{
+			$alert = '<div class="row">
+		 					<div class="col-md-10 col-md-offset-1 col-sm-12">
+		 						<div id="alertJadwal" class="modal fade bs-example-modal-lg modal-danger" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		 							 <div class="modal-dialog modal-lg" role="document">
+		 							 <div class="modal-content">
+		 							 <div class="modal-body">
+		 							Hari dan Ruangan sudah dijadwalkan untuk Training ';
+		 							$alert .= $GetAlert[0]['training_name'];
+		 							foreach ($alerttrainer as $at) {
+		 								foreach ($GetTrainerAlert as $gta) {
+		 									if ($at == $gta['trainer_id']) {
+		 										$trainerName[] = $gta['trainer_name'];
+		 									}
+		 								}
+		 							}
+		 							if (!empty($trainerName)) {
+		 								$cetakTrain = implode(', ', $trainerName);
+		 								$alert .= ' dengan trainer '.$cetakTrain;
+		 							}
+		 							$alert .= '!
+		 							 </div>
+		 							 </div>
+		 						   </div>
+			 					</div>
+			 				</div>
+            	        </div>
+            	        <script type="text/javascript">
+							$("#alertJadwal").modal("show");
+						</script>';
+			$this->create($training_id, $alert);
+		}
+		
 	}
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
