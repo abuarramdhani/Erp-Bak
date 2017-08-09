@@ -11,7 +11,7 @@
 		<tr>
 			<td width="100px">&emsp;Jl. Magelang 144</td>
 			<td rowspan="2" width="200px" style="font-size: 25px; text-align: center"><b>KAS BON</b></td>
-			<td rowspan="2" width="200px" style="border-left: 1px solid #000;">&nbsp;Tanggal : <?php echo date("d/m/Y") ?></td>
+			<td rowspan="2" width="200px" style="border-left: 1px solid #000;">&nbsp;Tanggal Cetak : <?php echo date("d/m/Y") ?></td>
 		</tr>
 		<tr>
 			<td width="100px">&emsp;Yogyakarta</td>
@@ -96,7 +96,7 @@
 		</tr>
 		<tr>
 			<td style="font-size: 20px;vertical-align: top" width="300px"><center>Yuning Widiastuti</center></td>
-			<td style="font-size: 20px;vertical-align: top" width="300px"><center>Amelia Ayu Luthfi</center></td>
+			<td style="font-size: 20px;vertical-align: top" width="300px"><center>____________________</center></td>
 			<td style="font-size: 20px;vertical-align: top" width="300px"><center><?php echo $drel['employee_name'] ?></center></td>
 		</tr>
 		<tr>
