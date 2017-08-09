@@ -84,8 +84,16 @@
 								</div>
 							</div>
 						</div>
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label"> Kapasitas Kelas </label>
+								<div class="col-lg-8">
+									<input class="form-control" name="kapasitas"  type="number"  placeholder="Kapasitas Peserta" value="<?php echo $tm['kapasitas_kelas'] ?>" required>
+								</div>
+							</div>
+						</div>
 						<hr>
-						<?php if($tm['status']==1){?>
+						<?php {?>
 							<div class="row" style="margin: 10px 10px">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
@@ -106,8 +114,8 @@
 													<?php foreach($objective as $ob){?>
 													<tr class="obclone">
 														<td>
-															<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective">
-																	<option selected><?php echo $ob['objective']?></option>
+															<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective" data-placeholder="Tujuan Pelatihan">
+																	<option selected><?php echo $ob['purpose']?></option>
 															</select>
 														</td>
 													</tr>
@@ -131,8 +139,8 @@
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-10 text-right">
-								<a href="<?php echo site_url('ADMPelatihan/MasterTraining');?>"  class="btn btn-primary btn btn-flat">Back</a>
-								&nbsp;&nbsp;
+								<a href="<?php echo site_url('ADMPelatihan/MasterTraining/index');?>" class="btn btn-primary btn btn-flat" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>
 						</div>

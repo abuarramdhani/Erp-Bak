@@ -566,8 +566,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
           type: "post",
           error: function(){
-            //$("#tblDataAbsensi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataAbsensi_processing").css("display","none");
           }
         }
       });
@@ -585,8 +583,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -604,8 +600,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Tambahan/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -623,8 +617,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Potongan/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -642,8 +634,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/MasterData/TargetBenda/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -661,8 +651,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/MasterData/MasterPekerja/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -680,8 +668,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/MasterData/DataGaji/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -702,8 +688,6 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/HitungGaji/showList",
           type: "post",
           error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });

@@ -22,6 +22,7 @@
 								<fieldset class="row2" style="background:#F8F8F8 ;">
 								 	<form action="<?php echo base_URL('AccountPayables/C_Invoice/saveTaxNumber')?>" method="post" enctype="multipart/form-data" id="pph">
 				                    	<div class="box-body">
+				                    	<input type="hidden" name="faktur_type" value="N">
 				                    	<table>	
 					                     		<tr>
 					                     			<td width="150px">
@@ -45,7 +46,7 @@
 					                     			<td width="150px">
 					                     				<label for="exampleInputPassword1">Nomor Faktur</label>
 					                     			</td>
-					                     			<td>					                					                     			
+					                     			<td>
 					                     			<input type="text" id="nomorFaktur" style="width:280px;" class="form-control " name="nomorFaktur" value="" readonly="readonly">
 					                     		
 					                     			</td>
@@ -168,153 +169,20 @@
 
 											<!-- hasil scan -->
 									</td>											
-									<td>
-											<fieldset class="row2" style="background:#F8F8F8 ;">
-								 	<form action="<?php echo base_URL('AccountPayables/C_Invoice/saveTaxNumber')?>" method="post" enctype="multipart/form-data" id="pph">
-								 	<input type="hidden" name="faktur_type" value="Y">
-								 	<input type="hidden" id="hppn" value="<?php echo $data[0]->PPN; ?>">
-								 	<input type="hidden" id="hppn1" value="">
-				                    	<div class="box-body">
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">Invoice ID</label>
-					                     			</td>
-					                     			<td>
-					                     				<input type="text" id="nomor_cari" style="width:280px;" class="form-control " name="invoice_id" value="<?php echo $data[0]->INVOICE_ID; ?>" readonly="readonly">
-					                     			</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">Supplier</label>
-					                     			</td>
-					                     			<td>
-					                     				<input type="text" id="namaPenjual1" style="width:280px;" class="form-control " name="supplier" value="<?php echo $data[0]->VENDOR_NAME; ?>" readonly="readonly">
-					                     			</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">NPWP</label>
-					                     			</td>
-					                     			<td>
-					                     				<input type="text" id="npwp" style="width:280px;" class="form-control " name="npwp" value="<?php echo $data[0]->NPWP; ?>" readonly="readonly">
-					                     			</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">Invoice Date</label>
-					                     			</td>
-					                     			<td>
-														<input type="text" id="tanggal_cari" style="width:280px;" class="form-control " name="invoice_date" value="<?php echo $data[0]->TODATE; ?>" readonly="readonly">
-													</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">Product</label>
-					                     			</td>
-					                     			<td>
-					                     				<textarea name="product" value="" class="form-control" type="text" rows="8" cols="60" readonly="readonly"><?php foreach ($data as $row){
-					                     					echo $row->DESCRIPTION.'&#13;&#10;';
-					                     				}
-					                     				?>
-					                     				</textarea>
-					                     			</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">DPP</label>
-					                     			</td>
-					                     			<td>
-					                     				<input type="text" id="dpp1" style="width:280px;" class="form-control " name="dpp" value="<?php echo $data[0]->DPP; ?>" readonly="readonly">
-					                     			</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-					                     	<table>	
-					                     		<tr>
-					                     			<td width="150px">
-					                     				<label for="exampleInputPassword1">PPN</label>
-					                     			</td>
-					                     			<td>
-					                     				<input type="text" id="ppn1" style="width:280px;" class="form-control " name="ppn" value="<?php echo $data[0]->PPN; ?>" readonly="readonly">
-					                     			</td>
-					                     		</tr>
-					                     		<tr>
-					                     			<td>
-					                     				<br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-											<table>	
-					                     		<tr>
-					                     			<td>
-					                     				<br/><br/><br/><br/><br/>
-					                     			</td>
-					                     		</tr>
-					                     	</table>
-
-										</td>
 									</tr>
 								</table>					          
 										</div>
 							 	</fieldset>
 							 	<div class="box-footer">
-									<button type="button" class="btn btn-primary btn-sm" id="savewithinvoice"><b>Simpan Data</b></button>
+									<button type="button" class="btn btn-primary btn-sm" id="save"><b>Simpan Data</b></button>
 									<!-- <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
 				            	</div>
-							</div>
-							<div class="modal fade" id="comentModal" role="dialog">
+				            <div class="modal fade" id="comentModal" role="dialog">
   							  <div class="modal-dialog">
+  							  <!-- Modal content-->
   							    <div class="modal-content">
   							      <div class="modal-header">
-  							        <h4 class="modal-title">Invoice dan Faktur tidak cocok</h4>
+  							        <h4 class="modal-title">Faktur Tanpa Invoice</h4>
   							      </div>
   							      <div class="modal-body">
   							        <p>Lanjutkan input Faktur tanpa Invoice</p>
@@ -322,16 +190,14 @@
   							        	<input type="password" name="passwd" id="passwd" style="width: 45%"><br>
   							        <label for="txaCmt">COMMENT : </label><br>
   							        	<textarea name="txaCmt" id="txaCmt" style="width: 100%"></textarea>
-  							        <!-- <a href="<?php echo base_URL('AccountPayables/Invoice/faktursa')?>" class="btn btn-lg btn-info">Faktur Tanpa Invoice</a> -->
   							      </div>
   							      <div class="modal-footer">
   							        <button type="button" id="btnCls" class="btn btn-danger" data-dismiss="modal">Cancel</button>
   							        <button type="button" class="btn btn-info" id="btnConfirm">Proceed</button>
   							      </div>
   							    </div>
-  							  </form>							    
-  							  </div>
-  							</div>
+				            	</form>
+							</div>
 						</div>
 					</div>
 				</div>

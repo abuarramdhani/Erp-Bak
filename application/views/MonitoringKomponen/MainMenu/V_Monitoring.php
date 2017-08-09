@@ -164,7 +164,7 @@
 					<fieldset class="row3" style="display:none;">
 						<div class="box-body with-border">
 							<div class="col-md-12">
-								<table class="table table-bordered table-horvered table-striped" id="table_kirim_komponen" style="width:100%;">
+								<table class="table table-bordered table-horvered table-striped" id="table_terima_komponen" style="width:100%;font-size:12px;">
 										<thead>
 											<tr>
 												<th rowspan="2">No.</th>

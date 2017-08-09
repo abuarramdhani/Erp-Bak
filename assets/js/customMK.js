@@ -83,7 +83,7 @@ $(document).ready(function() {
 				processResults: function (data) {
 					return {
 						results: $.map(data, function(obj) {
-							return { id:obj.INVENTORY_LOCATION_ID, text:obj.SEGMENT1};
+							return { id:obj.INVENTORY_LOCATION_ID, text:obj.INVENTORY_LOCATION_ID+" ( "+obj.SEGMENT1+" )"};
 						})
 					};
 				}
@@ -201,6 +201,29 @@ $(document).ready(function() {
 			$('#loadingAjax').removeClass('overlay_loading');
 		}); 
 		
+		$('#table_view_seksi').DataTable({
+			  "paging": true,
+			  "lengthChange": false,
+			  "searching": true,
+			  "ordering": true,
+			  "info": true,
+			  "autoWidth": true,
+			   "columnDefs": [
+											{ width: "5%", className: "text-center", "targets": [ 0 ] },
+											{ width: "10%", className: "text-center", "targets": [ 1 ] },
+											{ width: "20%", className: "text-left", "targets": [ 2 ] },
+											{ width: "5%", className: "text-center", "targets": [ 3 ] },
+											{ width: "5%", className: "text-center", "targets": [ 4 ] },
+											{ width: "5%", className: "text-center", "targets": [ 5 ] },
+											{ width: "5%", className: "text-center", "targets": [ 6 ] },
+											{ width: "5%", className: "text-center", "targets": [ 7 ] },
+											{ width: "5%", className: "text-center", "targets": [ 8 ] },
+											{ width: "15%", className: "text-left", "targets": [ 9 ] },
+											{ width: "10%", className: "text-left", "targets": [ 10 ] },
+											{ width: "10%", className: "text-left", "targets": [ 11 ] }
+										]
+		});
+		
 		$('#destroy_datatable').click(function(){
 			var table = $('#table_kirim_komponen').DataTable();
 			table.destroy();
@@ -229,7 +252,7 @@ $(document).ready(function() {
 				var sort = $('#txsSort').val();
 				var report = $('#txsJenisLaporan').val();
 				
-				 $('#table_kirim_komponen').DataTable({
+				 $('#table_terima_komponen').DataTable({
 						  "paging": true,
 						  "lengthChange": false,
 						  "searching": true,

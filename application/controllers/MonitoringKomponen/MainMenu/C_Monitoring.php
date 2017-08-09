@@ -81,9 +81,9 @@ class C_Monitoring extends CI_Controller {
 	
 	public function tableView(){
 		
-		$tgl 		= $this->input->post('date',true);
-		 $sub_sour	= $this->input->post('subinv_from',true);
-		 $loc_sour	= $this->input->post('locator_from',true);
+		 $tgl 		= $this->input->post('date',true);
+		 $sub_sour	= 'INT-UPL';
+		 $loc_sour	= '29';
 		 $sub_des	= $this->input->post('subinv_to',true);
 		 $loc_des	= $this->input->post('locator_to',true);
 		 $cd_kom	= $this->input->post('kode',true);
@@ -122,40 +122,10 @@ class C_Monitoring extends CI_Controller {
 		 
 		 switch ($sort) {
 				case 1:
-					$order = "min((case when (select (select flv.DESCRIPTION from FND_LOOKUP_Values flv where flv.LOOKUP_TYPE = 'ITEM_TYPE' and flv.LOOKUP_CODE = msib_type.ITEM_TYPE) ITEM_TYPE 
-							  from mtl_system_items_b msib_type where msib_type.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID and msib_type.ORGANIZATION_ID = msib.ORGANIZATION_ID) like 'KHS%Buy%' then 'Suplier'
-							  when ((select msib2.SEGMENT1 from mtl_system_items_b msib2 where msib2.SEGMENT1 like (select 'JAC'||substr(msib3.SEGMENT1,1,(LENGTH(msib3.SEGMENT1))-2)||'%' from mtl_system_items_b msib3 where msib3.SEGMENT1 = msib.SEGMENT1 AND msib3.ORGANIZATION_ID = 102 AND ROWNUM = 1 ) and rownum = 1)) is not null then 'Subkon'
-							  else
-							  (NVL((select fm.ATTRIBUTE2 || fm.ATTRIBUTE3 from FM_MATL_DTL fm 
-							  where fm.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-							  and rownum =1),(NVL((select mil.SEGMENT1 from mtl_item_locations mil
-							  where mil.INVENTORY_LOCATION_ID = (select bor.COMPLETION_LOCATOR_ID 
-														   from bom_operational_routings bor 
-														   where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
-														   and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
-														   and rownum = 1)),(select bor.COMPLETION_SUBINVENTORY 
-							  from bom_operational_routings bor 
-							  where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
-							  and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
-							  and rownum = 1)))))end)), msib.SEGMENT1 asc";
+					$order = "mil.INVENTORY_LOCATION_ID, msib.SEGMENT1 asc";
 					break;
 				case 2:
-					$order = "min((case when (select (select flv.DESCRIPTION from FND_LOOKUP_Values flv where flv.LOOKUP_TYPE = 'ITEM_TYPE' and flv.LOOKUP_CODE = msib_type.ITEM_TYPE) ITEM_TYPE 
-							  from mtl_system_items_b msib_type where msib_type.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID and msib_type.ORGANIZATION_ID = msib.ORGANIZATION_ID) like 'KHS%Buy%' then 'Suplier'
-							  when ((select msib2.SEGMENT1 from mtl_system_items_b msib2 where msib2.SEGMENT1 like (select 'JAC'||substr(msib3.SEGMENT1,1,(LENGTH(msib3.SEGMENT1))-2)||'%' from mtl_system_items_b msib3 where msib3.SEGMENT1 = msib.SEGMENT1 AND msib3.ORGANIZATION_ID = 102 AND ROWNUM = 1 ) and rownum = 1)) is not null then 'Subkon'
-							  else
-							  (NVL((select fm.ATTRIBUTE2 || fm.ATTRIBUTE3 from FM_MATL_DTL fm 
-							  where fm.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-							  and rownum =1),(NVL((select mil.SEGMENT1 from mtl_item_locations mil
-							  where mil.INVENTORY_LOCATION_ID = (select bor.COMPLETION_LOCATOR_ID 
-														   from bom_operational_routings bor 
-														   where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
-														   and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
-														   and rownum = 1)),(select bor.COMPLETION_SUBINVENTORY 
-							  from bom_operational_routings bor 
-							  where bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
-							  and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
-							  and rownum = 1)))))end)),(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY), msib.SEGMENT1 asc";
+					$order = "mil.INVENTORY_LOCATION_ID,(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY), msib.SEGMENT1 asc";
 					break;
 				default:
 					$order = "bor.COMPLETION_SUBINVENTORY,msib.SEGMENT1";
@@ -164,17 +134,28 @@ class C_Monitoring extends CI_Controller {
 		
 		switch($lap){
 			case 1:
-				$lap = "and having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$qty = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
 				break;
 			case 2:
-				$lap = "and having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$qty = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				break;
+			case 3:
+				$lap = "";
+				$qty = "and msib.MAX_MINMAX_QUANTITY is not null";
+				break;
+			case 4:
+				$lap = "";
+				$qty = "and msib.MAX_MINMAX_QUANTITY is null";
 				break;
 			default:
 				$lap = "";
+				$qty = "";
 				break;
 		}
 		
-		$data = $this->M_monitoring_seksi->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap);
+		$data = $this->M_monitoring->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap,$qty);
 		$output = array();
 		$a=1;
 		$i=0;

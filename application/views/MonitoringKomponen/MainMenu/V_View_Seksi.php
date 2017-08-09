@@ -28,20 +28,20 @@
 						</div>
 						<div class="box-body">
 							<br>
-							<table class="table table-bordered table-horvered table-striped" id="table_view">
-								<thead>
+							<table class="table table-bordered table-horvered table-striped" id="table_view_seksi" style="width:100%;font-size:12px;">
+								<thead style="background:#2E6DA4; color:#FFFFFF;">
 									<tr>
-										<th rowspan="2">No.</th>
-										<th rowspan="2">Kode Komp.</th>
-										<th rowspan="2">Nama Komp.</th>
-										<th rowspan="2">On Hand</th>
-										<th rowspan="2">Qty Max</th>
-										<th rowspan="2">Boleh Kirim</th>
-										<th rowspan="2">Boleh/Tidak</th>
+										<th rowspan="2" style="text-align:center;">No.</th>
+										<th rowspan="2" style="text-align:center;">Kode Komp.</th>
+										<th rowspan="2" style="text-align:center;">Nama Komp.</th>
+										<th rowspan="2" style="text-align:center;">On Hand</th>
+										<th rowspan="2" style="text-align:center;">Qty Max</th>
+										<th rowspan="2" style="text-align:center;">Boleh Kirim</th>
+										<th rowspan="2" style="text-align:center;">Boleh/Tidak</th>
 										<th colspan="2" style="text-align:center;">Handling</th>
-										<th rowspan="2">Asal Komp.</th>
-										<th rowspan="2">Lokasi</th>
-										<th rowspan="2">Gudang</th>
+										<th rowspan="2" style="text-align:center;">Asal Komp.</th>
+										<th rowspan="2" style="text-align:center;">Lokasi</th>
+										<th rowspan="2" style="text-align:center;">Gudang</th>
 									</tr>
 									<tr>
 										<th>Qty</th>
@@ -50,12 +50,24 @@
 								</thead>
 								<tbody>
 									<?php
-										$no: 0; 
-										foreach($list_comp as $lc){
+										$no= 0; 
+										foreach($data as $lc){
 											$no++;
 										?>
-											<td><?php echo $no; ?></td>
-											<td><?php echo $lc['SEGMENT1']; ?></td>
+											<tr>
+												<td><?php echo $no; ?></td>
+												<td><?php echo $lc['SEGMENT1']; ?></td>
+												<td><?php echo $lc['DESCRIPTION']; ?></td>
+												<td><?php echo $lc['ONHAND']; ?></td>
+												<td><?php echo $lc['MAX_MINMAX_QUANTITY']; ?></td>
+												<td><?php echo $lc['BOLEH_KIRIM']; ?></td>
+												<td><?php echo $lc['STATUS']; ?></td>
+												<td><?php echo $lc['UNIT_VOLUME']; ?></td>
+												<td><?php echo $lc['ATTRIBUTE14']; ?></td>
+												<td><?php echo $lc['ASAL_ITEM']; ?></td>
+												<td><?php echo $lc['LOKASI']; ?></td>
+												<td><?php echo $lc['SUBINVENTORY_CODE']; ?></td>
+											</tr>
 										<?php
 										}
 									?>
@@ -63,10 +75,11 @@
 							</table>
 						</div>
 							<div class="box-footer">
-								<table align="left">
-									<td width="20%"><a href="javascript:window.history.go(-1);" class="btn btn-primary btn-ls col-md-10" style="background:#2E6DA4;"> BACK </a></td>
-									<td width="20%"><button class="btn btn-success btn-ls col-md-10" id="txtBtnSave" type="SUBMIT"> EXPORT </button></td>
-								</table>
+								<div class="col-md-12">
+									<div class="col-md-2">
+										<a href="javascript:window.history.go(-1);" class="btn btn-flat btn-primary btn-ls col-md-10" style="background:#2E6DA4;"> BACK </a>
+									</div>
+								</div>
 							</div>
 					</div>
 				</div>

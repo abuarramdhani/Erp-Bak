@@ -10,7 +10,7 @@
 				<div class="table-responsive">
 					<fieldset class="row2">
 						<div class="box-body with-border">
-							<form id="filter-rekap" method="post" action="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/show-data')?>">
+							<form id="filter-rekap" method="post" action="<?php echo base_url($action)?>">
 								<div class="form-group">
 									<div class="row" style="margin: 10px ">
 										<div class="col-md-2">
@@ -137,7 +137,7 @@
 												<select name="txsJenisLaporan" id="txsJenisLaporan" class="form-control select2-JenisLap">
 													<option value=""></option>
 													<option value="1">Komp. boleh kirim</option>
-													<option value="2">Komp. lebih max simpan</option>
+													<option value="2">Komp. tdk boleh kirim</option>
 												</select>
 												</div>
 											</div>
@@ -149,9 +149,10 @@
 										<div class="col-md-3">
 										</div>
 										<div class="col-md-1">
-											<span id="submit-filter-komponen" class="btn btn-primary pull-right" style="vertical-align: middle">
+											<!-- <span id="submit-filter-komponen" class="btn btn-primary pull-right" style="vertical-align: middle">
 												SEARCH
-											</span>
+											</span>  -->
+											<input type="submit" value="SEARCH" class="btn btn-primary pull-right btn-sm"></input>
 										</div>
 									</div>
 								</div>
@@ -161,7 +162,7 @@
 					<fieldset class="row3" style="display:none;">
 						<div class="box-body with-border">
 							<div class="col-md-12">
-								<table class="table table-bordered table-horvered table-striped" id="table_kirim_komponen" style="width:100%;">
+								<table class="table table-bordered table-horvered table-striped" id="table_kirim_komponen" style="width:100%;font-size:12px;">
 										<thead>
 											<tr>
 												<th rowspan="2">No.</th>
@@ -191,7 +192,7 @@
 								<div class="col-md-3">
 								</div>
 								<div class="col-md-1">
-									<span id="destroy_datatable" class="btn btn-primary pull-right" style="vertical-align: middle">
+									<span id="destroy_datatable" class="btn btn-primary pull-right btn-xs" style="vertical-align: middle">
 										BACK
 									</span>
 								</div>

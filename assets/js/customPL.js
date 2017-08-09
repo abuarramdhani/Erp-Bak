@@ -363,46 +363,125 @@ $(document).ready(function(){
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
 	function AddSegment(base){
-		var newgroup = $('<tr>').addClass('clone');
+		// var newgroup = $('<tr>').addClass('clone');
 		var e = jQuery.Event( "click" );
-		e.preventDefault();
+		// e.preventDefault();
 		
-		$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegment');
+		// $('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegment'
+		var n = $('#tbodyQuestionnaireSegment tr').length;
+		counter = n+1;
 
-		$("input#segment:last").val("").change();
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+									+"<td >"+ counter +" </td>"
+									+"<td>"
+										+"<input id='segment' name='txtSegment[]' class='form-control segment'> "
+										+"<input type='hidden' name='idSegment[]'' value='0'>"
+									+"</td>"
+									+"<td>"
+										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
+										+"<a href='"+baseurl+"ADMPelatihan/MasterQuestionnaire/Edit' data-toggle='modal'  class='btn btn-xs btn-warning' style='margin:2px'><i class='fa fa-search'></i></i> Statement</a>"
+									+"</td>"
+									+"</tr>");
+			jQuery("#tbodyQuestionnaireSegment").append(newRow);
+			
 	}
+	function AddSegmentCreate(base){
+			var e = jQuery.Event( "click" );
+			var n = $('#tbodyQuestionnaireSegmentC tr').length;
+			counter = n+1;
+
+	        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+										+"<td >"+ counter +" </td>"
+										+"<td>"
+											+"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
+											+"<input type='hidden' name='idSegment[]'' value='0'>"
+										+"</td>"
+										+"</tr>");
+				jQuery("#tbodyQuestionnaireSegmentC").append(newRow);
+				
+		}
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
-	function AddSegmentEssay(base){
-		var newgroup = $('<tr>').addClass('cclone');
-		var e = jQuery.Event( "click" );
-		e.preventDefault();
+	// function AddSegmentEssay(base){
+	// 	var newgroup = $('<tr>').addClass('cclone');
+	// 	var e = jQuery.Event( "click" );
+	// 	e.preventDefault();
 		
-		$('.cclone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegmentEssay');
+	// 	$('.cclone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegmentEssay');
 
-		$("input#segmentessay:last").val("").change();
+	// 	$("input#segmentessay:last").val("").change();
+	// }
+	function  AddSegmentEssayC(base){
+			var e = jQuery.Event( "click" );
+			var n = $('#tbodyQuestionnaireSegmentEssay tr').length;
+			counter = n+1;
+
+			var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+									+"<td >"+ counter +" </td>"
+									+"<td>"
+										+"<input id='segmentessay' name='txtSegmentEssay[]' class='form-control segmentessay' placeholder='Nama Bagian'>"
+									+"</td>"
+									+"</tr>");
+			jQuery("#tbodyQuestionnaireSegmentEssay").append(newRow);
 	}
+
 
 	//MENGHAPUS ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
+	// function delStatRow(id){
+	// 	var rowCount = $("#tbodyStatement"+id+" tr").size();
+	// 	if(rowCount > 1){
+	// 		$("#tbodyStatement"+id+" tr:last").remove();
+	// 	}else{
+	// 		alert('Minimal harus ada satu baris tersisa');
+	// 	}
+	// }
 	function delStatRow(id){
-		var rowCount = $("#tbodyStatement"+id+" tr").size();
-		if(rowCount > 1){
-			$("#tbodyStatement"+id+" tr:last").remove();
-		}else{
-			alert('Minimal harus ada satu baris tersisa');
+			var rowCount = $("#tbodyStatementC"+id+" tr").size();
+			if(rowCount > 1){
+				$("#tbodyStatementC"+id+" tr:last").remove();
+			}else{
+				alert('Minimal harus ada satu baris tersisa');
+			}
 		}
-	}
 
 	//MENAMBAH ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
 	function AddStatement(id){
-		var newgroup = $('<tr>').addClass('clone'+id);
-		var e = jQuery.Event( "click" );
-		e.preventDefault();
-		
-		$('.clone'+id).last().clone().appendTo(newgroup).appendTo('#tbodyStatement'+id);
+		// var newgroup = $('<tr>').addClass('clone'+id);
+		// e.preventDefault();
+		// $('.clone'+id).last().clone().appendTo(newgroup).appendTo('#tbodyStatement'+id);
+		// $("input#statement"+id+":last").val("").change();
 
-		$("input#statement"+id+":last").val("").change();
+
+		var e = jQuery.Event( "click" );
+		var n = $('#tbodyStatement tr').length;
+		counter = n+1;
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+									+"<td >"+ counter +" </td>"
+									+"<td>"
+										+"<input id='statement' name='txtStatement[]' class='form-control statement'> "
+										+"<input type='hidden' name='idStatement[]' value='0'>"
+									+"</td>"
+									+"<td>"
+										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelStatement' title='Hapus Baris' onclick='delSpesifikRowSt("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
+									+"</td>"
+									+"</tr>");
+			jQuery("#tbodyStatement").append(newRow);
 	}
+
+	function AddStatementC(id){
+			// var e = jQuery.Event( "click" );
+			var n = $('#tbodyStatementC'+id+' tr').length;
+			// alert(n);
+			counter = n+1;
+	        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+										+"<td >"+ counter +" </td>"
+										+"<td>"
+											+"<input id='statement' name='txtStatement[]' class='form-control statement'> "
+											+"<input type='hidden' name='idStatement[]' value='0'>"
+										+"</td>"
+										+"</tr>");
+				jQuery("#tbodyStatementC"+id).append(newRow);
+		}
 
 	//MENAMBAH ROW UNTUK OBJECTIVE (MASTER TRAINING)
 	function AddObjective(base){
@@ -544,15 +623,29 @@ $(document).ready(function(){
 		var maxrow = parseInt(row)+1;
 		var table = document.getElementById("tblParticipant");
 		var rowCount = table.rows.length;
+		var nomer = 0;
+		var nomer = rowCount;
 
 		if(rowCount < maxrow){
-			
-			var newgroup = $('<tr>').addClass('clone');
 			var e = jQuery.Event( "click" );
 			e.preventDefault();
-			$("select#slcEmployee:last").select2("destroy");
-
-			$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyParticipant');
+			var newRow = jQuery("<tr class='clone'>"
+									+"<td >"+ nomer +" </td>"
+									+"<td>"
+										+"<div class='input-group'>"
+											+"<div class='input-group-addon'>"
+												+"<i class='glyphicon glyphicon-user'></i>"
+											+"</div>"
+											+"<select class='form-control js-slcEmployee' name='slcEmployee[]' id='slcEmployee' required>"
+												+"<option value=''></option>"
+											+"</select>"
+										+"</div>"
+									+"</td>"
+									+"<td>"
+										+"<button type='button' class='btn btn-danger list-del'><i class='fa fa-remove'></i></button>"
+									+"</td>"
+								+"</tr>");
+			jQuery("#tblParticipant").append(newRow);
 
 			$("select#slcEmployee").select2({
 						placeholder: "No Induk",
@@ -577,7 +670,7 @@ $(document).ready(function(){
 								};
 							}
 						}	
-					});
+					}); 
 
 			$("select#slcEmployee:last").select2({
 						placeholder: "No Induk",
@@ -637,3 +730,37 @@ $(document).ready(function(){
         	} 
     	});
 	});
+
+function delSpesifikRow(rowid,segmentid) {
+	if (segmentid == '0') {
+		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
+	}else{
+		$.ajax({
+			type:'POST',
+			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
+			success:function(result)
+			{
+				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
+				// $('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
+			}
+		});
+	}
+	
+}
+
+function delSpesifikRowSt(rowid,statementid) {
+	if(statementid == '0'){
+			$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
+	}
+	else{
+		$.ajax({
+			type:'POST',
+			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSt/"+statementid,
+			success:function(result)
+			{
+				$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
+			}
+		});
+	}
+	
+}

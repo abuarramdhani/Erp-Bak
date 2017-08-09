@@ -32,7 +32,7 @@
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
-															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date("d-m-y"); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 														</div>
 					                     			</td>
@@ -43,7 +43,7 @@
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
-															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date('d-m-y'); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date("d-m-y"); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 													</div>
 					                     			</td>
@@ -77,7 +77,7 @@
 					                     				<label for="exampleInputPassword1">Invoice Number</label>
 					                     			</td>
 					                     			<td>
-					                     				<input type="text" id="slcInvoiceNumber" name="invoice_number" class="form-control" style="width:265px;" placeholder="INVOICE NUMBER"></input>
+					                     				<input type="text" id="slcInvoiceNumber" name="invoice_number" class="form-control" style="width:265px; text-transform: uppercase;" placeholder="INVOICE NUMBER"></input>
 					                     			</td>
 					                     		</tr>
 					                     		<tr>
@@ -92,7 +92,7 @@
 					                     				<label for="exampleInputPassword1">Invoice Status</label>
 					                     			</td>
 					                     			<td>
-					                     				<select id="" name="invoice_status" class="form-control" style="width:265px;">
+					                     				<select id="invStat" name="invoice_status" class="form-control" style="width:265px;">
 															<option value="1">All Invoice</option>
 															<option value="2">With Tax Invoice</option>
 															<option value="3">Without Tax Invoice</option>
@@ -119,9 +119,11 @@
 										</div>
 							 	</fieldset>
 							 	<div class="box-footer">
-									<button type="submit" class="btn btn-primary btn-sm" id="save"><b>Cari Data</b></button>
+									<button type="submit" class="btn btn-primary btn-sm" id="sbmt"><b>Cari Data</b></button>
 									<a id="ClearSearch" class="btn btn-danger btn-sm"><b>Clear</b></a>
 									<!-- a <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
+									<div style="float: right;">
+									<a href="<?php echo base_URL('AccountPayables/Invoice/faktursa') ?>" id="fti" class="btn btn-info btn-lg">Faktur tanpa Invoice</a>
 				            	</div>
 							</div>
 						</div>

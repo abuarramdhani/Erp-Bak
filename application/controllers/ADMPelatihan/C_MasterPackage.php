@@ -56,6 +56,7 @@ class C_MasterPackage extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['GetPackage'] = $this->M_masterpackage->GetPackage();
+		$data['TrainingType'] = $this->M_masterpackage->GetTrainingType();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -64,6 +65,7 @@ class C_MasterPackage extends CI_Controller {
 		
 	}
 	
+
 	//HALAMAN CREATE PAKET PELATIHAN
 	public function create(){
 		$this->checkSession();
@@ -78,6 +80,9 @@ class C_MasterPackage extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['GetTraining'] = $this->M_masterpackage->GetTraining();
+		$data['GetPackage'] = $this->M_masterpackage->GetPackageId();
+		$data['trgtype'] = $this->M_masterpackage->GetTrainingType();
+		$data['ptctype'] = $this->M_masterpackage->GetParticipantType();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -89,7 +94,7 @@ class C_MasterPackage extends CI_Controller {
 	public function add(){
 		$pkgname	= $this->input->post('txtNamaPaket');
 		$trgtype	= $this->input->post('slcJenisPaket');
-		$ptctype	= $this->input->post('txtPeserta');
+		$ptctype	= $this->input->post('slcPeserta');
 		
 		$this->M_masterpackage->AddPackage($pkgname,$trgtype,$ptctype);
 		$maxid	= $this->M_masterpackage->GetMaxIdPackage();
@@ -130,6 +135,8 @@ class C_MasterPackage extends CI_Controller {
 		
 		$data['GetPackage'] = $this->M_masterpackage->GetPackageId($id);
 		$data['GetPackageTraining'] = $this->M_masterpackage->GetPackageTrainingId($id);
+		$data['trgtype'] = $this->M_masterpackage->GetTrainingType();
+		$data['ptctype'] = $this->M_masterpackage->GetParticipantType();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -153,7 +160,9 @@ class C_MasterPackage extends CI_Controller {
 		$data['GetTraining'] = $this->M_masterpackage->GetTraining();
 		$data['GetPackage'] = $this->M_masterpackage->GetPackageId($id);
 		$data['GetPackageTraining'] = $this->M_masterpackage->GetPackageTrainingId($id);
-
+		$data['trgtype'] = $this->M_masterpackage->GetTrainingType();
+		$data['ptctype'] = $this->M_masterpackage->GetParticipantType();
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/MasterPackage/V_Edit',$data);
@@ -172,9 +181,10 @@ class C_MasterPackage extends CI_Controller {
 	{
 		$id			= $this->input->post('txtPackageId');
 		$pkgname	= $this->input->post('txtNamaPaket');
-		$ptctype	= $this->input->post('txtPeserta');
+		$trgtype	= $this->input->post('slcJenisPaket');
+		$ptctype	= $this->input->post('slcPeserta');
 		
-		$this->M_masterpackage->UpdatePackage($id,$pkgname,$ptctype);
+		$this->M_masterpackage->UpdatePackage($id,$pkgname,$trgtype,$ptctype);
 		$this->M_masterpackage->DelPackageTraining($id);
 		
 		$training	= $this->input->post('slcTraining');
