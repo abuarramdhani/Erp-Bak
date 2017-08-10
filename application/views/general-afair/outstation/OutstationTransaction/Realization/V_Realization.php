@@ -25,7 +25,7 @@
 								<table id="data_table" class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr class="bg-primary" style="text-align: center">
-											<th width="5%" style="text-align: center">No</th>
+											<th width="3%" style="text-align: center">No</th>
 											<th style="text-align: center">Employee</th>
 											<th style="text-align: center">Destination</th>
 											<th width="10%" style="text-align: center">City Type</th>
@@ -69,6 +69,7 @@
 														</div>
 													</div>
 												<a class="btn btn-primary" href="<?php echo base_url('Outstation/realization/print/'.$dre['realization_id'])?>"><i class="fa fa-print"></i> Print</a>
+												<a href="<?php echo base_url('Outstation/realization/mail/'.$dre['realization_id'])?>" id="mail_button"  class="btn btn-info"><i class="fa  fa-envelope-o"></i> Mail</a>
 											</td>
 										</tr>
 										<?php }?>
