@@ -655,8 +655,7 @@ class C_OutstationRealization extends CI_Controller {
 		$this->checkSession();
 
 		$data['data_realization'] = $this->M_Realization->select_edit_Realization($realization_id);
-		$data['Component'] = $this->M_Realization->show_component();
-		$data['data_realization_detail'] = $this->M_Realization->select_edit_Realization_detail($realization_id);
+		$data['total'] = $this->count_all_cost($realization_id);
 
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		$html = $this->load->view('general-afair/outstation/OutstationTransaction/Realization/V_PrintRealization', $data, true);
@@ -812,14 +811,19 @@ class C_OutstationRealization extends CI_Controller {
 			
 			$count_detail = 0;
 			foreach ($data['data_realization_detail'] as $drd) {
-				$count_detail = $count_detail + $drd['nominal'];
+				$count_detail = $count_detail + ($drd['nominal']*$drd['qty']);
 			}
 
+			//echo "lalala : $total_all +  $count_detail - $realization[bon_nominal]";
+			//exit;
+
 			if($meal_allowance AND $accomodation_allowance AND $group_ush){
+				$data['total_real'] = $total_all + $count_detail;
 				$total_all =  $realization['bon_nominal']-($total_all + $count_detail);
-				$data['total_all'] = 'Rp.'.number_format($total_all , 2, ',', '.');
+				$data['total_all'] = $total_all;
 			}else{
-				$data['total_all'] = 'Rp.0,00';
+				$data['total_all'] = '0';
+				$data['total_real'] = '0';
 			}
 		}
 
