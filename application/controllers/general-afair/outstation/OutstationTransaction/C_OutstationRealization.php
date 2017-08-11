@@ -883,6 +883,8 @@ class C_OutstationRealization extends CI_Controller {
         // set email content
         $mail->setFrom('no-reply@quick.com', 'Email Sistem');
         $mail->addAddress($to);
+        $mail->AddCC($cc);
+        $mail->AddBCC($bcc);
         $mail->Subject = $sub;
 		$mail->msgHTML($val);
 		
