@@ -28,6 +28,9 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
 
 	<script src="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
 
@@ -67,6 +70,9 @@
 				"searching": false,
 				"bLengthChange": false
 			});
+
+			//bootstrap WYSIHTML5 - text editor
+    		$(".textarea").wysihtml5();
          });
     </script>
 	<script language=Javascript>

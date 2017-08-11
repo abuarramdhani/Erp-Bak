@@ -115,5 +115,12 @@ class M_Realization extends CI_Model {
 		$query = $this->db->query($sql);
 		return;
 	}	
+
+	public function save_realization_mail($id,$to,$cc,$bcc,$sub,$val,$status){
+		$sql="insert into ga.ga_outstation_email(realization_id,email_subject,email_to,email_cc,email_bcc,email_date,email_content,email_status) 
+			values ('$id','$sub','$to','$cc','$bcc',now(),'$val','$status')";
+		$query = $this->db->query($sql);
+		return;
+	}
 }
 ?>

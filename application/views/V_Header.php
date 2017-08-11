@@ -55,6 +55,9 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/switch/static/stylesheets/bootstrap-switch.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.css');?>" />
+	<!-- PAGE LEVEL STYLES FOR TEXTAREA -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>" />
 	<!-- Fine Uploader New/Modern CSS file -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader-new.min.css');?>" />
 
