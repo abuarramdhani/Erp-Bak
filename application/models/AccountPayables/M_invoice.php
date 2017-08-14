@@ -358,6 +358,24 @@ class M_invoice extends CI_Model{
 		return $query*$query1;
 	}
 
+	public function saveTaxNumberManual($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment ){
+
+		$oracle = $this->load->database("oracle",true);
+		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
+		$query = true;
+		if ($invoice_id != NULL || $invoice_id != '') {
+			$date=date_create($tanggalFakturCon);
+			$tanggalFaktur_fix = date_format($date,"Y/m/d H:i:s");
+			$query = $oracle->query("UPDATE ap_invoices_all
+									SET ATTRIBUTE5 = '$tax_number_awal',
+										ATTRIBUTE3 = '$tax_number_akhir',
+										ATTRIBUTE4 = '$tanggalFaktur_fix'
+									WHERE INVOICE_ID = '$invoice_id'
+									");
+		};
+		return $query;
+	}
+
 	public function deleteTaxNumber($invoice_id, $invoice_num){
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("

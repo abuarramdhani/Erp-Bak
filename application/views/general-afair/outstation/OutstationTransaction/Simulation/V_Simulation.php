@@ -81,7 +81,7 @@
 															</div>
 														</div>
 													</div>
-												<a class="btn btn-primary" href="<?php echo base_url('Outstation/simulation/print/'.$dsim['simulation_id'])?>"><i class="fa fa-print"></i> Print</a>
+												<!--<a class="btn btn-primary" href="<?php echo base_url('Outstation/simulation/print/'.$dsim['simulation_id'])?>"><i class="fa fa-print"></i> Print</a>-->
 											</td>
 										</tr>
 										<?php
