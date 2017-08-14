@@ -1032,3 +1032,24 @@ $route['ItemManagement/User/InputPekerja/(:any)']  = 'ItemManagement/User/C_Inpu
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
+
+//-------------------------GeneralAffair-Limbah------------------------------------------------//
+$route['GeneralAffair/Limbah'] = 'GeneralAffair/MainMenu/C_Limbah';
+$route['GeneralAffair/Limbah/(:any)'] = 'GeneralAffair/MainMenu/C_Limbah/$1';
+$route['GeneralAffair/Limbah/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_Limbah/$1/$2';
+$route['GeneralAffair/Limbah/Report'] =  'GeneralAffair/MainMenu/C_Limbah/Report';
+$route['GeneralAffair/Limbah/Record'] = 'GeneralAffair/MainMenu/C_Limbah/Record';
+
+//-----------------------GeneralAffair-TransaksiLimbah-----------------------------------------//
+$route['GeneralAffair/LimbahTransaksi'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi';
+$route['GeneralAffair/LimbahTransaksi/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/$1';
+$route['GeneralAffair/LimbahTransaksi/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/$1/$2';
+$route['GeneralAffair/LimbahTransaksi/Report'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/Report';
+$route['GeneralAffair/LimbahTransaksi/Record'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/Record';
+
+//----------------------------GeneralAffair-TransaksiLimbahKeluar---------------------------------//
+$route['GeneralAffair/LimbahKeluar'] = 'GeneralAffair/MainMenu/C_LimbahKeluar';
+$route['GeneralAffair/LimbahKeluar/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/$1';
+$route['GeneralAffair/LimbahKeluar/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/$1/$2';
+$route['GeneralAffair/LimbahKeluar/Report'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/Report';
+$route['GeneralAffair/LimbahKeluar/Record'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/Record';
