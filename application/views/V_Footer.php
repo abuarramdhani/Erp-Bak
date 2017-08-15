@@ -45,6 +45,7 @@
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
 
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
 

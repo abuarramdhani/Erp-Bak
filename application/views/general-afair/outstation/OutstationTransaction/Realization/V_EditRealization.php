@@ -235,7 +235,9 @@
 															</td>
 															<td><input type="text" name="txt_info[]" class="form-control" value="<?php echo $real_det['info'] ?>" required/></td>
 															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" required/></td>
-															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/></td>
+															<td>
+															<input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/>
+															</td>
 															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
 															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 														</tr>
