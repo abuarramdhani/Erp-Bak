@@ -29,14 +29,6 @@ class M_penjadwalan extends CI_Model {
 
 		public function GetAlert($date,$start_time,$end_time,$room,$training_id)
 		{
-			// $sql="	SELECT pst.date,pst.start_time,pst.end_time,pst.room,pmt.training_name,pst.trainer
-			// 		from pl.pl_scheduling_training pst, pl.pl_master_training pmt
-			// 		WHERE date = to_date('$date','DD-MM-YYYY') 
-			// 		AND
-			// 		pst.training_id = pmt.training_id
-			// 		AND room = '$room'
-			// 		order by room;";
-
 			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
 					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
 					where pst.training_id = pmt.training_id 

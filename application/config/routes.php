@@ -845,6 +845,7 @@ $route['ADMPelatihan/InputQuestionnaire'] 				= 'ADMPelatihan/C_InputQuestionnai
 $route['ADMPelatihan/InputQuestionnaire/(:any)'] 		= 'ADMPelatihan/C_InputQuestionnaire/$1';
 $route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)']	= 'ADMPelatihan/C_InputQuestionnaire/$1/$2';
 $route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)/(:any)']	= 'ADMPelatihan/C_InputQuestionnaire/$1/$2/$3';
+$route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)/(:any)/(:any)']	= 'ADMPelatihan/C_InputQuestionnaire/$1/$2/$3/$4';
 
 
 $route['ADMPelatihan/MasterTrainer'] 					= 'ADMPelatihan/C_MasterTrainer';
