@@ -119,7 +119,7 @@
 											<td><?php echo $no++; ?></td>
 											<td>
 												<a href="<?php echo base_url('ADMPelatihan/InputQuestionnaire/edit/'.$se['scheduling_id'].'/'.$se['questionnaire_id'].'/'.$se['questionnaire_sheet_id']);?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
-												<a href="<?php echo base_url('ADMPelatihan/InputQuestionnaire/delete/'.$se['questionnaire_sheet_id'])?>" data-toggle="modal" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
+												<a href="<?php $id1=$SchedulingId;$id2=$QuestionnaireId;$id3=$se['questionnaire_sheet_id'];echo base_url('ADMPelatihan/InputQuestionnaire/delete/'.$id1.'/'.$id2.'/'.$id3)?>"  class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
 												<?php
 													foreach($statement as $st){
 												?>
