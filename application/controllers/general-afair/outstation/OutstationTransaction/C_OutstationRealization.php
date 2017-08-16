@@ -408,9 +408,12 @@ class C_OutstationRealization extends CI_Controller {
 		$component_nominal_string = $this->input->post('txt_component_nominal');
 		$data_count = sizeof($component_id);
 
-		$string = array('Rp','.');
-
-		$bon = str_replace($string, '', $bon_string);
+		if($bon_string != ''){
+			$string = array('Rp','.');
+			$bon = str_replace($string, '', $bon_string);
+		}else{
+			$bon=0;
+		}
 
 		$this->M_Realization->new_realization($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon);
 
