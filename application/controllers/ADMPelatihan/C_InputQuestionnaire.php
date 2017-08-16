@@ -69,7 +69,7 @@ class C_InputQuestionnaire extends CI_Controller {
 		foreach ($train_id as $ti) {
 			$trainData[] = $this->M_inputquestionnaire->GetTrain($ti);
 		}
-
+		
 
 		$quesData = array();
 		foreach ($trainData as $td => $value) {
@@ -151,7 +151,7 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
 		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
 		$data['trainer'] 		= $this->M_inputquestionnaire->GetTrainer();
-	
+
 		foreach ($data['submitted'] as $sb){$sbm=$sb['submitted'];}
 		foreach ($data['training'] as $tr){$participant_number=$tr['participant_number'];}
 		if($sbm<$participant_number){
@@ -238,11 +238,12 @@ class C_InputQuestionnaire extends CI_Controller {
 	}
 
 
-	public function delete($id)
+	public function delete($id1,$id2,$id3)
 	{
-		$data['SchedulingId'] 	= $id;
-		$this->M_inputquestionnaire->DeleteQuestionnaireSheet($id);
-		redirect('ADMPelatihan/InputQuestionnaire/ToCreate/'.$id);
+		$id=$id1;
+		$qe=$id2;
+		$this->M_inputquestionnaire->DeleteQuestionnaireSheet($id3);
+		redirect('ADMPelatihan/InputQuestionnaire/view/'.$id.'/'.$qe);
 	}
 
 	public function checkSession(){

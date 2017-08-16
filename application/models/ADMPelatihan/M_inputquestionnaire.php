@@ -130,11 +130,11 @@ class M_inputquestionnaire extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function GetTrain($id)
+	public function GetTrain($ti)
 	{
 		$sql = "SELECT	*
 				 from	pl.pl_master_training
-				 where training_id = $id";
+				 where training_id ='$ti'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -180,9 +180,9 @@ class M_inputquestionnaire extends CI_Model {
 	}
 
 	// DELETE 
-	public function DeleteQuestionnaireSheet($qsid)
+	public function DeleteQuestionnaireSheet($id3)
 	{
-		$sql="delete from pl.pl_questionnaire_sheet where questionnaire_sheet_id='$qsid'";
+		$sql="delete from pl.pl_questionnaire_sheet where questionnaire_sheet_id=$id3";
 		$query = $this->db->query($sql);
 		return;
 	}
