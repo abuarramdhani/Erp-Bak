@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/LimbahTransaksi');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/LimbahTransaksi');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -23,7 +23,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a href="<?php echo site_url('GeneralAffair/LimbahTransaksi/create/') ?>" style="float:right;margin-right:1%;margin-top:0%;" alt="Add New" title="Add New" >
+                                <a href="<?php echo site_url('WasteManagement/LimbahTransaksi/create/') ?>" style="float:right;margin-right:1%;margin-top:0%;" alt="Add New" title="Add New" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
                                 </a>    
                             </div>
@@ -55,9 +55,9 @@
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/LimbahTransaksi/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/LimbahTransaksi/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('GeneralAffair/LimbahTransaksi/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('WasteManagement/LimbahTransaksi/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('WasteManagement/LimbahTransaksi/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                	<a href="<?php echo base_url('WasteManagement/LimbahTransaksi/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
 												<td><?php echo date('d M Y', strtotime($row['tanggal_transaksi'])) ;?></td>
 												<td><?php echo $row['jenis'] ?></td>

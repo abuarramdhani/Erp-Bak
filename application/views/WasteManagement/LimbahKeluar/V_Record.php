@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/LimbahKeluar');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/LimbahKeluar/Record');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -23,10 +23,30 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a href="<?php echo site_url('GeneralAffair/LimbahKeluar/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
-                                    <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
-                                </a>
-        
+                                <form action="<?php echo site_url('WasteManagement/LimbahKeluar/FilterDataRecord/');?>" method="post" enctype="multipart/form-data">
+                                <div class="col-md-2">
+                                        <div class="input-group">
+                                        <select id="jenis_limbah" name="jenis_limbah" class="select select2" data-placeholder="Pilih Jenis Limbah " style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php foreach ($jenis_limbah as $limbah) { ?>
+                                                        <option value="<?php echo $limbah['id_jenis_limbah']; ?>"><?php echo $limbah['jenis_limbah']; ?></option>
+                                                        <?php }?> 
+                                        </select>
+                                        </div>
+                                </div>
+                                <div class="col-md-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                <input id="periode" class="form-control datepicker-month"  data-date-format="d M Y" autocomplete="off" type="text" name="periode" style="width:170px" placeholder="Masukkan Periode" value="" />
+                                        </div>
+                                </div>
+                                <div class="col-md-1">
+                                        <div class="input-group">
+                                                <input type="submit"  class="btn btn-ms btn-warning pull-left" value="SEARCH">
+                                        </div>
+                                </div>
+                                </form> 
+                                        
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -34,7 +54,6 @@
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-                                                <th style="text-align:center; min-width:80px">Action</th>
                                                 <th>Jenis Limbah</th>
 												<th>Tanggal Keluar</th>
 												<th>Jumlah Keluar</th>
@@ -46,18 +65,16 @@
                                         </thead>
                                         <tbody>
                                             <?php 
-                                            	$no = 1;  
-                                            	foreach($data as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['id_limbah_keluar']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                            	$no = 1;
+                                                if(!isset($data)){
+                                                    $data_item = $filter_data;
+                                                }else{
+                                                    $data_item = $data;
+                                                }  
+                                            	foreach($data_item as $row):
 											?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
-                                                <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/LimbahKeluar/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/LimbahKeluar/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('GeneralAffair/LimbahKeluar/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
-                                                </td>
                                                 <td><?php echo $row['jenis'] ?></td>
 												<td><?php echo date('d M Y',strtotime($row['tanggal_keluar'])); ?></td>
 												<td><?php echo $row['jumlah_keluar'] ?></td>

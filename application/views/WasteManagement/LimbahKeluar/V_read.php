@@ -10,7 +10,7 @@
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/LimbahKeluar/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/LimbahKeluar/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <br />
                                     </a>                             
@@ -93,7 +93,7 @@
                                     <?php foreach ($User as $user): ?>
                                         <?php if($this->session->userdata['user']==$user['user_name']): ?> 
                                         <?php if($headerRow['konfirmasi_status']==0) {
-                                            echo '<a href="'.site_url('GeneralAffair/LimbahKeluar/kirimApprove/'.$encrypted_string.'').'" class="btn btn-success btn-md btn-flat">Confirmed</a> <a href="'.site_url('GeneralAffair/LimbahKeluar/kirimReject/'.$encrypted_string.'').'" class="btn btn-danger btn-md btn-flat">Not Confirmed</a>';
+                                            echo '<a href="'.site_url('WasteManagement/LimbahKeluar/kirimApprove/'.$encrypted_string.'').'" class="btn btn-success btn-md btn-flat">Confirmed</a> <a href="'.site_url('WasteManagement/LimbahKeluar/kirimReject/'.$encrypted_string.'').'" class="btn btn-danger btn-md btn-flat">Not Confirmed</a>';
                                         }?>
                                         <?php endif; ?>
                                     <?php endforeach; ?> 

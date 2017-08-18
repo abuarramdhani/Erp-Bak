@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/LimbahTransaksi/Report');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/LimbahKeluar/Report');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -23,8 +23,8 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <form action="<?php echo site_url('GeneralAffair/LimbahTransaksi/FilterDataReport/');?>" method="post" enctype="multipart/form-data">
-                                        <div class="col-md-2">
+                                <form action="<?php echo site_url('WasteManagement/LimbahKeluar/FilterDataReport/');?>" method="post" enctype="multipart/form-data">
+                                <div class="col-md-2">
                                         <div class="input-group">
                                         <select id="jenis_limbah" name="jenis_limbah" class="select select2" data-placeholder="Pilih Jenis Limbah " style="width: 100%">
                                                         <option value=""></option>
@@ -33,19 +33,19 @@
                                                         <?php }?> 
                                         </select>
                                         </div>
-                                        </div>
-                                        <div class="col-md-3">
+                                </div>
+                                <div class="col-md-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                 <input id="periode" class="form-control datepicker-month"  data-date-format="d M Y" autocomplete="off" type="text" name="periode" style="width:170px" placeholder="Masukkan Periode" value="" />
                                         </div>
-                                        </div>
-                                        <div class="col-md-1">
+                                </div>
+                                <div class="col-md-1">
                                         <div class="input-group">
                                                 <input type="submit"  class="btn btn-ms btn-warning pull-left" value="SEARCH">
                                         </div>
-                                        </div> 
-                                    </form> 
+                                </div>
+                                </form> 
                                         <div class="col-md-1">
                                         <div class="input-group">
                                         <?php
@@ -56,7 +56,7 @@
                                                     $tanggalawallink    =   str_replace('-', '.', $tanggalawalformatindo);
                                                     $tanggalakhirlink   =   str_replace('-', '.', $tanggalakhirformatindo);
                                                     ?>
-                                                    <form method="POST" action="<?php echo site_url('GeneralAffair/LimbahTransaksi/cetakExcel/'.$tanggalawallink.'/'.$tanggalakhirlink) ?>";">
+                                                    <form method="POST" action="<?php echo site_url('WasteManagement/LimbahKeluar/cetakExcel/'.$tanggalawallink.'/'.$tanggalakhirlink) ?>";">
                                                     <input type="hidden" name="excelTglAwal" id="excelTglAwal" value="<?php echo $tanggalawal; ?>">
                                                     <input type="hidden" name="excelTglAkhir" id="excelTglAkhir" value="<?php echo $tanggalakhir; ?>">
                                                     <input type="hidden" name="exceljenislimbah" id="exceljenislimbah" value="<?php echo $jenislimbah; ?>">
@@ -67,23 +67,21 @@
                                                 }
                                             ?>
                                         </div>
-                                        </div>            
+                                        </div> 
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblLimbahTransaksi" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblLimbahKeluar" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-												<th>Tanggal Masuk</th>
-												<th>Jenis Limbah</th>
-												<th>Sumber Limbah</th>
-												<th>Jenis Sumber</th>
-												<th>Satuan</th>
-												<th>Jumlah</th>
-												<th>Perlakuan</th>
-												<th>Maks Penyimpanan</th>
-                                                <th>Konfirmasi Status</th>
+                                                <th>Jenis Limbah</th>
+												<th>Tanggal Keluar</th>
+												<th>Jumlah Keluar</th>
+												<th>Tujuan Limbah</th>
+												<th>Nomor Dok</th>
+												<th>Sisa Limbah</th>
+                                                <th style="text-align:center">Status</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -93,33 +91,22 @@
                                                     $data_item = $filter_data;
                                                 }else{
                                                     $data_item = $data;
-                                                } 
+                                                }  
                                             	foreach($data_item as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['id_transaksi']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
-												<td><?php echo date('d M Y', strtotime($row['tanggal_transaksi'])) ;?></td>
-												<td><?php echo $row['jenis'] ?></td>
-												<td><?php echo $row['sumber'] ?></td>
-												<td><?php if($row['jenis_sumber']==1){
-                                                                echo "Proses Produksi";}
-                                                            elseif ($row['jenis_sumber']==0) {
-                                                                echo "Diluar Proses Produksi";} ?>
-                                                </td>
-												<td><?php if($row['satuan']==1){
-                                                                echo "TON";}
-                                                            elseif ($row['satuan']==0) {
-                                                                echo "PCS";} ?></td>
-												<td><?php echo $row['jumlah'] ?></td>
-												<td><?php echo $row['limbah_perlakuan'] ?></td>
-												<td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>
-                                                <td align="center"><?php if(empty($row['konfirmasi'])) {
+                                                <td><?php echo $row['jenis'] ?></td>
+												<td><?php echo date('d M Y',strtotime($row['tanggal_keluar'])); ?></td>
+												<td><?php echo $row['jumlah_keluar'] ?></td>
+												<td><?php echo $row['tujuan_limbah'] ?></td>
+												<td><?php echo $row['nomor_dok'] ?></td>
+												<td><?php echo $row['sisa_limbah'] ?></td>
+                                                <td align="center"><?php if($row['konfirmasi_status']==0) {
                                                                 echo "<h4><span class='label label-warning'>Waiting</span></h4>";
-                                                            }elseif ($row['konfirmasi']==1) {
+                                                            }elseif ($row['konfirmasi_status']==1) {
                                                                 echo "<h4><span class='label label-success'>Confirmed</span></h4>";
-                                                            }elseif ($row['konfirmasi']==2) {
+                                                            }elseif ($row['konfirmasi_status']==2) {
                                                                 echo "<h4><span class='label label-danger'>Not Confirmed</span></h4>";
                                                             } ;?>
                                                 </td>

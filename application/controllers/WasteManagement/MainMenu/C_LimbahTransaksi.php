@@ -15,7 +15,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('GeneralAffair/MainMenu/M_limbahtransaksi');
+		$this->load->model('WasteManagement/MainMenu/M_limbahtransaksi');
 
 		$this->checkSession();
 	}
@@ -51,7 +51,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahTransaksi/V_index', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -82,7 +82,7 @@ class C_LimbahTransaksi extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/LimbahTransaksi/V_create', $data);
+			$this->load->view('WasteManagement/LimbahTransaksi/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
@@ -102,7 +102,7 @@ class C_LimbahTransaksi extends CI_Controller
 			$this->M_limbahtransaksi->setLimbahTransaksi($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('GeneralAffair/LimbahTransaksi'));
+			redirect(site_url('WasteManagement/LimbahTransaksi'));
 		}
 	}
 
@@ -143,7 +143,7 @@ class C_LimbahTransaksi extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/LimbahTransaksi/V_update', $data);
+			$this->load->view('WasteManagement/LimbahTransaksi/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
@@ -160,7 +160,7 @@ class C_LimbahTransaksi extends CI_Controller
     			);
 			$this->M_limbahtransaksi->updateLimbahTransaksi($data, $plaintext_string);
 
-			redirect(site_url('GeneralAffair/LimbahTransaksi'));
+			redirect(site_url('WasteManagement/LimbahTransaksi'));
 		}
 	}
 
@@ -190,7 +190,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahTransaksi/V_read', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_read', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -202,7 +202,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->M_limbahtransaksi->deleteLimbahTransaksi($plaintext_string);
 
-		redirect(site_url('GeneralAffair/LimbahTransaksi'));
+		redirect(site_url('WasteManagement/LimbahTransaksi'));
     }
 
 	public function kirimApprove($id)
@@ -212,7 +212,7 @@ class C_LimbahTransaksi extends CI_Controller
 	
 		$this->M_limbahtransaksi->kirimApprove($plaintext_string);
 
-		redirect(site_url('GeneralAffair/LimbahTransaksi'));
+		redirect(site_url('WasteManagement/LimbahTransaksi'));
 	}
 
 	public function kirimReject($id)
@@ -222,7 +222,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->M_limbahtransaksi->kirimReject($plaintext_string);
 
-		redirect(site_url('GeneralAffair/LimbahTransaksi'));
+		redirect(site_url('WasteManagement/LimbahTransaksi'));
 	}
 
 	public function Report()
@@ -245,7 +245,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahTransaksi/V_Report', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_Report', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -289,7 +289,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahTransaksi/V_Report', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_Report', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -313,7 +313,7 @@ class C_LimbahTransaksi extends CI_Controller
 
             $data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
            
-            $this->load->view('GeneralAffair/LimbahTransaksi/V_Excel', $data, true);
+            $this->load->view('WasteManagement/LimbahTransaksi/V_Excel', $data, true);
     }
 
 	public function Record()
@@ -336,7 +336,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahTransaksi/V_Record', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_Record', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -377,12 +377,12 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahTransaksi/V_Record', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_Record', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
 }
 
 /* End of file C_LimbahTransaksi.php */
-/* Location: ./application/controllers/GeneralAffair/MainMenu/C_LimbahTransaksi.php */
+/* Location: ./application/controllers/WasteManagement/MainMenu/C_LimbahTransaksi.php */
 /* Generated automatically on 2017-08-01 11:38:56 */

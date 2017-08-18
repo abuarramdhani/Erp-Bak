@@ -17,7 +17,7 @@ class C_Limbah extends CI_Controller
 		$this->load->library('upload');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('GeneralAffair/MainMenu/M_limbah');
+		$this->load->model('WasteManagement/MainMenu/M_limbah');
 
 		$this->checkSession();
 	}
@@ -53,7 +53,7 @@ class C_Limbah extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/Limbah/V_index', $data);
+		$this->load->view('WasteManagement/Limbah/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -84,7 +84,7 @@ class C_Limbah extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/Limbah/V_create', $data);
+			$this->load->view('WasteManagement/Limbah/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			
@@ -150,7 +150,7 @@ class C_Limbah extends CI_Controller
 			$this->M_limbah->setLimbah($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('GeneralAffair/Limbah'));
+			redirect(site_url('WasteManagement/Limbah'));
 		}
 	}
 
@@ -189,7 +189,7 @@ class C_Limbah extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/Limbah/V_update', $data);
+			$this->load->view('WasteManagement/Limbah/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			if(!empty($_FILES['fileFoto']['name'])){
@@ -272,7 +272,7 @@ class C_Limbah extends CI_Controller
 
 			$this->M_limbah->updateLimbah($data, $plaintext_string);
 
-			redirect(site_url('GeneralAffair/Limbah'));
+			redirect(site_url('WasteManagement/Limbah'));
 		}
 	}
 
@@ -302,7 +302,7 @@ class C_Limbah extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/Limbah/V_read', $data);
+		$this->load->view('WasteManagement/Limbah/V_read', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -314,7 +314,7 @@ class C_Limbah extends CI_Controller
 
 		$this->M_limbah->deleteLimbah($plaintext_string);
 
-		redirect(site_url('GeneralAffair/Limbah'));
+		redirect(site_url('WasteManagement/Limbah'));
     }
 
     public function cetakPDF($id)
@@ -332,7 +332,7 @@ class C_Limbah extends CI_Controller
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
 		$filename = 'data-limbah.pdf';
 		
-		$html = $this->load->view('GeneralAffair/Limbah/V_Pdf', $data, true);
+		$html = $this->load->view('WasteManagement/Limbah/V_Pdf', $data, true);
 
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'D');
@@ -358,7 +358,7 @@ class C_Limbah extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/Limbah/V_Report', $data);
+		$this->load->view('WasteManagement/Limbah/V_Report', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -382,12 +382,12 @@ class C_Limbah extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/Limbah/V_Record', $data);
+		$this->load->view('WasteManagement/Limbah/V_Record', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
 }
 
 /* End of file C_Limbah.php */
-/* Location: ./application/controllers/GeneralAffair/MainMenu/C_Limbah.php */
+/* Location: ./application/controllers/WasteManagement/MainMenu/C_Limbah.php */
 /* Generated automatically on 2017-07-31 10:47:07 */

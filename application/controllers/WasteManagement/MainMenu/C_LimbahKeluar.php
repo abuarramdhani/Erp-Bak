@@ -15,7 +15,7 @@ class C_LimbahKeluar extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('GeneralAffair/MainMenu/M_limbahkeluar');
+		$this->load->model('WasteManagement/MainMenu/M_limbahkeluar');
 
 		$this->checkSession();
 	}
@@ -51,7 +51,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahKeluar/V_index', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -80,7 +80,7 @@ class C_LimbahKeluar extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/LimbahKeluar/V_create', $data);
+			$this->load->view('WasteManagement/LimbahKeluar/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
@@ -98,7 +98,7 @@ class C_LimbahKeluar extends CI_Controller
 			$this->M_limbahkeluar->setLimbahKeluar($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('GeneralAffair/LimbahKeluar'));
+			redirect(site_url('WasteManagement/LimbahKeluar'));
 		}
 	}
 
@@ -136,7 +136,7 @@ class C_LimbahKeluar extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/LimbahKeluar/V_update', $data);
+			$this->load->view('WasteManagement/LimbahKeluar/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
@@ -151,7 +151,7 @@ class C_LimbahKeluar extends CI_Controller
     			);
 			$this->M_limbahkeluar->updateLimbahKeluar($data, $plaintext_string);
 
-			redirect(site_url('GeneralAffair/LimbahKeluar'));
+			redirect(site_url('WasteManagement/LimbahKeluar'));
 		}
 	}
 
@@ -182,7 +182,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahKeluar/V_read', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_read', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -194,7 +194,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->M_limbahkeluar->deleteLimbahKeluar($plaintext_string);
 
-		redirect(site_url('GeneralAffair/LimbahKeluar'));
+		redirect(site_url('WasteManagement/LimbahKeluar'));
     }
 
     public function kirimApprove($id)
@@ -204,7 +204,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->M_limbahkeluar->approval($plaintext_string);
 
-		redirect(site_url('GeneralAffair/LimbahKeluar'));
+		redirect(site_url('WasteManagement/LimbahKeluar'));
     }
 
     public function kirimReject($id)
@@ -214,7 +214,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->M_limbahkeluar->reject($plaintext_string);
 
-		redirect(site_url('GeneralAffair/LimbahKeluar'));	
+		redirect(site_url('WasteManagement/LimbahKeluar'));	
     }
 
 	public function Record()
@@ -237,7 +237,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahKeluar/V_Record', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_Record', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -278,7 +278,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahKeluar/V_Record', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_Record', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -302,7 +302,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahKeluar/V_Report', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_Report', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -346,7 +346,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/LimbahKeluar/V_Report', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_Report', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -370,12 +370,12 @@ class C_LimbahKeluar extends CI_Controller
 
             $data['filter_data'] = $this->M_limbahkeluar->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
            
-            $this->load->view('GeneralAffair/LimbahKeluar/V_Excel', $data, true);
+            $this->load->view('WasteManagement/LimbahKeluar/V_Excel', $data, true);
     } 
 
 
 }
 
 /* End of file C_LimbahKeluar.php */
-/* Location: ./application/controllers/GeneralAffair/MainMenu/C_LimbahKeluar.php */
+/* Location: ./application/controllers/WasteManagement/MainMenu/C_LimbahKeluar.php */
 /* Generated automatically on 2017-08-09 12:34:02 */

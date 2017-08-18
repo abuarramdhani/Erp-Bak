@@ -10,7 +10,7 @@
                             </div>
                             <div class="col-md-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-md" href="<?php echo site_url('GeneralAffair/Limbah/');?>">
+                                    <a class="btn btn-default btn-md" href="<?php echo site_url('WasteManagement/Limbah/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <br />
                                     </a>                             
