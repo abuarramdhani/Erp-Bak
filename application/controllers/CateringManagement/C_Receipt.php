@@ -187,7 +187,7 @@ class C_Receipt extends CI_Controller {
 		
 		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
 		
-		$finedate = $this->input->post('TxtFineDate');
+		$finedate = date("Y-m-d",strtotime($this->input->post('TxtFineDate')));
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
 		$finetype = $this->input->post('TxtFineType');
