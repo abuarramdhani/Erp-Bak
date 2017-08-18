@@ -14,7 +14,7 @@ class C_Monitoring extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('MonitoringKomponen/MainMenu/M_monitoring');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		  
+		$this->load->library('excel');
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -176,5 +176,204 @@ class C_Monitoring extends CI_Controller {
 			$i++;
 		}
 		echo json_encode(array('data' => $output));
+	}
+	
+	public function check(){
+	 	 $tgl 		= $this->input->post('date',true);
+		 $sub_sour	= $this->input->post('txsAsalKomp',true);
+		 $loc_sour	= $this->input->post('txsAsalLocator',true);
+		 $sub_des	= $this->input->post('txsTujuanSub',true);
+		 $loc_des	= $this->input->post('txsTujuanLocator',true);
+		 $cd_kom	= $this->input->post('txsKodeKomp',true);
+		 $sort		= $this->input->post('txsSort',true);
+		 $lap		= $this->input->post('txsJenisLaporan',true);
+		 
+		  if(empty($sub_sour)){
+			 $inv_from = "";
+		 }else{
+			 $inv_from = "and bor.COMPLETION_SUBINVENTORY='$sub_sour'";
+		 }
+		 
+		 if(empty($loc_sour)){
+			 $q_loc_sour = "";
+		 }else{
+			 $q_loc_sour = "and mil.INVENTORY_LOCATION_ID='$loc_sour'";
+		 }
+		 
+		 if(empty($sub_des)){
+			 $inv_to = "";
+		 }else{
+			 $inv_to = "and bor.ATTRIBUTE1='$sub_des'";
+		 }
+		 
+		 if(empty($loc_des)){
+			 $q_loc_des = "";
+		 }else{
+			 $q_loc_des = "and bor.COMPLETION_LOCATOR_ID='$loc_des'";
+		 }
+		 
+		 if(empty($cd_kom)){
+			 $comp = "";
+		 }else{
+			 $comp = "and msib.SEGMENT1='$cd_kom'";
+		 }
+		 
+		 switch ($sort) {
+				case 1:
+					$order = "mil.INVENTORY_LOCATION_ID, msib.SEGMENT1 asc";
+					break;
+				case 2:
+					$order = "mil.INVENTORY_LOCATION_ID,(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY), msib.SEGMENT1 asc";
+					break;
+				default:
+					$order = "bor.COMPLETION_SUBINVENTORY,msib.SEGMENT1";
+					break;
+			}
+		
+		switch($lap){
+			case 1:
+				$record = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$qty = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				break;
+			case 2:
+				$record = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$qty = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				break;
+			case 3:
+				$record = "";
+				$group = "";
+				$qty = "and msib.MAX_MINMAX_QUANTITY is not null";
+				break;
+			case 4:
+				$record = "";
+				$qty = "and msib.MAX_MINMAX_QUANTITY is null";
+				break;
+			default:
+				$record = "";
+				$group = "";
+				$qty = "";
+				break;
+		}
+		
+		$data = $this->M_monitoring->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$record,$qty,$group);
+		// echo $data;
+		$data['data'] = $data;
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['action'] = 'MonitoringKomponen/Monitoring/check';
+		$data['export_xls'] = site_url('MonitoringKomponen/Monitoring/export_xls?ss='.$sub_sour.'&ls='.$loc_sour.'&sd='.$sub_des.'&ld='.$loc_des.'&cd='.$cd_kom.'&s='.$sort.'&l='.$lap.'');
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringKomponen/MainMenu/V_View', $data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	function export_xls(){
+		 $tgl 		= date('Y-m-d');
+		 $sub_sour	= $this->input->get('ss',true);
+		 $loc_sour	= $this->input->get('ls',true);
+		 $sub_des	= $this->input->get('sd',true);
+		 $loc_des	= $this->input->get('ld',true);
+		 $cd_kom	= $this->input->get('cd',true);
+		 $sort		= $this->input->get('s',true);
+		 $lap		= $this->input->get('l',true);
+		 
+		  if(empty($sub_sour)){
+			 $inv_from = "";
+		 }else{
+			 $inv_from = "and bor.COMPLETION_SUBINVENTORY='$sub_sour'";
+		 }
+		 
+		 if(empty($loc_sour)){
+			 $q_loc_sour = "";
+		 }else{
+			 $q_loc_sour = "and mil.INVENTORY_LOCATION_ID='$loc_sour'";
+		 }
+		 
+		 if(empty($sub_des)){
+			 $inv_to = "";
+		 }else{
+			 $inv_to = "and bor.ATTRIBUTE1='$sub_des'";
+		 }
+		 
+		 if(empty($loc_des)){
+			 $q_loc_des = "";
+		 }else{
+			 $q_loc_des = "and bor.COMPLETION_LOCATOR_ID='$loc_des'";
+		 }
+		 
+		 if(empty($cd_kom)){
+			 $comp = "";
+		 }else{
+			 $comp = "and msib.SEGMENT1='$cd_kom'";
+		 }
+		 
+		 switch ($sort) {
+				case 1:
+					$order = "mil.INVENTORY_LOCATION_ID, msib.SEGMENT1 asc";
+					break;
+				case 2:
+					$order = "mil.INVENTORY_LOCATION_ID,(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY), msib.SEGMENT1 asc";
+					break;
+				default:
+					$order = "bor.COMPLETION_SUBINVENTORY,msib.SEGMENT1";
+					break;
+			}
+		
+		switch($lap){
+			case 1:
+				$record = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$r_jns = "1. Komp. yang melebihi max. simpan gudang.";
+				$qty = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				break;
+			case 2:
+				$record = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$r_jns = "2. Komp. yang masih bisa disimpan gudang.";
+				$qty = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				break;
+			case 3:
+				$record = "";
+				$group = "";
+				$r_jns = "3. Komp. yang sudah ada qty max.";
+				$qty = "and msib.MAX_MINMAX_QUANTITY is not null";
+				break;
+			case 4:
+				$record = "";
+				$qty = "and msib.MAX_MINMAX_QUANTITY is null";
+				break;
+			default:
+				$record = "";
+				$group = "";
+				$r_jns = "4. Komp. yang belum sudah ada qty max.";
+				$qty = "";
+				break;
+		}
+		
+		$data = $this->M_monitoring->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$record,$qty,$group);
+		// echo $data;
+		$data['data'] = $data;
+		$data['r_jns'] = $r_jns;
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringKomponen/Report/V_Excel_Monitoring', $data);
+		$this->load->view('V_Footer',$data);
 	}
 }

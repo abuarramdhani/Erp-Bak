@@ -27,6 +27,13 @@ $styleThead = array(
         'bold'  => true
 		)
 	);
+$allborder = array(
+    'borders' => array(
+        'allborders' => array(
+            'style' => PHPExcel_Style_Border::BORDER_THIN,
+        ),
+    )
+);
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
@@ -87,11 +94,11 @@ $styleThead = array(
 								 ->setCategory("Sistem");
 	// Add some data
 	$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValue('A1', 'LAPORAN  KAPASITAS SIMPAN  GUDANG')
+				->setCellValue('A1', 'LAPORAN KAPASITAS SIMPAN GUDANG')
 				->setCellValue('A3', 'Tanggal Cetak')
 				->setCellValue('C3', ": ".date("Y-m-d H:i:s"))
 				->setCellValue('A4', 'Jenis Laporan')
-				->setCellValue('C4', ': 1. Komp. yang boleh kirim gudang')
+				->setCellValue('C4', ': '.$r_jns)
 				->setCellValue('A5', 'NO')
 				->setCellValue('B5', 'KODE KOMPONEN')
 				->setCellValue('C5', 'NAMA KOMPONEN')
@@ -137,6 +144,16 @@ $styleThead = array(
 				->setCellValueExplicit($kolomK, $tc['LOKASI'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomL, $tc['SUBINVENTORY_CODE'], PHPExcel_Cell_DataType::TYPE_STRING);
 	}
+	
+	$new_row = $i + (int)1;
+	$row = $i + (int)2;
+	$ttd = $i + (int)7;
+			$objPHPExcel->getActiveSheet()->insertNewRowBefore($new_row,1) 
+						->setCellValueExplicit('B'.$row, "Mengetahui", PHPExcel_Cell_DataType::TYPE_STRING)
+						->setCellValueExplicit('H'.$row, "Menyetujui", PHPExcel_Cell_DataType::TYPE_STRING)	
+						->setCellValueExplicit('B'.$ttd, "( Indah Hapsari)", PHPExcel_Cell_DataType::TYPE_STRING)	
+						->setCellValueExplicit('H'.$ttd, "(Suliono / M. Intan)", PHPExcel_Cell_DataType::TYPE_STRING);	
+			$objPHPExcel->getActiveSheet()->getStyle('A5:L'.$i)->applyFromArray($allborder);
 																					
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');

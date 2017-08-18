@@ -81,13 +81,13 @@ class C_Monitoring_Seksi extends CI_Controller {
 	
 	public function check(){
 	 	 $tgl 		= $this->input->post('date',true);
-		 $sub_sour	= $this->input->post('subinv_from',true);
-		 $loc_sour	= $this->input->post('locator_from',true);
-		 $sub_des	= $this->input->post('subinv_to',true);
-		 $loc_des	= $this->input->post('locator_to',true);
-		 $cd_kom	= $this->input->post('kode',true);
-		 $sort		= $this->input->post('sort',true);
-		 $lap		= $this->input->post('report',true);
+		 $sub_sour	= $this->input->post('txsAsalKomp',true);
+		 $loc_sour	= $this->input->post('txsAsalLocator',true);
+		 $sub_des	= $this->input->post('txsTujuanSub',true);
+		 $loc_des	= $this->input->post('txsTujuanLocator',true);
+		 $cd_kom	= $this->input->post('txsKodeKomp',true);
+		 $sort		= $this->input->post('txsSort',true);
+		 $lap		= $this->input->post('txsJenisLaporan',true);
 		 
 		  if(empty($sub_sour)){
 			 $inv_from = "";
@@ -133,26 +133,29 @@ class C_Monitoring_Seksi extends CI_Controller {
 		
 		switch($lap){
 			case 1:
-				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$record = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
 				break;
 			case 2:
-				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$record = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
 				break;
 			default:
-				$lap = "";
+				$record = "";
+				$group = "";
 				break;
 		}
 		
-		$data = $this->M_monitoring_seksi->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap);
-		$this->phpExcel($data);
-		$data['data'] = $data;
+		$result = $this->M_monitoring_seksi->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$record,$group);
+		// echo $data;
+		$data['data'] = $result;
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['action'] = 'MonitoringKomponen/Monitoring/check';
-		
+		$data['export_xls'] = site_url('MonitoringKomponen/MonitoringSeksi/export_xls?ss='.$sub_sour.'&ls='.$loc_sour.'&sd='.$sub_des.'&ld='.$loc_des.'&cd='.$cd_kom.'&s='.$sort.'&l='.$lap.'');
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -160,6 +163,85 @@ class C_Monitoring_Seksi extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringKomponen/MainMenu/V_View_Seksi', $data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	function export_xls(){
+		 $tgl 		= date('Y-m-d');
+		 $sub_sour	= $this->input->get('ss',true);
+		 $loc_sour	= $this->input->get('ls',true);
+		 $sub_des	= $this->input->get('sd',true);
+		 $loc_des	= $this->input->get('ld',true);
+		 $cd_kom	= $this->input->get('cd',true);
+		 $sort		= $this->input->get('s',true);
+		 $lap		= $this->input->get('l',true);
+		 
+		   if(empty($sub_sour)){
+			 $inv_from = "";
+		 }else{
+			 $inv_from = "and bor.COMPLETION_SUBINVENTORY='$sub_sour'";
+		 }
+		 
+		 if(empty($loc_sour)){
+			 $q_loc_sour = "";
+		 }else{
+			 $q_loc_sour = "and mil.INVENTORY_LOCATION_ID='$loc_sour'";
+		 }
+		 
+		 if(empty($sub_des)){
+			 $inv_to = "";
+		 }else{
+			 $inv_to = "and bor.ATTRIBUTE1='$sub_des'";
+		 }
+		 
+		 if(empty($loc_des)){
+			 $q_loc_des = "";
+		 }else{
+			 $q_loc_des = "and bor.COMPLETION_LOCATOR_ID='$loc_des'";
+		 }
+		 
+		 if(empty($cd_kom)){
+			 $comp = "";
+		 }else{
+			 $comp = "and msib.SEGMENT1='$cd_kom'";
+		 }
+		 
+		 switch ($sort) {
+				case 1:
+					$order = "mil.INVENTORY_LOCATION_ID, msib.SEGMENT1 asc";
+					break;
+				case 2:
+					$order = "mil.INVENTORY_LOCATION_ID,(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY), msib.SEGMENT1 asc";
+					break;
+				default:
+					$order = "bor.COMPLETION_SUBINVENTORY,msib.SEGMENT1";
+					break;
+			}
+		
+		switch($lap){
+			case 1:
+				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$r_jns = "1. Komp. yang boleh kirim gudang.";
+				break;
+			case 2:
+				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) > 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$r_jns = "2. Komp. yang melebihi max. simpan gudang.";
+				break;
+			default:
+				$lap = "having (sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) < 0";
+				$group = ",mil.INVENTORY_LOCATION_ID";
+				$r_jns = "1. Komp. yang boleh kirim gudang.";
+				break;
+		}
+		
+		$result = $this->M_monitoring_seksi->tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap,$group);
+		$data['data'] = $result;
+		$data['r_jns'] = $r_jns;
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringKomponen/Report/V_Excel_Monitoring_Seksi', $data);
 		$this->load->view('V_Footer',$data);
 	}
 	

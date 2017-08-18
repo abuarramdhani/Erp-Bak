@@ -77,7 +77,10 @@
 							<div class="box-footer">
 								<div class="col-md-12">
 									<div class="col-md-2">
-										<a href="javascript:window.history.go(-1);" class="btn btn-flat btn-primary btn-ls col-md-10" style="background:#2E6DA4;"> BACK </a>
+										<a href="javascript:window.history.go(-1);" class="btn btn-flat btn-primary btn-ls col-md-10" style="width:100%;"> BACK </a>
+									</div>
+									<div class="col-md-2">
+										<a href="<?php echo $export_xls; ?>" target="blank_" class="btn btn-flat btn-success btn-ls col-md-10" style="width:100%;"> XLS </a>
 									</div>
 								</div>
 							</div>

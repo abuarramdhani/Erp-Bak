@@ -10,7 +10,7 @@
 				<div class="table-responsive">
 					<fieldset class="row2">
 						<div class="box-body with-border">
-							<form id="filter-rekap" method="post" action="<?php echo base_url('RekapTIMSPromosiPekerja/RekapTIMS/show-data')?>">
+							<form id="filter-rekap" method="post" action="<?php echo base_url('MonitoringKomponen/Monitoring/check')?>">
 								<div class="form-group">
 									<div class="row" style="margin: 10px ">
 										<div class="col-md-2">
@@ -152,9 +152,10 @@
 										<div class="col-md-3">
 										</div>
 										<div class="col-md-1">
-											<span id="search_kapasitas_simpan" class="btn btn-primary pull-right" style="vertical-align: middle">
+											<!-- <span id="" class="btn btn-primary pull-right" style="vertical-align: middle">
 												SEARCH
-											</span>
+											</span> -->
+											<input type="submit" value="SEARCH" class="btn btn-primary pull-right btn-sm"></input>
 										</div>
 									</div>
 								</div>

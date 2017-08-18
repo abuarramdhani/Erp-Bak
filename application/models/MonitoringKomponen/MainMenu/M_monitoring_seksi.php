@@ -35,9 +35,9 @@ class M_monitoring_seksi extends CI_Model {
 		return $query->result_array();
 	}
 	
-	public function tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap){
+	public function tableView($tgl,$inv_from,$q_loc_sour,$inv_to,$q_loc_des,$comp,$order,$lap,$group){
 		$oracle = $this->load->database("oracle", true);
-		$query = $oracle->query("select 
+		$query = "select 
 									msib.SEGMENT1, msib.DESCRIPTION ,
 									sum(moqd.PRIMARY_TRANSACTION_QUANTITY)  onhand,
 									msib.MAX_MINMAX_QUANTITY,(sum(moqd.PRIMARY_TRANSACTION_QUANTITY) - msib.MAX_MINMAX_QUANTITY) boleh_kirim,
@@ -74,11 +74,12 @@ class M_monitoring_seksi extends CI_Model {
 								group by 
 									msib.INVENTORY_ITEM_ID, msib.SEGMENT1, msib.DESCRIPTION,
 									bor.COMPLETION_SUBINVENTORY,bor.ATTRIBUTE1, bor.ATTRIBUTE2, 
-									mil.SEGMENT1,msib.MAX_MINMAX_QUANTITY,msib.UNIT_VOLUME,msib.ATTRIBUTE14,moqd.SUBINVENTORY_CODE
+									mil.SEGMENT1,msib.MAX_MINMAX_QUANTITY,msib.UNIT_VOLUME,msib.ATTRIBUTE14,moqd.SUBINVENTORY_CODE $group
                                 $lap
 								order by
-									$order");
-		return $query->result_array();
+									$order";
+		$sql = $oracle->query($query);
+		return $sql->result_array();
 	}
 	
 }

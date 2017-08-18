@@ -30,11 +30,13 @@ $(document).ready(function() {
 		
 		$('.select2-Sorting').select2({
 			placeholder: "[Select Sorting Type]",
+			allowClear: true,
 			minimumResultsForSearch: -1
 		});
 		
 		$('.select2-JenisLap').select2({
 			placeholder: "[Select Jenis Laporan]",
+			allowClear: true,
 			minimumResultsForSearch: -1
 		});
 		
