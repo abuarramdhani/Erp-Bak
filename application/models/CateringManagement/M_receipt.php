@@ -115,7 +115,7 @@ class M_receipt extends CI_Model {
 			$sql = "
 			insert into cm.cm_receipt
 			(receipt_id,receipt_no,receipt_date,receipt_place,receipt_from,receipt_signer,order_start_date,order_end_date,order_qty,order_price,fine,pph,payment,order_type_id,catering_id)values
-			('$id','$no','$date','$place','$from','$signer','$startdate','$enddate','$orderqty','$orderprice','$fine','$pph','$payment','$ordertype','$catering')";
+			('$id','$no',TO_DATE('$date','YYYY-MM-DD'),'$place','$from','$signer','$startdate','$enddate','$orderqty','$orderprice','$fine','$pph','$payment','$ordertype','$catering')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -137,7 +137,7 @@ class M_receipt extends CI_Model {
 			$sql = "
 			update cm.cm_receipt set 
 				receipt_no='$no',
-				receipt_date='$date',
+				receipt_date=TO_DATE('$date','YYYY-MM-DD'),
 				receipt_place='$place',
 				receipt_from='$from',
 				receipt_signer='$signer',
