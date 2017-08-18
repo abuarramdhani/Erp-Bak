@@ -27,7 +27,7 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
-						<b>Form Pembuatan Master Training</b>
+						<b>View Edit Kuesioner di Record</b>
 					</div>
 					<?php foreach($attendant as $at){$attendant=$at['attendant'];}?>
 					<div class="box-body">
@@ -80,92 +80,93 @@
 						</div>
 						<br>
 						<?php } ?>
-						<?php
-						$bagnum=0;
-						$sgIdDat = array();
-						foreach($segmentessay as $sge){
-							$sgIdDat[] = $sge['segment_id'];
-						}
-						foreach($segment as $sg){
-								if (!in_array($sg['segment_id'], $sgIdDat)) {
-									$bagnum++; ?>
-							<div class="row" style="margin: 10px 10px">
-								<div class="table-responsive col-lg-12" >
-									<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;">
-										<thead>
-											<tr class="bg-primary">
-												<th width="5%">No</th>
-												<th width="10%">Id Statement</th>
-												<th width="55%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
-												<th>Sangat Setuju</th>
-												<th>Setuju</th>
-												<th>Tidak Setuju</th>
-												<th>Sangat Tidak Setuju</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php 
-												$no=0;
-												foreach($statement as $st){
-													if($sg['segment_id']==$st['segment_id']){
-														 $no++ ?>
-											<tr>
-												<td><?php echo $no?></td>
-												<td><?php echo $st['statement_id']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td style="text-align:left;"><?php echo $st['statement_description']?></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
-											</tr>
-											<?php 	}
-												}
-												?>
-										</tbody>
-									</table>
+						<?php $bagnum=0; // foreach($segment as $sg){ $bagnum++ ?>
+						<div class="col-lg-12 text-right">
+							<div class="form-group">
+								<div class="col-lg-12 text-right">
+									<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/cetakExcel/'.$SchedulingId.'/'.$QuestionnaireId)?>" class="btn btn-warning btn-flat" target="_blank">Export Excel</a>
 								</div>
 							</div>
-							<br>
-						<?php }
-						}?>
-						<?php
-						foreach($segmentessay as $sge){
-							$bagnum++ ?>
-							<div class="row" style="margin: 10px 10px">
-								<div class=" col-lg-12" >
-									<table class="table table-bordered table-hover text-center" width="100%">
-										<thead>
-											<tr class="bg-primary">
-												<th width="1px">No</th>
-												<th width="10px">Id Statement</th>
-												<th width="100px"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
-												<th>Jawab</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php 
-												$no=0;
+						</div>
+						<div class="row" style="margin: 10px 10px">
+							<div class="table-responsive col-lg-12" >
+								 <table class="datatable table table-striped table-bordered table-hover text-left" id="tblLimbah" style="table-layout: fixed; min-width:1500px;">
+										<?php 
+											$no=0;
+													$no++
+										?>
+									<thead>
+										<tr class="bg-primary">
+											<th style="width: 30px">No</th>
+											<th style="width: 80px">Action</th>
+											<?php
+											foreach($segment as $sg){
 												foreach($statement as $st){
-													if($sge['segment_id']==$st['segment_id']){ $no++
+													if ($sg['segment_id'] == $st['segment_id']) {
 											?>
-											<tr>
-												<td><?php echo $no?></td>
-												<td><?php echo $st['statement_id']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td style="text-align:left;"><?php echo $st['statement_description']?></td>
-												<td>
-													<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" required>
-												</td>
-											</tr>
-											<?php }} ?>
-										</tbody>
-									</table>
-								</div>
+												<th>
+													<?php echo $sg['segment_description'].' - '.$st['statement_description'] ?>
+												</th>
+											<?php }
+												}
+											}
+											?>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($sheet as $se){ ?>
+										<tr>
+											<td><?php echo $no++; ?></td>
+											<td>
+												<a href="<?php echo base_url('ADMPelatihan/InputQuestionnaire/edit/'.$se['scheduling_id'].'/'.$se['questionnaire_id'].'/'.$se['questionnaire_sheet_id']);?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
+												<a href="<?php $id1=$SchedulingId;$id2=$QuestionnaireId;$id3=$se['questionnaire_sheet_id'];echo base_url('ADMPelatihan/InputQuestionnaire/delete/'.$id1.'/'.$id2.'/'.$id3)?>"  class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
+												<?php
+													foreach($statement as $st){
+												?>
+														<input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden>
+												<?php
+													}
+												
+												?>
+											</td>
+												<?php
+													$stj = explode('||', $se['join_input']);
+													$hasil = array();
+													$j = 0;
+													$k = 0;
+													for ($i = 0; $i < count($stj); $i++) {
+														if($stj[$i] == 1 || $stj[$i] == 2 || $stj[$i] == 3 || $stj[$i] == 4){
+															$hasil[$j]['nilai'] = $stj[$i];
+														} else {
+															$hasil[$j]['essay'][$k] = $stj[$i];
+															$k++;
+														}
+														if(($i+1) == count($stj)) {
+
+														} else {
+															if($stj[($i+1)] == 3) $j++;	
+														}
+															
+															if($stj[$i] == 1) echo "<td>Sangat Tidak Setuju</td>";
+															else if($stj[$i] == 2) echo "<td>Tidak Setuju</td>";
+															else if($stj[$i] == 3) echo "<td>Setuju</td>";
+															else if($stj[$i] == 4) echo "<td>Sangat Setuju</td>";
+															else echo '<td>'.$stj[$i].'</td>';
+													}
+												?>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
 							</div>
-							<br>
-						<?php }?>
+						</div>
+						<br>
+						<?php ?>
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-12 text-right">
+								<div class="form-group">
+								<div class="col-lg-12 text-right">
 								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
 								&nbsp;&nbsp;
 								<a href="<?php echo base_url('ADMPelatihan/Record/Finished')?>" class="btn btn-danger btn btn-flat">Close</a>
@@ -184,17 +185,6 @@
 	</div>
 	</div>
 </section>
-
-<script type="text/javascript">
-
-	var submitted 	= <?php echo $sbm?>;
-	var attendant 	= <?php echo $attendant?>;
-	if (submitted > attendant) {
-		if (confirm("Jumlah kuesioner yang diinput telah melebihi jumlah peserta yang hadir. Namun Anda masih dapat melanjutkan hingga jumlahnya mencapai jumlah peserta yang dijadwalkan. \nIngin melanjutkan penginputan?") != true) {
-		window.location  = "<?php echo base_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$SchedulingId)?>";
-		}
-	}
-
-</script>	
+	
 			
 				

@@ -45,53 +45,42 @@
 													<td>Employee Name</td>
 													<td><p id="employee_name"><?php echo $drel['employee_name'] ?></p></td>
 													<td>Destination</td>
-													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
+													<td><select id="area" name="txt_city_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
-															<?php foreach($Area as $ar){?>
+															<?php foreach($City as $ct){?>
 																<?php
 																	$selected = '';
-																	if ($drel['area_id'] == $ar['area_id']) {
+																	if ($drel['city_id'] == $ct['city_id']) {
 																		$selected = 'selected';
 																	}
 																?>
-																<option <?php echo $selected ?> value="<?php echo $ar['area_id'] ?>"><?php echo $ar['area_name'] ?></option>
+																<option <?php echo $selected ?> value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
 															<?php } ?>
 														</select></td>
 												</tr>
 												<tr>
 													<td>Section</td>
 													<td><p id="section_name"><?php echo $drel['section_name'] ?></p></td>
-													<td>City Type</td>
-													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
-															<option value=""></option>
-															<?php foreach($CityType as $ci){?>
-																<?php
-																	$selected = '';
-																	if ($drel['city_type_id'] == $ci['city_type_id']) {
-																		$selected = 'selected';
-																	}
-																?>
-																<option <?php echo $selected ?> value="<?php echo $ci['city_type_id'] ?>"><?php echo $ci['city_type_name'] ?></option>
-															<?php } ?>
-														</select></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" value="<?php echo $drel['depart_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
+													<td>Unit</td>
+													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" value="<?php echo $drel['return_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Outstation Position</td>
-													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
+													<td>Departemen</td>
+													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
 													<td>Bon</td>
 													<td><input  id="txt_bon" type="text" name="txt_bon" value="<?php echo str_replace(',00', '', $drel['bon_nominal']); ?> " class="form-control input_money" required></td>
+												</tr>
+												<tr>
+													<td>Outstation Position</td>
+													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
+													<td></td>
+													<td></td>
 												</tr>
 												<tr>
 													<td colspan="4">

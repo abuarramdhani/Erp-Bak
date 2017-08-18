@@ -62,8 +62,9 @@ class C_OutstationRealization extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-        $data['Area'] = $this->M_Realization->show_area();
-        $data['CityType'] = $this->M_Realization->show_city_type();
+        //$data['Area'] = $this->M_Realization->show_area();
+        //$data['CityType'] = $this->M_Realization->show_city_type();
+        $data['City'] = $this->M_Realization->show_city();
         $data['Employee'] = $this->M_Realization->show_employee();
         $data['Component'] = $this->M_Realization->show_component();
 
@@ -75,14 +76,17 @@ class C_OutstationRealization extends CI_Controller {
 
 	public function load_process(){
 		$position_id = $this->input->post('txt_position_id');
-		$area_id = $this->input->post('txt_area_id');
+		$destination = $this->input->post('txt_city_id');
+		$destination_ex = explode('-', $destination);
+		$city_id = $destination_ex[0];
+		$area_id = $destination_ex[1];	//$this->input->post('txt_area_id');
 		if ($area_id == '39') {
 			$is_foreign = 1;
 		}
 		else{
 			$is_foreign = 0;
 		}
-		$city_type_id = $this->input->post('txt_city_type_id');
+		$city_type_id = $destination_ex[2];	//$this->input->post('txt_city_type_id');
 		$bon = $this->input->post('txt_bon');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
@@ -390,8 +394,11 @@ class C_OutstationRealization extends CI_Controller {
 	{
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
-		$area_id = $this->input->post('txt_area_id');
-		$city_type_id = $this->input->post('txt_city_type_id');
+		$destination = $this->input->post('txt_city_id');
+		$destination_ex = explode('-', $destination);
+		$city_id = $destination_ex[0];
+		$area_id = $destination_ex[1];	//$this->input->post('txt_area_id');
+		$city_type_id = $destination_ex[2];	//$this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 		$return = $this->input->post('txt_return');
 		$bon_string = $this->input->post('txt_bon');
@@ -405,7 +412,7 @@ class C_OutstationRealization extends CI_Controller {
 
 		$bon = str_replace($string, '', $bon_string);
 
-		$this->M_Realization->new_realization($employee_id,$area_id,$city_type_id,$depart,$return,$bon);
+		$this->M_Realization->new_realization($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon);
 
 		for ($i=0; $i <= $data_count; $i++){ 
 			
@@ -434,8 +441,9 @@ class C_OutstationRealization extends CI_Controller {
 
 		$data['data_realization'] = $this->M_Realization->select_edit_Realization($realization_id);
 		$data['data_realization_detail'] = $this->M_Realization->select_edit_Realization_detail($realization_id);
-		$data['Area'] = $this->M_Realization->show_area();
-        $data['CityType'] = $this->M_Realization->show_city_type();
+		//$data['Area'] = $this->M_Realization->show_area();
+        //$data['CityType'] = $this->M_Realization->show_city_type();
+        $data['City'] = $this->M_Realization->show_city();
         $data['Employee'] = $this->M_Realization->show_employee();
         $data['Component'] = $this->M_Realization->show_component();
 
@@ -606,8 +614,11 @@ class C_OutstationRealization extends CI_Controller {
 	public function update_Realization(){
 		$realization_id = $this->input->post('txt_realization_id');
 		$employee_id = $this->input->post('txt_employee_id');
-		$area_id = $this->input->post('txt_area_id');
-		$city_type_id = $this->input->post('txt_city_type_id');
+		$destination = $this->input->post('txt_city_id');
+		$destination_ex = explode('-', $destination);
+		$city_id = $destination_ex[0];
+		$area_id = $destination_ex[1];	//$this->input->post('txt_area_id');
+		$city_type_id = $destination_ex[2];	//$this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 		$return = $this->input->post('txt_return');
 		$bon_string = $this->input->post('txt_bon');
@@ -622,7 +633,7 @@ class C_OutstationRealization extends CI_Controller {
 
 		$bon = str_replace($string, '', $bon_string);
 
-		$this->M_Realization->update_realization($realization_id,$employee_id,$area_id,$city_type_id,$depart,$return,$bon);
+		$this->M_Realization->update_realization($realization_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon);
 		$this->M_Realization->delete_before_update($realization_id);
 
 		for ($i=0; $i <= $data_count; $i++){ 

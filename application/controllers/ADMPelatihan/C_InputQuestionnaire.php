@@ -40,8 +40,8 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaire();
-
+		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaire($id);
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/MasterQuestionnaire/V_Index',$data);
@@ -61,7 +61,24 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['questionnaire'] 	= $this->M_inputquestionnaire->GetQuestionnaire($id);
+		$data['schedule'] = $this->M_inputquestionnaire->GetSchedule($id);
+		$data['GetSheet'] = $this->M_inputquestionnaire->GetSheet($id);
+
+		$train_id = explode(',', $data['schedule'][0]['training_id']);
+		$trainData = array();
+		foreach ($train_id as $ti) {
+			$trainData[] = $this->M_inputquestionnaire->GetTrain($ti);
+		}
+		
+
+		$quesData = array();
+		foreach ($trainData as $td => $value) {
+			$qid = explode(',', $value[$td]['questionnaire']);
+			foreach ($qid as $qd) {
+				$quesData[]	= $this->M_inputquestionnaire->GetQuestionnaire($id,$qd);
+			}
+		}
+		$data['questionnaire']	= $quesData;
 		$data['training'] 		= $this->M_inputquestionnaire->GetTraining($id);
 		$data['trainingid'] 	= $id;
 
@@ -89,7 +106,6 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['submitted'] 		= $this->M_inputquestionnaire->GetSubmittedSheet($id,$qe);
 		$data['attendant'] 		= $this->M_inputquestionnaire->GetAttendant($id);
 
-
 		$data['training'] 		= $this->M_inputquestionnaire->GetTrainingId($id);
 		$data['questionnaire'] 	= $this->M_inputquestionnaire->GetQuestionnaireId($qe);
 		$data['segment'] 		= $this->M_inputquestionnaire->GetQuestionnaireSegmentId($qe);
@@ -110,12 +126,55 @@ class C_InputQuestionnaire extends CI_Controller {
 		}
 	}
 
+	public function view($id,$qe)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = '';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['SchedulingId'] 	= $id;
+		$data['QuestionnaireId']= $qe;
+		$data['submitted'] 		= $this->M_inputquestionnaire->GetSubmittedSheet($id,$qe);
+		$data['attendant'] 		= $this->M_inputquestionnaire->GetAttendant($id);
+
+		$data['training'] 		= $this->M_inputquestionnaire->GetTrainingId($id);
+		$data['questionnaire'] 	= $this->M_inputquestionnaire->GetQuestionnaireId($qe);
+		$data['sheet']		 	= $this->M_inputquestionnaire->GetQuestionnaireSheet($id, $qe);
+		$data['segment'] 		= $this->M_inputquestionnaire->GetQuestionnaireSegmentId($qe);
+		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
+		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
+		$data['trainer'] 		= $this->M_inputquestionnaire->GetTrainer();
+
+		foreach ($data['submitted'] as $sb){$sbm=$sb['submitted'];}
+		foreach ($data['training'] as $tr){$participant_number=$tr['participant_number'];}
+		if($sbm<$participant_number){
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('ADMPelatihan/InputQuestionnaire/V_View',$data);
+			$this->load->view('V_Footer',$data);
+		}
+		elseif($sbm==$participant_number){
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('ADMPelatihan/InputQuestionnaire/V_View',$data);
+			$this->load->view('V_Footer',$data);
+		}
+	}
+
 	//SUBMIT QUESTIONNAIRE
 	public function Add(){
 		$IdKuesioner	= $this->input->post('txtQuestionnaireId');
 		$IdPenjadwalan	= $this->input->post('txtSchedulingId');
 		$IdStatement	= $this->input->post('txtStatementId');
-		
+		$QSheetId 		= $qsi;
+
 		foreach($IdStatement as $loop){
 			$statement[] = $loop;
 			$input[] = $this->input->post('txtInput'.$loop);
@@ -128,10 +187,82 @@ class C_InputQuestionnaire extends CI_Controller {
 		redirect('ADMPelatihan/InputQuestionnaire/Create/'.$IdPenjadwalan.'/'.$IdKuesioner);
 	}
 
+	public function edit($id,$qe,$qsi)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = '';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['SchedulingId'] 	= $id;
+		$data['QuestionnaireId']= $qe;
+		$data['QuestionnaireSheetId']= $qsi;
+		$data['submitted'] 		= $this->M_inputquestionnaire->GetSubmittedSheet($id,$qe);
+		$data['attendant'] 		= $this->M_inputquestionnaire->GetAttendant($id);
+		$data['training'] 		= $this->M_inputquestionnaire->GetTrainingId($id);
+		$data['questionnaire'] 	= $this->M_inputquestionnaire->GetQuestionnaireId($qe);
+		$data['sheetEdit']		= $this->M_inputquestionnaire->GetQuestionnaireSheetEdit($id, $qe, $qsi);
+		$data['segment'] 		= $this->M_inputquestionnaire->GetQuestionnaireSegmentId($qe);
+		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
+		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
+		$data['trainer'] 		= $this->M_inputquestionnaire->GetTrainer();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/InputQuestionnaire/V_Edit',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function update($id, $qsi){
+		$IdKuesioner	= $this->input->post('txtQuestionnaireId');
+		$IdPenjadwalan	= $this->input->post('txtSchedulingId');
+		$IdStatement	= $this->input->post('txtStatementId');
+		$IdQSheet		= $this->input->post('txtQuestionnaireSheetId');
+		
+		foreach($IdStatement as $loop){
+			$statement[] = $loop;
+			$input[] = $this->input->post('txtInput'.$loop);
+		}
+		$join_statement = join('||', $statement);
+		$join_input		= join('||', $input);
+		
+		$this->M_inputquestionnaire->UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input);
+		
+		redirect('ADMPelatihan/InputQuestionnaire/ToCreate/'.$IdPenjadwalan.'/'.$IdKuesioner);
+	}
+
+
+	public function delete($id1,$id2,$id3)
+	{
+		$id=$id1;
+		$qe=$id2;
+		$this->M_inputquestionnaire->DeleteQuestionnaireSheet($id3);
+		redirect('ADMPelatihan/InputQuestionnaire/view/'.$id.'/'.$qe);
+	}
+
 	public function checkSession(){
 		if($this->session->is_logged){
 		}else{
 			redirect('');
 		}
 	}
+
+	public function cetakExcel($sid,$qid)
+    {
+    	$this->load->library("Excel");
+    	$data['questionnaire'] 	= $this->M_inputquestionnaire->GetQuestionnaireId($qid);
+		$data['segment'] 		= $this->M_inputquestionnaire->GetQuestionnaireSegmentId($qid);
+		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qid);
+		$data['sheet']		 	= $this->M_inputquestionnaire->GetQuestionnaireSheet($sid, $qid);
+		$data['training'] 		= $this->M_inputquestionnaire->GetTrainingId($sid);
+		$data['trainer'] 		= $this->M_inputquestionnaire->GetTrainer();
+
+		$this->load->view('ADMPelatihan/InputQuestionnaire/V_Excel', $data);
+    }
 }

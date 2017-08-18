@@ -62,8 +62,9 @@ class C_OutstationSimulation extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['Area'] = $this->M_Simulation->show_area();
-		$data['CityType'] = $this->M_Simulation->show_city_type();
+		//$data['Area'] = $this->M_Simulation->show_area();
+		//$data['CityType'] = $this->M_Simulation->show_city_type();
+		$data['City'] = $this->M_Simulation->show_city();
 		$data['Employee'] = $this->M_Simulation->show_employee();
 
 		$this->load->view('V_Header',$data);
@@ -74,14 +75,17 @@ class C_OutstationSimulation extends CI_Controller {
 
 	public function load_process(){
 		$position_id = $this->input->post('txt_position_id');
-		$area_id = $this->input->post('txt_area_id');
+		$destination = $this->input->post('txt_city_id');
+		$destination_ex = explode('-', $destination);
+		$city_id = $destination_ex[0];
+		$area_id = $destination_ex[1];	//$this->input->post('txt_area_id');
 		if ($area_id == '39') {
 			$is_foreign = 1;
 		}
 		else{
 			$is_foreign = 0;
 		}
-		$city_type_id = $this->input->post('txt_city_type_id');
+		$city_type_id = $destination_ex[2];	//$this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
 				$depart_tgl = $depart_ex[0];
@@ -226,14 +230,17 @@ class C_OutstationSimulation extends CI_Controller {
 	{
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
-		$area_id = $this->input->post('txt_area_id');
+		$destination = $this->input->post('txt_city_id');
+		$destination_ex = explode('-', $destination);
+		$city_id = $destination_ex[0];
+		$area_id = $destination_ex[1];	//$this->input->post('txt_area_id');
 		if ($area_id == '39') {
 			$is_foreign = 1;
 		}
 		else{
 			$is_foreign = 0;
 		}
-		$city_type_id = $this->input->post('txt_city_type_id');
+		$city_type_id = $destination_ex[2];	//$this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
 				$depart_tgl = $depart_ex[0];
@@ -249,7 +256,7 @@ class C_OutstationSimulation extends CI_Controller {
 						$return_time = $return_wkt_ex[0].':'.$return_wkt_ex[1];
 
 		//Insert Simulation
-		$this->M_Simulation->new_simulation($employee_id,$area_id,$city_type_id,$depart,$return);
+		$this->M_Simulation->new_simulation($employee_id,$city_id,$area_id,$city_type_id,$depart,$return);
 
 		$time_name = array('1' => 'pagi', '2' => 'siang', '3' => 'malam');
 
@@ -352,17 +359,14 @@ class C_OutstationSimulation extends CI_Controller {
 		$data['Menu'] = 'Outstation Transaction';
 		$data['SubMenuOne'] = 'Simulation';
 
-		$data['Employee'] = $this->M_Simulation->show_employee();
-        $data['area_data'] = $this->M_Simulation->show_area();
-        $data['city_type_data'] = $this->M_Simulation->show_city_type();
-
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['data_simulation'] = $this->M_Simulation->select_edit_simulation($simulation_id);
-		$data['Area'] = $this->M_Simulation->show_area();
-		$data['CityType'] = $this->M_Simulation->show_city_type();
+		//$data['Area'] = $this->M_Simulation->show_area();
+		//$data['CityType'] = $this->M_Simulation->show_city_type();
+		$data['City'] = $this->M_Simulation->show_city();
 		$data['Employee'] = $this->M_Simulation->show_employee();
 		$data['GroupUSH'] = $this->M_Simulation->show_group_ush_all();
 		$data['Simulation_detail'] = $this->M_Simulation->select_simulation_detail($simulation_id);
@@ -378,14 +382,17 @@ class C_OutstationSimulation extends CI_Controller {
 		$simulation_id = $this->input->post('txt_simulation_id');
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
-		$area_id = $this->input->post('txt_area_id');
+		$destination = $this->input->post('txt_city_id');
+		$destination_ex = explode('-', $destination);
+		$city_id = $destination_ex[0];
+		$area_id = $destination_ex[1];	//$this->input->post('txt_area_id');
 		if ($area_id == '39') {
 			$is_foreign = 1;
 		}
 		else{
 			$is_foreign = 0;
 		}
-		$city_type_id = $this->input->post('txt_city_type_id');
+		$city_type_id = $destination_ex[2];	//$this->input->post('txt_city_type_id');
 		$depart = $this->input->post('txt_depart');
 			$depart_ex =explode(' ', $depart);
 				$depart_tgl = $depart_ex[0];
@@ -401,7 +408,7 @@ class C_OutstationSimulation extends CI_Controller {
 						$return_time = $return_wkt_ex[0].':'.$return_wkt_ex[1];
 
 		//Insert Simulation
-		$this->M_Simulation->update_simulation($simulation_id,$employee_id,$area_id,$city_type_id,$depart,$return);
+		$this->M_Simulation->update_simulation($simulation_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return);
 		$this->M_Simulation->delete_before_insert($simulation_id);
 
 		$time_name = array('1' => 'pagi', '2' => 'siang', '3' => 'malam');
