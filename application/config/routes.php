@@ -1055,3 +1055,6 @@ $route['GeneralAffair/LimbahKeluar/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_L
 $route['GeneralAffair/LimbahKeluar/(:any)/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/$1/$2/$3';
 $route['GeneralAffair/LimbahKeluar/Report'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/Report';
 $route['GeneralAffair/LimbahKeluar/Record'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/Record';
+
+//-------------------------------Waste Management-----------------------------------------//
+$route['GeneralAffair'] = 'GeneralAffair/C_WasteManagement';

@@ -58,7 +58,8 @@
                                         <tbody>
                                             <?php 
                                             	$no = 1; 
-                                            	foreach($Limbah as $row):
+                                            	foreach($Limbah as $row):$encrypted_string = $this->encrypt->encode($row['limbah_id']);
+                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
@@ -97,11 +98,19 @@
                                                 </td>
 												<td><a target="_blank" href="<?php echo base_url('/assets/limbah/standar-foto/'.$row['standar_foto']);?>"><?php echo $row['standar_foto'];?></a>
                                                 </td>
-												<td><?php echo $row['standar_refrensi'] ?></td>
+												<td><?php if(strlen($row['standar_refrensi'])<50) {
+                                                              echo $row['standar_refrensi'];  
+                                                    }else{
+                                                             echo substr($row['standar_refrensi'], 0, 50).'.......</br>[<a href="'.site_url('GeneralAffair/Limbah/read/'.$encrypted_string.'').'">Read More</a> ] </hr>';    
+                                                    } ?></td>
 												<td><?php echo $row['standar_kemasan'] ?></td>
 												<td><?php echo $row['standar_kebocoran'] ?></td>
 												<td><?php echo $row['standar_lain_lain'] ?></td>
-												<td><?php echo $row['catatan_saran'] ?></td>
+												<td><?php if(strlen($row['catatan_saran'])<50) {
+                                                              echo $row['catatan_saran'];  
+                                                    }else{
+                                                             echo substr($row['catatan_saran'], 0, 50).'.....</br>[<a href="'.site_url('GeneralAffair/Limbah/read/'.$encrypted_string.'').'">Read More</a> ] </hr>';    
+                                                    } ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
