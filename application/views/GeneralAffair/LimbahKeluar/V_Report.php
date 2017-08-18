@@ -53,8 +53,10 @@
                                                 ?>
                                                 <?php
                                                 }else{
+                                                    $tanggalawallink    =   str_replace('-', '.', $tanggalawalformatindo);
+                                                    $tanggalakhirlink   =   str_replace('-', '.', $tanggalakhirformatindo);
                                                     ?>
-                                                    <form method="POST" action="<?php echo site_url('GeneralAffair/LimbahKeluar/cetakExcel') ?>";">
+                                                    <form method="POST" action="<?php echo site_url('GeneralAffair/LimbahKeluar/cetakExcel/'.$tanggalawallink.'/'.$tanggalakhirlink) ?>";">
                                                     <input type="hidden" name="excelTglAwal" id="excelTglAwal" value="<?php echo $tanggalawal; ?>">
                                                     <input type="hidden" name="excelTglAkhir" id="excelTglAkhir" value="<?php echo $tanggalakhir; ?>">
                                                     <input type="hidden" name="exceljenislimbah" id="exceljenislimbah" value="<?php echo $jenislimbah; ?>">

@@ -15,14 +15,17 @@ $styleArray = array(
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
 	$objPHPExcel->getActiveSheet()->getStyle('A:F')->applyFromArray($styleArray);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:F1')->getAlignment()->setHorizontal('center');
 	$objPHPExcel->getActiveSheet()->getStyle('A1:F1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:F5')->getAlignment()->setHorizontal('center');
+	$objPHPExcel->getActiveSheet()->getStyle('A5:F5')->getFont()->setBold(true);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);
 	
 
 	// Redirect output to a client?s web browser (Excel5)
-	//tambahkan paling atas
+
 	header('Content-type: application/vnd-ms-excel');
 	header('Content-Disposition: attachment; filename="Data_Limbah_Transaksi.xlsx"');
 	header('Cache-Control: max-age=0');
@@ -43,11 +46,27 @@ $styleArray = array(
 								 ->setKeywords("Sistem")
 								 ->setCategory("Sistem");
 
+	$objset = $objPHPExcel->setActiveSheetIndex(0);
+	$objget = $objPHPExcel->getActiveSheet();
+	$objget->getStyle("A6:F6")->applyFromArray(
+		array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => '92d050')
+			),
+			'font' => array(
+				'color' => array('rgb' => '000000'),
+				'bold'  => true,
+			),	
+		)				
+	);
+
 
 	// Add some data
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A1', 'Logbook Harian Limbah Bahan Berbahaya Dan Beracun')
-				->setCellValue('A3', 'Periode')
+				->setCellValue('A3', 'Periode :'.$tanggalawal.' - '.$tanggalakhir)
+				->setCellValue('A5', 'Masuknya Limbah B3 dari TPS')
 				->setCellValue('A6', 'No')
 				->setCellValue('B6', 'Jenis Limbah B3 Masuk')
 				->setCellValue('C6', 'Tanggal Limbah B3 Masuk')
@@ -56,7 +75,8 @@ $styleArray = array(
 				->setCellValue('F6', 'Maks.Penyimpanan s/d Tanggal');
 
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:F1');
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:G3');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:F3');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A5:F5');
 
 	$no = 0;
 	$i=6;	

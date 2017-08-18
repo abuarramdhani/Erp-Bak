@@ -23,12 +23,12 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Limbah Transaksi</div>
+                                <div class="box-header with-border">Create Limbah Masuk</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
 											<div class="form-group">
-                                                <label for="txtTanggalTransaksiHeader" class="control-label col-lg-4">Tanggal Transaksi</label>
+                                                <label for="txtTanggalTransaksiHeader" class="control-label col-lg-4">Tanggal Masuk</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" />
                                                 </div>

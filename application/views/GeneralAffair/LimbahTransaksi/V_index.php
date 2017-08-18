@@ -34,7 +34,7 @@
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-												<th>Tanggal Transaksi</th>
+												<th>Tanggal Masuk</th>
 												<th>Jenis Limbah</th>
 												<th>Sumber Limbah</th>
 												<th>Jenis Sumber</th>

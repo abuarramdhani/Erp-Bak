@@ -40,7 +40,7 @@ class C_Limbah extends CI_Controller
 		$user_id = $this->session->userid;
 
 
-		$data['Title'] = 'Limbah';
+		$data['Title'] = 'Koreksi Limbah';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -66,7 +66,7 @@ class C_Limbah extends CI_Controller
 		$data['getSeksi'] = $this->M_limbah->getSeksi();
 		$data['jenis_limbah'] = $this->M_limbah->getJenisLimbah();
 
-		$data['Title'] = 'Limbah';
+		$data['Title'] = 'Koreksi Limbah';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -162,7 +162,7 @@ class C_Limbah extends CI_Controller
 		$data['getSeksi'] = $this->M_limbah->getSeksi();
 		$data['jenis_limbah'] = $this->M_limbah->getJenisLimbah();
 
-		$data['Title'] = 'Limbah';
+		$data['Title'] = 'Koreksi Limbah';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -254,12 +254,21 @@ class C_Limbah extends CI_Controller
 				'temuan_lain_lain_status' => $this->input->post('cmbTemuanLainLainStatusHeader',TRUE),
     		);
 
+
+
 			if(empty($_FILES['fileFoto']['name'])){
-        		unset($transportasi['standar_foto']);
+        		unset($data['standar_foto']);
         	}
         	if(empty($_FILES['fileLimbah']['name'])){
-        		unset($transportasi['kondisi_limbah']);
+        		unset($data['kondisi_limbah']);
         	}
+        	//wah......................ckckkckckckckc..........hadaeeeehhhhh............itu $transportasi dari mana?
+        	//dari kamu copas kodingan lain mungkin....hayooooo........hahaha aku kok gk liat ya 
+        	//hmmmmmmmmmmmmm.................... -_-
+      //   	echo "<pre>";
+    		// print_r($data);
+    		// echo "</pre>";
+    		// exit();
 
 			$this->M_limbah->updateLimbah($data, $plaintext_string);
 
@@ -272,7 +281,7 @@ class C_Limbah extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Limbah';
+		$data['Title'] = 'Koreksi Limbah';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -313,6 +322,10 @@ class C_Limbah extends CI_Controller
     	$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
+		$data['id'] = $id;
+
+		$data['Limbah'] = $this->M_limbah->getLimbah($plaintext_string);
+
     	$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
@@ -332,7 +345,7 @@ class C_Limbah extends CI_Controller
 		$user_id = $this->session->userid;
 
 
-		$data['Title'] = 'Report Limbah';
+		$data['Title'] = 'Report Koreksi Limbah';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -356,7 +369,7 @@ class C_Limbah extends CI_Controller
 		$user_id = $this->session->userid;
 
 
-		$data['Title'] = 'Record Limbah';
+		$data['Title'] = 'Record Koreksi Limbah';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';

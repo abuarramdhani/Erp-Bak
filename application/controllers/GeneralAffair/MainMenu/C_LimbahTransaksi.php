@@ -37,7 +37,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Limbah Transaksi';
+		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -64,7 +64,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['getSeksi']= $this->M_limbahtransaksi->getSeksi();
 		$data['perlakuan']= $this->M_limbahtransaksi->getPerlakuan();
 
-		$data['Title'] = 'Limbah Transaksi';
+		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -115,7 +115,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['getSeksi']= $this->M_limbahtransaksi->getSeksi();
 		$data['perlakuan']= $this->M_limbahtransaksi->getPerlakuan();
 
-		$data['Title'] = 'Limbah Transaksi';
+		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -169,7 +169,7 @@ class C_LimbahTransaksi extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Limbah Transaksi';
+		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -231,7 +231,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Report Limbah Transaksi';
+		$data['Title'] = 'Report Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -253,7 +253,7 @@ class C_LimbahTransaksi extends CI_Controller
 	{	
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Report Limbah Transaksi';
+		$data['Title'] = 'Report Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -281,6 +281,9 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['tanggalakhir']= $tanggalakhir;
 		$data['jenislimbah'] = $jenislimbah;
 
+		$data['tanggalawalformatindo'] 	= date('d-m-Y',strtotime($tanggalawal));
+		$data['tanggalakhirformatindo']	= date('d-m-Y',strtotime($tanggalakhir));
+
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
 		$data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
 
@@ -290,18 +293,23 @@ class C_LimbahTransaksi extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function cetakExcel()
+	public function cetakExcel($tanggalawallink,$tanggalakhirlink)
     {
             $this->load->library("Excel/PHPExcel");
+
+            $tanggalawalx = str_replace('.', '-', $tanggalawallink);
+            $tanggalakhirx = str_replace('.', '-', $tanggalakhirlink);
 
             $tanggalawal = $this->input->post('excelTglAwal');
             $tanggalakhir = $this->input->post('excelTglAkhir');
             $jenisLimbah = $this->input->post('exceljenislimbah'); 
+
 			if($tanggalawal == '') $tanggalawal = '';
 			if($tanggalakhir == '') $tanggalakhir = '';
-			
-
 			if($jenisLimbah == null) $jenisLimbah == ''; 
+
+			$data['tanggalawal'] = $tanggalawal; 
+			$data['tanggalakhir'] = $tanggalakhir; 
 
             $data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
            
@@ -314,7 +322,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Record Limbah Transaksi';
+		$data['Title'] = 'Record Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -336,7 +344,7 @@ class C_LimbahTransaksi extends CI_Controller
 	{	
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Record Limbah Transaksi';
+		$data['Title'] = 'Record Limbah Masuk';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';

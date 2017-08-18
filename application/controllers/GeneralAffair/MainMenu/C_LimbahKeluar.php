@@ -267,8 +267,8 @@ class C_LimbahKeluar extends CI_Controller
 			$buattanggalakhir	= str_replace('/', '-', $periode[1]);
 			$tanggalawal 		= date('Y-m-d', strtotime($buattanggalawal));
 			$tanggalakhir 		= date('Y-m-d', strtotime($buattanggalakhir));
-		}
-		
+		}                                    
+
 		$data['tanggalawal'] = $tanggalawal;
 		$data['tanggalakhir']= $tanggalakhir;
 		$data['jenislimbah'] = $jenislimbah;
@@ -333,10 +333,13 @@ class C_LimbahKeluar extends CI_Controller
 			$tanggalawal 		= date('Y-m-d', strtotime($buattanggalawal));
 			$tanggalakhir 		= date('Y-m-d', strtotime($buattanggalakhir));
 		}
-		
+
 		$data['tanggalawal'] = $tanggalawal;
 		$data['tanggalakhir']= $tanggalakhir;
 		$data['jenislimbah'] = $jenislimbah;
+
+		$data['tanggalawalformatindo'] 	= date('d-m-Y',strtotime($tanggalawal));
+		$data['tanggalakhirformatindo']	= date('d-m-Y',strtotime($tanggalakhir));
 
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
 		$data['filter_data'] = $this->M_limbahkeluar->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
@@ -347,16 +350,23 @@ class C_LimbahKeluar extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function cetakExcel()
+	public function cetakExcel($tanggalawallink,$tanggalakhirlink)
     {
             $this->load->library("Excel/PHPExcel");
+
+            $tanggalawalx = str_replace('.', '-', $tanggalawallink);
+            $tanggalakhirx = str_replace('.', '-', $tanggalakhirlink);
 
             $tanggalawal = $this->input->post('excelTglAwal');
             $tanggalakhir = $this->input->post('excelTglAkhir');
             $jenisLimbah = $this->input->post('exceljenislimbah'); 
+
 			if($tanggalawal == '') $tanggalawal = '';
 			if($tanggalakhir == '') $tanggalakhir = '';
-			if($jenisLimbah == null) $jenisLimbah == ''; 
+			if($jenisLimbah == null) $jenisLimbah == '';
+
+			$data['tanggalawal'] = $tanggalawal; 
+			$data['tanggalakhir'] = $tanggalakhir; 
 
             $data['filter_data'] = $this->M_limbahkeluar->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
            

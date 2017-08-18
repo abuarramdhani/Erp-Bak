@@ -53,7 +53,7 @@
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-                                                <th>Tanggal Transaksi</th>
+                                                <th>Tanggal Masuk</th>
                                                 <th>Jenis Limbah</th>
                                                 <th>Sumber Limbah</th>
                                                 <th>Jenis Sumber</th>

@@ -8,22 +8,31 @@ $styleArray = array(
     ),
 	'alignment' => array(
             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-        )
+        ),
 	);
-
+// $styleBorder = array(
+// 	'borders' => array(
+//         'allborders' => array(
+//         	'style' => PHPExcel_Style_Border::BORDER_THIN
+//         	)
+//       	)		
+// 	);
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
 	$objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleArray);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal(true); 
+	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); 
 	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:G5')->getAlignment()->setHorizontal('center'); 
+	$objPHPExcel->getActiveSheet()->getStyle('A5:G5')->getFont()->setBold(true);
+	// $objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleBorder);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);
 	
 
 	// Redirect output to a client?s web browser (Excel5)
-	//tambahkan paling atas
+
 	header('Content-type: application/vnd-ms-excel');
 	header('Content-Disposition: attachment; filename="Data_Limbah_Keluar.xlsx"');
 	header('Cache-Control: max-age=0');
@@ -35,6 +44,7 @@ $styleArray = array(
 	header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
 	header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
 	header ('Pragma: public'); // HTTP/1.0
+
 // Set document properties
 	$objPHPExcel->getProperties()->setCreator("Sistem")
 								 ->setLastModifiedBy("Sistem")
@@ -44,10 +54,26 @@ $styleArray = array(
 								 ->setKeywords("Sistem")
 								 ->setCategory("Sistem");
 
+	$objset = $objPHPExcel->setActiveSheetIndex(0);
+	$objget = $objPHPExcel->getActiveSheet();
+	$objget->getStyle("A6:G6")->applyFromArray(
+		array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => '92d050')
+			),
+			'font' => array(
+				'color' => array('rgb' => '000000'),
+				'bold'  => true,
+			),	
+		)				
+	);
+
 	// Add some data
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A1', 'Logbook Harian Limbah Bahan Berbahaya Dan Beracun')
-				->setCellValue('A3', 'Periode')
+				->setCellValue('A3', 'Periode :'.$tanggalawal.' - '.$tanggalakhir)
+				->setCellValue('A5', 'Keluarnya Limbah B3 dari TPS')
 				->setCellValue('A6', 'No')
 				->setCellValue('B6', 'Tanggal Keluar Limbah B3')
 				->setCellValue('C6', 'Jumlah Limbah B3 Keluar')
@@ -58,6 +84,7 @@ $styleArray = array(
 
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:G1');
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:G3');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A5:G5');
 
 	$no = 0;
 	$i=6;	

@@ -1044,6 +1044,7 @@ $route['GeneralAffair/Limbah/Record'] = 'GeneralAffair/MainMenu/C_Limbah/Record'
 $route['GeneralAffair/LimbahTransaksi'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi';
 $route['GeneralAffair/LimbahTransaksi/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/$1';
 $route['GeneralAffair/LimbahTransaksi/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/$1/$2';
+$route['GeneralAffair/LimbahTransaksi/(:any)/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/$1/$2/$3';
 $route['GeneralAffair/LimbahTransaksi/Report'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/Report';
 $route['GeneralAffair/LimbahTransaksi/Record'] = 'GeneralAffair/MainMenu/C_LimbahTransaksi/Record';
 
@@ -1051,5 +1052,6 @@ $route['GeneralAffair/LimbahTransaksi/Record'] = 'GeneralAffair/MainMenu/C_Limba
 $route['GeneralAffair/LimbahKeluar'] = 'GeneralAffair/MainMenu/C_LimbahKeluar';
 $route['GeneralAffair/LimbahKeluar/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/$1';
 $route['GeneralAffair/LimbahKeluar/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/$1/$2';
+$route['GeneralAffair/LimbahKeluar/(:any)/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/$1/$2/$3';
 $route['GeneralAffair/LimbahKeluar/Report'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/Report';
 $route['GeneralAffair/LimbahKeluar/Record'] = 'GeneralAffair/MainMenu/C_LimbahKeluar/Record';

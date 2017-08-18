@@ -14,13 +14,15 @@ class M_limbahkeluar extends CI_Model
     		$query = "SELECT limar.*, limnis.jenis_limbah as jenis
                             FROM ga.ga_limbah_keluar as limar
                             LEFT JOIN ga.ga_limbah_jenis as limnis
-                            ON limar.jenis_limbah = limnis.id_jenis_limbah";                          
+                            ON limar.jenis_limbah = limnis.id_jenis_limbah
+                            Order By limar.tanggal_keluar";                          
     	} else {
     		$query = "SELECT limar.*, limnis.jenis_limbah as jenis
                             FROM ga.ga_limbah_keluar as limar
                             LEFT JOIN ga.ga_limbah_jenis as limnis
                             ON limar.jenis_limbah = limnis.id_jenis_limbah
-                            WHERE id_limbah_keluar = $id";
+                            WHERE id_limbah_keluar = $id 
+                            Order By limar.tanggal_keluar";
     	}
         $sql = $this->db->query($query);
     	return $sql->result_array();
@@ -76,25 +78,25 @@ class M_limbahkeluar extends CI_Model
     public function filterData($tanggalawal = FALSE,$tanggalakhir = FALSE, $jenislimbah = FALSE)
     {   
         $condition = '';
-        if($jenislimbah != '') {
-            $condition = "and limar.jenis_limbah='$jenislimbah'";
-        } elseif($tanggalawal === '') {
-            $condition = "and limar.tanggal_keluar BETWEEN '$tanggalawal' AND '$tanggalakhir'";
-        }
-
-        if($jenislimbah == true && $tanggalawal == true) {
-            $condition = "and limar.jenis_limbah='$jenislimbah' and limar.tanggal_keluar BETWEEN '$tanggalawal' AND '$tanggalakhir'";
-        }
-
-        if($jenislimbah=='' && $tanggalawal=='') {
+        if($jenislimbah == '' && $tanggalawal == '') {
             $condition = '';
+        } else if($jenislimbah == true || $tanggalawal == true) {
+            if($jenislimbah == true && $tanggalawal == true) {
+                $condition = "and limar.jenis_limbah='$jenislimbah' and limar.tanggal_keluar BETWEEN '$tanggalawal' AND '$tanggalakhir'";
+            } elseif($jenislimbah != '') {
+                $condition = "and limar.jenis_limbah='$jenislimbah'";    
+            } elseif($tanggalawal != '') {
+                $condition = "and limar.tanggal_keluar BETWEEN '$tanggalawal' AND '$tanggalakhir'";    
+            }
         }
 
         $sqlfilterData = "SELECT limar.*, limnis.jenis_limbah as jenis
                             FROM ga.ga_limbah_keluar as limar
                             LEFT JOIN ga.ga_limbah_jenis as limnis
                             ON limar.jenis_limbah = limnis.id_jenis_limbah
-                            WHERE limar.konfirmasi_status='1'".$condition;
+                            WHERE limar.konfirmasi_status='1' $condition 
+                            Order By limar.tanggal_keluar ";
+
         $query = $this->db->query($sqlfilterData);
         return $query->result_array();
     }

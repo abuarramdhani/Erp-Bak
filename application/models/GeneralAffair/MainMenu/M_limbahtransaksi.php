@@ -21,7 +21,8 @@ class M_limbahtransaksi extends CI_Model
                         LEFT JOIN ga.ga_limbah_jenis AS linis
                         ON limsi.jenis_limbah=linis.id_jenis_limbah
                         LEFT JOIN ga.ga_limbah_perlakuan AS liman
-                        ON limsi.perlakuan=liman.id_perlakuan";
+                        ON limsi.perlakuan=liman.id_perlakuan
+                        Order By limsi.tanggal_transaksi";
     	} else {
     		$sql = "SELECT limsi.*, 
                             dmsi.nama_seksi AS sumber,
@@ -34,7 +35,8 @@ class M_limbahtransaksi extends CI_Model
                         ON limsi.jenis_limbah=linis.id_jenis_limbah
                         LEFT JOIN ga.ga_limbah_perlakuan AS liman
                         ON limsi.perlakuan=liman.id_perlakuan
-                    WHERE limsi.id_transaksi = $id";
+                    WHERE limsi.id_transaksi = $id
+                    Order By limsi.tanggal_transaksi";
     	}
 
         $query = $this->db->query($sql);
@@ -89,18 +91,16 @@ class M_limbahtransaksi extends CI_Model
     public function filterData($tanggalawal = FALSE,$tanggalakhir = FALSE, $jenislimbah = FALSE)
     {
         $condition = '';
-        if($jenislimbah != '') {
-            $condition = "and limsi.jenis_limbah='$jenislimbah'";
-        } elseif($tanggalawal === '') {
-            $condition = "and limsi.tanggal_transaksi BETWEEN '$tanggalawal' AND '$tanggalakhir'";
-        }
-
-        if($jenislimbah == true && $tanggalawal == true) {
-            $condition = "and limsi.jenis_limbah='$jenislimbah' and limsi.tanggal_transaksi BETWEEN '$tanggalawal' AND '$tanggalakhir'";
-        }
-
-        if($jenislimbah=='' && $tanggalawal=='') {
+        if($jenislimbah == '' && $tanggalawal == '') {
             $condition = '';
+        } else if($jenislimbah == true || $tanggalawal == true) {
+            if($jenislimbah == true && $tanggalawal == true) {
+                $condition = "and limsi.jenis_limbah='$jenislimbah' and limsi.tanggal_transaksi BETWEEN '$tanggalawal' AND '$tanggalakhir'";
+            } elseif($jenislimbah != '') {
+                $condition = "and limsi.jenis_limbah='$jenislimbah'";   
+            } elseif($tanggalawal != '') {
+                $condition = "and limsi.tanggal_transaksi BETWEEN '$tanggalawal' AND '$tanggalakhir'";    
+            }
         }
 
         $sqlfilterData = "SELECT limsi.*, 

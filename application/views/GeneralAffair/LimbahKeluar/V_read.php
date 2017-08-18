@@ -24,14 +24,38 @@
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border">Read Limbah Keluar</div>
+                                 <?php foreach ($LimbahKeluar as $headerRow):$encrypted_string = $this->encrypt->encode($headerRow['id_limbah_keluar']);
+                                                            $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string); ?>
                                 <div class="box-body">
+
+                                <div class="col-lg-12">
+                                           
+                                            <div class="row">
+                                                <div class="nav-tabs-custom" align="center">
+                                                   
+                                                        <?php if($headerRow['konfirmasi_status']==1) {
+                                                            echo "<div class='callout callout-success'>
+                                                                        <h4><strong>Status Confirmed! </strong></h4> <p>Anda telah melakukan konfirmasi pada data limbah ini.</p>
+                                                                </div>";
+                                                            }elseif($headerRow['konfirmasi_status']==2) {
+                                                                echo "<div class='callout callout-danger'>
+                                                                        <h4><strong>Status Not Confirmed! </strong></h4> <p>Anda tidak melakukan konfirmasi pada data limbah ini.</p>
+                                                                </div>";
+                                                            }else{
+                                                                echo "";
+                                                            }
+                                                        ?>
+                                                      
+                                                </div>
+                                            </div>
+                                    </div>
+
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-                                                    <?php foreach ($LimbahKeluar as $headerRow):$encrypted_string = $this->encrypt->encode($headerRow['id_limbah_keluar']);
-                                                            $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string); ?>
+                                                   
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Tanggal Keluar</strong></td>
                                                             <td style="border: 0">: <?php echo date('d M Y',strtotime($headerRow['tanggal_keluar'])); ?></td>
@@ -61,31 +85,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12">
-                                            <br />
-                                            <br />
-                                            <div class="row">
-                                                <div class="nav-tabs-custom">
-                                                    <ul class="nav nav-tabs">
-													</ul>
-                                                    <div class="tab-content" align="center">
-                                                        <?php if($headerRow['konfirmasi_status']==1) {
-                                                            echo "<div class='callout callout-success'>
-                                                                        <h4><strong>Status Confirmed! </strong></h4> <p>Anda telah melakukan konfirmasi pada data limbah ini.</p>
-                                                                </div>";
-                                                            }elseif($headerRow['konfirmasi_status']==2) {
-                                                                echo "<div class='callout callout-danger'>
-                                                                        <h4><strong>Status Not Confirmed! </strong></h4> <p>Anda tidak melakukan konfirmasi pada data limbah ini.</p>
-                                                                </div>";
-                                                            }else{
-                                                                echo "";
-                                                            }
-                                                        ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
+                                    </div>
                                     </div>
                                     <div class="panel-footer">
                                         <div align="right">

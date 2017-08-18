@@ -53,8 +53,10 @@
                                                 ?>
                                                 <?php
                                                 }else{
+                                                    $tanggalawallink    =   str_replace('-', '.', $tanggalawalformatindo);
+                                                    $tanggalakhirlink   =   str_replace('-', '.', $tanggalakhirformatindo);
                                                     ?>
-                                                    <form method="POST" action="<?php echo site_url('GeneralAffair/LimbahTransaksi/cetakExcel') ?>">
+                                                    <form method="POST" action="<?php echo site_url('GeneralAffair/LimbahTransaksi/cetakExcel/'.$tanggalawallink.'/'.$tanggalakhirlink) ?>";">
                                                     <input type="hidden" name="excelTglAwal" id="excelTglAwal" value="<?php echo $tanggalawal; ?>">
                                                     <input type="hidden" name="excelTglAkhir" id="excelTglAkhir" value="<?php echo $tanggalakhir; ?>">
                                                     <input type="hidden" name="exceljenislimbah" id="exceljenislimbah" value="<?php echo $jenislimbah; ?>">
@@ -73,7 +75,7 @@
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-												<th>Tanggal Transaksi</th>
+												<th>Tanggal Masuk</th>
 												<th>Jenis Limbah</th>
 												<th>Sumber Limbah</th>
 												<th>Jenis Sumber</th>

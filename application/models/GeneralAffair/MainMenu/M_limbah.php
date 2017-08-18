@@ -16,7 +16,8 @@ class M_limbah extends CI_Model
                         left join dm.dm_seksi as dmsi
                             on galim.seksi_kirim=dmsi.seksi_id
                         left join ga.ga_limbah_jenis as linis
-                            on galim.jenis_limbah=linis.id_jenis_limbah";
+                            on galim.jenis_limbah=linis.id_jenis_limbah
+                        Order By galim.tanggal_kirim";
         } else {
             $sql = "SELECT galim.*, dmsi.nama_seksi AS seksi, linis.jenis_limbah AS limbahjenis  
                     FROM ga.ga_limbah as galim 
@@ -24,7 +25,8 @@ class M_limbah extends CI_Model
                             on galim.seksi_kirim=dmsi.seksi_id
                         left join ga.ga_limbah_jenis as linis
                             on galim.jenis_limbah=linis.id_jenis_limbah 
-                    WHERE galim.limbah_id = $id";
+                    WHERE galim.limbah_id = $id
+                    Order By galim.tanggal_kirim";
         }
 
 
