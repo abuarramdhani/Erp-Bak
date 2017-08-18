@@ -167,7 +167,8 @@ class C_Receipt extends CI_Controller {
 	{
 		$id 		= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
-		$date 		= date("Y-m-d",strtotime($this->input->post('TxtReceiptDate')));
+		$date 		= $this->input->post('TxtReceiptDate');
+		$date       = date("Y-m-d", strtotime($date));
 		$place 		= $this->input->post('TxtPlace');
 		$from 		= $this->input->post('TxtFrom');
 		$signer		= $this->input->post('TxtSigner');
@@ -187,7 +188,8 @@ class C_Receipt extends CI_Controller {
 		
 		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
 		
-		$finedate = date("Y-m-d",strtotime($this->input->post('TxtFineDate')));
+		$finedate = $this->input->post('TxtFineDate');
+		$finedate       = date("Y-m-d", strtotime($finedate));
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
 		$finetype = $this->input->post('TxtFineType');
@@ -196,6 +198,7 @@ class C_Receipt extends CI_Controller {
 				
 			$i=0;
 			foreach($finedate as $loop){
+				$finedate[$i] = date("Y-m-d", strtotime($finedate[$i]));
 				$data_fine[$i] = array(
 					'receipt_id' 			=> $this->input->post('TxtID'),
 					'receipt_fine_date' 	=> $finedate[$i],
@@ -217,7 +220,9 @@ class C_Receipt extends CI_Controller {
 	{
 		$id			= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
-		$date 		= date("Y-m-d",strtotime($this->input->post('TxtReceiptDate')));
+		$date 		= $this->input->post('TxtReceiptDate');
+		$date       = date("Y-m-d", strtotime($date));
+		
 		$place 		= $this->input->post('TxtPlace');
 		$from 		= $this->input->post('TxtFrom');
 		$signer		= $this->input->post('TxtSigner');
@@ -240,6 +245,8 @@ class C_Receipt extends CI_Controller {
 		$this->M_receipt->DeleteReceiptFine($id);
 		
 		$finedate = $this->input->post('TxtFineDate');
+		$finedate = date("Y-m-d", strtotime($finedate));
+		
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
 		$finetype = $this->input->post('TxtFineType');
@@ -248,6 +255,8 @@ class C_Receipt extends CI_Controller {
 				
 			$i=0;
 			foreach($finedate as $loop){
+
+				$finedate[$i]       = date("Y-m-d", strtotime($finedate[$i]));
 				$data_fine[$i] = array(
 					'receipt_id' 		=> $this->input->post('TxtID'),
 					'receipt_fine_date' 	=> $finedate[$i],
