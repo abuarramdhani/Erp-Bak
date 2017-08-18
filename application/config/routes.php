@@ -1073,11 +1073,7 @@ $route['GeneralAffair/LimbahKeluar/Record'] = 'GeneralAffair/MainMenu/C_LimbahKe
 $route['GeneralAffair'] = 'GeneralAffair/C_WasteManagement';
 
 //------------------------------------ Calibration Report ----------------------------
-$route['GeneralAffair/Limbah'] = 'GeneralAffair/MainMenu/C_Limbah';
 $route['CalibrationReport'] = 'CalibrationReport/C_Index';
-$route['GeneralAffair/Limbah/(:any)'] = 'GeneralAffair/MainMenu/C_Limbah/$1';
 $route['CalibrationReport/Calibration'] = 'CalibrationReport/MainMenu/C_Component';
-$route['GeneralAffair/Limbah/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_Limbah/$1/$2';
 $route['CalibrationReport/Calibration/(:any)'] = 'CalibrationReport/MainMenu/C_Component/$1';
-$route['GeneralAffair/Limbah/Report'] =  'GeneralAffair/MainMenu/C_Limbah/Report';
 $route['CalibrationReport/Calibration/(:any)/(:any)'] = 'CalibrationReport/MainMenu/C_Component/$1/$2';
