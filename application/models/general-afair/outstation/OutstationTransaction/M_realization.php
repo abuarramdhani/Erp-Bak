@@ -7,7 +7,7 @@ class M_Realization extends CI_Model {
     }
 	
 	public function show_realization(){
-		$sql="select * from ga.ga_outstation_realization aa, ga.ga_outstation_area ar, ga.ga_outstation_city_type ct, er.er_employee_all emp, er.er_section sec where aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id and aa.employee_id=emp.employee_id and emp.section_code= sec.section_code order by aa.realization_id";
+		$sql="select * from ga.ga_outstation_realization aa, ga.ga_outstation_city ct, er.er_employee_all emp, er.er_section sec where aa.city_id=ct.city_id and aa.employee_id=emp.employee_id and emp.section_code= sec.section_code order by aa.realization_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	} 
@@ -25,7 +25,7 @@ class M_Realization extends CI_Model {
 	}
 
 	public function select_edit_realization($realization_id){
-		$sql="select * from ga.ga_outstation_realization aa, ga.ga_outstation_area ar, er.er_employee_all emp, er.er_section sec, ga.ga_outstation_position pst, ga.ga_outstation_city_type ct where aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id and aa.employee_id = emp.employee_id and emp.section_code = sec.section_code and emp.outstation_position = pst.position_id and aa.realization_id = '$realization_id'";
+		$sql="select * from ga.ga_outstation_realization aa, er.er_employee_all emp, er.er_section sec, ga.ga_outstation_position pst, ga.ga_outstation_city ct where aa.city_id=ct.city_id and aa.employee_id = emp.employee_id and emp.section_code = sec.section_code and emp.outstation_position = pst.position_id and aa.realization_id = '$realization_id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

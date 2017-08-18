@@ -58,7 +58,7 @@
 													<td>Departemen</td>
 													<td><p id="department_name">-</p></td>
 													<td>Bon</td>
-													<td><input id="txt_bon" type="text" name="txt_bon" class="form-control input_money" required></td>
+													<td><input id="txt_bon" type="text" name="txt_bon" class="form-control input_money"></td>
 												</tr>
 												<tr>
 													<td>Outstation Position</td>
@@ -146,17 +146,17 @@
 											<tbody>
 												<tr class="multiRow">
 													<td>
-														<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+														<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 															<option value=""></option>
 															<?php foreach($Component as $comp){ ?>
 																<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
 															<?php } ?>
 														</select>
 													</td>
-													<td><input type="text" name="txt_info[]" class="form-control" value="" required/></td>
-													<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" required/></td>
-													<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" required/></td>
-													<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+													<td><input type="text" name="txt_info[]" class="form-control" value="" /></td>
+													<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" /></td>
+													<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" /></td>
+													<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal"  readonly/></td>
 													<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 												</tr>
 											</tbody>

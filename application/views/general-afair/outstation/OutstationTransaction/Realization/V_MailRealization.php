@@ -55,7 +55,7 @@ Bersama dengan ini kami informasikan bahwa Laporan Dinas Luar pekerja atas nama 
 			}else{
 				$action = "dikembalikan";
 			}
-			echo "<li>".trim($dr['employee_name'])." - ".$dr['employee_code'].", tujuan ".$dr['area_name'].", tgl ".date_format(date_create($dr['depart_time']),"d-m-Y")." - ".date_format(date_create($dr['return_time']),"d-m-Y").", jumlah uang yang ".$action." Rp.".number_format(abs($all_cost['total_all']) , 2, ',', '.')."</li>";
+			echo "<li>".trim($dr['employee_name'])." - ".$dr['employee_code'].", tujuan ".$dr['city_province'].' - '.$dr['city_name'].", tgl ".date_format(date_create($dr['depart_time']),"d-m-Y")." - ".date_format(date_create($dr['return_time']),"d-m-Y").", jumlah uang yang ".$action." Rp.".number_format(abs($all_cost['total_all']) , 2, ',', '.')."</li>";
 		}
 	?>
 </ul>
