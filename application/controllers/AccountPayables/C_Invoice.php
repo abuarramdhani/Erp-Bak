@@ -285,6 +285,68 @@ class C_Invoice extends CI_Controller {
 			redirect('AccountPayables/Invoice/faktursa');
 		}
 
+	}
+	public function saveTaxNumberManual(){
+
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$invoice_id = $this->input->post('invoice_id');
+		$faktur_type = $this->input->post('faktur_type');
+		$tanggalFaktur = $this->input->post('tanggalFaktur');
+		$tanggalFakturCon = $this->input->post('tanggalFakturCon');
+		$npwpPenjual = $this->input->post('npwpPenjual');
+		$namaPenjual = $this->input->post('namaPenjual');
+		$alamatPenjual = $this->input->post('alamatPenjual');
+		$dpp = $this->input->post('jumlahDpp');
+		$ppn = $this->input->post('jumlahPpn');
+		$ppnbm = "";
+		$comment = $this->input->post('txaCmt');
+		$tax_number = $this->input->post('nomorFaktur');
+		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
+		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
+
+		$checkInv = $this->M_Invoice->checkInvoice($invoice_id);
+		if ($checkInv[0]['ATTRIBUTE3'] != NULL || $checkInv[0]['ATTRIBUTE3'] != '') {
+		$invoice_id = $this->input->post('invoice_id');
+			echo"
+				<script>
+				var inv = confirm('Data sudah ada di faktur oracle. Tetap simpan[replace]?');
+				if(inv != true) {
+					window.stop();
+					window.location.assign('".base_url()."/AccountPayables/C_Invoice/inputTaxNumber/".$invoice_id."');
+				};
+				</script>
+			";
+		};
+
+		$checkFak = $this->M_Invoice->checkFaktur($tax_number);
+		if ($checkFak) {
+			$query = $this->M_Invoice->saveTaxNumberManual($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment);
+		} else {
+			$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment );
+		};
+		
+		if($query){
+			echo "
+				<script>
+				    alert('Input Berhasil');
+				</script>
+			";
+		}else{
+			echo "
+			<script>
+			    alert('Input Gagal');
+			</script>
+			";
+		}
+
+		if ($invoice_id != NULL || $invoice_id != '') {
+			$this->inputTaxNumber($invoice_id);
+		}else if ($invoice_id == NULL || $invoice_id == '') {
+			redirect('AccountPayables/Invoice/faktursa');
+		}
+
 	}	
 
 	public function deleteTaxNumber($invoice_id,$invoice_num){

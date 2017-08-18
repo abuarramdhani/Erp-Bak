@@ -28,6 +28,9 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
 
 	<script src="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
 
@@ -44,6 +47,14 @@
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+<<<<<<< HEAD
+	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customKL.js');?>" type="text/javascript"></script>
+
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+
+=======
+>>>>>>> a60f7a05e27d667a03cfe2c5a9c9496bc92d2cb6
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
@@ -67,6 +78,9 @@
 				"searching": false,
 				"bLengthChange": false
 			});
+
+			//bootstrap WYSIHTML5 - text editor
+    		$(".textarea").wysihtml5();
          });
     </script>
 	<script language=Javascript>

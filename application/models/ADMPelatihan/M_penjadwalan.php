@@ -27,9 +27,18 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
-		public function GetEvaluation()
+		public function GetAlert($date,$start_time,$end_time,$room,$training_id)
 		{
-			$sql = "select evaluation from pl.pl_scheduling_training";
+			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
+					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
+					where pst.training_id = pmt.training_id 
+						AND pst.date = to_date('$date','DD-MM-YYYY')
+						and (pst.start_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
+							AND to_timestamp('$end_time', 'HH24:MI')::time without time zone
+						OR end_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
+							and to_timestamp('$end_time', 'HH24:MI')::time without time zone)
+						AND pst.room = '$room'
+					order by pst.room";
 			$query=$this->db->query($sql);
 			return $query->result_array();
 		}

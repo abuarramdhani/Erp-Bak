@@ -99,13 +99,13 @@
 									<div class="col-lg-9">
 										<?php
 											$eval='';
-											if($rc['evaluation']==1){$eval='Wawasan';}
-											if($rc['evaluation']==2){$eval='Pengetahuan';}
-											if($rc['evaluation']==3){$eval='Perilaku';}
-											if($rc['evaluation']==12){$eval='Wawasan, Pengetahuan';}
-											if($rc['evaluation']==13){$eval='Wawasan, Perilaku';}
-											if($rc['evaluation']==23){$eval='Pengetahuan, Perilaku';}
-											if($rc['evaluation']==123){$eval='Wawasan, Pengetahuan, Perilaku';}
+											if($rc['evaluation']=='1'){$eval='Wawasan';}
+											if($rc['evaluation']=='2'){$eval='Pengetahuan';}
+											if($rc['evaluation']=='3'){$eval='Perilaku';}
+											if($rc['evaluation']=='1,2'){$eval='Wawasan, Pengetahuan';}
+											if($rc['evaluation']=='1,3'){$eval='Wawasan, Perilaku';}
+											if($rc['evaluation']=='2,3'){$eval='Pengetahuan, Perilaku';}
+											if($rc['evaluation']=='1,2,3'){$eval='Wawasan, Pengetahuan, Perilaku';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>

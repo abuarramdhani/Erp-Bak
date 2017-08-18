@@ -45,53 +45,42 @@
 													<td>Employee Name</td>
 													<td><p id="employee_name"><?php echo $drel['employee_name'] ?></p></td>
 													<td>Destination</td>
-													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
+													<td><select id="area" name="txt_city_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
-															<?php foreach($Area as $ar){?>
+															<?php foreach($City as $ct){?>
 																<?php
 																	$selected = '';
-																	if ($drel['area_id'] == $ar['area_id']) {
+																	if ($drel['city_id'] == $ct['city_id']) {
 																		$selected = 'selected';
 																	}
 																?>
-																<option <?php echo $selected ?> value="<?php echo $ar['area_id'] ?>"><?php echo $ar['area_name'] ?></option>
+																<option <?php echo $selected ?> value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
 															<?php } ?>
 														</select></td>
 												</tr>
 												<tr>
 													<td>Section</td>
 													<td><p id="section_name"><?php echo $drel['section_name'] ?></p></td>
-													<td>City Type</td>
-													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
-															<option value=""></option>
-															<?php foreach($CityType as $ci){?>
-																<?php
-																	$selected = '';
-																	if ($drel['city_type_id'] == $ci['city_type_id']) {
-																		$selected = 'selected';
-																	}
-																?>
-																<option <?php echo $selected ?> value="<?php echo $ci['city_type_id'] ?>"><?php echo $ci['city_type_name'] ?></option>
-															<?php } ?>
-														</select></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" value="<?php echo $drel['depart_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
+													<td>Unit</td>
+													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" value="<?php echo $drel['return_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
+													<td>Departemen</td>
+													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
+													<td>Bon</td>
+													<td><input  id="txt_bon" type="text" name="txt_bon" value="<?php echo str_replace(',00', '', $drel['bon_nominal']); ?> " class="form-control input_money" ></td>
+												</tr>
+												<tr>
 													<td>Outstation Position</td>
 													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
-													<td>Bon</td>
-													<td><input  id="txt_bon" type="text" name="txt_bon" value="<?php echo str_replace(',00', '', $drel['bon_nominal']); ?> " class="form-control input_money" required></td>
+													<td></td>
+													<td></td>
 												</tr>
 												<tr>
 													<td colspan="4">
@@ -220,7 +209,7 @@
 													?>
 														<tr class="multiRow">
 															<td>
-																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 																	<option value=""></option>
 																	<?php foreach($Component as $comp){ ?>
 																		<?php
@@ -233,27 +222,27 @@
 																	<?php } ?>
 																</select>
 															</td>
-															<td><input type="text" name="txt_info[]" class="form-control" value="<?php echo $real_det['info'] ?>" required/></td>
-															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" required/></td>
-															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/></td>
-															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+															<td><input type="text" name="txt_info[]" class="form-control" value="<?php echo $real_det['info'] ?>" /></td>
+															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" /></td>
+															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" /></td>
+															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal"  readonly/></td>
 															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 														</tr>
 													<?php
 														} ?>
 														<tr class="multiRow">
 															<td>
-																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 																	<option value=""></option>
 																	<?php foreach($Component as $comp){ ?>
 																		<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
 																	<?php } ?>
 																</select>
 															</td>
-															<td><input type="text" name="txt_info[]" class="form-control" value="" required/></td>
-															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" required/></td>
-															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" required/></td>
-															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+															<td><input type="text" name="txt_info[]" class="form-control" value="" /></td>
+															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" /></td>
+															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" /></td>
+															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal"  readonly/></td>
 															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 														</tr>
 												</tbody>
