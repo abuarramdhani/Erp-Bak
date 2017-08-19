@@ -1,26 +1,53 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_Plotting extends CI_Controller {
+class C_Order_In extends CI_Controller {
    function __construct() 
    {
-        parent::__construct();
-		$this->load->model('M_plotting');
+         parent::__construct();
+		$this->load->helper('form');
+        $this->load->helper('url');
+        $this->load->helper('html');
+        $this->load->library('form_validation');
+          //load the login model
+		$this->load->library('session');
+		  //$this->load->library('Database');
+		$this->load->model('M_Index');
+		$this->load->model('ManagementOrder/M_order_in');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		  
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+				  //redirect('index');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
+		  //$this->load->model('CustomerRelationship/M_Index');
     }
 	
 	public function index()
 	{
 		$this->checkSession();
-		$user_id = $this->session->userdata('username');
-		$user['user_id'] = $user_id;
-		 
-		$this->load->view('template/V_Header');
-		$this->load->view('template/V_Menu',$user);
-		$this->load->view('MainMenu/V_Plotting');
-		$this->load->view('template/V_Footer');
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Order In';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		$data['action'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['staff']   = $this->M_order_in->staff();
+		$data['count']   = $this->M_order_in->countPlotting();
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ManagementOrder/MainMenu/V_Order_In', $data);
+		$this->load->view('V_Footer',$data);
 	}
 	
 	public function getMember(){
-		$getMember = $this->M_plotting->staff();
+		$getMember = $this->M_order_in->staff();
 		echo json_encode($getMember);
 	}
 	
@@ -30,27 +57,27 @@ class C_Plotting extends CI_Controller {
 		$subject = $this->input->post('subject',true);
 		$date = date("Y-m-d H:i:s");
 		$agent = $this->session->userdata('username');
-		$getTick = $this->M_plotting->getNoTick($ticket);
+		$getTick = $this->M_order_in->getNoTick($ticket);
 		$active= '1';
 		foreach($getTick as $tc){
 			$notik = $tc['ticket_id'];
 		}
 		
-		$getName = $this->M_plotting->getName($member);
+		$getName = $this->M_order_in->getName($member);
 		$name	 = $getName->firstname;
-		$check   = $this->M_plotting->checkPlot($ticket);
+		$check   = $this->M_order_in->checkPlot($ticket);
 		if($check){
-			$save = $this->M_plotting->updateClaim($member,$ticket,$subject,$name,$notik,$date,$agent,$active);
+			$save = $this->M_order_in->updateClaim($member,$ticket,$subject,$name,$notik,$date,$agent,$active);
 			echo $member;
 		}else{
-			$save = $this->M_plotting->saveClaim($member,$ticket,$subject,$name,$notik,$date,$agent,$active);
+			$save = $this->M_order_in->saveClaim($member,$ticket,$subject,$name,$notik,$date,$agent,$active);
 			echo $member;
 		}
 	}
 	
 	public function removePlotting(){
 		$ticket = $this->input->post('ticket');
-		$this->M_plotting->removePlotting($ticket);
+		$this->M_order_in->removePlotting($ticket);
 		echo "success";
 	}
 	
@@ -58,7 +85,7 @@ class C_Plotting extends CI_Controller {
 		$todo = $this->input->post('todo',true);
 		$ticket = $this->input->post('ticket',true);
 		$date = date("Y-m-d H:i:s");
-		$save = $this->M_plotting->saveTodo($todo,$ticket,$date);
+		$save = $this->M_order_in->saveTodo($todo,$ticket,$date);
 		echo "success";
 	}
 	
@@ -73,8 +100,8 @@ class C_Plotting extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userdata('username');
 		$data['user_id'] = $user_id;
-		$data['staff']   = $this->M_plotting->staff();
-		$data['count']   = $this->M_plotting->countPlotting();
+		$data['staff']   = $this->M_order_in->staff();
+		$data['count']   = $this->M_order_in->countPlotting();
 		$this->load->view('template/V_Header');
 		$this->load->view('template/V_Menu',$data);
 		$this->load->view('MainMenu/V_Member');
@@ -83,8 +110,8 @@ class C_Plotting extends CI_Controller {
 	
 	public function getPlotting(){
 		$member = $this->input->post('member',true);
-		$listJob	= $this->M_plotting->listJob($member);
-		$descJob	= $this->M_plotting->descJob($member);
+		$listJob	= $this->M_order_in->listJob($member);
+		$descJob	= $this->M_order_in->descJob($member);
 		$i = 0;
 		foreach($listJob as $row){
 			foreach($descJob as $rw){
@@ -101,74 +128,27 @@ class C_Plotting extends CI_Controller {
 	}
 	
 	public function ExistTicket($id){
-		$data = $this->M_plotting->listJob($id);
+		$data = $this->M_order_in->listJob($id);
 		foreach($data as $dt){
 				$ticket = $dt['id_ticket'];
-				$check = $this->M_plotting->existTicket($ticket);
+				$check = $this->M_order_in->existTicket($ticket);
 					if($check){
-						$this->M_plotting->updateJob($ticket);
+						$this->M_order_in->updateJob($ticket);
 					}
 		}
 	}
 	
-	public function AjaxPlotting($member){
-		
-		$data = $this->M_plotting->listJob($member);
-		$output = array();
-		$a=1;
-		$i=0;
-		
-		foreach($data as $k => $value) {
-			$output[] = array_values($value);
-			$ticket   = $output[$i][0];
-			$id		  = $output[$i][1];
-			$priority =  $output[$i][3];
-			$comment =  $output[$i][4];
-			$duedate =  $output[$i][5];
-			if(!$comment){
-				$class_date = "";
-				$readonly = "readonly";
-			}else{
-				$class_date = "duedate";
-				$readonly = "";
-			}
-			if(empty($priority)){
-				$link = "<div id='field_priority".$i."'><input type='number' class='form-control' maxlength='2'  onkeyup='savePriority(\"".$i."\",\"".site_url()."\",\"".$ticket."\")' name='txtPriority' style='width:60px;' id='txtPriority".$i."'></div>";
-			}else{
-				$link = "<div id='field_priority".$i."'><input type='number' class='form-control' maxlength='2'  onkeyup='savePriority(\"".$i."\",\"".site_url()."\",\"".$ticket."\")' name='txtPriority' style='width:60px;' id='txtPriority".$i."' value='".$output[$i][3]."'></div>";
-			}
-			$duedate = "<div id='duedate".$a."'><input type='text' class='form-control $class_date' name='txtDueDate' id='txtDueDate".$a."' style='width:90px;' data-id='".$ticket."' value='".$duedate."' $readonly></input></div>";	
-			$act = "<a href='http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id=".$id."' target='blank_'><b>".$ticket."</b></a>";
-			$todo = "<div id='field_todo".$a."' data-tip='".$comment."'><input type='text' name='txtToDo' id='txtToDo".$a."' value='".$comment."' class='form-control field-todo bg-danger' style='width:100%' data-id='".$ticket."'></input></div>";	
-			$sentto = " <a data-toggle='modal' id='showModal' href='#' data-id='".$ticket."'><i class='fa fa-share fa-2x' style='color:orange;text-align:center;'></i></a>";	
-			array_pop($output[$i]);
-			array_unshift($output[$i], "$act");
-			array_unshift($output[$i], "$a");
-			array_splice($output[$i], 2, 2);
-			array_splice($output[$i], 3, 1);
-			array_splice($output[$i], 3, 3);
-			array_push($output[$i], "$link");
-			array_push($output[$i], "$todo");
-			array_push($output[$i], "$duedate");
-			if($this->session->userdata('prev')=='fullver_sion'){
-				array_push($output[$i], "$sentto");
-			}
-			$a++;
-			$i++;
-		}
-		echo json_encode(array('data' => $output));
-	}
 	
 	public function setPriority(){
 		$prior = $this->input->post('prior',true);
 		$ticket = $this->input->post('ticket',true);
-		$save = $this->M_plotting->setPriority($prior,$ticket);
+		$save = $this->M_order_in->setPriority($prior,$ticket);
 		echo "Priority has been Set .. !!";
 	}
 	
 	public function CountJob(){
 		$member = $this->input->post('member');
-		$row_data = $this->M_plotting->qtyJob($member);
+		$row_data = $this->M_order_in->qtyJob($member);
 		if(empty($row_data)){
 			echo "0";
 		}else{
@@ -183,9 +163,9 @@ class C_Plotting extends CI_Controller {
 		$id = $this->input->post('id');
 		$member = $this->input->post('member');
 		$ticket = $this->input->post('ticket');
-		$getName = $this->M_plotting->getName($member);
+		$getName = $this->M_order_in->getName($member);
 		$name	 = $getName->firstname;
-		$save = $this->M_plotting->changePlotting($id,$member,$ticket,$name);
+		$save = $this->M_order_in->changePlotting($id,$member,$ticket,$name);
 		echo "success";
 	}
 	
@@ -194,11 +174,11 @@ class C_Plotting extends CI_Controller {
 		$duedate = $this->input->post('duedate');
 		$duedate = date("Y-m-d",strtotime($duedate));
 		$date = date("Y-m-d H:i:s");
-		$checkTodo = $this->M_plotting->checkTodo($ticket);
+		$checkTodo = $this->M_order_in->checkTodo($ticket);
 			if($checkTodo){
-				$this->M_plotting->updateDuedate($ticket,$duedate,$date);
+				$this->M_order_in->updateDuedate($ticket,$duedate,$date);
 			}else{
-				$this->M_plotting->insertDuedate($ticket,$duedate,$date);
+				$this->M_order_in->insertDuedate($ticket,$duedate,$date);
 			}
 		echo "success";
 	}
@@ -206,19 +186,19 @@ class C_Plotting extends CI_Controller {
 	public function PlottingTable($tab){
 		switch ($tab) {
 			case "1":
-				$data = $this->M_plotting->order_emergency();
+				$data = $this->M_order_in->order_emergency();
 				break;
 			case "2":
-				$data = $this->M_plotting->order_overdue();
+				$data = $this->M_order_in->order_overdue();
 				break;
 			case "3":
-				$data = $this->M_plotting->order_unanswered();
+				$data = $this->M_order_in->order_unanswered();
 				break;
 			case "4":
-				$data = $this->M_plotting->order_wip();
+				$data = $this->M_order_in->order_wip();
 				break;
 			case "5":
-				$data = $this->M_plotting->order_holded();
+				$data = $this->M_order_in->order_holded();
 				break;
 		}
 		
@@ -233,7 +213,7 @@ class C_Plotting extends CI_Controller {
 			$num = $output[$i][1];
 			$subject = $output[$i][2];
 			$t = 0;
-			$todo	 = $this->M_plotting->todo($num);
+			$todo	 = $this->M_order_in->todo($num);
 				if(!empty($todo)){
 					$comment = $todo->todo;
 					$duedate = $todo->duedate;
@@ -250,31 +230,23 @@ class C_Plotting extends CI_Controller {
 					$readonly = "readonly";
 					$class_date = "";
 				}
-			$plot = $this->M_plotting->plotting($num);
+			$plot = $this->M_order_in->plotting($num);
 				if(!empty($plot)){
 					$name = $plot->name_;
 				}else{
 					$name = "";
 				}
-			if($this->session->userdata('prev')=='fullver_sion'){
+			$staff = $this->M_order_in->staff();
 			$select = "<div id='plotting".$a."'>
 						<select name='txsClaim' id='txsClaim".$tab."".$a."' class='form-control field-save' style='width:100%' data-id='".$subject."' data-id-index='".$num."'>
-							<option value=''>[ ".$name." ]</option>
-							<option value='33'>Gilardi</option>
-							<option value='18'>Paulus</option>
-							<option value='19'>Alfian</option>
-							<option value='49'>Junawi</option>
-							<option value='50'>R</option>
-							<option value='53'>Rezaldi</option>
-							<option value='60'>Brian</option>
-							<option value='62'>Godeliva</option>
-							<option value='65'>Adnan</option>
-						</select>
+							<option value=''>[ ".$name." ]</option>";
+							foreach($staff as $staff_item){
+								$select .= "<option value='".$staff_item['staff_id']."'>".$staff_item['firstname']."</option>";
+							}
+						$select .= "</select>
 						</div>";
-			}else{
-				$select = "<div id='plotting".$a."'><input class='form-control' style='width:100%;' value='".$name."' data-id='".$num."' readonly></input></div>";
-			}
-			$duedate = "<div id='duedate".$a."'><input type='text' class='form-control $class_date' name='txtDueDate' id='txtDueDate".$a."' data-id='".$num."' value='".$duedate."' $readonly></input></div>";
+			
+			$duedate = "<div id='duedate".$a."'><input type='text' class='form-control $class_date' name='txtDueDate' id='txtDueDate".$a."' data-id='".$num."' data-date-format='yyyy-mm-dd' style='width:150px;' value='".$duedate."' $readonly></input></div>";
 			$todo = "<div id='field_todo".$a."'><input type='text' name='txtToDo' id='txtToDo".$a."' value='".$comment."' class='form-control field-todo' data-tip='".$comment."' style='width:100%' data-id='".$num."'></input></div>";
 			$link = " <a href='http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id=".$tick."' target='blank_'><b>".$num."</b></a>";
 			$delete = "<button type='button' class='close field-remove ' style='color:black' data-id='".$num."'>&times;</button>";
@@ -285,9 +257,7 @@ class C_Plotting extends CI_Controller {
 			array_push($output[$i], "$select");
 			array_push($output[$i], "$todo");
 			array_push($output[$i], "$duedate");
-			if($this->session->userdata('prev')=='fullver_sion'){
 				array_push($output[$i], "$delete");
-			}
 			array_unshift($output[$i], "$a");
 			$a++;
 			$i++;
