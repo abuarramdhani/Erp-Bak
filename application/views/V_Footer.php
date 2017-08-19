@@ -28,6 +28,8 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/canvasjs/canvasjs.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.js');?>"></script>
 	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
 	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
@@ -46,6 +48,7 @@
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
