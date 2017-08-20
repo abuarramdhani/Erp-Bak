@@ -39,6 +39,7 @@
 												<th style="text-align:center;">Ticket</th>
 												<th style="text-align:center;">Subject</th>
 												<th style="text-align:center;">Order To*</th>
+												<th style="text-align:center;">Tags</th>
 												<th style="text-align:center;">To Do</th>
 												<th style="text-align:center;">Duedate</th>
 												<th style="text-align:center;">X</th>

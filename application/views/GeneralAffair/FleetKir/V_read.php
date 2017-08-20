@@ -30,6 +30,7 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
+<<<<<<< HEAD
                                                     <?php foreach ($FleetKir as $headerRow): ?>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
@@ -59,6 +60,37 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
                                                         </tr>
+=======
+                                                    <?php foreach ($FleetKir as $headerRow): ?>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Kir</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_kir']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Periode Awal Kir</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['periode_awal_kir']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Periode Akhir Kir</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['periode_akhir_kir']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Biaya</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['biaya']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
+                                                        </tr>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>

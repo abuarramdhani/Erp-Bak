@@ -80,4 +80,23 @@ class C_Scheduler extends CI_Controller {
 		echo json_encode($selectTicket);
 	}
 	
+	function ChooseClassificationFormat(){
+		$id = $this->input->post('id',true);
+		$getFormat = $this->M_scheduler->getFormat($id);
+		if(empty($getFormat)){
+			echo "empty";
+		}else{
+			$no = 0;
+			foreach($getFormat as $getFormat_item){
+				$no++;
+				echo "<tr>
+						<td>".$no."</td>
+						<td>".$getFormat_item['classification']."</td>
+						<td></td>
+						<td></td>
+					  </tr>";
+			}
+		}
+	}
+	
 }

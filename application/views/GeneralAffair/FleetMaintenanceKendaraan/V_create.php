@@ -26,7 +26,11 @@
                                 <div class="box-header with-border">Create Fleet Maintenance Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
+<<<<<<< HEAD
                                         <div class="row">
+=======
+                                        <div class="row">
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan Id</label>
                                                 <div class="col-lg-4">
@@ -39,21 +43,33 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTanggalMaintenanceHeader" class="control-label col-lg-4">Tanggal Maintenance</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalMaintenanceHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalMaintenanceHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtKilometerMaintenanceHeader" class="control-label col-lg-4">Kilometer Maintenance</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Kilometer Maintenance" name="txtKilometerMaintenanceHeader" id="txtKilometerMaintenanceHeader" class="form-control" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="cmbMaintenanceKategoriIdHeader" class="control-label col-lg-4">Maintenance Kategori Id</label>
@@ -67,28 +83,44 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txaAlasanHeader" class="control-label col-lg-4">Alasan</label>
                                                 <div class="col-lg-4">
                                                     <textarea name="txaAlasanHeader" id="txaAlasanHeader" class="form-control" placeholder="Alasan"></textarea>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 
                                         </div>

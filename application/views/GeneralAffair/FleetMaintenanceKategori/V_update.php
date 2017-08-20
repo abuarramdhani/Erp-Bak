@@ -29,27 +29,43 @@
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
+<<<<<<< HEAD
                                         <div class="row">
+=======
+                                        <div class="row">
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="txtMaintenanceKategoryHeader" class="control-label col-lg-4">Maintenance Kategory</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Maintenance Kategory" name="txtMaintenanceKategoryHeader" id="txtMaintenanceKategoryHeader" class="form-control" value="<?php echo $headerRow['maintenance_kategory']; ?>"/>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" value="<?php echo $headerRow['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" value="<?php echo $headerRow['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 
                                         </div>

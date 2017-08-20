@@ -120,34 +120,7 @@ $(document).ready(function() {
 	// NOTIFICATION END
 	
 });
-	// window.onload = function () {
-		// var base_url = window.location.origin;
-		// $.ajax({
-			// url: base_url+'/erp/ManagementOrder/Kaizen/Approval' 
-		// })
-		// .done(function(data) {
-			// var data = JSON.parse(data);
-			
-			// for(var i = 0; i < data['member'].length; i++) {
-				// var member = data['member'][i]['firstname'];
-				// addChart3(bulan, persenTercapai);
-				// setChartValue(persenTercapai);
-				// setChartLabel(member);
-			// }
-		// })
-		// .fail(function() {
-			// console.log("error");
-		// })
-		// .always(function() {
-			// console.log("complete");
-		// });
-	// }
-
-	// function addChart3(label, data){
-		// myChart.data.labels.push(label);
-		// myChart.data.datasets[0].data.push(data);
-		// myChart.update();
-	// }
+	
 
 
  window.onload = function () {
@@ -381,7 +354,14 @@ $(document).on("click", ".js-panel", function () {
 				  var plot = data[4],
 					  $node = this.api().row(row).nodes().to$();
 					  
-			  }   
+			  },
+			"initComplete": function(settings, json) {
+				$(".select-tags").select2({
+						allowClear: true,
+						minimumInputLength: 0,
+						minimumResultsForSearch: -1
+					});
+			  }			  
         });
 	$('body').on('focus',".duedate", function(){
 		$(this).datepicker({
@@ -430,6 +410,29 @@ $(document).on("keyup", ".field-todo", function () {
 
 //+++++++++++++++++++++++
 
+	//: FUNCTION ADD TAGING ORDER :\\
+
+//+++++++++++++++++++++++
+
+$(document).on("change", ".field-tags", function () {
+	var str	= $(this).attr("id");
+	var id	= str.substring(7, 9);
+	var host   = window.location.origin;
+	var ticket = $(this).attr("data-id");
+	var tags   = $(this).val();
+	$('#field_tags'+id+'').addClass('has-error');
+		$.ajax({
+			type:'POST',
+			data:{tags: tags,ticket: ticket},
+			url : host+"/erp/ManagementOrder/Order_In/saveTags",
+			success : function(result){
+				alert(result);
+			}
+		  });
+});
+
+//+++++++++++++++++++++++
+
 	//: FUNCTION DELETE PLOTTING :\\
 
 //+++++++++++++++++++++++
@@ -437,7 +440,7 @@ $(document).on("keyup", ".field-todo", function () {
 $(document).on("click", ".field-remove", function () {
 	var host   = window.location.origin;
 	var ticket = $(this).attr("data-id");
-	var r = confirm("Beneran mau di hapus ?");
+	var r = confirm("Serius nih mau di hapus ?");
 		if (r == true) {
 			$.ajax({
 				type:'POST',
@@ -702,7 +705,16 @@ function deleteRowManagement(tableID) {
 	}
 }
 
-function changeClassificationProject(){
+function changeClassificationProject(base){
+	var cl = $('#txtClassification').val();
+	$.ajax({
+		url : base+"ManagementOrder/Scheduler/ChooseClassificationFormat",
+		type : "POST",
+		data : {id:cl},
+		success : function(result){
+			$('#table_add_classification tbody').html(result);
+		}
+	});
 }
 
 

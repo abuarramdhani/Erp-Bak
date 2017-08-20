@@ -30,6 +30,7 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
+<<<<<<< HEAD
                                                     <?php foreach ($FleetKendaraan as $headerRow): ?>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Nomor Polisi</strong></td>
@@ -71,6 +72,49 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
                                                         </tr>
+=======
+                                                    <?php foreach ($FleetKendaraan as $headerRow): ?>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Polisi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_polisi']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Kendaraan Id</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['jenis_kendaraan_id']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Merk Kendaraan Id</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['merk_kendaraan_id']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Warna Kendaraan Id</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['warna_kendaraan_id']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tahun Pembuatan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tahun_pembuatan']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Stnk</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['foto_stnk']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Bpkb</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['foto_bpkb']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Kendaraan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['foto_kendaraan']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
+                                                        </tr>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>

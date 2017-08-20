@@ -33,7 +33,11 @@
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
+<<<<<<< HEAD
                                                 <th style="text-align:center; min-width:80px">Action</th>
+=======
+                                                <th style="text-align:center; min-width:80px">Action</th>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 												<th>Merk Kendaraan</th>
 												<th>Start Date</th>
 												<th>End Date</th>
@@ -52,10 +56,17 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+<<<<<<< HEAD
                                                 </td>
 												<td><?php echo $row['merk_kendaraan'] ?></td>
 												<td><?php echo $row['start_date'] ?></td>
 												<td><?php echo $row['end_date'] ?></td>
+=======
+                                                </td>
+												<td><?php echo $row['merk_kendaraan'] ?></td>
+												<td><?php echo $row['start_date'] ?></td>
+												<td><?php echo $row['end_date'] ?></td>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

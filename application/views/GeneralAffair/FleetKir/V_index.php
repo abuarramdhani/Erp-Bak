@@ -33,7 +33,11 @@
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
+<<<<<<< HEAD
                                                 <th style="text-align:center; min-width:80px">Action</th>
+=======
+                                                <th style="text-align:center; min-width:80px">Action</th>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 												<th>Kendaraan Id</th>
 												<th>Tanggal Kir</th>
 												<th>Periode Awal Kir</th>
@@ -56,6 +60,7 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetKir/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 	<a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetKir/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('GeneralAffair/FleetKir/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+<<<<<<< HEAD
                                                 </td>
 												<td><?php echo $row['kendaraan_id'] ?></td>
 												<td><?php echo $row['tanggal_kir'] ?></td>
@@ -64,6 +69,16 @@
 												<td><?php echo $row['biaya'] ?></td>
 												<td><?php echo $row['start_date'] ?></td>
 												<td><?php echo $row['end_date'] ?></td>
+=======
+                                                </td>
+												<td><?php echo $row['kendaraan_id'] ?></td>
+												<td><?php echo $row['tanggal_kir'] ?></td>
+												<td><?php echo $row['periode_awal_kir'] ?></td>
+												<td><?php echo $row['periode_akhir_kir'] ?></td>
+												<td><?php echo $row['biaya'] ?></td>
+												<td><?php echo $row['start_date'] ?></td>
+												<td><?php echo $row['end_date'] ?></td>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

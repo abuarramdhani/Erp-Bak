@@ -32,4 +32,13 @@ class M_scheduler extends CI_Model {
 			return $query->result_array();
 		}
 		
+		function getFormat($id){
+			$sql = "select cgl.classification_sequence,c.classification from mo.mo_classification_group_list cgl 
+					join mo.mo_classification c on cgl.classification_id=c.id
+					where cgl.classification_group_id='$id'
+					order by cgl.classification_sequence";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
 }

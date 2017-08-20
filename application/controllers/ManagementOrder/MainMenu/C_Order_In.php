@@ -89,6 +89,14 @@ class C_Order_In extends CI_Controller {
 		echo "success";
 	}
 	
+	public function saveTags(){
+		$tags = $this->input->post('tags',true);
+		$ticket = $this->input->post('ticket',true);
+		$date = date("Y-m-d H:i:s");
+		$singleTags = end($tags)
+		echo $singleTags;
+	}
+	
 	public function checkSession(){
 		if($this->session->userdata('is_logged')){
 		}else{
@@ -237,6 +245,7 @@ class C_Order_In extends CI_Controller {
 					$name = "";
 				}
 			$staff = $this->M_order_in->staff();
+			$selectTags = $this->M_order_in->selectTags();
 			$select = "<div id='plotting".$a."'>
 						<select name='txsClaim' id='txsClaim".$tab."".$a."' class='form-control field-save' style='width:100%' data-id='".$subject."' data-id-index='".$num."'>
 							<option value=''>[ ".$name." ]</option>";
@@ -245,8 +254,15 @@ class C_Order_In extends CI_Controller {
 							}
 						$select .= "</select>
 						</div>";
-			
-			$duedate = "<div id='duedate".$a."'><input type='text' class='form-control $class_date' name='txtDueDate' id='txtDueDate".$a."' data-id='".$num."' data-date-format='yyyy-mm-dd' style='width:150px;' value='".$duedate."' $readonly></input></div>";
+			$tags = "<div id='field_tags".$a."'>
+						<select name='txtTags' id='txtTags".$tab."".$a."' multiple='multiple' class='form-control field-tags select-tags' style='width:170px;font-size:13px;' data-id='".$subject."' data-id-index='".$num."' >
+						";
+							foreach($selectTags as $selectTags_item){
+								$tags .= "<option value='".$selectTags_item['id']."'>".$selectTags_item['tags']."</option>";
+							}
+						$tags .= "</select>
+					</div>";
+			$duedate = "<div id='duedate".$a."'><input type='text' class='form-control $class_date' name='txtDueDate' id='txtDueDate".$a."' data-id='".$num."' data-date-format='yyyy-mm-dd' style='width:100px;' value='".$duedate."' $readonly></input></div>";
 			$todo = "<div id='field_todo".$a."'><input type='text' name='txtToDo' id='txtToDo".$a."' value='".$comment."' class='form-control field-todo' data-tip='".$comment."' style='width:100%' data-id='".$num."'></input></div>";
 			$link = " <a href='http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id=".$tick."' target='blank_'><b>".$num."</b></a>";
 			$delete = "<button type='button' class='close field-remove ' style='color:black' data-id='".$num."'>&times;</button>";
@@ -255,6 +271,7 @@ class C_Order_In extends CI_Controller {
 			array_unshift($output[$i], "$link");
 			array_splice($output[$i], 1, 1);
 			array_push($output[$i], "$select");
+			array_push($output[$i], "$tags");
 			array_push($output[$i], "$todo");
 			array_push($output[$i], "$duedate");
 				array_push($output[$i], "$delete");

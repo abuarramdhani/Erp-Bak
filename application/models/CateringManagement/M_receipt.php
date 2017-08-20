@@ -137,7 +137,7 @@ class M_receipt extends CI_Model {
 			$sql = "
 			update cm.cm_receipt set 
 				receipt_no='$no',
-				receipt_date='$date',
+				receipt_date=TO_DATE('$date','YYYY-MM-DD'),
 				receipt_place='$place',
 				receipt_from='$from',
 				receipt_signer='$signer',

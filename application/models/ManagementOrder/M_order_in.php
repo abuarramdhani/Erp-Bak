@@ -292,5 +292,10 @@ class M_order_in extends CI_Model {
 			$query     = $this->db->query($sql);
 			return $query->result_array();
 		}
+		function selectTags(){
+			$sql	   = "select * from mo.mo_tags";
+			$query     = $this->db->query($sql);
+			return $query->result_array();
+		}
 		
 }

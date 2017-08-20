@@ -29,13 +29,21 @@
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
+<<<<<<< HEAD
                                         <div class="row">
+=======
+                                        <div class="row">
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Polisi</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Nomor Polisi" name="txtNomorPolisiHeader" id="txtNomorPolisiHeader" class="form-control" value="<?php echo $headerRow['nomor_polisi']; ?>"/>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="cmbJenisKendaraanIdHeader" class="control-label col-lg-4">Jenis Kendaraan Id</label>
@@ -54,7 +62,11 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="cmbMerkKendaraanIdHeader" class="control-label col-lg-4">Merk Kendaraan Id</label>
@@ -73,7 +85,11 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="cmbWarnaKendaraanIdHeader" class="control-label col-lg-4">Warna Kendaraan Id</label>
@@ -92,49 +108,77 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTahunPembuatanHeader" class="control-label col-lg-4">Tahun Pembuatan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Tahun Pembuatan" name="txtTahunPembuatanHeader" id="txtTahunPembuatanHeader" class="form-control" value="<?php echo $headerRow['tahun_pembuatan']; ?>"/>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto Stnk</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Foto Stnk" name="txtFotoStnkHeader" id="txtFotoStnkHeader" class="form-control" value="<?php echo $headerRow['foto_stnk']; ?>"/>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto Bpkb</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Foto Bpkb" name="txtFotoBpkbHeader" id="txtFotoBpkbHeader" class="form-control" value="<?php echo $headerRow['foto_bpkb']; ?>"/>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtFotoKendaraanHeader" class="control-label col-lg-4">Foto Kendaraan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Foto Kendaraan" name="txtFotoKendaraanHeader" id="txtFotoKendaraanHeader" class="form-control" value="<?php echo $headerRow['foto_kendaraan']; ?>"/>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" value="<?php echo $headerRow['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" value="<?php echo $headerRow['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 
                                         </div>

@@ -45,7 +45,7 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Classification Project</label>
 											<div class="col-lg-4">
-												<select class="form-crontrol select-classification" name="txtClassification" onChange="changeClassificationProject('<?php echo site_url(); ?>')" style="width:100%;">
+												<select class="form-crontrol select-classification" name="txtClassification" id="txtClassification" onChange="changeClassificationProject('<?php echo site_url(); ?>')" style="width:100%;">
 													<option value=""></option>
 													<?php
 														foreach($ClassificationProject as $ClassificationProject_item){
@@ -64,15 +64,17 @@
 												<div class="panel panel-default">
 													<div class="panel-body">
 														<div class="table-responsive" >
-															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;">
+															<table class="table table-bordered table-hover"  id="table_add_classification">
 																<thead>
 																	<tr class="bg-primary">
-																		<th width="10%">No</th>
+																		<th width="5%">No</th>
 																		<th width="30%">Schedule</th>
 																		<th width="15%">Plan</th>
 																		<th width="15%">Action</th>
 																	</tr>
 																</thead>
+																<tbody>
+																</tbody>
 															</table>
 														</div>
 													</div>

@@ -26,7 +26,11 @@
                                 <div class="box-header with-border">Create Fleet Kecelakaan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
+<<<<<<< HEAD
                                         <div class="row">
+=======
+                                        <div class="row">
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan Id</label>
                                                 <div class="col-lg-4">
@@ -39,35 +43,55 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTanggalKecelakaanHeader" class="control-label col-lg-4">Tanggal Kecelakaan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalKecelakaanHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txaSebabHeader" class="control-label col-lg-4">Sebab</label>
                                                 <div class="col-lg-4">
                                                     <textarea name="txaSebabHeader" id="txaSebabHeader" class="form-control" placeholder="Sebab"></textarea>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtBiayaPerusahaanHeader" class="control-label col-lg-4">Biaya Perusahaan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtBiayaPekerjaHeader" class="control-label col-lg-4">Biaya Pekerja</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">Pekerja</label>
@@ -81,21 +105,33 @@
                                                         ?>
                                                     </select>
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
                                                 </div>
+<<<<<<< HEAD
                                             </div>
+=======
+                                            </div>
+>>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 
                                         </div>
