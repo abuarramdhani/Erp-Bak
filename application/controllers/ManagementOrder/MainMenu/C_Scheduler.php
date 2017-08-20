@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_Kaizen extends CI_Controller {
+class C_Scheduler extends CI_Controller {
 	
 	function __construct()
 	{
@@ -13,7 +13,7 @@ class C_Kaizen extends CI_Controller {
 		$this->load->library('session');
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
-		$this->load->model('ManagementOrder/M_kaizen');
+		$this->load->model('ManagementOrder/M_scheduler');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -39,26 +39,45 @@ class C_Kaizen extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Kaizen';
-		$data['SubMenuOne'] = 'Kaizen';
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		$data['action'] = '';
+		$data['Title'] = 'SCHEDULER PROJECT';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ManagementOrder/MainMenu/V_Kaizen', $data);
+		$this->load->view('ManagementOrder/MainMenu/Scheduler/V_Index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 	
-	function Approve(){
-		$selectMember = $this->M_kaizen->selectMember();
-		$selectKaizen = $this->M_kaizen->selectKaizen();
-		$data['member'] = $selectMember;
-		$data['kaizen'] = $selectKaizen;
-		echo json_encode($data);
+	function Create(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		$data['action'] = '';
+		$data['Title'] = 'SCHEDULER PROJECT';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['ClassificationProject'] = $this->M_scheduler->getClassificationProject();
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ManagementOrder/MainMenu/Scheduler/V_Create', $data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	function getTicket(){
+		$q = $this->input->post('term',true);
+		$selectTicket = $this->M_scheduler->getTicket($q);
+		echo json_encode($selectTicket);
 	}
 	
 }

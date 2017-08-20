@@ -38,24 +38,57 @@ $(document).ready(function() {
 	
 	$('#table-class').DataTable({"lengthChange": false,"searching": false,"info": false});
 	$('#table-class-group').DataTable({"lengthChange": false,"searching": false,"info": false});
+	$('#table-schedule').DataTable({"lengthChange": false,"searching": true,"info": false});
 		
 	//SELECT2
 	$(".select2-member").select2({
-	allowClear: true,
-	placeholder: "[Select Agent]",
-	minimumInputLength: 0,
-	minimumResultsForSearch: -1,
-	ajax: {		
-			url: baseUrl+"/erp/ManagementOrder/Member/getMember",
-			dataType: 'json',
-			processResults: function (data) {
-				return {
-					results: $.map(data, function(obj) {
-						return { id:obj.staff_id, text:obj.firstname};
-					})
-				};
+		allowClear: true,
+		placeholder: "[Select Agent]",
+		minimumInputLength: 0,
+		minimumResultsForSearch: -1,
+		ajax: {		
+				url: baseUrl+"/erp/ManagementOrder/Member/getMember",
+				dataType: 'json',
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.staff_id, text:obj.firstname};
+						})
+					};
+				}
 			}
-		}
+	});
+	
+	$(".select-classification").select2({
+		allowClear: true,
+		placeholder: "[Select Classification Project]",
+		minimumInputLength: 0,
+		minimumResultsForSearch: -1
+	});
+	
+	$(".select-project").select2({
+		allowClear: true,
+		placeholder: "[Select Project]",
+		tags : true,
+		minimumInputLength: 0,
+		ajax: {		
+				url: baseUrl+"/erp/ManagementOrder/Scheduler/getTicket",
+				dataType: 'json',
+				type: "POST",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term
+					}
+					return queryParameters; 
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.number, text:obj.subject};
+						})
+					};
+				}
+			}
 	});
 	
 	$(".select2-classification").select2({
@@ -667,6 +700,9 @@ function deleteRowManagement(tableID) {
 	}catch(e) {
 		alert(e);
 	}
+}
+
+function changeClassificationProject(){
 }
 
 
