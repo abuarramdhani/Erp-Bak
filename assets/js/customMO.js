@@ -207,7 +207,7 @@ chart.render();
 }
 
 /***************************
-	MODOFICATION TAGS
+	MODIFICATION TAGS
 ****************************/
 function removeTag(base,id){
 	$.ajax({
@@ -231,7 +231,7 @@ $(document).on("keyup", ".field-tag", function () {
 	if(event.keyCode == 13){
 		var tag = $('#txtTags').val();
 		var id = $('#txtId').val();
-		if(id.length == 0){
+		if(id.length == 0 && tag.length != 0){
 			$.ajax({
 				type:'POST',
 				data:{tag: tag},
@@ -288,7 +288,7 @@ $(document).on("keyup", ".field-class", function () {
 	if(event.keyCode == 13){
 		var class_ = $('#txtClass').val();
 		var id = $('#txtId').val();
-		if(id.length == 0){
+		if(id.length == 0 && class_.length!=0){
 			$.ajax({
 				type:'POST',
 				data:{class_: class_},
@@ -418,17 +418,29 @@ $(document).on("change", ".field-tags", function () {
 	var str	= $(this).attr("id");
 	var id	= str.substring(7, 9);
 	var host   = window.location.origin;
-	var ticket = $(this).attr("data-id");
+	var ticket = $(this).attr("data-id-index");
 	var tags   = $(this).val();
-	$('#field_tags'+id+'').addClass('has-error');
-		$.ajax({
-			type:'POST',
-			data:{tags: tags,ticket: ticket},
-			url : host+"/erp/ManagementOrder/Order_In/saveTags",
-			success : function(result){
-				alert(result);
-			}
-		  });
+		$.post(host+"/erp/ManagementOrder/Order_In/CountTags", {ticket:ticket}, function(data){
+			if(tags == null){
+				$.ajax({
+					type:'POST',
+					data:{tags: null,ticket: ticket},
+					url : host+"/erp/ManagementOrder/Order_In/deleteTags"
+				  });
+			}else if(data > tags.length){
+				$.ajax({
+					type:'POST',
+					data:{tags: tags,ticket: ticket},
+					url : host+"/erp/ManagementOrder/Order_In/deleteTags"
+				  });
+			}else{
+				$.ajax({
+					type:'POST',
+					data:{tags: tags,ticket: ticket},
+					url : host+"/erp/ManagementOrder/Order_In/saveTags"
+				  });
+			}				
+		});
 });
 
 //+++++++++++++++++++++++

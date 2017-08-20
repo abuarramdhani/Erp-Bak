@@ -322,7 +322,7 @@ class C_Setting extends CI_Controller {
 					<td>".$no."</td>
 					<td>".$row['classification']."</td>
 					<td>
-						<a class='btn btn-xs bg-maroon' onclick='removeClass0(\"".site_url()."\",\"".$row['id']."\")'><span class='fa fa-remove'></span></a>
+						<a class='btn btn-xs bg-maroon' onclick='removeClass(\"".site_url()."\",\"".$row['id']."\")'><span class='fa fa-remove'></span></a>
 						<a class='btn btn-xs btn-warning' onclick='editClass(\"".$row['classification']."\",\"".$row['id']."\",\"".site_url()."\")'><span class='fa fa-edit'></span></a>
 					</td>
 				</tr>

@@ -90,11 +90,28 @@ class C_Order_In extends CI_Controller {
 	}
 	
 	public function saveTags(){
+		$user = $this->session->userid;
 		$tags = $this->input->post('tags',true);
 		$ticket = $this->input->post('ticket',true);
 		$date = date("Y-m-d H:i:s");
-		$singleTags = end($tags)
-		echo $singleTags;
+		$singleTags = end($tags);
+		$check = $this->M_order_in->checkTags($singleTags,$ticket);
+		if(empty($check)){
+			$save = $this->M_order_in->saveTags($singleTags,$ticket,$date,$user);
+		}
+		echo "success";
+	}
+	
+	public function deleteTags(){
+		$tags = $this->input->post('tags',true);
+		$ticket = $this->input->post('ticket',true);
+		$singleTags = end($tags);
+		if($tags == null){
+			$delete = $this->M_order_in->deleteTagsTicket($ticket);
+		}else{
+			$delete = $this->M_order_in->deleteTags($singleTags,$ticket);
+		}
+		echo "success";
 	}
 	
 	public function checkSession(){
@@ -245,6 +262,7 @@ class C_Order_In extends CI_Controller {
 					$name = "";
 				}
 			$staff = $this->M_order_in->staff();
+			$tagslist = $this->M_order_in->tagslist($num);
 			$selectTags = $this->M_order_in->selectTags();
 			$select = "<div id='plotting".$a."'>
 						<select name='txsClaim' id='txsClaim".$tab."".$a."' class='form-control field-save' style='width:100%' data-id='".$subject."' data-id-index='".$num."'>
@@ -258,7 +276,15 @@ class C_Order_In extends CI_Controller {
 						<select name='txtTags' id='txtTags".$tab."".$a."' multiple='multiple' class='form-control field-tags select-tags' style='width:170px;font-size:13px;' data-id='".$subject."' data-id-index='".$num."' >
 						";
 							foreach($selectTags as $selectTags_item){
-								$tags .= "<option value='".$selectTags_item['id']."'>".$selectTags_item['tags']."</option>";
+									$tags .= "<option value='".$selectTags_item['id']."'";
+									foreach($tagslist as $tagslist_item){
+										if($tagslist_item['tags_id']==$selectTags_item['id']){
+											$tags .= "selected";
+										}else{
+											$tags .= "";
+										}
+									}
+									$tags .= ">".$selectTags_item['tags']."</option>";
 							}
 						$tags .= "</select>
 					</div>";
@@ -280,5 +306,11 @@ class C_Order_In extends CI_Controller {
 			$i++;
 		}
 		echo json_encode(array('data' => $output));
+	}
+	
+	function CountTags(){
+		$id = $this->input->post('ticket',true);
+		$count = $this->M_order_in->count_tags($id);
+		echo $count->hasil;
 	}
 }

@@ -292,10 +292,47 @@ class M_order_in extends CI_Model {
 			$query     = $this->db->query($sql);
 			return $query->result_array();
 		}
+		
 		function selectTags(){
 			$sql	   = "select * from mo.mo_tags";
 			$query     = $this->db->query($sql);
 			return $query->result_array();
+		}
+		
+		function checkTags($singleTags,$ticket){
+			$sql	   = "select * from mo.mo_tags_list where tags_id='$singleTags' and ticket_number='$ticket'";
+			$query     = $this->db->query($sql);
+			return $query->row();
+		}
+		
+		function tagslist($num){
+			$sql	   = "select * from mo.mo_tags_list where ticket_number='$num'";
+			$query     = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		function saveTags($tags,$ticket,$date,$user){
+			$sql = "insert into mo.mo_tags_list (tags_id,ticket_number,creation_date,created_by) values ('$tags','$ticket','$date','$user')";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
+		function count_tags($id){
+			$sql	   = "select count(*) as hasil from mo.mo_tags_list where ticket_number='$id'";
+			$query     = $this->db->query($sql);
+			return $query->row();
+		}
+		
+		function deleteTags($singleTags,$ticket){
+			$sql	   = "delete from mo.mo_tags_list where tags_id='$singleTags' and ticket_number='$ticket'";
+			$query     = $this->db->query($sql);
+			return;
+		}
+		
+		function deleteTagsticket($ticket){
+			$sql	   = "delete from mo.mo_tags_list where ticket_number='$ticket'";
+			$query     = $this->db->query($sql);
+			return;
 		}
 		
 }
