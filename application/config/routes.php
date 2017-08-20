@@ -1046,7 +1046,7 @@ $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
 
-<<<<<<< HEAD
+
 //------------------------------------ MANAGEMENT ORDER --------------------------------------------
 $route['ManagementOrder'] = 'ManagementOrder/C_ManagementOrder';
 
@@ -1069,7 +1069,7 @@ $route['ManagementOrder/Kaizen/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Kai
 $route['ManagementOrder/Scheduler'] = 'ManagementOrder/MainMenu/C_Scheduler/index';
 $route['ManagementOrder/Scheduler/(:any)'] = 'ManagementOrder/MainMenu/C_Scheduler/$1';
 $route['ManagementOrder/Scheduler/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Scheduler/$1/$2';
-=======
+
 //-------------------------WasteManagement-Limbah------------------------------------------------//
 $route['WasteManagement/Limbah'] = 'WasteManagement/MainMenu/C_Limbah';
 $route['WasteManagement/Limbah/(:any)'] = 'WasteManagement/MainMenu/C_Limbah/$1';
@@ -1146,4 +1146,4 @@ $route['GeneralAffair/FleetKecelakaanDetail/(:any)/(:any)'] = 'GeneralAffair/Mai
 $route['GeneralAffair/FleetKecelakaan'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan';
 $route['GeneralAffair/FleetKecelakaan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan/$1';
 $route['GeneralAffair/FleetKecelakaan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan/$1/$2';
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+
