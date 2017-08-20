@@ -75,8 +75,38 @@
                                             <div class="row">
                                                 <div class="nav-tabs-custom">
                                                     <ul class="nav nav-tabs">
+														<li class="active"><a href="#lines_view_ga_fleet_kecelakaan_detail" data-toggle="tab">Fleet Kecelakaan Detail</a></li>
 													</ul>
                                                     <div class="tab-content">
+														<div class="tab-pane active" id="lines_view_ga_fleet_kecelakaan_detail">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">Lines of Fleet Kecelakaan Detail</div>
+                                                                    <div class="panel-body">
+                                                                        <div class="table-responsive">
+                                                                            <table class="table table-striped table-bordered table-hover" style="font-size:12px;">
+                                                                                <thead>
+                                                                                    <tr class="bg-primary">
+                                                                                        <th style="text-align:center; width:30px">No</th>
+																						<th style="text-align:center;">Kerusakan</th>
+																						<th style="text-align:center;">Start Date</th>
+																						<th style="text-align:center;">End Date</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <?php $no = 1; foreach($FleetKecelakaanDetail as $lines1_row): ?>
+                                                                                    <tr>
+                                                                                        <td style="text-align:center; width:30px"><?php echo $no++;?></td>
+																						<td><?php echo $lines1_row['kerusakan']; ?></td>
+																						<td><?php echo $lines1_row['start_date']; ?></td>
+																						<td><?php echo $lines1_row['end_date']; ?></td>
+                                                                                    </tr>
+                                                                                    <?php endforeach; ?>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
