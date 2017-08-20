@@ -14,4 +14,11 @@ class M_kaizen extends CI_Model {
 			$query = $ticket->query($sql);
 			return $query->result_array();
 		}
+		
+		function selectKaizen(){
+			$kaizen = $this->load->database('kaizen',true);
+			$sql = "select * from kaizen.kaizen";
+			$query = $kaizen->query($sql);
+			return $query->result_array();
+		}
 }

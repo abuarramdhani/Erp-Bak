@@ -823,4 +823,18 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$('#dataTables-limbah').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'pdf'
+      ]
+    });
+
+    $('#dataTables-limbahTransaksi').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 });

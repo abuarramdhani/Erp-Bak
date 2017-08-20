@@ -55,7 +55,9 @@ class C_Kaizen extends CI_Controller {
 	
 	function Approve(){
 		$selectMember = $this->M_kaizen->selectMember();
+		$selectKaizen = $this->M_kaizen->selectKaizen();
 		$data['member'] = $selectMember;
+		$data['kaizen'] = $selectKaizen;
 		echo json_encode($data);
 	}
 	

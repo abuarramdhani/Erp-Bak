@@ -87,12 +87,41 @@ $(document).ready(function() {
 	// NOTIFICATION END
 	
 });
+	// window.onload = function () {
+		// var base_url = window.location.origin;
+		// $.ajax({
+			// url: base_url+'/erp/ManagementOrder/Kaizen/Approval' 
+		// })
+		// .done(function(data) {
+			// var data = JSON.parse(data);
+			
+			// for(var i = 0; i < data['member'].length; i++) {
+				// var member = data['member'][i]['firstname'];
+				// addChart3(bulan, persenTercapai);
+				// setChartValue(persenTercapai);
+				// setChartLabel(member);
+			// }
+		// })
+		// .fail(function() {
+			// console.log("error");
+		// })
+		// .always(function() {
+			// console.log("complete");
+		// });
+	// }
 
-  window.onload = function () {
+	// function addChart3(label, data){
+		// myChart.data.labels.push(label);
+		// myChart.data.datasets[0].data.push(data);
+		// myChart.update();
+	// }
+
+
+ window.onload = function () {
     var chart = new CanvasJS.Chart("chartContainer",
     {
       title:{
-        text: "Olympic Medals of all Times (till 2012 Olympics)"
+        text: "Percentage Kaizen IT.PROD SQUAD"
       },
       animationEnabled: true,
       legend: {
@@ -108,7 +137,7 @@ $(document).ready(function() {
         }
       },
       axisY: {
-        title: "Medals"
+       title: "Record Kaizen"
       },
       toolTip: {
         shared: true,  
@@ -129,52 +158,39 @@ $(document).ready(function() {
         }
 
       },
-      data: [
+       data: [
       {        
         type: "bar",
         showInLegend: true,
-        name: "Gold",
+        name: "Approve",
         color: "gold",
         dataPoints: [
-        { y: 198, label: "Italy"},
-        { y: 201, label: "China"},
-        { y: 202, label: "France"},        
-        { y: 236, label: "Great Britain"},        
-        { y: 395, label: "Soviet Union"},        
-        { y: 957, label: "USA"}        
-
-
+			{ y: 0, label: "Gilardi"},
+			{ y: 0, label: "Paulus"},
+			{ y: 1, label: "Alfian"},        
+			{ y: 0, label: "Junawi"},        
+			{ y: 0, label: "Rezaldi"},        
+			{ y: 0, label: "Firman"},        
+			{ y: 1, label: "Brian"},        
+			{ y: 0, label: "Godeliva"},        
+			{ y: 1, label: "Adnan"}   
         ]
       },
       {        
         type: "bar",
         showInLegend: true,
-        name: "Silver",
+        name: "Waiting Approval",
         color: "silver",          
         dataPoints: [
-        { y: 166, label: "Italy"},
-        { y: 144, label: "China"},
-        { y: 223, label: "France"},        
-        { y: 272, label: "Great Britain"},        
-        { y: 319, label: "Soviet Union"},        
-        { y: 759, label: "USA"}        
-
-
-        ]
-      },
-      {        
-        type: "bar",
-        showInLegend: true,
-        name: "Bronze",
-        color: "#A57164",
-        dataPoints: [
-        { y: 185, label: "Italy"},
-        { y: 128, label: "China"},
-        { y: 246, label: "France"},        
-        { y: 272, label: "Great Britain"},        
-        { y: 296, label: "Soviet Union"},        
-        { y: 666, label: "USA"}    
-
+			{ y: 1, label: "Gilardi"},
+			{ y: 1, label: "Paulus"},
+			{ y: 2, label: "Alfian"},        
+			{ y: 0, label: "Junawi"},        
+			{ y: 1, label: "Rezaldi"},        
+			{ y: 0, label: "Firman"},        
+			{ y: 1, label: "Brian"},        
+			{ y: 1, label: "Godeliva"},        
+			{ y: 1, label: "Adnan"}        
         ]
       }
 

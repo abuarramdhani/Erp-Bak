@@ -28,7 +28,6 @@
 											<th width="3%" style="text-align: center">No</th>
 											<th style="text-align: center">Employee</th>
 											<th style="text-align: center">Destination</th>
-											<th width="10%" style="text-align: center">City Type</th>
 											<th style="text-align: center">Depart</th>
 											<th style="text-align: center">Return</th>
 											<th style="text-align: center">BON</th>
@@ -43,8 +42,7 @@
 										<tr>
 											<td style="text-align: center"><?php echo $no++?></td>
 											<td><?php echo $dre['employee_name']?></td>
-											<td><?php echo $dre['area_name']?></td>
-											<td><?php echo $dre['city_type_name']?></td>
+											<td><?php echo $dre['city_province'].' - '.$dre['city_name'] ?></td>
 											<td><?php echo $dre['depart_time']?></td>
 											<td><?php echo $dre['return_time']?></td>
 											<td><?php echo $dre['bon_nominal']?></td>
