@@ -67,7 +67,7 @@ class C_Report extends CI_Controller {
 		$objset = $objPHPExcel->setActiveSheetIndex(0);
 		$objget = $objPHPExcel->getActiveSheet();
 		$objget->setTitle('Invoice Tanpa Faktur');
-		$objget->getStyle("A1:I1")->applyFromArray(
+		$objget->getStyle("A1:L1")->applyFromArray(
 			array(
 				'fill' => array(
 					'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -80,10 +80,10 @@ class C_Report extends CI_Controller {
 			)
 		);
 
-		$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I");
-		$val = array("Vendor Name", "Invoice Type", "Invoice Date", "Invoice Number", "Payment Date", "DPP", "PPN", "Total", "No. Faktur");
+		$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L");
+		$val = array("Vendor Name", "Invoice Type", "Invoice Date", "Invoice Number", "Payment Date", "DPP", "PPN", "Total", "No. Faktur","No. LPPB", "No. PO", "Currency");
 
-		for ($a=0;$a<9; $a++) {
+		for ($a=0;$a<12; $a++) {
 			$objset->setCellValue($cols[$a].'1', $val[$a]);
 			$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
 			$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
@@ -94,6 +94,9 @@ class C_Report extends CI_Controller {
 			$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(13);
 			$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
 			$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(10);
 			$style = array(
 				'alignment' => array(
 					'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
@@ -118,6 +121,9 @@ class C_Report extends CI_Controller {
 				$numfaktur = '-';
 			};
 			$objset->setCellValue("I".$baris, $numfaktur);
+			$objset->setCellValue("J".$baris, $frow['LPPB']);
+			$objset->setCellValue("K".$baris, $frow['PO_NUM']);
+			$objset->setCellValue("L".$baris, $frow['CURRENCY']);
 			$baris++;
 		}
 
