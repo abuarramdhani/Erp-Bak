@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner" >
 		<div class="row">
-			<form method="post" action="<?php echo site_url('SystemAdministration/MenuGroup/UpdateMenuGroup/'.$id."/".$grup_list_id)?>" class="form-horizontal">
+			<form method="post" action="<?php echo site_url('ManagementOrder/Setting/UpdateClassificationGroup/'.$id."/".$grup_list_id)?>" class="form-horizontal">
 					<!-- action merupakan halaman yang dituju ketika tombol submit dalam suatu form ditekan -->
 					<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 					<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
@@ -16,7 +16,7 @@
 							</div>
 							<div class="col-lg-1 ">
 								<div class="text-right hidden-md hidden-sm hidden-xs">
-									<a class="btn btn-default btn-lg" href="<?php echo site_url('SystemAdministration/MenuGroup/');?>">
+									<a class="btn btn-default btn-lg" href="<?php echo site_url('ManagementOrder/Setting/ClassificationGroup');?>">
 										<i class="icon-wrench icon-2x"></i>
 										<span ><br /></span>
 									</a>

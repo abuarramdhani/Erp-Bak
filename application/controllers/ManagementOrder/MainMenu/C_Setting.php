@@ -221,7 +221,6 @@ class C_Setting extends CI_Controller {
 		
 		if ($this->form_validation->run() === FALSE)
 		{
-				//$this->load->view('templates/header', $data);
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);
 				$this->load->view('ManagementOrder/Setting/ClassificationGroup/V_update',$data);
@@ -310,8 +309,7 @@ class C_Setting extends CI_Controller {
 		$class_ = $this->input->post('class_',true);
 		$this->M_setting->deleteClass($class_);
 		$this->selectClass();
-	}
-	
+	}	
 	function selectClass(){
 		$select = $this->M_setting->selectClass();
 		$no = 0;

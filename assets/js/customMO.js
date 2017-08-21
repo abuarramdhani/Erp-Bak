@@ -13,7 +13,6 @@ $(document).ready(function() {
         $(".txtNameMember").css('display','block');
     }
 	
-	var baseUrl = document.location.origin;
 	//DATATABLES !!!!!!!!!!!!!!!
 	$('#tableorder-job').DataTable({
 	   "paging": true,
@@ -25,7 +24,7 @@ $(document).ready(function() {
 			  "scroller": true,
 			  "info": true,
 			  "autoWidth": true,
-			  "ajax": baseUrl+'/erp/ManagementOrder/Order_In/PlottingTable/1',
+			  "ajax": baseurl+'ManagementOrder/Order_In/PlottingTable/1',
 			  "columnDefs": [
 								{ width: "5%", className: "text-center", "targets": [ 0 ] },
 								{ width: "10%", className: "text-center", "targets": [ 1 ] },
@@ -47,7 +46,7 @@ $(document).ready(function() {
 		minimumInputLength: 0,
 		minimumResultsForSearch: -1,
 		ajax: {		
-				url: baseUrl+"/erp/ManagementOrder/Member/getMember",
+				url: baseurl+"ManagementOrder/Member/getMember",
 				dataType: 'json',
 				processResults: function (data) {
 					return {
@@ -72,7 +71,7 @@ $(document).ready(function() {
 		tags : true,
 		minimumInputLength: 0,
 		ajax: {		
-				url: baseUrl+"/erp/ManagementOrder/Scheduler/getTicket",
+				url: baseurl+"ManagementOrder/Scheduler/getTicket",
 				dataType: 'json',
 				type: "POST",
 				data: function (params) {
@@ -101,7 +100,7 @@ $(document).ready(function() {
 	// NOTIFICATION START
 	// setInterval(function(){ 
 		// $.ajax({
-			// url :baseUrl+"/erp/ManagementOrder/Order_In/checkDueDate",
+			// url :baseUrl+"/erp_mo/ManagementOrder/Order_In/checkDueDate",
 			// success:function(result){ 
 				// var partsOfStr = result.split('/');
 				// var part = partsOfStr.slice(0, -1);
@@ -226,7 +225,6 @@ function editTag(tag,id,url){
 }
 
 $(document).on("keyup", ".field-tag", function () {
-	var host   = window.location.origin;
 	$('#field_tag').addClass('has-error');
 	if(event.keyCode == 13){
 		var tag = $('#txtTags').val();
@@ -235,7 +233,7 @@ $(document).on("keyup", ".field-tag", function () {
 			$.ajax({
 				type:'POST',
 				data:{tag: tag},
-				url :host+"/erp/ManagementOrder/Setting/saveTag",
+				url :baseurl+"ManagementOrder/Setting/saveTag",
 				success:function(result){
 					$('#table-taging tbody').html(result);
 					$('#field_tag').removeClass('has-error');
@@ -246,7 +244,7 @@ $(document).on("keyup", ".field-tag", function () {
 			$.ajax({
 				type:'POST',
 				data:{tag:tag,id:id},
-				url :host+"/erp/ManagementOrder/Setting/updateTag",
+				url :baseurl+"ManagementOrder/Setting/updateTag",
 				success:function(result){
 					$('#txtTags').val('');
 					$('#txtId').val('');
@@ -283,7 +281,6 @@ function editClass(class_,id,url){
 }
 
 $(document).on("keyup", ".field-class", function () {
-	var host   = window.location.origin;
 	$('#field_class').addClass('has-error');
 	if(event.keyCode == 13){
 		var class_ = $('#txtClass').val();
@@ -292,7 +289,7 @@ $(document).on("keyup", ".field-class", function () {
 			$.ajax({
 				type:'POST',
 				data:{class_: class_},
-				url :host+"/erp/ManagementOrder/Setting/saveClass",
+				url :baseurl+"ManagementOrder/Setting/saveClass",
 				success:function(result){
 					$('#table-class tbody').html(result);
 					$('#field_class').removeClass('has-error');
@@ -303,7 +300,7 @@ $(document).on("keyup", ".field-class", function () {
 			$.ajax({
 				type:'POST',
 				data:{class_:class_,id:id},
-				url :host+"/erp/ManagementOrder/Setting/updateClass",
+				url :baseurl+"ManagementOrder/Setting/updateClass",
 				success:function(result){
 					$('#txtClass').val('');
 					$('#txtId').val('');
@@ -327,7 +324,7 @@ $(document).on("keyup", ".field-class", function () {
 //+++++++++++++++++++++++
 
 $(document).on("click", ".js-panel", function () {
-	var host	= window.location.origin;
+
 	var str = $(this).attr('id');
 	var num = str.slice(-1);
 	 $('#tableorder-job').DataTable().destroy();
@@ -341,7 +338,7 @@ $(document).on("click", ".js-panel", function () {
 			  "scroller": true,
 			  "info": true,
 			  "autoWidth": true,
-			  "ajax": host+'/erp/ManagementOrder/Order_In/PlottingTable/'+num+'',
+			  "ajax": baseurl+'ManagementOrder/Order_In/PlottingTable/'+num+'',
 			  "columnDefs": [
 								{ width: "5%", className: "text-center", "targets": [ 0 ] },
 								{ width: "8%", className: "text-center", "targets": [ 1 ] },
@@ -382,13 +379,12 @@ $(document).on("keyup", ".field-todo", function () {
 		id = str.substring(7, 9);
 	$('#field_todo'+id+'').addClass('has-error');
 	if(event.keyCode == 13){
-		var host   = window.location.origin;
 		var ticket = $(this).attr("data-id");
 		var todo   = $(this).val();
 		$.ajax({
 					type:'POST',
 					data:{todo: todo,ticket: ticket},
-					url : host+"/erp/ManagementOrder/Order_In/saveTodo",
+					url : baseurl+"ManagementOrder/Order_In/saveTodo",
 					success:function(result)
 					{
 					  // alert(todo);
@@ -417,27 +413,26 @@ $(document).on("keyup", ".field-todo", function () {
 $(document).on("change", ".field-tags", function () {
 	var str	= $(this).attr("id");
 	var id	= str.substring(7, 9);
-	var host   = window.location.origin;
 	var ticket = $(this).attr("data-id-index");
 	var tags   = $(this).val();
-		$.post(host+"/erp/ManagementOrder/Order_In/CountTags", {ticket:ticket}, function(data){
+		$.post(baseurl+"ManagementOrder/Order_In/CountTags", {ticket:ticket}, function(data){
 			if(tags == null){
 				$.ajax({
 					type:'POST',
 					data:{tags: null,ticket: ticket},
-					url : host+"/erp/ManagementOrder/Order_In/deleteTags"
+					url : baseurl+"ManagementOrder/Order_In/deleteTags"
 				  });
 			}else if(data > tags.length){
 				$.ajax({
 					type:'POST',
 					data:{tags: tags,ticket: ticket},
-					url : host+"/erp/ManagementOrder/Order_In/deleteTags"
+					url : baseurl+"ManagementOrder/Order_In/deleteTags"
 				  });
 			}else{
 				$.ajax({
 					type:'POST',
 					data:{tags: tags,ticket: ticket},
-					url : host+"/erp/ManagementOrder/Order_In/saveTags"
+					url : baseurl+"ManagementOrder/Order_In/saveTags"
 				  });
 			}				
 		});
@@ -450,14 +445,14 @@ $(document).on("change", ".field-tags", function () {
 //+++++++++++++++++++++++
 
 $(document).on("click", ".field-remove", function () {
-	var host   = window.location.origin;
+
 	var ticket = $(this).attr("data-id");
 	var r = confirm("Serius nih mau di hapus ?");
 		if (r == true) {
 			$.ajax({
 				type:'POST',
 				data:{ticket: ticket},
-				url: host+"/erp/ManagementOrder/Order_In/removePlotting",
+				url: baseurl+"ManagementOrder/Order_In/removePlotting",
 				success:function(result)
 				{
 				  // alert(result);
@@ -474,14 +469,14 @@ $(document).on("click", ".field-remove", function () {
 //+++++++++++++++++++++++
 
 $(document).on("change", ".field-save", function () {
-	var host   = window.location.origin;
+
 	var subject = $(this).attr("data-id");
 	var ticket = $(this).attr("data-id-index");
 	var member  = $('option:selected', this).attr('value');
 		$.ajax({
 			type:'POST',
 			data:{member: member,ticket: ticket,subject:subject},
-			url: host+"/erp/ManagementOrder/Order_In/saveClaim",
+			url: baseurl+"ManagementOrder/Order_In/saveClaim",
 			success:function(result)
 			{
 			  $('#plotting'+id+'').addClass('has-success');
@@ -490,8 +485,7 @@ $(document).on("change", ".field-save", function () {
 });
 
 $(document).on("change", ".duedate", function () {
-	
-	var host   = window.location.origin;
+
 	var str   = $(this).attr("id");
 	var id = str.substring(10, 12);
 	var ticket = $(this).attr("data-id");
@@ -499,7 +493,7 @@ $(document).on("change", ".duedate", function () {
 		$.ajax({
 			type:'POST',
 			data:{ticket: ticket,duedate: duedate},
-			url: host+"/erp/ManagementOrder/Order_In/duedateTodo",
+			url: baseurl+"ManagementOrder/Order_In/duedateTodo",
 			success:function(result)
 			{
 			  // $('#duedate'+id+'').addClass('has-success');
@@ -581,8 +575,7 @@ function savePriority(i,url,ticket){
 	// });
 
 function loadOrder(id,nama){
-	 var host	= window.location.origin;
-	 $.ajax({url: host+"/erp/ManagementOrder/Order_In/ExistTicket/"+id+""});
+	 $.ajax({url: baseurl+"ManagementOrder/Order_In/ExistTicket/"+id+""});
 	 $('#tableorder-member').DataTable().destroy();
 	 $('#tableorder-member').DataTable({
 		  "paging": true,
@@ -591,7 +584,7 @@ function loadOrder(id,nama){
 		  "ordering": false,
 		  "info": true,
 		  "autoWidth": false,
-		  "ajax": host+'/erp/ManagementOrder/Member/AjaxPlotting/'+id+'',
+		  "ajax": baseurl+'ManagementOrder/Member/AjaxPlotting/'+id+'',
 		  "columnDefs": [
 							{ "orderable": false, width: "5%", className: "text-center", "targets": [ 0 ] },
 							{ width: "5%", className: "text-center", "targets": [ 1 ] },
@@ -601,7 +594,7 @@ function loadOrder(id,nama){
 							
 						]
 	});
-	$.post(host+'/erp/ManagementOrder/Order_In/CountJob', {member:id}, function(data){
+	$.post(baseurl+'ManagementOrder/Order_In/CountJob', {member:id}, function(data){
 		$("#countJOb"+id+"").html("<strong><span style='color:green;'>( "+data+" )</span></strong>");
 	});
 	$('span#tgtMember').html(nama);
