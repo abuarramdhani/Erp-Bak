@@ -1,5 +1,10 @@
 
 $(document).ready(function() {
+	setInterval(function(){ 
+		$.ajax({
+			url :baseurl+"ManagementOrder/Order_In/SyncTicket",
+		});
+	}, 30000);
 	
 	$('#txtTags').focus();
 	var screen = window.innerWidth;
@@ -350,7 +355,11 @@ $(document).on("click", ".js-panel", function () {
 			"rowCallback": function( row, data, index ) {
 				  var plot = data[4],
 					  $node = this.api().row(row).nodes().to$();
-					  
+					  $(".select-tags").select2({
+							allowClear: true,
+							minimumInputLength: 0,
+							minimumResultsForSearch: -1
+						});
 			  },
 			"initComplete": function(settings, json) {
 				$(".select-tags").select2({

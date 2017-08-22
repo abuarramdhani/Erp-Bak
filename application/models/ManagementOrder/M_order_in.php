@@ -335,4 +335,37 @@ class M_order_in extends CI_Model {
 			return;
 		}
 		
+		function sync_ticket(){
+			$ticket = $this->load->database('ticket',true);
+			$sql = "SELECT kt.ticket_id,kt.number,kt.staff_id,kt.status_id,ktc.priority,ktc.subject,ks.firstname 
+					FROM ticket1.khs_ticket kt 
+					INNER JOIN ticket1.khs_ticket__cdata ktc ON kt.ticket_id=ktc.ticket_id
+					LEFT JOIN ticket1.khs_staff ks ON kt.staff_id=ks.staff_id 
+					WHERE kt.dept_id='9' AND kt.status_id='1' and kt.staff_id <> 0";
+			$query = $ticket->query($sql);
+			return $query->result_array();
+		}
+		
+		function check_local($user,$ticket){
+			$sql = "select *
+				from mo.mo_manage_order tb1
+				where tb1.id_ticket='$ticket' and tb1.user_='$user' and active='1'";
+			$query = $this->db->query($sql);
+			return $query->row();
+		}
+		
+		function sync_local($user,$ticket,$name){
+			$sql = "update mo.mo_manage_order set user_='$user',name_='$name' where id_ticket='$ticket'";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
+		function checkTicket($ticket){
+			$sql = "select *
+				from mo.mo_manage_order tb1
+				where tb1.id_ticket='$ticket' and active='1'";
+			$query = $this->db->query($sql);
+			return $query->row();
+		}
+		
 }

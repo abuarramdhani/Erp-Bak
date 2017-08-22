@@ -313,4 +313,25 @@ class C_Order_In extends CI_Controller {
 		$count = $this->M_order_in->count_tags($id);
 		echo $count->hasil;
 	}
+	
+	function SyncTicket(){
+		$getTick = $this->M_order_in->sync_ticket();
+		$no=0;
+		$active = 1;
+		$date = date("Y-m-d H:i:s");
+		$agent = $this->session->userdata('username');
+		foreach($getTick as $getTick_item){
+			$no++;
+			$checkTicket = $this->M_order_in->checkTicket($getTick_item['number']);
+			if(empty($checkTicket)){
+			$saveTicket = $this->M_order_in->saveClaim($getTick_item['staff_id'],$getTick_item['number'],$getTick_item['subject'],$getTick_item['firstname'],$getTick_item['ticket_id'],$date,$agent,$active);
+			}else{
+				$checkUser = $this->M_order_in->check_local($getTick_item['staff_id'],$getTick_item['number']);
+					if(empty($checkUser)){
+						$changeTicket = $this->M_order_in->sync_local($getTick_item['staff_id'],$getTick_item['number'],$getTick_item['firstname']);
+					}else{
+					}
+			}
+		}
+	}
 }
