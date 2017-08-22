@@ -79,8 +79,7 @@
 												<tr>
 													<td>Outstation Position</td>
 													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
-													<td></td>
-													<td></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" <?php if($drel['accomodation_option'] == 1){echo"checked";} ?> >&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td colspan="4">
@@ -174,7 +173,41 @@
 													</div>
 													<div class="col-md-8">
 														<div class="row">
-															<p id="ush-estimate"><?php echo $total_ush  ?></p>
+															<table>
+								
+																<?php
+																$ush_id="";
+																$ush_count = 0;
+																foreach ($detail_ush as $du) {
+																	if($du['id'] == $ush_id || $ush_id == ""){
+																		$ush_count++;
+																		$ush_name = $du['id'];
+																		$ush_nom = $du['nominal'];
+																		$ush_tot = $ush_count*$ush_nom;
+																	}else{
+																		echo'
+																		<tr>
+																			<td>'.$ush_count.' '.$ush_name.'</td>
+																			<td>&emsp;X&emsp;</td>
+																			<td align="right">Rp.'.number_format($ush_nom , 2, ',', '.').'</td>
+																			<td>&emsp;=&emsp;</td>
+																			<td align="right">Rp.'.number_format($ush_tot , 2, ',', '.').'</td>
+																		</tr>';
+
+																		$ush_count = 1;
+																		$ush_name = $du['id'];
+																		$ush_nom = $du['nominal'];
+																		$ush_tot = $ush_count*$ush_nom;
+																	}
+																	$ush_id = $du['id'];
+																}
+																?>
+																<tr>
+																	<td colspan="3">Total USH Allowance</td>
+																	<td>&emsp;=&emsp;</td>
+																	<td><?php echo $total_ush  ?></td>
+																</tr>
+															</table>
 														</div>
 													</div>
 												</div>

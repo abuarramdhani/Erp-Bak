@@ -74,6 +74,11 @@ class C_OutstationSimulation extends CI_Controller {
 	}
 
 	public function load_process(){
+		if($this->input->post('acc_check') == 1){
+			$include_acc = 1;
+		}else{
+			$include_acc = 0;
+		}
 		$position_id = $this->input->post('txt_position_id');
 		$destination = $this->input->post('txt_city_id');
 		$destination_ex = explode('-', $destination);
@@ -164,50 +169,54 @@ class C_OutstationSimulation extends CI_Controller {
 					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id, $area_id, $city_type_id);
 					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time_now, $have_holiday, $is_foreign);
 					foreach ($accomodation_allowance as $aa) {
-						foreach ($meal_allowance as $ma) {
-							foreach ($group_ush as $grp) {
-								if ($time == $y) {
-									$acc_nominal = $aa['nominal'];
-								}
-								else{
-									$acc_nominal = '0';
-								}
-								if ($time == $i) {
-									$group_name = $grp['group_name'];
-									$nominal_ush = $grp['nominal'];
-								}
-								else{
-									$group_name = '-';
-									$nominal_ush = '0';
-								}
-								$meal = $ma['nominal'];
-								$acc = $acc_nominal;
-
-								$string = array('Rp',',00','.');
-								$remover = array('');
-
-								$meal_number = str_replace($string, $remover, $meal);
-
-								$acc_number = str_replace($string, $remover, $acc);
-
-								$ush_number = str_replace($string, $remover, $nominal_ush);
-
-								$total = $meal_number+$acc_number+$ush_number;
-									echo '
-									<tr>
-										<td width="5%"></td>
-										<td width="10%">'.$dt->format( "Y-m-d\n" ).'</td>
-										<td>'.$ma['time_name'].'</td>
-										<td style="text-align: right">Rp'.number_format($meal_number , 2, '.', ',').'</td>
-										<td style="text-align: right">Rp'.number_format($acc_number , 2, '.', ',').'</td>
-										<td>'.$group_name.'</td>
-										<td style="text-align: right">Rp'.number_format($ush_number , 2, '.', ',').'</td>
-										<td style="text-align: right">Rp'.number_format($total , 2, '.', ',').'</td>
-									</tr>
-								';
-							}
+						if ($time == $y and $include_acc == 1) {
+							$acc_nominal = $aa['nominal'];
+						}else{
+							$acc_nominal = '0';
 						}
+						$acc = $acc_nominal;
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$acc_number = str_replace($string, $remover, $acc);
 					}
+
+					foreach ($meal_allowance as $ma) {
+						$meal = $ma['nominal'];
+						$meal_time = $ma['time_name'];
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$meal_number = str_replace($string, $remover, $meal);
+					}
+
+					foreach ($group_ush as $grp) {
+						if ($time == $i) {
+							$group_name = $grp['group_name'];
+							$nominal_ush = $grp['nominal'];
+						}else{
+							$group_name = '-';
+							$nominal_ush = '0';
+						}
+								
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$ush_number = str_replace($string, $remover, $nominal_ush);
+					}
+
+					$total = $meal_number+$acc_number+$ush_number;
+					echo '
+						<tr>
+							<td width="5%"></td>
+							<td width="10%">'.$dt->format( "Y-m-d\n" ).'</td>
+							<td>'.$meal_time.'</td>
+							<td style="text-align: right">Rp'.number_format($meal_number , 2, '.', ',').'</td>
+							<td style="text-align: right">Rp'.number_format($acc_number , 2, '.', ',').'</td>
+							<td>'.$group_name.'</td>
+							<td style="text-align: right">Rp'.number_format($ush_number , 2, '.', ',').'</td>
+							<td style="text-align: right">Rp'.number_format($total , 2, '.', ',').'</td>
+						</tr>';
 				}
 				$i=1;
 		}
@@ -226,8 +235,12 @@ class C_OutstationSimulation extends CI_Controller {
 		';
 	}
 
-	public function save_Simulation()
-	{
+	public function save_Simulation(){
+		if($this->input->post('acc_check') == 1){
+			$include_acc = 1;
+		}else{
+			$include_acc = 0;
+		}
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
 		$destination = $this->input->post('txt_city_id');
@@ -256,7 +269,7 @@ class C_OutstationSimulation extends CI_Controller {
 						$return_time = $return_wkt_ex[0].':'.$return_wkt_ex[1];
 
 		//Insert Simulation
-		$this->M_Simulation->new_simulation($employee_id,$city_id,$area_id,$city_type_id,$depart,$return);
+		$this->M_Simulation->new_simulation($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$include_acc);
 
 		$time_name = array('1' => 'pagi', '2' => 'siang', '3' => 'malam');
 
@@ -308,42 +321,47 @@ class C_OutstationSimulation extends CI_Controller {
 					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id,$area_id,$city_type_id);
 					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time_now, $have_holiday, $is_foreign);
 					foreach ($accomodation_allowance as $aa) {
-						foreach ($meal_allowance as $ma) {
-							foreach ($group_ush as $grp) {
-								if ($time == $y) {
-									$acc_nominal = $aa['nominal'];
-								}
-								else{
-									$acc_nominal = '0';
-								}
-								if ($time == $i) {
-									$group_id = $grp['group_id'];
-									$nominal_ush = $grp['nominal'];
-								}
-								else{
-									$group_id = 'NULL';
-									$nominal_ush = '0';
-								}
-								$meal = $ma['nominal'];
-								$time_id = $ma['time_id'];////
-								$acc = $acc_nominal;
-
-								$string = array('Rp',',00','.');
-								$remover = array('');
-
-								$meal_number = str_replace($string, $remover, $meal);
-
-								$acc_number = str_replace($string, $remover, $acc);
-
-								$ush_number = str_replace($string, $remover, $nominal_ush);
-
-								$date = $dt->format( "Y-m-d" );////
-
-								//Insert Simulation Detail
-								$this->M_Simulation->new_simulation_detail($date,$time_id,$meal_number,$acc_number,$group_id,$ush_number);
-							}
+						if ($time == $y and $include_acc == 1) {
+							$acc_nominal = $aa['nominal'];
+						}else{
+							$acc_nominal = '0';
 						}
+
+						$acc = $acc_nominal;
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$acc_number = str_replace($string, $remover, $acc);
 					}
+
+					foreach ($meal_allowance as $ma) {
+						$meal = $ma['nominal'];
+						$time_id = $ma['time_id'];
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$meal_number = str_replace($string, $remover, $meal);
+					}
+
+					
+					foreach ($group_ush as $grp) {
+						if ($time == $i) {
+							$group_id = $grp['group_id'];
+							$nominal_ush = $grp['nominal'];
+						}else{
+							$group_id = 'NULL';
+							$nominal_ush = '0';
+						}
+								
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$ush_number = str_replace($string, $remover, $nominal_ush);
+					}
+					$date = $dt->format( "Y-m-d" );////
+
+					//Insert Simulation Detail
+					$this->M_Simulation->new_simulation_detail($date,$time_id,$meal_number,$acc_number,$group_id,$ush_number);
 				}
 				$i=1;
 		}
@@ -379,6 +397,11 @@ class C_OutstationSimulation extends CI_Controller {
 	}
 
 	public function update_Simulation(){
+		if($this->input->post('acc_check') == 1){
+			$include_acc = 1;
+		}else{
+			$include_acc = 0;
+		}
 		$simulation_id = $this->input->post('txt_simulation_id');
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
@@ -408,7 +431,7 @@ class C_OutstationSimulation extends CI_Controller {
 						$return_time = $return_wkt_ex[0].':'.$return_wkt_ex[1];
 
 		//Insert Simulation
-		$this->M_Simulation->update_simulation($simulation_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return);
+		$this->M_Simulation->update_simulation($simulation_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$include_acc);
 		$this->M_Simulation->delete_before_insert($simulation_id);
 
 		$time_name = array('1' => 'pagi', '2' => 'siang', '3' => 'malam');
@@ -461,42 +484,47 @@ class C_OutstationSimulation extends CI_Controller {
 					$accomodation_allowance = $this->M_Simulation->show_accomodation_allowance($position_id,$area_id, $city_type_id);
 					$group_ush = $this->M_Simulation->show_group_ush($position_id, $return_time_now, $have_holiday, $is_foreign);
 					foreach ($accomodation_allowance as $aa) {
-						foreach ($meal_allowance as $ma) {
-							foreach ($group_ush as $grp) {
-								if ($time == $y) {
-									$acc_nominal = $aa['nominal'];
-								}
-								else{
-									$acc_nominal = '0';
-								}
-								if ($time == $i) {
-									$group_id = $grp['group_id'];
-									$nominal_ush = $grp['nominal'];
-								}
-								else{
-									$group_id = 'NULL';
-									$nominal_ush = '0';
-								}
-								$meal = $ma['nominal'];
-								$time_id = $ma['time_id'];////
-								$acc = $acc_nominal;
-
-								$string = array('Rp',',00','.');
-								$remover = array('');
-
-								$meal_number = str_replace($string, $remover, $meal);
-
-								$acc_number = str_replace($string, $remover, $acc);
-
-								$ush_number = str_replace($string, $remover, $nominal_ush);
-
-								$date = $dt->format( "Y-m-d" );////
-
-								//Insert Simulation Detail
-								$this->M_Simulation->update_simulation_detail($simulation_id,$date,$time_id,$meal_number,$acc_number,$group_id,$ush_number);
-							}
+						if ($time == $y and $include_acc == 1) {
+							$acc_nominal = $aa['nominal'];
+						}else{
+							$acc_nominal = '0';
 						}
+
+						$acc = $acc_nominal;
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$acc_number = str_replace($string, $remover, $acc);
 					}
+
+					foreach ($meal_allowance as $ma) {
+						$meal = $ma['nominal'];
+						$time_id = $ma['time_id'];
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$meal_number = str_replace($string, $remover, $meal);
+					}
+
+					foreach ($group_ush as $grp) {
+						if ($time == $i) {
+							$group_id = $grp['group_id'];
+							$nominal_ush = $grp['nominal'];
+						}else{
+							$group_id = 'NULL';
+							$nominal_ush = '0';
+						}
+								
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$ush_number = str_replace($string, $remover, $nominal_ush);
+					}
+
+					$date = $dt->format( "Y-m-d" );
+
+					//Insert Simulation Detail
+					$this->M_Simulation->update_simulation_detail($simulation_id,$date,$time_id,$meal_number,$acc_number,$group_id,$ush_number);
 				}
 				$i=1;
 		}

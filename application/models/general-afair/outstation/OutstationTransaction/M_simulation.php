@@ -13,8 +13,8 @@ where simulation.simulation_id = nominal.simulation_id order by simulation.simul
 		return $query->result_array();
 	}
 
-	public function new_simulation($employee_id,$city_id,$area_id,$city_type_id,$depart,$return){
-		$sql="insert into ga.ga_outstation_simulation (employee_id, city_id, area_id, city_type_id, depart_time, return_time) values ('$employee_id','$city_id','$area_id','$city_type_id','$depart','$return')";
+	public function new_simulation($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$include_acc){
+		$sql="insert into ga.ga_outstation_simulation (employee_id, city_id, area_id, city_type_id, depart_time, return_time, accomodation_option) values ('$employee_id','$city_id','$area_id','$city_type_id','$depart','$return','$include_acc')";
 		$query = $this->db->query($sql);
 		return;
 	}
@@ -49,8 +49,8 @@ where simulation.simulation_id = nominal.simulation_id order by simulation.simul
 		return $query->result_array();
 	}
 
-	public function update_simulation($simulation_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return){
-		$sql="update ga.ga_outstation_simulation set employee_id = '$employee_id', city_id='$city_id', area_id='$area_id', city_type_id='$city_type_id', depart_time='$depart', return_time='$return' where simulation_id='$simulation_id'";
+	public function update_simulation($simulation_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$include_acc){
+		$sql="update ga.ga_outstation_simulation set employee_id = '$employee_id', city_id='$city_id', area_id='$area_id', city_type_id='$city_type_id', depart_time='$depart', return_time='$return', accomodation_option='$include_acc' where simulation_id='$simulation_id'";
 		$query = $this->db->query($sql);
 		return;
 	}
