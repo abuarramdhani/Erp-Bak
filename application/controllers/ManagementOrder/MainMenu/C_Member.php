@@ -82,6 +82,18 @@ class C_Member extends CI_Controller {
 				$class_date = "duedate";
 				$readonly = "";
 			}
+			
+			$response = $this->M_order_in->checkResponse($ticket);
+			if(empty($response)){
+				$replied = "<a class='btn btn-xs' style='color:red;'><span class='fa fa-volume-off'></span></a>";
+			}else{
+				if($response->isanswered==0){
+					$replied = "<a class='btn btn-xs' style='color:green;'><span class='fa fa-volume-up'></span></a>";
+				}else{
+					$replied = "<a class='btn btn-xs' style='color:red;'><span class='fa fa-volume-off'></span></a>";
+				}
+			}
+			
 			if(empty($priority)){
 				$link = "<div id='field_priority".$i."'><input type='number' class='form-control' maxlength='2'  onkeyup='savePriority(\"".$i."\",\"".site_url()."\",\"".$ticket."\")' name='txtPriority' style='width:60px;' id='txtPriority".$i."'></div>";
 			}else{
@@ -89,20 +101,19 @@ class C_Member extends CI_Controller {
 			}
 			$duedate = "<div id='duedate".$a."'><input type='text' class='form-control $class_date' name='txtDueDate' id='txtDueDate".$a."' style='width:90px;' data-id='".$ticket."' value='".$duedate."' $readonly></input></div>";	
 			$act = "<a href='http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id=".$id."' target='blank_'><b>".$ticket."</b></a>";
-			$todo = "<div id='field_todo".$a."' data-tip='".$comment."'><input type='text' name='txtToDo' id='txtToDo".$a."' value='".$comment."' class='form-control field-todo bg-danger' style='width:100%' data-id='".$ticket."'></input></div>";	
-			$sentto = " <a data-toggle='modal' id='showModal' href='#' data-id='".$ticket."'><i class='fa fa-share fa-2x' style='color:orange;text-align:center;'></i></a>";	
+			$todo = "<div id='field_todo".$a."' data-tip='".$comment."'><input type='text' name='txtToDo' id='txtToDo".$a."' value='".$comment."' class='form-control field-todo bg-danger' style='width:200px' data-id='".$ticket."'></input></div>";	
+			$sentto = " <a data-toggle='modal' id='showModal' href='#' data-id='".$ticket."'><i class='fa fa-share fa-2x' style='color:orange;text-align:center;'></i></a>";
 			array_pop($output[$i]);
 			array_unshift($output[$i], "$act");
 			array_unshift($output[$i], "$a");
 			array_splice($output[$i], 2, 2);
 			array_splice($output[$i], 3, 1);
 			array_splice($output[$i], 3, 3);
+			array_push($output[$i], "$replied");
 			array_push($output[$i], "$link");
 			array_push($output[$i], "$todo");
 			array_push($output[$i], "$duedate");
-			if($this->session->userdata('prev')=='fullver_sion'){
-				array_push($output[$i], "$sentto");
-			}
+			array_push($output[$i], "$sentto");
 			$a++;
 			$i++;
 		}

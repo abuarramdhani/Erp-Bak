@@ -191,6 +191,7 @@ class C_Order_In extends CI_Controller {
 		$getName = $this->M_order_in->getName($member);
 		$name	 = $getName->firstname;
 		$save = $this->M_order_in->changePlotting($id,$member,$ticket,$name);
+		$checkTicket = $this->M_order_in->updateTicketServer($ticket,$member);
 		echo "success";
 	}
 	

@@ -368,4 +368,18 @@ class M_order_in extends CI_Model {
 			return $query->row();
 		}
 		
+		function checkResponse($id){
+			$ticket = $this->load->database('ticket',true);
+			$sql = "SELECT isanswered FROM ticket1.khs_ticket WHERE dept_id='9' AND status_id='1' AND number='$id'";
+			$query = $ticket->query($sql);
+			return $query->row();
+		}
+		
+		function updateTicketServer($id,$member){
+			$ticket = $this->load->database('ticket',true);
+			$sql = "update ticket1.khs_ticket set staff_id='$member' where number='$id' and staff_id<>0";
+			$query = $ticket->query($sql);
+			return;
+		}
+		
 }

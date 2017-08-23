@@ -4,7 +4,7 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>IT. PROD SQUAD</b></h1>
+						<h1><b>IT. PROD SQUAD </b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
@@ -61,18 +61,17 @@
 						</div><!-- /.box-header -->
 						<br>
 						<div  class="box-body">
-							<table class="table table-striped table-bordered table-hover" id="tableorder-member" style="font-size:12px;width:100%;">
+							<table class="table table-striped table-bordered table-hover" id="tableorder-member" style="font-size:12px;width:110%;">
 								<thead>
 									<tr class="bg-primary">
 										<th style="text-align:center;width:5%;">No</th>
 										<th style="text-align:center;width:5%;">Ticket</th>
-										<th style="text-align:center;width:40%;">Subject</th>
+										<th style="text-align:center;width:35%;">Subject</th>
+										<th style="text-align:center;width:5%;">Reply</th>
 										<th style="text-align:center;width:5%;">Priority</th>
 										<th style="text-align:center;width:25%;">Todo</th>
 										<th style="text-align:center;width:15%;">Duedate</th>
-										<?php if($this->session->userdata('prev')=='fullver_sion'){ ?>
-											<th style="text-align:center;width:5%;">Sent</th>
-										<?php } ?>
+										<th style="text-align:center;width:5%;">Sent</th>
 									</tr>
 								</thead>
 								<tbody>

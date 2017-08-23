@@ -592,6 +592,9 @@ function loadOrder(id,nama){
 		  "searching": false,
 		  "ordering": false,
 		  "info": true,
+		  "scrollX": true,
+		  "deferRender" : true,
+		  "scroller": true,
 		  "autoWidth": false,
 		  "ajax": baseurl+'ManagementOrder/Member/AjaxPlotting/'+id+'',
 		  "columnDefs": [
@@ -599,7 +602,7 @@ function loadOrder(id,nama){
 							{ width: "5%", className: "text-center", "targets": [ 1 ] },
 							{ width: "45%", "targets ": [ 2 ] },
 							{ width: "5%", className: "text-center", "targets": [ 3 ] },
-							{ width: "25%", className: "text-center", "targets": [ 4 ] }
+							{ width: "25%", className: "text-center", "targets": [ 5 ] }
 							
 						]
 	});
@@ -629,7 +632,6 @@ $(document).on("click", "#showModal", function () {
 });
 
 function changePlotting(url){
-	alert(url+"/ManagementOrder/Order_In/changePlotting");
 	var ticket = $('#txtNoTicket1').val();
 	var id = $('#txtfrom').val();								// member asal
 	var member = $('#txsClaim option:selected').attr('value');	// member tujuan
