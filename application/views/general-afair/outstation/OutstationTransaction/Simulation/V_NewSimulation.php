@@ -57,8 +57,7 @@
 												<tr>
 													<td>Departemen</td>
 													<td><p id="department_name">-</p></td>
-													<td></td>
-													<td></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" checked="checked">&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td>Outstation Position</td>

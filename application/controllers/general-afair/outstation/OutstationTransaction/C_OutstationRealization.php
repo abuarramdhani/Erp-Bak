@@ -75,6 +75,11 @@ class C_OutstationRealization extends CI_Controller {
 	}
 
 	public function load_process(){
+		if($this->input->post('acc_check') == 1){
+			$include_acc = 1;
+		}else{
+			$include_acc = 0;
+		}
 		$position_id = $this->input->post('txt_position_id');
 		$destination = $this->input->post('txt_city_id');
 		$destination_ex = explode('-', $destination);
@@ -137,7 +142,12 @@ class C_OutstationRealization extends CI_Controller {
 		$nom_meal_siang = '';
 		$nom_meal_malam = '';
 		$nom_inn_malam = '';
-		
+		$meal_number = array();
+		$acc_number = array();
+		$ush_number = array();
+		$group_id = array();
+		$nom_inn_malam = '0';
+
 		foreach ( $period as $dt ){
 			$check_holiday = $this->M_Realization->check_holiday($dt->format('Y-m-d'),$dt->format('Y-m-d') );
 			$have_holiday = "0";
@@ -158,70 +168,76 @@ class C_OutstationRealization extends CI_Controller {
 					$meal_allowance = $this->M_Realization->show_meal_allowance($position_id,$area_id,$time_name[$time]);
 					$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($position_id,$area_id,$city_type_id);
 					$group_ush = $this->M_Realization->show_group_ush($position_id, $return_time_now, $have_holiday, $is_foreign);
-					
 					foreach ($accomodation_allowance as $aa) {
-						foreach ($meal_allowance as $ma) {
-							foreach ($group_ush as $grp) {
-								$indexx++;
-								if ($time == $y) {
-									$acc_nominal = $aa['nominal'];
-									$nom_inn_malam = $aa['nominal'];
-								}
-								else{
-									$acc_nominal = '0';
-								}
-								if ($time == $i) {
-									$nominal_ush = array($indexx => $grp['nominal']);
-									//$nominal_ush[$indexx] = $grp['nominal'];
-								}
-								else{
-									$nominal_ush[$indexx] = '0';
-								}
-								$meal = array($indexx => $ma['nominal']);
-								$acc = array($indexx =>$acc_nominal);
-								//$meal[$indexx] = $ma['nominal'];
-								//$acc[$indexx] = $acc_nominal;
-								if (strtolower($ma['time_name']) == strtolower("Pagi")) {
-									$meal_pagi++;
-									$nom_meal_pagi = $ma['nominal'];
-								}
-								if (strtolower($ma['time_name']) == strtolower("Siang")) {
-									$meal_siang++;
-									$nom_meal_siang = $ma['nominal'];
-								}
-								if (strtolower($ma['time_name']) == strtolower("Malam")) {
-									$meal_malam++;
-									$nom_meal_malam = $ma['nominal'];
-								}
+						$indexx++;
 
-								$string = array('Rp',',00','.');
-								$remover = array('');
-
-								$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
-
-								$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
-
-								$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
-
-								//$total[$indexx] = $meal_number[$indexx]+$acc_number[$indexx]+$ush_number[$indexx];
-								$total_meal = array_sum($meal_number);
-								$total_acc = array_sum($acc_number);
-								$total_ush = array_sum($ush_number);
-								$total_all = $total_meal+$total_acc+$total_ush;
-							}
+						if ($time == $y and $include_acc == 1) {
+							$acc_nominal = $aa['nominal'];
+							$nom_inn_malam = $aa['nominal'];
+						}else{
+							$acc_nominal = '0';
 						}
+						$acc = array($indexx =>$acc_nominal);
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
 					}
 
+					foreach ($meal_allowance as $ma) {
+						$indexx++;
+
+						$meal = array($indexx => $ma['nominal']);
+						if (strtolower($ma['time_name']) == strtolower("Pagi")) {
+							$meal_pagi++;
+							$nom_meal_pagi = $ma['nominal'];
+						}
+						if (strtolower($ma['time_name']) == strtolower("Siang")) {
+							$meal_siang++;
+							$nom_meal_siang = $ma['nominal'];
+						}
+						if (strtolower($ma['time_name']) == strtolower("Malam")) {
+							$meal_malam++;
+							$nom_meal_malam = $ma['nominal'];
+						}
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
+					}
+
+					foreach ($group_ush as $grp) {
+						$indexx++;
+
+						if ($time == $i) {
+							$nominal_ush = array($indexx => $grp['nominal']);
+							array_push($group_id, array('id' => $grp['group_name'], 'nominal' => $grp['nominal']) );
+
+							//echo "lalala: ".$grp['group_id']."<br>"; exit;
+						}else{
+							$nominal_ush[$indexx] = '0';
+						}
+						$string = array('Rp',',00','.');
+						$remover = array('');
+
+						$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
+					}
+
+					$total_meal = array_sum($meal_number);
+					$total_acc = array_sum($acc_number);
+					$total_ush = array_sum($ush_number);
+					$total_all = $total_meal+$total_acc+$total_ush;
 				}
 				$i=1;
 		}
-				if($meal_allowance AND $accomodation_allowance AND $group_ush){
-					$total_meal_pagi = $meal_pagi*$nom_meal_pagi;
-					$total_meal_siang = $meal_siang*$nom_meal_siang;
-					$total_meal_malam = $meal_malam*$nom_meal_malam;
-					echo '
-						<div class="col-md-6">
-							<div class="row" style="margin-bottom: 10px;">
+		echo '<div class="col-md-6">';
+
+		if($meal_allowance){
+			$total_meal_pagi = $meal_pagi*$nom_meal_pagi;
+			$total_meal_siang = $meal_siang*$nom_meal_siang;
+			$total_meal_malam = $meal_malam*$nom_meal_malam;
+			echo'
+				<div class="row" style="margin-bottom: 10px;">
 								<div class="col-md-4">
 									Meal
 								</div>
@@ -257,57 +273,10 @@ class C_OutstationRealization extends CI_Controller {
 										</table>
 									</div>
 								</div>
-							</div>
-							<div class="row" style="margin-bottom: 10px;">
-								<div class="col-md-4">
-									Accomodation
-								</div>
-								<div class="col-md-8">
-									<div class="row">
-										<table>
-											<tr>
-												<td>'.$meal_malam.' Malam</td>
-												<td>&emsp;X&emsp;</td>
-												<td align="right">Rp.'.number_format($nom_inn_malam , 2, ',', '.').'</td>
-												<td>&emsp;=&emsp;</td>
-												<td align="right">Rp.'.number_format($total_acc , 2, ',', '.').'</td>
-											</tr>
-											<tr>
-												<td colspan="3">Total Accomodation Allowance</td>
-												<td>&emsp;=&emsp;</td>
-												<td>Rp.'.number_format($total_acc , 2, ',', '.').'</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-							</div>
-							<div class="row" style="margin-bottom: 10px;">
-								<div class="col-md-4">
-									 USH
-								</div>
-								<div class="col-md-8">
-									<div class="row">
-										<p id="ush-estimate">Rp.'.number_format($total_ush , 2, ',', '.').'</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="row" style="margin-bottom: 10px;">
-								<div class="col-md-4">
-									Total Estimated
-								</div>
-								<div class="col-md-8">
-									<p id="total-estimate">Rp.'.number_format($total_all , 2, ',', '.').'</p>
-								</div>
-							</div>
-						</div>
-						';
-				}
-				else{
-					echo '
-						<div class="col-md-6">
-							<div class="row" style="margin-bottom: 10px;">
+				</div>';
+		}else{
+			echo'
+				<div class="row" style="margin-bottom: 10px;">
 								<div class="col-md-4">
 									Meal
 								</div>
@@ -343,8 +312,36 @@ class C_OutstationRealization extends CI_Controller {
 										</table>
 									</div>
 								</div>
-							</div>
-							<div class="row" style="margin-bottom: 10px;">
+				</div>';
+		}
+		if($accomodation_allowance){
+			echo'
+				<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
+									Accomodation
+								</div>
+								<div class="col-md-8">
+									<div class="row">
+										<table>
+											<tr>
+												<td>'.$meal_malam.' Malam</td>
+												<td>&emsp;X&emsp;</td>
+												<td align="right">Rp.'.number_format($nom_inn_malam , 2, ',', '.').'</td>
+												<td>&emsp;=&emsp;</td>
+												<td align="right">Rp.'.number_format($total_acc , 2, ',', '.').'</td>
+											</tr>
+											<tr>
+												<td colspan="3">Total Accomodation Allowance</td>
+												<td>&emsp;=&emsp;</td>
+												<td>Rp.'.number_format($total_acc , 2, ',', '.').'</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+				</div>';
+		}else{
+			echo'
+				<div class="row" style="margin-bottom: 10px;">
 								<div class="col-md-4">
 									Accomodation
 								</div>
@@ -366,32 +363,86 @@ class C_OutstationRealization extends CI_Controller {
 										</table>
 									</div>
 								</div>
-							</div>
-							<div class="row" style="margin-bottom: 10px;">
+				</div>';
+		}
+		if($group_ush){
+			echo '
+				<div class="row" style="margin-bottom: 10px;">
+								<div class="col-md-4">
+									 USH
+								</div>
+								<div class="col-md-8">
+									<div class="row">
+										<table>';
+
+										array_push($group_id, array('id' => '0', 'nominal' => '0'));
+			
+										$ush_id="";
+										$ush_count = 0;
+										foreach ($group_id as $gi) {
+											if($gi['id'] == $ush_id || $ush_id == ""){
+												$ush_count++;
+												$ush_name = $gi['id'];
+												$ush_nom = $gi['nominal'];
+												$ush_tot = $ush_count*$ush_nom;
+											}else{
+												echo'
+												<tr>
+													<td>'.$ush_count.' '.$ush_name.'</td>
+													<td>&emsp;X&emsp;</td>
+													<td align="right">Rp.'.number_format($ush_nom , 2, ',', '.').'</td>
+													<td>&emsp;=&emsp;</td>
+													<td align="right">Rp.'.number_format($ush_tot , 2, ',', '.').'</td>
+												</tr>';
+
+												$ush_count = 1;
+												$ush_name = $gi['id'];
+												$ush_nom = $gi['nominal'];
+												$ush_tot = $ush_count*$ush_nom;
+											}
+											$ush_id = $gi['id'];
+										}
+
+											echo'
+											<tr>
+												<td colspan="3">Total USH Allowance</td>
+												<td>&emsp;=&emsp;</td>
+												<td>Rp.'.number_format($total_ush , 2, ',', '.').'</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+				</div>';	
+		}else{
+			echo'
+				<div class="row" style="margin-bottom: 10px;">
 								<div class="col-md-7">
 									 USH
 								</div>
 								<div class="col-md-5">
 									<p id="ush-estimate">Rp0,00</p>
 								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
+				</div>';
+		}
+		echo'</div>
+			<div class="col-md-6">
 							<div class="row" style="margin-bottom: 10px;">
-								<div class="col-md-5">
+								<div class="col-md-4">
 									Total Estimated
 								</div>
-								<div class="col-md-5">
-									<p id="total-estimate">Rp0,00</p>
+								<div class="col-md-8">
+									<p id="total-estimate">Rp.'.number_format($total_all , 2, ',', '.').'</p>
 								</div>
 							</div>
-						</div>
-						';
-				}
+			</div>';
 	}
 
-	public function save_Realization()
-	{
+	public function save_Realization(){
+		if($this->input->post('acc_check') == 1){
+			$include_acc = 1;
+		}else{
+			$include_acc = 0;
+		}
 		$employee_id = $this->input->post('txt_employee_id');
 		$position_id = $this->input->post('txt_position_id');
 		$destination = $this->input->post('txt_city_id');
@@ -415,7 +466,7 @@ class C_OutstationRealization extends CI_Controller {
 			$bon=0;
 		}
 
-		$this->M_Realization->new_realization($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon);
+		$this->M_Realization->new_realization($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon,$include_acc);
 
 		for ($i=0; $i <= $data_count; $i++){ 
 			
@@ -430,8 +481,7 @@ class C_OutstationRealization extends CI_Controller {
 		redirect('Outstation/realization');
 	}
 
-	public function edit_Realization($realization_id)
-	{
+	public function edit_Realization($realization_id){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['Title'] = 'Edit Realization';
@@ -451,6 +501,7 @@ class C_OutstationRealization extends CI_Controller {
         $data['Component'] = $this->M_Realization->show_component();
 
         foreach ($data['data_realization'] as $realization) {
+			$include_acc = $realization['accomodation_option'];
         	$position_id = $realization['outstation_position'];
         	$area_id = $realization['area_id'];
         	if ($area_id == '39') {
@@ -510,6 +561,11 @@ class C_OutstationRealization extends CI_Controller {
 			$data['nom_meal_siang'] = '';
 			$data['nom_meal_malam'] = '';
 			$data['nom_inn_malam'] = '';
+			$meal_number = array();
+			$acc_number = array();
+			$ush_number = array();
+			$group_id = array();
+			$data['nom_inn_malam'] = '0';
 			
 			foreach ( $period as $dt ){
 				$check_holiday = $this->M_Realization->check_holiday($dt->format('Y-m-d'),$dt->format('Y-m-d') );
@@ -531,81 +587,92 @@ class C_OutstationRealization extends CI_Controller {
 						$meal_allowance = $this->M_Realization->show_meal_allowance($position_id,$area_id,$time_name[$time]);
 						$accomodation_allowance = $this->M_Realization->show_accomodation_allowance($position_id,$area_id,$city_type_id);
 						$group_ush = $this->M_Realization->show_group_ush($position_id, $return_time_now, $have_holiday, $is_foreign);
-						
 						foreach ($accomodation_allowance as $aa) {
-							foreach ($meal_allowance as $ma) {
-								foreach ($group_ush as $grp) {
-									$indexx++;
-									if ($time == $y) {
-										$acc_nominal = $aa['nominal'];
-										$data['nom_inn_malam'] = $aa['nominal'];
-									}
-									else{
-										$acc_nominal = '0';
-									}
-									if ($time == $i) {
-										$nominal_ush = array($indexx => $grp['nominal']);
-										//$nominal_ush[$indexx] = $grp['nominal'];
-									}
-									else{
-										$nominal_ush[$indexx] = '0';
-									}
-									$meal = array($indexx => $ma['nominal']);
-									$acc = array($indexx =>$acc_nominal);
-									//$meal[$indexx] = $ma['nominal'];
-									//$acc[$indexx] = $acc_nominal;
-									if (strtolower($ma['time_name']) == strtolower("Pagi")) {
-										$data['meal_pagi']++;
-										$data['nom_meal_pagi'] = $ma['nominal'];
-									}
-									if (strtolower($ma['time_name']) == strtolower("Siang")) {
-										$data['meal_siang']++;
-										$data['nom_meal_siang'] = $ma['nominal'];
-									}
-									if (strtolower($ma['time_name']) == strtolower("Malam")) {
-										$data['meal_malam']++;
-										$data['nom_meal_malam'] = $ma['nominal'];
-									}
-
-									$string = array('Rp',',00','.');
-									$remover = array('');
-
-									$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
-
-									$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
-
-									$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
-
-									//$total[$indexx] = $meal_number[$indexx]+$acc_number[$indexx]+$ush_number[$indexx];
-									$total_meal = array_sum($meal_number);
-									$total_acc = array_sum($acc_number);
-									$total_ush = array_sum($ush_number);
-									$total_all = $total_meal+$total_acc+$total_ush;
-								}
+							$indexx++;
+							if ($time == $y and $include_acc == 1) {
+								$acc_nominal = $aa['nominal'];
+								$data['nom_inn_malam'] = $aa['nominal'];
+							}else{
+								$acc_nominal = '0';
 							}
+							$acc = array($indexx =>$acc_nominal);
+							$string = array('Rp',',00','.');
+							$remover = array('');
+
+							$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
 						}
 
+						foreach ($meal_allowance as $ma) {
+							$indexx++;
+							$meal = array($indexx => $ma['nominal']);
+									
+							if (strtolower($ma['time_name']) == strtolower("Pagi")) {
+								$data['meal_pagi']++;
+								$data['nom_meal_pagi'] = $ma['nominal'];
+							}
+							if (strtolower($ma['time_name']) == strtolower("Siang")) {
+								$data['meal_siang']++;
+								$data['nom_meal_siang'] = $ma['nominal'];
+							}
+							if (strtolower($ma['time_name']) == strtolower("Malam")) {
+								$data['meal_malam']++;
+								$data['nom_meal_malam'] = $ma['nominal'];
+							}
+							$string = array('Rp',',00','.');
+							$remover = array('');
+
+							$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
+						}
+						
+						foreach ($group_ush as $grp) {
+							$indexx++;
+							if ($time == $i) {
+								$nominal_ush = array($indexx => $grp['nominal']);
+
+								array_push($group_id, array('id' => $grp['group_name'], 'nominal' => $grp['nominal']) );
+							}else{
+								$nominal_ush[$indexx] = '0';
+							}
+							$string = array('Rp',',00','.');
+							$remover = array('');
+
+							$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
+						}
+						$total_meal = array_sum($meal_number);
+						$total_acc = array_sum($acc_number);
+						$total_ush = array_sum($ush_number);
+						$total_all = $total_meal+$total_acc+$total_ush;
 					}
 					$i=1;
 			}
-					if($meal_allowance AND $accomodation_allowance AND $group_ush){
-						$data['total_meal_pagi'] = $data['meal_pagi']*$data['nom_meal_pagi'];
-						$data['total_meal_siang'] = $data['meal_siang']*$data['nom_meal_siang'];
-						$data['total_meal_malam'] = $data['meal_malam']*$data['nom_meal_malam'];
-						$data['total_meal'] = 'Rp'.number_format($total_meal , 2, ',', '.');
-						$data['total_acc'] = 'Rp'.number_format($total_acc , 2, ',', '.');
-						$data['total_ush'] = 'Rp'.number_format($total_ush , 2, ',', '.');
-						$data['total_all'] = 'Rp'.number_format($total_all , 2, ',', '.');
-					}
-					else{
-						$data['total_meal_pagi'] = 'Rp0,00';
-						$data['total_meal_siang'] = 'Rp0,00';
-						$data['total_meal_malam'] = 'Rp0,00';
-						$data['total_meal'] = 'Rp0,00';
-						$data['total_acc'] = 'Rp0,00';
-						$data['total_ush'] = 'Rp0,00';
-						$data['total_all'] = 'Rp0,00';
-					}
+
+			if($meal_allowance){
+				$data['total_meal_pagi'] = $data['meal_pagi']*$data['nom_meal_pagi'];
+				$data['total_meal_siang'] = $data['meal_siang']*$data['nom_meal_siang'];
+				$data['total_meal_malam'] = $data['meal_malam']*$data['nom_meal_malam'];
+				$data['total_meal'] = 'Rp'.number_format($total_meal , 2, ',', '.');
+			}else{
+				$data['total_meal_pagi'] = 'Rp0,00';
+				$data['total_meal_siang'] = 'Rp0,00';
+				$data['total_meal_malam'] = 'Rp0,00';
+				$data['total_meal'] = 'Rp0,00';
+			}
+
+			if($accomodation_allowance){
+				$data['total_acc'] = 'Rp'.number_format($total_acc , 2, ',', '.');
+			}else{
+				$data['total_acc'] = 'Rp0,00';
+			}
+
+			if($group_ush){
+				$data['total_ush'] = 'Rp'.number_format($total_ush , 2, ',', '.');
+				array_push($group_id, array('id' => '0', 'nominal' => '0') );
+				$data['detail_ush'] = $group_id;
+			}else{
+				$data['total_ush'] = 'Rp0,00';
+			}
+
+			$data['total_all'] = 'Rp'.number_format($total_all , 2, ',', '.');
 		}
 
 		$this->load->view('V_Header',$data);
@@ -615,6 +682,11 @@ class C_OutstationRealization extends CI_Controller {
 	}
 
 	public function update_Realization(){
+		if($this->input->post('acc_check') == 1){
+			$include_acc = 1;
+		}else{
+			$include_acc = 0;
+		}
 		$realization_id = $this->input->post('txt_realization_id');
 		$employee_id = $this->input->post('txt_employee_id');
 		$destination = $this->input->post('txt_city_id');
@@ -636,7 +708,7 @@ class C_OutstationRealization extends CI_Controller {
 
 		$bon = str_replace($string, '', $bon_string);
 
-		$this->M_Realization->update_realization($realization_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon);
+		$this->M_Realization->update_realization($realization_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon,$include_acc);
 		$this->M_Realization->delete_before_update($realization_id);
 
 		for ($i=0; $i <= $data_count; $i++){ 
@@ -685,6 +757,7 @@ class C_OutstationRealization extends CI_Controller {
 		$data['data_realization_detail'] = $this->M_Realization->select_edit_Realization_detail($realization_id);
 
         foreach ($data['data_realization'] as $realization) {
+        	$include_acc = $realization['accomodation_option'];
         	$position_id = $realization['outstation_position'];
         	$area_id = $realization['area_id'];
         	if ($area_id == '39') {
@@ -744,6 +817,11 @@ class C_OutstationRealization extends CI_Controller {
 			$data['nom_meal_siang'] = '';
 			$data['nom_meal_malam'] = '';
 			$data['nom_inn_malam'] = '';
+			$meal_number = array();
+			$acc_number = array();
+			$ush_number = array();
+			$group_id = array();
+			$data['nom_inn_malam'] = '0';
 			
 			foreach ( $period as $dt ){
 				$check_holiday = $this->M_Realization->check_holiday($dt->format('Y-m-d'),$dt->format('Y-m-d') );
@@ -767,58 +845,60 @@ class C_OutstationRealization extends CI_Controller {
 						$group_ush = $this->M_Realization->show_group_ush($position_id, $return_time_now, $have_holiday, $is_foreign);
 						
 						foreach ($accomodation_allowance as $aa) {
-							foreach ($meal_allowance as $ma) {
-								foreach ($group_ush as $grp) {
-									$indexx++;
-									if ($time == $y) {
-										$acc_nominal = $aa['nominal'];
-										$data['nom_inn_malam'] = $aa['nominal'];
-									}
-									else{
-										$acc_nominal = '0';
-									}
-									if ($time == $i) {
-										$nominal_ush = array($indexx => $grp['nominal']);
-										//$nominal_ush[$indexx] = $grp['nominal'];
-									}
-									else{
-										$nominal_ush[$indexx] = '0';
-									}
-									$meal = array($indexx => $ma['nominal']);
-									$acc = array($indexx =>$acc_nominal);
-									//$meal[$indexx] = $ma['nominal'];
-									//$acc[$indexx] = $acc_nominal;
-									if (strtolower($ma['time_name']) == strtolower("Pagi")) {
-										$data['meal_pagi']++;
-										$data['nom_meal_pagi'] = $ma['nominal'];
-									}
-									if (strtolower($ma['time_name']) == strtolower("Siang")) {
-										$data['meal_siang']++;
-										$data['nom_meal_siang'] = $ma['nominal'];
-									}
-									if (strtolower($ma['time_name']) == strtolower("Malam")) {
-										$data['meal_malam']++;
-										$data['nom_meal_malam'] = $ma['nominal'];
-									}
-
-									$string = array('Rp',',00','.');
-									$remover = array('');
-
-									$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
-
-									$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
-
-									$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
-
-									//$total[$indexx] = $meal_number[$indexx]+$acc_number[$indexx]+$ush_number[$indexx];
-									$total_meal = array_sum($meal_number);
-									$total_acc = array_sum($acc_number);
-									$total_ush = array_sum($ush_number);
-									$total_all = $total_meal+$total_acc+$total_ush;
-								}
+							$indexx++;
+							if ($time == $y and $include_acc == 1) {
+								$acc_nominal = $aa['nominal'];
+								$data['nom_inn_malam'] = $aa['nominal'];
+							}else{
+								$acc_nominal = '0';
 							}
+							$acc = array($indexx =>$acc_nominal);
+							$string = array('Rp',',00','.');
+							$remover = array('');
+
+							$acc_number[$indexx] = str_replace($string, $remover, $acc[$indexx]);
 						}
 
+						foreach ($meal_allowance as $ma) {
+							$indexx++;
+							$meal = array($indexx => $ma['nominal']);
+									
+							if (strtolower($ma['time_name']) == strtolower("Pagi")) {
+								$data['meal_pagi']++;
+								$data['nom_meal_pagi'] = $ma['nominal'];
+							}
+							if (strtolower($ma['time_name']) == strtolower("Siang")) {
+								$data['meal_siang']++;
+								$data['nom_meal_siang'] = $ma['nominal'];
+							}
+							if (strtolower($ma['time_name']) == strtolower("Malam")) {
+								$data['meal_malam']++;
+								$data['nom_meal_malam'] = $ma['nominal'];
+							}
+							$string = array('Rp',',00','.');
+							$remover = array('');
+
+							$meal_number[$indexx] = str_replace($string, $remover, $meal[$indexx]);
+						}
+						
+						foreach ($group_ush as $grp) {
+							$indexx++;
+							if ($time == $i) {
+								$nominal_ush = array($indexx => $grp['nominal']);
+
+								array_push($group_id, array('id' => $grp['group_name'], 'nominal' => $grp['nominal']) );
+							}else{
+								$nominal_ush[$indexx] = '0';
+							}
+							$string = array('Rp',',00','.');
+							$remover = array('');
+
+							$ush_number[$indexx] = str_replace($string, $remover, $nominal_ush[$indexx]);
+						}
+						$total_meal = array_sum($meal_number);
+						$total_acc = array_sum($acc_number);
+						$total_ush = array_sum($ush_number);
+						$total_all = $total_meal+$total_acc+$total_ush;
 					}
 					$i=1;
 			}

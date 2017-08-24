@@ -63,8 +63,7 @@
 												<tr>
 													<td>Outstation Position</td>
 													<td><p id="outstation-position">-</p></td>
-													<td></td>
-													<td></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" checked="checked">&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td colspan="4">

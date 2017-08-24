@@ -73,8 +73,7 @@
 												<tr>
 													<td>Departemen</td>
 													<td><p id="department_name"><?php echo $dsim['department_name'] ?></p></td>
-													<td></td>
-													<td></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" <?php if($dsim['accomodation_option'] == 1){echo "checked";} ?> >&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td>Outstation Position</td>
