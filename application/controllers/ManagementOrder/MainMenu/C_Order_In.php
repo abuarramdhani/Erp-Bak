@@ -152,8 +152,8 @@ class C_Order_In extends CI_Controller {
 		}
 	}
 	
-	public function ExistTicket($id){
-		$data = $this->M_order_in->listJob($id);
+	public function ExistTicket(){
+		$data = $this->M_order_in->listJob_all();
 		foreach($data as $dt){
 				$ticket = $dt['id_ticket'];
 				$check = $this->M_order_in->existTicket($ticket);

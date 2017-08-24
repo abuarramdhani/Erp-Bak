@@ -6,6 +6,12 @@ $(document).ready(function() {
 		});
 	}, 30000);
 	
+	setInterval(function(){ 
+		$.ajax({
+			url: baseurl+"ManagementOrder/Order_In/ExistTicket",
+		});
+	}, 30000);
+	
 	$('#txtTags').focus();
 	var screen = window.innerWidth;
     if ( screen <= 1250) {
@@ -584,7 +590,6 @@ function savePriority(i,url,ticket){
 	// });
 
 function loadOrder(id,nama){
-	 $.ajax({url: baseurl+"ManagementOrder/Order_In/ExistTicket/"+id+""});
 	 $('#tableorder-member').DataTable().destroy();
 	 $('#tableorder-member').DataTable({
 		  "paging": true,

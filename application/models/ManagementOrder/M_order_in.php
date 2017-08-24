@@ -214,9 +214,19 @@ class M_order_in extends CI_Model {
 			return $query->result_array();
 		}
 		
-		public function existTicket($ticket){
+		public function listJob_all(){
+			$sql	   = "SELECT pj.id_ticket,pj.number,pj.subject_,pj.priority,
+								(SELECT t.todo FROM mo.mo_todo t WHERE t.id_ticket=pj.id_ticket ORDER BY datetime_ DESC LIMIT 1 ) AS todo,
+								(SELECT t.duedate FROM mo.mo_todo t WHERE t.id_ticket=pj.id_ticket ORDER BY datetime_ DESC LIMIT 1 ) AS duedate
+							FROM mo.mo_manage_order pj 
+							WHERE pj.active='1' ORDER BY pj.priority,pj.id_plot ASC";
+			$query     = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function existTicket($id){
 			$ticket = $this->load->database('ticket',true);
-			$sql	   = "select * from ticket1.khs_ticket where number='$ticket' and status_id in ('2','3') ";
+			$sql	   = "select * from ticket1.khs_ticket where number='$id' and status_id in ('2','3') ";
 			$query     = $ticket->query($sql);
 			return $query->result_array();
 		}

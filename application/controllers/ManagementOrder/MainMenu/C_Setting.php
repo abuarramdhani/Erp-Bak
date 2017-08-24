@@ -217,7 +217,7 @@ class C_Setting extends CI_Controller {
 		$data['id'] = $id;
 		$data['grup_list_id'] = $grup_list_id;
 		
-		$this->form_validation->set_rules('txtClassificationGroup', 'menugroup', 'required');
+		$this->form_validation->set_rules('txtMenuGroupName', 'menugroup', 'required');
 		
 		if ($this->form_validation->run() === FALSE)
 		{
@@ -242,7 +242,6 @@ class C_Setting extends CI_Controller {
 					'classification_sequence' 	=> $menu_sequence[$i],
 					'prompt' 			=> empty($menu_prompt[$i]) ? NULL : $menu_prompt[$i],
 					'classification_level' 		=> $menu_level[$i],
-					'root_id' 			=> $root_id,
 					'classification_group_id' 	=> $plaintext_string,
 					'last_update_date' 	=> $this->input->post('hdnDate'),
 					'last_updated_by' 	=> $this->input->post('hdnUser'),

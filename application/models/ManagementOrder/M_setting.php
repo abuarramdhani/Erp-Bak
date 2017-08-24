@@ -72,6 +72,13 @@ class M_setting extends CI_Model {
 			return $this->db->insert('mo.mo_classification_group', $data);
 		}
 		
+		public function updateMenuGroupList($data, $menu_group_list_id)
+		{		
+				$this->db->where('classification_group_list_id',$menu_group_list_id);
+				$this->db->update('mo.mo_classification_group_list', $data); 
+
+		}
+		
 		function select_class_group(){
 			$sql = "select *,(select count(b.*) from mo.mo_classification_group_list b where b.classification_group_id=a.classification_group_id) total_class from mo.mo_classification_group a";
 			$query = $this->db->query($sql);

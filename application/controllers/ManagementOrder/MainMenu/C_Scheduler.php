@@ -90,11 +90,11 @@ class C_Scheduler extends CI_Controller {
 			foreach($getFormat as $getFormat_item){
 				$no++;
 				echo "<tr>
-						<td>".$no."</td>
-						<td>".$getFormat_item['classification']."</td>
-						<td></td>
-						<td></td>
-					  </tr>";
+							<td>".$no."</td>
+							<td>".$getFormat_item['classification']."</td>
+							<td></td>
+							<td></td>
+						  </tr>";
 			}
 		}
 	}
