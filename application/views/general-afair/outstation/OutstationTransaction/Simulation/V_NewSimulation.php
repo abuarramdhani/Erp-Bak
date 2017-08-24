@@ -80,6 +80,7 @@
 													</td>
 												</tr>
 											</table>
+											<!--
 											<label>Simulation Table</label>
 											<table id="simulation_detail" class="table table-bordered table-striped table-hover">
 												<thead>
@@ -108,6 +109,47 @@
 													</tr>
 												</tfoot>
 											</table>
+											-->
+											<label>Estimate Allowance</label>
+											<div class="row2" id="estimate-allowance">
+												<div class="col-md-4">
+													<div class="row">
+														<div class="col-md-7">
+															Meal Allowance
+														</div>
+														<div class="col-md-5">
+															<p id="meal-estimate">Rp0,00</p>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-7">
+															Accomodation Allowance
+														</div>
+														<div class="col-md-5">
+															<p id="accomodation-estimate">Rp0,00</p>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-7">
+															 USH
+														</div>
+														<div class="col-md-5">
+															<p id="ush-estimate">Rp0,00</p>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="row">
+														<div class="col-md-5">
+															Total Estimated
+														</div>
+														<div class="col-md-5">
+															<p id="total-estimate">Rp0,00</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											
 											<table width="100%">
 												<tr>
 													<td colspan="8"><center><a style="margin: 10px; width: 100px;" onclick="window.history.back()" class="btn btn-primary">Back</a><a style="margin: 10px; width: 100px;" onclick="location.reload()" class="btn btn-primary">Reset</a><button style="margin: 10px; width: 100px;" class="btn btn-primary">Save</button></center></td>

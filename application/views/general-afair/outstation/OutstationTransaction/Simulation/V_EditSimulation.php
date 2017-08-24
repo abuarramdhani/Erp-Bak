@@ -105,6 +105,7 @@
 													}
 											?>
 											<label>Simulation Table</label>
+											<!--
 											<table id="simulation_detail" class="table table-bordered table-striped table-hover">
 												<thead>
 													<tr class="bg-primary">
@@ -119,7 +120,18 @@
 													</tr>
 												</thead>
 												<tbody id="simulation_body">
+											-->
 													<?php
+														$meal_pagi = 0;
+														$meal_siang = 0;
+														$meal_malam = 0;
+														$nom_meal_pagi = 0;
+														$nom_meal_siang = 0;
+														$nom_meal_malam = 0;
+														$acc_malam = 0;
+														$nom_accomodation = 0;
+														$total_ush = 0;
+
 														foreach ($Simulation_detail as $sdet) {
 															$inn_date = explode(' ', $sdet['inn_date']);
 															$meal_rep = str_replace('Rp', '', $sdet['meal_allowance_nominal']);
@@ -141,7 +153,40 @@
 																	$group_name = $grp['group_name'];
 																}
 															}
+
+															$string = array('Rp',',00','.');
+															//Meal
+															if (strtolower($sdet['time_name']) == strtolower("Pagi")) {
+																$meal_pagi++;
+																$nom_meal_pagi = str_replace($string,'',$sdet['meal_allowance_nominal']);
+															}
+															if (strtolower($sdet['time_name']) == strtolower("Siang")) {
+																$meal_siang++;
+																$nom_meal_siang = str_replace($string,'',$sdet['meal_allowance_nominal']);
+															}
+															if (strtolower($sdet['time_name']) == strtolower("Malam")) {
+																$meal_malam++;
+																$nom_meal_malam = str_replace($string,'',$sdet['meal_allowance_nominal']);
+															}
+															//Accomodation
+															if (strtolower($sdet['time_name']) == strtolower("Malam")) {
+																$acc_malam++;
+																$nom_accomodation = str_replace($string,'',$sdet['acomodation_allowance_nominal']);
+															}
+															//USH
+															if ($sdet['group_id'] != NULL) {
+																$total_ush = $total_ush+$sdet['ush_nominal'];
+															}
+														}
+														$total_meal_pagi = $meal_pagi*$nom_meal_pagi;
+														$total_meal_siang = $meal_siang*$nom_meal_siang;
+														$total_meal_malam = $meal_malam*$nom_meal_malam;
+														$total_meal = $total_meal_pagi+$total_meal_siang+$total_meal_malam;
+
+														$total_acc = $acc_malam*$nom_accomodation;
+														$total_all = $total_meal+$total_acc+$total_ush;
 													?>
+											<!--
 													<tr>
 														<td></td>
 														<td><?php echo $inn_date[0] ?></td>
@@ -152,9 +197,6 @@
 														<td style="text-align: right">Rp<?php echo number_format($ush_rep2 , 2, '.', ',') ?></td>
 														<td style="text-align: right">Rp<?php echo number_format($total , 2, '.', ',') ?></td>
 													</tr>
-													<?php
-														}
-													?>
 												</tbody>
 												<tfoot>
 													<tr>
@@ -167,6 +209,158 @@
 													</tr>
 												</tfoot>
 											</table>
+											-->
+											<div class="row2" id="estimate-allowance">
+												<div class="col-md-6">
+													<div class="row" style="margin-bottom: 10px;">
+														<div class="col-md-4">
+															Meal
+														</div>
+														<div class="col-md-8">
+															<div class="row">
+																<table>
+																	<tr>
+																		<td><?php echo $meal_pagi ?> Pagi</td>
+																		<td>&emsp;X&emsp;</td>
+																		<td>Rp.<?php if(!empty($nom_meal_pagi)){echo number_format($nom_meal_pagi, 2, ',', '.');}else{echo "0,00";} ?></td>
+																		<td>&emsp;=&emsp;</td>
+																		<td align="right">Rp.<?php if(!empty($nom_meal_pagi)){echo number_format($total_meal_pagi, 2, ',', '.');}else{echo "0,00";}  ?></td>
+																	</tr>
+																	<tr>
+																		<td><?php echo $meal_siang ?> Siang</td>
+																		<td>&emsp;X&emsp;</td>
+																		<td>Rp.<?php if(!empty($nom_meal_siang)){echo number_format($nom_meal_siang, 2, ',', '.');}else{echo "0,00";}  ?></td>
+																		<td>&emsp;=&emsp;</td>
+																		<td align="right">Rp.<?php if(!empty($nom_meal_siang)){echo number_format($total_meal_siang, 2, ',', '.');}else{echo "0,00";}  ?></td>
+																	</tr>
+																	<tr>
+																		<td><?php echo $meal_malam ?> Malam</td>
+																		<td>&emsp;X&emsp;</td>
+																		<td>Rp.<?php if(!empty($nom_meal_malam)){echo number_format($nom_meal_malam, 2, ',', '.');}else{echo "0,00";}  ?></td>
+																		<td>&emsp;=&emsp;</td>
+																		<td align="right">Rp.<?php if(!empty($nom_meal_malam)){echo number_format($total_meal_malam, 2, ',', '.');}else{echo "0,00";}  ?></td>
+																	</tr>
+																	<tr>
+																		<td colspan="3">Total Meal Allowance</td>
+																		<td>&emsp;=&emsp;</td>
+																		<td align="right">Rp.<?php echo number_format($total_meal, 2, ',', '.');  ?></td>
+																	</tr>
+																</table>
+															</div>
+														</div>
+													</div>
+													<div class="row" style="margin-bottom: 10px;">
+														<div class="col-md-4">
+															Accomodation
+														</div>
+														<div class="col-md-8">
+															<div class="row">
+																<table>
+																	<tr>
+																		<td><?php echo $acc_malam ?> Malam</td>
+																		<td>&emsp;X&emsp;</td>
+																		<td align="right">Rp.<?php if(!empty($nom_accomodation)){echo number_format($nom_accomodation, 2, ',', '.');}else{echo "0,00";}  ?></td>
+																		<td>&emsp;=&emsp;</td>
+																		<td align="right">Rp.<?php echo number_format($total_acc, 2, ',', '.');  ?></td>
+																	</tr>
+																	<tr>
+																		<td colspan="3">Total Accomodation Allowance</td>
+																		<td>&emsp;=&emsp;</td>
+																		<td align="right">Rp.<?php echo number_format($total_acc, 2, ',', '.');  ?></td>
+																	</tr>
+																</table>
+															</div>
+														</div>
+													</div>
+													<div class="row" style="margin-bottom: 10px;">
+														<div class="col-md-4">
+															 USH
+														</div>
+														<div class="col-md-8">
+															<div class="row">
+																<table>
+									
+																	<?php
+																	$ush_id="";
+																	$ush_count = 0;
+																	foreach ($Simulation_detail as $sdet) {
+																		if ($sdet['group_id'] != NULL) {
+																			$group_name ='-';
+																			foreach ($GroupUSH as $grp) {
+																				if ($sdet['group_id'] == $grp['group_id']) {
+																					$group_name = $grp['group_name'];
+																				}
+																			}
+																			/*
+																			$ush_nom = $sdet['ush_nominal'];
+																			$ush_tot = $sdet['ush_nominal']*$ush_count;
+																			echo'
+																			<tr>
+																				<td>'.$ush_count.' '.$group_name.'</td>
+																				<td>&emsp;X&emsp;</td>
+																				<td align="right">Rp.'.number_format($ush_nom , 2, ',', '.').'</td>
+																				<td>&emsp;=&emsp;</td>
+																				<td align="right">Rp.'.number_format($ush_tot , 2, ',', '.').'</td>
+																			</tr>';
+																			*/
+
+																			if($group_name == $ush_id || $ush_id == ""){
+																				$ush_count++;
+																				$ush_name = $group_name;
+																				$ush_nom = $sdet['ush_nominal'];
+																				$ush_tot = $ush_count*$ush_nom;
+																			}else{
+																				echo'
+																				<tr>
+																					<td>'.$ush_count.' '.$ush_name.'</td>
+																					<td>&emsp;X&emsp;</td>
+																					<td align="right">Rp.'.number_format($ush_nom , 2, ',', '.').'</td>
+																					<td>&emsp;=&emsp;</td>
+																					<td align="right">Rp.'.number_format($ush_tot , 2, ',', '.').'</td>
+																				</tr>';
+
+																				$ush_count = 1;
+																				$ush_name = $group_name;
+																				$ush_nom = $sdet['ush_nominal'];
+																				$ush_tot = $ush_count*$ush_nom;
+																			}
+																			$ush_id = $group_name;
+
+																		}
+																		$total_ush = $total_ush+$ush_tot;
+																	}
+																				echo'
+																				<tr>
+																					<td>'.$ush_count.' '.$ush_name.'</td>
+																					<td>&emsp;X&emsp;</td>
+																					<td align="right">Rp.'.number_format($ush_nom , 2, ',', '.').'</td>
+																					<td>&emsp;=&emsp;</td>
+																					<td align="right">Rp.'.number_format($ush_tot , 2, ',', '.').'</td>
+																				</tr>';
+																	?>
+
+																	<tr>
+																		<td colspan="3">Total USH Allowance</td>
+																		<td>&emsp;=&emsp;</td>
+																		<td>Rp. <?php echo number_format($total_ush, 2, ',', '.');  ?></td>
+																	</tr>
+																</table>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="row" style="margin-bottom: 10px;">
+														<div class="col-md-4">
+															Total Estimated
+														</div>
+														<div class="col-md-8">
+															<p id="total-estimate">Rp.<?php echo number_format($total_all, 2, ',', '.');  ?></p>
+														</div>
+													</div>
+												</div>
+											</div>
+
 											<table width="100%">
 												<tr>
 													<td colspan="8">
