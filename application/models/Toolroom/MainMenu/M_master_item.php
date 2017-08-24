@@ -1,0 +1,38 @@
+<?php
+class M_master_item extends CI_Model {
+
+        public function __construct()
+        {
+                $this->load->database();
+				$this->load->library('encrypt');
+				$this->load->helper('url');
+				$this->load->library('session');
+        }
+		
+		public function getItemUsable($item_id=FALSE)
+		{	if($item_id === FALSE){
+				$sql = "select * from tr.tr_master_item";
+			}else{
+				$sql = "select * from tr.tr_master_item  where item_id=$item_id";
+			}						
+			
+			$query = $this->db->query($sql);
+			return $query->result_array();
+				
+		}
+		
+		public function saveUsableItem($data){
+			return $this->db->insert('tr.tr_master_item', $data);
+		}
+		
+		public function updateUsableItem($data,$id){
+			$this->db->where('item_id',$id);
+			$this->db->update('tr.tr_master_item', $data); 
+		}
+		
+		public function deleteUsableItem($id){
+			$this->db->where('item_id', $id);
+			$this->db->delete('tr.tr_master_item'); 
+		}
+		
+}

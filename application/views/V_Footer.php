@@ -55,6 +55,7 @@
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/js/customTR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/formValidation.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
