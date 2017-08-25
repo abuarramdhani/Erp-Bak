@@ -131,8 +131,6 @@ $('#dataTables-fleetKecelakaan').DataTable( {
     });
 $('#daterangepicker').daterangepicker({
     "showDropdowns": true,
-    "timePicker": true,
-    "timePicker24Hour": true,
     "autoApply": true,
     "locale": {
         "format": "DD-MM-YYYY",

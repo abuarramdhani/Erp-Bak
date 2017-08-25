@@ -36,7 +36,7 @@ class C_FleetPajak extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pajak';
+		$data['Title'] = 'Pajak';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -58,7 +58,7 @@ class C_FleetPajak extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pajak';
+		$data['Title'] = 'Pajak';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -105,7 +105,7 @@ class C_FleetPajak extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pajak';
+		$data['Title'] = 'Pajak';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -161,7 +161,7 @@ class C_FleetPajak extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pajak';
+		$data['Title'] = 'Pajak';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';

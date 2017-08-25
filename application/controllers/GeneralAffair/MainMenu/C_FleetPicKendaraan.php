@@ -93,8 +93,8 @@ class C_FleetPicKendaraan extends CI_Controller
 
 			$MasaAktifPIC 		=	explode(' - ', $masaAktifPIC);
 
-			$dari 		=	date('Y-m-d H:i:s', strtotime($MasaAktifPIC[0]));
-			$sampai 	= 	date('Y-m-d H:i:s', strtotime($MasaAktifPIC[1]));
+			$dari 		=	date('Y-m-d', strtotime($MasaAktifPIC[0]));
+			$sampai 	= 	date('Y-m-d', strtotime($MasaAktifPIC[1]));
 
 			$data = array(
 				'kendaraan_id' 		=> $kodeKendaraan,
@@ -139,12 +139,14 @@ class C_FleetPicKendaraan extends CI_Controller
 
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan();
+		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
+
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'KendaraanId', 'required');
-		$this->form_validation->set_rules('txtDariPeriodeHeader', 'DariPeriode', 'required');
-		$this->form_validation->set_rules('txtSampaiPeriodeHeader', 'SampaiPeriode', 'required');
+		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'Kendaraan', 'required');
+		$this->form_validation->set_rules('cmbPekerjaHeader', 'Pekerja', 'required');
+		$this->form_validation->set_rules('masaAktifPIC', 'Masa Aktif PIC', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -152,14 +154,35 @@ class C_FleetPicKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetPicKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$kendaraan 	= 	$this->input->post('cmbKendaraanIdHeader', TRUE);
+			$idPekerja 	= 	$this->input->post('cmbPekerjaHeader', TRUE);
+			$periode 	= 	explode(' - ', $this->input->post('masaAktifPIC', TRUE));
+			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
+			$periode_awal 	= 	date('Y-m-d', strtotime($periode[0]));
+			$periode_akhir	= 	date('Y-m-d', strtotime($periode[1]));
+			$status_data 	= 	$this->input->post('CheckAktif');
+
+
+
+			$waktu_eksekusi = 	date('Y-m-d H:i:s');
+
+			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
+			{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
+			{
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}
+
 			$data = array(
-				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader',TRUE),
-				'dari_periode' => $this->input->post('txtDariPeriodeHeader',TRUE),
-				'sampai_periode' => $this->input->post('txtSampaiPeriodeHeader',TRUE),
-				'start_date' => $this->input->post('txtStartDateHeader',TRUE),
-				'end_date' => $this->input->post('txtEndDateHeader',TRUE),
-				'last_updated' => 'NOW()',
-				'last_updated_by' => $this->session->userid,
+				'kendaraan_id' 		=> $kendaraan,
+				'dari_periode' 		=> $periode_awal,
+				'sampai_periode' 	=> $periode_akhir,
+				'end_date' 			=> $waktu_dihapus,
+				'last_updated' 		=> $tanggal_eksekusi,
+				'last_updated_by'	=> $this->session->userid,
+				'employee_id' 		=> $idPekerja
     			);
 			$this->M_fleetpickendaraan->updateFleetPicKendaraan($data, $plaintext_string);
 

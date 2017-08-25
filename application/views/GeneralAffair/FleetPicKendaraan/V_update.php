@@ -31,51 +31,71 @@
                                     <div class="panel-body">
                                         <div class="row">
 											<div class="form-group">
-                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan Id</label>
+                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select select2" data-placeholder="Choose an option" style="width: 75%">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
-                                                                if ($headerRow['kendaraan_id'] == $row['kendaraan_id']) {
+                                                                 if ($headerRow['kode_kendaraan'] == $row['kode_kendaraan']) {
                                                                     $selected_data = "selected";
                                                                 } else {
                                                                     $selected_data = "";   
                                                                 }
-                                                                echo '<option value="'.$row['nomor_polisi'].'" '.$selected_data.'>'.$row['kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_kendaraan'].'" '.$selected_data.'>'.$row['nomor_polisi'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtDariPeriodeHeader" class="control-label col-lg-4">Dari Periode</label>
+                                            <div class="form-group">
+                                                <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtDariPeriodeHeader" value="<?php echo $headerRow['dari_periode'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtDariPeriodeHeader" />
+                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                            foreach ($DaftarNama as $row) {
+                                                                if($headerRow['id_pekerja'] == $row['id_pekerja'])
+                                                                {
+                                                                    $selected_data = "selected";
+                                                                }
+                                                                else
+                                                                {
+                                                                    $selected_data = "";
+                                                                }
+                                                                echo '<option value="'.$row['id_pekerja'].'" '.$selected_data.'>'.$row['daftar'].'</option>';
+                                                            }
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtSampaiPeriodeHeader" class="control-label col-lg-4">Sampai Periode</label>
+
+
+                                            <div class="form-group">
+                                                <label for="txtMasaAktifPICHeader" class="control-label col-lg-4">Masa Penggunaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtSampaiPeriodeHeader" value="<?php echo $headerRow['sampai_periode'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtSampaiPeriodeHeader" />
+                                                    <input type="text" name="masaAktifPIC" class="date form-control" id="daterangepicker" value="<?php echo $headerRow['periode'];?>" required="" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
+                                            <div class="form-group">
+                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Waktu Dibuat</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" value="<?php echo $headerRow['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo $headerRow['waktu_dibuat'];?>" name="txtStartDateHeader" value="<?php echo $headerRow['waktu_dibuat'] ?>" class="date form-control" data-date-format="dd-mm-yyyy H:i:s" id="txtStartDateHeader" disabled=""/>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
+                                            <div class="form-group">
+                                                <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" value="<?php echo $headerRow['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
+                                                    <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
+                                                    <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $headerRow['waktu_dihapus'];?>">
                                                 </div>
-                                            </div>
+
+                                            </div>                                            
+
 
 
                                         </div>

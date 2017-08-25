@@ -59,7 +59,7 @@
                                                 <?php 
                                                    $no = 1; 
                                                    foreach($PICKendaraan as $row):
-                                                   $encrypted_string = $this->encrypt->encode($row['pic_kendaraan_id']);
+                                                   $encrypted_string = $this->encrypt->encode($row['kode_pic_kendaraan']);
                                                     $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
                                                  ?>
                                                     <tr>
@@ -98,7 +98,7 @@
                                                 <?php 
                                             	   $no = 1; 
                                             	   foreach($PICKendaraanDel as $row):
-                                            	   $encrypted_string = $this->encrypt->encode($row['pic_kendaraan_id']);
+                                            	   $encrypted_string = $this->encrypt->encode($row['kode_pic_kendaraan']);
 												    $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											     ?>
                                                     <tr>
