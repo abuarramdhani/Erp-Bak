@@ -16,6 +16,8 @@ class C_FleetPicKendaraan extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetpickendaraan');
 
+		date_default_timezone_set('Asia/Jakarta');
+
 		$this->checkSession();
 	}
 
@@ -36,7 +38,7 @@ class C_FleetPicKendaraan extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pic Kendaraan';
+		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -45,7 +47,8 @@ class C_FleetPicKendaraan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetPicKendaraan'] = $this->M_fleetpickendaraan->getFleetPicKendaraan();
+		$data['PICKendaraan'] 	= $this->M_fleetpickendaraan->getFleetPicKendaraan();
+		$data['PICKendaraanDel']= $this->M_fleetpickendaraan->getFleetPicKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -56,9 +59,10 @@ class C_FleetPicKendaraan extends CI_Controller
 	/* NEW DATA */
 	public function create()
 	{
+		date_default_timezone_set('Asia/Jakarta');
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pic Kendaraan';
+		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -69,12 +73,13 @@ class C_FleetPicKendaraan extends CI_Controller
 
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan();
+		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
+
 
 		/* LINES DROPDOWN DATA */
-
-		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'KendaraanId', 'required');
-		$this->form_validation->set_rules('txtDariPeriodeHeader', 'DariPeriode', 'required');
-		$this->form_validation->set_rules('txtSampaiPeriodeHeader', 'SampaiPeriode', 'required');
+		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'Kendaraan', 'required');
+		$this->form_validation->set_rules('cmbPekerjaHeader', 'Pekerja', 'required');
+		$this->form_validation->set_rules('masaAktifPIC', 'Masa Aktif PIC', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -82,14 +87,24 @@ class C_FleetPicKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetPicKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$kodeKendaraan		= 	$this->input->post('cmbKendaraanIdHeader');
+			$idPekerja			=	$this->input->post('cmbPekerjaHeader');
+			$masaAktifPIC 		= 	$this->input->post('masaAktifPIC');
+
+			$MasaAktifPIC 		=	explode(' - ', $masaAktifPIC);
+
+			$dari 		=	date('Y-m-d H:i:s', strtotime($MasaAktifPIC[0]));
+			$sampai 	= 	date('Y-m-d H:i:s', strtotime($MasaAktifPIC[1]));
+
 			$data = array(
-				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader'),
-				'dari_periode' => $this->input->post('txtDariPeriodeHeader'),
-				'sampai_periode' => $this->input->post('txtSampaiPeriodeHeader'),
-				'start_date' => $this->input->post('txtStartDateHeader'),
-				'end_date' => $this->input->post('txtEndDateHeader'),
-				'creation_date' => 'NOW()',
-				'created_by' => $this->session->userid,
+				'kendaraan_id' 		=> $kodeKendaraan,
+				'dari_periode' 		=> $dari,
+				'sampai_periode' 	=> $sampai,
+				'start_date' 		=> date('Y-m-d H:i:s'),
+				'end_date'			=> '9999-12-12 00:00:00',
+				'creation_date' 	=> date('Y-m-d H:i:s'),
+				'created_by' 		=> $this->session->userid,
+				'employee_id'		=> $idPekerja
     		);
 			$this->M_fleetpickendaraan->setFleetPicKendaraan($data);
 			$header_id = $this->db->insert_id();

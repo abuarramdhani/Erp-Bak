@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/create');?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/create');?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -23,144 +23,102 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Fleet Kendaraan</div>
+                                <div class="box-header with-border">Create Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Polisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Nomor Polisi" name="txtNomorPolisiHeader" id="txtNomorPolisiHeader" class="form-control" />
+                                                    <input type="text" placeholder="Nomor Polisi (contoh : AB1234CD)" name="txtNomorPolisiHeader" id="txtNomorPolisiHeader" class="form-control" maxlength="11" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbJenisKendaraanIdHeader" class="control-label col-lg-4">Jenis Kendaraan Id</label>
+                                                <label for="cmbJenisKendaraanIdHeader" class="control-label col-lg-4">Jenis Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbJenisKendaraanIdHeader" name="cmbJenisKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbJenisKendaraanIdHeader" name="cmbJenisKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
-                                                            foreach ($FleetJenisKendaraan as $row) {
-                                                                echo '<option value="'.$row['jenis_kendaraan'].'" >'.$row['jenis_kendaraan_id'].'</option>';
+                                                            foreach ($FleetJenisKendaraan as $JenisKendaraan) {
+                                                                echo '  <option value="'.$JenisKendaraan['kode_jenis_kendaraan'].'" >'
+                                                                            .$JenisKendaraan['jenis_kendaraan'].'
+                                                                        </option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbMerkKendaraanIdHeader" class="control-label col-lg-4">Merk Kendaraan Id</label>
+                                                <label for="cmbMerkKendaraanIdHeader" class="control-label col-lg-4">Merk Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbMerkKendaraanIdHeader" name="cmbMerkKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbMerkKendaraanIdHeader" name="cmbMerkKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
-                                                            foreach ($FleetMerkKendaraan as $row) {
-                                                                echo '<option value="'.$row['merk_kendaraan'].'" >'.$row['merk_kendaraan_id'].'</option>';
+                                                            foreach ($FleetMerkKendaraan as $MerkKendaraan) {
+                                                                echo '  <option value="'.$MerkKendaraan["kode_merk_kendaraan"].'" >'
+                                                                            .$MerkKendaraan["merk_kendaraan"].'
+                                                                        </option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbWarnaKendaraanIdHeader" class="control-label col-lg-4">Warna Kendaraan Id</label>
+                                                <label for="cmbWarnaKendaraanIdHeader" class="control-label col-lg-4">Warna Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbWarnaKendaraanIdHeader" name="cmbWarnaKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbWarnaKendaraanIdHeader" name="cmbWarnaKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
-                                                            foreach ($FleetWarnaKendaraan as $row) {
-                                                                echo '<option value="'.$row['warna_kendaraan'].'" >'.$row['warna_kendaraan_id'].'</option>';
+                                                            foreach ($FleetWarnaKendaraan as $WarnaKendaraan) {
+                                                                echo '  <option value="'.$WarnaKendaraan["kode_warna_kendaraan"].'" >'
+                                                                            .$WarnaKendaraan["warna_kendaraan"].'
+                                                                        </option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTahunPembuatanHeader" class="control-label col-lg-4">Tahun Pembuatan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Tahun Pembuatan" name="txtTahunPembuatanHeader" id="txtTahunPembuatanHeader" class="form-control" />
+                                                    <select id="cmbTahunPembuatan" name="cmbTahunPembuatan" class="select2" data-placeholder="Pilih" style="width: 50%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        for ($tahun=date('Y'); $tahun > 1900; $tahun--) 
+                                                        { 
+                                                        echo '  <option value="'.$tahun.'">
+                                                                        '.$tahun.'
+                                                                </option>';
+                                                        }
+                                                        ?>
+                                                    </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto Stnk</label>
+                                                <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto STNK</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Foto Stnk" name="txtFotoStnkHeader" id="txtFotoStnkHeader" class="form-control" />
+                                                    <input type="file" placeholder="Foto STNK" name="FotoSTNK" id="FotoSTNK" class="form-control" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto Bpkb</label>
+                                                <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto BPKB</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Foto Bpkb" name="txtFotoBpkbHeader" id="txtFotoBpkbHeader" class="form-control" />
+                                                    <input type="file" placeholder="Foto BPKB" name="FotoBPKB" id="FotoBPKB" class="form-control" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtFotoKendaraanHeader" class="control-label col-lg-4">Foto Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Foto Kendaraan" name="txtFotoKendaraanHeader" id="txtFotoKendaraanHeader" class="form-control" />
+                                                    <input type="file" placeholder="Foto Kendaraan" name="FotoKendaraan" id="FotoKendaraan" class="form-control" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 
                                         </div>
