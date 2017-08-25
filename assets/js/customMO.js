@@ -1,16 +1,16 @@
 
 $(document).ready(function() {
-	setInterval(function(){ 
-		$.ajax({
-			url :baseurl+"ManagementOrder/Order_In/SyncTicket",
-		});
-	}, 30000);
+	// setInterval(function(){ 
+		// $.ajax({
+			// url :baseurl+"ManagementOrder/Order_In/SyncTicket",
+		// });
+	// }, 30000);
 	
-	setInterval(function(){ 
-		$.ajax({
-			url: baseurl+"ManagementOrder/Order_In/ExistTicket",
-		});
-	}, 30000);
+	// setInterval(function(){ 
+		// $.ajax({
+			// url: baseurl+"ManagementOrder/Order_In/ExistTicket",
+		// });
+	// }, 30000);
 	
 	$('#txtTags').focus();
 	var screen = window.innerWidth;

@@ -25,14 +25,9 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								<a href="<?php echo site_url('Toolroom/MasterItem/CreateUsableItem') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
+								<a href="<?php echo site_url('Toolroom/Transaksi/CreatePeminjaman') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
 									<button type="button" class="btn btn-default btn-sm">
 									  <i class="icon-plus icon-2x"></i>
-									</button>
-								</a>
-								<a href="<?php echo site_url('Toolroom/MasterItem/ImportUsableItem') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Import" title="Import" >
-									<button type="button" class="btn btn-default btn-sm">
-									  <i class="icon-download icon-2x"></i>
 									</button>
 								</a>
 							</div>
@@ -49,7 +44,7 @@
 												<th width="10%"><center>Description</center></th>
 											</tr>
 										</thead>
-										<tbody>
+										<!-- <tbody>
 											<?php $num = 0;
 														foreach ($AllUsableItem as $AllUsableItem_item): 
 														$num++;
@@ -69,7 +64,7 @@
 														<td><?php echo $AllUsableItem_item['item_desc'] ?></td>
 													</tr>
 											<?php endforeach ?>
-										</tbody>
+										</tbody> -->
 									</table>
 							</div>
 						</div>

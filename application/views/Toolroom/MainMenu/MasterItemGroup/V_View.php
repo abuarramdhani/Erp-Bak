@@ -25,16 +25,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								<a href="<?php echo site_url('Toolroom/MasterItem/CreateUsableItem') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
-									<button type="button" class="btn btn-default btn-sm">
-									  <i class="icon-plus icon-2x"></i>
-									</button>
-								</a>
-								<a href="<?php echo site_url('Toolroom/MasterItem/ImportUsableItem') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Import" title="Import" >
-									<button type="button" class="btn btn-default btn-sm">
-									  <i class="icon-download icon-2x"></i>
-									</button>
-								</a>
+							<b>Header</b>
 							</div>
 							<div class="box-body">
 									<table class="table table-striped table-bordered table-hover text-left table-item-usable" id="table-item-usable" style="font-size:12px;">
@@ -58,7 +49,7 @@
 											?>
 													<tr>
 														<td align="center">
-															<a class="btn btn-xs bg-green" href="<?php echo base_url('Toolroom/MasterItem/UpdateItemUsable/')."/".$encrypted_string ?>"><span title="Update <?php echo $AllUsableItem_item['item_name'] ?>" class="fa fa-edit"></span></a>
+															<a class="btn btn-xs bg-blue" href="<?php echo base_url('Toolroom/MasterItem/UpdateItemUsable/')."/".$encrypted_string ?>"><span title="Update <?php echo $AllUsableItem_item['item_name'] ?>" class="fa fa-edit"></span></a>
 															<a class="btn btn-xs bg-maroon" href="<?php echo base_url('Toolroom/MasterItem/RemoveItemUsable/')."/".$encrypted_string ?>" onclick="return confirm('are you sure to delete this tool ?')"><span title="Update <?php echo $AllUsableItem_item['item_name'] ?>" class="fa fa-remove"></span></a>
 														</td>
 														<td align="center"><?php echo $num?></td>

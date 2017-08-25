@@ -10,7 +10,8 @@ class M_master_item extends CI_Model {
         }
 		
 		public function getItemUsable($item_id=FALSE)
-		{	if($item_id === FALSE){
+		{	
+			if($item_id === FALSE){
 				$sql = "select * from tr.tr_master_item";
 			}else{
 				$sql = "select * from tr.tr_master_item  where item_id=$item_id";
@@ -18,7 +19,6 @@ class M_master_item extends CI_Model {
 			
 			$query = $this->db->query($sql);
 			return $query->result_array();
-				
 		}
 		
 		public function saveUsableItem($data){
@@ -33,6 +33,37 @@ class M_master_item extends CI_Model {
 		public function deleteUsableItem($id){
 			$this->db->where('item_id', $id);
 			$this->db->delete('tr.tr_master_item'); 
+		}
+		
+		public function getGroupItemUsable($item_id=FALSE){
+			if($item_id === FALSE){
+				$sql = "select * from tr.tr_master_item_group";
+			}else{
+				$sql = "select * from tr.tr_master_item_group  where item_group_id=$item_id";
+			}						
+			
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function getListGroupItemUsable($id){
+			$sql = "select * from tr.tr_master_item where item_group_id=$id";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function saveUsableItemGroup($data){
+			return $this->db->insert('tr.tr_master_item_group', $data);
+		}
+		
+		public function deleteUsableItemGroup($id){
+			$this->db->where('item_group_id', $id);
+			$this->db->delete('tr.tr_master_item_group'); 
+		}
+		
+		public function updateUsableGroupItem($data,$id){
+			$this->db->where('item_group_id',$id);
+			$this->db->update('tr.tr_master_item_group', $data); 
 		}
 		
 }

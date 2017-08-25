@@ -71,7 +71,7 @@
 								<div class="row text-right">
 									<a href="<?php echo site_url('Toolroom/MasterItem/Usable') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
 									&nbsp;&nbsp;
-									<button id="btnUser" class="btn btn-primary btn-lg btn-rect">Update</button>
+									<button id="btnUser" class="btn btn-primary btn-lg btn-rect">Update Data</button>
 								</div>
 							</div>
 							<?php endforeach ?>

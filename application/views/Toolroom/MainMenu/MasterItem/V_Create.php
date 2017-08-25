@@ -36,6 +36,19 @@
 							<div class="panel-body">
 								<div class="row col-lg-12">
 									<div class="form-group">
+											<label for="norm" class="control-label col-md-2 text-center">Group Toolkit</label>
+											<div class="col-md-3">
+												<select name="txtGroupItem" id="txtGroupItem" class="form-control select-group-item">
+													<option value=""></option>
+													<?php
+														foreach ($AllUsableItemGroup as $AllUsableItemGroup_item){
+															echo "<option value='".$AllUsableItemGroup_item['item_group_id']."'>".$AllUsableItemGroup_item['item_group']."</option>";
+														}
+													?>
+												</select>
+											</div>
+									</div>
+									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Barcode</label>
 											<div class="col-md-3">
 												<input type="text" placeholder="Barcode" name="txtBarcodeId" id="txtBarcodeId" class="form-control" required/>
