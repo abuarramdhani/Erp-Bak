@@ -16,6 +16,8 @@ class C_FleetPajak extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetpajak');
 
+		date_default_timezone_set('Asia/Jakarta');
+
 		$this->checkSession();
 	}
 
@@ -45,7 +47,8 @@ class C_FleetPajak extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetPajak'] = $this->M_fleetpajak->getFleetPajak();
+		$data['FleetPajak'] 		= $this->M_fleetpajak->getFleetPajak();
+		$data['FleetPajakDeleted']	= $this->M_fleetpajak->getFleetPajakDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -72,10 +75,10 @@ class C_FleetPajak extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'KendaraanId', 'required');
-		$this->form_validation->set_rules('txtPeriodeAwalPajakHeader', 'PeriodeAwalPajak', 'required');
-		$this->form_validation->set_rules('txtPeriodeAkhirPajakHeader', 'PeriodeAkhirPajak', 'required');
-		$this->form_validation->set_rules('txtBiayaHeader', 'Biaya', 'required');
+		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'Kendaraan', 'required');
+		$this->form_validation->set_rules('txtTanggalPajak', 'Tanggal Pajak', 'required');
+		$this->form_validation->set_rules('txtPeriodePajak', 'Periode Pajak', 'required');
+		$this->form_validation->set_rules('txtBiaya', 'Biaya', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -83,15 +86,38 @@ class C_FleetPajak extends CI_Controller
 			$this->load->view('GeneralAffair/FleetPajak/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$kendaraan 			= 	$this->input->post('cmbKendaraanIdHeader');
+			$tanggalPajak 		= 	$this->input->post('txtTanggalPajak');
+			$periodePajak 		= 	$this->input->post('txtPeriodePajak');
+			$biaya 				= 	$this->input->post('txtBiaya');
+
+			$tanggalPajak 		= 	date('Y-m-d', strtotime($tanggalPajak));
+			$periodePajak 		= 	explode(' - ', $periodePajak);
+			$periodeawalPajak 	= 	date('Y-m-d',strtotime($periodePajak[0]));
+			$periodeakhirPajak 	=	date('Y-m-d', strtotime($periodePajak[1]));
+
+			$biaya 				= 	str_replace(array('.','Rp'), '', $biaya);
+
+			$tanggal_eksekusi 	= 	date('Y-m-d H:i:s');
+
+			// echo $kendaraan.'<br/>';
+			// echo $tanggalPajak.'<br/>';
+			// echo $periodeawalPajak.'<br/>';
+			// echo $periodeakhirPajak.'<br/>';
+			// echo $biaya.'<br/>';
+			// echo $tanggal_eksekusi.'<br/>';
+
+
 			$data = array(
-				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader'),
-				'periode_awal_pajak' => $this->input->post('txtPeriodeAwalPajakHeader'),
-				'periode_akhir_pajak' => $this->input->post('txtPeriodeAkhirPajakHeader'),
-				'biaya' => $this->input->post('txtBiayaHeader'),
-				'start_date' => $this->input->post('txtStartDateHeader'),
-				'end_date' => $this->input->post('txtEndDateHeader'),
-				'creation_date' => 'NOW()',
-				'created_by' => $this->session->userid,
+				'kendaraan_id' 			=> $kendaraan,
+				'tanggal_pajak'			=> $tanggalPajak,
+				'periode_awal_pajak' 	=> $periodeawalPajak,
+				'periode_akhir_pajak' 	=> $periodeakhirPajak,
+				'biaya' 				=> $biaya,
+				'start_date' 			=> $tanggal_eksekusi,
+				'end_date' 				=> '9999-12-12 00:00:00',
+				'creation_date' 		=> $tanggal_eksekusi,
+				'created_by' 			=> $this->session->userid,
     		);
 			$this->M_fleetpajak->setFleetPajak($data);
 			$header_id = $this->db->insert_id();
