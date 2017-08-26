@@ -144,17 +144,29 @@ public function excel($message=NULL)
             //mulai
             $object = new PHPExcel();
             $object->getProperties()->setCreator("Quick")
-                           ->setLastModifiedBy("Quick");
+                ->setLastModifiedBy("Quick");
+
             $object->getActiveSheet()->getPageSetup()
                 ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
             $object->getActiveSheet()->getPageSetup()
-                ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO);
+                ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER);
+            // $object->getActiveSheet()->getPageSetup()
+            //     ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO);
 
-            $object->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-            $object->getActiveSheet()->getColumnDimension('B')->setWidth(42);
-            $object->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-            $object->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-            $object->getActiveSheet()->getColumnDimension('E')->setWidth(26);
+            $object->getActiveSheet()
+                ->getPageMargins()->setTop(0.5);
+            $object->getActiveSheet()
+                ->getPageMargins()->setRight(0.4);
+            $object->getActiveSheet()
+                ->getPageMargins()->setLeft(0.4);
+            $object->getActiveSheet()
+                ->getPageMargins()->setBottom(0.5);
+
+            $object->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+            $object->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+            $object->getActiveSheet()->getColumnDimension('C')->setWidth(11);
+            $object->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+            $object->getActiveSheet()->getColumnDimension('E')->setWidth(24);
 
             //font style
             $Font11Reg      = array('font'  => array( 'size' => 11,'bold'  => false,));
@@ -196,12 +208,13 @@ public function excel($message=NULL)
             $alignright = array(
                'alignment' => array(
                   'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-                  'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));        
+                  'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));
 
             //Height
+            $object->getActiveSheet()->getRowDimension('1')->setRowHeight(35);
             $object->getActiveSheet()->getRowDimension('2')->setRowHeight(15);
-            $object->getActiveSheet()->getRowDimension('3')->setRowHeight(24); 
-            $object->getActiveSheet()->getRowDimension('4')->setRowHeight(15); 
+            $object->getActiveSheet()->getRowDimension('3')->setRowHeight(24);
+            $object->getActiveSheet()->getRowDimension('4')->setRowHeight(15);
             $object->getActiveSheet()->getRowDimension('5')->setRowHeight(14);
 
             //PENGAPLIKASIAN STYLE
@@ -224,9 +237,18 @@ public function excel($message=NULL)
             $object->getActiveSheet()->getStyle('A18:E18') ->applyFromArray($border_top_bot);
 
             //merge-cell
-            $object->getActiveSheet()->mergeCells('A3:E3');
+            $object->getActiveSheet()->mergeCells('A1:B1');
             $object->getActiveSheet()->mergeCells('A2:E2');
+            $object->getActiveSheet()->mergeCells('A3:E3');
             $object->getActiveSheet()->mergeCells('D12:D13');
+
+            $objDrawing = new PHPExcel_Worksheet_Drawing();
+            $objDrawing->setWorksheet($object->getActiveSheet());
+            $objDrawing->setPath('./assets/img/logo/COST_ACCOUNTING_LOGO.png');
+            $objDrawing->setOffsetX(8);
+            $objDrawing->setOffsetY(12);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(25);
 
             $object->setActiveSheetIndex(0)
                     ->setCellValue('E1','No. Dokumen: ESTCAST/'.$year_doc.$month_doc.$day_doc.'/'.str_pad($no_doc, 4, '0', STR_PAD_LEFT))
@@ -249,7 +271,10 @@ public function excel($message=NULL)
                     ->setCellValue('D11','Mesin Moulding')->setCellValue('E11',$moulding)
                     ->setCellValue('D12','Target Cetak Mold')->setCellValue('E12',$target_pieces)
                                                              ->setCellValue('E13',$target_flask)
-                    ->setCellValue('D14','Cavity')->setCellValue('E14',$cavity_flask)
+                    ->setCellValue('D14','Cavity')->setCellValue('E14',$cavity_flask);
+            $object->getActiveSheet()->mergeCells('A16:E16');
+            $object->getActiveSheet()->mergeCells('A17:E17');
+            $object->setActiveSheetIndex(0)
                     ->setCellValue('A16','Rincian Perhitungan')->setCellValue('A17','Material Melting')
                     ->setCellValue('A18','Item Code')->setCellValue('B18','Description')->setCellValue('C18','Qty')
                     ->setCellValue('D18','Rate')->setCellValue('E18','Total Cost');
@@ -277,9 +302,10 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('E'.$row)->applyFromArray($Font11Bold);
                     $object->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('"Rp. "#,##0.00 "/Pcs"');
              //--------------------------------------------------------------------------------------------------------------//
-
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Material Pembuatan Inti');
+                    ->setCellValue('A'.$row,'Material Pembuatan Inti');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Item Code')
@@ -306,9 +332,10 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('E'.$row) ->applyFromArray($Font11Bold);
                     $object->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('"Rp. "#,##0.00 "/Pcs"');
              //--------------------------------------------------------------------------------------------------------------//
-
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Material Molding');
+                    ->setCellValue('A'.$row,'Material Molding');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Item Code')->setCellValue('B'.$row,'Description')->setCellValue('C'.$row,'Qty')
@@ -359,9 +386,10 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('E'.$row) ->applyFromArray($Font11Bold);
                     $object->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('"Rp. "#,##0.00 "/Pcs"');
              //--------------------------------------------------------------------------------------------------------------//
-
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Material Finishing');
+                    ->setCellValue('A'.$row,'Material Finishing');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Item Code')
@@ -407,17 +435,21 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('"Rp. "#,##0.00 "/Pcs"');
                     $object->getActiveSheet()->getStyle('A'.$end.':E'.$row) ->applyFromArray($border_horizon);
                     $object->getActiveSheet()->getStyle('D'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':D'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('D'.$row+=1,'Total Biaya Material')
+                    ->setCellValue('A'.$row,'Total Biaya Material')
                     ->setCellValue('E'.$row, $tot_material_cost);
                     $object->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('"Rp. "#,##0.00 "/Pcs"');
                     $object->getActiveSheet()->getStyle('E'.$row) ->applyFromArray($border_horizon);
-                    $object->getActiveSheet()->getStyle('D'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
+                    $object->getActiveSheet()->getStyle('A'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
+                    $object->getActiveSheet()->getStyle('A'.$row) ->applyFromArray($alignright);
              //--------------------------------------------------------------------------------------------------------------//
-
-
+             $object->getActiveSheet()->setBreak( 'A'.$row , PHPExcel_Worksheet::BREAK_ROW );
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Pengurangan Remelt');
+                    ->setCellValue('A'.$row,'Pengurangan Remelt');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Item Code')
@@ -449,17 +481,20 @@ public function excel($message=NULL)
              $result_remelt                 = $cost_remelt;
              $result_material_min_remelt    = $tot_material_cost - $cost_remelt;
              
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':D'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('E'.$row+=1,$result_material_min_remelt)
-                    ->setCellValue('D'.$row,'Total Biaya Material setelah Pengurangan Remelt');
+                    ->setCellValue('E'.$row,$result_material_min_remelt)
+                    ->setCellValue('A'.$row,'Total Biaya Material setelah Pengurangan Remelt');
                     $object->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('"Rp. "#,##0.00 "/Pcs"');
                     $object->getActiveSheet()->getStyle('A'.$end.':E'.$row) ->applyFromArray($border_horizon);
-                    $object->getActiveSheet()->getStyle('D'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
-                    $object->getActiveSheet()->getStyle('D'.$row) ->applyFromArray($alignright);
+                    $object->getActiveSheet()->getStyle('A'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
+                    $object->getActiveSheet()->getStyle('A'.$row) ->applyFromArray($alignright);
              //--------------------------------------------------------------------------------------------------------------//
-
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Proses Pembuatan Inti');
+                    ->setCellValue('A'.$row,'Proses Pembuatan Inti');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Nama Resource')->setCellValue('B'.$row,'Tarif (Rate)')->setCellValue('C'.$row,'Resc Count')
@@ -512,9 +547,10 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('A'.$end.':E'.$row) ->applyFromArray($border_horizon);
                     $object->getActiveSheet()->getStyle('D'.$row.':E'.$row) ->applyFromArray($Font11Bold);
              //--------------------------------------------------------------------------------------------------------------//
-
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Proses Line Molding');
+                    ->setCellValue('A'.$row,'Proses Line Molding');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Nama Resource')
@@ -571,9 +607,10 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('A'.$end.':E'.$row) ->applyFromArray($border_horizon);
                     $object->getActiveSheet()->getStyle('D'.$row.':E'.$row) ->applyFromArray($Font11Bold);
              //--------------------------------------------------------------------------------------------------------------//
-
+             $row+=1;
+             $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$row+=1,'Proses Finishing');
+                    ->setCellValue('A'.$row,'Proses Finishing');
                     $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font11BoldUI);
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row+=1,'Nama Resource')->setCellValue('B'.$row,'Tarif (Rate)')->setCellValue('C'.$row,'Resc Count')
@@ -635,24 +672,38 @@ public function excel($message=NULL)
             $tot_casting_reject     = $tot_casting / (1 - ($scrap/100) );
             $tot_casting_reject_kg  = $tot_casting_reject / $berat_casting;
 
+            $row+=1;
+            $object->getActiveSheet()->mergeCells('A'.$row.':D'.$row);
             $object->setActiveSheetIndex(0)
-                    ->setCellValue('D'.$row+=2,'Total Biaya Proses')
-                    ->setCellValue('E'.$row, $tot_process)
+                    ->setCellValue('A'.$row,'Total Biaya Proses')
+                    ->setCellValue('E'.$row, $tot_process);
+            
+            $row+=1;
+            $object->getActiveSheet()->mergeCells('A'.$row.':D'.$row);
+            $object->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$row,'Total Biaya Casting')
+                    ->setCellValue('E'.$row, $tot_casting);
+            
+            $row+=2;
+            $object->getActiveSheet()->mergeCells('A'.$row.':D'.$row);
+            $object->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$row,'Total Biaya Casting per KG')
+                    ->setCellValue('E'.$row, $tot_casting_kg);
 
-                    ->setCellValue('D'.$row+=2,'Total Biaya Casting')
-                    ->setCellValue('E'.$row, $tot_casting)
-
-                    ->setCellValue('D'.$row+=2,'Total Biaya Casting per KG')
-                    ->setCellValue('E'.$row, $tot_casting_kg)
-
-                    ->setCellValue('C'.$row+=2,'Total Biaya Casting setelah Memperhitungkan reject')
+            $row+=2;
+            $object->getActiveSheet()->mergeCells('A'.$row.':C'.$row);
+            $object->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$row,'Total Biaya Casting setelah Memperhitungkan reject')
                     ->setCellValue('D'.$row, $scrap)
-                    ->setCellValue('E'.$row, $tot_casting_reject)
+                    ->setCellValue('E'.$row, $tot_casting_reject);
 
-                    ->setCellValue('C'.$row+=2,'Total Biaya Casting per Kg setelah Memperhitungkan reject')
+            $row+=2;
+            $object->getActiveSheet()->mergeCells('A'.$row.':C'.$row);
+            $object->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$row,'Total Biaya Casting per Kg setelah Memperhitungkan reject')
                     ->setCellValue('D'.$row, 'Harga per Kilogram')
                     ->setCellValue('E'.$row, $tot_casting_reject_kg)
-                    ->setCellValue('E6', $tot_casting_reject) 
+                    ->setCellValue('E6', $tot_casting_reject)
                     ->setCellValue('E7', $tot_casting_reject_kg);
                      $end3 = $row-2;
                      $endcastkg = $row-5;
@@ -670,7 +721,7 @@ public function excel($message=NULL)
                      $end4 = $row;
 
             $object->setActiveSheetIndex(0)
-                    ->setCellValue('B'.$row+=15,'Yogyakarta, '.date('d M Y'))
+                    ->setCellValue('B'.$row+=4,'Yogyakarta, '.date('d M Y'))
                     ->setCellValue('B'.$row+=1,'Dibuat Oleh,')->setCellValue('D'.$row,'Menyetujui,')
                     ->setCellValue('B'.$row+=4,'Artha Sakabuana')->setCellValue('D'.$row,'_____________')
                     ->setCellValue('B'.$row+=1,'Akuntansi Biaya');
@@ -678,6 +729,10 @@ public function excel($message=NULL)
 
             $object->getActiveSheet()->setTitle('Pelaporan');
             $object->setActiveSheetIndex(0);
+
+            // wraptext dan set print area
+            $object->getActiveSheet()->getStyle('A19:E'.$object->getActiveSheet()->getHighestRow())->getAlignment()->setWrapText(true);
+            $object->getActiveSheet()->getPageSetup()->setPrintArea('A1:E'.$object->getActiveSheet()->getHighestRow());
 
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="'.str_replace(" ","", $desc).'_'.$part_number.'.xlsx"');
