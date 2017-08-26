@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#tbdataplan').DataTable();
+    $('#tbdatagroupsection').DataTable();
 });
 
 function chartFabricationMon() {
