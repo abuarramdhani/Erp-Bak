@@ -8,7 +8,6 @@ class M_Casting extends CI_Model
 	        parent::__construct();
 	        $this->oracle = $this->load->database('oracle_prod', TRUE);
 	        $this->db = $this->load->database('default', TRUE);
-	        $this->local = $this->load->database('local', TRUE);
 	    }
 
 
