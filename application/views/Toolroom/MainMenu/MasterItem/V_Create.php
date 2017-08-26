@@ -56,7 +56,7 @@
 									</div>
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Tool</label>
-											<div class="col-md-3">
+											<div class="col-md-6">
 												<input type="text" placeholder="Tool Name" name="txtTool" id="txtTool" class="form-control" required/>
 											</div>
 									</div>
@@ -65,7 +65,7 @@
 											<div class="col-md-2">
 												<input type="text" placeholder="Item Quantity" name="txtQuantity" id="txtQuantity" class="form-control" required/>
 											</div>
-											<label for="norm" class="control-label col-md-2 text-center">Stock Opname</label>
+											<label for="norm" class="control-label col-md-2 text-center">Min Qty</label>
 											<div class="col-md-2">
 												<input type="text" placeholder="Stock Opname Qty" name="txtStockOpname" id="txtStockOpname" class="form-control"/>
 											</div>

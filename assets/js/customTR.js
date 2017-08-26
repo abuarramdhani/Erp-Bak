@@ -8,8 +8,26 @@ $(document).ready(function() {
 	});
 	$(".select-item").select2({
 		allowClear: true,
-		tags: true,
-		placeholder: "[Barcode]"
+		placeholder: "[Select Item]",
+		minimumInputLength: 3,
+		ajax: {		
+				url: baseurl+"Toolroom/Transaksi/getItem",
+				dataType: 'json',
+				type: "POST",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term
+					}
+					return queryParameters; 
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.item_id, text:obj.item_id+" ( "+obj.item_name+" )"};
+						})
+					};
+				}
+			}
 	});
 	$(".select-noind").select2({
 		allowClear: true,
@@ -36,16 +54,48 @@ $(document).ready(function() {
 	});
 });
 
+$(document).on("click", "#showModalItem", function () {
+	$('#modalSearchItem').modal();
+});
+
+$(document).on("click", "#showModalNoind", function () {
+	$('#modalSearchNoind').modal();
+});
+
 function AddPinjamItem(){
 	var barcode = $('#txtBarcode').val();
-		$.ajax({
-			type:'POST',
-			data:{id: barcode},
-			url :baseurl+"Toolroom/Transaksi/addNewItem",
-			success:function(result){
-				$('#table-create-peminjaman').append(result);
-				count = $('.clone').length;
-				$("span#no:last").html(count);
+	$.ajax({
+		type:'POST',
+		data:{id: barcode},
+		url :baseurl+"Toolroom/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-create-peminjaman tbody').html(result);
 			}
-		});
+		}
+	});
+	$('#txtBarcode').val('');
+}
+
+function removeListOutItem(id){
+	$.ajax({
+		type:'POST',
+		data:{id: id},
+		url :baseurl+"Toolroom/Transaksi/removeNewItem",
+		success:function(result){
+				$('#table-create-peminjaman tbody').html(result);
+		}
+	});
+}
+
+function clearListOutItem(){
+	$.ajax({
+		type:'POST',
+		url :baseurl+"Toolroom/Transaksi/clearNewItem",
+		success:function(result){
+				$('#table-create-peminjaman tbody').html(result);
+		}
+	});
 }

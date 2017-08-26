@@ -14,7 +14,7 @@ class M_master_item extends CI_Model {
 			if($item_id === FALSE){
 				$sql = "select * from tr.tr_master_item";
 			}else{
-				$sql = "select * from tr.tr_master_item  where item_id=$item_id";
+				$sql = "select * from tr.tr_master_item  where item_id='$item_id'";
 			}						
 			
 			$query = $this->db->query($sql);
@@ -39,7 +39,7 @@ class M_master_item extends CI_Model {
 			if($item_id === FALSE){
 				$sql = "select * from tr.tr_master_item_group";
 			}else{
-				$sql = "select * from tr.tr_master_item_group  where item_group_id=$item_id";
+				$sql = "select * from tr.tr_master_item_group  where item_group_id='$item_id'";
 			}						
 			
 			$query = $this->db->query($sql);
@@ -47,7 +47,7 @@ class M_master_item extends CI_Model {
 		}
 		
 		public function getListGroupItemUsable($id){
-			$sql = "select * from tr.tr_master_item where item_group_id=$id";
+			$sql = "select * from tr.tr_master_item where item_group_id='$id'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

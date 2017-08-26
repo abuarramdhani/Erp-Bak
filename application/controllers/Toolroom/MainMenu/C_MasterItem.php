@@ -161,20 +161,39 @@ class C_MasterItem extends CI_Controller {
                                                 NULL,
                                                 TRUE,
                                                 FALSE);
-                                                 
-                //Sesuaikan sama nama kolom tabel di database                                
-                 $data = array(
-                    "item_id"=> $rowData[0][0],
-                    "item_name"=> $rowData[0][1],
-                    "item_barcode"=> $rowData[0][2],
-                    "item"=> $rowData[0][3]
-                );
-                 
-                //sesuaikan nama dengan nama tabel
-                $insert = $this->db->insert("eimport",$data);
-				unlink($inputFileName);
-            // }
-		// }
+                $check = $this->M_master_item->getItemUsable($rowData[0][0]);
+				if($check){
+					$data = array(
+						"item_id"=> $rowData[0][0],
+						"item_name"=> $rowData[0][1],
+						"item_barcode"=> $rowData[0][2],
+						"item_group_id"=> $rowData[0][3],
+						"item_qty"=> $rowData[0][4],
+						"item_qty_min"=> $rowData[0][5],
+						"item_desc"=> $rowData[0][6],
+						"last_update_date"=> date('Y-m-d H:i:s'),
+						"last_updated_by"=> $this->session->user_id()
+					);
+					 
+					$insert = $this->M_master_item->updateUsableItem($data,$rowData[0][0]);
+				}else{
+					$data = array(
+						"item_id"=> $rowData[0][0],
+						"item_name"=> $rowData[0][1],
+						"item_barcode"=> $rowData[0][2],
+						"item_group_id"=> $rowData[0][3],
+						"item_qty"=> $rowData[0][4],
+						"item_qty_min"=> $rowData[0][5],
+						"item_desc"=> $rowData[0][6],
+						"creation_date"=> date('Y-m-d H:i:s'),
+						"created_by"=> $this->session->userid
+					);
+					 
+					$insert = $this->M_master_item->saveUsableItem($data);
+				}
+            }
+			unlink($inputFileName);
+		}
 	}
 	
 	function UpdateItemUsable($id){

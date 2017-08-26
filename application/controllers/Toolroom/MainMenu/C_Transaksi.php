@@ -49,7 +49,7 @@ class C_Transaksi extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Transaksi';
+		$data['Menu'] = 'Transaction';
 		$data['SubMenuOne'] = 'Keluar';
 		$data['SubMenuTwo'] = '';
 		$data['Title'] = 'Peminjaman';
@@ -67,15 +67,15 @@ class C_Transaksi extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Transaksi';
-		$data['SubMenuOne'] = 'Keluar';
+		$data['Menu'] = 'Transaction';
+		$data['SubMenuOne'] = 'Peminjaman';
 		$data['SubMenuTwo'] = '';
 		$data['Title'] = 'Peminjaman';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['AllUsableItem'] = $this->M_master_item->getItemUsable();
+		$data['itemOut'] = $this->M_transaksi->listOutITem();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_Create',$data);
@@ -88,18 +88,52 @@ class C_Transaksi extends CI_Controller {
 		echo json_encode($getNoind);
 	}
 	
+	public function getItem(){
+		$q = strtoupper($this->input->post('term',true));
+		$getItem = $this->M_transaksi->getItem($q);
+		echo json_encode($getItem);
+	}
+	
 	public function addNewItem(){
 		$id = $this->input->post('id');
-		$getItem = $this->M_master_item->getItemUsable($id);
+		$getItem = $this->M_transaksi->checkStokItem($id);
 		foreach($getItem as $getItem_item){
+			if($getItem_item['stok']=="0"){
+				echo "out";
+			}else{
+				$checkLog = $this->M_transaksi->checkLog($id);
+				if(empty($checkLog)){
+					$saveLog = $this->M_transaksi->saveLog($id,$getItem_item['item_name']);
+				}else{
+					$updateLog = $this->M_transaksi->updateLog($id);
+				}	
+				$this->showListOutItem();
+			}
+		}
+	}
+	
+	public function removeNewItem(){
+		$id = $this->input->post('id');
+		$delete = $this->M_transaksi->deleteLog($id);
+		$this->showListOutItem();
+	}
+	
+	public function clearNewItem(){
+		$delete = $this->M_transaksi->deleteLog();
+		$this->showListOutItem();
+	}
+	
+	public function showListOutItem(){
+		$itemOut = $this->M_transaksi->listOutITem();
+		foreach($itemOut as $itemOut_item){
 			echo "
 				<tr class='clone'>
 					<td class='text-center'><span id='no'>1</span></td>
-					<td class='text-center'>".$getItem_item['item_barcode']."</td>
-					<td>".$getItem_item['item_name']."</td>
-					<td class='text-center'>".$getItem_item['item_qty']."</td>
-					<td><input type='number' class='form-control' name='txtQtyPinjam' id='txtQtyPinjam' value='1' style='100%'></input></td>
-					<td class='text-center'><a><span class='fa fa-remove'></span></a></td>
+					<td class='text-center'>".$itemOut_item['item_id']."</td>
+					<td>".$itemOut_item['item_name']."</td>
+					<td class='text-center'>".$itemOut_item['sisa_stok']."</td>
+					<td><input type='number' class='form-control' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_qty']."' style='100%'></input></td>
+					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\")'><span class='fa fa-remove'></span></a></td>
 				</tr>
 			";
 		}

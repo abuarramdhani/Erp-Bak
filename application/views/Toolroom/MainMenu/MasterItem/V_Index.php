@@ -45,7 +45,7 @@
 												<th width="10%"><center>Code Barcode</center></th>
 												<th width="30%"><center>Tool</center></th>
 												<th width="15%"><center>Qty</center></th>
-												<th width="20%"><center>Stock Opname</center></th>
+												<th width="20%"><center>Min Qty</center></th>
 												<th width="10%"><center>Description</center></th>
 											</tr>
 										</thead>
@@ -65,7 +65,7 @@
 														<td align="center"><?php echo $AllUsableItem_item['item_barcode'] ?></td>
 														<td><?php echo $AllUsableItem_item['item_name'] ?></td>
 														<td align="center"><?php echo $AllUsableItem_item['item_qty'] ?></td>
-														<td align="center"><?php echo $AllUsableItem_item['item_so'] ?></td>
+														<td align="center"><?php echo $AllUsableItem_item['item_qty_min'] ?></td>
 														<td><?php echo $AllUsableItem_item['item_desc'] ?></td>
 													</tr>
 											<?php endforeach ?>

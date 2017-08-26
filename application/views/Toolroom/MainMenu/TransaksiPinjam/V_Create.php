@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner" >
 		<div class="row">
-			<form method="post" action="<?php echo site_url('Toolroom/Transaksi/savePeminjaman')?>" enctype="multipart/form-data" class="form-horizontal">
+			<form method="post" action="<?php echo site_url('Toolroom/Transaksi/savePeminjaman')?>" class="form-horizontal">
 					<!-- action merupakan halaman yang dituju ketika tombol submit dalam suatu form ditekan -->
 					<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" />
 					<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" />
@@ -37,15 +37,21 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-1 text-center">Barcode</label>
 											<div class="col-md-4">
-												<select name="txtBarcode" id="txtBarcode" class="form-control select-item" onChange="AddPinjamItem()" style="width:100%;">
-													<option value=""></option>
-													<?php 
-														foreach($AllUsableItem as $AllUsableItem_item){
-															echo "<option value='".$AllUsableItem_item['item_id']."'>".$AllUsableItem_item['item_barcode']."</option>";
-														}
-													?>
-												</select>
+												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPinjamItem()" placeholder="[Barcode]" autofocus></input>
 											</div>
+											<div class="col-md-1">
+												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
+											</div>
+											<div class="col-md-5">
+											</div>
+											<div class="col-md-1">
+												<a class="btn btn-md btn-danger" onClick="clearListOutItem()" >Reset</a>
+											</div>
+											<!-- <div class="col-md-4">
+												<select name="slcBarcode" id="slcBarcode" class="form-control select-item" onChange="AddPinjamItem()" style="width:100%;">
+													<option value=""></option>
+												</select>
+											</div> -->
 									</div>
 								</div>
 								<br>
@@ -54,14 +60,32 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%">No.</th>
-												<th width="15%"><center>Code Barcode</center></th>
-												<th width="55%"><center>Tool</center></th>
+												<th width="15%"><center>Item Code</center></th>
+												<th width="55%"><center>Item</center></th>
 												<th width="10%"><center>Stock</center></th>
 												<th width="10%"><center>Pinjam</center></th>
 												<th width="5%"><center>Act</center></th>
 											</tr>
 										</thead>
 										<tbody>
+											<?php 
+											if(!empty($itemOut)){
+												$no = 0;
+												foreach($itemOut as $itemOut_item){
+														$no++;
+														echo "
+															<tr class='clone'>
+																<td class='text-center'><span id='no'>".$no."</span></td>
+																<td class='text-center'>".$itemOut_item['item_id']."</td>
+																<td>".$itemOut_item['item_name']."</td>
+																<td class='text-center'>".$itemOut_item['sisa_stok']."</td>
+																<td><input type='number' class='form-control' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_qty']."' style='100%'></input></td>
+																<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\")'><span class='fa fa-remove'></span></a></td>
+															</tr>
+														";
+													}
+												}
+											?>
 										</tbody>
 									</table>
 								</div>
@@ -70,9 +94,10 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-1 text-center">Peminjam</label>
 											<div class="col-md-4">
-												<select name="txtNoind" class="form-control select-noind" style="width:100%;text-transform:uppercase;">
-													<option value=""></option>
-												</select>
+												<input type="text" name="txtNoind" id="txtNoind" class="form-control" placeholder="[Noind Pekerja]" autofocus></input>
+											</div>
+											<div class="col-md-1">
+												<a class="btn btn-md btn-default" id="showModalNoind"><span class="fa fa-search"></span></a>
 											</div>
 									</div>
 								</div>
@@ -81,7 +106,7 @@
 								<div class="row text-right">
 									<a href="<?php echo site_url('Toolroom/MasterItem/UsableGroup') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
 									&nbsp;&nbsp;
-									<button id="btnUser" class="btn btn-primary btn-lg btn-rect">Save</button>
+									<a id="btnUser" class="btn btn-primary btn-lg btn-rect">Save</a>
 								</div>
 							</div>
 						</div>
@@ -93,3 +118,34 @@
 		</div>
 	</div>
 </section>
+
+
+<div class="modal fade" id="modalSearchItem" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #3c8dbc;">
+			<b>- Pencarian Master Item -</b>
+        </div>
+        <div class="modal-body">
+			<select name="txtBarcode" id="txtBarcode" class="form-control select-item" style="width:100%;">
+				<option value=""></option>
+			</select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="modalSearchNoind" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #3c8dbc;">
+			<b>- List Pekerja -</b>
+        </div>
+        <div class="modal-body">
+			<select name="slcNoind" class="form-control select-noind" style="width:100%;text-transform:uppercase;">
+				<option value=""></option>
+			</select>
+        </div>
+      </div>
+    </div>
+  </div>
