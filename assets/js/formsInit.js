@@ -108,7 +108,7 @@
 	});
 	*/
 	$(".select4").select2({
-			placeholder: "",//add placeholder kosong karena allowclear tidak bisa jalan tanpa placeholder
+			placeholder: "Choose Option",//add placeholder kosong karena allowclear tidak bisa jalan tanpa placeholder
 			allowClear : true,
 	});
 	
