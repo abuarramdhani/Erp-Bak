@@ -37,50 +37,42 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-1 text-center">Barcode</label>
 											<div class="col-md-3">
-												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPinjamItem()" placeholder="[Barcode]" autofocus></input>
+												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPengembalianItem()" placeholder="[Barcode]" autofocus></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
 											</div>
 											<div class="col-md-5">
 											</div>
-											<div class="col-md-1">
-												<a class="btn btn-md btn-danger" onClick="clearListOutItem()" >Reset</a>
-											</div>
-											<!-- <div class="col-md-4">
-												<select name="slcBarcode" id="slcBarcode" class="form-control select-item" onChange="AddPinjamItem()" style="width:100%;">
-													<option value=""></option>
-												</select>
-											</div> -->
 									</div>
 								</div>
 								<br>
 								<div class="row col-lg-12">
-									<table class="table table-striped table-bordered table-hover text-left table-create-peminjaman" id="table-create-peminjaman" style="font-size:12px;">
+									<table class="table table-striped table-bordered table-hover text-left table-create-pengembalian-today" id="table-create-pengembalian-today" style="font-size:12px;">
 										<thead>
 											<tr class="bg-primary">
-												<th width="5%">No.</th>
-												<th width="15%"><center>Item Code</center></th>
-												<th width="55%"><center>Item</center></th>
-												<th width="10%"><center>Stock</center></th>
-												<th width="10%"><center>Pinjam</center></th>
-												<th width="5%"><center>Act</center></th>
+												<th width="5%"><center>No</center></th>
+												<th width="10%"><center>Tool Code</center></th>
+												<th width="55%"><center>Tool</center></th>
+												<th width="10%"><center>Qty Awal</center></th>
+												<th width="10%"><center>Qty Akh</center></th>
+												<th width="10%"><center>Qty Pakai</center></th>
 											</tr>
 										</thead>
 										<tbody>
-											<?php 
-											if(!empty($itemOut)){
-												$no = 0;
-												foreach($itemOut as $itemOut_item){
+											<?php
+												if(!empty($ListOutTransaction)){
+													$no = 0;
+													foreach($ListOutTransaction as $ListOutTransaction_item){
 														$no++;
 														echo "
-															<tr class='clone'>
-																<td class='text-center'><span id='no'>".$no."</span></td>
-																<td class='text-center item_id'>".$itemOut_item['item_id']."</td>
-																<td class='item_name'>".$itemOut_item['item_name']."</td>
-																<td class='text-center sisa_stok'>".$itemOut_item['sisa_stok']."</td>
-																<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_qty']."' style='100%'></input></td>
-																<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\")'><span class='fa fa-remove'></span></a></td>
+															<tr>
+																<td class='text-center'>".$no."</td>
+																<td class='text-center'>".$ListOutTransaction_item['item_id']."</td>
+																<td>".$ListOutTransaction_item['item_name']."</td>
+																<td class='text-center'>".$ListOutTransaction_item['item_qty']."</td>
+																<td class='text-center'>".$ListOutTransaction_item['item_sisa']."</td>
+																<td class='text-center'>".$ListOutTransaction_item['item_dipakai']."</td>
 															</tr>
 														";
 													}
@@ -90,26 +82,10 @@
 									</table>
 								</div>
 								<br>
-								<div class="row col-lg-12">
-									<div class="form-group">
-											<label for="norm" class="control-label col-md-1 text-center">Peminjam</label>
-											<div class="col-md-2">
-												<input type="text" name="txtNoind" onChange="getName()" id="txtNoind" class="form-control" placeholder="[Noind Pekerja]"></input>
-											</div>
-											<div class="col-md-4">
-												<input type="text" name="txtName" id="txtName" class="form-control" placeholder="[Nama Pekerja]" readonly></input>
-											</div>
-											<div class="col-md-1">
-												<a class="btn btn-md btn-default" id="showModalNoind"><span class="fa fa-search"></span></a>
-											</div>
-									</div>
-								</div>
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">
-									<a href="<?php echo site_url('Toolroom/MasterItem/UsableGroup') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
-									&nbsp;&nbsp;
-									<a id="btnExecuteSave" class="btn btn-primary btn-lg btn-rect">Save</a>
+									<a href="<?php echo site_url('Toolroom/MasterItem/UsableGroup') ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 								</div>
 							</div>
 						</div>

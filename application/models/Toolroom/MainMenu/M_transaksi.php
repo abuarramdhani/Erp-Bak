@@ -72,4 +72,57 @@ class M_transaksi extends CI_Model {
 			return;
 		}
 		
+		public function getName($id){
+			$personalia = $this->load->database('personalia',true);
+			$sql = "select nama from hrd_khs.tpribadi where noind='$id' and keluar='0'";
+			$query = $personalia->query($sql);
+			return $query->row();
+		}
+		
+		public function insertLending($noind,$user,$date){
+			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by) values ('$noind','$date','$user')";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
+		public function insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,$item_out,$id_transaction){
+			$sql = "insert into tr.tr_transaction_list (transaction_id,item_id,item_qty,status,date_lend) values ('$id_transaction','$item_id','$item_out','0','$date')";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
+		public function ListOutGroupTransaction(){
+			$sql = "select * from tr.tr_transaction";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function ListOutTransaction($id=FALSE,$date=FALSE){
+			if($id === FALSE && $date === FALSE){
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-sum(ttl.item_qty)) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
+						from tr.tr_transaction_list ttl
+						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
+						where date_trunc('day', date_lend)=current_date and ttl.status='0'
+						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
+			}else{
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-sum(ttl.item_qty)) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
+						from tr.tr_transaction_list ttl
+						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
+						where date_trunc('second', date_lend)=date_trunc('second', timestamp '$date') and ttl.status='0' and ttl.transaction_id='$id'
+						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
+			}
+			
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function addItemLending($id,$date){
+			$sql = "update tr.tr_transaction_list set status='1' , date_return='$date'
+					where date_trunc('day', date_lend)=current_date 
+					and item_id='$id' 
+					and transaction_list_id=(select max(transaction_list_id) from tr.tr_transaction_list where date_trunc('day', date_lend)=current_date and item_id='$id' and status='0')";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
 }

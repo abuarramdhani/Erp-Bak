@@ -37,34 +37,33 @@
 											<tr class="bg-primary">
 												<th width="10%"><center>Action</center></th>
 												<th width="5%"><center>No</center></th>
-												<th width="10%"><center>Code Barcode</center></th>
-												<th width="30%"><center>Tool</center></th>
-												<th width="15%"><center>Qty</center></th>
-												<th width="20%"><center>Stock Opname</center></th>
-												<th width="10%"><center>Description</center></th>
+												<th width="10%"><center>Noind</center></th>
+												<th width="30%"><center>Name</center></th>
+												<th width="15%"><center>Toolman</center></th>
+												<th width="15%"><center>Date</center></th>
 											</tr>
 										</thead>
-										<!-- <tbody>
+										<tbody>
 											<?php $num = 0;
-														foreach ($AllUsableItem as $AllUsableItem_item): 
+														foreach ($ListOutGroupTransaction as $ListOutGroupTransaction_item): 
 														$num++;
-														$encrypted_string = $this->encrypt->encode($AllUsableItem_item['item_id']);
+														$encrypted_string = $this->encrypt->encode($ListOutGroupTransaction_item['id_transaction']);
 														$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
 													<tr>
 														<td align="center">
-															<a class="btn btn-xs bg-green" href="<?php echo base_url('Toolroom/MasterItem/UpdateItemUsable/')."/".$encrypted_string ?>"><span title="Update <?php echo $AllUsableItem_item['item_name'] ?>" class="fa fa-edit"></span></a>
-															<a class="btn btn-xs bg-maroon" href="<?php echo base_url('Toolroom/MasterItem/RemoveItemUsable/')."/".$encrypted_string ?>" onclick="return confirm('are you sure to delete this tool ?')"><span title="Update <?php echo $AllUsableItem_item['item_name'] ?>" class="fa fa-remove"></span></a>
+															<a class="btn btn-xs bg-green" href="<?php echo base_url('Toolroom/Transaksi/UpdateItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>"><span title="Update <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-edit"></span></a>
+															<a class="btn btn-xs bg-maroon" href="<?php echo base_url('Toolroom/Transaksi/RemoveItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>" onclick="return confirm('are you sure to delete this tool ?')"><span title="Update <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-remove"></span></a>
+															<a class="btn btn-xs bg-blue" href="<?php echo base_url('Toolroom/Transaksi/ListItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>"><span title="Update <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-search"></span></a>
 														</td>
 														<td align="center"><?php echo $num?></td>
-														<td align="center"><?php echo $AllUsableItem_item['item_barcode'] ?></td>
-														<td><?php echo $AllUsableItem_item['item_name'] ?></td>
-														<td align="center"><?php echo $AllUsableItem_item['item_qty'] ?></td>
-														<td align="center"><?php echo $AllUsableItem_item['item_so'] ?></td>
-														<td><?php echo $AllUsableItem_item['item_desc'] ?></td>
+														<td align="center"><?php echo $ListOutGroupTransaction_item['noind'] ?></td>
+														<td></td>
+														<td align="center"><?php echo $ListOutGroupTransaction_item['created_by'] ?></td>
+														<td align="center"><?php echo $ListOutGroupTransaction_item['creation_date'] ?></td>
 													</tr>
 											<?php endforeach ?>
-										</tbody> -->
+										</tbody>
 									</table>
 							</div>
 						</div>

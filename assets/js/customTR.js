@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$('.table-item-usable').DataTable({"lengthChange": false,"searching": true,"info": false});
+	$('.table-create-pengembalian-today').DataTable({"lengthChange": false,"searching": true,"info": false});
 	$('.select-group-item').select2({
 		allowClear: true,
 		placeholder: "[Select Group Toolkit]",
@@ -62,6 +63,36 @@ $(document).on("click", "#showModalNoind", function () {
 	$('#modalSearchNoind').modal();
 });
 
+$(document).on("click", "#btnExecuteSave", function () {
+	// if (confirm('Are you sure you want to save this thing into the database?')) {
+		var noind = $('#txtNoind').val();
+		var user = $('#hdnUser').val();
+		var date = $('#hdnDate').val();
+		$.ajax({
+			type:'POST',
+			data:{noind: noind,user:user,date:date},
+			url :baseurl+"Toolroom/Transaksi/addNewLending",
+			success:function(result){
+				$('#table-create-peminjaman tbody tr').each(function() {
+					var item_id = $(this).find(".item_id").html();    
+					var item_name = $(this).find(".item_name").html();    
+					var sisa_stok = $(this).find(".sisa_stok").html();    
+					var item_out = $(this).find(".item_out").val();
+					$.ajax({
+						type:'POST',
+						data:{noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result},
+						url :baseurl+"Toolroom/Transaksi/addNewLendingList"
+					});
+				});
+				$('#table-create-peminjaman tbody').html("<tr></tr>");
+				$('#txtNoind').val('');
+				$('#txtName').val('');
+				alert('List Item Has Been Added !');
+			}
+		});
+	// }
+});
+
 function AddPinjamItem(){
 	var barcode = $('#txtBarcode').val();
 	$.ajax({
@@ -99,3 +130,29 @@ function clearListOutItem(){
 		}
 	});
 }
+
+function getName(){
+	var id = $('#txtNoind').val();
+	$.ajax({
+		type:'POST',
+		data:{id: id},
+		url :baseurl+"Toolroom/Transaksi/getName",
+		success:function(result){
+			$('#txtName').val(result);
+		}
+	});
+}
+
+function AddPengembalianItem(){
+	var barcode = $('#txtBarcode').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode},
+		url :baseurl+"Toolroom/Transaksi/addNewPengembalianItem",
+		success:function(result){
+			$('#table-create-pengembalian-today tbody').html(result);
+		}
+	});
+	$('#txtBarcode').val('');
+}
+
