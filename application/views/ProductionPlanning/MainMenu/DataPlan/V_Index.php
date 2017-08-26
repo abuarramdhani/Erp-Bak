@@ -67,10 +67,10 @@
                                         <?php foreach ($plan as $pl) {
 											if ($pl['achieve_qty'] >= $pl['need_qty']) {
 												$status = "OK";
-												$color  = "class='bg-warning'";
+												$color  = "class='bg-success'";
 											}else{
 												$status = "NOT OK";
-												$color  = "class='bg-success'";
+												$color  = "class='bg-warning'";
 											}
 										?>
                                         <tr>
@@ -78,7 +78,7 @@
                                                 <?php echo $no++; ?>
                                             </td>
                                             <td>
-                                                <?php echo $pl['item_name']; ?>
+                                                <?php echo $pl['item_code']; ?>
                                             </td>
                                             <td>
                                                 <?php echo $pl['item_description']; ?>
@@ -86,8 +86,7 @@
                                             <td>
                                                 <?php echo $pl['priority']; ?>
                                             </td>
-                                            <td $color;="" <?php="" ?="" echo="">
-                                                >
+                                            <td <?php echo $color; ?>>
                                                 <?php echo $status; ?>
                                             </td>
                                             <td>
