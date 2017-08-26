@@ -13,6 +13,7 @@ class C_Monitoring extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('ProductionPlanning/MainMenu/M_dataplan');
     }
 	
 	public function checkSession(){
@@ -35,11 +36,39 @@ class C_Monitoring extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['section'] 		= $this->M_dataplan->getSection($user_id);
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ProductionPlanning/MainMenu/V_Monitoring',$data);
+		$this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 		
 	}
+
+    public function Open()
+    {
+    	$user_id 	= $this->session->userid;
+    	$section 	= $this->input->post('section');
+    	$datplan 	= array();
+    	$datsec 	= array();
+    	foreach ($section as $val) {
+    		$datplan[] = $this->M_dataplan->getDataPlan($val);
+    	}
+
+    	$data['section'] 		= $this->M_dataplan->getSection();
+    	$data['plan'] 			= $datplan;
+    	$data['selectedSection']= $section;
+    	$count = count($data['plan']);
+   //  	echo "<pre>";
+   //  	print_r($count);
+   //  	for ($i=0; $i < $count; $i++) {
+			// foreach ($data['plan'][$i] as $key) {
+			// 	print_r($key);
+			// }
+			// exit();
+   //  	}
+   //  	echo "</pre>";
+   //  	exit();
+        $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Monitoring', $data);
+    }
 }
