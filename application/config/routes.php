@@ -1034,8 +1034,10 @@ $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemM
 //------------------------------------ Production Planning ----------------------------------------
 $route['ProductionPlanning']  						= 'ProductionPlanning/C_Index/index';
 $route['ProductionPlanning/Monitoring']  			= 'ProductionPlanning/MainMenu/C_Monitoring/index';
-$route['ProductionPlanning/Monitoring/Open']  		= 'ProductionPlanning/MainMenu/C_Monitoring1/index';
+$route['ProductionPlanning/Monitoring/(:any)']  		= 'ProductionPlanning/MainMenu/C_Monitoring/$1';
 $route['ProductionPlanning/DataPlan']  				= 'ProductionPlanning/MainMenu/C_DataPlan/index';
-$route['ProductionPlanning/DataPlan/Create']  		= 'ProductionPlanning/MainMenu/C_DataPlan/Create';
+$route['ProductionPlanning/DataPlan/Create']  		= 'ProductionPlanning/MainMenu/C_DataPlan/CreatePage';
+$route['ProductionPlanning/DataPlan/CreateSubmit']  		= 'ProductionPlanning/MainMenu/C_DataPlan/Create';
 $route['ProductionPlanning/DataPlan/DownloadSample']= 'ProductionPlanning/MainMenu/C_DataPlan/DownloadSample';
 $route['ProductionPlanning/Setting/GroupSection']  	= 'ProductionPlanning/MainMenu/C_GroupSection/index';
+$route['ProductionPlanning/Setting/GroupSection/(:any)']  	= 'ProductionPlanning/MainMenu/C_GroupSection/$1';
