@@ -34,7 +34,8 @@
                                 Create New Plans
                             </div>
                             <div class="panel-body">
-                                <form method="post" action="<?php echo base_url('ProductionPlanning/DataPlan/Create'); ?>">
+                                <?php echo $message; ?>
+                                <form enctype="multipart/form-data" method="post" action="<?php echo base_url('ProductionPlanning/DataPlan/CreateSubmit'); ?>">
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <h2><b>UPLOAD FILE EXCEL</b></h2>
@@ -50,22 +51,30 @@
                                         </div>
                                     </div>
                                     <div class="row" style="padding-bottom: 50px;"> 
-                                        <div class="col-md-12">
-                                            <select class="form-control select2" name="section">
-                                                <?php foreach ($section as $s) { ?>
-                                                    <option value="<?php echo $s['section_id']; ?>"> <?php echo $s['section_name']; ?> </option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-7 col-md-offset-2">
-                                            <input type="file" name="dataPlan" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-offset-2 col-md-2" for="dp2">Section</label>
+                                                <div class="col-lg-6">
+                                                    <select class="form-control select2" name="section">
+                                                        <?php foreach ($section as $s) { ?>
+                                                            <option value="<?php echo $s['section_id']; ?>"> <?php echo $s['section_name']; ?> </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-offset-2 col-md-2" for="dp2">Data Plan</label>
+                                                <div class="col-lg-6">
+                                                    <input type="file" name="dataPlan" class="form-control" required>
+                                                </div>
+                                            </div>
+                                    </div>
+                                        <div class="row text-center">
                                             <button type="submit" class="btn btn-primary">
-                                                <i aria-hidden="true" class="fa fa-upload"></i> UPLOAD
+                                                <i aria-hidden="true" class="fa fa-upload"></i> UPLOAD PLANS
                                             </button>
                                         </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
