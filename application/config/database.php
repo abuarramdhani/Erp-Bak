@@ -151,28 +151,6 @@ $db['mssql'] = array(
 	'save_queries' => TRUE
 );
 
-$db['local'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'postgres',
-	'password' => '123456',
-	'database' => 'dbase',
-	'dbdriver' => 'postgre',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
-
 $db['personalia'] = array(
 	'dsn'	=> '',
 	'hostname' => 'db.quick.com',
@@ -228,28 +206,6 @@ $db['oracle_dev'] = array(
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt'  => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
-
-$db['quickerpdev'] = array(
-	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
-	'username' => 'postgres',
-	'password' => 'password',
-	'database' => 'quickerpdev',
-	'dbdriver' => 'postgre',
-	'dbprefix' => '',
-	'pconnect' => TRUE,
 	'db_debug' => TRUE,
 	'cache_on' => FALSE,
 	'cachedir' => '',
