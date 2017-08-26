@@ -21,7 +21,7 @@ $(document).ready(function() {
 $('#berat_casting,#berat_cairan').change(function(){
 	var cairan = $('input#berat_cairan').val();
 	var casting = $('input#berat_casting').val();
-	var remelt = ((cairan*100000) - (casting*100000))/100000
+	var remelt = ((cairan*100000) - (casting*100000))/100000;
 	var ycast = (casting/cairan)*100;
 	var yiedl = ycast.toFixed(1);
 
@@ -30,20 +30,20 @@ $('#berat_casting,#berat_cairan').change(function(){
 	});
 
 $('#target_pieces , #cavity_flask').change(function(){
-	var pieces = $('input#target_pieces').val()
-	var cavity = $('input#cavity_flask').val()
+	var pieces = $('input#target_pieces').val().replace(/,/g , "");
+	var cavity = $('input#cavity_flask').val().replace(/,/g , "");
 	var tcs = pieces / cavity;
 	
 		$('input#target_flask').val(tcs);
 })
 
 $('.core_fiedl').change(function(){
-	var choosen = $('input[name="core_input"]:checked').val()
+	var choosen = $('input[name="core_input"]:checked').val();
 		if (choosen == 'yes') {
-			$('#fiedl_core').show()
+			$('#fiedl_core').show();
 		}
 		else{
-			$('#fiedl_core').hide()
+			$('#fiedl_core').hide();
 		}
 });
 
