@@ -42,7 +42,13 @@
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
 											</div>
-											<div class="col-md-5">
+											<div class="col-md-3">
+											</div>
+											<div class="col-md-1">
+												<input type="text" class="form-control" value="<?= $list_id ?>" readonly></input>
+											</div>
+											<div class="col-md-3">
+												<input type="text" class="form-control" value="<?= $list_date ?>" readonly></input>
 											</div>
 									</div>
 								</div>

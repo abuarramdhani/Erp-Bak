@@ -92,7 +92,9 @@ class M_transaksi extends CI_Model {
 		}
 		
 		public function ListOutGroupTransaction(){
-			$sql = "select * from tr.tr_transaction";
+			$sql = "select * from tr.tr_transaction tt 
+					where 
+					(select count(ttl.status) from tr.tr_transaction_list ttl where ttl.status='0' and ttl.transaction_id=tt.id_transaction)!='0'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
