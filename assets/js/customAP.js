@@ -579,7 +579,7 @@ $(document).ready(function(){
 		$('#formSearch').submit();
 	});
 
-	$('#slcSupplier').select2({
+	$('#slcSupplierlppb').select2({
 		placeholder: 'supplier'
 	});
 
