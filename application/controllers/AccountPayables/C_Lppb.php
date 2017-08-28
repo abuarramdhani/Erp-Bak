@@ -17,7 +17,7 @@ class C_Lppb extends CI_Controller {
 		//$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('AccountPayables/M_Lppb');
+		$this->load->model('AccountPayables/M_lppb');
 
 			  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -40,8 +40,8 @@ class C_Lppb extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['supplier'] = $this->M_Lppb->getSupplier();
-		$data['inventory'] = $this->M_Lppb->getInventory();
+		$data['supplier'] = $this->M_lppb->getSupplier();
+		$data['inventory'] = $this->M_lppb->getInventory();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -70,8 +70,8 @@ class C_Lppb extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['supplier'] = $this->M_Lppb->getSupplier();
-		$data['inventory'] = $this->M_Lppb->getInventory();
+		$data['supplier'] = $this->M_lppb->getSupplier();
+		$data['inventory'] = $this->M_lppb->getInventory();
 
 		$data['sup'] = $this->input->post('slcSupplier');
 		$data['date'] = $this->input->post('txtReceiptDate');
@@ -107,7 +107,7 @@ class C_Lppb extends CI_Controller {
 
 		$sortTerima = 'ORDER BY TERIMA';
 		
-		$data['lppb'] = $this->M_Lppb->getLppbdata($tglawal, $tglakhir, $sqlSupplier, $sqlInventory, $sqlPo, $sortTerima);
+		$data['lppb'] = $this->M_lppb->getLppbdata($tglawal, $tglakhir, $sqlSupplier, $sqlInventory, $sqlPo, $sortTerima);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/Lppb/V_Search',$data);
@@ -213,7 +213,7 @@ class C_Lppb extends CI_Controller {
 					$tgl_terima = '';
 				};
 			};
-			$this->M_Lppb->addTerima($vendor, $inventory, $receipt_num, $receipt_date, $po_num, $terms_po, $terima, $tgl_terima);
+			$this->M_lppb->addTerima($vendor, $inventory, $receipt_num, $receipt_date, $po_num, $terms_po, $terima, $tgl_terima);
 			$objset->setCellValue("A".$baris, $no);
 			$objset->setCellValue("B".$baris, $vendor);
 			$objset->setCellValue("C".$baris, $inventory);
@@ -279,7 +279,7 @@ class C_Lppb extends CI_Controller {
 					$tgl_terima = '';
 				};
 			};
-			$this->M_Lppb->addTerima($vendor, $inventory, $receipt_num, $receipt_date, $po_num, $terms_po, $terima, $tgl_terima);
+			$this->M_lppb->addTerima($vendor, $inventory, $receipt_num, $receipt_date, $po_num, $terms_po, $terima, $tgl_terima);
 		}
 	}
 
@@ -288,7 +288,7 @@ class C_Lppb extends CI_Controller {
 	{	
 		$receipt = '3157';
 		$po = '17006590';
-		$query = $this->M_Lppb->countAPLPPB($receipt, $po);
+		$query = $this->M_lppb->countAPLPPB($receipt, $po);
 		print_r($query);
 	}
 // FOR TESTING PURPOSE ONLY[end]
