@@ -64,6 +64,8 @@
 	<!-- END PAGE LEVEL  STYLES -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
 
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/multiselect/css/bootstrap-multiselect.css');?>" />
+
 	<!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>" type="text/javascript"></script>
