@@ -30,51 +30,39 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-<<<<<<< HEAD
                                                     <?php foreach ($FleetPicKendaraan as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Polisi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_polisi']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Dari Periode</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['dari_periode']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>PIC</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pic']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sampai Periode</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sampai_periode']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Periode</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['periode']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
-=======
-                                                    <?php foreach ($FleetPicKendaraan as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Dari Periode</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['dari_periode']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sampai Periode</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sampai_periode']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+                                                        <?php
+                                                            if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00')
+                                                            {
+                                                                echo '  <tr>
+                                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Dibuat</strong></td>
+                                                                            <td style="border: 0">: '.$headerRow['waktu_dibuat'].'</td>
+                                                                        </tr>';
+                                                            }
+                                                            else
+                                                            {
+                                                                echo '  <tr>
+                                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Dibuat</strong></td>
+                                                                            <td style="border: 0">: '.$headerRow['waktu_dibuat'].'</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Dihapus</strong></td>
+                                                                            <td style="border: 0">: '.$headerRow['waktu_dihapus'].'</td>
+                                                                        </tr>';
+                                                            }
+                                                        ?>
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>

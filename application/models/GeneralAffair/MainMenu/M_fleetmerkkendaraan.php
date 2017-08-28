@@ -11,12 +11,36 @@ class M_fleetmerkkendaraan extends CI_Model
     public function getFleetMerkKendaraan($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_fleet_merk_kendaraan');
+            $ambilMerkKendaraan     = " select  merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
+                                                merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                to_char(merkkdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat
+                                        from    ga.ga_fleet_merk_kendaraan as merkkdrn
+                                        where   merkkdrn.end_date = '9999-12-12 00:00:00';";
+    		$query = $this->db->query($ambilMerkKendaraan);
     	} else {
-    		$query = $this->db->get_where('ga.ga_fleet_merk_kendaraan', array('merk_kendaraan_id' => $id));
+            $ambilMerkKendaraan     = " select  merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
+                                                merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                to_char(merkkdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(merkkdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                        from    ga.ga_fleet_merk_kendaraan as merkkdrn
+                                        where   merkkdrn.merk_kendaraan_id=$id;";
+    		$query = $this->db->query($ambilMerkKendaraan);
     	}
 
     	return $query->result_array();
+    }
+
+    public function getFleetMerkKendaraanDeleted()
+    {
+        $ambilMerkKendaraanDeleted  = " select  merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
+                                                merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                to_char(merkkdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(merkkdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                        from    ga.ga_fleet_merk_kendaraan as merkkdrn
+                                        where   merkkdrn.end_date != '9999-12-12 00:00:00';";
+
+        $query                      =   $this->db->query($ambilMerkKendaraanDeleted);
+        return $query->result_array();
     }
 
     public function setFleetMerkKendaraan($data)
@@ -32,8 +56,12 @@ class M_fleetmerkkendaraan extends CI_Model
 
     public function deleteFleetMerkKendaraan($id)
     {
-        $this->db->where('merk_kendaraan_id', $id);
-        $this->db->delete('ga.ga_fleet_merk_kendaraan');
+        $tanggal_eksekusi       = date('Y-m-d H:i:s');
+
+        $deleteMerkKendaraan    = " update  ga.ga_fleet_merk_kendaraan
+                                    set     end_date='$tanggal_eksekusi'
+                                    where   merk_kendaraan_id=$id;";
+        $this->db->query($deleteMerkKendaraan);
     }
 }
 

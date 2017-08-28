@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/update/'.$id);?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/update/'.$id);?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -23,163 +23,146 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Update Fleet Kendaraan</div>
+                                <div class="box-header with-border">Update Kendaraan</div>
                                 <?php
-                                    foreach ($FleetKendaraan as $headerRow):
+                                    foreach ($FleetKendaraan as $kendaraanEdit):
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Polisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Nomor Polisi" name="txtNomorPolisiHeader" id="txtNomorPolisiHeader" class="form-control" value="<?php echo $headerRow['nomor_polisi']; ?>"/>
+                                                    <input type="text" placeholder="Nomor Polisi (contoh: AB1234CD)" name="txtNomorPolisiHeader" id="txtNomorPolisiHeader" class="form-control" value="<?php echo $kendaraanEdit['nomor_polisi']; ?>"/>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbJenisKendaraanIdHeader" class="control-label col-lg-4">Jenis Kendaraan Id</label>
+                                                <label for="cmbJenisKendaraanIdHeader" class="control-label col-lg-4">Jenis Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbJenisKendaraanIdHeader" name="cmbJenisKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbJenisKendaraanIdHeader" name="cmbJenisKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetJenisKendaraan as $row) {
-                                                                if ($headerRow['jenis_kendaraan_id'] == $row['jenis_kendaraan_id']) {
+                                                                if ($kendaraanEdit['kode_jenis_kendaraan'] == $row['kode_jenis_kendaraan']) {
                                                                     $selected_data = "selected";
                                                                 } else {
                                                                     $selected_data = "";   
                                                                 }
-                                                                echo '<option value="'.$row['jenis_kendaraan'].'" '.$selected_data.'>'.$row['jenis_kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_jenis_kendaraan'].'" '.$selected_data.'>'.$row['jenis_kendaraan'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbMerkKendaraanIdHeader" class="control-label col-lg-4">Merk Kendaraan Id</label>
+                                                <label for="cmbMerkKendaraanIdHeader" class="control-label col-lg-4">Merk Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbMerkKendaraanIdHeader" name="cmbMerkKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbMerkKendaraanIdHeader" name="cmbMerkKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetMerkKendaraan as $row) {
-                                                                if ($headerRow['merk_kendaraan_id'] == $row['merk_kendaraan_id']) {
+                                                                if ($kendaraanEdit['kode_merk_kendaraan'] == $row['kode_merk_kendaraan']) {
                                                                     $selected_data = "selected";
                                                                 } else {
                                                                     $selected_data = "";   
                                                                 }
-                                                                echo '<option value="'.$row['merk_kendaraan'].'" '.$selected_data.'>'.$row['merk_kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_merk_kendaraan'].'" '.$selected_data.'>'.$row['merk_kendaraan'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbWarnaKendaraanIdHeader" class="control-label col-lg-4">Warna Kendaraan Id</label>
+                                                <label for="cmbWarnaKendaraanIdHeader" class="control-label col-lg-4">Warna Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbWarnaKendaraanIdHeader" name="cmbWarnaKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbWarnaKendaraanIdHeader" name="cmbWarnaKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetWarnaKendaraan as $row) {
-                                                                if ($headerRow['warna_kendaraan_id'] == $row['warna_kendaraan_id']) {
+                                                                if ($kendaraanEdit['kode_warna_kendaraan'] == $row['kode_warna_kendaraan']) {
                                                                     $selected_data = "selected";
                                                                 } else {
                                                                     $selected_data = "";   
                                                                 }
-                                                                echo '<option value="'.$row['warna_kendaraan'].'" '.$selected_data.'>'.$row['warna_kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_warna_kendaraan'].'" '.$selected_data.'>'.$row['warna_kendaraan'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTahunPembuatanHeader" class="control-label col-lg-4">Tahun Pembuatan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Tahun Pembuatan" name="txtTahunPembuatanHeader" id="txtTahunPembuatanHeader" class="form-control" value="<?php echo $headerRow['tahun_pembuatan']; ?>"/>
+                                                    <select id="cmbTahunPembuatan" name="cmbTahunPembuatan" class="select2" data-placeholder="Pilih" style="width: 50%">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        for ($tahun=date('Y'); $tahun > 1900; $tahun--) 
+                                                        {
+                                                        $terpilih;
+                                                            if($tahun==$kendaraanEdit['tahun_pembuatan'])
+                                                            {
+                                                                $terpilih = "selected";
+                                                            }
+                                                            else
+                                                            {
+                                                                $terpilih = "";
+                                                            }
+                                                        echo '  <option value="'.$tahun.'" '.$terpilih.'>
+                                                                        '.$tahun.'
+                                                                </option>';
+                                                        }
+                                                        ?>
+                                                    </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto Stnk</label>
+                                                <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto STNK</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Foto Stnk" name="txtFotoStnkHeader" id="txtFotoStnkHeader" class="form-control" value="<?php echo $headerRow['foto_stnk']; ?>"/>
+                                                    <input type="file" name="FotoSTNK" id="FotoSTNK" class="form-control" placeholder="Edit File" />
+                                                    <a target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanEdit['foto_stnk']);?>"><?php echo $kendaraanEdit['foto_stnk'];?></a>
+                                                    <input type="text" name="FotoSTNKawal" id="FotoSTNKawal" hidden="" value="<?php echo $kendaraanEdit['foto_stnk'];?>">
+
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto Bpkb</label>
+                                                <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto BPKB</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Foto Bpkb" name="txtFotoBpkbHeader" id="txtFotoBpkbHeader" class="form-control" value="<?php echo $headerRow['foto_bpkb']; ?>"/>
+                                                    <input type="file" name="FotoBPKB" id="FotoBPKB" class="form-control" placeholder="Edit File" />
+                                                    <a target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanEdit['foto_bpkb']);?>"><?php echo $kendaraanEdit['foto_bpkb'];?></a>
+                                                    <input type="text" name="FotoBPKBawal" id="FotoBPKBawal" hidden="" value="<?php echo $kendaraanEdit['foto_bpkb'];?>">
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtFotoKendaraanHeader" class="control-label col-lg-4">Foto Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Foto Kendaraan" name="txtFotoKendaraanHeader" id="txtFotoKendaraanHeader" class="form-control" value="<?php echo $headerRow['foto_kendaraan']; ?>"/>
+                                                    <input type="file" name="FotoKendaraan" id="FotoKendaraan" class="form-control" placeholder="Edit File" />
+                                                    <a target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanEdit['foto_kendaraan']);?>"><?php echo $kendaraanEdit['foto_kendaraan'];?></a>
+                                                    <input type="text" name="FotoKendaraanawal" id="FotoKendaraanawal" hidden="" value="<?php echo $kendaraanEdit['foto_kendaraan'];?>">
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
+                                            <div class="form-group">
+                                                <label for="txtTanggalDibuat" class="control-label col-lg-4">Tanggal Dibuat</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" value="<?php echo $headerRow['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
+                                                    <input type="text" placeholder="Tanggal Dibuat" name="TanggalDibuat" id="TanggalDibuat" class="form-control" value="<?php echo $kendaraanEdit['waktu_dibuat'];?>" disabled>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
+                                            <div class="form-group">
+                                                <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" value="<?php echo $headerRow['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
+                                                    <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($kendaraanEdit['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
+                                                    <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $kendaraanEdit['waktu_dihapus'];?>">
                                                 </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
+                                            </div>
 
                                         </div>
 

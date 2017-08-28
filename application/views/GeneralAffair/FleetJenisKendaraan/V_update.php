@@ -29,43 +29,29 @@
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="txtJenisKendaraanHeader" class="control-label col-lg-4">Jenis Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jenis Kendaraan" name="txtJenisKendaraanHeader" id="txtJenisKendaraanHeader" class="form-control" value="<?php echo $headerRow['jenis_kendaraan']; ?>"/>
+                                                    <input type="text" placeholder="Jenis Kendaraan" name="txtJenisKendaraanHeader" id="txtJenisKendaraanHeader" class="form-control" value="<?php echo $headerRow['jenis_kendaraan']; ?>" required=""/>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
+                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Waktu Dibuat</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" value="<?php echo $headerRow['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo $headerRow['waktu_dibuat'];?>" name="txtStartDateHeader" value="<?php echo $headerRow['waktu_dibuat'] ?>" class="date form-control" data-date-format="dd-mm-yyyy H:i:s" id="txtStartDateHeader" disabled=""/>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
+                                            <div class="form-group">
+                                                <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" value="<?php echo $headerRow['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
+                                                    <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
+                                                    <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $headerRow['waktu_dihapus'];?>">
                                                 </div>
-<<<<<<< HEAD
+
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 
                                         </div>

@@ -11,12 +11,37 @@ class M_fleetwarnakendaraan extends CI_Model
     public function getFleetWarnaKendaraan($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_fleet_warna_kendaraan');
+            $ambilWarnaKendaraan    = " select  warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
+                                                warnakdrn.warna_kendaraan as warna_kendaraan,
+                                                to_char(warnakdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat
+                                        from    ga.ga_fleet_warna_kendaraan as warnakdrn
+                                        where   warnakdrn.end_date='9999-12-12 00:00:00';";
+
+    		$query = $this->db->query($ambilWarnaKendaraan);
     	} else {
-    		$query = $this->db->get_where('ga.ga_fleet_warna_kendaraan', array('warna_kendaraan_id' => $id));
+            $ambilWarnaKendaraan    = " select  warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
+                                                warnakdrn.warna_kendaraan as warna_kendaraan,
+                                                to_char(warnakdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(warnakdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                        from    ga.ga_fleet_warna_kendaraan as warnakdrn
+                                        where   warnakdrn.warna_kendaraan_id=$id;";
+
+    		$query = $this->db->query($ambilWarnaKendaraan);
     	}
 
     	return $query->result_array();
+    }
+
+    public function getFleetWarnaKendaraanDeleted()
+    {
+        $ambilWarnaKendaraanDeleted = " select  warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
+                                                warnakdrn.warna_kendaraan as warna_kendaraan,
+                                                to_char(warnakdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(warnakdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                        from    ga.ga_fleet_warna_kendaraan as warnakdrn
+                                        where   warnakdrn.end_date!='9999-12-12 00:00:00';";
+        $query                      =   $this->db->query($ambilWarnaKendaraanDeleted);
+        return $query->result_array();
     }
 
     public function setFleetWarnaKendaraan($data)
@@ -32,8 +57,13 @@ class M_fleetwarnakendaraan extends CI_Model
 
     public function deleteFleetWarnaKendaraan($id)
     {
-        $this->db->where('warna_kendaraan_id', $id);
-        $this->db->delete('ga.ga_fleet_warna_kendaraan');
+        $waktu_eksekusi         = date('Y-m-d H:i:s');
+
+        $deleteWarnaKendaraan   = " update  ga.ga_fleet_warna_kendaraan
+                                    set     end_date='$waktu_eksekusi'
+                                    where   warna_kendaraan_id=$id;";
+
+        $this->db->query($deleteWarnaKendaraan);
     }
 }
 

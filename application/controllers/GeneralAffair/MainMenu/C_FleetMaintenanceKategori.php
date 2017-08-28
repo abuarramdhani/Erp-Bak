@@ -16,6 +16,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetmaintenancekategori');
 
+		date_default_timezone_set('Asia/Jakarta');
+
 		$this->checkSession();
 	}
 
@@ -36,7 +38,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kategori';
+		$data['Title'] = 'Kategori Maintenance';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -45,7 +47,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekategori->getFleetMaintenanceKategori();
+		$data['FleetMaintenanceKategori'] 			= $this->M_fleetmaintenancekategori->getFleetMaintenanceKategori();
+		$data['FleetMaintenanceKategoriDeleted']	= $this->M_fleetmaintenancekategori->getFleetMaintenanceKategoriDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -58,7 +61,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kategori';
+		$data['Title'] = 'Kategori Maintenance';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -71,7 +74,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtMaintenanceKategoryHeader', 'MaintenanceKategory', 'required');
+		$this->form_validation->set_rules('txtKategoriMaintenanceHeader', 'KategoriMaintenance', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -79,12 +82,16 @@ class C_FleetMaintenanceKategori extends CI_Controller
 			$this->load->view('GeneralAffair/FleetMaintenanceKategori/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+
+			$kategoriMaintenance 	= 	$this->input->post('txtKategoriMaintenanceHeader');
+			$waktu_eksekusi			= 	date('Y-m-d H:i:s');
+
 			$data = array(
-				'maintenance_kategory' => $this->input->post('txtMaintenanceKategoryHeader'),
-				'start_date' => $this->input->post('txtStartDateHeader'),
-				'end_date' => $this->input->post('txtEndDateHeader'),
-				'creation_date' => 'NOW()',
-				'created_by' => $this->session->userid,
+				'maintenance_kategori' 	=> ucwords(strtolower($kategoriMaintenance)),
+				'start_date' 			=> $waktu_eksekusi,
+				'end_date' 				=> '9999-12-12 00:00:00',
+				'creation_date' 		=> $waktu_eksekusi,
+				'created_by' 			=> $this->session->userid,
     		);
 			$this->M_fleetmaintenancekategori->setFleetMaintenanceKategori($data);
 			$header_id = $this->db->insert_id();
@@ -98,7 +105,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kategori';
+		$data['Title'] = 'Kategori Maintenance';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -121,7 +128,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtMaintenanceKategoryHeader', 'MaintenanceKategory', 'required');
+		$this->form_validation->set_rules('txtKategoriMaintenanceHeader', 'Kategori Maintenance', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -129,12 +136,29 @@ class C_FleetMaintenanceKategori extends CI_Controller
 			$this->load->view('GeneralAffair/FleetMaintenanceKategori/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+
+			$kategoriMaintenance 	= 	$this->input->post('txtKategoriMaintenanceHeader', TRUE);
+			$tanggal_eksekusi 		= 	date('Y-m-d H:i:s');
+			$status_data 			= 	$this->input->post('CheckAktif');
+
+			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
+
+			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
+
+			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
+			{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
+			{
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}	
+
 			$data = array(
-				'maintenance_kategory' => $this->input->post('txtMaintenanceKategoryHeader',TRUE),
-				'start_date' => $this->input->post('txtStartDateHeader',TRUE),
-				'end_date' => $this->input->post('txtEndDateHeader',TRUE),
-				'last_updated' => 'NOW()',
-				'last_updated_by' => $this->session->userid,
+				'maintenance_kategori' 	=> $kategoriMaintenance,
+				'end_date' 				=> $waktu_dihapus,
+				'last_updated'	 		=> $tanggal_eksekusi,
+				'last_updated_by' 		=> $this->session->userid,
     			);
 			$this->M_fleetmaintenancekategori->updateFleetMaintenanceKategori($data, $plaintext_string);
 
@@ -147,7 +171,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kategori';
+		$data['Title'] = 'Kategori Maintenance';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';

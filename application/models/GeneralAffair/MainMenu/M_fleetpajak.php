@@ -5,20 +5,65 @@ class M_fleetpajak extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
+
+        date_default_timezone_set('Asia/Jakarta');
     }
 
     public function getFleetPajak($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_fleet_pajak');
+            $ambilPajak     = " select  pjk.pajak_id as kode_pajak,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        pjk.kendaraan_id as kode_kendaraan,
+                                        to_char(pjk.tanggal_pajak, 'DD-MM-YYYY') as tanggal_pajak,
+                                        concat_ws('<br/>sampai dengan<br/>', to_char(pjk.periode_awal_pajak, 'DD-MM-YYYY'), to_char(periode_akhir_pajak,'DD-MM-YYYY')) as periode_pajak,
+                                        pjk.biaya as biaya,
+                                        to_char(pjk.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(pjk.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_pajak as pjk
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=pjk.kendaraan_id
+                                where   pjk.end_date='9999-12-12 00:00:00';";
+
+    		$query = $this->db->query($ambilPajak);
     	} else {
-    		$query = $this->db->get_where('ga.ga_fleet_pajak', array('pajak_id' => $id));
+            $ambilPajak     = " select  pjk.pajak_id as kode_pajak,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        pjk.kendaraan_id as kode_kendaraan,
+                                        pjk.tanggal_pajak as tanggal_pajak,
+                                        concat_ws(' - ', pjk.periode_awal_pajak, periode_akhir_pajak) as periode_pajak,
+                                        pjk.biaya as biaya,
+                                        to_char(pjk.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(pjk.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_pajak as pjk
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=pjk.kendaraan_id
+                                where   pjk.pajak_id=$id;";
+
+    		$query = $this->db->query($ambilPajak);
     	}
 
     	return $query->result_array();
     }
 
+    public function getFleetPajakDeleted()
+    {
+        $ambilPajakDeleted  = " select  pjk.pajak_id as kode_pajak,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        pjk.kendaraan_id as kode_kendaraan,
+                                        pjk.tanggal_pajak as tanggal_pajak,
+                                        concat_ws(' - ', pjk.periode_awal_pajak, periode_akhir_pajak) as periode_pajak,
+                                        pjk.biaya as biaya,
+                                        to_char(pjk.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(pjk.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_pajak as pjk
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=pjk.kendaraan_id
+                                where   pjk.end_date!='9999-12-12 00:00:00';";
+        $query              =   $this->db->query($ambilPajakDeleted);
+        return $query->result_array();
+    }
     public function setFleetPajak($data)
     {
         return $this->db->insert('ga.ga_fleet_pajak', $data);
@@ -38,7 +83,12 @@ class M_fleetpajak extends CI_Model
 
 	public function getFleetKendaraan()
 	{
-		$query = $this->db->get('ga.ga_fleet_kendaraan');
+        $ambilKendaraan = " select  kdrn.kendaraan_id as kode_kendaraan,
+                                        kdrn.nomor_polisi as nomor_polisi
+                                from    ga.ga_fleet_kendaraan as kdrn
+                                where   kdrn.end_date='9999-12-12 00:00:00';";
+
+		$query = $this->db->query($ambilKendaraan);
 
 		return $query->result_array();
 	}

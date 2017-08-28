@@ -16,6 +16,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetwarnakendaraan');
 
+		date_default_timezone_set('Asia/Jakarta');
+
 		$this->checkSession();
 	}
 
@@ -36,7 +38,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Warna Kendaraan';
+		$data['Title'] = 'Warna Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -45,7 +47,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetWarnaKendaraan'] = $this->M_fleetwarnakendaraan->getFleetWarnaKendaraan();
+		$data['FleetWarnaKendaraan'] 		= $this->M_fleetwarnakendaraan->getFleetWarnaKendaraan();
+		$data['FleetWarnaKendaraanDeleted']	= $this->M_fleetwarnakendaraan->getFleetWarnaKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -58,7 +61,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Warna Kendaraan';
+		$data['Title'] = 'Warna Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -79,12 +82,15 @@ class C_FleetWarnaKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetWarnaKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$warnaKendaraan 	= 	$this->input->post('txtWarnaKendaraanHeader');
+			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
+
 			$data = array(
-				'warna_kendaraan' => $this->input->post('txtWarnaKendaraanHeader'),
-				'start_date' => $this->input->post('txtStartDateHeader'),
-				'end_date' => $this->input->post('txtEndDateHeader'),
-				'creation_date' => 'NOW()',
-				'created_by' => $this->session->userid,
+				'warna_kendaraan' 	=> strtoupper($warnaKendaraan),
+				'start_date' 		=> $waktu_eksekusi,
+				'end_date' 			=> '9999-12-12 00:00:00',
+				'creation_date'		=> $waktu_eksekusi,
+				'created_by' 		=> $this->session->userid
     		);
 			$this->M_fleetwarnakendaraan->setFleetWarnaKendaraan($data);
 			$header_id = $this->db->insert_id();
@@ -98,7 +104,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Warna Kendaraan';
+		$data['Title'] = 'Warna Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -129,12 +135,25 @@ class C_FleetWarnaKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetWarnaKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$warnaKendaraan 		= 	$this->input->post('txtWarnaKendaraanHeader',TRUE);
+			$status_data 		=	$this->input->post('CheckAktif');
+			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
+
+			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
+
+			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
+			{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
+			{
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}			
 			$data = array(
-				'warna_kendaraan' => $this->input->post('txtWarnaKendaraanHeader',TRUE),
-				'start_date' => $this->input->post('txtStartDateHeader',TRUE),
-				'end_date' => $this->input->post('txtEndDateHeader',TRUE),
-				'last_updated' => 'NOW()',
-				'last_updated_by' => $this->session->userid,
+				'warna_kendaraan' 	=> $warnaKendaraan,
+				'end_date' 			=> $waktu_dihapus,
+				'last_updated' 		=> $waktu_eksekusi,
+				'last_updated_by' 	=> $this->session->userid
     			);
 			$this->M_fleetwarnakendaraan->updateFleetWarnaKendaraan($data, $plaintext_string);
 
@@ -147,7 +166,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Warna Kendaraan';
+		$data['Title'] = 'Warna Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';

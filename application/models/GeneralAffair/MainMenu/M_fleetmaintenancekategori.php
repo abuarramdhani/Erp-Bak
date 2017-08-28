@@ -11,12 +11,38 @@ class M_fleetmaintenancekategori extends CI_Model
     public function getFleetMaintenanceKategori($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_fleet_maintenance_kategori');
+            $ambilKategoriMaintenance   = " select  mtckategori.maintenance_kategori_id as kode_kategori_maintenance,
+                                                    mtckategori.maintenance_kategori as kategori_maintenance,
+                                                    to_char(mtckategori.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat
+                                            from    ga.ga_fleet_maintenance_kategori as mtckategori
+                                            where   mtckategori.end_date = '9999-12-12 00:00:00';";
+
+    		$query = $this->db->query($ambilKategoriMaintenance);
     	} else {
-    		$query = $this->db->get_where('ga.ga_fleet_maintenance_kategori', array('maintenance_kategori_id' => $id));
+            $ambilKategoriMaintenance   = " select  mtckategori.maintenance_kategori_id as kode_kategori_maintenance,
+                                                    mtckategori.maintenance_kategori as kategori_maintenance,
+                                                    to_char(mtckategori.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                    to_char(mtckategori.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                            from    ga.ga_fleet_maintenance_kategori as mtckategori
+                                            where   mtckategori.maintenance_kategori_id=$id;";
+
+    		$query = $this->db->query($ambilKategoriMaintenance);
     	}
 
     	return $query->result_array();
+    }
+
+    public function getFleetMaintenanceKategoriDeleted()
+    {
+        $ambilKategoriMaintenanceDeleted    = " select  mtckategori.maintenance_kategori_id as kode_kategori_maintenance,
+                                                        mtckategori.maintenance_kategori as kategori_maintenance,
+                                                        to_char(mtckategori.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                        to_char(mtckategori.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                                from    ga.ga_fleet_maintenance_kategori as mtckategori
+                                                where   mtckategori.end_date != '9999-12-12 00:00:00';";
+
+        $query                              =   $this->db->query($ambilKategoriMaintenanceDeleted);
+        return $query->result_array();
     }
 
     public function setFleetMaintenanceKategori($data)
@@ -32,8 +58,13 @@ class M_fleetmaintenancekategori extends CI_Model
 
     public function deleteFleetMaintenanceKategori($id)
     {
-        $this->db->where('maintenance_kategori_id', $id);
-        $this->db->delete('ga.ga_fleet_maintenance_kategori');
+        $tanggal_eksekusi           = date('Y-m-d H:i:s');
+
+        $deleteKategoriMaintenance  = " update  ga.ga_fleet_maintenance_kategori
+                                        set     end_date='$tanggal_eksekusi'
+                                        where   maintenance_kategori_id=$id;";
+
+        $this->db->query($deleteKategoriMaintenance);
     }
 }
 

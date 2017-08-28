@@ -23,98 +23,78 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Read Fleet Kendaraan</div>
+                                <div class="box-header with-border">Read Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-<<<<<<< HEAD
-                                                    <?php foreach ($FleetKendaraan as $headerRow): ?>
+                                                    <?php foreach ($FleetKendaraan as $kendaraanDetail): ?>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Nomor Polisi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['nomor_polisi']; ?></td>
+                                                            <td style="border: 0">: <?php echo $kendaraanDetail['nomor_polisi']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jenis_kendaraan_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Kendaraan</strong></td>
+                                                            <td style="border: 0">: <?php echo $kendaraanDetail['jenis_kendaraan']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Merk Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['merk_kendaraan_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Merk Kendaraan</strong></td>
+                                                            <td style="border: 0">: <?php echo $kendaraanDetail['merk_kendaraan']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Warna Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['warna_kendaraan_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Warna Kendaraan</strong></td>
+                                                            <td style="border: 0">: <?php echo $kendaraanDetail['warna_kendaraan']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Tahun Pembuatan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tahun_pembuatan']; ?></td>
+                                                            <td style="border: 0">: <?php echo $kendaraanDetail['tahun_pembuatan']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Stnk</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['foto_stnk']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Foto STNK</strong></td>
+                                                            <td style="border: 0">: <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanDetail['foto_stnk']);?>" target="_blank"><?php echo $kendaraanDetail['foto_stnk']; ?></a></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Bpkb</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['foto_bpkb']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Kendaraan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['foto_kendaraan']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
-=======
-                                                    <?php foreach ($FleetKendaraan as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Polisi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['nomor_polisi']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jenis_kendaraan_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Merk Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['merk_kendaraan_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Warna Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['warna_kendaraan_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tahun Pembuatan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tahun_pembuatan']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Stnk</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['foto_stnk']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Foto Bpkb</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['foto_bpkb']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Foto BPKB</strong></td>
+                                                            <td style="border: 0">: <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanDetail['foto_bpkb']);?>" target="_blank"><?php echo $kendaraanDetail['foto_bpkb']; ?></a></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Foto Kendaraan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['foto_kendaraan']; ?></td>
+                                                            <td style="border: 0">: <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanDetail['foto_kendaraan']);?>" target="_blank"><?php echo $kendaraanDetail['foto_kendaraan']; ?></a></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+                                                        <?php
+                                                            if($kendaraanDetail['waktu_dihapus']=='12-12-9999 00:00:00')
+                                                            {
+                                                                echo '  <tr>
+                                                                            <td class="col-lg-2" style="border: 0">
+                                                                                <strong>Waktu Dibuat</strong>
+                                                                            </td>
+                                                                            <td style="border: 0">
+                                                                                : '.$kendaraanDetail['waktu_dibuat'].' 
+                                                                            </td>
+                                                                        </tr>';
+                                                            }
+                                                            else
+                                                            {
+                                                                echo '  <tr>
+                                                                            <td class="col-lg-2" style="border: 0;">
+                                                                                <strong>Waktu Dibuat</strong>
+                                                                            </td>
+                                                                            <td style="border: 0">
+                                                                                : '.$kendaraanDetail['waktu_dibuat'].' 
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="col-lg-2" style="border: 0;">
+                                                                                <strong>Waktu Dihapus</strong>
+                                                                            </td>
+                                                                            <td style="border: 0;">
+                                                                                : '.$kendaraanDetail['waktu_dihapus'].'
+                                                                            </td>
+                                                                        </tr>';
+                                                            }
+                                                        ?>
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>

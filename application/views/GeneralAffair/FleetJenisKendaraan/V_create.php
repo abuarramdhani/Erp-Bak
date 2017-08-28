@@ -23,48 +23,16 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Fleet Jenis Kendaraan</div>
+                                <div class="box-header with-border">Create Jenis Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
                                                 <label for="txtJenisKendaraanHeader" class="control-label col-lg-4">Jenis Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jenis Kendaraan" name="txtJenisKendaraanHeader" id="txtJenisKendaraanHeader" class="form-control" />
+                                                    <input type="text" placeholder="Jenis Kendaraan" name="txtJenisKendaraanHeader" id="txtJenisKendaraanHeader" class="form-control" required="" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-
                                         </div>
 
                                         <div class="col-lg-12">
