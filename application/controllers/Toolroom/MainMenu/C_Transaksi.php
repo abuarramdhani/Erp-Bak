@@ -76,7 +76,7 @@ class C_Transaksi extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['itemOut'] = $this->M_transaksi->listOutITem();
+		$data['itemOut'] = $this->M_transaksi->listOutITem($user_id);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_Create',$data);
@@ -96,20 +96,28 @@ class C_Transaksi extends CI_Controller {
 	}
 	
 	public function addNewItem(){
-		$id = $this->input->post('id');
+		$id = 'NELA1ABP36';
+		$user = '67';
+		$type = '0';
 		$getItem = $this->M_transaksi->checkStokItem($id);
-		foreach($getItem as $getItem_item){
-			if($getItem_item['stok']=="0"){
-				echo "out";
-			}else{
-				$checkLog = $this->M_transaksi->checkLog($id);
-				if(empty($checkLog)){
-					$saveLog = $this->M_transaksi->saveLog($id,$getItem_item['item_name']);
+		if(!empty($getItem)){
+			foreach($getItem as $getItem_item){
+				if($getItem_item['stok']=="0"){
+					echo "out";
 				}else{
-					$updateLog = $this->M_transaksi->updateLog($id);
-				}	
-				$this->showListOutItem();
+					$checkLog = $this->M_transaksi->checkLog($id,$user,$type);
+					if(empty($checkLog)){
+						$saveLog = $this->M_transaksi->saveLog($id,$getItem_item['item_name'],$user,$type);
+						// echo "save";
+					}else{
+						$updateLog = $this->M_transaksi->updateLog($id,$user,$type);
+						// echo "update";
+					}	
+					$this->showListOutItem();
+				}
 			}
+		}else{
+			echo "null";
 		}
 	}
 	
@@ -125,7 +133,8 @@ class C_Transaksi extends CI_Controller {
 	}
 	
 	public function showListOutItem(){
-		$itemOut = $this->M_transaksi->listOutITem();
+		$user_id = $this->session->userid;
+		$itemOut = $this->M_transaksi->listOutITem($user_id);
 		foreach($itemOut as $itemOut_item){
 			echo "
 				<tr class='clone'>
@@ -141,9 +150,13 @@ class C_Transaksi extends CI_Controller {
 	}
 	
 	public function getName(){
-		$id = $this->input->post('id');
+		$id = $this->input->post('id',true);;
 		$getName = $this->M_transaksi->getName($id);
-		echo $getName->nama;
+		if(empty($getName)){
+			echo "null";
+		}else{
+			echo $getName->nama;
+		}			
 	}
 	
 	public function checkSession(){
@@ -206,6 +219,44 @@ class C_Transaksi extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_List',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	public function RemoveItemUsable($id,$date){
+		
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		
+		$date = date("Y-m-d H:i:s",strtotime(str_replace('%20',' ',$date)));
+		$removeTransactionList = $this->M_transaksi->removeTransactionList($plaintext_string,$date);
+		$removeGroupTransaction = $this->M_transaksi->removeGroupTransaction($plaintext_string,$date);
+	}
+	
+	public function UpdateItemUsable($id,$date){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$date = date("Y-m-d H:i:s",strtotime(str_replace('%20',' ',$date)));
+		
+		$getNoind = $this->M_transaksi->getNoindTransaction($plaintext_string);
+		
+		$data['Menu'] = 'Transaction';
+		$data['SubMenuOne'] = 'Peminjaman';
+		$data['SubMenuTwo'] = '';
+		$data['Title'] = 'Peminjaman';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['ListOutTransaction'] = $this->M_transaksi->ListOutTransaction($plaintext_string,$date);
+		$data['id_list'] = $plaintext_string;
+		$data['noind_list'] = $getNoind->noind;
+		$data['date_list'] = $date;
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_Update',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	

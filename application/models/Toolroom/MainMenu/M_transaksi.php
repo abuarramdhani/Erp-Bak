@@ -34,12 +34,12 @@ class M_transaksi extends CI_Model {
 			return $query->result_array();
 		}
 		
-		public function listOutITem(){
+		public function listOutITem($user){
 			$sql = "select *,
 					((
 						(select tmi.item_qty from tr.tr_master_item tmi where tmi.item_id=tlt.item_id)
 						- (select coalesce(sum(ttl.item_qty), 0) from tr.tr_transaction_list ttl where ttl.item_id=tlt.item_id and ttl.status='0')
-					) - tlt.item_qty) sisa_stok from tr.tr_log_transaction tlt";
+					) - tlt.item_qty) sisa_stok from tr.tr_log_transaction tlt where tlt.transaction_id='0' and tlt.user_id='$user'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -54,20 +54,20 @@ class M_transaksi extends CI_Model {
 			return ;
 		}
 		
-		public function checkLog($id){
-			$sql = "select * from tr.tr_log_transaction where item_id='$id'";
+		public function checkLog($id,$user,$type){
+			$sql = "select * from tr.tr_log_transaction where item_id='$id' and user_id='$user' and transaction_id='$type'";
 			$query = $this->db->query($sql);
 			return $query->row();
 		}
 		
-		public function saveLog($id,$name){
-			$sql = "insert into tr.tr_log_transaction values ('$id','$name','1')";
+		public function saveLog($id,$name,$user,$type){
+			$sql = "insert into tr.tr_log_transaction values ('$id','$name','1','$type','$user')";
 			$query = $this->db->query($sql);
 			return;
 		}
 		
-		public function updateLog($id){
-			$sql = "update tr.tr_log_transaction set item_qty=item_qty+1 where item_id='$id'";
+		public function updateLog($id,$user,$type){
+			$sql = "update tr.tr_log_transaction set item_qty=item_qty+1 where item_id='$id' and user_id='$user' and transaction_id='$type'";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -101,13 +101,17 @@ class M_transaksi extends CI_Model {
 		
 		public function ListOutTransaction($id=FALSE,$date=FALSE){
 			if($id === FALSE && $date === FALSE){
-				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-sum(ttl.item_qty)) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-
+							(select sum(ttl2.item_qty) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)
+						) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
 						from tr.tr_transaction_list ttl
 						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
 						where date_trunc('day', date_lend)=current_date and ttl.status='0'
 						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
 			}else{
-				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-sum(ttl.item_qty)) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-
+							(select sum(ttl2.item_qty) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)
+						) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
 						from tr.tr_transaction_list ttl
 						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
 						where date_trunc('second', date_lend)=date_trunc('second', timestamp '$date') and ttl.status='0' and ttl.transaction_id='$id'
@@ -125,6 +129,24 @@ class M_transaksi extends CI_Model {
 					and transaction_list_id=(select max(transaction_list_id) from tr.tr_transaction_list where date_trunc('day', date_lend)=current_date and item_id='$id' and status='0')";
 			$query = $this->db->query($sql);
 			return;
+		}
+		
+		public function removeGroupTransaction($id,$date){
+			$sql = "delete from tr.tr_transaction where id_transaction='$id'";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
+		public function removeTransactionList($id,$date){
+			$sql = "delete from tr.tr_transaction_list where transaction_id='$id'";
+			$query = $this->db->query($sql);
+			return;
+		}
+		
+		public function getNoindTransaction($id){
+			$sql = "select * from tr.tr_transaction where id_transaction='$id'";
+			$query = $this->db->query($sql);
+			return $query->row();
 		}
 		
 }

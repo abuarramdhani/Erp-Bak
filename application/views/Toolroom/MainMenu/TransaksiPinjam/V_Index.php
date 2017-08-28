@@ -52,9 +52,9 @@
 											?>
 													<tr>
 														<td align="center">
-															<a class="btn btn-xs bg-green" href="<?php echo base_url('Toolroom/Transaksi/UpdateItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>"><span title="Update <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-edit"></span></a>
-															<a class="btn btn-xs bg-maroon" href="<?php echo base_url('Toolroom/Transaksi/RemoveItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>" onclick="return confirm('are you sure to delete this tool ?')"><span title="Update <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-remove"></span></a>
-															<a class="btn btn-xs bg-blue" href="<?php echo base_url('Toolroom/Transaksi/ListItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>"><span title="Update <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-search"></span></a>
+															<a class="btn btn-xs bg-green" href="<?php echo base_url('Toolroom/Transaksi/UpdateItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>"><span title="Update Peminjaman <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-edit"></span></a>
+															<a class="btn btn-xs bg-maroon" href="<?php echo base_url('Toolroom/Transaksi/RemoveItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>" onclick="return confirm('are you sure to delete this tool ?')"><span title="Delete Peminjaman <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-remove"></span></a>
+															<a class="btn btn-xs bg-blue" href="<?php echo base_url('Toolroom/Transaksi/ListItemUsable/')."/".$encrypted_string."/".$ListOutGroupTransaction_item['creation_date'] ?>"><span title="View List Peminjaman <?php echo $ListOutGroupTransaction_item['noind'] ?>" class="fa fa-search"></span></a>
 														</td>
 														<td align="center"><?php echo $num?></td>
 														<td align="center"><?php echo $ListOutGroupTransaction_item['noind'] ?></td>

@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	$('.table-item-usable').DataTable({"lengthChange": false,"searching": true,"info": false});
 	$('.table-create-pengembalian-today').DataTable({"lengthChange": false,"searching": true,"info": false});
+	$('.table-update-peminjaman').DataTable({"lengthChange": false,"searching": true,"info": false});
 	$('.select-group-item').select2({
 		allowClear: true,
 		placeholder: "[Select Group Toolkit]",
@@ -53,6 +54,8 @@ $(document).ready(function() {
 				}
 			}
 	});
+	
+	
 });
 
 $(document).on("click", "#showModalItem", function () {
@@ -61,6 +64,20 @@ $(document).on("click", "#showModalItem", function () {
 
 $(document).on("click", "#showModalNoind", function () {
 	$('#modalSearchNoind').modal();
+});
+
+$(document).on("keyup", "#txtBarcode", function () {
+	var barcode = $('#txtBarcode').val().length;
+	 if (event.ctrlKey && event.keyCode == 16) {
+		$( "#txtNoind" ).focus();
+	}
+});
+
+$(document).on("keyup", "#txtNoind", function () {
+	var barcode = $('#txtNoind').val().length;
+	 if (event.ctrlKey && event.keyCode == 16) {
+		$( "#txtBarcode" ).focus();
+	}
 });
 
 $(document).on("click", "#btnExecuteSave", function () {
@@ -95,15 +112,37 @@ $(document).on("click", "#btnExecuteSave", function () {
 
 function AddPinjamItem(){
 	var barcode = $('#txtBarcode').val();
+	var user = $('#hdnUser').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:0},
+		url :baseurl+"Toolroom/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-create-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+}
+
+function UpdatePinjamItem(){
+	var barcode = $('#txtBarcode').val();
 	$.ajax({
 		type:'POST',
 		data:{id: barcode},
 		url :baseurl+"Toolroom/Transaksi/addNewItem",
 		success:function(result){
-			if(result == "out"){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
 				alert('Out Of Stock !!!');
 			}else{
-				$('#table-create-peminjaman tbody').html(result);
+				$('#table-update-peminjaman tbody').html(result);
 			}
 		}
 	});
@@ -138,7 +177,12 @@ function getName(){
 		data:{id: id},
 		url :baseurl+"Toolroom/Transaksi/getName",
 		success:function(result){
-			$('#txtName').val(result);
+			if(result == "null"){
+				alert('No matching Id Number !');
+				$('#txtName').val('');
+			}else{
+				$('#txtName').val(result);
+			}
 		}
 	});
 }
