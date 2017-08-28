@@ -38,7 +38,7 @@
 											<label for="norm" class="control-label col-md-1 text-center">Barcode</label>
 											<div class="col-md-3">
 												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="UpdatePinjamItem()" placeholder="[Barcode]" autofocus></input>
-												<input type="text" name="txtID" id="txtID" value="<?= $list_id ?>" class="form-control"></input>
+												<input type="hidden" name="txtID" id="txtID" value="<?= $id_list ?>" class="form-control"></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>

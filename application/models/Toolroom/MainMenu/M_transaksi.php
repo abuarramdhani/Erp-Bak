@@ -44,12 +44,18 @@ class M_transaksi extends CI_Model {
 			return $query->result_array();
 		}
 		
-		public function deleteLog($item_id=FALSE){
+		public function deleteLog($item_id=FALSE,$id_trs,$user){
 			if($item_id === FALSE){
-				$sql = "delete from tr.tr_log_transaction";
+				$sql = "delete from tr.tr_log_transaction where user_id='$user' and transaction_id='$id_trs'";
 			}else{
-				$sql = "delete from tr.tr_log_transaction where item_id='$item_id'";
+				$sql = "delete from tr.tr_log_transaction where item_id='$item_id' and user_id='$user' and transaction_id='$id_trs'";
 			}	
+			$query = $this->db->query($sql);
+			return ;
+		}
+		
+		public function deleteLogAll($id_trs,$user){
+			$sql = "delete from tr.tr_log_transaction where user_id='$user' and transaction_id='$id_trs'";
 			$query = $this->db->query($sql);
 			return ;
 		}

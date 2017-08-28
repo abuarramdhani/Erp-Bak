@@ -80,7 +80,7 @@
 																<td class='item_name'>".$itemOut_item['item_name']."</td>
 																<td class='text-center sisa_stok'>".$itemOut_item['sisa_stok']."</td>
 																<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_qty']."' style='100%'></input></td>
-																<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\")'><span class='fa fa-remove'></span></a></td>
+																<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->userid."\")'><span class='fa fa-remove'></span></a></td>
 															</tr>
 														";
 													}

@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	$('.table-item-usable').DataTable({"lengthChange": false,"searching": true,"info": false});
 	$('.table-create-pengembalian-today').DataTable({"lengthChange": false,"searching": true,"info": false});
-	$('.table-update-peminjaman').DataTable({"lengthChange": false,"searching": true,"info": false});
 	$('.select-group-item').select2({
 		allowClear: true,
 		placeholder: "[Select Group Toolkit]",
@@ -149,10 +148,10 @@ function UpdatePinjamItem(){
 	$('#txtBarcode').val('');
 }
 
-function removeListOutItem(id){
+function removeListOutItem(id,id_trans,user){
 	$.ajax({
 		type:'POST',
-		data:{id: id},
+		data:{id: id,id_trans:id_trans,user:user},
 		url :baseurl+"Toolroom/Transaksi/removeNewItem",
 		success:function(result){
 				$('#table-create-peminjaman tbody').html(result);
