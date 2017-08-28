@@ -50,7 +50,7 @@
 												<div class="form-group"><!-- Supplier txtSupplier -->
 													<label for="norm" class="control-label col-lg-3">Supplier</label>
 													<div class="col-lg-4">
-														<select id="slcSupplier" name="slcSupplier">
+														<select id="slcSupplierlppb" name="slcSupplier">
 															<option></option>
 															<?php foreach ($supplier as $spl) {?>
 															<option value="<?php echo $spl['VENDOR_ID'] ; ?>"><?php echo $spl['VENDOR_NAME'] ; ?></option>
