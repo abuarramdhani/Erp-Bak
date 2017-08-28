@@ -1,5 +1,5 @@
 <?php
-class M_Lppb extends CI_Model{
+class M_lppb extends CI_Model{
 	function __construct(){
 		parent::__construct();
 	}

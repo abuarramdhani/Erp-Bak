@@ -17,7 +17,7 @@ class C_Lppb extends CI_Controller {
 		//$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('AccountPayables/M_Lppb');
+		$this->load->model('AccountPayables/M_lppb');
 
 			  
 		if($this->session->userdata('logged_in')!=TRUE) {
