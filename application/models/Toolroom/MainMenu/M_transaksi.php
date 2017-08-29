@@ -44,21 +44,43 @@ class M_transaksi extends CI_Model {
 			return $query->result_array();
 		}
 		
+		public function listOutITemUpdate($user,$id){
+			$sql = "select ttl.item_id,tmi.item_name,tmi.item_qty,(sum(ttl.item_qty)+(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user')) item_dipakai,(tmi.item_qty-
+												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)-
+												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user')
+											) sisa_stok
+					from tr.tr_transaction_list ttl
+					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
+					where ttl.transaction_id='$id'
+					group by ttl.item_id,tmi.item_name,tmi.item_qty
+					union
+					select tlt.item_id,tlt.item_name,tmi.item_qty,(tlt.item_qty + (select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)) item_dipakai,(tmi.item_qty-
+												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)-
+												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=tlt.item_id and tlt2.user_id='$user')
+											) sisa_stok 
+					from tr.tr_log_transaction tlt
+					join tr.tr_master_item tmi on tmi.item_id=tlt.item_id
+					where tlt.transaction_id='$id' and tlt.user_id='$user'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
 		public function deleteLog($item_id=FALSE,$id_trs,$user){
 			if($item_id === FALSE){
-				$sql = "delete from tr.tr_log_transaction where user_id='$user' and transaction_id='$id_trs'";
+				$sql = "delete from tr.tr_log_transaction where  and transaction_id='$id_trs'";
 			}else{
-				$sql = "delete from tr.tr_log_transaction where item_id='$item_id' and user_id='$user' and transaction_id='$id_trs'";
+				$sql = "delete from tr.tr_log_transaction where item_id='$item_id'  and transaction_id='$id_trs'";
 			}	
 			$query = $this->db->query($sql);
 			return ;
 		}
 		
 		public function deleteLogAll($id_trs,$user){
-			$sql = "delete from tr.tr_log_transaction where user_id='$user' and transaction_id='$id_trs'";
+			$sql = "delete from tr.tr_log_transaction where  transaction_id='$id_trs' and user_id='$user'";
 			$query = $this->db->query($sql);
 			return ;
 		}
+		
 		
 		public function checkLog($id,$user,$type){
 			$sql = "select * from tr.tr_log_transaction where item_id='$id' and user_id='$user' and transaction_id='$type'";
@@ -106,6 +128,7 @@ class M_transaksi extends CI_Model {
 		}
 		
 		public function ListOutTransaction($id=FALSE,$date=FALSE){
+			$user_id = $this->session->userid;
 			if($id === FALSE && $date === FALSE){
 				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-
 							(select sum(ttl2.item_qty) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)
@@ -115,13 +138,22 @@ class M_transaksi extends CI_Model {
 						where date_trunc('day', date_lend)=current_date and ttl.status='0'
 						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
 			}else{
-				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-
-							(select sum(ttl2.item_qty) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)
-						) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
-						from tr.tr_transaction_list ttl
-						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
-						where date_trunc('second', date_lend)=date_trunc('second', timestamp '$date') and ttl.status='0' and ttl.transaction_id='$id'
-						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
+				$sql = "select ttl.item_id,tmi.item_name,tmi.item_qty,sum(ttl.item_qty) item_dipakai,(tmi.item_qty-
+												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)-
+												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user_id')
+											) item_sisa
+					from tr.tr_transaction_list ttl
+					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
+					where ttl.transaction_id='$id'
+					group by ttl.item_id,tmi.item_name,tmi.item_qty
+					union
+					select tlt.item_id,tlt.item_name,tmi.item_qty,tlt.item_qty,(tmi.item_qty-
+												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)-
+												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=tlt.item_id and tlt2.user_id='$user_id')
+											) item_sisa 
+					from tr.tr_log_transaction tlt
+					join tr.tr_master_item tmi on tmi.item_id=tlt.item_id
+					where tlt.transaction_id='$id' and tlt.user_id='$user_id'";
 			}
 			
 			$query = $this->db->query($sql);
@@ -153,6 +185,12 @@ class M_transaksi extends CI_Model {
 			$sql = "select * from tr.tr_transaction where id_transaction='$id'";
 			$query = $this->db->query($sql);
 			return $query->row();
+		}
+		
+		public function updateLending($noind,$user,$date,$id){
+			$sql = "update tr.tr_transaction set noind='$noind' , last_update_date='$date',last_updated_by='$user' where id_transaction='$id'";
+			$query = $this->db->query($sql);
+			return;
 		}
 		
 }

@@ -43,6 +43,11 @@
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
 											</div>
+											<div class="col-md-5">
+											</div>
+											<div class="col-md-1">
+												<a class="btn btn-md btn-danger" onClick="clearListOutItem('<?= $id_list ?>')" >Reset</a>
+											</div>
 									</div>
 								</div>
 								<br>
@@ -65,7 +70,7 @@
 												foreach($ListOutTransaction as $ListOutTransaction){
 														$no++;
 														echo "
-															<tr class='clone'>
+															<tr class='clone-update'>
 																<td class='text-center'><span id='no'>".$no."</span></td>
 																<td class='text-center item_id'>".$ListOutTransaction['item_id']."</td>
 																<td class='item_name'>".$ListOutTransaction['item_name']."</td>
@@ -100,7 +105,7 @@
 								<div class="row text-right">
 									<a href="<?php echo site_url('Toolroom/MasterItem/UsableGroup') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
 									&nbsp;&nbsp;
-									<a id="btnExecuteSave" class="btn btn-primary btn-lg btn-rect">Save</a>
+									<a id="btnExecuteUpdate" class="btn btn-primary btn-lg btn-rect">Update</a>
 								</div>
 							</div>
 						</div>

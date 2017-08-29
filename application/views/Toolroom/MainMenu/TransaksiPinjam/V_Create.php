@@ -45,7 +45,7 @@
 											<div class="col-md-5">
 											</div>
 											<div class="col-md-1">
-												<a class="btn btn-md btn-danger" onClick="clearListOutItem()" >Reset</a>
+												<a class="btn btn-md btn-danger" onClick="clearListOutItem('0')" >Reset</a>
 											</div>
 											<!-- <div class="col-md-4">
 												<select name="slcBarcode" id="slcBarcode" class="form-control select-item" onChange="AddPinjamItem()" style="width:100%;">

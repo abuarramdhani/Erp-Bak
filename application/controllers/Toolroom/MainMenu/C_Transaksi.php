@@ -67,7 +67,7 @@ class C_Transaksi extends CI_Controller {
 	public function CreatePeminjaman(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+		$this->clearNewItem();
 		$data['Menu'] = 'Transaction';
 		$data['SubMenuOne'] = 'Peminjaman';
 		$data['SubMenuTwo'] = '';
@@ -108,12 +108,14 @@ class C_Transaksi extends CI_Controller {
 					$checkLog = $this->M_transaksi->checkLog($id,$user,$type);
 					if(empty($checkLog)){
 						$saveLog = $this->M_transaksi->saveLog($id,$getItem_item['item_name'],$user,$type);
-						// echo "save";
 					}else{
 						$updateLog = $this->M_transaksi->updateLog($id,$user,$type);
-						// echo "update";
 					}	
-					$this->showListOutItem();
+					if($type!=0){
+						$this->showListOutItemUpdate($type);
+					}else{
+						$this->showListOutItem();
+					}
 				}
 			}
 		}else{
@@ -129,8 +131,13 @@ class C_Transaksi extends CI_Controller {
 		$this->showListOutItem();
 	}
 	
-	public function clearNewItem(){
-		$id_trs = 0;
+	public function clearNewItem($id=FALSE){
+		if($id === FALSE){
+			$id_trs = 0;
+		}else{
+			$id_trs = $id;
+		}
+		
 		$user = $this->session->userid;
 		$delete = $this->M_transaksi->deleteLogAll($id_trs,$user);
 		$this->showListOutItem();
@@ -147,6 +154,23 @@ class C_Transaksi extends CI_Controller {
 					<td class='item_name'>".$itemOut_item['item_name']."</td>
 					<td class='text-center sisa_stok'>".$itemOut_item['sisa_stok']."</td>
 					<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_qty']."' style='100%'></input></td>
+					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->userid."\")'><span class='fa fa-remove'></span></a></td>
+				</tr>
+			";
+		}
+	}
+	
+	public function showListOutItemUpdate($id){
+		$user_id = $this->session->userid;
+		$itemOut = $this->M_transaksi->listOutITemUpdate($user_id,$id);
+		foreach($itemOut as $itemOut_item){
+			echo "
+				<tr class='clone'>
+					<td class='text-center'><span id='no'>1</span></td>
+					<td class='text-center item_id'>".$itemOut_item['item_id']."</td>
+					<td class='item_name'>".$itemOut_item['item_name']."</td>
+					<td class='text-center sisa_stok'>".$itemOut_item['sisa_stok']."</td>
+					<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_dipakai']."' style='100%'></input></td>
 					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->userid."\")'><span class='fa fa-remove'></span></a></td>
 				</tr>
 			";
@@ -200,6 +224,36 @@ class C_Transaksi extends CI_Controller {
 		$this->clearNewItem();
 	}
 	
+	public function UpdateNewLending(){
+		$id = $this->input->post('id',true);
+		$noind = $this->input->post('noind',true);
+		$user = $this->input->post('user',true);
+		$date = $this->input->post('date',true);
+		$saveLending = $this->M_transaksi->updateLending($noind,$user,$date,$id);
+		$removeTransactionList = $this->M_transaksi->removeTransactionList($id,$date);
+		echo $id;
+	}
+	
+	public function UpdateNewLendingList(){
+		$noind = $this->input->post('noind',true);
+		$user = $this->input->post('user',true);
+		$date = $this->input->post('date',true);
+		$item_id = $this->input->post('item_id',true);
+		$item_name = $this->input->post('item_name',true);
+		$sisa_stok = $this->input->post('sisa_stok',true);
+		$item_out = $this->input->post('item_out',true);
+		$id_transaction = $this->input->post('id',true);
+		if($item_out>1){
+			for($i=0;$i<$item_out;$i++){
+				$saveLendingList = $this->M_transaksi->insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,'1',$id_transaction);
+			}
+		}else{
+			$saveLendingList = $this->M_transaksi->insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,$item_out,$id_transaction);
+		}
+		
+		$this->clearNewItem($id_transaction);
+	}
+	
 	public function ListItemUsable($id,$date){
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -213,7 +267,7 @@ class C_Transaksi extends CI_Controller {
 			
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-		
+		$this->clearNewItem($plaintext_string);
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -237,13 +291,14 @@ class C_Transaksi extends CI_Controller {
 	}
 	
 	public function UpdateItemUsable($id,$date){
+		
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$date = date("Y-m-d H:i:s",strtotime(str_replace('%20',' ',$date)));
 		
+		$this->clearNewItem($plaintext_string);
 		$getNoind = $this->M_transaksi->getNoindTransaction($plaintext_string);
 		
 		$data['Menu'] = 'Transaction';

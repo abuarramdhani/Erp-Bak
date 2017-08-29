@@ -109,6 +109,35 @@ $(document).on("click", "#btnExecuteSave", function () {
 	// }
 });
 
+$(document).on("click", "#btnExecuteUpdate", function () {
+	// if (confirm('Are you sure you want to save this thing into the database?')) {
+		var id = $('#txtID').val();
+		var noind = $('#txtNoind').val();
+		var user = $('#hdnUser').val();
+		var date = $('#hdnDate').val();
+		$.ajax({
+			type:'POST',
+			data:{id:id,noind: noind,user:user,date:date},
+			url :baseurl+"Toolroom/Transaksi/UpdateNewLending",
+			success:function(result){
+				$('#table-update-peminjaman tbody tr').each(function() {
+					var item_id = $(this).find(".item_id").html();    
+					var item_name = $(this).find(".item_name").html();    
+					var sisa_stok = $(this).find(".sisa_stok").html();    
+					var item_out = $(this).find(".item_out").val();
+					$.ajax({
+						type:'POST',
+						data:{id:id,noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result},
+						url :baseurl+"Toolroom/Transaksi/UpdateNewLendingList"
+					});
+				});
+				window.location.replace(baseurl+"Toolroom/Transaksi/Keluar");
+				alert('List Item Has Been Updated !');
+			}
+		});
+	// }
+});
+
 function AddPinjamItem(){
 	var barcode = $('#txtBarcode').val();
 	var user = $('#hdnUser').val();
@@ -131,9 +160,11 @@ function AddPinjamItem(){
 
 function UpdatePinjamItem(){
 	var barcode = $('#txtBarcode').val();
+	var user = $('#hdnUser').val();
+	var type = $('#txtID').val();
 	$.ajax({
 		type:'POST',
-		data:{id: barcode},
+		data:{id: barcode,user:user,type:type},
 		url :baseurl+"Toolroom/Transaksi/addNewItem",
 		success:function(result){
 			if(result == "null"){
@@ -159,9 +190,10 @@ function removeListOutItem(id,id_trans,user){
 	});
 }
 
-function clearListOutItem(){
+function clearListOutItem(id){
 	$.ajax({
 		type:'POST',
+		data:{id: id},
 		url :baseurl+"Toolroom/Transaksi/clearNewItem",
 		success:function(result){
 				$('#table-create-peminjaman tbody').html(result);
