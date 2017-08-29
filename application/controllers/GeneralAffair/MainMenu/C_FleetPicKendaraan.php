@@ -180,7 +180,7 @@ class C_FleetPicKendaraan extends CI_Controller
 				'dari_periode' 		=> $periode_awal,
 				'sampai_periode' 	=> $periode_akhir,
 				'end_date' 			=> $waktu_dihapus,
-				'last_updated' 		=> $tanggal_eksekusi,
+				'last_updated' 		=> $waktu_eksekusi,
 				'last_updated_by'	=> $this->session->userid,
 				'employee_id' 		=> $idPekerja
     			);
