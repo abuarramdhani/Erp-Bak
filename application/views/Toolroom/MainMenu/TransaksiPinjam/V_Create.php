@@ -35,14 +35,27 @@
 							<div class="panel-body">
 								<div class="row col-lg-12">
 									<div class="form-group">
-											<label for="norm" class="control-label col-md-1 text-center">Barcode</label>
-											<div class="col-md-3">
+									<label for="norm" class="control-label col-md-1 text-center">Shift</label>
+											<div class="col-md-2">
+												<select name="txsShift" id="txsShift" class="form-control">
+													<option value="">[Select Shift]</option>
+													<option value="S1">SHIFT 1</option>
+													<option value="S2">SHIFT 2</option>
+													<option value="S3">SHIFT 3</option>
+													<option value="SU">SHIFT UMUM</option>
+													<option value="ST">TANGGUNG 1</option>
+													<option value="T2">TANGGUNG 2</option>
+													<option value="T3">TANGGUNG 3</option>
+												</select>
+											</div>
+											<!-- <label for="norm" class="control-label col-md-1 text-center">Barcode</label> -->
+											<div class="col-md-4">
 												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPinjamItem()" placeholder="[Barcode]" autofocus></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
 											</div>
-											<div class="col-md-5">
+											<div class="col-md-3">
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-danger" onClick="clearListOutItem('0')" >Reset</a>
@@ -92,7 +105,7 @@
 								<br>
 								<div class="row col-lg-12">
 									<div class="form-group">
-											<label for="norm" class="control-label col-md-1 text-center">Peminjam</label>
+											<label for="norm" class="control-label col-md-1 text-center">Noind</label>
 											<div class="col-md-2">
 												<input type="text" name="txtNoind" onChange="getName()" id="txtNoind" class="form-control" placeholder="[Noind Pekerja]"></input>
 											</div>

@@ -196,10 +196,11 @@ class C_Transaksi extends CI_Controller {
 	}
 	
 	public function addNewLending(){
+		$shift = $this->input->post('shift',true);
 		$noind = $this->input->post('noind',true);
 		$user = $this->input->post('user',true);
 		$date = $this->input->post('date',true);
-		$saveLending = $this->M_transaksi->insertLending($noind,$user,$date);
+		$saveLending = $this->M_transaksi->insertLending($noind,$user,$date,$shift);
 		$insert_id = $this->db->insert_id();
 		echo $insert_id;
 	}
@@ -229,7 +230,8 @@ class C_Transaksi extends CI_Controller {
 		$noind = $this->input->post('noind',true);
 		$user = $this->input->post('user',true);
 		$date = $this->input->post('date',true);
-		$saveLending = $this->M_transaksi->updateLending($noind,$user,$date,$id);
+		$shift = $this->input->post('shift',true);
+		$saveLending = $this->M_transaksi->updateLending($noind,$user,$date,$id,$shift);
 		$removeTransactionList = $this->M_transaksi->removeTransactionList($id,$date);
 		echo $id;
 	}
@@ -310,6 +312,7 @@ class C_Transaksi extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['ListOutTransaction'] = $this->M_transaksi->ListOutTransaction($plaintext_string,$date);
+		$data['getShift'] = $this->M_transaksi->getShift($plaintext_string);
 		$data['id_list'] = $plaintext_string;
 		$data['noind_list'] = $getNoind->noind;
 		$data['date_list'] = $date;

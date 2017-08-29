@@ -107,8 +107,8 @@ class M_transaksi extends CI_Model {
 			return $query->row();
 		}
 		
-		public function insertLending($noind,$user,$date){
-			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by) values ('$noind','$date','$user')";
+		public function insertLending($noind,$user,$date,$shift){
+			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by,shift) values ('$noind','$date','$user','$shift')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -187,10 +187,16 @@ class M_transaksi extends CI_Model {
 			return $query->row();
 		}
 		
-		public function updateLending($noind,$user,$date,$id){
-			$sql = "update tr.tr_transaction set noind='$noind' , last_update_date='$date',last_updated_by='$user' where id_transaction='$id'";
+		public function updateLending($noind,$user,$date,$id,$shift){
+			$sql = "update tr.tr_transaction set noind='$noind' , last_update_date='$date',last_updated_by='$user',shift='$shift' where id_transaction='$id'";
 			$query = $this->db->query($sql);
 			return;
+		}
+		
+		public function getShift($id){
+			$sql = "select * from tr.tr_transaction where id_transaction='$id'";
+			$query = $this->db->query($sql);
+			return $query->row();
 		}
 		
 }

@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	$('.table-item-usable').DataTable({"lengthChange": false,"searching": true,"info": false});
 	$('.table-create-pengembalian-today').DataTable({"lengthChange": false,"searching": true,"info": false});
+	$('.datepicker-range').datepicker();
 	$('.select-group-item').select2({
 		allowClear: true,
 		placeholder: "[Select Group Toolkit]",
@@ -81,12 +82,13 @@ $(document).on("keyup", "#txtNoind", function () {
 
 $(document).on("click", "#btnExecuteSave", function () {
 	// if (confirm('Are you sure you want to save this thing into the database?')) {
+		var shift = $('#txsShift option:selected').attr('value');
 		var noind = $('#txtNoind').val();
 		var user = $('#hdnUser').val();
 		var date = $('#hdnDate').val();
 		$.ajax({
 			type:'POST',
-			data:{noind: noind,user:user,date:date},
+			data:{noind: noind,user:user,date:date,shift:shift},
 			url :baseurl+"Toolroom/Transaksi/addNewLending",
 			success:function(result){
 				$('#table-create-peminjaman tbody tr').each(function() {
@@ -103,6 +105,7 @@ $(document).on("click", "#btnExecuteSave", function () {
 				$('#table-create-peminjaman tbody').html("<tr></tr>");
 				$('#txtNoind').val('');
 				$('#txtName').val('');
+				$('#txsSelect').val('');
 				alert('List Item Has Been Added !');
 			}
 		});
@@ -113,11 +116,12 @@ $(document).on("click", "#btnExecuteUpdate", function () {
 	// if (confirm('Are you sure you want to save this thing into the database?')) {
 		var id = $('#txtID').val();
 		var noind = $('#txtNoind').val();
+		var shift = $('#txsShift').val();
 		var user = $('#hdnUser').val();
 		var date = $('#hdnDate').val();
 		$.ajax({
 			type:'POST',
-			data:{id:id,noind: noind,user:user,date:date},
+			data:{id:id,noind: noind,user:user,date:date,shift:shift},
 			url :baseurl+"Toolroom/Transaksi/UpdateNewLending",
 			success:function(result){
 				$('#table-update-peminjaman tbody tr').each(function() {

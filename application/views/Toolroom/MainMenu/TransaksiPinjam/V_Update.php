@@ -35,15 +35,27 @@
 							<div class="panel-body">
 								<div class="row col-lg-12">
 									<div class="form-group">
-											<label for="norm" class="control-label col-md-1 text-center">Barcode</label>
-											<div class="col-md-3">
-												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="UpdatePinjamItem()" placeholder="[Barcode]" autofocus></input>
+											<label for="norm" class="control-label col-md-1 text-center">Shift</label>
+											<div class="col-md-2">
+													<select name="txsShift" id="txsShift" class="form-control">
+														<option value="">[Select Shift]</option>
+														<option value="S1" <?php if($getShift->shift == "S1"){ echo "selected";} ?>>SHIFT 1</option>
+														<option value="S2" <?php if($getShift->shift == "S2"){ echo "selected";} ?>>SHIFT 2</option>
+														<option value="S3" <?php if($getShift->shift == "S3"){ echo "selected";} ?>>SHIFT 3</option>
+														<option value="SU" <?php if($getShift->shift == "SU"){ echo "selected";} ?>>SHIFT UMUM</option>
+														<option value="ST" <?php if($getShift->shift == "ST"){ echo "selected";} ?>>TANGGUNG 1</option>
+														<option value="T2" <?php if($getShift->shift == "T2"){ echo "selected";} ?>>TANGGUNG 2</option>
+														<option value="T3" <?php if($getShift->shift == "T3"){ echo "selected";} ?>>TANGGUNG 3</option>
+													</select>
 												<input type="hidden" name="txtID" id="txtID" value="<?= $id_list ?>" class="form-control"></input>
+											</div>
+											<div class="col-md-4">
+												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="UpdatePinjamItem()" placeholder="[Barcode]" autofocus></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
 											</div>
-											<div class="col-md-5">
+											<div class="col-md-3">
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-danger" onClick="clearListOutItem('<?= $id_list ?>')" >Reset</a>
@@ -88,7 +100,7 @@
 								<br>
 								<div class="row col-lg-12">
 									<div class="form-group">
-											<label for="norm" class="control-label col-md-1 text-center">Peminjam</label>
+											<label for="norm" class="control-label col-md-1 text-center">Noind</label>
 											<div class="col-md-2">
 												<input type="text" name="txtNoind" onChange="getName()" value="<?= $noind_list ?>" id="txtNoind" class="form-control" placeholder="[Noind Pekerja]"></input>
 											</div>

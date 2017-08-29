@@ -1160,3 +1160,8 @@ $route['Toolroom/Transaksi'] = 'Toolroom/MainMenu/C_Transaksi';
 $route['Toolroom/Transaksi/(:any)'] = 'Toolroom/MainMenu/C_Transaksi/$1';
 $route['Toolroom/Transaksi/(:any)/(:any)'] = 'Toolroom/MainMenu/C_Transaksi/$1/$2';
 $route['Toolroom/Transaksi/(:any)/(:any)/(:any)'] = 'Toolroom/MainMenu/C_Transaksi/$1/$2/$3';
+
+$route['Toolroom/Report'] = 'Toolroom/Report/C_Report';
+$route['Toolroom/Report/(:any)'] = 'Toolroom/Report/C_Report/$1';
+$route['Toolroom/Report/(:any)/(:any)'] = 'Toolroom/Report/C_Report/$1/$2';
+$route['Toolroom/Report/(:any)/(:any)/(:any)'] = 'Toolroom/Report/C_Report/$1/$2/$3';
