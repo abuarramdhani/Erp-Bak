@@ -735,7 +735,8 @@ class C_OutstationRealization extends CI_Controller {
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', array(165,105), 0, '', 3, 3, 3, 3);
+		//$pdf = new mPDF('utf-8', array(165,105), 0, '', 3, 3, 3, 3);
+		$pdf = new mPDF('', array(210,120), 0, '', 3, 3, 3, 3);
 
 		$filename = 'Simulation_Detail_'.time();
 		$this->checkSession();

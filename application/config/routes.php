@@ -514,6 +514,8 @@ $route['AccountPayables'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
+$route['AccountPayables/Lppb'] 				= 'AccountPayables/C_Lppb';
+$route['AccountPayables/Lppb/(:any)'] 				= 'AccountPayables/C_Lppb/$1';
 
 
 //------------------------------------Payroll Management---------------------------------------------------

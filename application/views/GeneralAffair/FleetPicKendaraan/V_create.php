@@ -23,76 +23,46 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Fleet Pic Kendaraan</div>
+                                <div class="box-header with-border">Create PIC Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-											<div class="form-group">
-                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan Id</label>
+                                            <div class="form-group">
+                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
-                                                                echo '<option value="'.$row['nomor_polisi'].'" >'.$row['kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_kendaraan'].'" >'.$row['nomor_polisi'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="txtDariPeriodeHeader" class="control-label col-lg-4">Dari Periode</label>
+                                                <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtDariPeriodeHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtDariPeriodeHeader" />
+                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                            foreach ($DaftarNama as $row) {
+                                                                echo '<option value="'.$row['id_pekerja'].'" >'.$row['daftar'].'</option>';
+                                                            }
+                                                        ?>
+                                                    </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+
+
 
 											<div class="form-group">
-                                                <label for="txtSampaiPeriodeHeader" class="control-label col-lg-4">Sampai Periode</label>
+                                                <label for="txtMasaAktifPICHeader" class="control-label col-lg-4">Masa Penggunaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtSampaiPeriodeHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtSampaiPeriodeHeader" />
+                                                    <input type="text" name="masaAktifPIC" class="date form-control" id="daterangepicker" required="" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
 
                                         </div>
 

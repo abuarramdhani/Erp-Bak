@@ -5,18 +5,46 @@ class M_fleetjeniskendaraan extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
+        date_default_timezone_set('Asia/Jakarta');
     }
 
     public function getFleetJenisKendaraan($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_fleet_jenis_kendaraan');
+            $ambilJenisKendaraan    = " select  jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
+                                                jeniskdrn.jenis_kendaraan as jenis_kendaraan,
+                                                to_char(jeniskdrn.creation_date,'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat
+                                        from    ga.ga_fleet_jenis_kendaraan as jeniskdrn
+                                        where   (
+                                                    jeniskdrn.end_date='9999-12-12 00:00:00'
+                                                    or  jeniskdrn.end_date=null
+                                                );";
+
+    		$query = $this->db->query($ambilJenisKendaraan);
     	} else {
-    		$query = $this->db->get_where('ga.ga_fleet_jenis_kendaraan', array('jenis_kendaraan_id' => $id));
+            $ambilJenisKendaraan    = " select  jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
+                                                jeniskdrn.jenis_kendaraan as jenis_kendaraan,
+                                                to_char(jeniskdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(jeniskdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                        from    ga.ga_fleet_jenis_kendaraan as jeniskdrn
+                                        where   jeniskdrn.jenis_kendaraan_id=$id;";
+    		$query = $this->db->query($ambilJenisKendaraan);
     	}
 
     	return $query->result_array();
+    }
+
+    public function getFleetJenisKendaraanDeleted()
+    {
+        $ambilJenisKendaraanDeleted     = " select  jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
+                                                    jeniskdrn.jenis_kendaraan as jenis_kendaraan,
+                                                    to_char(jeniskdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                    to_char(jeniskdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                            from    ga.ga_fleet_jenis_kendaraan as jeniskdrn
+                                            where   jeniskdrn.end_date!='9999-12-12 00:00:00';";
+        $query                          =   $this->db->query($ambilJenisKendaraanDeleted);
+        return $query->result_array();
     }
 
     public function setFleetJenisKendaraan($data)
@@ -32,8 +60,11 @@ class M_fleetjeniskendaraan extends CI_Model
 
     public function deleteFleetJenisKendaraan($id)
     {
-        $this->db->where('jenis_kendaraan_id', $id);
-        $this->db->delete('ga.ga_fleet_jenis_kendaraan');
+        $tanggal_eksekusi       = date('Y-m-d H:i:s');
+        $DeleteJenisKendaraan   = " update  ga.ga_fleet_jenis_kendaraan
+                                            set     end_date='$tanggal_eksekusi'
+                                            where   jenis_kendaraan_id=$id;";
+        $this->db->query($DeleteJenisKendaraan);
     }
 }
 

@@ -16,6 +16,8 @@ class C_FleetJenisKendaraan extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetjeniskendaraan');
 
+		date_default_timezone_set('Asia/Jakarta');
+
 		$this->checkSession();
 	}
 
@@ -36,7 +38,7 @@ class C_FleetJenisKendaraan extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Jenis Kendaraan';
+		$data['Title'] = 'Jenis Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -45,7 +47,8 @@ class C_FleetJenisKendaraan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetJenisKendaraan'] = $this->M_fleetjeniskendaraan->getFleetJenisKendaraan();
+		$data['FleetJenisKendaraan'] 		= $this->M_fleetjeniskendaraan->getFleetJenisKendaraan();
+		$data['FleetJenisKendaraanDeleted']	= $this->M_fleetjeniskendaraan->getFleetJenisKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -55,10 +58,10 @@ class C_FleetJenisKendaraan extends CI_Controller
 
 	/* NEW DATA */
 	public function create()
-	{
+	{ 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Jenis Kendaraan';
+		$data['Title'] = 'Jenis Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -79,12 +82,15 @@ class C_FleetJenisKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetJenisKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$jenisKendaraan 	= 	$this->input->post('txtJenisKendaraanHeader');
+
+			$creation_date 		= 	date('Y-m-d H:i:s');
 			$data = array(
-				'jenis_kendaraan' => $this->input->post('txtJenisKendaraanHeader'),
-				'start_date' => $this->input->post('txtStartDateHeader'),
-				'end_date' => $this->input->post('txtEndDateHeader'),
-				'creation_date' => 'NOW()',
-				'created_by' => $this->session->userid,
+				'jenis_kendaraan' 	=> $jenisKendaraan,
+				'start_date' 		=> $creation_date,
+				'end_date' 			=> '9999-12-12 00:00:00',
+				'creation_date' 	=> $creation_date,
+				'created_by' 		=> $this->session->userid
     		);
 			$this->M_fleetjeniskendaraan->setFleetJenisKendaraan($data);
 			$header_id = $this->db->insert_id();
@@ -98,7 +104,7 @@ class C_FleetJenisKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Jenis Kendaraan';
+		$data['Title'] = 'Jenis Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -129,12 +135,28 @@ class C_FleetJenisKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetJenisKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+
+			$jenisKendaraan = 	$this->input->post('txtJenisKendaraanHeader', TRUE);
+			$status_data 	=	$this->input->post('CheckAktif');
+			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
+
+			$waktu_eksekusi = 	date('Y-m-d H:i:s');
+
+			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
+			{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
+			{
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}
+
+
 			$data = array(
-				'jenis_kendaraan' => $this->input->post('txtJenisKendaraanHeader',TRUE),
-				'start_date' => $this->input->post('txtStartDateHeader',TRUE),
-				'end_date' => $this->input->post('txtEndDateHeader',TRUE),
-				'last_updated' => 'NOW()',
-				'last_updated_by' => $this->session->userid,
+				'jenis_kendaraan' 	=> $jenisKendaraan,
+				'end_date' 			=> $waktu_dihapus,
+				'last_updated' 		=> $waktu_eksekusi,
+				'last_updated_by' 	=> $this->session->userid,
     			);
 			$this->M_fleetjeniskendaraan->updateFleetJenisKendaraan($data, $plaintext_string);
 
@@ -147,7 +169,7 @@ class C_FleetJenisKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Jenis Kendaraan';
+		$data['Title'] = 'Jenis Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
