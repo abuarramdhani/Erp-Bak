@@ -74,7 +74,8 @@ class M_correction extends CI_Model {
     									kls.khslokasisimpan_id ID
     								FROM mtl_system_items_b msib, khs.khslokasisimpan kls, mtl_system_items_b msib2 
     								WHERE kls.COMPONENT = msib.SEGMENT1
-    								AND msib2.segment1 = kls.assembly $p $a $p1 $b $p2 $c $p3 $d" );
+    								    AND msib2.segment1 = kls.assembly $p $a $p1 $b $p2 $c $p3 $d
+                                    ORDER BY kls.component");
     	return $sql->result_array();
     }
 
@@ -129,7 +130,8 @@ class M_correction extends CI_Model {
                         kls.khslokasisimpan_id ID
                 FROM    mtl_system_items_b msib,
                         mtl_system_items_b msib2 RIGHT JOIN khs.khslokasisimpan kls ON msib2.segment1 = kls.assembly
-                WHERE kls.COMPONENT = msib.SEGMENT1 $p $a $p1 $b $p2 $c";
+                WHERE kls.COMPONENT = msib.SEGMENT1 $p $a $p1 $b $p2 $c
+                ORDER BY kls.assembly";
     	$query= $this->oracle->query($sql);
     	return $query->result_array();
     }
