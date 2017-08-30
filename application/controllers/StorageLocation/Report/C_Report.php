@@ -39,9 +39,27 @@ class C_Report extends CI_Controller {
 		$org_id 	= $this->input->post('IdOrganization');
 		$sub_inv 	= $this->input->post('SlcSubInventori');
 		$locator 	= $this->input->post('SlcLocator');
+		$Assy 		= $this->input->post('SlcKodeAssy');
+		$b 			= explode('|', $Assy);
+		$kode_assy 	= $b[0];
 		$component 	= $this->input->post('SlcItem');
 		$a 			= explode('|', $component);
 		$kode_item 	= $a[0];
+		$sortingData= $this->input->post('reportSorting');
+
+		if (!empty($sortingData)) {
+			if ($sortingData == 'ALC') {
+				$sort = 'ORDER BY kls.assembly, kls.alamat_simpan, kls.component';
+			}elseif ($sortingData == 'ACL') {
+				$sort = 'ORDER BY kls.assembly, kls.component, kls.alamat_simpan';
+			}elseif ($sortingData == 'CL') {
+				$sort = 'ORDER BY kls.component, kls.alamat_simpan';
+			}elseif ($sortingData == 'DCL') {
+				$sort = 'ORDER BY msib2.DESCRIPTION, kls.component, kls.alamat_simpan';
+			}
+		}else{
+			$sort = '';
+		}
 
 		// ----------------- load material -----------------
 		$this->load->model('StorageLocation/Report/M_report');
@@ -77,11 +95,7 @@ class C_Report extends CI_Controller {
             	'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
         	)
 		);
-		$data = $this->M_report->getStorageData($sub_inv,$locator,$kode_item,$org_id);
-		// echo "<pre>";
-		// print_r($data);
-		// echo "</pre>";
-		// exit();
+		$data = $this->M_report->getStorageData($sub_inv,$locator,$kode_assy,$kode_item,$org_id,$sort);
 
 		// ----------------- Set format table -----------------
 		$worksheet->getColumnDimension('A')->setWidth(5);
@@ -92,10 +106,10 @@ class C_Report extends CI_Controller {
 		$worksheet->getColumnDimension('F')->setWidth(24);
 		$worksheet->getColumnDimension('G')->setWidth(24);
 		$worksheet->getColumnDimension('H')->setWidth(45);
-		$worksheet->getColumnDimension('I')->setWidth(5);
-		$worksheet->getColumnDimension('J')->setWidth(5);
-		$worksheet->getColumnDimension('K')->setWidth(5);
-		$worksheet->getColumnDimension('L')->setWidth(5);
+		$worksheet->getColumnDimension('I')->setWidth(20);
+		$worksheet->getColumnDimension('J')->setWidth(12);
+		$worksheet->getColumnDimension('K')->setWidth(15);
+		$worksheet->getColumnDimension('L')->setWidth(8);
 
 		$worksheet->getStyle('A3:L3')->applyFromArray($styleThead);
 		$worksheet	->getStyle('A3:L3')
@@ -168,8 +182,6 @@ class C_Report extends CI_Controller {
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="Storage_Location_'.time().'.xlsx"');
 		$objWriter->save("php://output");
-
-		// $this->load->view('StorageLocation/Report/V_StorageReport', $data, true);
 	}
 
 	public function checkSession(){
