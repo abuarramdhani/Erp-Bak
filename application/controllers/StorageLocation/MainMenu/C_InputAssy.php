@@ -66,15 +66,15 @@ class C_InputAssy extends CI_Controller
 			$lppbmokib_save 	= $lppbmokib[$i];
 			$picklist_save 		= $picklist[$i];
 
-			$checkData = $this->M_inputcomponent->CekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator);
-			if ($checkData>0) {
-				$this->M_inputcomponent->UpdateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user);
-				$id[$i] = 'UPDATE';
-			}
-			else{
+			// $checkData = $this->M_inputcomponent->CekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator);
+			// if ($checkData>0) {
+				// $this->M_inputcomponent->UpdateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user);
+				// $id[$i] = 'UPDATE';
+			// }
+			// else{
 				$this->M_inputcomponent->insertData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item_save,$locator,$alamat_simpan_save,$lppbmokib_save,$picklist_save,$user);
 				$id[$i] = $this->M_inputcomponent->getLastInserted('KHS.KHSLOKASISIMPAN', 'KHSLOKASISIMPAN_ID');
-			}
+			// }
 			$i++;
 		}
 
@@ -82,21 +82,21 @@ class C_InputAssy extends CI_Controller
 		$updCount = 0;
 		$n = 1;
 		foreach ($id as $aidi) {
-			if ($aidi == 'UPDATE') {
-				$messContent[$x]	= "Data-".$n." Already Exist. Update Data Success!";
-	        	$data[$x] = array(array('KHSLOKASISIMPAN_ID' => '0'));
-	        	$updCount++;
-			}else{
+			// if ($aidi == 'UPDATE') {
+				// $messContent[$x]	= "Data-".$n." Already Exist. Update Data Success!";
+	        	// $data[$x] = array(array('KHSLOKASISIMPAN_ID' => '0'));
+	        	// $updCount++;
+			// }else{
 				$messContent[$x] = "Input Data-".$n." Success!";
 				$data[$x] = $this->M_inputcomponent->getLastData($aidi);
-			}
+			// }
 			$x++;
 			$n++;
 		}
 
-		if ($updCount == $x) {
-			$showData = "";
-		}else{
+		// if ($updCount == $x) {
+			// $showData = "";
+		// }else{
 			$showData = "
     	    	<div class='box box-primary box-solid'>
         	        <div class='box-header with-border'>
@@ -142,7 +142,7 @@ class C_InputAssy extends CI_Controller
         			</div>
         		</div>
         		";
-			}
+			// }
 		
 			$message = '<div class="row">
 		 					<div class="col-md-10 col-md-offset-1 col-sm-12">
@@ -157,11 +157,6 @@ class C_InputAssy extends CI_Controller
 		 						</div>
 		 					</div>
                     	</div>';
-  //           echo "<pre>";
-		// print_r($message);
-		// print_r($showData);
-		// echo "</pre>";
-		// exit;
 	    $this->index($message,$showData);
 	}
 }

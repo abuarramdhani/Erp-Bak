@@ -129,12 +129,12 @@ class C_InputFileUpload extends CI_Controller
                 }
 
                 if ($data !=null && $errStock == 0) {
-                	$checkData = $this->M_inputfileupload->cekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator);
-                	if ($checkData>0) {
-                		$this->M_inputfileupload->updateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator,$alamat_simpan,$lppbmokib,$picklist,$username_save);
-                	}else{
+                	// $checkData = $this->M_inputfileupload->cekData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator);
+                	// if ($checkData>0) {
+                		// $this->M_inputfileupload->updateData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator,$alamat_simpan,$lppbmokib,$picklist,$username_save);
+                	// }else{
                 		$this->M_inputfileupload->insertData($org_id,$sub_inv,$kode_assy,$type_assy,$kode_item,$locator,$alamat_simpan,$lppbmokib,$picklist,$username_save);
-                	}
+                	// }
                 }
             }
             unlink($inputFileName);

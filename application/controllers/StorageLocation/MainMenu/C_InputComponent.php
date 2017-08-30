@@ -69,19 +69,19 @@ class C_InputComponent extends CI_Controller
 			$picklist  ="1";
 		}
 
-		$checkData = $this->M_inputcomponent->CekData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator);
-		if ($checkData>0) {
-			$this->M_inputcomponent->UpdateData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
-			$id = 'UPDATE';
-		}else{
+		// $checkData = $this->M_inputcomponent->CekData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator);
+		// if ($checkData>0) {
+			// $this->M_inputcomponent->UpdateData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
+			// $id = 'UPDATE';
+		// }else{
 			$this->M_inputcomponent->insertData($org_id,$sub_inv,$assy_code,$type_assy,$comp_code,$locator,$address,$lmk,$picklist,$user);
 			$id = $this->M_inputcomponent->getLastInserted('KHS.KHSLOKASISIMPAN', 'KHSLOKASISIMPAN_ID');
-		}
+		// }
 
-		if ($id == 'UPDATE') {
-			$messContent 	= "Data Already Exist. Update Data Success!";
-	        $showData 		= "";
-		}else{
+		// if ($id == 'UPDATE') {
+			// $messContent 	= "Data Already Exist. Update Data Success!";
+	        // $showData 		= "";
+		// }else{
 			$messContent = "Input Data Success!";
 			$data = $this->M_inputcomponent->getLastData($id);
 	        $showData = "
@@ -125,7 +125,7 @@ class C_InputComponent extends CI_Controller
         			</div>
         		</div>
         	";
-		}
+		// }
 
 			$message = '<div class="row">
 		 					<div class="col-md-10 col-md-offset-1 col-sm-12">
