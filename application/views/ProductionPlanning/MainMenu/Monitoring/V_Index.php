@@ -38,9 +38,9 @@
                 <div class="panel-body">
                 	<form method="post" action="<?php echo base_url('ProductionPlanning/Monitoring/Open'); ?>" target="_blank">
                 		<div class="row">
-                			<div class="col-md-8 col-md-offset-2">
+                			<div class="col-md-8 col-md-offset-1">
 	                			<div class="form-group">
-	                				<label class="control-label col-lg-4" for="dp2">SECTION</label>
+	                				<label class="control-label col-lg-4" for="dp2">PRODUCTION SECTION</label>
 	                				<div class="col-lg-8">
 	                					<select class="form-control select4" multiple="" name="section[]">
 	                						<option></option>
@@ -51,18 +51,13 @@
 	                				</div>
 	                			</div>
                 			</div>
-                		</div>
-                		<div class="row">
-                			<div class="col-md-8 col-md-offset-2">
+                			<div class="col-md-1">
                 				<button type="submit" class="btn btn-primary pull-right">
                 					SUBMIT
                 				</button>
                 			</div>
-                		</div>
-                	</form><!-- 
-                    <a class="btn btn-primary btn-lg" href="<?php echo base_url('ProductionPlanning/Monitoring/Open'); ?>" target="_blank">
-                        MONITOR
-                    </a> -->
+                        </div>
+                	</form>
                 </div>
             </div>
         </div>

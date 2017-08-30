@@ -39,12 +39,13 @@
                                             <div class="col-md-6 text-left">
                                                 <?php
                                                 foreach ($section as $sc) {
-                                                    foreach ($selectedSection as $slcSec) {
-                                                        if ($slcSec == $sc['section_id'] && $plan[$i][0]['section_id'] == $sc['section_id']) { ?>
+                                                    // foreach ($selectedSection as $slcSec) {
+                                                        // && $plan[$i][0]['section_id'] == $sc['section_id']
+                                                        if ($selectedSection[$i] == $sc['section_id'] ) { ?>
                                                     <b>
                                                         SEKSI : <?php echo $sc['section_name']; ?>
                                                     </b>
-                                                <?php   }
+                                                <?php   // }
                                                     }
                                                 } ?>
                                             </div>
