@@ -130,7 +130,9 @@ class C_DataPlan extends CI_Controller {
                     		'priority' 			=> $rowData[0][3],
                     		'need_qty' 			=> $rowData[0][4],
                     		'due_time' 			=> date('d-m-Y', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][5])),
-                    		'section_id' 		=> $section
+                            'section_id'        => $section,
+                            'created_by'        => $user_id,
+                    		'created_date' 		=> date('d-m-Y h24:m:i')
                     	);
 
                     	if (!is_numeric($rowData[0][4])) {
@@ -146,10 +148,6 @@ class C_DataPlan extends CI_Controller {
                 	if ($datPoint !=null && $errStock == 0) {
                 		$this->M_dataplan->insertDataPlan($dataIns);
                 	}
-            	// echo '<pre>';
-            	// print_r($rowData);
-            	// print_r($dataIns);
-            	// echo '</pre>';
             	}
 
             	unlink($inputFileName);

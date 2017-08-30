@@ -59,16 +59,6 @@ class C_Monitoring extends CI_Controller {
     	$data['plan'] 			= $datplan;
     	$data['selectedSection']= $section;
     	$count = count($data['plan']);
-   //  	echo "<pre>";
-   //  	print_r($count);
-   //  	for ($i=0; $i < $count; $i++) {
-			// foreach ($data['plan'][$i] as $key) {
-			// 	print_r($key);
-			// }
-			// exit();
-   //  	}
-   //  	echo "</pre>";
-   //  	exit();
         $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Monitoring', $data);
     }
 }
