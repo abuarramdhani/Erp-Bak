@@ -73,6 +73,30 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="control-label col-lg-3" for="norm">
+                                            <b>
+                                                ASSEMBLY CODE
+                                            </b>
+                                        </label>
+                                        <div class="col-lg-9">
+                                            <select class="form-control jsAssembly" id="SlcKodeAssy" name="SlcKodeAssy" onchange="GetDescAssy()" style="width: 100%" disabled="">
+                                                <option>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-lg-3" for="norm">
+                                            <b>
+                                                ASSEMBLY NAME
+                                            </b>
+                                        </label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="txtNameAssy" name="txtNameAssy" placeholder="Assembly Name" readonly="">
+                                            </input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-lg-3" for="norm">
                                             COMPONENT CODE
                                         </label>
                                         <div class="col-lg-9">
@@ -87,6 +111,20 @@
                                         </label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="txtDesc" name="txtDesc" placeholder="Component Name" readonly="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-lg-3" for="norm">
+                                            SORTING
+                                        </label>
+                                        <div class="col-lg-9">
+                                            <select class="form-control select-2" name="reportSorting">
+                                                <option></option>
+                                                <option value="ALC">Assembly Code + Storage Location + Component Code</option>
+                                                <option value="ACL">Assembly Code + Component Code + Storage Location</option>
+                                                <option value="CL">Component Code + Storage Location</option>
+                                                <option value="DCL">Description + Component Code + Storage Location</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
