@@ -78,7 +78,7 @@
                 <input class="ID" type="hidden" value="<?php echo $SA['ID']; ?>">
                     <input class="org_id" type="hidden" value="<?php echo $SA['ORGANIZATION_ID']; ?>">
             </td>
-            <td>
+            <td class="compDescArea">
                 <?php echo $SA['DESCRIPTION']; ?>
             </td>
             <td>
