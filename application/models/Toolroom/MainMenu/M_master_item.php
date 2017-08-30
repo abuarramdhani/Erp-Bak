@@ -12,9 +12,9 @@ class M_master_item extends CI_Model {
 		public function getItemUsable($item_id=FALSE)
 		{	
 			if($item_id === FALSE){
-				$sql = "select * from tr.tr_master_item";
+				$sql = "select * from tr.tr_master_item order by item_id";
 			}else{
-				$sql = "select * from tr.tr_master_item  where item_id='$item_id'";
+				$sql = "select * from tr.tr_master_item  where item_id='$item_id' order by item_id";
 			}						
 			
 			$query = $this->db->query($sql);

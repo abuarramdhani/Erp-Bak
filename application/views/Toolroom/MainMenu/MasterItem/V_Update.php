@@ -40,7 +40,7 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Barcode</label>
 											<div class="col-md-3">
-												<input type="text" placeholder="Barcode" name="txtBarcodeId" id="txtBarcodeId" value="<?php echo $AllUsableItem_item['item_barcode'] ?>" class="form-control" required/>
+												<input type="text" placeholder="Barcode" name="txtBarcodeId" id="txtBarcodeId" value="<?php echo $AllUsableItem_item['item_id'] ?>" class="form-control" required/>
 											</div>
 									</div>
 									<div class="form-group">

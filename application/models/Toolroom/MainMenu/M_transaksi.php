@@ -39,7 +39,7 @@ class M_transaksi extends CI_Model {
 					((
 						(select tmi.item_qty from tr.tr_master_item tmi where tmi.item_id=tlt.item_id)
 						- (select coalesce(sum(ttl.item_qty), 0) from tr.tr_transaction_list ttl where ttl.item_id=tlt.item_id and ttl.status='0')
-					) - tlt.item_qty) sisa_stok from tr.tr_log_transaction tlt where tlt.transaction_id='0' and tlt.user_id='$user'";
+					) - tlt.item_qty) sisa_stok from tr.tr_log_transaction tlt where tlt.transaction_id='0' and tlt.user_id='$user' order by tlt.item_id";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -67,10 +67,16 @@ class M_transaksi extends CI_Model {
 		
 		public function deleteLog($item_id=FALSE,$id_trs,$user){
 			if($item_id === FALSE){
-				$sql = "delete from tr.tr_log_transaction where  and transaction_id='$id_trs'";
+				$sql = "delete from tr.tr_log_transaction where  and transaction_id='$id_trs' and user_id='$user'";
 			}else{
-				$sql = "delete from tr.tr_log_transaction where item_id='$item_id'  and transaction_id='$id_trs'";
+				$sql = "delete from tr.tr_log_transaction where item_id='$item_id'  and transaction_id='$id_trs' and user_id='$user'";
 			}	
+			$query = $this->db->query($sql);
+			return ;
+		}
+		
+		public function deleteList($id,$id_trs,$user){
+			$sql = "delete from tr.tr_transaction_list where transaction_id='$id_trs' and item_id='$id'";
 			$query = $this->db->query($sql);
 			return ;
 		}
@@ -107,8 +113,8 @@ class M_transaksi extends CI_Model {
 			return $query->row();
 		}
 		
-		public function insertLending($noind,$user,$date,$shift){
-			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by,shift) values ('$noind','$date','$user','$shift')";
+		public function insertLending($noind,$user,$date,$shift,$name){
+			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by,shift,name) values ('$noind','$date','$user','$shift','$name')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -138,16 +144,16 @@ class M_transaksi extends CI_Model {
 						where date_trunc('day', date_lend)=current_date and ttl.status='0'
 						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
 			}else{
-				$sql = "select ttl.item_id,tmi.item_name,tmi.item_qty,sum(ttl.item_qty) item_dipakai,(tmi.item_qty-
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,sum(ttl.item_qty) item_dipakai,(tmi.item_qty-
 												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)-
 												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user_id')
 											) item_sisa
 					from tr.tr_transaction_list ttl
 					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
 					where ttl.transaction_id='$id'
-					group by ttl.item_id,tmi.item_name,tmi.item_qty
+					group by ttl.item_id,tmi.item_name,tmi.item_qty,ttl.transaction_id
 					union
-					select tlt.item_id,tlt.item_name,tmi.item_qty,tlt.item_qty,(tmi.item_qty-
+					select tlt.transaction_id,tlt.item_id,tlt.item_name,tmi.item_qty,tlt.item_qty,(tmi.item_qty-
 												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)-
 												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=tlt.item_id and tlt2.user_id='$user_id')
 											) item_sisa 

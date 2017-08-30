@@ -30,7 +30,7 @@
 							<div class="box-body">
 								<div class="row col-lg-12">
 									<div class="form-group">
-										<form method="post" action="<?php echo site_url('Toolroom/Report/SearchReportTransaction') ?>">
+										<form method="post" action="<?php echo site_url('Toolroom/Report/SearchReportStok') ?>">
 											<div class="col-md-3">
 												<input type="text" name="txtPeriode" id="txtPeriode" class="form-control daterangepicker-range" data-date-format="d F Y" placeholder="[Periode]"></input>
 											</div>
@@ -61,36 +61,28 @@
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
 												<th width="10%"><center>Item Code</center></th>
-												<th width="30%"><center>Item</center></th>
+												<th width="50%"><center>Item</center></th>
 												<th width="10%"><center>Merk</center></th>
-												<th width="5%"><center>Stok</center></th>
-												<th width="5%"><center>Qty used</center></th>
-												<th width="10%"><center>Date used</center></th>
-												<th width="5%"><center>Shift</center></th>
-												<th width="5%"><center>User</center></th>
-												<th width="5%"><center>Toolman</center></th>
+												<th width="10%"><center>Stok Awal</center></th>
+												<th width="10%"><center>Stok Akhr</center></th>
 												<th width="10%"><center>Spesification</center></th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php
-												if(!empty($RecordTransaction)){
+												if(!empty($RecordStok)){
 													$no = 0;
-													foreach($RecordTransaction as $RecordTransaction_item){
+													foreach($RecordStok as $RecordStok_item){
 														$no++;
 														echo "
 															<tr>
 																<td class='text-center'>".$no."</td>
-																<td class='text-center'>".$RecordTransaction_item['item_id']."</td>
-																<td>".$RecordTransaction_item['item_name']."</td>
+																<td class='text-center'>".$RecordStok_item['item_id']."</td>
+																<td>".$RecordStok_item['item_name']."</td>
 																<td class='text-center'>-</td>
-																<td class='text-center'>".$RecordTransaction_item['item_qty']."</td>
-																<td class='text-center'>".$RecordTransaction_item['qty_dipakai']."</td>
-																<td class='text-center'>".$RecordTransaction_item['creation_date']."</td>
-																<td class='text-center'>".$RecordTransaction_item['shift']."</td>
-																<td class='text-center'>".$RecordTransaction_item['noind']."</td>
-																<td class='text-center'>".$RecordTransaction_item['created_by']."</td>
-																<td>".$RecordTransaction_item['item_desc']."</td>
+																<td class='text-center'>".$RecordStok_item['item_qty']."</td>
+																<td class='text-center'>".$RecordStok_item['stok_akh']."</td>
+																<td>".$RecordStok_item['item_desc']."</td>
 															</tr>
 														";
 													}
@@ -99,11 +91,11 @@
 										</tbody>
 									</table>
 							</div>
-							<?php if(!empty($RecordTransaction)){ ?>
+							<?php if(!empty($RecordStok)){ ?>
 							<div class="box-footer">
 								<div class="col-md-12">
 									<div class="col-md-3">
-										<a class="btn btn-success btn-flat" href="<?php echo site_url('Toolroom/Report/ExportExcelTransaction/'.$shift.'?periode='.$periode) ?>" target="blank"><span class="fa fa-file-excel-o"></span> Export</a>
+										<a class="btn btn-success btn-flat" href="<?php echo site_url('Toolroom/Report/ExportExcelStok/'.$shift.'?periode='.$periode) ?>" target="blank"><span class="fa fa-file-excel-o"></span> Export</a>
 									</div>
 								</div>
 							</div>

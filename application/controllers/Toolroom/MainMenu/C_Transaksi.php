@@ -71,7 +71,7 @@ class C_Transaksi extends CI_Controller {
 		$data['Menu'] = 'Transaction';
 		$data['SubMenuOne'] = 'Peminjaman';
 		$data['SubMenuTwo'] = '';
-		$data['Title'] = 'Peminjaman';
+		$data['Title'] = 'Create Peminjaman';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -127,8 +127,14 @@ class C_Transaksi extends CI_Controller {
 		$id = $this->input->post('id');
 		$id_trs = $this->input->post('id_trans');
 		$user = $this->input->post('user');
-		$delete = $this->M_transaksi->deleteLog($id,$id_trs,$user);
-		$this->showListOutItem();
+		if($id_trs == 0){
+			$delete = $this->M_transaksi->deleteLog($id,$id_trs,$user);
+			$this->showListOutItem();
+		}else{
+			$delete = $this->M_transaksi->deleteLog($id,$id_trs,$user);
+			$deletelist = $this->M_transaksi->deleteList($id,$id_trs,$user);
+			$this->showListOutItemUpdate($id_trs);
+		}
 	}
 	
 	public function clearNewItem($id=FALSE){
@@ -138,13 +144,13 @@ class C_Transaksi extends CI_Controller {
 			$id_trs = $id;
 		}
 		
-		$user = $this->session->userid;
+		$user = $this->session->user;
 		$delete = $this->M_transaksi->deleteLogAll($id_trs,$user);
 		$this->showListOutItem();
 	}
 	
 	public function showListOutItem(){
-		$user_id = $this->session->userid;
+		$user_id = $this->session->user;
 		$itemOut = $this->M_transaksi->listOutITem($user_id);
 		foreach($itemOut as $itemOut_item){
 			echo "
@@ -154,14 +160,14 @@ class C_Transaksi extends CI_Controller {
 					<td class='item_name'>".$itemOut_item['item_name']."</td>
 					<td class='text-center sisa_stok'>".$itemOut_item['sisa_stok']."</td>
 					<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_qty']."' style='100%'></input></td>
-					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->userid."\")'><span class='fa fa-remove'></span></a></td>
+					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->user."\")'><span class='fa fa-remove'></span></a></td>
 				</tr>
 			";
 		}
 	}
 	
 	public function showListOutItemUpdate($id){
-		$user_id = $this->session->userid;
+		$user_id = $this->session->user;
 		$itemOut = $this->M_transaksi->listOutITemUpdate($user_id,$id);
 		foreach($itemOut as $itemOut_item){
 			echo "
@@ -171,7 +177,7 @@ class C_Transaksi extends CI_Controller {
 					<td class='item_name'>".$itemOut_item['item_name']."</td>
 					<td class='text-center sisa_stok'>".$itemOut_item['sisa_stok']."</td>
 					<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$itemOut_item['item_dipakai']."' style='100%'></input></td>
-					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->userid."\")'><span class='fa fa-remove'></span></a></td>
+					<td class='text-center'><a onClick='removeListOutItem(\"".$itemOut_item['item_id']."\",\"0\",\"".$this->session->user."\")'><span class='fa fa-remove'></span></a></td>
 				</tr>
 			";
 		}
@@ -200,7 +206,8 @@ class C_Transaksi extends CI_Controller {
 		$noind = $this->input->post('noind',true);
 		$user = $this->input->post('user',true);
 		$date = $this->input->post('date',true);
-		$saveLending = $this->M_transaksi->insertLending($noind,$user,$date,$shift);
+		$name = $this->input->post('name',true);
+		$saveLending = $this->M_transaksi->insertLending($noind,$user,$date,$shift,$name);
 		$insert_id = $this->db->insert_id();
 		echo $insert_id;
 	}
@@ -290,6 +297,7 @@ class C_Transaksi extends CI_Controller {
 		$date = date("Y-m-d H:i:s",strtotime(str_replace('%20',' ',$date)));
 		$removeTransactionList = $this->M_transaksi->removeTransactionList($plaintext_string,$date);
 		$removeGroupTransaction = $this->M_transaksi->removeGroupTransaction($plaintext_string,$date);
+		redirect('Toolroom/Transaksi/Keluar');
 	}
 	
 	public function UpdateItemUsable($id,$date){
@@ -306,7 +314,7 @@ class C_Transaksi extends CI_Controller {
 		$data['Menu'] = 'Transaction';
 		$data['SubMenuOne'] = 'Peminjaman';
 		$data['SubMenuTwo'] = '';
-		$data['Title'] = 'Peminjaman';
+		$data['Title'] = 'Update Peminjaman';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -315,6 +323,7 @@ class C_Transaksi extends CI_Controller {
 		$data['getShift'] = $this->M_transaksi->getShift($plaintext_string);
 		$data['id_list'] = $plaintext_string;
 		$data['noind_list'] = $getNoind->noind;
+		$data['name_list'] = $getNoind->name;
 		$data['date_list'] = $date;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

@@ -86,9 +86,10 @@ $(document).on("click", "#btnExecuteSave", function () {
 		var noind = $('#txtNoind').val();
 		var user = $('#hdnUser').val();
 		var date = $('#hdnDate').val();
+		var name = $('#txtName').val();
 		$.ajax({
 			type:'POST',
-			data:{noind: noind,user:user,date:date,shift:shift},
+			data:{noind: noind,user:user,date:date,shift:shift,name:name},
 			url :baseurl+"Toolroom/Transaksi/addNewLending",
 			success:function(result){
 				$('#table-create-peminjaman tbody tr').each(function() {
@@ -189,7 +190,11 @@ function removeListOutItem(id,id_trans,user){
 		data:{id: id,id_trans:id_trans,user:user},
 		url :baseurl+"Toolroom/Transaksi/removeNewItem",
 		success:function(result){
+			if(id_trans === 0){
 				$('#table-create-peminjaman tbody').html(result);
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
 		}
 	});
 }
@@ -233,5 +238,86 @@ function AddPengembalianItem(){
 		}
 	});
 	$('#txtBarcode').val('');
+}
+
+function copyPekerja(){
+	var noind = $('#slcModalNoind').val();
+	$('#txtNoind').val(noind);
+	$.ajax({
+		type:'POST',
+		data:{id: noind},
+		url :baseurl+"Toolroom/Transaksi/getName",
+		success:function(result){
+			if(result == "null"){
+				alert('No matching Id Number !');
+				$('#txtName').val('');
+			}else{
+				$('#txtName').val(result);
+			}
+		}
+	});
+	$('#modalSearchNoind').modal('hide');
+}
+
+function copyItem(){
+	var barcode = $('#slcModalBarcode').val();
+	var user = $('#hdnUser').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:0},
+		url :baseurl+"Toolroom/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-create-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
+}
+
+function copyItemUpdate(){
+	var barcode = $('#slcModalBarcodeUpdate').val();
+	var user = $('#hdnUser').val();
+	var type = $('#txtID').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:type},
+		url :baseurl+"Toolroom/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
+}
+
+function copyPekerjaUpdate(){
+	var noind = $('#slcNoindUpdate').val();
+	$('#txtNoind').val(noind);
+	$.ajax({
+		type:'POST',
+		data:{id: noind},
+		url :baseurl+"Toolroom/Transaksi/getName",
+		success:function(result){
+			if(result == "null"){
+				alert('No matching Id Number !');
+				$('#txtName').val('');
+			}else{
+				$('#txtName').val(result);
+			}
+		}
+	});
+	$('#modalSearchNoind').modal('hide');
 }
 

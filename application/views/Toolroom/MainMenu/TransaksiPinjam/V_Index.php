@@ -58,7 +58,7 @@
 														</td>
 														<td align="center"><?php echo $num?></td>
 														<td align="center"><?php echo $ListOutGroupTransaction_item['noind'] ?></td>
-														<td></td>
+														<td><?php echo $ListOutGroupTransaction_item['name'] ?></td>
 														<td align="center"><?php echo $ListOutGroupTransaction_item['created_by'] ?></td>
 														<td align="center"><?php echo $ListOutGroupTransaction_item['creation_date'] ?></td>
 													</tr>

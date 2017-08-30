@@ -4,7 +4,7 @@
 			<form method="post" action="<?php echo site_url('Toolroom/Transaksi/updatePeminjaman')?>" class="form-horizontal">
 					<!-- action merupakan halaman yang dituju ketika tombol submit dalam suatu form ditekan -->
 					<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" id="hdnDate"/>
-					<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" id="hdnUser"/>
+					<input type="hidden" value="<?php echo $this->session->user; ?>" name="hdnUser" id="hdnUser"/>
 			<div class="col-lg-12">
 				<div class="row">
 						<div class="col-lg-12">
@@ -88,7 +88,7 @@
 																<td class='item_name'>".$ListOutTransaction['item_name']."</td>
 																<td class='text-center sisa_stok'>".$ListOutTransaction['item_sisa']."</td>
 																<td><input type='number' class='form-control item_out' name='txtQtyPinjam' id='txtQtyPinjam' value='".$ListOutTransaction['item_dipakai']."' style='100%'></input></td>
-																<td class='text-center'><a onClick='removeListOutItem(\"".$ListOutTransaction['item_id']."\")'><span class='fa fa-remove'></span></a></td>
+																<td class='text-center'><a onClick='removeListOutItem(\"".$ListOutTransaction['item_id']."\",\"".$ListOutTransaction['transaction_id']."\",\"".$this->session->user."\")'><span class='fa fa-remove'></span></a></td>
 															</tr>
 														";
 													}
@@ -102,10 +102,10 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-1 text-center">Noind</label>
 											<div class="col-md-2">
-												<input type="text" name="txtNoind" onChange="getName()" value="<?= $noind_list ?>" id="txtNoind" class="form-control" placeholder="[Noind Pekerja]"></input>
+												<input type="text" name="txtNoind" onChange="getName()" value="<?= $noind_list; ?>" id="txtNoind" class="form-control" placeholder="[Noind Pekerja]"></input>
 											</div>
 											<div class="col-md-4">
-												<input type="text" name="txtName" id="txtName" class="form-control" placeholder="[Nama Pekerja]" readonly></input>
+												<input type="text" name="txtName" id="txtName" class="form-control" value="<?= $name_list; ?>" placeholder="[Nama Pekerja]" readonly></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalNoind"><span class="fa fa-search"></span></a>
@@ -115,7 +115,7 @@
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">
-									<a href="<?php echo site_url('Toolroom/MasterItem/UsableGroup') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
+									<a href="<?php echo site_url('Toolroom/Transaksi/Keluar') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
 									&nbsp;&nbsp;
 									<a id="btnExecuteUpdate" class="btn btn-primary btn-lg btn-rect">Update</a>
 								</div>
@@ -138,7 +138,7 @@
 			<b>- Pencarian Master Item -</b>
         </div>
         <div class="modal-body">
-			<select name="txtBarcode" id="txtBarcode" class="form-control select-item" style="width:100%;">
+			<select name="slcModalBarcodeUpdate" id="slcModalBarcodeUpdate" onChange="copyItemUpdate()" class="form-control select-item" style="width:100%;">
 				<option value=""></option>
 			</select>
         </div>
@@ -153,7 +153,7 @@
 			<b>- List Pekerja -</b>
         </div>
         <div class="modal-body">
-			<select name="slcNoind" class="form-control select-noind" style="width:100%;text-transform:uppercase;">
+			<select name="slcNoindUpdate" id="slcNoindUpdate" onChange="copyPekerjaUpdate()" class="form-control select-noind" style="width:100%;text-transform:uppercase;">
 				<option value=""></option>
 			</select>
         </div>

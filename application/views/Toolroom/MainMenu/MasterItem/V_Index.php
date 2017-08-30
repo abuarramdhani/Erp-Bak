@@ -42,7 +42,7 @@
 											<tr class="bg-primary">
 												<th width="10%"><center>Action</center></th>
 												<th width="5%"><center>No</center></th>
-												<th width="10%"><center>Code Barcode</center></th>
+												<th width="10%"><center>Tool ID</center></th>
 												<th width="30%"><center>Tool</center></th>
 												<th width="15%"><center>Qty</center></th>
 												<th width="20%"><center>Min Qty</center></th>
@@ -62,7 +62,7 @@
 															<a class="btn btn-xs bg-maroon" href="<?php echo base_url('Toolroom/MasterItem/RemoveItemUsable/')."/".$encrypted_string ?>" onclick="return confirm('are you sure to delete this tool ?')"><span title="Update <?php echo $AllUsableItem_item['item_name'] ?>" class="fa fa-remove"></span></a>
 														</td>
 														<td align="center"><?php echo $num?></td>
-														<td align="center"><?php echo $AllUsableItem_item['item_barcode'] ?></td>
+														<td align="center"><?php echo $AllUsableItem_item['item_id'] ?></td>
 														<td><?php echo $AllUsableItem_item['item_name'] ?></td>
 														<td align="center"><?php echo $AllUsableItem_item['item_qty'] ?></td>
 														<td align="center"><?php echo $AllUsableItem_item['item_qty_min'] ?></td>

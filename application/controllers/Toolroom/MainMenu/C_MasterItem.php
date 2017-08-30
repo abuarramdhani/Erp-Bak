@@ -172,7 +172,7 @@ class C_MasterItem extends CI_Controller {
 						"item_qty_min"=> $rowData[0][5],
 						"item_desc"=> $rowData[0][6],
 						"last_update_date"=> date('Y-m-d H:i:s'),
-						"last_updated_by"=> $this->session->user_id()
+						"last_updated_by"=> $this->session->userid
 					);
 					 
 					$insert = $this->M_master_item->updateUsableItem($data,$rowData[0][0]);
@@ -194,6 +194,7 @@ class C_MasterItem extends CI_Controller {
             }
 			unlink($inputFileName);
 		}
+		redirect('Toolroom/MasterItem/Usable');
 	}
 	
 	function UpdateItemUsable($id){
@@ -225,10 +226,10 @@ class C_MasterItem extends CI_Controller {
 			$this->load->view('V_Footer',$data);
 		}else{
 			$data = array(
-					'item_barcode' 	=> $this->input->post('txtBarcodeId'),
+					'item_id' 	=> $this->input->post('txtBarcodeId'),
 					'item_name'		=> $this->input->post('txtTool'),
 					'item_qty'		=> $this->input->post('txtQuantity'),
-					'item_so'		=> $this->input->post('txtStockOpname'),
+					'item_qty_min'		=> $this->input->post('txtStockOpname'),
 					'item_desc'		=> $this->input->post('txtDesc'),
 					'last_update_date'	=>  $this->input->post('hdnDate'),
 					'last_updated_by'	=>  $this->input->post('hdnUser')
