@@ -14,7 +14,6 @@ class M_dataplan extends CI_Model {
       		$this->db->order_by('priority, created_date', 'ASC');
           $query = $this->db->get();
         }else{
-          // $query = $this->db->get_where('pp.pp_daily_plans', array('daily_plan_id' => $id));
           $this->db->select('*');
           $this->db->from('pp.pp_daily_plans');
           $this->db->where('section_id', $id);
@@ -52,4 +51,19 @@ class M_dataplan extends CI_Model {
     {
       $this->db->insert('pp.pp_daily_plans', $dataIns);
     }
+
+    // public function getPlanMonthly()
+    // {
+    //   $sql = "SELECT
+    //             to_char(dp.created_date, 'dd') as date,
+    //             to_char(dp.created_date, 'Mon') as mon,
+    //             extract(year from dp.created_date) as yyyy,
+    //             count(*) as plan
+    //           FROM pp.pp_daily_plans dp
+    //           WHERE dp.section_id = 9
+    //           GROUP BY 1,2,3";
+              
+    //   $query = $this->db->query($sql);
+    //   return $query->result_array();
+    // }
 }

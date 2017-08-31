@@ -61,4 +61,9 @@ class C_Monitoring extends CI_Controller {
     	$count = count($data['plan']);
         $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Monitoring', $data);
     }
+
+    // public function getMonthlyPlan()
+    // {
+    // 	echo "muah";
+    // }
 }

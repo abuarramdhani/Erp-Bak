@@ -90,7 +90,7 @@
                                                 <?php echo $status; ?>
                                             </td>
                                             <td>
-                                                <a class="btn btn-default" href="javascript:void(0)">
+                                                <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlan/Edit/'.$pl['daily_plan_id']); ?>">
                                                     EDIT
                                                 </a>
                                             </td>

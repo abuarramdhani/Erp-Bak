@@ -28,7 +28,7 @@
                     <div class="col-lg-9 col-md-9">
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="20000">
+                                <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="1000">
                                     <div class="carousel-inner" role="listbox">
                             <?php
                                 $count = count($plan);
@@ -39,13 +39,11 @@
                                             <div class="col-md-6 text-left">
                                                 <?php
                                                 foreach ($section as $sc) {
-                                                    // foreach ($selectedSection as $slcSec) {
-                                                        // && $plan[$i][0]['section_id'] == $sc['section_id']
-                                                        if ($selectedSection[$i] == $sc['section_id'] ) { ?>
+                                                    if ($selectedSection[$i] == $sc['section_id'] ) { ?>
                                                     <b>
                                                         SEKSI : <?php echo $sc['section_name']; ?>
                                                     </b>
-                                                <?php   // }
+                                                <?php
                                                     }
                                                 } ?>
                                             </div>
