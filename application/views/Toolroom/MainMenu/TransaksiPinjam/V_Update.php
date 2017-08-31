@@ -50,7 +50,7 @@
 												<input type="hidden" name="txtID" id="txtID" value="<?= $id_list ?>" class="form-control"></input>
 											</div>
 											<div class="col-md-4">
-												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="UpdatePinjamItem()" placeholder="[Barcode]" autofocus></input>
+												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddItem('update')" placeholder="[Barcode]" autofocus></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>

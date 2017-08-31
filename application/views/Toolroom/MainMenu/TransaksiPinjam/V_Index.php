@@ -38,8 +38,9 @@
 												<th width="10%"><center>Action</center></th>
 												<th width="5%"><center>No</center></th>
 												<th width="10%"><center>Noind</center></th>
-												<th width="30%"><center>Name</center></th>
-												<th width="15%"><center>Toolman</center></th>
+												<th width="20%"><center>Name</center></th>
+												<th width="5%"><center>Shift</center></th>
+												<th width="20%"><center>Toolman</center></th>
 												<th width="15%"><center>Date</center></th>
 											</tr>
 										</thead>
@@ -59,7 +60,8 @@
 														<td align="center"><?php echo $num?></td>
 														<td align="center"><?php echo $ListOutGroupTransaction_item['noind'] ?></td>
 														<td><?php echo $ListOutGroupTransaction_item['name'] ?></td>
-														<td align="center"><?php echo $ListOutGroupTransaction_item['created_by'] ?></td>
+														<td align="center"><?php echo $ListOutGroupTransaction_item['shift'] ?></td>
+														<td><?php echo $ListOutGroupTransaction_item['toolman'] ?></td>
 														<td align="center"><?php echo $ListOutGroupTransaction_item['creation_date'] ?></td>
 													</tr>
 											<?php endforeach ?>

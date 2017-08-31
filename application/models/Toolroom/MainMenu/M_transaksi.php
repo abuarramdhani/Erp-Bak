@@ -26,7 +26,6 @@ class M_transaksi extends CI_Model {
 			$sql = "select tmi.item_id,tmi.item_name,
 					(
 						tmi.item_qty 
-						- (select coalesce(sum(tlt.item_qty), 0) from tr.tr_log_transaction tlt where tlt.item_id=tmi.item_id)
 						- (select coalesce(sum(ttl.item_qty), 0) from tr.tr_transaction_list ttl where ttl.item_id=tmi.item_id and ttl.status='0')
 					) stok 
 					from tr.tr_master_item tmi where tmi.item_id='$id'";
@@ -113,8 +112,8 @@ class M_transaksi extends CI_Model {
 			return $query->row();
 		}
 		
-		public function insertLending($noind,$user,$date,$shift,$name){
-			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by,shift,name) values ('$noind','$date','$user','$shift','$name')";
+		public function insertLending($noind,$user,$date,$shift,$name,$toolman){
+			$sql = "insert into tr.tr_transaction (noind,creation_date,created_by,shift,name,toolman) values ('$noind','$date','$user','$shift','$name','$toolman')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -151,15 +150,7 @@ class M_transaksi extends CI_Model {
 					from tr.tr_transaction_list ttl
 					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
 					where ttl.transaction_id='$id'
-					group by ttl.item_id,tmi.item_name,tmi.item_qty,ttl.transaction_id
-					union
-					select tlt.transaction_id,tlt.item_id,tlt.item_name,tmi.item_qty,tlt.item_qty,(tmi.item_qty-
-												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)-
-												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=tlt.item_id and tlt2.user_id='$user_id')
-											) item_sisa 
-					from tr.tr_log_transaction tlt
-					join tr.tr_master_item tmi on tmi.item_id=tlt.item_id
-					where tlt.transaction_id='$id' and tlt.user_id='$user_id'";
+					group by ttl.item_id,tmi.item_name,tmi.item_qty,ttl.transaction_id";
 			}
 			
 			$query = $this->db->query($sql);
@@ -201,6 +192,12 @@ class M_transaksi extends CI_Model {
 		
 		public function getShift($id){
 			$sql = "select * from tr.tr_transaction where id_transaction='$id'";
+			$query = $this->db->query($sql);
+			return $query->row();
+		}
+		
+		public function getToolman($user){
+			$sql = "select employee_name from sys.vi_sys_user_data where user_name='$user'";
 			$query = $this->db->query($sql);
 			return $query->row();
 		}

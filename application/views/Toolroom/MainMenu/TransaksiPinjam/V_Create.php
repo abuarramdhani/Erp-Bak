@@ -29,7 +29,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								Header 
+								Header  <?php echo $this->session->username; ?>
 							</div>
 						<div class="box-body">
 							<div class="panel-body">
@@ -48,9 +48,8 @@
 													<option value="T3">TANGGUNG 3</option>
 												</select>
 											</div>
-											<!-- <label for="norm" class="control-label col-md-1 text-center">Barcode</label> -->
 											<div class="col-md-4">
-												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPinjamItem()" placeholder="[Barcode]" autofocus></input>
+												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddItem('create')" placeholder="[Barcode]" autofocus></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
@@ -60,11 +59,6 @@
 											<div class="col-md-1">
 												<a class="btn btn-md btn-danger" onClick="clearListOutItem('0')" >Reset</a>
 											</div>
-											<!-- <div class="col-md-4">
-												<select name="slcBarcode" id="slcBarcode" class="form-control select-item" onChange="AddPinjamItem()" style="width:100%;">
-													<option value=""></option>
-												</select>
-											</div> -->
 									</div>
 								</div>
 								<br>

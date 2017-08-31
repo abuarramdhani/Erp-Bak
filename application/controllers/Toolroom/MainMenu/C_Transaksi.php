@@ -34,7 +34,7 @@ class C_Transaksi extends CI_Controller {
 		$this->load->model('Toolroom/MainMenu/M_transaksi');
 		$this->load->model('Toolroom/MainMenu/M_master_item');
         // $this->load->library(array('Excel/PHPExcel','Excel/PHPExcel/IOFactory'));
-		  
+		date_default_timezone_set("Asia/Bangkok");
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -208,7 +208,9 @@ class C_Transaksi extends CI_Controller {
 		$user = $this->input->post('user',true);
 		$date = $this->input->post('date',true);
 		$name = $this->input->post('name',true);
-		$saveLending = $this->M_transaksi->insertLending($noind,$user,$date,$shift,$name);
+		$getToolman = $this->M_transaksi->getToolman($user);
+		$toolman = $getToolman->employee_name;
+		$saveLending = $this->M_transaksi->insertLending($noind,$user,$date,$shift,$name,$toolman);
 		$insert_id = $this->db->insert_id();
 		echo $insert_id;
 	}
@@ -336,6 +338,7 @@ class C_Transaksi extends CI_Controller {
 	
 	public function getItemUpdate(){
 		$id = $this->input->post('id',true);
+		$no = $this->input->post('no',true);
 		$getItem = $this->M_transaksi->checkStokItem($id);
 		if(empty($getItem)){
 			echo "null";
@@ -345,7 +348,7 @@ class C_Transaksi extends CI_Controller {
 					echo "out";
 				}else{
 					echo "<tr class='clone'>
-							<td class='text-center'><span id='no_mor'>1</span></td>
+							<td class='text-center'><span id='no_mor'>".$no."</span></td>
 							<td class='text-center item_id'>".$getItem_item['item_id']."</td>
 							<td class='item_name'>".$getItem_item['item_name']."</td>
 							<td class='text-center sisa_stok'>".((int)$getItem_item['stok']-1)."</td>

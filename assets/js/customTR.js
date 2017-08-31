@@ -87,29 +87,33 @@ $(document).on("click", "#btnExecuteSave", function () {
 		var user = $('#hdnUser').val();
 		var date = $('#hdnDate').val();
 		var name = $('#txtName').val();
-		$.ajax({
-			type:'POST',
-			data:{noind: noind,user:user,date:date,shift:shift,name:name},
-			url :baseurl+"Toolroom/Transaksi/addNewLending",
-			success:function(result){
-				$('#table-create-peminjaman tbody tr').each(function() {
-					var item_id = $(this).find(".item_id").html();    
-					var item_name = $(this).find(".item_name").html();    
-					var sisa_stok = $(this).find(".sisa_stok").html();    
-					var item_out = $(this).find(".item_out").val();
-					$.ajax({
-						type:'POST',
-						data:{noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result},
-						url :baseurl+"Toolroom/Transaksi/addNewLendingList"
+		if(shift.length === 0 || noind.length === 0){
+				alert('your application form is not complete yet (SHIFT/NOIND). Please check again !!');
+		}else{
+				$.ajax({
+				type:'POST',
+				data:{noind: noind,user:user,date:date,shift:shift,name:name},
+				url :baseurl+"Toolroom/Transaksi/addNewLending",
+				success:function(result){
+					$('#table-create-peminjaman tbody tr').each(function() {
+						var item_id = $(this).find(".item_id").html();    
+						var item_name = $(this).find(".item_name").html();    
+						var sisa_stok = $(this).find(".sisa_stok").html();    
+						var item_out = $(this).find(".item_out").val();
+						$.ajax({
+							type:'POST',
+							data:{noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result},
+							url :baseurl+"Toolroom/Transaksi/addNewLendingList"
+						});
 					});
-				});
-				$('#table-create-peminjaman tbody').html("<tr></tr>");
-				$('#txtNoind').val('');
-				$('#txtName').val('');
-				$('#txsSelect').val('');
-				alert('List Item Has Been Added !');
-			}
-		});
+					$('#table-create-peminjaman tbody').html("");
+					$('#txtNoind').val('');
+					$('#txtName').val('');
+					$('#txsSelect').val('');
+					alert('List Item Has Been Added !');
+				}
+			});
+		}
 	// }
 });
 
@@ -144,11 +148,11 @@ $(document).on("click", "#btnExecuteUpdate", function () {
 	// }
 });
 
-function AddPinjamItem(){
+function AddItem(exe){
 	var barcode = $('#txtBarcode').val(),
 		user = $('#hdnUser').val(),
 		type = $('#txtID').val(),
-		count = $('#table-create-peminjaman tbody tr').length,
+		count = $('#table-'+exe+'-peminjaman tbody tr').length,
 		no = 0;
 		if(count == 0){
 			no = parseInt(no)+1;
@@ -162,13 +166,13 @@ function AddPinjamItem(){
 						}else if(result == "out"){
 							alert('Out Of Stock !!!');
 						}else{
-							$('#table-create-peminjaman tbody').append(result);
+							$('#table-'+exe+'-peminjaman tbody').append(result);
 							$('#no_mor').html(no);
 						}
 					}
 				});
 		}else{
-			$('#table-create-peminjaman tbody tr').each(function() {
+			$('#table-'+exe+'-peminjaman tbody tr').each(function() {
 				no = parseInt(no)+1;
 				var barcode2 = $(this).find(".item_id").html(),
 					stok = $(this).find(".sisa_stok").html();
@@ -183,7 +187,7 @@ function AddPinjamItem(){
 							no = parseInt(no)+1;
 							 $.ajax({
 									type:'POST',
-									data:{id: barcode},
+									data:{id: barcode,no:no},
 									url :baseurl+"Toolroom/Transaksi/getItemUpdate",
 									success:function(result){
 										if(result == "null"){
@@ -191,8 +195,7 @@ function AddPinjamItem(){
 										}else if(result == "out"){
 											alert('Out Of Stock !!!');
 										}else{
-											$('#table-create-peminjaman tbody tr:last').after(result);
-											$('#no_mor').html(no);
+											$('#table-'+exe+'-peminjaman tbody tr:last').after(result);
 										}
 									}
 								});
@@ -200,46 +203,6 @@ function AddPinjamItem(){
 					}	
 			});
 		}
-	$('#txtBarcode').val('');
-}
-
-function UpdatePinjamItem(){
-	var barcode = $('#txtBarcode').val(),
-		user = $('#hdnUser').val(),
-		type = $('#txtID').val(),
-		count = $('#table-update-peminjaman tbody tr').length,
-		no = 0;
-	$('#table-update-peminjaman tbody tr').each(function() {
-		no = parseInt(no)+1;
-		var barcode2 = $(this).find(".item_id").html(),
-			stok = $(this).find(".sisa_stok").html();
-			if(stok == 0){
-				alert('Out Of Stock !!!');
-			}else{
-				if(barcode == barcode2){
-					var item_out = $(this).find(".item_out").val();
-					$(this).find(".item_out").val(parseInt(item_out)+1);
-					$(this).find(".sisa_stok").html(parseInt(stok)-1);
-				}else if(no==count){
-					no = parseInt(no)+1;
-					 $.ajax({
-							type:'POST',
-							data:{id: barcode},
-							url :baseurl+"Toolroom/Transaksi/getItemUpdate",
-							success:function(result){
-								if(result == "null"){
-									alert('There is no item !!!');
-								}else if(result == "out"){
-									alert('Out Of Stock !!!');
-								}else{
-									$('#table-update-peminjaman tbody tr:last').after(result);
-									$('#no_mor').html(no);
-								}
-							}
-						});
-				}		
-			}	
-	});
 	$('#txtBarcode').val('');
 }
 

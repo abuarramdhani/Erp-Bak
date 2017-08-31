@@ -33,6 +33,7 @@ class C_MasterItem extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('Toolroom/MainMenu/M_master_item');
 		 $this->load->library(array('Excel/PHPExcel','Excel/PHPExcel/IOFactory'));
+		 date_default_timezone_set("Asia/Bangkok");
         // $this->load->library(array('Excel/PHPExcel','Excel/PHPExcel/IOFactory'));
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
