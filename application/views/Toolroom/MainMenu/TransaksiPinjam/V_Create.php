@@ -120,7 +120,7 @@
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">
-									<a href="<?php echo site_url('Toolroom/MasterItem/UsableGroup') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
+									<a href="<?php echo site_url('Toolroom/Transaksi/Keluar') ?>" class="btn btn-primary btn-lg btn-rect">Close</a>
 									&nbsp;&nbsp;
 									<a id="btnExecuteSave" class="btn btn-primary btn-lg btn-rect">Save</a>
 								</div>

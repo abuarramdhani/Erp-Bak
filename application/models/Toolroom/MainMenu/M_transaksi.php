@@ -45,16 +45,16 @@ class M_transaksi extends CI_Model {
 		}
 		
 		public function listOutITemUpdate($user,$id){
-			$sql = "select ttl.item_id,tmi.item_name,tmi.item_qty,(sum(ttl.item_qty)+(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user')) item_dipakai,(tmi.item_qty-
+			$sql = "select ttl.transaction_list_id,ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,sum(ttl.item_qty) item_dipakai,(tmi.item_qty-
 												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)-
 												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user')
 											) sisa_stok
 					from tr.tr_transaction_list ttl
 					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
 					where ttl.transaction_id='$id'
-					group by ttl.item_id,tmi.item_name,tmi.item_qty
+					group by ttl.item_id,tmi.item_name,tmi.item_qty,ttl.transaction_id,ttl.transaction_list_id
 					union
-					select tlt.item_id,tlt.item_name,tmi.item_qty,(tlt.item_qty + (select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)) item_dipakai,(tmi.item_qty-
+					select NULL AS \"transaction_list_id\",tlt.transaction_id,tlt.item_id,tlt.item_name,tmi.item_qty,tlt.item_qty,(tmi.item_qty-
 												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=tlt.item_id)-
 												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=tlt.item_id and tlt2.user_id='$user')
 											) sisa_stok 
