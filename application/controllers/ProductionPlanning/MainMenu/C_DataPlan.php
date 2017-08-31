@@ -48,7 +48,7 @@ class C_DataPlan extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function CreatePage($message = FALSE)
+	public function Create($message = FALSE)
 	{
 		$this->checkSession();
 		$user_id  = $this->session->userid;
@@ -69,7 +69,7 @@ class C_DataPlan extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function Create()
+	public function CreateSubmit()
 	{
 		$user_id  = $this->session->userid;
 		$section 	= $this->input->post('section');
@@ -102,7 +102,7 @@ class C_DataPlan extends CI_Controller {
             		    <script type="text/javascript">
 							$("#messUpPP").modal("show");
 						</script>';
-            	$this->CreatePage($message);
+            	$this->Create($message);
         	}else{
 	        	$media	= $this->upload->data();
 	        	$inputFileName 	= 'assets/upload/ProductionPlanning/data-plan/'.$media['file_name'];
@@ -129,10 +129,10 @@ class C_DataPlan extends CI_Controller {
                     		'item_description' 	=> $rowData[0][2],
                     		'priority' 			=> $rowData[0][3],
                     		'need_qty' 			=> $rowData[0][4],
-                    		'due_time' 			=> date('d-m-Y', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][5])),
+                    		'due_time' 			=> date('m-d-Y', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][5])),
                             'section_id'        => $section,
                             'created_by'        => $user_id,
-                    		'created_date' 		=> date('d-m-Y h24:m:i')
+                    		'created_date' 		=> date("Y-m-d H:i:s")
                     	);
 
                     	if (!is_numeric($rowData[0][4])) {
@@ -226,7 +226,7 @@ class C_DataPlan extends CI_Controller {
                                 </div>
                             </div>';
             	}
-            	$this->CreatePage($message);
+            	$this->Create($message);
 	        }
 	}
 
@@ -235,4 +235,24 @@ class C_DataPlan extends CI_Controller {
 		$this->load->helper('download');
 		force_download('assets/upload/ProductionPlanning/production-planning.xls', NULL);
 	}
+
+    public function Edit($id)
+    {
+        $this->checkSession();
+        $user_id  = $this->session->userid;
+        $no_induk = $this->session->user;
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['section']        = $this->M_dataplan->getSection($user_id);
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('ProductionPlanning/MainMenu/DataPlan/V_Edit',$data);
+        $this->load->view('V_Footer',$data);
+    }
 }
