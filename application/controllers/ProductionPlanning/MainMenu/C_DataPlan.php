@@ -240,7 +240,6 @@ class C_DataPlan extends CI_Controller {
     {
         $this->checkSession();
         $user_id  = $this->session->userid;
-        $no_induk = $this->session->user;
         $data['Menu'] = 'Dashboard';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -248,11 +247,27 @@ class C_DataPlan extends CI_Controller {
         $data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $data['section']        = $this->M_dataplan->getSection($user_id);
+        $this->form_validation->set_rules('item', 'priority', 'required');
 
-        $this->load->view('V_Header',$data);
-        $this->load->view('V_Sidemenu',$data);
-        $this->load->view('ProductionPlanning/MainMenu/DataPlan/V_Edit',$data);
-        $this->load->view('V_Footer',$data);
+        if ($this->form_validation->run() === FALSE){
+            $data['section']        = $this->M_dataplan->getSection($user_id);
+            $data['plan']           = $this->M_dataplan->getDataPlan($id,$sid = FALSE);
+            $this->load->view('V_Header',$data);
+            $this->load->view('V_Sidemenu',$data);
+            $this->load->view('ProductionPlanning/MainMenu/DataPlan/V_Edit',$data);
+            $this->load->view('V_Footer',$data);
+        }else{
+            $data = array(
+                'item_code' => $this->input->post('item'),
+                'item_description' => $this->input->post('desc'),
+                'priority' => $this->input->post('priority'),
+                'need_qty' => $this->input->post('needQty'),
+                'due_time' => $this->input->post('dueTime'),
+                'section_id' => $this->input->post('section')
+            );
+
+            $this->M_dataplan->update($data,$id);
+            redirect(base_url('ProductionPlanning/DataPlan'));
+        }
     }
 }
