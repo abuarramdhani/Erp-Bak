@@ -52,7 +52,7 @@ class C_Monitoring extends CI_Controller {
     	$datplan 	= array();
     	$datsec 	= array();
     	foreach ($section as $val) {
-    		$datplan[] = $this->M_dataplan->getDataPlan($val);
+    		$datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
     	}
 
     	$data['section'] 		= $this->M_dataplan->getSection();
