@@ -35,7 +35,8 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-	                                <form method="post" action="<?php echo base_url('ProductionPlanning/DataPlan/CreateSubmit'); ?>" class="form-horizontal">
+                                	<?php foreach ($plan as $pl) { ?>
+	                                <form method="post" action="<?php echo base_url('ProductionPlanning/DataPlan/Edit/'.$pl['daily_plan_id']); ?>" class="form-horizontal">
 	                                	<div class="col-md-12">
 	                                    	<div class="col-md-6">
 		                                        <div class="form-group">
@@ -43,7 +44,7 @@
 		                                            <div class="col-lg-8">
 		                                                <select class="form-control select2" name="section">
 		                                                    <?php foreach ($section as $s) { ?>
-		                                                        <option value="<?php echo $s['section_id']; ?>"> <?php echo $s['section_name']; ?> </option>
+		                                                        <option value="<?php echo $s['section_id']; ?>" <?php if ($pl['section_id'] == $s['section_id']) { echo "selected"; } ?>> <?php echo $s['section_name']; ?> </option>
 		                                                    <?php } ?>
 		                                                </select>
 		                                            </div>
@@ -51,13 +52,13 @@
 		                                        <div class="form-group">
 		                                            <label class="control-label col-md-4" for="dp2">Item Code</label>
 		                                            <div class="col-lg-8">
-		                                                <input type="text" name="item" class="form-control" placeholder="Item Code" required>
+		                                                <input type="text" name="item" class="form-control" placeholder="Item Code" required value="<?php echo $pl['item_code']; ?>">
 		                                            </div>
 		                                        </div>
 		                                        <div class="form-group">
 		                                            <label class="control-label col-md-4" for="dp2">Item Description</label>
 		                                            <div class="col-lg-8">
-		                                                <input type="text" name="desc" class="form-control" placeholder="Item Description" required>
+		                                                <input type="text" name="desc" class="form-control" placeholder="Item Description" required value="<?php echo $pl['item_description']; ?>">
 		                                            </div>
 		                                        </div>
 	                                    	</div>
@@ -65,33 +66,37 @@
 		                                        <div class="form-group">
 		                                            <label class="control-label col-md-4" for="dp2">Priority</label>
 		                                            <div class="col-lg-8">
-		                                                <select name="priority" class="form-control select2">
+		                                                <select name="priority" class="form-control select4">
 		                                                	<option></option>
-		                                                	<option value="1">1</option>
-		                                                	<option value="NORMAL">NORMAL</option>
+		                                                	<option value="1" <?php if ($pl['priority'] == 1) { echo "selected"; } ?>>1</option>
+		                                                	<option value="NORMAL" <?php if ($pl['priority'] == 'NORMAL') { echo "selected"; } ?>>NORMAL</option>
 		                                                </select>
 		                                            </div>
 		                                        </div>
 		                                        <div class="form-group">
 		                                            <label class="control-label col-md-4" for="dp2">Need Quantity</label>
 		                                            <div class="col-lg-8">
-		                                                <input type="number" name="needQty" class="form-control" placeholder="Need Quantity" required>
+		                                                <input type="number" name="needQty" class="form-control" placeholder="Need Quantity" required value="<?php echo $pl['need_qty']; ?>">
 		                                            </div>
 		                                        </div>
 		                                        <div class="form-group">
 		                                            <label class="control-label col-md-4" for="dp2">Due Time</label>
 		                                            <div class="col-lg-8">
-		                                                <input type="text" name="dueTime" class="form-control" placeholder="Due Time" required>
+		                                                <input type="text" name="dueTime" class="form-control time-form" placeholder="Due Time" required value="<?php echo $pl['due_time']; ?>">
 		                                            </div>
 		                                        </div>
 	                                    	</div>
 	                                    	<div class="col-md-12 text-right">
+	                                    		<a href="<?php echo base_url('ProductionPlanning/DataPlan'); ?>" class="btn btn-default">
+	                                    			CANCEL
+	                                    		</a>
 		                                        <button type="submit" class="btn btn-primary">
 		                                            SAVE
 		                                        </button>
 	                                    	</div>
 	                                    </div>
 	                                </form>
+	                                <?php } ?>
                                 </div>
                             </div>
                         </div>
