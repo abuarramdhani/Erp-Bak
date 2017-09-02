@@ -493,6 +493,7 @@
 			} );
 		} ).draw();
 
+		/*
 		$('#submit-simulation').click(function(){
 			$('.alert').alert('close');
 			$('#loadAjax').show();
@@ -582,6 +583,7 @@
 				}
 			});
 		});
+		*/
 
 		$(".select2-component").select2({
 			placeholder: function(){
@@ -650,7 +652,6 @@
 			});
 		}
 
-
 		$('#submit-realization').click(function(){
 			$('.alert').alert('close');
 			$('#loadAjax').show();
@@ -669,6 +670,26 @@
 				}
 			});
 		});
+
+		$('#submit-simulation').click(function(){
+			$('.alert').alert('close');
+			$('#loadAjax').show();
+			$.ajax({
+				type:'POST',
+				data:$("#simulation-form").serialize(),
+				url:baseurl+"Outstation/simulation/new/process",
+				success:function(result)
+				{
+					$('#estimate-allowance').html(result);
+					$('#loadAjax').hide();
+				},
+				error: function() {
+					$('#loadAjax').hide();
+					document.getElementById("errordiv").innerHTML = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Outstation Position/Destination/City Type Invalid!</div>';
+				}
+			});
+		});
+
 	});
 
 
@@ -823,4 +844,18 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$('#dataTables-limbah').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'pdf'
+      ]
+    });
+
+    $('#dataTables-limbahTransaksi').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 });

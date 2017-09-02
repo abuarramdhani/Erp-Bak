@@ -105,6 +105,7 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaireId($id);
+		$data['segment'] 		= $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -170,6 +171,7 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$this->load->view('V_Footer',$data);	
 	}
 
+
 	//SUBMIT QUESTIONNAIRE STATEMENT
 	public function AddStatement(){
 		$QuestionnaireId= $this->input->post('txtQuestionnaireId');
@@ -191,6 +193,30 @@ class C_MasterQuestionnaire extends CI_Controller {
 			}
 
 		redirect('ADMPelatihan/MasterQuestionnaire/');
+	}
+
+	public function EditStatement($Qs_id, $Sg_id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Master Kuesioner';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['title']			= $this->M_masterquestionnaire->GetTitle($Qs_id);
+		$data['segment_title']	= $this->M_masterquestionnaire->GetSegmentTitle($Sg_id);
+		$data['statement']		= $this->M_masterquestionnaire->GetStatement($Qs_id,$Sg_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/MasterQuestionnaire/V_Edit_Statement', $data);
+		$this->load->view('V_Footer',$data);
+		
 	}
 
 	//MENGHAPUS QUESIONER
@@ -240,12 +266,74 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['questionnaire'] 	= $this->M_masterquestionnaire->GetQuestionnaireId($id);
 		$data['segment'] 		= $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
 		$data['statement'] 		= $this->M_masterquestionnaire->GetQuestionnaireStatementId($id);
+		$data['id']				= $id;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/MasterQuestionnaire/V_Edit',$data);
+
 		$this->load->view('V_Footer',$data);
 	}
+
+	public function EditSaveStatement($questionnaire_id,$segment_id)
+	{
+		$StDes 		=	$this->input->post('txtStatement');
+		$idStatement=	$this->input->post('idStatement');
+		$n = 0;
+		foreach ($StDes as $TDes) {
+			if ($idStatement[$n] == '0') {
+				$save = $this->M_masterquestionnaire->insertStDes($questionnaire_id,$segment_id,$TDes);
+			}
+			else {
+				$update = $this->M_masterquestionnaire->updateStDes($questionnaire_id,$segment_id,$TDes,$idStatement[$n]);
+			}
+			$n++;
+		}
+		redirect(base_url('ADMPelatihan/MasterQuestionnaire/Edit/'.$questionnaire_id));
+	}
+
+	public function editSave($id)
+	{
+
+		$Q_id 		=	$this->input->post('txtQuestionnaireId');
+		$Q_name		=	$this->input->post('txtQuestionnaireName');
+		$StDes 		=	$this->input->post('txtStatement');
+		$SgDes 		=	$this->input->post('txtSegment');
+		$idSegment 	=	$this->input->post('idSegment');
+		$idStatement=	$this->input->post('idStatement');
+		$SgID 		= 	$this->input->post('segment_id');
+		$StID 		= 	$this->input->post('statement_id');
+		$n = 0;
+		foreach ($SgDes as $Des) {
+			if ($idSegment[$n] == '0') {
+				$save = $this->M_masterquestionnaire->insertDes($Q_id,$Des,$SgID);
+			}else{
+			    $update = $this->M_masterquestionnaire->updateDes($Q_id,$Des, $idSegment[$n]);
+			}
+			$n++;
+		}
+		foreach ($StDes as $TDes) {
+			if ($idStatement[$n] == '0') {
+				$save = $this->M_masterquestionnaire->insertStDes($Q_id,$SgID,$TDes,$StID);
+			}
+			else {
+				$update = $this->M_masterquestionnaire->updateStDes($Q_id,$SgID,$TDes,$idStatement[$n]);
+			}
+			$n++;
+		}
+		redirect(base_url('ADMPelatihan/MasterQuestionnaire'));
+	}
+
+	public function delSeg($SgID)
+	{		
+			
+			$delete = $this->M_masterquestionnaire->deleteSeg($SgID);
+	}
+	public function delSt($StID)
+		{		
+			
+				$delete = $this->M_masterquestionnaire->deleteSt($StID);
+		}
 
 	public function checkSession(){
 		if($this->session->is_logged){

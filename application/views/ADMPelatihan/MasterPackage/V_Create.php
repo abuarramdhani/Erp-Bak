@@ -40,21 +40,33 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Jenis Paket Pelatihan</label>
 								<div class="col-lg-2">
-									<input class="form-control" value="ORIENTASI" readonly>
-									<input type="text" name="slcJenisPaket" value="0" hidden >
+									<select class="form-control select2" name="slcJenisPaket">
+										<?php foreach ($trgtype as $ty) { ?>
+											<option value="<?php echo $ty['training_type_id']?>">
+												<?php echo $ty['training_type_description']?>
+											</option>
+										<?php } ?>
+									</select>
 								</div>
 								<label class="col-lg-1 control-label">Peserta</label>
-								<div class="col-lg-3">
-									<input type="radio" name="txtPeserta" value="0"> Staff<br>
-									<input type="radio" name="txtPeserta" value="1"> Non-Staff<br>
+								<div class="col-lg-2">
+									<!-- <input type="radio" name="txtPeserta" value="0"> Staff<br>
+									<input type="radio" name="txtPeserta" value="1"> Non-Staff<br> -->
+									<select class="form-control select2" name="slcPeserta">
+										<?php foreach($ptctype as $py) {?> 
+											<option value="<?php echo $py['participant_type_id']?>">
+												<?php echo $py['participant_type_description']?>
+											</option>
+										<?php }?>
+									</select>
 								</div>
 							</div>
 						</div>
-
 						<div class="row" style="margin: 10px 10px">
 							<div class="col-md-8">
 								<div class="panel panel-default">
@@ -96,7 +108,7 @@
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="<?php echo site_url('ADMPelatihan/MasterPackage');?>"  class="btn btn-primary btn btn-flat">Back</a>
 								&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>

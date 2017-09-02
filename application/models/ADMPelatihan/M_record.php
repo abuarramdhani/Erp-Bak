@@ -35,8 +35,16 @@ class M_record extends CI_Model {
 				end as date_format
 			from pl.pl_scheduling_training a
 			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
-			where a.date >= now()::date AND a.status = 0
+			where a.date >= now()::date 
 			order by a.date asc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+
+	//Ambil Data Tujuan 
+	public function GetPurpose($id){
+		$sql = "select * from pl.pl_master_training_purpose where training_id='$id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -155,18 +163,11 @@ class M_record extends CI_Model {
 
 	//Ambil data Objective dari Record Tertentu
 	public function GetObjectiveId($id){
-		$sql = " select * from pl.pl_objective where scheduling_id='$id'";
+		// $sql = " select * from pl.pl_objective where scheduling_id='$id'";
+		$sql = " select * from pl.pl_master_training_purpose where training_id='$id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
-
-	//Ambil data Objective dari Record Tertentu
-	public function GetMasterObjectiveId($id){
-		$sql = " select * from pl.pl_objective_master where training_id='$id'";
-		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
-
 
 	//Ambil tipe Training
 	public function GetTrainingType($id){

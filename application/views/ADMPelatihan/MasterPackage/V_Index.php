@@ -39,8 +39,9 @@
 								<thead class="bg-primary">
 									<tr>
 										<th width="5%">NO</th>
-										<th width="55%">Nama Paket Pelatihan</th>
+										<th width="35%">Nama Paket Pelatihan</th>
 										<th width="20%">Jenis Pelatihan</th>
+										<th width="10%">Peserta</th>
 										<th width="20%">Action</th>
 									</tr>
 								</thead>
@@ -48,13 +49,28 @@
 									<?php
 										$no=0;
 										foreach($GetPackage as $gp){
-											$no++;$trgtype='Orientasi';
-											if($gp['training_type']==1){$trgtype='Non Orientasi';}
+											foreach($TrainingType as $tt){
+												if($gp['training_type']==$tt['training_type_id']){
+													$trgtype=$tt['training_type_description'];
+												}else{
+													$trgtype='Orientasi';
+												}
+											}
+
+											$no++;
+											// $trgtype='Orientasi';
+											// $ptctype='Staf';
+											if($gp['participant_type']==1){
+												$ptctype='Non Staf';
+											}elseif ($gp['participant_type']==0) {
+												$ptctype='Staf';
+											}
 									?>
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $gp['package_name'] ?></td>
 										<td><?php echo 'pelatihan '.$trgtype ?></td>
+										<td ><?php echo $ptctype ?></td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/MasterPackage/View/'.$gp['package_id'])?>" class="btn btn-xs btn-warning"><i class="fa fa-search"></i> View</a>
 											<a href="<?php echo base_url('ADMPelatihan/MasterPackage/Edit/'.$gp['package_id'])?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>

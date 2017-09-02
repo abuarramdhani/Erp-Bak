@@ -28,6 +28,14 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/canvasjs/canvasjs.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.js');?>"></script>
+	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
+
+	<!-- MULTISELECT -->
+	<script src="<?php echo base_url('assets/plugins/multiselect/js/bootstrap-multiselect.js');?>"></script>
 
 	<script src="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
 
@@ -43,11 +51,10 @@
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+	<!--<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
-
-	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
-
+	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customKL.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
@@ -56,6 +63,8 @@
 	<script src="<?php echo base_url('assets/js/formValidation.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customSL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){
@@ -73,6 +82,9 @@
 				"searching": false,
 				"bLengthChange": false
 			});
+
+			//bootstrap WYSIHTML5 - text editor
+    		$(".textarea").wysihtml5();
          });
     </script>
 	<script language=Javascript>
@@ -145,6 +157,50 @@
 		
 		
 	</script>
+
+	<script type="text/javascript">
+		$('#txtTanggalKirimHeader').datepicker({
+    		"autoclose": true,
+    		"todayHiglight": true,
+    		"format": 'dd M yyyy'
+      	});	
+
+      	$('#txtTanggalTransaksiHeader').datepicker({
+    		"autoclose": true,
+    		"todayHiglight": true,
+    		"format": 'dd M yyyy'
+      	});
+
+      	$('#txtMaksPenyimpananHeader').datepicker({
+    		"autoclose": true,
+    		"todayHiglight": true,
+    		"format": 'dd M yyyy'
+      	});
+
+      	$('#txtTanggalKeluarHeader').datepicker({
+    		"autoclose": true,
+    		"todayHiglight": true,
+    		"format": 'dd M yyyy'
+      	});	
+
+      	$("#periode").daterangepicker({  
+      		"autoclose": true,
+    		"todayHiglight": true,
+    		locale: {
+    			cancelLabel: 'Clear'
+    		},
+    		autoUpdateInput: false,
+      	});
+
+      	$('input[id="periode"]').on('apply.daterangepicker', function(ev, picker) {
+			$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+		});
+
+		$('input[id="periode"]').on('cancel.daterangepicker', function(ev, picker) {
+			$(this).val('');
+		});
+	</script>
+
 	<?php
 	if (empty($alert)) {
 		$alert = '';

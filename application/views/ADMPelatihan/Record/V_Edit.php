@@ -99,13 +99,13 @@
 									<div class="col-lg-9">
 										<?php
 											$eval='';
-											if($rc['evaluation']==1){$eval='Wawasan';}
-											if($rc['evaluation']==2){$eval='Pengetahuan';}
-											if($rc['evaluation']==3){$eval='Perilaku';}
-											if($rc['evaluation']==12){$eval='Wawasan, Pengetahuan';}
-											if($rc['evaluation']==13){$eval='Wawasan, Perilaku';}
-											if($rc['evaluation']==23){$eval='Pengetahuan, Perilaku';}
-											if($rc['evaluation']==123){$eval='Wawasan, Pengetahuan, Perilaku';}
+											if($rc['evaluation']=='1'){$eval='Wawasan';}
+											if($rc['evaluation']=='2'){$eval='Pengetahuan';}
+											if($rc['evaluation']=='3'){$eval='Perilaku';}
+											if($rc['evaluation']=='1,2'){$eval='Wawasan, Pengetahuan';}
+											if($rc['evaluation']=='1,3'){$eval='Wawasan, Perilaku';}
+											if($rc['evaluation']=='2,3'){$eval='Pengetahuan, Perilaku';}
+											if($rc['evaluation']=='1,2,3'){$eval='Wawasan, Pengetahuan, Perilaku';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
@@ -132,8 +132,8 @@
 											<b>Tujuan Pelatihan :</b>
 										</div>
 										<div class="panel-body">
-											<?php foreach($objective as $ob){ ?>
-											<i class="fa fa-angle-right"></i><?php echo ' '.$ob['objective'] ?><br>
+											<?php foreach($purpose as $pp){ ?>
+											<i class="fa fa-angle-right"></i><?php echo ' '.$pp['purpose'] ?><br>
 											<?php } ?>
 										</div>
 									</div>
@@ -215,7 +215,8 @@
 								<div class="col-lg-12 text-right">
 									<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-success">Confirm</a>
 									<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger">Delete</a>
-									<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
+									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								</div>
 							</div>
 							<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$rc['scheduling_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
