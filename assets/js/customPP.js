@@ -1,6 +1,10 @@
 $(document).ready(function() {
     $('#tbdataplan').DataTable();
     $('#tbdatagroupsection').DataTable();
+    $('.time-form').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd'
+    });
 });
 
 function chartFabricationMon() {
