@@ -116,12 +116,12 @@ $borderAll = array(
 					->setCellValueExplicit($kolomF, $RecordTransaction_item['qty_dipakai'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomG, $RecordTransaction_item['creation_date'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomH, $RecordTransaction_item['shift'], PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomI, str_replace(" ","",$RecordTransaction_item['name']), PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomJ, str_replace(" ","",$RecordTransaction_item['toolman']), PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomI, $RecordTransaction_item['name'], PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomJ, $RecordTransaction_item['toolman'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomK, $RecordTransaction_item['item_desc'], PHPExcel_Cell_DataType::TYPE_STRING);
 					
 					$objPHPExcel->getActiveSheet()->getStyle(''.$kolomA.':'.$kolomK.'')->applyFromArray($borderAll);
-		$toolman = str_replace(" ","",$RecordTransaction_item['toolman']);
+		$toolman = $RecordTransaction_item['toolman'];
 	}	
 	$row = (int)$i+2;
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.$row.':I'.$row.'');
