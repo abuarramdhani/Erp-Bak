@@ -49,6 +49,8 @@ $borderAll = array(
 	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(55);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:K1');
@@ -114,13 +116,25 @@ $borderAll = array(
 					->setCellValueExplicit($kolomF, $RecordTransaction_item['qty_dipakai'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomG, $RecordTransaction_item['creation_date'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomH, $RecordTransaction_item['shift'], PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomI, $RecordTransaction_item['noind'], PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomJ, $RecordTransaction_item['created_by'], PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomI, str_replace(" ","",$RecordTransaction_item['name']), PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomJ, str_replace(" ","",$RecordTransaction_item['toolman']), PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomK, $RecordTransaction_item['item_desc'], PHPExcel_Cell_DataType::TYPE_STRING);
 					
 					$objPHPExcel->getActiveSheet()->getStyle(''.$kolomA.':'.$kolomK.'')->applyFromArray($borderAll);
+		$toolman = str_replace(" ","",$RecordTransaction_item['toolman']);
 	}	
-					
+	$row = (int)$i+2;
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.$row.':I'.$row.'');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('J'.$row.':K'.$row.'');
+	$objPHPExcel->getActiveSheet()->insertNewRowBefore($row,1) 
+						->setCellValueExplicit('H'.$row, "Pengawas,", PHPExcel_Cell_DataType::TYPE_STRING)
+						->setCellValueExplicit('J'.$row, "Toolman,", PHPExcel_Cell_DataType::TYPE_STRING);
+	$row2 = (int)$i+5;
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.$row2.':I'.$row2.'');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('J'.$row2.':K'.$row2.'');
+	$objPHPExcel->getActiveSheet()->insertNewRowBefore($row2,1) 
+						->setCellValueExplicit('H'.$row2, "(                       )", PHPExcel_Cell_DataType::TYPE_STRING)
+						->setCellValueExplicit('J'.$row2, $toolman, PHPExcel_Cell_DataType::TYPE_STRING);
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
 exit;

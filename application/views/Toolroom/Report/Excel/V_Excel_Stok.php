@@ -108,6 +108,18 @@ $borderAll = array(
 					
 					$objPHPExcel->getActiveSheet()->getStyle(''.$kolomA.':'.$kolomG.'')->applyFromArray($borderAll);
 	}	
+	$row = (int)$i+2;
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('D'.$row.':E'.$row.'');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('F'.$row.':G'.$row.'');
+	$objPHPExcel->getActiveSheet()->insertNewRowBefore($row,1) 
+						->setCellValueExplicit('D'.$row, "Pengawas,", PHPExcel_Cell_DataType::TYPE_STRING)
+						->setCellValueExplicit('F'.$row, "Toolman,", PHPExcel_Cell_DataType::TYPE_STRING);
+	$row2 = (int)$i+5;
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('D'.$row2.':E'.$row2.'');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('F'.$row2.':G'.$row2.'');
+	$objPHPExcel->getActiveSheet()->insertNewRowBefore($row2,1) 
+						->setCellValueExplicit('D'.$row2, "(                       )", PHPExcel_Cell_DataType::TYPE_STRING)
+						->setCellValueExplicit('F'.$row2, $toolman, PHPExcel_Cell_DataType::TYPE_STRING);
 					
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
