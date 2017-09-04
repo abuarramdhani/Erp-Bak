@@ -35,7 +35,7 @@ class C_Correction extends CI_Controller
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('StorageLocation/MainMenu/V_koreksi');
+		$this->load->view('StorageLocation/MainMenu/V_Koreksi');
 		$this->load->view('V_Footer',$data);
 	}
 
