@@ -6,7 +6,7 @@ class C_Monitoring extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('StorageLocation/MainMenu/M_Monitoring');
+		$this->load->model('StorageLocation/MainMenu/M_monitoring');
 		$this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
