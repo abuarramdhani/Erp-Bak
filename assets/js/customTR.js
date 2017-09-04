@@ -148,6 +148,18 @@ $(document).on("click", "#btnExecuteUpdate", function () {
 	// }
 });
 
+window.onload = function() {            
+    function realtime() {
+       $.ajax({
+				url :baseurl+"Toolroom/Transaksi/Time_",
+				success:function(result){
+					$('#hdnDate').val(result);
+				}
+			});
+    }
+    setInterval(realtime, 1000);
+}
+
 function AddItem(exe){
 	var barcode = $('#txtBarcode').val(),
 		user = $('#hdnUser').val(),
@@ -176,13 +188,14 @@ function AddItem(exe){
 				no = parseInt(no)+1;
 				var barcode2 = $(this).find(".item_id").html(),
 					stok = $(this).find(".sisa_stok").html();
-					if(stok == 0){
+					if(stok == 0 && barcode2 == barcode){
 						alert('Out Of Stock !!!');
 					}else{
 						if(barcode == barcode2){
 							var item_out = $(this).find(".item_out").val();
 							$(this).find(".item_out").val(parseInt(item_out)+1);
 							$(this).find(".sisa_stok").html(parseInt(stok)-1);
+							return false;
 						}else if(no==count){
 							no = parseInt(no)+1;
 							 $.ajax({

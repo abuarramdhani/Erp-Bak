@@ -44,6 +44,10 @@ class C_Transaksi extends CI_Controller {
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
 	
+	
+	public function Time_(){
+		echo date('Y-m-d H:i:s');
+	}
 	//HALAMAN TRANSAKSI PEMINJAMAN
 	public function Keluar(){
 		$this->checkSession();
@@ -224,14 +228,7 @@ class C_Transaksi extends CI_Controller {
 		$sisa_stok = $this->input->post('sisa_stok',true);
 		$item_out = $this->input->post('item_out',true);
 		$id_transaction = $this->input->post('id_transaction',true);
-		if($item_out>1){
-			for($i=0;$i<$item_out;$i++){
-				$saveLendingList = $this->M_transaksi->insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,'1',$id_transaction);
-			}
-		}else{
-			$saveLendingList = $this->M_transaksi->insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,$item_out,$id_transaction);
-		}
-		
+		$saveLendingList = $this->M_transaksi->insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,$item_out,$id_transaction);
 		$this->clearNewItem();
 	}
 	

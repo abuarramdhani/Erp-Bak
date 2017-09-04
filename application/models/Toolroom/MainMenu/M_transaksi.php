@@ -119,7 +119,7 @@ class M_transaksi extends CI_Model {
 		}
 		
 		public function insertLendingList($noind,$user,$date,$item_id,$item_name,$sisa_stok,$item_out,$id_transaction){
-			$sql = "insert into tr.tr_transaction_list (transaction_id,item_id,item_qty,status,date_lend) values ('$id_transaction','$item_id','$item_out','0','$date')";
+			$sql = "insert into tr.tr_transaction_list (transaction_id,item_id,item_qty,status,date_lend,item_awl,item_akh) values ('$id_transaction','$item_id','$item_out','0','$date',('$sisa_stok')::int + ('$item_out')::int,'$sisa_stok')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -135,22 +135,17 @@ class M_transaksi extends CI_Model {
 		public function ListOutTransaction($id=FALSE,$date=FALSE){
 			$user_id = $this->session->userid;
 			if($id === FALSE && $date === FALSE){
-				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,(tmi.item_qty-
-							(select sum(ttl2.item_qty) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)
-						) item_sisa,sum(ttl.item_qty) item_dipakai,ttl.status 
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,(ttl.item_awl) item_qty,(ttl.item_qty) item_dipakai,(ttl.item_akh) item_sisa
 						from tr.tr_transaction_list ttl
 						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
-						where date_trunc('day', date_lend)=current_date and ttl.status='0'
-						group by ttl.transaction_id,ttl.item_id,ttl.item_qty,ttl.status,tmi.item_qty,tmi.item_name";
+						where date_trunc('day', ttl.date_lend)=current_date and ttl.status='0'
+						order by ttl.item_id";
 			}else{
-				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,tmi.item_qty,sum(ttl.item_qty) item_dipakai,(tmi.item_qty-
-												(select coalesce(sum(ttl2.item_qty),0) from tr.tr_transaction_list ttl2 where ttl2.status='0' and ttl2.item_id=ttl.item_id)-
-												(select coalesce(sum(tlt2.item_qty),0) from tr.tr_log_transaction tlt2 where tlt2.item_id=ttl.item_id and tlt2.user_id='$user_id')
-											) item_sisa
+				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,(ttl.item_awl) item_qty,(ttl.item_qty) item_dipakai,(ttl.item_akh) item_sisa
 					from tr.tr_transaction_list ttl
 					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
 					where ttl.transaction_id='$id'
-					group by ttl.item_id,tmi.item_name,tmi.item_qty,ttl.transaction_id";
+					order by ttl.item_id";
 			}
 			
 			$query = $this->db->query($sql);

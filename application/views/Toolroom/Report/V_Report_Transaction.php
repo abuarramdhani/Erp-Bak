@@ -63,7 +63,7 @@
 												<th width="10%"><center>Item Code</center></th>
 												<th width="30%"><center>Item</center></th>
 												<th width="10%"><center>Merk</center></th>
-												<th width="5%"><center>Stok</center></th>
+												<th width="5%"><center>Stok Awal</center></th>
 												<th width="5%"><center>Qty used</center></th>
 												<th width="10%"><center>Date used</center></th>
 												<th width="5%"><center>Shift</center></th>

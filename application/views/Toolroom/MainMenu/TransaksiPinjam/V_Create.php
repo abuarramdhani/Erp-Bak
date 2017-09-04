@@ -3,7 +3,7 @@
 		<div class="row">
 			<form method="post" action="<?php echo site_url('Toolroom/Transaksi/savePeminjaman')?>" class="form-horizontal">
 					<!-- action merupakan halaman yang dituju ketika tombol submit dalam suatu form ditekan -->
-					<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" name="hdnDate" id="hdnDate"/>
+					<input type="hidden" value="<?php echo date("Y-m-d H:i:s")?>" onload="realtime()" name="hdnDate" id="hdnDate"/>
 					<input type="hidden" value="<?php echo $this->session->user; ?>" name="hdnUser" id="hdnUser"/>
 			<div class="col-lg-12">
 				<div class="row">
