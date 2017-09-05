@@ -725,11 +725,7 @@ $(document).on('click','#ProsesRekapTotal', function()
         value.push(temp);
       }
       Grafik('#RekapFrekuensiMaintenance',value,bulan,'#0033CC','#0033CC', ['Frekuensi Maintenance Kendaraan']);
-
-      var   data  =   $.parseJSON(data);
-      var   
-
-    })
+    });
 });
 
 function Grafik(canvas, data, labels, color, color2, label) {
