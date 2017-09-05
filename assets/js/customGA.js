@@ -305,6 +305,9 @@ setInterval(function() {
   });
 }, 10);
 
+var   DataTableMonitoringNomorPolisi      =   $('#dataTables-fleetMonitoringNomorPolisi').dataTable({"sPaginationType": "full_numbers"});
+var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKategori').dataTable({"sPaginationType": "full_numbers"});
+
 
 function TambahBarisMaintenanceKendaraan(base){  
       var e = jQuery.Event( "click" );
@@ -410,6 +413,7 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
 
+
     $.ajax(
     {
       type    : 'POST',
@@ -423,26 +427,19 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
         console.log(data);
         // alert(data);
         var   data  = JSON.parse(data);
-        var   html  = '';
-        for(i = 0; i < data['monitoringNomorPolisi'].length; i++){
-          html  +=  '<tr>';
-          html  +=    '<td>'+(i+1)+'</td>';
-          html  +=    '<td>'+data['monitoringNomorPolisi'][i]['kategori']+'</td>';
-          html  +=    '<td>'+data['monitoringNomorPolisi'][i]['tanggal_asli']+'</td>';
-          html  +=    '<td>Rp'+parseFloat(data['monitoringNomorPolisi'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</td>'
-          html  +=  '</tr>';
+
+        DataTableMonitoringNomorPolisi.fnClearTable();
+        for(i=0; i < data['monitoringNomorPolisi'].length; i++)
+        {
+        DataTableMonitoringNomorPolisi.fnAddData([
+            (i+1),
+            data['monitoringNomorPolisi'][i]['kategori'],
+            data['monitoringNomorPolisi'][i]['tanggal_asli'],
+            'Rp'+parseFloat(data['monitoringNomorPolisi'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+          ]);        
         }
-        $('tbody#isiMonitoringNomorPolisi').empty();
-        $('tbody#isiMonitoringNomorPolisi').append(html);
         $('#tabelMonitoringNomorPolisi').show();
-        $('table#dataTables-fleetMonitoringNomorPolisi').show();
-        $('#dataTables-fleetMonitoringNomorPolisi').DataTable().fnDestroy();        
-        $('#dataTables-fleetMonitoringNomorPolisi').DataTable( {
-          dom: 'Bfrtip',
-          buttons: [
-            'excel'
-          ]
-        });
+        $('table#dataTables-fleetMonitoringNomorPolisi').show();        
       }
     });
 });
@@ -465,26 +462,18 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
-        var   html  = '';
-        for(i = 0; i < data['monitoringKategori'].length; i++){
-          html  +=  '<tr>';
-          html  +=    '<td>'+(i+1)+'</td>';
-          html  +=    '<td>'+data['monitoringKategori'][i]['nomor_polisi']+'</td>';
-          html  +=    '<td>'+data['monitoringKategori'][i]['tanggal_asli']+'</td>';
-          html  +=    '<td>Rp'+parseFloat(data['monitoringKategori'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")+'</td>'
-          html  +=  '</tr>';
+        DataTableMonitoringKategori.fnClearTable();
+        for(i=0; i < data['monitoringKategori'].length; i++)
+        {
+        DataTableMonitoringKategori.fnAddData([
+            (i+1),
+            data['monitoringKategori'][i]['nomor_polisi'],
+            data['monitoringKategori'][i]['tanggal_asli'],
+            'Rp'+parseFloat(data['monitoringKategori'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+          ]);        
         }
-        $('tbody#isiMonitoringKategori').empty();
-        $('tbody#isiMonitoringKategori').append(html);
         $('#tabelMonitoringKategori').show();
-        $('table#dataTables-fleetMonitoringKategori').show();
-        $('#dataTables-fleetMonitoringKategori').DataTable().fnDestroy();        
-        $('#dataTables-fleetMonitoringKategori').DataTable( {
-          dom: 'Bfrtip',
-          buttons: [
-            'excel'
-          ]
-        });
+        $('table#dataTables-fleetMonitoringKategori').show();         
       }
     });
 });
@@ -689,6 +678,7 @@ $(document).on('change','#TahunPeriodeKecelakaan', function()
 
 $(document).on('click','#ProsesRekapTotal', function()
 {
+
     var tahun   = $('#TahunPeriodeTotal').val();
     var bulan   = $('#BulanPeriodeTotal').val();
     $.ajax({
@@ -700,31 +690,42 @@ $(document).on('click','#ProsesRekapTotal', function()
       url: baseurl + 'GeneralAffair/FleetRekapTotal/RekapTotal', 
     })
     .done(function(data){
-      var data = JSON.parse(data);
-      console.log(data);
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['totalMaintenance'].length; j++) {
-          temp.push(data['totalMaintenance'][j]['total_biaya']);
-          bulan.push(data['totalMaintenance'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapTotalMaintenance',value,bulan,'#0033CC','#0033CC', ['Total Maintenance Kendaraan']);
+      // var resetCanvas = function(){
+      // $('#RekapBiayaTotal').remove(); // this is my <canvas> element
+      // $('#ContainerRekapBiayaTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
+      // $('#RekapFrekuensiTotal').remove(); // this is my <canvas> element
+      // $('#ContainerRekapFrekuensiTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
+      // };
+ 
 
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['frekuensiMaintenance'].length; j++) {
-          temp.push(data['frekuensiMaintenance'][j]['total_frekuensi']);
-          bulan.push(data['frekuensiMaintenance'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapFrekuensiMaintenance',value,bulan,'#0033CC','#0033CC', ['Frekuensi Maintenance Kendaraan']);
+      var   data = JSON.parse(data);
+      var   totalBiayaPajak             =   parseInt(data['biayaTotal'][0]['total_biaya_pajak']);
+      var   totalBiayaKIR               =   parseInt(data['biayaTotal'][0]['total_biaya_kir']);
+      var   totalBiayaMaintenance       =   parseInt(data['biayaTotal'][0]['total_biaya_maintenance_kendaraan']);
+      var   totalBiayaKecelakaan        =   parseInt(data['biayaTotal'][0]['total_biaya_kecelakaan']);
+
+      var   totalFrekuensiPajak         =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_pajak']);
+      var   totalFrekuensiKIR           =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_kir']);
+      var   totalFrekuensiMaintenance   =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_maintenance_kendaraan']);
+      var   totalFrekuensiKecelakaan    =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_kecelakaan']);
+
+      // console.log(totalFrekuensiMaintenance);
+      // alert($('#RekapBiayaTotal').attr('height'));
+      // if(!$('#RekapBiayaTotal') && !$('#RekapFrekuensiTotal'))
+      // {
+      //   alert('jalan');
+      // resetCanvas();
+      // }
+      // $('#RekapBiayaTotal').destroy();
+      // $('#RekapBiayaTotal').clear();
+
+
+      pieChart('#RekapBiayaTotal', [totalBiayaPajak, totalBiayaKIR, totalBiayaMaintenance, totalBiayaKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Biaya Pajak', 'Total Biaya KIR', 'Total Biaya Maintenance Kendaraan', 'Total Biaya Kecelakaan']);
+      pieChart('#RekapFrekuensiTotal', [totalFrekuensiPajak, totalFrekuensiKIR, totalFrekuensiMaintenance, totalFrekuensiKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Frekuensi Pajak', 'Total Frekuensi KIR', 'Total Frekuensi Maintenance Kendaraan', 'Total Frekuensi Kecelakaan']);
+
+    });
+});
+
     });
 });
 
@@ -778,7 +779,7 @@ function pieChart(canvas, data, color, color2, label) {
                     var allData = data.datasets[tooltipItem.datasetIndex].data;
                     var tooltipLabel = data.labels[tooltipItem.index];
                     var tooltipData = allData[tooltipItem.index];
-                    return tooltipData + '%'; 
+                    return tooltipData; 
                 }
             }
         }
