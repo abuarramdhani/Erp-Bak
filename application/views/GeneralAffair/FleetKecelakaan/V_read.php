@@ -30,11 +30,10 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-<<<<<<< HEAD
                                                     <?php foreach ($FleetKecelakaan as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_polisi']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Tanggal Kecelakaan</strong></td>
@@ -46,59 +45,36 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Biaya Perusahaan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['biaya_perusahaan']; ?></td>
+                                                            <td style="border: 0">: Rp<?php echo number_format($headerRow['biaya_perusahaan'],0,",",".") ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Biaya Pekerja</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['biaya_pekerja']; ?></td>
+                                                            <td style="border: 0">: Rp<?php echo number_format($headerRow['biaya_pekerja'],0,",",".") ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Pekerja</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['pekerja']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
-=======
-                                                    <?php foreach ($FleetKecelakaan as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Kecelakaan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_kecelakaan']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sebab</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sebab']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Biaya Perusahaan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['biaya_perusahaan']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Biaya Pekerja</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['biaya_pekerja']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Pekerja</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['pekerja']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+                                                        <?php
+                                                          if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00')
+                                                          {
+                                                            echo '  <tr>
+                                                                        <td class="col-lg-2" style="border: 0"><strong>Waktu Dibuat</strong></td>
+                                                                        <td style="border: 0">: '.$headerRow['waktu_dibuat'].'</td>
+                                                                    </tr>';
+                                                          }
+                                                          else
+                                                          {
+                                                            echo '  <tr>
+                                                                        <td class="col-lg-2" style="border: 0"><strong>Waktu Dibuat</strong></td>
+                                                                        <td style="border: 0">: '.$headerRow['waktu_dibuat'].'</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="col-lg-2" style="border: 0"><strong>Waktu Dihapus</strong></td>
+                                                                        <td style="border: 0">: '.$headerRow['waktu_dihapus'].'</td>
+                                                                    </tr>';
+                                                          }
+                                                        ?>     
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>
@@ -124,8 +100,6 @@
                                                                                     <tr class="bg-primary">
                                                                                         <th style="text-align:center; width:30px">No</th>
 																						<th style="text-align:center;">Kerusakan</th>
-																						<th style="text-align:center;">Start Date</th>
-																						<th style="text-align:center;">End Date</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
@@ -133,8 +107,6 @@
                                                                                     <tr>
                                                                                         <td style="text-align:center; width:30px"><?php echo $no++;?></td>
 																						<td><?php echo $lines1_row['kerusakan']; ?></td>
-																						<td><?php echo $lines1_row['start_date']; ?></td>
-																						<td><?php echo $lines1_row['end_date']; ?></td>
                                                                                     </tr>
                                                                                     <?php endforeach; ?>
                                                                                 </tbody>

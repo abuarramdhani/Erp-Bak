@@ -55,7 +55,6 @@
                                                     <tr>
                                                         <td align='center'><?php echo $no++;?></td>
                                                         <td align='center'>
-                                                           <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                            <a href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
@@ -90,7 +89,6 @@
                                                     <tr>
                                                         <td align='center'><?php echo $no++;?></td>
                                                         <td align='center'>
-                                                	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                         </td>
 												        <td><?php echo $row['merk_kendaraan'] ?></td>

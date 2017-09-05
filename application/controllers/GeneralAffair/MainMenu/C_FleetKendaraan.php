@@ -51,7 +51,7 @@ class C_FleetKendaraan extends CI_Controller
 		$data['FleetKendaraanDeleted']	= $this->M_fleetkendaraan->getFleetKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('V_Sidemenu',$data);	
 		$this->load->view('GeneralAffair/FleetKendaraan/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}

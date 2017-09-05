@@ -5,18 +5,64 @@ class M_fleetkir extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
+
+        date_default_timezone_set('Asia/Jakarta');
     }
 
     public function getFleetKir($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_fleet_kir');
+            $ambilKIR       = " select  kir.kir_id as kode_kir,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        kir.kendaraan_id as kode_kendaraan,
+                                        to_char(kir.tanggal_kir, 'DD-MM-YYYY') as tanggal_kir,
+                                        concat_ws('<br/>sampai dengan<br/>', to_char(kir.periode_awal_kir, 'DD-MM-YYYY'), to_char(kir.periode_akhir_kir, 'DD-MM-YYYY')) as periode_kir,
+                                        kir.biaya as biaya,
+                                        to_char(kir.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(kir.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_kir as kir
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=kir.kendaraan_id
+                                where   kir.end_date='9999-12-12 00:00:00';";
+
+    		$query = $this->db->query($ambilKIR);
     	} else {
-    		$query = $this->db->get_where('ga.ga_fleet_kir', array('kir_id' => $id));
+            $ambilKIR       = " select  kir.kir_id as kode_kir,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        kir.kendaraan_id as kode_kendaraan,
+                                        to_char(kir.tanggal_kir, 'DD-MM-YYYY') as tanggal_kir,
+                                        concat_ws(' - ', to_char(kir.periode_awal_kir, 'DD-MM-YYYY'), to_char(kir.periode_akhir_kir, 'DD-MM-YYYY')) as periode_kir,
+                                        kir.biaya as biaya,
+                                        to_char(kir.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(kir.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_kir as kir
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=kir.kendaraan_id
+                                where   kir.kir_id=$id;";
+
+    		$query = $this->db->query($ambilKIR);
     	}
 
     	return $query->result_array();
+    }
+
+    public function getFleetKirDeleted()
+    {
+        $ambilKIRDeleted    = " select  kir.kir_id as kode_kir,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        kir.kendaraan_id as kode_kendaraan,
+                                        to_char(kir.tanggal_kir, 'DD-MM-YYYY') as tanggal_kir,
+                                        concat_ws('<br/>sampai dengan<br/>', to_char(kir.periode_awal_kir, 'DD-MM-YYYY'), to_char(kir.periode_akhir_kir, 'DD-MM-YYYY')) as periode_kir,
+                                        kir.biaya as biaya,
+                                        to_char(kir.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(kir.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_kir as kir
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=kir.kendaraan_id
+                                where   kir.end_date!='9999-12-12 00:00:00';";
+        $query              =   $this->db->query($ambilKIRDeleted);
+        return $query->result_array();
     }
 
     public function setFleetKir($data)
@@ -32,15 +78,24 @@ class M_fleetkir extends CI_Model
 
     public function deleteFleetKir($id)
     {
-        $this->db->where('kir_id', $id);
-        $this->db->delete('ga.ga_fleet_kir');
+        $waktu_eksekusi     =   date('Y-m-d H:i:s');
+
+        $deleteKIR      = " update  ga.ga_fleet_kir
+                            set     end_date='$waktu_eksekusi'
+                            where   kir_id=$id;";
+        $this->db->query($deleteKIR);
     }
 
 	public function getFleetKendaraan()
 	{
-		$query = $this->db->get('ga.ga_fleet_kendaraan');
+        $ambilKendaraan = "     select  kdrn.kendaraan_id as kode_kendaraan,
+                                        kdrn.nomor_polisi as nomor_polisi
+                                from    ga.ga_fleet_kendaraan as kdrn
+                                where   kdrn.end_date='9999-12-12 00:00:00';";
 
-		return $query->result_array();
+        $query = $this->db->query($ambilKendaraan);
+
+        return $query->result_array();
 	}
 
 }
