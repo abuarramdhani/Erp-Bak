@@ -69,15 +69,15 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="chart-responsive">
-                                                    <canvas id="RekapTotalKecelakaan" height="100"></canvas>
+                                                <div class="chart-responsive" id="ContainerRekapBiayaTotal">
+                                                    <canvas id="RekapBiayaTotal" height="100"></canvas>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="chart-responsive">
-                                                    <canvas id="RekapFrekuensiKecelakaan" height="100"></canvas>
+                                                <div class="chart-responsive" id="ContainerRekapFrekuensiTotal">
+                                                    <canvas id="RekapFrekuensiTotal" height="100"></canvas>
                                                 </div>
                                             </div>
                                         </div>
