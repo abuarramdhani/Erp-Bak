@@ -1147,3 +1147,20 @@ $route['GeneralAffair/FleetKecelakaan'] = 'GeneralAffair/MainMenu/C_FleetKecelak
 $route['GeneralAffair/FleetKecelakaan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan/$1';
 $route['GeneralAffair/FleetKecelakaan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan/$1/$2';
 
+$route['GeneralAffair/FleetMonitoring'] 			= 'GeneralAffair/MainMenu/C_FleetMonitoring';
+$route['GeneralAffair/FleetMonitoring/(:any)']		= 'GeneralAffair/MainMenu/C_FleetMonitoring/$1';
+
+$route['GeneralAffair/FleetRekapPajak'] 			= 'GeneralAffair/MainMenu/C_FleetRekapPajak';
+$route['GeneralAffair/FleetRekapPajak/(:any)']		= 'GeneralAffair/MainMenu/C_FleetRekapPajak/$1';
+
+$route['GeneralAffair/FleetRekapKIR'] 				= 'GeneralAffair/MainMenu/C_FleetRekapKIR';
+$route['GeneralAffair/FleetRekapKIR/(:any)']		= 'GeneralAffair/MainMenu/C_FleetRekapKIR/$1';
+
+$route['GeneralAffair/FleetRekapMaintenance'] 				= 'GeneralAffair/MainMenu/C_FleetRekapMaintenance';
+$route['GeneralAffair/FleetRekapMaintenance/(:any)']		= 'GeneralAffair/MainMenu/C_FleetRekapMaintenance/$1';
+
+$route['GeneralAffair/FleetRekapKecelakaan'] 				= 'GeneralAffair/MainMenu/C_FleetRekapKecelakaan';
+$route['GeneralAffair/FleetRekapKecelakaan/(:any)']			= 'GeneralAffair/MainMenu/C_FleetRekapKecelakaan/$1';
+
+$route['GeneralAffair/FleetRekapTotal'] 				= 'GeneralAffair/MainMenu/C_FleetRekapTotal';
+$route['GeneralAffair/FleetRekapTotal/(:any)']			= 'GeneralAffair/MainMenu/C_FleetRekapTotal/$1';

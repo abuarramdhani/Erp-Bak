@@ -30,11 +30,10 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-<<<<<<< HEAD
                                                     <?php foreach ($FleetMaintenanceKendaraan as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_polisi']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Tanggal Maintenance</strong></td>
@@ -45,52 +44,13 @@
                                                             <td style="border: 0">: <?php echo $headerRow['kilometer_maintenance']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Maintenance Kategori Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['maintenance_kategori_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kategori Maintenance</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kategori_maintenance']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Alasan</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['alasan']; ?></td>
                                                         </tr>
-=======
-                                                    <?php foreach ($FleetMaintenanceKendaraan as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kendaraan Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kendaraan_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Maintenance</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_maintenance']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kilometer Maintenance</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kilometer_maintenance']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Maintenance Kategori Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['maintenance_kategori_id']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Start Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['start_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>End Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['end_date']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Alasan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['alasan']; ?></td>
-                                                        </tr>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>
@@ -117,8 +77,6 @@
                                                                                         <th style="text-align:center; width:30px">No</th>
 																						<th style="text-align:center;">Jenis Maintenance</th>
 																						<th style="text-align:center;">Biaya</th>
-																						<th style="text-align:center;">Start Date</th>
-																						<th style="text-align:center;">End Date</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
@@ -126,9 +84,7 @@
                                                                                     <tr>
                                                                                         <td style="text-align:center; width:30px"><?php echo $no++;?></td>
 																						<td><?php echo $lines1_row['jenis_maintenance']; ?></td>
-																						<td><?php echo $lines1_row['biaya']; ?></td>
-																						<td><?php echo $lines1_row['start_date']; ?></td>
-																						<td><?php echo $lines1_row['end_date']; ?></td>
+																						<td>Rp<?php echo number_format($lines1_row['biaya'],0,",","."); ?></td>
                                                                                     </tr>
                                                                                     <?php endforeach; ?>
                                                                                 </tbody>

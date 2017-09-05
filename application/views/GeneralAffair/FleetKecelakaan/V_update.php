@@ -29,125 +29,92 @@
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-											<div class="form-group">
-                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan Id</label>
+                                            <div class="form-group">
+                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
-                                                                if ($headerRow['kendaraan_id'] == $row['kendaraan_id']) {
+                                                                if ($headerRow['kode_kendaraan'] == $row['kode_kendaraan']) {
                                                                     $selected_data = "selected";
-                                                                } else {
+                                                                } 
+                                                                else 
+                                                                {
                                                                     $selected_data = "";   
                                                                 }
-                                                                echo '<option value="'.$row['nomor_polisi'].'" '.$selected_data.'>'.$row['kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_kendaraan'].'" '.$selected_data.'>'.$row['nomor_polisi'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTanggalKecelakaanHeader" class="control-label col-lg-4">Tanggal Kecelakaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" value="<?php echo $headerRow['tanggal_kecelakaan'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalKecelakaanHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" value="<?php echo $headerRow['tanggal_kecelakaan'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepickersingledatewithtime" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txaSebabHeader" class="control-label col-lg-4">Sebab</label>
                                                 <div class="col-lg-4">
                                                     <textarea name="txaSebabHeader" id="txaSebabHeader" class="form-control" placeholder="Sebab"><?php echo $headerRow['sebab']; ?></textarea>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtBiayaPerusahaanHeader" class="control-label col-lg-4">Biaya Perusahaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control" value="<?php echo $headerRow['biaya_perusahaan']; ?>"/>
+                                                    <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control input_money" value="<?php echo $headerRow['biaya_perusahaan']; ?>"/>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtBiayaPekerjaHeader" class="control-label col-lg-4">Biaya Pekerja</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control" value="<?php echo $headerRow['biaya_pekerja']; ?>"/>
+                                                    <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control input_money" value="<?php echo $headerRow['biaya_pekerja']; ?>"/>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">Pekerja</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($EmployeeAll as $row) {
-                                                                if ($headerRow['pekerja'] == $row['pekerja']) {
+                                                                if($headerRow['id_pekerja'] == $row['id_pekerja'])
+                                                                {
                                                                     $selected_data = "selected";
-                                                                } else {
-                                                                    $selected_data = "";   
                                                                 }
-                                                                echo '<option value="'.$row['employee_name'].'" '.$selected_data.'>'.$row['employee_id'].'</option>';
+                                                                else
+                                                                {
+                                                                    $selected_data = "";
+                                                                }
+                                                                echo '<option value="'.$row['id_pekerja'].'" '.$selected_data.'>'.$row['daftar'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
+                                            <div class="form-group">
+                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Waktu Dibuat</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" value="<?php echo $headerRow['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo $headerRow['waktu_dibuat'];?>" name="txtStartDateHeader" value="<?php echo $headerRow['waktu_dibuat'] ?>" class="date form-control" data-date-format="dd-mm-yyyy H:i:s" id="txtStartDateHeader" disabled=""/>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
+                                            <div class="form-group">
+                                                <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" value="<?php echo $headerRow['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
+                                                    <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
+                                                    <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $headerRow['waktu_dihapus'];?>">
                                                 </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
-
-                                        </div>
+                                            </div>                                               
 
                                         <div class="col-lg-12">
                                             <br />
@@ -169,11 +136,9 @@
                                                                                     <th style="text-align:center; width:30px">No</th>
                                                                                     <th style="text-align:center;">Action</th>
 																					<th style="text-align:center;">Kerusakan</th>
-																					<th style="text-align:center;">Start Date</th>
-																					<th style="text-align:center;">End Date</th>
                                                                                 </tr>
                                                                             </thead>
-                                                                            <tbody>
+                                                                            <tbody id="DetailKecelakaan">
                                                                                 <?php
                                                                                     $no = 1;
                                                                                     if(count($FleetKecelakaanDetail) > 0):
@@ -186,7 +151,7 @@
                                                                                         <?php echo $no++ ?> 
                                                                                     </td>
                                                                                     <td align="center" width="60px">
-                                                                                        <a class="del-row btn btn-xs btn-danger disabled" data-toggle="tooltip" data-placement="bottom" title="Delete Data"><span class="fa fa-times"></span></a>
+                                                                                        <a class="del-row btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete Data" onclick="delSpesifikRow(this)" data-id="<?php echo $encrypted_string ?>" id="deleteUpdateKecelakaan"><span class="fa fa-times"></span></a>
                                                                                         <input type="hidden" name="hdnKecelakaanDetailId[]" value="<?php echo $encrypted_string ?>" class="form-control" id="hdnKecelakaanDetailId" />
                                                                                     </td>
                                                                                     
@@ -194,22 +159,6 @@
 																						<div class="form-group">
                                                                                             <div class="col-lg-12">
                                                                                             <input type="text" placeholder="Kerusakan" name="txtKerusakanLine1[]" id="txtKerusakanLine1" class="form-control" value="<?php echo $lines1_row['kerusakan']; ?>"/>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-
-																					<td>
-																						<div class="form-group">
-                                                                                            <div class="col-lg-12">
-                                                                                            <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateLine1[]" value="<?php echo $lines1_row['start_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateLine1" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-
-																					<td>
-																						<div class="form-group">
-                                                                                            <div class="col-lg-12">
-                                                                                            <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateLine1[]" value="<?php echo $lines1_row['end_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateLine1" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -231,28 +180,12 @@
                                                                                         </div>
                                                                                     </td>
 
-																					<td>
-																						<div class="form-group">
-                                                                                            <div class="col-lg-12">
-                                                                                            <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateLine1[]" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateLine1" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-
-																					<td>
-																						<div class="form-group">
-                                                                                            <div class="col-lg-12">
-                                                                                            <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateLine1[]" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateLine1" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-
                                                                                 </tr>
                                                                                 <?php endif; ?>
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
-                                                                    <a class="add-row btn btn-sm btn-success"><i class="fa fa-plus"></i> Add New</a>
+                                                                    <a class="add-row btn btn-sm btn-success" onclick="TambahBarisKecelakaanDetail()"><i class="fa fa-plus"></i> Add New</a>
                                                                 </div>
                                                             </div>
                                                         </div>

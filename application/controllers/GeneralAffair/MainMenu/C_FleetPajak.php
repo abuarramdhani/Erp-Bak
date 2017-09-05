@@ -155,10 +155,10 @@ class C_FleetPajak extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'KendaraanId', 'required');
-		$this->form_validation->set_rules('txtPeriodeAwalPajakHeader', 'PeriodeAwalPajak', 'required');
-		$this->form_validation->set_rules('txtPeriodeAkhirPajakHeader', 'PeriodeAkhirPajak', 'required');
-		$this->form_validation->set_rules('txtBiayaHeader', 'Biaya', 'required');
+		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'Kendaraan', 'required');
+		$this->form_validation->set_rules('txtTanggalPajak', 'Tanggal Pajak', 'required');
+		$this->form_validation->set_rules('txtPeriodePajak', 'Periode Pajak', 'required');
+		$this->form_validation->set_rules('txtBiaya', 'Biaya', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -166,15 +166,40 @@ class C_FleetPajak extends CI_Controller
 			$this->load->view('GeneralAffair/FleetPajak/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$kendaraan 			= 	$this->input->post('cmbKendaraanIdHeader', TRUE);
+			$tanggalPajak 		= 	$this->input->post('txtTanggalPajak', TRUE);
+			$periodePajak 		= 	$this->input->post('txtPeriodePajak', TRUE);
+			$biaya 				= 	$this->input->post('txtBiaya', TRUE);
+			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
+			$status_data 		= 	$this->input->post('CheckAktif');
+
+			$tanggalPajak 		= 	date('Y-m-d', strtotime($tanggalPajak));
+			$periodePajak 		=	explode(' - ', $periodePajak);
+			$biaya 				=	str_replace(array('Rp','.'), '', $biaya);
+
+			$periodeawalPajak 	=	date('Y-m-d',strtotime($periodePajak[0]));
+			$periodeakhirPajak 	=	date('Y-m-d',strtotime($periodePajak[1]));
+
+			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
+
+			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
+			{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
+			{
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}			
+
 			$data = array(
-				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader',TRUE),
-				'periode_awal_pajak' => $this->input->post('txtPeriodeAwalPajakHeader',TRUE),
-				'periode_akhir_pajak' => $this->input->post('txtPeriodeAkhirPajakHeader',TRUE),
-				'biaya' => $this->input->post('txtBiayaHeader',TRUE),
-				'start_date' => $this->input->post('txtStartDateHeader',TRUE),
-				'end_date' => $this->input->post('txtEndDateHeader',TRUE),
-				'last_updated' => 'NOW()',
-				'last_updated_by' => $this->session->userid,
+				'kendaraan_id' 			=> $kendaraan,
+				'periode_awal_pajak' 	=> $periodeawalPajak,
+				'periode_akhir_pajak' 	=> $periodeakhirPajak,
+				'biaya' 				=> $biaya,
+				'end_date' 				=> $waktu_dihapus,
+				'last_updated' 			=> $waktu_eksekusi,
+				'last_updated_by' 		=> $this->session->userid,
+				'tanggal_pajak'			=> $tanggalPajak
     			);
 			$this->M_fleetpajak->updateFleetPajak($data, $plaintext_string);
 
@@ -205,7 +230,7 @@ class C_FleetPajak extends CI_Controller
 		$data['FleetPajak'] = $this->M_fleetpajak->getFleetPajak($plaintext_string);
 
 		/* LINES DATA */
-
+ 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('GeneralAffair/FleetPajak/V_read', $data);

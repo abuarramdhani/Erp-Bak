@@ -26,103 +26,55 @@
                                 <div class="box-header with-border">Create Fleet Maintenance Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
-<<<<<<< HEAD
                                         <div class="row">
-=======
-                                        <div class="row">
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 											<div class="form-group">
-                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan Id</label>
+                                                <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="" >
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
-                                                                echo '<option value="'.$row['nomor_polisi'].'" >'.$row['kendaraan_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_kendaraan'].'" >'.$row['nomor_polisi'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtTanggalMaintenanceHeader" class="control-label col-lg-4">Tanggal Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalMaintenanceHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalMaintenanceHeader" />
+                                                    <input type="text" maxlength="10" name="txtTanggalMaintenanceHeader" class="date form-control" id="daterangepickersingledatewithtime" required="" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
                                                 <label for="txtKilometerMaintenanceHeader" class="control-label col-lg-4">Kilometer Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Kilometer Maintenance" name="txtKilometerMaintenanceHeader" id="txtKilometerMaintenanceHeader" class="form-control" />
+                                                    <input type="number" step="0.01" placeholder="Kilometer Maintenance" name="txtKilometerMaintenanceHeader" id="txtKilometerMaintenanceHeader" class="form-control" required="" />
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
 
 											<div class="form-group">
-                                                <label for="cmbMaintenanceKategoriIdHeader" class="control-label col-lg-4">Maintenance Kategori Id</label>
+                                                <label for="cmbMaintenanceKategoriIdHeader" class="control-label col-lg-4">Kategori Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbMaintenanceKategoriIdHeader" name="cmbMaintenanceKategoriIdHeader" class="select select2" data-placeholder="Choose an option">
+                                                    <select id="cmbMaintenanceKategoriIdHeader" name="cmbMaintenanceKategoriIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetMaintenanceKategori as $row) {
-                                                                echo '<option value="'.$row['maintenance_kategory'].'" >'.$row['maintenance_kategori_id'].'</option>';
+                                                                echo '<option value="'.$row['kode_kategori_maintenance'].'" >'.$row['kategori_maintenance'].'</option>';
                                                             }
                                                         ?>
                                                     </select>
                                                 </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtStartDateHeader" class="control-label col-lg-4">Start Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-											<div class="form-group">
-                                                <label for="txtEndDateHeader" class="control-label col-lg-4">End Date</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateHeader" />
-                                                </div>
-<<<<<<< HEAD
-                                            </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+                                           </div>
 
 											<div class="form-group">
                                                 <label for="txaAlasanHeader" class="control-label col-lg-4">Alasan</label>
                                                 <div class="col-lg-4">
                                                     <textarea name="txaAlasanHeader" id="txaAlasanHeader" class="form-control" placeholder="Alasan"></textarea>
                                                 </div>
-<<<<<<< HEAD
                                             </div>
-=======
-                                            </div>
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
-
-
                                         </div>
 
                                         <div class="col-lg-12">
@@ -146,15 +98,13 @@
                                                                                     <th style="text-align:center;">Action</th>
 																					<th style="text-align:center;">Jenis Maintenance</th>
 																					<th style="text-align:center;">Biaya</th>
-																					<th style="text-align:center;">Start Date</th>
-																					<th style="text-align:center;">End Date</th>
                                                                                 </tr>
                                                                             </thead>
-                                                                            <tbody>
-                                                                                <tr>
+                                                                            <tbody id="DetailMaintenanceKendaraan">
+                                                                                <tr row-id="1">
                                                                                     <td style="text-align:center; width:30px">1</td>
                                                                                     <td align="center" width="60px">
-                                                                                        <a class="del-row btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete Data"><span class="fa fa-times"></span></a>
+                                                                                        <a class="del-row btn btn-xs btn-danger " data-toggle="tooltip" data-placement="bottom" title="Delete Data"><span class="fa fa-times" onclick="delSpesifikRow(this)"></span></a>
                                                                                     </td>
                                                                                     
 																					<td>
@@ -168,32 +118,15 @@
 																					<td>
 																						<div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="text" placeholder="Biaya" name="txtBiayaLine1[]" id="txtBiayaLine1" class="form-control"/>
+                                                                                            <input type="text" placeholder="Biaya" name="txtBiayaLine1[]" id="txtBiayaLine1" class="form-control input_money"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
-
-																					<td>
-																						<div class="form-group">
-                                                                                            <div class="col-lg-12">
-                                                                                            <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtStartDateLine1[]" class="date form-control" data-date-format="yyyy-mm-dd" id="txtStartDateLine1" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-
-																					<td>
-																						<div class="form-group">
-                                                                                            <div class="col-lg-12">
-                                                                                            <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtEndDateLine1[]" class="date form-control" data-date-format="yyyy-mm-dd" id="txtEndDateLine1" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
-                                                                    <a class="add-row btn btn-sm btn-success"><i class="fa fa-plus"></i> Add New</a>
+                                                                    <a class="add-row btn btn-sm btn-success" onclick="TambahBarisMaintenanceKendaraan()"><i class="fa fa-plus"></i> Add New</a>
                                                                 </div>
                                                             </div>
                                                         </div>

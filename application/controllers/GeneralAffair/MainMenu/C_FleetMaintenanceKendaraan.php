@@ -16,6 +16,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetmaintenancekendaraan');
 
+		date_default_timezone_set('Asia/Jakarta');
+
 		$this->checkSession();
 	}
 
@@ -36,7 +38,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kendaraan';
+		$data['Title'] = 'Maintenance Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -45,7 +47,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetMaintenanceKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraan();
+		$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraan();
+		$data['FleetMaintenanceKendaraanDeleted'] 	= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -58,7 +61,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kendaraan';
+		$data['Title'] = 'Maintenance Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -76,48 +79,58 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'KendaraanId', 'required');
 		$this->form_validation->set_rules('txtTanggalMaintenanceHeader', 'TanggalMaintenance', 'required');
 		$this->form_validation->set_rules('cmbMaintenanceKategoriIdHeader', 'MaintenanceKategoriId', 'required');
-
+ 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('GeneralAffair/FleetMaintenanceKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$kendaraan 				= 	$this->input->post('cmbKendaraanIdHeader');
+			$tanggal_maintenance	=	date('Y-m-d H:i:s', strtotime($this->input->post('txtTanggalMaintenanceHeader')));
+			$kilometer_maintenance	= 	$this->input->post('txtKilometerMaintenanceHeader');
+			$alasan 				= 	$this->input->post('txaAlasanHeader');
+			$kategori_maintenance 	= 	$this->input->post('cmbMaintenanceKategoriIdHeader');
+
+			$waktu_eksekusi 		= 	date('Y-m-d H:i:s');
+
 			$data = array(
-				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader'),
-				'tanggal_maintenance' => $this->input->post('txtTanggalMaintenanceHeader'),
-				'kilometer_maintenance' => $this->input->post('txtKilometerMaintenanceHeader'),
-				'maintenance_kategori_id' => $this->input->post('cmbMaintenanceKategoriIdHeader'),
-				'start_date' => $this->input->post('txtStartDateHeader'),
-				'end_date' => $this->input->post('txtEndDateHeader'),
-				'creation_date' => 'NOW()',
-				'created_by' => $this->session->userid,
-				'alasan' => $this->input->post('txaAlasanHeader'),
+				'kendaraan_id' 				=> $kendaraan,
+				'tanggal_maintenance' 		=> $tanggal_maintenance,
+				'kilometer_maintenance' 	=> $kilometer_maintenance,
+				'maintenance_kategori_id' 	=> $kategori_maintenance,
+				'start_date' 				=> $waktu_eksekusi,
+				'end_date' 					=> '9999-12-12 00:00:00',
+				'creation_date' 			=> $waktu_eksekusi,
+				'created_by' 				=> $this->session->userid,
+				'alasan' 					=> $alasan,
     		);
 			$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraan($data);
 			$header_id = $this->db->insert_id();
 
 			$line1_jenis_maintenance = $this->input->post('txtJenisMaintenanceLine1');
 			$line1_biaya = $this->input->post('txtBiayaLine1');
-			$line1_start_date = $this->input->post('txtStartDateLine1');
-			$line1_end_date = $this->input->post('txtEndDateLine1');
+
+			// print_r($line1_jenis_maintenance);
+			// print_r($line1_biaya);
+			// exit();
 
 			foreach ($line1_jenis_maintenance as $i => $loop) {
-				if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '' && $line1_start_date[$i] != '' && $line1_end_date[$i] != '') {
+				if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '') {
 					$data_line1[$i] = array(
-						'maintenance_kendaraan_id' => $header_id,
-						'jenis_maintenance' => $line1_jenis_maintenance[$i],
-						'biaya' => $line1_biaya[$i],
-						'start_date' => $line1_start_date[$i],
-						'end_date' => $line1_end_date[$i],
-						'creation_date' => 'now()',
-						'created_by' => $this->session->userid,
+						'maintenance_kendaraan_id' 		=> $header_id,
+						'jenis_maintenance' 			=> $line1_jenis_maintenance[$i],
+						'biaya' 						=> str_replace(array('Rp','.'), '', $line1_biaya[$i]),
+						'start_date' 					=> $waktu_eksekusi,
+						'end_date' 						=> '9999-12-12 00:00:00',
+						'creation_date' 				=> $waktu_eksekusi,
+						'created_by' 					=> $this->session->userid,
 						
 					);
 					$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraanDetail($data_line1[$i]);
 				}
 			}
-
+ 
 			redirect(site_url('GeneralAffair/FleetMaintenanceKendaraan'));
 		}
 	}
@@ -127,7 +140,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kendaraan';
+		$data['Title'] = 'Maintenance Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -163,38 +176,45 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetMaintenanceKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
+			$status_data 	= 	$this->input->post('CheckAktif');
+			$waktu_eksekusi = 	date('Y-m-d H:i:s');
+			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
+			{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
+			{
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}
+
 			$data = array(
-				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader',TRUE),
-				'tanggal_maintenance' => $this->input->post('txtTanggalMaintenanceHeader',TRUE),
-				'kilometer_maintenance' => $this->input->post('txtKilometerMaintenanceHeader',TRUE),
-				'maintenance_kategori_id' => $this->input->post('cmbMaintenanceKategoriIdHeader',TRUE),
-				'start_date' => $this->input->post('txtStartDateHeader',TRUE),
-				'end_date' => $this->input->post('txtEndDateHeader',TRUE),
-				'last_updated' => 'NOW()',
-				'last_updated_by' => $this->session->userid,
-				'alasan' => $this->input->post('txaAlasanHeader',TRUE),
+				'kendaraan_id' 				=> $this->input->post('cmbKendaraanIdHeader',TRUE),
+				'tanggal_maintenance' 		=> date('Y-m-d H:i:s',strtotime($this->input->post('txtTanggalMaintenanceHeader',TRUE))),
+				'kilometer_maintenance' 	=> $this->input->post('txtKilometerMaintenanceHeader',TRUE),
+				'maintenance_kategori_id' 	=> $this->input->post('cmbMaintenanceKategoriIdHeader',TRUE),
+				'end_date'					=> $waktu_dihapus,
+				'last_updated' 				=> $waktu_eksekusi,
+				'last_updated_by' 			=> $this->session->userid,
+				'alasan'		 			=> $this->input->post('txaAlasanHeader',TRUE),
     			);
 			$this->M_fleetmaintenancekendaraan->updateFleetMaintenanceKendaraan($data, $plaintext_string);
 
 			$line1_jenis_maintenance = $this->input->post('txtJenisMaintenanceLine1');
 			$line1_biaya = $this->input->post('txtBiayaLine1');
-			$line1_start_date = $this->input->post('txtStartDateLine1');
-			$line1_end_date = $this->input->post('txtEndDateLine1');
 			$maintenance_kendaraan_detail_id = $this->input->post('hdnMaintenanceKendaraanDetailId');
 
 			foreach ($line1_jenis_maintenance as $i => $loop) {
 				/* if hidden lines id is not null, then update data */
 				if($maintenance_kendaraan_detail_id[$i] != null) {
 					$data_line1[$i] = array(
-						'maintenance_kendaraan_id' => $plaintext_string,
-						'jenis_maintenance' => $line1_jenis_maintenance[$i],
-						'biaya' => $line1_biaya[$i],
-						'start_date' => $line1_start_date[$i],
-						'end_date' => $line1_end_date[$i],
-						'last_updated' => 'now()',
-						'last_updated_by' => $this->session->userid,
-						'creation_date' => 'now()',
-						'created_by' => $this->session->userid,
+						'maintenance_kendaraan_id' 	=> $plaintext_string,
+						'jenis_maintenance' 		=> $line1_jenis_maintenance[$i],
+						'biaya' 					=> str_replace(array('Rp','.'), '', $line1_biaya[$i]),
+						'last_updated' 				=> $waktu_eksekusi,
+						'last_updated_by' 			=> $this->session->userid,
+						'creation_date' 			=> $waktu_eksekusi,
+						'created_by' 				=> $this->session->userid,
 						
 					);
 					unset($data_line1[$i]['creation_date']);
@@ -203,17 +223,17 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 					$lineId[$i] = $this->encrypt->decode($lineId[$i]);
 					$this->M_fleetmaintenancekendaraan->updateFleetMaintenanceKendaraanDetail($data_line1[$i], $lineId[$i]);
 				} else {
-					if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '' && $line1_start_date[$i] != '' && $line1_end_date[$i] != '') {
+					if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '') {
 						$data_line1[$i] = array(
-							'maintenance_kendaraan_id' => $plaintext_string,
-						'jenis_maintenance' => $line1_jenis_maintenance[$i],
-						'biaya' => $line1_biaya[$i],
-						'start_date' => $line1_start_date[$i],
-						'end_date' => $line1_end_date[$i],
-						'last_updated' => 'now()',
-						'last_updated_by' => $this->session->userid,
-						'creation_date' => 'now()',
-						'created_by' => $this->session->userid,
+						'maintenance_kendaraan_id' 	=> $plaintext_string,
+						'jenis_maintenance' 		=> $line1_jenis_maintenance[$i],
+						'biaya' 					=> str_replace(array('Rp','.'), '', $line1_biaya[$i]),
+						'start_date' 				=> $waktu_eksekusi,
+						'end_date' 					=> '9999-12-12 00:00:00',
+						'last_updated' 				=> $waktu_eksekusi,
+						'last_updated_by' 			=> $this->session->userid,
+						'creation_date' 			=> $waktu_eksekusi,
+						'created_by' 				=> $this->session->userid,
 						
 						);
 						unset($data_line1[$i]['last_updated']);
@@ -232,7 +252,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Maintenance Kendaraan';
+		$data['Title'] = 'Maintenance Kendaraan';
 		$data['Menu'] = 'General Affair';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -247,10 +267,10 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['FleetMaintenanceKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraan($plaintext_string);
+		$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraan($plaintext_string);
 
 		/* LINES DATA */
-		$data['FleetMaintenanceKendaraanDetail'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDetail($plaintext_string);
+		$data['FleetMaintenanceKendaraanDetail'] 	= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDetail($plaintext_string);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -269,12 +289,15 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		redirect(site_url('GeneralAffair/FleetMaintenanceKendaraan'));
     }
 
-	public function deleteFleetMaintenanceKendaraanDetail($id)
+	public function deleteBarisDetail($id)
 	{
+		// $id = $this->input->post('id');
 		$lineId = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$lineId = $this->encrypt->decode($lineId);
 
 		$this->M_fleetmaintenancekendaraan->deleteFleetMaintenanceKendaraanDetail($lineId);
+
+		echo json_encode('true');
 	}
 
 

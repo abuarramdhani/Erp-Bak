@@ -27,12 +27,12 @@ class M_fleetpajak extends CI_Model
                                 where   pjk.end_date='9999-12-12 00:00:00';";
 
     		$query = $this->db->query($ambilPajak);
-    	} else {
+    	} else { 
             $ambilPajak     = " select  pjk.pajak_id as kode_pajak,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         pjk.kendaraan_id as kode_kendaraan,
-                                        pjk.tanggal_pajak as tanggal_pajak,
-                                        concat_ws(' - ', pjk.periode_awal_pajak, periode_akhir_pajak) as periode_pajak,
+                                        to_char(pjk.tanggal_pajak, 'DD-MM-YYYY') as tanggal_pajak,
+                                        concat_ws(' - ', to_char(pjk.periode_awal_pajak, 'DD-MM-YYYY'), to_char(periode_akhir_pajak, 'DD-MM-YYYY')) as periode_pajak,
                                         pjk.biaya as biaya,
                                         to_char(pjk.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                         to_char(pjk.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
@@ -52,8 +52,8 @@ class M_fleetpajak extends CI_Model
         $ambilPajakDeleted  = " select  pjk.pajak_id as kode_pajak,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         pjk.kendaraan_id as kode_kendaraan,
-                                        pjk.tanggal_pajak as tanggal_pajak,
-                                        concat_ws(' - ', pjk.periode_awal_pajak, periode_akhir_pajak) as periode_pajak,
+                                        to_char(pjk.tanggal_pajak, 'DD-MM-YYYY') as tanggal_pajak,
+                                        concat_ws('<br/>sampai dengan<br/>', to_char(pjk.periode_awal_pajak, 'DD-MM-YYYY'), to_char(periode_akhir_pajak,'DD-MM-YYYY')) as periode_pajak,
                                         pjk.biaya as biaya,
                                         to_char(pjk.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                         to_char(pjk.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
@@ -77,13 +77,17 @@ class M_fleetpajak extends CI_Model
 
     public function deleteFleetPajak($id)
     {
-        $this->db->where('pajak_id', $id);
-        $this->db->delete('ga.ga_fleet_pajak');
+        $waktu_eksekusi = date('Y-m-d H:i:s');
+        $deletePajak    = " update  ga.ga_fleet_pajak
+                            set     end_date='$waktu_eksekusi'
+                            where   pajak_id=$id;";
+
+        $this->db->query($deletePajak);
     }
 
 	public function getFleetKendaraan()
 	{
-        $ambilKendaraan = " select  kdrn.kendaraan_id as kode_kendaraan,
+        $ambilKendaraan = "     select  kdrn.kendaraan_id as kode_kendaraan,
                                         kdrn.nomor_polisi as nomor_polisi
                                 from    ga.ga_fleet_kendaraan as kdrn
                                 where   kdrn.end_date='9999-12-12 00:00:00';";
