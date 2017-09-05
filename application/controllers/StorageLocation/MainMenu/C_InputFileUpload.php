@@ -61,13 +61,15 @@ class C_InputFileUpload extends CI_Controller
         $this->upload->initialize($config);
          
         if(! $this->upload->do_upload('datafile') ){
+            $errorinfo = $this->upload->display_errors();
           	$message = '<div class="row">
           					<div class="col-md-6 col-md-offset-3" style="margin-top: 20px">
           						<div id="eror" class="alert alert-dismissible" role="alert" style="background-color:#c53838; text-align:center; color:white; ">
           							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
           								<span aria-hidden="true">&times;</span>
-          							</button>
-          							You did not select any file Excel to upload.
+          							</button>';
+                                    $message .= $errorinfo;
+          							$message .= '
           						</div>
           					</div>
                       	</div>';
