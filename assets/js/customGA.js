@@ -726,6 +726,9 @@ $(document).on('click','#ProsesRekapTotal', function()
       }
       Grafik('#RekapFrekuensiMaintenance',value,bulan,'#0033CC','#0033CC', ['Frekuensi Maintenance Kendaraan']);
 
+      var   data  =   $.parseJSON(data);
+      var   
+
     })
 });
 

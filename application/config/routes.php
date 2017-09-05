@@ -1164,3 +1164,37 @@ $route['GeneralAffair/FleetRekapKecelakaan/(:any)']			= 'GeneralAffair/MainMenu/
 
 $route['GeneralAffair/FleetRekapTotal'] 				= 'GeneralAffair/MainMenu/C_FleetRekapTotal';
 $route['GeneralAffair/FleetRekapTotal/(:any)']			= 'GeneralAffair/MainMenu/C_FleetRekapTotal/$1';
+
+//------------------------------------ Aplikasi Toolroom ----------------------------
+$route['Toolroom'] = 'Toolroom/C_Index';
+$route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';
+$route['Toolroom/MasterItem/(:any)'] = 'Toolroom/MainMenu/C_MasterItem/$1';
+$route['Toolroom/MasterItem/(:any)/(:any)'] = 'Toolroom/MainMenu/C_MasterItem/$1/$2';
+$route['Toolroom/Transaksi'] = 'Toolroom/MainMenu/C_Transaksi';
+$route['Toolroom/Transaksi/(:any)'] = 'Toolroom/MainMenu/C_Transaksi/$1';
+$route['Toolroom/Transaksi/(:any)/(:any)'] = 'Toolroom/MainMenu/C_Transaksi/$1/$2';
+$route['Toolroom/Transaksi/(:any)/(:any)/(:any)'] = 'Toolroom/MainMenu/C_Transaksi/$1/$2/$3';
+$route['Toolroom/Report'] = 'Toolroom/Report/C_Report';
+$route['Toolroom/Report/(:any)'] = 'Toolroom/Report/C_Report/$1';
+$route['Toolroom/Report/(:any)/(:any)'] = 'Toolroom/Report/C_Report/$1/$2';
+$route['Toolroom/Report/(:any)/(:any)/(:any)'] = 'Toolroom/Report/C_Report/$1/$2/$3';
+$route['Toolroom/Dashboard'] = 'Toolroom/MainMenu/C_Dashboard';
+
+//------------------------------------ KHS Save Location ----------------------------------------
+$route['StorageLocation'] 									= 'StorageLocation/C_StorageLocation/index';
+$route['StorageLocation/InputComponent'] 					= 'StorageLocation/MainMenu/C_InputComponent/index';
+$route['StorageLocation/InputComponent/(:any)'] 			= 'StorageLocation/MainMenu/C_InputComponent/$1';
+$route['StorageLocation/InputSubAssy'] 						= 'StorageLocation/MainMenu/C_InputAssy/index';
+$route['StorageLocation/InputSubAssy/(:any)'] 				= 'StorageLocation/MainMenu/C_InputAssy/$1';
+$route['StorageLocation/FileUpload'] 						= 'StorageLocation/MainMenu/C_InputFileUpload/index';
+$route['StorageLocation/FileUpload/(:any)'] 				= 'StorageLocation/MainMenu/C_InputFileUpload/$1';
+$route['StorageLocation/FileUpload/(:any)/(:any)'] 			= 'StorageLocation/MainMenu/C_InputFileUpload/$1/$2';
+$route['StorageLocation/Correction'] 						= 'StorageLocation/MainMenu/C_Correction/index';
+$route['StorageLocation/Correction/(:any)'] 				= 'StorageLocation/MainMenu/C_Correction/$1';
+$route['StorageLocation/AddressMonitoring'] 				= 'StorageLocation/MainMenu/C_Monitoring/index';
+$route['StorageLocation/AddressMonitoring/(:any)'] 			= 'StorageLocation/MainMenu/C_Monitoring/$1';
+$route['StorageLocation/AddressMonitoring/(:any)/(:any)'] 	= 'StorageLocation/MainMenu/C_Monitoring/$1/$2';
+$route['StorageLocation/Ajax/(:any)'] 						= 'StorageLocation/Additional/C_Ajax/$1';
+$route['StorageLocation/Ajax/(:any)/(:any)'] 				= 'StorageLocation/Additional/C_Ajax/$1/$2';
+$route['StorageLocation/Report'] 							= 'StorageLocation/Report/C_Report/index';
+$route['StorageLocation/Report/(:any)'] 					= 'StorageLocation/Report/C_Report/$1';
