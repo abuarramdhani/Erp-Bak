@@ -167,14 +167,14 @@ class C_Receipt extends CI_Controller {
 	{
 		$id 		= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
-<<<<<<< HEAD
+
 		$date 		= date("Y-m-d",strtotime($this->input->post('TxtReceiptDate')));
-=======
-		$date 		= $this->input->post('TxtReceiptDate');
+
+		//$date 		= $this->input->post('TxtReceiptDate');
 		$date=str_replace('/', '-', $date);
 		$date=date_create($date);
 		$date=date_format($date,"Y-m-d");
->>>>>>> bf455b425468f660f3b48080e96612f78ed90ffc
+
 		$place 		= $this->input->post('TxtPlace');
 		$from 		= $this->input->post('TxtFrom');
 		$signer		= $this->input->post('TxtSigner');

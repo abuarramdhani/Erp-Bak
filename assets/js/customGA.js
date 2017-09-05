@@ -726,23 +726,8 @@ $(document).on('click','#ProsesRekapTotal', function()
     });
 });
 
-      function resetCanvas(){
-      $('#RekapBiayaTotal').remove(); // this is my <canvas> element
-      $('#ContainerRekapBiayaTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
-
-      canvas  =   document.getElementById('#RekapBiayaTotal');
-      ctx     =   canvas.getContext('2d');
-      ctx.canvas.height  =   100;
-
-      $('#RekapFrekuensiTotal').remove(); // this is my <canvas> element
-      $('#ContainerRekapFrekuensiTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
-
-      canvas  =   document.getElementById('#RekapFrekuensiTotal');
-      ctx     =   canvas.getContext('2d');
-      ctx.canvas.height  =   100;
-
-      };
-
+    });
+});
 
 function Grafik(canvas, data, labels, color, color2, label) {
     var ctx = $(canvas);
