@@ -11,84 +11,78 @@ class M_fleetrekaptotal extends CI_Model
 
     public function rekapBiayaTotal($tahun, $bulan)
       {
-        $biayaTotal     = "             -- Pajak
-                                        select      'Pajak' as label,
-                                                    sum(pjk.biaya) as total_biaya
-                                        from        ga.ga_fleet_pajak as pjk
-                                        where       extract(year from pjk.tanggal_pajak)='$tahun'
-                                                    and     extract(month from pjk.tanggal_pajak)='$bulan'
-                                                    and     pjk.end_date='9999-12-12 00:00:00'
-                                        union
-                                        -- KIR
-                                        select      'KIR' as label,
-                                                    sum(kir.biaya) as total_biaya
-                                        from        ga.ga_fleet_kir as kir
-                                        where       extract(year from kir.tanggal_kir)='$tahun'
-                                                    and     extract(month from kir.tanggal_kir)='$bulan'
-                                                    and     kir.end_date='9999-12-12 00:00:00'
-                                        union
-                                        -- Maintenance Kendaraan
-                                        select      'Maintenance Kendaraan' as label,
-                                                    sum(mtckdrndtl.biaya) as total_biaya
-                                        from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
-                                                    join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
-                                                        on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
-                                        where       extract(year from mtckdrn.tanggal_maintenance)='$tahun'
-                                                    and     extract(month from mtckdrn.tanggal_maintenance)='$bulan'
-                                                    and     mtckdrn.end_date='9999-12-12 00:00:00'
-                                                    and     mtckdrndtl.end_date='9999-12-12 00:00:00'           
-                                        union
-                                        -- Kecelakaan
-                                        select      'Kecelakaan' as label,
-                                                    (
-                                                        sum(kecelakaan.biaya_perusahaan)
-                                                        + 
-                                                        sum(kecelakaan.biaya_pekerja)
-                                                    ) as total_biaya
-                                        from        ga.ga_fleet_kecelakaan as kecelakaan
-                                        where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
-                                                    and     extract(month from kecelakaan.tanggal_kecelakaan)='$bulan'
-                                                    and     kecelakaan.end_date='9999-12-12 00:00:00';";
+        $biayaTotal     = "     select  (
+                                            select      coalesce(sum(pjk.biaya),0) as total_biaya
+                                            from        ga.ga_fleet_pajak as pjk
+                                            where       extract(year from pjk.tanggal_pajak)='$tahun'
+                                                        and     extract(month from pjk.tanggal_pajak)='$bulan'
+                                                        and     pjk.end_date='9999-12-12 00:00:00'
+                                        ) as total_biaya_pajak,
+                                        (
+                                            select      coalesce(sum(kir.biaya),0) as total_biaya
+                                            from        ga.ga_fleet_kir as kir
+                                            where       extract(year from kir.tanggal_kir)='$tahun'
+                                                        and     extract(month from kir.tanggal_kir)='$bulan'
+                                                        and     kir.end_date='9999-12-12 00:00:00'
+                                        ) as total_biaya_kir,
+                                        (
+                                            select      coalesce(sum(mtckdrndtl.biaya),0) as total_biaya
+                                            from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
+                                                        join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
+                                                            on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
+                                            where       extract(year from mtckdrn.tanggal_maintenance)='$tahun'
+                                                        and     extract(month from mtckdrn.tanggal_maintenance)='$bulan'
+                                                        and     mtckdrn.end_date='9999-12-12 00:00:00'
+                                                        and     mtckdrndtl.end_date='9999-12-12 00:00:00'
+                                        ) as total_biaya_maintenance_kendaraan,
+                                        (
+                                            select      coalesce(
+                                                            sum(kecelakaan.biaya_perusahaan)
+                                                            + 
+                                                            sum(kecelakaan.biaya_pekerja)
+                                                        ,0) as total_biaya
+                                            from        ga.ga_fleet_kecelakaan as kecelakaan
+                                            where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
+                                                        and     extract(month from kecelakaan.tanggal_kecelakaan)='$bulan'
+                                                        and     kecelakaan.end_date='9999-12-12 00:00:00'
+                                        ) as total_biaya_kecelakaan;";
         $query=$this->db->query($biayaTotal);
         return $query->result_array();
       }  
 
     public function rekapFrekuensiTotal($tahun, $bulan)
       {
-        $frekuensiTotal = "    -- Pajak
-                                    select      'Pajak' as label,
-                                                count(pjk.biaya) as total_frekuensi
-                                    from        ga.ga_fleet_pajak as pjk
-                                    where       extract(year from pjk.tanggal_pajak)='$tahun'
-                                                and     extract(month from pjk.tanggal_pajak)='$bulan'
-                                                and     pjk.end_date='9999-12-12 00:00:00'
-                                    union
-                                    -- KIR
-                                    select      'KIR' as label,
-                                                count(kir.biaya) as total_frekuensi
-                                    from        ga.ga_fleet_kir as kir
-                                    where       extract(year from kir.tanggal_kir)='$tahun'
-                                                and     extract(month from kir.tanggal_kir)='$bulan'
-                                                and     kir.end_date='9999-12-12 00:00:00'
-                                    union
-                                    -- Maintenance kendaraan_id
-                                    select      'Maintenance Kendaraan' as label,
-                                                count(mtckdrn.maintenance_kendaraan_id) as total_frekuensi
-                                    from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
-                                                join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
-                                                    on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
-                                    where       extract(year from mtckdrn.tanggal_maintenance)='$tahun'
-                                                and     extract(month from mtckdrn.tanggal_maintenance)='$bulan'
-                                                and     mtckdrn.end_date='9999-12-12 00:00:00'
-                                                and     mtckdrndtl.end_date='9999-12-12 00:00:00'           
-                                    union
-                                    -- Kecelakaan
-                                    select      'Kecelakaan' as label,
-                                                count(kecelakaan.kecelakaan_id) as total_frekuensi
-                                    from        ga.ga_fleet_kecelakaan as kecelakaan
-                                    where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
-                                                and     extract(month from kecelakaan.tanggal_kecelakaan)='$bulan'
-                                                and     kecelakaan.end_date='9999-12-12 00:00:00';";
+        $frekuensiTotal = "     select  (
+                                            select      coalesce(count(pjk.biaya),0) as total_frekuensi
+                                            from        ga.ga_fleet_pajak as pjk
+                                            where       extract(year from pjk.tanggal_pajak)='$tahun'
+                                                        and     extract(month from pjk.tanggal_pajak)='$bulan'
+                                                        and     pjk.end_date='9999-12-12 00:00:00'
+                                        ) as total_frekuensi_pajak,
+                                        (
+                                            select      coalesce(count(kir.biaya),0) as total_frekuensi
+                                            from        ga.ga_fleet_kir as kir
+                                            where       extract(year from kir.tanggal_kir)='$tahun'
+                                                        and     extract(month from kir.tanggal_kir)='$bulan'
+                                                        and     kir.end_date='9999-12-12 00:00:00'
+                                        ) as total_frekuensi_kir,
+                                        (
+                                            select      coalesce(count(mtckdrn.maintenance_kendaraan_id),0) as total_frekuensi
+                                            from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
+                                                        join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
+                                                            on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
+                                            where       extract(year from mtckdrn.tanggal_maintenance)='$tahun'
+                                                        and     extract(month from mtckdrn.tanggal_maintenance)='$bulan'
+                                                        and     mtckdrn.end_date='9999-12-12 00:00:00'
+                                                        and     mtckdrndtl.end_date='9999-12-12 00:00:00'
+                                        ) as total_frekuensi_maintenance_kendaraan,
+                                        (
+                                            select      coalesce(count(kecelakaan.kecelakaan_id),0) as total_frekuensi
+                                            from        ga.ga_fleet_kecelakaan as kecelakaan
+                                            where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
+                                                        and     extract(month from kecelakaan.tanggal_kecelakaan)='$bulan'
+                                                        and     kecelakaan.end_date='9999-12-12 00:00:00'
+                                        ) as total_frekuensi_kecelakaan;";
         $query=$this->db->query($frekuensiTotal);
         return $query->result_array();
       }  
