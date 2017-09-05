@@ -88,19 +88,32 @@ class C_MasterItem extends CI_Controller {
 	
 	function saveCreateUsableItem(){
 		$this->form_validation->set_rules('txtTool', 'toolname', 'required');
+		$qty = $this->input->post('txtQuantity');
+		if($qty == null){
+			$qty = null;
+		}
+		$qty_min = $this->input->post('txtStockOpname');
+		if($qty_min == null){
+			$qty_min = null;
+		}
+		$group = $this->input->post('txtGroupItem');
+		if($group == null){
+			$group = null;
+		}
+		
 		if ($this->form_validation->run() === FALSE)
 		{
 			redirect('Toolroom/MasterItem/Usable');
 		}else{
 			$data = array(
-					'item_barcode' 	=> $this->input->post('txtBarcodeId'),
-					'item_name'		=> $this->input->post('txtTool'),
-					'item_qty'		=> $this->input->post('txtQuantity'),
-					'item_so'	=> $this->input->post('txtStockOpname'),
+					'item_id' 	=> strtoupper($this->input->post('txtBarcodeId')),
+					'item_name'		=> strtoupper($this->input->post('txtTool')),
+					'item_qty'		=> $qty,
+					'item_qty_min'	=> $qty_min,
 					'item_desc'	=> $this->input->post('txtDesc'),
 					'creation_date'	=>  $this->input->post('hdnDate'),
 					'created_by'	=>  $this->input->post('hdnUser'),
-					'item_group_id'	=>  $this->input->post('txtGroupItem')
+					'item_group_id'	=>  $group
 				);
 				
 			$this->M_master_item->saveUsableItem($data);
@@ -226,11 +239,19 @@ class C_MasterItem extends CI_Controller {
 			$this->load->view('ToolRoom/MainMenu/MasterItem/V_Update',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
+			$qty = $this->input->post('txtQuantity');
+			if($qty == null){
+				$qty = null;
+			}
+			$qty_min = $this->input->post('txtStockOpname');
+			if($qty_min == null){
+				$qty_min = null;
+			}
 			$data = array(
-					'item_id' 	=> $this->input->post('txtBarcodeId'),
-					'item_name'		=> $this->input->post('txtTool'),
-					'item_qty'		=> $this->input->post('txtQuantity'),
-					'item_qty_min'		=> $this->input->post('txtStockOpname'),
+					'item_id' 	=> strtoupper($this->input->post('txtBarcodeId')),
+					'item_name'		=> strtoupper($this->input->post('txtTool')),
+					'item_qty'		=> $qty,
+					'item_qty_min'		=> $qty_min,
 					'item_desc'		=> $this->input->post('txtDesc'),
 					'last_update_date'	=>  $this->input->post('hdnDate'),
 					'last_updated_by'	=>  $this->input->post('hdnUser')

@@ -40,13 +40,13 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Barcode</label>
 											<div class="col-md-3">
-												<input type="text" placeholder="Barcode" name="txtBarcodeId" id="txtBarcodeId" value="<?php echo $AllUsableItem_item['item_id'] ?>" class="form-control" required/>
+												<input type="text" placeholder="Barcode" name="txtBarcodeId" style="text-transform:uppercase;" id="txtBarcodeId" value="<?php echo $AllUsableItem_item['item_id'] ?>" class="form-control" required/>
 											</div>
 									</div>
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Tool</label>
 											<div class="col-md-6">
-												<input type="text" placeholder="Tool Name" name="txtTool" value="<?php echo $AllUsableItem_item['item_name'] ?>" id="txtTool" class="form-control" required/>
+												<input type="text" placeholder="Tool Name" name="txtTool" style="text-transform:uppercase;" value="<?php echo $AllUsableItem_item['item_name'] ?>" id="txtTool" class="form-control" required/>
 											</div>
 									</div>
 									<div class="form-group">
@@ -56,7 +56,7 @@
 											</div>
 											<label for="norm" class="control-label col-md-2 text-center">min Qty</label>
 											<div class="col-md-2">
-												<input type="text" placeholder="Stock Opname Qty" name="txtStockOpname" value="<?php echo $AllUsableItem_item['item_qty_min'] ?>" id="txtStockOpname" class="form-control"/>
+												<input type="text" placeholder="Item Qty Minimal" name="txtStockOpname" value="<?php echo $AllUsableItem_item['item_qty_min'] ?>" id="txtStockOpname" class="form-control"/>
 											</div>
 									</div>
 									<div class="form-group">

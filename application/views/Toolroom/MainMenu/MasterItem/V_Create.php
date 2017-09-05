@@ -51,13 +51,13 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Barcode</label>
 											<div class="col-md-3">
-												<input type="text" placeholder="Barcode" name="txtBarcodeId" id="txtBarcodeId" class="form-control" required/>
+												<input type="text" placeholder="Barcode" style="text-transform:uppercase;" name="txtBarcodeId" id="txtBarcodeId" class="form-control" required/>
 											</div>
 									</div>
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-2 text-center">Tool</label>
 											<div class="col-md-6">
-												<input type="text" placeholder="Tool Name" name="txtTool" id="txtTool" class="form-control" required/>
+												<input type="text" placeholder="Tool Name" style="text-transform:uppercase;" name="txtTool" id="txtTool" class="form-control" required/>
 											</div>
 									</div>
 									<div class="form-group">
@@ -67,7 +67,7 @@
 											</div>
 											<label for="norm" class="control-label col-md-2 text-center">Min Qty</label>
 											<div class="col-md-2">
-												<input type="text" placeholder="Stock Opname Qty" name="txtStockOpname" id="txtStockOpname" class="form-control"/>
+												<input type="text" placeholder="Item Qty Minimal" name="txtStockOpname" id="txtStockOpname" class="form-control"/>
 											</div>
 									</div>
 									<div class="form-group">

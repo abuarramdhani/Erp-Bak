@@ -55,7 +55,19 @@ $(document).ready(function() {
 			}
 	});
 	
-	
+	if(window.location.href == baseurl+"Toolroom/Transaksi/CreatePeminjaman"){
+		window.onload = function() {            
+		function realtime() {
+		   $.ajax({
+					url :baseurl+"Toolroom/Transaksi/Time_",
+					success:function(result){
+						$('#hdnDate').val(result);
+					}
+				});
+		}
+		setInterval(realtime, 1000);
+	}
+	}
 });
 
 $(document).on("click", "#showModalItem", function () {
@@ -147,18 +159,6 @@ $(document).on("click", "#btnExecuteUpdate", function () {
 		});
 	// }
 });
-
-// window.onload = function() {            
-    // function realtime() {
-       // $.ajax({
-				// url :baseurl+"Toolroom/Transaksi/Time_",
-				// success:function(result){
-					// $('#hdnDate').val(result);
-				// }
-			// });
-    // }
-    // setInterval(realtime, 1000);
-// }
 
 function AddItem(exe){
 	var barcode = $('#txtBarcode').val(),

@@ -1146,6 +1146,7 @@ $route['Toolroom/Report'] = 'Toolroom/Report/C_Report';
 $route['Toolroom/Report/(:any)'] = 'Toolroom/Report/C_Report/$1';
 $route['Toolroom/Report/(:any)/(:any)'] = 'Toolroom/Report/C_Report/$1/$2';
 $route['Toolroom/Report/(:any)/(:any)/(:any)'] = 'Toolroom/Report/C_Report/$1/$2/$3';
+$route['Toolroom/Dashboard'] = 'Toolroom/MainMenu/C_Dashboard';
 
 //------------------------------------ KHS Save Location ----------------------------------------
 $route['StorageLocation'] 									= 'StorageLocation/C_StorageLocation/index';
