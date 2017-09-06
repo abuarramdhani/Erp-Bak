@@ -69,7 +69,7 @@
 									
 									<label class="col-md-2 control-label">Berat Cairan</label>
 									<div class="col-md-2">
-										<input type="number" name="berat_cairan" id="berat_cairan" class="form-control input-sm"   placeholder="0.00" step="any" required >
+										<input type="number" name="berat_cairan" id="berat_cairan" class="form-control input-sm number-format"   placeholder="0.00" step="any" required >
 									</div>
 									<label class=" col-md-1 ">Kg</label>
 									
@@ -82,7 +82,7 @@
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Berat Casting</label>
 									<div class="col-md-2">
-										<input type="number" name="berat_casting" id="berat_casting" class="form-control input-sm" placeholder="0.00"  step="any" required >
+										<input type="number" name="berat_casting" id="berat_casting" class="form-control input-sm number-format" placeholder="0.00"  step="any" required >
 									</div>
 									<label class=" col-md-1">Kg</label>
 									<label class="col-md-2 control-label">Yield Casting</label>
@@ -94,7 +94,7 @@
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Scrap/Reject</label>
 									<div class="col-md-2">
-										<input step="any" type="number" name="scrap" class="form-control input-sm" placeholder="0" required  >
+										<input step="any" type="number" name="scrap" class="form-control input-sm number-format" placeholder="0" required  >
 									</div>
 									<label  style="text-align: left;" class=" col-md-2 control-label">%</label>
 								</div>
@@ -117,14 +117,14 @@
 									<div class="form-group" style="margin: 8 auto">
 										<label class="col-md-2 control-label">Berat Inti</label>
 										<div class="col-md-2">
-											<input type="Number"  name="berat_inti" class="form-control input-sm" placeholder="0.00" step="any"  >
+											<input type="Number"  name="berat_inti" class="form-control input-sm number-format" placeholder="0.00" step="any"  >
 										</div>
 										<label style="text-align: left;" class=" col-md-2 control-label">Kg</label>
 									</div>
 									<div class="form-group" style="margin: 8 auto">
 										<label class="col-md-2 control-label">Target Pembuatan Inti</label>
 										<div class="col-md-2">
-											<input  onchange="addCommass(event,this)" type="" name="target_inti" class="form-control input-sm" placeholder="0" step="any"  >
+											<input type="text" onchange="addCommass(event,this)" name="target_inti" class="form-control input-sm" placeholder="0" step="any"  >
 										</div>
 										<label style="text-align: left;" class=" col-md-2 control-label">Pieces/Shift</label>
 									</div>
@@ -148,19 +148,19 @@
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label"> Basic Tonage (Tonase)  </label>
 									<div class="col-md-2">
-										<input onchange="addCommass(event,this)" name="basic_tonage" class="form-control input-sm " placeholder="0" required >
+										<input type="text" onchange="addCommass(event,this)" name="basic_tonage" class="form-control input-sm" placeholder="0" required>
 									</div>
 									<label style="text-align: left;" class=" col-md-1 control-label">Kg/Shift</label>
 									<label class="col-md-2 control-label">Target Cetak/Shift</label>
 									<div class="col-md-2">
-										<input type="" onchange="addCommass(event,this)" name="target_pieces" id="target_pieces" class="form-control input-sm"  placeholder="0" required >
+										<input type="text" onchange="addCommass(event,this)" name="target_pieces" id="target_pieces" class="form-control input-sm"  placeholder="0" required >
 									</div>
-									<label style="text-align: left;" class=" col-md-2 ">Pieces/Shift</label>
+									<label style="text-align: left;" class="col-md-2 ">Pieces/Shift</label>
 								</div>
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Cavity per Flask</label>
 									<div class="col-md-1">
-										<input type="Number" name="cavity_flask" id="cavity_flask" class="form-control input-sm" step="any" placeholder="0" required >
+										<input type="number" name="cavity_flask" id="cavity_flask" class="form-control input-sm number-format" step="any" placeholder="0" required >
 									</div>
 									<label style="text-align: left;" class=" col-md-2 control-label">Cavity</label>
 									<label class="col-md-2 control-label">Target Cetak/Shift</label>
@@ -172,28 +172,28 @@
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Berat Pasir Cetak</label>
 									<div class="col-md-2">
-										<input onchange="addCommass(event,this)"  type="Number" name="berat_pasir" class="form-control input-sm" placeholder="0" step="any" required >
+										<input onchange="addCommass(event,this)" type="text" name="berat_pasir" class="form-control input-sm" placeholder="0" step="any" required >
 									</div>
 									<label style="text-align: left;" class=" col-md-2 control-label">Kg</label>
 								</div>
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Konsumsi Batu gerinda</label>
 									<div class="col-md-2">
-										<input type="Number" name="batu_gerinda" class="form-control input-sm" placeholder="0.00" step="any" required >
+										<input type="number" name="batu_gerinda" class="form-control input-sm number-format" placeholder="0.00" step="any" required >
 									</div>
 									<label style="text-align: left;" class=" col-md-2 control-label">Pieces</label>
 								</div>
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Target Grinding / Shift</label>
 									<div class="col-md-2">
-										<input  onchange="addCommass(event,this)" type="Number" name="target_grinding" class="form-control input-sm " placeholder="0" step="any" required >
+										<input onchange="addCommass(event,this)" type="text" name="target_grinding" class="form-control input-sm" placeholder="0" step="any" required >
 									</div>
 									<label style="text-align: left;" class=" col-md-2 control-label">Pieces</label>
 								</div>
 								<div class="form-group" style="margin: 8 auto">
 									<label class="col-md-2 control-label">Waktu Pembuatan Pola </label>
 									<div class="col-md-1">
-										<input type="Number" name="pembuatan_pola" class="form-control input-sm" placeholder="0"  step="any"  >
+										<input type="Number" name="pembuatan_pola" class="form-control input-sm number-format" placeholder="0"  step="any"  >
 									</div>
 									<label style="text-align: left;" class=" col-md-2 control-label" >Jam</label>
 								</div>
