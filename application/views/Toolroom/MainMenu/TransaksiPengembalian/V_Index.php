@@ -32,7 +32,7 @@
 										<div class="form-group">
 												<label for="norm" class="control-label col-md-1 text-center">Barcode</label>
 												<div class="col-md-3">
-													<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPengembalianItem()" placeholder="[Barcode]" autofocus></input>
+													<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddPengembalianItem('<?php echo null; ?>','<?php echo date('Y-m-d') ?>')" placeholder="[Barcode]" autofocus></input>
 												</div>
 												<div class="col-md-1">
 													<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
@@ -54,6 +54,7 @@
 												<th width="10%"><center>Qty Awal</center></th>
 												<th width="10%"><center>Qty Akh</center></th>
 												<th width="10%"><center>Qty Pakai</center></th>
+												<th width="10%"><center>Qty Return</center></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -70,6 +71,7 @@
 																<td class='text-center'>".$ListOutTransaction_item['item_qty']."</td>
 																<td class='text-center'>".$ListOutTransaction_item['item_sisa']."</td>
 																<td class='text-center'>".$ListOutTransaction_item['item_dipakai']."</td>
+																<td class='text-center'>".$ListOutTransaction_item['item_qty_return']."</td>
 															</tr>
 														";
 													}

@@ -262,11 +262,11 @@ function getName(){
 	});
 }
 
-function AddPengembalianItem(){
+function AddPengembalianItem(id,date){
 	var barcode = $('#txtBarcode').val();
 	$.ajax({
 		type:'POST',
-		data:{id: barcode},
+		data:{barcode: barcode,trans : id,date:date},
 		url :baseurl+"Toolroom/Transaksi/addNewPengembalianItem",
 		success:function(result){
 			$('#table-create-pengembalian-today tbody').html(result);

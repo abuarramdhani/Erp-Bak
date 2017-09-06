@@ -378,25 +378,32 @@ class C_Transaksi extends CI_Controller {
 	}
 	
 	public function addNewPengembalianItem(){
-		$id = $this->input->post('id',true);
-		$date = date('Y-m-d H:i:s');
-		$addItemLending = $this->M_transaksi->addItemLending($id,$date);
-		$this->listOutItemToday();
+		$id = $this->input->post('barcode',true);
+		$trans = $this->input->post('trans',true);
+		$date = $this->input->post('date',true);
+		$datenow =  date('Y-m-d H:i:s');
+		$addItemLending = $this->M_transaksi->addItemLending($id,$trans,$date,$datenow);
+		$this->listOutItemToday($trans);
 	}
 	
-	public function listOutItemToday(){
-		$ListOutTransaction = $this->M_transaksi->ListOutTransaction();
+	public function listOutItemToday($id){
+		$ListOutTransaction = $this->M_transaksi->ListOutTransaction($id);
 		foreach($ListOutTransaction as $ListOutTransaction_item){
-			echo "
-				<tr>
-					<td class='text-center'>1</td>
-					<td class='text-center'>".$ListOutTransaction_item['item_id']."</td>
-					<td>".$ListOutTransaction_item['item_name']."</td>
-					<td class='text-center'>".$ListOutTransaction_item['item_qty']."</td>
-					<td class='text-center'>".$ListOutTransaction_item['item_sisa']."</td>
-					<td class='text-center'>".$ListOutTransaction_item['item_dipakai']."</td>
-				</tr>
-			";
+			if($ListOutTransaction_item['status']=='1'){
+				echo "<tr><td colspan='7' style='text-align:center'>tidak ada data</td></tr>";
+			}else{
+				echo "
+					<tr>
+						<td class='text-center'>1</td>
+						<td class='text-center'>".$ListOutTransaction_item['item_id']."</td>
+						<td>".$ListOutTransaction_item['item_name']."</td>
+						<td class='text-center'>".$ListOutTransaction_item['item_qty']."</td>
+						<td class='text-center'>".$ListOutTransaction_item['item_sisa']."</td>
+						<td class='text-center'>".$ListOutTransaction_item['item_dipakai']."</td>
+						<td class='text-center'>".$ListOutTransaction_item['item_qty_return']."</td>
+					</tr>
+				";
+			}
 		}
 	}
 }

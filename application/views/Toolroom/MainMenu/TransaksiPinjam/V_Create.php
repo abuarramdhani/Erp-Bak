@@ -33,7 +33,6 @@
 							</div>
 						<div class="box-body">
 							<div class="panel-body">
-								<div class="row col-lg-12">
 									<div class="form-group">
 									<label for="norm" class="control-label col-md-1 text-center">Shift</label>
 											<div class="col-md-2">
@@ -49,7 +48,7 @@
 												</select>
 											</div>
 											<div class="col-md-4">
-												<input type="text" name="txtBarcode" id="txtBarcode" class="form-control" onChange="AddItem('create')" placeholder="[Barcode]" autofocus></input>
+												<input type="text" name="txtBarcode" id="txtBarcode" style="text-transform:uppercase;" class="form-control" onChange="AddItem('create')" placeholder="[Barcode]" autofocus></input>
 											</div>
 											<div class="col-md-1">
 												<a class="btn btn-md btn-default" id="showModalItem"><span class="fa fa-search"></span></a>
@@ -60,9 +59,7 @@
 												<a class="btn btn-md btn-danger" onClick="clearListOutItem('0')" >Reset</a>
 											</div>
 									</div>
-								</div>
 								<br>
-								<div class="row col-lg-12">
 									<table class="table table-striped table-bordered table-hover text-left table-create-peminjaman" id="table-create-peminjaman" style="font-size:12px;">
 										<thead>
 											<tr class="bg-primary">
@@ -95,9 +92,7 @@
 											?>
 										</tbody>
 									</table>
-								</div>
 								<br>
-								<div class="row col-lg-12">
 									<div class="form-group">
 											<label for="norm" class="control-label col-md-1 text-center">Noind</label>
 											<div class="col-md-2">
@@ -110,7 +105,6 @@
 												<a class="btn btn-md btn-default" id="showModalNoind"><span class="fa fa-search"></span></a>
 											</div>
 									</div>
-								</div>
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">
