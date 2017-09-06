@@ -67,7 +67,7 @@ $db['default'] = array(
 	'hostname' => 'db.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
-	'database' => 'erpdev',
+	'database' => 'erp',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -87,32 +87,10 @@ $db['default'] = array(
 
 $db['oracle'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.3:1522/DEV',
-	'username' => 'apps',
-	'password' => 'apps',
-	'database' => 'KHS_DEV',
-	'dbdriver' => 'oci8',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
-
-$db['oracle_prod'] = array(
-	'dsn'	=> '',
 	'hostname' => '192.168.7.1:1521/PROD',
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_PROD',
+	'database' => 'KHS_DEV',
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -195,28 +173,6 @@ $db['quickcom'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE,
 	'port' => 3306
-);
-
-$db['oracle_dev'] = array(
-	'dsn'	=> '',
-	'hostname' => '192.168.7.3:1522/DEV',
-	'username' => 'apps',
-	'password' => 'apps',
-	'database' => 'KHS_DEV',
-	'dbdriver' => 'oci8',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt'  => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
 );
 
 $efg="";

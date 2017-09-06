@@ -6,7 +6,7 @@ class M_Casting extends CI_Model
 	public function __construct()
 	    {
 	        parent::__construct();
-	        $this->oracle = $this->load->database('oracle_prod', TRUE);
+	        $this->oracle = $this->load->database('oracle', TRUE);
 	        $this->db = $this->load->database('default', TRUE);
 	    }
 
