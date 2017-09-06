@@ -514,6 +514,8 @@ $route['AccountPayables'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/Invoice'] 			= 'AccountPayables/C_Invoice';
 $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
+$route['AccountPayables/Lppb'] 				= 'AccountPayables/C_Lppb';
+$route['AccountPayables/Lppb/(:any)'] 				= 'AccountPayables/C_Lppb/$1';
 
 
 //------------------------------------Payroll Management---------------------------------------------------
@@ -1046,26 +1048,20 @@ $route['ItemManagement/User/InputPekerja/(:any)/(:any)']  = 'ItemManagement/User
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3';
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
 
-
 //------------------------------------ MANAGEMENT ORDER --------------------------------------------
 $route['ManagementOrder'] = 'ManagementOrder/C_ManagementOrder';
-
 $route['ManagementOrder/Order_In'] = 'ManagementOrder/MainMenu/C_Order_In/index';
 $route['ManagementOrder/Order_In/(:any)'] = 'ManagementOrder/MainMenu/C_Order_In/$1';
 $route['ManagementOrder/Order_In/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Order_In/$1/$2';
-
 $route['ManagementOrder/Member'] = 'ManagementOrder/MainMenu/C_Member/index';
 $route['ManagementOrder/Member/(:any)'] = 'ManagementOrder/MainMenu/C_Member/$1';
 $route['ManagementOrder/Member/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Member/$1/$2';
-
 $route['ManagementOrder/Setting'] = 'ManagementOrder/MainMenu/C_Setting/index';
 $route['ManagementOrder/Setting/(:any)'] = 'ManagementOrder/MainMenu/C_Setting/$1';
 $route['ManagementOrder/Setting/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Setting/$1/$2';
-
 $route['ManagementOrder/Kaizen'] = 'ManagementOrder/MainMenu/C_Kaizen/index';
 $route['ManagementOrder/Kaizen/(:any)'] = 'ManagementOrder/MainMenu/C_Kaizen/$1';
 $route['ManagementOrder/Kaizen/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Kaizen/$1/$2';
-
 $route['ManagementOrder/Scheduler'] = 'ManagementOrder/MainMenu/C_Scheduler/index';
 $route['ManagementOrder/Scheduler/(:any)'] = 'ManagementOrder/MainMenu/C_Scheduler/$1';
 $route['ManagementOrder/Scheduler/(:any)/(:any)'] = 'ManagementOrder/MainMenu/C_Scheduler/$1/$2';
@@ -1106,47 +1102,33 @@ $route['CalibrationReport/Calibration/(:any)/(:any)'] = 'CalibrationReport/MainM
 $route['GeneralAffair/FleetJenisKendaraan'] = 'GeneralAffair/MainMenu/C_FleetJenisKendaraan';
 $route['GeneralAffair/FleetJenisKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetJenisKendaraan/$1';
 $route['GeneralAffair/FleetJenisKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetJenisKendaraan/$1/$2';
-
 $route['GeneralAffair/FleetMerkKendaraan'] = 'GeneralAffair/MainMenu/C_FleetMerkKendaraan';
 $route['GeneralAffair/FleetMerkKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMerkKendaraan/$1';
 $route['GeneralAffair/FleetMerkKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMerkKendaraan/$1/$2';
-
 $route['GeneralAffair/FleetWarnaKendaraan'] = 'GeneralAffair/MainMenu/C_FleetWarnaKendaraan';
 $route['GeneralAffair/FleetWarnaKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetWarnaKendaraan/$1';
 $route['GeneralAffair/FleetWarnaKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetWarnaKendaraan/$1/$2';
-
-$route['GeneralAffair/FleetModelKendaraan'] 				= 	'GeneralAffair/MainMenu/C_FleetModelKendaraan';
-$route['GeneralAffair/FleetModelKendaraan/(:any)'] 			= 	'GeneralAffair/MainMenu/C_FleetModelKendaraan/$1';
-$route['GeneralAffair/FleetModelKendaraan/(:any)/(:any)'] 	= 	'GeneralAffair/MainMenu/C_FleetModelKendaraan/$1/$2';
-
 $route['GeneralAffair/FleetKendaraan'] = 'GeneralAffair/MainMenu/C_FleetKendaraan';
 $route['GeneralAffair/FleetKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKendaraan/$1';
 $route['GeneralAffair/FleetKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKendaraan/$1/$2';
-
 $route['GeneralAffair/FleetPajak'] = 'GeneralAffair/MainMenu/C_FleetPajak';
 $route['GeneralAffair/FleetPajak/(:any)'] = 'GeneralAffair/MainMenu/C_FleetPajak/$1';
 $route['GeneralAffair/FleetPajak/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetPajak/$1/$2';
-
 $route['GeneralAffair/FleetKir'] = 'GeneralAffair/MainMenu/C_FleetKir';
 $route['GeneralAffair/FleetKir/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKir/$1';
 $route['GeneralAffair/FleetKir/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKir/$1/$2';
-
 $route['GeneralAffair/FleetPicKendaraan'] = 'GeneralAffair/MainMenu/C_FleetPicKendaraan';
 $route['GeneralAffair/FleetPicKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetPicKendaraan/$1';
 $route['GeneralAffair/FleetPicKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetPicKendaraan/$1/$2';
-
 $route['GeneralAffair/FleetMaintenanceKategori'] = 'GeneralAffair/MainMenu/C_FleetMaintenanceKategori';
 $route['GeneralAffair/FleetMaintenanceKategori/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMaintenanceKategori/$1';
 $route['GeneralAffair/FleetMaintenanceKategori/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMaintenanceKategori/$1/$2';
-
 $route['GeneralAffair/FleetMaintenanceKendaraan'] = 'GeneralAffair/MainMenu/C_FleetMaintenanceKendaraan';
 $route['GeneralAffair/FleetMaintenanceKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMaintenanceKendaraan/$1';
 $route['GeneralAffair/FleetMaintenanceKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMaintenanceKendaraan/$1/$2';
-
 $route['GeneralAffair/FleetKecelakaanDetail'] = 'GeneralAffair/MainMenu/C_FleetKecelakaanDetail';
 $route['GeneralAffair/FleetKecelakaanDetail/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaanDetail/$1';
 $route['GeneralAffair/FleetKecelakaanDetail/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaanDetail/$1/$2';
-
 $route['GeneralAffair/FleetKecelakaan'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan';
 $route['GeneralAffair/FleetKecelakaan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan/$1';
 $route['GeneralAffair/FleetKecelakaan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKecelakaan/$1/$2';

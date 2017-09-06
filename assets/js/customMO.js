@@ -1,17 +1,20 @@
 
 $(document).ready(function() {
-	setInterval(function(){ 
-		$.ajax({
-			url :baseurl+"ManagementOrder/Order_In/SyncTicket",
-		});
-	}, 30000);
-	
-	setInterval(function(){ 
-		$.ajax({
-			url: baseurl+"ManagementOrder/Order_In/ExistTicket",
-		});
-	}, 30000);
-	
+	var str = window.location.pathname;
+	var str_s = str.split('/');
+	if(baseurl+""+str_s[2] == baseurl+"ManagementOrder"){
+		setInterval(function(){ 
+			$.ajax({
+				url :baseurl+"ManagementOrder/Order_In/SyncTicket",
+			});
+		}, 30000);
+		
+		setInterval(function(){ 
+			$.ajax({
+				url: baseurl+"ManagementOrder/Order_In/ExistTicket",
+			});
+		}, 30000);	
+	}
 	$('#txtTags').focus();
 	var screen = window.innerWidth;
     if ( screen <= 1250) {

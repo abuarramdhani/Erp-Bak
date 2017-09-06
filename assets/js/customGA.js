@@ -765,5 +765,67 @@ function rekapTotal(tahun, bulan)
       pieChart('#RekapBiayaTotal', [totalBiayaPajak, totalBiayaKIR, totalBiayaMaintenance, totalBiayaKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Biaya Pajak', 'Total Biaya KIR', 'Total Biaya Maintenance Kendaraan', 'Total Biaya Kecelakaan']);
       pieChart('#RekapFrekuensiTotal', [totalFrekuensiPajak, totalFrekuensiKIR, totalFrekuensiMaintenance, totalFrekuensiKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Frekuensi Pajak', 'Total Frekuensi KIR', 'Total Frekuensi Maintenance Kendaraan', 'Total Frekuensi Kecelakaan']);
 
-    });  
+    });
+});
+
+function Grafik(canvas, data, labels, color, color2, label) {
+    var ctx = $(canvas);
+    var canvas = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: []
+        },
+        options: { 
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min:0,
+                    }
+                }]
+            },
+        }
+    });
+
+    var countDataset = label.length;
+    for(var i = 0; i < countDataset; i++) {
+        canvas.data.datasets.push({label: label[i], borderColor: color[i],  data: [] });
+        for(var j = 0; j < data[i].length; j++) {
+            canvas.data.datasets[i].data.push(data[i][j]);
+        }
+        canvas.update();
+    }
+}
+
+function pieChart(canvas, data, color, color2, label) {
+    var ctx = $(canvas);
+    var data = {
+        datasets: [{
+            data: data,
+            backgroundColor: color,
+            hoverBackgroundColor: color2
+        }],
+
+        labels: label,
+    };
+    var options = {
+      legend: {
+        display: true, position: 'bottom', labels : { boxWidth : 10, fontSize : 11}
+      },
+      tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var allData = data.datasets[tooltipItem.datasetIndex].data;
+                    var tooltipLabel = data.labels[tooltipItem.index];
+                    var tooltipData = allData[tooltipItem.index];
+                    return tooltipData; 
+                }
+            }
+        }
+    }
+    var canvas = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
 }

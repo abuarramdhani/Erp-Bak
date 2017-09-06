@@ -89,7 +89,7 @@ class C_Report extends CI_Controller {
 		$date2='1/1/1900';
 		$data['report'] = $this->M_report->GetReport3($date1,$date2);
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
-		
+				
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index',$data);
@@ -133,13 +133,6 @@ class C_Report extends CI_Controller {
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index2',$data);
 	}
-
-
-
-
-
-
-
 
 	//HALAMAN FINISHED
 	public function finished(){

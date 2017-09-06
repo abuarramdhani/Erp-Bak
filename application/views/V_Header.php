@@ -11,6 +11,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
@@ -63,6 +64,8 @@
 
 	<!-- END PAGE LEVEL  STYLES -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
+
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/multiselect/css/bootstrap-multiselect.css');?>" />
 
 	<!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>

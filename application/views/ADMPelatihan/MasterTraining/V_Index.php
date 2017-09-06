@@ -52,7 +52,14 @@
 										<td><?php echo $no ?></td>
 										<td><?php echo $tr['training_name'] ?></td>
 										<td><?php echo $tr['kapasitas_kelas']?></td>
-										<td><?php echo $tr['limit'] ?></td>
+										<td> <?php if($tr['limit_1'] && $tr['limit_2']) {
+												echo 'Staf : '.$tr['limit_1'].', Non Staf : '.$tr['limit_2'];
+											}elseif($tr['limit_1']){
+												echo 'Staf : '.$tr['limit_1'];		
+											}else{
+												echo 'Non Staf : '.$tr['limit_2'];
+												}?>
+										</td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/MasterTraining/Edit/'.$tr['training_id'])?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
 											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$tr['training_id'] ?>" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
