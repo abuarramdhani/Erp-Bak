@@ -16,12 +16,12 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								Parameter Pencarian
+								LAPORAN PREPAYMENT CV. KHS
 							</div>
 							<div class="box-body">
 								
-								<pre><label>DARI TANGGAL  : </label><input type="text" name="dateFrom" id="dateFrom"><br><label>SITE SUPPLIER : </label><input type="text" name="siteSupp" id="siteSupp"></pre>
-								<button id="btnViewPrp" class="btn btn-info">CARI DATA</button><br><br>
+								<pre><label>PER TANGGAL   : </label><input type="text" name="dateFrom" id="dateFrom" value="<?php echo date('m/d/Y'); ?>"><br><label>SITE SUPPLIER : </label><input type="text" name="siteSupp" id="siteSupp" placeholder="ALL"></pre>
+								<button id="btnViewPrp" class="btn btn-primary btn-sm">CARI DATA</button><br><br>
 								<div id="loadingPrpData" style="text-align: center; width: 100%;"></div><br>
 								<div id="viewPrpData"></div>
 								

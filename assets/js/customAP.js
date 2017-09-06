@@ -585,21 +585,6 @@ $(document).ready(function(){
 
 	$('#slcInventory').select2();
 
-	// $('#chkTerima').click(function(){
-	// 	if($('#chkTerima').is(':checked')) {
-	// 	    $("#hdnTerima").val('YA');
-	// 	} else {
-	// 	    $("#hdnTerima").val('TIDAK');
-	// 	};
-	// });
-
-
-	// if($('#chkTerima').is(':checked')) {
-	//     $("#hdnTerima").val('YA');
-	// } else {
-	//     $("#hdnTerima").val('TIDAK');
-	// };
-
 	$('button').click(function(){
 		var table = $('#lppbList').DataTable();
 		table
@@ -649,11 +634,13 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('#dateFrom').datepicker({
 		autoclose:true
-	 });
+	});
+
 	$('#btnViewPrp').click(function(){
 		$('#dateFrom').attr('readonly', 'readonly');
 		$('#siteSupp').attr('readonly', 'readonly');
-		$('#loadingPrpData').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="60px"/>');
+		$("#viewPrpData").css('opacity', '50%');
+		$('#loadingPrpData').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="65px"/>');
 		var tanggal = $('#dateFrom').val();
 		var SiteSupp = $('#siteSupp').val();
 			$.ajax({

@@ -44,7 +44,6 @@ class C_Prepayment extends CI_Controller {
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';			
 		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
-		$org_id = $data['UserResponsibility']['0']['org_id'];
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -63,7 +62,7 @@ class C_Prepayment extends CI_Controller {
 		$user_id = $this->session->userid;		
 		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
 
-		$org_id = $data['UserResponsibility']['0']['org_id'];
+		$org_id = '82';//sementara
 		$sitesuppRaw = $this->input->post('SiteSupp');
 		$tanggal = $this->input->post('tanggal');
 
@@ -73,21 +72,21 @@ class C_Prepayment extends CI_Controller {
 			<table id='showPrpData' class='table table-striped table-bordered table-hover'style='width: 150%'>
 				<thead>
 					<tr class='bg-primary'>
-						<th rowspan='2'>Supplier</th>
-						<th rowspan='2'>SiteSupp</th>
-						<th colspan='9'>Invoice Prepayement</th>
-						<th rowspan='2'>DESCRIPTION</th>
+						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Supplier</th>
+						<th rowspan='2' style='text-align: center; vertical-align: middle;'>SiteSupp</th>
+						<th colspan='9' style='text-align: center;'>Invoice Prepayement</th>
+						<th rowspan='2' style='text-align: center; vertical-align: middle;'>DESCRIPTION</th>
 					</tr>
 					<tr class='bg-primary'>
-						<th>Inv. Date</th>
-						<th>Pay Date</th>
-						<th>No. Voucher</th>
-						<th>No. PO</th>
-						<th>No. Invoice</th>
-						<th>Curr.</th>
-						<th>Amount</th>
-						<th>Rate</th>
-						<th>Amount[IDR]</th>
+						<th style='text-align: center;'>Inv. Date</th>
+						<th style='text-align: center;'>Pay Date</th>
+						<th style='text-align: center;'>No. Voucher</th>
+						<th style='text-align: center;'>No. PO</th>
+						<th style='text-align: center;'>No. Invoice</th>
+						<th style='text-align: center;'>Curr.</th>
+						<th style='text-align: center;'>Amount</th>
+						<th style='text-align: center;'>Rate</th>
+						<th style='text-align: center;'>Amount[IDR]</th>
 					</tr>
 				</thead>
 				<tbody>"; 
@@ -124,10 +123,10 @@ class C_Prepayment extends CI_Controller {
 		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
 		$org_id = $data['UserResponsibility']['0']['org_id'];
 		$sitesuppRaw = '';
-		$data['Prepayment'] = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw);
+		// $data['Prepayment'] = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw);
 		echo "<pre>";
 		echo $org_id;
-		print_r($data['Prepayment']);
+		print_r($data['UserResponsibility']);
 		echo "</pre>";
 	}
 
