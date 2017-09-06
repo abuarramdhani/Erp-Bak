@@ -129,7 +129,7 @@ public function excel($message=NULL)
                              'MFMC5C001',
                              'MFSF1S001', 
                              'MCAF22A02' );
-        for ($i=0; $i < 5 ; $i++) { 
+        for ($i=0; $i < 5 ; $i++) {
             $kode    = $kodes[$i];
             $rate_m  = $this->M_ExportExcel->getRate($kode,$period,$year,$cost_type,$io);
             if (empty($rate_m[0]['MATERIAL_COST'])) {
@@ -154,13 +154,13 @@ public function excel($message=NULL)
             //     ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO);
 
             $object->getActiveSheet()
-                ->getPageMargins()->setTop(0.5);
+                ->getPageMargins()->setTop(0.4);
             $object->getActiveSheet()
                 ->getPageMargins()->setRight(0.4);
             $object->getActiveSheet()
                 ->getPageMargins()->setLeft(0.4);
             $object->getActiveSheet()
-                ->getPageMargins()->setBottom(0.5);
+                ->getPageMargins()->setBottom(0.4);
 
             $object->getActiveSheet()->getColumnDimension('A')->setWidth(15);
             $object->getActiveSheet()->getColumnDimension('B')->setWidth(30);
@@ -445,7 +445,6 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('A'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
                     $object->getActiveSheet()->getStyle('A'.$row) ->applyFromArray($alignright);
              //--------------------------------------------------------------------------------------------------------------//
-             $object->getActiveSheet()->setBreak( 'A'.$row , PHPExcel_Worksheet::BREAK_ROW );
              $row+=1;
              $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
@@ -491,6 +490,7 @@ public function excel($message=NULL)
                     $object->getActiveSheet()->getStyle('A'.$row.':E'.$row) ->applyFromArray($Font11BoldI);
                     $object->getActiveSheet()->getStyle('A'.$row) ->applyFromArray($alignright);
              //--------------------------------------------------------------------------------------------------------------//
+             $object->getActiveSheet()->setBreak( 'A'.$row , PHPExcel_Worksheet::BREAK_ROW );
              $row+=1;
              $object->getActiveSheet()->mergeCells('A'.$row.':E'.$row);
              $object->setActiveSheetIndex(0)
