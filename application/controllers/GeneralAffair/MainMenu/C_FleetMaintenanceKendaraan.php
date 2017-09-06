@@ -39,8 +39,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Maintenance Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Maintenance Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Maintenance Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Maintenance Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -141,8 +141,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Maintenance Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Maintenance Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -253,8 +253,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Maintenance Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Maintenance Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

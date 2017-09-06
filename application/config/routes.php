@@ -1115,6 +1115,10 @@ $route['GeneralAffair/FleetWarnaKendaraan'] = 'GeneralAffair/MainMenu/C_FleetWar
 $route['GeneralAffair/FleetWarnaKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetWarnaKendaraan/$1';
 $route['GeneralAffair/FleetWarnaKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetWarnaKendaraan/$1/$2';
 
+$route['GeneralAffair/FleetModelKendaraan'] 				= 	'GeneralAffair/MainMenu/C_FleetModelKendaraan';
+$route['GeneralAffair/FleetModelKendaraan/(:any)'] 			= 	'GeneralAffair/MainMenu/C_FleetModelKendaraan/$1';
+$route['GeneralAffair/FleetModelKendaraan/(:any)/(:any)'] 	= 	'GeneralAffair/MainMenu/C_FleetModelKendaraan/$1/$2';
+
 $route['GeneralAffair/FleetKendaraan'] = 'GeneralAffair/MainMenu/C_FleetKendaraan';
 $route['GeneralAffair/FleetKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKendaraan/$1';
 $route['GeneralAffair/FleetKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetKendaraan/$1/$2';

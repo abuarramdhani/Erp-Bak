@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_FleetJenisKendaraan extends CI_Controller
+class C_FleetModelKendaraan extends CI_Controller
 {
 	function __construct()
 	{
@@ -14,7 +14,7 @@ class C_FleetJenisKendaraan extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('GeneralAffair/MainMenu/M_fleetjeniskendaraan');
+		$this->load->model('GeneralAffair/MainMenu/M_fleetmodelkendaraan');
 
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -38,32 +38,32 @@ class C_FleetJenisKendaraan extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jenis Kendaraan';
-		$data['Menu'] = 'Master';
-		$data['SubMenuOne'] = 'Jenis Kendaraan';
+		$data['Title'] = 'Model kendaraan';
+		$data['Menu'] = 'General Affair';
+		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetJenisKendaraan'] 		= $this->M_fleetjeniskendaraan->getFleetJenisKendaraan();
-		$data['FleetJenisKendaraanDeleted']	= $this->M_fleetjeniskendaraan->getFleetJenisKendaraanDeleted();
+		$data['FleetMerkKendaraan'] 		= $this->M_fleetmodelkendaraan->getFleetMerkKendaraan();
+		$data['FleetMerkKendaraanDeleted']	= $this->M_fleetmodelkendaraan->getFleetMerkKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/FleetJenisKendaraan/V_index', $data);
+		$this->load->view('GeneralAffair/FleetMerkKendaraan/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
 	/* NEW DATA */
 	public function create()
-	{ 
+	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jenis Kendaraan';
-		$data['Menu'] = 'Master';
-		$data['SubMenuOne'] = 'Jenis Kendaraan';
+		$data['Title'] = 'Model kendaraan';
+		$data['Menu'] = 'General Affair';
+		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -74,28 +74,28 @@ class C_FleetJenisKendaraan extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtJenisKendaraanHeader', 'JenisKendaraan', 'required');
+		$this->form_validation->set_rules('txtMerkKendaraanHeader', 'MerkKendaraan', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/FleetJenisKendaraan/V_create', $data);
+			$this->load->view('GeneralAffair/FleetMerkKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$jenisKendaraan 	= 	$this->input->post('txtJenisKendaraanHeader');
+			$merkKendaraan 		= 	strtoupper($this->input->post('txtMerkKendaraanHeader'));
+			$tanggal_eksekusi 	= 	date('Y-m-d H:i:s');
 
-			$creation_date 		= 	date('Y-m-d H:i:s');
 			$data = array(
-				'jenis_kendaraan' 	=> $jenisKendaraan,
-				'start_date' 		=> $creation_date,
+				'merk_kendaraan' 	=> $merkKendaraan,
+				'start_date' 		=> $tanggal_eksekusi,
 				'end_date' 			=> '9999-12-12 00:00:00',
-				'creation_date' 	=> $creation_date,
-				'created_by' 		=> $this->session->userid
+				'creation_date' 	=> $tanggal_eksekusi,
+				'created_by' 		=> $this->session->userid,
     		);
-			$this->M_fleetjeniskendaraan->setFleetJenisKendaraan($data);
+			$this->M_fleetmodelkendaraan->setFleetMerkKendaraan($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('GeneralAffair/FleetJenisKendaraan'));
+			redirect(site_url('GeneralAffair/FleetMerkKendaraan'));
 		}
 	}
 
@@ -104,9 +104,9 @@ class C_FleetJenisKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jenis Kendaraan';
-		$data['Menu'] = 'Master';
-		$data['SubMenuOne'] = 'Jenis Kendaraan';
+		$data['Title'] = 'Model kendaraan';
+		$data['Menu'] = 'General Affair';
+		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -119,7 +119,7 @@ class C_FleetJenisKendaraan extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['FleetJenisKendaraan'] = $this->M_fleetjeniskendaraan->getFleetJenisKendaraan($plaintext_string);
+		$data['FleetMerkKendaraan'] = $this->M_fleetmodelkendaraan->getFleetMerkKendaraan($plaintext_string);
 
 		/* LINES DATA */
 
@@ -127,20 +127,20 @@ class C_FleetJenisKendaraan extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtJenisKendaraanHeader', 'JenisKendaraan', 'required');
+		$this->form_validation->set_rules('txtMerkKendaraanHeader', 'MerkKendaraan', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('GeneralAffair/FleetJenisKendaraan/V_update', $data);
+			$this->load->view('GeneralAffair/FleetMerkKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 
-			$jenisKendaraan = 	$this->input->post('txtJenisKendaraanHeader', TRUE);
-			$status_data 	=	$this->input->post('CheckAktif');
-			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
+			$merkKendaraan 		= 	$this->input->post('txtMerkKendaraanHeader',TRUE);
+			$status_data 		=	$this->input->post('CheckAktif');
+			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
 
-			$waktu_eksekusi = 	date('Y-m-d H:i:s');
+			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
 
 			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
 			{
@@ -150,17 +150,15 @@ class C_FleetJenisKendaraan extends CI_Controller
 			{
 				$waktu_dihapus = '9999-12-12 00:00:00';
 			}
-
-
 			$data = array(
-				'jenis_kendaraan' 	=> $jenisKendaraan,
+				'merk_kendaraan' 	=> $merkKendaraan,
 				'end_date' 			=> $waktu_dihapus,
 				'last_updated' 		=> $waktu_eksekusi,
-				'last_updated_by' 	=> $this->session->userid,
+				'last_updated_by' 	=> $this->session->userid
     			);
-			$this->M_fleetjeniskendaraan->updateFleetJenisKendaraan($data, $plaintext_string);
+			$this->M_fleetmodelkendaraan->updateFleetMerkKendaraan($data, $plaintext_string);
 
-			redirect(site_url('GeneralAffair/FleetJenisKendaraan'));
+			redirect(site_url('GeneralAffair/FleetMerkKendaraan'));
 		}
 	}
 
@@ -169,9 +167,9 @@ class C_FleetJenisKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jenis Kendaraan';
-		$data['Menu'] = 'Master';
-		$data['SubMenuOne'] = 'Jenis Kendaraan';
+		$data['Title'] = 'Model kendaraan';
+		$data['Menu'] = 'General Affair';
+		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -184,13 +182,13 @@ class C_FleetJenisKendaraan extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['FleetJenisKendaraan'] = $this->M_fleetjeniskendaraan->getFleetJenisKendaraan($plaintext_string);
+		$data['FleetMerkKendaraan'] = $this->M_fleetmodelkendaraan->getFleetMerkKendaraan($plaintext_string);
 
 		/* LINES DATA */
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('GeneralAffair/FleetJenisKendaraan/V_read', $data);
+		$this->load->view('GeneralAffair/FleetMerkKendaraan/V_read', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -200,15 +198,15 @@ class C_FleetJenisKendaraan extends CI_Controller
         $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$this->M_fleetjeniskendaraan->deleteFleetJenisKendaraan($plaintext_string);
+		$this->M_fleetmodelkendaraan->deleteFleetMerkKendaraan($plaintext_string);
 
-		redirect(site_url('GeneralAffair/FleetJenisKendaraan'));
+		redirect(site_url('GeneralAffair/FleetMerkKendaraan'));
     }
 
 
 
 }
 
-/* End of file C_FleetJenisKendaraan.php */
-/* Location: ./application/controllers/GeneralAffair/MainMenu/C_FleetJenisKendaraan.php */
-/* Generated automatically on 2017-08-05 13:18:43 */
+/* End of file C_FleetMerkKendaraan.php */
+/* Location: ./application/controllers/GeneralAffair/MainMenu/C_FleetMerkKendaraan.php */
+/* Generated automatically on 2017-08-05 13:19:46 */

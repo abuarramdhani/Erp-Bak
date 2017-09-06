@@ -39,8 +39,8 @@ class C_FleetRekapPajak extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Pajak Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Rekapitulasi';
+		$data['SubMenuOne'] = 'Grafik Pajak';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -59,9 +59,43 @@ class C_FleetRekapPajak extends CI_Controller
 
 	public function RekapPajak()
 	{
-		$tahun 	= $this->input->post('value');
+		// $tahun 	= $this->input->post('value');
 
-		$data['totalPajak'] 		= $this->M_fleetrekappajak->rekapTotalPajak($tahun);
+		$tahun 		= $this->input->post('cmbPeriode');
+
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Rekap Pajak Kendaraan';
+		$data['Menu'] = 'Rekapitulasi';
+		$data['SubMenuOne'] = 'Grafik Pajak';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['dropdownTahun'] 	= 	$this->M_fleetrekappajak->dropdownTahun();
+
+		$data['tahun'] 				= $tahun;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+
+		$this->load->view('GeneralAffair/FleetRekapPajak/V_proses', $data);
+
+		$this->load->view('V_Footer',$data);
+
+
+		// echo json_encode($data);
+	}
+
+	public function ambilData()
+	{
+		$tahun 	= 	$this->input->post('tahun');
+
+		$data['totalPajak'] 		= $this->M_fleetrekappajak->rekapTotalPajak($tahun); 		
 		$data['frekuensiPajak'] 	= $this->M_fleetrekappajak->rekapFrekuensiPajak($tahun);
 
 		echo json_encode($data);

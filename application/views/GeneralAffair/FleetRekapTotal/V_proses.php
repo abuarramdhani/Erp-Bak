@@ -35,7 +35,12 @@
                                                             <?php
                                                                 foreach ($dropdownTahun as $Tahun) 
                                                                 {
-                                                                    echo    '  <option value="'.$Tahun['tahun'].'">'
+                                                                    $status_tahun = '';
+                                                                    if($Tahun['tahun']==$tahun)
+                                                                    {
+                                                                        $status_tahun = "selected";
+                                                                    }
+                                                                    echo    '  <option value="'.$Tahun['tahun'].'" '.$status_tahun.'>'
                                                                                     .$Tahun['tahun'].
                                                                             '   </option>';
                                                                 }
@@ -48,7 +53,12 @@
                                                             <?php
                                                                 foreach ($dropdownBulan as $Bulan) 
                                                                 {
-                                                                    echo    '  <option value="'.$Bulan['bulan_angka'].'">'
+                                                                    $status_bulan   = '';
+                                                                    if($Bulan['bulan_angka']==$bulan)
+                                                                    {
+                                                                        $status_bulan = 'selected';
+                                                                    }
+                                                                    echo    '  <option value="'.$Bulan['bulan_angka'].'" '.$status_bulan.'>'
                                                                                     .$Bulan['bulan'].
                                                                             '   </option>';
                                                                 }
@@ -69,6 +79,26 @@
                                                 <hr>
                                             </form>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="chart-responsive" id="ContainerRekapBiayaTotal">
+                                                    <center>
+                                                    <label for="RekapBiayaTotal" class="control-label">Rekap Biaya Total</label>
+                                                    </center>
+                                                    <hr/>                                                    
+                                                    <canvas id="RekapBiayaTotal" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="chart-responsive" id="ContainerRekapFrekuensiTotal">
+                                                    <center>
+                                                    <label for="RekapFrekuensiTotal" class="control-label">Rekap Frekuensi Total</label>
+                                                    </center>
+                                                    <hr/>                                                
+                                                    <canvas id="RekapFrekuensiTotal" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -78,3 +108,13 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    
+    window.onload = function() {
+        setTimeout(function() {
+            var     tahun   = $('#TahunPeriodeTotal').val();
+            var     bulan   = $('#BulanPeriodeTotal').val();
+            rekapTotal(tahun, bulan);
+        }, 1000);
+    }
+</script>

@@ -39,8 +39,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Merk Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Merk Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -105,8 +105,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Merk Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -168,8 +168,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Merk Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

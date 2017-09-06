@@ -39,8 +39,8 @@ class C_FleetKecelakaan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kecelakaan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Kecelakaan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetKecelakaan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kecelakaan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Kecelakaan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -144,8 +144,8 @@ class C_FleetKecelakaan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kecelakaan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Kecelakaan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -259,8 +259,8 @@ class C_FleetKecelakaan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kecelakaan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Kecelakaan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

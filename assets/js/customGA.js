@@ -512,238 +512,6 @@ $(document).on('click', '#deleteUpdateKecelakaan', function(){
   }
 });
 
-$(document).on('change','#TahunPeriodePajak', function()
-{
-    var value = $(this).val();
-    $.ajax({
-      type: 'POST',
-      data: {
-         value: value
-      },
-      url: baseurl + 'GeneralAffair/FleetRekapPajak/RekapPajak', 
-    })
-    .done(function(data){
-      console.log(data);
-      var data = JSON.parse(data);
-      console.log(data);
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['totalPajak'].length; j++) {
-          temp.push(data['totalPajak'][j]['total_biaya']);
-          bulan.push(data['totalPajak'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapTotalPajak',value,bulan,'#0033CC','#0033CC', ['Total Pajak Kendaraan']);
-
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['frekuensiPajak'].length; j++) {
-          temp.push(data['frekuensiPajak'][j]['total_frekuensi']);
-          bulan.push(data['frekuensiPajak'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapFrekuensiPajak',value,bulan,'#0033CC','#0033CC', ['Frekuensi Pajak Kendaraan']);
-
-    })
-});
-
-$(document).on('change','#TahunPeriodeKIR', function()
-{
-    var value = $(this).val();
-    $.ajax({
-      type: 'POST',
-      data: {
-         value: value
-      },
-      url: baseurl + 'GeneralAffair/FleetRekapKIR/RekapKIR', 
-    })
-    .done(function(data){
-      console.log(data);
-      var data = JSON.parse(data);
-      console.log(data);
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['totalKIR'].length; j++) {
-          temp.push(data['totalKIR'][j]['total_biaya']);
-          bulan.push(data['totalKIR'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapTotalKIR',value,bulan,'#0033CC','#0033CC', ['Total KIR Kendaraan']);
-
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['frekuensiKIR'].length; j++) {
-          temp.push(data['frekuensiKIR'][j]['total_frekuensi']);
-          bulan.push(data['frekuensiKIR'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapFrekuensiKIR',value,bulan,'#0033CC','#0033CC', ['Frekuensi KIR Kendaraan']);
-
-    })
-});
-
-$(document).on('change','#TahunPeriodeMaintenance', function()
-{
-    var value = $(this).val();
-    $.ajax({
-      type: 'POST',
-      data: {
-         value: value
-      },
-      url: baseurl + 'GeneralAffair/FleetRekapMaintenance/RekapMaintenance', 
-    })
-    .done(function(data){
-      console.log(data);
-      var data = JSON.parse(data);
-      console.log(data);
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['totalMaintenance'].length; j++) {
-          temp.push(data['totalMaintenance'][j]['total_biaya']);
-          bulan.push(data['totalMaintenance'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapTotalMaintenance',value,bulan,'#0033CC','#0033CC', ['Total Maintenance Kendaraan']);
-
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['frekuensiMaintenance'].length; j++) {
-          temp.push(data['frekuensiMaintenance'][j]['total_frekuensi']);
-          bulan.push(data['frekuensiMaintenance'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapFrekuensiMaintenance',value,bulan,'#0033CC','#0033CC', ['Frekuensi Maintenance Kendaraan']);
-
-    })
-});
-
-$(document).on('change','#TahunPeriodeKecelakaan', function()
-{
-    var value = $(this).val();
-    $.ajax({
-      type: 'POST',
-      data: {
-         value: value
-      },
-      url: baseurl + 'GeneralAffair/FleetRekapKecelakaan/RekapKecelakaan', 
-    })
-    .done(function(data){
-      console.log(data);
-      var data = JSON.parse(data);
-      console.log(data);
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['totalKecelakaan'].length; j++) {
-          temp.push(data['totalKecelakaan'][j]['total_biaya']);
-          bulan.push(data['totalKecelakaan'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapTotalKecelakaan',value,bulan,'#0033CC','#0033CC', ['Total Kecelakaan']);
-
-      var value = [];
-      var bulan = [];
-      var temp = [];
-      for (var i = 0; i < 1; i++) {
-        for (var j = 0; j < data['frekuensiKecelakaan'].length; j++) {
-          temp.push(data['frekuensiKecelakaan'][j]['total_frekuensi']);
-          bulan.push(data['frekuensiKecelakaan'][j]['bulan']);
-        };
-        value.push(temp);
-      }
-      Grafik('#RekapFrekuensiKecelakaan',value,bulan,'#0033CC','#0033CC', ['Frekuensi Kecelakaan']);
-
-    })
-});
-
-$(document).on('click','#ProsesRekapTotal', function()
-{
-
-    var tahun   = $('#TahunPeriodeTotal').val();
-    var bulan   = $('#BulanPeriodeTotal').val();
-    $.ajax({
-      type: 'POST',
-      data: {
-         tahun: tahun,
-         bulan: bulan,
-      },
-      url: baseurl + 'GeneralAffair/FleetRekapTotal/RekapTotal', 
-    })
-    .done(function(data){
-      // var resetCanvas = function(){
-      // $('#RekapBiayaTotal').remove(); // this is my <canvas> element
-      // $('#ContainerRekapBiayaTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
-      // $('#RekapFrekuensiTotal').remove(); // this is my <canvas> element
-      // $('#ContainerRekapFrekuensiTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
-      // };
- 
-
-      var   data = JSON.parse(data);
-      var   totalBiayaPajak             =   parseInt(data['biayaTotal'][0]['total_biaya_pajak']);
-      var   totalBiayaKIR               =   parseInt(data['biayaTotal'][0]['total_biaya_kir']);
-      var   totalBiayaMaintenance       =   parseInt(data['biayaTotal'][0]['total_biaya_maintenance_kendaraan']);
-      var   totalBiayaKecelakaan        =   parseInt(data['biayaTotal'][0]['total_biaya_kecelakaan']);
-
-      var   totalFrekuensiPajak         =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_pajak']);
-      var   totalFrekuensiKIR           =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_kir']);
-      var   totalFrekuensiMaintenance   =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_maintenance_kendaraan']);
-      var   totalFrekuensiKecelakaan    =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_kecelakaan']);
-
-      // console.log(totalFrekuensiMaintenance);
-      // alert($('#RekapBiayaTotal').attr('height'));
-      // if(!$('#RekapBiayaTotal') && !$('#RekapFrekuensiTotal'))
-      // {
-      //   alert('jalan');
-      // resetCanvas();
-      // }
-      // $('#RekapBiayaTotal').destroy();
-      // $('#RekapBiayaTotal').clear();
-
-
-      pieChart('#RekapBiayaTotal', [totalBiayaPajak, totalBiayaKIR, totalBiayaMaintenance, totalBiayaKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Biaya Pajak', 'Total Biaya KIR', 'Total Biaya Maintenance Kendaraan', 'Total Biaya Kecelakaan']);
-      pieChart('#RekapFrekuensiTotal', [totalFrekuensiPajak, totalFrekuensiKIR, totalFrekuensiMaintenance, totalFrekuensiKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Frekuensi Pajak', 'Total Frekuensi KIR', 'Total Frekuensi Maintenance Kendaraan', 'Total Frekuensi Kecelakaan']);
-
-    });
-});
-
-      function resetCanvas(){
-      $('#RekapBiayaTotal').remove(); // this is my <canvas> element
-      $('#ContainerRekapBiayaTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
-
-      canvas  =   document.getElementById('#RekapBiayaTotal');
-      ctx     =   canvas.getContext('2d');
-      ctx.canvas.height  =   100;
-
-      $('#RekapFrekuensiTotal').remove(); // this is my <canvas> element
-      $('#ContainerRekapFrekuensiTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
-
-      canvas  =   document.getElementById('#RekapFrekuensiTotal');
-      ctx     =   canvas.getContext('2d');
-      ctx.canvas.height  =   100;
-
-      };
-
-
 function Grafik(canvas, data, labels, color, color2, label) {
     var ctx = $(canvas);
     var canvas = new Chart(ctx, {
@@ -772,6 +540,7 @@ function Grafik(canvas, data, labels, color, color2, label) {
         canvas.update();
     }
 }
+
 
 function pieChart(canvas, data, color, color2, label) {
     var ctx = $(canvas);
@@ -804,4 +573,197 @@ function pieChart(canvas, data, color, color2, label) {
         data: data,
         options: options
     });
+}
+
+function rekapPajak(tahun) {
+    $.ajax({
+      type: 'POST',
+      data: {
+         tahun: tahun
+      },
+      url: baseurl + 'GeneralAffair/FleetRekapPajak/ambilData', 
+    })
+    .done(function(data){
+      var data = JSON.parse(data);
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['totalPajak'].length; j++) {
+          temp.push(data['totalPajak'][j]['total_biaya']);
+          bulan.push(data['totalPajak'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapTotalPajak',value,bulan,'#33CC33','#006600', ['Total Pajak Kendaraan']);
+
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['frekuensiPajak'].length; j++) {
+          temp.push(data['frekuensiPajak'][j]['total_frekuensi']);
+          bulan.push(data['frekuensiPajak'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapFrekuensiPajak',value,bulan,'#33CC33','#006600', ['Frekuensi Pajak Kendaraan']);
+
+    });  
+}
+
+function rekapKIR(tahun)
+{
+    $.ajax({
+      type: 'POST',
+      data: {
+         tahun: tahun
+      },
+      url: baseurl + 'GeneralAffair/FleetRekapKIR/ambilData', 
+    })
+    .done(function(data){
+      console.log(data);
+      var data = JSON.parse(data);
+      console.log(data);
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['totalKIR'].length; j++) {
+          temp.push(data['totalKIR'][j]['total_biaya']);
+          bulan.push(data['totalKIR'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapTotalKIR',value,bulan,'#33CC33','#006600', ['Total KIR Kendaraan']);
+
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['frekuensiKIR'].length; j++) {
+          temp.push(data['frekuensiKIR'][j]['total_frekuensi']);
+          bulan.push(data['frekuensiKIR'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapFrekuensiKIR',value,bulan,'#33CC33','#006600', ['Frekuensi KIR Kendaraan']);
+    });
+}
+
+function rekapMaintenance(tahun) 
+{
+    $.ajax({
+      type: 'POST',
+      data: {
+         tahun: tahun
+      },
+      url: baseurl + 'GeneralAffair/FleetRekapMaintenance/ambilData', 
+    })
+    .done(function(data){
+      var data = JSON.parse(data);
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['totalMaintenance'].length; j++) {
+          temp.push(data['totalMaintenance'][j]['total_biaya']);
+          bulan.push(data['totalMaintenance'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapTotalMaintenance',value,bulan,'#33CC33','#006600', ['Total Maintenance Kendaraan']);
+
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['frekuensiMaintenance'].length; j++) {
+          temp.push(data['frekuensiMaintenance'][j]['total_frekuensi']);
+          bulan.push(data['frekuensiMaintenance'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapFrekuensiMaintenance',value,bulan,'#33CC33','#006600', ['Frekuensi Maintenance Kendaraan']);
+
+    })
+}
+
+function rekapKecelakaan(tahun) 
+{
+    $.ajax({
+      type: 'POST',
+      data: {
+         tahun: tahun
+      },
+      url: baseurl + 'GeneralAffair/FleetRekapKecelakaan/ambilData', 
+    })
+    .done(function(data){
+      var data = JSON.parse(data);
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['totalKecelakaan'].length; j++) {
+          temp.push(data['totalKecelakaan'][j]['total_biaya']);
+          bulan.push(data['totalKecelakaan'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapTotalKecelakaan',value,bulan,'#33CC33','#006600', ['Total Kecelakaan']);
+
+      var value = [];
+      var bulan = [];
+      var temp = [];
+      for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < data['frekuensiKecelakaan'].length; j++) {
+          temp.push(data['frekuensiKecelakaan'][j]['total_frekuensi']);
+          bulan.push(data['frekuensiKecelakaan'][j]['bulan']);
+        };
+        value.push(temp);
+      }
+      Grafik('#RekapFrekuensiKecelakaan',value,bulan,'#33CC33','#006600', ['Frekuensi Kecelakaan']);
+    })
+}
+
+function rekapTotal(tahun, bulan)
+{
+    $.ajax({
+      type: 'POST',
+      data: {
+         tahun: tahun,
+         bulan: bulan,
+      },
+      url: baseurl + 'GeneralAffair/FleetRekapTotal/ambilData', 
+    })
+    .done(function(data){
+      // var resetCanvas = function(){
+      // $('#RekapBiayaTotal').remove(); // this is my <canvas> element
+      // $('#ContainerRekapBiayaTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
+      // $('#RekapFrekuensiTotal').remove(); // this is my <canvas> element
+      // $('#ContainerRekapFrekuensiTotal').append('<canvas id="RekapBiayaTotal"><canvas>');
+      // };
+      
+      var   data = JSON.parse(data);
+      var   totalBiayaPajak             =   parseInt(data['biayaTotal'][0]['total_biaya_pajak']);
+      var   totalBiayaKIR               =   parseInt(data['biayaTotal'][0]['total_biaya_kir']);
+      var   totalBiayaMaintenance       =   parseInt(data['biayaTotal'][0]['total_biaya_maintenance_kendaraan']);
+      var   totalBiayaKecelakaan        =   parseInt(data['biayaTotal'][0]['total_biaya_kecelakaan']);
+
+      var   totalFrekuensiPajak         =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_pajak']);
+      var   totalFrekuensiKIR           =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_kir']);
+      var   totalFrekuensiMaintenance   =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_maintenance_kendaraan']);
+      var   totalFrekuensiKecelakaan    =   parseInt(data['frekuensiTotal'][0]['total_frekuensi_kecelakaan']);
+
+      // console.log(totalFrekuensiMaintenance);
+      // alert($('#RekapBiayaTotal').attr('height'));
+      // $('#RekapBiayaTotal').destroy();
+      // $('#RekapBiayaTotal').clear();
+
+      // resetCanvas();
+
+      pieChart('#RekapBiayaTotal', [totalBiayaPajak, totalBiayaKIR, totalBiayaMaintenance, totalBiayaKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Biaya Pajak', 'Total Biaya KIR', 'Total Biaya Maintenance Kendaraan', 'Total Biaya Kecelakaan']);
+      pieChart('#RekapFrekuensiTotal', [totalFrekuensiPajak, totalFrekuensiKIR, totalFrekuensiMaintenance, totalFrekuensiKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Frekuensi Pajak', 'Total Frekuensi KIR', 'Total Frekuensi Maintenance Kendaraan', 'Total Frekuensi Kecelakaan']);
+
+    });  
 }

@@ -39,8 +39,8 @@ class C_FleetRekapKecelakaan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Kecelakaan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Rekapitulasi';
+		$data['SubMenuOne'] = 'Grafik Kecelakaan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -59,7 +59,44 @@ class C_FleetRekapKecelakaan extends CI_Controller
 
 	public function RekapKecelakaan()
 	{
-		$tahun 	= $this->input->post('value');
+		// echo ($this->input->post('cmbPeriode'));
+		// exit();
+
+		$tahun 	= 	$this->input->post('cmbPeriode');
+
+		// echo $tahun;
+		// exit();
+
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Rekap Kecelakaan';
+		$data['Menu'] = 'Rekapitulasi';
+		$data['SubMenuOne'] = 'Grafik Kecelakaan';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['dropdownTahun'] 	= 	$this->M_fleetrekapkecelakaan->dropdownTahun();
+
+		$data['tahun'] 			=	$tahun;
+
+		// echo $data['tahun'];
+		// exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('GeneralAffair/FleetRekapKecelakaan/V_proses', $data);
+
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function ambilData()
+	{
+		$tahun 	= $this->input->post('tahun');
 
 		$data['totalKecelakaan'] 		= $this->M_fleetrekapkecelakaan->rekapTotalKecelakaan($tahun);
 		$data['frekuensiKecelakaan'] 	= $this->M_fleetrekapkecelakaan->rekapFrekuensiKecelakaan($tahun);

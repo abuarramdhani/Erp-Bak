@@ -39,8 +39,8 @@ class C_FleetPajak extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Pajak';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Pajak';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetPajak extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Pajak';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Pajak';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -132,8 +132,8 @@ class C_FleetPajak extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Pajak';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Pajak';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -213,8 +213,8 @@ class C_FleetPajak extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Pajak';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'Pajak';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
