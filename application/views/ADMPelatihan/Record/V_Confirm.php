@@ -77,20 +77,19 @@
 								</div>
 							</div>
 							<hr>
-
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 								<label class="col-lg-3 control-label">Evaluasi</label>
 									<div class="col-lg-9">
-										<?php
+ 										<?php
 											$eval='';$ev1='';$ev2='';$ev3='';
-											if($rc['evaluation']==1){$eval='Wawasan';$ev1='Y';}
-											if($rc['evaluation']==2){$eval='Pengetahuan';$ev2='Y';}
-											if($rc['evaluation']==3){$eval='Perilaku';$ev3='Y';}
-											if($rc['evaluation']==12){$eval='Wawasan, Pengetahuan';$ev1='Y';$ev2='Y';}
-											if($rc['evaluation']==13){$eval='Wawasan, Perilaku';$ev1='Y';$ev3='Y';}
-											if($rc['evaluation']==23){$eval='Pengetahuan, Perilaku';$ev2='Y';$ev3='Y';}
-											if($rc['evaluation']==123){$eval='Wawasan, Pengetahuan, Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
+											if($rc['evaluation']=='1'){$eval='Wawasan';$ev1='Y';}
+											if($rc['evaluation']=='2'){$eval='Pengetahuan';$ev2='Y';}
+											if($rc['evaluation']=='3'){$eval='Perilaku';$ev3='Y';}
+											if($rc['evaluation']=='1,2'){$eval='Wawasan, Pengetahuan';$ev1='Y';$ev2='Y';}
+											if($rc['evaluation']=='1,3'){$eval='Wawasan, Perilaku';$ev1='Y';$ev3='Y';}
+											if($rc['evaluation']=='2,3'){$eval='Pengetahuan, Perilaku';$ev2='Y';$ev3='Y';}
+											if($rc['evaluation']=='1,2,3'){$eval='Wawasan, Pengetahuan, Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
@@ -183,18 +182,21 @@
 												<th width="20%">Nama Peserta</th>
 												<th width="12%">Status</th>
 													<?php if($ev2=='Y'){ ?>
-												<th>Pengetahuan (Pre)</th>
+														<th>Pengetahuan (Pre)</th>
 													<?php } if($ev3=='Y'){ ?>
-												<th>Perilaku (Pre)</th>
-												<th>Perilaku (Post)</th>
-												<th width="7%">R1</th>
-												<th width="7%">R2</th>
-												<th width="7%">R3</th>
+														<th>Perilaku (Pre)</th>
+														<th>Perilaku (Post)</th>
+														<th width="7%">R1</th>
+														<th width="7%">R2</th>
+														<th width="7%">R3</th>
 													<?php } ?>
 											</tr>
 										</thead>
 										<tbody>
-											<?php $no=0;foreach ($participant as $pt){ $no++; 
+											<?php $no=0;
+												$stafdata = array();
+												$nonstafdata = array();
+												foreach ($participant as $pt){ $no++; 
 
 												if('2'==$pt['status'])
 												{
@@ -207,6 +209,15 @@
 													$tidakhadir='';
 												}
 
+												$staffCode = array('B', 'D', 'J', 'Q');
+												$indCode = substr($pt['noind'], 0, 1);
+												if (in_array($indCode, $staffCode)) {
+													$a='staf';
+													array_push($stafdata, $pt['noind'] );
+												}else{
+													$a='nonstaf';
+													array_push($nonstafdata, $pt['noind'] );
+												}
 												?>
 											<tr>
 												<td><?php echo $no ?></td>
@@ -248,7 +259,17 @@
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
-									<label class="col-lg-12 control-label">*) Standar kelulsan : <?php echo $rc['limit']?></label>
+									<label class="col-lg-12 control-label">*) Standar kelulusan :
+									<?php
+									if ($stafdata!=null && $nonstafdata!=null) {
+										echo '<br><br> <b>Staf:</b> <br> '.implode($stafdata, ', ').' = '.$rc['limit_1'];
+										echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
+									} elseif ($stafdata!=null && $nonstafdata==null) {
+										echo '<br><br> <b>Staf:</b> <br>'.implode($stafdata, ', ').' = '.$rc['limit_1'];
+									} else {
+										echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
+									}
+									?></label>
 								</div>
 							</div>
 							<hr>

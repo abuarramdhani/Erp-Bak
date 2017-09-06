@@ -8,7 +8,7 @@ class M_penjadwalan extends CI_Model {
 		
 		//AMBIL DATA TRAINING
 		public function GetTraining(){
-			$sql = "select * from pl.pl_master_training where status=0";
+			$sql = "select * from pl.pl_master_training ";
 			$sql2 = "select * from pl.pl_master_training_purpose";
 			$sql3 = "SELECT
 						SUM(tr.kapasitas_kelas) jumlah, 
@@ -104,6 +104,11 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
+		public function GetObjectiveId($id){
+		$sql = " select * from pl.pl_master_training_purpose where training_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 		//Get Trainer
 		public function GetObjective($term){
 			if ($term === FALSE) {
