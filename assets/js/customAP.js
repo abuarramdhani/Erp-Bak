@@ -637,9 +637,8 @@ $(document).ready(function(){
 	});
 
 	$('#btnViewPrp').click(function(){
-		$('#dateFrom').attr('readonly', 'readonly');
-		$('#siteSupp').attr('readonly', 'readonly');
-		$("#viewPrpData").css('opacity', '50%');
+		$('#btnViewPrp').attr('disabled', 'disabled');
+		$("#viewPrpData").css('opacity', '0.5');
 		$('#loadingPrpData').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="65px"/>');
 		var tanggal = $('#dateFrom').val();
 		var SiteSupp = $('#siteSupp').val();
@@ -652,8 +651,8 @@ $(document).ready(function(){
 				url:baseurl+"AccountPayables/Prepayment/viewPrepayment/",
 				success:function(result)
 				{
-					$('#dateFrom').removeAttr('readonly', 'readonly');
-					$('#siteSupp').removeAttr('readonly', 'readonly');
+					$('#btnViewPrp').removeAttr('disabled', 'disabled');
+					$("#viewPrpData").css('opacity', '1');
 					$('#loadingPrpData').html('');
 					$("#viewPrpData").html(result);
 					$('#showPrpData').dataTable({

@@ -7,7 +7,7 @@ class M_prepayment extends CI_Model{
 	public function getLaporan($org_id, $sitesuppRaw, $tanggal)
 	{
 
-		if ($sitesuppRaw == '') {
+		if ($sitesuppRaw == '' || $sitesuppRaw == NULL) {
 			$sitesupp = '%';
 		}else{
 			$sitesupp = $sitesuppRaw;

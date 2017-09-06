@@ -16,12 +16,12 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								LAPORAN PREPAYMENT CV. KHS
+								LAPORAN PREPAYMENT CV. KHS<br>Branch : KHS Pusat (OU)
 							</div>
 							<div class="box-body">
 								
 								<pre><label>PER TANGGAL   : </label><input type="text" name="dateFrom" id="dateFrom" value="<?php echo date('m/d/Y'); ?>"><br><label>SITE SUPPLIER : </label><input type="text" name="siteSupp" id="siteSupp" placeholder="ALL"></pre>
-								<button id="btnViewPrp" class="btn btn-primary btn-sm">CARI DATA</button><br><br>
+								<button id="btnViewPrp" class="btn btn-info btn-sm">CARI DATA</button><br><br>
 								<div id="loadingPrpData" style="text-align: center; width: 100%;"></div><br>
 								<div id="viewPrpData"></div>
 								

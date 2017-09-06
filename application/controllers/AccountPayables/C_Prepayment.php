@@ -75,7 +75,7 @@ class C_Prepayment extends CI_Controller {
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Supplier</th>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>SiteSupp</th>
 						<th colspan='9' style='text-align: center;'>Invoice Prepayement</th>
-						<th rowspan='2' style='text-align: center; vertical-align: middle;'>DESCRIPTION</th>
+						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Description</th>
 					</tr>
 					<tr class='bg-primary'>
 						<th style='text-align: center;'>Inv. Date</th>
