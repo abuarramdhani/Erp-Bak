@@ -516,6 +516,8 @@ $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
 $route['AccountPayables/Lppb'] 				= 'AccountPayables/C_Lppb';
 $route['AccountPayables/Lppb/(:any)'] 				= 'AccountPayables/C_Lppb/$1';
+$route['AccountPayables/Prepayment'] 				= 'AccountPayables/C_Prepayment';
+$route['AccountPayables/Prepayment/(:any)'] 				= 'AccountPayables/C_Prepayment/$1';
 
 
 //------------------------------------Payroll Management---------------------------------------------------

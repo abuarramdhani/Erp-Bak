@@ -644,3 +644,41 @@ $(document).ready(function(){
 
 });
 // ---------------------------------------------LPPB[end]-------------------------------------------
+
+// ---------------------------------------------PREPAYEMENT[START]-----------------------------------------
+$(document).ready(function(){
+	$('#dateFrom').datepicker({
+		autoclose:true
+	 });
+	$('#btnViewPrp').click(function(){
+		$('#dateFrom').attr('readonly', 'readonly');
+		$('#siteSupp').attr('readonly', 'readonly');
+		$('#loadingPrpData').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="60px"/>');
+		var tanggal = $('#dateFrom').val();
+		var SiteSupp = $('#siteSupp').val();
+			$.ajax({
+				type: "POST",
+				data:{
+						tanggal:tanggal,
+						SiteSupp:SiteSupp,
+					},
+				url:baseurl+"AccountPayables/Prepayment/viewPrepayment/",
+				success:function(result)
+				{
+					$('#dateFrom').removeAttr('readonly', 'readonly');
+					$('#siteSupp').removeAttr('readonly', 'readonly');
+					$('#loadingPrpData').html('');
+					$("#viewPrpData").html(result);
+					$('#showPrpData').dataTable({
+						"bSort" : true,
+						"searching": true,
+						"bLengthChange": false,
+						"sScrollX": true,
+						"paging": true
+					});
+				}
+			});
+
+	});
+});
+// ---------------------------------------------PREPAYEMENT[END]-------------------------------------------
