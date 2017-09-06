@@ -726,9 +726,6 @@ $(document).on('click','#ProsesRekapTotal', function()
     });
 });
 
-    });
-});
-
 function Grafik(canvas, data, labels, color, color2, label) {
     var ctx = $(canvas);
     var canvas = new Chart(ctx, {
