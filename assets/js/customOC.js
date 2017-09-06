@@ -16,16 +16,14 @@ $(document).ready(function() {
 		$('.format_number').maskMoney({thousands:',',decimal:'.'});
 });
 
-
-
 $('#berat_casting,#berat_cairan').change(function(){
 	var cairan = $('input#berat_cairan').val();
 	var casting = $('input#berat_casting').val();
-	var remelt = ((cairan*100000) - (casting*100000))/100000;
+	var remelt = ((cairan*1000) - (casting*1000))/1000;
 	var ycast = (casting/cairan)*100;
 	var yiedl = ycast.toFixed(1);
 
-		$('input#berat_remelt').val(remelt);
+		$('input#berat_remelt').val(remelt.toFixed(2));
 		$('input#yield_casting').val(yiedl);
 	});
 
@@ -100,40 +98,11 @@ function save_cost2(e, t){
 
 function addCommass(e, th) {
     var value_input = $(th).val();
-    value_input += '';
-    x = value_input.split('.');
-    x1 = x[0];
-    x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-            x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return $(th).val(x1 + x2);
+    return $(th).val(value_input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 }
 
-
-/*$('#basic_tonage').change(function(){
-	var basic = $('#basic_tonage').val();
-	basic += '';
-    x = basic.split('.');
-    x1 = x[0];
-    x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-            x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return $('#basic_tonage').val(x1 + x2);
+$('.number-format').change(function(){
+	var val = $(this).val();
+	var valNumber = Number(val);
+	$(this).val(valNumber);
 });
-
-$('#target_pieces').change(function(){
-	var basic = $('#target_pieces').val();
-	basic += '';
-    x = basic.split('.');
-    x1 = x[0];
-    x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-            x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return $('#target_pieces').val(x1 + x2);
-})*/
