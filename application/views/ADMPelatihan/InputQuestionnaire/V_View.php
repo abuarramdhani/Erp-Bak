@@ -90,7 +90,7 @@
 						</div>
 						<div class="row" style="margin: 10px 10px">
 							<div class="table-responsive col-lg-12" >
-								 <table class="datatable table table-striped table-bordered table-hover text-left" id="tblLimbah" style="table-layout: fixed; min-width:1500px;">
+								 <table class="datatable table table-striped table-bordered table-hover text-left" id="tblPenjadwalan" style="table-layout: fixed; min-width:1500px;">
 										<?php 
 											$no=0;
 													$no++
@@ -172,7 +172,7 @@
 								<a href="<?php echo base_url('ADMPelatihan/Record/Finished')?>" class="btn btn-danger btn btn-flat">Close</a>
 								&nbsp;&nbsp;
 								<?php if($sbm<$participant_number){?>
-								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
+									<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 								<?php } ?>
 							</div>
 						</div>

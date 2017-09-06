@@ -64,11 +64,11 @@
 													</tr>
 												</thead>
 												<tbody id="tbodyQuestionnaireSegmentC">
-														<?php 
-															$no=1;
-															foreach($segment as $sg){
-															$Sg_id=$sg['segment_id'];
-														?>
+													<?php 
+														$no=1;
+														foreach($segment as $sg){
+														$Sg_id=$sg['segment_id'];
+													?>
 													<tr class="clone" row-id="<?php echo $no; ?>">
 														<td><?php echo $no; ?></td>
 														<td>
@@ -102,18 +102,18 @@
 													</tr>
 												</thead>
 												<tbody id="tbodyQuestionnaireSegmentEssay">
-														<?php 
-															$no=1;
-															foreach($segment as $sg){
-															$Sg_id=$sg['segment_id'];
-														?>
+													<?php 
+														$no=1;
+														foreach($segment as $sg){
+														$Sg_id=$sg['segment_id'];
+													?>
 													<tr class="clone" row-id="<?php echo $no; ?>">
 														<td><?php echo $no; ?></td>
 														<td>
 															<input id="segmentessay" name="txtSegmentEssay[]" class="form-control segmentessay" placeholder="Nama Bagian">
 														</td>
 													</tr>
-												<?php } ?>
+													<?php } ?>
 												</tbody>
 											</table>
 										</div>

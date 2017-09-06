@@ -95,7 +95,6 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%">No</th>
-												<th width="10%">Id Statement</th>
 												<th width="55%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
 												<th>Sangat Setuju</th>
 												<th>Setuju</th>
@@ -111,8 +110,7 @@
 														 $no++ ?>
 											<tr>
 												<td><?php echo $no?></td>
-												<td><?php echo $st['statement_id']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td style="text-align:left;"><?php echo $st['statement_description']?></td>
+												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
 												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
 												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
 												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
@@ -137,7 +135,6 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="1px">No</th>
-												<th width="10px">Id Statement</th>
 												<th width="100px"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
 												<th>Jawab</th>
 											</tr>
@@ -150,10 +147,9 @@
 											?>
 											<tr>
 												<td><?php echo $no?></td>
-												<td><?php echo $st['statement_id']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td style="text-align:left;"><?php echo $st['statement_description']?></td>
+												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
 												<td>
-													<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" required>
+													<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" >
 												</td>
 											</tr>
 											<?php }} ?>

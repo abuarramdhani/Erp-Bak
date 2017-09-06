@@ -154,7 +154,7 @@
 												<?php echo $py['participant_type_description']?>
 											</option>
 										<?php }?>
-									</select>
+										</select>
 									</div>
 									<label class="col-lg-1 control-label">Jumlah Peserta</label>
 									<div class="col-lg-4">

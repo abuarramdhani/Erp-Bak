@@ -23,6 +23,8 @@
 			</div>
 			<br/>
 			
+		<?php foreach($record as $rc){?>						
+			<form method="post" action="<?php $id=$rc['scheduling_id'];echo base_url('ADMPelatihan/Record/EditSave/'.$id);?>">
 			<div class="row">
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
@@ -30,7 +32,6 @@
 						<b>Record Pelatihan</b>
 					</div>
 					<div class="box-body">
-					<?php foreach($record as $rc){?>	
 						<div class="row" style="margin: 10px 10px">
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $rc['training_name']?></b></h3>
@@ -41,7 +42,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Nama Pelatihan</label>
 									<div class="col-lg-9">	
-										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" value="<?php echo $rc['scheduling_name']?>" required>
+										<input type="text" name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" value="<?php echo $rc['scheduling_name']?>" required>
 									</div>
 								</div>
 							</div>
@@ -50,7 +51,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input name="txtTanggalPelaksanaan" class="form-control singledate" placeholder="Tanggal" required >
+										<input type="text" name="txtTanggalPelaksanaan" class="form-control singledate" placeholder="Tanggal" required >
 										<input type="text" id="scheduledate" value="<?php echo $rc['date_foredit']?>" hidden>
 									</div>
 								</div>
@@ -61,14 +62,14 @@
 									<label class="col-lg-3 control-label">Waktu</label>
 									<div class="col-lg-4 ">
 										<div class="bootstrap-timepicker timepicker">
-											<input name="txtWaktuMulai" class="form-control" placeholder="Waktu" id="TrainingStartTime" onkeypress="return isNumberKey(event)" value="<?php echo $rc['start_time']?>" required >
+											<input type="text" name="txtWaktuMulai" class="form-control" placeholder="Waktu" id="TrainingStartTime" onkeypress="return isNumberKey(event)" value="<?php echo $rc['start_time']?>" required >
 										</div>
 
 									</div>
 									<label class="col-lg-1 control-label" align="center">-</label>
 									<div class="col-lg-4">
 										<div class="bootstrap-timepicker timepicker">
-											<input name="txtWaktuSelesai" class="form-control"  placeholder="Waktu" id="TrainingEndTime" onkeypress="return isNumberKey(event)"  value="<?php echo $rc['end_time']?>" required >
+											<input type="text" name="txtWaktuSelesai" class="form-control"  placeholder="Waktu" id="TrainingEndTime" onkeypress="return isNumberKey(event)"  value="<?php echo $rc['end_time']?>" required >
 										</div>
 									</div>
 								</div>
@@ -92,35 +93,52 @@
 							</div>
 
 							<hr>
-
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 								<label class="col-lg-3 control-label">Evaluasi</label>
 									<div class="col-lg-9">
 										<?php
+											$evalData = explode(',', $rc['evaluation']);
 											$eval='';
-											if($rc['evaluation']=='1'){$eval='Wawasan';}
-											if($rc['evaluation']=='2'){$eval='Pengetahuan';}
-											if($rc['evaluation']=='3'){$eval='Perilaku';}
-											if($rc['evaluation']=='1,2'){$eval='Wawasan, Pengetahuan';}
-											if($rc['evaluation']=='1,3'){$eval='Wawasan, Perilaku';}
-											if($rc['evaluation']=='2,3'){$eval='Pengetahuan, Perilaku';}
-											if($rc['evaluation']=='1,2,3'){$eval='Wawasan, Pengetahuan, Perilaku';}
+											if($rc['evaluation']=='1'){$eval='Pengetahuan';}
+											if($rc['evaluation']=='2'){$eval='Sikap/Perilaku';}
+											if($rc['evaluation']=='3'){$eval='Wawasan';}
+											if($rc['evaluation']=='1,2'){$eval='Pengetahuan, Sikap/Perilaku';}
+											if($rc['evaluation']=='1,3'){$eval='Pengetahuan, Wawasan';}
+											if($rc['evaluation']=='2,3'){$eval='Sikap/Perilaku, Wawasan';}
+											if($rc['evaluation']=='1,2,3'){$eval='Pengetahuan, Sikap/Perilaku, Wawasan';}
 										?>
-										<input class="form-control" value="<?php echo $eval ?>" readonly >
+										<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" >
+												<?php
+													foreach($GetEvaluationType as $et){ ?>
+													<option value="<?php echo $et['evaluation_type_id']?>" 
+													<?php if (in_array($et['evaluation_type_id'], $evalData)) { echo "selected"; } ?>>
+														<?php echo $et['evaluation_type_description'];?>
+													</option>
+												<?php }?>
+										</select>
 									</div>
 								</div>
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
-									<div class="col-lg-3">
-										<input class="form-control" value="<?php echo $rc['participant_type_description'] ?>" readonly >
-									</div>
+									<div class="col-lg-3" >
+										<!-- <select class="form-control select2" name="slcPeserta" >
+										<?php foreach($ptctype as $py) {?> 
+											<option  value="<?php echo $py['participant_type_id']?>"
+												<?php if($py['participant_type_id']) { echo "selected"; } ?> >
+												<?php echo $py['participant_type_description'] ?>
+											</option>
+										<?php }?>
+										</select> --> 
+										<input class="form-control" value="<?php echo $rc['participant_type_description'] ?>" readonly>	</div>
+									
 									<label class="col-lg-3 control-label" align="right">Jumlah Peserta</label>
-									<div class="col-lg-3">
-										<input class="form-control" value="<?php echo $rc['participant_number']?>" readonly >
-									</div>
+										<div class="col-lg-3">
+											<input class="form-control" name="txtJumlahPeserta" id="jmlpeserta" placeholder="<?php echo $rc['participant_number']?>" 
+											onkeypress="return isNumberKey(event)" maxlength=2 value="<?php echo $rc['participant_number']?>">
+										</div>
 								</div>
 							</div>
 							
@@ -180,9 +198,9 @@
 								</div>
 							</div>
 							<hr>
-							<div class="row" style="margin: 10px 10px">
-								<div class="col-md-12">
-									<table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+							<!-- <div class="row" style="margin: 10px 10px">
+								<div class="col-md-12"> -->
+									<!-- <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
 										<thead class="bg-primary">
 											<tr>
 												<th width="5%">No</th>
@@ -191,30 +209,89 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php $no=0;foreach ($participant as $pt){ $no++ ?>
+											<?php //$no=0;//foreach ($participant as $pt){ $no++ ?>
 											<tr>
-												<td><?php echo $no ?></td>
-												<td><?php echo $pt['participant_name'] ?></td>
+												<td><?php //echo $no ?></td>
+												<td><?php //echo $pt['participant_name'] ?></td>
 												<td>
 													<?php
-														$participant_status='Unconfirmed';
-														if($pt['status']==1){$participant_status='Hadir';}
-														if($pt['status']==2){$participant_status='Tidak Hadir';}
-														echo $participant_status;
+														$participant_//status='Unconfirmed';
+														//if($pt['status']==1){$participant_status='Hadir';}
+														//if($pt['status']==2){$participant_status='Tidak Hadir';}
+														//echo $participant_status;
 													?>
 												</td>
-											</tr>
+											</tr> -->
+											
+												<div class="panel panel-default">
+													<div class="panel-heading text-right">
+														<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddParticipantEdit" title="Tambah Baris" onclick="AddParticipantEdit('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+													</div>
+													<div class="panel-body">
+														<div class="table-responsive" >
+															<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblParticipant" id="tblParticipant">
+																<thead>
+																	<tr class="bg-primary">
+																		<th width="5%" class="sorting_disabled" rowspan="1" colspan="1" style="width: 48.7778px;">NO</th>
+																		<th width="90%">Daftar Peserta</th>
+																		<th width="20%">Status</th>
+																		<th width="10%"></th>
+																	</tr>
+																</thead>
+																<tbody id="tbodyParticipant">
+																<?php $no=1;foreach ($participant as $pt) {?>
+																	<tr class="clone" row-id="<?php echo $no;?>">
+																		<td ><?php echo $no;?></td>
+																		<td>
+																			<div class="input-group">
+																				<div class="input-group-addon">
+																					<i class="glyphicon glyphicon-user"></i>
+																				</div>
+																					<?php 
+																						if ($pt['participant_id']) { ?>
+																							<select class="form-control js-slcEmployee">
+																								<option value="<?php echo $pt['participant_id']?>" >
+																									<?php echo $pt['noind'].'-'.$pt['participant_name']?>
+																								</option>
+																									<input type="text" name="txtParticipantID" value="<?php echo $pt['participant_id']?>" hidden>
+																							</select>
+																					<?php }else { ?>
+																							<select class="form-control js-slcEmployee" name="slcEmployee[]" id="slcEmployee" >
+																								<option value=""></option>
+																							</select>
+																					<?php }?>
+																			</div>
+																		</td>
+																		<td>
+																			<?php
+																				$participant_status='Unconfirmed';
+																				if($pt['status']==1){$participant_status='Hadir';}
+																				if($pt['status']==2){$participant_status='Tidak Hadir';}
+																				echo $participant_status;
+																			?>
+																		</td>
+																		<td>
+																			<button type="button" class="btn btn-danger" onclick="deleteRowAjax(<?php echo $no++.','.$pt['participant_id'].','.$rc['scheduling_id']?>)"><i class="fa fa-remove"></i></button>
+																		</td>
+																	</tr>
+															     <?php }?>
+																</tbody>
+															 </table>
+														</div>
+													</div>
+												</div>
 											<?php } ?>
-										</tbody>
-									</table>
-								</div>
-							</div>
+										<!-- </tbody>
+									</table> -->
+								<!-- </div>
+							</div> -->
 							<hr>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 								<div class="col-lg-12 text-right">
-									<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-success">Confirm</a>
-									<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger">Delete</a>
+										<button type="submit" class="btn btn-flat btn-warning">Save</button>
+<!-- 									<a type="submit" href="<?php $id;echo site_url('ADMPelatihan/Record/EditSave/'.$id);?>" class="btn btn-flat btn-warning">Save</a>
+ -->									<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger">Delete</a>
 									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 								</div>
@@ -240,11 +317,13 @@
 								</div>
 							</div>
 						</div>
-					<?php } ?>
 					</div>
 				</div>
 				</div>
-			</div>		
+			</div>
+			</form>		
+			<?php //} ?>
+			</div>
 		</div>		
 	</div>
 	</div>
