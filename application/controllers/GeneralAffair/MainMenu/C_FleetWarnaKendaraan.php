@@ -39,8 +39,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -105,8 +105,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -167,8 +167,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

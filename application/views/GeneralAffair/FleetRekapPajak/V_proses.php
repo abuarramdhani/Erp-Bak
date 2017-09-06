@@ -18,24 +18,30 @@
                         </div>
                     </div>
                     <br/>
-           
+          
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Rekap KIR Kendaraan</div>
+                                <div class="box-header with-border">Rekap Pajak Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <form method="post" action="<?php echo base_url('GeneralAffair/FleetRekapKIR/RekapKIR');?>">
+                                            <form method="post" action="<?php echo base_url('GeneralAffair/FleetRekapPajak/RekapPajak');?>">
                                                 <div class="form-group">
                                                     <label for="cmbPeriode" class="control-label col-lg-4">Periode</label>
                                                     <div class="col-lg-4">
-                                                        <select id="TahunPeriodeKIR" name="cmbPeriode" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
+                                                        <select id="TahunPeriodePajak" name="cmbPeriode" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                             <option value=""></option>
                                                             <?php
                                                                 foreach ($dropdownTahun as $Tahun) 
                                                                 {
-                                                                    echo    '  <option value="'.$Tahun['tahun'].'">'
+                                                                    $status = '';
+                                                                    if($Tahun['tahun']==$tahun)
+                                                                    {
+                                                                        $status = "selected";
+                                                                    }
+
+                                                                    echo    '  <option value="'.$Tahun['tahun'].'" '.$status.'>'
                                                                                     .$Tahun['tahun'].
                                                                             '   </option>';
                                                                 }
@@ -46,14 +52,34 @@
                                                         <center>
                                                             <button type="submit" class="btn btn-primary">Proses</button>
                                                         </center>
-                                                    </div>                                                    
+                                                    </div>
                                                 </div>
                                                 <br/>
                                                 <hr/>
                                             </form>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="chart-responsive">
+                                                    <center>
+                                                    <label for="RekapTotalPajak" class="control-label">Rekap Total Pajak</label>
+                                                    </center>
+                                                    <hr/>
+                                                    <canvas id="RekapTotalPajak" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="chart-responsive">
+                                                    <center>
+                                                    <label for="RekapFrekuensiPajak" class="control-label">Rekap Frekuensi Pajak</label>
+                                                    </center>
+                                                    <hr/>                                                
+                                                    <canvas id="RekapFrekuensiPajak" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -61,3 +87,13 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    
+    window.onload = function() {
+        setTimeout(function() {
+            var     tahun   = $('#TahunPeriodePajak').val();
+            rekapPajak(tahun);
+        }, 1000);
+    }
+</script>

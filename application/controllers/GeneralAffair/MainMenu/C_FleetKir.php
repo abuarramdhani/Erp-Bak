@@ -39,8 +39,8 @@ class C_FleetKir extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'KIR';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'KIR';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetKir extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'KIR';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'KIR';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -123,8 +123,8 @@ class C_FleetKir extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'KIR';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'KIR';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -203,8 +203,8 @@ class C_FleetKir extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'KIR';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Proses';
+		$data['SubMenuOne'] = 'KIR';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

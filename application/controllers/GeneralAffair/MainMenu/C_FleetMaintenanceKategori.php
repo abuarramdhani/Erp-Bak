@@ -39,8 +39,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -62,8 +62,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -106,8 +106,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -172,8 +172,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

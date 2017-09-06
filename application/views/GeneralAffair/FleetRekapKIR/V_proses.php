@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <br/>
-           
+          
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -35,7 +35,12 @@
                                                             <?php
                                                                 foreach ($dropdownTahun as $Tahun) 
                                                                 {
-                                                                    echo    '  <option value="'.$Tahun['tahun'].'">'
+                                                                    $status = '';
+                                                                    if($Tahun['tahun']==$tahun)
+                                                                    {
+                                                                        $status = "selected";
+                                                                    }
+                                                                    echo    '  <option value="'.$Tahun['tahun'].'" '.$status.'>'
                                                                                     .$Tahun['tahun'].
                                                                             '   </option>';
                                                                 }
@@ -46,12 +51,33 @@
                                                         <center>
                                                             <button type="submit" class="btn btn-primary">Proses</button>
                                                         </center>
-                                                    </div>                                                    
+                                                    </div>                                                
                                                 </div>
                                                 <br/>
                                                 <hr/>
                                             </form>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="chart-responsive">
+                                                    <center>
+                                                    <label for="RekapTotalKIR" class="control-label">Rekap Total KIR</label>
+                                                    </center>
+                                                    <hr/>                                                
+                                                    <canvas id="RekapTotalKIR" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="chart-responsive">
+                                                    <center>
+                                                    <label for="RekapFrekuensiKIR" class="control-label">Rekap Frekuensi KIR</label>
+                                                    </center>
+                                                    <hr/>                                                
+                                                    <canvas id="RekapFrekuensiKIR" height="200"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -61,3 +87,13 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    
+    window.onload = function() {
+        setTimeout(function() {
+            var     tahun   = $('#TahunPeriodeKIR').val();
+            rekapKIR(tahun);
+        }, 1000);
+    }
+</script>
