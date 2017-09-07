@@ -4,6 +4,7 @@ class M_dataplan extends CI_Model {
 	public function __construct()
 	{
 		$this->load->database();
+    $this->oracle = $this->load->database ( 'oracle', TRUE );
 	}
 
 	public function getDataPlan($id = FALSE, $sid = FALSE)
@@ -60,6 +61,67 @@ class M_dataplan extends CI_Model {
   {
     $this->db->where('daily_plan_id', $id);
     $this->db->update('pp.pp_daily_plans', $data);
+  }
+
+  public function getItemTransaction($job=FALSE,$invSrc,$invDst,$itemCode,$locatorID)
+  {
+    if ($job==FALSE) {
+      $sql = "  SELECT
+                  (SUM(MMT.TRANSACTION_QUANTITY)*-1) ACHIEVE_QTY,
+                  MAX(MMT.TRANSACTION_DATE) LAST_DELIVERY
+                FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
+                WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
+                  AND MMT.ORGANIZATION_ID = MSIB.ORGANIZATION_ID
+                  AND MMT.ORGANIZATION_ID = 102
+                  AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                  AND MMT.SUBINVENTORY_CODE = '$invSrc'
+                  AND MMT.TRANSFER_SUBINVENTORY = '$invDst'
+                  AND MSIB.SEGMENT1 = '$itemCode'
+                  AND MMT.TRANSACTION_DATE BETWEEN
+                    (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                      (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                    ELSE
+                      (trunc(sysdate-1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                    END)
+                    AND
+                    (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                      (trunc(sysdate+1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                    ELSE
+                      (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                    END)
+                group by msib.SEGMENT1
+                order by MSIB.segment1";
+    }else{
+      $sql = "  SELECT
+                  SUM(MMT.TRANSACTION_QUANTITY) ACHIEVE_QTY,
+                  MAX(MMT.TRANSACTION_DATE) LAST_DELIVERY
+                FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
+                WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
+                  AND MMT.ORGANIZATION_ID = MSIB.ORGANIZATION_ID
+                  AND MMT.ORGANIZATION_ID = 102
+                  AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                  AND MMT.SUBINVENTORY_CODE = '$invDst'
+                  AND MMT.LOCATOR_ID = 34
+                  AND MMT.TRANSACTION_TYPE_ID = 44
+                  AND MSIB.SEGMENT1 = '$itemCode'
+                  AND MMT.TRANSACTION_DATE BETWEEN
+                    (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                      (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                    ELSE
+                      (trunc(sysdate-1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                    END)
+                    AND
+                    (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                      (trunc(sysdate+1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                    ELSE
+                      (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                    END)
+                group by msib.SEGMENT1
+                order by MSIB.segment1";
+    }
+
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
   }
 
   // public function getPlanMonthly()
