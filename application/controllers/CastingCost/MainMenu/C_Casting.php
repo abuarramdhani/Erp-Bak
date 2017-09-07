@@ -50,8 +50,7 @@ public function index()
 			$this->load->view('V_Sidemenu',$data);
 			if ($user_name == 'B0585') {
 				$this->load->view('CastingCost/V_DashboardCasting',$data);
-			}
-			else{
+			}else{
 				$this->load->view('CastingCost/V_Casting',$data);
 			}
 			$this->load->view('V_Footer',$data);
