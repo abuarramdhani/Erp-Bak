@@ -389,7 +389,10 @@ $(document).ready(function() {
 		
 });
 
-document.getElementById('btnDeleteAssets').onclick= function() {return confirm('Delete All Shown Assets?')};
+// document.getElementById('btnDeleteAssets').onclick= function() {return confirm('Delete All Shown Assets?')};
+$(document).on('click', '#btnDeleteAssets', function() {
+	return confirm('Delete All Shown Assets?');
+});
 
 function ConfirmDelete() {
   return confirm("Are you sure you want to delete?");

@@ -31,6 +31,7 @@ class C_Penjadwalan extends CI_Controller {
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('ADMPelatihan/M_penjadwalan');
+		$this->load->model('ADMPelatihan/M_record');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -56,6 +57,7 @@ class C_Penjadwalan extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['training'] = $this->M_penjadwalan->GetTraining();
+		$data['ptctype'] = $this->M_penjadwalan->GetParticipantType();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -64,7 +66,7 @@ class C_Penjadwalan extends CI_Controller {
 	}
 	
 	//HALAMAN CREATE PENJADWALAN
-	public function create($id){
+	public function create($id, $alert = FALSE){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -77,14 +79,21 @@ class C_Penjadwalan extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
+		$data['purpose'] = $this->M_penjadwalan->GetObjectiveId($id);
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['trainer'] = $this->M_penjadwalan->GetTrainer();
+		$data['no'] = 1;
+		$data['ptctype'] = $this->M_penjadwalan->GetParticipantType();
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['alert'] = $alert;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Penjadwalan/V_Create',$data);
 		$this->load->view('V_Footer',$data);	
 	}
+
+	
 
 	//HALAMAN CREATE PENJADWALAN PAKET VERSI BARU
 	public function createbypackage($pse){
@@ -106,6 +115,7 @@ class C_Penjadwalan extends CI_Controller {
 		$data['daynumber']		= $this->M_penjadwalan->GetDayNumber($package_id);
 		$data['room'] 			= $this->M_penjadwalan->GetRoom();
 		$data['trainer'] 		= $this->M_penjadwalan->GetTrainer();
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -131,6 +141,7 @@ class C_Penjadwalan extends CI_Controller {
 		$data['packscheduling'] = $this->M_penjadwalan->GetPackageSchedulingId($pse);
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['trainer'] = $this->M_penjadwalan->GetTrainer();
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -162,7 +173,7 @@ class C_Penjadwalan extends CI_Controller {
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"objective":"'.$data['objective'].'"}';
+			echo '{"objective":"'.$data['purpose'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}
@@ -183,35 +194,43 @@ class C_Penjadwalan extends CI_Controller {
 		$end_time				= $this->input->post('txtWaktuSelesai');
 		$room 					= $this->input->post('slcRuang');
 		
-		$participant_type		= $this->input->post('txtPeserta');
+		$participant_type		= $this->input->post('slcPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
+
+		$evaluasi		= $this->input->post('slcEvaluasi');
+		$evaluasi2 		= implode(',', $evaluasi);
+
 		
-		$chk1			= $this->input->post('chk1');
-		$chk2			= $this->input->post('chk2');
-		$chk3			= $this->input->post('chk3');
-		$evaluasi		= $chk1.$chk2.$chk3;
-		
+		$GetAlert 		= $this->M_penjadwalan->GetAlert($date,$start_time,$end_time,$room,$training_id);
+		$GetTrainerAlert= $this->M_penjadwalan->GetTrainer();
+		$count 			= count($GetAlert);
+		$alerttrainer	= explode(',', $GetAlert[0]['trainer']);
+		$trainerName 	= array();
+
+		if ($count == 0) {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
-		
-		$this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi,$trainers);
-		
+		$insertId 		= $this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$trainers);
+
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;
 		
 		$objective		= $this->input->post('slcObjective');
-				
 			$i=0;
 			foreach($objective as $loop){
 				$data_objective[$i] = array(
-					'scheduling_id' 	=> $pkgid,
-					'objective' 		=> $objective[$i],
+					'training_id' 	=> $pkgid,
+					'purpose' 		=> $objective[$i],
 				);
-				if( !empty($objective[$i]) ){
+
+		$pp		= $this->M_penjadwalan->pp($objective[$i]);
+					// if( !empty($objective[$i]) )
+				if( $pp[0]['count']==NULL or $pp[0]['count']==0 ){
 					$this->M_penjadwalan->AddObjective($data_objective[$i]);
 				}
 				$i++;
 			}
+
 
 		$participant	= $this->input->post('slcEmployee');
 			
@@ -235,6 +254,39 @@ class C_Penjadwalan extends CI_Controller {
 			}
 			
 		redirect('ADMPelatihan/Record');
+		}else{
+			$alert = '<div class="row">
+		 					<div class="col-md-10 col-md-offset-1 col-sm-12">
+		 						<div id="alertJadwal" class="modal fade bs-example-modal-lg modal-danger" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		 							 <div class="modal-dialog modal-lg" role="document">
+		 							 <div class="modal-content">
+		 							 <div class="modal-body">
+		 							Hari dan Ruangan sudah dijadwalkan untuk Training ';
+		 							$alert .= $GetAlert[0]['training_name'];
+		 							foreach ($alerttrainer as $at) {
+		 								foreach ($GetTrainerAlert as $gta) {
+		 									if ($at == $gta['trainer_id']) {
+		 										$trainerName[] = $gta['trainer_name'];
+		 									}
+		 								}
+		 							}
+		 							if (!empty($trainerName)) {
+		 								$cetakTrain = implode(', ', $trainerName);
+		 								$alert .= ' dengan trainer '.$cetakTrain;
+		 							}
+		 							$alert .= '!
+		 							 </div>
+		 							 </div>
+		 						   </div>
+			 					</div>
+			 				</div>
+            	        </div>
+            	        <script type="text/javascript">
+							$("#alertJadwal").modal("show");
+						</script>';
+			$this->create($training_id, $alert);
+		}
+		
 	}
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
@@ -249,7 +301,7 @@ class C_Penjadwalan extends CI_Controller {
 		$room					= $this->input->post('slcRuang');
 
 
-		$participant_type		= $this->input->post('txtPeserta');
+		$participant_type		= $this->input->post('slcPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
 
 		$i=0;
@@ -258,9 +310,8 @@ class C_Penjadwalan extends CI_Controller {
 			$arr=$i+1;
 			//NUMBERING
 			$trainers			= $this->input->post('slcTrainer'.$arr);
-			$chk1				= $this->input->post('chk1'.$arr);
-			$chk2				= $this->input->post('chk2'.$arr);
-			$chk3				= $this->input->post('chk3'.$arr);
+			$evaluasi			= $this->input->post('slcEvaluasi'.$arr);
+
 			//ARRAY YANG AKAN DI INPUT
 			$data_schedule[$i] = array(
 				'package_scheduling_id'	=> $package_scheduling_id,
@@ -271,7 +322,7 @@ class C_Penjadwalan extends CI_Controller {
 				'room'					=> $room[$i],
 				'participant_type'		=> $participant_type,
 				'trainer'				=> implode(',', $trainers),
-				'evaluation'			=> $chk1.$chk2.$chk3,
+				'evaluation'			=> implode(',', $evaluasi),
 				'participant_number'	=> $participant_number,
 			);
 
@@ -349,18 +400,20 @@ class C_Penjadwalan extends CI_Controller {
 		$date 					= $this->input->post('txtTanggalPelaksanaan');
 		$room					= $this->input->post('slcRuang');
 		
-		$participant_type		= $this->input->post('txtPeserta');
+		$participant_type		= $this->input->post('slcPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
 		
-		$chk1			= $this->input->post('chk1');
-		$chk2			= $this->input->post('chk2');
-		$chk3			= $this->input->post('chk3');
-		$evaluasi		= $chk1.$chk2.$chk3;
-		
+		// $chk1			= $this->input->post('chk1');
+		// $chk2			= $this->input->post('chk2');
+		// $chk3			= $this->input->post('chk3');
+		// $evaluasi		= $chk1.$chk2.$chk3;
+		$evaluasi		= $this->input->post('slcEvaluasi');
+		$evaluasi2 		= implode(',', $evaluasi);
+
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 		
-		$this->M_penjadwalan->AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi,$trainers);
+		$this->M_penjadwalan->AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers);
 		
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;

@@ -36,7 +36,7 @@ foreach ($rekap as $rekap_data) {}
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NAMA</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">MASA KERJA</th>
 										<th colspan="8" style="text-align: center">REKAP</th>
-										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">TOTAL HARI KERJA</th>
+										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">TOTAL HARI KERJA<br>(Periode)</th>
 										<th colspan="7" style="text-align: center">PERSENTASE</th>
 									</tr>
 									<tr class="bg-primary">
@@ -58,7 +58,8 @@ foreach ($rekap as $rekap_data) {}
 									</tr>
 								</thead>
 								<tbody>
-									<?php $no=1; foreach ($rekap as $rekap_data) { ?>
+									<?php $no=1; 
+									foreach ($rekap as $rekap_data) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
 											<td style="text-align:center;">
@@ -73,35 +74,50 @@ foreach ($rekap as $rekap_data) {}
 											</td>
 											<td style="text-align:center;">
 												<?php
-													///*
-													$masukkerja_s = '';
-													${'masa_kerja'.$rekap_data['nama']} = array();
-													$index_masakerja = 0;
-													foreach ($rekap_masakerja as $row) {
-														if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-															
-															if ($row['masukkerja'] != $masukkerja_s) {
-																$masukkerja = new DateTime($row['masukkerja']);
-																$tglkeluar = new DateTime($row['tglkeluar']);
-																$masa_kerja = $masukkerja->diff($tglkeluar);
-																${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
-																$index_masakerja++;
-															}
-
-															$masukkerja_s = $row['masukkerja'];
-														}
-													}
-
-													$e = new DateTime();
-													$f = clone $e;
-													if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
-														$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
-													}
-													if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
-														$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
-													}
-													echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 													
+												$masukkerja_s = '';
+												${'masa_kerja'.$rekap_data['nama']} = array();
+												$index_masakerja = 0;
+												$aktif=0;
+												foreach ($rekap_masakerja as $row) {
+													if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+														if ($row['masukkerja'] != $masukkerja_s) {
+															$masukkerja = new DateTime($row['masukkerja']);
+															$tglkeluar = new DateTime($row['tglkeluar']);
+															$masa_kerja = $masukkerja->diff($tglkeluar);
+															${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+															$index_masakerja++;
+														}
+														
+														if ('f' == $row['keluar'])
+															{
+																$aktif=1;
+																$amasukkerja=$row['masukkerja'];
+																$aperiode2=$ex_period2[0].' '.$ex_period2[1];
+															}
+														if(1==$index_masakerja && 1==$aktif)
+														{
+															$bmasukkerja = new DateTime($amasukkerja);
+															$bperiode2 = new DateTime($aperiode2);
+															$masa_kerja = $bmasukkerja->diff($bperiode2);		
+															${'masa_kerja'.$rekap_data['nama']}[0] = $masa_kerja;		
+														}
+
+														$masukkerja_s = $row['masukkerja'];
+													}
+												}
+
+												$e = new DateTime();
+												$f = clone $e;
+												if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+													$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+												}
+												if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+													$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+												}
+												echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
+
+
 													//*/
 													//echo $rekap_data['masa_kerja']
 												?>
@@ -114,7 +130,8 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo $rekap_data['frekip']+$rekap_data['frekips'] ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekct']+$rekap_data['frekcts'] ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['freksp']+$rekap_data['freksps'] ?></td>
-											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : ($rekap_data['totalhk']+$rekap_data['totalhks'])) ?></td>
+											<td style="text-align:center;"><?php
+											 echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : ($rekap_data['totalhk']+$rekap_data['totalhks'])) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['freki']+$rekap_data['frekis']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekm']+$rekap_data['frekms']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
