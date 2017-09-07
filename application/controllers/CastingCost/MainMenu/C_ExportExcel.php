@@ -154,13 +154,13 @@ public function excel($message=NULL)
             //     ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO);
 
             $object->getActiveSheet()
-                ->getPageMargins()->setTop(0.4);
+                ->getPageMargins()->setTop(0.3);
             $object->getActiveSheet()
                 ->getPageMargins()->setRight(0.4);
             $object->getActiveSheet()
                 ->getPageMargins()->setLeft(0.4);
             $object->getActiveSheet()
-                ->getPageMargins()->setBottom(0.4);
+                ->getPageMargins()->setBottom(0.3);
 
             $object->getActiveSheet()->getColumnDimension('A')->setWidth(15);
             $object->getActiveSheet()->getColumnDimension('B')->setWidth(30);
