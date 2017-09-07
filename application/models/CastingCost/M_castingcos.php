@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class M_Casting extends CI_Model
+class M_castingcost extends CI_Model
 {
 	public function __construct()
 	    {
@@ -20,20 +20,20 @@ class M_Casting extends CI_Model
 	function getAllRequest()
 		{
 			$sql ="select * from co.khs_request_report_hpp where sign_confirmation =0 order by date_submition";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
 
 	function getDoneRequest()
 		{
 			$sql ="select * from co.khs_request_report_hpp where sign_confirmation = 1 order by id desc limit 10";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
 	function getRequest($id)
 		{
 			$sql ="select * from co.khs_request_report_hpp where id = '$id'";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
 	
@@ -63,40 +63,34 @@ class M_Casting extends CI_Model
 	function getCostMachine()
 		{
 			$sql ="select * from co.khs_cost_machine order by resource";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
 
 	function getCostElectric()
 		{
 			$sql ="select * from co.khs_electric_cost order by resource";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
 
 	function save_cost_machine($resource,$cost)
 		{
 			$sql = "update co.khs_cost_machine set cost = $cost where resource = '$resource'";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return;
 		}
 
 	function save_cost_electric($resource,$cost)
 		{
 			$sql = "update co.khs_electric_cost set cost = $cost where resource = '$resource'";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return;
 		}
 	function updateStatus($id,$user_name)
 		{
 			$sql = "update co.khs_request_report_hpp set sign_confirmation = 1 , user_confirmation = '$user_name' , date_confirmation = now() where id = '$id'";
-			$query =$this->db->query($sql);
+			$query = $this->db->query($sql);
 			return;
-		}
-	function cekDoc()
-		{
-			$sql ="select * from co.khs_request_report_hpp where date_submition = current_date";
-			$query =$this->db->query($sql);
-			return $query->num_rows();
 		}
 }
