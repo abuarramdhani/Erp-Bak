@@ -106,23 +106,35 @@ class C_DataPlan extends CI_Controller {
         	}else{
 	        	$media	= $this->upload->data();
 	        	$inputFileName 	= 'assets/upload/ProductionPlanning/data-plan/'.$media['file_name'];
+                $subInv = $this->M_dataplan->getSection($user_id,$section);
 
-	        	try{
-                	$inputFileType 	= PHPExcel_IOFactory::identify($inputFileName);
-                	$objReader 		= PHPExcel_IOFactory::createReader($inputFileType);
-                	$objPHPExcel 	= $objReader->load($inputFileName);
-            	}catch(Exception $e){
-            		die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
-            	}
+                try{
+                    $inputFileType  = PHPExcel_IOFactory::identify($inputFileName);
+                    $objReader      = PHPExcel_IOFactory::createReader($inputFileType);
+                    $objPHPExcel    = $objReader->load($inputFileName);
+                }catch(Exception $e){
+                    die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+                }
 
-            	$sheet 			= $objPHPExcel->getSheet(0);
-            	$highestRow 	= $sheet->getHighestRow();
-            	$highestColumn 	= $sheet->getHighestColumn();
-            	$errStock       = 0;
+                $sheet          = $objPHPExcel->getSheet(0);
+                $highestRow     = $sheet->getHighestRow();
+                $highestColumn  = $sheet->getHighestColumn();
+                $errStock       = 0;
 
-            	for ($row = 4; $row <= $highestRow; $row++){
-            		$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-            		if ($rowData[0][0] != null) {
+                for ($row = 4; $row <= $highestRow; $row++){
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+                    if ($rowData[0][0] != null) {
+                        echo "<pre>";
+                        foreach ($subInv as $si) {
+                            if ($si['from_inventory'] == 'JOB') {
+                                $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$rowData[0][1],$si['locator_id']);
+                            }else{
+
+                            }
+                        }
+                        print_r($subInv);
+                        echo "</pre>";
+                        exit();
                     	$datPoint = "1";
                     	$dataIns = array(
                     		'item_code' 		=> $rowData[0][1],
