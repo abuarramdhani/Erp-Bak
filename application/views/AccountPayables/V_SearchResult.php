@@ -21,7 +21,7 @@
 							</div>
 							<div class="box-body">
 								<fieldset class="row2" style="background:#F8F8F8 ;">
-								 	<form action="<?php echo base_URL('AccountPayables/C_Invoice/search')?>" method="post" enctype="multipart/form-data" id="pph">
+								 	<form action="<?php echo base_URL('AccountPayables/Invoice/search')?>" method="post" enctype="multipart/form-data" id="pph">
 				                    	<div class="box-body">
 
 					                     	<table>
@@ -213,10 +213,10 @@
 												<td rowspan="<?php echo $row->JML?>"><?php echo $TaxInvNum?></td>
 												<td rowspan="<?php echo $row->JML?>"><?php echo $row->VOUCHER_NUMBER?></td>
 												<td rowspan="<?php echo $row->JML?>">											
-													<a class="btn btn-info btn-sm" title="Input QR" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxNumber/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-qrcode"></i></a>		
-													<a class="btn btn-warning btn-sm" title="Input Manual" href="<?php echo base_URL('AccountPayables/C_Invoice/inputTaxManual/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-edit"></i></a>
+													<a class="btn btn-info btn-sm" title="Input QR" href="<?php echo base_URL('AccountPayables/Invoice/inputTaxNumber/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-qrcode"></i></a>		
+													<a class="btn btn-warning btn-sm" title="Input Manual" href="<?php echo base_URL('AccountPayables/Invoice/inputTaxManual/'.$row->INVOICE_ID)?>" target="blank"><i class="glyphicon glyphicon-edit"></i></a>
 													<?php $fkp = str_replace(str_split('.-'), '', $TaxInvNum); ?>
-													<a class="btn btn-danger btn-sm" title="Delete" href="<?php echo base_URL('AccountPayables/C_Invoice/deleteTaxNumber/'.$row->INVOICE_ID.'/'.$fkp)?>" onclick="return confirm('Anda YAKIN menghapus data \n (<?php echo $row->INVOICE_NUM?>)..?');" target="blank"><i class="glyphicon glyphicon-trash"></i></a>					
+													<a class="btn btn-danger btn-sm" title="Delete" href="<?php echo base_URL('AccountPayables/Invoice/deleteTaxNumber/'.$row->INVOICE_ID.'/'.$fkp)?>" onclick="return confirm('Anda YAKIN menghapus data \n (<?php echo $row->INVOICE_NUM?>)..?');" target="blank"><i class="glyphicon glyphicon-trash"></i></a>					
 												</td>
 											</tr>
 											<?php 

@@ -20,7 +20,7 @@
 							</div>
 							<div class="box-body">
 								<fieldset class="row2" style="background:#F8F8F8 ;">
-								 	<form action="<?php echo base_URL('AccountPayables/C_Invoice/saveTaxNumber')?>" method="post" enctype="multipart/form-data" id="pph">
+								 	<form action="<?php echo base_URL('AccountPayables/Invoice/saveTaxNumber')?>" method="post" enctype="multipart/form-data" id="pph">
 				                    	<div class="box-body">
 				                    	<table>	
 					                     		<tr>
@@ -170,7 +170,7 @@
 									</td>											
 									<td>
 											<fieldset class="row2" style="background:#F8F8F8 ;">
-								 	<form action="<?php echo base_URL('AccountPayables/C_Invoice/saveTaxNumber')?>" method="post" enctype="multipart/form-data" id="pph">
+								 	<form action="<?php echo base_URL('AccountPayables/Invoice/saveTaxNumber')?>" method="post" enctype="multipart/form-data" id="pph">
 								 	<input type="hidden" name="faktur_type" value="Y">
 								 	<input type="hidden" id="hppn" value="<?php echo $data[0]->PPN; ?>">
 								 	<input type="hidden" id="hppn1" value="">

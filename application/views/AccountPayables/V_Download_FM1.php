@@ -26,16 +26,16 @@
 							<div class=" col-lg-offset-7 col-lg-5">
 								<div class="row">
 									<div class=" col-lg-6">
-										<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadfm')?>"  class="btn btn-info btn-block">Faktur Masukan</a>
+										<a href="<?php echo base_url('AccountPayables/Invoice/downloadfm')?>"  class="btn btn-info btn-block">Faktur Masukan</a>
 									</div>
 									<div class=" col-lg-6">
-										<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadrfm')?>"  class="btn btn-info btn-block">Retur Masukan</a>
+										<a href="<?php echo base_url('AccountPayables/Invoice/downloadrfm')?>"  class="btn btn-info btn-block">Retur Masukan</a>
 									</div>
 								</div>
 							</div>
 						</div>
 						<!-- INPUT ROW 2 -->
-						<form method="post" id="fm-form" action="<?php echo base_url('AccountPayables/C_Invoice/savefile')?>">
+						<form method="post" id="fm-form" action="<?php echo base_url('AccountPayables/Invoice/savefile')?>">
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Masa Pajak</label>
@@ -141,7 +141,7 @@
 							</div>
 						</form>
 						<!-- INPUT ROW 7 -->
-						<form method="post" action="<?php echo base_url('AccountPayables/C_Invoice/importfm')?>" enctype="multipart/form-data">
+						<form method="post" action="<?php echo base_url('AccountPayables/Invoice/importfm')?>" enctype="multipart/form-data">
 							<div class="row" style="margin: 10px 10px">
 								<div class=" col-lg-offset-7 col-lg-3">
 									
