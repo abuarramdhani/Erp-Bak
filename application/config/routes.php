@@ -1184,3 +1184,16 @@ $route['StorageLocation/Ajax/(:any)'] 						= 'StorageLocation/Additional/C_Ajax
 $route['StorageLocation/Ajax/(:any)/(:any)'] 				= 'StorageLocation/Additional/C_Ajax/$1/$2';
 $route['StorageLocation/Report'] 							= 'StorageLocation/Report/C_Report/index';
 $route['StorageLocation/Report/(:any)'] 					= 'StorageLocation/Report/C_Report/$1';
+
+//------------------------------------ KHS Cost Order --------------------------------------------
+//CastingCost
+$route['CastingCost']					 	= 'CastingCost/C_CastingCost/index';
+$route['CastingCost/InputCasting']		 	= 'CastingCost/MainMenu/C_Casting/index';
+$route['CastingCost/simpan'] 			 	= 'CastingCost/MainMenu/C_Casting/simpan';
+$route['CastingCost/cek']				 	= 'CastingCost/MainMenu/C_Casting/cek';
+$route['CastingCost/edit/submit'] 		 	= 'CastingCost/MainMenu/C_Casting/submit';
+$route['CastingCost/view_casting'] 		 	= 'CastingCost/MainMenu/C_Casting/view_casting';
+$route['CastingCost/EditRequest/(:any)']	= 'CastingCost/MainMenu/C_Casting/edit_request/$1';
+$route['CastingCost/edit/savecostmachine']  = 'CastingCost/MainMenu/C_Casting/save_cost_machine';
+$route['CastingCost/edit/savecostelectric'] = 'CastingCost/MainMenu/C_Casting/save_cost_electric';
+$route['CastingCost/edit/export_excel'] 	= 'CastingCost/MainMenu/C_ExportExcel/excel';
