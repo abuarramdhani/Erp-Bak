@@ -12,8 +12,8 @@ class M_exportexcel extends CI_Model
 
 	function getMaterial($material_casting)
 		{
-			$sql =" select distinct msib.SEGMENT1 MATERIAL_CODE , msib.DESCRIPTION MATERIAL_NAME 
-					, round(fmd.QTY,4) QTY ,fmd.DETAIL_UOM UOM 
+			$sql =" SELECT distinct msib.SEGMENT1 MATERIAL_CODE , msib.DESCRIPTION MATERIAL_NAME 
+					, round(fmd.QTY,5) QTY ,fmd.DETAIL_UOM UOM 
 					from FM_MATL_DTL fmd , FM_FORM_MST ffm ,mtl_system_items_b msib
 					where ffm.FORMULA_NO like '%$material_casting%'
 						AND fmd.LINE_TYPE = -1

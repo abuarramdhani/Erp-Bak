@@ -43,10 +43,10 @@ public function excel($message=NULL)
         $pembuatan_pola     = $this->input->post('pembuatan_pola');
         $date_doc           = $this->input->post('txt_date');
         $no_doc             = $this->input->post('txt_no_doc');
-        $dates       =  explode("-", $date_doc);
-        $year_doc    =  substr($dates[0],2);
-        $month_doc   =  $dates[1];
-        $day_doc     =  $dates[2];
+        $dates              =  explode("-", $date_doc);
+        $year_doc           =  substr($dates[0],2);
+        $month_doc          =  $dates[1];
+        $day_doc            =  $dates[2];
         $user_name          = $this->session->user;
         $material_melting        = $this->M_ExportExcel->getMaterial($material_casting);
         $cost_machine            = $this->M_ExportExcel->getCostMachine($mesin_shelcore);
@@ -285,7 +285,7 @@ public function excel($message=NULL)
              $object->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row,$melting['MATERIAL_CODE'])
                     ->setCellValue('B'.$row,$melting['MATERIAL_NAME'])
-                    ->setCellValue('C'.$row,$melting['QTY']*$berat_cairan)
+                    ->setCellValue('C'.$row,number_format($melting['QTY']*$berat_cairan, 5))
                     ->setCellValue('D'.$row,$rate[$i])
                     ->setCellValue('E'.$row,$melting['QTY']*$berat_cairan*$rate[$i]);
              $object->getActiveSheet()->getStyle('A'.$row.':E'.$row) ->applyFromArray($border_top_bot);
