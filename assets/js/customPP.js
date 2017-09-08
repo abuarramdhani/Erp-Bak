@@ -1,11 +1,23 @@
 $(document).ready(function() {
     $('#tbdataplan').DataTable();
     $('#tbdatagroupsection').DataTable();
+    $('.mon-fab-table').DataTable({
+        // "paging": false,
+        // "lengthChange": false,
+        "searching": false,
+        "ordering": false,
+        "info": false,
+        "autoWidth": false,
+        "pageLength": 5
+    });
+});
+
+window.onload = function() {
     $('.time-form').datepicker({
         autoclose: true,
         format: 'yyyy-mm-dd'
     });
-});
+}
 
 function chartFabricationMon() {
     var ctx = document.getElementById('month-fabrication').getContext('2d');
