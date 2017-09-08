@@ -124,43 +124,49 @@ class C_DataPlan extends CI_Controller {
                 for ($row = 4; $row <= $highestRow; $row++){
                     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
                     if ($rowData[0][0] != null) {
-                        echo "<pre>";
                         foreach ($subInv as $si) {
                             if ($si['from_inventory'] == 'JOB') {
                                 $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$rowData[0][1],$si['locator_id']);
                             }else{
-
+                                $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$si['from_inventory'],$si['to_inventory'],$rowData[0][1],$si['locator_id']);
                             }
                         }
-                        print_r($subInv);
-                        echo "</pre>";
-                        exit();
-                    	$datPoint = "1";
-                    	$dataIns = array(
-                    		'item_code' 		=> $rowData[0][1],
-                    		'item_description' 	=> $rowData[0][2],
-                    		'priority' 			=> $rowData[0][3],
-                    		'need_qty' 			=> $rowData[0][4],
-                    		'due_time' 			=> date('m-d-Y', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][5])),
+                        $datPoint = "1";
+                        if ($getItemTransaction == NULL) {
+                            $acvQty = 0;
+                            $lastDelv = null;
+                        }else{
+                            $acvQty = $getItemTransaction[0]['ACHIEVE_QTY'];
+                            $lastDelv = date('d-m-Y H:i:s', strtotime($getItemTransaction[0]['LAST_DELIVERY']));
+                        }
+
+                        $dataIns = array(
+                            'item_code'         => $rowData[0][1],
+                            'item_description'  => $rowData[0][2],
+                            'priority'          => $rowData[0][3],
+                            'need_qty'          => $rowData[0][4],
+                            'due_time'          => date('m-d-Y', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][5])),
+                            'achieve_qty'       => $acvQty,
+                            'last_delivery'     => $lastDelv,
                             'section_id'        => $section,
                             'created_by'        => $user_id,
-                    		'created_date' 		=> date("Y-m-d H:i:s")
-                    	);
+                            'created_date'      => date("Y-m-d H:i:s")
+                        );
 
-                    	if (!is_numeric($rowData[0][4])) {
-                    		$errStock++;
-                    	}
-                    	if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3]) || empty($rowData[0][4]) || empty($rowData[0][5])) {
-                        	$errStock++;
-                    	}
-            		}else{
-                		$datPoint = null;
-            		}
+                        if (!is_numeric($rowData[0][4])) {
+                            $errStock++;
+                        }
+                        if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3]) || empty($rowData[0][4]) || empty($rowData[0][5])) {
+                            $errStock++;
+                        }
+                    }else{
+                        $datPoint = null;
+                    }
 
-                	if ($datPoint !=null && $errStock == 0) {
-                		$this->M_dataplan->insertDataPlan($dataIns);
-                	}
-            	}
+                    if ($datPoint !=null && $errStock == 0) {
+                     $this->M_dataplan->insertDataPlan($dataIns);
+                    }
+                }
 
             	unlink($inputFileName);
             	if ($errStock > 0) {
