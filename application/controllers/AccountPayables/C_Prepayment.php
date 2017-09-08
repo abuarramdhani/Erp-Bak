@@ -61,9 +61,10 @@ class C_Prepayment extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;		
 		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
+		$ssn = $this->session->userdata;
 
-		$org_id = '82';//sementara
-		$sitesuppRaw = $this->input->post('SiteSupp');
+		$org_id = $ssn['org_id'];
+		$sitesuppRaw = strtoupper($this->input->post('SiteSupp'));
 		$tanggal = $this->input->post('tanggal');
 
 		// $result = 'tanggal : '.$tanggal.'<br>sitesuppRaw : '.$sitesuppRaw.'<br>org_id : '.$org_id;
@@ -73,7 +74,7 @@ class C_Prepayment extends CI_Controller {
 				<thead>
 					<tr class='bg-primary'>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Supplier</th>
-						<th rowspan='2' style='text-align: center; vertical-align: middle;'>SiteSupp</th>
+						<th rowspan='2' style='text-align: center; vertical-align: middle;'>No. Induk</th>
 						<th colspan='9' style='text-align: center;'>Invoice Prepayement</th>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Description</th>
 					</tr>
@@ -105,28 +106,25 @@ class C_Prepayment extends CI_Controller {
 						<td>"; echo $prp['RATE_PREPAYMENT']; echo"</td>
 						<td>"; echo $prp['AMOUNT_IDR']; echo"</td>
 						<td>"; echo $prp['DESCRIPTION']; echo"</td>
-					</tr>
-					";};"
+					</tr>";
+					};"
 				</tbody>
 			</table>
 		";
-		// echo "<pre>";
-		// print_r($prepayment);
-		// echo "</pre>";
 	}
 
 	public function testChamber()
 	{
 		echo "<h2>For Testing Purpose Only</h2>";
-		$this->checkSession();
-		$user_id = $this->session->userid;		
-		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
-		$org_id = $data['UserResponsibility']['0']['org_id'];
-		$sitesuppRaw = '';
-		// $data['Prepayment'] = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw);
+		// $sitesuppRaw = strtoupper($this->input->post('SiteSupp'));
+		// $tanggal = $this->input->post('tanggal');
+		// $data['Prepayment'] = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw, $tanggal);
+		$ssn = $this->session->userdata;
 		echo "<pre>";
 		echo $org_id;
-		print_r($data['UserResponsibility']);
+		print_r($ssn['org_id']);
+		// echo $sitesuppRaw;
+		// echo $tanggal;
 		echo "</pre>";
 	}
 

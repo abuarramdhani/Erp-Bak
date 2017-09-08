@@ -6,7 +6,7 @@
 					<div class="col-lg-12">
 						<div class="col-lg-11">
 							<div class="text-right">
-								<h1><b>LAPORAN PREPAYMENT</b></h1>
+								<h1><b>INVOICE PREPAYMENT</b></h1>
 							</div>
 						</div>
 					</div>
@@ -19,13 +19,12 @@
 								LAPORAN PREPAYMENT CV. KHS<br>Branch : KHS Pusat (OU)
 							</div>
 							<div class="box-body">
-								
-								<pre><label>PER TANGGAL   : </label><input type="text" name="dateFrom" id="dateFrom" value="<?php echo date('m/d/Y'); ?>"><br><label>SITE SUPPLIER : </label><input type="text" name="siteSupp" id="siteSupp" placeholder="ALL"></pre>
-								<button id="btnViewPrp" class="btn btn-info btn-sm">CARI DATA</button><br><br>
-								<div id="loadingPrpData" style="text-align: center; width: 100%;"></div><br>
-								<div id="viewPrpData"></div>
-								
-
+								<form id="dummyForm_prp" action="#">
+									<pre><label>PER TANGGAL : </label><input type="text" name="dateFrom" id="dateFrom" value="<?php echo date('m/d/Y'); ?>"><br><label>NO. INDUK   : </label><input type="text" name="siteSupp" id="siteSupp" placeholder="ALL" style="text-transform: uppercase;"></pre>
+									<button type="submit" id="btnViewPrp" class="btn btn-info btn-sm">CARI DATA</button><br><br>
+									<div id="loadingPrpData" style="text-align: center; width: 100%;"></div><br>
+									<div id="viewPrpData"></div>
+								</form>
 							</div>
 						</div>
 					</div>

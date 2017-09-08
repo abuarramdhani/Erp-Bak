@@ -8,9 +8,9 @@ class M_prepayment extends CI_Model{
 	{
 
 		if ($sitesuppRaw == '' || $sitesuppRaw == NULL) {
-			$sitesupp = '%';
+			$sitesupp = '';
 		}else{
-			$sitesupp = $sitesuppRaw;
+			$sitesupp = "AND PVS.VENDOR_SITE_CODE LIKE '".$sitesuppRaw."'";
 		};
 		$tanggal = date('d/M/Y');
 		$oracle = $this->load->database("oracle",true);
@@ -127,7 +127,7 @@ class M_prepayment extends CI_Model{
 				AND PV.VENDOR_ID = AI.VENDOR_ID  
 				AND AI.PAYMENT_METHOD_CODE = IBY1.PAYMENT_METHOD_CODE (+) 
 				AND NVL(PV.VENDOR_NAME, HP.PARTY_NAME) = 'KHS Employee'
-				AND PVS.VENDOR_SITE_CODE LIKE '$sitesupp'
+				$sitesupp
 				AND ALC.LOOKUP_TYPE = 'PREPAY STATUS'
 				AND ALC.LOOKUP_CODE = (AP_INVOICES_PKG.GET_APPROVAL_STATUS( AI.INVOICE_ID,
 				  AI.INVOICE_AMOUNT, AI.PAYMENT_STATUS_FLAG,

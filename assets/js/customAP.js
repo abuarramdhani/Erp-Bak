@@ -636,6 +636,10 @@ $(document).ready(function(){
 		autoclose:true
 	});
 
+	$('#dummyForm_prp').submit(function(e){
+		e.preventDefault();
+	});
+
 	$('#btnViewPrp').click(function(){
 		$('#btnViewPrp').attr('disabled', 'disabled');
 		$("#viewPrpData").css('opacity', '0.5');
@@ -662,6 +666,21 @@ $(document).ready(function(){
 						"sScrollX": true,
 						"paging": true
 					});
+					$('html, body').animate({
+						scrollTop: $("#viewPrpData").offset().top
+					}, 500);
+				},
+				error: function (xhr, ajaxOptions, thrownError) 
+				{
+					$('#btnViewPrp').removeAttr('disabled', 'disabled');
+					alert('Ajax Error\n'+xhr.status+' ['+xhr.readyState+']'+thrownError);
+					$('#loadingPrpData').html('');
+					$("#viewPrpData").css('opacity', '1');
+					$("#viewPrpData").html('<h1>AJAX ERROR</h1>'+thrownError);
+					console.log(xhr.responseText);
+					$('html, body').animate({
+						scrollTop: $("#viewPrpData").offset().top
+					}, 200);
 				}
 			});
 
