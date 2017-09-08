@@ -68,7 +68,7 @@ class M_dataplan extends CI_Model {
     if ($job==FALSE) {
       $sql = "  SELECT
                   (SUM(MMT.TRANSACTION_QUANTITY)*-1) ACHIEVE_QTY,
-                  MAX(MMT.TRANSACTION_DATE) LAST_DELIVERY
+                  TO_CHAR(MAX(MMT.TRANSACTION_DATE), 'DD-MON-YYYY HH24:MI:SS') LAST_DELIVERY
                 FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
                 WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
                   AND MMT.ORGANIZATION_ID = MSIB.ORGANIZATION_ID
@@ -94,14 +94,14 @@ class M_dataplan extends CI_Model {
     }else{
       $sql = "  SELECT
                   SUM(MMT.TRANSACTION_QUANTITY) ACHIEVE_QTY,
-                  MAX(MMT.TRANSACTION_DATE) LAST_DELIVERY
+                  TO_CHAR(MAX(MMT.TRANSACTION_DATE), 'DD-MON-YYYY HH24:MI:SS') LAST_DELIVERY
                 FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
                 WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
                   AND MMT.ORGANIZATION_ID = MSIB.ORGANIZATION_ID
                   AND MMT.ORGANIZATION_ID = 102
                   AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
                   AND MMT.SUBINVENTORY_CODE = '$invDst'
-                  AND MMT.LOCATOR_ID = 34
+                  AND MMT.LOCATOR_ID = $locatorID
                   AND MMT.TRANSACTION_TYPE_ID = 44
                   AND MSIB.SEGMENT1 = '$itemCode'
                   AND MMT.TRANSACTION_DATE BETWEEN
@@ -122,6 +122,7 @@ class M_dataplan extends CI_Model {
 
     $query = $this->oracle->query($sql);
     return $query->result_array();
+    // return $sql;
   }
 
   // public function getPlanMonthly()
