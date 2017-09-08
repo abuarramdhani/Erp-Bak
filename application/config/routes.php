@@ -124,6 +124,8 @@ $route['FixedAsset/DataAssets'] = 'FixedAsset/MainMenu/C_DataAssets/index';
 $route['FixedAsset/DataAssets/(:any)'] = 'FixedAsset/MainMenu/C_DataAssets/$1';
 $route['FixedAsset/DataAssets/(:any)/(:any)'] = 'FixedAsset/MainMenu/C_DataAssets/$1/$2';
 $route['FixedAsset/DataAssets/(:any)/(:any)/(:any)'] = 'FixedAsset/MainMenu/C_DataAssets/$1/$2/$3';
+$route['FixedAsset/BonAssets'] = 'FixedAsset/MainMenu/C_BonAssets/index';
+$route['FixedAsset/BonAssets/(:any)'] = 'FixedAsset/MainMenu/C_BonAssets/$1';
 //-------------------------------------InventoryManagement----------------------------------------------------
 $route['InventoryManagement'] = 'InventoryManagement/C_InventoryManagement/index';
 //InventoryManagement/MainMenu
