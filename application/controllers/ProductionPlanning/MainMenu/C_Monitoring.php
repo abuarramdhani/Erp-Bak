@@ -56,14 +56,21 @@ class C_Monitoring extends CI_Controller {
     	}
 
     	$data['section'] 		= $this->M_dataplan->getSection();
-    	$data['plan'] 			= $datplan;
     	$data['selectedSection']= $section;
-    	$count = count($data['plan']);
+    	
+    	$data['highPriority']= array();
+    	$data['normalPriority']= array();
+
+    	foreach ($datplan as $dp => $val1) {
+    		foreach ($val1 as $key => $val2) {
+    			if ($val2['priority'] == '1') {
+    				$data['highPriority'][$dp][$key] = $val2;
+    			}else{
+    				$data['normalPriority'][$dp][$key] = $val2;
+    			}
+    		}
+    	}
+    	
         $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Monitoring', $data);
     }
-
-    // public function getMonthlyPlan()
-    // {
-    // 	echo "muah";
-    // }
 }
