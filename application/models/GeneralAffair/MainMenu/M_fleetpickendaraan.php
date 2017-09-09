@@ -14,32 +14,50 @@ class M_fleetpickendaraan extends CI_Model
             $ambilPICKendaraan  = " select  pic.pic_kendaraan_id as kode_pic_kendaraan,
                                             pic.kendaraan_id as kode_kendaraan,
                                             kdrn.nomor_polisi as nomor_polisi,
-                                            pic.employee_id as id_pekerja,
-                                            concat_ws('<br/>', er.employee_code, er.employee_name) as pic,
+                                            coalesce(pic.employee_id, pic.pic_kodesie) as kode,
+                                            case    when    pic.employee_id is null and pic.pic_kodesie is not null then 'seksi'
+                                                    when    pic.employee_id is not null and pic.pic_kodesie is null then 'pekerja'
+                                            end as pilihan,
+                                            case    when        pic.employee_id is null and pic.pic_kodesie is not null 
+                                                        then    concat_ws('<br/>', seksi.unit_name, seksi.section_name)
+                                                    when    pic.employee_id is not null and pic.pic_kodesie is null 
+                                                        then    concat_ws('<br/>', er.employee_code, er.employee_name)
+                                            end as pic,
                                             concat_ws('<br/>sampai dengan<br/>', to_char(pic.dari_periode, 'DD-MM-YYYY'), to_char(pic.sampai_periode,'DD-MM-YYYY')) as periode,
                                             to_char(pic.creation_date,'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                             to_char(pic.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                     from    ga.ga_fleet_pic_kendaraan as pic
-                                            join    ga.ga_fleet_kendaraan as kdrn
-                                                on  kdrn.kendaraan_id=pic.kendaraan_id
-                                            join    er.er_employee_all as er
-                                                on  er.employee_id=pic.employee_id
+                                            join        ga.ga_fleet_kendaraan as kdrn
+                                                    on  kdrn.kendaraan_id=pic.kendaraan_id
+                                            left join   er.er_employee_all as er
+                                                    on  er.employee_id=pic.employee_id
+                                            left join   er.er_section as seksi
+                                                    on      seksi.section_code=pic.pic_kodesie::varchar
                                     where   pic.end_date='9999-12-12 00:00:00';";
     		$query = $this->db->query($ambilPICKendaraan);
     	} else {
             $ambilPICKendaraan  = " select  pic.pic_kendaraan_id as kode_pic_kendaraan,
                                             pic.kendaraan_id as kode_kendaraan,
                                             kdrn.nomor_polisi as nomor_polisi,
-                                            pic.employee_id as id_pekerja,
-                                            concat_ws(' - ', er.employee_code, er.employee_name) as pic,
+                                            coalesce(pic.employee_id, pic.pic_kodesie) as kode,
+                                            case    when    pic.employee_id is null and pic.pic_kodesie is not null then 'seksi'
+                                                    when    pic.employee_id is not null and pic.pic_kodesie is null then 'pekerja'
+                                            end as pilihan,                                            
+                                            case    when        pic.employee_id is null and pic.pic_kodesie is not null 
+                                                        then    concat_ws(' - ', seksi.unit_name, seksi.section_name)
+                                                    when    pic.employee_id is not null and pic.pic_kodesie is null 
+                                                        then    concat_ws(' - ', er.employee_code, er.employee_name)
+                                            end as pic,
                                             concat_ws(' - ', to_char(pic.dari_periode, 'DD-MM-YYYY'), to_char(pic.sampai_periode,'DD-MM-YYYY')) as periode,
                                             to_char(pic.creation_date,'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                             to_char(pic.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                     from    ga.ga_fleet_pic_kendaraan as pic
-                                            join    ga.ga_fleet_kendaraan as kdrn
-                                                on  kdrn.kendaraan_id=pic.kendaraan_id
-                                            join    er.er_employee_all as er
-                                                on  er.employee_id=pic.employee_id
+                                            join        ga.ga_fleet_kendaraan as kdrn
+                                                    on  kdrn.kendaraan_id=pic.kendaraan_id
+                                            left join   er.er_employee_all as er
+                                                    on  er.employee_id=pic.employee_id
+                                            left join   er.er_section as seksi
+                                                    on      seksi.section_code=pic.pic_kodesie::varchar                                                
                                     where   pic.pic_kendaraan_id=$id;";
 
     		$query = $this->db->query($ambilPICKendaraan);
@@ -53,17 +71,26 @@ class M_fleetpickendaraan extends CI_Model
             $ambilPICKendaraanDeleted   = " select  pic.pic_kendaraan_id as kode_pic_kendaraan,
                                                     pic.kendaraan_id as kode_kendaraan,
                                                     kdrn.nomor_polisi as nomor_polisi,
-                                                    pic.employee_id as id_pekerja,
-                                                    concat_ws('<br/>', er.employee_code, er.employee_name) as pic,
+                                                    case    when    pic.employee_id is null and pic.pic_kodesie is not null then 'seksi'
+                                                            when    pic.employee_id is not null and pic.pic_kodesie is null then 'pekerja'
+                                                    end as pilihan,                                                    
+                                                    coalesce(pic.employee_id, pic.pic_kodesie) as kode,
+                                                    case    when        pic.employee_id is null and pic.pic_kodesie is not null 
+                                                                then    concat_ws('<br/>', seksi.unit_name, seksi.section_name)
+                                                            when    pic.employee_id is not null and pic.pic_kodesie is null 
+                                                                then    concat_ws('<br/>', er.employee_code, er.employee_name)
+                                                    end as pic,
                                                     concat_ws('<br/>sampai dengan<br/>', to_char(pic.dari_periode, 'DD-MM-YYYY'), to_char(pic.sampai_periode,'DD-MM-YYYY')) as periode,
                                                     to_char(pic.creation_date,'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                     to_char(pic.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                             from    ga.ga_fleet_pic_kendaraan as pic
-                                                    join    ga.ga_fleet_kendaraan as kdrn
+                                                    join        ga.ga_fleet_kendaraan as kdrn
                                                             on  kdrn.kendaraan_id=pic.kendaraan_id
-                                                    join    er.er_employee_all as er
+                                                    left join   er.er_employee_all as er
                                                             on  er.employee_id=pic.employee_id
-                                        where   pic.end_date!='9999-12-12 00:00:00';";
+                                                    left join   er.er_section as seksi
+                                                            on  seksi.section_code=pic.pic_kodesie::varchar  
+                                            where   pic.end_date!='9999-12-12 00:00:00';";
         $query                      =   $this->db->query($ambilPICKendaraanDeleted);
         return $query->result_array();
     }
@@ -77,6 +104,19 @@ class M_fleetpickendaraan extends CI_Model
                                             and     pkj.employee_code!='Z0000'
                                 order by    pkj.employee_code;";
         $query              =   $this->db->query($ambilDaftarNama);
+        return $query->result_array();
+    }
+
+    public function getDaftarSeksi()
+    {
+        $ambilDaftarSeksi   = " select      seksi.section_code as kode_seksi,
+                                            concat_ws(' - ', seksi.unit_name, seksi.section_name) as nama_seksi
+                                from        er.er_section as seksi
+                                where       seksi.job_name='-'
+                                            and     seksi.section_name!='-'
+                                            and     right(seksi.section_code,2)='00'
+                                order by    nama_seksi;";
+        $query              =   $this->db->query($ambilDaftarSeksi);
         return $query->result_array();
     }
 

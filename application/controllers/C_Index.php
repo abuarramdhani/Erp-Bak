@@ -150,11 +150,13 @@ class C_Index extends CI_Controller {
 			foreach($user as $user_item){
 				$iduser = $user_item->user_id;
 				$password_default = $user_item->password_default;
+				$kodesie	= 	$user_item->section_code;
 			}
 			$ses = array(
 							'is_logged' => 1,
 							'userid' 	=> $iduser,
-							'user' 		=> $username
+							'user' 		=> $username,
+							'kodesie' 	=> $kodesie
 						);
 			$this->session->set_userdata($ses);
 			

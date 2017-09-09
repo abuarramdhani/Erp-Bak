@@ -74,7 +74,10 @@
                                                     <input type="text" maxlength="10" placeholder="<?php echo $headerRow['waktu_dibuat'];?>" name="txtStartDateHeader" value="<?php echo $headerRow['waktu_dibuat'] ?>" class="date form-control" data-date-format="dd-mm-yyyy H:i:s" id="txtStartDateHeader" disabled=""/>
                                                 </div>
                                             </div>
-
+                                            <?php
+                                                if(substr($kodesie, 0, 5)=='10103')
+                                                    {
+                                            ?>
                                             <div class="form-group">
                                                 <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
@@ -82,7 +85,10 @@
                                                     <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $headerRow['waktu_dihapus'];?>">
                                                 </div>
 
-                                            </div>                                              
+                                            </div>  
+                                            <?php
+                                                }
+                                            ?>                                            
                                         </div>
 
                                         <div class="col-lg-12">
