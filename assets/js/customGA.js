@@ -823,9 +823,10 @@ function rekapTotal(tahun, bulan)
 }
 
 $(document).ready(function(){
-    $('input[name="OpsiPIC"]').load(function() {
+    $('input[name="OpsiPIC"]').click(function() {
        if($('input[name="OpsiPIC"]').is(':checked')) { 
            var radioValue = $("input[name='OpsiPIC']:checked").val();
+           alert(radioValue);
             if(radioValue == "Seksi"){
                $( "#cmbSeksi" ).prop( "disabled", false );
                $( "#cmbPekerja" ).prop( "disabled", true );
@@ -836,3 +837,4 @@ $(document).ready(function(){
        }
     });
 });
+

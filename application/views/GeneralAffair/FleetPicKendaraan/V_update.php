@@ -26,8 +26,8 @@
                                 <div class="box-header with-border">Update PIC Kendaraan</div>
                                 <?php
                                     foreach ($FleetPicKendaraan as $headerRow):
-                                        $status_dropdown_seksi      = 'true';
-                                        $status_dropdown_pekerja    = 'true' ;
+                                        $status_dropdown_seksi      = 'disabled';
+                                        $status_dropdown_pekerja    = 'disabled' ;
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
@@ -38,7 +38,8 @@
                                                     <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%">
                                                         <option value=""></option>
                                                         <?php
-                                                            foreach ($FleetKendaraan as $row) {
+                                                            foreach ($FleetKendaraan as $row) 
+                                                            {
                                                                  if ($headerRow['kode_kendaraan'] == $row['kode_kendaraan']) {
                                                                     $selected_data = "selected";
                                                                 } else {
@@ -55,16 +56,23 @@
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
                                                 <div class="row">
                                                     <div class="col-lg-1">
-                                                        <input type="radio" name="OpsiPIC" value="Seksi" required="" <?php if($headerRow['pilihan']=='seksi'){echo 'checked';$status_dropdown_seksi = 'false';};?>/>
+                                                        <input type="radio" name="OpsiPIC" value="Seksi" required="" <?php if($headerRow['pilihan']=='seksi'){echo 'checked';$status_dropdown_seksi = '';};?>/>
                                                         <label for="OpsiSeksi" class="control-label">Seksi</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" disabled="<?php echo $status_dropdown_seksi;?>" >
-                                                            <option value=""></option>
+                                                        <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" <?php echo $status_dropdown_seksi;?> >
+                                                            <option value="" selected></option>
                                                             <?php
-                                                             foreach ($DaftarSeksi as $row) {
-                                                                    echo '<option value="'.$row['kode_seksi'].'" >'.$row['nama_seksi'].'</option>';
+                                                             foreach ($DaftarSeksi as $row) 
+                                                             {
+                                                                $status_data_seksi = '';
+                                                                if($row['kode_seksi']==$headerRow['kode'])
+                                                                {
+                                                                    $status_data_seksi     = 'selected';
                                                                 }
+
+                                                                    echo '<option value="'.$row['kode_seksi'].'" '.$status_data_seksi.'>'.$row['nama_seksi'].'</option>';
+                                                            }
                                                             ?>
                                                         </select>
                                                     </div>
@@ -74,15 +82,20 @@
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4"><span class="hidden">PIC</span></label>
                                                 <div class="row">
                                                     <div class="col-lg-1">
-                                                        <input type="radio" name="OpsiPIC" value="Pekerja" required="" <?php if($headerRow['pilihan']=='pekerja'){echo 'checked';$status_dropdown_pekerja='false';};?>/>
+                                                        <input type="radio" name="OpsiPIC" value="Pekerja" required="" <?php if($headerRow['pilihan']=='pekerja'){echo 'checked';$status_dropdown_pekerja='';};?>/>
                                                         <label for="OpsiSeksi" class="control-label" >Pekerja</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPekerja" name="cmbPekerja" class="select2" data-placeholder="Pilih Pekerja" style="width: 75%" required="" disabled="<?php echo $status_dropdown_pekerja;?>" >
+                                                        <select id="cmbPekerja" name="cmbPekerja" class="select2" data-placeholder="Pilih Pekerja" style="width: 75%" required="" <?php echo $status_dropdown_pekerja;?> >
                                                             <option value=""></option>
                                                             <?php
                                                              foreach ($DaftarNama as $row) {
-                                                                    echo '<option value="'.$row['id_pekerja'].'" >'.$row['daftar'].'</option>';
+                                                                $status_data_pekerja = '';
+                                                                if($row['id_pekerja']==$headerRow['kode'])
+                                                                {
+                                                                    $status_data_pekerja     = 'selected';
+                                                                }                                                                
+                                                                    echo '<option value="'.$row['id_pekerja'].'" '.$status_data_pekerja.'>'.$row['daftar'].'</option>';
                                                                 }
                                                             ?>
                                                         </select>

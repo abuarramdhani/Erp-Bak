@@ -170,8 +170,6 @@ class C_FleetPicKendaraan extends CI_Controller
 		/* LINES DROPDOWN DATA */
 
 		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'Kendaraan', 'required');
-		$this->form_validation->set_rules('cmbPekerjaHeader', 'Pekerja', 'required');
-		$this->form_validation->set_rules('masaAktifPIC', 'Masa Aktif PIC', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -179,12 +177,33 @@ class C_FleetPicKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetPicKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$kendaraan 	= 	$this->input->post('cmbKendaraanIdHeader', TRUE);
-			$idPekerja 	= 	$this->input->post('cmbPekerjaHeader', TRUE);
-			$periode 	= 	explode(' - ', $this->input->post('masaAktifPIC', TRUE));
+			$pilihanPIC 		= 	$this->input->post('OpsiPIC', TRUE);
+			$kodeKendaraan		= 	$this->input->post('cmbKendaraanIdHeader', TRUE);
+			$masaAktifPIC 		= 	$this->input->post('masaAktifPIC', TRUE);
+
+			$kode_seksi = NULL;
+			$kode_pekerja = NULL;
+
+			$dari;
+			$sampai;
+
+			if($pilihanPIC=='Seksi')
+			{
+				$kode_seksi 	= 	$this->input->post('cmbSeksi');
+			}
+			elseif ($pilihanPIC == 'Pekerja') 
+			{
+				$kode_pekerja 	= 	$this->input->post('cmbPekerja');
+			}
+
+			if(isset($masaAktifPIC))
+			{
+				$MasaAktifPIC 		=	explode(' - ', $masaAktifPIC);
+				$dari 		=	date('Y-m-d', strtotime($MasaAktifPIC[0]));
+				$sampai 	= 	date('Y-m-d', strtotime($MasaAktifPIC[1]));
+			}
+
 			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
-			$periode_awal 	= 	date('Y-m-d', strtotime($periode[0]));
-			$periode_akhir	= 	date('Y-m-d', strtotime($periode[1]));
 			$status_data 	= 	$this->input->post('CheckAktif');
 
 
@@ -201,13 +220,14 @@ class C_FleetPicKendaraan extends CI_Controller
 			}
 
 			$data = array(
-				'kendaraan_id' 		=> $kendaraan,
-				'dari_periode' 		=> $periode_awal,
-				'sampai_periode' 	=> $periode_akhir,
+				'kendaraan_id' 		=> $kodeKendaraan,
+				'dari_periode' 		=> $dari,
+				'sampai_periode' 	=> $sampai,
 				'end_date' 			=> $waktu_dihapus,
 				'last_updated' 		=> $waktu_eksekusi,
 				'last_updated_by'	=> $this->session->userid,
-				'employee_id' 		=> $idPekerja
+				'employee_id'		=> $kode_pekerja,
+				'pic_kodesie'		=> $kode_seksi
     			);
 			$this->M_fleetpickendaraan->updateFleetPicKendaraan($data, $plaintext_string);
 
