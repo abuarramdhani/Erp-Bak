@@ -47,6 +47,8 @@ class C_FleetPicKendaraan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['kodesie'] = $this->session->kodesie;
+		
 		$data['PICKendaraan'] 	= $this->M_fleetpickendaraan->getFleetPicKendaraan();
 		$data['PICKendaraanDel']= $this->M_fleetpickendaraan->getFleetPicKendaraanDeleted();
 
@@ -74,12 +76,13 @@ class C_FleetPicKendaraan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan();
 		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
+		$data['DaftarSeksi'] 	= $this->M_fleetpickendaraan->getDaftarSeksi();
 
 
 		/* LINES DROPDOWN DATA */
 		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'Kendaraan', 'required');
-		$this->form_validation->set_rules('cmbPekerjaHeader', 'Pekerja', 'required');
-		$this->form_validation->set_rules('masaAktifPIC', 'Masa Aktif PIC', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaHeader', 'Pekerja', 'required');
+		// $this->form_validation->set_rules('masaAktifPIC', 'Masa Aktif PIC', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -87,14 +90,31 @@ class C_FleetPicKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetPicKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$pilihanPIC 		= 	$this->input->post('OpsiPIC');
 			$kodeKendaraan		= 	$this->input->post('cmbKendaraanIdHeader');
-			$idPekerja			=	$this->input->post('cmbPekerjaHeader');
 			$masaAktifPIC 		= 	$this->input->post('masaAktifPIC');
 
-			$MasaAktifPIC 		=	explode(' - ', $masaAktifPIC);
+			$kode_seksi = NULL;
+			$kode_pekerja = NULL;
 
-			$dari 		=	date('Y-m-d', strtotime($MasaAktifPIC[0]));
-			$sampai 	= 	date('Y-m-d', strtotime($MasaAktifPIC[1]));
+			$dari;
+			$sampai;
+
+			if($pilihanPIC=='Seksi')
+			{
+				$kode_seksi 	= 	$this->input->post('cmbSeksi');
+			}
+			elseif ($pilihanPIC == 'Pekerja') 
+			{
+				$kode_pekerja 	= 	$this->input->post('cmbPekerja');
+			}
+
+			if(isset($masaAktifPIC))
+			{
+				$MasaAktifPIC 		=	explode(' - ', $masaAktifPIC);
+				$dari 		=	date('Y-m-d', strtotime($MasaAktifPIC[0]));
+				$sampai 	= 	date('Y-m-d', strtotime($MasaAktifPIC[1]));
+			}
 
 			$data = array(
 				'kendaraan_id' 		=> $kodeKendaraan,
@@ -104,7 +124,8 @@ class C_FleetPicKendaraan extends CI_Controller
 				'end_date'			=> '9999-12-12 00:00:00',
 				'creation_date' 	=> date('Y-m-d H:i:s'),
 				'created_by' 		=> $this->session->userid,
-				'employee_id'		=> $idPekerja
+				'employee_id'		=> $kode_pekerja,
+				'pic_kodesie'		=> $kode_seksi
     		);
 			$this->M_fleetpickendaraan->setFleetPicKendaraan($data);
 			$header_id = $this->db->insert_id();
@@ -127,6 +148,8 @@ class C_FleetPicKendaraan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['kodesie'] = $this->session->kodesie;		
+
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
@@ -140,6 +163,8 @@ class C_FleetPicKendaraan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan();
 		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
+
+		$data['DaftarSeksi'] 	= $this->M_fleetpickendaraan->getDaftarSeksi();
 
 
 		/* LINES DROPDOWN DATA */

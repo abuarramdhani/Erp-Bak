@@ -43,6 +43,15 @@ class M_fleetmerkkendaraan extends CI_Model
         return $query->result_array();
     }
 
+    public function ambilProdusenKendaraan()
+    {
+        $ambilProdusenKendaraan     = " select      prd.prod_name as produsen_kendaraan
+                                        from        ga.ga_fleet_produsen_kendaraan as prd
+                                        order by    produsen_kendaraan;";
+        $query                      =   $this->db->query($ambilProdusenKendaraan);
+        return $query->result_array();
+    }
+
     public function setFleetMerkKendaraan($data)
     {
         return $this->db->insert('ga.ga_fleet_merk_kendaraan', $data);

@@ -154,7 +154,10 @@
                                                     <input type="text" placeholder="Tanggal Dibuat" name="TanggalDibuat" id="TanggalDibuat" class="form-control" value="<?php echo $kendaraanEdit['waktu_dibuat'];?>" disabled>
                                                 </div>
                                             </div>
-
+                                            <?php
+                                                if(substr($kodesie, 0, 5)=='10103')
+                                                    {
+                                            ?>
                                             <div class="form-group">
                                                 <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
@@ -163,6 +166,9 @@
                                                 </div>
 
                                             </div>
+                                            <?php
+                                                }
+                                            ?>
 
                                         </div>
 

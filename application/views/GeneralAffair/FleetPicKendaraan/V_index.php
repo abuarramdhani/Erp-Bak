@@ -28,6 +28,10 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                                <?php
+                                if(substr($kodesie, 0, 5)=='10103')
+                                    {
+                                ?>                            
                                 <ul class="nav nav-pills nav-justified">
                                     <li class="active">
                                         <a data-toggle="pill" href="#active">
@@ -40,6 +44,9 @@
                                         </a>
                                     </li>
                                 </ul>
+                                <?php
+                                    }
+                                ?>
                                 <div class="tab-content">
                                     <div id="active" class="tab-pane fade in active">
                                         <br/>
@@ -51,7 +58,7 @@
                                                         <th style="text-align:center; min-width:80px">Action</th>
                                                         <th>Nomor Polisi</th>
                                                         <th>PIC</th>
-                                                        <th>Periode</th>
+                                                        <th class="hidden">Periode</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -71,7 +78,7 @@
                                                         </td>
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
                                                         <td><?php echo $row['pic'] ?></td>
-                                                        <td><?php echo $row['periode'] ?></td>
+                                                        <td class="hidden"><?php echo $row['periode'] ?></td>
                                                         <td><?php echo $row['waktu_dibuat'] ?></td>
                                                      </tr>
                                                 <?php endforeach; ?>
@@ -82,14 +89,14 @@
                                     <div id="removed" class="tab-pane fade">
                                         <br/>
                                         <div class="table-responsive">
-                                            <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetPicKendaraanDeleted" style="font-size:12px;">
+                                            <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetPicKendaraanDeleted" style="font-size:12px; width: 100%">
                                                 <thead class="bg-primary">
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
 												        <th>Nomor Polisi</th>
 												        <th>PIC</th>
-												        <th>Periode</th>
+												        <th class="hidden">Periode</th>
 												        <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>
@@ -109,7 +116,7 @@
                                                         </td>
 												        <td><?php echo $row['nomor_polisi'] ?></td>
 												        <td><?php echo $row['pic'] ?></td>
-												        <td><?php echo $row['periode'] ?></td>
+												        <td class="hidden"><?php echo $row['periode'] ?></td>
 												        <td><?php echo $row['waktu_dibuat'] ?></td>
                                                         <td><?php echo $row['waktu_dihapus'];?></td>
 											         </tr>

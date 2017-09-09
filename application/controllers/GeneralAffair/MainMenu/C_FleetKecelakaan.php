@@ -47,6 +47,8 @@ class C_FleetKecelakaan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['kodesie'] = $this->session->kodesie;
+
 		$data['FleetKecelakaan'] 		= $this->M_fleetkecelakaan->getFleetKecelakaan();
 		$data['FleetKecelakaanDeleted'] = $this->M_fleetkecelakaan->getFleetKecelakaanDeleted();		
 
@@ -151,6 +153,8 @@ class C_FleetKecelakaan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);

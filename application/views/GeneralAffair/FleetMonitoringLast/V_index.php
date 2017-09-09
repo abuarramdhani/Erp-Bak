@@ -57,7 +57,7 @@
                                                     </div> 
                                                     <div class="form-group">
                                                         <center>
-                                                            <button type="button" name="ProsesMonitoringNomorPolisi" id="ProsesMonitoringNomorPolisi" class="btn btn-primary">
+                                                            <button type="button" name="ProsesMonitoringNomorPolisi" id="ProsesMonitoringLastProcessNomorPolisi" class="btn btn-primary">
                                                                 Proses
                                                             </button>                                                        
                                                         </center>
@@ -71,7 +71,7 @@
                                                                 <tr>
                                                                     <th style="text-align: center; width: 30px">No</th>
                                                                     <th style="text-align: center;">Kategori</th>
-                                                                    <th style="text-align: center;">Tanggal</th>
+                                                                    <th style="text-align: center;">Tanggal Proses Terakhir</th>
                                                                     <th style="text-align: center;">Biaya</th>
                                                                 </tr>
                                                             </thead>
@@ -93,19 +93,13 @@
                                                                 <option value="D">Kecelakaan</option>
                                                             </select>
                                                         </div>
-                                                    </div>
-                                                    <br/>
-                                                    <div class="form-group">
-                                                        <label class="control-label col-lg-4">Periode</label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="PeriodeKategori" id="daterangepicker" class="date form-control">
+                                                            <center>
+                                                                <button type="button" name="ProsesMonitoringKategori" id="ProsesMonitoringLastProcessKategori" class="btn btn-primary" >Proses</button>                                                          
+                                                            </center>                                                            
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <center>
-                                                        <button type="button" name="ProsesMonitoringKategori" id="ProsesMonitoringKategori" class="btn btn-primary" >Proses</button>                                                          
-                                                        </center>
-                                                    </div>
+                                                    <br/>
                                                     <hr/>
                                                     <br/>
 
@@ -115,7 +109,7 @@
                                                                 <tr>
                                                                     <th style="text-align: center; width: 30px">No</th>
                                                                     <th style="text-align: center;">Nomor Polisi</th>
-                                                                    <th style="text-align: center;">Tanggal</th>
+                                                                    <th style="text-align: center;">Tanggal Proses Terakhir</th>
                                                                     <th style="text-align: center;">Biaya</th>
                                                                 </tr>
                                                             </thead>
