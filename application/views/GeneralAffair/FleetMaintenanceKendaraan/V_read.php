@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Read Fleet Maintenance Kendaraan</div>
+                                <div class="box-header with-border">Read Maintenance Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">

@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Update Merk Kendaraan</div>
+                                <div class="box-header with-border">Update Model Kendaraan</div>
                                 <?php
                                     foreach ($FleetMerkKendaraan as $headerRow):
                                         $merkKendaraan      =   $headerRow['merk_kendaraan'];

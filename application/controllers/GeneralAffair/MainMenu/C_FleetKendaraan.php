@@ -269,6 +269,7 @@ class C_FleetKendaraan extends CI_Controller
 			$statusdata				=	$this->input->post('CheckAktif');
 			$WaktuDihapus 			=	$this->input->post('WaktuDihapus');
 
+
 			// $tanggalNonaktif		=	$this->input->post('txtTanggalNonaktif');
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
@@ -371,9 +372,6 @@ class C_FleetKendaraan extends CI_Controller
         	elseif($statusdata=='' && $WaktuDihapus=='12-12-9999 00:00:00')
         	{
         		$WaktuDihapus 	=	date('Y-m-d H:i:s');
-        	}
-        	else{
-        		$WaktuDihapus 	=	date('Y-m-d H:i:s', strtotime($WaktuDihapus));
         	}
     		$data = array(
 				'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),

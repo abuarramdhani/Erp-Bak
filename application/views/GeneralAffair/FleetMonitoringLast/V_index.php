@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Monitoring Kendaraan</div>
+                                <div class="box-header with-border">Monitoring Last Process Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">

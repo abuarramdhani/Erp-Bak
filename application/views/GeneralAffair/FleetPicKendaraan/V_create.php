@@ -43,10 +43,9 @@
 
                                             <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
-                                                <div class="row">
-                                                    <div class="col-lg-1">
-                                                        <input type="radio" name="OpsiPIC" value="Seksi" required="" />
-                                                        <label for="OpsiSeksi" class="control-label">Seksi</label>
+                                                    <div class="col-lg-2">
+                                                            <input type="radio" name="OpsiPIC" value="Seksi" required="" />
+                                                            <label for="OpsiSeksi" class="control-label" >Seksi</label>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" disabled="true">
@@ -58,12 +57,10 @@
                                                             ?>
                                                         </select>
                                                     </div>
-                                                </div>
                                             </div>
 											<div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4"><span class="hidden">PIC</span></label>
-                                                <div class="row">
-                                                    <div class="col-lg-1">
+                                                    <div class="col-lg-2">
                                                         <input type="radio" name="OpsiPIC" value="Pekerja" required="" />
                                                         <label for="OpsiSeksi" class="control-label">Pekerja</label>
                                                     </div>
@@ -77,7 +74,6 @@
                                                             ?>
                                                         </select>
                                                     </div>
-                                                </div>
                                             </div>
 
 

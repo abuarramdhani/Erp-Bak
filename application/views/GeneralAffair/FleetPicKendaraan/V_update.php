@@ -54,8 +54,7 @@
 
                                             <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
-                                                <div class="row">
-                                                    <div class="col-lg-1">
+                                                    <div class="col-lg-2">
                                                         <input type="radio" name="OpsiPIC" value="Seksi" required="" <?php if($headerRow['pilihan']=='seksi'){echo 'checked';$status_dropdown_seksi = '';};?>/>
                                                         <label for="OpsiSeksi" class="control-label">Seksi</label>
                                                     </div>
@@ -76,12 +75,10 @@
                                                             ?>
                                                         </select>
                                                     </div>
-                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4"><span class="hidden">PIC</span></label>
-                                                <div class="row">
-                                                    <div class="col-lg-1">
+                                                    <div class="col-lg-2">
                                                         <input type="radio" name="OpsiPIC" value="Pekerja" required="" <?php if($headerRow['pilihan']=='pekerja'){echo 'checked';$status_dropdown_pekerja='';};?>/>
                                                         <label for="OpsiSeksi" class="control-label" >Pekerja</label>
                                                     </div>
@@ -100,7 +97,6 @@
                                                             ?>
                                                         </select>
                                                     </div>
-                                                </div>
                                             </div>
 
 

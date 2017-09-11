@@ -54,6 +54,10 @@
                                                         <th>Biaya Perusahaan</th>
                                                         <th>Biaya Pekerja</th>
                                                         <th>Pekerja</th>
+                                                        <th>Asuransi</th>
+                                                        <th>Cek Asuransi</th>
+                                                        <th>Masuk Bengkel</th>
+                                                        <th>Keluar Bengkel</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -88,6 +92,31 @@
                                                         <td>Rp<?php echo number_format($row['biaya_perusahaan'],0,",",".") ?></td>
                                                         <td>Rp<?php echo number_format($row['biaya_pekerja'],0,",",".") ?></td>
                                                         <td><?php echo $row['pekerja'] ?></td>
+                                                        <td>
+                                                            <?php
+                                                                $status_button = '';
+                                                                if($row['status_asuransi']==1)
+                                                                {
+                                                                    echo 'Ya';
+                                                                }
+                                                                elseif($row['status_asuransi']==0)
+                                                                {
+                                                                    echo 'Tidak';
+                                                                    $status_button = 'disabled';
+                                                                }
+                                                            ?>
+                                                        </td>
+                                                        <td><?php echo $row['tanggal_cek_asuransi'];?></td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_masuk_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_masuk_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_keluar_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_keluar_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>                                                            
+                                                        </td>
                                                         <td><?php echo $row['waktu_dibuat'];?></td>             
                                                      </tr>
                                                     <?php endforeach; ?>
@@ -109,6 +138,10 @@
 												        <th>Biaya Perusahaan</th>
 												        <th>Biaya Pekerja</th>
 												        <th>Pekerja</th>
+                                                        <th>Asuransi</th>
+                                                        <th>Cek Asuransi</th>
+                                                        <th>Masuk Bengkel</th>
+                                                        <th>Keluar Bengkel</th>
                                                         <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>
@@ -143,6 +176,31 @@
 												        <td>Rp<?php echo number_format($row['biaya_perusahaan'],0,",",".") ?></td>
                                                         <td>Rp<?php echo number_format($row['biaya_pekerja'],0,",",".") ?></td>
 												        <td><?php echo $row['pekerja'] ?></td>
+                                                        <td>
+                                                            <?php
+                                                                $status_button = '';
+                                                                if($row['status_asuransi']==1)
+                                                                {
+                                                                    echo 'Ya';
+                                                                }
+                                                                elseif($row['status_asuransi']==0)
+                                                                {
+                                                                    echo 'Tidak';
+                                                                    $status_button = 'disabled';
+                                                                }
+                                                            ?>
+                                                        </td>
+                                                        <td><?php echo $row['tanggal_cek_asuransi'];?></td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_masuk_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_masuk_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_keluar_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_keluar_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>                                                            
+                                                        </td>
                                                         <td><?php echo $row['waktu_dibuat'];?></td>
                                                         <td><?php echo $row['waktu_dihapus'];?></td>                                                      
 											         </tr>

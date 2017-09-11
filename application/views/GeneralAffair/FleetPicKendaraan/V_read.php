@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Read Fleet Pic Kendaraan</div>
+                                <div class="box-header with-border">Read PIC Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
@@ -39,7 +39,7 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>PIC</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['pic']; ?></td>
                                                         </tr>
-														<tr>
+														<tr class="hidden">
                                                             <td class="col-lg-2" style="border: 0"><strong>Periode</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['periode']; ?></td>
                                                         </tr>

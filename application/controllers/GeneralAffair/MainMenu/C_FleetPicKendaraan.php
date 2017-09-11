@@ -139,7 +139,7 @@ class C_FleetPicKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pic Kendaraan';
+		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'PIC Kendaraan';
 		$data['SubMenuTwo'] = '';
@@ -240,7 +240,7 @@ class C_FleetPicKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Fleet Pic Kendaraan';
+		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'PIC Kendaraan';
 		$data['SubMenuTwo'] = '';
