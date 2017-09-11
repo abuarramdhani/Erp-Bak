@@ -123,8 +123,8 @@ class C_Prepayment extends CI_Controller {
 		// $data['Prepayment'] = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw, $tanggal);
 		$ssn = $this->session->userdata;
 		echo "<pre>";
-		echo $org_id;
-		print_r($ssn['org_id']);
+		// echo $org_id;
+		// print_r($ssn['org_id']);
 		// echo $sitesuppRaw;
 		// echo $tanggal;
 		echo "</pre>";
