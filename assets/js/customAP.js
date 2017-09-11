@@ -666,6 +666,18 @@ $(document).ready(function(){
 						"sScrollX": true,
 						"paging": true
 					});
+
+					$('.amt').each(function(){
+						var amt = $(this).html();
+						var fixamt = parseFloat(amt).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+						$(this).html(fixamt);
+					});
+					$('.amtIDR').each(function(){
+						var amtIDR = $(this).html();
+						var fixamtIDR = parseFloat(amtIDR).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+						$(this).html(fixamtIDR);
+					});
+
 					$('html, body').animate({
 						scrollTop: $("#viewPrpData").offset().top
 					}, 500);

@@ -75,6 +75,7 @@ class C_Prepayment extends CI_Controller {
 					<tr class='bg-primary'>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Supplier</th>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>No. Induk</th>
+						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Nama</th>
 						<th colspan='9' style='text-align: center;'>Invoice Prepayement</th>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Description</th>
 					</tr>
@@ -96,15 +97,16 @@ class C_Prepayment extends CI_Controller {
 					<tr>
 						<td>"; echo $prp['VENDOR_NAME']; echo"</td>
 						<td>"; echo $prp['VENDOR_SITE_CODE']; echo"</td>
+						<td>"; echo $prp['NAMA']; echo"</td>
 						<td>"; echo $prp['INV_PREPAYMENT_DATE']; echo"</td>
 						<td>"; echo $prp['PAYMENT_DATE']; echo"</td>
 						<td>"; echo $prp['NO_VOUCHER']; echo"</td>
 						<td>"; echo $prp['PO_NUMBER']; echo"</td>
 						<td>"; echo $prp['NO_INV_PREPAYMENT']; echo"</td>
 						<td>"; echo $prp['PAYMENT_CURRENCY_CODE']; echo"</td>
-						<td>"; echo $prp['AMOUNT']; echo"</td>
+						<td class='amt'>"; echo $prp['AMOUNT']; echo"</td>
 						<td>"; echo $prp['RATE_PREPAYMENT']; echo"</td>
-						<td>"; echo $prp['AMOUNT_IDR']; echo"</td>
+						<td class='amtIDR'>"; echo $prp['AMOUNT_IDR']; echo"</td>
 						<td>"; echo $prp['DESCRIPTION']; echo"</td>
 					</tr>";
 					};"
