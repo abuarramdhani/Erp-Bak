@@ -247,7 +247,7 @@ $('#daterangepickersingledate').daterangepicker({
 }, function(start, end, label) {
   console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 });
-$('#daterangepickersingledatewithtime').daterangepicker({
+$('.daterangepickersingledatewithtime').daterangepicker({
     "timePicker": true,
     "timePicker24Hour": true,
     "singleDatePicker": true,
@@ -826,13 +826,40 @@ $(document).ready(function(){
     $('input[name="OpsiPIC"]').click(function() {
        if($('input[name="OpsiPIC"]').is(':checked')) { 
            var radioValue = $("input[name='OpsiPIC']:checked").val();
-           alert(radioValue);
             if(radioValue == "Seksi"){
                $( "#cmbSeksi" ).prop( "disabled", false );
                $( "#cmbPekerja" ).prop( "disabled", true );
             } else if (radioValue == "Pekerja"){
                 $( "#cmbSeksi" ).prop( "disabled", true );
                $( "#cmbPekerja" ).prop( "disabled", false );
+            }
+       }
+    });
+});
+
+$(document).ready(function(){
+    $('input[name="radioAsuransi"]').click(function() {
+       if($('input[name="radioAsuransi"]').is(':checked')) { 
+           var radioValue = $("input[name='radioAsuransi']:checked").val();
+            if(radioValue == "1")
+            {
+               $( "input[name='txtTanggalCekAsuransi']" ).prop( "disabled", false );
+               $( "input[name='txtTanggalMasukBengkel']" ).prop( "disabled", false );
+               $( "input[name='txtTanggalKeluarBengkel']" ).prop( "disabled", false );
+               $( "input[name='FotoMasukBengkel']" ).prop( "disabled", false );
+               $( "input[name='FotoKeluarBengkel']" ).prop( "disabled", false );
+               $( '#linkFotoMasukBengkel' ).prop( "disabled", false);
+               $( '#linkFotoKeluarBengkel' ).prop( "disabled", false);
+            }
+            else
+            {
+               $( "input[name='txtTanggalCekAsuransi']" ).prop( "disabled", true );
+               $( "input[name='txtTanggalMasukBengkel']" ).prop( "disabled", true );
+               $( "input[name='txtTanggalKeluarBengkel']" ).prop( "disabled", true );
+               $( "input[name='FotoMasukBengkel']" ).prop( "disabled", true );
+               $( "input[name='FotoKeluarBengkel']" ).prop( "disabled", true );
+               $( '#linkFotoMasukBengkel' ).prop( "disabled", true);
+               $( '#linkFotoKeluarBengkel' ).prop( "disabled", true);
             }
        }
     });

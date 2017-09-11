@@ -38,7 +38,7 @@ class C_FleetMonitoringLast extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Monitoring';
+		$data['Title'] = 'Monitoring Proses Terakhir';
 		$data['Menu'] = 'Monitoring';
 		$data['SubMenuOne'] = 'Monitoring Last Process';
 		$data['SubMenuTwo'] = '';

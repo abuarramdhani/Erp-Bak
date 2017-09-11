@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Update Fleet Kir</div>
+                                <div class="box-header with-border">Update KIR</div>
                                 <?php
                                     foreach ($FleetKir as $headerRow):
                                 ?>

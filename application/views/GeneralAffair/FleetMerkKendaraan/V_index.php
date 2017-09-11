@@ -48,7 +48,7 @@
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
-                                                        <th>Merk Kendaraan</th>
+                                                        <th>Model Kendaraan</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -81,7 +81,7 @@
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
-												        <th>Merk Kendaraan</th>
+												        <th>Model Kendaraan</th>
 												        <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>

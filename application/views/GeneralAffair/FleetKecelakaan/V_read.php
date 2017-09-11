@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Read Fleet Kecelakaan</div>
+                                <div class="box-header with-border">Read Kecelakaan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
@@ -55,6 +55,36 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Pekerja</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['pekerja']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Status Asuransi</strong></td>
+                                                            <td style="border: 0">
+                                                                : <?php
+                                                                    if($headerRow['status_asuransi']==1)
+                                                                    {
+                                                                        echo 'Ya';
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        echo 'Tidak';
+                                                                    }
+                                                                ?>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Cek Asuransi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_cek_asuransi']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Masuk Bengkel</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_masuk_bengkel']; ?> (Foto : <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$headerRow['foto_masuk_bengkel']);?>" target="_blank" class="btn btn-info btn-xs"><?php echo $headerRow['foto_masuk_bengkel'];?></a>)
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Keluar Bengkel</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_keluar_bengkel']; ?> (Foto : <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$headerRow['foto_keluar_bengkel']);?>" target="_blank" class="btn btn-info btn-xs"><?php echo $headerRow['foto_keluar_bengkel'];?></a>)
+                                                            </td>
+                                                        </tr>
+
                                                         <?php
                                                           if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00')
                                                           {

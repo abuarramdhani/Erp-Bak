@@ -33,7 +33,8 @@ class M_fleetpickendaraan extends CI_Model
                                                     on  er.employee_id=pic.employee_id
                                             left join   er.er_section as seksi
                                                     on      seksi.section_code=pic.pic_kodesie::varchar
-                                    where   pic.end_date='9999-12-12 00:00:00';";
+                                    where   pic.end_date='9999-12-12 00:00:00'
+                                    order by pic.pic_kendaraan_id;";
     		$query = $this->db->query($ambilPICKendaraan);
     	} else {
             $ambilPICKendaraan  = " select  pic.pic_kendaraan_id as kode_pic_kendaraan,
@@ -90,7 +91,8 @@ class M_fleetpickendaraan extends CI_Model
                                                             on  er.employee_id=pic.employee_id
                                                     left join   er.er_section as seksi
                                                             on  seksi.section_code=pic.pic_kodesie::varchar  
-                                            where   pic.end_date!='9999-12-12 00:00:00';";
+                                            where   pic.end_date!='9999-12-12 00:00:00'
+                                            order by pic.pic_kendaraan_id;";
         $query                      =   $this->db->query($ambilPICKendaraanDeleted);
         return $query->result_array();
     }

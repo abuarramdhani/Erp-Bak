@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKecelakaan/update/'.$id);?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKecelakaan/update/'.$id);?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Update Fleet Kecelakaan</div>
+                                <div class="box-header with-border">Update Kecelakaan</div>
                                 <?php
                                     foreach ($FleetKecelakaan as $headerRow):
                                 ?>
@@ -33,7 +33,7 @@
                                             <div class="form-group">
                                                 <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%">
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
@@ -54,28 +54,28 @@
 											<div class="form-group">
                                                 <label for="txtTanggalKecelakaanHeader" class="control-label col-lg-4">Tanggal Kecelakaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" value="<?php echo $headerRow['tanggal_kecelakaan'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepickersingledatewithtime" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" value="<?php echo $headerRow['tanggal_kecelakaan'] ?>" class="date form-control daterangepickersingledatewithtime" data-date-format="yyyy-mm-dd"  required="" value="<?php echo $headerRow['tanggal_kecelakaan'];?>"/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txaSebabHeader" class="control-label col-lg-4">Sebab</label>
                                                 <div class="col-lg-4">
-                                                    <textarea name="txaSebabHeader" id="txaSebabHeader" class="form-control" placeholder="Sebab"><?php echo $headerRow['sebab']; ?></textarea>
+                                                    <textarea name="txaSebabHeader" id="txaSebabHeader" class="form-control" placeholder="Sebab" required="" ><?php echo $headerRow['sebab']; ?></textarea>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtBiayaPerusahaanHeader" class="control-label col-lg-4">Biaya Perusahaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control input_money" value="<?php echo $headerRow['biaya_perusahaan']; ?>"/>
+                                                    <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control input_money" value="<?php echo $headerRow['biaya_perusahaan']; ?>" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtBiayaPekerjaHeader" class="control-label col-lg-4">Biaya Pekerja</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control input_money" value="<?php echo $headerRow['biaya_pekerja']; ?>"/>
+                                                    <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control input_money" value="<?php echo $headerRow['biaya_pekerja']; ?>" required="" />
                                                 </div>
                                             </div>
 
@@ -100,12 +100,116 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4">Asuransi</label>
+                                                <?php
+                                                    $asuransiYa     = '';
+                                                    $asuransiTidak  = '';
+                                                    $status_input   = 'disabled';
+                                                    if($headerRow['status_asuransi']==1)
+                                                    {
+                                                        $asuransiYa     =   'checked';
+                                                        $status_input   =   '';
+                                                    }
+                                                    elseif($headerRow['status_asuransi']==0)
+                                                    {
+                                                        $asuransiTidak  =   'checked';
+                                                    }
+                                                ?>
+                                                <div class="col-lg-2">
+                                                    <input type="radio" name="radioAsuransi" value="1" required="" <?php echo $asuransiYa;?>><label>Ya</label>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input type="radio" name="radioAsuransi" value="0" required="" <?php echo $asuransiTidak;?>><label>Tidak</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalCekAsuransi' class="control-label">Tanggal Cek Asuransi</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                        <input type="text" name="txtTanggalCekAsuransi" id="daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_cek_asuransi'];?>" <?php echo $status_input;?>>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalMasukBengkel' class="control-label">Tanggal Masuk Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalMasukBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_masuk_bengkel'];?>" <?php echo $status_input;?>/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalMasukBengkel' class="control-label">Foto Masuk Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input type="file" placeholder="Foto Masuk Bengkel" name="FotoMasukBengkel" id="FotoMasukBengkel" class="form-control" <?php echo $status_input;?>/>
+                                                    <?php
+                                                        if($status_input=='disabled')
+                                                        {
+                                                            echo '  <span class="hidden>"';
+                                                        }
+                                                    ?>
+                                                    <a id="linkFotoMasukBengkel" target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$headerRow['foto_masuk_bengkel']);?>" <?php echo $status_input;?>><?php echo $headerRow['foto_masuk_bengkel'];?></a>
+                                                    <input type="text" name="FotoMasukBengkelawal" id="FotoMasukBengkelawal" hidden="" value="<?php echo $headerRow['foto_masuk_bengkel'];?>">
+                                                    <?php
+                                                        if($status_input=='disabled')
+                                                        {
+                                                            echo '  </span>';
+                                                        }
+                                                    ?>
+                                                </div>                                                
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalKeluarBengkel' class="control-label">Tanggal Keluar Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                        <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalKeluarBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_keluar_bengkel'];?>" <?php echo $status_input;?>/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalKeluarBengkel' class="control-label">Foto Keluar Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input type="file" placeholder="Foto Keluar Bengkel" name="FotoKeluarBengkel" id="FotoKeluarBengkel" class="form-control" <?php echo $status_input;?>/>
+                                                    <?php
+                                                        if($status_input=='disabled')
+                                                        {
+                                                            echo '  <span class="hidden>"';
+                                                        }
+                                                    ?>
+                                                    <a id="linkFotoKeluarBengkel" target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$headerRow['foto_keluar_bengkel']);?>" <?php echo $status_input;?>><?php echo $headerRow['foto_keluar_bengkel'];?></a>
+                                                    <input type="text" name="FotoKeluarBengkelawal" id="FotoKeluarBengkelawal" hidden="" value="<?php echo $headerRow['foto_keluar_bengkel'];?>">
+                                                    <?php
+                                                        if($status_input=='disabled')
+                                                        {
+                                                            echo '  </span>';
+                                                        }
+                                                    ?>                                                    
+                                                </div>                                                
+                                            </div> 
+
                                             <div class="form-group">
                                                 <label for="txtStartDateHeader" class="control-label col-lg-4">Waktu Dibuat</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo $headerRow['waktu_dibuat'];?>" name="txtStartDateHeader" value="<?php echo $headerRow['waktu_dibuat'] ?>" class="date form-control" data-date-format="dd-mm-yyyy H:i:s" id="txtStartDateHeader" disabled=""/>
                                                 </div>
                                             </div>
+
                                             <?php
                                                 if(substr($kodesie, 0, 5)=='10103')
                                                     {

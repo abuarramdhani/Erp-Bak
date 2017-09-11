@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Merk Kendaraan</div>
+                                <div class="box-header with-border">Create Model Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">

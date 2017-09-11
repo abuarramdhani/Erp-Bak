@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Update Fleet Maintenance Kendaraan</div>
+                                <div class="box-header with-border">Update Maintenance Kendaraan</div>
                                 <?php
                                     foreach ($FleetMaintenanceKendaraan as $headerRow):
                                 ?>
@@ -54,7 +54,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalMaintenanceHeader" class="control-label col-lg-4">Tanggal Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalMaintenanceHeader" value="<?php echo $headerRow['tanggal_maintenance'] ?>" class="date form-control" id="daterangepickersingledatewithtime" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalMaintenanceHeader" value="<?php echo $headerRow['tanggal_maintenance'] ?>" class="date form-control daterangepickersingledatewithtime" />
                                                 </div>
                                             </div>
 

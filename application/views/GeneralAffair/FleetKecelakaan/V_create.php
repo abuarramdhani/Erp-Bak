@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKecelakaan/create');?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKecelakaan/create');?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%">
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="" >
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
@@ -44,34 +44,34 @@
 											<div class="form-group">
                                                 <label for="txtTanggalKecelakaanHeader" class="control-label col-lg-4">Tanggal Kecelakaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepickersingledatewithtime" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd"  required="" />
                                                 </div>
                                            </div>
 
 											<div class="form-group">
                                                 <label for="txaSebabHeader" class="control-label col-lg-4">Sebab</label>
                                                 <div class="col-lg-4">
-                                                    <textarea name="txaSebabHeader" id="txaSebabHeader" class="form-control" placeholder="Sebab"></textarea>
+                                                    <textarea name="txaSebabHeader" id="txaSebabHeader" class="form-control" placeholder="Sebab" required="" ></textarea>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtBiayaPerusahaanHeader" class="control-label col-lg-4">Biaya Perusahaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control input_money" />
+                                                    <input type="text" placeholder="Biaya Perusahaan" name="txtBiayaPerusahaanHeader" id="txtBiayaPerusahaanHeader" class="form-control input_money"  required="" />
                                                 </div>
                                             </div>
 											<div class="form-group">
                                                 <label for="txtBiayaPekerjaHeader" class="control-label col-lg-4">Biaya Pekerja</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control input_money" />
+                                                    <input type="text" placeholder="Biaya Pekerja" name="txtBiayaPekerjaHeader" id="txtBiayaPekerjaHeader" class="form-control input_money"  required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">Pekerja</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select2" data-placeholder="Choose an option" style="width: 75%">
+                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="" >
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($EmployeeAll as $row) {
@@ -82,7 +82,65 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4">Asuransi</label>
+                                                <div class="col-lg-2">
+                                                    <input type="radio" name="radioAsuransi" value="1" required="" ><label>Ya</label>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input type="radio" name="radioAsuransi" value="0" required="" ><label>Tidak</label>
+                                                </div>
+                                            </div>
 
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalCekAsuransi' class="control-label">Tanggal Cek Asuransi</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                        <input type="text" name="txtTanggalCekAsuransi" id="daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" disabled="" required="" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalMasukBengkel' class="control-label">Tanggal Masuk Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalMasukBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" disabled="" required=""/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalMasukBengkel' class="control-label">Foto Masuk Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input type="file" placeholder="Foto Masuk Bengkel" name="FotoMasukBengkel" id="FotoMasukBengkel" class="form-control" disabled="" required="" />
+                                                </div>                                                
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalKeluarBengkel' class="control-label">Tanggal Keluar Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                        <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalKeluarBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" disabled="" required=""/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="radioAsuransi" class="control-label col-lg-4"><span class="hidden">Asuransi</span></label>
+                                                <div class="col-lg-2">
+                                                    <label for='txtTanggalKeluarBengkel' class="control-label">Foto Keluar Bengkel</label>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input type="file" placeholder="Foto Keluar Bengkel" name="FotoKeluarBengkel" id="FotoKeluarBengkel" class="form-control" disabled="" required="" />
+                                                </div>                                                
+                                            </div>                                            
                                         </div>
 
                                         <div class="col-lg-12">

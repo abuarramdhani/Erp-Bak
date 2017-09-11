@@ -41,7 +41,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 		$data['kodesie'] = $this->session->kodesie;
 
 
-		$data['Title'] = 'Merk Kendaraan';
+		$data['Title'] = 'Model Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
@@ -64,7 +64,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
+		$data['Title'] = 'Model Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
@@ -112,7 +112,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
+		$data['Title'] = 'Model Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
@@ -181,7 +181,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
+		$data['Title'] = 'Model Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';

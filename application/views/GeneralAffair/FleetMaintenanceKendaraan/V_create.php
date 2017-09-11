@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Fleet Maintenance Kendaraan</div>
+                                <div class="box-header with-border">Create Maintenance Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
@@ -44,7 +44,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalMaintenanceHeader" class="control-label col-lg-4">Tanggal Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" name="txtTanggalMaintenanceHeader" class="date form-control" id="daterangepickersingledatewithtime" required="" />
+                                                    <input type="text" maxlength="10" name="txtTanggalMaintenanceHeader" class="date form-control daterangepickersingledatewithtime" required="" />
                                                 </div>
                                             </div>
 

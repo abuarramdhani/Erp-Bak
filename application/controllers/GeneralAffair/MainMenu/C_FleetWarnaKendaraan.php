@@ -85,7 +85,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetWarnaKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$warnaKendaraan 	= 	$this->input->post('txtWarnaKendaraanHeader');
+			$warnaKendaraan 	= 	strtoupper($this->input->post('txtWarnaKendaraanHeader'));
 			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
 
 			$data = array(
@@ -140,7 +140,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetWarnaKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$warnaKendaraan 		= 	$this->input->post('txtWarnaKendaraanHeader',TRUE);
+			$warnaKendaraan 	= 	strtoupper($this->input->post('txtWarnaKendaraanHeader',TRUE));
 			$status_data 		=	$this->input->post('CheckAktif');
 			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
 

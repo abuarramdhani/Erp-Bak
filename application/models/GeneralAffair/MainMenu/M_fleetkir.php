@@ -24,7 +24,8 @@ class M_fleetkir extends CI_Model
                                 from    ga.ga_fleet_kir as kir
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=kir.kendaraan_id
-                                where   kir.end_date='9999-12-12 00:00:00';";
+                                where   kir.end_date='9999-12-12 00:00:00'
+                                order by kir.tanggal_kir desc;";
 
     		$query = $this->db->query($ambilKIR);
     	} else {
@@ -60,7 +61,8 @@ class M_fleetkir extends CI_Model
                                 from    ga.ga_fleet_kir as kir
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=kir.kendaraan_id
-                                where   kir.end_date!='9999-12-12 00:00:00';";
+                                where   kir.end_date!='9999-12-12 00:00:00'
+                                order by kir.tanggal_kir desc;";
         $query              =   $this->db->query($ambilKIRDeleted);
         return $query->result_array();
     }
