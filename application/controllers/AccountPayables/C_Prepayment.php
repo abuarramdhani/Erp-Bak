@@ -70,7 +70,7 @@ class C_Prepayment extends CI_Controller {
 		// $result = 'tanggal : '.$tanggal.'<br>sitesuppRaw : '.$sitesuppRaw.'<br>org_id : '.$org_id;
 		$prepayment = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw, $tanggal);
 		echo "
-			<table id='showPrpData' class='table table-striped table-bordered table-hover'style='width: 150%'>
+			<table id='showPrpData' class='table table-striped table-bordered table-hover'style='width: 200%'>
 				<thead>
 					<tr class='bg-primary'>
 						<th rowspan='2' style='text-align: center; vertical-align: middle;'>Supplier</th>
