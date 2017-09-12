@@ -585,21 +585,6 @@ $(document).ready(function(){
 
 	$('#slcInventory').select2();
 
-	// $('#chkTerima').click(function(){
-	// 	if($('#chkTerima').is(':checked')) {
-	// 	    $("#hdnTerima").val('YA');
-	// 	} else {
-	// 	    $("#hdnTerima").val('TIDAK');
-	// 	};
-	// });
-
-
-	// if($('#chkTerima').is(':checked')) {
-	//     $("#hdnTerima").val('YA');
-	// } else {
-	//     $("#hdnTerima").val('TIDAK');
-	// };
-
 	$('button').click(function(){
 		var table = $('#lppbList').DataTable();
 		table
@@ -644,3 +629,76 @@ $(document).ready(function(){
 
 });
 // ---------------------------------------------LPPB[end]-------------------------------------------
+
+// ---------------------------------------------PREPAYEMENT[START]-----------------------------------------
+$(document).ready(function(){
+	$('#dateFrom').datepicker({
+		autoclose:true
+	});
+
+	$('#dummyForm_prp').submit(function(e){
+		e.preventDefault();
+	});
+
+	$('#btnViewPrp').click(function(){
+		$('#btnViewPrp').attr('disabled', 'disabled');
+		$("#viewPrpData").css('opacity', '0.5');
+		$('#loadingPrpData').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="65px"/>');
+		var tanggal = $('#dateFrom').val();
+		var SiteSupp = $('#siteSupp').val();
+			$.ajax({
+				type: "POST",
+				data:{
+						tanggal:tanggal,
+						SiteSupp:SiteSupp,
+					},
+				url:baseurl+"AccountPayables/Prepayment/viewPrepayment/",
+				success:function(result)
+				{
+					$('#btnViewPrp').removeAttr('disabled', 'disabled');
+					$("#viewPrpData").css('opacity', '1');
+					$('#loadingPrpData').html('');
+					$("#viewPrpData").html(result);
+
+					$('.amt').each(function(){
+						var amt = $(this).html();
+						var fixamt = parseFloat(amt).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+						// var fixamt = amt.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+						$(this).html(fixamt);
+					});
+					$('.amtIDR').each(function(){
+						var amtIDR = $(this).html();
+						var fixamtIDR = parseFloat(amtIDR).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+						// var fixamtIDR = amtIDR.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+						$(this).html(fixamtIDR);
+					});
+					
+					$('#showPrpData').dataTable({
+						"bSort" : true,
+						"searching": true,
+						"bLengthChange": false,
+						"sScrollX": true,
+						"paging": true
+					});
+
+					$('html, body').animate({
+						scrollTop: $("#viewPrpData").offset().top
+					}, 500);
+				},
+				error: function (xhr, ajaxOptions, thrownError) 
+				{
+					$('#btnViewPrp').removeAttr('disabled', 'disabled');
+					alert('Ajax Error\n'+xhr.status+' ['+xhr.readyState+']'+thrownError);
+					$('#loadingPrpData').html('');
+					$("#viewPrpData").css('opacity', '1');
+					$("#viewPrpData").html('<h1>AJAX ERROR</h1>'+thrownError);
+					console.log(xhr.responseText);
+					$('html, body').animate({
+						scrollTop: $("#viewPrpData").offset().top
+					}, 200);
+				}
+			});
+
+	});
+});
+// ---------------------------------------------PREPAYEMENT[END]-------------------------------------------
