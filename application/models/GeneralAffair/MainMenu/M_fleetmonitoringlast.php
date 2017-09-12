@@ -129,13 +129,19 @@ class M_fleetmonitoringlast extends CI_Model
                                                 select  pjc.biaya
                                                 from    ga.ga_fleet_pajak as pjc
                                                 where   pjc.end_date='9999-12-12 00:00:00'
-                                                        and     pjc.tanggal_pajak=(
-                                                                select  max(pjb.tanggal_pajak)
-                                                                from    ga.ga_fleet_pajak as pjb
-                                                                where   pjb.kendaraan_id=pjk.kendaraan_id
-                                                                        and     pjb.end_date='9999-12-12 00:00:00'
-                                                                )
-                                            ) as biaya
+                                                        and     pjc.pajak_id=(
+                                                        		select  pja.pajak_id
+                                                				from    ga.ga_fleet_pajak as pja
+                                               	 				where   pja.kendaraan_id=pjk.kendaraan_id
+                                                        				and     pja.end_date='9999-12-12 00:00:00'
+                                                        				and     pja.tanggal_pajak=(
+                                                                				select  max(pjb.tanggal_pajak)
+                                                                				from    ga.ga_fleet_pajak as pjb
+                                                                				where   pjb.kendaraan_id=pjk.kendaraan_id
+                                                                        				and     pjb.end_date='9999-12-12 00:00:00'
+                                                                				)
+                                                        		)
+                                            ) as biaya                                            
                                 from        ga.ga_fleet_pajak as pjk
                                 where       pjk.end_date='9999-12-12 00:00:00'
                                 group by    kode_kendaraan
