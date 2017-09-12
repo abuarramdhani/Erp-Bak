@@ -70,6 +70,8 @@ class C_FleetMonitoringLast extends CI_Controller
 		$filter 		= 	$this->input->post('berdasarkan');
 		$kategori 		= 	$this->input->post('kategori');
 
+        $data['monitoringKategori']         =   null;
+
 		if($kategori == 'A')
 		{
 			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriPajak();
