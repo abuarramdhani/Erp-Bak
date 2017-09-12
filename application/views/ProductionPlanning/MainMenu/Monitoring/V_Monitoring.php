@@ -26,15 +26,15 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-10 col-md-10">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12">
-                                <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="1000">
-                                    <div class="carousel-inner" role="listbox">
-                            <?php
-                                $count = count($selectedSection);
-                                $crslActive = 'active';
-                                for ($i=0; $i < $count; $i++) {
-                            ?>
+                        <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="1000">
+                            <div class="carousel-inner" role="listbox">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+                                        <?php
+                                            $count = count($selectedSection);
+                                            $crslActive = 'active';
+                                            for ($i=0; $i < $count; $i++) {
+                                        ?>
                                         <div class="item <?php echo $crslActive; ?>">
                                             <div class="col-md-6 text-left">
                                                 <?php
@@ -190,48 +190,60 @@
                                                 </table>
                                             </div>
                                         </div>
-                            <?php $crslActive = '';
-                                }
-                            ?>
+                                        <?php $crslActive = '';
+                                            }
+                                        ?>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <canvas id="month-fabrication" style="height: 250px;" data-secId="3">
-                                </canvas>
-                            </div>
-                            <div class="col-md-4">
-                                <br>
-                                <table class="table table-bordered">
-                                	<tr>
-                                		<td></td>
-                                		<td>Jumlah Job</td>
-                                		<td>Jumlah Part (Pcs)</td>
-                                	</tr>
-                                	<tr>
-                                		<td>Job Released</td>
-                                		<td></td>
-                                		<td></td>
-                                	</tr>
-                                	<tr>
-                                		<td>Job Pending Picklist</td>
-                                		<td></td>
-                                		<td></td>
-                                	</tr>
-                                	<tr>
-                                		<td>Total Job Complete 1 bulan</td>
-                                		<td></td>
-                                		<td></td>
-                                	</tr>
-                                	<tr>
-                                		<td>Job Terlama</td>
-                                		<td colspan="2">
-                                			<?php echo date('d-m-Y'); ?>
-                                		</td>
-                                	</tr>
-                                </table>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <canvas id="month-fabrication" style="height: 250px;" data-secId="3">
+                                        </canvas>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <br>
+                                        <table class="table table-bordered">
+                                        	<tr>
+                                        		<td></td>
+                                        		<td class="text-center">Jumlah Job</td>
+                                        		<td class="text-center">Jumlah Part (Pcs)</td>
+                                        	</tr>
+                                        	<tr>
+                                        		<td>Job Released</td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
+                                                </td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0]['RELEASED_JUMLAH_PART']; ?>
+                                                </td>
+                                        	</tr>
+                                        	<tr>
+                                        		<td>Job Pending Picklist</td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
+                                                </td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0]['PENDING_JUMLAH_PART']; ?>
+                                                </td>
+                                        	</tr>
+                                        	<tr>
+                                        		<td>Total Job Complete 1 bulan</td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
+                                                </td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0]['COMPLETE_JUMLAH_PART']; ?>
+                                                </td>
+                                        	</tr>
+                                        	<tr>
+                                        		<td>Job Terlama</td>
+                                        		<td colspan="2">
+                                        			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
+                                        		</td>
+                                        	</tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
