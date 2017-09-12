@@ -13,7 +13,8 @@ class C_Monitoring extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+        $this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+		$this->load->model('ProductionPlanning/MainMenu/M_monitoring');
     }
 	
 	public function checkSession(){
@@ -55,7 +56,8 @@ class C_Monitoring extends CI_Controller {
     		$datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
     	}
 
-    	$data['section'] 		= $this->M_dataplan->getSection();
+        $data['section']        = $this->M_dataplan->getSection();
+    	$data['infoJob'] 		= $this->M_monitoring->getInfoJobs();
     	$data['selectedSection']= $section;
     	
     	$data['highPriority']= array();
