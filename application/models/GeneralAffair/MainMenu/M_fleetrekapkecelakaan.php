@@ -11,30 +11,44 @@ class M_fleetrekapkecelakaan extends CI_Model
 
     public function rekapTotalKecelakaan($tahun)
       {
-        $totalKecelakaan   = "          select      to_char(kecelakaan.tanggal_kecelakaan::timestamp, 'Month') as bulan,
+        $totalKecelakaan   = "          select      tblbulan.angka,
+                                                    tblbulan.nama_bulan as bulan,
                                                     (
-                                                        sum(kecelakaan.biaya_perusahaan)
-                                                        + 
-                                                        sum(kecelakaan.biaya_pekerja)
+                                                        select  coalesce((sum(kecelakaan.biaya_pekerja)+sum(kecelakaan.biaya_perusahaan)),0)
+                                                        from    ga.ga_fleet_kecelakaan as kecelakaan
+                                                        where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
+                                                                and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
+                                                                and     kecelakaan.end_date='9999-12-12 00:00:00'
                                                     ) as total_biaya
-                                        from        ga.ga_fleet_kecelakaan as kecelakaan
-                                        where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
-                                                    and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                        group by    bulan, extract(month from kecelakaan.tanggal_kecelakaan)
-                                        order by    extract(month from kecelakaan.tanggal_kecelakaan);";
+                                        from        (
+                                                        select  angka.* as bulan_angka,
+                                                                to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                                        from    generate_series(1,12) as angka  
+                                                    ) as tblbulan
+                                        group by    angka, bulan
+                                        order by    angka;";
         $query=$this->db->query($totalKecelakaan);
         return $query->result_array();
       }  
 
     public function rekapFrekuensiKecelakaan($tahun)
       {
-        $frekuensiKecelakaan = "    select      to_char(kecelakaan.tanggal_kecelakaan::timestamp, 'Month') as bulan,
-                                                count(kecelakaan.kecelakaan_id) as total_frekuensi
-                                    from        ga.ga_fleet_kecelakaan as kecelakaan
-                                    where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
-                                                and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                    group by    bulan, extract(month from kecelakaan.tanggal_kecelakaan)
-                                    order by    extract(month from kecelakaan.tanggal_kecelakaan);";
+        $frekuensiKecelakaan = "    select      tblbulan.angka,
+                                                tblbulan.nama_bulan as bulan,
+                                                (
+                                                    select  coalesce(count(kecelakaan.*),0)
+                                                    from    ga.ga_fleet_kecelakaan as kecelakaan
+                                                    where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
+                                                            and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
+                                                            and     kecelakaan.end_date='9999-12-12 00:00:00'
+                                                ) as total_frekuensi
+                                    from        (
+                                                    select  angka.* as bulan_angka,
+                                                            to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                                    from    generate_series(1,12) as angka  
+                                                ) as tblbulan
+                                    group by    angka, bulan
+                                    order by    angka;";
         $query=$this->db->query($frekuensiKecelakaan);
         return $query->result_array();
       }  
