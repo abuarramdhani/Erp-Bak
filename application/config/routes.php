@@ -1032,11 +1032,14 @@ $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)']  = 'ItemManageme
 $route['ItemManagement/User/InputPekerja/(:any)/(:any)/(:any)/(:any)']  = 'ItemManagement/User/C_InputPekerja/$1/$2/$3/$4';
 
 //------------------------------------ Production Planning ----------------------------------------
-$route['ProductionPlanning']  							= 'ProductionPlanning/C_Index/index';
-$route['ProductionPlanning/Monitoring']  				= 'ProductionPlanning/MainMenu/C_Monitoring/index';
-$route['ProductionPlanning/Monitoring/(:any)']  		= 'ProductionPlanning/MainMenu/C_Monitoring/$1';
-$route['ProductionPlanning/DataPlan']  					= 'ProductionPlanning/MainMenu/C_DataPlan/index';
-$route['ProductionPlanning/DataPlan/(:any)']  			= 'ProductionPlanning/MainMenu/C_DataPlan/$1';
-$route['ProductionPlanning/DataPlan/(:any)/(:any)']  	= 'ProductionPlanning/MainMenu/C_DataPlan/$1/$2';
-$route['ProductionPlanning/Setting/GroupSection']  		= 'ProductionPlanning/MainMenu/C_GroupSection/index';
-$route['ProductionPlanning/Setting/GroupSection/(:any)']= 'ProductionPlanning/MainMenu/C_GroupSection/$1';
+$route['ProductionPlanning']  								= 'ProductionPlanning/C_Index/index';
+$route['ProductionPlanning/Monitoring']  					= 'ProductionPlanning/MainMenu/C_Monitoring/index';
+$route['ProductionPlanning/Monitoring/(:any)']  			= 'ProductionPlanning/MainMenu/C_Monitoring/$1';
+$route['ProductionPlanning/DataPlanMonthly']  				= 'ProductionPlanning/MainMenu/C_DataPlanMonthly/index';
+$route['ProductionPlanning/DataPlanMonthly/(:any)']  		= 'ProductionPlanning/MainMenu/C_DataPlanMonthly/$1';
+$route['ProductionPlanning/DataPlanMonthly/(:any)/(:any)']	= 'ProductionPlanning/MainMenu/C_DataPlanMonthly/$1/$2';
+$route['ProductionPlanning/DataPlanDaily']  				= 'ProductionPlanning/MainMenu/C_DataPlanDaily/index';
+$route['ProductionPlanning/DataPlanDaily/(:any)']  			= 'ProductionPlanning/MainMenu/C_DataPlanDaily/$1';
+$route['ProductionPlanning/DataPlanDaily/(:any)/(:any)']	= 'ProductionPlanning/MainMenu/C_DataPlanDaily/$1/$2';
+$route['ProductionPlanning/Setting/GroupSection']  			= 'ProductionPlanning/MainMenu/C_GroupSection/index';
+$route['ProductionPlanning/Setting/GroupSection/(:any)']	= 'ProductionPlanning/MainMenu/C_GroupSection/$1';
