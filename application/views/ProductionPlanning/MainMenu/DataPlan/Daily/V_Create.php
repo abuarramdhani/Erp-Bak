@@ -8,14 +8,14 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Input Data Plans
+                                        Input Daily Plans
                                     </b>
                                 </h1>
                             </div>
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/DataPlan');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/DataPlanDaily');?>">
                                     <i aria-hidden="true" class="fa fa-line-chart fa-2x">
                                     </i>
                                     <span>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="panel-body">
                                 <?php echo $message; ?>
-                                <form enctype="multipart/form-data" method="post" action="<?php echo base_url('ProductionPlanning/DataPlan/CreateSubmit'); ?>">
+                                <form enctype="multipart/form-data" class="form-horizontal" method="post" action="<?php echo base_url('ProductionPlanning/DataPlanDaily/CreateSubmit'); ?>">
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <h2><b>UPLOAD FILE EXCEL</b></h2>
@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 text-center">
-                                            <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlan/DownloadSample');?>">
+                                            <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlanDaily/DownloadSample');?>">
                                                 <i aria-hidden="true" class="fa fa-download"></i> DOWNLOAD SAMPLE
                                             </a>
                                             <br><br>

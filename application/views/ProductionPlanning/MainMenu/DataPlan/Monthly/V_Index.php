@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/DataPlan');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/DataPlanMonthly');?>">
                                     <i aria-hidden="true" class="fa fa-line-chart fa-2x">
                                     </i>
                                     <span>
@@ -31,7 +31,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a alt="Add New" href="<?php echo site_url('ProductionPlanning/DataPlan/Create') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" title="Add New">
+                                <a alt="Add New" href="<?php echo site_url('ProductionPlanning/DataPlanMonthly/Create') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" title="Add New">
                                     <button class="btn btn-default btn-sm" type="button">
                                         <i class="icon-plus icon-2x">
                                         </i>
@@ -47,16 +47,13 @@
                                                 No
                                             </td>
                                             <td>
-                                                Item
+                                                Monthly Plan Qty
                                             </td>
                                             <td>
-                                                Description
+                                                Plan Time
                                             </td>
                                             <td>
-                                                Priority
-                                            </td>
-                                            <td>
-                                                Status
+                                                Section
                                             </td>
                                             <td>
                                                 Action
@@ -64,35 +61,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($plan as $pl) {
-											if ($pl['achieve_qty'] >= $pl['need_qty']) {
-												$status = "OK";
-												$color  = "class='bg-success'";
-											}else{
-												$status = "NOT OK";
-												$color  = "class='bg-warning'";
-											}
-										?>
+                                        <?php foreach ($plan as $plm) { ?>
                                         <tr>
                                             <td>
                                                 <?php echo $no++; ?>
                                             </td>
                                             <td>
-                                                <?php echo $pl['item_code']; ?>
+                                                <?php echo $plm['monthly_plan_quantity']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $pl['item_description']; ?>
+                                                <?php echo date('F Y', strtotime($plm['plan_time'])); ?>
                                             </td>
                                             <td>
-                                                <?php echo $pl['priority']; ?>
-                                            </td>
-                                            <td <?php echo $color; ?>>
-                                                <?php echo $status; ?>
+                                                <?php echo $plm['section_name']; ?>
                                             </td>
                                             <td>
-                                                <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlan/Edit/'.$pl['daily_plan_id']); ?>">
-                                                    EDIT
-                                                </a>
+                                                <button class="btn btn-default" onclick="javascript:alert('feature ini belum jalan!')">EDIT</button>
                                             </td>
                                         </tr>
                                         <?php } ?>

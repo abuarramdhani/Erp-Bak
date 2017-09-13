@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/DataPlan');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/DataPlanDaily');?>">
                                     <i aria-hidden="true" class="fa fa-line-chart fa-2x">
                                     </i>
                                     <span>
@@ -36,7 +36,7 @@
                             <div class="panel-body">
                                 <div class="row">
                                 	<?php foreach ($plan as $pl) { ?>
-	                                <form method="post" action="<?php echo base_url('ProductionPlanning/DataPlan/Edit/'.$pl['daily_plan_id']); ?>" class="form-horizontal">
+	                                <form method="post" action="<?php echo base_url('ProductionPlanning/DataPlanDaily/Edit/'.$pl['daily_plan_id']); ?>" class="form-horizontal">
 	                                	<div class="col-md-12">
 	                                    	<div class="col-md-6">
 		                                        <div class="form-group">
@@ -87,7 +87,7 @@
 		                                        </div>
 	                                    	</div>
 	                                    	<div class="col-md-12 text-right">
-	                                    		<a href="<?php echo base_url('ProductionPlanning/DataPlan'); ?>" class="btn btn-default">
+	                                    		<a href="<?php echo base_url('ProductionPlanning/DataPlanDaily'); ?>" class="btn btn-default">
 	                                    			CANCEL
 	                                    		</a>
 		                                        <button type="submit" class="btn btn-primary">
