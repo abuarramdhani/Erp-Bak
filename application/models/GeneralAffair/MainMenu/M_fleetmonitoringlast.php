@@ -129,13 +129,19 @@ class M_fleetmonitoringlast extends CI_Model
                                                 select  pjc.biaya
                                                 from    ga.ga_fleet_pajak as pjc
                                                 where   pjc.end_date='9999-12-12 00:00:00'
-                                                        and     pjc.tanggal_pajak=(
-                                                                select  max(pjb.tanggal_pajak)
-                                                                from    ga.ga_fleet_pajak as pjb
-                                                                where   pjb.kendaraan_id=pjk.kendaraan_id
-                                                                        and     pjb.end_date='9999-12-12 00:00:00'
-                                                                )
-                                            ) as biaya
+                                                        and     pjc.pajak_id=(
+                                                        		select  pja.pajak_id
+                                                				from    ga.ga_fleet_pajak as pja
+                                               	 				where   pja.kendaraan_id=pjk.kendaraan_id
+                                                        				and     pja.end_date='9999-12-12 00:00:00'
+                                                        				and     pja.tanggal_pajak=(
+                                                                				select  max(pjb.tanggal_pajak)
+                                                                				from    ga.ga_fleet_pajak as pjb
+                                                                				where   pjb.kendaraan_id=pjk.kendaraan_id
+                                                                        				and     pjb.end_date='9999-12-12 00:00:00'
+                                                                				)
+                                                        		)
+                                            ) as biaya                                            
                                 from        ga.ga_fleet_pajak as pjk
                                 where       pjk.end_date='9999-12-12 00:00:00'
                                 group by    kode_kendaraan
@@ -171,13 +177,19 @@ class M_fleetmonitoringlast extends CI_Model
                                                 select  kir3.biaya
                                                 from    ga.ga_fleet_kir as kir3
                                                 where   kir3.end_date='9999-12-12 00:00:00'
-                                                        and     kir3.tanggal_kir=(
-                                                                select  max(kir2.tanggal_kir)
-                                                                from    ga.ga_fleet_kir as kir2
-                                                                where   kir2.kendaraan_id=kir.kendaraan_id
-                                                                        and     kir2.end_date='9999-12-12 00:00:00'
-                                                                )
-                                            ) as biaya      
+                                                		and 	kir3.kir_id=(
+                                                				select  kir1.kir_id
+                                                				from    ga.ga_fleet_kir as kir1
+                                                				where   kir1.kendaraan_id=kir.kendaraan_id
+                                                        				and     kir1.end_date='9999-12-12 00:00:00'
+                                                        				and     kir1.tanggal_kir=(
+                                                                				select  max(kir2.tanggal_kir)
+                                                                				from    ga.ga_fleet_kir as kir2
+                                                                				where   kir2.kendaraan_id=kir.kendaraan_id
+                                                                        				and     kir2.end_date='9999-12-12 00:00:00'
+                                                                				)                                                				
+                                                				)
+                                            ) as biaya       
                                 from        ga.ga_fleet_kir as kir
                                 where       kir.end_date='9999-12-12 00:00:00'
                                 group by    kode_kendaraan
@@ -265,12 +277,18 @@ class M_fleetmonitoringlast extends CI_Model
                                                                 )
                                                         from    ga.ga_fleet_kecelakaan as kecelakaan3
                                                         where   kecelakaan3.end_date='9999-12-12 00:00:00'
-                                                                and     kecelakaan3.tanggal_kecelakaan=(
-                                                                        select  max(kecelakaan2.tanggal_kecelakaan)
-                                                                        from    ga.ga_fleet_kecelakaan as kecelakaan2
-                                                                        where   kecelakaan2.kendaraan_id=kecelakaan.kendaraan_id
-                                                                                and     kecelakaan2.end_date='9999-12-12 00:00:00'
-                                                                        )
+                                                                and     kecelakaan3.kecelakaan_id=(
+                                                                		select  kecelakaan1.kecelakaan_id
+                                                        				from    ga.ga_fleet_kecelakaan as kecelakaan1
+                                                        				where   kecelakaan1.kendaraan_id=kecelakaan.kendaraan_id
+                                                                				and     kecelakaan1.end_date='9999-12-12 00:00:00'
+                                                                				and     kecelakaan1.tanggal_kecelakaan=(
+                                                                        		select  max(kecelakaan2.tanggal_kecelakaan)
+                                                                        		from    ga.ga_fleet_kecelakaan as kecelakaan2
+                                                                        		where   kecelakaan2.kendaraan_id=kecelakaan.kendaraan_id
+                                                                                		and     kecelakaan2.end_date='9999-12-12 00:00:00'
+                                                                				)
+                                                                		)
                                                     ) as biaya              
                                         from        ga.ga_fleet_kecelakaan as kecelakaan
                                         where       kecelakaan.end_date='9999-12-12 00:00:00'
