@@ -17,7 +17,7 @@ class M_fleetrekapkecelakaan extends CI_Model
                                                         select  coalesce((sum(kecelakaan.biaya_pekerja)+sum(kecelakaan.biaya_perusahaan)),0)
                                                         from    ga.ga_fleet_kecelakaan as kecelakaan
                                                         where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
-                                                                and     extract(year from kecelakaan.tanggal_kecelakaan)='2017'
+                                                                and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
                                                                 and     kecelakaan.end_date='9999-12-12 00:00:00'
                                                     ) as total_biaya
                                         from        (
@@ -39,7 +39,7 @@ class M_fleetrekapkecelakaan extends CI_Model
                                                     select  coalesce(count(kecelakaan.*),0)
                                                     from    ga.ga_fleet_kecelakaan as kecelakaan
                                                     where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
-                                                            and     extract(year from kecelakaan.tanggal_kecelakaan)='2017'
+                                                            and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
                                                             and     kecelakaan.end_date='9999-12-12 00:00:00'
                                                 ) as total_frekuensi
                                     from        (
