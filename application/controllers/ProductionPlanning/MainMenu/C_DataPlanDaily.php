@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_DataPlan extends CI_Controller {
+class C_DataPlanDaily extends CI_Controller {
 
 	public function __construct()
     {
@@ -164,7 +164,7 @@ class C_DataPlan extends CI_Controller {
                     }
 
                     if ($datPoint !=null && $errStock == 0) {
-                     $this->M_dataplan->insertDataPlan($dataIns);
+                     $this->M_dataplan->insertDataPlan($dataIns, 'pp.pp_daily_plans');
                     }
                 }
 
@@ -285,7 +285,7 @@ class C_DataPlan extends CI_Controller {
             );
 
             $this->M_dataplan->update($data,$id);
-            redirect(base_url('ProductionPlanning/DataPlan'));
+            redirect(base_url('ProductionPlanning/DataPlanDaily'));
         }
     }
 }
