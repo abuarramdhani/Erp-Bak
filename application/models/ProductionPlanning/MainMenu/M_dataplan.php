@@ -52,9 +52,9 @@ class M_dataplan extends CI_Model {
     return $query->result_array();
   }
 
-  public function insertDataPlan($dataIns)
+  public function insertDataPlan($dataIns, $tbName)
   {
-    $this->db->insert('pp.pp_daily_plans', $dataIns);
+    $this->db->insert($tbName, $dataIns);
   }
 
   public function update($data,$id)
@@ -122,21 +122,31 @@ class M_dataplan extends CI_Model {
 
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // return $sql;
   }
 
-  // public function getPlanMonthly()
-  // {
-  //   $sql = "SELECT
-  //             to_char(dp.created_date, 'dd') as date,
-  //             to_char(dp.created_date, 'Mon') as mon,
-  //             extract(year from dp.created_date) as yyyy,
-  //             count(*) as plan
-  //           FROM pp.pp_daily_plans dp
-  //           WHERE dp.section_id = 9
-  //           GROUP BY 1,2,3";
+  public function getSumPlanMonth()
+  {
+    $sql = "SELECT
+              to_char(dp.created_date, 'dd') as date,
+              to_char(dp.created_date, 'Mon') as mon,
+              extract(year from dp.created_date) as yyyy,
+              count(*) as plan
+            FROM pp.pp_daily_plans dp
+            WHERE dp.section_id = 9
+            GROUP BY 1,2,3";
             
-  //   $query = $this->db->query($sql);
-  //   return $query->result_array();
-  // }
+    $query = $this->db->query($sql);
+    return $query->result_array();
+  }
+
+  public function getMonthlyPlan()
+  {
+    $this->db->select('*');
+    $this->db->from('pp.pp_monthly_plans pmp, pp.pp_section ps');
+    $this->db->where('pmp.section_id = ps.section_id');
+    $this->db->order_by('pmp.plan_time, ps.section_name ASC');
+
+    $query = $this->db->get();
+    return $query->result_array();
+  }
 }
