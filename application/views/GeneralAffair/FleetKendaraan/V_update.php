@@ -152,6 +152,7 @@
                                                 <label for="txtTanggalDibuat" class="control-label col-lg-4">Tanggal Dibuat</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Tanggal Dibuat" name="TanggalDibuat" id="TanggalDibuat" class="form-control" value="<?php echo $kendaraanEdit['waktu_dibuat'];?>" disabled>
+                                                    <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $kendaraanEdit['waktu_dihapus'];?>">
                                                 </div>
                                             </div>
                                             <?php
@@ -162,7 +163,7 @@
                                                 <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
                                                     <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($kendaraanEdit['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
-                                                    <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $kendaraanEdit['waktu_dihapus'];?>">
+                                                    
                                                 </div>
 
                                             </div>
