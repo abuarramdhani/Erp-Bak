@@ -600,7 +600,7 @@ $(document).ready(function(){
 			var d = new Date();
 			var date = d.getDate();
 			var month = d.getMonth();
-			var year = d.getFullYear();
+			var year = d.getFullYear().toString().substr(-2);
 			var today = date+'-'+mon_names[month]+'-'+year;
 			var idfortgl = idterim.replace(/[A-Za-z]/g, '');
 			if ($(this).is(':checked')) {

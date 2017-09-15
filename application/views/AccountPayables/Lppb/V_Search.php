@@ -88,11 +88,11 @@
 											<div style="width: 45%; float: left; text-align: left;">
 												<input type="hidden" name="hdnTanggalrange" value="<?php echo $date ?>">
 												<a href="<?php echo base_url('/AccountPayables/Lppb'); ?>">
-													<button type="button" id="btnExport" class="btn btn-primary btn-lg btn-rect">BACK</button>
+													<button type="button" class="btn btn-primary btn-lg btn-rect">BACK</button>
 												</a>
 											</div>
 											<div style="width: 45%; float: right; text-align: right;">
-												<button type="submit" id="btnExport" class="btn btn-primary btn-lg btn-rect">EXPORT</button>
+												<button type="submit" id="btnExportlppb" class="btn btn-primary btn-lg btn-rect">EXPORT</button>
 												<button type="button" id="btnSavelppb" class="btn btn-primary btn-lg btn-rect">SAVE</button>
 											</div>
 										</form>
