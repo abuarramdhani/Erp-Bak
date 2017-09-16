@@ -23,16 +23,33 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Merk Kendaraan</div>
+                                <div class="box-header with-border">Create Model Kendaraan</div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
+                                            <div class="form-group">
+                                                <label for="cmbProdusenKendaraan" class="control-label col-lg-4">Produsen Kendaraan</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbProdusenKendaraan" name="cmbProdusenKendaraan" class="select2" data-placeholder="Pilih" style="width: 75%;" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                            foreach ($ProdusenKendaraan as $Produsen) 
+                                                            {
+                                                                echo '  <option value="'.$Produsen['produsen_kendaraan'].'">
+                                                                        '.$Produsen['produsen_kendaraan'].'
+                                                                        </option>';
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
 											<div class="form-group">
                                                 <label for="txtMerkKendaraanHeader" class="control-label col-lg-4">Merk Kendaraan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Merk Kendaraan" name="txtMerkKendaraanHeader" id="txtMerkKendaraanHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
+
                                         </div>
 
                                         <div class="col-lg-12">

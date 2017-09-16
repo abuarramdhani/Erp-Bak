@@ -36,7 +36,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <hr>
+                                            <br/>
+                                            <hr/>
 
                                             <div id="nomor_polisi" hidden="">
                                                     <br/>
@@ -55,9 +56,11 @@
                                                         </div>
                                                     </div> 
                                                     <div class="form-group">
-                                                        <button type="button" name="ProsesMonitoringNomorPolisi" id="ProsesMonitoringNomorPolisi" class="btn btn-primary">
-                                                            Proses
-                                                        </button>                                                        
+                                                        <center>
+                                                            <button type="button" name="ProsesMonitoringNomorPolisi" id="ProsesMonitoringNomorPolisi" class="btn btn-primary">
+                                                                Proses
+                                                            </button>                                                        
+                                                        </center>
                                                     </div>
                                                     <hr/>
                                                     <br/>

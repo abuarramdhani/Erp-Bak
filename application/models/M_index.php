@@ -21,7 +21,12 @@ class M_index extends CI_Model {
 		
 		function getDetail($usr)
 		{
-          $sql = "select * from sys.sys_user where user_name = '" . $usr . "'";
+          $sql = "	select 	su.*,
+          					er.section_code
+          	 		from 	sys.sys_user as su
+							join 	er.er_employee_all as er
+									on 	er.employee_id=su.employee_id
+					where 	user_name = '" . $usr . "'";
           $query = $this->db->query($sql);
 		  return $query->result();
 		}

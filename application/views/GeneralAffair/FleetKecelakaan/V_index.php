@@ -28,10 +28,17 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                                <?php
+                                if(substr($kodesie, 0, 5)=='10103')
+                                    {
+                                ?>                            
                                 <ul class="nav nav-pills nav-justified">
                                     <li class="active"><a data-toggle="pill" href="#active">Active</a></li>
                                     <li><a data-toggle="pill" href="#removed">Removed</a></li>
                                 </ul>
+                                <?php
+                                    }
+                                ?>                                
                                 <div class="tab-content">
                                     <div id="active" class="tab-pane fade in active">
                                         <div class="table-responsive">
@@ -47,6 +54,10 @@
                                                         <th>Biaya Perusahaan</th>
                                                         <th>Biaya Pekerja</th>
                                                         <th>Pekerja</th>
+                                                        <th>Asuransi</th>
+                                                        <th>Cek Asuransi</th>
+                                                        <th>Masuk Bengkel</th>
+                                                        <th>Keluar Bengkel</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -81,6 +92,31 @@
                                                         <td>Rp<?php echo number_format($row['biaya_perusahaan'],0,",",".") ?></td>
                                                         <td>Rp<?php echo number_format($row['biaya_pekerja'],0,",",".") ?></td>
                                                         <td><?php echo $row['pekerja'] ?></td>
+                                                        <td>
+                                                            <?php
+                                                                $status_button = '';
+                                                                if($row['status_asuransi']==1)
+                                                                {
+                                                                    echo 'Ya';
+                                                                }
+                                                                elseif($row['status_asuransi']==0)
+                                                                {
+                                                                    echo 'Tidak';
+                                                                    $status_button = 'disabled';
+                                                                }
+                                                            ?>
+                                                        </td>
+                                                        <td><?php echo $row['tanggal_cek_asuransi'];?></td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_masuk_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_masuk_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_keluar_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_keluar_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>                                                            
+                                                        </td>
                                                         <td><?php echo $row['waktu_dibuat'];?></td>             
                                                      </tr>
                                                     <?php endforeach; ?>
@@ -102,6 +138,10 @@
 												        <th>Biaya Perusahaan</th>
 												        <th>Biaya Pekerja</th>
 												        <th>Pekerja</th>
+                                                        <th>Asuransi</th>
+                                                        <th>Cek Asuransi</th>
+                                                        <th>Masuk Bengkel</th>
+                                                        <th>Keluar Bengkel</th>
                                                         <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>
@@ -118,7 +158,6 @@
                                                         <td align='center'>
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetKecelakaan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetKecelakaan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	       <a href="<?php echo base_url('GeneralAffair/FleetKecelakaan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus data ini?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
 												        <td><?php echo $row['nomor_polisi'] ?></td>
 												        <td><?php echo $row['tanggal_kecelakaan'] ?></td>
@@ -137,6 +176,31 @@
 												        <td>Rp<?php echo number_format($row['biaya_perusahaan'],0,",",".") ?></td>
                                                         <td>Rp<?php echo number_format($row['biaya_pekerja'],0,",",".") ?></td>
 												        <td><?php echo $row['pekerja'] ?></td>
+                                                        <td>
+                                                            <?php
+                                                                $status_button = '';
+                                                                if($row['status_asuransi']==1)
+                                                                {
+                                                                    echo 'Ya';
+                                                                }
+                                                                elseif($row['status_asuransi']==0)
+                                                                {
+                                                                    echo 'Tidak';
+                                                                    $status_button = 'disabled';
+                                                                }
+                                                            ?>
+                                                        </td>
+                                                        <td><?php echo $row['tanggal_cek_asuransi'];?></td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_masuk_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_masuk_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $row['tanggal_keluar_bengkel'];?>
+                                                            <br/>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$row['foto_keluar_bengkel']);?>" target="_blank" class="btn btn-info <?php echo $status_button;?>">Lihat Foto</a>                                                            
+                                                        </td>
                                                         <td><?php echo $row['waktu_dibuat'];?></td>
                                                         <td><?php echo $row['waktu_dihapus'];?></td>                                                      
 											         </tr>

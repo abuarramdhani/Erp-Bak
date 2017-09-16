@@ -39,13 +39,15 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$data['FleetMaintenanceKategori'] 			= $this->M_fleetmaintenancekategori->getFleetMaintenanceKategori();
 		$data['FleetMaintenanceKategoriDeleted']	= $this->M_fleetmaintenancekategori->getFleetMaintenanceKategoriDeleted();
@@ -62,8 +64,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -106,13 +108,15 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -172,8 +176,8 @@ class C_FleetMaintenanceKategori extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kategori Maintenance';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kategori Maintenance';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

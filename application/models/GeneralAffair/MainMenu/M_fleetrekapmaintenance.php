@@ -11,29 +11,50 @@ class M_fleetrekapmaintenance extends CI_Model
 
     public function rekapTotalMaintenance($tahun)
       {
-        $totalMaintenance   = "     select      to_char(mtckdrn.tanggal_maintenance::timestamp, 'Month') as bulan,
-                                                sum(mtckdrndtl.biaya) as total_biaya
-                                    from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
-                                                join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
-                                                    on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
-                                    where       extract(year from mtckdrn.tanggal_maintenance)='$tahun'
-                                                and     mtckdrn.end_date='9999-12-12 00:00:00'
-                                                and     mtckdrndtl.end_date='9999-12-12 00:00:00'
-                                    group by    bulan, extract(month from mtckdrn.tanggal_maintenance)
-                                    order by    extract(month from mtckdrn.tanggal_maintenance);";
+        $totalMaintenance   = "     select      tblbulan.angka,
+                                                tblbulan.nama_bulan as bulan,
+                                                (
+                                                    select  coalesce(sum(mtckdrndtl.biaya),0)
+                                                    from    ga.ga_fleet_maintenance_kendaraan as mtckdrn
+                                                            join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
+                                                                on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
+                                                    where   extract(month from mtckdrn.tanggal_maintenance)=tblbulan.angka
+                                                            and     extract(year from mtckdrn.tanggal_maintenance)='$tahun'
+                                                            and     mtckdrn.end_date='9999-12-12 00:00:00'
+                                                            and     mtckdrndtl.end_date='9999-12-12 00:00:00'
+                                                ) as total_biaya
+                                    from        (
+                                                    select  angka.* as bulan_angka,
+                                                            to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                                    from    generate_series(1,12) as angka  
+                                                ) as tblbulan
+                                    group by    angka, bulan
+                                    order by    angka;";
         $query=$this->db->query($totalMaintenance);
         return $query->result_array();
       }  
 
     public function rekapFrekuensiMaintenance($tahun)
       {
-        $frekuensiMaintenance = "   select      to_char(mtckdrn.tanggal_maintenance::timestamp, 'Month') as bulan,
-                                                count(mtckdrn.maintenance_kendaraan_id) as total_frekuensi
-                                    from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
-                                    where       extract(year from mtckdrn.tanggal_maintenance)='$tahun'
-                                                and     mtckdrn.end_date='9999-12-12 00:00:00'
-                                    group by    bulan, extract(month from mtckdrn.tanggal_maintenance)
-                                    order by    extract(month from mtckdrn.tanggal_maintenance);";
+        $frekuensiMaintenance = "   select      tblbulan.angka,
+                                                tblbulan.nama_bulan as bulan,
+                                                (
+                                                    select  coalesce(count(mtckdrn.*),0)
+                                                    from    ga.ga_fleet_maintenance_kendaraan as mtckdrn
+                                                            join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
+                                                                on  mtckdrndtl.maintenance_kendaraan_id=mtckdrn.maintenance_kendaraan_id
+                                                    where   extract(month from mtckdrn.tanggal_maintenance)=tblbulan.angka
+                                                            and     extract(year from mtckdrn.tanggal_maintenance)='$tahun'
+                                                            and     mtckdrn.end_date='9999-12-12 00:00:00'
+                                                            and     mtckdrndtl.end_date='9999-12-12 00:00:00'
+                                                ) as total_frekuensi
+                                    from        (
+                                                    select  angka.* as bulan_angka,
+                                                            to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                                    from    generate_series(1,12) as angka  
+                                                ) as tblbulan
+                                    group by    angka, bulan
+                                    order by    angka;";
         $query=$this->db->query($frekuensiMaintenance);
         return $query->result_array();
       }  

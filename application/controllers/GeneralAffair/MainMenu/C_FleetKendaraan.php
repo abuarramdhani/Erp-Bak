@@ -39,13 +39,15 @@ class C_FleetKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan();
 		$data['FleetKendaraanDeleted']	= $this->M_fleetkendaraan->getFleetKendaraanDeleted();
@@ -63,8 +65,8 @@ class C_FleetKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -215,13 +217,15 @@ class C_FleetKendaraan extends CI_Controller
 		date_default_timezone_set('Asia/Jakarta');
 
 		$data['Title'] = 'Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -264,6 +268,7 @@ class C_FleetKendaraan extends CI_Controller
 			$fileKendaraanawal		=	$this->input->post('FotoKendaraanawal');
 			$statusdata				=	$this->input->post('CheckAktif');
 			$WaktuDihapus 			=	$this->input->post('WaktuDihapus');
+
 
 			// $tanggalNonaktif		=	$this->input->post('txtTanggalNonaktif');
 
@@ -368,9 +373,6 @@ class C_FleetKendaraan extends CI_Controller
         	{
         		$WaktuDihapus 	=	date('Y-m-d H:i:s');
         	}
-        	else{
-        		$WaktuDihapus 	=	date('Y-m-d H:i:s', strtotime($WaktuDihapus));
-        	}
     		$data = array(
 				'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 				'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
@@ -414,8 +416,8 @@ class C_FleetKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

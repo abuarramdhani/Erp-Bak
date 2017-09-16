@@ -79,7 +79,7 @@ class C_Penjadwalan extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
-		$data['purpose'] = $this->M_record->GetPurpose($id);
+		$data['purpose'] = $this->M_penjadwalan->GetObjectiveId($id);
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['trainer'] = $this->M_penjadwalan->GetTrainer();
 		$data['no'] = 1;
@@ -202,7 +202,7 @@ class C_Penjadwalan extends CI_Controller {
 
 		
 		$GetAlert 		= $this->M_penjadwalan->GetAlert($date,$start_time,$end_time,$room,$training_id);
-		$GetTrainerAlert		= $this->M_penjadwalan->GetTrainer();
+		$GetTrainerAlert= $this->M_penjadwalan->GetTrainer();
 		$count 			= count($GetAlert);
 		$alerttrainer	= explode(',', $GetAlert[0]['trainer']);
 		$trainerName 	= array();
@@ -211,8 +211,7 @@ class C_Penjadwalan extends CI_Controller {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 		$insertId 		= $this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$trainers);
-		
-		
+
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;
 		

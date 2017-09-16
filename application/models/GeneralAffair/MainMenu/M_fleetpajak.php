@@ -24,7 +24,8 @@ class M_fleetpajak extends CI_Model
                                 from    ga.ga_fleet_pajak as pjk
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=pjk.kendaraan_id
-                                where   pjk.end_date='9999-12-12 00:00:00';";
+                                where   pjk.end_date='9999-12-12 00:00:00'
+                                order by pjk.tanggal_pajak desc;";
 
     		$query = $this->db->query($ambilPajak);
     	} else { 
@@ -60,7 +61,8 @@ class M_fleetpajak extends CI_Model
                                 from    ga.ga_fleet_pajak as pjk
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=pjk.kendaraan_id
-                                where   pjk.end_date!='9999-12-12 00:00:00';";
+                                where   pjk.end_date!='9999-12-12 00:00:00'
+                                order by pjk.tanggal_pajak desc;";
         $query              =   $this->db->query($ambilPajakDeleted);
         return $query->result_array();
     }

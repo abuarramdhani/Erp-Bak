@@ -11,8 +11,8 @@
 										<th width="10%">Tanggal Paket</th>
 										<th width="6%">Jumlah Kelulusan</th>
 										<th width="6%">Persentase Kelulusan</th>
-										<th width="7%">Nilai Terendah</th>
 										<th width="7%">Nilai Tertinggi</th>
+										<th width="7%">Nilai Terendah</th>
 										<th width="7%">Nilai Rata-rata</th>
 									</tr>
 								</thead>

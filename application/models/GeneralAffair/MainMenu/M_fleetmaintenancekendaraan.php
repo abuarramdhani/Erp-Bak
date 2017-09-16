@@ -28,7 +28,8 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                             on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
                                                         join    ga.ga_fleet_maintenance_kategori as mtckategori
                                                             on  mtckategori.maintenance_kategori_id=mtckendaraan.maintenance_kategori_id
-                                                where   mtckendaraan.end_date='9999-12-12 00:00:00';";
+                                                where   mtckendaraan.end_date='9999-12-12 00:00:00'
+                                                order by mtckendaraan.tanggal_maintenance desc;";
 
     		$query = $this->db->query($ambilMaintenanceKendaraan);
     	} else {
@@ -72,7 +73,8 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                                 on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
                                                             join    ga.ga_fleet_maintenance_kategori as mtckategori
                                                                 on  mtckategori.maintenance_kategori_id=mtckendaraan.maintenance_kategori_id
-                                                    where   mtckendaraan.end_date!='9999-12-12 00:00:00';";
+                                                    where   mtckendaraan.end_date!='9999-12-12 00:00:00'
+                                                    order by mtckendaraan.tanggal_maintenance desc;";
         $query                              =   $this->db->query($ambilMaintenanceKendaraanDeleted);
         return $query->result_array();
     }

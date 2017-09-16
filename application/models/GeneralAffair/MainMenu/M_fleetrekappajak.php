@@ -11,26 +11,44 @@ class M_fleetrekappajak extends CI_Model
 
     public function rekapTotalPajak($tahun)
       {
-        $rekapPajak = "     select      to_char(pjk.tanggal_pajak::timestamp, 'Month') as bulan,
-                                        sum(pjk.biaya) as total_biaya
-                            from        ga.ga_fleet_pajak as pjk
-                            where       extract(year from pjk.tanggal_pajak)='$tahun'
-                                        and     pjk.end_date='9999-12-12 00:00:00'
-                            group by    bulan, extract(month from pjk.tanggal_pajak)
-                            order by    extract(month from pjk.tanggal_pajak);";
+        $rekapPajak = "     select      tblbulan.angka,
+                                        tblbulan.nama_bulan as bulan,
+                                        (
+                                            select  coalesce(sum(pjk.biaya),0)
+                                            from    ga.ga_fleet_pajak as pjk
+                                            where   extract(month from pjk.tanggal_pajak)=tblbulan.angka
+                                                    and     extract(year from pjk.tanggal_pajak)='$tahun'
+                                                    and     pjk.end_date='9999-12-12 00:00:00'
+                                        ) as total_biaya
+                            from        (
+                                            select  angka.* as bulan_angka,
+                                                    to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                            from    generate_series(1,12) as angka  
+                                        ) as tblbulan
+                            group by    angka, bulan
+                            order by    angka;";
         $query=$this->db->query($rekapPajak);
         return $query->result_array();
       }  
 
     public function rekapFrekuensiPajak($tahun)
       {
-        $rekapPajak = "     select      to_char(pjk.tanggal_pajak::timestamp, 'Month') as bulan,
-                                        count(pjk.biaya) as total_frekuensi
-                            from        ga.ga_fleet_pajak as pjk
-                            where       extract(year from pjk.tanggal_pajak)='$tahun'
-                                        and     pjk.end_date='9999-12-12 00:00:00'
-                            group by    bulan, extract(month from pjk.tanggal_pajak)
-                            order by    extract(month from pjk.tanggal_pajak);";
+        $rekapPajak = "     select      tblbulan.angka,
+                                        tblbulan.nama_bulan as bulan,
+                                        (
+                                            select  coalesce(count(pjk.*),0)
+                                            from    ga.ga_fleet_pajak as pjk
+                                            where   extract(month from pjk.tanggal_pajak)=tblbulan.angka
+                                                    and     extract(year from pjk.tanggal_pajak)='$tahun'
+                                                    and     pjk.end_date='9999-12-12 00:00:00'
+                                        ) as total_frekuensi
+                            from        (
+                                            select  angka.* as bulan_angka,
+                                                    to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                            from    generate_series(1,12) as angka  
+                                        ) as tblbulan
+                            group by    angka, bulan
+                            order by    angka;";
         $query=$this->db->query($rekapPajak);
         return $query->result_array();
       }  

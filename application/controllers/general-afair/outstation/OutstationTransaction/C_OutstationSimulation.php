@@ -106,23 +106,23 @@ class C_OutstationSimulation extends CI_Controller {
 						$return_time = $return_wkt_ex[0].':'.$return_wkt_ex[1];
 		$time_name = array('1' => 'pagi', '2' => 'siang', '3' => 'malam');
 
-		if ($depart_time <= '08:00') {
+		if ($depart_time <= '07:00') {
 			$i = 1;
 		}
-		elseif ($depart_time > '08:00' && $depart_time < '16:00') {
+		elseif ($depart_time > '07:00' && $depart_time < '12:00') {
 			$i = 2;
 		}
-		elseif ($depart_time >= '16:00') {
+		elseif ($depart_time > '12:00' && $depart_time < '18.30') {
 			$i = 3;
 		}
 
-		if ($return_time <= '08:00') {
+		if ($return_time > '07:00' && $return_time < '12:00') {
 			$x = 1;
 		}
-		elseif ($return_time > '08:00' && $return_time < '18:00') {
+		elseif ($return_time > '12:00' && $return_time < '18:30') {
 			$x = 2;
 		}
-		elseif ($return_time >= '18:00') {
+		elseif ($return_time >= '18:30') {
 			$x = 3;
 		}
 

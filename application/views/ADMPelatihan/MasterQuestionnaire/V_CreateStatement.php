@@ -47,14 +47,18 @@
 						<?php }?>
 						
 						<?php 
-								$no=1;foreach($segment as $sg){ $placeholder='Pernyataan';
-								if($sg['segment_type']==0){$placeholder='Pertanyaan Essay';}
+								$no=1;foreach($segment as $sg){
+									$placeholder='Pernyataan';
+									$inputName='txtStatement'.$sg['segment_id'];
+									if($sg['segment_type']==0){
+										$placeholder='Pertanyaan Essay';
+									}
 						?>
 						<div class="row" style="margin: 10px 10px">
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddStatementC('<?php echo $sg['segment_id']; ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddStatementC(<?php echo $sg['segment_id'].",'".$inputName."'"; ?>)"><i class="fa fa-plus"></i></a>
 										<a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Hapus Baris" onclick="delStatRow('<?php echo $sg['segment_id']; ?>')"><i class="fa fa-remove"></i></a>
 									</div>
 									<div class="panel-body">
@@ -72,7 +76,7 @@
 														<td ><?php echo $no; ?></td>
 														<td>
 															<input id="idstatement<?php echo $no; ?>" name="txtSegmentId[]" value="<?php echo $sg['segment_id']?>" hidden>
-															<input id="statement<?php echo $no; ?>" name="txtStatement[]" class="form-control statement" placeholder="<?php echo $placeholder?>">
+															<input id="statement<?php echo $no; ?>" name="<?php echo $inputName.'[]'; ?>" class="form-control statement" placeholder="<?php echo $placeholder?>">
 														</td>
 													</tr>
 												</tbody>

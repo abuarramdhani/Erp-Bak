@@ -124,6 +124,8 @@ $route['FixedAsset/DataAssets'] = 'FixedAsset/MainMenu/C_DataAssets/index';
 $route['FixedAsset/DataAssets/(:any)'] = 'FixedAsset/MainMenu/C_DataAssets/$1';
 $route['FixedAsset/DataAssets/(:any)/(:any)'] = 'FixedAsset/MainMenu/C_DataAssets/$1/$2';
 $route['FixedAsset/DataAssets/(:any)/(:any)/(:any)'] = 'FixedAsset/MainMenu/C_DataAssets/$1/$2/$3';
+$route['FixedAsset/BonAssets'] = 'FixedAsset/MainMenu/C_BonAssets/index';
+$route['FixedAsset/BonAssets/(:any)'] = 'FixedAsset/MainMenu/C_BonAssets/$1';
 //-------------------------------------InventoryManagement----------------------------------------------------
 $route['InventoryManagement'] = 'InventoryManagement/C_InventoryManagement/index';
 //InventoryManagement/MainMenu
@@ -516,6 +518,8 @@ $route['AccountPayables/Invoice/(:any)'] 			= 'AccountPayables/C_Invoice/$1';
 $route['AccountPayables/Invoice/(:any)/(:any)'] 			= 'AccountPayables/C_Invoice/$1/$2';
 $route['AccountPayables/Lppb'] 				= 'AccountPayables/C_Lppb';
 $route['AccountPayables/Lppb/(:any)'] 				= 'AccountPayables/C_Lppb/$1';
+$route['AccountPayables/Prepayment'] 				= 'AccountPayables/C_Prepayment';
+$route['AccountPayables/Prepayment/(:any)'] 				= 'AccountPayables/C_Prepayment/$1';
 
 
 //------------------------------------Payroll Management---------------------------------------------------
@@ -1136,6 +1140,9 @@ $route['GeneralAffair/FleetKecelakaan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/
 $route['GeneralAffair/FleetMonitoring'] 			= 'GeneralAffair/MainMenu/C_FleetMonitoring';
 $route['GeneralAffair/FleetMonitoring/(:any)']		= 'GeneralAffair/MainMenu/C_FleetMonitoring/$1';
 
+$route['GeneralAffair/FleetMonitoringLast'] 			= 'GeneralAffair/MainMenu/C_FleetMonitoringLast';
+$route['GeneralAffair/FleetMonitoringLast/(:any)']		= 'GeneralAffair/MainMenu/C_FleetMonitoringLast/$1';
+
 $route['GeneralAffair/FleetRekapPajak'] 			= 'GeneralAffair/MainMenu/C_FleetRekapPajak';
 $route['GeneralAffair/FleetRekapPajak/(:any)']		= 'GeneralAffair/MainMenu/C_FleetRekapPajak/$1';
 
@@ -1184,3 +1191,16 @@ $route['StorageLocation/Ajax/(:any)'] 						= 'StorageLocation/Additional/C_Ajax
 $route['StorageLocation/Ajax/(:any)/(:any)'] 				= 'StorageLocation/Additional/C_Ajax/$1/$2';
 $route['StorageLocation/Report'] 							= 'StorageLocation/Report/C_Report/index';
 $route['StorageLocation/Report/(:any)'] 					= 'StorageLocation/Report/C_Report/$1';
+
+//------------------------------------ KHS Cost Order --------------------------------------------
+//CastingCost
+$route['CastingCost']					 	= 'CastingCost/C_CastingCost/index';
+$route['CastingCost/InputCasting']		 	= 'CastingCost/MainMenu/C_Casting/index';
+$route['CastingCost/simpan'] 			 	= 'CastingCost/MainMenu/C_Casting/simpan';
+$route['CastingCost/cek']				 	= 'CastingCost/MainMenu/C_Casting/cek';
+$route['CastingCost/edit/submit'] 		 	= 'CastingCost/MainMenu/C_Casting/submit';
+$route['CastingCost/view_casting'] 		 	= 'CastingCost/MainMenu/C_Casting/view_casting';
+$route['CastingCost/EditRequest/(:any)']	= 'CastingCost/MainMenu/C_Casting/edit_request/$1';
+$route['CastingCost/edit/savecostmachine']  = 'CastingCost/MainMenu/C_Casting/save_cost_machine';
+$route['CastingCost/edit/savecostelectric'] = 'CastingCost/MainMenu/C_Casting/save_cost_electric';
+$route['CastingCost/edit/export_excel'] 	= 'CastingCost/MainMenu/C_ExportExcel/excel';

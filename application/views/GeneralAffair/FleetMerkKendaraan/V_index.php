@@ -28,10 +28,17 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                                <?php
+                                if(substr($kodesie, 0, 5)=='10103')
+                                    {
+                                ?>
                                 <ul class="nav nav-pills nav-justified">
                                     <li class="active"><a data-toggle="pill" href="#active">Active</a></li>
                                     <li><a data-toggle="pill" href="#removed">Removed</a></li>
                                 </ul>
+                                <?php
+                                    }
+                                ?>
                                 <div class="tab-content">
                                     <div id="active" class="tab-pane fade in active">
                                         <br/>
@@ -41,7 +48,7 @@
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
-                                                        <th>Merk Kendaraan</th>
+                                                        <th>Model Kendaraan</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -74,7 +81,7 @@
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
-												        <th>Merk Kendaraan</th>
+												        <th>Model Kendaraan</th>
 												        <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>

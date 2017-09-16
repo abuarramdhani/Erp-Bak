@@ -34,13 +34,16 @@ class C_FleetMerkKendaraan extends CI_Controller
 	/* LIST DATA */
 	public function index()
 	{
-		$user = $this->session->username;
+		$user = $this->session->username;		
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['kodesie'] = $this->session->kodesie;
+
+
+		$data['Title'] = 'Model Kendaraan';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -61,9 +64,9 @@ class C_FleetMerkKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Model Kendaraan';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -74,6 +77,9 @@ class C_FleetMerkKendaraan extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
+		$data['ProdusenKendaraan'] 	= 	$this->M_fleetmerkkendaraan->ambilProdusenKendaraan();
+
+		$this->form_validation->set_rules('cmbProdusenKendaraan', 'Produsen Kendaraan', 'required');
 		$this->form_validation->set_rules('txtMerkKendaraanHeader', 'MerkKendaraan', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
@@ -82,7 +88,9 @@ class C_FleetMerkKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetMerkKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$merkKendaraan 		= 	strtoupper($this->input->post('txtMerkKendaraanHeader'));
+			$produsenKendaraan 	= 	strtoupper($this->input->post('cmbProdusenKendaraan'));
+			$merkKendaraan 		= 	$this->input->post('txtMerkKendaraanHeader');
+			$merkKendaraan 		=	$produsenKendaraan.' - '.$merkKendaraan;
 			$tanggal_eksekusi 	= 	date('Y-m-d H:i:s');
 
 			$data = array(
@@ -104,14 +112,16 @@ class C_FleetMerkKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Model Kendaraan';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -120,6 +130,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 
 		/* HEADER DATA */
 		$data['FleetMerkKendaraan'] = $this->M_fleetmerkkendaraan->getFleetMerkKendaraan($plaintext_string);
+		$data['ProdusenKendaraan'] 	= 	$this->M_fleetmerkkendaraan->ambilProdusenKendaraan();
 
 		/* LINES DATA */
 
@@ -136,7 +147,10 @@ class C_FleetMerkKendaraan extends CI_Controller
 			$this->load->view('V_Footer',$data);	
 		} else {
 
+			$produsenKendaraan 	= 	strtoupper($this->input->post('cmbProdusenKendaraan', TRUE));
 			$merkKendaraan 		= 	$this->input->post('txtMerkKendaraanHeader',TRUE);
+			$merkKendaraan 		=	$produsenKendaraan.' - '.$merkKendaraan;
+
 			$status_data 		=	$this->input->post('CheckAktif');
 			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
 
@@ -167,9 +181,9 @@ class C_FleetMerkKendaraan extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Merk Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Model Kendaraan';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Model Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

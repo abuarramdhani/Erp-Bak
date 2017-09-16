@@ -39,8 +39,8 @@ class C_FleetRekapTotal extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Total';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Rekapitulasi';
+		$data['SubMenuOne'] = 'Grafik Total Biaya';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -59,6 +59,38 @@ class C_FleetRekapTotal extends CI_Controller
 	}
  
 	public function RekapTotal()
+	{
+		$tahun 	= $this->input->post('cmbTahun');
+		$bulan 	= $this->input->post('cmbBulan');
+
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Rekap Total';
+		$data['Menu'] = 'Rekapitulasi';
+		$data['SubMenuOne'] = 'Grafik Total Biaya';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['dropdownTahun'] 	= 	$this->M_fleetrekaptotal->dropdownTahun();
+		$data['dropdownBulan'] 	= 	$this->M_fleetrekaptotal->dropdownBulan();
+
+		$data['tahun'] 		= 	$tahun;
+		$data['bulan'] 		=	$bulan;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+
+		$this->load->view('GeneralAffair/FleetRekapTotal/V_proses');
+
+		$this->load->view('V_Footer',$data);				
+	}
+
+	public function ambilData()
 	{
 		$tahun 	= $this->input->post('tahun');
 		$bulan 	= $this->input->post('bulan');

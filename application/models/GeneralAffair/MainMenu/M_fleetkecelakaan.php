@@ -23,6 +23,12 @@ class M_fleetkecelakaan extends CI_Model
                                             kecelakaan.biaya_pekerja as biaya_pekerja,
                                             kecelakaan.pekerja as id_pekerja,
                                             concat_ws('<br/>', pkj.employee_code, pkj.employee_name) as pekerja,
+                                            kecelakaan.status_asuransi as status_asuransi,
+                                            to_char(kecelakaan.tanggal_cek_asuransi, 'DD-MM-YYYY') as tanggal_cek_asuransi,
+                                            to_char(kecelakaan.tanggal_masuk_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_masuk_bengkel,
+                                            to_char(kecelakaan.tanggal_keluar_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_keluar_bengkel,
+                                            kecelakaan.foto_masuk_bengkel as foto_masuk_bengkel,
+                                            kecelakaan.foto_keluar_bengkel as foto_keluar_bengkel,
                                             to_char(kecelakaan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                             to_char(kecelakaan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                     from    ga.ga_fleet_kecelakaan as kecelakaan
@@ -30,7 +36,8 @@ class M_fleetkecelakaan extends CI_Model
                                                 on  kdrn.kendaraan_id=kecelakaan.kendaraan_id
                                             join    er.er_employee_all as pkj
                                                 on  pkj.employee_id=kecelakaan.pekerja
-                                    where   kecelakaan.end_date='9999-12-12 00:00:00';";
+                                    where   kecelakaan.end_date='9999-12-12 00:00:00'
+                                    order by kecelakaan.tanggal_kecelakaan desc;";
 
     		$query = $this->db->query($ambilKecelakaan);
     	} else {
@@ -43,6 +50,12 @@ class M_fleetkecelakaan extends CI_Model
                                             kecelakaan.biaya_pekerja as biaya_pekerja,
                                             kecelakaan.pekerja as id_pekerja,
                                             concat_ws(' - ', pkj.employee_code, pkj.employee_name) as pekerja,
+                                            kecelakaan.status_asuransi as status_asuransi,
+                                            to_char(kecelakaan.tanggal_cek_asuransi, 'DD-MM-YYYY') as tanggal_cek_asuransi,
+                                            to_char(kecelakaan.tanggal_masuk_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_masuk_bengkel,
+                                            to_char(kecelakaan.tanggal_keluar_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_keluar_bengkel,
+                                            kecelakaan.foto_masuk_bengkel as foto_masuk_bengkel,
+                                            kecelakaan.foto_keluar_bengkel as foto_keluar_bengkel,
                                             to_char(kecelakaan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                             to_char(kecelakaan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                     from    ga.ga_fleet_kecelakaan as kecelakaan
@@ -69,6 +82,12 @@ class M_fleetkecelakaan extends CI_Model
                                                 kecelakaan.biaya_pekerja as biaya_pekerja,
                                                 kecelakaan.pekerja as id_pekerja,
                                                 concat_ws('<br/>', pkj.employee_code, pkj.employee_name) as pekerja,
+                                                kecelakaan.status_asuransi as status_asuransi,
+                                                to_char(kecelakaan.tanggal_cek_asuransi, 'DD-MM-YYYY') as tanggal_cek_asuransi,
+                                                to_char(kecelakaan.tanggal_masuk_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_masuk_bengkel,
+                                                to_char(kecelakaan.tanggal_keluar_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_keluar_bengkel,
+                                                kecelakaan.foto_masuk_bengkel as foto_masuk_bengkel,
+                                                kecelakaan.foto_keluar_bengkel as foto_keluar_bengkel,
                                                 to_char(kecelakaan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                 to_char(kecelakaan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                         from    ga.ga_fleet_kecelakaan as kecelakaan
@@ -76,7 +95,8 @@ class M_fleetkecelakaan extends CI_Model
                                                     on  kdrn.kendaraan_id=kecelakaan.kendaraan_id
                                                 join    er.er_employee_all as pkj
                                                     on  pkj.employee_id=kecelakaan.pekerja
-                                        where   kecelakaan.end_date!='9999-12-12 00:00:00';";
+                                        where   kecelakaan.end_date!='9999-12-12 00:00:00'
+                                        order by kecelakaan.tanggal_kecelakaan desc;";
         $query  =   $this->db->query($ambilKecelakaanDeleted);
         return $query->result_array();
     }

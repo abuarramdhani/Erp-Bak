@@ -29,7 +29,7 @@
                                         <div class="row">
                                             <div class="form-group">
                                                 <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-8">
                                                     <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
                                                         <option value=""></option>
                                                         <?php
@@ -41,26 +41,47 @@
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbPekerjaHeader" name="cmbPekerjaHeader" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
-                                                        <option value=""></option>
-                                                        <?php
-                                                            foreach ($DaftarNama as $row) {
-                                                                echo '<option value="'.$row['id_pekerja'].'" >'.$row['daftar'].'</option>';
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                </div>
+                                                    <div class="col-lg-2">
+                                                            <input type="radio" name="OpsiPIC" value="Seksi" required="" />
+                                                            <label for="OpsiSeksi" class="control-label" >Seksi</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" disabled="true">
+                                                            <option value=""></option>
+                                                            <?php
+                                                             foreach ($DaftarSeksi as $row) {
+                                                                    echo '<option value="'.$row['kode_seksi'].'" >'.$row['nama_seksi'].'</option>';
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                            </div>
+											<div class="form-group">
+                                                <label for="cmbPekerjaHeader" class="control-label col-lg-4"><span class="hidden">PIC</span></label>
+                                                    <div class="col-lg-2">
+                                                        <input type="radio" name="OpsiPIC" value="Pekerja" required="" />
+                                                        <label for="OpsiSeksi" class="control-label">Pekerja</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <select id="cmbPekerja" name="cmbPekerja" class="select2" data-placeholder="Pilih Pekerja" style="width: 75%" required="" disabled="true">
+                                                            <option value=""></option>
+                                                            <?php
+                                                             foreach ($DaftarNama as $row) {
+                                                                    echo '<option value="'.$row['id_pekerja'].'" >'.$row['daftar'].'</option>';
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
                                             </div>
 
 
 
-											<div class="form-group">
+											<div class="form-group hidden">
                                                 <label for="txtMasaAktifPICHeader" class="control-label col-lg-4">Masa Penggunaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="masaAktifPIC" class="date form-control" id="daterangepicker" required="" />
+                                                    <input type="text" name="masaAktifPIC" class="date form-control" id="daterangepicker" />
                                                 </div>
                                             </div>
 

@@ -92,7 +92,7 @@ class C_InputQuestionnaire extends CI_Controller {
 	public function Create($id,$qe){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-
+ 
 		$data['Menu'] = '';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -114,7 +114,7 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['trainer'] 		= $this->M_inputquestionnaire->GetTrainer();
 
 		foreach ($data['submitted'] as $sb){$sbm=$sb['submitted'];}
-		foreach ($data['training'] as $tr){$participant_number=$tr['participant_number'];}
+		foreach ($data['attendant'] as $tr){$participant_number=$tr['attendant'];}
 
 		if($sbm<$participant_number){
 			$this->load->view('V_Header',$data);
@@ -153,7 +153,8 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['trainer'] 		= $this->M_inputquestionnaire->GetTrainer();
 
 		foreach ($data['submitted'] as $sb){$sbm=$sb['submitted'];}
-		foreach ($data['training'] as $tr){$participant_number=$tr['participant_number'];}
+		foreach ($data['attendant'] as $tr){$participant_number=$tr['attendant'];}
+		
 		if($sbm<$participant_number){
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
@@ -219,12 +220,12 @@ class C_InputQuestionnaire extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function update($id, $qsi){
+	public function update(){
 		$IdKuesioner	= $this->input->post('txtQuestionnaireId');
 		$IdPenjadwalan	= $this->input->post('txtSchedulingId');
 		$IdStatement	= $this->input->post('txtStatementId');
 		$IdQSheet		= $this->input->post('txtQuestionnaireSheetId');
-		
+				
 		foreach($IdStatement as $loop){
 			$statement[] = $loop;
 			$input[] = $this->input->post('txtInput'.$loop);
@@ -232,6 +233,7 @@ class C_InputQuestionnaire extends CI_Controller {
 		$join_statement = join('||', $statement);
 		$join_input		= join('||', $input);
 		
+
 		$this->M_inputquestionnaire->UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input);
 		
 		redirect('ADMPelatihan/InputQuestionnaire/ToCreate/'.$IdPenjadwalan.'/'.$IdKuesioner);

@@ -28,11 +28,17 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                                <?php
+                                if(substr($kodesie, 0, 5)=='10103')
+                                    {
+                                ?>                            
                                 <ul class="nav nav-pills nav-justified">
                                     <li class="active"><a data-toggle="pill" href="#active">Active</a></li>
                                     <li><a data-toggle="pill" href="#disabled">Removed</a></li>
                                 </ul>
-
+                                <?php
+                                    }
+                                ?>
 
 
                                 <div class="tab-content">

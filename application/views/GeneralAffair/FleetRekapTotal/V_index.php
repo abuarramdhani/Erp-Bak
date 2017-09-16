@@ -26,63 +26,51 @@
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="form-group">
-                                                <label for="cmbPeriode" class="control-label col-lg-3">Periode</label>
-                                                <div class="col-lg-3">
-                                                    <select id="TahunPeriodeTotal" name="cmbTahun" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
-                                                        <option value=""></option>
-                                                        <?php
-                                                            foreach ($dropdownTahun as $Tahun) 
-                                                            {
-                                                                echo    '  <option value="'.$Tahun['tahun'].'">'
-                                                                                .$Tahun['tahun'].
-                                                                        '   </option>';
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <select id="BulanPeriodeTotal" name="cmbBulan" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
-                                                        <option value=""></option>
-                                                        <?php
-                                                            foreach ($dropdownBulan as $Bulan) 
-                                                            {
-                                                                echo    '  <option value="'.$Bulan['bulan_angka'].'">'
-                                                                                .$Bulan['bulan'].
-                                                                        '   </option>';
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <div class="form-group">
-                                                        <center>
-                                                            <button type="button" name="ProsesRekapTotal" id="ProsesRekapTotal" class="btn btn-primary">
+                                            <form method="post" action="<?php echo base_url('GeneralAffair/FleetRekapTotal/RekapTotal');?>">
+                                                <div class="form-group">
+                                                    <label for="cmbPeriode" class="control-label col-lg-3">Periode</label>
+                                                    <div class="col-lg-3">
+                                                        <select id="TahunPeriodeTotal" name="cmbTahun" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
+                                                            <option value=""></option>
+                                                            <?php
+                                                                foreach ($dropdownTahun as $Tahun) 
+                                                                {
+                                                                    echo    '  <option value="'.$Tahun['tahun'].'">'
+                                                                                    .$Tahun['tahun'].
+                                                                            '   </option>';
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <select id="BulanPeriodeTotal" name="cmbBulan" class="select2" data-placeholder="Pilih" style="width: 75%" required="">
+                                                            <option value=""></option>
+                                                            <?php
+                                                                foreach ($dropdownBulan as $Bulan) 
+                                                                {
+                                                                    echo    '  <option value="'.$Bulan['bulan_angka'].'">'
+                                                                                    .$Bulan['bulan'].
+                                                                            '   </option>';
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <center>
+                                                                <button type="submit" name="ProsesRekapTotal" id="ProsesRekapTotal" class="btn btn-primary">
                                                                 Proses
-                                                            </button>
-                                                        </center>  
-                                                    </div>                                                      
-                                                </div>                                                 
-                                            </div>
-                                            <hr>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="chart-responsive" id="ContainerRekapBiayaTotal">
-                                                    <canvas id="RekapBiayaTotal" height="100"></canvas>
+                                                                </button>
+                                                            </center>  
+                                                        </div>                                                      
+                                                    </div>                                                 
                                                 </div>
-                                            </div>
+                                                <hr>
+                                            </form>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="chart-responsive" id="ContainerRekapFrekuensiTotal">
-                                                    <canvas id="RekapFrekuensiTotal" height="100"></canvas>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -106,12 +106,13 @@ class C_MasterTraining extends CI_Controller {
 	public function add(){
 		$tname 		= $this->input->post('txtNamaPelatihan');
 		$limit 		= $this->input->post('txtBatas');
+		$limit2 		= $this->input->post('txtBatas2');
 		// $status		= $this->input->post('slcStatus');
 		$kapasitas	= $this->input->post('kapasitas');
 		$questionnaire		= $this->input->post('slcQuestionnaire[]');
 		$questionnaires 	= implode(',', $questionnaire);
 
-		$insertId = $this->M_mastertraining->AddMaster($tname,$limit,$questionnaires,$kapasitas);
+		$insertId = $this->M_mastertraining->AddMaster($tname,$limit,$questionnaires,$kapasitas,$limit2);
 		
 		// if($status==1){
 		// 	$maxid		= $this->M_mastertraining->GetMaxIdTraining();
@@ -188,6 +189,7 @@ class C_MasterTraining extends CI_Controller {
 		$id 		= $this->input->post('txtId');
 		$tname 		= $this->input->post('txtNamaPelatihan');
 		$limit		= $this->input->post('txtBatas');
+		$limit2 	= $this->input->post('txtBatas2');
 		$status		= $this->input->post('slcStatus');
 		$kapasitas	= $this->input->post('kapasitas');
 		$questionnaire		= $this->input->post('slcQuestionnaire');
@@ -212,7 +214,7 @@ class C_MasterTraining extends CI_Controller {
 		}
 
 
-		$this->M_mastertraining->UpdateTraining($id,$tname,$limit,$status,$questionnaires,$kapasitas);
+		$this->M_mastertraining->UpdateTraining($id,$tname,$limit,$status,$questionnaires,$kapasitas,$limit2);
 		redirect('ADMPelatihan/MasterTraining');
 	}
 	

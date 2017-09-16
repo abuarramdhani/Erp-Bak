@@ -39,8 +39,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -49,6 +49,9 @@ class C_FleetWarnaKendaraan extends CI_Controller
 
 		$data['FleetWarnaKendaraan'] 		= $this->M_fleetwarnakendaraan->getFleetWarnaKendaraan();
 		$data['FleetWarnaKendaraanDeleted']	= $this->M_fleetwarnakendaraan->getFleetWarnaKendaraanDeleted();
+
+		$data['kodesie'] = $this->session->kodesie;
+
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -62,8 +65,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -82,7 +85,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetWarnaKendaraan/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$warnaKendaraan 	= 	$this->input->post('txtWarnaKendaraanHeader');
+			$warnaKendaraan 	= 	strtoupper($this->input->post('txtWarnaKendaraanHeader'));
 			$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
 
 			$data = array(
@@ -105,13 +108,15 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kodesie'] = $this->session->kodesie;		
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -135,7 +140,7 @@ class C_FleetWarnaKendaraan extends CI_Controller
 			$this->load->view('GeneralAffair/FleetWarnaKendaraan/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$warnaKendaraan 		= 	$this->input->post('txtWarnaKendaraanHeader',TRUE);
+			$warnaKendaraan 	= 	strtoupper($this->input->post('txtWarnaKendaraanHeader',TRUE));
 			$status_data 		=	$this->input->post('CheckAktif');
 			$waktu_dihapus 		=	$this->input->post('WaktuDihapus');
 
@@ -167,8 +172,8 @@ class C_FleetWarnaKendaraan extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Warna Kendaraan';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Warna Kendaraan';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
