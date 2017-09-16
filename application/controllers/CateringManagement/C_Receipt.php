@@ -168,12 +168,14 @@ class C_Receipt extends CI_Controller {
 		$id 		= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
 
-		$date 		= date("Y-m-d",strtotime($this->input->post('TxtReceiptDate')));
+		// $date 		= date("Y-m-d",strtotime($this->input->post('TxtReceiptDate')));
 
 		//$date 		= $this->input->post('TxtReceiptDate');
-		$date=str_replace('/', '-', $date);
-		$date=date_create($date);
-		$date=date_format($date,"Y-m-d");
+		// $date=str_replace('/', '-', $date);
+		// $date=date_create($date);
+		// $date=date_format($date,"Y-m-d");
+
+		$date 	= 	date('Y-m-d', strtotime($this->input->post('TxtReceiptDate')));
 
 		$place 		= $this->input->post('TxtPlace');
 		$from 		= $this->input->post('TxtFrom');
@@ -183,8 +185,8 @@ class C_Receipt extends CI_Controller {
 		
 		$Doubledate = $this->input->post('TxtOrderDate');
 		$ex_Doubledate = explode(' ', $Doubledate);
-		$startdate 	= $ex_Doubledate[0];
-		$enddate 	= $ex_Doubledate[2];
+		$startdate 	= date('Y-m-d',strtotime($ex_Doubledate[0]));
+		$enddate 	= date('Y-m-d',strtotime($ex_Doubledate[2]));
 		
 		$orderqty 	= $this->input->post('TxtOrderQty');
 		$orderprice	= $this->input->post('TxtSinglePrice');
@@ -195,9 +197,12 @@ class C_Receipt extends CI_Controller {
 		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
 		
 		$finedate = $this->input->post('TxtFineDate');
-		$finedate=str_replace('/', '-', $finedate);
-		$finedate=date_create($finedate);
-		$finedate=date_format($finedate,"Y-m-d");
+		// $finedate=str_replace('/', '-', $finedate);
+		// $finedate=date_create($finedate);
+		// $finedate=date_format($finedate,"Y-m-d");
+
+		// $finedate = date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('TxtFineDate'))));
+
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
 		$finetype = $this->input->post('TxtFineType');
@@ -206,9 +211,10 @@ class C_Receipt extends CI_Controller {
 				
 			$i=0;
 			foreach($finedate as $loop){
-				$finedate[$i]=str_replace('/', '-', $finedate[$i]);
-				$finedate[$i]=date_create($finedate[$i]);
-				$finedate[$i]=date_format($finedate[$i],"Y-m-d");
+				// $finedate[$i]=str_replace('/', '-', $finedate[$i]);
+				// $finedate[$i]=date_create($finedate[$i]);
+				// $finedate[$i]=date_format($finedate[$i],"Y-m-d");
+				$finedate[$i] 	= 	date('Y-m-d', strtotime($finedate[$i]));
 				$data_fine[$i] = array(
 					'receipt_id' 			=> $this->input->post('TxtID'),
 					'receipt_fine_date' 	=> $finedate[$i],
@@ -230,11 +236,13 @@ class C_Receipt extends CI_Controller {
 	{
 		$id			= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
-		$date 		= $this->input->post('TxtReceiptDate');
-		$date=str_replace('/', '-', $date);
-		$date=date_create($date);
-		$date=date_format($date,"Y-m-d");
-		
+		//$date 		= $this->input->post('TxtReceiptDate');
+		// $date=str_replace('/', '-', $date);
+		// $date=date_create($date);
+		// $date=date_format($date,"Y-m-d");
+
+		$date 	= 	date('Y-m-d', strtotime($this->input->post('TxtReceiptDate', TRUE)));
+
 		$place 		= $this->input->post('TxtPlace');
 		$from 		= $this->input->post('TxtFrom');
 		$signer		= $this->input->post('TxtSigner');
@@ -243,8 +251,8 @@ class C_Receipt extends CI_Controller {
 		
 		$Doubledate = $this->input->post('TxtOrderDate');
 		$ex_Doubledate = explode(' ', $Doubledate);
-		$startdate 	= $ex_Doubledate[0];
-		$enddate 	= $ex_Doubledate[2];
+		$startdate 	= date('Y-m-d',strtotime($ex_Doubledate[0]));
+		$enddate 	= date('Y-m-d', strtotime($ex_Doubledate[2]));
 		
 		$orderqty 	= $this->input->post('TxtOrderQty');
 		$orderprice	= $this->input->post('TxtSinglePrice');
@@ -257,9 +265,9 @@ class C_Receipt extends CI_Controller {
 		$this->M_receipt->DeleteReceiptFine($id);
 		
 		$finedate = $this->input->post('TxtFineDate');
-		$finedate=str_replace('/', '-', $finedate);
-		$finedate=date_create($finedate);
-		$finedate=date_format($finedate,"Y-m-d");
+		// $finedate=str_replace('/', '-', $finedate);
+		// $finedate=date_create($finedate);
+		// $finedate=date_format($finedate,"Y-m-d");
 		
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
@@ -271,10 +279,10 @@ class C_Receipt extends CI_Controller {
 			foreach($finedate as $loop){
 
 				
-				$finedate[$i]=str_replace('/', '-', $finedate[$i]);
-				$finedate[$i]=date_create($finedate[$i]);
-				$finedate[$i]=date_format($finedate[$i],"Y-m-d");
-		
+				// $finedate[$i]=str_replace('/', '-', $finedate[$i]);
+				// $finedate[$i]=date_create($finedate[$i]);
+				// $finedate[$i]=date_format($finedate[$i],"Y-m-d");
+				$finedate[$i] 	= 	date('Y-m-d', strtotime($finedate[$i]));		
 				$data_fine[$i] = array(
 					'receipt_id' 		=> $this->input->post('TxtID'),
 					'receipt_fine_date' 	=> $finedate[$i],
