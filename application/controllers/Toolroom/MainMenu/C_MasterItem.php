@@ -105,18 +105,33 @@ class C_MasterItem extends CI_Controller {
 		{
 			redirect('Toolroom/MasterItem/Usable');
 		}else{
-			$data = array(
-					'item_id' 	=> strtoupper($this->input->post('txtBarcodeId')),
+			$id = strtoupper($this->input->post('txtBarcodeId'));
+			$check = $this->M_master_item->check_item($id);
+			if($check){
+				$data = array(
 					'item_name'		=> strtoupper($this->input->post('txtTool')),
 					'item_qty'		=> $qty,
 					'item_qty_min'	=> $qty_min,
-					'item_desc'	=> $this->input->post('txtDesc'),
+					'item_desc'		=> $this->input->post('txtDesc'),
 					'creation_date'	=>  $this->input->post('hdnDate'),
 					'created_by'	=>  $this->input->post('hdnUser'),
 					'item_group_id'	=>  $group
 				);
-				
-			$this->M_master_item->saveUsableItem($data);
+				$this->M_master_item->updateUsableItem($data,$id);
+			}else{
+				$data = array(
+					'item_id' 	=> $id,
+					'item_name'		=> strtoupper($this->input->post('txtTool')),
+					'item_qty'		=> $qty,
+					'item_qty_min'	=> $qty_min,
+					'item_desc'		=> $this->input->post('txtDesc'),
+					'creation_date'	=>  $this->input->post('hdnDate'),
+					'created_by'	=>  $this->input->post('hdnUser'),
+					'item_group_id'	=>  $group
+				);
+				$this->M_master_item->saveUsableItem($data);
+			}
+			
 			$message = '<div class="row"> <div class="col-md-12 " style="margin-top: 10px">
                            <div id="eror" class="alert alert-dismissible " role="alert" style="background-color:#3cbc81; text-align:center; color:white; "><b>Input Success!</b></div>
                       </div>';
@@ -178,7 +193,6 @@ class C_MasterItem extends CI_Controller {
                 $check = $this->M_master_item->getItemUsable($rowData[0][0]);
 				if($check){
 					$data = array(
-						"item_id"=> $rowData[0][0],
 						"item_name"=> $rowData[0][1],
 						"item_barcode"=> $rowData[0][2],
 						"item_group_id"=> $rowData[0][3],
@@ -248,7 +262,6 @@ class C_MasterItem extends CI_Controller {
 				$qty_min = null;
 			}
 			$data = array(
-					'item_id' 	=> strtoupper($this->input->post('txtBarcodeId')),
 					'item_name'		=> strtoupper($this->input->post('txtTool')),
 					'item_qty'		=> $qty,
 					'item_qty_min'		=> $qty_min,

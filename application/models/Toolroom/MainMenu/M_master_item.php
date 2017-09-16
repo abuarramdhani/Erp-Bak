@@ -21,6 +21,12 @@ class M_master_item extends CI_Model {
 			return $query->result_array();
 		}
 		
+		public function check_item($id){
+			$sql = "select * from tr.tr_master_item where item_id='$id'";
+			$query = $this->db->query($sql);
+			return $query->row();
+		}
+		
 		public function saveUsableItem($data){
 			return $this->db->insert('tr.tr_master_item', $data);
 		}

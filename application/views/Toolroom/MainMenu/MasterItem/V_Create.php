@@ -49,9 +49,9 @@
 											</div>
 									</div>
 									<div class="form-group">
-											<label for="norm" class="control-label col-md-2 text-center">Barcode</label>
+											<label for="norm" class="control-label col-md-2 text-center">Item Id</label>
 											<div class="col-md-3">
-												<input type="text" placeholder="Barcode" style="text-transform:uppercase;" name="txtBarcodeId" id="txtBarcodeId" class="form-control" required/>
+												<input type="text" placeholder="Item ID" style="text-transform:uppercase;" name="txtBarcodeId" id="txtBarcodeId" class="form-control" required/>
 											</div>
 									</div>
 									<div class="form-group">
