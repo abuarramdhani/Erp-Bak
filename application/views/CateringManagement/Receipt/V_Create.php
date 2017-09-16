@@ -55,7 +55,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Receipt Date</label>
 								<div class="col-lg-3">
-									<input name="TxtReceiptDate" class="form-control singledate" placeholder="Receipt Date" required >
+									<input name="TxtReceiptDate" class="form-control cmsingledate" placeholder="Receipt Date" required >
 								</div>
 								<label class="col-lg-1 control-label" align="right">Place</label>
 								<div class="col-lg-2">
@@ -111,7 +111,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Date</label>
 								<div class="col-lg-6">
-									<input name="TxtOrderDate" class="form-control doubledate" placeholder="Order Date" required >
+									<input name="TxtOrderDate" class="form-control cmdaterange" placeholder="Order Date" required >
 								</div>
 							</div>
 						</div>
@@ -155,7 +155,7 @@
 												</thead>
 												<tbody id="tbodyFineCatering">
 													<tr class="clone">
-														<td><input id="finedate" name="TxtFineDate[]" class="form-control singledate finedate" placeholder="Fine Date"></td>
+														<td><input id="finedate" name="TxtFineDate[]" class="form-control cmsingledate finedate" placeholder="Fine Date"></td>
 														<td><input id="fineqty" name="TxtFineQty[]" class="form-control fineqty" onkeypress="return isNumberKey(event)" placeholder="Order Qty"></td>
 														<td><input id="fineprice" name="TxtFinePrice[]" class="form-control fineprice" onkeypress="return isNumberKey(event)" placeholder="Order Price"></td>
 														<td>
