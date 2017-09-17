@@ -48,7 +48,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Receipt Date</label>
 								<div class="col-lg-3">
-									<input name="TxtReceiptDate" class="form-control cmsingledate" placeholder="Receipt Date" required >
+									<input name="TxtReceiptDate" class="form-control cmsingledate" placeholder="Receipt Date" value="<?php echo date('d-m-Y', strtotime($rc['receipt_date']));?>" required >
 									<input type="hidden" id="receipt-date" value="<?php echo $rc['receipt_date'] ?>" />
 								</div>
 								<label class="col-lg-1 control-label" align="right">Place</label>
@@ -113,7 +113,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Date</label>
 								<div class="col-lg-6">
-									<input name="TxtOrderDate" class="form-control cmdaterange" placeholder="Order Date" required >
+									<input name="TxtOrderDate" class="form-control cmdaterange" placeholder="Order Date" value="<?php echo date('d-m-Y', strtotime($rc['order_start_date'])).' - '.date('d-m-Y', strtotime($rc['order_end_date']));?>" required >
 									<!-- <input type="hidden" id="order-start-date" value="<?php echo $rc['order_start_date'] ?>" />
 									<input type="hidden" id="order-end-date" value="<?php echo $rc['order_end_date'] ?>" /> -->
 								</div>
