@@ -63,11 +63,11 @@ class M_receipt extends CI_Model {
 		//Select Receipt Single
 		public function GetReceiptForEdit($id){
 			$sql = "
-			select *
-			from cm.cm_receipt a
-			left join cm.cm_type b on a.order_type_id = b.type_id
-			left join cm.cm_catering c on a.catering_id = c.catering_id
-			where a.receipt_id = $id";
+			select 	*
+			from 	cm.cm_receipt a
+			left 	join cm.cm_type b on a.order_type_id = b.type_id
+			left 	join cm.cm_catering c on a.catering_id = c.catering_id
+			where 	a.receipt_id = $id";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
