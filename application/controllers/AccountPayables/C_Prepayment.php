@@ -121,7 +121,7 @@ class C_Prepayment extends CI_Controller {
 		// $sitesuppRaw = strtoupper($this->input->post('SiteSupp'));
 		// $tanggal = $this->input->post('tanggal');
 		// $data['Prepayment'] = $this->M_prepayment->getLaporan($org_id, $sitesuppRaw, $tanggal);
-		$ssn = $this->session->userdata;
+		// $ssn = $this->session->userdata;
 		echo "<pre>";
 		// echo $org_id;
 		// print_r($ssn['org_id']);
