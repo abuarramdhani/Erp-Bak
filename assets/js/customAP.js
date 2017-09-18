@@ -660,18 +660,8 @@ $(document).ready(function(){
 					$('#loadingPrpData').html('');
 					$("#viewPrpData").html(result);
 
-					$('.amt').each(function(){
-						var amt = $(this).html();
-						var fixamt = parseFloat(amt).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-						// var fixamt = amt.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-						$(this).html(fixamt);
-					});
-					$('.amtIDR').each(function(){
-						var amtIDR = $(this).html();
-						var fixamtIDR = parseFloat(amtIDR).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-						// var fixamtIDR = amtIDR.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-						$(this).html(fixamtIDR);
-					});
+					$('.amt').moneyFormat();
+					$('.amtIDR').moneyFormat();
 					
 					$('#showPrpData').dataTable({
 						"bSort" : true,
