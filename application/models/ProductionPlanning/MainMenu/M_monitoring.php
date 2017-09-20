@@ -106,4 +106,23 @@ class M_monitoring extends CI_Model {
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
+
+  public function getSumPlanMonth()
+  {
+    $sql = "SELECT
+              to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
+              to_char(dp.created_date, 'dd') as label,
+              sum(dp.need_qty) plan_qty,
+              sum(dp.achieve_qty) achieve_qty
+            FROM pp.pp_daily_plans dp
+            WHERE
+              dp.section_id = 9
+              and dp.created_date between
+                date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
+            group by 1,2
+            order by 1";
+            
+    $query = $this->db->query($sql);
+    return $query->result_array();
+  }
 }
