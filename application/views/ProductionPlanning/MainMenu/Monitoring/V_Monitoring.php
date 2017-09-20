@@ -98,95 +98,108 @@
                                                             </td>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="highPriority">
-                                                        <?php
-                                                        $no=1;
-                                                        foreach ($highPriority[$i] as $hpl ){
-                                                            $status = '';
-                                                            if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
-                                                                $status = 'OK';
-                                                            }else{
-                                                                $status = 'NOT OK';
+                                                    <?php
+                                                    $no=1;
+                                                    if (!empty($highPriority)) {
+                                                    ?>
+                                                        <tbody id="highPriority">
+                                                            <?php
+                                                            foreach ($highPriority[$i] as $hpl ){
+                                                                $status = '';
+                                                                if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
+                                                                    $status = 'OK';
+                                                                }else{
+                                                                    $status = 'NOT OK';
+                                                                }
+                                                            ?>
+                                                                <tr class="priority-1">
+                                                                    <td>
+                                                                        <?php echo $no++; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['item_code']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['item_description']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['priority']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['need_qty']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['due_time']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['achieve_qty']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $hpl['last_delivery']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php
+                                                                            echo $status;
+                                                                        ?>
+                                                                    </td>
+                                                                </tr>
+                                                                <?php
                                                             }
                                                         ?>
-                                                            <tr class="priority-1">
-                                                                <td>
-                                                                    <?php echo $no++; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['item_code']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['item_description']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['priority']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['need_qty']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['due_time']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['achieve_qty']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $hpl['last_delivery']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php
-                                                                        echo $status;
-                                                                    ?>
-                                                                </td>
-                                                            </tr>
+                                                        </tbody>
+                                                    <?php
+                                                    }
+
+                                                    if (!empty($normalPriority)) {
+                                                    ?>
+                                                        <tbody id="normalPriority">
                                                         <?php
-                                                        } ?>
-                                                    </tbody>
-                                                    <tbody id="normalPriority">
-                                                         <?php
-                                                        foreach ($normalPriority[$i] as $npl ){
-                                                            $status = '';
-                                                            if ($npl['achieve_qty'] >= $npl['need_qty']) {
-                                                                $status = 'OK';
-                                                            }else{
-                                                                $status = 'NOT OK';
+                                                            foreach ($normalPriority[$i] as $npl ){
+                                                                $status = '';
+                                                                if ($npl['achieve_qty'] >= $npl['need_qty']) {
+                                                                    $status = 'OK';
+                                                                }else{
+                                                                    $status = 'NOT OK';
+                                                                }
+                                                            ?>
+                                                                <tr class="priority-normal">
+                                                                    <td>
+                                                                        <?php echo $no++; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['item_code']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['item_description']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['priority']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['need_qty']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['due_time']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['achieve_qty']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php echo $npl['last_delivery']; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?php
+                                                                            echo $status;
+                                                                        ?>
+                                                                    </td>
+                                                                </tr>
+                                                                <?php
                                                             }
                                                         ?>
-                                                            <tr class="priority-normal">
-                                                                <td>
-                                                                    <?php echo $no++; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['item_code']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['item_description']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['priority']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['need_qty']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['due_time']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['achieve_qty']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php echo $npl['last_delivery']; ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php
-                                                                        echo $status;
-                                                                    ?>
-                                                                </td>
-                                                            </tr>
-                                                        <?php
-                                                        } ?>
-                                                    </tbody>
+                                                        </tbody>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </table>
                                             </div>
                                         </div>
@@ -273,6 +286,9 @@
                 </div>
             </div>
         </section>
+        <script type="text/javascript">
+            var baseurl = "<?php echo base_url(); ?>";
+        </script>
         <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
         <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
         <script src="<?php echo base_url('assets/plugins/chartjs/Chart.min.js');?>" type="text/javascript"></script>
@@ -280,7 +296,7 @@
         <script src="<?php echo base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/js/customPP.js');?>"></script>
         <script type="text/javascript">
-            chartFabricationMon();
+            getDataLineChartPP();
         </script>
     </body>
 </html>
