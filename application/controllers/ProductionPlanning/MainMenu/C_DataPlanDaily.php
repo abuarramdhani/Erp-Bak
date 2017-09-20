@@ -44,7 +44,7 @@ class C_DataPlanDaily extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ProductionPlanning/MainMenu/DataPlan/V_Index',$data);
+		$this->load->view('ProductionPlanning/MainMenu/DataPlan/Daily/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -65,7 +65,7 @@ class C_DataPlanDaily extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ProductionPlanning/MainMenu/DataPlan/V_Create',$data);
+		$this->load->view('ProductionPlanning/MainMenu/DataPlan/Daily/V_Create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -137,7 +137,7 @@ class C_DataPlanDaily extends CI_Controller {
                             $lastDelv = null;
                         }else{
                             $acvQty = $getItemTransaction[0]['ACHIEVE_QTY'];
-                            $lastDelv = date('d-m-Y H:i:s', strtotime($getItemTransaction[0]['LAST_DELIVERY']));
+                            $lastDelv = date('Y-m-d H:i:s', strtotime($getItemTransaction[0]['LAST_DELIVERY']));
                         }
 
                         $dataIns = array(
@@ -272,7 +272,7 @@ class C_DataPlanDaily extends CI_Controller {
             $data['plan']           = $this->M_dataplan->getDataPlan($id,$sid = FALSE);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
-            $this->load->view('ProductionPlanning/MainMenu/DataPlan/V_Edit',$data);
+            $this->load->view('ProductionPlanning/MainMenu/DataPlan/Daily/V_Edit',$data);
             $this->load->view('V_Footer',$data);
         }else{
             $data = array(
