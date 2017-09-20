@@ -17,7 +17,8 @@ class C_Monitoring extends CI_Controller {
 		$this->load->model('ProductionPlanning/MainMenu/M_monitoring');
     }
 	
-	public function checkSession(){
+	public function checkSession()
+    {
 		if($this->session->is_logged){
 			
 		}else{
@@ -29,7 +30,7 @@ class C_Monitoring extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -43,7 +44,6 @@ class C_Monitoring extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Index',$data);
 		$this->load->view('V_Footer',$data);
-		
 	}
 
     public function Open()
@@ -57,22 +57,54 @@ class C_Monitoring extends CI_Controller {
     	}
 
         $data['section']        = $this->M_dataplan->getSection();
-    	$data['infoJob'] 		= $this->M_monitoring->getInfoJobs();
-    	$data['selectedSection']= $section;
-    	
-    	$data['highPriority']= array();
-    	$data['normalPriority']= array();
+        $data['infoJob']        = $this->M_monitoring->getInfoJobs();
+        $data['selectedSection']= $section;
+        
+        $data['highPriority']= array();
+        $data['normalPriority']= array();
 
-    	foreach ($datplan as $dp => $val1) {
-    		foreach ($val1 as $key => $val2) {
-    			if ($val2['priority'] == '1') {
-    				$data['highPriority'][$dp][$key] = $val2;
-    			}else{
-    				$data['normalPriority'][$dp][$key] = $val2;
-    			}
-    		}
-    	}
-    	
+
+        foreach ($datplan as $dp => $val1) {
+            if (empty($val1)) {
+                $data['highPriority'][$dp][0] = false;
+                $data['normalPriority'][$dp][0] = false;
+            }else{
+                foreach ($val1 as $key => $val2) {
+                    if ($val2['priority'] == '1') {
+                        $data['highPriority'][$dp][$key] = $val2;
+                    }else{
+                        $data['normalPriority'][$dp][$key] = $val2;
+                    }
+                }
+            }
+        }
+        
         $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Monitoring', $data);
+    }
+
+    public function getSumPlanMonth()
+    {
+        $section        = $this->input->post('section');
+        $sumPlan        = $this->M_monitoring->getSumPlanMonth($section);
+        $valPlan        = array();
+        for ($i=1; $i <= date('t'); $i++) {
+            $checkout = 0;
+            $valPlanDefault = array(
+                'label' => $i,
+                'plan_qty' => 0,
+                'achieve_qty' => 0
+            );
+            foreach ($sumPlan as $sp) {
+                if ($i == (int)substr($sp['hari'], 0,2)) {
+                    $valPlan[$i] = $sp;
+                    $checkout = 1;
+                }
+                elseif ($checkout == 0) {
+                    $valPlan[$i] = $valPlanDefault;
+                }
+            }
+        }
+        $data['plan'] = $valPlan;
+        echo json_encode($data);
     }
 }
