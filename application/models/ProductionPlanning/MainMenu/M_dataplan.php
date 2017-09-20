@@ -16,7 +16,20 @@ class M_dataplan extends CI_Model {
     }elseif (!$sid == FALSE){
       $this->db->select('*');
       $this->db->from('pp.pp_daily_plans');
-      $this->db->where('section_id', $sid);
+      $this->db->where("created_date between
+    (
+      case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+        then to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
+        else to_timestamp((to_char(TIMESTAMP 'yesterday', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
+      END
+    )
+    and
+    (
+      case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+        then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+        else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+      END
+    ) AND section_id =", $sid);
       $this->db->order_by('priority, created_date', 'ASC');
    	}elseif (!$id == FALSE) {
       $this->db->select('*');
@@ -25,7 +38,7 @@ class M_dataplan extends CI_Model {
       $this->db->order_by('priority, created_date', 'ASC');
     }
     $query = $this->db->get();
-   	return $query->result_array();
+    return $query->result_array();
   }
 
   public function getSection($id = FALSE, $section_id = FALSE)
@@ -121,21 +134,6 @@ class M_dataplan extends CI_Model {
     }
 
     $query = $this->oracle->query($sql);
-    return $query->result_array();
-  }
-
-  public function getSumPlanMonth()
-  {
-    $sql = "SELECT
-              to_char(dp.created_date, 'dd') as date,
-              to_char(dp.created_date, 'Mon') as mon,
-              extract(year from dp.created_date) as yyyy,
-              count(*) as plan
-            FROM pp.pp_daily_plans dp
-            WHERE dp.section_id = 9
-            GROUP BY 1,2,3";
-            
-    $query = $this->db->query($sql);
     return $query->result_array();
   }
 
