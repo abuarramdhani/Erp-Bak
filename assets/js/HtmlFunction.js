@@ -1609,3 +1609,27 @@ function sendValueCustomerNoGroup(cust_id,cust_name,cat_id){
 }
 
 
+//------------------money format untuk MoneyFormat----------------\\
+$.fn.moneyFormat = function () {
+	$(this).each(function(){
+		var erpMoneyFormat = $(this).html();
+		var fixerpMoneyFormat = parseFloat(erpMoneyFormat).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+		$(this).html(fixerpMoneyFormat+'.00');
+		
+		var erpMoneyFormatval = $(this).val();
+		var fixerpMoneyFormatval = parseFloat(erpMoneyFormatval).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+		$(this).val(fixerpMoneyFormatval+'.00');
+	});
+};
+
+$.fn.resetFormat = function () {
+	$(this).each(function(){
+		var resethtml = $(this).html().split('.', 1);
+		var erpResetFormat = resethtml[0].replace(/[\D]/g, '');
+		$(this).html(erpResetFormat);
+		
+		var resetval = $(this).val().split('.', 1);
+		var erpResetFormatval = resetval[0].replace(/[\D]/g, '');
+		$(this).val(erpResetFormatval);
+	});
+};
