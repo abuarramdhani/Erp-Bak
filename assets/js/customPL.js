@@ -702,8 +702,9 @@ $(document).ready(function(){
 						}	
 					});
 
+		// alert(rowCount);
 			$("select#slcEmployee:last").val("").change();
-			delete_row();
+			// delete_row();
 		}else{
 			alert('Jumlah peserta sudah maksimal');
 		}
@@ -798,7 +799,7 @@ $(document).ready(function(){
 					});
 
 			$("select#slcEmployee:last").val("").change();
-			delete_row();
+			// delete_row();
 		}else{
 			alert('Jumlah peserta sudah maksimal');		
 		}
