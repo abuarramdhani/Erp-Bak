@@ -26,16 +26,16 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-10 col-md-10">
-                        <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="1000">
+                        <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="3000">
                             <div class="carousel-inner" role="listbox">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                        <?php
-                                            $count = count($selectedSection);
-                                            $crslActive = 'active';
-                                            for ($i=0; $i < $count; $i++) {
-                                        ?>
-                                        <div class="item <?php echo $crslActive; ?>">
+                                <?php
+                                    $count = count($selectedSection);
+                                    $crslActive = 'active';
+                                    for ($i=0; $i < $count; $i++) {
+                                ?>
+                                <div class="item <?php echo $crslActive; ?>">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
                                             <div class="col-md-6 text-left">
                                                 <?php
                                                 foreach ($section as $sc) {
@@ -100,7 +100,7 @@
                                                     </thead>
                                                     <?php
                                                     $no=1;
-                                                    if (!empty($highPriority)) {
+                                                    if (!empty($highPriority[$i][0])) {
                                                     ?>
                                                         <tbody id="highPriority">
                                                             <?php
@@ -149,8 +149,7 @@
                                                         </tbody>
                                                     <?php
                                                     }
-
-                                                    if (!empty($normalPriority)) {
+                                                    if (!empty($normalPriority[$i][0])) {
                                                     ?>
                                                         <tbody id="normalPriority">
                                                         <?php
@@ -203,60 +202,62 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <?php $crslActive = '';
-                                            }
-                                        ?>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <input type="hidden" name="sectionId<?php echo $i; ?>" value="<?php echo $selectedSection[$i]; ?>">
+                                            <canvas id="month-fabrication<?php echo $selectedSection[$i]; ?>" height="250">
+                                            </canvas>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <br>
+                                            <table class="table table-bordered">
+                                            	<tr>
+                                            		<td></td>
+                                            		<td class="text-center">Jumlah Job</td>
+                                            		<td class="text-center">Jumlah Part (Pcs)</td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Job Released</td>
+                                            		<td class="text-right">
+                                                        <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
+                                                    </td>
+                                            		<td class="text-right">
+                                                        <?php echo $infoJob[0]['RELEASED_JUMLAH_PART']; ?>
+                                                    </td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Job Pending Picklist</td>
+                                            		<td class="text-right">
+                                                        <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
+                                                    </td>
+                                            		<td class="text-right">
+                                                        <?php echo $infoJob[0]['PENDING_JUMLAH_PART']; ?>
+                                                    </td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Total Job Complete 1 bulan</td>
+                                            		<td class="text-right">
+                                                        <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
+                                                    </td>
+                                            		<td class="text-right">
+                                                        <?php echo $infoJob[0]['COMPLETE_JUMLAH_PART']; ?>
+                                                    </td>
+                                            	</tr>
+                                            	<tr>
+                                            		<td>Job Terlama</td>
+                                            		<td colspan="2">
+                                            			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
+                                            		</td>
+                                            	</tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <canvas id="month-fabrication" style="height: 250px;" data-secId="3">
-                                        </canvas>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <br>
-                                        <table class="table table-bordered">
-                                        	<tr>
-                                        		<td></td>
-                                        		<td class="text-center">Jumlah Job</td>
-                                        		<td class="text-center">Jumlah Part (Pcs)</td>
-                                        	</tr>
-                                        	<tr>
-                                        		<td>Job Released</td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
-                                                </td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['RELEASED_JUMLAH_PART']; ?>
-                                                </td>
-                                        	</tr>
-                                        	<tr>
-                                        		<td>Job Pending Picklist</td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
-                                                </td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['PENDING_JUMLAH_PART']; ?>
-                                                </td>
-                                        	</tr>
-                                        	<tr>
-                                        		<td>Total Job Complete 1 bulan</td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
-                                                </td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['COMPLETE_JUMLAH_PART']; ?>
-                                                </td>
-                                        	</tr>
-                                        	<tr>
-                                        		<td>Job Terlama</td>
-                                        		<td colspan="2">
-                                        			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
-                                        		</td>
-                                        	</tr>
-                                        </table>
-                                    </div>
-                                </div>
+                                <?php $crslActive = '';
+                                    }
+                                ?>
+                                <input type="hidden" name="sectionCount" value="<?php echo $count; ?>">
                             </div>
                         </div>
                     </div>
@@ -292,11 +293,11 @@
         <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
         <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
         <script src="<?php echo base_url('assets/plugins/chartjs/Chart.min.js');?>" type="text/javascript"></script>
-        <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
+        <!-- <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script> -->
         <script src="<?php echo base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js');?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/js/customPP.js');?>"></script>
         <script type="text/javascript">
-            getDataLineChartPP();
+            getSectionMon();
         </script>
     </body>
 </html>
