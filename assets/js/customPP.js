@@ -1,15 +1,6 @@
 $(document).ready(function() {
     $('#tbdataplan').DataTable();
     $('#tbdatagroupsection').DataTable();
-    // $('.mon-fab-table').DataTable({
-    //     // "paging": false,
-    //     "lengthChange": false,
-    //     "searching": false,
-    //     "ordering": false,
-    //     "info": false,
-    //     "autoWidth": false,
-    //     "pageLength": 5
-    // });
 });
 
 window.onload = function() {
@@ -19,8 +10,8 @@ window.onload = function() {
     });
 }
 
-function chartFabricationMon(labels, value, color, color2, label) {
-    var ctx = document.getElementById('month-fabrication').getContext('2d');
+function chartFabricationMon(canvasid, labels, value, color, color2, label) {
+    var ctx = document.getElementById(canvasid);
     var chartMF = new Chart(ctx, {
         type: 'line',
         data: {
@@ -57,13 +48,23 @@ function chartFabricationMon(labels, value, color, color2, label) {
         }
         chartMF.update();
     }
+    $('canvas#'+canvasid).height("250px");
 }
 
-function getDataLineChartPP(){
+function getSectionMon(){
+    var count = $('input[name="sectionCount"]').val();
+    var id = [];
+    for (var i = 0; i < count; i++) {
+        id[i] = $('input[name="sectionId'+i+'"]').val();
+        getDataLineChartPP(id[i], 'month-fabrication'+id[i]);
+    }
+}
+
+function getDataLineChartPP(section,canvasid){
     $.ajax({
         url: baseurl+'ProductionPlanning/Monitoring/getSumPlanMonth',
         data:{
-            section: 9
+            section: section
         },
         type: 'POST',
     }).done(function(data){
@@ -87,6 +88,6 @@ function getDataLineChartPP(){
             value.push(temp1);
         }
         
-        chartFabricationMon(labels, value, ['rgba(163, 60, 82, 0.5)', 'rgba(94, 169, 218, 0.7)'], ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'], ['% PLAN', '% ACHIEV']);
+        chartFabricationMon(canvasid, labels, value, ['rgba(163, 60, 82, 0.5)', 'rgba(94, 169, 218, 0.7)'], ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'], ['% PLAN', '% ACHIEV']);
     });
 }
