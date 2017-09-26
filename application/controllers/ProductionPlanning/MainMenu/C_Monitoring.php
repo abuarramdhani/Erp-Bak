@@ -65,15 +65,17 @@ class C_Monitoring extends CI_Controller {
 
 
         foreach ($datplan as $dp => $val1) {
+            $h = 0;
+            $n = 0;
             if (empty($val1)) {
                 $data['highPriority'][$dp][0] = false;
                 $data['normalPriority'][$dp][0] = false;
             }else{
                 foreach ($val1 as $key => $val2) {
                     if ($val2['priority'] == '1') {
-                        $data['highPriority'][$dp][$key] = $val2;
+                        $data['highPriority'][$dp][$h++] = $val2;
                     }else{
-                        $data['normalPriority'][$dp][$key] = $val2;
+                        $data['normalPriority'][$dp][$n++] = $val2;
                     }
                 }
             }
