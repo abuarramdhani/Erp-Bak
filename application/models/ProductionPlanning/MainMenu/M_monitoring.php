@@ -107,7 +107,7 @@ class M_monitoring extends CI_Model {
     return $query->result_array();
   }
 
-  public function getSumPlanMonth()
+  public function getSumPlanMonth($section)
   {
     $sql = "SELECT
               to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
@@ -116,7 +116,7 @@ class M_monitoring extends CI_Model {
               sum(dp.achieve_qty) achieve_qty
             FROM pp.pp_daily_plans dp
             WHERE
-              dp.section_id = 9
+              dp.section_id = $section
               and dp.created_date between
                 date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
             group by 1,2
