@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-10 col-md-10">
-                        <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="3000">
+                        <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="20000">
                             <div class="carousel-inner" role="listbox">
                                 <?php
                                     $count = count($selectedSection);
@@ -100,6 +100,7 @@
                                                     </thead>
                                                     <?php
                                                     $no=1;
+                                                    $checkpoint = 1;
                                                     if (!empty($highPriority[$i][0])) {
                                                     ?>
                                                         <tbody id="highPriority">
@@ -120,7 +121,13 @@
                                                                         <?php echo $hpl['item_code']; ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $hpl['item_description']; ?>
+                                                                        <?php
+                                                                            if (strlen($hpl['item_description']) > 20) {
+                                                                                echo substr($hpl['item_description'],0,20).'...';
+                                                                            }else{
+                                                                                echo $hpl['item_description'];
+                                                                            }
+                                                                        ?>
                                                                     </td>
                                                                     <td>
                                                                         <?php echo $hpl['priority']; ?>
@@ -144,6 +151,7 @@
                                                                     </td>
                                                                 </tr>
                                                                 <?php
+                                                                $checkpoint++;
                                                             }
                                                         ?>
                                                         </tbody>
@@ -151,6 +159,7 @@
                                                     }
                                                     if (!empty($normalPriority[$i][0])) {
                                                     ?>
+                                                        <input type="hidden" name="checkpointBegin" value="<?php echo $checkpoint; ?>">
                                                         <tbody id="normalPriority">
                                                         <?php
                                                             foreach ($normalPriority[$i] as $npl ){
@@ -161,7 +170,14 @@
                                                                     $status = 'NOT OK';
                                                                 }
                                                             ?>
-                                                                <tr class="priority-normal">
+                                                                <tr class="priority-normal" <?php if ($checkpoint > 6) {
+                                                                    echo " data-showstat='".$checkpoint."'";
+                                                                    echo "style='display:none;' ";
+                                                                    $checkpoint++;
+                                                                }else{
+                                                                    echo " data-showstat='".$checkpoint."'";
+                                                                    $checkpoint++;
+                                                                } ?>>
                                                                     <td>
                                                                         <?php echo $no++; ?>
                                                                     </td>
@@ -196,6 +212,7 @@
                                                             }
                                                         ?>
                                                         </tbody>
+                                                        <input type="hidden" name="checkpointEnd" value="<?php echo $checkpoint; ?>">
                                                     <?php
                                                     }
                                                     ?>
@@ -298,6 +315,8 @@
         <script type="text/javascript" src="<?php echo base_url('assets/js/customPP.js');?>"></script>
         <script type="text/javascript">
             getSectionMon();
+            showHideNormalPlanning();
+            var repeat = setInterval(getSectionMon, 600000);
         </script>
     </body>
 </html>
