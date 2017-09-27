@@ -109,4 +109,38 @@ class C_Monitoring extends CI_Controller {
         $data['plan'] = $valPlan;
         echo json_encode($data);
     }
+
+    public function getDailyPlan()
+    {
+        $section    = $this->input->post('section');
+        $datplan    = array();
+        $datsec     = array();
+        foreach ($section as $val) {
+            $datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
+        }
+
+        $data['infoJob']        = $this->M_monitoring->getInfoJobs();
+        $data['selectedSection']= $section;
+        
+        $data['highPriority']= array();
+        $data['normalPriority']= array();
+
+
+        foreach ($datplan as $dp => $val1) {
+            $h = 0;
+            $n = 0;
+            if (empty($val1)) {
+                $data['highPriority'][$dp][0] = false;
+                $data['normalPriority'][$dp][0] = false;
+            }else{
+                foreach ($val1 as $key => $val2) {
+                    if ($val2['priority'] == '1') {
+                        $data['highPriority'][$dp][$h++] = $val2;
+                    }else{
+                        $data['normalPriority'][$dp][$n++] = $val2;
+                    }
+                }
+            }
+        }
+    }
 }
