@@ -64,13 +64,16 @@
 												$ptctype='Non Staf';
 											}elseif ($gp['participant_type']==0) {
 												$ptctype='Staf';
+											}else{
+												$ptctype='Staf & Non Staf';
 											}
 									?>
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $gp['package_name'] ?></td>
 										<td><?php echo 'pelatihan '.$trgtype ?></td>
-										<td ><?php echo $ptctype ?></td>
+										<td ><?php echo $ptctype; ?>
+										</td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/MasterPackage/View/'.$gp['package_id'])?>" class="btn btn-xs btn-warning"><i class="fa fa-search"></i> View</a>
 											<a href="<?php echo base_url('ADMPelatihan/MasterPackage/Edit/'.$gp['package_id'])?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
