@@ -181,20 +181,20 @@ class C_MasterTrainer extends CI_Controller {
 	}
 
 	//MENGAMBIL DAFTAR PEKERJA BERHUBUNGAN DENGAN AJAX/JAVASCRIPT
-	public function GetApplicant(){
-		$term = $this->input->get("term");
-		$data = $this->M_mastertrainer->GetApplicant($term);
-		$count = count($data);
-		echo "[";
-		foreach ($data as $data) {
-			$count--;
-			echo '{"NoInduk":"'.$data['kodelamaran'].'","Nama":"'.$data['nama'].'"}';
-			if ($count !== 0) {
-				echo ",";
-			}
-		}
-		echo "]";
-	}
+	// public function GetApplicant(){
+	// 	$term = $this->input->get("term");
+	// 	$data = $this->M_mastertrainer->GetApplicant($term);
+	// 	$count = count($data);
+	// 	echo "[";
+	// 	foreach ($data as $data) {
+	// 		$count--;
+	// 		echo '{"NoInduk":"'.$data['kodelamaran'].'","Nama":"'.$data['nama'].'"}';
+	// 		if ($count !== 0) {
+	// 			echo ",";
+	// 		}
+	// 	}
+	// 	echo "]";
+	// }
 
 	public function checkSession(){
 		if($this->session->is_logged){
