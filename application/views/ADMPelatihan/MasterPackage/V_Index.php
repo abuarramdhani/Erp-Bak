@@ -71,7 +71,7 @@
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $gp['package_name'] ?></td>
-										<td><?php echo 'pelatihan '.$trgtype ?></td>
+										<td><?php echo $trgtype ?></td>
 										<td ><?php echo $ptctype; ?>
 										</td>
 										<td>
