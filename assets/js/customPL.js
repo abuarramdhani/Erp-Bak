@@ -634,20 +634,20 @@ $(document).ready(function(){
 		if(rowCount < maxrow){
 			var e = jQuery.Event( "click" );
 			e.preventDefault();
-			var newRow = jQuery("<tr class='clone'>"
+			var newRow = jQuery("<tr class='clone' row-id='"+nomer+"'>"
 									+"<td >"+ nomer +" </td>"
 									+"<td>"
 										+"<div class='input-group'>"
 											+"<div class='input-group-addon'>"
 												+"<i class='glyphicon glyphicon-user'></i>"
 											+"</div>"
-											+"<select class='form-control js-slcEmployee' name='slcEmployee[]' id='slcEmployee' required>"
+											+"<select class='form-control js-slcEmployee' name='slcEmployee[]' id='slcEmployee'>"
 												+"<option value=''></option>"
 											+"</select>"
 										+"</div>"
 									+"</td>"
 									+"<td>"
-										+"<button type='button' class='btn btn-danger list-del'><i class='fa fa-remove'></i></button>"
+										+"<button type='button' class='btn btn-danger list-del' onclick='deleteRowAjax("+nomer+",0,0)'><i class='fa fa-remove'></i></button>"
 									+"</td>"
 								+"</tr>");
 			jQuery("#tblParticipant").append(newRow);
@@ -722,7 +722,7 @@ $(document).ready(function(){
 		if(rowCount < maxrow){
 			var e = jQuery.Event( "click" );
 			e.preventDefault();
-			var newRow = jQuery("<tr class='clone'>"
+			var newRow = jQuery("<tr class='clone' row-id='"+nomer+"'>"
 									+"<td >"+ nomer +" </td>"
 									+"<td>"
 										+"<div class='input-group'>"
@@ -731,6 +731,7 @@ $(document).ready(function(){
 											+"</div>"
 											+"<select class='form-control js-slcEmployee' name='slcEmployee[]' id='slcEmployee'>"
 												+"<option value=''></option>"
+												+"<input type='text' name='txtParticipantID' value='0' hidden>"
 											+"</select>"
 										+"</div>"
 									+"</td>"
@@ -743,7 +744,7 @@ $(document).ready(function(){
 											+"?>"
 										+"</td>"
 									+"<td>"
-										+"<button type='button' class='btn btn-danger list-del'><i class='fa fa-remove'></i></button>"
+										+"<button type='button' class='btn btn-danger list-del' onclick='deleteRowAjax("+nomer+",0,0)'><i class='fa fa-remove'></i></button>"
 									+"</td>"
 								+"</tr>");
 			jQuery("#tblParticipant").append(newRow);
@@ -803,6 +804,92 @@ $(document).ready(function(){
 		}else{
 			alert('Jumlah peserta sudah maksimal');		
 		}
+	}
+
+	function AddParticipantSchedule(base) {
+		var row = $('input#jmlpeserta').val();
+		var maxrow = parseInt(row)+1;
+		var table = document.getElementById("tblParticipant");
+		var rowCount = table.rows.length;
+		var nomer = 0;
+		var nomer = rowCount;
+
+		if(rowCount < maxrow){
+			var e = jQuery.Event( "click" );
+			e.preventDefault();
+			var newRow = jQuery("<tr class='clone'>"
+									+"<td >"+ nomer +"</td>"
+									+"<td>"
+										+"<div class='input-group'>"
+											+"<div class='input-group-addon'>"
+												+"<i class='glyphicon glyphicon-user'></i>"
+											+"</div>"
+											+"<select class='form-control js-slcEmployee' name='slcEmployee[]' id='slcEmployee' required>"
+												+"<option value=''></option>"
+											+"</select>"
+										+"</div>"
+									+"</td>"
+									+"<td>"
+										+"<button type='button' class='btn btn-danger list-del'><i class='fa fa-remove'></i></button>"
+									+"</td>"
+								+"</tr>");
+			jQuery("#tblParticipant").append(newRow);
+		
+		$("select#slcEmployee").select2({
+						placeholder: "No Induk",
+						minimumInputLength: 3,
+						tags: true,
+						ajax: {
+							url:baseurl+"ADMPelatihan/MasterTrainer/GetNoInduk",
+							dataType: 'json',
+							type: "GET",
+							data: function (params) {
+								var queryParameters = {
+									term: params.term,
+									type: $('select#slcEmployee').val()
+								}
+								return queryParameters;
+							},
+							processResults: function (data) {
+								return {
+									results: $.map(data, function(obj) {
+										return { id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
+									})
+								};
+							}
+						}	
+					}); 
+
+			$("select#slcEmployee:last").select2({
+						placeholder: "No Induk",
+						minimumInputLength: 3,
+						tags: true,
+						ajax: {		
+							url:baseurl+"ADMPelatihan/MasterTrainer/GetNoInduk",
+							dataType: 'json',
+							type: "GET",
+							data: function (params) {
+								var queryParameters = {
+									term: params.term,
+									type: $('select#slcEmployee').val()
+								}
+								return queryParameters;
+							},
+							processResults: function (data) {
+								return {
+									results: $.map(data, function(obj) {
+										return { id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
+									})
+								};
+							}
+						}	
+					});
+
+			$("select#slcEmployee:last").val("").change();
+		}else{
+			alert('Jumlah peserta sudah maksimal');		
+		}
+
 	}
 
 	//DELETE ROW UNTUK DAFTAR PESERTA (PENJADWALAN TRAINING)
