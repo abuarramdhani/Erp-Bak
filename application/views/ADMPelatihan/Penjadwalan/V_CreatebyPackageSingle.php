@@ -95,25 +95,41 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Evaluasi</label>
 									<div class="col-lg-9">
-										<input type="checkbox" name="chk1" value="1"> Wawasan<br>
+										<!-- <input type="checkbox" name="chk1" value="1"> Wawasan<br>
 	  									<input type="checkbox" name="chk2" value="2"> Pengetahuan<br>
-	  									<input type="checkbox" name="chk3" value="3"> Perilaku
+	  									<input type="checkbox" name="chk3" value="3"> Perilaku -->
+	  									<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" data-placeholder=" Evaluasi" required>
+												<option value="" ></option>
+												<?php foreach($GetEvaluationType as $et){ ?>
+													<option value="<?php echo $et['evaluation_type_id']?>">
+														<?php echo $et['evaluation_type_description']?>
+													</option>
+												<?php } ?>
+										</select>
 									</div>
 								</div>
 							</div>
-							<?php foreach($packscheduling as $pse){
+							<!-- <?php foreach($packscheduling as $pse){
 								$participanttype=$pse['participant_type'];
 								$radioa='';$radiob='';
 								if($pse['participant_type']==0){$radioa='checked';}
 								if($pse['participant_type']==1){$radiob='checked';}
-							?>
+							?> -->
+							
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
 									<div class="col-lg-4">
-										<input type="radio" value="0" <?php echo $radioa ?> disabled> Staff<br>
+										<!-- <input type="radio" value="0" <?php echo $radioa ?> disabled> Staff<br>
 										<input type="radio" value="1" <?php echo $radiob ?> disabled> Non-Staff<br>
-										<input name="txtPeserta" value="<?php echo $pse['participant_type'] ?>" hidden>
+										<input name="txtPeserta" value="<?php echo $pse['participant_type'] ?>" hidden> -->
+									<select class="form-control select2" name="slcPeserta">
+										<?php foreach($ptctype as $py) {?> 
+											<option value="<?php echo $py['participant_type_id']?>">
+												<?php echo $py['participant_type_description']?>
+											</option>
+										<?php }?>
+									</select>
 									</div>
 									<label class="col-lg-1 control-label">Jumlah Peserta</label>
 									<div class="col-lg-4">

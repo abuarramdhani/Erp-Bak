@@ -183,7 +183,7 @@
 													</thead>
 													<tbody id="tbodyParticipant">
 														<tr class="clone">
-															<td ><?php echo $no++;?></td>
+															<td ><?php echo $number++;?></td>
 															<td>
 																<div class="input-group">
 																	<div class="input-group-addon">

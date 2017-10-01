@@ -45,7 +45,7 @@ class M_report extends CI_Model {
 				a.*
 			from pl.pl_participant a
 				left join pl.pl_scheduling_training b on a.scheduling_id = b.scheduling_id
-			where a.participant_name ilike '%$name%'
+			where a.participant_name like '%$name%'
 			order by b.date desc";
 
 		$query = $this->db->query($sql);
