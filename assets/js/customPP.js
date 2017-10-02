@@ -17,6 +17,7 @@ function getSectionMon(){
         id[i] = $('input[name="sectionId'+i+'"]').val();
         getDataLineChartPP(id[i], 'month-fabrication'+id[i]);
     }
+    getDailyPlan(id);
 }
 
 function getDataLineChartPP(section,canvasid){
@@ -40,8 +41,8 @@ function getDataLineChartPP(section,canvasid){
         for (var i = 0; i < 1; i++) {
             for (var n = 0; n < array.length; n++) {
                 labels.push(Number(array[n]['label']));
-                temp.push(Number(array[n]['plan_qty']));
-                temp1.push(Number(array[n]['achieve_qty']));
+                temp.push(Number(array[n]['prosentase_plan']));
+                temp1.push(Number(array[n]['prosentase_achieve']));
             }
             value.push(temp);
             value.push(temp1);
@@ -93,22 +94,24 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
 }
 
 function showHideNormalPlanning(){
-    var ckBegin = $('input[name="checkpointBegin"]').val();
-    var ckEnd = $('input[name="checkpointEnd"]').val();
-     $.ajax({
-        url: baseurl+'ProductionPlanning/Monitoring/getSumPlanMonth',
-        data:{
-            section: section
-        },
-        type: 'POST',
-    }).done(function(data){
-        var data = JSON.parse(data);
-
-        var array = $.map(data['plan'], function(value, index) {
-            return [value];
-        });
-    });
-
+    var ckBegin = Number($('input[name="checkpointBegin"]').val());
+    var ckEnd = Number($('input[name="checkpointEnd"]').val());
+    var loopEnd = ckEnd;
     console.log(ckBegin);
     console.log(ckEnd);
+    // if (ckBegin <= 6) {}
+    // for (var i = ckBegin; i < loopEnd; i++) {
+    //     console.log(i);
+    //     console.log(ckEnd--);
+    // }
+}
+
+function getDailyPlan(sectionId){
+    $.ajax({
+        url: baseurl+'ProductionPlanning/Monitoring/getDailyPlan',
+        data:{
+            section: sectionId
+        },
+        type: 'POST',
+    });
 }
