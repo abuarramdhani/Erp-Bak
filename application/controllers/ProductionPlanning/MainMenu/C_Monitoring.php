@@ -93,8 +93,8 @@ class C_Monitoring extends CI_Controller {
             $checkout = 0;
             $valPlanDefault = array(
                 'label' => $i,
-                'plan_qty' => 0,
-                'achieve_qty' => 0
+                'prosentase_plan' => 0,
+                'prosentase_achieve' => 0
             );
             foreach ($sumPlan as $sp) {
                 if ($i == (int)substr($sp['hari'], 0,2)) {
@@ -112,32 +112,28 @@ class C_Monitoring extends CI_Controller {
 
     public function getDailyPlan()
     {
+        $user_id    = $this->session->userid;
         $section    = $this->input->post('section');
         $datplan    = array();
-        $datsec     = array();
         foreach ($section as $val) {
-            $datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
-        }
-
-        $data['infoJob']        = $this->M_monitoring->getInfoJobs();
-        $data['selectedSection']= $section;
-        
-        $data['highPriority']= array();
-        $data['normalPriority']= array();
-
-
-        foreach ($datplan as $dp => $val1) {
-            $h = 0;
-            $n = 0;
-            if (empty($val1)) {
-                $data['highPriority'][$dp][0] = false;
-                $data['normalPriority'][$dp][0] = false;
-            }else{
-                foreach ($val1 as $key => $val2) {
-                    if ($val2['priority'] == '1') {
-                        $data['highPriority'][$dp][$h++] = $val2;
-                    }else{
-                        $data['normalPriority'][$dp][$n++] = $val2;
+            $a = $this->M_dataplan->getDataPlan($id=false,$val);
+            if (!empty($a)) {
+                foreach ($a as $aval) {
+                    $subInv = $this->M_dataplan->getSection($user_id,$aval['section_id']);
+                    foreach ($subInv as $si) {
+                        if ($si['from_inventory'] == 'JOB') {
+                            $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
+                        }else{
+                            $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
+                        }
+                        if (!empty($getItemTransaction)) {
+                            $dataUpd = array(
+                                'achieve_qty'       => $getItemTransaction[0]['ACHIEVE_QTY'],
+                                'last_delivery'     => $getItemTransaction[0]['LAST_DELIVERY'],
+                                'last_updated_date' => date("Y-m-d H:i:s")
+                            );
+                            $this->M_dataplan->update($dataUpd, $aval['daily_plan_id']);
+                        }
                     }
                 }
             }
