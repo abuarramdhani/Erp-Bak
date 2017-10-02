@@ -109,11 +109,13 @@
                                                                 $status = '';
                                                                 if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
                                                                     $status = 'OK';
+                                                                    $classStatus = "plan-done";
                                                                 }else{
                                                                     $status = 'NOT OK';
+                                                                    $classStatus = "plan-undone-high";
                                                                 }
                                                             ?>
-                                                                <tr class="priority-1">
+                                                                <tr class="<?php echo $classStatus; ?>">
                                                                     <td>
                                                                         <?php echo $no++; ?>
                                                                     </td>
@@ -166,16 +168,20 @@
                                                                 $status = '';
                                                                 if ($npl['achieve_qty'] >= $npl['need_qty']) {
                                                                     $status = 'OK';
+                                                                    $classStatus = "plan-done";
                                                                 }else{
                                                                     $status = 'NOT OK';
+                                                                    $classStatus = "plan-undone-normal";
                                                                 }
                                                             ?>
-                                                                <tr class="priority-normal" <?php if ($checkpoint > 6) {
-                                                                    echo " data-showstat='".$checkpoint."'";
-                                                                    echo "style='display:none;' ";
+                                                                <tr class="<?php echo $classStatus; ?>" <?php if ($checkpoint > 6) {
+                                                                    echo " data-showid='".$checkpoint."'";
+                                                                    echo " data-showstat='0'";
+                                                                    echo " style='display:none;'";
                                                                     $checkpoint++;
                                                                 }else{
-                                                                    echo " data-showstat='".$checkpoint."'";
+                                                                    echo " data-showid='".$checkpoint."'";
+                                                                    echo " data-showstat='1'";
                                                                     $checkpoint++;
                                                                 } ?>>
                                                                     <td>
@@ -315,8 +321,14 @@
         <script type="text/javascript" src="<?php echo base_url('assets/js/customPP.js');?>"></script>
         <script type="text/javascript">
             getSectionMon();
-            showHideNormalPlanning();
-            var repeat = setInterval(getSectionMon, 600000);
+            var repeat = setInterval(function(){
+                getSectionMon();
+            }
+            , 600000);
+            var showhide = setInterval(function(){
+                showHideNormalPlanning();
+            }
+            , 10000);
         </script>
     </body>
 </html>
