@@ -110,18 +110,74 @@ class M_monitoring extends CI_Model {
   public function getSumPlanMonth($section)
   {
     $sql = "SELECT
-              to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
-              to_char(dp.created_date, 'dd') as label,
-              sum(dp.need_qty) plan_qty,
-              sum(dp.achieve_qty) achieve_qty
-            FROM pp.pp_daily_plans dp
-            WHERE
-              dp.section_id = $section
-              and dp.created_date between
-                date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
-            group by 1,2
-            order by 1";
-            
+              a.hari,
+              a.label,
+              ROUND(
+                (
+                  SELECT SUM(b.plan_qty)
+                  from
+                    (
+                      SELECT
+                                to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
+                                sum(dp.need_qty) plan_qty
+                            FROM
+                              pp.pp_daily_plans dp,
+                              pp.pp_monthly_plans pmp
+                            where
+                              dp.section_id = pmp.section_id
+                              AND to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
+                              AND dp.section_id = $section
+                                AND dp.created_date between
+                                  date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
+                            group by 1
+                            order by 1
+                    ) b
+                  where b.hari <= a.hari
+                )/a.monthly_plan_quantity * 100
+              , 2) prosentase_plan,
+              ROUND((
+                  SELECT SUM(b.achieve_qty)
+                  from
+                    (
+                      SELECT
+                                to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
+                                sum(dp.achieve_qty) achieve_qty
+                            FROM
+                              pp.pp_daily_plans dp,
+                              pp.pp_monthly_plans pmp
+                            where
+                              dp.section_id = pmp.section_id
+                              AND to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
+                              AND dp.section_id = $section
+                                AND dp.created_date between
+                                  date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
+                            group by 1
+                            order by 1
+                    ) b
+                  where b.hari <= a.hari
+                )/a.monthly_plan_quantity * 100
+                ,2) prosentase_achieve
+            from
+              (SELECT
+                    to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
+                    to_char(dp.created_date, 'dd') as label,
+                pmp.monthly_plan_quantity,
+                    sum(dp.need_qty) plan_qty,
+                    sum(dp.achieve_qty) achieve_qty
+                FROM
+                  pp.pp_daily_plans dp,
+                  pp.pp_monthly_plans pmp
+                where
+                  dp.section_id = pmp.section_id
+                  AND to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
+                  AND dp.section_id = $section
+                    AND dp.created_date between
+                      date_trunc('month', current_date)
+                      and
+                      (date_trunc('month', current_date) + interval '1 month') 
+                group by 1,2,3
+                order by 1) a";
+    
     $query = $this->db->query($sql);
     return $query->result_array();
   }
