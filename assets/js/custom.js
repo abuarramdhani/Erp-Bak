@@ -592,6 +592,82 @@
 			allowClear: true,
 		});
 
+		$(".select-employee").select2({
+			  ajax: {
+			        url: baseurl+'CateringManagement/PrintPP/Employee',
+			        dataType: 'json',
+			        delay: 250,
+			        data: function (params) {
+			          return {
+			            q: params.term,
+			        };
+			        },
+			        processResults: function (data) {
+			          return {
+			                results: $.map(data, function (item) {
+			                    return {
+			                      id: item.employee_id,
+			                      text: item.employee_name,
+			                    }
+			                })
+			            };
+			      },
+			      cache: true
+			    },
+			    minimumInputLength: 2,
+			    
+			});
+
+		$(document).on('click', '#add-row-printpp', function (){
+			var count = $('#printpp tr').length;
+			if(count >= 13) {
+				alert('gak boleh lebih dari 13');
+			} else {
+				$(".multiRow:last .date").datepicker("destroy");
+				var form = $('.multiRow').last().clone();
+
+				$('#printpp').append(form);
+				
+				$(".multiRow:last .form-control").val("").change();
+
+				$('.date').datepicker({
+		    		"autoclose": true,
+		    		"todayHiglight": true,
+		    		"format": 'dd M yyyy'
+		      	});	
+			}
+		});
+
+		$(document).on('click', '.delete-row-printpp', function (e){
+			e.preventDefault();
+			var count = $('#printpp tr').length;
+			if(count == 1) {
+				alert('gak boleh dihapus, awas kalo dihapus');
+			} else {
+				$(this).closest('tr').remove();
+			}
+		});
+
+		$(document).on('click', '.delete-row-update-printpp', function (e){
+			e.preventDefault();
+			var count = $('#printpp tr').length;
+			var row = $(this);
+			if(count == 1) {
+				alert('gak boleh dihapus, awas kalo dihapus');
+			} else {
+				var id = $(this).attr('data-id');
+				$.ajax({
+					type: 'POST',
+					data: {idKU: id},
+					url:baseurl+"CateringManagement/PrintPP/deleteLines",
+				})
+				.done(function(data) {
+					row.closest('tr').remove();
+				});
+			}
+		});
+		
+
 		$('#add-row').on( 'click', function () {
 			var new_form = $('<tr>').addClass('multiRow');
 			var e = jQuery.Event( "click" );
@@ -859,3 +935,5 @@ $(document).ready(function(){
       ]
     });
 });
+
+
