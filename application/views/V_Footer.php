@@ -161,6 +161,12 @@
 	</script>
 
 	<script type="text/javascript">
+		$('.pp-date').datepicker({
+    		"autoclose": true,
+    		"todayHiglight": true,
+    		"format": 'dd M yyyy'
+      	});	
+
 		$('#txtTanggalKirimHeader').datepicker({
     		"autoclose": true,
     		"todayHiglight": true,

@@ -262,13 +262,6 @@ class C_Limbah extends CI_Controller
         	if(empty($_FILES['fileLimbah']['name'])){
         		unset($data['kondisi_limbah']);
         	}
-        	//wah......................ckckkckckckckc..........hadaeeeehhhhh............itu $transportasi dari mana?
-        	//dari kamu copas kodingan lain mungkin....hayooooo........hahaha aku kok gk liat ya 
-        	//hmmmmmmmmmmmmm.................... -_-
-      //   	echo "<pre>";
-    		// print_r($data);
-    		// echo "</pre>";
-    		// exit();
 
 			$this->M_limbah->updateLimbah($data, $plaintext_string);
 
@@ -385,6 +378,7 @@ class C_Limbah extends CI_Controller
 		$this->load->view('WasteManagement/Limbah/V_Record', $data);
 		$this->load->view('V_Footer',$data);
 	}
+
 
 }
 
