@@ -205,6 +205,8 @@ class C_Printpp extends CI_Controller
 			$kodeBarang = $this->input->post('txtPpKodebarangHeader', true);
 
 			foreach ($kodeBarang as $key => $value) {
+				$pp_id = $this->input->post('txtPpId');
+				$pp_detail_id = $this->input->post('txtPpDetailId');
 				$kodebarang = $this->input->post('txtPpKodebarangHeader');
 				$jumlahpp = $this->input->post('txtPpJumlahHeader');
 				$satuan = $this->input->post('txtPpSatuanHeader');
@@ -212,7 +214,7 @@ class C_Printpp extends CI_Controller
 				$nbd = $this->input->post('txtPpNbdHeader');
 				$keterangan = $this->input->post('txtPpKeteranganHeader');
 				$supplier = $this->input->post('txtPpSupplierHeader');
-				if($this->input->post('txtPpId')[$key] == null || $this->input->post('txtPpId')[$key] == '') {
+				if($pp_id[$key] == null || $pp_id[$key] == '') {
 					$lines = array(
 						'pp_id' => $plaintext_string,
 						'pp_kode_barang' => $kodebarang[$key],
@@ -225,7 +227,7 @@ class C_Printpp extends CI_Controller
 		    		);
 					$this->M_printpp->createPrintppDetail($lines);
 				} else {
-					$id_lines = str_replace(array('-', '_', '~'), array('+', '/', '='), $this->input->post('txtPpDetailId')[$key]);
+					$id_lines = str_replace(array('-', '_', '~'), array('+', '/', '='), $pp_detail_id[$key]);
 					$id_lines = $this->encrypt->decode($id_lines);
 					$lines = array(
 						'pp_kode_barang' => $kodebarang[$key],
