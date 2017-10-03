@@ -308,16 +308,16 @@ class C_Printpp extends CI_Controller
 
     public function cetakPDF($id)
     {	
-    	$user_id = $this->session->userid;
+  //   	$user_id = $this->session->userid;
 
-		$data['Title'] = 'Print PP';
-		$data['Menu'] = 'Catering Management';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
+		// $data['Title'] = 'Print PP';
+		// $data['Menu'] = 'Catering Management';
+		// $data['SubMenuOne'] = '';
+		// $data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		// $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		// $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		// $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     	$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -331,20 +331,20 @@ class C_Printpp extends CI_Controller
 		$data['CostCenter'] = $this->M_printpp->getCostCenter();
 		$data['Employee'] = $this->M_printpp->getEmployeeSelected();
 
-  //   	$this->load->library('pdf');
+     	$this->load->library('pdf');
 
-		// $pdf = $this->pdf->load();
-		// $pdf = new mPDF('utf-8', 'A5', 8, '', 5, 5, 10, 15, 0, 0, 'L');
-		// $filename = 'Print_PP.pdf';
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
+		$filename = 'Print_PP.pdf';
 		
-		// $html = $this->load->view('CateringManagement/PrintPP/V_printpp', $data, true);
+		$html = $this->load->view('CateringManagement/PrintPP/V_printpp', $data, true);
 
-		// $pdf->WriteHTML($html, 2);
-		// $pdf->Output($filename, 'D');
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('CateringManagement/PrintPP/V_printpp', $data);
-		$this->load->view('V_Footer',$data);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'D');
+		// $this->load->view('V_Header',$data);
+		// $this->load->view('V_Sidemenu',$data);
+		// $this->load->view('CateringManagement/PrintPP/V_printpp', $data);
+		// $this->load->view('V_Footer',$data);
 
 	}
 

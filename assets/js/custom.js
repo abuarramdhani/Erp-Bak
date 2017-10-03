@@ -615,7 +615,7 @@
 			      cache: true
 			    },
 			    minimumInputLength: 2,
-			    
+			    allowClear: true,
 			});
 
 		$(document).on('click', '#add-row-printpp', function (){
