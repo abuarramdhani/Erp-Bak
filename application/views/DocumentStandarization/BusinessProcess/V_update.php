@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('DocumentStandarization/BP/update/'.$id);?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('DocumentStandarization/BP/update/'.$id);?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -31,93 +31,146 @@
                                     <div class="panel-body">
                                         <div class="row">
 											<div class="form-group">
-                                                <label for="txtBpNameHeader" class="control-label col-lg-4">Bp Name</label>
+                                                <label for="txtBpNameHeader" class="control-label col-lg-4">Nama Business Process</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Bp Name" name="txtBpNameHeader" id="txtBpNameHeader" class="form-control" value="<?php echo $headerRow['bp_name']; ?>"/>
+                                                    <input type="text" name="txtBpNameHeader" id="txtBpNameHeader" class="form-control" required="" value="<?php echo $headerRow['nama_business_process'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtBpFileHeader" class="control-label col-lg-4">Bp File</label>
+                                            <div class="form-group">
+                                                <label for="txtNoKontrolHeader" class="control-label col-lg-4">Nomor Kontrol</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Bp File" name="txtBpFileHeader" id="txtBpFileHeader" class="form-control" value="<?php echo $headerRow['bp_file']; ?>"/>
+                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" required="" value="<?php echo $headerRow['nomor_kontrol'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtNoKontrolHeader" class="control-label col-lg-4">No Kontrol</label>
+                                            <div class="form-group">
+                                                <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="No Kontrol" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" value="<?php echo $headerRow['no_kontrol']; ?>"/>
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" required="" value="<?php echo $headerRow['nomor_revisi'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtNoRevisiHeader" class="control-label col-lg-4">No Revisi</label>
+                                            <div class="form-group">
+                                                <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="No Revisi" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" value="<?php echo $headerRow['no_revisi']; ?>"/>
+                                                    <input type="text" maxlength="10" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" required="" value="<?php echo $headerRow['tanggal_revisi'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal</label>
+                                            <div class="form-group">
+                                                <label for="txtJmlHalamanHeader" class="control-label col-lg-4">Jumlah Halaman</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalHeader" value="<?php echo $headerRow['tanggal'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" />
+                                                    <input type="number" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" min="0" required="" value="<?php echo $headerRow['jumlah_halaman'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtDibuatHeader" class="control-label col-lg-4">Dibuat</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Dibuat" name="txtDibuatHeader" id="txtDibuatHeader" class="form-control" value="<?php echo $headerRow['dibuat']; ?>"/>
+                                                    <select id="cmbPekerjaPembuat" name="cmbPekerjaDibuat" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <option value="<?php echo $headerRow['kode_pekerja_pembuat'];?>" selected><?php echo $headerRow['pekerja_pembuat'];?></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerjaAll as $Pekerja) 
+                                                            {
+                                                                $status_data = '';
+                                                                if($headerRow['kode_pekerja_pembuat']==$Pekerja['id_pekerja'])
+                                                                {
+                                                                    $status_data = 'selected';
+                                                                }
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'" '.$status_data.' >'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtDiperiksa1Header" class="control-label col-lg-4">Diperiksa 1</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Diperiksa 1" name="txtDiperiksa1Header" id="txtDiperiksa1Header" class="form-control" value="<?php echo $headerRow['diperiksa_1']; ?>"/>
+                                                     <select id="cmbPekerjaPemeriksa1" name="cmbPekerjaDiperiksa1" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <option value="<?php echo $headerRow['kode_pekerja_pemeriksa_1'];?>" selected><?php echo $headerRow['pekerja_pemeriksa_1'];?></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerjaMinKasie as $Pekerja) 
+                                                            {
+                                                                $status_data = '';
+                                                                if($headerRow['kode_pekerja_pemeriksa_1']==$Pekerja['id_pekerja'])
+                                                                {
+                                                                    $status_data = 'selected';
+                                                                }
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'" '.$status_data.' >'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtDiperiksa2Header" class="control-label col-lg-4">Diperiksa 2</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Diperiksa 2" name="txtDiperiksa2Header" id="txtDiperiksa2Header" class="form-control" value="<?php echo $headerRow['diperiksa_2']; ?>"/>
+                                                     <select id="cmbPekerjaPemeriksa2" name="cmbPekerjaDiperiksa2" class="select2" data-placeholder="Pilih" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <option value="<?php echo $headerRow['kode_pekerja_pemeriksa_2'];?>" selected><?php echo $headerRow['pekerja_pemeriksa_2'];?></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerjaMinKasie as $Pekerja) 
+                                                            {
+                                                                $status_data = '';
+                                                                if($headerRow['kode_pekerja_pemeriksa_2']==$Pekerja['id_pekerja'])
+                                                                {
+                                                                    $status_data = 'selected';
+                                                                }
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'" '.$status_data.' >'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtDiputuskanHeader" class="control-label col-lg-4">Diputuskan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Diputuskan" name="txtDiputuskanHeader" id="txtDiputuskanHeader" class="form-control" value="<?php echo $headerRow['diputuskan']; ?>"/>
+                                                     <select id="cmbPekerjaPemberiKeputusan" name="cmbPekerjaDiputuskan" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <option value="<?php echo $headerRow['kode_pekerja_pemberi_keputusan'];?>" selected><?php echo $headerRow['pekerja_pemberi_keputusan'];?></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerjaMinKasie as $Pekerja) 
+                                                            {
+                                                                $status_data = '';
+                                                                if($headerRow['kode_pekerja_pemberi_keputusan']==$Pekerja['id_pekerja'])
+                                                                {
+                                                                    $status_data = 'selected';
+                                                                }
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'" '.$status_data.' >'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txaBpInfoHeader" class="control-label col-lg-4">Info</label>
+                                                <div class="col-lg-7">
+                                                    <textarea name="txaBpInfoHeader" id="txaBpInfoHeader" class="form-control ckeditor" ><?php echo $headerRow['info']; ?></textarea>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtJmlHalamanHeader" class="control-label col-lg-4">Jml Halaman</label>
+                                                <label for="txtBpFileHeader" class="control-label col-lg-4">Upload File</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jml Halaman" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" value="<?php echo $headerRow['jml_halaman']; ?>"/>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txaBpInfoHeader" class="control-label col-lg-4">Bp Info</label>
-                                                <div class="col-lg-4">
-                                                    <textarea name="txaBpInfoHeader" id="txaBpInfoHeader" class="form-control" placeholder="Bp Info"><?php echo $headerRow['bp_info']; ?></textarea>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtTglUploadHeader" class="control-label col-lg-4">Tgl Upload</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglUploadHeader" value="<?php echo $headerRow['tgl_upload'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglUploadHeader" />
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtTglInsertHeader" class="control-label col-lg-4">Tgl Insert</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglInsertHeader" value="<?php echo $headerRow['tgl_insert'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTglInsertHeader" />
+                                                    <input type="file" name="txtBpFileHeader" id="txtBpFileHeader" class="form-control"  />
+                                                    <a target="_blank" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/'.$headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
+                                                    <input type="text" name="DokumenAwal" id="DokumenAwal" hidden="" value="<?php echo $headerRow['file'];?>">
+                                                    <input type="text" name="WaktuUpload" id="WaktuUpload" hidden="" value="<?php echo $headerRow['waktu_upload_file'];?>">
                                                 </div>
                                             </div>
 

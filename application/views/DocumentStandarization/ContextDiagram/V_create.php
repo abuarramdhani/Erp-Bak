@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtCdNameHeader" class="control-label col-lg-4">Nama Context Diagram</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Cd Name" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control" />
+                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
 
@@ -39,6 +39,14 @@
                                                 <div class="col-lg-4">
                                                     <select id="cmbBusinessProcess" name="cmbBusinessProcess" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
                                                         <option value=""></option>
+                                                        <?php
+                                                            foreach ($daftarBusinessProcess as $BP) 
+                                                            {
+                                                                echo '  <option value="'.$BP['id_business_process'].'">'
+                                                                        .$BP['daftar_business_process'].
+                                                                        '</option>';
+                                                            }
+                                                        ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -46,70 +54,110 @@
 											<div class="form-group">
                                                 <label for="txtNoKontrolHeader" class="control-label col-lg-4">Nomor Kontrol</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="No Kontrol" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" />
+                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="No Revisi" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="Tanggal Revisi" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" value="<?php echo date('d-m-Y');?>" />
+                                                    <input type="text" maxlength="10" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" value="<?php echo date('d-m-Y');?>" required="" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtJmlHalamanHeader" class="control-label col-lg-4">Jumlah Halaman</label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="txaCdInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
-                                                <div class="col-lg-4">
-                                                    <textarea name="txaCdInfoHeader" id="txaCdInfoHeader" class="form-control" placeholder="Cd Info"></textarea>
+                                                    <input type="number" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" required="" min="0" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtDibuatHeader" class="control-label col-lg-4">Dibuat</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Dibuat" name="txtDibuatHeader" id="txtDibuatHeader" class="form-control" />
+                                                     <select id="cmbPekerjaPembuat" name="cmbPekerjaDibuat" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerja as $Pekerja) 
+                                                            {
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'">'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtDiperiksa1Header" class="control-label col-lg-4">Diperiksa 1</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Diperiksa 1" name="txtDiperiksa1Header" id="txtDiperiksa1Header" class="form-control" />
+                                                     <select id="cmbPekerjaPemeriksa1" name="cmbPekerjaDiperiksa1" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerja as $Pekerja) 
+                                                            {
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'">'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtDiperiksa2Header" class="control-label col-lg-4">Diperiksa 2</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Diperiksa 2" name="txtDiperiksa2Header" id="txtDiperiksa2Header" class="form-control" />
+                                                     <select id="cmbPekerjaPemeriksa2" name="cmbPekerjaDiperiksa2" class="select2" data-placeholder="Pilih" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerja as $Pekerja) 
+                                                            {
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'">'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtDiputuskanHeader" class="control-label col-lg-4">Diputuskan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Diputuskan" name="txtDiputuskanHeader" id="txtDiputuskanHeader" class="form-control" />
+                                                     <select id="cmbPekerjaPemberiKeputusan" name="cmbPekerjaDiputuskan" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                        /*
+                                                            foreach ($pekerja as $Pekerja) 
+                                                            {
+                                                                echo '  <option value="'.$Pekerja['id_pekerja'].'">'.$Pekerja['daftar_pekerja'].'</option>';
+                                                            }
+                                                        */
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txaCdInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
+                                                <div class="col-lg-7">
+                                                    <textarea name="txaCdInfoHeader" id="txaCdInfoHeader" class="form-control ckeditor" ></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtCdFileHeader" class="control-label col-lg-4">Upload File</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" placeholder="File" name="txtCdFileHeader" id="txtCdFileHeader" class="form-control" />
+                                                    <input type="file" name="txtCdFileHeader" id="txtCdFileHeader" class="form-control" />
                                                 </div>
                                             </div>                                            
 

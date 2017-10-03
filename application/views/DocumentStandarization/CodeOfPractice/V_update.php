@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('DocumentStandarization/CodeOfPractice/update/'.$id);?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('DocumentStandarization/CodeOfPractice/update/'.$id);?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">

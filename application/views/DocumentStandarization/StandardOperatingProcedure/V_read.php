@@ -32,80 +32,81 @@
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($StandardOperatingProcedure as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop Name</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_name']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nama</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_sop']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Business Process</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_business_process']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Context Diagram</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_context_diagram']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop File</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_file']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Dokumen</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_dokumen']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>No Kontrol</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['no_kontrol']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Revisi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_revisi']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>No Revisi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['no_revisi']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tanggal']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Revisi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_revisi']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Dibuat</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['dibuat']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pembuat']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Diperiksa 1</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['diperiksa_1']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pemeriksa_1']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Diperiksa 2</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['diperiksa_2']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pemeriksa_2']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Diputuskan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['diputuskan']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pemberi_keputusan']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Jml Halaman</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jml_halaman']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['jumlah_halaman']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop Info</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_info']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Info</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['info']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tujuan</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['tujuan_sop']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tgl Upload</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tgl_upload']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Ruang Lingkup</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['ruang_lingkup_sop']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tgl Insert</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tgl_insert']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Referensi</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['referensi_sop']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Bp Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['bp_id']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Definisi</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['definisi_sop']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Cd Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['cd_id']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Input</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['waktu_input']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop Tujuan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_tujuan']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Upload File</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['waktu_upload_file']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop Ruang Lingkup</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_ruang_lingkup']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop Referensi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_referensi']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Sop Definisi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sop_definisi']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>File</strong></td>
+                                                            <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$headerRow['file'];?>" download="<?php echo str_replace('_', ' ', $headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
+                                                            </td>
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

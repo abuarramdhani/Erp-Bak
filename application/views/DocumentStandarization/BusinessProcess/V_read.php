@@ -32,56 +32,58 @@
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($BusinessProcess as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Bp Name</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['bp_name']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nama Business Process</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_business_process']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Bp File</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['bp_file']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Kontrol</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_kontrol']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>No Kontrol</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['no_kontrol']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nomor Revisi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nomor_revisi']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>No Revisi</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['no_revisi']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tanggal']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tanggal Revisi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tanggal_revisi']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Dibuat</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['dibuat']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pembuat']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Diperiksa 1</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['diperiksa_1']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pemeriksa_1']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Diperiksa 2</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['diperiksa_2']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pemeriksa_2']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Diputuskan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['diputuskan']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pekerja_pemberi_keputusan']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jml Halaman</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jml_halaman']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Jumlah Halaman</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['jumlah_halaman']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Bp Info</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['bp_info']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Info</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['info']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Dibuat</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['waktu_input']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tgl Upload</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tgl_upload']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Waktu Upload</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['waktu_upload_file']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Tgl Insert</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['tgl_insert']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>File</strong></td>
+                                                            <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$headerRow['file'];?>" download="<?php echo str_replace('_', ' ', $headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
+                                                            </td>
+
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

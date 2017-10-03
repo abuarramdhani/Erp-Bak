@@ -1,3 +1,4 @@
+
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class C_ContextDiagram extends CI_Controller
@@ -12,13 +13,19 @@ class C_ContextDiagram extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
+		$this->load->library('General');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('DocumentStandarization/MainMenu/M_contextdiagram');
+		$this->load->model('DocumentStandarization/MainMenu/M_general');
+
+		$this->load->library('upload');
 
 		$this->checkSession();
-	}
 
+		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+
+	}
 	/* CHECK SESSION */
 	public function checkSession()
 	{
@@ -70,34 +77,71 @@ class C_ContextDiagram extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
+		$this->form_validation->set_rules('txtCdNameHeader', 'Nama Context Diagram', 'required');
+		$this->form_validation->set_rules('cmbBusinessProcess', 'Business Process', 'required');
+		$this->form_validation->set_rules('txtNoKontrolHeader', 'Nomor Kontrol', 'required');
+		$this->form_validation->set_rules('txtNoRevisiHeader', 'Nomor Revisi', 'required');
+		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
+		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
+		if ($this->form_validation->run() === FALSE) 
+		{
+			$data['daftarBusinessProcess'] 	= 	$this->M_general->ambilDaftarBusinessProcess();
 
-		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/ContextDiagram/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$namaContextDiagram		= 	$this->input->post('txtCdNameHeader');
+			$BusinessProcess 		= 	$this->input->post('cmbBusinessProcess');
+			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader');
+			$nomorRevisi 			= 	$this->input->post('txtNoRevisiHeader');
+			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase($this->input->post('txtTanggalHeader'), 'tanggal');
+			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
+			$pekerjaPembuat 		= 	$this->input->post('cmbPekerjaDibuat');
+			$pekerjaPemeriksa1 		= 	$this->input->post('cmbPekerjaDiperiksa1');
+			$pekerjaPemeriksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2');
+			$pekerjaPemberiKeputusan=	$this->input->post('cmbPekerjaDiputuskan');
+			$info 					= 	$this->input->post('txaCdInfoHeader');
+			$inputfile 				= 	'txtCdFileHeader';
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
+			$fileDokumen;
+			$tanggalUpload;
+
+			if($pekerjaPemeriksa2=='' OR $pekerjaPemeriksa2==NULL OR $pekerjaPemeriksa2==' ')
+			{
+				$pekerjaPemeriksa2=NULL;
+			}
+
+			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
+			if(is_null($fileDokumen)==FALSE)
+			{
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			}					
 			$data = array(
-				'cd_name' => $this->input->post('txtCdNameHeader'),
-				'cd_file' => $this->input->post('txtCdFileHeader'),
-				'no_kontrol' => $this->input->post('txtNoKontrolHeader'),
-				'no_revisi' => $this->input->post('txtNoRevisiHeader'),
-				'tanggal' => $this->input->post('txtTanggalHeader'),
-				'dibuat' => $this->input->post('txtDibuatHeader'),
-				'diperiksa_1' => $this->input->post('txtDiperiksa1Header'),
-				'diperiksa_2' => $this->input->post('txtDiperiksa2Header'),
-				'diputuskan' => $this->input->post('txtDiputuskanHeader'),
-				'jml_halaman' => $this->input->post('txtJmlHalamanHeader'),
-				'cd_info' => $this->input->post('txaCdInfoHeader'),
-				'tgl_upload' => $this->input->post('txtTglUploadHeader'),
-				'tgl_insert' => $this->input->post('txtTglInsertHeader'),
-				'bp_id' => $this->input->post('txtBpIdHeader'),
+				'cd_name' 			=> $namaContextDiagram,
+				'cd_file' 			=> $fileDokumen,
+				'no_kontrol' 		=> $nomorKontrol,
+				'no_revisi' 		=> $nomorRevisi,
+				'tanggal' 			=> $tanggalRevisi,
+				'dibuat' 			=> $pekerjaPembuat,
+				'diperiksa_1' 		=> $pekerjaPemeriksa1,
+				'diperiksa_2' 		=> $pekerjaPemeriksa2,
+				'diputuskan' 		=> $pekerjaPemberiKeputusan,
+				'jml_halaman'		=> $jumlahHalaman,
+				'cd_info' 			=> $info,
+				'tgl_upload' 		=> $tanggalUpload,
+				'tgl_insert'		=> $this->general->ambilWaktuEksekusi(),
+				'bp_id' 			=> $BusinessProcess,
     		);
 			$this->M_contextdiagram->setContextDiagram($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('OTHERS/ContextDiagram'));
+			redirect(site_url('DocumentStandarization/CD'));
 		}
 	}
 
@@ -128,33 +172,79 @@ class C_ContextDiagram extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
+		$this->form_validation->set_rules('txtCdNameHeader', 'Nama Context Diagram', 'required');
+		$this->form_validation->set_rules('cmbBusinessProcess', 'Business Process', 'required');
+		$this->form_validation->set_rules('txtNoKontrolHeader', 'Nomor Kontrol', 'required');
+		$this->form_validation->set_rules('txtNoRevisiHeader', 'Nomor Revisi', 'required');
+		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
+		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['daftarBusinessProcess'] 	= 	$this->M_general->ambilDaftarBusinessProcess();
+			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/ContextDiagram/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+
+			$namaContextDiagram		= 	$this->input->post('txtCdNameHeader', TRUE);
+			$BusinessProcess 		= 	$this->input->post('cmbBusinessProcess', TRUE);
+			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader', TRUE);
+			$nomorRevisi 			= 	$this->input->post('txtNoRevisiHeader', TRUE);
+			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase($this->input->post('txtTanggalHeader', TRUE), 'tanggal');
+			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
+			$pekerjaPembuat 		= 	$this->input->post('cmbPekerjaDibuat', TRUE);
+			$pekerjaPemeriksa1 		= 	$this->input->post('cmbPekerjaDiperiksa1', TRUE);
+			$pekerjaPemeriksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2', TRUE);
+			$pekerjaPemberiKeputusan=	$this->input->post('cmbPekerjaDiputuskan', TRUE);
+			$info 					= 	$this->input->post('txaCdInfoHeader', TRUE);
+			$inputfile 				= 	'txtCdFileHeader';
+			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');			
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
+
+			if($pekerjaPemeriksa2=='' OR $pekerjaPemeriksa2==NULL OR $pekerjaPemeriksa2==' ')
+			{
+				$pekerjaPemeriksa2=NULL;
+			}
+			
+			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
+
+			if(is_null($fileDokumen))
+			{
+				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+
+			}
+			else
+			{
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			}
+
+			$fileDokumen = $this->general->cekFile($namaContextDiagram, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+
 			$data = array(
-				'cd_name' => $this->input->post('txtCdNameHeader',TRUE),
-				'cd_file' => $this->input->post('txtCdFileHeader',TRUE),
-				'no_kontrol' => $this->input->post('txtNoKontrolHeader',TRUE),
-				'no_revisi' => $this->input->post('txtNoRevisiHeader',TRUE),
-				'tanggal' => $this->input->post('txtTanggalHeader',TRUE),
-				'dibuat' => $this->input->post('txtDibuatHeader',TRUE),
-				'diperiksa_1' => $this->input->post('txtDiperiksa1Header',TRUE),
-				'diperiksa_2' => $this->input->post('txtDiperiksa2Header',TRUE),
-				'diputuskan' => $this->input->post('txtDiputuskanHeader',TRUE),
-				'jml_halaman' => $this->input->post('txtJmlHalamanHeader',TRUE),
-				'cd_info' => $this->input->post('txaCdInfoHeader',TRUE),
-				'tgl_upload' => $this->input->post('txtTglUploadHeader',TRUE),
-				'tgl_insert' => $this->input->post('txtTglInsertHeader',TRUE),
-				'bp_id' => $this->input->post('txtBpIdHeader',TRUE),
+				'cd_name' 		=> $namaContextDiagram,
+				'cd_file' 		=> $fileDokumen,
+				'no_kontrol' 	=> $nomorKontrol,
+				'no_revisi' 	=> $nomorRevisi,
+				'tanggal' 		=> $tanggalRevisi,
+				'dibuat' 		=> $pekerjaPembuat,
+				'diperiksa_1' 	=> $pekerjaPemeriksa1,
+				'diperiksa_2' 	=> $pekerjaPemeriksa2,
+				'diputuskan' 	=> $pekerjaPemberiKeputusan,
+				'jml_halaman' 	=> $jumlahHalaman,
+				'cd_info' 		=> $info,
+				'tgl_upload' 	=> $tanggalUpload,
+				'bp_id' 		=> $BusinessProcess,
     			);
 			$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);
 
-			redirect(site_url('OTHERS/ContextDiagram'));
+			redirect(site_url('DocumentStandarization/CD'));
 		}
 	}
 
@@ -196,7 +286,7 @@ class C_ContextDiagram extends CI_Controller
 
 		$this->M_contextdiagram->deleteContextDiagram($plaintext_string);
 
-		redirect(site_url('OTHERS/ContextDiagram'));
+		redirect(site_url('DocumentStandarization/CD'));
     }
 
 

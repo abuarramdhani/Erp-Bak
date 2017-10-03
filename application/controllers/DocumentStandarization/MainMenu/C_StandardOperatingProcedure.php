@@ -12,11 +12,19 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
+		$this->load->library('General');
+
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('DocumentStandarization/MainMenu/M_standardoperatingprocedure');
+		$this->load->model('DocumentStandarization/MainMenu/M_general');
+
+		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
+
+		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+
 	}
 
 	/* CHECK SESSION */
@@ -70,39 +78,91 @@ class C_StandardOperatingProcedure extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
+		$this->form_validation->set_rules('txtSopNameHeader', 'Nama Standard Operating Procedure', 'required');
+		$this->form_validation->set_rules('txtNoDocHeader', 'Nomor Kontrol', 'required');
+		$this->form_validation->set_rules('txtNoRevisiHeader', 'Nomor Revisi', 'required');
+		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
+		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['daftarContextDiagram'] 	= 	$this->M_general->ambilDaftarContextDiagram();
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/StandardOperatingProcedure/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$namaSOP 				= 	$this->input->post('txtSopNameHeader');
+			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram');			
+			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader');
+			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
+			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
+			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
+			$info 					= 	$this->input->post('txaSopInfoHeader');
+			$pekerjaDibuat 			= 	$this->input->post('cmbPekerjaDibuat');
+			$pekerjaDiperiksa1 		= 	$this->input->post('cmbPekerjaDiperiksa1');
+			$pekerjaDiperiksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2');
+			$pekerjaDiputuskan 		= 	$this->input->post('cmbPekerjaDiputuskan');
+			$tujuanSOP 				= 	$this->input->post('txaSopTujuanHeader');
+			$ruanglingkupSOP 		= 	$this->input->post('txaSopRuangLingkupHeader');
+			$referensiSOP 			= 	$this->input->post('txaSopReferensiHeader');
+			$definisiSOP 			= 	$this->input->post('txaSopDefinisiHeader');
+			$inputfile 				= 	'txtSopFileHeader';
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaSOP);
+			$fileDokumen;
+			$tanggalUpload;
+
+			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
+			{
+				$pekerjaDiperiksa2=NULL;
+			}
+
+			// echo 'sampai sini bisa';
+			// exit();
+			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
+			if(is_null($fileDokumen)==FALSE)
+			{
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			}
+
+			$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
+
 			$data = array(
-				'sop_name' => $this->input->post('txtSopNameHeader'),
-				'sop_file' => $this->input->post('txtSopFileHeader'),
-				'no_kontrol' => $this->input->post('txtNoKontrolHeader'),
-				'no_revisi' => $this->input->post('txtNoRevisiHeader'),
-				'tanggal' => $this->input->post('txtTanggalHeader'),
-				'dibuat' => $this->input->post('txtDibuatHeader'),
-				'diperiksa_1' => $this->input->post('txtDiperiksa1Header'),
-				'diperiksa_2' => $this->input->post('txtDiperiksa2Header'),
-				'diputuskan' => $this->input->post('txtDiputuskanHeader'),
-				'jml_halaman' => $this->input->post('txtJmlHalamanHeader'),
-				'sop_info' => $this->input->post('txaSopInfoHeader'),
-				'tgl_upload' => $this->input->post('txtTglUploadHeader'),
-				'tgl_insert' => $this->input->post('txtTglInsertHeader'),
-				'bp_id' => $this->input->post('txtBpIdHeader'),
-				'cd_id' => $this->input->post('txtCdIdHeader'),
-				'sop_tujuan' => $this->input->post('txaSopTujuanHeader'),
-				'sop_ruang_lingkup' => $this->input->post('txaSopRuangLingkupHeader'),
-				'sop_referensi' => $this->input->post('txaSopReferensiHeader'),
-				'sop_definisi' => $this->input->post('txaSopDefinisiHeader'),
+				'sop_name' 			=> $namaSOP,
+				'sop_file' 			=> $fileDokumen,
+				'no_kontrol' 		=> $nomorKontrol,
+				'no_revisi' 		=> $nomorRevisi,
+				'tanggal' 			=> $tanggalRevisi,
+				'dibuat' 			=> $pekerjaDibuat,
+				'diperiksa_1' 		=> $pekerjaDiperiksa1,
+				'diperiksa_2' 		=> $pekerjaDiperiksa2,
+				'diputuskan' 		=> $pekerjaDiputuskan,
+				'jml_halaman' 		=> $jumlahHalaman,
+				'sop_info' 			=> $info,
+				'tgl_upload' 		=> $tanggalUpload,
+				'tgl_insert' 		=> $this->general->ambilWaktuEksekusi(),
+				'bp_id' 			=> $BusinessProcess,
+				'cd_id' 			=> $ContextDiagram,
+				'sop_tujuan' 		=> $tujuanSOP,
+				'sop_ruang_lingkup'	=> $ruanglingkupSOP,
+				'sop_referensi' 	=> $referensiSOP,
+				'sop_definisi' 		=> $definisiSOP,
     		);
+    		/*
+    		echo '<pre>';
+    		print_r($data);
+    		echo "</pre>";
+    		exit();
+    		*/
 			$this->M_standardoperatingprocedure->setStandardOperatingProcedure($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('OTHERS/StandardOperatingProcedure'));
+			redirect(site_url('DocumentStandarization/SOP'));
 		}
 	}
 
@@ -133,38 +193,95 @@ class C_StandardOperatingProcedure extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
+		$this->form_validation->set_rules('txtSopNameHeader', 'Nama Standard Operating Procedure', 'required');
+		$this->form_validation->set_rules('txtNoDocHeader', 'Nomor Kontrol', 'required');
+		$this->form_validation->set_rules('txtNoRevisiHeader', 'Nomor Revisi', 'required');
+		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
+		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
+		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['daftarContextDiagram'] 	= 	$this->M_general->ambilDaftarContextDiagram();
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/StandardOperatingProcedure/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$namaSOP 				= 	$this->input->post('txtSopNameHeader', TRUE);
+			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram', TRUE);			
+			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader', TRUE);
+			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader', TRUE);
+			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
+			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
+			$info 					= 	$this->input->post('txaSopInfoHeader', TRUE);
+			$pekerjaDibuat 			= 	$this->input->post('cmbPekerjaDibuat', TRUE);
+			$pekerjaDiperiksa1 		= 	$this->input->post('cmbPekerjaDiperiksa1', TRUE);
+			$pekerjaDiperiksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2', TRUE);
+			$pekerjaDiputuskan 		= 	$this->input->post('cmbPekerjaDiputuskan', TRUE);
+			$tujuanSOP 				= 	$this->input->post('txaSopTujuanHeader', TRUE);
+			$ruanglingkupSOP 		= 	$this->input->post('txaSopRuangLingkupHeader', TRUE);
+			$referensiSOP 			= 	$this->input->post('txaSopReferensiHeader', TRUE);
+			$definisiSOP 			= 	$this->input->post('txaSopDefinisiHeader', TRUE);
+			$inputfile 				= 	'txtSopFileHeader';
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaSOP);
+			$fileDokumen 			= 	$this->input->post('DokumenAwal', TRUE);
+			$tanggalUpload 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)),'datetime');
+
+			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
+			{
+				$pekerjaDiperiksa2=NULL;
+			}
+
+			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
+
+			if(is_null($fileDokumen))
+			{
+				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+
+			}
+			else
+			{
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			}	
+
+			$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
+
+			$fileDokumen = $this->general->cekFile($namaSOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+
 			$data = array(
-				'sop_name' => $this->input->post('txtSopNameHeader',TRUE),
-				'sop_file' => $this->input->post('txtSopFileHeader',TRUE),
-				'no_kontrol' => $this->input->post('txtNoKontrolHeader',TRUE),
-				'no_revisi' => $this->input->post('txtNoRevisiHeader',TRUE),
-				'tanggal' => $this->input->post('txtTanggalHeader',TRUE),
-				'dibuat' => $this->input->post('txtDibuatHeader',TRUE),
-				'diperiksa_1' => $this->input->post('txtDiperiksa1Header',TRUE),
-				'diperiksa_2' => $this->input->post('txtDiperiksa2Header',TRUE),
-				'diputuskan' => $this->input->post('txtDiputuskanHeader',TRUE),
-				'jml_halaman' => $this->input->post('txtJmlHalamanHeader',TRUE),
-				'sop_info' => $this->input->post('txaSopInfoHeader',TRUE),
-				'tgl_upload' => $this->input->post('txtTglUploadHeader',TRUE),
-				'tgl_insert' => $this->input->post('txtTglInsertHeader',TRUE),
-				'bp_id' => $this->input->post('txtBpIdHeader',TRUE),
-				'cd_id' => $this->input->post('txtCdIdHeader',TRUE),
-				'sop_tujuan' => $this->input->post('txaSopTujuanHeader',TRUE),
-				'sop_ruang_lingkup' => $this->input->post('txaSopRuangLingkupHeader',TRUE),
-				'sop_referensi' => $this->input->post('txaSopReferensiHeader',TRUE),
-				'sop_definisi' => $this->input->post('txaSopDefinisiHeader',TRUE),
+				'sop_name' 			=> $namaSOP,
+				'sop_file' 			=> $fileDokumen,
+				'no_kontrol' 		=> $nomorKontrol,
+				'no_revisi' 		=> $nomorRevisi,
+				'tanggal' 			=> $tanggalRevisi,
+				'dibuat' 			=> $pekerjaDibuat,
+				'diperiksa_1' 		=> $pekerjaDiperiksa1,
+				'diperiksa_2' 		=> $pekerjaDiperiksa2,
+				'diputuskan' 		=> $pekerjaDiputuskan,
+				'jml_halaman' 		=> $jumlahHalaman,
+				'sop_info' 			=> $info,
+				'tgl_upload'		=> $tanggalUpload,
+				'bp_id' 			=> $BusinessProcess,
+				'cd_id' 			=> $ContextDiagram,
+				'sop_tujuan' 		=> $tujuanSOP,
+				'sop_ruang_lingkup' => $ruanglingkupSOP,
+				'sop_referensi' 	=> $referensiSOP,
+				'sop_definisi' 		=> $definisiSOP,
     			);
+    		
+    		// echo '<pre>';
+    		// print_r($data);
+    		// echo "</pre>";
+    		// exit();
+    					
 			$this->M_standardoperatingprocedure->updateStandardOperatingProcedure($data, $plaintext_string);
 
-			redirect(site_url('OTHERS/StandardOperatingProcedure'));
+			redirect(site_url('DocumentStandarization/SOP'));
 		}
 	}
 
@@ -206,7 +323,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 
 		$this->M_standardoperatingprocedure->deleteStandardOperatingProcedure($plaintext_string);
 
-		redirect(site_url('OTHERS/StandardOperatingProcedure'));
+		redirect(site_url('DocumentStandarization/SOP'));
     }
 
 

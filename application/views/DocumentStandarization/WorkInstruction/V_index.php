@@ -51,27 +51,27 @@
                                             <?php 
                                             	$no = 1; 
                                             	foreach($WorkInstruction as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['wi_id']);
+                                            	$encrypted_string = $this->encrypt->encode($row['kode_work_instruction']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/WorkInstruction/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/WorkInstruction/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('DocumentStandarization/WorkInstruction/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/WI/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/WI/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                	<a href="<?php echo base_url('DocumentStandarization/WI/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-												<td><?php echo $row['wi_name'] ?></td>
-												<td><?php echo $row['no_kontrol'] ?></td>
-												<td><?php echo $row['no_revisi'] ?></td>
-												<td><?php echo $row['tanggal'] ?></td>
-												<td><?php echo $row['dibuat'] ?></td>
-												<td><?php echo $row['diperiksa_1'] ?></td>
-												<td><?php echo $row['diperiksa_2'] ?></td>
-												<td><?php echo $row['diputuskan'] ?></td>
-												<td><?php echo $row['bp_id'] ?></td>
-												<td><?php echo $row['cd_id'] ?></td>
-												<td><?php echo $row['sop_id'] ?></td>
+												<td><?php echo $row['nama_work_instruction'] ?></td>
+												<td><?php echo $row['nomor_dokumen'] ?></td>
+												<td><?php echo $row['nomor_revisi'] ?></td>
+												<td><?php echo $row['tanggal_revisi'] ?></td>
+												<td><?php echo $row['pekerja_pembuat'] ?></td>
+												<td><?php echo $row['pekerja_pemeriksa_1'] ?></td>
+												<td><?php echo $row['pekerja_pemeriksa_2'] ?></td>
+												<td><?php echo $row['pekerja_pemberi_keputusan'] ?></td>
+												<td><?php echo $row['nama_business_process'] ?></td>
+												<td><?php echo $row['nama_context_diagram'] ?></td>
+												<td><?php echo $row['nama_standard_operating_procedure'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

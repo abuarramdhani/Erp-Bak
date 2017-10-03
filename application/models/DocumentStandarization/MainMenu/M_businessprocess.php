@@ -11,9 +11,81 @@ class M_businessprocess extends CI_Model
     public function getBusinessProcess($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ds.ds_business_process');
+            $ambilBusinessProcess   = " select      bp.bp_id as kode_business_process,
+                                                    bp.bp_name as nama_business_process,
+                                                    bp.no_kontrol as nomor_kontrol,
+                                                    bp.no_revisi as nomor_revisi,
+                                                    bp.tanggal as tanggal_revisi,
+                                                    bp.jml_halaman as jumlah_halaman,
+                                                    bp.dibuat as kode_pekerja_pembuat,
+                                                    bp.bp_info as info,
+                                                    (
+                                                        select  concat_ws('<br/>', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.dibuat
+                                                    ) as pekerja_pembuat,
+                                                    bp.diperiksa_1 as kode_pekerja_pemeriksa_1,
+                                                    (
+                                                        select  concat_ws('<br/>', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.diperiksa_1
+                                                    ) as pekerja_pemeriksa_1,
+                                                    bp.diperiksa_2 as kode_pekerja_pemeriksa_2,
+                                                    (
+                                                        select  concat_ws('<br/>', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.diperiksa_2
+                                                    ) as pekerja_pemeriksa_2,
+                                                    bp.diputuskan as kode_pekerja_pemberi_keputusan,        
+                                                    (
+                                                        select  concat_ws('<br/>', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.diputuskan
+                                                    ) as pekerja_pemberi_keputusan,
+                                                    bp.bp_file as file,
+                                                    to_char(bp.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                                    to_char(bp.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                        from        ds.ds_business_process as bp
+                                        order by    bp.bp_id asc, bp.tanggal desc;";
+    		$query = $this->db->query($ambilBusinessProcess);
     	} else {
-    		$query = $this->db->get_where('ds.ds_business_process', array('bp_id' => $id));
+            $ambilBusinessProcess   = " select      bp.bp_id as kode_business_process,
+                                                    bp.bp_name as nama_business_process,
+                                                    bp.no_kontrol as nomor_kontrol,
+                                                    bp.no_revisi as nomor_revisi,
+                                                    to_char(bp.tanggal, 'DD-MM-YYYY') as tanggal_revisi,
+                                                    bp.jml_halaman as jumlah_halaman,
+                                                    bp.dibuat as kode_pekerja_pembuat,
+                                                    bp.bp_info as info,
+                                                    (
+                                                        select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.dibuat
+                                                    ) as pekerja_pembuat,
+                                                    bp.diperiksa_1 as kode_pekerja_pemeriksa_1,                                                 
+                                                    (
+                                                        select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.diperiksa_1
+                                                    ) as pekerja_pemeriksa_1,
+                                                    bp.diperiksa_2 as kode_pekerja_pemeriksa_2,
+                                                    (
+                                                        select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.diperiksa_2
+                                                    ) as pekerja_pemeriksa_2,
+                                                    bp.diputuskan as kode_pekerja_pemberi_keputusan,
+                                                    (
+                                                        select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                        from    er.er_employee_all as pkj
+                                                        where   pkj.employee_id=bp.diputuskan
+                                                    ) as pekerja_pemberi_keputusan,
+                                                    bp.bp_file as file,
+                                                    to_char(bp.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                                    to_char(bp.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                        from        ds.ds_business_process as bp
+                                        where       bp.bp_id=$id;";
+    		$query = $this->db->query($ambilBusinessProcess);
     	}
 
     	return $query->result_array();

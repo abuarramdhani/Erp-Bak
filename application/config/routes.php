@@ -1245,4 +1245,9 @@ $route['DocumentStandarization/JobDeskPekerja'] 				= 'DocumentStandarization/Ma
 $route['DocumentStandarization/JobDeskPekerja/(:any)'] 		= 'DocumentStandarization/MainMenu/C_JobdeskEmployee/$1';
 $route['DocumentStandarization/JobDeskPekerja/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdeskEmployee/$1/$2';
 
+$route['DocumentStandarization/General'] 						= 'DocumentStandarization/MainMenu/C_General';
+$route['DocumentStandarization/General/(:any)'] 				= 'DocumentStandarization/MainMenu/C_General/$1';
+$route['DocumentStandarization/General/(:any)/(:any)'] 			= 'DocumentStandarization/MainMenu/C_General/$1/$2';
+
+
 //---end------------------------------ Document Controller --------------------------------------------

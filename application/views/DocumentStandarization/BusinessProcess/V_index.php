@@ -48,7 +48,7 @@
                                             <?php 
                                             	$no = 1; 
                                             	foreach($BusinessProcess as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['bp_id']);
+                                            	$encrypted_string = $this->encrypt->encode($row['kode_business_process']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
@@ -58,19 +58,14 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/BP/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('DocumentStandarization/BP/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-												<td><?php echo $row['bp_name'] ?></td>
-												<td><?php echo $row['bp_file'] ?></td>
-												<td><?php echo $row['no_kontrol'] ?></td>
-												<td><?php echo $row['no_revisi'] ?></td>
-												<td><?php echo $row['tanggal'] ?></td>
-												<td><?php echo $row['dibuat'] ?></td>
-												<td><?php echo $row['diperiksa_1'] ?></td>
-												<td><?php echo $row['diperiksa_2'] ?></td>
-												<td><?php echo $row['diputuskan'] ?></td>
-												<td><?php echo $row['jml_halaman'] ?></td>
-												<td><?php echo $row['bp_info'] ?></td>
-												<td><?php echo $row['tgl_upload'] ?></td>
-												<td><?php echo $row['tgl_insert'] ?></td>
+												<td><?php echo $row['nama_business_process'] ?></td>
+												<td><?php echo $row['nomor_kontrol'] ?></td>
+												<td><?php echo $row['nomor_revisi'] ?></td>
+												<td><?php echo $row['tanggal_revisi'] ?></td>
+												<td><?php echo $row['pekerja_pembuat'] ?></td>
+												<td><?php echo $row['pekerja_pemeriksa_1'] ?></td>
+												<td><?php echo $row['pekerja_pemeriksa_2'] ?></td>
+												<td><?php echo $row['pekerja_pemberi_keputusan'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
