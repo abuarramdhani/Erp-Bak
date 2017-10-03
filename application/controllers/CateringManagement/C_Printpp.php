@@ -114,15 +114,22 @@ class C_Printpp extends CI_Controller
 			$kodeBarang = $this->input->post('txtPpKodebarangHeader', true);
 
 			foreach ($kodeBarang as $key => $value) {
+				$kodebarang = $this->input->post('txtPpKodebarangHeader');
+				$jumlahpp = $this->input->post('txtPpJumlahHeader');
+				$satuan = $this->input->post('txtPpSatuanHeader');
+				$namabarang =$this->input->post('txtPpNamaBarangHeader');
+				$nbd = $this->input->post('txtPpNbdHeader');
+				$keterangan = $this->input->post('txtPpKeteranganHeader');
+				$supplier = $this->input->post('txtPpSupplierHeader');
 				$lines = array(
 					'pp_id' => $header_id,
-					'pp_kode_barang' => $this->input->post('txtPpKodebarangHeader')[$key],
-					'pp_jumlah' => $this->input->post('txtPpJumlahHeader')[$key],
-					'pp_satuan' => $this->input->post('txtPpSatuanHeader')[$key],
-					'pp_nama_barang' => $this->input->post('txtPpNamaBarangHeader')[$key],
-					'pp_nbd' => date("Y-m-d",strtotime($this->input->post('txtPpNbdHeader')[$key])),
-					'pp_keterangan' => $this->input->post('txtPpKeteranganHeader')[$key],
-					'pp_supplier' => $this->input->post('txtPpSupplierHeader')[$key],
+					'pp_kode_barang' => $kodebarang[$key],
+					'pp_jumlah' => $jumlahpp[$key],
+					'pp_satuan' => $satuan[$key],
+					'pp_nama_barang' => $namabarang[$key],
+					'pp_nbd' => date("Y-m-d",strtotime($nbd[$key])),
+					'pp_keterangan' => $keterangan[$key],
+					'pp_supplier' => $supplier[$key],
 	    		);
 				$this->M_printpp->createPrintppDetail($lines);
 			}
@@ -198,30 +205,36 @@ class C_Printpp extends CI_Controller
 			$kodeBarang = $this->input->post('txtPpKodebarangHeader', true);
 
 			foreach ($kodeBarang as $key => $value) {
+				$kodebarang = $this->input->post('txtPpKodebarangHeader');
+				$jumlahpp = $this->input->post('txtPpJumlahHeader');
+				$satuan = $this->input->post('txtPpSatuanHeader');
+				$namabarang =$this->input->post('txtPpNamaBarangHeader');
+				$nbd = $this->input->post('txtPpNbdHeader');
+				$keterangan = $this->input->post('txtPpKeteranganHeader');
+				$supplier = $this->input->post('txtPpSupplierHeader');
 				if($this->input->post('txtPpId')[$key] == null || $this->input->post('txtPpId')[$key] == '') {
 					$lines = array(
 						'pp_id' => $plaintext_string,
-						'pp_kode_barang' => $this->input->post('txtPpKodebarangHeader')[$key],
-						'pp_jumlah' => $this->input->post('txtPpJumlahHeader')[$key],
-						'pp_satuan' => $this->input->post('txtPpSatuanHeader')[$key],
-						'pp_nama_barang' => $this->input->post('txtPpNamaBarangHeader')[$key],
-						'pp_nbd' => date("Y-m-d",strtotime($this->input->post('txtPpNbdHeader')[$key])),
-						'pp_keterangan' => $this->input->post('txtPpKeteranganHeader')[$key],
-						'pp_supplier' => $this->input->post('txtPpSupplierHeader')[$key],
+						'pp_kode_barang' => $kodebarang[$key],
+						'pp_jumlah' => $jumlahpp[$key],
+						'pp_satuan' => $satuan[$key],
+						'pp_nama_barang' => $namabarang[$key],
+						'pp_nbd' => date("Y-m-d",strtotime($nbd[$key])),
+						'pp_keterangan' => $keterangan[$key],
+						'pp_supplier' => $supplier[$key],
 		    		);
 					$this->M_printpp->createPrintppDetail($lines);
 				} else {
 					$id_lines = str_replace(array('-', '_', '~'), array('+', '/', '='), $this->input->post('txtPpDetailId')[$key]);
 					$id_lines = $this->encrypt->decode($id_lines);
-					
 					$lines = array(
-						'pp_kode_barang' => $this->input->post('txtPpKodebarangHeader')[$key],
-						'pp_jumlah' => $this->input->post('txtPpJumlahHeader')[$key],
-						'pp_satuan' => $this->input->post('txtPpSatuanHeader')[$key],
-						'pp_nama_barang' => $this->input->post('txtPpNamaBarangHeader')[$key],
-						'pp_nbd' => date("Y-m-d",strtotime($this->input->post('txtPpNbdHeader')[$key])),
-						'pp_keterangan' => $this->input->post('txtPpKeteranganHeader')[$key],
-						'pp_supplier' => $this->input->post('txtPpSupplierHeader')[$key],
+						'pp_kode_barang' => $kodebarang[$key],
+						'pp_jumlah' => $jumlahpp[$key],
+						'pp_satuan' => $satuan[$key],
+						'pp_nama_barang' => $namabarang[$key],
+						'pp_nbd' => date("Y-m-d",strtotime($nbd[$key])),
+						'pp_keterangan' => $keterangan[$key],
+						'pp_supplier' => $supplier[$key],
 		    		);
 					$this->M_printpp->updatePrintppDetail($lines, $id_lines);
 				}
