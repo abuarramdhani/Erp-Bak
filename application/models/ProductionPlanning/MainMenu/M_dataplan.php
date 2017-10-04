@@ -14,9 +14,9 @@ class M_dataplan extends CI_Model {
   		$this->db->from('pp.pp_daily_plans');
   		$this->db->order_by('priority, created_date', 'ASC');
     }elseif (!$sid == FALSE){
-      $this->db->select('*');
-      $this->db->from('pp.pp_daily_plans');
-      $this->db->where("created_date between
+      $this->db->select("dp.*,(case when dp.achieve_qty>=dp.need_qty then 'OK' else 'NOT OK' end) status");
+      $this->db->from('pp.pp_daily_plans dp');
+      $this->db->where("dp.created_date between
     (
       case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
         then to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
@@ -29,8 +29,8 @@ class M_dataplan extends CI_Model {
         then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
         else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
       END
-    ) AND section_id =", $sid);
-      $this->db->order_by('priority, created_date', 'ASC');
+    ) AND dp.section_id =", $sid);
+      $this->db->order_by('dp.priority, status, dp.created_date', 'ASC');
    	}elseif (!$id == FALSE) {
       $this->db->select('*');
       $this->db->from('pp.pp_daily_plans');
