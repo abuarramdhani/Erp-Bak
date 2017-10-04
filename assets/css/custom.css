@@ -588,12 +588,17 @@ table.t_riwayat_mutasi td {
     color: #fff;
 }
 
-.priority-1 {
+.plan-undone-high {
     background-color: #E74C3C;
     color: #fff;
 }
 
-.priority-normal {
+.plan-undone-normal {
+    background-color: #e77b3c;
+    color: #fff;
+}
+
+.plan-done {
     background-color: #1bc171;
     color: #fff;
 }
