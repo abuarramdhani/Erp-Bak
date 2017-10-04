@@ -1208,3 +1208,50 @@ $route['CastingCost/EditRequest/(:any)']	= 'CastingCost/MainMenu/C_Casting/edit_
 $route['CastingCost/edit/savecostmachine']  = 'CastingCost/MainMenu/C_Casting/save_cost_machine';
 $route['CastingCost/edit/savecostelectric'] = 'CastingCost/MainMenu/C_Casting/save_cost_electric';
 $route['CastingCost/edit/export_excel'] 	= 'CastingCost/MainMenu/C_ExportExcel/excel';
+
+//---start---------------------------- Document Controller --------------------------------------------
+
+$route['DocumentStandarization'] 								= 'DocumentStandarization/MainMenu/C_BusinessProcess';
+
+$route['DocumentStandarization/BP'] 							= 'DocumentStandarization/MainMenu/C_BusinessProcess';
+$route['DocumentStandarization/BP/(:any)'] 						= 'DocumentStandarization/MainMenu/C_BusinessProcess/$1';
+$route['DocumentStandarization/BP/(:any)/(:any)'] 				= 'DocumentStandarization/MainMenu/C_BusinessProcess/$1/$2';
+
+$route['DocumentStandarization/CD'] 							= 'DocumentStandarization/MainMenu/C_ContextDiagram';
+$route['DocumentStandarization/CD/(:any)'] 						= 'DocumentStandarization/MainMenu/C_ContextDiagram/$1';
+$route['DocumentStandarization/CD/(:any)/(:any)'] 				= 'DocumentStandarization/MainMenu/C_ContextDiagram/$1/$2';
+
+$route['DocumentStandarization/SOP'] 							= 'DocumentStandarization/MainMenu/C_StandardOperatingProcedure';
+$route['DocumentStandarization/SOP/(:any)'] 					= 'DocumentStandarization/MainMenu/C_StandardOperatingProcedure/$1';
+$route['DocumentStandarization/SOP/(:any)/(:any)'] 				= 'DocumentStandarization/MainMenu/C_StandardOperatingProcedure/$1/$2';
+
+$route['DocumentStandarization/WI'] 							= 'DocumentStandarization/MainMenu/C_WorkInstruction';
+$route['DocumentStandarization/WI/(:any)'] 						= 'DocumentStandarization/MainMenu/C_WorkInstruction/$1';
+$route['DocumentStandarization/WI/(:any)/(:any)'] 				= 'DocumentStandarization/MainMenu/C_WorkInstruction/$1/$2';
+
+$route['DocumentStandarization/COP'] 							= 'DocumentStandarization/MainMenu/C_CodeOfPractice';
+$route['DocumentStandarization/COP/(:any)'] 					= 'DocumentStandarization/MainMenu/C_CodeOfPractice/$1';
+$route['DocumentStandarization/COP/(:any)/(:any)'] 				= 'DocumentStandarization/MainMenu/C_CodeOfPractice/$1/$2';
+
+// $route['DocumentStandarization/FlowProcess'] 								= 'DocumentStandarization/MainMenu/C_FlowProcess';
+// $route['DocumentStandarization/FlowProcess/(:any)'] 						= 'DocumentStandarization/MainMenu/C_FlowProcess/$1';
+// $route['DocumentStandarization/FlowProcess/(:any)/(:any)'] 					= 'DocumentStandarization/MainMenu/C_FlowProcess/$1/$2';
+
+$route['DocumentStandarization/MasterJobDesk'] 						= 'DocumentStandarization/MainMenu/C_Jobdesk';
+$route['DocumentStandarization/MasterJobDesk/(:any)'] 				= 'DocumentStandarization/MainMenu/C_Jobdesk/$1';
+$route['DocumentStandarization/MasterJobDesk/(:any)/(:any)'] 			= 'DocumentStandarization/MainMenu/C_Jobdesk/$1/$2';
+
+$route['DocumentStandarization/DocumentJobDesk'] 				= 'DocumentStandarization/MainMenu/C_JobdeskDocument';
+$route['DocumentStandarization/DocumentJobDesk/(:any)'] 		= 'DocumentStandarization/MainMenu/C_JobdeskDocument/$1';
+$route['DocumentStandarization/DocumentJobDesk/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdeskDocument/$1/$2';
+
+$route['DocumentStandarization/JobDeskPekerja'] 				= 'DocumentStandarization/MainMenu/C_JobdeskEmployee';
+$route['DocumentStandarization/JobDeskPekerja/(:any)'] 		= 'DocumentStandarization/MainMenu/C_JobdeskEmployee/$1';
+$route['DocumentStandarization/JobDeskPekerja/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdeskEmployee/$1/$2';
+
+$route['DocumentStandarization/General'] 						= 'DocumentStandarization/MainMenu/C_General';
+$route['DocumentStandarization/General/(:any)'] 				= 'DocumentStandarization/MainMenu/C_General/$1';
+$route['DocumentStandarization/General/(:any)/(:any)'] 			= 'DocumentStandarization/MainMenu/C_General/$1/$2';
+
+
+//---end------------------------------ Document Controller --------------------------------------------
