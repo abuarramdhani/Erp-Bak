@@ -28,9 +28,9 @@
                                     <div class="panel-body">
                                         <div class="row">
 											<div class="form-group">
-                                                <label for="txtCdNameHeader" class="control-label col-lg-4">Nama Context Diagram</label>
+                                                <label for="txtCdNameHeader" class="control-label col-lg-4 ">Nama Context Diagram</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
@@ -52,16 +52,16 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtNoKontrolHeader" class="control-label col-lg-4">Nomor Kontrol</label>
+                                                <label for="txtNoKontrolHeader" class="control-label col-lg-4 ">Nomor Kontrol</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
+                                                <label for="txtNoRevisiHeader" class="control-label col-lg-4 ">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 

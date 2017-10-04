@@ -30,21 +30,21 @@
 											<div class="form-group">
                                                 <label for="txtBpNameHeader" class="control-label col-lg-4">Nama Business Process</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtBpNameHeader" id="txtBpNameHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtBpNameHeader" id="txtBpNameHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNoKontrolHeader" class="control-label col-lg-4">Nomor Kontrol</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 

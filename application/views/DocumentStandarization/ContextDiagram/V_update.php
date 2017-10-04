@@ -33,7 +33,7 @@
                                             <div class="form-group">
                                                 <label for="txtCdNameHeader" class="control-label col-lg-4">Nama Context Diagram</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control" required="" value="<?php echo $headerRow['nama_context_diagram'];?>" />
+                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control bubbletip-character sensitive-input" required="" value="<?php echo $headerRow['nama_context_diagram'];?>" />
                                                 </div>
                                             </div>
 
@@ -62,14 +62,14 @@
                                             <div class="form-group">
                                                 <label for="txtNoKontrolHeader" class="control-label col-lg-4">Nomor Kontrol</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control" required="" value="<?php echo $headerRow['nomor_kontrol'];?>" />
+                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control bubbletip-character sensitive-input" required="" value="<?php echo $headerRow['nomor_kontrol'];?>" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" required="" value="<?php echo $headerRow['nomor_revisi'];?>" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" required="" value="<?php echo $headerRow['nomor_revisi'];?>" />
                                                 </div>
                                             </div>
 

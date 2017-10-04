@@ -221,13 +221,13 @@ class C_BusinessProcess extends CI_Controller
 			// echo 'sampai sini bisa';
 			// exit();
 			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
-			if(is_null($fileDokumen)==FALSE)
+			if(!is_null($fileDokumen))
 			{
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
 			}
 			else
-			{
-				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();		
+			{	
+				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			}
 
 			$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
@@ -245,7 +245,6 @@ class C_BusinessProcess extends CI_Controller
 				'jml_halaman' 	=> $jumlahHalaman,
 				'bp_info' 		=> $info,
 				'tgl_upload' 	=> $tanggalUpload,
-				'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
     		);
 			$this->M_businessprocess->updateBusinessProcess($data, $plaintext_string);
 

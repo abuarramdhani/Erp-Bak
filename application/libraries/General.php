@@ -73,13 +73,18 @@ class general
     				$fileDokumen						= filter_var($namafile.".".$ekstensiDokumen, FILTER_SANITIZE_URL); 
 
     			}
-
+    			$fileDokumen 	= 	str_replace('&', '_', $fileDokumen);
     			// $nama_STNK 							= filter_var($_FILES[$inputfile]['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
     			if(is_null($direktoriUpload)==FALSE)
     			{
 
     				$config['upload_path'] 			= $direktoriUpload;
+
+    				if(!file_exists($direktoriUpload))
+    				{
+    					mkdir($direktoriUpload, 0777, true);
+    				}
 
     			}
     			else

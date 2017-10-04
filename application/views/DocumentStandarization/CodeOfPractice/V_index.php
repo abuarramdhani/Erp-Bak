@@ -29,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-codeOfPractice" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-COP" style="font-size:12px; overflow-x: auto;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -52,7 +52,7 @@
                                             <?php 
                                             	$no = 1; 
                                             	foreach($CodeOfPractice as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['cop_id']);
+                                            	$encrypted_string = $this->encrypt->encode($row['kode_code_of_practice']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
@@ -62,17 +62,18 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/COP/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('DocumentStandarization/COP/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-												<td><?php echo $row['cop_name'] ?></td>
-												<td><?php echo $row['no_kontrol'] ?></td>
-												<td><?php echo $row['no_revisi'] ?></td>
-												<td><?php echo $row['tanggal'] ?></td>
-												<td><?php echo $row['dibuat'] ?></td>
-												<td><?php echo $row['diperiksa_1'] ?></td>
-												<td><?php echo $row['diperiksa_2'] ?></td>
-												<td><?php echo $row['diputuskan'] ?></td>
-												<td><?php echo $row['bp_id'] ?></td>
-												<td><?php echo $row['cd_id'] ?></td>
-												<td><?php echo $row['sop_id'] ?></td>
+												<td><?php echo $row['nama_code_of_practice'] ?></td>
+												<td><?php echo $row['nomor_dokumen'] ?></td>
+												<td><?php echo $row['nomor_revisi'] ?></td>
+												<td><?php echo $row['tanggal_revisi'] ?></td>
+												<td><?php echo $row['pekerja_pembuat'] ?></td>
+												<td><?php echo $row['pekerja_pemeriksa_1'] ?></td>
+												<td><?php echo $row['pekerja_pemeriksa_2'] ?></td>
+												<td><?php echo $row['pekerja_pemberi_keputusan'] ?></td>
+                                                <td><?php echo $row['jumlah_halaman'];?></td>
+												<td><?php echo $row['nama_business_process'] ?></td>
+												<td><?php echo $row['nama_context_diagram'] ?></td>
+												<td><?php echo $row['nama_standard_operating_procedure'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

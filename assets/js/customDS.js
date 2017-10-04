@@ -16,7 +16,7 @@
 				$('#dataTables-workInstruction').DataTable({
 					"lengthChange": false
 				});
-				$('#dataTables-codeOfPractice').DataTable({
+				$('#dataTables-COP').DataTable({
 					"lengthChange": false
 				});
 				$('#dataTables-flowProcess').DataTable({
@@ -294,7 +294,7 @@
 //			{
 				$('.bubbletip-character').qtip({
 					content: {
-						text: 'Jangan gunakan karakter "$&+/:;=?@<>#%{}|\^~[]`"!'
+						text: 'Jangan gunakan karakter "$+/:;=?@<>#%{}|\^~[]`"!'
 					},
 					style: {
 						def: true

@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtWiNameHeader" class="control-label col-lg-4">Nama Work Instruction</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtWiNameHeader" id="txtWiNameHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtWiNameHeader" id="txtWiNameHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
@@ -54,14 +54,14 @@
                                             <div class="form-group">
                                                 <label for="txtNoDocHeader" class="control-label col-lg-4">Nomor Dokumen</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control" required="" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" required="" />
                                                 </div>
                                             </div>
 
@@ -107,7 +107,7 @@
 											<div class="form-group">
                                                 <label for="txtDiperiksa2Header" class="control-label col-lg-4">Diperiksa 2</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbPekerjaPemeriksa2" name="cmbPekerjaDiperiksa2" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                    <select id="cmbPekerjaPemeriksa2" name="cmbPekerjaDiperiksa2" class="select2" data-placeholder="Pilih" style="width: 100%">
                                                     </select>
                                                 </div>
                                             </div>
