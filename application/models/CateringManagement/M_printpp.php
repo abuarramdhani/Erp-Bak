@@ -16,26 +16,21 @@ class M_printpp extends CI_Model
     		// $query = $this->db->get_where('ga.ga_printpp', array('pp_id' => $id));
     		$query = $this->db->query("
     			select
-    				pp.*,
-    				er1.employee_name as kadept,
-    				er2.employee_name as direksi,
-    				er3.employee_name as kasie,
-    				er4.employee_name as kaunit,
-    				er5.employee_name as siepembelian
-    			from
-    				ga.ga_printpp pp,
-    				er.er_employee_all er1,
-    				er.er_employee_all er2,
-    				er.er_employee_all er3,
-    				er.er_employee_all er4,
-    				er.er_employee_all er5
-    			where
-    				cast(pp.pp_kadept as integer) = er1.employee_id
-					and cast(pp.pp_direksi as integer) = er2.employee_id
-					and cast(pp.pp_kasie as integer) = er3.employee_id
-					and cast(pp.pp_kaunit as integer) = er4.employee_id
-					and cast(pp.pp_siepembelian as integer) = er5.employee_id
-    				and pp.pp_id = ".$id
+					pp.*,
+					er1.employee_name as kadept,
+					er2.employee_name as direksi,
+					er3.employee_name as kasie,
+					er4.employee_name as kaunit,
+					er5.employee_name as siepembelian
+				from
+					ga.ga_printpp pp
+				left join er.er_employee_all er1 on er1.employee_id = cast(pp.pp_kadept as integer)
+				left join er.er_employee_all er2 on er2.employee_id = cast(pp.pp_direksi as integer)
+				left join er.er_employee_all er3 on er3.employee_id = cast(pp.pp_kasie as integer)
+				left join er.er_employee_all er4 on er4.employee_id = cast(pp.pp_kaunit as integer)
+				left join er.er_employee_all er5 on er5.employee_id = cast(pp.pp_siepembelian as integer)
+				where
+					pp.pp_id = ".$id
     		);
     	}
 
