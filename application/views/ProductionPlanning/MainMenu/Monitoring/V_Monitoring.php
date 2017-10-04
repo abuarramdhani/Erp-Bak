@@ -108,10 +108,8 @@
                                                             foreach ($highPriority[$i] as $hpl ){
                                                                 $status = '';
                                                                 if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
-                                                                    $status = 'OK';
                                                                     $classStatus = "plan-done";
                                                                 }else{
-                                                                    $status = 'NOT OK';
                                                                     $classStatus = "plan-undone-high";
                                                                 }
                                                             ?>
@@ -148,7 +146,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <?php
-                                                                            echo $status;
+                                                                            echo $hpl['status'];
                                                                         ?>
                                                                     </td>
                                                                 </tr>
@@ -167,10 +165,8 @@
                                                             foreach ($normalPriority[$i] as $npl ){
                                                                 $status = '';
                                                                 if ($npl['achieve_qty'] >= $npl['need_qty']) {
-                                                                    $status = 'OK';
                                                                     $classStatus = "plan-done";
                                                                 }else{
-                                                                    $status = 'NOT OK';
                                                                     $classStatus = "plan-undone-normal";
                                                                 }
                                                             ?>
@@ -210,7 +206,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <?php
-                                                                            echo $status;
+                                                                            echo $npl['status'];
                                                                         ?>
                                                                     </td>
                                                                 </tr>
@@ -325,10 +321,11 @@
                 getSectionMon();
             }
             , 600000);
+
             var showhide = setInterval(function(){
                 showHideNormalPlanning();
             }
-            , 10000);
+            , 15000);
         </script>
     </body>
 </html>
