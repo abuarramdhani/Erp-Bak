@@ -186,11 +186,11 @@
 	</tr>
 	<tr>
 		<td style="border:1px solid black;font-size: 7px;padding-left: 10px">Lembar Merah -> Seksi Pemesan</td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php echo date("d M Y", strtotime($value['pp_tgl_siepembelian']));?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php echo date("d M Y", strtotime($value['pp_tgl_direksi']));?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php echo date("d M Y", strtotime($value['pp_tgl_kadept']));?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php echo date("d M Y", strtotime($value['pp_tgl_kaunit']));?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php echo date("d M Y", strtotime($value['pp_tgl_kasie']));?></td>
+		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_siepembelian'] != null) {echo date("d M Y", strtotime($value['pp_tgl_siepembelian'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_direksi'] != null) {echo date("d M Y", strtotime($value['pp_tgl_direksi'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_kadept'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kadept'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_kaunit'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kaunit'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_kasie'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kasie'])); }?></td>
 	</tr>
 	<tr>
 		<td colspan="6" style="border:1px solid black;font-size: 10px;padding-bottom: 10px;padding-left: 10px"><b>Catatan Sie Pembelian : </b><?php echo $value['pp_catatan'];?></td>

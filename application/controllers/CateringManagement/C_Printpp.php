@@ -95,16 +95,16 @@ class C_Printpp extends CI_Controller
 				'pp_cost_center' => $this->input->post('cmbPpCostCenterHeader'),
 				'pp_kat_barang' => $this->input->post('cmbPpKatBarangHeader'),
 				'pp_sub_invent' => 'EXP',
-				'pp_siepembelian' => $this->input->post('cmbPpSiepembelianHeader'),
-				'pp_tgl_siepembelian' => date("Y-m-d",strtotime($this->input->post('txtPpTglSiepembelianHeader'))),
-				'pp_direksi' => $this->input->post('cmbPpDireksiHeader'),
-				'pp_tgl_direksi' => date("Y-m-d",strtotime($this->input->post('txtPpTglDireksiHeader'))),
-				'pp_kadept' => $this->input->post('cmbPpKadeptHeader'),
-				'pp_tgl_kadept' => date("Y-m-d",strtotime($this->input->post('txtPpTglKadeptHeader'))),
-				'pp_kaunit' => $this->input->post('cmbPpKaunitHeader'),
-				'pp_tgl_kaunit' => date("Y-m-d",strtotime($this->input->post('txtPpTglKaunitHeader'))),
-				'pp_kasie' => $this->input->post('cmbPpKasieHeader'),
-				'pp_tgl_kasie' => date("Y-m-d",strtotime($this->input->post('txtPpTglKasieHeader'))),
+				'pp_siepembelian' => ($this->input->post('cmbPpSiepembelianHeader') == '' ? null : $this->input->post('cmbPpSiepembelianHeader')),
+				'pp_tgl_siepembelian' => ($this->input->post('txtPpTglSiepembelianHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglSiepembelianHeader')))),
+				'pp_direksi' => ($this->input->post('cmbPpDireksiHeader') == '' ? null : $this->input->post('cmbPpDireksiHeader')),
+				'pp_tgl_direksi' => ($this->input->post('txtPpTglDireksiHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglDireksiHeader')))),
+				'pp_kadept' => ($this->input->post('cmbPpKadeptHeader') == '' ? null : $this->input->post('cmbPpKadeptHeader')),
+				'pp_tgl_kadept' => ($this->input->post('txtPpTglKadeptHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKadeptHeader')))),
+				'pp_kaunit' => ($this->input->post('cmbPpKaunitHeader') == '' ? null : $this->input->post('cmbPpKaunitHeader')),
+				'pp_tgl_kaunit' => ($this->input->post('txtPpTglKaunitHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKaunitHeader')))),
+				'pp_kasie' => ($this->input->post('cmbPpKasieHeader') == '' ? null : $this->input->post('cmbPpKasieHeader')),
+				'pp_tgl_kasie' => ($this->input->post('txtPpTglKasieHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKasieHeader')))),
 				'pp_catatan' => $this->input->post('txaPpCatatanHeader'),
     		);
 
@@ -160,7 +160,6 @@ class C_Printpp extends CI_Controller
 		/* HEADER DATA */
 		$data['Printpp'] = $this->M_printpp->getPrintpp($plaintext_string);
 		$data['PrintppDetail'] = $this->M_printpp->getPrintppDetail($plaintext_string);
-
 		/* LINES DATA */
 
 		/* HEADER DROPDOWN DATA */
@@ -188,16 +187,16 @@ class C_Printpp extends CI_Controller
 				'pp_branch' => $this->input->post('cmbPpBranchHeader',TRUE),
 				'pp_cost_center' => $this->input->post('cmbPpCostCenterHeader',TRUE),
 				'pp_kat_barang' => $this->input->post('cmbPpKatBarangHeader',TRUE),
-				'pp_siepembelian' => $this->input->post('cmbPpSiepembelianHeader',TRUE),
-				'pp_tgl_siepembelian' => date("Y-m-d", strtotime($this->input->post('txtPpTglSiepembelianHeader',TRUE))),
-				'pp_direksi' => $this->input->post('cmbPpDireksiHeader',TRUE),
-				'pp_tgl_direksi' => date("Y-m-d", strtotime($this->input->post('txtPpTglDireksiHeader',TRUE))),
-				'pp_kadept' => $this->input->post('cmbPpKadeptHeader',TRUE),
-				'pp_tgl_kadept' => date("Y-m-d", strtotime($this->input->post('txtPpTglKadeptHeader',TRUE))),
-				'pp_kaunit' => $this->input->post('cmbPpKaunitHeader',TRUE),
-				'pp_tgl_kaunit' => date("Y-m-d", strtotime($this->input->post('txtPpTglKaunitHeader',TRUE))),
-				'pp_kasie' => $this->input->post('cmbPpKasieHeader',TRUE),
-				'pp_tgl_kasie' => date("Y-m-d", strtotime($this->input->post('txtPpTglKasieHeader',TRUE))),
+				'pp_siepembelian' => ($this->input->post('cmbPpSiepembelianHeader') == '' ? null : $this->input->post('cmbPpSiepembelianHeader')),
+				'pp_tgl_siepembelian' => ($this->input->post('txtPpTglSiepembelianHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglSiepembelianHeader')))),
+				'pp_direksi' => ($this->input->post('cmbPpDireksiHeader') == '' ? null : $this->input->post('cmbPpDireksiHeader')),
+				'pp_tgl_direksi' => ($this->input->post('txtPpTglDireksiHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglDireksiHeader')))),
+				'pp_kadept' => ($this->input->post('cmbPpKadeptHeader') == '' ? null : $this->input->post('cmbPpKadeptHeader')),
+				'pp_tgl_kadept' => ($this->input->post('txtPpTglKadeptHeader') == '' ? null : date("Y-m-d", strtotime($this->input->post('txtPpTglKadeptHeader',TRUE)))),
+				'pp_kaunit' => ($this->input->post('cmbPpKaunitHeader') == '' ? null : $this->input->post('cmbPpKaunitHeader')),
+				'pp_tgl_kaunit' => ($this->input->post('txtPpTglKaunitHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKaunitHeader')))),
+				'pp_kasie' => ($this->input->post('cmbPpKasieHeader') == '' ? null : $this->input->post('cmbPpKasieHeader')),
+				'pp_tgl_kasie' => ($this->input->post('txtPpTglKasieHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKasieHeader')))),
 				'pp_catatan' => $this->input->post('txaPpCatatanHeader',TRUE),
     			);
 			$this->M_printpp->updatePrintpp($temp, $plaintext_string);

@@ -30,7 +30,7 @@ class M_printpp extends CI_Model
 				left join er.er_employee_all er4 on er4.employee_id = cast(pp.pp_kaunit as integer)
 				left join er.er_employee_all er5 on er5.employee_id = cast(pp.pp_siepembelian as integer)
 				where
-					pp.pp_id = ".$id
+					pp.pp_id = '".$id."'"
     		);
     	}
 

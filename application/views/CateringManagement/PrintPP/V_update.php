@@ -165,7 +165,7 @@
 											<div class="form-group">
                                                 <label for="txtPpTglSiepembelianHeader" class="control-label col-lg-6">Tgl Sie Pembelian</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglSiepembelianHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglSiepembelianHeader" style="width:100%" value="<?php echo date('d M Y', strtotime($headerRow['pp_tgl_siepembelian'])) ?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglSiepembelianHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglSiepembelianHeader" style="width:100%" value="<?php if($headerRow['pp_tgl_siepembelian'] != null) {echo date('d M Y', strtotime($headerRow['pp_tgl_siepembelian'])); } ?>"/>
                                                 </div>
                                             </div>
 
@@ -181,7 +181,7 @@
 											<div class="form-group">
                                                 <label for="txtPpTglDireksiHeader" class="control-label col-lg-6">Tgl Direksi</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglDireksiHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglDireksiHeader" style="width:100%" value="<?php echo date('d M Y', strtotime($headerRow['pp_tgl_direksi'])) ?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglDireksiHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglDireksiHeader" style="width:100%" value="<?php if($headerRow['pp_tgl_direksi'] != null) {echo date('d M Y', strtotime($headerRow['pp_tgl_direksi'])); } ?>"/>
                                                 </div>
                                             </div>
 
@@ -200,7 +200,7 @@
 											<div class="form-group">
                                                 <label for="txtPpTglKadeptHeader" class="control-label col-lg-6">Tgl Kadept</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglKadeptHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglKadeptHeader" style="width:100%" value="<?php echo date('d M Y', strtotime($headerRow['pp_tgl_kadept'])) ?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglKadeptHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglKadeptHeader" style="width:100%" value="<?php if($headerRow['pp_tgl_kadept'] != null) {echo date('d M Y', strtotime($headerRow['pp_tgl_kadept'])); } ?>"/>
                                                 </div>
                                             </div>
 
@@ -216,7 +216,7 @@
 											<div class="form-group">
                                                 <label for="txtPpTglKaunitHeader" class="control-label col-lg-6">Tgl Kaunit</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglKaunitHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglKaunitHeader" style="width:100%" value="<?php echo date('d M Y', strtotime($headerRow['pp_tgl_kaunit'])) ?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglKaunitHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglKaunitHeader" style="width:100%" value="<?php if($headerRow['pp_tgl_kaunit'] != null) { echo date('d M Y', strtotime($headerRow['pp_tgl_kaunit'])); } ?>"/>
                                                 </div>
                                             </div>
 
@@ -232,7 +232,9 @@
 											<div class="form-group">
                                                 <label for="txtPpTglKasieHeader" class="control-label col-lg-6">Tgl Kasie</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglKasieHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglKasieHeader" style="width:100%" value="<?php echo date('d M Y', strtotime($headerRow['pp_tgl_kasie'])) ?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpTglKasieHeader" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpTglKasieHeader" style="width:100%" value="<?php
+                                                    if($headerRow['pp_tgl_kasie'] != null) {
+                                                      echo date('d M Y', strtotime($headerRow['pp_tgl_kasie'])); }?>"/>
                                                 </div>
                                             </div>
 
@@ -355,7 +357,6 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    
                                 </div>
                             </div> 
                         </div>

@@ -164,6 +164,7 @@
 		$('.pp-date').datepicker({
     		"autoclose": true,
     		"todayHiglight": true,
+    		"allowClear" : true,
     		"format": 'dd M yyyy'
       	});	
 
