@@ -96,14 +96,17 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
 function showHideNormalPlanning(){
     var ckBegin = Number($('input[name="checkpointBegin"]').val());
     var ckEnd = Number($('input[name="checkpointEnd"]').val());
-    var loopEnd = ckEnd;
-    console.log(ckBegin);
-    console.log(ckEnd);
-    // if (ckBegin <= 6) {}
-    // for (var i = ckBegin; i < loopEnd; i++) {
-    //     console.log(i);
-    //     console.log(ckEnd--);
-    // }
+    if (ckBegin <= 6 && ckBegin < ckEnd) {
+        $('tbody#normalPriority tr:first').fadeOut("slow", function() {
+            $('tbody#normalPriority tr:first').attr('data-showstat', '0');
+            var tempElem = $('tbody#normalPriority tr').get(0);
+            $('tbody#normalPriority tr').get(0).remove();
+            $('tbody#normalPriority').append(tempElem);
+            var tempShowId = $( "tbody#normalPriority tr[data-showstat*='0']:first" ).attr('data-showid');
+            $( "tbody#normalPriority tr[data-showid='"+tempShowId+"']" ).fadeIn("fast");
+            $( "tbody#normalPriority tr[data-showid='"+tempShowId+"']" ).attr('data-showstat', '1');
+        });
+    }
 }
 
 function getDailyPlan(sectionId){
