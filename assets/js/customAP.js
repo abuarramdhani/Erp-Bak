@@ -132,7 +132,7 @@ $(document).ready(function() {
 			"bSort" : false,
 			"searching": false,
 			"bLengthChange": false,
-			"scrollX": true
+			"scrollX": true 
 		});
 	}
 	
