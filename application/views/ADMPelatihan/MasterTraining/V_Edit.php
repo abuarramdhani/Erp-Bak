@@ -45,16 +45,19 @@
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Standar Nilai</label>
-								<div class="col-lg-8">
-									<input name="txtBatas" class="form-control" placeholder="Standar Nilai" value="<?php echo $tm['limit'] ?>" onkeypress="return isNumberKey(event)" required >
+								<div class="col-lg-4">
+									<input name="txtBatas" class="form-control"  type="number" placeholder="Standar Nilai Staff" value="<?php echo $tm['limit_1'] ?>" onkeypress="return isNumberKey(event)">
+								</div>
+								<div class="col-lg-4">
+									<input name="txtBatas2" class="form-control"  type="number" placeholder="Standar Nilai Non-Staff" value="<?php echo $tm['limit_2'] ?>" onkeypress="return isNumberKey(event)">
 								</div>
 							</div>
 						</div>
-						<div class="row" style="margin: 10px 10px">
+						<div class="row" style="margin: 10px 10px" hidden>
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Status Pelatihan</label>
 								<div class="col-lg-8">
-									<select name="slcStatus" class="select4 form-control" data-placeholder="Status Pelatihan" id="slcStatus" required>
+									<select name="slcStatus" class="select4 form-control" data-placeholder="Status Pelatihan" id="slcStatus">
 										<?php
 											$status1='';$status2='';
 											if($tm['status']==0){$status1='selected';}
@@ -81,6 +84,14 @@
 											<option <?php echo $questopt ?> value="<?php echo $qs['questionnaire_id']?>"><?php echo $qs['questionnaire_title'] ?></option>
 										<?php }?>
 									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label"> Kapasitas Kelas </label>
+								<div class="col-lg-8">
+									<input class="form-control" name="kapasitas"  type="number"  placeholder="Kapasitas Peserta" value="<?php echo $tm['kapasitas_kelas'] ?>" required>
 								</div>
 							</div>
 						</div>

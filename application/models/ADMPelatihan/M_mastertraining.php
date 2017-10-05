@@ -8,7 +8,7 @@ class M_mastertraining extends CI_Model {
 		
 		//HALAMAN INDEX
 		public function GetTraining(){
-			$sql = "select pt.training_id , pt.training_name , pt.limit from pl.pl_master_training pt order by status asc";
+			$sql = "select pt.training_id , pt.training_name , pt.limit_1, pt.kapasitas_kelas, pt.limit_2 from pl.pl_master_training pt order by status asc";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -17,11 +17,11 @@ class M_mastertraining extends CI_Model {
 		public function GetObjective($term){
 			if ($term === FALSE) {
 				$sql = "
-					SELECT * FROM pl.pl_master_training_purpose ORDER BY purpose ASC
+					SELECT purpose FROM pl.pl_master_training_purpose GROUP BY purpose
 				";
 			}else{
 				$sql = "
-					SELECT * FROM pl.pl_master_training_purpose WHERE (purpose LIKE '%$term%') ORDER BY purpose ASC 
+					SELECT purpose FROM pl.pl_master_training_purpose WHERE (purpose LIKE '%$term%') GROUP BY purpose 
 				";
 			}
 			$query = $this->db->query($sql);
@@ -67,13 +67,27 @@ class M_mastertraining extends CI_Model {
 		}
 
 		//ADD DATA
-		public function AddMaster($tname,$limit,$questionnaires){
+		public function AddMaster($tname,$limit=FALSE,$questionnaires,$kapasitas,$limit2=FALSE){
+			if ($limit==FALSE) {
 			$sql = "
 				insert into pl.pl_master_training
-				(training_name,\"limit\",status,questionnaire) values
-				('$tname',$limit,0,'$questionnaires')";
+				(training_name,status,questionnaire,kapasitas_kelas,limit_2) values
+				('$tname',0,'$questionnaires','$kapasitas','$limit2')";
+			}elseif ($limit2==FALSE) {
+				$sql = "
+				insert into pl.pl_master_training
+				(training_name,limit_1,status,questionnaire,kapasitas_kelas) values
+				('$tname','$limit',0,'$questionnaires','$kapasitas')";
+			}else{
+				$sql = "
+				insert into pl.pl_master_training
+				(training_name,limit_1,status,questionnaire,kapasitas_kelas,limit_2) values
+				('$tname','$limit',0,'$questionnaires','$kapasitas','$limit2')";
+			}
 			$query = $this->db->query($sql);
-			return;
+
+			$insert_id = $this->db->insert_id();
+			return  $insert_id;
 		}
 		
 
@@ -92,15 +106,41 @@ class M_mastertraining extends CI_Model {
 		}
 
 		//UPDATE DATA
-		public function UpdateTraining($id,$tname,$limit,$status,$questionnaires){
-			$sql = "
-				update pl.pl_master_training set
-					training_name='$tname',
-					status='$status',
-					questionnaire='$questionnaires',
-					\"limit\"='$limit'
-				where training_id=$id
-			";
+		public function UpdateTraining($id,$tname,$limit=false,$status,$questionnaires,$kapasitas,$limit2=false){
+			if ($limit==FALSE) {
+				$sql = "
+					update pl.pl_master_training set
+						training_name='$tname',
+						status='$status',
+						kapasitas_kelas='$kapasitas',
+						questionnaire='$questionnaires',
+						limit_2='$limit2',
+						limit_1=null
+					where training_id=$id
+				";	
+			} elseif ($limit2==FALSE) {
+				$sql = "
+					update pl.pl_master_training set
+						training_name='$tname',
+						status='$status',
+						kapasitas_kelas='$kapasitas',
+						questionnaire='$questionnaires',
+						limit_1='$limit',
+						limit_2=null
+					where training_id=$id
+				";
+			}else{
+				$sql = "
+					update pl.pl_master_training set
+						training_name='$tname',
+						status='$status',
+						kapasitas_kelas='$kapasitas',
+						questionnaire='$questionnaires',
+						limit_1='$limit',
+						limit_2='$limit2'
+					where training_id=$id
+				";
+			}
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -108,7 +148,7 @@ class M_mastertraining extends CI_Model {
 		// GET OBJECT
 		public function pp($objective)
 		{
-			$sql = "select count(*) from pl.pl_master_training_purpose WHERE purpose LIKE '%$objective%'; ";
+			$sql = "select count(*) from pl.pl_master_training_purpose WHERE purpose LIKE '%$objective%' GROUP BY purpose; ";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

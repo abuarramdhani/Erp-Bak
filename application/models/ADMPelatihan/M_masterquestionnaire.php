@@ -108,7 +108,7 @@ class M_masterquestionnaire extends CI_Model {
 			$sqlUpdateData3		=	$this->db->query($queryUpdateData3);
 		}
 
-		public function insertDes($Q_id,$Des,$SgID)
+		public function insertDes($Q_id,$Des)
 		{
 			$sql="
 				INSERT into pl.pl_master_questionnaire_segment
@@ -118,6 +118,8 @@ class M_masterquestionnaire extends CI_Model {
 			";
 			$this->db->query($sql);
 
+			$last_insert_id = $this->db->insert_id();
+			return $last_insert_id;
 		}
 		
 		public function insertStDes($Q_id,$SgID,$TDes)

@@ -1,29 +1,29 @@
 <head>
   <title><?php echo $unit_name.' - '.$noinduk.' - '.$namapkj;?></title>
 </head>
-    <div style="margin-left:20px;margin-right:20px;">
+    <div style="margin-left:20px;margin-right:20px; ">
         <div class="row" style="margin-left:3px;margin-right:3px;">
             <table style="margin: 0 auto;width: 100%">
                 <tr>
                     <td colspan='11' align="left">
-                        <span style="padding: 10px;">LAPORAN PRODUKSI <?php echo $unit_name;?></span><br>
+                        <span style="padding: 10px; font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">LAPORAN PRODUKSI <?php echo $unit_name;?></span><br>
                     </td>
                 </tr>
                 <tr>
                     <td colspan='4' align="left">
-                        <span style="padding: 10px;">Nama Opr : <?php echo $namapkj;?></span>
+                        <span style="padding: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">Nama Opr : <?php echo $namapkj;?></span>
                     </td>
                     <td colspan='4' align="left">
-                        <span style="padding: 10px;">No. Induk : <?php echo $noinduk;?></span>
+                        <span style="padding: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">No. Induk : <?php echo $noinduk;?></span>
                     </td>
                     <td colspan='4' align="left">
-                        <span style="padding: 10px;">Kelas : <?php echo $kelas;?></span>
+                        <span style="padding: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">Kelas : <?php echo $kelas;?></span>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="row" style="margin-left:3px;margin-right:3px;" border="1">
-            <table style="margin: 0 auto;width: 100%;border: 1px solid black;" border="1">
+            <table style="margin: 0 auto;width: 100%;border: 1px solid black; font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;" border="1">
                 <thead>
                     <tr >
                         <th  class="text-center" width="17%">

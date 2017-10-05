@@ -107,20 +107,15 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['record'] = $this->M_record->GetRecordId($id);
-		
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
+
 		//MENENTUKAN SOURCE OBJECTIVE BERDASARKAN STATUS PELATIHAN (PAKET/NON-PAKET)
 		$trainingdt		= $data['record'][0];
 		$trainingid 	= $trainingdt['training_id'];
 		$trainingst		= $this->M_record->GetTrainingType($trainingid);
 		$status 		= $trainingst[0]->status;
-
-		if($status==0){
-			$data['objective'] = $this->M_record->GetObjectiveId($id);
-		}elseif($status==1){
-			$data['objective'] = $this->M_record->GetMasterObjectiveId($trainingid);
-		}
-		//------------------------------------------------------------------------//
-
+		
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 
@@ -131,7 +126,7 @@ class C_Record extends CI_Controller {
 	}
 
 	//HALAMAN EDIT
-	public function edit($id){
+	public function Edit($id){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -143,18 +138,70 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['ptctype'] = $this->M_penjadwalan->GetParticipantType();
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['record'] = $this->M_record->GetRecordId($id);
-		$data['objective'] = $this->M_record->GetObjectiveId($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['id'] 	= $id;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
+
 	}
 
+	public function EditSave($id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$namapelatihan 	= $this->input->post('txtNamaPelatihan', TRUE);
+		$tanggal 		= str_replace('/', '-', $this->input->post('txtTanggalPelaksanaan', TRUE));
+		$tanggal 		= date('Y-m-d', strtotime($tanggal));
+		$waktuawal 		= $this->input->post('txtWaktuMulai', TRUE);
+		$waktuakhir 	= $this->input->post('txtWaktuSelesai', TRUE);
+		$ruangan 		= $this->input->post('slcRuang', TRUE);
+		$evaluasi		= $this->input->post('slcEvaluasi', TRUE);
+		$evaluasi2 		= implode(',', $evaluasi);
+		$jmlpeserta		= $this->input->post('txtJumlahPeserta', TRUE);
+
+		$kirim = array(
+			'scheduling_name' 	=> $namapelatihan,
+			'date'			  	=> $tanggal,
+			'start_time'		=> $waktuawal,
+			'end_time'			=> $waktuakhir,
+			'room' 				=> $ruangan,
+			'evaluation'		=> $evaluasi2,
+			'participant_number'=> $jmlpeserta 
+			);
+
+		$participant	= $this->input->post('slcEmployee', TRUE);
+		$j=0;
+			foreach($participant as $loop){
+				$dataemployee	= $this->M_record->GetEmployeeData($loop);
+					foreach ($dataemployee as $de) {
+						$noind		= $de['employee_code'];
+						$name		= $de['employee_name'];
+					}
+				$data_participant[$j] = array(
+					'scheduling_id' 	=> $id,
+					'participant_name' 	=> $name,
+					'noind' 			=> $noind,
+					'status'			=> '0',
+				);
+				if( !empty($participant[$j]) ){
+					$this->M_record->AddParticipant($data_participant[$j]);
+				}
+				$j++;
+			}
+		$this->M_record->UpdateSchedule($kirim, $id);
+		redirect('ADMPelatihan/Record/Detail/'.$id);
+	}
 
 	//HALAMAN KONFIRMASI
 	public function confirm($id){
@@ -194,16 +241,17 @@ class C_Record extends CI_Controller {
 
 		//---GET NOINDUK
 
-
+		$staf = array();
+		$nonstaf = array();
 		$data['record'] = $this->M_record->GetRecordId($id);
-		$data['objective'] = $this->M_record->GetObjectiveId($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
-		$data['purpose'] = $this->M_record->GetPurpose($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ADMPelatihan/Record/V_Confirm',$data);
+		$this->load->view('ADMPelatihan/Record/V_Confirm',$data,$staf,$nonstaf);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -257,6 +305,11 @@ class C_Record extends CI_Controller {
 		redirect('ADMPelatihan/Record');
 	}
 
+	public function deleteParticipant($pid,$schID)
+	{
+		$this->M_record->deleteParticipant($pid, $schID);
+	}
+
 	//FILTER RECORD
 	public function FilterRecord(){
 		
@@ -275,5 +328,20 @@ class C_Record extends CI_Controller {
 		}else{
 			redirect('');
 		}
+	}
+
+	public function GetNoInduk(){
+		$term = $this->input->get("term");
+		$data = $this->M_record->GetNoInduk($term);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{"NoInduk":"'.$data['employee_code'].'","Nama":"'.$data['employee_name'].'"}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
 	}
 }

@@ -43,8 +43,11 @@
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Standar Nilai</label>
-								<div class="col-lg-8">
-									<input name="txtBatas" class="form-control"  type="number" placeholder="Standar Nilai" required >
+								<div class="col-lg-4">
+									<input name="txtBatas" class="form-control"  type="number" placeholder="Standar Nilai Staff" >
+								</div>
+								<div class="col-lg-4">
+									<input name="txtBatas2" class="form-control"  type="number" placeholder="Standar Nilai Non Staff" >
 								</div>
 							</div>
 						</div>
@@ -70,6 +73,14 @@
 										<option value="<?php echo $qs['questionnaire_id']?>"><?php echo $qs['questionnaire_title'] ?></option>
 										<?php }?>
 									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label"> Kapasitas Kelas </label>
+								<div class="col-lg-8">
+									<input class="form-control" name="kapasitas"  type="number"  placeholder="Kapasitas Peserta" required>
 								</div>
 							</div>
 						</div>

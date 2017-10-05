@@ -558,3 +558,138 @@ $(document).ready(function(){
 	});
 
 });
+
+// ---------------------------------------------LPPB[start]-------------------------------------------
+$(document).ready(function(){
+	$('#lppbList').dataTable({
+		"bSort" : true,
+		"searching": true,
+		"bLengthChange": false,
+		"scrollX": false,
+    	"paging": false
+	});
+
+	$('#txtReceiptDate').daterangepicker({
+		autoclose: true,
+		locale: {
+            format: 'DD/MMM/YYYY'
+        }
+	});
+
+	$('#btnSearch').click(function(){
+		$('#formSearch').submit();
+	});
+
+	$('#slcSupplierlppb').select2({
+		placeholder: 'supplier'
+	});
+
+	$('#slcInventory').select2();
+
+	$('button').click(function(){
+		var table = $('#lppbList').DataTable();
+		table
+			.search('')
+			.columns().search('')
+			.draw();
+	});
+
+	$('.chkTerima').each(function(){
+		var idterim = $(this).attr('name');
+		$(this).click(function(){
+			var mon_names = new Array("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+			var d = new Date();
+			var date = d.getDate();
+			var month = d.getMonth();
+			var year = d.getFullYear().toString().substr(-2);
+			var today = date+'-'+mon_names[month]+'-'+year;
+			var idfortgl = idterim.replace(/[A-Za-z]/g, '');
+			if ($(this).is(':checked')) {
+				$('td#tgl'+idfortgl).html(today);
+			}else{
+				$('td#tgl'+idfortgl).html('');
+			};
+		});
+	});
+
+	$('#btnSavelppb').click(function(){  
+		$.ajax({
+			type: "POST",
+			url: baseurl + "AccountPayables/Lppb/savelppb", 
+			data: $('form#formExport').serialize(),
+			cache:false,
+			success: 
+				function(data){
+					console.log(data);
+					alert('data telah disimpan')  //as a debugging message.
+				}
+		});
+		return false;
+		
+	});
+
+});
+// ---------------------------------------------LPPB[end]-------------------------------------------
+
+// ---------------------------------------------PREPAYEMENT[START]-----------------------------------------
+$(document).ready(function(){
+	$('#dateFrom').datepicker({
+		autoclose:true
+	});
+
+	$('#dummyForm_prp').submit(function(e){
+		e.preventDefault();
+	});
+
+	$('#btnViewPrp').click(function(){
+		$('#btnViewPrp').attr('disabled', 'disabled');
+		$("#viewPrpData").css('opacity', '0.5');
+		$('#loadingPrpData').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="65px"/>');
+		var tanggal = $('#dateFrom').val();
+		var SiteSupp = $('#siteSupp').val();
+			$.ajax({
+				type: "POST",
+				data:{
+						tanggal:tanggal,
+						SiteSupp:SiteSupp,
+					},
+				url:baseurl+"AccountPayables/Prepayment/viewPrepayment/",
+				success:function(result)
+				{
+					$('#btnViewPrp').removeAttr('disabled', 'disabled');
+					$("#viewPrpData").css('opacity', '1');
+					$('#loadingPrpData').html('');
+					$("#viewPrpData").html(result);
+
+					$('.amt').moneyFormat();
+					$('.amtIDR').moneyFormat();
+					
+					$('#showPrpData').dataTable({
+						"bSort" : true,
+						"searching": true,
+						"bLengthChange": false,
+						"sScrollX": true,
+						"paging": true
+					});
+
+					$('html, body').animate({
+						scrollTop: $("#viewPrpData").offset().top
+					}, 500);
+				},
+				error: function (xhr, ajaxOptions, thrownError) 
+				{
+					$('#btnViewPrp').removeAttr('disabled', 'disabled');
+					alert('Ajax Error\n'+xhr.status+' ['+xhr.readyState+']'+thrownError);
+					$('#loadingPrpData').html('');
+					$("#viewPrpData").css('opacity', '1');
+					$("#viewPrpData").html('<h1>AJAX ERROR</h1>'+thrownError);
+					console.log(xhr.responseText);
+					$('html, body').animate({
+						scrollTop: $("#viewPrpData").offset().top
+					}, 200);
+				}
+			});
+
+	});
+});
+// ---------------------------------------------PREPAYEMENT[END]-------------------------------------------

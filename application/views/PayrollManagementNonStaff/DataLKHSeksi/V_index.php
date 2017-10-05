@@ -57,6 +57,12 @@
                                                 <th class="text-center" width="100px">Status</th>
                                                 <th class="text-center" width="200px">Kode Barang Target Sementara</th>
                                                 <th class="text-center" width="200px">Kode Proses Target Sementara</th>
+                                                <th class="text-center" width="200px">Dies</th>
+                                                <th class="text-center" width="200px">Non Dies</th>
+                                                <th class="text-center" width="200px">Stopper</th>
+                                                <th class="text-center" width="200px">Pisau</th>
+                                                <th class="text-center" width="200px">Lain-Lain</th>
+                                                <th class="text-center" width="200px">Non Setting</th>
 											</tr>
                                         </thead>
                                     </table>
