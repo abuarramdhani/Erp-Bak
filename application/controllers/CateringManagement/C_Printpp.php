@@ -76,7 +76,7 @@ class C_Printpp extends CI_Controller
 		$data['CostCenter'] = $this->M_printpp->getCostCenter();
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtPpNoProposalHeader', 'pp no proposal', 'required');
+		$this->form_validation->set_rules('txtNoPpHeader', 'no proposal', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -169,7 +169,7 @@ class C_Printpp extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtPpNoProposalHeader', 'pp no proposal', 'required');
+		$this->form_validation->set_rules('txtNoPpHeader', 'no proposal', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
