@@ -62,8 +62,13 @@
                                                 <div class="col-md-6 text-right">
                                                     <b>
                                                         ACHIEVEMENT =
-                                                        <?php echo "75"; ?>
-                                                        %
+                                                        <?php
+                                                            if (!empty($secAchieve[$i])) {
+                                                                echo $secAchieve[$i][0]['percentage'];
+                                                            }else{
+                                                                echo "0 %";
+                                                            }
+                                                        ?>
                                                     </b>
                                                 </div>
                                                 <table class="table mon-fab-table" data-page-length='5'>
@@ -233,11 +238,11 @@
                                             <table class="table table-bordered">
                                             	<tr>
                                             		<td></td>
-                                            		<td class="text-center">Jumlah Job</td>
-                                            		<td class="text-center">Jumlah Part (Pcs)</td>
+                                            		<td class="text-center">JUMLAH JOB</td>
+                                            		<td class="text-center">JUMLAH PART (PCS)</td>
                                             	</tr>
                                             	<tr>
-                                            		<td>Job Released</td>
+                                            		<td>JOB RELEASED</td>
                                             		<td class="text-right">
                                                         <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
                                                     </td>
@@ -246,7 +251,7 @@
                                                     </td>
                                             	</tr>
                                             	<tr>
-                                            		<td>Job Pending Picklist</td>
+                                            		<td>JOB PENDING PICKLIST</td>
                                             		<td class="text-right">
                                                         <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
                                                     </td>
@@ -255,7 +260,7 @@
                                                     </td>
                                             	</tr>
                                             	<tr>
-                                            		<td>Total Job Complete 1 bulan</td>
+                                            		<td>TOTAL JOB COMPLETE 1 BULAN</td>
                                             		<td class="text-right">
                                                         <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
                                                     </td>
@@ -264,7 +269,7 @@
                                                     </td>
                                             	</tr>
                                             	<tr>
-                                            		<td>Job Terlama</td>
+                                            		<td>JOB TERLAMA</td>
                                             		<td colspan="2">
                                             			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
                                             		</td>
@@ -289,13 +294,13 @@
                                 			<b>ACHIEVEMENT ALL FAB</b>
                                 		</td>
                                 	</tr>
-                                    <?php foreach ($section as $sc) { ?>
+                                    <?php foreach ($achieveAll as $aa) {?>
                                         <tr>
                                             <td style="width: 70%">
-                                                <b><?php echo $sc['section_name']; ?></b>
+                                                <b><?php echo $aa['section_name']; ?></b>
                                             </td>
                                             <td style="width: 30%">
-                                                <b>85%</b>
+                                                <b><?php echo $aa['percentage']; ?></b>
                                             </td>
                                         </tr>
                                     <?php } ?>
