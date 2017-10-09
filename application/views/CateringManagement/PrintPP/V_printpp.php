@@ -74,25 +74,25 @@
 </table>
 <table style="width:100%;border: 1px solid black;">
 	<tr>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Kode Barang</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Qty</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 13%"><b>Satuan</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 18%"><b>Nama Barang</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 13%"><b>NBD</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 23%"><b>Keterangan</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 13%"><b>Supplier</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 20%"><b>Kode Barang</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Qty</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Satuan</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 28%"><b>Nama Barang</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 22%"><b>NBD</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Keterangan</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Supplier</b></td>
 	</tr>
 	<?php $count=0; ?>
 		<?php foreach ($PrintppDetail as $key): ?>
 			<?php $count++; ?>
 				<tr>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo $key['pp_kode_barang'];?></td>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo $key['pp_jumlah'];?></td>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo $key['pp_satuan'];?></td>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo $key['pp_nama_barang'];?></td>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo date("d M Y", strtotime($key['pp_nbd']));?></td>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo $key['pp_keterangan'];?></td>
-					<td style="border:1px solid black;font-size: 8px;text-align: center;"><?php echo $key['pp_supplier'];?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_kode_barang'];?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_jumlah'];?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_satuan'];?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_nama_barang'];?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo date("d M Y", strtotime($key['pp_nbd']));?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_keterangan'];?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_supplier'];?></td>
 				</tr>
 	<?php endforeach; ?>
 	<?php if($count <= 14) : ?>
