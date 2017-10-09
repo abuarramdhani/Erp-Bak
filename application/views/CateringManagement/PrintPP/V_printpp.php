@@ -15,22 +15,22 @@
 		<td colspan="2" style="border:1px solid black;font-size: 10px;padding-left: 10px;"><b>Tgl Dibuat : </b><?php echo date("d M Y", strtotime($value['tgl_buat']));?></td>
 	</tr>
 	<tr>
-		<td colspan="3" style="border:1px solid black;font-size: 8px; padding-left: 10px;"><b>Kepada Sie Pembelian : </b>
+		<td colspan="3" style="border:1px solid black;font-size: 10px; padding-left: 10px;"><b>Kepada Sie Pembelian : </b>
 			<?php if($value['pp_kepada']==1) {
 					echo "SUPPLIER";
 				}else{
 					echo "SUBKONTRAKTOR";}?>
 		</td>
-		<td colspan="2" style="border:1px solid black;font-size: 8px; padding-left: 10px;"><b>Jenis PP : </b>
+		<td colspan="2" style="border:1px solid black;font-size: 10px; padding-left: 10px;"><b>Jenis PP : </b>
 			<?php if($value['pp_jenis']==1) {
 					echo "ASET";
 				}else{
 					echo "NON ASET";}?>
 		</td>
-		<td colspan="3" style="border:1px solid black;font-size: 8px; padding-left: 10px;"><b>No. Proposal Pengadaan Aset : </b><?php echo $value['pp_no_proposal'];?></td>
+		<td colspan="3" style="border:1px solid black;font-size: 10px; padding-left: 10px;"><b>No. Proposal Pengadaan Aset : </b><?php echo $value['pp_no_proposal'];?></td>
 	</tr>
 	<tr>
-		<td rowspan="2" colspan="2" style="border:1px solid black;font-size: 8px;text-align: center">
+		<td rowspan="2" colspan="2" style="border:1px solid black;font-size: 10px;text-align: center">
 		<b>Seksi Pemesan : </b>
 		<p style="margin-bottom: 0;">
 			<?php foreach ($Section as $seksi) {
@@ -39,7 +39,7 @@
 			}}?>
 		</p>
 		</td>
-		<td rowspan="2" style="border:1px solid black;font-size: 8px;text-align: center">
+		<td rowspan="2" style="border:1px solid black;font-size: 10px;text-align: center">
 		<b>Branch : </b>
 		<p style="margin-bottom: 0;">
 			<?php foreach ($Branch as $cab ) {
@@ -48,7 +48,7 @@
 			}} ?>
 		</p>
 		</td>
-		<td rowspan="2" style="border:1px solid black;font-size: 8px;text-align: center">
+		<td rowspan="2" style="border:1px solid black;font-size: 10px;text-align: center">
 		<b>Cost Center : </b>
 		<p style="margin-bottom: 0;">
 			<?php foreach ($CostCenter as $coser) {
@@ -57,7 +57,7 @@
 			}} ?>
 		</p>
 		</td>
-		<td rowspan="2" colspan="3" style="border:1px solid black;font-size: 8px;text-align: center">
+		<td rowspan="2" colspan="3" style="border:1px solid black;font-size: 10px;text-align: center">
 		<b>Barang Untuk : </b>
 		<p style="margin-bottom: 0;">
 			<?php if($value['pp_kat_barang']==1) {
@@ -66,7 +66,7 @@
 					echo "NON PRODUKSI";}?>
 		</p>
 		</td>
-		<td rowspan="2" style="border:1px solid black;font-size: 8px;text-align: center">
+		<td rowspan="2" style="border:1px solid black;font-size: 10px;text-align: center">
 		<b>Sub Inventory : </b>
 		<p style="margin-bottom: 0;"><?php echo $value['pp_sub_invent'];?></p>
 		</td>
