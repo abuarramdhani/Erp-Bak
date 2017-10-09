@@ -169,6 +169,67 @@ class M_general extends CI_Model
         return $queryCekContextDiagram->result();
     }
 
+    public function ambilSemuaDokumen()
+    {
+        $ambilSemuaDokumen  = " select      'Business Process' as jenis_dokumen,
+                                            'BP' as inisial_jenis_dokumen,
+                                            bp.bp_id as kode_dokumen,
+                                            bp.bp_name as nama_dokumen,
+                                            bp.no_kontrol as nomor_dokumen,
+                                            bp.no_revisi as nomor_revisi,
+                                            bp.tanggal as tanggal_revisi,
+                                            to_char(bp.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                            to_char(bp.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                from        ds.ds_business_process as bp
+                                union
+                                select      'Context Diagram' as jenis_dokumen,
+                                            'CD' as inisial_jenis_dokumen,
+                                            cd.cd_id as kode_dokumen,
+                                            cd.cd_name as nama_dokumen,
+                                            cd.no_kontrol as nomor_dokumen,
+                                            cd.no_revisi as nomor_revisi,
+                                            cd.tanggal as tanggal_revisi,
+                                            to_char(cd.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                            to_char(cd.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                from        ds.ds_context_diagram as cd
+                                union
+                                select      'Standard Operating Procedure' as jenis_dokumen,
+                                            'SOP' as inisial_jenis_dokumen,
+                                            sop.sop_id as kode_dokumen,
+                                            sop.sop_name as nama_dokumen,
+                                            sop.no_kontrol as nomor_dokumen,
+                                            sop.no_revisi as nomor_revisi,
+                                            sop.tanggal as tanggal_revisi,
+                                            to_char(sop.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                            to_char(sop.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                from        ds.ds_standard_operating_procedure as sop
+                                union
+                                select      'Work Instruction' as jenis_dokumen,
+                                            'WI' as inisial_jenis_dokumen,
+                                            wi.wi_id as kode_dokumen,
+                                            wi.wi_name as nama_dokumen,
+                                            wi.no_kontrol as nomor_dokumen,
+                                            wi.no_revisi as nomor_revisi,
+                                            wi.tanggal as tanggal_revisi,
+                                            to_char(wi.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                            to_char(wi.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                from        ds.ds_work_instruction as wi
+                                union
+                                select      'Code of Practice' as jenis_dokumen,
+                                            'COP' as inisial_jenis_dokumen,
+                                            cop.cop_id as kode_dokumen,
+                                            cop.cop_name as nama_dokumen,
+                                            cop.no_kontrol as nomor_dokumen,
+                                            cop.no_revisi as nomor_revisi,
+                                            cop.tanggal as tanggal_revisi,
+                                            to_char(cop.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                            to_char(cop.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
+                                from        ds.ds_code_of_practice as cop
+                                order by    nomor_dokumen;";
+        $queryAmbilSemuaDokumen     =   $this->db->query($ambilSemuaDokumen);
+        return $queryAmbilSemuaDokumen->result_array();
+    }
+
 }
 
 /* End of file M_jobdesk.php */

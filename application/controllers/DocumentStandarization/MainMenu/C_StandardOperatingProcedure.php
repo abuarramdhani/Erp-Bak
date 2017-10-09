@@ -113,7 +113,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$referensiSOP 			= 	$this->input->post('txaSopReferensiHeader');
 			$definisiSOP 			= 	$this->input->post('txaSopDefinisiHeader');
 			$inputfile 				= 	'txtSopFileHeader';
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaSOP);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaSOP);
 			$fileDokumen;
 			$tanggalUpload;
 
@@ -228,7 +228,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$referensiSOP 			= 	$this->input->post('txaSopReferensiHeader', TRUE);
 			$definisiSOP 			= 	$this->input->post('txaSopDefinisiHeader', TRUE);
 			$inputfile 				= 	'txtSopFileHeader';
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaSOP);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaSOP);
 			$fileDokumen 			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)),'datetime');
 
