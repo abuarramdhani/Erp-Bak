@@ -174,10 +174,73 @@ class M_monitoring extends CI_Model {
                     AND dp.created_date between
                       date_trunc('month', current_date)
                       and
-                      (date_trunc('month', current_date) + interval '1 month') 
+                      (date_trunc('month', current_date) + interval '1 month')
                 group by 1,2,3
                 order by 1) a";
     
+    $query = $this->db->query($sql);
+    return $query->result_array();
+  }
+
+  public function getAchievementAllFab(){
+    $sql = "SELECT ps.section_id,
+              ps.section_name,
+              COALESCE(round(
+                cast((
+                select sum(dp.achieve_qty)
+                from pp.pp_daily_plans dp
+                where
+                  dp.created_date between
+                    date_trunc('month', current_date)
+                    and
+                    current_timestamp
+                  and dp.section_id = ps.section_id 
+                group by dp.section_id
+                ) as decimal) / cast((
+                select pmp.monthly_plan_quantity
+                from pp.pp_monthly_plans pmp
+                where to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
+                  and pmp.section_id = ps.section_id
+                ) as decimal) *100
+              ,2),0) || ' %' percentage
+            from
+              pp.pp_section ps
+            order by ps.section_id";
+    $query = $this->db->query($sql);
+    return $query->result_array();
+  }
+
+  public function getDailyAchieve($id)
+  {
+    $sql = "  SELECT
+                dp.section_id,
+                coalesce(round(
+                  cast((
+                    sum(dp.achieve_qty)
+                  ) as decimal) / cast((
+                    sum(dp.need_qty)
+                  ) as decimal) * 100
+                ,2),0) || ' %' percentage
+              from
+                pp.pp_daily_plans dp
+              where
+                dp.created_date between
+                  (
+                    case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+                      then to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
+                      else to_timestamp((to_char(TIMESTAMP 'yesterday', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
+                    END
+                  )
+                  and
+                  (
+                    case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+                      then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                      else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                    END
+                  )
+                and dp.section_id = $id
+              group by dp.section_id";
+
     $query = $this->db->query($sql);
     return $query->result_array();
   }
