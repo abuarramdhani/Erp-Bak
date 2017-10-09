@@ -50,14 +50,18 @@ class C_Monitoring extends CI_Controller {
     {
     	$user_id 	= $this->session->userid;
     	$section 	= $this->input->post('section');
-    	$datplan 	= array();
+        $datplan    = array();
+    	$datDailyAchieve= array();
     	$datsec 	= array();
     	foreach ($section as $val) {
-    		$datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
+            $datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
+    		$datDailyAchieve[] = $this->M_monitoring->getDailyAchieve($val);
     	}
 
         $data['section']        = $this->M_dataplan->getSection();
+        $data['secAchieve']     = $datDailyAchieve;
         $data['infoJob']        = $this->M_monitoring->getInfoJobs();
+        $data['achieveAll']     = $this->M_monitoring->getAchievementAllFab();
         $data['selectedSection']= $section;
         
         $data['highPriority']= array();
