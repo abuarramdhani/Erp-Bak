@@ -107,7 +107,7 @@ class C_CodeOfPractice extends CI_Controller
 			$pekerjaDiperiksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2');
 			$pekerjaDiputuskan 		= 	$this->input->post('cmbPekerjaDiputuskan');
 			$inputfile 				= 	'txtCopFileHeader';
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaCOP);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaCOP);
 			$fileDokumen;
 			$tanggalUpload;
 
@@ -225,7 +225,7 @@ class C_CodeOfPractice extends CI_Controller
 			$pekerjaDiperiksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2');
 			$pekerjaDiputuskan 		= 	$this->input->post('cmbPekerjaDiputuskan');
 			$inputfile 				= 	'txtCopFileHeader';
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaCOP);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaCOP);
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');
 

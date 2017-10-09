@@ -111,7 +111,7 @@ class C_BusinessProcess extends CI_Controller
 			$pekerjaDiperiksa2 		= 	$this->input->post('cmbPekerjaDiperiksa2');
 			$pekerjaDiputuskan 		= 	$this->input->post('cmbPekerjaDiputuskan');
 			$inputfile 				= 	'txtBpFileHeader';
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
 			$fileDokumen;
 			$tanggalUpload;
 
@@ -210,7 +210,7 @@ class C_BusinessProcess extends CI_Controller
 			$inputfile 				= 	'txtBpFileHeader';
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
 
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')

@@ -108,7 +108,7 @@ class C_ContextDiagram extends CI_Controller
 			$pekerjaPemberiKeputusan=	$this->input->post('cmbPekerjaDiputuskan');
 			$info 					= 	$this->input->post('txaCdInfoHeader');
 			$inputfile 				= 	'txtCdFileHeader';
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
 			$fileDokumen;
 			$tanggalUpload;
 
@@ -206,7 +206,7 @@ class C_ContextDiagram extends CI_Controller
 			$inputfile 				= 	'txtCdFileHeader';
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');			
-			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev.'.'_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
+			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
 
 			if($pekerjaPemeriksa2=='' OR $pekerjaPemeriksa2==NULL OR $pekerjaPemeriksa2==' ')
 			{

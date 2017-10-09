@@ -1207,7 +1207,10 @@ $route['CastingCost/edit/export_excel'] 	= 'CastingCost/MainMenu/C_ExportExcel/e
 
 //---start---------------------------- Document Controller --------------------------------------------
 
-$route['DocumentStandarization'] 								= 'DocumentStandarization/MainMenu/C_BusinessProcess';
+$route['DocumentStandarization'] 								= 'DocumentStandarization/MainMenu/C_AllDoc';
+
+$route['DocumentStandarization/AllDoc'] 						= 'DocumentStandarization/MainMenu/C_AllDoc';
+$route['DocumentStandarization/AllDoc/(:any)'] 					= 'DocumentStandarization/MainMenu/C_AllDoc/$1';
 
 $route['DocumentStandarization/BP'] 							= 'DocumentStandarization/MainMenu/C_BusinessProcess';
 $route['DocumentStandarization/BP/(:any)'] 						= 'DocumentStandarization/MainMenu/C_BusinessProcess/$1';
