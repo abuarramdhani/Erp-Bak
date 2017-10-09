@@ -65,12 +65,26 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
             scales: {
                 xAxes: [{
                     display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: "DATE"
+                    },
                     gridLines: {
                         display: false,
                         color: "#c6c6c6"
                     }
                 }],
                 yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 100,
+                        callback: function(value){return value+ "%"},
+                        stepSize: 20,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: "PERCENTAGE"
+                    },
                     display: true,
                     gridLines: {
                         color: "#c6c6c6"
