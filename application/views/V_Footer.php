@@ -11,7 +11,6 @@
 		<!--END FOOTER -->
      
 	
-	
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
 	<!-- FastClick -->
@@ -33,6 +32,13 @@
 	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
 	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
+
+	<!-- InputMask -->
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/jquery.inputmask.bundle.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone-be.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone-ru.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/bindings/inputmask.binding.js"></script>
 
 	<!-- MULTISELECT -->
 	<script src="<?php echo base_url('assets/plugins/multiselect/js/bootstrap-multiselect.js');?>"></script>
@@ -141,6 +147,7 @@
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
+
 <!-- 	<script src="<?php echo base_url('assets/plugins/ckeditor/config.js');?>"></script>
  -->    
 	<script src="<?php echo base_url('assets/js/formsInit.js');?>"></script>
@@ -213,6 +220,8 @@
 			$(this).val('');
 		});
 	</script>
+
+
 
 	<?php
 	if (empty($alert)) {

@@ -2,34 +2,52 @@
 // 	{
 		$(function()
 		{
+//			Input Mask
+//			{
+    			// $(".inputmask-date").inputmask("dd-mm-yyyy");		
+//			}
+
 // 			DataTables Main Menu
 // 			{
+				$('#dataTables-allDocument').DataTable({
+					"lengthChange": false,
+					"responsive": true
+				});	
 				$('#dataTables-businessProcess').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-contextDiagram').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-standardOperatingProcedure').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-workInstruction').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-COP').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-flowProcess').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-jobdesk').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-jobdeskDocument').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 				$('#dataTables-jobdeskEmployee').DataTable({
-					"lengthChange": false
+					"lengthChange": false,
+					"responsive": true
 				});
 //			}
 //
@@ -80,6 +98,7 @@
 				    "singleDatePicker": true,
 				    "showDropdowns": true,
 				    "autoApply": true,
+				    "mask": true,
 				    "locale": {
 				        "format": "DD-MM-YYYY",
 				        "separator": " - ",
@@ -117,6 +136,7 @@
 				}, function(start, end, label) {
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 				});
+
 				$('.daterangepickersingledatewithtime').daterangepicker({
 				    "timePicker": true,
 				    "timePicker24Hour": true,
@@ -264,31 +284,8 @@
 						}
 					}
 				});
-
-
 //			}
 
-// 			CKEditor
-// 			{
-				// CKEDITOR.config.customConfig = baseurl+'assets/plugins/ckeditor/config.js';
-				// CKEDITOR.replace('txaSopInfoHeader',{
-				// 	toolbar : 'Basic',
-				// });
-				// CKEDITOR.replace('txaSopTujuanHeader');
-				// CKEDITOR.replace('txaSopRuangLingkupHeader');
-				// $('.ckeditor').ckeditor(
-				// {
-				// 	customConfig : baseurl+'assets/plugins/ckeditor/config.js'
-				// });
-				// CKEDITOR.replaceClass('ckeditor',{
-				// 	toolbar : 'Basic',
-				// })
-				// $('.ckeditor').ckeditor({
-				// 	toolbar : 'Basic',
-				// });
-
-
-//			}
 
 //			QTip
 //			{
@@ -323,6 +320,10 @@
 				// });	
 //			}
 
+
 		});
+		// $(document).ready(function(){ 
+  //           $(".inputmask-date").inputmask("dd-mm-yyyy");
+  //       });
 // 	}
 // 	Document Controller ----------------------------------------------------------------------------end---

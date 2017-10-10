@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtWiNameHeader" class="control-label col-lg-4">Nama Work Instruction</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtWiNameHeader" id="txtWiNameHeader" class="form-control bubbletip-character sensitive-input" required="" />
+                                                    <input type="text" name="txtWiNameHeader" id="txtWiNameHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
@@ -54,21 +54,21 @@
                                             <div class="form-group">
                                                 <label for="txtNoDocHeader" class="control-label col-lg-4">Nomor Dokumen</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" required="" />
+                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" required="" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" required=""/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" required="" data-inputmask="'alias': 'dd-mm-yyyy'" />
                                                 </div>
                                             </div>
 
@@ -122,7 +122,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="txaWiInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
+                                                <label for="txaWiInfoHeader" class="control-label col-lg-4">Catatan Revisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaWiInfoHeader" id="txaWiInfoHeader" class="form-control ckeditor"></textarea>
                                                 </div>

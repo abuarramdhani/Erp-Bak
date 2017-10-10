@@ -33,7 +33,7 @@
                                             <div class="form-group">
                                                 <label for="txtSopNameHeader" class="control-label col-lg-4">Nama SOP</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtSopNameHeader" id="txtSopNameHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nama_sop'];?>" />
+                                                    <input type="text" name="txtSopNameHeader" id="txtSopNameHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nama_sop'];?>"  style="text-transform: uppercase" required=""/>
                                                 </div>
                                             </div>
 
@@ -62,28 +62,28 @@
                                             <div class="form-group">
                                                 <label for="txtNoDocHeader" class="control-label col-lg-4">Nomor Dokumen</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_dokumen'];?>" />
+                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_dokumen'];?>"  style="text-transform: uppercase" required=""/>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_revisi'];?>" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_revisi'];?>"  style="text-transform: uppercase" required=""/>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="dd-mm-yyyy" id="txtTanggalHeader" value="<?php echo $headerRow['tanggal_revisi'];?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="dd-mm-yyyy" id="txtTanggalHeader" data-inputmask="'alias': 'dd-mm-yyyy'" value="<?php echo $headerRow['tanggal_revisi'];?>"/>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtJmlHalamanHeader" class="control-label col-lg-4">Jumlah Halaman</label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" value="<?php echo $headerRow['jumlah_halaman'];?>" />
+                                                    <input type="number" min="0" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" value="<?php echo $headerRow['jumlah_halaman'];?>" required=""/>
                                                 </div>
                                             </div>
 
@@ -160,34 +160,34 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="txaSopInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
+                                                <label for="txaSopInfoHeader" class="control-label col-lg-4">Catatan Revisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopInfoHeader" id="txaSopInfoHeader" class="form-control ckeditor" ><?php echo $headerRow['info'];?></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label for="txaSopTujuanHeader" class="control-label col-lg-4">Tujuan</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopTujuanHeader" id="txaSopTujuanHeader" class="ckeditor form-control" ><?php echo $headerRow['tujuan_sop'];?></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label for="txaSopRuangLingkupHeader" class="control-label col-lg-4">Ruang Lingkup</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopRuangLingkupHeader" id="txaSopRuangLingkupHeader" class="ckeditor form-control" ><?php echo $headerRow['ruang_lingkup_sop'];?></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label for="txaSopReferensiHeader" class="control-label col-lg-4">Referensi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopReferensiHeader" id="txaSopReferensiHeader" class="ckeditor form-control" ><?php echo $headerRow['referensi_sop'];?></textarea>
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label for="txaSopDefinisiHeader" class="control-label col-lg-4">Definisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopDefinisiHeader" id="txaSopDefinisiHeader" class="ckeditor form-control" ><?php echo $headerRow['definisi_sop'];?></textarea>
