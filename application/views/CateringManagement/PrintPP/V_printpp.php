@@ -12,7 +12,7 @@
 		<td colspan="2" style="border:1px solid black;font-size: 10px;padding-left: 10px;"><b>No. PP : </b><?php echo $value['no_pp'];?></td>
 	</tr>
 	<tr>
-		<td colspan="2" style="border:1px solid black;font-size: 10px;padding-left: 10px;"><b>Tgl Dibuat : </b><?php echo date("d M Y", strtotime($value['tgl_buat']));?></td>
+		<td colspan="2" style="border:1px solid black;font-size: 10px;padding-left: 10px;"><b>Tgl Dibuat : </b><?php echo date("d F Y", strtotime($value['tgl_buat']));?></td>
 	</tr>
 	<tr>
 		<td colspan="3" style="border:1px solid black;font-size: 10px; padding-left: 10px;"><b>Kepada Sie Pembelian : </b>
@@ -74,11 +74,11 @@
 </table>
 <table style="width:100%;border: 1px solid black;">
 	<tr>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 20%"><b>Kode Barang</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 15%"><b>Kode Barang</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Qty</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Satuan</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 28%"><b>Nama Barang</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 22%"><b>NBD</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 38%"><b>Nama Barang</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 17%"><b>NBD</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Keterangan</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Supplier</b></td>
 	</tr>
@@ -90,7 +90,7 @@
 					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_jumlah'];?></td>
 					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_satuan'];?></td>
 					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_nama_barang'];?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo date("d M Y", strtotime($key['pp_nbd']));?></td>
+					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo date("d F Y", strtotime($key['pp_nbd']));?></td>
 					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_keterangan'];?></td>
 					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_supplier'];?></td>
 				</tr>
