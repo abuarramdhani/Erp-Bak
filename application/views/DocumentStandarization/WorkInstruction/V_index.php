@@ -34,17 +34,17 @@
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-												<th>Nama</th>
-												<th>Nomor Kontrol</th>
-												<th>Nomor Revisi</th>
-												<th>Tanggal</th>
-												<th>Dibuat</th>
-												<th>Diperiksa 1</th>
-												<th>Diperiksa 2</th>
-												<th>Diputuskan</th>
-												<th>Business Process</th>
-												<th>Context Diagram</th>
-												<th>Standard Operating Procedure</th>
+												<th style="white-space: nowrap;">Nama</th>
+												<th style="white-space: nowrap;">Nomor Kontrol</th>
+												<th style="white-space: nowrap;">Nomor Revisi</th>
+												<th style="white-space: nowrap;">Tanggal</th>
+												<th class="hidden">Dibuat</th>
+												<th class="hidden">Diperiksa 1</th>
+												<th class="hidden">Diperiksa 2</th>
+												<th class="hidden">Diputuskan</th>
+												<th class="hidden">Business Process</th>
+												<th class="hidden">Context Diagram</th>
+												<th class="hidden">Standard Operating Procedure</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -61,17 +61,17 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/WI/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('DocumentStandarization/WI/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-												<td><?php echo $row['nama_work_instruction'] ?></td>
-												<td><?php echo $row['nomor_dokumen'] ?></td>
-												<td><?php echo $row['nomor_revisi'] ?></td>
-												<td><?php echo $row['tanggal_revisi'] ?></td>
-												<td><?php echo $row['pekerja_pembuat'] ?></td>
-												<td><?php echo $row['pekerja_pemeriksa_1'] ?></td>
-												<td><?php echo $row['pekerja_pemeriksa_2'] ?></td>
-												<td><?php echo $row['pekerja_pemberi_keputusan'] ?></td>
-												<td><?php echo $row['nama_business_process'] ?></td>
-												<td><?php echo $row['nama_context_diagram'] ?></td>
-												<td><?php echo $row['nama_standard_operating_procedure'] ?></td>
+												<td style="white-space: nowrap;"><?php echo $row['nama_work_instruction'] ?></td>
+												<td style="white-space: nowrap;"><?php echo $row['nomor_dokumen'] ?></td>
+												<td style="white-space: nowrap;"><?php echo $row['nomor_revisi'] ?></td>
+												<td style="white-space: nowrap;"><?php echo $row['tanggal_revisi'] ?></td>
+												<td class="hidden"><?php echo $row['pekerja_pembuat'] ?></td>
+												<td class="hidden"><?php echo $row['pekerja_pemeriksa_1'] ?></td>
+												<td class="hidden"><?php echo $row['pekerja_pemeriksa_2'] ?></td>
+												<td class="hidden"><?php echo $row['pekerja_pemberi_keputusan'] ?></td>
+												<td class="hidden"><?php echo $row['nama_business_process'] ?></td>
+												<td class="hidden"><?php echo $row['nama_context_diagram'] ?></td>
+												<td class="hidden"><?php echo $row['nama_standard_operating_procedure'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

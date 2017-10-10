@@ -68,7 +68,7 @@
                                                             <td style="border: 0">: <?php echo $headerRow['jumlah_halaman']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Info</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Catatan Revisi</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['info']; ?></td>
                                                         </tr>
                                                         <tr>

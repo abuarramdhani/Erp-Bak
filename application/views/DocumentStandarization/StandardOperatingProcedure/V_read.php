@@ -72,26 +72,26 @@
                                                             <td style="border: 0">: <?php echo $headerRow['pekerja_pemberi_keputusan']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jml Halaman</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Jumlah Halaman</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['jumlah_halaman']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Info</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Catatan Revisi</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['info']; ?></td>
                                                         </tr>
-                                                        <tr>
+                                                        <tr class="hidden">
                                                             <td class="col-lg-2" style="border: 0"><strong>Tujuan</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['tujuan_sop']; ?></td>
                                                         </tr>
-														<tr>
+														<tr class="hidden">
                                                             <td class="col-lg-2" style="border: 0"><strong>Ruang Lingkup</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['ruang_lingkup_sop']; ?></td>
                                                         </tr>
-														<tr>
+														<tr class="hidden">
                                                             <td class="col-lg-2" style="border: 0"><strong>Referensi</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['referensi_sop']; ?></td>
                                                         </tr>
-														<tr>
+														<tr class="hidden">
                                                             <td class="col-lg-2" style="border: 0"><strong>Definisi</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['definisi_sop']; ?></td>
                                                         </tr>

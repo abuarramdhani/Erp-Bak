@@ -72,7 +72,7 @@ class M_codeofpractice extends CI_Model
                                         cop.cop_name as nama_code_of_practice,
                                         cop.no_kontrol as nomor_dokumen,
                                         cop.no_revisi as nomor_revisi,
-                                        to_char(cop.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
+                                        to_char(cop.tanggal, 'DD-MM-YYYY') as tanggal_revisi,
                                         cop.jml_halaman as jumlah_halaman,
                                         cop.cop_info as info,
                                         cop.dibuat as kode_pekerja_pembuat,

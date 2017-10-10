@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtSopNameHeader" class="control-label col-lg-4">Nama SOP</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtSopNameHeader" id="txtSopNameHeader" class="form-control bubbletip-character sensitive-input" />
+                                                    <input type="text" name="txtSopNameHeader" id="txtSopNameHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
@@ -54,28 +54,28 @@
                                             <div class="form-group">
                                                 <label for="txtNoDocHeader" class="control-label col-lg-4">Nomor Dokumen</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" />
+                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="dd-mm-yyyy" id="txtTanggalHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="dd-mm-yyyy" id="txtTanggalHeader"  style="text-transform: uppercase" required="" data-inputmask="'alias': 'dd-mm-yyyy'" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtJmlHalamanHeader" class="control-label col-lg-4">Jumlah Halaman</label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" min="0" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" />
+                                                    <input type="number" min="0" name="txtJmlHalamanHeader" id="txtJmlHalamanHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
 
@@ -148,34 +148,34 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="txaSopInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
+                                                <label for="txaSopInfoHeader" class="control-label col-lg-4">Catatan Revisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopInfoHeader" id="txaSopInfoHeader" class="form-control ckeditor" ></textarea>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+											<div class="form-group hidden">
                                                 <label for="txaSopTujuanHeader" class="control-label col-lg-4">Tujuan</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopTujuanHeader" id="txaSopTujuanHeader" class="ckeditor form-control" ></textarea>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+											<div class="form-group hidden">
                                                 <label for="txaSopRuangLingkupHeader" class="control-label col-lg-4">Ruang Lingkup</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopRuangLingkupHeader" id="txaSopRuangLingkupHeader" class="ckeditor form-control" ></textarea>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+											<div class="form-group hidden">
                                                 <label for="txaSopReferensiHeader" class="control-label col-lg-4">Referensi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopReferensiHeader" id="txaSopReferensiHeader" class="ckeditor form-control" ></textarea>
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+											<div class="form-group hidden">
                                                 <label for="txaSopDefinisiHeader" class="control-label col-lg-4">Definisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaSopDefinisiHeader" id="txaSopDefinisiHeader" class="ckeditor form-control" ></textarea>

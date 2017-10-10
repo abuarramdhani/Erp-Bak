@@ -33,7 +33,7 @@
 											<div class="form-group">
                                                 <label for="txtCopNameHeader" class="control-label col-lg-4">Nama Code of Practice</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtCopNameHeader" id="txtCopNameHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nama_code_of_practice']; ?>"/>
+                                                    <input type="text" name="txtCopNameHeader" id="txtCopNameHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nama_code_of_practice']; ?>" style="text-transform: uppercase" required=""/>
                                                 </div>
                                             </div>
 
@@ -62,21 +62,21 @@
 											<div class="form-group">
                                                 <label for="txtNoDocHeader" class="control-label col-lg-4">Nomor Dokumen</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_dokumen']; ?>"/>
+                                                    <input type="text" name="txtNoDocHeader" id="txtNoDocHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_dokumen']; ?>" style="text-transform: uppercase" required=""/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_revisi']; ?>"/>
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" value="<?php echo $headerRow['nomor_revisi']; ?>" style="text-transform: uppercase" required=""/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" name="txtTanggalHeader" value="<?php echo $headerRow['tanggal_revisi'] ?>" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" />
+                                                    <input type="text" maxlength="10" name="txtTanggalHeader" value="<?php echo $headerRow['tanggal_revisi'] ?>" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" data-inputmask="'alias': 'dd-mm-yyyy'" />
                                                 </div>
                                             </div>
 
@@ -128,7 +128,7 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txaCopInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
+                                                <label for="txaCopInfoHeader" class="control-label col-lg-4">Catatan Revisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaCopInfoHeader" id="txaCopInfoHeader" class="form-control ckeditor"  ><?php echo $headerRow['info']; ?></textarea>
                                                 </div>

@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtCdNameHeader" class="control-label col-lg-4 ">Nama Context Diagram</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control bubbletip-character sensitive-input" required="" />
+                                                    <input type="text" name="txtCdNameHeader" id="txtCdNameHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
@@ -54,21 +54,21 @@
 											<div class="form-group">
                                                 <label for="txtNoKontrolHeader" class="control-label col-lg-4 ">Nomor Kontrol</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control bubbletip-character sensitive-input" required="" />
+                                                    <input type="text" name="txtNoKontrolHeader" id="txtNoKontrolHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4 ">Nomor Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input" required="" />
+                                                    <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" value="<?php echo date('d-m-Y');?>" required="" />
+                                                    <input type="text" name="txtTanggalHeader" class="form-control daterangepickersingledate" data-date-format="dd-mm-yyyy" id="txtTanggalHeader" data-inputmask="'alias': 'dd-mm-yyyy'"  required="" />
                                                 </div>
                                             </div>
 
@@ -148,7 +148,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="txaCdInfoHeader" class="control-label col-lg-4">Info / Keterangan</label>
+                                                <label for="txaCdInfoHeader" class="control-label col-lg-4">Catatan Revisi</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaCdInfoHeader" id="txaCdInfoHeader" class="form-control ckeditor" ></textarea>
                                                 </div>
