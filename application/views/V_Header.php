@@ -71,11 +71,9 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/multiselect/css/bootstrap-multiselect.css');?>" />
 
 	<!-- GLOBAL SCRIPTS -->
-<!-- 	<script src="<?php echo base_url('assets/plugins/jQuery/jquery-3.2.1.min.js');?>" type="text/javascript"></script> --> 
     <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
-<!--     <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js');?>" type="text/javascript"></script> -->
     <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
     <!-- END GLOBAL SCRIPTS -->
 	
