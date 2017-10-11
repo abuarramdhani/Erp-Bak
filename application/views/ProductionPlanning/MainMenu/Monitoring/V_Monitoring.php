@@ -71,7 +71,7 @@
                                                         ?>
                                                     </b>
                                                 </div>
-                                                <table class="table mon-fab-table" data-page-length='5'>
+                                                <table class="table mon-fab-table" data-secid="<?php echo $selectedSection[$i]; ?>">
                                                     <thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
                                                         <tr>
                                                             <td>
@@ -111,7 +111,6 @@
                                                         <tbody id="highPriority">
                                                             <?php
                                                             foreach ($highPriority[$i] as $hpl ){
-                                                                $status = '';
                                                                 if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
                                                                     $classStatus = "plan-done";
                                                                 }else{
@@ -164,11 +163,10 @@
                                                     }
                                                     if (!empty($normalPriority[$i][0])) {
                                                     ?>
-                                                        <input type="hidden" name="checkpointBegin" value="<?php echo $checkpoint; ?>">
+                                                        <input type="hidden" name="checkpointBegin" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                                         <tbody id="normalPriority">
                                                         <?php
                                                             foreach ($normalPriority[$i] as $npl ){
-                                                                $status = '';
                                                                 if ($npl['achieve_qty'] >= $npl['need_qty']) {
                                                                     $classStatus = "plan-done";
                                                                 }else{
@@ -219,7 +217,7 @@
                                                             }
                                                         ?>
                                                         </tbody>
-                                                        <input type="hidden" name="checkpointEnd" value="<?php echo $checkpoint; ?>">
+                                                        <input type="hidden" name="checkpointEnd" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                                     <?php
                                                     }
                                                     ?>
@@ -288,7 +286,7 @@
                     <div class="col-lg-2 col-md-2">
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered" id="achieveAllFab">
                                 	<tr>
                                 		<td colspan="2">
                                 			<b>ACHIEVEMENT ALL FAB</b>
@@ -324,6 +322,7 @@
             getSectionMon();
             var repeat = setInterval(function(){
                 getSectionMon();
+                getDailyPlan();
             }
             , 600000);
 
