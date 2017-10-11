@@ -1,13 +1,10 @@
-$(document).ready(function() {
-    $('#tbdataplan').DataTable();
-    $('#tbdatagroupsection').DataTable();
-});
-
 window.onload = function() {
     $('.time-form').datepicker({
         autoclose: true,
         format: 'yyyy-mm-dd'
     });
+    $('#tbdataplan').DataTable();
+    $('#tbdatagroupsection').DataTable();
 }
 
 function getSectionMon(){
@@ -17,7 +14,6 @@ function getSectionMon(){
         id[i] = $('input[name="sectionId'+i+'"]').val();
         getDataLineChartPP(id[i], 'month-fabrication'+id[i]);
     }
-    getDailyPlan(id);
 }
 
 function getDataLineChartPP(section,canvasid){
@@ -108,27 +104,43 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
 }
 
 function showHideNormalPlanning(){
-    var ckBegin = Number($('input[name="checkpointBegin"]').val());
-    var ckEnd = Number($('input[name="checkpointEnd"]').val());
-    if (ckBegin <= 6 && ckBegin < ckEnd) {
-        $('tbody#normalPriority tr:first').fadeOut("slow", function() {
-            $('tbody#normalPriority tr:first').attr('data-showstat', '0');
-            var tempElem = $('tbody#normalPriority tr').get(0);
-            $('tbody#normalPriority tr').get(0).remove();
-            $('tbody#normalPriority').append(tempElem);
-            var tempShowId = $( "tbody#normalPriority tr[data-showstat*='0']:first" ).attr('data-showid');
-            $( "tbody#normalPriority tr[data-showid='"+tempShowId+"']" ).fadeIn("fast");
-            $( "tbody#normalPriority tr[data-showid='"+tempShowId+"']" ).attr('data-showstat', '1');
-        });
+    var count = $('input[name="sectionCount"]').val();
+    var id = [];
+    var ckBegin = [];
+    var ckEnd = [];
+    for (var i = 0; i < count; i++) {
+        id[i] = $('input[name="sectionId'+i+'"]').val();
+
+        ckBegin[i] = Number($('input[name="checkpointBegin"][data-secid="'+id[i]+'"]').val());
+        ckEnd[i] = Number($('input[name="checkpointEnd"][data-secid="'+id[i]+'"]').val());
+        if (ckBegin[i] <= 6 && ckBegin[i] < ckEnd[i]) {
+            $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr:first').fadeOut("slow", function() {
+                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr:first').attr('data-showstat', '0');
+                var tempElem = $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr').get(0);
+                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr:first').remove();
+                $('table[data-secid="'+id[i]+'"] tbody#normalPriority').append(tempElem);
+                var tempShowId = $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr[data-showstat*="0"]:first').attr('data-showid');
+                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr[data-showid="'+tempShowId+'"]').fadeIn('fast');
+                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr[data-showid="'+tempShowId+'"]').attr('data-showstat', '1');
+            });
+        }
     }
 }
 
 function getDailyPlan(sectionId){
-    $.ajax({
-        url: baseurl+'ProductionPlanning/Monitoring/getDailyPlan',
-        data:{
-            section: sectionId
-        },
-        type: 'POST',
-    });
+    var count = $('input[name="sectionCount"]').val();
+    var id = [];
+    for (var i = 0; i < count; i++) {
+        id[i] = $('input[name="sectionId'+i+'"]').val();
+        var a = id[i];
+        $.ajax({
+            url: baseurl+'ProductionPlanning/Monitoring/getDailyPlan',
+            data:{
+                sectionId: id[i]
+            },
+            type: 'POST',
+        }).done(function(data){
+            $('table[data-secid="'+a+'"]').html(data);
+        });
+    }
 }
