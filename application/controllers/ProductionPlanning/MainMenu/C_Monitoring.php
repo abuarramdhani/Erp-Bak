@@ -117,30 +117,132 @@ class C_Monitoring extends CI_Controller {
     public function getDailyPlan()
     {
         $user_id    = $this->session->userid;
-        $section    = $this->input->post('section');
+        $section    = $this->input->post('sectionId');
         $datplan    = array();
-        foreach ($section as $val) {
-            $a = $this->M_dataplan->getDataPlan($id=false,$val);
-            if (!empty($a)) {
-                foreach ($a as $aval) {
-                    $subInv = $this->M_dataplan->getSection($user_id,$aval['section_id']);
-                    foreach ($subInv as $si) {
-                        if ($si['from_inventory'] == 'JOB') {
-                            $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
-                        }else{
-                            $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
-                        }
-                        if (!empty($getItemTransaction)) {
-                            $dataUpd = array(
-                                'achieve_qty'       => $getItemTransaction[0]['ACHIEVE_QTY'],
-                                'last_delivery'     => $getItemTransaction[0]['LAST_DELIVERY'],
-                                'last_updated_date' => date("Y-m-d H:i:s")
-                            );
-                            $this->M_dataplan->update($dataUpd, $aval['daily_plan_id']);
-                        }
+        $a = $this->M_dataplan->getDataPlan($id=false,$section);
+        if (!empty($a)) {
+            foreach ($a as $aval) {
+                $subInv = $this->M_dataplan->getSection($user_id,$aval['section_id']);
+                foreach ($subInv as $si) {
+                    if ($si['from_inventory'] == 'JOB') {
+                        $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
+                    }else{
+                        $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
+                    }
+                    if (!empty($getItemTransaction)) {
+                        $dataUpd = array(
+                            'achieve_qty'       => $getItemTransaction[0]['ACHIEVE_QTY'],
+                            'last_delivery'     => $getItemTransaction[0]['LAST_DELIVERY'],
+                            'last_updated_date' => date("Y-m-d H:i:s")
+                        );
+                        $this->M_dataplan->update($dataUpd, $aval['daily_plan_id']);
                     }
                 }
             }
+            $b = $this->M_dataplan->getDataPlan($id=false,$section);
+            $high   = array();
+            $normal = array();
+            $h = 0;
+            $n = 0;
+
+            foreach ($b as $dp) {
+                if ($dp['priority'] == '1' && $dp['status'] == 'NOT OK') {
+                    $high[$h++] = $dp;
+                }else{
+                    $normal[$n++] = $dp;
+                }
+            }
+            echo '<thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
+                    <tr>
+                        <td>No</td>
+                        <td>Item</td>
+                        <td>Desc</td>
+                        <td>Priority</td>
+                        <td>Need Qty</td>
+                        <td>Due Time</td>
+                        <td>Achieve Qty</td>
+                        <td>Last Delivery</td>
+                        <td>Status</td>
+                    </tr>
+                </thead>';
+            $no = 1;
+            $checkpoint = 1;
+            if (!empty($high)) {
+                echo '<tbody id="highPriority">';
+                foreach ($high as $h){
+                    if ($h['achieve_qty'] >= $h['need_qty']) {
+                        $classStatus = "plan-done";
+                    }else{
+                        $classStatus = "plan-undone-high";
+                    }
+                    echo '<tr class="'.$classStatus.'">
+                            <td>'.$no++.'</td>
+                            <td>'.$h['item_code'].'</td>
+                            <td>';
+                                if (strlen($h['item_description']) > 20) {
+                                    echo substr($h['item_description'],0,20).'...';
+                                }else{
+                                    echo $h['item_description'];
+                                }
+                            echo '</td>
+                            <td>'.$h['priority'].'</td>
+                            <td>'.$h['need_qty'].'</td>
+                            <td>'.$h['due_time'].'</td>
+                            <td>'.$h['achieve_qty'].'</td>
+                            <td>'.$h['last_delivery'].'</td>
+                            <td>'.$h['status'].'</td>
+                        </tr>';
+                    $checkpoint++;
+                }
+                echo '</tbody>';
+            }
+            if (!empty($normal)) {
+                echo '<input type="hidden" name="checkpointBegin" data-secid="'.$section.'" value="'.$checkpoint.'">
+                <tbody id="normalPriority">';
+                foreach ($normal as $n ){
+                    if ($n['achieve_qty'] >= $n['need_qty']) {
+                        $classStatus = "plan-done";
+                    }else{
+                        $classStatus = "plan-undone-normal";
+                    }
+                    echo '<tr class="'.$classStatus.'"';
+                        if ($checkpoint > 6) {
+                            echo " data-showid='".$checkpoint."'";
+                            echo " data-showstat='0'";
+                            echo " style='display:none;'";
+                            $checkpoint++;
+                        }else{
+                            echo " data-showid='".$checkpoint."'";
+                            echo " data-showstat='1'";
+                            $checkpoint++;
+                        } echo '>
+                        <td>'.$no++.'</td>
+                        <td>'.$n['item_code'].'</td>
+                        <td>'.$n['item_description'].'</td>
+                        <td>'.$n['priority'].'</td>
+                        <td>'.$n['need_qty'].'</td>
+                        <td>'.$n['due_time'].'</td>
+                        <td>'.$n['achieve_qty'].'</td>
+                        <td>'.$n['last_delivery'].'</td>
+                        <td>'.$n['status'].'</td>
+                    </tr>';
+                }
+                echo "</tbody>";
+            }
+        }else{
+            echo '<thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
+                    <tr>
+                        <td>No</td>
+                        <td>Item</td>
+                        <td>Desc</td>
+                        <td>Priority</td>
+                        <td>Need Qty</td>
+                        <td>Due Time</td>
+                        <td>Achieve Qty</td>
+                        <td>Last Delivery</td>
+                        <td>Status</td>
+                    </tr>
+                </thead>';
         }
     }
 }
