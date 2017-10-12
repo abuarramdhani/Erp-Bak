@@ -140,7 +140,49 @@ function getDailyPlan(sectionId){
             },
             type: 'POST',
         }).done(function(data){
-            $('table[data-secid="'+a+'"]').html(data);
+            $('table.dailyPlan[data-secid="'+a+'"]').html(data);
+        });
+    }
+}
+
+function getAchieveAllFab(){
+    $.ajax({
+        url: baseurl+'ProductionPlanning/Monitoring/getAchieveAllFab',
+        type: 'POST',
+    }).done(function(data){
+        $('table#achieveAllFab').html(data);
+    });
+}
+
+function getInfoJob(){
+    var count = $('input[name="sectionCount"]').val();
+    var id = [];
+    for (var i = 0; i < count; i++) {
+        id[i] = $('input[name="sectionId'+i+'"]').val();
+        var a = id[i];
+        $.ajax({
+            url: baseurl+'ProductionPlanning/Monitoring/getInfoJob',
+            type: 'POST',
+        }).done(function(data){
+            $('table.infoJob[data-secid="'+a+'"] tbody').html(data);
+        });
+    }
+}
+
+function getAchievement(){
+    var count = $('input[name="sectionCount"]').val();
+    var id = [];
+    for (var i = 0; i < count; i++) {
+        id[i] = $('input[name="sectionId'+i+'"]').val();
+        var a = id[i];
+        $.ajax({
+            url: baseurl+'ProductionPlanning/Monitoring/getAchievement',
+            data:{
+                sectionId: id[i]
+            },
+            type: 'POST',
+        }).done(function(data){
+            $('div.achievement[data-secid="'+a+'"] b').html(data);
         });
     }
 }
