@@ -59,7 +59,7 @@
                                                         TARGET PENGIRIMAN KOMPONEN
                                                     </b>
                                                 </div>
-                                                <div class="col-md-6 text-right">
+                                                <div class="col-md-6 text-right achievement" data-secid="<?php echo $selectedSection[$i]; ?>">
                                                     <b>
                                                         ACHIEVEMENT =
                                                         <?php
@@ -71,7 +71,7 @@
                                                         ?>
                                                     </b>
                                                 </div>
-                                                <table class="table mon-fab-table" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                                <table class="table mon-fab-table dailyPlan" data-secid="<?php echo $selectedSection[$i]; ?>">
                                                     <thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
                                                         <tr>
                                                             <td>
@@ -233,45 +233,49 @@
                                         </div>
                                         <div class="col-md-4">
                                             <br>
-                                            <table class="table table-bordered">
-                                            	<tr>
-                                            		<td></td>
-                                            		<td class="text-center">JUMLAH JOB</td>
-                                            		<td class="text-center">JUMLAH PART (PCS)</td>
-                                            	</tr>
-                                            	<tr>
-                                            		<td>JOB RELEASED</td>
-                                            		<td class="text-right">
-                                                        <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
-                                                    </td>
-                                            		<td class="text-right">
-                                                        <?php echo $infoJob[0]['RELEASED_JUMLAH_PART']; ?>
-                                                    </td>
-                                            	</tr>
-                                            	<tr>
-                                            		<td>JOB PENDING PICKLIST</td>
-                                            		<td class="text-right">
-                                                        <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
-                                                    </td>
-                                            		<td class="text-right">
-                                                        <?php echo $infoJob[0]['PENDING_JUMLAH_PART']; ?>
-                                                    </td>
-                                            	</tr>
-                                            	<tr>
-                                            		<td>TOTAL JOB COMPLETE 1 BULAN</td>
-                                            		<td class="text-right">
-                                                        <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
-                                                    </td>
-                                            		<td class="text-right">
-                                                        <?php echo $infoJob[0]['COMPLETE_JUMLAH_PART']; ?>
-                                                    </td>
-                                            	</tr>
-                                            	<tr>
-                                            		<td>JOB TERLAMA</td>
-                                            		<td colspan="2">
-                                            			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
-                                            		</td>
-                                            	</tr>
+                                            <table class="table table-bordered infoJob" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                                <thead>
+                                                    <tr>
+                                                		<td></td>
+                                                		<td class="text-center">JUMLAH JOB</td>
+                                                		<td class="text-center">JUMLAH PART (PCS)</td>
+                                                	</tr>
+                                                </thead>
+                                                <tbody>
+                                                	<tr>
+                                                		<td>JOB RELEASED</td>
+                                                		<td class="text-right">
+                                                            <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
+                                                        </td>
+                                                		<td class="text-right">
+                                                            <?php echo $infoJob[0]['RELEASED_JUMLAH_PART']; ?>
+                                                        </td>
+                                                	</tr>
+                                                	<tr>
+                                                		<td>JOB PENDING PICKLIST</td>
+                                                		<td class="text-right">
+                                                            <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
+                                                        </td>
+                                                		<td class="text-right">
+                                                            <?php echo $infoJob[0]['PENDING_JUMLAH_PART']; ?>
+                                                        </td>
+                                                	</tr>
+                                                	<tr>
+                                                		<td>TOTAL JOB COMPLETE 1 BULAN</td>
+                                                		<td class="text-right">
+                                                            <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
+                                                        </td>
+                                                		<td class="text-right">
+                                                            <?php echo $infoJob[0]['COMPLETE_JUMLAH_PART']; ?>
+                                                        </td>
+                                                	</tr>
+                                                	<tr>
+                                                		<td>JOB TERLAMA</td>
+                                                		<td colspan="2">
+                                                			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
+                                                		</td>
+                                                	</tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -323,6 +327,9 @@
             var repeat = setInterval(function(){
                 getSectionMon();
                 getDailyPlan();
+                getAchieveAllFab();
+                getInfoJob();
+                getAchievement();
             }
             , 600000);
 
