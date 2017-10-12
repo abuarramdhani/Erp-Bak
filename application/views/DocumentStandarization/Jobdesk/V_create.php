@@ -29,6 +29,41 @@
                                         <div class="row">
 
                                             <div class="form-group">
+                                                <label for="txtKodesieHeader" class="control-label col-lg-4">Departemen</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbDepartemen" name="cmbDepartemen" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                            foreach ($ambilDepartemen as $Departemen) 
+                                                            {
+                                                                echo '  <option value="'.$Departemen['kode_departemen'].'">
+                                                                            '.$Departemen['nama_departemen'].'
+                                                                        </option>';
+                                                            }
+                                                        ?>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtKodesieHeader" class="control-label col-lg-4">Bidang</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbBidang" name="cmbBidang" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtKodesieHeader" class="control-label col-lg-4">Unit</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbUnit" name="cmbUnit" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label for="txtKodesieHeader" class="control-label col-lg-4">Seksi</label>
                                                 <div class="col-lg-4">
                                                     <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
@@ -40,14 +75,14 @@
 											<div class="form-group">
                                                 <label for="txtJdNameHeader" class="control-label col-lg-4">Job Desk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtJdNameHeader" id="txtJdNameHeader" class="form-control" />
+                                                    <input type="text" name="txtJdNameHeader" id="txtJdNameHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txaJdDetailHeader" class="control-label col-lg-4">Detail</label>
-                                                <div class="col-lg-4">
-                                                    <textarea name="txaJdDetailHeader" id="txaJdDetailHeader" class="form-control" ></textarea>
+                                                <div class="col-lg-7">
+                                                    <textarea name="txaJdDetailHeader" id="txaJdDetailHeader" class="form-control ckeditor" required=""></textarea>
                                                 </div>
                                             </div>
 

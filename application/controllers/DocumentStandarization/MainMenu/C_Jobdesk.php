@@ -15,6 +15,7 @@ class C_Jobdesk extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('DocumentStandarization/MainMenu/M_jobdesk');
+		$this->load->model('DocumentStandarization/MainMenu/M_general');
 
 		$this->checkSession();
 	}
@@ -73,6 +74,8 @@ class C_Jobdesk extends CI_Controller
 
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['ambilDepartemen'] 	= 	$this->M_general->ambilDepartemen();
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/Jobdesk/V_create', $data);
@@ -89,6 +92,7 @@ class C_Jobdesk extends CI_Controller
 			redirect(site_url('OTHERS/Jobdesk'));
 		}
 	}
+
 
 	/* UPDATE DATA */
 	public function update($id)

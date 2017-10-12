@@ -284,8 +284,89 @@
 						}
 					}
 				});
-//			}
 
+				$(document).on('change', '#cmbDepartemen', function(){
+					var departemen = $(this).val();
+					$('#cmbBidang').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariBidang',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									departemen: departemen
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_bidang, text: obj.nama_bidang};
+									})
+								};
+							}
+						}
+					});
+				});
+
+				$(document).on('change', '#cmbBidang', function(){
+					var bidang 		= $(this).val();
+					$('#cmbUnit').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariUnit',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									bidang: bidang
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_unit, text: obj.nama_unit};
+									})
+								};
+							}
+						}
+					});
+				});
+
+				$(document).on('change', '#cmbUnit', function(){
+					var unit 		= $(this).val();
+					$('#cmbSeksi').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariSeksi',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									unit: unit
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_seksi, text: obj.nama_seksi};
+									})
+								};
+							}
+						}
+					});
+				});
+
+//			}
 
 //			QTip
 //			{

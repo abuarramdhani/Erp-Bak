@@ -177,7 +177,7 @@ class M_general extends CI_Model
                                             bp.bp_name as nama_dokumen,
                                             bp.no_kontrol as nomor_dokumen,
                                             bp.no_revisi as nomor_revisi,
-                                            bp.tanggal as tanggal_revisi,
+                                            to_char(bp.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
                                             to_char(bp.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
                                             to_char(bp.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
                                 from        ds.ds_business_process as bp
@@ -188,7 +188,7 @@ class M_general extends CI_Model
                                             cd.cd_name as nama_dokumen,
                                             cd.no_kontrol as nomor_dokumen,
                                             cd.no_revisi as nomor_revisi,
-                                            cd.tanggal as tanggal_revisi,
+                                            to_char(cd.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
                                             to_char(cd.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
                                             to_char(cd.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
                                 from        ds.ds_context_diagram as cd
@@ -199,7 +199,7 @@ class M_general extends CI_Model
                                             sop.sop_name as nama_dokumen,
                                             sop.no_kontrol as nomor_dokumen,
                                             sop.no_revisi as nomor_revisi,
-                                            sop.tanggal as tanggal_revisi,
+                                            to_char(sop.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
                                             to_char(sop.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
                                             to_char(sop.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
                                 from        ds.ds_standard_operating_procedure as sop
@@ -210,7 +210,7 @@ class M_general extends CI_Model
                                             wi.wi_name as nama_dokumen,
                                             wi.no_kontrol as nomor_dokumen,
                                             wi.no_revisi as nomor_revisi,
-                                            wi.tanggal as tanggal_revisi,
+                                            to_char(wi.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
                                             to_char(wi.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
                                             to_char(wi.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
                                 from        ds.ds_work_instruction as wi
@@ -221,7 +221,7 @@ class M_general extends CI_Model
                                             cop.cop_name as nama_dokumen,
                                             cop.no_kontrol as nomor_dokumen,
                                             cop.no_revisi as nomor_revisi,
-                                            cop.tanggal as tanggal_revisi,
+                                            to_char(cop.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
                                             to_char(cop.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
                                             to_char(cop.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file
                                 from        ds.ds_code_of_practice as cop
@@ -230,6 +230,55 @@ class M_general extends CI_Model
         return $queryAmbilSemuaDokumen->result_array();
     }
 
+    public function ambilDepartemen()
+    {
+        $ambilDepartemen        =   "   select      departemen.section_code as kode_departemen,
+                                                    departemen.department_name as nama_departemen
+                                        from        er.er_section as departemen
+                                        where       substring(departemen.section_code,2,2)='00';";
+        $queryAmbilDepartemen   =   $this->db->query($ambilDepartemen);
+        return $queryAmbilDepartemen->result_array();
+    }
+
+    public function ambilBidang($keywordBidang, $departemen)
+    {
+        $ambilBidang            = " select      bidang.section_code as kode_bidang,
+                                                bidang.field_name as nama_bidang
+                                    from        er.er_section as bidang
+                                    where       substring(bidang.section_code,4,2)='00'
+                                                and     bidang.field_name!='-'
+                                                and     substring(bidang.section_code,1,2)='".$departemen."'
+                                                and     bidang.field_name like '%$keywordBidang%';";
+        $queryAmbilBidang       =   $this->db->query($ambilBidang);
+        return $queryAmbilBidang->result_array();
+    }
+
+    public function ambilUnit($keywordBidang, $departemen, $bidang)
+    {
+        $ambilUnit              = " select      unit.section_code as kode_unit,
+                                                unit.unit_name as nama_unit
+                                    from        er.er_section as unit
+                                    where       substring(unit.section_code,6,2)='00'
+                                                and     unit.unit_name!='-'
+                                                and     substring(unit.section_code, 3, 2)='$bidang'
+                                                and     substring(unit.section_code, 1, 2)='$departemen'";
+        $queryAmbilUnit         =   $this->db->query($ambilUnit);
+        return $queryAmbilUnit->result_array();
+    }
+
+    public function ambilSeksi($keywordUnit, $departemen, $bidang, $unit)
+    {
+        $ambilSeksi             = " select      seksi.section_code as kode_seksi,
+                                                seksi.section_name as nama_seksi
+                                    from        er.er_section as seksi
+                                    where       substring(seksi.section_code,8,2)='00'
+                                                and     seksi.section_name!='-'
+                                                and     substring(seksi.section_code, 5, 2)='$unit'
+                                                and     substring(seksi.section_code, 3, 2)='$bidang'
+                                                and     substring(seksi.section_code, 1, 2)='$departemen';";
+        $queryAmbilSeksi        =   $this->db->query($ambilSeksi);
+        return $queryAmbilSeksi->result_array();
+    }
 }
 
 /* End of file M_jobdesk.php */

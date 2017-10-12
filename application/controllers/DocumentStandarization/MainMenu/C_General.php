@@ -158,6 +158,42 @@ class C_General extends CI_Controller
 		echo json_encode($resultPekerjaPemberiKeputusan);
 	}
 
+	public function cariDepartemen()
+	{
+		$keywordDepartemen 					= 	strtoupper($this->input->get('term'));
+
+		$resultDepartemen 					= 	$this->M_general->ambilDepartemen($keywordDepartemen);
+		echo json_encode($resultDepartemen);
+	}
+
+	public function cariBidang()
+	{
+		$keywordBidang 						= 	strtoupper($this->input->get('term'));
+		$departemen 						=  	substr(($this->input->get('departemen')), 0, 2);
+		$resultBidang 						= 	$this->M_general->ambilBidang($keywordBidang, $departemen);
+		echo json_encode($resultBidang);
+	}
+
+	public function cariUnit()
+	{
+		$keywordUnit 						= 	strtoupper($this->input->get('term'));
+		$departemen 						= 	substr(($this->input->get('bidang')), 0, 2);
+		$bidang 							= 	substr(($this->input->get('bidang')), 2, 2);
+
+		$resultUnit 						= 	$this->M_general->ambilUnit($keywordUnit, $departemen, $bidang);
+		echo json_encode($resultUnit);
+	}
+
+	public function cariSeksi()
+	{
+		$keywordSeksi 						= 	strtoupper($this->input->get('term'));
+		$departemen 						= 	substr(($this->input->get('unit')), 0, 2);
+		$bidang 							= 	substr(($this->input->get('unit')), 2, 2);
+		$unit 								= 	substr(($this->input->get('unit')), 4, 2);
+
+		$resultSeksi						= 	$this->M_general->ambilSeksi($keywordSeksi, $departemen, $bidang, $unit);
+		echo json_encode($resultSeksi);
+	}
 
 }
 
