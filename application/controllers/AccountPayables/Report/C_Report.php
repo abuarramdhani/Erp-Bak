@@ -34,6 +34,8 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		// print_r($data['userLoged']);
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/Report/ReportInvoiceTanpaFaktur/V_report_invoice_tanpa_faktur', $data);
@@ -44,13 +46,14 @@ class C_Report extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
+		$user = $this->session->user;
 
 		$startDate = $this->input->post('tanggal_awal', true);
 		$endDate = $this->input->post('tanggal_akhir', true);
 		$status = $this->input->post('invoice_status', true);
 		$vendor = $this->input->post('supplier', true);
 
-		$dataInvoice = $this->M_report->getInvoiceFaktur($startDate, $endDate, $vendor, $status);
+		$dataInvoice = $this->M_report->getInvoiceFaktur($startDate, $endDate, $vendor, $status, $user);
 
 		if($vendor == '') $vendor = 'All';
 		if($status == 1){
@@ -67,65 +70,126 @@ class C_Report extends CI_Controller {
 		$objset = $objPHPExcel->setActiveSheetIndex(0);
 		$objget = $objPHPExcel->getActiveSheet();
 		$objget->setTitle('Invoice Tanpa Faktur');
-		$objget->getStyle("A1:L1")->applyFromArray(
-			array(
-				'fill' => array(
-					'type' => PHPExcel_Style_Fill::FILL_SOLID,
-					'color' => array('rgb' => '949494')
-				),
-				'font' => array(
-					'color' => array('rgb' => '000000'),
-					'bold'  => true,
-				)
-			)
-		);
 
-		$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L");
-		$val = array("Vendor Name", "Invoice Type", "Invoice Date", "Invoice Number", "Payment Date", "DPP", "PPN", "Total", "No. Faktur","No. LPPB", "No. PO", "Currency");
-
-		for ($a=0;$a<12; $a++) {
-			$objset->setCellValue($cols[$a].'1', $val[$a]);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(37);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(13);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(13);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(13);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(10);
-			$style = array(
-				'alignment' => array(
-					'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+		if ($user == 'B0541' OR $user == 'B0727') {
+			$objget->getStyle("A1:K1")->applyFromArray(
+				array(
+					'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'color' => array('rgb' => '949494')
+					),
+					'font' => array(
+						'color' => array('rgb' => '000000'),
+						'bold'  => true,
+					)
 				)
 			);
-			$objPHPExcel->getActiveSheet()->getStyle($cols[$a].'1')->applyFromArray($style);
-		}
 
-		$baris  = 2;
-		foreach ($dataInvoice as $frow) {
-			$objset->setCellValue("A".$baris, $frow['VENDOR_NAME']);
-			$objset->setCellValue("B".$baris, $frow['TYPE_INVOICE']);
-			$objset->setCellValue("C".$baris, $frow['INVOICE_DATE']);
-			$objset->setCellValue("D".$baris, $frow['INVOICE_NUM']);
-			$objset->setCellValue("E".$baris, $frow['PAYMENT_DATE']);
-			$objset->setCellValue("F".$baris, $frow['DPP']);
-			$objset->setCellValue("G".$baris, $frow['PPN']);
-			$objset->setCellValue("H".$baris, $frow['TOTAL']);
-			$faktur = $frow['ATTRIBUTE5'].$frow['ATTRIBUTE3'];
-			$numfaktur = preg_replace("/[^0-9]/", "", $faktur );
-			if ($frow['ATTRIBUTE3'] == NULL) {
-				$numfaktur = '-';
-			};
-			$objset->setCellValue("I".$baris, $numfaktur);
-			$objset->setCellValue("J".$baris, $frow['LPPB']);
-			$objset->setCellValue("K".$baris, $frow['PO_NUM']);
-			$objset->setCellValue("L".$baris, $frow['CURRENCY']);
-			$baris++;
-		}
+			$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K");
+			$val = array("Vendor Name", "Invoice Type", "Invoice Date", "Invoice Number", "Payment Date", "DPP", "PPN", "Total", "No. Faktur", "No. PO", 'Buyer Name');
+
+			for ($a=0;$a<11; $a++) {
+				$objset->setCellValue($cols[$a].'1', $val[$a]);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(37);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+				$style = array(
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+					)
+				);
+				$objPHPExcel->getActiveSheet()->getStyle($cols[$a].'1')->applyFromArray($style);
+			}
+
+			$baris  = 2;
+			foreach ($dataInvoice as $frow) {
+				$objset->setCellValue("A".$baris, $frow['VENDOR_NAME']);
+				$objset->setCellValue("B".$baris, $frow['TYPE_INVOICE']);
+				$objset->setCellValue("C".$baris, $frow['INVOICE_DATE']);
+				$objset->setCellValue("D".$baris, $frow['INVOICE_NUM']);
+				$objset->setCellValue("E".$baris, $frow['PAYMENT_DATE']);
+				$objset->setCellValue("F".$baris, $frow['DPP']);
+				$objset->setCellValue("G".$baris, $frow['PPN']);
+				$objset->setCellValue("H".$baris, $frow['TOTAL']);
+				$faktur = $frow['ATTRIBUTE5'].$frow['ATTRIBUTE3'];
+				$numfaktur = preg_replace("/[^0-9]/", "", $faktur );
+				if ($frow['ATTRIBUTE3'] == NULL) {
+					$numfaktur = '-';
+				};
+				$objset->setCellValue("I".$baris, $numfaktur);
+				$objset->setCellValue("J".$baris, $frow['PO_NUM']);
+				$objset->setCellValue("K".$baris, $frow['BUYER']);
+				$baris++;
+			}
+		}else{
+			$objget->getStyle("A1:L1")->applyFromArray(
+				array(
+					'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'color' => array('rgb' => '949494')
+					),
+					'font' => array(
+						'color' => array('rgb' => '000000'),
+						'bold'  => true,
+					)
+				)
+			);
+
+			$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L");
+			$val = array("Vendor Name", "Invoice Type", "Invoice Date", "Invoice Number", "Payment Date", "DPP", "PPN", "Total", "No. Faktur","No. LPPB", "No. PO", "Currency");
+
+			for ($a=0;$a<12; $a++) {
+				$objset->setCellValue($cols[$a].'1', $val[$a]);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(37);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(10);
+				$style = array(
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+					)
+				);
+				$objPHPExcel->getActiveSheet()->getStyle($cols[$a].'1')->applyFromArray($style);
+			}
+
+			$baris  = 2;
+			foreach ($dataInvoice as $frow) {
+				$objset->setCellValue("A".$baris, $frow['VENDOR_NAME']);
+				$objset->setCellValue("B".$baris, $frow['TYPE_INVOICE']);
+				$objset->setCellValue("C".$baris, $frow['INVOICE_DATE']);
+				$objset->setCellValue("D".$baris, $frow['INVOICE_NUM']);
+				$objset->setCellValue("E".$baris, $frow['PAYMENT_DATE']);
+				$objset->setCellValue("F".$baris, $frow['DPP']);
+				$objset->setCellValue("G".$baris, $frow['PPN']);
+				$objset->setCellValue("H".$baris, $frow['TOTAL']);
+				$faktur = $frow['ATTRIBUTE5'].$frow['ATTRIBUTE3'];
+				$numfaktur = preg_replace("/[^0-9]/", "", $faktur );
+				if ($frow['ATTRIBUTE3'] == NULL) {
+					$numfaktur = '-';
+				};
+				$objset->setCellValue("I".$baris, $numfaktur);
+				$objset->setCellValue("J".$baris, $frow['LPPB']);
+				$objset->setCellValue("K".$baris, $frow['PO_NUM']);
+				$objset->setCellValue("L".$baris, $frow['CURRENCY']);
+				$baris++;
+			}
+		};
 
 		$objPHPExcel->getActiveSheet()->setTitle('Invoice Tanpa Faktur');
 		$objPHPExcel->setActiveSheetIndex(0);
