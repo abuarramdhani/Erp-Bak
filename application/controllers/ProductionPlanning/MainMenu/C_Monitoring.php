@@ -245,4 +245,54 @@ class C_Monitoring extends CI_Controller {
                 </thead>';
         }
     }
+
+    public function getAchieveAllFab()
+    {
+        $achieveAll = $this->M_monitoring->getAchievementAllFab();
+
+        echo '<tr>
+            <td colspan="2"><b>ACHIEVEMENT ALL FAB</b></td>
+        </tr>';
+        foreach ($achieveAll as $aa) {
+            echo '<tr>
+                <td style="width: 70%">
+                    <b>'.$aa['section_name'].'</b>
+                </td>
+                <td style="width: 30%">
+                    <b>'.$aa['percentage'].'</b>
+                </td>
+            </tr>}';
+        }
+    }
+
+    public function getInfoJob()
+    {
+        $data = $this->M_monitoring->getInfoJobs();
+        echo '<tr>
+            <td>JOB RELEASED</td>
+            <td class="text-right">'.$data[0]['RELEASED_JUMLAH_JOB'].'</td>
+            <td class="text-right">'.$data[0]['RELEASED_JUMLAH_PART'].'</td>
+        </tr>
+        <tr>
+            <td>JOB PENDING PICKLIST</td>
+            <td class="text-right">'.$data[0]['PENDING_JUMLAH_JOB'].'</td>
+            <td class="text-right">'.$data[0]['PENDING_JUMLAH_PART'].'</td>
+        </tr>
+        <tr>
+            <td>TOTAL JOB COMPLETE 1 BULAN</td>
+            <td class="text-right">'.$data[0]['COMPLETE_JUMLAH_JOB'].'</td>
+            <td class="text-right">'.$data[0]['COMPLETE_JUMLAH_PART'].'</td>
+        </tr>
+        <tr>
+            <td>JOB TERLAMA</td>
+            <td colspan="2">'.date('d, F Y', strtotime($data[0]['JOB_TERLAMA'])).'</td>
+        </tr>';
+    }
+
+    public function getAchievement()
+    {
+        $secid  = $this->input->post('sectionId');
+        $achieve= $this->M_monitoring->getDailyAchieve($secid);
+        echo "ACHIEVEMENT = ".$achieve[0]['percentage'];
+    }
 }
