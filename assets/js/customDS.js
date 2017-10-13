@@ -377,7 +377,16 @@
 					style: {
 						def: true
 					},
-				})
+				});
+				$('#bubbletip-checkboxRevisi').qtip({
+					content: {
+						text: 'Check jika perubahan yang dilakukan adalah revisi baru dokumen.'
+					},
+					style: {
+						def: true
+					},
+				});
+
 //			}
 
 // 			Form Behavior

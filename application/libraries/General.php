@@ -7,9 +7,10 @@ class general
 	{
 		$this->CI = &get_instance();
 		date_default_timezone_set('Asia/Jakarta');
-
-		$this->CI->load->model('DocumentStandarization/MainMenu/M_general');
-
+		
+		// Model Document Controller -----start-----
+			$this->CI->load->model('DocumentStandarization/MainMenu/M_general');
+		// Model Document Controller -------end-----
 	}
 	// General Function ---------------------------start---
 	public function ambilPekerja($list)
@@ -144,10 +145,66 @@ class general
 		$ekstensiFile 		=	pathinfo($direktoriFile.$fileDokumen, PATHINFO_EXTENSION);
 		if(!(str_replace(' ', '_', $namaDokumen)==$namaDokumenLama AND str_replace(' ', '_', $nomorRevisi)==$nomorRevisiLama AND str_replace(' ', '_', $nomorKontrol)==$nomorKontrolLama))
 		{
-			rename($direktoriFile.$fileDokumen, filter_var($direktoriFile.str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev._'.str_replace(' ', '_', $nomorRevisi).'_-_'.str_replace(' ', '_', $namaDokumen).'.'.$ekstensiFile, FILTER_SANITIZE_URL));
-			$fileDokumen 	= 	filter_var(str_replace(' ', '_', $nomorKontrol).'_-_'.'Rev._'.str_replace(' ', '_', $nomorRevisi).'_-_'.str_replace(' ', '_', $namaDokumen).'.'.$ekstensiFile, FILTER_SANITIZE_URL);
+			rename($direktoriFile.$fileDokumen, filter_var($direktoriFile.str_replace(' ', '_', $nomorKontrol).'_-_'.str_replace(' ', '_', $nomorRevisi).'_-_'.str_replace(' ', '_', $namaDokumen).'.'.$ekstensiFile, FILTER_SANITIZE_URL));
+			$fileDokumen 	= 	filter_var(str_replace(' ', '_', $nomorKontrol).'_-_'.str_replace(' ', '_', $nomorRevisi).'_-_'.str_replace(' ', '_', $namaDokumen).'.'.$ekstensiFile, FILTER_SANITIZE_URL);
 		}
 		return $fileDokumen;
+	}
+
+	public function notifikasiRevisi($jenisDokumen)
+	{
+		if($jenisDokumen=='BP' || $jenisDokumen=='CD' || $jenisDokumen=='SOP' || $jenisDokumen=='WI' || $jenisDokumen=='COP')
+		{
+			$data['notif'] 		= 	null;
+			$jumlahData			= 	$this->CI->M_general->cekJumlahNotif($jenisDokumen, 'revisi');
+			if($jumlahData>0)
+			{
+				$data['notif'] 	= 	$this->CI->M_general->ambilNotifikasi($jenisDokumen, 'revisi');
+			}
+			return $data['notif'];
+		}
+		else
+		{
+			echo '	<center>
+						<h1><b>Terima Kasih</b></h1>
+						<br/>
+						<h3>Anda telah menemukan bug di program kami.</h3>
+						<h4><i>Simpan informasi di bawah untuk dapat dilaporkan ke ICT Human Resource (VoIP: 12300)</i></h4>
+						<hr/>
+					</center>
+					<p>
+						Info : ERP->Document Controller->"Dokumen" Group Menu-->Fungsi notifikasiRevisi class General mendapat argumen selain "BP, CD, SOP, WI, dan COP".
+					</p>';
+			exit();
+		}
+	}
+
+	public function notifikasiDokumenBaru($jenisDokumen)
+	{
+		if($jenisDokumen=='BP' || $jenisDokumen=='CD' || $jenisDokumen=='SOP' || $jenisDokumen=='WI' || $jenisDokumen=='COP')
+		{
+			$data['notif'] 		= 	null;
+			$jumlahData			= 	$this->CI->M_general->cekJumlahNotif($jenisDokumen, 'dokumenBaru');
+			if($jumlahData>0)
+			{
+				$data['notif'] 	= 	$this->CI->M_general->ambilNotifikasi($jenisDokumen, 'dokumenBaru');
+			}
+			return $data['notif'];
+		}
+		else
+		{
+			echo '	<center>
+						<h1><b>Terima Kasih</b></h1>
+						<br/>
+						<h3>Anda telah menemukan bug di program kami.</h3>
+						<h4><i>Simpan informasi di bawah untuk dapat dilaporkan ke ICT Human Resource (VoIP: 12300)</i></h4>
+						<hr/>
+					</center>
+					<p>
+						Info : ERP->Document Controller->"Dokumen" Group Menu-->Fungsi notifikasiRevisi class General mendapat argumen selain "BP, CD, SOP, WI, dan COP".
+					</p>';
+			exit();
+		}
 	}
 
 	// General Document Standarization Function -----end---

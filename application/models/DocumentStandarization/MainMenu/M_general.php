@@ -279,6 +279,181 @@ class M_general extends CI_Model
         $queryAmbilSeksi        =   $this->db->query($ambilSeksi);
         return $queryAmbilSeksi->result_array();
     }
+
+    public function ambilRiwayatDokumen()
+    {
+        $ambilRiwayatDokumen        = " select      dochistory.id as kode_dokumen,
+                                                    dochistory.jenis_doc as jenis_dokumen,
+                                                    dochistory.no_kontrol as nomor_dokumen,
+                                                    dochistory.no_revisi as nomor_revisi,
+                                                    dochistory.tanggal as tanggal_revisi,
+                                                    dochistory.name as nama_dokumen,
+                                                    dochistory.file as file
+                                        from        ds.ds_history as dochistory
+                                        order by    dochistory.tgl_update desc;";
+        $queryAmbilRiwayatDokumen   =   $this->db->query($ambilRiwayatDokumen);
+        return $queryAmbilRiwayatDokumen->result_array();
+    }
+
+    public function ambilRiwayatDokumenDetail($id)
+    {
+        $ambilRiwayatDokumenDetail      = " select      dochistory.jenis_doc as inisial_jenis_dokumen,
+                                                        case dochistory.jenis_doc   when 'BP'   then 'Business Process'
+                                                                                    when 'CD'   then 'Context Diagram'
+                                                                                    when 'SOP'  then 'Standard Operating Procedure'
+                                                                                    when 'WI'   then 'Work Instruction'
+                                                                                    when 'COP'  then 'Code of Practice'
+                                                                                    else '(Not Defined)'
+                                                        end as jenis_dokumen,
+                                                        dochistory.no_kontrol as nomor_kontrol,
+                                                        dochistory.no_revisi as nomor_revisi,
+                                                        to_char(dochistory.tanggal, 'DD-Mon-YYYY') as tanggal_revisi,
+                                                        dochistory.name as nama_dokumen,
+                                                        dochistory.jml_halaman as jumlah_halaman,
+                                                        coalesce(dochistory.info, '(Tidak ada catatan.)') as catatan_revisi,
+                                                        dochistory.dibuat as kode_pekerja_pembuat,
+                                                        (
+                                                            select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                            from    er.er_employee_all as pkj
+                                                            where   pkj.employee_id=dochistory.dibuat
+                                                        ) as pekerja_pembuat,
+                                                        dochistory.diperiksa_1 as kode_pekerja_pemeriksa_1,
+                                                        (
+                                                            select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                            from    er.er_employee_all as pkj
+                                                            where   pkj.employee_id=dochistory.diperiksa_1
+                                                        ) as pekerja_pemeriksa_1,
+                                                        dochistory.diperiksa_2 as kode_pekerja_pemeriksa_2,
+                                                        (
+                                                            select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                            from    er.er_employee_all as pkj
+                                                            where   pkj.employee_id=dochistory.diperiksa_2
+                                                        ) as pekerja_pemeriksa_2,
+                                                        dochistory.diputuskan as kode_pekerja_pemberi_keputusan,
+                                                        (
+                                                            select  concat_ws(' - ', pkj.employee_code, pkj.employee_name)
+                                                            from    er.er_employee_all as pkj
+                                                            where   pkj.employee_id=dochistory.diputuskan
+                                                        ) as pekerja_pemberi_keputusan,
+                                                        to_char(dochistory.tgl_insert, 'DD-MM-YYYY HH24:MI:SS') as waktu_input,
+                                                        to_char(dochistory.tgl_upload, 'DD-MM-YYYY HH24:MI:SS') as waktu_upload_file,
+                                                        to_char(dochistory.tgl_update, 'DD-MM-YYYY HH24:MI:SS') as waktu_input_revisi_baru,
+                                                        dochistory.file as file
+                                            from        ds.ds_history as dochistory
+                                            where       dochistory.id=$id;";
+        $queryAmbilRiwayatDokumenDetail =   $this->db->query($ambilRiwayatDokumenDetail);
+        return $queryAmbilRiwayatDokumenDetail->result_array();
+    }
+
+    public function cekJumlahNotif($jenisDokumen, $jenisnotif)
+    {
+        $tabel;
+        if($jenisDokumen=='BP')
+        {  
+            $tabel      =   'ds.ds_business_process';
+        }
+        elseif ($jenisDokumen=='CD') 
+        {
+            $tabel      =   'ds.ds_context_diagram';
+        }
+        elseif ($jenisDokumen=='SOP') 
+        {
+            $tabel      =   'ds.ds_standard_operating_procedure';
+        }
+        elseif ($jenisDokumen=='WI') 
+        {
+            $tabel      =   'ds.ds_work_instruction';
+        }
+        elseif ($jenisDokumen=='COP') 
+        {
+            $tabel      =   'ds.ds_code_of_practice';
+        }
+
+        $klausaWhere;
+        if($jenisnotif=='revisi')
+        {
+            $klausaWhere    =    "to_char(update_Revisi, 'YYYY-MM-DD')='".date('Y-m-d')."'";
+        }
+        elseif($jenisnotif=='dokumenBaru')
+        {
+            $klausaWhere    =    "to_char(tgl_insert, 'YYYY-MM-DD')='".date('Y-m-d')."'";
+        }
+        else 
+        {
+            echo '  <center>
+                        <h1><b>Terima Kasih</b></h1>
+                        <br/>
+                        <h3>Anda telah menemukan bug di program kami.</h3>
+                        <h4><i>Simpan informasi di bawah untuk dapat dilaporkan ke ICT Human Resource (VoIP: 12300)</i></h4>
+                        <hr/>
+                    </center>
+                    <p>
+                        Info : ERP->Document Controller->"Dokumen" Group Menu-->Fungsi cekJumlahNotif model M_general argumen kedua berisi selain "revisi" dan "dokumenBaru".
+                    </p>';
+            exit();
+        }
+
+        $cekJumlahNotif     = " select      *
+                                from        ds.ds_business_process
+                                where       ".$klausaWhere.";";
+        $jumlahBaris    =   $this->db->query($cekJumlahNotif);
+        return $jumlahBaris->num_rows();
+    }
+
+    public function ambilNotifikasi($jenisDokumen, $jenisnotif)
+    {
+        $tabel;
+        if($jenisDokumen=='BP')
+        {  
+            $tabel      =   'ds.ds_business_process';
+        }
+        elseif ($jenisDokumen=='CD') 
+        {
+            $tabel      =   'ds.ds_context_diagram';
+        }
+        elseif ($jenisDokumen=='SOP') 
+        {
+            $tabel      =   'ds.ds_standard_operating_procedure';
+        }
+        elseif ($jenisDokumen=='WI') 
+        {
+            $tabel      =   'ds.ds_work_instruction';
+        }
+        elseif ($jenisDokumen=='COP') 
+        {
+            $tabel      =   'ds.ds_code_of_practice';
+        }
+
+        $klausaWhere = '';
+        if($jenisnotif=='revisi')
+        {
+            $klausaWhere    =   "to_char(update_Revisi, 'YYYY-MM-DD')='".date('Y-m-d')."'";
+        }
+        elseif ($jenisnotif=='dokumenBaru') 
+        {
+            $klausaWhere    =   "to_char(tgl_insert, 'YYYY-MM-DD')='".date('Y-m-d')."'";
+        }
+        else
+        {
+            echo '  <center>
+                        <h1><b>Terima Kasih</b></h1>
+                        <br/>
+                        <h3>Anda telah menemukan bug di program kami.</h3>
+                        <h4><i>Simpan informasi di bawah untuk dapat dilaporkan ke ICT Human Resource (VoIP: 12300)</i></h4>
+                        <hr/>
+                    </center>
+                    <p>
+                        Info : ERP->Document Controller->"Dokumen" Group Menu-->Fungsi ambilNotifikasi model M_general argumen kedua berisi selain "revisi" dan "dokumenBaru".
+                    </p>';
+            exit();            
+        }
+
+        $ambilNotifikasiRevisi          = " select      concat_ws(' - ', no_kontrol, no_revisi, bp_name) as daftar
+                                            from        ".$tabel."
+                                            where       ".$klausaWhere.";";
+        $queryAmbilNotifikasiRevisi     =   $this->db->query($ambilNotifikasiRevisi);
+        return $queryAmbilNotifikasiRevisi->result_array();
+    }
 }
 
 /* End of file M_jobdesk.php */
