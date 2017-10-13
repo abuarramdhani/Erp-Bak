@@ -186,11 +186,11 @@ class M_penjadwalan extends CI_Model {
 		}
 
 		//Create New Master
-		public function AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi,$trainers){
+		public function AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers){
 			$sql = "
 			insert INTO pl.pl_scheduling_training
 			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,room,participant_type,participant_number,evaluation,trainer)values
-			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi','$trainers')";
+			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi2','$trainers')";
 			$query = $this->db->query($sql);
 			return;
 		}
