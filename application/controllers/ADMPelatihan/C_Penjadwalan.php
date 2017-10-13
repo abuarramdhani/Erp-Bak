@@ -414,9 +414,11 @@ class C_Penjadwalan extends CI_Controller {
 		$date 					= $this->input->post('txtTanggalPelaksanaan');
 		$room					= $this->input->post('slcRuang');
 		
-		$participant_type		= $this->input->post('slcPeserta');
+		// $participant_type		= $this->input->post('slcPeserta');
+		// $participant_number		= $this->input->post('txtJumlahPeserta');
+		$participant			= $this->input->post('slcEmployee');
+		$participant_type		= $this->input->post('txtPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
-		
 		// $chk1			= $this->input->post('chk1');
 		// $chk2			= $this->input->post('chk2');
 		// $chk3			= $this->input->post('chk3');
@@ -427,19 +429,22 @@ class C_Penjadwalan extends CI_Controller {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 		
+		// echo "<pre>";
+		// var_dump($_POST);
+		// echo "</pre>";
+		// exit();
 		$this->M_penjadwalan->AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers);
 		
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;
 
-			if($participant_type==0){
-				$participant	= $this->input->post('slcEmployee');$j=0;
+		$j=0;
 				foreach($participant as $loop){
 					$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
-						foreach ($dataemployee as $de) {
-							$noind		= $de['employee_code'];
-							$name		= $de['employee_name'];
-						}
+					foreach ($dataemployee as $de) {
+						$noind		= $de['employee_code'];
+						$name		= $de['employee_name'];
+					}
 					$data_participant[$j] = array(
 						'scheduling_id' 	=> $pkgid,
 						'participant_name' 	=> $name,
@@ -451,26 +456,46 @@ class C_Penjadwalan extends CI_Controller {
 					}
 					$j++;
 				}
-			}elseif($participant_type==1){
-				$participant	= $this->input->post('slcApplicant');$j=0;
-				foreach($participant as $loop){
-					$dataemployee	= $this->M_penjadwalan->GetApplicantData($loop);
-						foreach ($dataemployee as $de) {
-							$noind		= $de['kodelamaran'];
-							$name		= $de['nama'];
-						}
-					$data_participant[$j] = array(
-						'scheduling_id' 	=> $pkgid,
-						'participant_name' 	=> $name,
-						'noapplicant'		=> $noind,
-						'status'			=> '0',
-					);
-					if( !empty($participant[$j]) ){
-						$this->M_penjadwalan->AddParticipant($data_participant[$j]);
-					}
-					$j++;
-				}
-			}
+
+			// if($participant_type==0){
+			// 	$participant	= $this->input->post('slcEmployee');$j=0;
+			// 	foreach($participant as $loop){
+			// 		$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
+			// 			foreach ($dataemployee as $de) {
+			// 				$noind		= $de['employee_code'];
+			// 				$name		= $de['employee_name'];
+			// 			}
+			// 		$data_participant[$j] = array(
+			// 			'scheduling_id' 	=> $pkgid,
+			// 			'participant_name' 	=> $name,
+			// 			'noind' 			=> $noind,
+			// 			'status'			=> '0',
+			// 		);
+			// 		if( !empty($participant[$j]) ){
+			// 			$this->M_penjadwalan->AddParticipant($data_participant[$j]);
+			// 		}
+			// 		$j++;
+			// 	}
+			// }elseif($participant_type==1){
+			// 	$participant	= $this->input->post('slcApplicant');$j=0;
+			// 	foreach($participant as $loop){
+			// 		$dataemployee	= $this->M_penjadwalan->GetApplicantData($loop);
+			// 			foreach ($dataemployee as $de) {
+			// 				$noind		= $de['kodelamaran'];
+			// 				$name		= $de['nama'];
+			// 			}
+			// 		$data_participant[$j] = array(
+			// 			'scheduling_id' 	=> $pkgid,
+			// 			'participant_name' 	=> $name,
+			// 			'noapplicant'		=> $noind,
+			// 			'status'			=> '0',
+			// 		);
+			// 		if( !empty($participant[$j]) ){
+			// 			$this->M_penjadwalan->AddParticipant($data_participant[$j]);
+			// 		}
+			// 		$j++;
+			// 	}
+			// }
 			
 		redirect('ADMPelatihan/PenjadwalanPackage/Schedule/'.$package_scheduling_id);
 	}
