@@ -56,6 +56,30 @@ class C_BusinessProcess extends CI_Controller
 
 		$data['BusinessProcess'] = $this->M_businessprocess->getBusinessProcess();
 
+		$data['jumlahNotifikasi'] 	= 	0;
+
+		$data['notifikasiRevisi']  		= 	$this->general->notifikasiRevisi('BP');
+		if($data['notifikasiRevisi']!=null)
+		{
+			$data['jumlahNotifikasi'] += 1;
+		}
+		$data['notifikasiDokumenBaru']  =	$this->general->notifikasiDokumenBaru('BP');
+		if($data['notifikasiDokumenBaru']!=null)
+		{
+			$data['jumlahNotifikasi'] += 1;
+		}
+
+		// echo $jumlahNotifikasi;
+		// echo '<br/>';
+		// echo '<pre>';
+		// print_r($data['notifikasiRevisi']);
+		// echo '</pre>';
+		// echo '<br/>';
+		// echo '<pre>';
+		// print_r($data['notifikasiDokumenBaru']);
+		// echo '</pre>';
+		// exit();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('DocumentStandarization/BusinessProcess/V_index', $data);
@@ -100,8 +124,8 @@ class C_BusinessProcess extends CI_Controller
 			$this->load->view('DocumentStandarization/BusinessProcess/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaBusinessProcess 	= 	$this->input->post('txtBpNameHeader');
-			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader');
+			$namaBusinessProcess 	= 	strtoupper($this->input->post('txtBpNameHeader'));
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
@@ -211,11 +235,79 @@ class C_BusinessProcess extends CI_Controller
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
+			
+			// Salin dari sini
+			$revisiBaru 			= 	$this->input->post('checkboxRevisi');
 
+			$nomorRevisiLama 		= 	$this->input->post('txtNoRevisiLamaHeader');
+			$tanggalRevisiLama 		= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalLamaHeader')), 'tanggal');
+
+			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
+			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
+			{
+				$kodeBusinessProcess 	= 	$plaintext_string;
+				$dataLama 	= 	$this->M_businessprocess->ambilDataLama($kodeBusinessProcess);
+
+				$doc_id 		= 	$dataLama[0]['bp_id'];
+				$name 			= 	$dataLama[0]['bp_name'];
+				$file 			= 	$dataLama[0]['bp_file'];
+				$no_kontrol 	= 	$dataLama[0]['no_kontrol'];
+				$no_revisi 		=	$dataLama[0]['no_revisi'];
+				$tanggal 		= 	$dataLama[0]['tanggal'];
+				$dibuat 		= 	$dataLama[0]['dibuat'];
+				$diperiksa_1 	= 	$dataLama[0]['diperiksa_1'];
+				$diperiksa_2 	= 	$dataLama[0]['diperiksa_2'];
+				$diputuskan 	= 	$dataLama[0]['diputuskan'];
+				$jml_halaman 	= 	$dataLama[0]['jml_halaman'];
+				$info 			= 	$dataLama[0]['bp_info'];
+				$tgl_upload 	= 	$dataLama[0]['tgl_upload'];
+				$tgl_insert 	= 	$dataLama[0]['tgl_insert'];
+
+				$jenis_doc 		= 	'BP';
+				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
+
+				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
+				{
+					$diperiksa_2=NULL;
+				}
+
+				if($info==NULL OR $info=='' OR $info==' ')
+				{
+					$info=NULL;
+				}
+
+				$recordLama 	= 	array(
+											'doc_id'		=> 	$doc_id,
+											'name' 			=> 	$name,
+											'file' 			=> 	$file,
+											'no_kontrol'	=>	$no_kontrol,
+											'no_revisi'		=>	$no_revisi,
+											'tanggal' 		=> 	$tanggal,
+											'dibuat' 		=> 	$dibuat,
+											'diperiksa_1' 	=>	$diperiksa_1,
+											'diperiksa_2' 	=> 	$diperiksa_2,
+											'diputuskan' 	=> 	$diputuskan,
+											'jml_halaman' 	=> 	$jml_halaman,
+											'info' 			=> 	$info,
+											'tgl_upload' 	=> 	$tgl_upload,
+											'tgl_insert' 	=> 	$tgl_insert,
+											'jenis_doc' 	=> 	$jenis_doc,
+											'tgl_update' 	=> 	$tgl_update
+									);
+				$this->M_businessprocess->inputDataLamakeHistory($recordLama);
+			}
+			// Salin sampai sini
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
+			}
+
+			if($info=='' OR $info==NULL OR $info==' ')
+			{
+				$info=NULL;
 			}
 
 			// echo 'sampai sini bisa';
@@ -232,21 +324,43 @@ class C_BusinessProcess extends CI_Controller
 
 			$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
 			
-			$data = array(
-				'bp_name' 		=> $namaBusinessProcess,
-				'bp_file' 		=> $fileDokumen,
-				'no_kontrol' 	=> $nomorKontrol,
-				'no_revisi' 	=> $nomorRevisi,
-				'tanggal' 		=> $tanggalRevisi,
-				'dibuat' 		=> $pekerjaDibuat,
-				'diperiksa_1' 	=> $pekerjaDiperiksa1,
-				'diperiksa_2' 	=> $pekerjaDiperiksa2,
-				'diputuskan' 	=> $pekerjaDiputuskan,
-				'jml_halaman' 	=> $jumlahHalaman,
-				'bp_info' 		=> $info,
-				'tgl_upload' 	=> $tanggalUpload,
-    		);
-			$this->M_businessprocess->updateBusinessProcess($data, $plaintext_string);
+			if($revisiBaru==0)
+			{
+				$data = array(
+					'bp_name' 		=> $namaBusinessProcess,
+					'bp_file' 		=> $fileDokumen,
+					'no_kontrol' 	=> $nomorKontrol,
+					'no_revisi' 	=> $nomorRevisi,
+					'tanggal' 		=> $tanggalRevisi,
+					'dibuat' 		=> $pekerjaDibuat,
+					'diperiksa_1' 	=> $pekerjaDiperiksa1,
+					'diperiksa_2' 	=> $pekerjaDiperiksa2,
+					'diputuskan' 	=> $pekerjaDiputuskan,
+					'jml_halaman' 	=> $jumlahHalaman,
+					'bp_info' 		=> $info,
+					'tgl_upload' 	=> $tanggalUpload,
+	    		);
+				$this->M_businessprocess->updateBusinessProcess($data, $plaintext_string);
+	    	}
+	    	elseif($revisiBaru==1)
+	    	{
+				$data = array(
+					'bp_name' 				=> $namaBusinessProcess,
+					'bp_file' 				=> $fileDokumen,
+					'no_kontrol' 			=> $nomorKontrol,
+					'no_revisi' 			=> $nomorRevisi,
+					'tanggal' 				=> $tanggalRevisi,
+					'dibuat' 				=> $pekerjaDibuat,
+					'diperiksa_1' 			=> $pekerjaDiperiksa1,
+					'diperiksa_2' 			=> $pekerjaDiperiksa2,
+					'diputuskan' 			=> $pekerjaDiputuskan,
+					'jml_halaman' 			=> $jumlahHalaman,
+					'bp_info' 				=> $info,
+					'update_revisi' 	=> $this->general->ambilWaktuEksekusi(),
+					'tgl_upload' 			=> $tanggalUpload,
+	    		);
+				$this->M_businessprocess->updateBusinessProcess($data, $plaintext_string);	    		
+	    	}
 
 			redirect(site_url('DocumentStandarization/BP'));
 		}

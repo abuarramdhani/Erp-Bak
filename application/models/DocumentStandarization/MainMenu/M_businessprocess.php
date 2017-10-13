@@ -107,6 +107,20 @@ class M_businessprocess extends CI_Model
         $this->db->where('bp_id', $id);
         $this->db->delete('ds.ds_business_process');
     }
+
+    public function ambilDataLama($id)
+    {
+        $ambilDataLamaBusinessProcess       = " select  *
+                                                from    ds.ds_business_process
+                                                where   bp_id=$id";
+        $queryAmbilDataLamaBusinessProcess  =   $this->db->query($ambilDataLamaBusinessProcess);
+        return $queryAmbilDataLamaBusinessProcess->result_array();
+    }
+
+    public function inputDataLamakeHistory($recordLama)
+    {
+        return $this->db->insert('ds.ds_history', $recordLama);
+    }
 }
 
 /* End of file M_businessprocess.php */

@@ -28,6 +28,50 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                                <?php
+                                    if($jumlahNotifikasi>0)
+                                    {
+                                        echo '  <div class="row">';
+                                    }
+                                ?>
+                                <?php
+                                    if($notifikasiRevisi!=null)
+                                    {
+                                        echo '      <div class="col-lg-'.(12/$jumlahNotifikasi).'">
+                                                        <div class="callout callout-success">
+                                                            <h4><b>Revisi dokumen hari ini : </b></h4>
+                                                                <ul>';
+                                        foreach ($notifikasiRevisi as $revisi) 
+                                        {
+                                            echo            '       <li>'.$revisi['daftar'].'</li>';
+                                        }
+                                        echo '          </div>
+                                                    </div>';
+
+                                    }
+                                ?>
+                                <?php
+                                    if($notifikasiDokumenBaru!=null)
+                                    {
+                                        echo '      <div class="col-lg-'.(12/$jumlahNotifikasi).'">
+                                                        <div class="callout callout-info">
+                                                            <h4><b>Dokumen baru hari ini : </b></h4>
+                                                                <ul>';
+                                        foreach ($notifikasiDokumenBaru as $dokumenBaru) 
+                                        {
+                                            echo            '       <li>'.$dokumenBaru['daftar'].'</li>';
+                                        }
+                                        echo   '        </div>
+                                                    </div>';
+                                    }
+                                ?>
+                                <?php
+                                    if($jumlahNotifikasi>0)
+                                    {
+                                        echo    '   </div>';
+                                    }
+
+                                ?>
                                 <div class="table-responsive">
                                     <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-businessProcess" style="font-size:12px; overflow-x: auto;">
                                         <thead class="bg-primary">

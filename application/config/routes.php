@@ -1236,6 +1236,10 @@ $route['DocumentStandarization/COP'] 							= 'DocumentStandarization/MainMenu/C
 $route['DocumentStandarization/COP/(:any)'] 					= 'DocumentStandarization/MainMenu/C_CodeOfPractice/$1';
 $route['DocumentStandarization/COP/(:any)/(:any)'] 				= 'DocumentStandarization/MainMenu/C_CodeOfPractice/$1/$2';
 
+$route['DocumentStandarization/DocumentHistory']				= 'DocumentStandarization/MainMenu/C_DocumentHistory';
+$route['DocumentStandarization/DocumentHistory/(:any)']			= 'DocumentStandarization/MainMenu/C_DocumentHistory/$1';
+$route['DocumentStandarization/DocumentHistory/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_DocumentHistory/$1/$2';
+
 // $route['DocumentStandarization/FlowProcess'] 								= 'DocumentStandarization/MainMenu/C_FlowProcess';
 // $route['DocumentStandarization/FlowProcess/(:any)'] 						= 'DocumentStandarization/MainMenu/C_FlowProcess/$1';
 // $route['DocumentStandarization/FlowProcess/(:any)/(:any)'] 					= 'DocumentStandarization/MainMenu/C_FlowProcess/$1/$2';

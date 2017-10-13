@@ -48,6 +48,7 @@
                                                 <label for="txtNoRevisiHeader" class="control-label col-lg-4">Nomor Revisi</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" name="txtNoRevisiHeader" id="txtNoRevisiHeader" class="form-control bubbletip-character sensitive-input"  style="text-transform: uppercase" required="" value="<?php echo $headerRow['nomor_revisi'];?>" />
+                                                    <input class="hidden" type="text" name="txtNoRevisiLamaHeader" class="form-control" style="text-transform: uppercase;" value="<?php echo $headerRow['nomor_revisi'];?>" readonly >
                                                 </div>
                                             </div>
 
@@ -55,6 +56,7 @@
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" required="" data-inputmask="'alias': 'dd-mm-yyyy'" value="<?php echo $headerRow['tanggal_revisi'];?>" />
+                                                    <input class="hidden" type="text" name="txtTanggalLamaHeader" class="form-control" style="text-transform: uppercase;" value="<?php echo $headerRow['tanggal_revisi'];?>">
                                                 </div>
                                             </div>
 
@@ -171,6 +173,13 @@
                                                     <a target="_blank" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/'.$headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
                                                     <input type="text" name="DokumenAwal" id="DokumenAwal" hidden="" value="<?php echo $headerRow['file'];?>">
                                                     <input type="text" name="WaktuUpload" id="WaktuUpload" hidden="" value="<?php echo $headerRow['waktu_upload_file'];?>">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="checkboxRevisi" class="control-label col-lg-4">Revisi Baru</label>
+                                                <div class="col-lg-4">
+                                                    <input type="checkbox" id="bubbletip-checkboxRevisi" name="checkboxRevisi" value="1">
                                                 </div>
                                             </div>
 
