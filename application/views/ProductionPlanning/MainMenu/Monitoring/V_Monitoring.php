@@ -336,7 +336,7 @@
             var showhide = setInterval(function(){
                 showHideNormalPlanning();
             }
-            , 15000);
+            , 20000);
         </script>
     </body>
 </html>

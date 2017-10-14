@@ -205,6 +205,9 @@ class M_monitoring extends CI_Model {
               ,2),0) || ' %' percentage
             from
               pp.pp_section ps
+            where
+              ps.section_id != 2
+              and ps.section_id != 14
             order by ps.section_id";
     $query = $this->db->query($sql);
     return $query->result_array();

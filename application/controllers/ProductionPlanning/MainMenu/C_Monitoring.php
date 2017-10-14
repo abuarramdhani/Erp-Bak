@@ -67,7 +67,6 @@ class C_Monitoring extends CI_Controller {
         $data['highPriority']= array();
         $data['normalPriority']= array();
 
-
         foreach ($datplan as $dp => $val1) {
             $h = 0;
             $n = 0;
