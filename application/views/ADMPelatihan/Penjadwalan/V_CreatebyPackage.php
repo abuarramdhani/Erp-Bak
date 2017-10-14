@@ -52,7 +52,7 @@
 									</div>
 									<label class="col-lg-1 control-label" align="center">-</label>
 									<div class="col-lg-4">
-										<input class="form-control enddate" placeholder="Tanggal" required >
+										<input class="form-control enddate" placeholder="Tanggal" required disabled="true">
 									</div>
 								</div>
 							</div>
