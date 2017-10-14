@@ -86,10 +86,11 @@
 											if($rc['evaluation']=='1'){$eval='Wawasan';$ev1='Y';}
 											if($rc['evaluation']=='2'){$eval='Pengetahuan';$ev2='Y';}
 											if($rc['evaluation']=='3'){$eval='Perilaku';$ev3='Y';}
-											if($rc['evaluation']=='1,2'){$eval='Wawasan, Pengetahuan';$ev1='Y';$ev2='Y';}
-											if($rc['evaluation']=='1,3'){$eval='Wawasan, Perilaku';$ev1='Y';$ev3='Y';}
-											if($rc['evaluation']=='2,3'){$eval='Pengetahuan, Perilaku';$ev2='Y';$ev3='Y';}
-											if($rc['evaluation']=='1,2,3'){$eval='Wawasan, Pengetahuan, Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
+											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Wawasan, Pengetahuan';$ev1='Y';$ev2='Y';}
+											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Wawasan, Perilaku';$ev1='Y';$ev3='Y';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pengetahuan, Perilaku';$ev2='Y';$ev3='Y';}
+											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+												{$eval='Wawasan, Pengetahuan, Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
