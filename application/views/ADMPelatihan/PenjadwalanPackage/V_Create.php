@@ -60,7 +60,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Nama Penjadwalan</label>
 								<div class="col-lg-6">
-									<input name="txtSchedulingName" class="form-control toupper" placeholder="Nama Penjadwalan Paket Pelatihan" required >
+									<input name="txtSchedulingName" class="form-control toupper" value="<?php echo $gpn['package_name']?>" required >
 								</div>
 							</div>
 						</div>
