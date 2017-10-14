@@ -6,7 +6,7 @@
 			<h4 style="margin-bottom: 0; padding-bottom: 0;font-size: 10px">CV. KARYA HIDUP SENTOSA</h4>
 			<p style="font-size: 9px">JOGJAKARTA</p>
 		</td>
-		<td style="text-align: center;font-size: 12px" colspan="4" rowspan="2">
+		<td style="text-align: center;font-size: 13px" colspan="4" rowspan="2">
 				<b>PERMINTAAN PEMBELIAN (PP)</b>
 		</td>
 		<td colspan="2" style="border:1px solid black;font-size: 10px;padding-left: 10px;"><b>No. PP : </b><?php echo $value['no_pp'];?></td>
@@ -76,8 +76,8 @@
 	<tr>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 15%"><b>Kode Barang</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Qty</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Satuan</b></td>
-		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 38%"><b>Nama Barang</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 7%"><b>Satuan</b></td>
+		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 36%"><b>Nama Barang</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 17%"><b>NBD</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Keterangan</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 10%"><b>Supplier</b></td>
@@ -86,13 +86,13 @@
 		<?php foreach ($PrintppDetail as $key): ?>
 			<?php $count++; ?>
 				<tr>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_kode_barang'];?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_jumlah'];?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_satuan'];?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_nama_barang'];?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo date("d F Y", strtotime($key['pp_nbd']));?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_keterangan'];?></td>
-					<td style="border:1px solid black;font-size: 10px;text-align: center;"><?php echo $key['pp_supplier'];?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo $key['pp_kode_barang'];?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo $key['pp_jumlah'];?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo $key['pp_satuan'];?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo $key['pp_nama_barang'];?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo date("d F Y", strtotime($key['pp_nbd']));?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo $key['pp_keterangan'];?></td>
+					<td style="border:1px solid black;font-size: 12px;text-align: center;"><?php echo $key['pp_supplier'];?></td>
 				</tr>
 	<?php endforeach; ?>
 	<?php if($count <= 14) : ?>
@@ -186,20 +186,20 @@
 	</tr>
 	<tr>
 		<td style="border:1px solid black;font-size: 7px;padding-left: 10px">Lembar Merah -> Seksi Pemesan</td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_siepembelian'] != null) {echo date("d M Y", strtotime($value['pp_tgl_siepembelian'])); }?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_direksi'] != null) {echo date("d M Y", strtotime($value['pp_tgl_direksi'])); }?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_kadept'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kadept'])); }?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_kaunit'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kaunit'])); }?></td>
-		<td style="border:1px solid black;font-size: 7px;text-align: center;"><b>Tgl : </b><?php if($value['pp_tgl_kasie'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kasie'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;padding-left: 5px"><b>Tgl : </b><?php if($value['pp_tgl_siepembelian'] != null) {echo date("d M Y", strtotime($value['pp_tgl_siepembelian'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;padding-left: 5px"><b>Tgl : </b><?php if($value['pp_tgl_direksi'] != null) {echo date("d M Y", strtotime($value['pp_tgl_direksi'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;padding-left: 5px"><b>Tgl : </b><?php if($value['pp_tgl_kadept'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kadept'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;padding-left: 5px"><b>Tgl : </b><?php if($value['pp_tgl_kaunit'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kaunit'])); }?></td>
+		<td style="border:1px solid black;font-size: 7px;padding-left: 5px"><b>Tgl : </b><?php if($value['pp_tgl_kasie'] != null) {echo date("d M Y", strtotime($value['pp_tgl_kasie'])); }?></td>
 	</tr>
 	<tr>
 		<td colspan="6" style="border:1px solid black;font-size: 10px;padding-bottom: 10px;padding-left: 10px"><b>Catatan Sie Pembelian : </b><?php echo $value['pp_catatan'];?></td>
 	</tr>
 	<tr>
-		<td colspan="2" style="font-size: 8px;padding-bottom: 10px;padding-left: 10px">FRM-PUR-00-02 (Rev.05)
+		<td colspan="2" style="font-size: 9px;padding-bottom: 10px;padding-left: 10px">FRM-PUR-00-02 (Rev.05)
 			<span>&nbsp;</span>
 		</td>
-		<td colspan="4" style="font-size: 7px;padding-bottom: 10px;padding-left: 10px;"><b>Catatan : </b> <p style="margin-bottom: 0px">- NBD (Need By Date) : Tanggal dibutuhkan barang</p>
+		<td colspan="4" style="font-size: 9px;padding-bottom: 10px;padding-left: 10px;"><b>Catatan : </b> <p style="margin-bottom: 0px">- NBD (Need By Date) : Tanggal dibutuhkan barang</p>
 				<p style="margin-bottom: 0px">- PP Aset dilampiri dengan Proposal Pengadaan Aset yang telah diotorisasi pihak yang terkait</p>
 				<p style="margin-bottom: 0px">- Otorisasi Permintaan Pembelian minimal sampai Kepala Departemen dan sampai ke Direksi jika ada kriteria khusus</p>
 	</td>
