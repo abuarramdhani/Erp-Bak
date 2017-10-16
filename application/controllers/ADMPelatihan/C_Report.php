@@ -281,6 +281,7 @@ class C_Report extends CI_Controller {
 		$ParticipantId 		= $this->input->post('txtId');
 		$ParticipantStatus 	= $this->input->post('slcStatus');
 		$ScoreEval2Pre 		= $this->input->post('txtPengetahuanPre');
+		$ScoreEval2Post		= $this->input->post('txtPengetahuanPost');
 		$ScoreEval3Pre 		= $this->input->post('txtPerilakuPre');
 		$ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
 		$ScoreEval3PostR1 	= $this->input->post('txtPerilakuPostRem1');
@@ -296,6 +297,7 @@ class C_Report extends CI_Controller {
 				if(empty($ScoreEval3PostR1[$i])){$ScoreEval3PostR1[$i] = NULL;}
 				if(empty($ScoreEval3PostR2[$i])){$ScoreEval3PostR2[$i] = NULL;}
 				if(empty($ScoreEval3PostR3[$i])){$ScoreEval3PostR3[$i] = NULL;}
+				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
 				
 				$data_participant[$i] = array(
 					'status' 			=> $ParticipantStatus[$i],
@@ -305,6 +307,7 @@ class C_Report extends CI_Controller {
 					'score_eval3_post2' => $ScoreEval3PostR1[$i],
 					'score_eval3_post3' => $ScoreEval3PostR2[$i],
 					'score_eval3_post4' => $ScoreEval3PostR3[$i],
+					'score_eval2_post' 	=> $ScoreEval2Post[$i],
 				);
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;
