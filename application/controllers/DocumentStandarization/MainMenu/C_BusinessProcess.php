@@ -221,8 +221,8 @@ class C_BusinessProcess extends CI_Controller
 		} 
 		else 
 		{
-			$namaBusinessProcess 	= 	$this->input->post('txtBpNameHeader', TRUE);
-			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader', TRUE);
+			$namaBusinessProcess 	= 	strtoupper($this->input->post('txtBpNameHeader', TRUE));
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader', TRUE));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader', TRUE);
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader', TRUE)),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
@@ -244,6 +244,11 @@ class C_BusinessProcess extends CI_Controller
 
 			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
 			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($revisiBaru!=1)
+			{
+				$revisiBaru 		=	0;
+			}
 
 			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
 			{
@@ -322,7 +327,10 @@ class C_BusinessProcess extends CI_Controller
 				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			}
 
-			$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			if($revisiBaru==0)
+			{
+				$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			}
 			
 			if($revisiBaru==0)
 			{

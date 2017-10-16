@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtBpNameHeader" class="control-label col-lg-4">Nama Business Process</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtBpNameHeader" id="txtBpNameHeader" class="form-control bubbletip-character sensitive-input" style="text-transform: uppercase" required="" />
+                                                    <input type="text" name="txtBpNameHeader" id="txtBpNameHeader" class="form-control bubbletip-character sensitive-input" style="text-transform: uppercase" required="" autofocus="" />
                                                 </div>
                                             </div>
 

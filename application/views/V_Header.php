@@ -59,6 +59,8 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/qtip/jquery.qtip.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/iCheck/skins/all.css');?>">
+
 	<!-- PAGE LEVEL STYLES FOR TEXTAREA -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>" />
