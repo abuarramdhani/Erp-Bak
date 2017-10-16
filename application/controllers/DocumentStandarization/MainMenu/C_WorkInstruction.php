@@ -94,9 +94,9 @@ class C_WorkInstruction extends CI_Controller
 			$this->load->view('DocumentStandarization/WorkInstruction/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaWI 				= 	$this->input->post('txtWiNameHeader');
+			$namaWI 				= 	strtoupper($this->input->post('txtWiNameHeader'));
 			$SOP 					= 	$this->input->post('cmbSOP');			
-			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader');
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
@@ -141,25 +141,29 @@ class C_WorkInstruction extends CI_Controller
 				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
 			}
 
+			if($revisiBaru==0)
+			{
+				$fileDokumen = $this->general->cekFile($namaWI, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			}
 
-			$data = array(
-				'wi_name' 		=> $namaWI,
-				'wi_file' 		=> $fileDokumen,
-				'no_kontrol' 	=> $nomorKontrol,
-				'no_revisi' 	=> $nomorRevisi,
-				'tanggal' 		=> $tanggalRevisi,
-				'dibuat' 		=> $pekerjaDibuat,
-				'diperiksa_1' 	=> $pekerjaDiperiksa1,
-				'diperiksa_2' 	=> $pekerjaDiperiksa2,
-				'diputuskan' 	=> $pekerjaDiputuskan,
-				'jml_halaman' 	=> $jumlahHalaman,
-				'wi_info' 		=> $info,
-				'tgl_upload' 	=> $tanggalUpload,
-				'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
-				'bp_id' 		=> $BusinessProcess,
-				'cd_id' 		=> $ContextDiagram,
-				'sop_id' 		=> $SOP,
-    		);
+				$data = array(
+					'wi_name' 		=> $namaWI,
+					'wi_file' 		=> $fileDokumen,
+					'no_kontrol' 	=> $nomorKontrol,
+					'no_revisi' 	=> $nomorRevisi,
+					'tanggal' 		=> $tanggalRevisi,
+					'dibuat' 		=> $pekerjaDibuat,
+					'diperiksa_1' 	=> $pekerjaDiperiksa1,
+					'diperiksa_2' 	=> $pekerjaDiperiksa2,
+					'diputuskan' 	=> $pekerjaDiputuskan,
+					'jml_halaman' 	=> $jumlahHalaman,
+					'wi_info' 		=> $info,
+					'tgl_upload' 	=> $tanggalUpload,
+					'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
+					'bp_id' 		=> $BusinessProcess,
+					'cd_id' 		=> $ContextDiagram,
+					'sop_id' 		=> $SOP,
+	    		);
 
     		// echo '<pre>';
     		// print_r($data);
@@ -234,6 +238,75 @@ class C_WorkInstruction extends CI_Controller
 			$fileDokumen 			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)),'datetime');
 
+			// Salin dari sini
+			$revisiBaru 			= 	$this->input->post('checkboxRevisi');
+
+			$nomorRevisiLama 		= 	$this->input->post('txtNoRevisiLamaHeader');
+			$tanggalRevisiLama 		= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalLamaHeader')), 'tanggal');
+
+			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
+			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($revisiBaru!=1)
+			{
+				$revisiBaru 		=	0;
+			}
+
+			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
+			{
+				$kodeWorkInstruction 	= 	$plaintext_string;
+				$dataLama 	= 	$this->M_workinstruction->ambilDataLama($kodeWorkInstruction);
+
+				$doc_id 		= 	$dataLama[0]['wi_id'];
+				$name 			= 	$dataLama[0]['wi_name'];
+				$file 			= 	$dataLama[0]['wi_file'];
+				$no_kontrol 	= 	$dataLama[0]['no_kontrol'];
+				$no_revisi 		=	$dataLama[0]['no_revisi'];
+				$tanggal 		= 	$dataLama[0]['tanggal'];
+				$dibuat 		= 	$dataLama[0]['dibuat'];
+				$diperiksa_1 	= 	$dataLama[0]['diperiksa_1'];
+				$diperiksa_2 	= 	$dataLama[0]['diperiksa_2'];
+				$diputuskan 	= 	$dataLama[0]['diputuskan'];
+				$jml_halaman 	= 	$dataLama[0]['jml_halaman'];
+				$info 			= 	$dataLama[0]['wi_info'];
+				$tgl_upload 	= 	$dataLama[0]['tgl_upload'];
+				$tgl_insert 	= 	$dataLama[0]['tgl_insert'];
+
+				$jenis_doc 		= 	'WI';
+				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
+
+				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
+				{
+					$diperiksa_2=NULL;
+				}
+
+				if($info==NULL OR $info=='' OR $info==' ')
+				{
+					$info=NULL;
+				}
+
+				$recordLama 	= 	array(
+											'doc_id'		=> 	$doc_id,
+											'name' 			=> 	$name,
+											'file' 			=> 	$file,
+											'no_kontrol'	=>	$no_kontrol,
+											'no_revisi'		=>	$no_revisi,
+											'tanggal' 		=> 	$tanggal,
+											'dibuat' 		=> 	$dibuat,
+											'diperiksa_1' 	=>	$diperiksa_1,
+											'diperiksa_2' 	=> 	$diperiksa_2,
+											'diputuskan' 	=> 	$diputuskan,
+											'jml_halaman' 	=> 	$jml_halaman,
+											'info' 			=> 	$info,
+											'tgl_upload' 	=> 	$tgl_upload,
+											'tgl_insert' 	=> 	$tgl_insert,
+											'jenis_doc' 	=> 	$jenis_doc,
+											'tgl_update' 	=> 	$tgl_update
+									);
+				$this->M_workinstruction->inputDataLamakeHistory($recordLama);
+			}
+			// Salin sampai sini
+
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
@@ -271,23 +344,49 @@ class C_WorkInstruction extends CI_Controller
 
 			$fileDokumen = $this->general->cekFile($namaWI, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
 
-			$data = array(
-				'wi_name' 			=> $namaWI,
-				'wi_file' 			=> $fileDokumen,
-				'no_kontrol' 		=> $nomorKontrol,
-				'no_revisi' 		=> $nomorRevisi,
-				'tanggal' 			=> $tanggalRevisi,
-				'dibuat' 			=> $pekerjaDibuat,
-				'diperiksa_1' 		=> $pekerjaDiperiksa1,
-				'diperiksa_2' 		=> $pekerjaDiperiksa2,
-				'diputuskan' 		=> $pekerjaDiputuskan,
-				'jml_halaman' 		=> $jumlahHalaman,
-				'wi_info' 			=> $info,
-				'tgl_upload' 		=> $tanggalUpload,
-				'bp_id' 			=> $BusinessProcess,
-				'cd_id' 			=> $ContextDiagram,
-				'sop_id' 			=> $SOP,
-    			);
+			if($revisiBaru==0)
+			{
+				$data = array(
+					'wi_name' 		=> $namaWI,
+					'wi_file' 		=> $fileDokumen,
+					'no_kontrol' 	=> $nomorKontrol,
+					'no_revisi' 	=> $nomorRevisi,
+					'tanggal' 		=> $tanggalRevisi,
+					'dibuat' 		=> $pekerjaDibuat,
+					'diperiksa_1' 	=> $pekerjaDiperiksa1,
+					'diperiksa_2' 	=> $pekerjaDiperiksa2,
+					'diputuskan' 	=> $pekerjaDiputuskan,
+					'jml_halaman' 	=> $jumlahHalaman,
+					'wi_info' 		=> $info,
+					'tgl_upload' 	=> $tanggalUpload,
+					'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
+					'bp_id' 		=> $BusinessProcess,
+					'cd_id' 		=> $ContextDiagram,
+					'sop_id' 		=> $SOP,
+	    		);
+	    	}
+	    	elseif($revisiBaru==1)
+	    	{
+				$data = array(
+					'wi_name' 		=> $namaWI,
+					'wi_file' 		=> $fileDokumen,
+					'no_kontrol' 	=> $nomorKontrol,
+					'no_revisi' 	=> $nomorRevisi,
+					'tanggal' 		=> $tanggalRevisi,
+					'dibuat' 		=> $pekerjaDibuat,
+					'diperiksa_1' 	=> $pekerjaDiperiksa1,
+					'diperiksa_2' 	=> $pekerjaDiperiksa2,
+					'diputuskan' 	=> $pekerjaDiputuskan,
+					'jml_halaman' 	=> $jumlahHalaman,
+					'wi_info' 		=> $info,
+					'tgl_upload' 	=> $tanggalUpload,
+					'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
+					'bp_id' 		=> $BusinessProcess,
+					'cd_id' 		=> $ContextDiagram,
+					'sop_id' 		=> $SOP,
+					'update_revisi'	=> $this->general->ambilWaktuEksekusi(),
+	    		);	    		
+	    	}
 			$this->M_workinstruction->updateWorkInstruction($data, $plaintext_string);
 
 			redirect(site_url('DocumentStandarization/WI'));

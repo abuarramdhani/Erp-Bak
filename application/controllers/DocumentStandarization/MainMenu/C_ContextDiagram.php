@@ -96,9 +96,9 @@ class C_ContextDiagram extends CI_Controller
 			$this->load->view('DocumentStandarization/ContextDiagram/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaContextDiagram		= 	$this->input->post('txtCdNameHeader');
+			$namaContextDiagram		= 	strtoupper($this->input->post('txtCdNameHeader'));
 			$BusinessProcess 		= 	$this->input->post('cmbBusinessProcess');
-			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader');
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader'));
 			$nomorRevisi 			= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase($this->input->post('txtTanggalHeader'), 'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
@@ -192,9 +192,9 @@ class C_ContextDiagram extends CI_Controller
 			$this->load->view('V_Footer',$data);	
 		} else {
 
-			$namaContextDiagram		= 	$this->input->post('txtCdNameHeader', TRUE);
+			$namaContextDiagram		= 	strtoupper($this->input->post('txtCdNameHeader', TRUE));
 			$BusinessProcess 		= 	$this->input->post('cmbBusinessProcess', TRUE);
-			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader', TRUE);
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader', TRUE));
 			$nomorRevisi 			= 	$this->input->post('txtNoRevisiHeader', TRUE);
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase($this->input->post('txtTanggalHeader', TRUE), 'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
@@ -207,6 +207,76 @@ class C_ContextDiagram extends CI_Controller
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');			
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
+
+			// Salin dari sini
+			$revisiBaru 			= 	$this->input->post('checkboxRevisi');
+
+			$nomorRevisiLama 		= 	$this->input->post('txtNoRevisiLamaHeader');
+			$tanggalRevisiLama 		= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalLamaHeader')), 'tanggal');
+
+			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
+			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($revisiBaru!=1)
+			{
+				$revisiBaru 		= 	0;
+			}
+
+			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
+			{
+				$kodeContextDiagram 	= 	$plaintext_string;
+				$dataLama 	= 	$this->M_contextdiagram->ambilDataLama($kodeContextDiagram);
+
+				$doc_id 		= 	$dataLama[0]['cd_id'];
+				$name 			= 	$dataLama[0]['cd_name'];
+				$file 			= 	$dataLama[0]['cd_file'];
+				$no_kontrol 	= 	$dataLama[0]['no_kontrol'];
+				$no_revisi 		=	$dataLama[0]['no_revisi'];
+				$tanggal 		= 	$dataLama[0]['tanggal'];
+				$dibuat 		= 	$dataLama[0]['dibuat'];
+				$diperiksa_1 	= 	$dataLama[0]['diperiksa_1'];
+				$diperiksa_2 	= 	$dataLama[0]['diperiksa_2'];
+				$diputuskan 	= 	$dataLama[0]['diputuskan'];
+				$jml_halaman 	= 	$dataLama[0]['jml_halaman'];
+				$info 			= 	$dataLama[0]['cd_info'];
+				$tgl_upload 	= 	$dataLama[0]['tgl_upload'];
+				$tgl_insert 	= 	$dataLama[0]['tgl_insert'];
+
+				$jenis_doc 		= 	'CD';
+				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
+
+				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
+				{
+					$diperiksa_2=NULL;
+				}
+
+				if($info==NULL OR $info=='' OR $info==' ')
+				{
+					$info=NULL;
+				}
+
+				$recordLama 	= 	array(
+											'doc_id'		=> 	$doc_id,
+											'name' 			=> 	$name,
+											'file' 			=> 	$file,
+											'no_kontrol'	=>	$no_kontrol,
+											'no_revisi'		=>	$no_revisi,
+											'tanggal' 		=> 	$tanggal,
+											'dibuat' 		=> 	$dibuat,
+											'diperiksa_1' 	=>	$diperiksa_1,
+											'diperiksa_2' 	=> 	$diperiksa_2,
+											'diputuskan' 	=> 	$diputuskan,
+											'jml_halaman' 	=> 	$jml_halaman,
+											'info' 			=> 	$info,
+											'tgl_upload' 	=> 	$tgl_upload,
+											'tgl_insert' 	=> 	$tgl_insert,
+											'jenis_doc' 	=> 	$jenis_doc,
+											'tgl_update' 	=> 	$tgl_update
+									);
+				$this->M_contextdiagram->inputDataLamakeHistory($recordLama);
+			}
+			// Salin sampai sini
+
 
 			if($pekerjaPemeriksa2=='' OR $pekerjaPemeriksa2==NULL OR $pekerjaPemeriksa2==' ')
 			{
@@ -225,25 +295,50 @@ class C_ContextDiagram extends CI_Controller
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
 			}
 
-			$fileDokumen = $this->general->cekFile($namaContextDiagram, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			if($revisiBaru==0)
+			{
+				$fileDokumen = $this->general->cekFile($namaContextDiagram, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			}
 
-			$data = array(
-				'cd_name' 		=> $namaContextDiagram,
-				'cd_file' 		=> $fileDokumen,
-				'no_kontrol' 	=> $nomorKontrol,
-				'no_revisi' 	=> $nomorRevisi,
-				'tanggal' 		=> $tanggalRevisi,
-				'dibuat' 		=> $pekerjaPembuat,
-				'diperiksa_1' 	=> $pekerjaPemeriksa1,
-				'diperiksa_2' 	=> $pekerjaPemeriksa2,
-				'diputuskan' 	=> $pekerjaPemberiKeputusan,
-				'jml_halaman' 	=> $jumlahHalaman,
-				'cd_info' 		=> $info,
-				'tgl_upload' 	=> $tanggalUpload,
-				'bp_id' 		=> $BusinessProcess,
-    			);
-			$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);
-
+			if($revisiBaru==0)
+			{
+				$data = array(
+					'cd_name' 		=> $namaContextDiagram,
+					'cd_file' 		=> $fileDokumen,
+					'no_kontrol' 	=> $nomorKontrol,
+					'no_revisi' 	=> $nomorRevisi,
+					'tanggal' 		=> $tanggalRevisi,
+					'dibuat' 		=> $pekerjaPembuat,
+					'diperiksa_1' 	=> $pekerjaPemeriksa1,
+					'diperiksa_2' 	=> $pekerjaPemeriksa2,
+					'diputuskan' 	=> $pekerjaPemberiKeputusan,
+					'jml_halaman' 	=> $jumlahHalaman,
+					'cd_info' 		=> $info,
+					'tgl_upload' 	=> $tanggalUpload,
+					'bp_id' 		=> $BusinessProcess,
+	    			);
+				$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);
+			}
+			elseif ($revisiBaru==1) 
+			{
+				$data = array(
+					'cd_name' 		=> $namaContextDiagram,
+					'cd_file' 		=> $fileDokumen,
+					'no_kontrol' 	=> $nomorKontrol,
+					'no_revisi' 	=> $nomorRevisi,
+					'tanggal' 		=> $tanggalRevisi,
+					'dibuat' 		=> $pekerjaPembuat,
+					'diperiksa_1' 	=> $pekerjaPemeriksa1,
+					'diperiksa_2' 	=> $pekerjaPemeriksa2,
+					'diputuskan' 	=> $pekerjaPemberiKeputusan,
+					'jml_halaman' 	=> $jumlahHalaman,
+					'cd_info' 		=> $info,
+					'tgl_upload' 	=> $tanggalUpload,
+					'bp_id' 		=> $BusinessProcess,
+					'update_revisi' => $this->general->ambilWaktuEksekusi(),
+	    			);
+				$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);				
+			}
 			redirect(site_url('DocumentStandarization/CD'));
 		}
 	}

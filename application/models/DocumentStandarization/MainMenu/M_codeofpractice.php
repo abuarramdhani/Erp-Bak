@@ -145,6 +145,20 @@ class M_codeofpractice extends CI_Model
         $this->db->where('cop_id', $id);
         $this->db->delete('ds.ds_code_of_practice');
     }
+
+    public function ambilDataLama($id)
+    {
+        $ambilDataLama                      = " select  *
+                                                from    ds.ds_code_of_practice
+                                                where   cop_id=$id";
+        $queryAmbilDataLama                 =   $this->db->query($ambilDataLama);
+        return $queryAmbilDataLama->result_array();
+    }
+
+    public function inputDataLamakeHistory($recordLama)
+    {
+        return $this->db->insert('ds.ds_history', $recordLama);
+    }    
 }
 
 /* End of file M_codeofpractice.php */

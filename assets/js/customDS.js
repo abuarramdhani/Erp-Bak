@@ -202,7 +202,7 @@
 						processResults: function(data) {
 							return {
 								results: $.map(data, function(obj){
-									return {id: obj.id_pekerja, text: obj.daftar_pekerja};
+									return {id: obj.id_pekerja, text: obj.nomor_induk+' - '+obj.nama_pekerja};
 								})
 							};
 						}
@@ -227,7 +227,7 @@
 						processResults: function(data) {
 							return {
 								results: $.map(data, function(obj){
-									return {id: obj.id_pekerja, text: obj.daftar_pekerja};
+									return {id: obj.id_pekerja, text: obj.nomor_induk+' - '+obj.nama_pekerja};
 								})
 							};
 						}
@@ -252,7 +252,7 @@
 						processResults: function(data) {
 							return {
 								results: $.map(data, function(obj){
-									return {id: obj.id_pekerja, text: obj.daftar_pekerja};
+									return {id: obj.id_pekerja, text: obj.nomor_induk+' - '+obj.nama_pekerja};
 								})
 							};
 						}
@@ -278,7 +278,7 @@
 						processResults: function(data) {
 							return {
 								results: $.map(data, function(obj){
-									return {id: obj.id_pekerja, text: obj.daftar_pekerja};
+									return {id: obj.id_pekerja, text: obj.nomor_induk+' - '+obj.nama_pekerja};
 								})
 							};
 						}
@@ -378,6 +378,7 @@
 						def: true
 					},
 				});
+
 				$('#bubbletip-checkboxRevisi').qtip({
 					content: {
 						text: 'Check jika perubahan yang dilakukan adalah revisi baru dokumen.'
@@ -387,6 +388,11 @@
 					},
 				});
 
+				$('#txtTanggalHeader').qtip({
+					content: {
+						text: 'Ctrl+A terlebih dahulu jika akan input manual.'
+					}
+				})
 //			}
 
 // 			Form Behavior
@@ -408,6 +414,14 @@
 				    });
 				//     });
 				// });	
+//			}
+
+//			iCheck
+//			{
+				$('input[name=checkboxRevisi]').iCheck({
+					checkboxClass: 'icheckbox_flat-blue',
+					radioClass: 'iradio_flat-blue'
+				});
 //			}
 
 

@@ -48,11 +48,98 @@ class M_general extends CI_Model
                                     from        er.er_employee_all as pkj
                                     where       /*pkj.resign='0'
                                                 and    */pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
                                                 and     (
                                                             pkj.employee_code LIKE '%$keyword%'
                                                             OR  pkj.employee_name LIKE '%$keyword%'
                                                         )
                                     order by    pkj.employee_code;";
+        $ambilPekerjaPembuat  =   " select      pkj.employee_name as nama_pekerja,
+                                                pkj.date_of_birth,
+                                                (
+                                                    case    when    (
+                                                                        (
+                                                                            select      count(*)
+                                                                            from        er.er_employee_all as pkj2
+                                                                            where       pkj2.employee_name=pkj.employee_name
+                                                                                        and     pkj2.date_of_birth=pkj.date_of_birth
+                                                                                        and     pkj2.employee_code!='Z0000'
+                                                                                        and     pkj2.employee_code!='Z0001'
+                                                                        )
+                                                                        !=1
+                                                                    )
+                                                                    then    (
+                                                                                select      pkj3.employee_code
+                                                                                from        er.er_employee_all as pkj3
+                                                                                where       pkj3.employee_name=pkj.employee_name
+                                                                                            and     pkj3.date_of_birth=pkj.date_of_birth
+                                                                                            and     pkj3.employee_code!='Z0000'
+                                                                                            and     pkj3.employee_code!='Z0001'
+                                                                                            and     pkj3.resign_date=(
+                                                                                                                    select              MAX(pkj4.resign_date)
+                                                                                                                    from                er.er_employee_all as pkj4
+                                                                                                                    where               pkj4.employee_name=pkj.employee_name
+                                                                                                                                        and     pkj4.date_of_birth=pkj.date_of_birth
+                                                                                                                                        and     pkj4.employee_code!='Z0000'
+                                                                                                                                        and     pkj4.employee_code!='Z0001'
+                                                                                                    )
+                                                                            )
+                                                            else    (
+                                                                        select      pkj5.employee_code
+                                                                        from        er.er_employee_all as pkj5
+                                                                        where       pkj5.employee_name=pkj.employee_name
+                                                                                    and     pkj5.date_of_birth=pkj.date_of_birth
+                                                                                    and     pkj5.employee_code!='Z0000'
+                                                                                    and     pkj5.employee_code!='Z0001'
+                                                                    )
+                                                    END
+                                                ) AS nomor_induk,
+                                                (
+                                                    case    when    (
+                                                                        (
+                                                                            select      count(*)
+                                                                            from        er.er_employee_all as pkj2
+                                                                            where       pkj2.employee_name=pkj.employee_name
+                                                                                        and     pkj2.date_of_birth=pkj.date_of_birth
+                                                                                        and     pkj2.employee_code!='Z0000'
+                                                                                        and     pkj2.employee_code!='Z0001'
+                                                                        )
+                                                                        !=1
+                                                                    )
+                                                                    then    (
+                                                                                select      pkj3.employee_id
+                                                                                from        er.er_employee_all as pkj3
+                                                                                where       pkj3.employee_name=pkj.employee_name
+                                                                                            and     pkj3.date_of_birth=pkj.date_of_birth
+                                                                                            and     pkj3.employee_code!='Z0000'
+                                                                                            and     pkj3.employee_code!='Z0001'
+                                                                                            and     pkj3.resign_date=(
+                                                                                                                    select              MAX(pkj4.resign_date)
+                                                                                                                    from                er.er_employee_all as pkj4
+                                                                                                                    where               pkj4.employee_name=pkj.employee_name
+                                                                                                                                        and     pkj4.date_of_birth=pkj.date_of_birth
+                                                                                                                                        and     pkj4.employee_code!='Z0000'
+                                                                                                                                        and     pkj4.employee_code!='Z0001'
+                                                                                                    )
+                                                                            )
+                                                            else    (
+                                                                        select      pkj5.employee_id
+                                                                        from        er.er_employee_all as pkj5
+                                                                        where       pkj5.employee_name=pkj.employee_name
+                                                                                    and     pkj5.date_of_birth=pkj.date_of_birth
+                                                                                    and     pkj5.employee_code!='Z0000'
+                                                                                    and     pkj5.employee_code!='Z0001'
+                                                                    )
+                                                    END
+                                                ) AS id_pekerja 
+                                    from        er.er_employee_all as pkj
+                                    where       pkj.employee_code is not null
+                                                and     pkj.employee_name like '%$keyword%'
+                                                and     pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
+                                    group by    pkj.employee_name, pkj.date_of_birth
+                                    order by    nomor_induk;";
+
         $queryAmbilPekerjaPembuat     =   $this->db->query($ambilPekerjaPembuat);
         return $queryAmbilPekerjaPembuat->result_array();
     }
@@ -67,11 +154,99 @@ class M_general extends CI_Model
                                     from        er.er_employee_all as pkj
                                     where       SUBSTR(pkj.section_code,8,2)='00'
                                                 and     pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
                                                 and     (
                                                             pkj.employee_code LIKE '%$keyword%'
                                                             OR  pkj.employee_name LIKE '%$keyword%'
                                                         )                                                
                                     order by    pkj.employee_code;";
+        $ambilPekerjaMinKasie  = "  select      pkj.employee_name as nama_pekerja,
+                                                pkj.date_of_birth,
+                                                (
+                                                    case    when    (
+                                                                        (
+                                                                            select      count(*)
+                                                                            from        er.er_employee_all as pkj2
+                                                                            where       pkj2.employee_name=pkj.employee_name
+                                                                                        and     pkj2.date_of_birth=pkj.date_of_birth
+                                                                                        and     pkj2.employee_code!='Z0000'
+                                                                                        and     pkj2.employee_code!='Z0001'
+                                                                        )
+                                                                        !=1
+                                                                    )
+                                                                    then    (
+                                                                                select      pkj3.employee_code
+                                                                                from        er.er_employee_all as pkj3
+                                                                                where       pkj3.employee_name=pkj.employee_name
+                                                                                            and     pkj3.date_of_birth=pkj.date_of_birth
+                                                                                            and     pkj3.employee_code!='Z0000'
+                                                                                            and     pkj3.employee_code!='Z0001'
+                                                                                            and     pkj3.resign_date=(
+                                                                                                                    select              MAX(pkj4.resign_date)
+                                                                                                                    from                er.er_employee_all as pkj4
+                                                                                                                    where               pkj4.employee_name=pkj.employee_name
+                                                                                                                                        and     pkj4.date_of_birth=pkj.date_of_birth
+                                                                                                                                        and     pkj4.employee_code!='Z0000'
+                                                                                                                                        and     pkj4.employee_code!='Z0001'
+                                                                                                    )
+                                                                            )
+                                                            else    (
+                                                                        select      pkj5.employee_code
+                                                                        from        er.er_employee_all as pkj5
+                                                                        where       pkj5.employee_name=pkj.employee_name
+                                                                                    and     pkj5.date_of_birth=pkj.date_of_birth
+                                                                                    and     pkj5.employee_code!='Z0000'
+                                                                                    and     pkj5.employee_code!='Z0001'
+                                                                    )
+                                                    END
+                                                ) AS nomor_induk,
+                                                (
+                                                    case    when    (
+                                                                        (
+                                                                            select      count(*)
+                                                                            from        er.er_employee_all as pkj2
+                                                                            where       pkj2.employee_name=pkj.employee_name
+                                                                                        and     pkj2.date_of_birth=pkj.date_of_birth
+                                                                                        and     pkj2.employee_code!='Z0000'
+                                                                                        and     pkj2.employee_code!='Z0001'
+                                                                        )
+                                                                        !=1
+                                                                    )
+                                                                    then    (
+                                                                                select      pkj3.employee_id
+                                                                                from        er.er_employee_all as pkj3
+                                                                                where       pkj3.employee_name=pkj.employee_name
+                                                                                            and     pkj3.date_of_birth=pkj.date_of_birth
+                                                                                            and     pkj3.employee_code!='Z0000'
+                                                                                            and     pkj3.employee_code!='Z0001'
+                                                                                            and     pkj3.resign_date=(
+                                                                                                                    select              MAX(pkj4.resign_date)
+                                                                                                                    from                er.er_employee_all as pkj4
+                                                                                                                    where               pkj4.employee_name=pkj.employee_name
+                                                                                                                                        and     pkj4.date_of_birth=pkj.date_of_birth
+                                                                                                                                        and     pkj4.employee_code!='Z0000'
+                                                                                                                                        and     pkj4.employee_code!='Z0001'
+                                                                                                    )
+                                                                            )
+                                                            else    (
+                                                                        select      pkj5.employee_id
+                                                                        from        er.er_employee_all as pkj5
+                                                                        where       pkj5.employee_name=pkj.employee_name
+                                                                                    and     pkj5.date_of_birth=pkj.date_of_birth
+                                                                                    and     pkj5.employee_code!='Z0000'
+                                                                                    and     pkj5.employee_code!='Z0001'
+                                                                    )
+                                                    END
+                                                ) AS id_pekerja 
+                                    from        er.er_employee_all as pkj
+                                    where       pkj.employee_code is not null
+                                                and     pkj.employee_name like '%$keyword%'
+                                                and     substr(pkj.section_code,8,2)='00'
+                                                and     pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
+                                    group by    pkj.employee_name, pkj.date_of_birth
+                                    order by    nomor_induk;";
+
         $queryAmbilPekerjaMinKasie     =   $this->db->query($ambilPekerjaMinKasie);
         return $queryAmbilPekerjaMinKasie->result_array();
     }    
@@ -86,11 +261,99 @@ class M_general extends CI_Model
                                     from        er.er_employee_all as pkj
                                     where       SUBSTR(pkj.section_code,8,2)='00'
                                                 and     pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
                                                 and     (
                                                             pkj.employee_code LIKE '%$keyword%'
                                                             OR  pkj.employee_name LIKE '%$keyword%'
                                                         )                                                
                                     order by    pkj.employee_code;";
+        $ambilPekerjaMinKasie  = "  select      pkj.employee_name as nama_pekerja,
+                                                pkj.date_of_birth,
+                                                (
+                                                    case    when    (
+                                                                        (
+                                                                            select      count(*)
+                                                                            from        er.er_employee_all as pkj2
+                                                                            where       pkj2.employee_name=pkj.employee_name
+                                                                                        and     pkj2.date_of_birth=pkj.date_of_birth
+                                                                                        and     pkj2.employee_code!='Z0000'
+                                                                                        and     pkj2.employee_code!='Z0001'
+                                                                        )
+                                                                        !=1
+                                                                    )
+                                                                    then    (
+                                                                                select      pkj3.employee_code
+                                                                                from        er.er_employee_all as pkj3
+                                                                                where       pkj3.employee_name=pkj.employee_name
+                                                                                            and     pkj3.date_of_birth=pkj.date_of_birth
+                                                                                            and     pkj3.employee_code!='Z0000'
+                                                                                            and     pkj3.employee_code!='Z0001'
+                                                                                            and     pkj3.resign_date=(
+                                                                                                                    select              MAX(pkj4.resign_date)
+                                                                                                                    from                er.er_employee_all as pkj4
+                                                                                                                    where               pkj4.employee_name=pkj.employee_name
+                                                                                                                                        and     pkj4.date_of_birth=pkj.date_of_birth
+                                                                                                                                        and     pkj4.employee_code!='Z0000'
+                                                                                                                                        and     pkj4.employee_code!='Z0001'
+                                                                                                    )
+                                                                            )
+                                                            else    (
+                                                                        select      pkj5.employee_code
+                                                                        from        er.er_employee_all as pkj5
+                                                                        where       pkj5.employee_name=pkj.employee_name
+                                                                                    and     pkj5.date_of_birth=pkj.date_of_birth
+                                                                                    and     pkj5.employee_code!='Z0000'
+                                                                                    and     pkj5.employee_code!='Z0001'
+                                                                    )
+                                                    END
+                                                ) AS nomor_induk,
+                                                (
+                                                    case    when    (
+                                                                        (
+                                                                            select      count(*)
+                                                                            from        er.er_employee_all as pkj2
+                                                                            where       pkj2.employee_name=pkj.employee_name
+                                                                                        and     pkj2.date_of_birth=pkj.date_of_birth
+                                                                                        and     pkj2.employee_code!='Z0000'
+                                                                                        and     pkj2.employee_code!='Z0001'
+                                                                        )
+                                                                        !=1
+                                                                    )
+                                                                    then    (
+                                                                                select      pkj3.employee_id
+                                                                                from        er.er_employee_all as pkj3
+                                                                                where       pkj3.employee_name=pkj.employee_name
+                                                                                            and     pkj3.date_of_birth=pkj.date_of_birth
+                                                                                            and     pkj3.employee_code!='Z0000'
+                                                                                            and     pkj3.employee_code!='Z0001'
+                                                                                            and     pkj3.resign_date=(
+                                                                                                                    select              MAX(pkj4.resign_date)
+                                                                                                                    from                er.er_employee_all as pkj4
+                                                                                                                    where               pkj4.employee_name=pkj.employee_name
+                                                                                                                                        and     pkj4.date_of_birth=pkj.date_of_birth
+                                                                                                                                        and     pkj4.employee_code!='Z0000'
+                                                                                                                                        and     pkj4.employee_code!='Z0001'
+                                                                                                    )
+                                                                            )
+                                                            else    (
+                                                                        select      pkj5.employee_id
+                                                                        from        er.er_employee_all as pkj5
+                                                                        where       pkj5.employee_name=pkj.employee_name
+                                                                                    and     pkj5.date_of_birth=pkj.date_of_birth
+                                                                                    and     pkj5.employee_code!='Z0000'
+                                                                                    and     pkj5.employee_code!='Z0001'
+                                                                    )
+                                                    END
+                                                ) AS id_pekerja 
+                                    from        er.er_employee_all as pkj
+                                    where       pkj.employee_code is not null
+                                                and     pkj.employee_name like '%$keyword%'
+                                                and     substr(pkj.section_code,8,2)='00'
+                                                and     pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
+                                    group by    pkj.employee_name, pkj.date_of_birth
+                                    order by    nomor_induk;";
+
         $queryAmbilPekerjaMinKasie     =   $this->db->query($ambilPekerjaMinKasie);
         return $queryAmbilPekerjaMinKasie->result_array();
     }    
@@ -105,6 +368,7 @@ class M_general extends CI_Model
                                     from        er.er_employee_all as pkj
                                     where       SUBSTR(pkj.section_code,6,4)='0000'
                                                 and     pkj.employee_code!='Z0000'
+                                                and     pkj.employee_code!='Z0001'
                                                 and     (
                                                             pkj.employee_code LIKE '%$keyword%'
                                                             OR  pkj.employee_name LIKE '%$keyword%'
@@ -129,7 +393,7 @@ class M_general extends CI_Model
     {
         $ambilDaftarContextDiagram      = " select      cd.cd_id as id_context_diagram,
                                                         cd.cd_name as nama_context_diagram,
-                                                        concat_ws(' - ', concat_ws('-Rev. ',cd.no_kontrol, cd.no_revisi), cd.cd_name) as daftar_context_diagram
+                                                        concat_ws(' - ', cd.no_kontrol, cd.no_revisi, cd.cd_name) as daftar_context_diagram
                                             from        ds.ds_context_diagram as cd
                                             order by    cd.cd_id asc, cd.tanggal desc;";
         $queryDaftarContextDiagram      =   $this->db->query($ambilDaftarContextDiagram);
@@ -140,7 +404,7 @@ class M_general extends CI_Model
     {
         $ambilDaftarSOP                 = " select      sop.sop_id as id_standard_operating_procedure,
                                                         sop.sop_name as nama_standard_operating_procedure,
-                                                        concat_ws(' - ', concat_ws('-Rev. ',sop.no_kontrol, sop.no_revisi), sop.sop_name) as daftar_standard_operating_procedure
+                                                        concat_ws(' - ', sop.no_kontrol, sop.no_revisi, sop.sop_name) as daftar_standard_operating_procedure
                                             from        ds.ds_standard_operating_procedure as sop
                                             order by    sop.sop_id asc, sop.tanggal desc;";
         $queryDaftarSOP                 =   $this->db->query($ambilDaftarSOP);

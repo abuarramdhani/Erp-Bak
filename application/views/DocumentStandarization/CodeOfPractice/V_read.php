@@ -32,7 +32,7 @@
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($CodeOfPractice as $headerRow): ?>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Cop Name</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Nama Code of Practice</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['nama_code_of_practice']; ?></td>
                                                         </tr>
                                                         <tr>
@@ -84,17 +84,20 @@
                                                             <td style="border: 0"><?php echo $headerRow['info']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>File</strong></td>
-                                                            <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$headerRow['file'];?>" download="<?php echo str_replace('_', ' ', $headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Waktu Input</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['waktu_input']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Waktu Upload File</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['waktu_upload_file']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>File</strong></td>
+                                                            <!-- <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$headerRow['file'];?>" download="<?php echo str_replace('_', ' ', $headerRow['file']);?>"><?php echo $headerRow['file'];?></a> -->
+                                                            </td>
+                                                            <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$headerRow['file'];?>" target="_blank"><?php echo $headerRow['file'];?></a>
+                                                            </td>
+
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

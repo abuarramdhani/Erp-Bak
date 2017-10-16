@@ -110,11 +110,11 @@ class M_businessprocess extends CI_Model
 
     public function ambilDataLama($id)
     {
-        $ambilDataLamaBusinessProcess       = " select  *
+        $ambilDataLama                      = " select  *
                                                 from    ds.ds_business_process
                                                 where   bp_id=$id";
-        $queryAmbilDataLamaBusinessProcess  =   $this->db->query($ambilDataLamaBusinessProcess);
-        return $queryAmbilDataLamaBusinessProcess->result_array();
+        $queryAmbilDataLama                 =   $this->db->query($ambilDataLama);
+        return $queryAmbilDataLama->result_array();
     }
 
     public function inputDataLamakeHistory($recordLama)
