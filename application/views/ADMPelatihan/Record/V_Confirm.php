@@ -184,6 +184,7 @@
 												<th width="12%">Status</th>
 													<?php if($ev2=='Y'){ ?>
 														<th>Pengetahuan (Pre)</th>
+														<th>Pengetahuan (Post)</th>
 													<?php } if($ev3=='Y'){ ?>
 														<th>Perilaku (Pre)</th>
 														<th>Perilaku (Post)</th>
@@ -234,6 +235,9 @@
 													<?php if($ev2=='Y'){ ?>
 												<td>
 													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
+												</td>
+												<td>
+													<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
 												</td>
 													<?php } if($ev3=='Y'){ ?>
 												<td>
