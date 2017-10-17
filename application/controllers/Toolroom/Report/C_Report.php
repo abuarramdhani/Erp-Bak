@@ -45,7 +45,10 @@ class C_Report extends CI_Controller {
     }
 	
 	//HALAMAN MASTER ITEM
-	public function Transaction(){
+	public function Transaction($msg=false){
+		if($msg==null){
+			$msg = "";
+		}
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -57,6 +60,7 @@ class C_Report extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['msg'] = $msg;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ToolRoom/Report/V_Report_Transaction',$data);
@@ -82,7 +86,14 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['RecordTransaction'] = $this->M_report->SearchTransaction($shift,$str_dt,$str_end);
+		if(empty($data['RecordTransaction'])){
+			redirect('Toolroom/Report/Transaction/null');
+		}
 		$data['periode'] = str_replace(" ","",$periode);
+		$data['shift'] = $shift;
+		$data['msg'] = "";
+		$data['str_dt'] = $str_dt;
+		$data['str_end'] = $str_end;
 		$data['shift'] = $shift;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -102,7 +113,10 @@ class C_Report extends CI_Controller {
 	}
 	
 	
-		public function Stok(){
+		public function Stok($msg=false){
+		if($msg==null){
+			$msg = "";
+		}
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -114,6 +128,7 @@ class C_Report extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['msg'] = "";
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ToolRoom/Report/V_Report_Stok',$data);
@@ -139,8 +154,15 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['RecordStok'] = $this->M_report->SearchStok($shift,$str_dt,$str_end);
+		$data['str_dt'] = $str_dt;
+		$data['str_end'] = $str_end;
+		$data['shift'] = $shift;
+		if(empty($data['RecordStok'])){
+			redirect('Toolroom/Report/Stok/null');
+		}
 		$data['periode'] = str_replace(" ","",$periode);
 		$data['shift'] = $shift;
+		$data['msg'] = "";
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ToolRoom/Report/V_Report_Stok',$data);

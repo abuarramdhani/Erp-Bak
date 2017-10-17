@@ -381,8 +381,14 @@ class C_Transaksi extends CI_Controller {
 		$id = $this->input->post('barcode',true);
 		$trans = $this->input->post('trans',true);
 		$date = $this->input->post('date',true);
+		if($date == null){
+			$all = "";
+		}else{
+			$all = "date_trunc('day', date_lend)='$date' 
+						and";
+		}
 		$datenow =  date('Y-m-d H:i:s');
-		$addItemLending = $this->M_transaksi->addItemLending($id,$trans,$date,$datenow);
+		$addItemLending = $this->M_transaksi->addItemLending($id,$trans,$date,$datenow,$all);
 		$this->listOutItemToday($trans);
 	}
 	

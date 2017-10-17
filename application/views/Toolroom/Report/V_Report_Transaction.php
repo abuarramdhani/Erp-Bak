@@ -27,15 +27,20 @@
 							<div class="box-header with-border">
 								Header
 							</div>
+							<?php if($msg != null){ ?>
+							<div class="alert alert-danger alert-dismissable"  style="width:100%;display:none;" >
+								<b> Alert!</b> Tidak ada data transaksi
+							</div>
+							<?php } ?>
 							<div class="box-body">
 								<div class="row col-lg-12">
 									<div class="form-group">
 										<form method="post" action="<?php echo site_url('Toolroom/Report/SearchReportTransaction') ?>">
-											<div class="col-md-3">
-												<input type="text" name="txtPeriode" id="txtPeriode" class="form-control daterangepicker-range" data-date-format="d F Y" placeholder="[Periode]"></input>
+											<div class="col-md-2">
+												<input type="text" name="txtPeriode" id="txtPeriode" class="form-control daterangepicker-range" data-date-format="d F Y" placeholder="[Periode]" required></input>
 											</div>
 											<div class="col-md-2">
-												<select name="txsShift" id="txsShift" class="form-control">
+												<select name="txsShift" id="txsShift" class="form-control" required>
 													<option value="">[Select Shift]</option>
 													<option value="S1">SHIFT 1</option>
 													<option value="S2">SHIFT 2</option>
@@ -49,7 +54,12 @@
 											<div class="col-md-1">
 												<button class="btn btn-md btn-primary btn-flat" >Search</button>
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-4 col-lg-offset-3 text-right">
+											<?php 
+												if(!empty($shift)){
+													echo "<span style='font-size:18px;'><b>".$shift." / ".date("d F Y",strtotime($str_dt))." - ".date("d F Y",strtotime($str_end))."</b></span>";
+												}
+											?>
 											</div>
 										</form>
 									</div>
@@ -60,12 +70,14 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
-												<th width="10%"><center>Item Code</center></th>
-												<th width="30%"><center>Item</center></th>
-												<th width="10%"><center>Merk</center></th>
+												<th width="7%"><center>Item Code</center></th>
+												<th width="23%"><center>Item</center></th>
+												<th width="5%"><center>Merk</center></th>
 												<th width="5%"><center>Stok Awal</center></th>
 												<th width="5%"><center>Qty used</center></th>
 												<th width="10%"><center>Date used</center></th>
+												<th width="5%"><center>Qty Rtn</center></th>
+												<th width="10%"><center>Last Rtn</center></th>
 												<th width="5%"><center>Shift</center></th>
 												<th width="5%"><center>User</center></th>
 												<th width="5%"><center>Toolman</center></th>
@@ -87,6 +99,8 @@
 																<td class='text-center'>".$RecordTransaction_item['item_qty']."</td>
 																<td class='text-center'>".$RecordTransaction_item['qty_dipakai']."</td>
 																<td class='text-center'>".$RecordTransaction_item['creation_date']."</td>
+																<td class='text-center'>".$RecordTransaction_item['item_qty_return']."</td>
+																<td class='text-center'>".$RecordTransaction_item['date_return']."</td>
 																<td class='text-center'>".$RecordTransaction_item['shift']."</td>
 																<td class='text-center'>".$RecordTransaction_item['noind']."</td>
 																<td class='text-center'>".$RecordTransaction_item['created_by']."</td>

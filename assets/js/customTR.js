@@ -166,6 +166,7 @@ function AddItem(exe){
 		type = $('#txtID').val(),
 		count = $('#table-'+exe+'-peminjaman tbody tr').length,
 		no = 0;
+		$('#txtBarcode').attr("readonly", 'readonly');
 		if(count == 0){
 			no = parseInt(no)+1;
 			$.ajax({
@@ -183,6 +184,7 @@ function AddItem(exe){
 						}
 					}
 				});
+		$('#txtBarcode').removeAttr("readonly", 'readonly');
 		}else{
 			$('#table-'+exe+'-peminjaman tbody tr').each(function() {
 				no = parseInt(no)+1;
@@ -216,6 +218,7 @@ function AddItem(exe){
 					}	
 			});
 		}
+	$('#txtBarcode').removeAttr("readonly", 'readonly');
 	$('#txtBarcode').val('');
 }
 

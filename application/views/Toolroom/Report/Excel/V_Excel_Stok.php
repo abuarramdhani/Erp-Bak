@@ -107,6 +107,7 @@ $borderAll = array(
 					->setCellValueExplicit($kolomG, $RecordStok_item['item_desc'], PHPExcel_Cell_DataType::TYPE_STRING);
 					
 					$objPHPExcel->getActiveSheet()->getStyle(''.$kolomA.':'.$kolomG.'')->applyFromArray($borderAll);
+					$toolman = $RecordStok_item['toolman'];
 	}	
 	$row = (int)$i+2;
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('D'.$row.':E'.$row.'');
@@ -119,7 +120,7 @@ $borderAll = array(
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('F'.$row2.':G'.$row2.'');
 	$objPHPExcel->getActiveSheet()->insertNewRowBefore($row2,1) 
 						->setCellValueExplicit('D'.$row2, "(                       )", PHPExcel_Cell_DataType::TYPE_STRING)
-						->setCellValueExplicit('F'.$row2, $toolman, PHPExcel_Cell_DataType::TYPE_STRING);
+						->setCellValueExplicit('F'.$row2, str_replace(" ","",$toolman), PHPExcel_Cell_DataType::TYPE_STRING);
 					
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
