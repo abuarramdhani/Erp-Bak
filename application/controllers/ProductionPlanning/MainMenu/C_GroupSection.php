@@ -37,6 +37,11 @@ class C_GroupSection extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['userGroup'] 		= $this->M_groupsection->getUserGroup();
 		$data['sectionGroup'] 		= $this->M_groupsection->getSectionGroup();
+
+		// echo "<pre>";
+		// print_r($data['userGroup']);
+		// echo "</pre>";
+		// exit();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -83,9 +88,32 @@ class C_GroupSection extends CI_Controller {
 				'creation_date' => date('Y-m-d')
 			);
 			$saveGroup = $this->M_groupsection->saveGroup($data);
-		// print_r($s);
-		// exit();
 		}
 		redirect('ProductionPlanning/Setting/GroupSection');
+	}
+
+	public function Edit($id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['userGroup'] 		= $this->M_groupsection->getUserGroup($id);
+		$data['regUser'] 		= $this->M_groupsection->getRegisteredUser();
+		$data['section'] 		= $this->M_groupsection->getPpSection();
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
+		// exit();
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ProductionPlanning/Settings/GroupSection/V_Edit',$data);
+		$this->load->view('V_Footer',$data);
 	}
 }
