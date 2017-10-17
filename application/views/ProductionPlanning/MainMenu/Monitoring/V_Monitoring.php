@@ -143,10 +143,22 @@
                                                                         <?php echo $hpl['due_time']; ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $hpl['achieve_qty']; ?>
+                                                                        <?php
+                                                                            if ($hpl['achieve_qty'] == null) {
+                                                                                echo "-";
+                                                                            }else{
+                                                                                echo $hpl['achieve_qty'];
+                                                                            }
+                                                                        ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $hpl['last_delivery']; ?>
+                                                                        <?php
+                                                                            if ($hpl['last_delivery'] == null) {
+                                                                                echo "-";
+                                                                            }else{
+                                                                                echo $hpl['last_delivery'];
+                                                                            }
+                                                                        ?>
                                                                     </td>
                                                                     <td>
                                                                         <?php
@@ -202,10 +214,22 @@
                                                                         <?php echo $npl['due_time']; ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $npl['achieve_qty']; ?>
+                                                                        <?php
+                                                                            if ($npl['achieve_qty'] == null) {
+                                                                                echo "-";
+                                                                            }else{
+                                                                                echo $npl['achieve_qty'];
+                                                                            }
+                                                                        ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $npl['last_delivery']; ?>
+                                                                        <?php
+                                                                            if ($npl['last_delivery'] == null) {
+                                                                                echo "-";
+                                                                            }else{
+                                                                                echo $npl['last_delivery'];
+                                                                            }
+                                                                        ?>
                                                                     </td>
                                                                     <td>
                                                                         <?php
@@ -324,17 +348,18 @@
         <script type="text/javascript" src="<?php echo base_url('assets/js/customPP.js');?>"></script>
         <script type="text/javascript">
             getSectionMon();
+            var checkpointEnd = $('input[name="checkpointEnd"]').val();
             var repeat = setInterval(function(){
-                getSectionMon();
                 getDailyPlan();
-                getAchieveAllFab();
-                getInfoJob();
-                getAchievement();
             }
-            , 600000);
+            , 20000*checkpointEnd);
 
             var showhide = setInterval(function(){
                 showHideNormalPlanning();
+                getSectionMon();
+                getAchieveAllFab();
+                getInfoJob();
+                getAchievement();
             }
             , 20000);
         </script>
