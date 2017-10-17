@@ -90,7 +90,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                                                    <a href="javascript:void(0)" class="btn btn-success">
+                                                    <a href="<?php echo base_url('ProductionPlanning/Setting/GroupSection/Edit/'.$ug['pp_user_id']) ?>" class="btn btn-success">
                                                         <i aria-hidden="true" class="fa fa-pencil-square-o"></i>
                                                     </a>
                                                     <a href="javascript:void(0)" class="btn btn-danger">
