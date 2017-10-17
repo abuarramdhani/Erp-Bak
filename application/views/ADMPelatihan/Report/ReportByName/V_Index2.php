@@ -17,7 +17,7 @@
 										<td align="center"><?php echo $no ?></td>
 										<td><?php echo $rc['scheduling_name'] ?></td>
 										<td><?php echo $rc['date_format'] ?></td>
-										<td><?php echo $rc['score_eval3_post1'] ?></td>
+										<td><?php echo $rc['score_eval2_post'] ?></td>
 										<td><?php echo $rc['standar_kelulusan'] ?></td>
 									</tr>
 									<?php } ?>
