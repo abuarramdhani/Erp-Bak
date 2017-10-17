@@ -85,6 +85,9 @@
 														</div>
 													</td>
 												</tr>
+												<tr>
+													<td><input type="file" name="fileOutstation" id="fileOutstation" /></td>
+												</tr>
 											</table>
 										<label>Estimate Allowance</label>
 										<div class="row2" id="estimate-allowance">
@@ -134,16 +137,27 @@
 										<table id="realization_detail" class="table table-bordered table-striped table-hover">
 											<thead>
 												<tr class="bg-primary">
-													<th width="25%"><center>Component</center></th>
-													<th width="25%"><center>Info</center></th>
-													<th width="10%"><center>Qty</center></th>
-													<th width="15%"><center>Nominal</center></th>
-													<th width="15%"><center>Total</center></th>
+														<th width="10%"><center>Tanggal</center></th>
+														<th width="10%"><center>Lokasi</center></th>
+														<th width="18%"><center>Component</center></th>
+														<th width="18%"><center>Info</center></th>
+														<th width="8%"><center>No. Urut</center></th>
+														<th width="7%"><center>Qty</center></th>
+														<th width="12%"><center>Nominal</center></th>
+														<th width="12%"><center>Total</center></th>
 													<th width="5%"><center>Action</center></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr class="multiRow">
+													<td><input type="text" name="txtTglOutstation[]" class="form-control date-picker"></td>
+													<td><select id="area" name="txt_Lokasi[]"  class="form-control outstation-area select2" data-placeholder="Pilih Salah Satu" required>
+															<option value=""></option>
+															<?php foreach($City as $ct){?>
+																<option value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
+															<?php } ?>
+														</select>
+													</td>
 													<td>
 														<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 															<option value=""></option>
@@ -153,6 +167,7 @@
 														</select>
 													</td>
 													<td><input type="text" name="txt_info[]" class="form-control" value="" /></td>
+													<td><input type="text" name="txt_NomerUrut[]" class="form-control" value="" /></td>
 													<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" /></td>
 													<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" /></td>
 													<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal"  readonly/></td>
@@ -161,7 +176,7 @@
 											</tbody>
 											<tfoot>
 												<tr>
-													<td colspan="4" style="text-align: right">Total Estimate Allowance</td>
+													<td colspan="7" style="text-align: right">Total Estimate Allowance</td>
 													<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
 													<td></td>
 												</tr>

@@ -166,7 +166,7 @@
     		"todayHiglight": true,
     		"allowClear" : true,
     		"format": 'dd M yyyy'
-      	});	
+      	});		
 
 		$('#txtTanggalKirimHeader').datepicker({
     		"autoclose": true,
