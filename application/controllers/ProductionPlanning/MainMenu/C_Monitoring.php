@@ -226,7 +226,8 @@ class C_Monitoring extends CI_Controller {
                         <td>'.$n['status'].'</td>
                     </tr>';
                 }
-                echo "</tbody>";
+                echo '</tbody>
+                    <input type="hidden" name="checkpointEnd" data-secid="'.$section.'" value="'.$checkpoint.'">';
             }
         }else{
             echo '<thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
