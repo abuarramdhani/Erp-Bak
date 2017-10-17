@@ -117,7 +117,8 @@ class C_PenjadwalanPackage extends CI_Controller {
 		$maxid		= $this->M_penjadwalanpackage->GetMaxIdSchedulingPackage();
 		$pkgschid	= $maxid[0]->package_scheduling_id;
 
-		redirect('ADMPelatihan/Penjadwalan/CreatebyPackage/'.$pkgschid);
+		// redirect('ADMPelatihan/Penjadwalan/CreatebyPackage/'.$pkgschid);
+		redirect('ADMPelatihan/PenjadwalanPackage/Schedule/'.$pkgschid);
 	}
 
 	//HALAMAN VIEW PENJADWALAN PAKET PELATIHAN

@@ -30,7 +30,7 @@ class M_report extends CI_Model {
 					is NULL then null 	
 					else to_char(b.date,'DD MONTH YYYY')
 					end as date_format
-				, a.score_eval3_post1
+				, a.score_eval2_post
 				, (case when 
 					substring(a.noind,1,1) like 'B' or 
 					substring(a.noind,1,1) like 'D' or 
@@ -45,7 +45,7 @@ class M_report extends CI_Model {
 				a.*
 			from pl.pl_participant a
 				left join pl.pl_scheduling_training b on a.scheduling_id = b.scheduling_id
-			where a.participant_name ilike '%$name%'
+			where a.participant_name like '%$name%'
 			order by b.date desc";
 
 		$query = $this->db->query($sql);
@@ -58,13 +58,12 @@ class M_report extends CI_Model {
 					AS(
  						SELECT
   							 scheduling_id
-  							,CASE WHEN MAX(score_eval3_post1) IS NULL THEN '0' ELSE MAX(score_eval3_post1) END as Nilai_Maximum
-  							,CASE WHEN MIN(score_eval3_post1) IS NULL THEN '0' ELSE MIN(score_eval3_post1) END as Nilai_Minimum
-  							,CASE WHEN AVG(score_eval3_post1) IS NULL THEN '0' ELSE ROUND(AVG(score_eval3_post1),2) END as Nilai_Rerata
+  							,CASE WHEN MAX(score_eval2_post) IS NULL THEN '0' ELSE MAX(score_eval2_post) END as Nilai_Maximum
+  							,CASE WHEN MIN(score_eval2_post) IS NULL THEN '0' ELSE MIN(score_eval2_post) END as Nilai_Minimum
+  							,CASE WHEN AVG(score_eval2_post) IS NULL THEN '0' ELSE ROUND(AVG(score_eval2_post),2) END as Nilai_Rerata
  						from pl.pl_participant
 						group by scheduling_id
 					)
-
 				SELECT
 					 a.scheduling_id
 					,a.scheduling_name
@@ -75,7 +74,7 @@ class M_report extends CI_Model {
 					,a.trainer
 					,a.participant_number
 					,(select 
-						sum(case when c.score_eval3_post1>=
+						sum(case when c.score_eval2_post>=
 						(case when 
 							substring(noind,0, 2) like 'B' or 
 							substring(noind,0, 2) like 'D' or 
