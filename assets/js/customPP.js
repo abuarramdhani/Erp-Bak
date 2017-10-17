@@ -5,6 +5,7 @@ window.onload = function() {
     });
     $('#tbdataplan').DataTable();
     $('#tbdatagroupsection').DataTable();
+    $('#tbitemData').DataTable();
 }
 
 function getSectionMon(){
@@ -140,6 +141,7 @@ function getDailyPlan(sectionId){
             },
             type: 'POST',
         }).done(function(data){
+            console.log('update table plans');
             $('table.dailyPlan[data-secid="'+a+'"]').html(data);
         });
     }
