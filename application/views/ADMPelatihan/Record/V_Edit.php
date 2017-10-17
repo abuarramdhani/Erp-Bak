@@ -100,13 +100,14 @@
 										<?php
 											$evalData = explode(',', $rc['evaluation']);
 											$eval='';
-											if($rc['evaluation']=='1'){$eval='Pengetahuan';}
-											if($rc['evaluation']=='2'){$eval='Sikap/Perilaku';}
-											if($rc['evaluation']=='3'){$eval='Wawasan';}
-											if($rc['evaluation']=='1,2'){$eval='Pengetahuan, Sikap/Perilaku';}
-											if($rc['evaluation']=='1,3'){$eval='Pengetahuan, Wawasan';}
-											if($rc['evaluation']=='2,3'){$eval='Sikap/Perilaku, Wawasan';}
-											if($rc['evaluation']=='1,2,3'){$eval='Pengetahuan, Sikap/Perilaku, Wawasan';}
+											if($rc['evaluation']=='1'){$eval='Wawasan';}
+											if($rc['evaluation']=='2'){$eval='Pengetahuan';}
+											if($rc['evaluation']=='3'){$eval='Sikap/Perilaku';}
+											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Wawasan, Pengetahuan';}
+											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Wawasan, Sikap/Perilaku';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pengetahuan, Sikap/Perilaku';}
+											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+												{$eval='Wawasan, Pengetahuan, Sikap/Perilaku';}
 										?>
 										<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" >
 												<?php

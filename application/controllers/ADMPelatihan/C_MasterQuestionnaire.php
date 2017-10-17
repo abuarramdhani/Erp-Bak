@@ -320,7 +320,7 @@ class C_MasterQuestionnaire extends CI_Controller {
 
 	public function editSave($id)
 	{
-		$accessType 		=	$this->input->post('accessType');
+		$accessType =	$this->input->post('accessType');
 		$Q_id 		=	$this->input->post('txtQuestionnaireId');
 		$Q_name		=	$this->input->post('txtQuestionnaireName');
 		$StDes 		=	$this->input->post('txtStatement');
@@ -330,6 +330,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$SgID 		= 	$this->input->post('segment_id');
 		$StID 		= 	$this->input->post('statement_id');
 		$lineId		=   $this->input->post('lineId');
+
+		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaireId($id);
+		if ($data['questionnaire'] == TRUE) {
+			if ($Q_name != $data['questionnaire'][0]['questionnaire_title']) {
+				$update = $this->M_masterquestionnaire->updateTitle($Q_id, $Q_name);
+			}
+		}
 
 		if ($accessType == 'ajax') {
 			if($lineId == null) {

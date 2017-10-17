@@ -60,7 +60,7 @@ class M_lppb extends CI_Model{
 			WHERE 
 				RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
 				AND
-				RSH.ORGANIZATION_ID = MP.ORGANIZATION_ID
+				RSH.SHIP_TO_ORG_ID = MP.ORGANIZATION_ID(+)
 				AND
 				POH.PO_HEADER_ID = RT.PO_HEADER_ID
 				AND
@@ -84,7 +84,7 @@ class M_lppb extends CI_Model{
 				RSH.CREATION_DATE,
 				POH.SEGMENT1,
 				ATT.NAME
-				$sortTerima
+			$sortTerima
 		");
 		return $query->result_array();
 	}

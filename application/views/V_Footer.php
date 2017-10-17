@@ -11,7 +11,6 @@
 		<!--END FOOTER -->
      
 	
-	
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
 	<!-- FastClick -->
@@ -33,6 +32,13 @@
 	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
 	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
+
+	<!-- InputMask -->
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/jquery.inputmask.bundle.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone-be.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone-ru.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/bindings/inputmask.binding.js"></script>
 
 	<!-- MULTISELECT -->
 	<script src="<?php echo base_url('assets/plugins/multiselect/js/bootstrap-multiselect.js');?>"></script>
@@ -67,6 +73,7 @@
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customDS.js');?>" type="text/javascript"></script>	
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){
@@ -139,7 +146,10 @@
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
-    
+	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
+
+<!-- 	<script src="<?php echo base_url('assets/plugins/ckeditor/config.js');?>"></script>
+ -->    
 	<script src="<?php echo base_url('assets/js/formsInit.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/ajaxSearch.js')?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/HtmlFunction.js')?>" type="text/javascript"></script>
@@ -147,6 +157,7 @@
 	<!--
 	<script src="<?php echo base_url('assets/js/formValidation.js')?>" type="text/javascript"></script>
 	-->
+	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		
@@ -209,6 +220,8 @@
 			$(this).val('');
 		});
 	</script>
+
+
 
 	<?php
 	if (empty($alert)) {
