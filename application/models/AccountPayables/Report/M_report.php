@@ -144,6 +144,8 @@ class M_report extends CI_Model {
 					, ail.unit_price
 					, ail.amount
 					, asa.vat_registration_num NPWP
+					, to_char(ac.check_date,'DD-MON-YYYY') payment_date
+					, ipmv.payment_method_name payment_method
 				FROM
 					ap_invoices_all ai
 					, ap_suppliers asa
@@ -151,6 +153,7 @@ class M_report extends CI_Model {
 					, ap_invoice_payments_all aip
 					, ap_checks_all ac
 					, ap_lookup_codes alc1
+					, iby_payment_methods_vl ipmv
 				WHERE
 					ac.check_id = aip.check_id 
 					AND ai.invoice_id = aip.invoice_id
@@ -158,8 +161,10 @@ class M_report extends CI_Model {
 					AND ai.vendor_id = asa.vendor_id
 					AND alc1.lookup_type(+) = 'INVOICE LINE TYPE'
 					AND alc1.lookup_code(+) = ail.line_type_lookup_code
-					AND TRUNC(ac.check_date) between TO_DATE('$tglAwal','MM-DD-YYYY') AND TO_DATE('$tglAkhir','MM-DD-YYYY')
+					AND TO_DATE(ac.check_date,'DD-MM-YYYY') between TO_DATE('$tglAwal','DD-MM-YYYY') AND TO_DATE('$tglAkhir','DD-MM-YYYY')
 					AND asa.vendor_name = '$vendorName'
+					AND ac.STATUS_LOOKUP_CODE <> 'VOIDED'
+					AND ipmv.payment_method_code = ac.payment_method_code
 				order by 1
 			");
 			return $query->result_array();

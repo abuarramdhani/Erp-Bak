@@ -257,15 +257,17 @@ class C_Report extends CI_Controller {
 			$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
 			$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
 			$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
 
 			$objPHPExcel->getActiveSheet()->mergeCells('A1:B1');
 			$objPHPExcel->getActiveSheet()->mergeCells('A2:B2');
-			$objPHPExcel->getActiveSheet()->mergeCells('C1:G1');
-			$objPHPExcel->getActiveSheet()->mergeCells('C2:G2');
+			$objPHPExcel->getActiveSheet()->mergeCells('C1:I1');
+			$objPHPExcel->getActiveSheet()->mergeCells('C2:I2');
 			$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'NAMA SUPLIER : '.$splNPWP[0]['VENDOR_NAME']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('A2', 'NPWP : '.$splNPWP[0]['NPWP']);
 
-			$objPHPExcel->getActiveSheet()->getStyle("A4:G4")->applyFromArray(
+			$objPHPExcel->getActiveSheet()->getStyle("A4:I4")->applyFromArray(
 				array(
 					'fill' => array(
 						'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -282,9 +284,11 @@ class C_Report extends CI_Controller {
 			$objPHPExcel->getActiveSheet()->SetCellValue('B4', 'NO.INVOICE');
 			$objPHPExcel->getActiveSheet()->SetCellValue('C4', 'TYPE');
 			$objPHPExcel->getActiveSheet()->SetCellValue('D4', 'DESCRIPTION');
-			$objPHPExcel->getActiveSheet()->SetCellValue('E4', 'QUANTITY');
-			$objPHPExcel->getActiveSheet()->SetCellValue('F4', 'UNIT PRICE');
-			$objPHPExcel->getActiveSheet()->SetCellValue('G4', 'AMOUNT');
+			$objPHPExcel->getActiveSheet()->SetCellValue('E4', 'TGL. PAYMENT');
+			$objPHPExcel->getActiveSheet()->SetCellValue('F4', 'PAYMENT METHOD');
+			$objPHPExcel->getActiveSheet()->SetCellValue('G4', 'QUANTITY');
+			$objPHPExcel->getActiveSheet()->SetCellValue('H4', 'UNIT PRICE');
+			$objPHPExcel->getActiveSheet()->SetCellValue('I4', 'AMOUNT');
 
 			$baris = 5;
 			$nomorBaris = 1;
@@ -293,9 +297,11 @@ class C_Report extends CI_Controller {
 				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$baris, $dti['INVOICE_NUM']);
 				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$baris, $dti['LINE_TYPE']);
 				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$baris, $dti['DESCRIPTION']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$baris, $dti['QUANTITY_INVOICED']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$baris, $dti['UNIT_PRICE']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('G'.$baris, $dti['AMOUNT']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$baris, $dti['PAYMENT_DATE']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$baris, $dti['PAYMENT_METHOD']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('G'.$baris, $dti['QUANTITY_INVOICED']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('H'.$baris, $dti['UNIT_PRICE']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('I'.$baris, $dti['AMOUNT']);
 				$nomorBaris++;
 				$baris++;
 			};
