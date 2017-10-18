@@ -308,7 +308,7 @@ class C_Report extends CI_Controller {
 		);
 		$objPHPExcel->removeSheetByIndex($sheetIndex);
 
-		$filename = "Detail Invoice (".$strTgl." s/d ".$endTgl.")";
+		$filename = "Detail Invoice (".$strTgl." s/d ".$endTgl.").xls";
 
 		header("Content-Type: application/vnd.ms-excel");   
 		header('Content-Disposition: attachment; filename="'.$filename.'"');
