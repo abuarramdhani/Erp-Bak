@@ -382,7 +382,7 @@ $(document).ready(function(){
 									+"<td >"+ counter +" </td>"
 									+"<td>"
 										+"<input "+onkeyup+" id='segment' name='txtSegment[]' class='form-control segment' data-toggle='tooltip' data-placement='top' title='Tekan Enter untuk Menyimpan'> "
-										+"<input type='hidden' name='idSegment[]'' value='0'>"
+										+"<input type='hidden' name='idSegment[]' value='0'>"
 									+"</td>"
 									+"<td>"
 										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
@@ -401,7 +401,10 @@ $(document).ready(function(){
 										+"<td >"+ counter +" </td>"
 										+"<td>"
 											+"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
-											+"<input type='hidden' name='idSegment[]'' value='0'>"
+											+"<input type='hidden' name='idSegment[]' value='0'>"
+										+"</td>"
+										+"<td>"
+											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateSegment("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
 				jQuery("#tbodyQuestionnaireSegmentC").append(newRow);
@@ -427,6 +430,10 @@ $(document).ready(function(){
 									+"<td >"+ counter +" </td>"
 									+"<td>"
 										+"<input id='segmentessay' name='txtSegmentEssay[]' class='form-control segmentessay' placeholder='Nama Bagian'>"
+										+"<input type='hidden' name='idSegment[]' value='0'>"
+									+"</td>"
+									+"<td>"
+										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateSegmentEssay("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 									+"</td>"
 									+"</tr>");
 			jQuery("#tbodyQuestionnaireSegmentEssay").append(newRow);
@@ -475,14 +482,19 @@ $(document).ready(function(){
 			jQuery("#tbodyStatement").append(newRow);
 	}
 
-	function AddStatementC(id,inputName){
+	function AddStatementC(numb,id,inputName){
 			var n = $('#tbodyStatementC'+id+' tr').length;
+			// n=1;
+			var tbID = String('tblStatement');
+			var tbodyID = String('tbodyStatementC');
 			counter = n+1;
 	        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
 										+"<td >"+ counter +" </td>"
 										+"<td>"
-											+"<input id='statement' name='"+inputName+"[]' class='form-control statement'> "
-											+"<input type='hidden' name='idStatement[]' value='0'>"
+											+"<input id='statement"+numb+"' name='"+inputName+"[]' class='form-control statement'> "
+										+"</td>"
+										+"<td>"
+											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateStatement("+numb+","+counter+","+id+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
 				jQuery("#tbodyStatementC"+id).append(newRow);
@@ -916,6 +928,26 @@ $(document).ready(function(){
         	} 
     	});
 	});
+
+function delCreateSegment(rowid,segmentid) {
+	if (segmentid == '0') {
+		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegmentC tr[row-id="'+rowid+'"]').remove();
+	}
+}
+function delCreateSegmentEssay(rowid,segmentid) {
+	if (segmentid == '0') {
+		$('#tblQuestionnaireSegmentEssay #tbodyQuestionnaireSegmentEssay tr[row-id="'+rowid+'"]').remove();
+	}
+}
+function delCreateStatement(tbID,rowid,id,statementid) {
+	console.log('#tblStatement'+tbID);
+	console.log('#tbodyStatementC'+id);
+	if (statementid == '0') {
+		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
+	}else{
+		console.log(statementid);
+	}
+}
 
 function delSpesifikRow(rowid,segmentid) {
 	if (segmentid == '0') {

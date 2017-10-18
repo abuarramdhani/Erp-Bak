@@ -58,8 +58,7 @@
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddStatementC(<?php echo $sg['segment_id'].",'".$inputName."'"; ?>)"><i class="fa fa-plus"></i></a>
-										<a href="javascript:void(0);" class="btn btn-sm btn-danger" title="Hapus Baris" onclick="delStatRow('<?php echo $sg['segment_id']; ?>')"><i class="fa fa-remove"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" title="Tambah Baris" onclick="AddStatementC(<?php echo $no.",".$sg['segment_id'].",'".$inputName."'"; ?>)"><i class="fa fa-plus"></i></a>
 									</div>
 									<div class="panel-body">
 										<div class="table-responsive" >
@@ -68,15 +67,19 @@
 													<tr class="bg-primary">
 														<th width="10%">No</th>
 														<th width="90%"><?php echo 'Bagian '.' - '.$sg['segment_description']?></th>
+														<th width="20%">Action</th>
 														<!-- <th width="90%"><?php echo 'Bagian '.$no.' - '.$sg['segment_description']?></th> -->
 													</tr>
 												</thead>
 												<tbody id="tbodyStatementC<?php echo $sg['segment_id']; ?>">
-													<tr class="clone" >
-														<td ><?php echo $no; ?></td>
+													<tr class="clone" row-id="1">
+														<td >1</td>
 														<td>
 															<input id="idstatement<?php echo $no; ?>" name="txtSegmentId[]" value="<?php echo $sg['segment_id']?>" hidden>
 															<input id="statement<?php echo $no; ?>" name="<?php echo $inputName.'[]'; ?>" class="form-control statement" placeholder="<?php echo $placeholder?>">
+														</td>
+														<td>
+															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSegment" title="Hapus Baris" onclick="delCreateStatement(<?php echo $no.",".$no.",".$sg['segment_id'].","."0" ?>)"><i class="fa fa-remove"></i>Delete</a>
 														</td>
 													</tr>
 												</tbody>
@@ -86,7 +89,7 @@
 								</div>
 							</div>
 						</div>
-						<?php }?>
+						<?php $no++; }?>
 
 						<hr>
 						<div class="form-group">

@@ -24,8 +24,33 @@ class M_report extends CI_Model {
 
 	public function GetReport1($name){
 		$sql = "
-			SELECT
-				b.scheduling_name,
+			with seksi as(
+				select e.employee_code, e.employee_name, d.section_name
+				from er.er_employee_all e
+				left join er.er_section d
+				on e.section_code = d. section_code
+				)
+			select case when a.score_eval2_post>=
+						(case when 
+							substring(noind,0, 2) like 'B' or 
+							substring(noind,0, 2) like 'D' or 
+							substring(noind,0, 2) like 'J' or 
+							substring(noind,0, 2) like 'G' or 
+							substring(noind,0, 2) like 'L' or 
+							substring(noind,0, 2) like 'Q' or 
+							substring(noind,0, 2) like 'Z' 
+							then 
+								cast(
+									(case when substring(b.standar_kelulusan,0,3) is null or
+								 	substring(b.standar_kelulusan,0,3) = '' then '0' else substring(b.standar_kelulusan,0,3) end)	
+								as int)
+								else cast(
+									(case when substring(b.standar_kelulusan,4,3) is null or 
+									substring(b.standar_kelulusan,4,3) = '' then '0' else substring(b.standar_kelulusan,4,3) end)
+								as int)end) 
+							then 1
+							else 0 
+						end as lulus,
 				case when b.date
 					is NULL then null 	
 					else to_char(b.date,'DD MONTH YYYY')
@@ -43,8 +68,11 @@ class M_report extends CI_Model {
 				else substring(b.standar_kelulusan,4,3)
 				end) standar_kelulusan,
 				a.*
+				,seksi.section_name
+				,b.scheduling_name
 			from pl.pl_participant a
 				left join pl.pl_scheduling_training b on a.scheduling_id = b.scheduling_id
+				join seksi on a.noind = seksi.employee_code
 			where a.participant_name like '%$name%'
 			order by b.date desc";
 
