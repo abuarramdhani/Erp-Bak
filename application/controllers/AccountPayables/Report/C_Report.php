@@ -202,5 +202,127 @@ class C_Report extends CI_Controller {
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); 
 		$objWriter->save('php://output');
 	}
+
+	//-------------------------------------------------------------DetailInvoice--------------------------------------
+	public function detailInvoice(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		$data['title'] = 'Report Invoice Tanpa Faktur';
+		$data['Menu'] = 'Invoice';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['Vendor'] = $this->M_report->getDetailInvoiceVendor();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('AccountPayables/Report/ReportDetailInvoice/V_index', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function exportDetailInvoice(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		$data['title'] = 'Report Invoice Tanpa Faktur';
+		$data['Menu'] = 'Invoice';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$vendorName = $this->input->post('DInvoiceVdr[]', true);
+		$strTgl = $this->input->post('DInvoiceStr', true);
+		$endTgl = $this->input->post('DInvoiceEnd', true);
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("ICT")->setTitle("Detail Invoice");
+
+		$i = 0;
+		foreach ($vendorName as $vdn) {
+			$detailInvoice = $this->M_report->getDetailInvoice($vdn, $strTgl, $endTgl);
+			$splNPWP = $this->M_report->getNPWP($vdn);
+
+			$newWorkSheet = new PHPExcel_Worksheet($objPHPExcel, $vdn);
+			$objPHPExcel->addSheet($newWorkSheet, $i);
+			$objPHPExcel->setActiveSheetIndex($i);
+
+			$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(7);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(33);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(23);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(59);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+			$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+
+			$objPHPExcel->getActiveSheet()->mergeCells('A1:B1');
+			$objPHPExcel->getActiveSheet()->mergeCells('A2:B2');
+			$objPHPExcel->getActiveSheet()->mergeCells('C1:G1');
+			$objPHPExcel->getActiveSheet()->mergeCells('C2:G2');
+			$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'NAMA SUPLIER : '.$splNPWP[0]['VENDOR_NAME']);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A2', 'NPWP : '.$splNPWP[0]['NPWP']);
+
+			$objPHPExcel->getActiveSheet()->getStyle("A4:G4")->applyFromArray(
+				array(
+					'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'color' => array('rgb' => '949494')
+					),
+					'font' => array(
+						'color' => array('rgb' => '000000'),
+						'bold'  => true,
+					)
+				)
+			);
+
+			$objPHPExcel->getActiveSheet()->SetCellValue('A4', 'NO');
+			$objPHPExcel->getActiveSheet()->SetCellValue('B4', 'NO.INVOICE');
+			$objPHPExcel->getActiveSheet()->SetCellValue('C4', 'TYPE');
+			$objPHPExcel->getActiveSheet()->SetCellValue('D4', 'DESCRIPTION');
+			$objPHPExcel->getActiveSheet()->SetCellValue('E4', 'QUANTITY');
+			$objPHPExcel->getActiveSheet()->SetCellValue('F4', 'UNIT PRICE');
+			$objPHPExcel->getActiveSheet()->SetCellValue('G4', 'AMOUNT');
+
+			$baris = 5;
+			$nomorBaris = 1;
+			foreach ($detailInvoice as $dti) {
+				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$baris, $nomorBaris);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$baris, $dti['INVOICE_NUM']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$baris, $dti['LINE_TYPE']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$baris, $dti['DESCRIPTION']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$baris, $dti['QUANTITY_INVOICED']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$baris, $dti['UNIT_PRICE']);
+				$objPHPExcel->getActiveSheet()->SetCellValue('G'.$baris, $dti['AMOUNT']);
+				$nomorBaris++;
+				$baris++;
+			};
+
+			$i++;
+		};
+
+		$sheetIndex = $objPHPExcel->getIndex(
+		    $objPHPExcel->getSheetByName('Worksheet')
+		);
+		$objPHPExcel->removeSheetByIndex($sheetIndex);
+
+		$filename = "Detail Invoice (".$strTgl." s/d ".$endTgl.")";
+
+		header("Content-Type: application/vnd.ms-excel");   
+		header('Content-Disposition: attachment; filename="'.$filename.'"');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); 
+		$objWriter->save('php://output');
+	}
+
+	// public function testChamber(){
+	// 	$vendorName = "ADJI, BENGKEL";
+	// 	$detailInvoice = $this->M_report->getNPWP($vendorName);
+	// 	echo "<pre>";
+	// 	print_r($detailInvoice);
+	// 	echo "</pre>";
+	// }
 }
 ?>

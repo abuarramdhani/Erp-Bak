@@ -123,5 +123,61 @@ class M_report extends CI_Model {
 			};
 			return $query->result_array();
 		}
+
+		public function getDetailInvoiceVendor()
+		{
+			$oracle = $this->load->database("oracle",true);
+			$query = $oracle->query("SELECT DISTINCT pv.VENDOR_NAME FROM  PO_VENDORS pv");
+			return $query->result_array();
+		}
+
+		public function getDetailInvoice($vendorName, $tglAwal, $tglAkhir)
+		{
+			$oracle = $this->load->database("oracle",true);
+			$query = $oracle->query("
+				SELECT 
+					ai.invoice_num
+					, alc1.displayed_field line_type
+					, asa.vendor_name
+					, ail.description
+					, ail.quantity_invoiced
+					, ail.unit_price
+					, ail.amount
+					, asa.vat_registration_num NPWP
+				FROM
+					ap_invoices_all ai
+					, ap_suppliers asa
+					, ap_invoice_lines_all ail
+					, ap_invoice_payments_all aip
+					, ap_checks_all ac
+					, ap_lookup_codes alc1
+				WHERE
+					ac.check_id = aip.check_id 
+					AND ai.invoice_id = aip.invoice_id
+					AND ai.invoice_id = ail.invoice_id
+					AND ai.vendor_id = asa.vendor_id
+					AND alc1.lookup_type(+) = 'INVOICE LINE TYPE'
+					AND alc1.lookup_code(+) = ail.line_type_lookup_code
+					AND TRUNC(ac.check_date) between TO_DATE('$tglAwal','MM-DD-YYYY') AND TO_DATE('$tglAkhir','MM-DD-YYYY')
+					AND asa.vendor_name = '$vendorName'
+				order by 1
+			");
+			return $query->result_array();
+		}
+
+		public function getNPWP($vendorName)
+		{
+			$oracle = $this->load->database("oracle",true);
+			$query = $oracle->query("
+				SELECT 
+					asa.vendor_name,
+					asa.vat_registration_num NPWP
+				FROM
+					ap_suppliers asa
+				WHERE
+					asa.vendor_name = '$vendorName'
+			");
+			return $query->result_array();
+		}
 }
 ?>
