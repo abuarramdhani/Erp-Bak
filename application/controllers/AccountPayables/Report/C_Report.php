@@ -219,7 +219,7 @@ class C_Report extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('AccountPayables/Report/ReportDetailInvoice/V_index', $data);
+		$this->load->view('AccountPayables/Report/ReportDetailInvoice/V_Index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
