@@ -696,9 +696,7 @@ $(document).ready(function(){
 // --------------------------------------------ReportDerailInvoice[START]------------------------------------------
 $(document).ready(function(){
 	$('.DInvoicePrd').datepicker({
-		locale: {
-			format: 'DD/MM/YYYY'
-		},
+		format: 'dd/mm/yy',
 		autoclose: true,
 	});
 	$('#DInvoiceVdr').select2();
