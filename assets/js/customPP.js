@@ -188,3 +188,9 @@ function getAchievement(){
         });
     }
 }
+
+function groupSectionDelConf(th,id){
+    var elm = $(th).get();
+    console.log(elm);
+    $('#deleteConfirm').modal('show');
+}
