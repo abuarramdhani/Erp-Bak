@@ -31,7 +31,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a class="pull-right" title="Add New" href="<?php echo site_url('ProductionPlanning/Setting/GroupSection/Create') ?>">
+                                <a class="pull-right" href="<?php echo site_url('ProductionPlanning/Setting/GroupSection/Create') ?>" title="Add New">
                                     <button class="btn btn-default btn-sm" type="button">
                                         <i class="icon-plus icon-2x">
                                         </i>
@@ -65,11 +65,19 @@
                                     </thead>
                                     <tbody>
                                         <?php $no=1; foreach ($userGroup as $ug) { ?>
-                                        <tr>
-                                            <td><?php echo $no++; ?></td>
-                                            <td><?php echo $ug['user_name']; ?></td>
-                                            <td><?php echo $ug['employee_code']; ?></td>
-                                            <td><?php echo $ug['employee_name']; ?></td>
+                                        <tr row-id="<?php echo $ug['pp_user_id'] ?>">
+                                            <td>
+                                                <?php echo $no++; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $ug['user_name']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $ug['employee_code']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $ug['employee_name']; ?>
+                                            </td>
                                             <td>
                                                 <?php
                                                 unset($section);
@@ -89,13 +97,20 @@
                                                 ?>
                                             </td>
                                             <td>
-                                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                                                    <a href="<?php echo base_url('ProductionPlanning/Setting/GroupSection/Edit/'.$ug['pp_user_id']) ?>" class="btn btn-success">
-                                                        <i aria-hidden="true" class="fa fa-pencil-square-o"></i>
-                                                    </a>
-                                                    <a href="javascript:void(0)" class="btn btn-danger">
-                                                        <i aria-hidden="true" class="fa fa-trash"></i>
-                                                    </a>
+                                                <div aria-label="..." class="btn-group btn-group-justified" role="group">
+                                                    <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/Setting/GroupSection/Edit/'.$ug['pp_user_id']) ?>">
+                                                        <i aria-hidden="true" class="fa fa-pencil-square-o">
+                                                        </i>
+                                                    </a><!-- 
+                                                    <button type="button" class="btn btn-danger" onclick="groupSectionDelConf(this, <?php echo $ug['pp_user_id'] ?>)">DELETE</button> -->
+                                                    <a class="btn btn-danger" href="javascript:void(0)" onclick="groupSectionDelConf(this, <?php echo $ug['pp_user_id'] ?>)">
+                                                        <i aria-hidden="true" class="fa fa-trash">
+                                                        </i>
+                                                    </a><!-- 
+                                                    <a class="btn btn-danger" href="<?php echo base_url('ProductionPlanning/Setting/GroupSection/Delete/'.$ug['pp_user_id']) ?>">
+                                                        <i aria-hidden="true" class="fa fa-trash">
+                                                        </i>
+                                                    </a> -->
                                                 </div>
                                             </td>
                                         </tr>
@@ -110,3 +125,55 @@
         </div>
     </div>
 </section>
+<div aria-labelledby="myModalLabel" class="modal fade" id="deleteConfirm" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Modal title
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="tbdatagroupsection">
+                    <thead class="bg-primary">
+                        <tr>
+                            <td>
+                                No
+                            </td>
+                            <td>
+                                User Name
+                            </td>
+                            <td>
+                                User Code
+                            </td>
+                            <td>
+                                Employee Name
+                            </td>
+                            <td>
+                                Group Section
+                            </td>
+                            <td style="width: 10%;">
+                                Action
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">
+                    Close
+                </button>
+                <button class="btn btn-primary" type="button">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
