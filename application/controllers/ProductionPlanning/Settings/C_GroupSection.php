@@ -37,11 +37,6 @@ class C_GroupSection extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['userGroup'] 		= $this->M_groupsection->getUserGroup();
 		$data['sectionGroup'] 		= $this->M_groupsection->getSectionGroup();
-
-		// echo "<pre>";
-		// print_r($data['userGroup']);
-		// echo "</pre>";
-		// exit();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -104,16 +99,40 @@ class C_GroupSection extends CI_Controller {
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
 		$data['userGroup'] 		= $this->M_groupsection->getUserGroup($id);
+		$data['sectionGroup']	= $this->M_groupsection->getSectionGroup($data['userGroup'][0]['pp_user_id']);
 		$data['regUser'] 		= $this->M_groupsection->getRegisteredUser();
 		$data['section'] 		= $this->M_groupsection->getPpSection();
-		// echo "<pre>";
-		// print_r($data);
-		// echo "</pre>";
-		// exit();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ProductionPlanning/Settings/GroupSection/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function EditSave($id)
+	{
+		$user_id = $this->session->userid;
+		$section = $this->input->post('section');
+		$this->M_groupsection->deleteGroupSection($id);
+		foreach ($section as $s) {
+			$data = array(
+				'pp_user_id' 	=> $id,
+				'section_id' 	=> $s,
+				'created_by' 	=> $user_id,
+				'creation_date' => date('Y-m-d H:i:s')
+			);
+			$this->M_groupsection->saveGroup($data);
+		}
+
+		redirect('ProductionPlanning/Setting/GroupSection');
+	}
+
+	public function Delete($id)
+	{
+		$this->M_groupsection->deleteGroupSection($id);
+		$this->M_groupsection->deleteUserGroup($id);
+		redirect('ProductionPlanning/Setting/GroupSection');
 	}
 }
