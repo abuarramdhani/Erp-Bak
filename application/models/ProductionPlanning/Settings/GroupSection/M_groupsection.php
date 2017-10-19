@@ -71,14 +71,33 @@ class M_groupsection extends CI_Model {
     return $query->result_array();
   }
 
-  public function getSectionGroup()
+  public function getSectionGroup($user_id = FALSE)
   {
-    $this->db->select('pu.pp_user_id, ps.section_id, ps.section_name, pug.section_group_id');
-    $this->db->from('pp.pp_user pu, pp.pp_section ps, pp.pp_user_group pug');
-    $this->db->where('pu.pp_user_id = pug.pp_user_id AND pug.section_id = ps.section_id');
-    $this->db->order_by('ps.section_name', 'ASC');
+    if ($user_id == FALSE) {
+      $this->db->select('pu.pp_user_id, ps.section_id, ps.section_name, pug.section_group_id');
+      $this->db->from('pp.pp_user pu, pp.pp_section ps, pp.pp_user_group pug');
+      $this->db->where('pu.pp_user_id = pug.pp_user_id AND pug.section_id = ps.section_id');
+      $this->db->order_by('ps.section_name', 'ASC');
+    }else{
+      $this->db->select('pu.pp_user_id, ps.section_id, ps.section_name, pug.section_group_id');
+      $this->db->from('pp.pp_user pu, pp.pp_section ps, pp.pp_user_group pug');
+      $this->db->where('pu.pp_user_id = pug.pp_user_id AND pug.section_id = ps.section_id AND pu.pp_user_id = ', $user_id);
+      $this->db->order_by('ps.section_name', 'ASC');
+    }
 
     $query = $this->db->get();
     return $query->result_array();
+  }
+
+  public function deleteGroupSection($id)
+  {
+    $this->db->where('pp_user_id', $id);
+    $this->db->delete('pp.pp_user_group');
+  }
+
+  public function deleteUserGroup($id)
+  {
+    $this->db->where('pp_user_id', $id);
+    $this->db->delete('pp.pp_user');
   }
 }
