@@ -34,7 +34,8 @@
                                 Upload file Excel
                             </div>
                             <div class="panel-body">
-                                <form action="<?php echo base_url('ProductionPlanning/ItemPlan/Create'); ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
+                                <?php echo $message; ?>
+                                <form action="<?php echo base_url('ProductionPlanning/ItemPlan/CreateUpload'); ?>" class="form-horizontal" enctype="multipart/form-data" method="post">
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <h2>
