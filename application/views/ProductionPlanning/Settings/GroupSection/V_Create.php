@@ -36,7 +36,7 @@
                             <div class="panel-body">
                                 <form method="post" class="form-horizontal" action="<?php echo base_url('ProductionPlanning/Setting/GroupSection/CreateSave'); ?>">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-10">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -72,8 +72,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"></div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-10">
                                         <div class="pull-right">
                                             <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/Setting/GroupSection') ?>">CANCEL</a>
                                             <button type="submit" class="btn btn-primary">SAVE</button>
