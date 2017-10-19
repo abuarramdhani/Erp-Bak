@@ -16,4 +16,12 @@ class M_itemplan extends CI_Model {
     $query = $this->db->get();
     return $query->result_array();
   }
+
+  public function setItemPlan($data,$delCheckPoint)
+  {
+    if ($delCheckPoint == 0) {
+      $this->db->query('DELETE FROM pp.pp_item_data');
+    }
+    $this->db->insert('pp.pp_item_data', $data);
+  }
 }
