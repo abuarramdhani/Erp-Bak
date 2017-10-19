@@ -138,7 +138,7 @@ class C_ItemPlan extends CI_Controller {
                         'to_inventory'      => $rowData[0][5],
                         'completion'  	    => $rowData[0][6],
                         'created_by'     	=> $user_id,
-                        'created_date'      => date('Y-m-d')
+                        'created_date'      => date('Y-m-d H:i:s')
                     );
                     if (empty($rowData[0][1]) || empty($rowData[0][3]) || $secID == 0) {
                         $errStock++;
