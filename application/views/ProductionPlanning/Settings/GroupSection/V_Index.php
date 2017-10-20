@@ -96,21 +96,16 @@
                                                 }
                                                 ?>
                                             </td>
-                                            <td>
+                                            <td class="del-col">
                                                 <div aria-label="..." class="btn-group btn-group-justified" role="group">
                                                     <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/Setting/GroupSection/Edit/'.$ug['pp_user_id']) ?>">
                                                         <i aria-hidden="true" class="fa fa-pencil-square-o">
                                                         </i>
-                                                    </a><!-- 
-                                                    <button type="button" class="btn btn-danger" onclick="groupSectionDelConf(this, <?php echo $ug['pp_user_id'] ?>)">DELETE</button> -->
+                                                    </a>
                                                     <a class="btn btn-danger" href="javascript:void(0)" onclick="groupSectionDelConf(this, <?php echo $ug['pp_user_id'] ?>)">
                                                         <i aria-hidden="true" class="fa fa-trash">
                                                         </i>
-                                                    </a><!-- 
-                                                    <a class="btn btn-danger" href="<?php echo base_url('ProductionPlanning/Setting/GroupSection/Delete/'.$ug['pp_user_id']) ?>">
-                                                        <i aria-hidden="true" class="fa fa-trash">
-                                                        </i>
-                                                    </a> -->
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -135,11 +130,11 @@
                     </span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    Modal title
+                    Are you sure to permanently delete this data?
                 </h4>
             </div>
             <div class="modal-body">
-                <table class="table table-striped table-bordered table-hover" id="tbdatagroupsection">
+                <table class="table table-striped table-bordered table-hover">
                     <thead class="bg-primary">
                         <tr>
                             <td>
@@ -157,9 +152,6 @@
                             <td>
                                 Group Section
                             </td>
-                            <td style="width: 10%;">
-                                Action
-                            </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,9 +162,9 @@
                 <button class="btn btn-default" data-dismiss="modal" type="button">
                     Close
                 </button>
-                <button class="btn btn-primary" type="button">
-                    Save changes
-                </button>
+                <a class="btn btn-danger">
+                    DELETE
+                </a>
             </div>
         </div>
     </div>
