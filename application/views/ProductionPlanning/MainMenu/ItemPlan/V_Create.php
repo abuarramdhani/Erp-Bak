@@ -40,23 +40,12 @@
                                         <div class="col-md-12 text-center">
                                             <h2>
                                                 <b>
-                                                    UPLOAD FILE EXCEL
+                                                    This Action will replace all data
                                                 </b>
                                             </h2>
                                             <p>
                                                 -- Klick button 'DOWNLOAD SAMPLE' to download sample format item data list --
                                             </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="col-md-12 text-center">
-                                                <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/ItemPlan/DownloadSample');?>">
-                                                    <i aria-hidden="true" class="fa fa-download">
-                                                    </i>
-                                                    DOWNLOAD SAMPLE
-                                                </a>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -70,12 +59,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row text-center">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right">
+                                        <a class="btn btn-default" href="<?php echo site_url('ProductionPlanning/ItemPlan');?>">CANCEL</a>
+                                        <a class="btn btn-warning" href="<?php echo base_url('ProductionPlanning/ItemPlan/DownloadSample');?>">
+                                            <i aria-hidden="true" class="fa fa-download"></i> DOWNLOAD SAMPLE
+                                        </a>
                                         <button class="btn btn-primary" type="submit">
                                             <i aria-hidden="true" class="fa fa-upload">
                                             </i>
-                                            UPLOAD PLANS
+                                            UPLOAD
                                         </button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

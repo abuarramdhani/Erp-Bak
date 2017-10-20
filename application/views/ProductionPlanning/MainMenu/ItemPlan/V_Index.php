@@ -37,7 +37,7 @@
                                         </i>
                                     </button>
                                 </a>
-                                Item List
+                                Last Updated : <?php echo date('d,MMMM Y H:i:s', strtotime($itemData[0]['created_date'])); ?>
                             </div>
                             <div class="panel-body">
                                 <table class="table table-bordered table-hover table-striped" id="tbitemData">
@@ -49,7 +49,6 @@
                                             <td>Section</td>
                                             <td>From Inventory</td>
                                             <td>To Inventory</td>
-                                            <td>Action</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -61,9 +60,6 @@
                                             <td><?php echo $dt['section_name']; ?></td>
                                             <td><?php echo $dt['from_inventory']; ?></td>
                                             <td><?php echo $dt['to_inventory']; ?></td>
-                                            <td>
-                                                <a href="javascript:alert('fitur ini belum tersedia')" class="btn btn-default">EDIT</a>
-                                            </td>
                                         </tr>
                                         <?php } ?>
                                     </tbody>
