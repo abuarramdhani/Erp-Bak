@@ -190,7 +190,9 @@ function getAchievement(){
 }
 
 function groupSectionDelConf(th,id){
-    var elm = $(th).get();
-    console.log(elm);
+    var elm = $(th).closest('tr').clone();
+    $('div.modal-footer a').attr("href", baseurl+"ProductionPlanning/Setting/GroupSection/Delete/"+id);
+    $('div#deleteConfirm tbody').html(elm);
+    $('div#deleteConfirm tbody td.del-col').remove();
     $('#deleteConfirm').modal('show');
 }
