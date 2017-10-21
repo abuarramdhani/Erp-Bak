@@ -64,11 +64,18 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		// $data['SchedulingId'] 	= $id;
+		// $data['Section'] 		= $section;
+		// $data['participant'] = $this->M_report->GetTrainingPrtcp($id,$section);
+		$data['report'] = $this->M_report->GetReport2($year = FALSE,$section = FALSE);
+		$data['section'] 	= $this->M_report->GetSeksi($term=FALSE);
+		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ADMPelatihan/ReportBySection/V_Index',$data);
-		$this->load->view('ADMPelatihan/ReportBySection/V_Index2',$data);
-		$this->load->view('ADMPelatihan/ReportBySection/V_Index3',$data);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index',$data);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index2',$data);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index3',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -116,12 +123,52 @@ class C_Report extends CI_Controller {
 		echo "]";
 	}
 
+	public function GetSeksi(){
+		$term = $this->input->get("term");
+		$data = $this->M_report->GetSeksi($term);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{
+					"Nama_Seksi":"'.$data['section_name'].'"
+				}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
+	public function GetTrainingPrtcp($id)
+	{	
+		$section 	= $this->input->post('section');
+		$report 	= $this->M_report->GetTrainingPrtcp($id, $section);
+		$no =1;
+		foreach ($report as $rc) {
+			echo "<tr>
+					<td>".$no++."</td>
+					<td>".$rc['participant_name']."</td>
+				</tr>";
+		}
+
+	}
+
 	//REPORT 1
 	public function GetReport1(){
 		
 		$name 			= $this->input->POST('name');
 		$data['report'] = $this->M_report->GetReport1($name);
 		$this->load->view('ADMPelatihan/Report/ReportByName/V_Index2',$data);
+	}
+
+	//REPORT 2
+	public function GetReport2(){
+		
+		$section 		= $this->input->POST('section');
+		$year 			= $this->input->POST('year');
+		$data['report'] = $this->M_report->GetReport2($year,$section);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index2',$data);
 	}
 
 	//REPORT 3
@@ -149,6 +196,7 @@ class C_Report extends CI_Controller {
 		
 		$data['record'] = $this->M_record->GetRecordFinished();
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['section'] = $this->M_record->GetSeksi();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
