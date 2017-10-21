@@ -240,7 +240,6 @@ class C_Record extends CI_Controller {
 		}
 
 		//---GET NOINDUK
-
 		$staf = array();
 		$nonstaf = array();
 		$data['record'] = $this->M_record->GetRecordId($id);
@@ -264,39 +263,32 @@ class C_Record extends CI_Controller {
 
 		$ParticipantId 		= $this->input->post('txtId');
 		$ParticipantStatus 	= $this->input->post('slcStatus');
+		$ScoreEval1Post		= $this->input->post('txtReaksiPost');
 		$ScoreEval2Pre 		= $this->input->post('txtPengetahuanPre');
 		$ScoreEval2Post		= $this->input->post('txtPengetahuanPost');
 		$ScoreEval3Pre 		= $this->input->post('txtPerilakuPre');
 		$ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
-		$ScoreEval3PostR1 	= $this->input->post('txtPerilakuPostRem1');
-		$ScoreEval3PostR2 	= $this->input->post('txtPerilakuPostRem2');
-		$ScoreEval3PostR3 	= $this->input->post('txtPerilakuPostRem3');
+		$ScoreEval3Eval 	= $this->input->post('txtPerilakuEvalLap');
 		
 			$i=0;
 			foreach($ParticipantId as $loop){
 				$id = $ParticipantId[$i];
+				if(empty($ScoreEval1Post[$i])){$ScoreEval1Post[$i] = NULL;}
 				if(empty($ScoreEval2Pre[$i])){$ScoreEval2Pre[$i] = NULL;}
 				if(empty($ScoreEval3Pre[$i])){$ScoreEval3Pre[$i] = NULL;}
 				if(empty($ScoreEval3Post[$i])){$ScoreEval3Post[$i] = NULL;}
-				if(empty($ScoreEval3PostR1[$i])){$ScoreEval3PostR1[$i] = NULL;}
-				if(empty($ScoreEval3PostR2[$i])){$ScoreEval3PostR2[$i] = NULL;}
-				if(empty($ScoreEval3PostR3[$i])){$ScoreEval3PostR3[$i] = NULL;}
 				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
+				if(empty($ScoreEval3Eval[$i])){$ScoreEval3Eval[$i] = NULL;}
 				
 				$data_participant[$i] = array(
 					'status' 			=> $ParticipantStatus[$i],
+					'score_eval1_post' 	=> $ScoreEval1Post[$i],
 					'score_eval2_pre' 	=> $ScoreEval2Pre[$i],
 					'score_eval3_pre' 	=> $ScoreEval3Pre[$i],
 					'score_eval3_post1' => $ScoreEval3Post[$i],
-					'score_eval3_post2' => $ScoreEval3PostR1[$i],
-					'score_eval3_post3' => $ScoreEval3PostR2[$i],
-					'score_eval3_post4' => $ScoreEval3PostR3[$i],
 					'score_eval2_post' 	=> $ScoreEval2Post[$i],
+					'score_eval3_post2' => $ScoreEval3Eval[$i],
 				);
-				// echo "<pre>";
-				// print_r($data_participant[$i]);
-				// echo "</pre>";
-				// exit();
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;
 			}
