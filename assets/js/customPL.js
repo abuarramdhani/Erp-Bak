@@ -231,7 +231,7 @@ $(document).ready(function(){
 	});
 
 	//FILTER
-	$(document).ready(function() {	
+	$(document).ready(function() {
 		$('#FilterRecord').click(function(){
 			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
 			
@@ -284,6 +284,34 @@ $(document).ready(function(){
 		}
 	});
 
+	//SELECT SEKSI UNTUK REPORT
+	$(".js-slcReportSection").select2({
+		placeholder: "Nama Seksi",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetSeksi",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportSection').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return {
+							id:obj.Nama_Seksi,
+							text:obj.Nama_Seksi
+						};
+					})
+				};
+			}
+		}
+	});
+
 	//GET REPORT1
 	$(document).ready(function() {	
 		$('#SearchReport1').click(function(){
@@ -297,6 +325,31 @@ $(document).ready(function(){
 						name:name,
 				},
 				url:baseurl+"ADMPelatihan/C_Report/GetReport1",
+				success:function(result)
+				{
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
+
+	//GET REPORT2
+	$(document).ready(function() {	
+		$('#SearchReport2').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var section 	= $('select[name=slcReportSection]').val();
+			var year 		= $('select[name="slcTahun"]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						section:section,
+						year:year,
+				},
+				url:baseurl+"ADMPelatihan/C_Report/GetReport2",
 				success:function(result)
 				{
 					$('#loading').html('');
@@ -716,7 +769,6 @@ $(document).ready(function(){
 
 		// alert(rowCount);
 			$("select#slcEmployee:last").val("").change();
-			// delete_row();
 		}else{
 			alert('Jumlah peserta sudah maksimal');
 		}
@@ -812,7 +864,6 @@ $(document).ready(function(){
 					});
 
 			$("select#slcEmployee:last").val("").change();
-			// delete_row();
 		}else{
 			alert('Jumlah peserta sudah maksimal');		
 		}
@@ -940,12 +991,12 @@ function delCreateSegmentEssay(rowid,segmentid) {
 	}
 }
 function delCreateStatement(tbID,rowid,id,statementid) {
-	console.log('#tblStatement'+tbID);
-	console.log('#tbodyStatementC'+id);
+	// console.log('#tblStatement'+tbID);
+	// console.log('#tbodyStatementC'+id);
 	if (statementid == '0') {
 		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
 	}else{
-		console.log(statementid);
+		// console.log(statementid);
 	}
 }
 
@@ -1023,3 +1074,18 @@ function insertKuesAjax(event, th){
 }
 
 
+// MODAL SHOW PESERTA DI SECTION
+function showModPar(schid,section){
+	$.ajax({
+		type: "POST",
+		data:{
+			section:section
+		},
+		url:baseurl+"ADMPelatihan/Report/GetTrainingPrtcp/"+schid,
+		success:function(result)
+		{
+			$('#showModPar table tbody').html(result);
+			$('div#showModPar').modal('show');
+		}
+	});
+}
