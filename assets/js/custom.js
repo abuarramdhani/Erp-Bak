@@ -747,6 +747,11 @@
 			});
 		});
 
+		$(document).on('change', '#area', function() {
+			var destination = $(this).val();
+			$('.outstation-area').select2('val', destination);
+		});
+
 		$('#submit-simulation').click(function(){
 			$('.alert').alert('close');
 			$('#loadAjax').show();

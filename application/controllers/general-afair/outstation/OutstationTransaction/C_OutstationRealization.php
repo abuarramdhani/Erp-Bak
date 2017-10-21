@@ -994,4 +994,11 @@ class C_OutstationRealization extends CI_Controller {
 		$to_save_realization_mail = $this->M_Realization->save_realization_mail($id,$to,$cc,$bcc,$sub,$val,$status);
 		redirect('Outstation/realization');
 	}
+
+	public function DownloadFile()
+    {
+            $this->load->library("Excel/PHPExcel");
+  
+            $this->load->view('', $data, true);
+    }
 }
