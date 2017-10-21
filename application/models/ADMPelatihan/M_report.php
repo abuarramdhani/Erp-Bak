@@ -22,6 +22,44 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetSeksi($term){
+		if ($term === FALSE) {
+			$iftermtrue = "";
+		}else{
+			$iftermtrue = "WHERE (section_name ILIKE '%$term%')";}
+		
+		$sql = "
+				select section_name 
+				from er.er_section $iftermtrue
+				group by section_name
+			";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetTrainingPrtcp($id,$section)
+	{
+		$sql = "with seksi as(
+				select e.employee_code, e.employee_name, d.section_name
+				from er.er_employee_all e
+				left join er.er_section d
+				on e.section_code = d. section_code
+				)
+				select
+					section_name,
+					a.participant_number,
+					a.scheduling_name,
+					a.scheduling_id,
+					to_char(a.date, 'YYYY') as tahun,
+					b.participant_name
+				from pl.pl_scheduling_training a
+								left join  pl.pl_participant b on a.scheduling_id = b.scheduling_id
+								join seksi on b.noind = seksi.employee_code
+				where a.scheduling_id = '$id' and section_name like '%$section%'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	public function GetReport1($name){
 		$sql = "
 			with seksi as(
@@ -76,6 +114,44 @@ class M_report extends CI_Model {
 			where a.participant_name like '%$name%'
 			order by b.date desc";
 
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetReport2($year = FALSE,$section = FALSE)
+	{
+		if ($year==FALSE) {
+			$p='';
+		}else{
+			$p="and to_char(pst.date,'YYYY')='$year'";
+		}
+		if ($section==FALSE) {
+			$s='';
+		}else{
+			$s="and es.section_name like '%$section%'";
+		}
+		$sql="	select	section_name, jumlah.jml, jumlah.nama, jumlah.tahun,jumlah.scheduling_id
+				from	
+				er.er_section es,
+				(select 
+							pea.section_code,
+							pst.scheduling_name as nama,
+							to_char(pst.date,'YYYY')as tahun,
+							pst.scheduling_id,
+							count(pp.participant_name)as jml
+							from	pl.pl_participant pp,
+									er.er_employee_all pea,
+									pl.pl_scheduling_training pst
+							where
+							pp.noind = pea.employee_code
+							and
+							pp.scheduling_id=pst.scheduling_id
+							$p
+							group by pea.section_code, pst.scheduling_name, 3,4) as jumlah
+				where jumlah.jml is not null
+				and jumlah.section_code = es.section_code
+				$s
+				group by section_name,es.section_code,2,3,4,5";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -140,6 +216,15 @@ class M_report extends CI_Model {
 	//Ambil data Trainer Lengkap
 	public function GetTrainer(){
 		$sql = "select * from pl.pl_master_trainer order by trainer_status DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function getYearTraining()
+	{
+		$sql 	 = "SELECT
+						(to_char(pst.date, 'YYYY')) as tahun
+					FROM pl.pl_scheduling_training pst";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

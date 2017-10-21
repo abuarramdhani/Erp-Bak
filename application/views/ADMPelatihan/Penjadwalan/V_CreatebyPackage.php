@@ -112,9 +112,9 @@
 														</td>
 														<td style="text-align:left;">
 															<div class="col-lg-9">
-																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1"> Wawasan<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2"> Pengetahuan<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3"> Perilaku
+																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1"> Reaksi<br>
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2"> Pembelajaran<br>
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3"> Sikap / Perilaku
 															</div>
 														</td>
 													</tr>

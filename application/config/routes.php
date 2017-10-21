@@ -882,7 +882,7 @@ $route['ADMPelatihan/Record/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Record/$1/
 
 $route['ADMPelatihan/Report']							= 'ADMPelatihan/C_Report';
 $route['ADMPelatihan/Report/(:any)']					= 'ADMPelatihan/C_Report/$1';
-$route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Repord/$1/$2';
+$route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Report/$1/$2';
 $route['ADMPelatihan/Report/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Report/$1/$2/$3';
 
 
