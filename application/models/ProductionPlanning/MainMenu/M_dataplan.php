@@ -137,11 +137,17 @@ class M_dataplan extends CI_Model {
     return $query->result_array();
   }
 
-  public function getMonthlyPlan()
+  public function getMonthlyPlan($id=FALSE)
   {
-    $this->db->select('*');
-    $this->db->from('pp.pp_monthly_plans pmp, pp.pp_section ps');
-    $this->db->where('pmp.section_id = ps.section_id');
+    if ($id==FALSE) {
+      $this->db->select('*');
+      $this->db->from('pp.pp_monthly_plans pmp, pp.pp_section ps');
+      $this->db->where('pmp.section_id = ps.section_id');
+    }else{
+      $this->db->select('*');
+      $this->db->from('pp.pp_monthly_plans pmp, pp.pp_section ps');
+      $this->db->where('pmp.section_id = ps.section_id and pmp.monthly_plan_id = ', $id);
+    }
     $this->db->order_by('pmp.plan_time, ps.section_name ASC');
 
     $query = $this->db->get();
