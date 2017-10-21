@@ -295,7 +295,7 @@ class C_LimbahTransaksi extends CI_Controller
 
 	public function cetakExcel($tanggalawallink,$tanggalakhirlink)
     {
-            $this->load->library("Excel/PHPExcel");
+            $this->load->library("Excel");
 
             $tanggalawalx = str_replace('.', '-', $tanggalawallink);
             $tanggalakhirx = str_replace('.', '-', $tanggalakhirlink);

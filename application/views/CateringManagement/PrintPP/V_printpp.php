@@ -1,5 +1,5 @@
 <?php foreach ($Printpp as $value): ?>
-<table style="width:100%;border: 1px solid black;">
+<table style="width:100%;">
 	<tr>
 		<td rowspan="2" style="padding-left: 10px;"><img src="<?php echo base_url('/assets/img/logo.png'); ?>" width="40px" heigth="auto"></td>
 		<td rowspan="2" style="text-align: left">
@@ -72,7 +72,7 @@
 		</td>
 	</tr>
 </table>
-<table style="width:100%;border: 1px solid black;">
+<table style="width:100%;">
 	<tr>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 15%"><b>Kode Barang</b></td>
 		<td style="border:1px solid black;font-size: 10px;text-align: center; width: 5%"><b>Qty</b></td>
@@ -109,7 +109,7 @@
 		<?php endfor; ?>
 	<?php endif; ?>
 </table>
-<table style="width:100%;border: 1px solid black;">
+<table style="width:100%;">
 	<tr>
 		<td style="border:1px solid black;font-size: 7px;width: 20%;padding-left: 10px"><b>No. PR: </b>
 		</td>	
