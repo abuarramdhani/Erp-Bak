@@ -76,7 +76,7 @@
                                                 <?php echo $plm['section_name']; ?>
                                             </td>
                                             <td>
-                                                <button class="btn btn-default" onclick="javascript:alert('feature ini belum jalan!')">EDIT</button>
+                                                <a class="btn btn-default" href="<?php echo site_url('ProductionPlanning/DataPlanMonthly/Edit/'.$plm['monthly_plan_id']) ?>">EDIT</a>
                                             </td>
                                         </tr>
                                         <?php } ?>

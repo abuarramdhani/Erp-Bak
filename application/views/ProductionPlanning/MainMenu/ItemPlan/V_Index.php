@@ -37,7 +37,7 @@
                                         </i>
                                     </button>
                                 </a>
-                                Last Updated : <?php echo date('d,MMMM Y H:i:s', strtotime($itemData[0]['created_date'])); ?>
+                                Last Updated : <?php echo date('d, F Y H:i:s', strtotime($itemData[0]['created_date'])); ?>
                             </div>
                             <div class="panel-body">
                                 <table class="table table-bordered table-hover table-striped" id="tbitemData">
