@@ -81,4 +81,43 @@ class C_DataPlanMonthly extends CI_Controller {
 			redirect(base_url('ProductionPlanning/DataPlanMonthly'));
 		}
 	}
+
+	public function Edit($id)
+	{
+		$this->checkSession();
+		$user_id  = $this->session->userid;
+		$this->form_validation->set_rules('planQTY', 'required');
+		if ($this->form_validation->run() === FALSE){
+			$data['Menu'] = 'Dashboard';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+
+			$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			$data['plan']			= $this->M_dataplan->getMonthlyPlan($id);
+
+			// echo "<pre>";
+			// print_r($data['plan']);
+			// echo "</pre>";
+			// exit();
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('ProductionPlanning/MainMenu/DataPlan/Monthly/V_Edit',$data);
+			$this->load->view('V_Footer',$data);
+		}else{
+
+			$value = array(
+				'section_id'			=> $this->input->post('section'),
+				'plan_time'				=> date("Y-m-d H:i:s"),
+				'monthly_plan_quantity' => $this->input->post('planQTY'),
+				'created_by'			=> $user_id,
+				'created_date'			=> date("Y-m-d H:i:s")
+			);
+
+			$this->M_dataplan->insertDataPlan($value, 'pp.pp_monthly_plans');
+			redirect(base_url('ProductionPlanning/DataPlanMonthly'));
+		}
+	}
 }
