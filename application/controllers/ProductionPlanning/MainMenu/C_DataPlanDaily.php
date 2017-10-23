@@ -284,7 +284,7 @@ class C_DataPlanDaily extends CI_Controller {
                 'section_id' => $this->input->post('section')
             );
 
-            $this->M_dataplan->update($data,$id);
+            $this->M_dataplan->update('pp.pp_daily_plans','daily_plan_id',$data,$id);
             redirect(base_url('ProductionPlanning/DataPlanDaily'));
         }
     }
