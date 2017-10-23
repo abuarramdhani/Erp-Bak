@@ -917,6 +917,33 @@ clASs M_rekap_per_pekerja extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function rekapPersonSakit($periode1, $periode2, $nik)
+	{
+		$sql 	= "	select 		pri.noind,
+								pri.nama,
+								datapre.tanggal,
+								datapre.masuk,
+								datapre.keluar,
+								datapre.kd_ket,
+								case datapre.kd_ket 	when 	'PSK'
+																then 	'Sakit Keterangan Dokter'
+														when 	'PSP'
+																then 	'Sakit Perusahaan'
+								end as keterangan
+					from 		\"Presensi\".tdatapresensi as datapre
+								left join 	hrd_khs.tpribadi as pri
+										on 	pri.noind=datapre.noind
+					where 		pri.nik='$nik'
+								and 	datapre.tanggal between '$periode1' and '$periode2'
+								and 	(
+											datapre.kd_ket='PSP'
+											or 	datapre.kd_ket='PSK'
+										)
+					order by 	datapre.tanggal desc;";
+		$query 	=	$this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function rekapPersonSP($periode1,$periode2,$nik)
 	{
 		$sql = "
