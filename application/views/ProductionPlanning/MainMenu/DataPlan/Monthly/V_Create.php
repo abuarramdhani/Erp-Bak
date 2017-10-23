@@ -8,7 +8,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Input Monthly Plans
+                                        Upload Monthly Plans
                                     </b>
                                 </h1>
                             </div>
@@ -31,32 +31,41 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <p class="pull-left">New Monthly Plans</p>
-                                <p class="pull-right">Monthly Plan will be implemented for this month</p>
+                                Upload file Excel
                             </div>
                             <div class="panel-body">
-                                <form method="post" class="form-horizontal" action="<?php echo base_url('ProductionPlanning/DataPlanMonthly/Create'); ?>">
+                                <?php echo $message; ?>
+                                <form method="post" enctype="multipart/form-data" class="form-horizontal" action="<?php echo base_url('ProductionPlanning/DataPlanMonthly/CreateSubmit'); ?>">
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <h2>
+                                                <b>
+                                                    Upload file Excel
+                                                </b>
+                                            </h2>
+                                            <p>
+                                                -- Klick button 'DOWNLOAD SAMPLE' to download sample format item data list --
+                                            </p>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="form-group">
-                                            <label class="control-label col-md-offset-2 col-md-2" for="dp2">Section</label>
+                                            <label class="control-label col-md-offset-2 col-md-2">Monthly Plan File (.xls)</label>
                                             <div class="col-lg-6">
-                                                <select class="form-control select2" name="section">
-                                                    <?php foreach ($section as $s) { ?>
-                                                        <option value="<?php echo $s['section_id']; ?>"> <?php echo $s['section_name']; ?> </option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-offset-2 col-md-2">Monthly Plan Quantity</label>
-                                            <div class="col-lg-6">
-                                                <input type="number" min='1' name="planQTY" class="form-control">
+                                                <input type="file" name="planData" class="form-control" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 text-right">
-                                            <button type="submit" class="btn btn-primary">SAVE</button>
+                                            <a class="btn btn-default" href="<?php echo site_url('ProductionPlanning/DataPlanMonthly');?>">CANCEL</a>
+                                            <a class="btn btn-warning" href="<?php echo base_url('ProductionPlanning/DataPlanMonthly/DownloadSample');?>">
+                                                <i aria-hidden="true" class="fa fa-download"></i> 
+                                                DOWNLOAD SAMPLE
+                                            </a>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i aria-hidden="true" class="fa fa-upload"></i> UPLOAD
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
