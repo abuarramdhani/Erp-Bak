@@ -867,13 +867,14 @@ class C_RekapPerPekerja extends CI_Controller {
 		$data['periode1'] = date('Y-m-d', strtotime($periode1));
 		$data['periode2'] = date('Y-m-d', strtotime($periode2));
 
-		$data['info'] = $this->M_rekap_per_pekerja->rekapPersonInfo($nik);
-		$data['Terlambat'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TT');
-		$data['IjinPribadi'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TIK');
-		$data['Mangkir'] = $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TM');
-		$data['IjinPerusahaan'] = $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'PIP');
-		$data['CutiTahunan'] = $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'CT');
-		$data['SuratPeringatan'] = $this->M_rekap_per_pekerja->rekapPersonSP($data['periode1'],$data['periode2'],$nik);
+		$data['info'] 				= $this->M_rekap_per_pekerja->rekapPersonInfo($nik);
+		$data['Terlambat'] 			= $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TT');
+		$data['IjinPribadi'] 		= $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TIK');
+		$data['Mangkir'] 			= $this->M_rekap_per_pekerja->rekapPersonTIM($data['periode1'],$data['periode2'],$nik,$keterangan = 'TM');
+		$data['IjinPerusahaan'] 	= $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'PIP');
+		$data['CutiTahunan'] 		= $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'CT');
+		$data['SuratPeringatan'] 	= $this->M_rekap_per_pekerja->rekapPersonSP($data['periode1'],$data['periode2'],$nik);
+		$data['Sakit'] 				= $this->M_rekap_per_pekerja->rekapPersonSakit($data['periode1'], $data['periode2'], $nik);
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
