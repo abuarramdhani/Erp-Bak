@@ -3,34 +3,43 @@ window.onload = function() {
         autoclose: true,
         format: 'yyyy-mm-dd'
     });
+    $('.date-month-year').datepicker({
+        autoclose: true,
+        changeMonth: true,
+        format: 'MM yyyy',
+        startView: "months",
+        minViewMode: "months"
+    });
     $('#tbdataplan').DataTable();
     $('#tbdatagroupsection').DataTable();
     $('#tbitemData').DataTable();
+    $('#tblSection').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excel']
+    });
 }
 
-function getSectionMon(){
+function getSectionMon() {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
     for (var i = 0; i < count; i++) {
-        id[i] = $('input[name="sectionId'+i+'"]').val();
-        getDataLineChartPP(id[i], 'month-fabrication'+id[i]);
+        id[i] = $('input[name="sectionId' + i + '"]').val();
+        getDataLineChartPP(id[i], 'month-fabrication' + id[i]);
     }
 }
 
-function getDataLineChartPP(section,canvasid){
+function getDataLineChartPP(section, canvasid) {
     $.ajax({
-        url: baseurl+'ProductionPlanning/Monitoring/getSumPlanMonth',
-        data:{
+        url: baseurl + 'ProductionPlanning/Monitoring/getSumPlanMonth',
+        data: {
             section: section
         },
         type: 'POST',
-    }).done(function(data){
+    }).done(function(data) {
         var data = JSON.parse(data);
-
         var array = $.map(data['plan'], function(value, index) {
             return [value];
         });
-
         var labels = [];
         var temp = [];
         var temp1 = [];
@@ -44,7 +53,6 @@ function getDataLineChartPP(section,canvasid){
             value.push(temp);
             value.push(temp1);
         }
-        
         chartFabricationMon(canvasid, labels, value, ['rgba(163, 60, 82, 0.5)', 'rgba(94, 169, 218, 0.7)'], ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'], ['% PLAN', '% ACHIEV']);
     });
 }
@@ -75,7 +83,9 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
                     ticks: {
                         min: 0,
                         max: 100,
-                        callback: function(value){return value+ "%"},
+                        callback: function(value) {
+                            return value + "%"
+                        },
                         stepSize: 20,
                     },
                     scaleLabel: {
@@ -92,106 +102,111 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
         }
     });
     Chart.defaults.global.defaultFontColor = 'white';
-
     var count = label.length;
-    for(var i = 0; i < count; i++) {
-        chartMF.data.datasets.push({borderWidth: 1, fill: false, label: label[i], backgroundColor: color[i], borderColor: color2[i], data: []});
-        for(var j = 0; j < value[i].length; j++) {
+    for (var i = 0; i < count; i++) {
+        chartMF.data.datasets.push({
+            borderWidth: 1,
+            fill: false,
+            label: label[i],
+            backgroundColor: color[i],
+            borderColor: color2[i],
+            data: []
+        });
+        for (var j = 0; j < value[i].length; j++) {
             chartMF.data.datasets[i].data.push(value[i][j]);
         }
         chartMF.update();
     }
-    $('canvas#'+canvasid).height("250px");
+    $('canvas#' + canvasid).height("250px");
 }
 
-function showHideNormalPlanning(){
+function showHideNormalPlanning() {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
     var ckBegin = [];
     var ckEnd = [];
     for (var i = 0; i < count; i++) {
-        id[i] = $('input[name="sectionId'+i+'"]').val();
-
-        ckBegin[i] = Number($('input[name="checkpointBegin"][data-secid="'+id[i]+'"]').val());
-        ckEnd[i] = Number($('input[name="checkpointEnd"][data-secid="'+id[i]+'"]').val());
+        id[i] = $('input[name="sectionId' + i + '"]').val();
+        ckBegin[i] = Number($('input[name="checkpointBegin"][data-secid="' + id[i] + '"]').val());
+        ckEnd[i] = Number($('input[name="checkpointEnd"][data-secid="' + id[i] + '"]').val());
         if (ckBegin[i] <= 6 && ckBegin[i] < ckEnd[i]) {
-            $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr:first').fadeOut("slow", function() {
-                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr:first').attr('data-showstat', '0');
-                var tempElem = $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr').get(0);
-                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr:first').remove();
-                $('table[data-secid="'+id[i]+'"] tbody#normalPriority').append(tempElem);
-                var tempShowId = $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr[data-showstat*="0"]:first').attr('data-showid');
-                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr[data-showid="'+tempShowId+'"]').fadeIn('fast');
-                $('table[data-secid="'+id[i]+'"] tbody#normalPriority tr[data-showid="'+tempShowId+'"]').attr('data-showstat', '1');
+            $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr:first').fadeOut("slow", function() {
+                $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr:first').attr('data-showstat', '0');
+                var tempElem = $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr').get(0);
+                $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr:first').remove();
+                $('table[data-secid="' + id[i] + '"] tbody#normalPriority').append(tempElem);
+                var tempShowId = $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr[data-showstat*="0"]:first').attr('data-showid');
+                $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr[data-showid="' + tempShowId + '"]').fadeIn('fast');
+                $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr[data-showid="' + tempShowId + '"]').attr('data-showstat', '1');
             });
         }
     }
 }
 
-function getDailyPlan(sectionId){
+function getDailyPlan(sectionId) {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
     for (var i = 0; i < count; i++) {
-        id[i] = $('input[name="sectionId'+i+'"]').val();
+        id[i] = $('input[name="sectionId' + i + '"]').val();
         var a = id[i];
         $.ajax({
-            url: baseurl+'ProductionPlanning/Monitoring/getDailyPlan',
-            data:{
+            url: baseurl + 'ProductionPlanning/Monitoring/getDailyPlan',
+            data: {
                 sectionId: id[i]
             },
             type: 'POST',
-        }).done(function(data){
+        }).done(function(data) {
             console.log('update table plans');
-            $('table.dailyPlan[data-secid="'+a+'"]').html(data);
+            $('table.dailyPlan[data-secid="' + a + '"]').html(data);
         });
     }
 }
 
-function getAchieveAllFab(){
+function getAchieveAllFab() {
     $.ajax({
-        url: baseurl+'ProductionPlanning/Monitoring/getAchieveAllFab',
+        url: baseurl + 'ProductionPlanning/Monitoring/getAchieveAllFab',
         type: 'POST',
-    }).done(function(data){
+    }).done(function(data) {
         $('table#achieveAllFab').html(data);
     });
 }
 
-function getInfoJob(){
+function getInfoJob() {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
     for (var i = 0; i < count; i++) {
-        id[i] = $('input[name="sectionId'+i+'"]').val();
+        id[i] = $('input[name="sectionId' + i + '"]').val();
         var a = id[i];
         $.ajax({
-            url: baseurl+'ProductionPlanning/Monitoring/getInfoJob',
+            url: baseurl + 'ProductionPlanning/Monitoring/getInfoJob',
             type: 'POST',
-        }).done(function(data){
-            $('table.infoJob[data-secid="'+a+'"] tbody').html(data);
+        }).done(function(data) {
+            $('table.infoJob[data-secid="' + a + '"] tbody').html(data);
         });
     }
 }
 
-function getAchievement(){
+function getAchievement() {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
     for (var i = 0; i < count; i++) {
-        id[i] = $('input[name="sectionId'+i+'"]').val();
+        id[i] = $('input[name="sectionId' + i + '"]').val();
         var a = id[i];
         $.ajax({
-            url: baseurl+'ProductionPlanning/Monitoring/getAchievement',
-            data:{
+            url: baseurl + 'ProductionPlanning/Monitoring/getAchievement',
+            data: {
                 sectionId: id[i]
             },
             type: 'POST',
-        }).done(function(data){
-            $('div.achievement[data-secid="'+a+'"] b').html(data);
+        }).done(function(data) {
+            $('div.achievement[data-secid="' + a + '"] b').html(data);
         });
     }
 }
 
-function groupSectionDelConf(th,id){
+function groupSectionDelConf(th, id) {
     var elm = $(th).closest('tr').clone();
-    $('div.modal-footer a').attr("href", baseurl+"ProductionPlanning/Setting/GroupSection/Delete/"+id);
+    $('div.modal-footer a').attr("href", baseurl + "ProductionPlanning/Setting/GroupSection/Delete/" + id);
     $('div#deleteConfirm tbody').html(elm);
     $('div#deleteConfirm tbody td.del-col').remove();
     $('#deleteConfirm').modal('show');
