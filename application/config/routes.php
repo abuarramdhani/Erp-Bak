@@ -1049,3 +1049,6 @@ $route['ProductionPlanning/ItemPlan/(:any)/(:any)']				= 'ProductionPlanning/Mai
 $route['ProductionPlanning/Setting/GroupSection']  				= 'ProductionPlanning/Settings/C_GroupSection/index';
 $route['ProductionPlanning/Setting/GroupSection/(:any)']		= 'ProductionPlanning/Settings/C_GroupSection/$1';
 $route['ProductionPlanning/Setting/GroupSection/(:any)/(:any)']	= 'ProductionPlanning/Settings/C_GroupSection/$1/$2';
+$route['ProductionPlanning/Setting/Section']					= 'ProductionPlanning/Settings/C_Section';
+$route['ProductionPlanning/Setting/Section/(:any)']				= 'ProductionPlanning/Settings/C_Section/$1';
+$route['ProductionPlanning/Setting/Section/(:any)/(:any)']		= 'ProductionPlanning/Settings/C_Section/$1/$2';
