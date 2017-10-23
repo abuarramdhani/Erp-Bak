@@ -41,6 +41,11 @@
                                             <label class="control-label col-md-offset-2 col-md-2" for="dp2">Section</label>
                                             <div class="col-lg-6">
                                                 <input type="text" name="sectionName" class="form-control" value="<?php echo $pl['section_name'] ?>" readonly>
+                                                <!-- <select class="form-control select2" name="section">
+                                                    <?php foreach ($section as $s) { ?>
+                                                        <option value="<?php echo $s['section_id']; ?>"> <?php echo $s['section_name']; ?> </option>
+                                                    <?php } ?>
+                                                </select> -->
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -52,13 +57,14 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-offset-2 col-md-2">Monthly Plan Time</label>
                                             <div class="col-lg-6">
-                                                <input type="text" min='1' name="planQTY" class="form-control" value="<?php echo date('F Y', strtotime($pl['plan_time'])) ?>">
+                                                <input type="text" name="planTime" class="form-control date-month-year" value="<?php echo date('F Y', strtotime($pl['plan_time'])) ?>">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 text-right">
-                                            <button type="submit" class="btn btn-primary">SAVE</button>
+                                            <a class="btn btn-default" href="<?php echo site_url('ProductionPlanning/DataPlanMonthly');?>">CANCEL</a>
+                                            <button type="submit" class="btn btn-primary">UPDATE</button>
                                         </div>
                                     </div>
                                 </form>

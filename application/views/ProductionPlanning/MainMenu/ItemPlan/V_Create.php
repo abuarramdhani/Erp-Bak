@@ -61,15 +61,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 text-right">
-                                        <a class="btn btn-default" href="<?php echo site_url('ProductionPlanning/ItemPlan');?>">CANCEL</a>
-                                        <a class="btn btn-warning" href="<?php echo base_url('ProductionPlanning/ItemPlan/DownloadSample');?>">
-                                            <i aria-hidden="true" class="fa fa-download"></i> DOWNLOAD SAMPLE
-                                        </a>
-                                        <button class="btn btn-primary" type="submit">
-                                            <i aria-hidden="true" class="fa fa-upload">
-                                            </i>
-                                            UPLOAD
-                                        </button>
+                                            <a class="btn btn-default" href="<?php echo site_url('ProductionPlanning/ItemPlan');?>">CANCEL</a>
+                                            <a class="btn btn-warning" href="<?php echo base_url('ProductionPlanning/ItemPlan/DownloadSample');?>">
+                                                <i aria-hidden="true" class="fa fa-download"></i> 
+                                                DOWNLOAD SAMPLE
+                                            </a>
+                                            <button class="btn btn-primary" type="submit">
+                                                <i aria-hidden="true" class="fa fa-upload">
+                                                </i>
+                                                UPLOAD
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
