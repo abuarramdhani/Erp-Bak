@@ -60,7 +60,7 @@ class C_Dashboard extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/Dashboard/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/Dashboard/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	

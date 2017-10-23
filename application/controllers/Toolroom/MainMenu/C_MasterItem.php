@@ -61,7 +61,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItem'] = $this->M_master_item->getItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItem/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItem/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -82,7 +82,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItemGroup'] = $this->M_master_item->getGroupItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItem/V_Create',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItem/V_Create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -154,7 +154,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItem'] = $this->M_master_item->getItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItem/V_Import',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItem/V_Import',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -165,16 +165,16 @@ class C_MasterItem extends CI_Controller {
 		$config['allowed_types'] = 'xlsx';
 		$config['max_size']      = '100000';
 		$config['overwrite']     = TRUE;
-		$config['file_name']     = "master-item-toolroom";
+		$config['file_name']     = "master-item-Toolroom";
 
-		$doc_name	= "master-item-toolroom";
+		$doc_name	= "master-item-Toolroom";
 
 		$this->upload->initialize($config);
 		if ( ! $this->upload->do_upload('fileScan')){
 			$error = array('error' => $this->upload->display_errors());
 			print_r($error);
 		}else{
-			$inputFileName = 'assets/upload/master-item-toolroom.xlsx';
+			$inputFileName = 'assets/upload/master-item-Toolroom.xlsx';
         try {
                 $inputFileType = IOFactory::identify($inputFileName);
                 $objReader = IOFactory::createReader($inputFileType);
@@ -250,7 +250,7 @@ class C_MasterItem extends CI_Controller {
 		{
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('ToolRoom/MainMenu/MasterItem/V_Update',$data);
+			$this->load->view('Toolroom/MainMenu/MasterItem/V_Update',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
 			$qty = $this->input->post('txtQuantity');
@@ -300,7 +300,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItemGroup'] = $this->M_master_item->getGroupItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -319,7 +319,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItemGroup'] = $this->M_master_item->getGroupItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_Create',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_Create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -376,7 +376,7 @@ class C_MasterItem extends CI_Controller {
 		{
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_Update',$data);
+			$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_Update',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
 			$data = array(
@@ -409,7 +409,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItem'] = $this->M_master_item->getListGroupItemUsable($plaintext_string);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_View',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_View',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	

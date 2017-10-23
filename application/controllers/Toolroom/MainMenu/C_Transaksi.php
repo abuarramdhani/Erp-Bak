@@ -64,7 +64,7 @@ class C_Transaksi extends CI_Controller {
 		$data['ListOutGroupTransaction'] = $this->M_transaksi->ListOutGroupTransaction();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/TransaksiPinjam/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -83,7 +83,7 @@ class C_Transaksi extends CI_Controller {
 		$data['itemOut'] = $this->M_transaksi->listOutITem($user_id);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_Create',$data);
+		$this->load->view('Toolroom/MainMenu/TransaksiPinjam/V_Create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -287,7 +287,7 @@ class C_Transaksi extends CI_Controller {
 		$data['list_date'] = $date;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_List',$data);
+		$this->load->view('Toolroom/MainMenu/TransaksiPinjam/V_List',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -329,7 +329,7 @@ class C_Transaksi extends CI_Controller {
 		$data['date_list'] = $date;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/TransaksiPinjam/V_Update',$data);
+		$this->load->view('Toolroom/MainMenu/TransaksiPinjam/V_Update',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -373,7 +373,7 @@ class C_Transaksi extends CI_Controller {
 		$data['ListOutTransaction'] = $this->M_transaksi->ListOutTransaction();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/TransaksiPengembalian/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/TransaksiPengembalian/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
