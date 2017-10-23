@@ -14,6 +14,7 @@ class C_KompTamb extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -46,7 +47,8 @@ class C_KompTamb extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+        $plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_komptamb->get_by_id($id);
         if ($row) {
             $data = array(
@@ -112,11 +114,12 @@ class C_KompTamb extends CI_Controller
     public function save()
     {
         $this->formValidation();
-
+		$dt = explode("/",$this->input->post('txtPeriode',TRUE));
+		$tgl_transaksi = $dt[1]."-".$dt[0];
             $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
+				'periode' => $tgl_transaksi,
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'tambahan' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
+				'tambahan' => str_replace('.','',$this->input->post('txtTambahan',TRUE)),
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
@@ -135,8 +138,9 @@ class C_KompTamb extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-
-        $row = $this->M_komptamb->get_by_id($id);
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id_e = $this->encrypt->decode($plaintext_string);
+        $row = $this->M_komptamb->get_by_id($id_e);
 
         if ($row) {
             $data = array(
@@ -146,11 +150,11 @@ class C_KompTamb extends CI_Controller
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-                'action' => site_url('PayrollManagement/KompTamb/saveUpdate'),
+                'action' => site_url('PayrollManagement/KompTamb/saveUpdate/'.$id),
 				'id' => set_value('txtId', $row->id),
-				'periode' => set_value('txtPeriode', $row->periode),
+				'periode' => set_value('txtPeriode', date("m/Y",strtotime($row->periode))),
 				'noind' => set_value('txtNoind', $row->noind),
-				'tambahan' => set_value('txtTambahan', $row->tambahan),
+				'tambahan' => set_value('txtTambahan', number_format((int)$row->tambahan,0,",",".")),
 				'stat' => set_value('txtStat', $row->stat),
 				'desc_' => set_value('txtDesc', $row->desc_),
 				);
@@ -168,18 +172,15 @@ class C_KompTamb extends CI_Controller
         }
     }
 
-    public function saveUpdate()
+    public function saveUpdate($id)
     {
         $this->formValidation();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
-            $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
-				'noind' => $this->input->post('cmbNoind',TRUE),
-				'tambahan' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
+			$dt = explode("/",$this->input->post('txtPeriode',TRUE));
+			$tgl_transaksi = $dt[1]."-".$dt[0];
+			$data = array(
+				'periode' => $tgl_transaksi,
+				'noind' => $this->input->post('txtNoind',TRUE),
+				'tambahan' => str_replace('.','',$this->input->post('txtTambahan',TRUE)),
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
@@ -191,13 +192,13 @@ class C_KompTamb extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
-        }
     }
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_komptamb->get_by_id($id);
-
         if ($row) {
             $this->M_komptamb->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');

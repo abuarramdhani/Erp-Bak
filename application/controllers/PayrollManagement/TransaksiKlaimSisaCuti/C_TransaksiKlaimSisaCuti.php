@@ -15,6 +15,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -137,7 +138,8 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 
     public function update($id)
     {
-
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $this->checkSession();
         $user_id = $this->session->userid;
 
@@ -179,11 +181,6 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
     public function saveUpdate()
     {
         $this->formValidation();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
             $data = array(
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'periode' => $this->input->post('txtPeriode',TRUE),
@@ -201,11 +198,12 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
-        }
     }
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_transaksiklaimsisacuti->get_by_id($id);
 
         if ($row) {
@@ -304,14 +302,18 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         }
     }
 	
-	    public function getKlaimCuti(){
+	public function getKlaimCuti(){
         $data_where = array(
             'noind' => $this->input->post('noind',TRUE),
             'tgl_tberlaku' => '9999-12-31',
         );
 
         $getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
-        $sisaKlaim = round($this->input->post('cuti',TRUE) * ($getGp/30),0);
+		if(empty($getGp)){
+			$sisaKlaim = '-';
+		}else{
+			$sisaKlaim = round($this->input->post('cuti',TRUE) * ($getGp->gaji_pokok/30),0);
+		}
         
         echo $sisaKlaim;
     }

@@ -14,6 +14,7 @@ class C_TransaksiKlaimDl extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -113,11 +114,13 @@ class C_TransaksiKlaimDl extends CI_Controller
 			echo "test";
         }
         else{
+			$dt = explode("/",$this->input->post('txtTglTransaksi',TRUE));
+			$varTgl = $dt[2]."-".$dt[1]."-".$dt[0];
             $data = array(
 				'id_klaim_dl' => date('YmdHis'),
-				'tanggal' => $this->input->post('txtTanggal',TRUE),
+				'tanggal' => $varTgl,
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'klaim_dl' => str_replace(',','',$this->input->post('txtKlaimDl',TRUE)),
+				'klaim_dl' => str_replace('.','',$this->input->post('txtKlaimDl',TRUE)),
 			);
 
             $this->M_transaksiklaimdl->insert($data);
@@ -135,7 +138,8 @@ class C_TransaksiKlaimDl extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_transaksiklaimdl->get_by_id($id);
 
         if ($row) {
@@ -148,9 +152,9 @@ class C_TransaksiKlaimDl extends CI_Controller
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/TransaksiKlaimDl/saveUpdate'),
 				'id_klaim_dl' => set_value('txtIdKlaimDl', $row->id_klaim_dl),
-				'tanggal' => set_value('txtTanggal', $row->tanggal),
+				'tanggal' => set_value('txtTanggal', date("d/m/Y",strtotime($row->tanggal))),
 				'noind' => set_value('txtNoind', $row->noind),
-				'klaim_dl' => set_value('txtKlaimDl', $row->klaim_dl),
+				'klaim_dl' => set_value('txtKlaimDl', number_format((int)$row->klaim_dl,0,",",".")),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -174,10 +178,12 @@ class C_TransaksiKlaimDl extends CI_Controller
             $this->update();
         }
         else{
+			$dt = explode("/",$this->input->post('txtTglTransaksi',TRUE));
+			$varTgl = $dt[2]."-".$dt[1]."-".$dt[0];
             $data = array(
-				'tanggal' => $this->input->post('txtTanggal',TRUE),
+				'tanggal' => $varTgl,
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'klaim_dl' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
+				'klaim_dl' => str_replace('.','',$this->input->post('txtKlaimDl',TRUE)),
 			);
 
             $this->M_transaksiklaimdl->update($this->input->post('txtIdKlaimDl', TRUE), $data);
@@ -192,6 +198,8 @@ class C_TransaksiKlaimDl extends CI_Controller
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_transaksiklaimdl->get_by_id($id);
 
         if ($row) {

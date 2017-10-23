@@ -38,9 +38,9 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-	                                    <label for="txtTanggal" class="control-label col-lg-4">Tanggal</label>
+	                                    <label for="txtTglTransaksi" class="control-label col-lg-4">Tanggal Transaksi</label>
 	                                    <div class="col-lg-4">
-	                                        <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggal" value="<?php echo $tanggal ?>" class="form-control" id="txtTanggal" />
+											<input type="text" maxlength="10" placeholder="<?php echo date('d/m/Y')?>" name="txtTglTransaksi" value="<?php echo $tanggal; ?>" class="form-control datepicker-erp-pr" data-date-format="dd/mm/yyyy" id="txtTglTransaksi" />
 	                                    </div>
 	                                </div>
 									<div class="form-group">
@@ -57,7 +57,7 @@
                                             <input type="text" placeholder="Bulan Sakit" name="txtBulanSakit" id="txtBulanSakit" class="form-control" value="<?php echo $bulan_sakit; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
                                         </div>
                                     </div>
-									<input type="text" name="txtIdSetting" value="<?php echo $id_setting; ?>" />
+									<input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" />
 								</div>
                             </div>
                             <div class="panel-footer">

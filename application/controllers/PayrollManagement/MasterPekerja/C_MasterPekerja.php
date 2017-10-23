@@ -15,6 +15,7 @@ class C_MasterPekerja extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library(array('Excel/PHPExcel','Excel/PHPExcel/IOFactory'));
     }
 
 	public function index()
@@ -22,8 +23,8 @@ class C_MasterPekerja extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Pekerja';
+        $data['SubMenuOne'] = 'Master Pekerja';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -55,8 +56,8 @@ class C_MasterPekerja extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Pekerja';
+        $data['SubMenuOne'] = 'Master Pekerja';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -81,8 +82,8 @@ class C_MasterPekerja extends CI_Controller
         $row = $this->M_masterpekerja->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Pekerja',
+            	'SubMenuOne' => 'Master Pekerja',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -162,8 +163,8 @@ class C_MasterPekerja extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Pekerja',
+            'SubMenuOne' => 'Master Pekerja',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -308,8 +309,8 @@ class C_MasterPekerja extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Pekerja',
+                'SubMenuOne' => 'Master Pekerja',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -580,145 +581,163 @@ class C_MasterPekerja extends CI_Controller
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
 	
 	  public function import() {
+		ini_set('memory_limit', '-1');
 		error_reporting(E_ALL ^ E_NOTICE);
-        $config['upload_path'] = 'assets/upload/importPR/masterpekerja/';
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '5000';
-        $this->load->library('upload', $config);
- 
-        if (!$this->upload->do_upload('file')) { echo $this->upload->display_errors();}
-        else {  $file_data  = $this->upload->data();
-                $filename   = $file_data['file_name'];
-                $file_path  = 'assets/upload/importPR/masterpekerja/'.$file_data['file_name'];
-                
-            if ($this->csvimport->get_array($file_path)) {
-                
-                $csv_array  = $this->csvimport->get_array($file_path);
-                $data_exist = array();
-                $i = 0;
-                foreach ($csv_array as $row) {
-					$noind = $row['noind'];
-	                $check = $this->M_masterpekerja->check($noind);
-					if($check){
-						$data = array(
-							'kd_hubungan_kerja' => substr($row['KD_HUB_KER'],0,3),
-							'kd_status_kerja' => substr($row['KD_STATUS_'],0,1),
-							'nik' => substr($row['NIK'],0,20),
-							'no_kk' => substr($row['NO_KK'],0,20),
-							'nama' => substr($row['NAMA'],0,50),
-							'id_kantor_asal' => substr($row['ID_KANT_AS'],0,3),
-							'id_lokasi_kerja' => substr($row['ID_LOK_KER'],0,3),
-							'jns_kelamin' => substr($row['JENKEL'],0,1),
-							'tempat_lahir' => substr($row['TEMPAT_LHR'],0,30),
-							'tgl_lahir' => date("Y-m-d",strtotime($row['TGL_LHR'])),
-							'alamat' => substr($row['ALAMAT'],0,100),
-							'desa' => substr($row['DESA'],0,30),
-							'kecamatan' => substr($row['KEC'],0,30),
-							'kabupaten' => substr($row['KAB'],0,30),
-							'provinsi' => substr($row['PROVINSI'],0,30),
-							'kode_pos' => substr($row['KODE_POS'],0,6),
-							'no_hp' => substr($row['NO_HP'],0,16),
-							'gelar_d' => substr($row['GELARD'],0,6),
-							'gelar_b' => substr($row['GELARB'],0,6),
-							'pendidikan' => substr($row['PENDIDIKAN'],0,7),
-							'jurusan' => substr($row['JURUSAN'],0,30),
-							'sekolah' => substr($row['SEKOLAH'],0,60),
-							'stat_nikah' => substr($row['STAT_NIKAH'],0,2),
-							'tgl_nikah' => date("Y-m-d",strtotime($row['TGL_NIKAH'])),
-							'jml_anak' => substr($row['JML_ANAK'],0,2),
-							'jml_sdr' => substr($row['JML_SDR'],0,2),
-							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
-							'masuk_kerja' => date("Y-m-d",strtotime($row['MASUK_KERJ'])),
-							'kodesie' => substr($row['KODESIE'],0,9),
-							'gol_kerja' => substr($row['GOL_KERJA'],0,7),
-							'kd_asal_outsourcing' => substr($row['KD_ASAL_OS'],0,4),
-							'kd_jabatan' => substr(str_replace("'","",$row['KD_JABATAN']),0,4),
-							'jabatan' => substr($row['JABATAN'],0,80),
-							'npwp' => substr($row['NPWP'],0,20),
-							'no_kpj' => substr($row['NO_KPJ'],0,20),
-							'lm_kontrak' => substr($row['LM_KONTRAK'],0,2),
-							'akh_kontrak' => date("Y-m-d",strtotime($row['AKH_KONTRA'])),
-							'stat_pajak' => substr($row['STAT_PAJAK'],0,3),
-							'jt_anak' => substr($row['JT_ANAK'],0,1),
-							'jt_bkn_anak' => substr($row['JT_BKN_ANA'],0,1),
-							'tgl_spsi' => date("Y-m-d",strtotime($row['TGL_SPSI'])),
-							'no_spsi' => substr($row['NO_SPSI'],0,11),
-							'tgl_kop' => date("Y-m-d",strtotime($row['TGL_KOP'])),
-							'no_koperasi' => substr($row['NO_KOPERAS'],0,11),
-							'keluar' => substr($row['KELUAR'],0,1),
-							'tgl_keluar' => date("Y-m-d",strtotime($row['TGL_KELUAR'])),
-							'kd_pkj' => substr($row['KD_PKJ'],0,9),
-							'angg_jkn' => substr($row['ANGG_JKN'],0,1),
-							'noind_baru' => substr($row['NOIND_BARU'],0,7),
-	                    );
-						$this->M_masterpekerja->update($noind,$data);
-					}else{
-						$data = array(
-	                    	'noind' => substr($row['NOIND'],0,7),
-							'kd_hubungan_kerja' => substr($row['KD_HUB_KER'],0,5),
-							'kd_status_kerja' => substr($row['KD_STATUS_'],0,1),
-							'nik' => substr($row['NIK'],0,20),
-							'no_kk' => substr($row['NO_KK'],0,20),
-							'nama' => substr($row['NAMA'],0,50),
-							'id_kantor_asal' => substr($row['ID_KANT_AS'],0,3),
-							'id_lokasi_kerja' => substr($row['ID_LOK_KER'],0,3),
-							'jns_kelamin' => substr($row['JENKEL'],0,1),
-							'tempat_lahir' => substr($row['TEMPAT_LHR'],0,30),
-							'tgl_lahir' => date("Y-m-d",strtotime($row['TGL_LHR'])),
-							'alamat' => substr($row['ALAMAT'],0,100),
-							'desa' => substr($row['DESA'],0,30),
-							'kecamatan' => substr($row['KEC'],0,30),
-							'kabupaten' => substr($row['KAB'],0,30),
-							'provinsi' => substr($row['PROVINSI'],0,30),
-							'kode_pos' => substr($row['KODE_POS'],0,6),
-							'no_hp' => substr($row['NO_HP'],0,16),
-							'gelar_d' => substr($row['GELARD'],0,6),
-							'gelar_b' => substr($row['GELARB'],0,6),
-							'pendidikan' => substr($row['PENDIDIKAN'],0,7),
-							'jurusan' => substr($row['JURUSAN'],0,30),
-							'sekolah' => substr($row['SEKOLAH'],0,60),
-							'stat_nikah' => substr($row['STAT_NIKAH'],0,2),
-							'tgl_nikah' => date("Y-m-d",strtotime($row['TGL_NIKAH'])),
-							'jml_anak' => substr($row['JML_ANAK'],0,2),
-							'jml_sdr' => substr($row['JML_SDR'],0,2),
-							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
-							'masuk_kerja' => date("Y-m-d",strtotime($row['MASUK_KERJ'])),
-							'kodesie' => substr($row['KODESIE'],0,9),
-							'gol_kerja' => substr($row['GOL_KERJA'],0,7),
-							'kd_asal_outsourcing' => substr($row['KD_ASAL_OS'],0,4),
-							'kd_jabatan' => substr(str_replace("'","",$row['KD_JABATAN']),0,4),
-							'jabatan' => substr($row['JABATAN'],0,80),
-							'npwp' => substr($row['NPWP'],0,20),
-							'no_kpj' => substr($row['NO_KPJ'],0,20),
-							'lm_kontrak' => substr($row['LM_KONTRAK'],0,2),
-							'akh_kontrak' => date("Y-m-d",strtotime($row['AKH_KONTRA'])),
-							'stat_pajak' => substr($row['STAT_PAJAK'],0,3),
-							'jt_anak' => substr($row['JT_ANAK'],0,1),
-							'jt_bkn_anak' => substr($row['JT_BKN_ANA'],0,1),
-							'tgl_spsi' => date("Y-m-d",strtotime($row['TGL_SPSI'])),
-							'no_spsi' => substr($row['NO_SPSI'],0,11),
-							'tgl_kop' => date("Y-m-d",strtotime($row['TGL_KOP'])),
-							'no_koperasi' => substr($row['NO_KOPERAS'],0,11),
-							'keluar' => substr($row['KELUAR'],0,1),
-							'tgl_keluar' => date("Y-m-d",strtotime($row['TGL_KELUAR'])),
-							'kd_pkj' => substr($row['KD_PKJ'],0,9),
-							'angg_jkn' => substr($row['ANGG_JKN'],0,1),
-							'noind_baru' => substr($row['NOIND_BARU'],0,7),
-	                    );
-						$this->M_masterpekerja->insert($data);
-					}
-                }
-				$this->session->set_flashdata('message', 'Record Not Found');
-				$ses=array(
-						 "success_import" => 1
-					);
-				$this->session->set_userdata($ses);
-                unlink($file_path);
-
-            } else {
-                $this->load->view('csvindex');
+		$filename = $_FILES['file']['name'];
+		$config['upload_path'] = './assets/upload/importPR/masterpekerja/'; //buat folder dengan nama assets di root folder
+        $config['file_name'] = $filename;
+        $config['allowed_types'] = 'xls|xlsx|csv';
+        $config['max_size'] = 10000;
+		
+		$this->load->library('upload');
+        $this->upload->initialize($config);
+		
+		if(! $this->upload->do_upload('file') )
+        $this->upload->display_errors();
+		
+		$media = $this->upload->data('file');
+	
+        $inputFileName = './assets/upload/importPR/masterpekerja/'.$filename;
+		try {
+                $inputFileType = IOFactory::identify($inputFileName);
+                $objReader = IOFactory::createReader($inputFileType);
+                $objPHPExcel = $objReader->load($inputFileName);
+            } catch(Exception $e) {
+                die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
             }
-        }
+			
+		 $sheet = $objPHPExcel->getSheet(0);
+		 if($sheet){
+			$highestRow = $sheet->getHighestRow();
+            $highestColumn = $sheet->getHighestColumn();
+             
+            for ($row = 2; $row <= $highestRow; $row++){                  //  Read a row of data into an array                 
+                $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+                                                NULL,
+                                                TRUE,
+                                                FALSE);
+							$noind = $rowData[0][0];
+							$check = $this->M_masterpekerja->check($noind);
+						if($check){
+							$data = array(
+									'kd_hubungan_kerja' => substr($rowData[0][2],0,3),
+									'kd_status_kerja' => substr($rowData[0][3],0,1),
+									'nik' => substr($rowData[0][4],0,20),
+									'no_kk' => substr($rowData[0][5],0,20),
+									'nama' => substr($rowData[0][6],0,50),
+									'id_kantor_asal' => substr($rowData[0][7],0,3),
+									'id_lokasi_kerja' => substr($rowData[0][8],0,3),
+									'jns_kelamin' => substr($rowData[0][9],0,1),
+									'tempat_lahir' => substr($rowData[0][10],0,30),
+									'tgl_lahir' => date("Y-m-d",strtotime($rowData[0][11])),
+									'alamat' => substr($rowData[0][12],0,100),
+									'desa' => substr($rowData[0][13],0,30),
+									'kecamatan' => substr($rowData[0][14],0,30),
+									'kabupaten' => substr($rowData[0][15],0,30),
+									'provinsi' => substr($rowData[0][16],0,30),
+									'kode_pos' => substr($rowData[0][17],0,6),
+									'no_hp' => substr($rowData[0][18],0,16),
+									'gelar_d' => substr($rowData[0][19],0,6),
+									'gelar_b' => substr($rowData[0][20],0,6),
+									'pendidikan' => substr($rowData[0][21],0,7),
+									'jurusan' => substr($rowData[0][22],0,30),
+									'sekolah' => substr($rowData[0][23],0,60),
+									'stat_nikah' => substr($rowData[0][24],0,2),
+									'tgl_nikah' => date("Y-m-d",strtotime($rowData[0][25])),
+									'jml_anak' => substr($rowData[0][26],0,2),
+									'jml_sdr' => substr($rowData[0][27],0,2),
+									'diangkat' => date("Y-m-d",strtotime($rowData[0][28])),
+									'masuk_kerja' => date("Y-m-d",strtotime($rowData[0][29])),
+									'kodesie' => substr($rowData[0][30],0,9),
+									'gol_kerja' => substr($rowData[0][31],0,7),
+									'kd_asal_outsourcing' => substr($rowData[0][32],0,4),
+									'kd_jabatan' => substr(str_replace("'","",$rowData[0][33]),0,4),
+									'jabatan' => substr($rowData[0][34],0,80),
+									'npwp' => substr($rowData[0][35],0,20),
+									'no_kpj' => substr($rowData[0][36],0,20),
+									'lm_kontrak' => substr($rowData[0][37],0,2),
+									'akh_kontrak' => date("Y-m-d",strtotime($rowData[0][38])),
+									'stat_pajak' => substr($rowData[0][39],0,3),
+									'jt_anak' => substr($rowData[0][40],0,1),
+									'jt_bkn_anak' => substr($rowData[0][41],0,1),
+									'tgl_spsi' => date("Y-m-d",strtotime($rowData[0][42])),
+									'no_spsi' => substr($rowData[0][43],0,11),
+									'tgl_kop' => date("Y-m-d",strtotime($rowData[0][44])),
+									'no_koperasi' => substr($rowData[0][45],0,11),
+									'keluar' => substr($rowData[0][46],0,1),
+									'tgl_keluar' => date("Y-m-d",strtotime($rowData[0][47])),
+									'kd_pkj' => substr($rowData[0][48],0,9),
+									'angg_jkn' => substr($rowData[0][49],0,1),
+									'noind_baru' => substr($rowData[0][1],0,7),
+								);
+							$this->M_masterpekerja->update($noind,$data);
+						}else{
+							$data = array(
+									'noind' => substr($rowData[0][0],0,3),
+									'kd_hubungan_kerja' => substr($rowData[0][2],0,3),
+									'kd_status_kerja' => substr($rowData[0][3],0,1),
+									'nik' => substr($rowData[0][4],0,20),
+									'no_kk' => substr($rowData[0][5],0,20),
+									'nama' => substr($rowData[0][6],0,50),
+									'id_kantor_asal' => substr($rowData[0][7],0,3),
+									'id_lokasi_kerja' => substr($rowData[0][8],0,3),
+									'jns_kelamin' => substr($rowData[0][9],0,1),
+									'tempat_lahir' => substr($rowData[0][10],0,30),
+									'tgl_lahir' => date("Y-m-d",strtotime($rowData[0][11])),
+									'alamat' => substr($rowData[0][12],0,100),
+									'desa' => substr($rowData[0][13],0,30),
+									'kecamatan' => substr($rowData[0][14],0,30),
+									'kabupaten' => substr($rowData[0][15],0,30),
+									'provinsi' => substr($rowData[0][16],0,30),
+									'kode_pos' => substr($rowData[0][17],0,6),
+									'no_hp' => substr($rowData[0][18],0,16),
+									'gelar_d' => substr($rowData[0][19],0,6),
+									'gelar_b' => substr($rowData[0][20],0,6),
+									'pendidikan' => substr($rowData[0][21],0,7),
+									'jurusan' => substr($rowData[0][22],0,30),
+									'sekolah' => substr($rowData[0][23],0,60),
+									'stat_nikah' => substr($rowData[0][24],0,2),
+									'tgl_nikah' => date("Y-m-d",strtotime($rowData[0][25])),
+									'jml_anak' => substr($rowData[0][26],0,2),
+									'jml_sdr' => substr($rowData[0][27],0,2),
+									'diangkat' => date("Y-m-d",strtotime($rowData[0][28])),
+									'masuk_kerja' => date("Y-m-d",strtotime($rowData[0][29])),
+									'kodesie' => substr($rowData[0][30],0,9),
+									'gol_kerja' => substr($rowData[0][31],0,7),
+									'kd_asal_outsourcing' => substr($rowData[0][32],0,4),
+									'kd_jabatan' => substr(str_replace("'","",$rowData[0][33]),0,4),
+									'jabatan' => substr($rowData[0][34],0,80),
+									'npwp' => substr($rowData[0][35],0,20),
+									'no_kpj' => substr($rowData[0][36],0,20),
+									'lm_kontrak' => substr($rowData[0][37],0,2),
+									'akh_kontrak' => date("Y-m-d",strtotime($rowData[0][38])),
+									'stat_pajak' => substr($rowData[0][39],0,3),
+									'jt_anak' => substr($rowData[0][40],0,1),
+									'jt_bkn_anak' => substr($rowData[0][41],0,1),
+									'tgl_spsi' => date("Y-m-d",strtotime($rowData[0][42])),
+									'no_spsi' => substr($rowData[0][43],0,11),
+									'tgl_kop' => date("Y-m-d",strtotime($rowData[0][44])),
+									'no_koperasi' => substr($rowData[0][45],0,11),
+									'keluar' => substr($rowData[0][46],0,1),
+									'tgl_keluar' => date("Y-m-d",strtotime($rowData[0][47])),
+									'kd_pkj' => substr($rowData[0][48],0,9),
+									'angg_jkn' => substr($rowData[0][49],0,1),
+									'noind_baru' => substr($rowData[0][1],0,7),
+								);
+							$this->M_masterpekerja->update($data);
+						}
+					}
+					$this->session->set_flashdata('message', 'Record Not Found');
+					$ses=array(
+							 "success_import" => 1
+						);
+					$this->session->set_userdata($ses);
+					unlink($file_path);
+					// $delete = $this->db->query("delete from rec_master_pekerja where noind is null");
+					redirect(site_url('PayrollManagement/MasterPekerja'));
+		 }else{
+			 redirect(site_url('PayrollManagement/MasterPekerja'));
+		 }
     }
 
     public function importexist()
@@ -877,6 +896,12 @@ class C_MasterPekerja extends CI_Controller
             redirect(site_url());
         }
     }
+	
+	public function getNoind(){
+		$string = strtoupper($this->input->get('term'));
+		$data = $this->M_masterpekerja->get_noind($string);
+		echo json_encode($data);
+	}
 
     public function formValidation()
     {

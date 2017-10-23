@@ -1,3 +1,163 @@
+$(document).ready(function() {
+  $('#txtPeriodeCheck').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+  });
+  
+	//DATEPICKER CHECK DATA
+	$('.periode_mutasi').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": false,
+		"timePicker24Hour": true,
+		"showDropdowns": false,
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Clear'
+		}
+	});
+
+	$('.periode_mutasi').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('MM/DD/YYYY'));
+	});
+
+	$('.periode_mutasi').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
+  $('#txtPeriodeHitung').datepicker({
+    autoclose: true,
+    format: "mm/yyyy",
+    viewMode: "months", 
+    minViewMode: "months"
+  });
+  
+
+  $('#txtPeriodeTahun').datepicker({
+    autoclose: true,
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+  });
+
+  $('#txtTglBerlakuPtkp').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtPeriodePengurangPajak').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('#txtTglPengajuan').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ $('.datepicker-erp-pr').datepicker({ 
+	autoclose: true,
+	format: "dd/mm/yyyy",
+ });
+  $('#txtPeriodeJst_new').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+ 
+   $('#txtPotTambLain').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
+  $('#cmbKdBank').select2();
+  $('.select2-txtDept').select2();
+  $('.select2-txtBank').select2();
+  $('#txtKodeStatusKerja').select2();
+  $('#cmbKdHubunganKerja').select2();
+  $('#cmbKdStatusKerja').select2();
+  $('#cmbKdJabatan').select2();
+  $('#cmbStat').select2({
+	 minimumResultsForSearch: -1
+  });
+  $('#cmbIdLokasiKerja').select2();
+  $('.select2-getNoind').select2({
+    placeholder: "No Induk",
+    allowClear: true,
+    minimumInputLength: 2,
+    ajax: {   
+      url:baseurl+"PayrollManagement/HutangKaryawan/getNoind",
+      dataType: 'json',
+      type: "GET",
+      data: function (params) {
+        var queryParameters = {
+          term: params.term
+        }
+        return queryParameters;
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function(obj) {
+            return { id:obj.noind, text:obj.noind+' - '+obj.nama};
+          })
+        };
+      }
+    }
+  });
+  
+  $('.money').mask('000,000,000,000,000', {reverse: true});
+  
+  $(".cmbNoindHeader").select2({
+      minimumInputLength: 3,
+      ajax: {   
+        url:baseurl+"PayrollManagement/MasterPekerja/getNoind",
+        dataType: 'json',
+        type: "GET",
+		placeholder: "[ Noind Pekerja ]",
+        data: function (params) {
+          var queryParameters = {
+            term: params.term,
+          }
+          return queryParameters;
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function(obj) {
+              return { id:obj.noind, text:obj.noind+' - '+obj.nama};
+            })
+          };
+        }
+      } 
+    });
+});
+
+	var base = window.location.origin;
+	var path = window.location.pathname.split( '/' );
+	var baseURL = base+"/"+path[1]+"/";
+	var ses_id = $('#txtSessionId').text();
+	var timer;
+
+    // $(document).ready(function(){
+			// $.ajax({url: baseURL+"PayrollManagement/process"});
+			// timer = window.setInterval(function(){refreshProgress()}, 1000);
+    // });
+	
+    // function refreshProgress() {
+      // $.ajax({
+        // url: baseURL+"PayrollManagement/check?file="+ses_id,
+		// dataType: 'json',
+        // success:function(data){
+			// console.log(data);
+          // $("#progress").html('<div class="bar" style="width:'+data.percent+'%">'+data.message+'</div>');
+		  // console.log(data.percent);
+          // if (data.percent == 100) {
+            // window.clearInterval(timer);
+            // timer = window.setInterval(function(){completed()}, 1000);
+          // }
+        // }
+      // });
+    // }
+
+    // function completed() {
+      // $(".bar").html("Completed");
+      // window.clearInterval(timer);
+    // }
 
 //INCREMENT FORM
 	$('.increment-form').TouchSpin({
@@ -273,12 +433,38 @@ $('#dataTables-transaksiHitungThrImport').DataTable( {
       ]
     });
 
+$('#dataTables-kompTamb-lain').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ],
+	  "columnDefs": [
+							{ className: "text-center", "targets": [ 0 ] },
+							{ className: "text-center", "targets": [ 1 ] },
+							{ className: "text-center", "targets": [ 2 ] },
+							{ className: "text-center", "targets": [ 3 ] },
+							{ className: "text-right", "targets": [ 4 ] },
+							{ className: "text-right", "targets": [ 5 ] }
+							
+						]
+    });
+	
 $('#dataTables-kompTamb').DataTable( {
 	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
-      ]
+      ],
+	  "columnDefs": [
+							{ className: "text-center", "targets": [ 0 ] },
+							{ className: "text-center", "targets": [ 1 ] },
+							{ className: "text-center", "targets": [ 2 ] },
+							{ className: "text-center", "targets": [ 3 ] },
+							{ className: "text-right", "targets": [ 4 ] },
+							{ className: "text-center", "targets": [ 5 ] }
+							
+						]
     });
 	
 $('#dataTables-transaksiHutang').DataTable( {
@@ -286,7 +472,34 @@ $('#dataTables-transaksiHutang').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
-      ]
+      ],
+	  "columnDefs": [
+							{ className: "text-center", "targets": [ 0 ] },
+							{ className: "text-center", "targets": [ 1 ] },
+							{ className: "text-center", "targets": [ 2 ] },
+							{ className: "text-center", "targets": [ 3 ] },
+							{ className: "text-center", "targets": [ 4 ] },
+							{ className: "text-center", "targets": [ 5 ] },
+							{ className: "text-right", "targets": [ 6 ] },
+							{ className: "text-center", "targets": [ 7 ] }
+							
+						]
+    });
+	
+$('#dataTables-transaksiHutang-list').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ],
+	  "columnDefs": [
+							{ className: "text-center", "targets": [ 0 ] },
+							{ className: "text-center", "targets": [ 1 ] },
+							{ className: "text-center", "targets": [ 2 ] },
+							{ className: "text-right", "targets": [ 3 ] },
+							{ className: "text-center", "targets": [ 4 ] }
+							
+						]
     });
 
 $('#dataTables-daftarPekerjaSakit').DataTable( {
@@ -363,128 +576,6 @@ $('#dataTables-reportRiwayatMutasi').DataTable( {
         'excel'
       ]
     });
-	
-$('#txtTglTransaksi').datepicker({ autoclose: true });
-$('#txtTglRecord').datepicker({ autoclose: true });
-$('#txtTglRec').datepicker({ autoclose: true });
-$('#txtTglLahir').datepicker({ autoclose: true });
-$('#txtTglNikah').datepicker({ autoclose: true });
-$('#txtDiangkat').datepicker({ autoclose: true });
-$('#txtMasukKerja').datepicker({ autoclose: true });
-$('#txtAkhKontrak').datepicker({ autoclose: true });
-$('#txtTglSpsi').datepicker({ autoclose: true });
-$('#txtTglKop').datepicker({ autoclose: true });
-$('#txtTglKeluar').datepicker({ autoclose: true });
-$('#txtTglJamRecord').datepicker({ autoclose: true });
-$('#txtTglRec').datepicker({ autoclose: true });
-
-$(document).ready(function() {
-  $('#txtPeriodeCheck').datepicker({
-    autoclose: true,
-    format: "yyyy",
-    viewMode: "years", 
-    minViewMode: "years"
-  });
-  
-	//DATEPICKER CHECK DATA
-	$('.periode_mutasi').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		autoUpdateInput: false,
-		locale: {
-			cancelLabel: 'Clear'
-		}
-	});
-
-	$('.periode_mutasi').on('apply.daterangepicker', function(ev, picker) {
-		$(this).val(picker.startDate.format('MM/DD/YYYY'));
-	});
-
-	$('.periode_mutasi').on('cancel.daterangepicker', function(ev, picker) {
-		$(this).val('');
-	});
-
-  $('#txtPeriodeHitung').datepicker({
-    autoclose: true,
-    format: "yyyy-mm",
-    viewMode: "months", 
-    minViewMode: "months"
-  });
-  
-
-  $('#txtPeriodeTahun').datepicker({
-    autoclose: true,
-    format: "yyyy",
-    viewMode: "years", 
-    minViewMode: "years"
-  });
-
-  $('#txtTglBerlakuPtkp').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- $('#txtPeriodePengurangPajak').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- $('#txtTglPengajuan').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
-  $('#txtTanggal').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- $('#txtTglBerlaku').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
-  $('#txtPeriodeJst_new').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- 
-   $('#txtPotTambLain').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
-  $('#cmbKdBank').select2();
-  $('.select2-txtDept').select2();
-  $('.select2-txtBank').select2();
-  $('#txtKodeStatusKerja').select2();
-  $('#cmbKdHubunganKerja').select2();
-  $('#cmbKdStatusKerja').select2();
-  $('#cmbKdJabatan').select2();
-  $('#cmbStat').select2();
-  $('#cmbIdLokasiKerja').select2();
-  $('.select2-getNoind').select2({
-    placeholder: "No Induk",
-    allowClear: true,
-    minimumInputLength: 2,
-    ajax: {   
-      url:baseurl+"PayrollManagement/HutangKaryawan/getNoind",
-      dataType: 'json',
-      type: "GET",
-      data: function (params) {
-        var queryParameters = {
-          term: params.term
-        }
-        return queryParameters;
-      },
-      processResults: function (data) {
-        return {
-          results: $.map(data, function(obj) {
-            return { id:obj.noind, text:obj.noind+' - '+obj.nama};
-          })
-        };
-      }
-    }
-  });
-  
-  $('.money').mask('000,000,000,000,000', {reverse: true});
-});
 
 function getMaxHutang(noind){
   $.ajax({
@@ -522,6 +613,28 @@ function getKlaimCuti(){
 		  });
 	}
 }
+
+$('input.number').keyup(function(event) {
+		  // format number
+  $(this).val(function(index, value) {
+	return value
+	.replace(/\D/g, "")
+	.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+	;
+  });
+});
+
+$('.currency').onload(function(event) {
+		  // format number
+  $(this).val(function(index, value) {
+	return value
+	.replace(/\D/g, "")
+	.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+	;
+  });
+});
+		
+		
 $(document).ready(function() {
   // alert('working');
   $('.datatables').DataTable( {
@@ -566,6 +679,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
           type: "post",
           error: function(){
+            //$("#tblDataAbsensi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataAbsensi_processing").css("display","none");
           }
         }
       });
@@ -583,6 +698,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -600,6 +717,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Tambahan/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -617,6 +736,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Potongan/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -634,6 +755,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/MasterData/TargetBenda/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -651,6 +774,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/MasterData/MasterPekerja/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -668,6 +793,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/MasterData/DataGaji/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -688,6 +815,8 @@ $(document).ready(function() {
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/HitungGaji/showList",
           type: "post",
           error: function(){
+            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataLKHSeksi_processing").css("display","none");
           }
         }
       });
@@ -742,32 +871,7 @@ $(document).ready(function() {
         },
     });
   }
-
-  cmbNoind();
-  function cmbNoind(){
-    $(".cmbNoindHeader").select2({
-      minimumInputLength: 3,
-      ajax: {   
-        url:baseurl+"PayrollManagementNonStaff/getNoind",
-        dataType: 'json',
-        type: "GET",
-        data: function (params) {
-          var queryParameters = {
-            term: params.term,
-          }
-          return queryParameters;
-        },
-        processResults: function (data) {
-          return {
-            results: $.map(data, function(obj) {
-              return { id:obj.NoInduk+' - '+obj.Kodesie, text:obj.NoInduk+' - '+obj.Nama};
-            })
-          };
-        }
-      } 
-    });
-  }
-
+  
   cmbKodesie();
   function cmbKodesie(){
     $(".cmbKodesie").select2({

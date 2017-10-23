@@ -14,6 +14,7 @@ class C_KompTambLain extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -112,13 +113,14 @@ class C_KompTambLain extends CI_Controller
     public function save()
     {
         $this->formValidation();
-
+		$dt = explode("/",$this->input->post('txtPeriode',TRUE));
+		$tgl_transaksi = $dt[1]."-".$dt[0]."-01";
             $data = array(
 				'id_komp_pot_tam'	=> date('YmdHis'),
-				'tanggal' => $this->input->post('txtPeriode',TRUE),
+				'tanggal' => $tgl_transaksi,
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'tamb_lain' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
-				'pot_lain' => str_replace(',','',$this->input->post('txtPotongan',TRUE)),
+				'tamb_lain' => str_replace('.','',$this->input->post('txtTambahan',TRUE)),
+				'pot_lain' => str_replace('.','',$this->input->post('txtPotongan',TRUE)),
 				'ket' => $this->input->post('txtDesc',TRUE),
 			);
 
@@ -136,7 +138,9 @@ class C_KompTambLain extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-
+		
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_komptamblain->get_by_id($id);
 
         if ($row) {
@@ -149,10 +153,10 @@ class C_KompTambLain extends CI_Controller
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/KompTambLain/saveUpdate'),
 				'id_komp_pot_tam' => set_value('txtId', $row->id_komp_pot_tam),
-				'tanggal' => set_value('txtPeriode', $row->tanggal),
+				'tanggal' => set_value('txtPeriode', date("m/Y",strtotime($row->tanggal))),
 				'noind' => set_value('txtNoind', $row->noind),
-				'pot_lain' => set_value('txtTambahan', $row->tamb_lain),
-				'tamb_lain' => set_value('txtPotongan',$row->pot_lain),
+				'pot_lain' => set_value('txtTambahan', number_format((int)$row->tamb_lain,0,",",".")),
+				'tamb_lain' => set_value('txtPotongan', number_format((int)$row->pot_lain,0,",",".")),
 				'ket' => set_value('txtDesc', $row->ket),
 				);
             $this->load->view('V_Header',$data);
@@ -177,12 +181,14 @@ class C_KompTambLain extends CI_Controller
             $this->update();
         }
         else{
+			$dt = explode("/",$this->input->post('txtPeriode',TRUE));
+			$tgl_transaksi = $dt[1]."-".$dt[0]."-01";
             $data = array(
 				'id_komp_pot_tam'	=> date('YmdHis'),
-				'tanggal' => $this->input->post('txtPeriode',TRUE),
+				'tanggal' => $tgl_transaksi,
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'tamb_lain' => str_replace(',','',$this->input->post('txtTambahan',TRUE)),
-				'pot_lain' => str_replace(',','',$this->input->post('txtPotongan',TRUE)),
+				'tamb_lain' => str_replace('.','',$this->input->post('txtTambahan',TRUE)),
+				'pot_lain' => str_replace('.','',$this->input->post('txtPotongan',TRUE)),
 				'ket' => $this->input->post('txtDesc',TRUE),
 			);
 
@@ -198,8 +204,9 @@ class C_KompTambLain extends CI_Controller
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_komptamblain->get_by_id($id);
-
         if ($row) {
             $this->M_komptamblain->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
