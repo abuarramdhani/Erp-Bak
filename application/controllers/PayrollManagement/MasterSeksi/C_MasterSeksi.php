@@ -225,7 +225,8 @@ class C_MasterSeksi extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KODESIE', $row)){ 
+					$check = $this->M_masterseksi->get_by_id($row['KODESIE']);
+                    if($check){ 
                         $data = array(
                             'dept'      => $row['DEPT'],
                             'bidang'    => $row['BIDANG'],

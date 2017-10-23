@@ -9,6 +9,7 @@ class C_KantorAsal extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterKantorAsal/M_kantorasal');
+		$this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -187,6 +188,50 @@ class C_KantorAsal extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KantorAsal'));
+        }
+    }
+	
+	    public function import() {
+        $config['upload_path'] = 'assets/upload/importPR/kantorasal/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/kantorasal/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+					$check = $this->M_kantorasal->get_by_id($row['ID_']);
+                    if($check){ 
+                        $data = array(
+                            'kantor_asal'      => $row['LOKASI_KERJA'],
+                        );
+                        $this->M_kantorasal->update($row['ID_'],$data);
+                    }else{
+                        $data = array(
+                            'id_kantor_asal'   => strtoupper($row['ID_']),
+                            'kantor_asal'      => strtoupper($row['LOKASI_KERJA']),
+                        );
+                        $this->M_kantorasal->insert($data);
+                    }
+                }
+				$this->session->set_flashdata('message', 'Record Not Found');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/KantorAsal');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 
