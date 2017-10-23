@@ -65,15 +65,15 @@ class M_dataplan extends CI_Model {
     return $query->result_array();
   }
 
-  public function insertDataPlan($dataIns, $tbName)
+  public function insertDataPlan($dataIns,$tbName)
   {
     $this->db->insert($tbName, $dataIns);
   }
 
-  public function update($data,$id)
+  public function update($tbName,$colname,$data,$id)
   {
-    $this->db->where('daily_plan_id', $id);
-    $this->db->update('pp.pp_daily_plans', $data);
+    $this->db->where($colname, $id);
+    $this->db->update($tbName, $data);
   }
 
   public function getItemTransaction($job=FALSE,$invSrc,$invDst,$itemCode,$locatorID)
