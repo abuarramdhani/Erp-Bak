@@ -206,7 +206,7 @@ class C_MasterJabatanUpah extends CI_Controller
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
-                $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$filename;
                 
             if ($this->csvimport->get_array($file_path)) {
                 
@@ -214,46 +214,24 @@ class C_MasterJabatanUpah extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KD_JAB_UPAH', $row)){
+					$checkstd = $this->M_masterjabatanupah->get_header_by_id($row['KD_JAB_UPAH']);
+                    if($checkstd){
                     	
  						//ROW DATA
 	                    $data = array(
-	                    	'kd_jabatan_upah' => $row['KD_JAB_UPAH'],
 							'jabatan_upah' => $row['JAB_UPAH'],
 	                    );
-
-                    	//CHECK IF EXIST
-                    	$jab_upah = $row['KD_JAB_UPAH'];
-	                   	$check = $this->M_masterjabatanupah->check($jab_upah);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-	                    }else{
-	                    	$this->M_masterjabatanupah->insert_header($data);
-	                    }
-
+	                    $this->M_masterjabatanupah->update_header($row['KD_JAB_UPAH'],$data);
                 	}else{
                 		//ROW DATA
                 		$data = array(
 	                    	'kd_jabatan_upah' => $row['KD_JAB_UPAH'],
 							'jabatan_upah' => $row['JAB_UPAH'],
 	                    );
-
-	                    //CHECK IF EXIST
-                    	$jab_upah = $row['KD_JAB_UPAH'];
-	                   	$check = $this->M_masterjabatanupah->check($jab_upah);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-	                    }else{
-	                    	$this->M_masterjabatanupah->insert_header($data);
-	                    }
-	                    
+	                    $this->M_masterjabatanupah->insert_header($data);
                 	}
                 }
-
+				unlink($file_path);
                 //LOAD EXIST DATA VERIFICATION PAGE
                 $this->checkSession();
         		$user_id = $this->session->userid;
@@ -271,7 +249,6 @@ class C_MasterJabatanUpah extends CI_Controller
 						 "success_import" => 1
 					);
 				$this->session->set_userdata($ses);
-				unlink($file_path);
 				redirect(site_url('PayrollManagement/MasterJabatanUpah'));
             } else {
                 $this->load->view('csvindex');

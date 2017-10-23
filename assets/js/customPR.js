@@ -33,6 +33,12 @@ $(document).ready(function() {
     minViewMode: "months"
   });
   
+  $('#txtPeriodeSearch').datepicker({
+    autoclose: true,
+    format: "mm/yyyy",
+    viewMode: "months", 
+    minViewMode: "months"
+  });
 
   $('#txtPeriodeTahun').datepicker({
     autoclose: true,

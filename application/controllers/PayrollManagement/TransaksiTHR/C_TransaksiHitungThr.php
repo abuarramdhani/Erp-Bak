@@ -31,6 +31,7 @@ class C_TransaksiHitungThr extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['action2'] = site_url('PayrollManagement/TransaksiHitungThr/search');
         $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
 		if(!empty($enc_dt)){
 			$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_dt);
@@ -430,7 +431,8 @@ class C_TransaksiHitungThr extends CI_Controller
     }
 
     public function hitung(){
-        $periode = $this->input->post('txtPeriodeHitung');
+		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
+		$periode = $dt[1]."-".$dt[0];
         $hitung_data = $this->M_transaksihitungthr->get_hitung_data($periode);
 		
 		if(!empty($hitung_data)){

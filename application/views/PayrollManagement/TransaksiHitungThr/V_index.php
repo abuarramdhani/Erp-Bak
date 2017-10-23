@@ -34,16 +34,24 @@
 		          <!--  <div class="table-responsive">  -->
 					 <div class="row">
 					  <div class="row" style="margin: 10px 0 10px 0">
-						 <form class="form-inline" method="post" action="<?php echo $action; ?>">
+						 <form class="form-inline" method="post" action="<?php echo $action2; ?>">
 							  <div class="col-lg-1">
-									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" style="width:100px;" required>
+									<input type="text" class="form-control" id="txtPeriodeSearch" name="txtPeriodeHitung" placeholder="<?php echo date('m/Y');?>" style="width:100px;" required>
+							  </div>
+							  <div class=" col-lg-1">
+							    <button type="submit" style="margin-left:25px;" class="btn btn-warning">Search</button>
+							  </div>
+						</form>
+						<form class="form-inline" method="post" action="<?php echo $action; ?>">
+							  <div class="col-lg-1">
+									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('m/Y');?>" style="width:100px;" required>
 							  </div>
 							  <div class=" col-lg-1">
 							    <button type="submit" style="margin-left:25px;" class="btn btn-primary">Hitung</button>
 							  </div>
-						</form>			             
+						</form>						
 						 <form method="post" action="<?php echo base_url('PayrollManagement/TransaksiHitungThr/upload')?>" enctype="multipart/form-data">
-							  <div class="col-lg-offset-6 col-lg-3">
+							  <div class="col-lg-offset-4 col-lg-3">
 							    <input name="importfile" type="file" class="form-control" readonly required>
 							  </div>
 							  <div class=" col-lg-1">

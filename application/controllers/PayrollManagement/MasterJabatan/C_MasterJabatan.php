@@ -202,15 +202,16 @@ class C_MasterJabatan extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KODE_JABAT', $row)){ 
+					$check = $this->M_masterjabatan->get_by_id($row['KODE_JABAT']);
+                    if($check){ 
                         $data = array(
                             'jabatan' => $row['NAMA_JABAT'],
                         );
                         $this->M_masterjabatan->update($row['KODE_JABAT'],$data);
                     }else{
                         $data = array(
-                            'kd_jabatan' => $row['kd_jabatan'],
-                            'jabatan' => $row['jabatan'],
+                            'kd_jabatan' => $row['KODE_JABAT'],
+                            'jabatan' => $row['NAMA_JABAT'],
                         );
                         $this->M_masterjabatan->insert($data);
                     }
