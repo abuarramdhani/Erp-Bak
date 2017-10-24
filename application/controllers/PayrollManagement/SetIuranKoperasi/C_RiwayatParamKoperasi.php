@@ -179,7 +179,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
 
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => '999912-31',
+				'tgl_tberlaku' => '9999-12-31',
 				'ikop' => str_replace(',','',$this->input->post('txtIkop',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
