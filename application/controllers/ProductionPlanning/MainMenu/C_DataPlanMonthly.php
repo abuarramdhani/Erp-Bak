@@ -205,7 +205,105 @@ class C_DataPlanMonthly extends CI_Controller {
 
 	public function DownloadSample()
 	{
-		$this->load->helper('download');
-        force_download('assets/upload/ProductionPlanning/monthly-planning.xls', NULL);
+		$section = $this->M_dataplan->getSection();
+		$this->load->library('Excel');
+		$objPHPExcel = new PHPExcel();
+		$worksheet = $objPHPExcel->getActiveSheet();
+		$styleThead = array(
+			'font'  => array(
+				'bold'  => true,
+				'color' => array('rgb' => 'FFFFFF'),
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+			)
+		);
+		$styleNotice = array(
+			'font'  => array(
+				'bold'  => true,
+				'color' => array('rgb' => 'ff0000'),
+			)
+		);
+		$styleBorder = array(
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+			)
+		);
+		$aligncenter = array(
+               'alignment' => array(
+                  'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));
+
+		// ----------------- Set format table -----------------
+		$worksheet->getColumnDimension('A')->setWidth(8);
+		$worksheet->getColumnDimension('B')->setWidth(24);
+		$worksheet->getColumnDimension('C')->setWidth(24);
+		$worksheet->getColumnDimension('D')->setWidth(32);
+		$worksheet->getColumnDimension('E')->setWidth(5);
+		$worksheet->getColumnDimension('F')->setWidth(5);
+		$worksheet->getColumnDimension('G')->setWidth(24);
+
+		$worksheet->getStyle('A1:D1')->applyFromArray($styleThead);
+		$worksheet	->getStyle('A1:D1')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('337ab7');
+		$worksheet->getStyle('A1:D3')->applyFromArray($styleBorder);
+		$worksheet->getStyle('F6:G6')->applyFromArray($styleThead);
+		$worksheet	->getStyle('F6:G6')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('337ab7');
+
+		// ----------------- STATIC DATA -----------------
+		$worksheet->setCellValue('A1', 'NO');
+		$worksheet->setCellValue('B1', 'NAMA SEKSI');
+		$worksheet->setCellValue('C1', 'BULAN');
+		$worksheet->setCellValue('D1', 'TOTAL PROD BULANAN');
+		$worksheet->setCellValue('F1', 'BARIS SAMPLE INI TIDAK PERLU DIHAPUS');
+		$worksheet->setCellValue('A2', '1');
+		$worksheet->setCellValue('B2', 'PERAKITAN A');
+		$worksheet->setCellValue('C2', '10/2017');
+		$worksheet->setCellValue('D2', '50000');
+		$worksheet->setCellValue('F2', 'CUKUP TAMBAHKAN DATA YANG INGIN DIINPUT DI BARIS KE-4 DAN SETERUSNYA');
+		$worksheet->setCellValue('A3', '(NOT NULL - WAJIB DIISI)');
+		$worksheet->setCellValue('B3', '(BERISI NAMA SEKSI-NOT NULL)');
+		$worksheet->setCellValue('C3', '(BERISI BULAN PLANNING - NOT NULL - FORMAT: MM/YYYY)');
+		$worksheet->setCellValue('D3', '(BERISI NUMBER TOTAL PRODUKSI BULAN TERSEBUT - NOT NULL)');
+		$worksheet->setCellValue('F3', 'PENDATAAN DATA DIMULAI DARI BARIS KE 4');
+		$worksheet->setCellValue('F5', 'PENULISAN NAMA SEKSI YANG BENAR');
+		$worksheet->setCellValue('F6', 'NO');
+		$worksheet->setCellValue('G6', 'NAMA SEKSI');
+
+        $worksheet->getStyle('A3:D3')->getAlignment()->setWrapText(true);
+        $worksheet->getStyle('A1:D3')->applyFromArray($aligncenter);
+        $worksheet->getStyle('A3:D3')->applyFromArray($styleNotice);
+        $worksheet->getStyle('F1:F3')->applyFromArray($styleNotice);
+		// ----------------- DYNAMIC DATA -----------------
+		$no = 1;
+		$highestRow = $worksheet->getHighestRow()+1;
+		foreach ($section as $sc) {
+			$worksheet->getStyle('F'.$highestRow.':G'.$highestRow)->applyFromArray($styleBorder);
+			$worksheet->setCellValue('F'.$highestRow, $no++);
+			$worksheet->setCellValue('G'.$highestRow, $sc['section_name']);
+			$highestRow++;
+		}
+
+		// ----------------- Final Process -----------------
+		$worksheet->setTitle('Monthly_Planning');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="Monthly_Planning_'.time().'.xls"');
+		$objWriter->save("php://output");
 	}
 }
