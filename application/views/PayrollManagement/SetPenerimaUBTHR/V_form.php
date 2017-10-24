@@ -40,7 +40,7 @@
 									<div class="form-group">
                                         <label for="txtTglBerlaku" class="control-label col-lg-4">Tanggal Berlaku</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="txtTglBerlaku" id="txtTglBerlaku" class="form-control" value="<?php echo rtrim($tgl_berlaku); ?>"/>
+                                            <input type="text" name="txtTglBerlaku" id="txtTglBerlaku" class="form-control class-datepicker-erp-pr" value="<?php echo rtrim($tgl_berlaku); ?>"/>
                                         </div>
                                     </div>
 									<div class="form-group">
