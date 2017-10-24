@@ -205,14 +205,29 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 			'bulan_akhir' => $this->input->post('txtBulanAkhir',TRUE),
 			'persentase' => $this->input->post('txtPersentase',TRUE),
 		);
+		
+		$ru_where = array(
+			'tingkatan' 	    => $this->input->post('txtTingkatan',TRUE),
+			'tgl_tberlaku' 	=> '9999-12-31',
+		);
+		$ru_data = array(
+			'tgl_berlaku' 	=> date('Y-m-d'),
+			'bulan_awal' => $this->input->post('txtBulanAwal',TRUE),
+			'bulan_akhir' => $this->input->post('txtBulanAkhir',TRUE),
+			'persentase' => $this->input->post('txtPersentase',TRUE),
+			'kd_petugas' 	=> $this->session->userdata('userid'),
+			'tgl_rec' 		=> date('Y-m-d H:i:s'),
+			
+		);
 
-            $this->M_settarifpekerjasakit->update($this->input->post('txtTingkatan',TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-			$ses=array(
-					 "success_update" => 1
-				);
-			$this->session->set_userdata($ses);
-            redirect(site_url('PayrollManagement/SetTarifPekerjaSakit'));
+		$this->M_settarifpekerjasakit->update($this->input->post('txtTingkatan',TRUE), $data);
+		$this->M_settarifpekerjasakit->riwayat_update($ru_where,$ru_data);
+		$this->session->set_flashdata('message', 'Update Record Success');
+		$ses=array(
+				 "success_update" => 1
+			);
+		$this->session->set_userdata($ses);
+		redirect(site_url('PayrollManagement/SetTarifPekerjaSakit'));
     }
 
     public function delete($id)

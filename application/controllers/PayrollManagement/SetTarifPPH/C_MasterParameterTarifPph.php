@@ -184,8 +184,18 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
+		
+		$data_riwayat = array(
+			'batas_bawah' => str_replace(',','',$this->input->post('txtBatasBawah',TRUE)),
+			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
+			'persen' => $this->input->post('txtPersen',TRUE),
+			'tgl_berlaku' 		=> date('Y-m-d'),
+			'kode_petugas' 		=> $this->session->userdata('userid'),
+			'tgl_jam_record' 	=> date('Y-m-d H:i:s'),
+		);
 
         $this->M_masterparametertarifpph->update($this->input->post('txtKdPph', TRUE), $data);
+        $this->M_masterparametertarifpph->update_riwayat($this->input->post('txtKdPphNew', TRUE), $data_riwayat);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/MasterParameterTarifPph'));
     }

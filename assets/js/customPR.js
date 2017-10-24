@@ -86,7 +86,6 @@ $(document).ready(function() {
   $('#cmbStat').select2({
 	 minimumResultsForSearch: -1
   });
-  $('#cmbIdLokasiKerja').select2();
   $('.select2-getNoind').select2({
     placeholder: "No Induk",
     allowClear: true,
@@ -177,6 +176,14 @@ $(document).ready(function() {
     });
 
   $('#dataTables-masterStatusKerja').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+	
+	$('#dataTables-masterTarifJkk').DataTable( {
 	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
@@ -638,6 +645,11 @@ function getKlaimCuti(){
 			}
 		  });
 	}
+}
+
+function duplicateLokasiKerja(){
+	var cmdKantorAsal = $('#cmbIdKantorAsal').val();
+	$('#cmbIdLokasiKerja').val(cmdKantorAsal);
 }
 
 $('input.number').keyup(function(event) {

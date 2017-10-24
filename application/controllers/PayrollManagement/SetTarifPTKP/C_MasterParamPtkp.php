@@ -208,6 +208,7 @@ class C_MasterParamPtkp extends CI_Controller
 				'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
 				'tgl_berlaku' => date('Y-m-d'),
 				'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
+				'tgl_berlaku' 			=> date('Y-m-d'),
 				'kode_petugas' 			=> $this->session->userdata('userid'),
 				'tgl_record' 			=> date('Y-m-d H:i:s'),
 			);

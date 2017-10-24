@@ -230,7 +230,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 				'jkk' => $this->input->post('txtJkk',TRUE),
 				'jkm' => $this->input->post('txtJkm',TRUE),
@@ -240,8 +240,8 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'jkn_prshn' => $this->input->post('txtJknPrshn',TRUE),
 				'jpn_kary' => $this->input->post('txtJpnKary',TRUE),
 				'jpn_prshn' => $this->input->post('txtJpnPrshn',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatsetasuransi->update($this->input->post('txtIdSetAsuransi', TRUE), $data);
