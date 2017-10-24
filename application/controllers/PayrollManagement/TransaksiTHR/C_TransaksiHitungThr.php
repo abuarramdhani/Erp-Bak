@@ -520,6 +520,29 @@ class C_TransaksiHitungThr extends CI_Controller
             redirect(site_url());
         }
     }
+	
+	public function search(){
+		$this->checkSession();
+        $user_id = $this->session->userid;
+        
+        $data['Menu'] = 'Payroll Management';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
+		$enc_dt = $dt[1]."-".$dt[0];
+		
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['action2'] = site_url('PayrollManagement/TransaksiHitungThr/search');
+        $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
+        $data['transaksiHitungThr_data'] = $this->M_transaksihitungthr->get_by_period($enc_dt);
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('PayrollManagement/TransaksiHitungThr/V_index', $data);
+        $this->load->view('V_Footer',$data);
+	}
 
     public function formValidation()
     {

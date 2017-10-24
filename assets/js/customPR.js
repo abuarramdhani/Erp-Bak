@@ -63,6 +63,10 @@ $(document).ready(function() {
 	autoclose: true,
 	format: "dd/mm/yyyy",
  });
+ $('.class-datepicker-erp-pr').datepicker({ 
+	autoclose: true,
+	format: "yyyy-mm-dd",
+ });
   $('#txtPeriodeJst_new').datepicker({ 
 	autoclose: true,
 	format: "yyyy-mm-dd",
@@ -261,7 +265,17 @@ $('#dataTables-masterBank').DataTable({
 	  dom: 'Bfrtip',
       buttons: [
         'excel'
-      ]
+      ],
+	  "columnDefs": [
+							{ className: "text-center", "targets": [ 0 ] },
+							{ className: "text-center", "targets": [ 1 ] },
+							{ className: "text-center", "targets": [ 2 ] },
+							{ className: "text-center", "targets": [ 3 ] },
+							{ className: "text-center", "targets": [ 4 ] },
+							{ className: "text-right", "targets": [ 5 ] },
+							{ className: "text-right", "targets": [ 6 ] }
+							
+						]
 	});
 $('#dataTables-masterSekolahAsal').DataTable( {
 	  "destroy": true,
@@ -385,7 +399,11 @@ $('#dataTables-masterPekerja').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
-      ]
+      ],
+	  "fixedColumns" : true,
+	  "fixedColumns" : {
+			"leftColumns" : 3
+		}, 
     });
 
 $('#dataTables-riwayatSetAsuransi').DataTable( {
@@ -583,6 +601,8 @@ $('#dataTables-reportRiwayatMutasi').DataTable( {
       ]
     });
 
+
+	
 function getMaxHutang(noind){
   $.ajax({
     type:'POST',

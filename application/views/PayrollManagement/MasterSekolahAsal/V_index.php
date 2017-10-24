@@ -41,7 +41,7 @@
 					  <form method="post" action="<?php echo base_url('PayrollManagement/MasterJabatanUpah/saveImport')?>">
 						<div class="row" style="margin: 10px 0 10px 10px">
 						  <div class="col-lg-offset-10 col-lg-2">
-							<input type="hidden" name="txtFileName" value="<?php echo $filename; ?>">
+							<input type="hidden" name="txtFileName" value="">
 							<button class="btn btn-primary btn-block">Import</button>
 						  </div>
 						</div>

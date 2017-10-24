@@ -581,6 +581,7 @@ class C_MasterPekerja extends CI_Controller
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
 	
 	  public function import() {
+		ini_set('max_execution_time', 300);
 		ini_set('memory_limit', '-1');
 		error_reporting(E_ALL ^ E_NOTICE);
 		$filename = $_FILES['file']['name'];

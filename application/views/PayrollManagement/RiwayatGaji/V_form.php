@@ -7,7 +7,7 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Riwayat Gaji</b></h1>
+                                <h1><b>Riwayat Gaji </b></h1>
 
                                 </div>
                             </div>
@@ -40,21 +40,21 @@
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control class-datepicker-erp-pr" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
                                                 <select class="form-control select2-getNoind" id="txtNoind" name="txtNoind" style="width:100%;" required>
-														<option value=""></option>
+														<option value="<?php echo $noind; ?>"><?php echo $noind; ?></option>
 												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
 	                                            <label for="cmbKdHubunganKerja" class="control-label col-lg-4">Kd Hubungan Kerja</label>
-	                                            <div class="col-lg-4">
-	                                                <select id="cmbKdHubunganKerja" name="cmbKdHubunganKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                            <div class="col-lg-3">
+	                                                <select id="cmbKdHubunganKerja" name="cmbKdHubunganKerja" class="form-control select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_hub_kerja_data as $row) {
                                                             $slc = '';
@@ -88,7 +88,7 @@
                                                         <?php
                                                         foreach ($pr_master_jabatan_data as $row) {
                                                             $slc = '';
-                                                            if ($row->kd_jabatan == $kd_jabatan) {
+                                                            if (str_replace(" ","",$row->kd_jabatan) == str_replace(" ","",$kd_jabatan)) {
                                                                 $slc = 'selected';
                                                             }
                                                             echo '<option value="'.$row->kd_jabatan.'" '.$slc.'>'.$row->jabatan.'</option>';

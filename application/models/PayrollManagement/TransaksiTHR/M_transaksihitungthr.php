@@ -28,6 +28,13 @@ class M_transaksihitungthr extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+	
+	// get data by id
+    function get_by_period($id)
+    {
+        $this->db->where('periode', $id);
+        return $this->db->get($this->table)->result();
+    }
 
 	 // check id
     function check($id)

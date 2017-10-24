@@ -29,7 +29,7 @@ class C_MasterSekolahAsal extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $masterSekolahAsal = $this->M_mastersekolahasal->get_all();
-
+		
         $data['masterSekolahAsal_data'] = $masterSekolahAsal;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
@@ -92,7 +92,7 @@ class C_MasterSekolahAsal extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterSekolahAsal/save'),
-				'noind' => set_value(''),
+			'noind' => set_value(''),
 			'pendidikan' => set_value('pendidikan'),
 			'sekolah' => set_value('sekolah'),
 			'jurusan' => set_value('jurusan'),

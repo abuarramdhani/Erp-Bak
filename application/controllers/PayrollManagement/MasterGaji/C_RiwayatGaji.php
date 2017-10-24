@@ -207,15 +207,15 @@ class C_RiwayatGaji extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'kd_hubungan_kerja' => $this->input->post('cmbKdHubunganKerja',TRUE),
 				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
 				'gaji_pokok' => str_replace(',','',$this->input->post('txtGajiPokok',TRUE)),
 				'i_f' => str_replace(',','',$this->input->post('txtIF',TRUE)),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatgaji->update($this->input->post('txtIdRiwGaji', TRUE), $data);
