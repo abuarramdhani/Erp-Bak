@@ -63,7 +63,7 @@ class C_Report extends CI_Controller {
 		$data['msg'] = $msg;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/Report/V_Report_Transaction',$data);
+		$this->load->view('Toolroom/Report/V_Report_Transaction',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -71,9 +71,8 @@ class C_Report extends CI_Controller {
 		$periode = $this->input->post('txtPeriode',true);
 		$shift = $this->input->post('txsShift',true);
 		
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -97,19 +96,18 @@ class C_Report extends CI_Controller {
 		$data['shift'] = $shift;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/Report/V_Report_Transaction',$data);
+		$this->load->view('Toolroom/Report/V_Report_Transaction',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
 	public function ExportExcelTransaction($shift){
 		$periode = $this->input->get('periode',true);
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$data['RecordTransaction'] = $this->M_report->SearchTransaction($shift,$str_dt,$str_end);
 		$data['periode'] = str_replace(" ","",$periode);
 		$data['shift'] = $shift;
-		$this->load->view('ToolRoom/Report/Excel/V_Excel_Transaction',$data);
+		$this->load->view('Toolroom/Report/Excel/V_Excel_Transaction',$data);
 	}
 	
 	
@@ -131,7 +129,7 @@ class C_Report extends CI_Controller {
 		$data['msg'] = "";
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/Report/V_Report_Stok',$data);
+		$this->load->view('Toolroom/Report/V_Report_Stok',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -139,9 +137,8 @@ class C_Report extends CI_Controller {
 		$periode = $this->input->post('txtPeriode',true);
 		$shift = $this->input->post('txsShift',true);
 		
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -165,19 +162,18 @@ class C_Report extends CI_Controller {
 		$data['msg'] = "";
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/Report/V_Report_Stok',$data);
+		$this->load->view('Toolroom/Report/V_Report_Stok',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
 	public function ExportExcelStok($shift){
 		$periode = $this->input->get('periode',true);
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$data['RecordStok'] = $this->M_report->SearchStok($shift,$str_dt,$str_end);
 		$data['periode'] = str_replace(" ","",$periode);
 		$data['shift'] = $shift;
-		$this->load->view('ToolRoom/Report/Excel/V_Excel_Stok',$data);
+		$this->load->view('Toolroom/Report/Excel/V_Excel_Stok',$data);
 	}
 	
 	public function checkSession(){

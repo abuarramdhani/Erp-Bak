@@ -22,7 +22,7 @@ class M_report extends CI_Model {
 		}
 
 		public function SearchStok($shift,$str_dt,$str_end){
-			$sql = "select ttl.item_id,tmi.item_name,max(ttl.item_awl) item_qty,(max(ttl.item_akh)+
+			$sql = "select ttl.item_id,tmi.item_name,max(ttl.item_awl) item_qty,(min(ttl.item_akh)+
 						(select coalesce(sum(ttl2.item_qty_return),0) from tr.tr_transaction_list ttl2 where ttl2.item_id=ttl.item_id and date_trunc('day', ttl2.date_lend)>='$str_dt' and date_trunc('day', ttl2.date_lend)<='$str_end')
 					) stok_akh,tmi.item_desc,tt.toolman
 					from tr.tr_transaction_list ttl 

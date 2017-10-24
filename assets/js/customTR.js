@@ -1,7 +1,10 @@
 $(document).ready(function() {
+	$( "#txtBarcode" ).focus();
 	$('.table-item-usable').DataTable({"lengthChange": false,"searching": true,"ordering": false,"info": false});
 	$('.table-create-pengembalian-today').DataTable({"lengthChange": false,"searching": true,"ordering": false,"info": false});
-	$('.datepicker-range').datepicker();
+	$('.datepicker-range').datepicker({
+		 autoclose: true,
+	});
 	$('.select-group-item').select2({
 		allowClear: true,
 		placeholder: "[Select Group Toolkit]",
@@ -126,6 +129,7 @@ $(document).on("click", "#btnExecuteSave", function () {
 				}
 			});
 		}
+		$('#txtBarcode').focus();
 	// }
 });
 
@@ -220,6 +224,7 @@ function AddItem(exe){
 		}
 	$('#txtBarcode').removeAttr("readonly", 'readonly');
 	$('#txtBarcode').val('');
+	$( "#txtNoind" ).focus();
 }
 
 function removeListOutItem(id,id_trans,user){
