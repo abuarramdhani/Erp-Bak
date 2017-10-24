@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$( "#txtBarcode" ).focus();
 	$('.table-item-usable').DataTable({"lengthChange": false,"searching": true,"ordering": false,"info": false});
 	$('.table-create-pengembalian-today').DataTable({"lengthChange": false,"searching": true,"ordering": false,"info": false});
 	$('.datepicker-range').datepicker({
@@ -128,6 +129,7 @@ $(document).on("click", "#btnExecuteSave", function () {
 				}
 			});
 		}
+		$('#txtBarcode').focus();
 	// }
 });
 
@@ -222,6 +224,7 @@ function AddItem(exe){
 		}
 	$('#txtBarcode').removeAttr("readonly", 'readonly');
 	$('#txtBarcode').val('');
+	$( "#txtNoind" ).focus();
 }
 
 function removeListOutItem(id,id_trans,user){
