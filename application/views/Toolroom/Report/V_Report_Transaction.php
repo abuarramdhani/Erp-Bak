@@ -37,7 +37,7 @@
 									<div class="form-group">
 										<form method="post" action="<?php echo site_url('Toolroom/Report/SearchReportTransaction') ?>">
 											<div class="col-md-2">
-												<input type="text" name="txtPeriode" id="txtPeriode" class="form-control daterangepicker-range" data-date-format="d F Y" placeholder="[Periode]" required></input>
+												<input type="text" name="txtPeriode" id="" class="form-control datepicker-range" data-date-format="yyyy-mm-dd" placeholder="[Periode]" required></input>
 											</div>
 											<div class="col-md-2">
 												<select name="txsShift" id="txsShift" class="form-control" required>

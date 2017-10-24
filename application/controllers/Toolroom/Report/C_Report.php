@@ -71,9 +71,8 @@ class C_Report extends CI_Controller {
 		$periode = $this->input->post('txtPeriode',true);
 		$shift = $this->input->post('txsShift',true);
 		
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -103,9 +102,8 @@ class C_Report extends CI_Controller {
 	
 	public function ExportExcelTransaction($shift){
 		$periode = $this->input->get('periode',true);
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$data['RecordTransaction'] = $this->M_report->SearchTransaction($shift,$str_dt,$str_end);
 		$data['periode'] = str_replace(" ","",$periode);
 		$data['shift'] = $shift;
@@ -139,9 +137,8 @@ class C_Report extends CI_Controller {
 		$periode = $this->input->post('txtPeriode',true);
 		$shift = $this->input->post('txsShift',true);
 		
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -171,9 +168,8 @@ class C_Report extends CI_Controller {
 	
 	public function ExportExcelStok($shift){
 		$periode = $this->input->get('periode',true);
-		$str = explode("-",$periode);
-		$str_dt = date("Y-m-d",strtotime($str[0]));
-		$str_end = date("Y-m-d",strtotime($str[1]));
+		$str_dt = $periode;
+		$str_end = $periode;
 		$data['RecordStok'] = $this->M_report->SearchStok($shift,$str_dt,$str_end);
 		$data['periode'] = str_replace(" ","",$periode);
 		$data['shift'] = $shift;
