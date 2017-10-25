@@ -119,16 +119,20 @@ class C_ItemPlan extends CI_Controller {
             $highestColumn  = $sheet->getHighestColumn();
             $errStock       = 0;
             $delCheckPoint  = 0;
+            $errSection     = '';
+            $errEmpty = '';
 
             for ($row = 7; $row <= $highestRow; $row++){
                 $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
                 if ($rowData[0][0] != null) {
                     $secID = 0;
-                	foreach ($subInv as $si) {
-                		if ($si['section_name'] == $rowData[0][3]) {
-                			$secID = $si['section_id'];
-                		}
-                	}
+                    $secCheckPoint = 0;
+                    foreach ($subInv as $si) {
+                        if ($secCheckPoint == 0 && strtoupper(preg_replace('/\s+/', '', $si['section_name'])) == strtoupper(preg_replace('/\s+/', '', $rowData[0][3]))) {
+                            $secID = $si['section_id'];
+                            $secCheckPoint = 1;
+                        }
+                    }
                     $datPoint = "1";
                     $dataIns = array(
                         'item_code'         => $rowData[0][1],
@@ -136,12 +140,21 @@ class C_ItemPlan extends CI_Controller {
                         'section_id'        => $secID,
                         'from_inventory'    => $rowData[0][4],
                         'to_inventory'      => $rowData[0][5],
-                        'completion'  	    => $rowData[0][6],
-                        'created_by'     	=> $user_id,
+                        'completion'        => $rowData[0][6],
+                        'created_by'        => $user_id,
                         'created_date'      => date('Y-m-d H:i:s')
                     );
+                    if ($secCheckPoint == 0) {
+                        $errSection .= 'Nama Seksi Ada yang tidak sesuai. '.strtoupper(preg_replace('/\s+/', '', $rowData[0][3])).'<br>';
+                        $errStock++;
+                    }else{
+                        $errSection .= '';
+                    }
                     if (empty($rowData[0][1]) || empty($rowData[0][3]) || $secID == 0) {
                         $errStock++;
+                        $errEmpty .= 'Data pada baris ke-'.$row.' ada yang kosong.'.'<br>';
+                    }else{
+                        $errEmpty .= '';
                     }
                 }else{
                     $datPoint = null;
@@ -162,8 +175,11 @@ class C_ItemPlan extends CI_Controller {
                                             <div class="modal-body">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                UPLOAD ERROR
+                                                </button>';
+                                                $message .= $errStock.'<br>';
+                                                $message .= $errSection;
+                                                $message .= $errEmpty;
+                                                $message .= '
                                             </div>
                                         </div>
                                     </div>
