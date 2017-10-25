@@ -385,9 +385,57 @@ $(document).ready(function(){
 		});
 	});
 
+	//GET REKAP TRAINING
+	$(document).ready(function() {	
+		$('#SearchRekapTraining').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var month 	= $('select[name=slcBulan]').val();
+			var year 		= $('select[name=slcTahun]').val();
 
-	
+			$.ajax({
+				type: "POST",
+				data:{
+						month:month,
+						year:year,
+				},
+				url:baseurl+"ADMPelatihan/Report/GetRkpTraining",
+				success:function(result)
+				{	
+					// console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
 
+	//GET PERSENTASE PESERTA TRAINING
+	$(document).ready(function() {	
+		$('#SearchPersenPeserta').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var month 		= $('select[name=slcBulan]').val();
+			var year 		= $('select[name=slcTahun]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						month:month,
+						year:year,
+				},
+				url:baseurl+"ADMPelatihan/Report/GetPercentParticipant",
+				success:function(result)
+				{	
+					// console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
 
 });
 	
@@ -995,8 +1043,6 @@ function delCreateStatement(tbID,rowid,id,statementid) {
 	// console.log('#tbodyStatementC'+id);
 	if (statementid == '0') {
 		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
-	}else{
-		// console.log(statementid);
 	}
 }
 

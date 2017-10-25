@@ -64,9 +64,6 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		// $data['SchedulingId'] 	= $id;
-		// $data['Section'] 		= $section;
-		// $data['participant'] = $this->M_report->GetTrainingPrtcp($id,$section);
 		$data['report'] = $this->M_report->GetReport2($year = FALSE,$section = FALSE);
 		$data['section'] 	= $this->M_report->GetSeksi($term=FALSE);
 		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
@@ -79,7 +76,7 @@ class C_Report extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	//HALAMAN RECORD BY NAME
+	//HALAMAN RECORD BY TRAINING
 	public function reportbytraining(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -104,6 +101,101 @@ class C_Report extends CI_Controller {
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index3',$data);
 		$this->load->view('V_Footer',$data);
 	}
+
+	//HALAMAN REKAP 
+	public function rekap(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Rekap Pelatihan';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN REKAP TRAINING
+	public function rekaptraining(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Rekap Training';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['report'] 		= $this->M_report->GetRkpTraining($year = FALSE,$month = FALSE);
+		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($year,$month);
+		$data['namaTrain'] 		= $this->M_report->GetSchName($year,$month);
+		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
+		$data['bulanTrain'] 	= $this->M_report->getMonthTraining();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN PRESENTASE KEHADIRAN
+	public function PresentaseKehadiran(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Presentase Kehadiran';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
+		$data['bulanTrain'] 	= $this->M_report->getMonthTraining();
+		$data['prcentpart']		= $this->M_report->GetPercentParticipant($year = FALSE,$month = FALSE);
+		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($year,$month);
+		$data['namaTrain'] 		= $this->M_report->GetSchName($year,$month);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN EFEKTIVITAS TRAINING
+	public function EfektivitasTraining(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Efektivitas Training';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 
 //----------------------------------- JAVASCRIPT RELATED --------------------//
 //----------------------------------- JAVASCRIPT RELATED --------------------//
@@ -179,6 +271,33 @@ class C_Report extends CI_Controller {
 		$data['report'] 	= $this->M_report->GetReport3($date1,$date2);
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index2',$data);
+	}
+
+	//REKAP TRAINING
+	public function GetRkpTraining(){
+		
+		$month	 				= $this->input->POST('month');
+		$year 					= $this->input->POST('year');
+		$data['report']		 	= $this->M_report->GetRkpTraining($year,$month);
+		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($year,$month);
+		$data['namaTrain']		= $this->M_report->GetSchName($year,$month);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index2',$data);
+	}
+
+	//PERSENTASE PESERTA TRAINING
+	public function GetPercentParticipant(){
+		
+		$month	 				= $this->input->POST('month');
+		$year 					= $this->input->POST('year');
+		$data['prcentpart']	 	= $this->M_report->GetPercentParticipant($year,$month);
+		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($year,$month);
+		$data['namaTrain']		= $this->M_report->GetSchName($year,$month);
+		// echo "<pre>";
+		// print_r($data['prcentpart']);
+		// print_r($data['namaTrain']);
+		// echo "</pre>";
+		// exit();
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index2',$data);
 	}
 
 	//HALAMAN FINISHED
