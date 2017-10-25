@@ -214,10 +214,7 @@ $('#daterangepickersingledate').daterangepicker({
 }, function(start, end, label) {
   console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 });
-<<<<<<< HEAD
 
-});
-=======
 $('.daterangepickersingledatewithtime').daterangepicker({
     "timePicker": true,
     "timePicker24Hour": true,
@@ -835,5 +832,3 @@ $(document).ready(function(){
        }
     });
 });
-
->>>>>>> d3b031eba0578cba3cc3a8f3ae9ba77320f56c7a
