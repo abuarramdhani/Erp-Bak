@@ -130,7 +130,6 @@ class C_DataPlanMonthly extends CI_Controller {
             		foreach ($section as $sc) {
             			if ($secCheckPoint == 0 && strtoupper(preg_replace('/\s+/', '', $sc['section_name'])) == strtoupper(preg_replace('/\s+/', '', $rowData[0][1]))) {
             				$section_id = $sc['section_id'];
-            				$sectionError = '';
             				$secCheckPoint = 1;
             			}
             		}
