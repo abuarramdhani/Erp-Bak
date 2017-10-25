@@ -33,17 +33,16 @@
 						</div>
 					<!-- Modal Start -->
 					<div id="showModPar" class="modal fade" tabindex="-1" role="dialog">
-					  <div class="modal-dialog modal-lg" role="document">
-					    <div class="modal-content">
+					  <div class="modal-dialog modal-md" role="document">
+					    <div class="modal-content" style="align-content: center;">
 					      <div class="modal-header">
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					        <h4 class="modal-title"><h3>DAFTAR PESERTA</h3></h4>
 					      </div>
 					      <div class="modal-body">
-					      	<div class="row" id="modalContent">
+					      	<div class="row" id="modalContent" >
 					      		<div class="col-md-12">
-					      			
-					      		<table style="width:100%; padding-left: 15%" class="table table-striped table-hover">
+					      		<table style="width:100%; padding-left: 15%; align-items: center;" class="table table-striped table-hover">
 					      			<thead>
 					      				<td>No</td>
 					      				<td>Nama</td>
