@@ -261,9 +261,35 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('NOIND', $row)){
-                    	
- 						//ROW DATA
+					$check = $this->M_riwayatpotdanapensiun->checkExist($row['NOIND']);
+					if(empty($check)){
+						//ROW DATA
+                		$data = array(
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'pot_pensiun' => $row['POT_PENSIUN'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$noind = $row['NOIND'];
+	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							);
+							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatpotdanapensiun->insert($data);
+	                    }else{
+	                    	$this->M_riwayatpotdanapensiun->insert($data);
+	                    }
+					}else{
+						//ROW DATA
 	                    $data = array(
 	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							'tgl_tberlaku' => '9999-12-31',
@@ -289,34 +315,7 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
 	                    	$this->M_riwayatpotdanapensiun->insert($data);
 	                    }
 
-                	}else{
-                		//ROW DATA
-                		$data = array(
-	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
-							'tgl_tberlaku' => '9999-12-31',
-							'noind' => $row['NOIND'],
-							'pot_pensiun' => $row['POT_PENSIUN'],
-							'kd_petugas' => $this->session->userdata('userid'),
-							'tgl_jam_record' => date('Y-m-d H:i:s'),
-	                    );
-
-	                    //CHECK IF EXIST
-                    	$noind = $row['NOIND'];
-	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-							$data_update = array(
-								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
-							);
-							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
-							$this->M_riwayatpotdanapensiun->insert($data);
-	                    }else{
-	                    	$this->M_riwayatpotdanapensiun->insert($data);
-	                    }
-	                    
-                	}
+					}
                 }
 
                 //LOAD EXIST DATA VERIFICATION PAGE

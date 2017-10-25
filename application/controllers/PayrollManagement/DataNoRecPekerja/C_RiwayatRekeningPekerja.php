@@ -250,38 +250,9 @@ class C_RiwayatRekeningPekerja extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('NOIND', $row)){
-                    	
- 						//ROW DATA
-	                    $data = array(
-	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
-							'tgl_tberlaku' => '9999-12-31',
-							'noind' => $row['NOIND'],
-							'kd_bank' => $row['KD_BANK'],
-							'no_rekening' => $row['NO_REK'],
-							'nama_pemilik_rekening' => $row['NAMA_REKENING'],
-							'kode_petugas' => $this->session->userdata('userid'),
-							'tgl_record' => date('Y-m-d H:i:s'),
-	                    );
-
-                    	//CHECK IF EXIST
-                    	$noind = $row['NOIND'];
-	                   	$check = $this->M_riwayatrekeningpekerja->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-							$data_update = array(
-								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
-							);
-							$this->M_riwayatrekeningpekerja->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
-							$this->M_riwayatrekeningpekerja->insert($data);
-	                    }else{
-	                    	$this->M_riwayatrekeningpekerja->insert($data);
-	                    }
-
-                	}else{
-                		//ROW DATA
+					$check = $this->M_riwayatrekeningpekerja->checkExist($row['NOIND']);
+					if(empty($check)){
+						//ROW DATA
                 		$data = array(
 	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							'tgl_tberlaku' => '9999-12-31',
@@ -292,24 +263,24 @@ class C_RiwayatRekeningPekerja extends CI_Controller
 							'kode_petugas' => $this->session->userdata('userid'),
 							'tgl_record' => date('Y-m-d H:i:s'),
 	                    );
-
-	                    //CHECK IF EXIST
-                    	$noind = $row['NOIND'];
-	                   	$check = $this->M_riwayatrekeningpekerja->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-							$data_update = array(
+						$this->M_riwayatrekeningpekerja->insert($data);
+					}else{
+						$data = array(
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'kd_bank' => $row['KD_BANK'],
+							'no_rekening' => $row['NO_REK'],
+							'nama_pemilik_rekening' => $row['NAMA_REKENING'],
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_record' => date('Y-m-d H:i:s'),
+	                    );
+						$data_update = array(
 								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							);
-							$this->M_riwayatrekeningpekerja->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
-							$this->M_riwayatrekeningpekerja->insert($data);
-	                    }else{
-	                    	$this->M_riwayatrekeningpekerja->insert($data);
-	                    }
-	                    
-                	}
+						$this->M_riwayatrekeningpekerja->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+						$this->M_riwayatrekeningpekerja->insert($data);
+					}
                 }
 
                 //LOAD EXIST DATA VERIFICATION PAGE
