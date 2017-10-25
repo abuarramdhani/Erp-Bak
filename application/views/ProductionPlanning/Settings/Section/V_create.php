@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtSectionNameHeader" class="control-label col-lg-4">Section Name</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Section Name" name="txtSectionNameHeader" id="txtSectionNameHeader" class="form-control" />
+                                                    <input type="text" placeholder="Section Name" name="txtSectionNameHeader" id="txtSectionNameHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
                                         </div>

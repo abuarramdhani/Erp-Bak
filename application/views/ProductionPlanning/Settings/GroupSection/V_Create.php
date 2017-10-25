@@ -42,7 +42,7 @@
                                                 <div class="form-group">
                                                     <label for="norm" class="control-label col-lg-4">Registered User</label>
                                                     <div class="col-lg-8">
-                                                        <select class="form-control select4" name="userCode">
+                                                        <select class="form-control select4" name="userCode" required="">
                                                             <option></option>
                                                             <?php foreach ($regUser as $ru) { ?>
                                                                 <option value="<?php echo $ru['user_id']; ?>">
