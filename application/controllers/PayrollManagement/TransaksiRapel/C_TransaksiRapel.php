@@ -21,7 +21,7 @@ class C_TransaksiRapel extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
+        $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
 
@@ -46,7 +46,7 @@ class C_TransaksiRapel extends CI_Controller
         $row = $this->M_transaksirapel->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
+            	'Menu' => 'Komponen Penggajian',
             	'SubMenuOne' => '',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
@@ -79,7 +79,7 @@ class C_TransaksiRapel extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
+            'Menu' => 'Komponen Penggajian',
             'SubMenuOne' => '',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
@@ -128,7 +128,7 @@ class C_TransaksiRapel extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
+                'Menu' => 'Komponen Penggajian',
                 'SubMenuOne' => '',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),

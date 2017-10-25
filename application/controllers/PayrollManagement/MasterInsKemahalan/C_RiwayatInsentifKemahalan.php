@@ -22,8 +22,8 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Pekerja';
+        $data['SubMenuOne'] = 'Master Ins Kemahalan';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -51,8 +51,8 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         $row = $this->M_riwayatinsentifkemahalan->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Pekerja',
+            	'SubMenuOne' => 'Master Ins Kemahalan',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -89,8 +89,8 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Pekerja',
+            'SubMenuOne' => 'Master Ins Kemahalan',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -120,7 +120,7 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'insentif_kemahalan' => $this->input->post('txtInsentifKemahalan',TRUE),
+				'insentif_kemahalan' => str_replace(",","",$this->input->post('txtInsentifKemahalan',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
@@ -150,8 +150,8 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Pekerja',
+                'SubMenuOne' => 'Master Ins Kemahalan',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -188,7 +188,7 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
-				'insentif_kemahalan' => $this->input->post('txtInsentifKemahalan',TRUE),
+				'insentif_kemahalan' => str_replace(",","",$this->input->post('txtInsentifKemahalan',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
@@ -304,7 +304,7 @@ class C_RiwayatInsentifKemahalan extends CI_Controller
                 $this->checkSession();
         		$user_id = $this->session->userid;
         
-        		$data['Menu'] = 'Payroll Management';
+        		$data['Menu'] = 'Master Pekerja';
         		$data['SubMenuOne'] = '';
         		$data['SubMenuTwo'] = '';
 

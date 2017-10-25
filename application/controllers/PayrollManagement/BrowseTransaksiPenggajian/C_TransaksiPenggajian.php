@@ -21,8 +21,8 @@ class C_TransaksiPenggajian extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Browse Detail Transaksi Penggajian';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -47,8 +47,8 @@ class C_TransaksiPenggajian extends CI_Controller
 		$this->checkSession();
         $user_id = $this->session->userid;
         $kd_transaksi = "1";
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Browse Detail Transaksi Penggajian';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -89,8 +89,8 @@ class C_TransaksiPenggajian extends CI_Controller
 		$this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Browse Detail Transaksi Penggajian';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -727,8 +727,8 @@ class C_TransaksiPenggajian extends CI_Controller
 		$this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Browse Detail Transaksi Penggajian';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
