@@ -869,6 +869,10 @@ $route['ADMPelatihan/Record/(:any)/(:any)']				= 'ADMPelatihan/C_Record/$1/$2';
 $route['ADMPelatihan/Record/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Record/$1/$2/$3';
 
 $route['ADMPelatihan/Report']							= 'ADMPelatihan/C_Report';
+$route['ADMPelatihan/Report/Rekap']						= 'ADMPelatihan/C_Report/Rekap';
+$route['ADMPelatihan/Report/Rekap/RekapTraining']		= 'ADMPelatihan/C_Report/RekapTraining';
+$route['ADMPelatihan/Report/Rekap/PresentaseKehadiran']	= 'ADMPelatihan/C_Report/PresentaseKehadiran';
+$route['ADMPelatihan/Report/Rekap/EfektivitasTraining']	= 'ADMPelatihan/C_Report/EfektivitasTraining';
 $route['ADMPelatihan/Report/(:any)']					= 'ADMPelatihan/C_Report/$1';
 $route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Report/$1/$2';
 $route['ADMPelatihan/Report/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Report/$1/$2/$3';
