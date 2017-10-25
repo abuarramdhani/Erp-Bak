@@ -27,7 +27,7 @@ class C_DataPlanMonthly extends CI_Controller {
 		}
 	}
 	
-	public function index()
+	public function index($message=FALSE)
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -41,6 +41,7 @@ class C_DataPlanMonthly extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['plan']			= $this->M_dataplan->getMonthlyPlan();
 		$data['no']				= 1;
+		$data['message'] 		= $message;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -52,20 +53,20 @@ class C_DataPlanMonthly extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id  = $this->session->userid;
-			$data['Menu'] = 'Dashboard';
-			$data['SubMenuOne'] = '';
-			$data['SubMenuTwo'] = '';
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
 
-			$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['section'] 		= $this->M_dataplan->getSection($user_id);
-			$data['message'] 		= $message;
+		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['section'] 		= $this->M_dataplan->getSection($user_id);
+		$data['message'] 		= $message;
 
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('ProductionPlanning/MainMenu/DataPlan/Monthly/V_Create',$data);
-			$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ProductionPlanning/MainMenu/DataPlan/Monthly/V_Create',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function CreateSubmit()
@@ -106,7 +107,7 @@ class C_DataPlanMonthly extends CI_Controller {
 	    }else{
 	        $media			= $this->upload->data();
 	        $inputFileName 	= 'assets/upload/ProductionPlanning/data-plan/'.$media['file_name'];
-    		$section = $this->M_dataplan->getSection();
+    		$section 		= $this->M_dataplan->getSection();
 
             try{
             	$inputFileType  = PHPExcel_IOFactory::identify($inputFileName);
@@ -125,13 +126,12 @@ class C_DataPlanMonthly extends CI_Controller {
             	$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
             	if ($rowData[0][0] != null) {
             		$datPoint = "1";
+        			$secCheckPoint = 0;
             		foreach ($section as $sc) {
-            			if (strtoupper($sc['section_name']) == strtoupper($rowData[0][1])) {
+            			if ($secCheckPoint == 0 && strtoupper(preg_replace('/\s+/', '', $sc['section_name'])) == strtoupper(preg_replace('/\s+/', '', $rowData[0][1]))) {
             				$section_id = $sc['section_id'];
             				$sectionError = '';
-            			}else{
-            				$errStock++;
-            				$sectionError = 'Nama Seksi Ada yang tidak sesuai.';
+            				$secCheckPoint = 1;
             			}
             		}
 
@@ -142,31 +142,83 @@ class C_DataPlanMonthly extends CI_Controller {
 						'created_by'			=> $user_id,
 						'created_date'			=> date("Y-m-d H:i:s")
 					);
-	    echo "<pre>";
-	    print_r($value);
-	    echo "</pre>";
-	    exit();
-                    if (!is_numeric($rowData[0][4])) {
+
+					if ($secCheckPoint == 0) {
+						$sectionError = 'Nama Seksi Ada yang tidak sesuai. '.strtoupper(preg_replace('/\s+/', '', $rowData[0][1]));
+        				$errStock++;
+					}else{
+						$sectionError = '';
+					}
+
+                    if (!is_numeric($rowData[0][3])) {
                         $errStock++;
+                        $qtyError = 'Quantity pada baris ke-'.$row.' tidak Numeric.';
+                    }else{
+                        $qtyError = '';
                     }
-                    if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3]) || empty($rowData[0][4]) || empty($rowData[0][5])) {
+                    if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3])) {
                         $errStock++;
+                        $emptyError = 'Data pada baris ke-'.$row.' kosong.';
+                    }else{
+                        $emptyError = '';
                     }
                 }else{
                     $datPoint = null;
                 }
 
-                // if ($datPoint !=null && $errStock == 0) {
-                //  $this->M_dataplan->insertDataPlan($dataIns, 'pp.pp_daily_plans');
-                // }
+                if ($datPoint !=null && $errStock == 0) {
+                	$this->M_dataplan->insertDataPlan($value, 'pp.pp_monthly_plans');
+                }
             }
 
-            	unlink($inputFileName);
-            }
-			
-
-			// $this->M_dataplan->insertDataPlan($value, 'pp.pp_monthly_plans');
-			// redirect(base_url('ProductionPlanning/DataPlanMonthly'));
+        	unlink($inputFileName);
+        	if ($errStock > 0) {
+        		$msg =	'<div class="row">
+	 					<div class="col-md-10 col-md-offset-1 col-sm-12">
+	 						<div id="messUpPP" class="modal fade modal-danger" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	 							<div class="modal-dialog modal-lg" role="document">
+	 								<div class="modal-content">
+	 									<div class="modal-body">
+	 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	 											<span aria-hidden="true">&times;</span>
+	 										</button>';
+	 										$msg .= $sectionError.'<br>';
+	 										$msg .= $qtyError.'<br>';
+	 										$msg .= $errStock.'<br>';
+	 										$msg .= '
+		 								</div>
+		 							</div>
+			 					</div>
+		 					</div>
+			 			</div>
+           		    </div>
+            		<script type="text/javascript">
+						$("#messUpPP").modal("show");
+					</script>';
+        		$this->Create($msg);
+        	}else{
+            	$msg =	'<div class="row">
+	 					<div class="col-md-10 col-md-offset-1 col-sm-12">
+	 						<div id="messUpPP" class="modal fade modal-success" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+	 							<div class="modal-dialog modal-lg" role="document">
+	 								<div class="modal-content">
+	 									<div class="modal-body">
+	 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	 											<span aria-hidden="true">&times;</span>
+	 										</button>
+	 										UPLOAD COMPLETE!
+		 								</div>
+		 							</div>
+			 					</div>
+		 					</div>
+			 			</div>
+           		    </div>
+            		<script type="text/javascript">
+						$("#messUpPP").modal("show");
+					</script>';
+        		$this->index($msg);
+        	}
+        }
 	}
 
 	public function Edit($id)
@@ -297,7 +349,7 @@ class C_DataPlanMonthly extends CI_Controller {
 
 		// ----------------- Final Process -----------------
 		$worksheet->setTitle('Monthly_Planning');
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
