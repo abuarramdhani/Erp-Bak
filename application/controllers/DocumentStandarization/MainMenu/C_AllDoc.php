@@ -125,7 +125,7 @@ class C_AllDoc extends CI_Controller
 
 		$data['namaBP'] 		= 	$data['bp'][0]['nama_business_process'];
 		$data['idBP'] 			= 	$data['bp'][0]['id_business_process'];
-		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkBP($BP)[0]['nomor_revisi'];
+		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$data['bp'][0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
@@ -164,11 +164,11 @@ class C_AllDoc extends CI_Controller
 
 		$data['namaBP'] 		= 	$data['bp'][0]['nama_business_process'];
 		$data['idBP'] 			= 	$data['bp'][0]['id_business_process'];
-		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkBP($BP)[0]['nomor_revisi'];
+		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$data['bp'][0]['nomor_revisi'];
 
 		$data['namaCD'] 		= 	$data['cd'][0]['nama_context_diagram'];
 		$data['idCD'] 			= 	$data['cd'][0]['id_context_diagram'];
-		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkCD($CD)[0]['nomor_revisi'];
+		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$data['cd']($CD)[0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
@@ -221,15 +221,15 @@ class C_AllDoc extends CI_Controller
 
 		$data['namaBP'] 		= 	$data['bp'][0]['nama_business_process'];
 		$data['idBP'] 			= 	$data['bp'][0]['id_business_process'];
-		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkBP($BP)[0]['nomor_revisi'];
+		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$data['bp'][0]['nomor_revisi'];
 
 		$data['namaCD'] 		= 	$data['cd'][0]['nama_context_diagram'];
 		$data['idCD'] 			= 	$data['cd'][0]['id_context_diagram'];
-		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkCD($CD)[0]['nomor_revisi'];
+		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$data['cd'][0]['nomor_revisi'];
 
 		$data['namaSOP'] 		= 	$data['sop'][0]['nama_standard_operating_procedure'];
 		$data['idSOP'] 			= 	$data['sop'][0]['id_standard_operating_procedure'];
-		$data['nomorSOP'] 		= 	$data['sop'][0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkSOP($SOP)[0]['nomor_revisi'];
+		$data['nomorSOP'] 		= 	$data['sop'][0]['nomor_kontrol'].' - '.$data['sop'][0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
