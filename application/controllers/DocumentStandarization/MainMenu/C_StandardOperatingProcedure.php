@@ -23,7 +23,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 
 		$this->checkSession();
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 
 	}
 
@@ -45,7 +45,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 
@@ -67,7 +67,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 
@@ -172,7 +172,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 
@@ -398,7 +398,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 

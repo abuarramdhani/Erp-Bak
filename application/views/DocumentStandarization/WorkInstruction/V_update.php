@@ -140,7 +140,7 @@
                                                 <label for="txtWiFileHeader" class="control-label col-lg-4">Upload File</label>
                                                 <div class="col-lg-4">
                                                     <input type="file" name="txtWiFileHeader" id="txtWiFileHeader" class="form-control" value="<?php echo $headerRow['file']; ?>"/>
-                                                    <a target="_blank" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/'.$headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
+                                                    <a target="_blank" href="<?php echo base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/'.$headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
                                                     <input type="text" name="DokumenAwal" id="DokumenAwal" hidden="" value="<?php echo $headerRow['file'];?>">
                                                     <input type="text" name="WaktuUpload" id="WaktuUpload" hidden="" value="<?php echo $headerRow['waktu_upload_file'];?>">
                                                 </div>

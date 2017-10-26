@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('DocumentStandarization/Jobdesk/create');?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('DocumentStandarization/MasterJobDescription/create');?>" class="form-horizontal">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -10,7 +10,7 @@
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('DocumentStandarization/Jobdesk/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('DocumentStandarization/MasterJobDescription/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
                                     </a>                             
@@ -48,7 +48,7 @@
                                             <div class="form-group">
                                                 <label for="txtKodesieHeader" class="control-label col-lg-4">Bidang</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbBidang" name="cmbBidang" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                    <select id="cmbBidang" name="cmbBidang" class="select2" data-placeholder="Pilih" style="width: 100%">
                                                         <option value=""></option>
                                                     </select>   
                                                 </div>
@@ -57,7 +57,7 @@
                                             <div class="form-group">
                                                 <label for="txtKodesieHeader" class="control-label col-lg-4">Unit</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbUnit" name="cmbUnit" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                    <select id="cmbUnit" name="cmbUnit" class="select2" data-placeholder="Pilih" style="width: 100%">
                                                         <option value=""></option>
                                                     </select>   
                                                 </div>
@@ -66,7 +66,7 @@
                                             <div class="form-group">
                                                 <label for="txtKodesieHeader" class="control-label col-lg-4">Seksi</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                    <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih" style="width: 100%">
                                                         <option value=""></option>
                                                     </select>   
                                                 </div>
@@ -75,7 +75,7 @@
 											<div class="form-group">
                                                 <label for="txtJdNameHeader" class="control-label col-lg-4">Job Desk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtJdNameHeader" id="txtJdNameHeader" class="form-control" required="" />
+                                                    <input type="text" style="text-transform: uppercase;" name="txtJdNameHeader" id="txtJdNameHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
 
