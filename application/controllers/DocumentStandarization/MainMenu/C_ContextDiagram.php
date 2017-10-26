@@ -23,7 +23,7 @@ class C_ContextDiagram extends CI_Controller
 
 		$this->checkSession();
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 
 	}
 	/* CHECK SESSION */
@@ -44,7 +44,7 @@ class C_ContextDiagram extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Context Diagram';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Context Diagram';
 		$data['SubMenuTwo'] = '';
 
@@ -66,7 +66,7 @@ class C_ContextDiagram extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Context Diagram';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Context Diagram';
 		$data['SubMenuTwo'] = '';
 
@@ -151,7 +151,7 @@ class C_ContextDiagram extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Context Diagram';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Context Diagram';
 		$data['SubMenuTwo'] = '';
 
@@ -349,7 +349,7 @@ class C_ContextDiagram extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Context Diagram';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Context Diagram';
 		$data['SubMenuTwo'] = '';
 

@@ -90,7 +90,7 @@ class C_General extends CI_Controller
 
     			// $nama_STNK 							= filter_var($_FILES[$inputfile]['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
-				$config['upload_path']          = './assets/upload/IA/StandarisasiDokumen';
+				$config['upload_path']          = './assets/upload/PengembanganSistem/StandarisasiDokumen';
 				$config['allowed_types'] 		= '*';
 	        	// $config['file_name']		 	= filter_var($_FILES[$inputfile]['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 	        	$config['file_name']		 	= $fileDokumen;

@@ -20,7 +20,7 @@ class C_CodeOfPractice extends CI_Controller
 
 		date_default_timezone_set('Asia/Jakarta');
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 
 		$this->checkSession();
 	}
@@ -43,7 +43,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 
@@ -65,7 +65,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 
@@ -172,7 +172,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 
@@ -369,7 +369,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 

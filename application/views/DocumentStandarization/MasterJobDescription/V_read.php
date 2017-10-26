@@ -31,17 +31,29 @@
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($Jobdesk as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jd Name</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jd_name']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Departemen</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['departemen']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Bidang</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['bidang']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Unit</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['unit']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Seksi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['seksi']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jd Detail</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jd_detail']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Job Description</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_jobdesc']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Kodesie</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['kodesie']; ?></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Detail</strong></td>
+                                                            <td style="border: 0"><?php echo $headerRow['detail_jobdesc']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

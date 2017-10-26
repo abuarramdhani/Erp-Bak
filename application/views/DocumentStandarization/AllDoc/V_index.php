@@ -26,6 +26,44 @@
 <!--                                 <a href="<?php echo site_url('DocumentStandarization/BP/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
                                 </a> -->
+                              <div class="navbar-custom-menu" style="float: right; margin-right: 1%" alt="Notification" title="Notification">
+                                <ul class="nav navbar-nav">
+                                  <li class="dropdown notifications-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <i class="fa fa-bell-o fa-lg"></i>
+                                      <span class="label label-warning"><?php echo $jumlahNotifikasiBaru[0]['jumlah_notifikasi'];?></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                      <li class="header">Anda memiliki <b><?php echo $jumlahNotifikasiBaru[0]['jumlah_notifikasi'];?></b> notifikasi.</li>
+                                      <li>
+                                        <!-- inner menu: contains the actual data -->
+
+                                        <ul class="menu">
+                                        <?php
+                                            foreach ($ambilNotifikasiBaru as $notifikasiBaru) 
+                                            {
+                                                $encrypted_string = $this->encrypt->encode($notifikasiBaru['id_dokumen']);
+                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                echo '  <li>
+                                                            <a href="'.base_url("DocumentStandarization/".$notifikasiBaru['jenis_dokumen'].'/read/'.$encrypted_string.'').'" data-apsa="" target="_blank">
+                                                                <b>'.$notifikasiBaru['dokumen'].'</b> dibuat oleh '.$notifikasiBaru['pengelola'].'
+                                                                <h6 style="text-align: right;">'.$notifikasiBaru['jenis_dokumen'].' | <b>'.$notifikasiBaru['waktu_notifikasi'].'</b></h6>
+                                                            </a>
+                                                        </li>';
+                                            }
+                                        ?>
+                                        </ul>
+                                      </li>
+                                      <?php
+                                        if($jumlahNotifikasiBaru[0]['jumlah_notifikasi']>0)
+                                        {
+                                            echo '<li class="footer"><a href="#">View all</a></li>';
+                                        }
+                                      ?>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>                                       
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">

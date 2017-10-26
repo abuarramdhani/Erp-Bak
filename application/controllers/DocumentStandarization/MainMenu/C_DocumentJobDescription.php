@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_Jobdesk extends CI_Controller
+class C_DocumentJobDescription extends CI_Controller
 {
 	function __construct()
 	{
@@ -14,8 +14,7 @@ class C_Jobdesk extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('DocumentStandarization/MainMenu/M_jobdesk');
-		$this->load->model('DocumentStandarization/MainMenu/M_general');
+		$this->load->model('DocumentStandarization/MainMenu/M_jobdeskdocument');
 
 		$this->checkSession();
 	}
@@ -37,20 +36,20 @@ class C_Jobdesk extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Master Job Desk';
-		$data['Menu'] = 'Job Desk';
-		$data['SubMenuOne'] = 'Master Job Desk';
+		$data['Title'] = 'Dokumen Job Description';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Dokumen Job Description';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['Jobdesk'] = $this->M_jobdesk->getJobdesk();
+		$data['JobdeskDocument'] = $this->M_jobdeskdocument->getJobdeskDocument();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('DocumentStandarization/Jobdesk/V_index', $data);
+		$this->load->view('DocumentStandarization/DocumentJobDescription/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -59,9 +58,9 @@ class C_Jobdesk extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Master Job Desk';
-		$data['Menu'] = 'Job Desk';
-		$data['SubMenuOne'] = 'Master Job Desk';
+		$data['Title'] = 'Dokumen Job Description';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Dokumen Job Description';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -74,34 +73,31 @@ class C_Jobdesk extends CI_Controller
 
 
 		if ($this->form_validation->run() === FALSE) {
-			$data['ambilDepartemen'] 	= 	$this->M_general->ambilDepartemen();
-
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('DocumentStandarization/Jobdesk/V_create', $data);
+			$this->load->view('DocumentStandarization/DocumentJobDescription/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
-				'jd_name' => $this->input->post('txtJdNameHeader'),
-				'jd_detail' => $this->input->post('txaJdDetailHeader'),
-				'kodesie' => $this->input->post('txtKodesieHeader'),
+				'jd_id' => $this->input->post('txtJdIdHeader'),
+				'document_id' => $this->input->post('txtDocumentIdHeader'),
+				'document_type' => $this->input->post('txtDocumentTypeHeader'),
     		);
-			$this->M_jobdesk->setJobdesk($data);
+			$this->M_jobdeskdocument->setJobdeskDocument($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('OTHERS/Jobdesk'));
+			redirect(site_url('DocumentStandarization/DocumentJobDescription'));
 		}
 	}
-
 
 	/* UPDATE DATA */
 	public function update($id)
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Master Job Desk';
-		$data['Menu'] = 'Job Desk';
-		$data['SubMenuOne'] = 'Master Job Desk';
+		$data['Title'] = 'Dokumen Job Description';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Dokumen Job Description';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -114,7 +110,7 @@ class C_Jobdesk extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['Jobdesk'] = $this->M_jobdesk->getJobdesk($plaintext_string);
+		$data['JobdeskDocument'] = $this->M_jobdeskdocument->getJobdeskDocument($plaintext_string);
 
 		/* LINES DATA */
 
@@ -126,17 +122,17 @@ class C_Jobdesk extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('DocumentStandarization/Jobdesk/V_update', $data);
+			$this->load->view('DocumentStandarization/DocumentJobDescription/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
-				'jd_name' => $this->input->post('txtJdNameHeader',TRUE),
-				'jd_detail' => $this->input->post('txaJdDetailHeader',TRUE),
-				'kodesie' => $this->input->post('txtKodesieHeader',TRUE),
+				'jd_id' => $this->input->post('txtJdIdHeader',TRUE),
+				'document_id' => $this->input->post('txtDocumentIdHeader',TRUE),
+				'document_type' => $this->input->post('txtDocumentTypeHeader',TRUE),
     			);
-			$this->M_jobdesk->updateJobdesk($data, $plaintext_string);
+			$this->M_jobdeskdocument->updateJobdeskDocument($data, $plaintext_string);
 
-			redirect(site_url('OTHERS/Jobdesk'));
+			redirect(site_url('DocumentStandarization/DocumentJobDescription'));
 		}
 	}
 
@@ -145,9 +141,9 @@ class C_Jobdesk extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Master Job Desk';
-		$data['Menu'] = 'Job Desk';
-		$data['SubMenuOne'] = 'Master Job Desk';
+		$data['Title'] = 'Dokumen Job Description';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Dokumen Job Description';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -160,13 +156,13 @@ class C_Jobdesk extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['Jobdesk'] = $this->M_jobdesk->getJobdesk($plaintext_string);
+		$data['JobdeskDocument'] = $this->M_jobdeskdocument->getJobdeskDocument($plaintext_string);
 
 		/* LINES DATA */
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('DocumentStandarization/Jobdesk/V_read', $data);
+		$this->load->view('DocumentStandarization/DocumentJobDescription/V_read', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -176,15 +172,15 @@ class C_Jobdesk extends CI_Controller
         $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$this->M_jobdesk->deleteJobdesk($plaintext_string);
+		$this->M_jobdeskdocument->deleteJobdeskDocument($plaintext_string);
 
-		redirect(site_url('OTHERS/Jobdesk'));
+		redirect(site_url('DocumentStandarization/DocumentJobDescription'));
     }
 
 
 
 }
 
-/* End of file C_Jobdesk.php */
-/* Location: ./application/controllers/OTHERS/MainMenu/C_Jobdesk.php */
-/* Generated automatically on 2017-09-14 11:03:22 */
+/* End of file C_JobdeskDocument.php */
+/* Location: ./application/controllers/OTHERS/MainMenu/C_JobdeskDocument.php */
+/* Generated automatically on 2017-09-14 11:03:46 */

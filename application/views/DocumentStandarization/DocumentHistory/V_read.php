@@ -89,7 +89,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>File</strong></td>
-                                                            <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$headerRow['file'];?>" download="<?php echo str_replace('_', ' ', $headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
+                                                            <td style="border: 0">: <a class="btn btn-info" href="<?php echo base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$headerRow['file'];?>" download="<?php echo str_replace('_', ' ', $headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
                                                             </td>
 
                                                         </tr>

@@ -37,7 +37,7 @@
 					"lengthChange": false,
 					"responsive": true
 				});
-				$('#dataTables-jobdesk').DataTable({
+				$('#dataTables-masterJobDescription').DataTable({
 					"lengthChange": false,
 					"responsive": true
 				});
@@ -49,6 +49,11 @@
 					"lengthChange": false,
 					"responsive": true
 				});
+				$('#dataTables-Pekerja-cariDokumen').DataTable({
+					"lengthChange": false,
+					"responsive": true
+				});
+
 //			}
 //
 // 			DateRangePicker
@@ -287,6 +292,11 @@
 
 				$(document).on('change', '#cmbDepartemen', function(){
 					var departemen = $(this).val();
+
+					$('#cmbBidang').select2('val','');
+					$('#cmbUnit').select2('val','');
+					$('#cmbSeksi').select2('val','');
+
 					$('#cmbBidang').select2(
 					{
 						allowClear: false,
@@ -314,6 +324,9 @@
 
 				$(document).on('change', '#cmbBidang', function(){
 					var bidang 		= $(this).val();
+					
+					$('#cmbUnit').select2('val','');
+					$('#cmbSeksi').select2('val','');					
 					$('#cmbUnit').select2(
 					{
 						allowClear: false,
@@ -341,6 +354,8 @@
 
 				$(document).on('change', '#cmbUnit', function(){
 					var unit 		= $(this).val();
+
+					$('#cmbSeksi').select2('val','');
 					$('#cmbSeksi').select2(
 					{
 						allowClear: false,
@@ -424,10 +439,36 @@
 				});
 //			}
 
+//			Bootstrap
+// 			{
+			    $(document).ready(function(){
+			    	var highestBox = 0;
+			        	$('.btn-group-vertical .buttonlistDocUpper').each(function(){  
+			          		if($(this).height() > highestBox){  
+			                	highestBox = $(this).height();  
+			        	}
+			    		});
+			  		  $('.btn-group-vertical .buttonlistDocUpper').height(highestBox);
+
+    				var largestBox = 0;
+        			$('.btn-group-vertical .btn').each(function(){  
+                		if($(this).width() > largestBox){  
+                			largestBox = $(this).width();  
+        				}
+    				});
+    				$('.btn-group-vertical .buttonlistDoc').width(largestBox);
+				});
+//			}
+
 
 		});
-		// $(document).ready(function(){ 
-  //           $(".inputmask-date").inputmask("dd-mm-yyyy");
-  //       });
+//			General Behaviour
+//			{
+				  function previousPage()
+				  {
+				    window.history.back();
+				  };
+//			}  
 // 	}
+
 // 	Document Controller ----------------------------------------------------------------------------end---

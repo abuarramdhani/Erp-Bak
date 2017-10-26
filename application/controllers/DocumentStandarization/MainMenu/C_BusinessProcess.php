@@ -25,7 +25,7 @@ class C_BusinessProcess extends CI_Controller
 
 		$this->checkSession();
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 	}
 
 	/* CHECK SESSION */
@@ -46,7 +46,7 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
@@ -92,7 +92,7 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
@@ -168,8 +168,13 @@ class C_BusinessProcess extends CI_Controller
 				'tgl_upload' 	=> $tanggalUpload,
 				'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
     		);
-			$this->M_businessprocess->setBusinessProcess($data);
+
+			$user_now 	= 	$this->session->user;
+
+			$this->M_businessprocess->setBusinessProcess($data, $user);
 			$header_id = $this->db->insert_id();
+
+			$this->M_general->inputNotifications('BP', $header_id, $user_now, $data, 'CREATE');
 
 			redirect(site_url('DocumentStandarization/BP'));
 		}
@@ -181,7 +186,7 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
@@ -380,13 +385,14 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
