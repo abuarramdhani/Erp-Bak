@@ -35,20 +35,6 @@
                     <b>Master Sekolah Asal</b>
 		          </div>
 		          <div class="box-body">
-				   <?php
-						if (!empty($masterSekolahAsal_data)) {
-					  ?>
-					  <form method="post" action="<?php echo base_url('PayrollManagement/MasterJabatanUpah/saveImport')?>">
-						<div class="row" style="margin: 10px 0 10px 10px">
-						  <div class="col-lg-offset-10 col-lg-2">
-							<input type="hidden" name="txtFileName" value="">
-							<button class="btn btn-primary btn-block">Import</button>
-						  </div>
-						</div>
-					  </form>
-					  <?php
-						}
-					  ?>
 		            <div class="table-responsive">
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-masterSekolahAsal" style="font-size:12px;">
 		                <thead class="bg-primary">

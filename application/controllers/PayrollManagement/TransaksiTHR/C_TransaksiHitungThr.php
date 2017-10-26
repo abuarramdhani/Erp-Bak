@@ -526,7 +526,7 @@ class C_TransaksiHitungThr extends CI_Controller
         $user_id = $this->session->userid;
         
         $data['Menu'] = 'Komponen Penggajian';
-        $data['SubMenuOne'] = '';
+        $data['SubMenuOne'] = 'THR';
         $data['SubMenuTwo'] = '';
 		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
 		$enc_dt = $dt[1]."-".$dt[0];

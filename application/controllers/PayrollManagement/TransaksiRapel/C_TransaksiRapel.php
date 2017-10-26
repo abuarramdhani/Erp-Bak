@@ -22,7 +22,7 @@ class C_TransaksiRapel extends CI_Controller
         $user_id = $this->session->userid;
         
         $data['Menu'] = 'Komponen Penggajian';
-        $data['SubMenuOne'] = '';
+        $data['SubMenuOne'] = 'Rapel Gaji';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -47,7 +47,7 @@ class C_TransaksiRapel extends CI_Controller
         if ($row) {
             $data = array(
             	'Menu' => 'Komponen Penggajian',
-            	'SubMenuOne' => '',
+            	'SubMenuOne' => 'Rapel Gaji',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -80,7 +80,7 @@ class C_TransaksiRapel extends CI_Controller
 
         $data = array(
             'Menu' => 'Komponen Penggajian',
-            'SubMenuOne' => '',
+            'SubMenuOne' => 'Rapel Gaji',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -129,7 +129,7 @@ class C_TransaksiRapel extends CI_Controller
         if ($row) {
             $data = array(
                 'Menu' => 'Komponen Penggajian',
-                'SubMenuOne' => '',
+                'SubMenuOne' => 'Rapel Gaji',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),

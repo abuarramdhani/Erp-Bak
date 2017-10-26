@@ -37,22 +37,21 @@
 		          <div class="box-body">
 
 		            <div class="table-responsive">
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-riwayatSetAsuransi" style="font-size:12px;">
+		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-riwayatSetAsuransi" style="font-size:12px;width:100%;">
 		                <thead class="bg-primary">
 		                  <tr>
-		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
-                            <th style='text-align:center'><div style="width:100px"></div>ACTION</th>
-							<th><div style="width:100px"></div>Tanggal Berlaku</th>
-							<th><div style="width:40px"></div>Kode Status Kerja</th>
-							<th><div style="width:40px"></div>JKK</th>
-							<th><div style="width:40px"></div>JKM</th>
-							<th><div style="width:40px"></div>JHT Karyawan</th>
-							<th><div style="width:40px"></div>JHT Perusahaan</th>
-							<th><div style="width:40px"></div>JKN Karyawan</th>
-							<th><div style="width:40px"></div>JKN Perusahaan</th>
-							<th><div style="width:40px"></div>JPN Karyawan</th>
-							<th><div style="width:40px"></div>JPN Perusahaan</th>
-
+		                    <th style="text-align:center; width:30px">NO</th>
+                            <th style='text-align:center'>ACTION</th>
+							<th class="text-center">Tanggal Berlaku</th>
+							<th class="text-center">Kode Status Kerja</th>
+							<th class="text-center">JKK</th>
+							<th class="text-center">JKM</th>
+							<th class="text-center">JHT K</th>
+							<th class="text-center">JHT P</th>
+							<th class="text-center">JKN K</th>
+							<th class="text-center">JKN P</th>
+							<th class="text-center">JPN K</th>
+							<th class="text-center">JPN P</th>
 		                  </tr>
 		                </thead>
 		                <tbody>

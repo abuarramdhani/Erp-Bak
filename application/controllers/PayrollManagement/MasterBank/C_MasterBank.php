@@ -226,14 +226,13 @@ class C_MasterBank extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
 			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
-			'pot_transfer' => str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' => str_replace('.','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace('.','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 
-        $this->M_masterbank->update(strtoupper($this->input->post('txtKdBank', TRUE)), $data);
+        $this->M_masterbank->update(strtoupper($this->input->post('txtKdBankNew', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
 		$ses=array(
 				 "success_update" => 1
