@@ -168,7 +168,7 @@ class C_AllDoc extends CI_Controller
 
 		$data['namaCD'] 		= 	$data['cd'][0]['nama_context_diagram'];
 		$data['idCD'] 			= 	$data['cd'][0]['id_context_diagram'];
-		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$data['cd']($CD)[0]['nomor_revisi'];
+		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$data['cd'][0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
