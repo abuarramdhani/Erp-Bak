@@ -127,12 +127,6 @@ $('#dataTables-fleetKecelakaanDetail').DataTable( {
         'excel'
       ]
     });
-$('#dataTables-fleetKecelakaan').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
 $('#daterangepicker').daterangepicker({
     "showDropdowns": true,
     "autoApply": true,
