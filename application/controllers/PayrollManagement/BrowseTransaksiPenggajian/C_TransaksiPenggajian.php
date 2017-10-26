@@ -56,8 +56,9 @@ class C_TransaksiPenggajian extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$varPeriode	= $this->input->post('txtPeriodeHitung',TRUE);
-		$varYear		= substr($varPeriode,0,4);
-		$varMonth		= substr($varPeriode,5,2);
+		$dt = explode("/",$varPeriode);
+		$varYear		= $dt[1];
+		$varMonth		= $dt[0];
 	
 		$checkPeriode	= $this->M_transaksipenggajian->checkPeriode($varYear,$varMonth,$kd_transaksi);
 		// if($checkPeriode){
@@ -99,6 +100,7 @@ class C_TransaksiPenggajian extends CI_Controller
 		
 		$varYear	= $this->input->post('txtYear',TRUE);
 		$varMonth	= $this->input->post('txtMonth',TRUE);
+		exit();
 		$varDate	= $varYear."-".$varMonth."-20";
 		$date			= date('Y-m-d');
 		$spc = "";
