@@ -499,7 +499,7 @@ class M_general extends CI_Model
         $ambilDepartemen        =   "   select      departemen.section_code as kode_departemen,
                                                     departemen.department_name as nama_departemen
                                         from        er.er_section as departemen
-                                        where       substring(departemen.section_code,2,2)='00';";
+                                        where       substring(departemen.section_code,2,8)='00000000';";
         $queryAmbilDepartemen   =   $this->db->query($ambilDepartemen);
         return $queryAmbilDepartemen->result_array();
     }
@@ -509,7 +509,7 @@ class M_general extends CI_Model
         $ambilBidang            = " select      bidang.section_code as kode_bidang,
                                                 bidang.field_name as nama_bidang
                                     from        er.er_section as bidang
-                                    where       substring(bidang.section_code,4,2)='00'
+                                    where       substring(bidang.section_code,4,6)='000000'
                                                 and     bidang.field_name!='-'
                                                 and     substring(bidang.section_code,1,2)='".$departemen."'
                                                 and     bidang.field_name like '%$keywordBidang%';";
@@ -522,7 +522,7 @@ class M_general extends CI_Model
         $ambilUnit              = " select      unit.section_code as kode_unit,
                                                 unit.unit_name as nama_unit
                                     from        er.er_section as unit
-                                    where       substring(unit.section_code,6,2)='00'
+                                    where       substring(unit.section_code,6,4)='0000'
                                                 and     unit.unit_name!='-'
                                                 and     substring(unit.section_code, 3, 2)='$bidang'
                                                 and     substring(unit.section_code, 1, 2)='$departemen'";
@@ -718,6 +718,337 @@ class M_general extends CI_Model
         $queryAmbilNotifikasiRevisi     =   $this->db->query($ambilNotifikasiRevisi);
         return $queryAmbilNotifikasiRevisi->result_array();
     }
+
+    public function ambilJumlahNotifikasiBaru($user_now)
+    {
+        $ambilJumlahNotifikasiBaru   = "    select         count(*) as jumlah_notifikasi
+                                            from        ds.ds_notifications as notif
+                                            where       notif.read_status=0
+                                                    and     notif.user_notified='".$user_now."';";
+        $queryAmbilJumlahNotifikasiBaru     =   $this->db->query($ambilJumlahNotifikasiBaru);
+        return $queryAmbilJumlahNotifikasiBaru->result_array();
+    }
+
+    public function ambilSemuaNotifikasiBaru($user_now, $document_type = FALSE)
+    {
+        $klausaWhere = '';
+        if($document_type=='BP' || $document_type=='CD' || $document_type=='SOP' || $document_type=='WI' || $document_type=='COP')
+        {
+            $klausaWhere    =   "and    notif.document_type=";
+        }
+        elseif ($document_type==FALSE) 
+        {
+            $document_type  =   '';
+        }
+
+        $ambilSemuaNotifikasiBaru   = " select      notif.notification_id as kode_notifikasi,
+                                                    notif.document_type as jenis_dokumen,
+                                                    notif.document as dokumen,
+                                                    case    notif.\"action\"  when 'CREATE'   then 'dibuat oleh'
+                                                                            when 'REVISE'   then 'direvisi oleh'
+                                                                            when 'EDIT'     then 'diubah oleh'
+                                                                            else 'modifikasi oleh'
+                                                    end as tindakan,
+                                                    notif.\"user\" as pengelola,
+                                                    to_char(notif.creation_date, 'DD-Mon-YYYY HH24:MI:SS') as waktu_notifikasi,
+                                                    notif.read_status as status_baca,
+                                                    notif.document_id as id_dokumen
+                                        from        ds.ds_notifications as notif
+                                        where       notif.read_status=0
+                                                    and     notif.user_notified='".$user_now."'
+                                                    ".$klausaWhere.$document_type."
+                                        order by    notif.creation_date desc;";
+        $queryAmbilSemuaNotifikasiBaru  =   $this->db->query($ambilSemuaNotifikasiBaru);
+        return $queryAmbilSemuaNotifikasiBaru->result_array();
+    }
+
+    public function inputNotifications($document_type, $header_id, $user_now, $data, $action)
+    {
+        $tabel;
+        if($document_type=='BP')
+        {
+            $tabel  =   "ds.ds_business_process";
+        }
+        elseif($document_type=='CD')
+        {
+            $tabel  =   "ds.ds_context_diagram";
+        }
+        elseif ($document_type=='SOP') 
+        {
+            $tabel  =   "ds.ds_standard_operating_procedure";
+        }
+        elseif ($document_type=='WI') 
+        {
+            $tabel  =   "ds.ds_work_instruction";
+        }
+        elseif ($document_type=='COP') 
+        {
+            $tabel  =   "ds.ds_code_of_practice";
+        }
+
+        if(!(strtoupper($action)=='CREATE' || strtoupper($action)=='REVISE' || strtoupper($action)=='EDIT'))
+        {
+            $action     =   NULL;
+        }
+
+        $getUserforNotifications    = " select      sysua.user_group_menu_id,
+                                                    sysua.user_id,
+                                                    (
+                                                        select      sysu.user_name
+                                                        from        sys.sys_user as sysu
+                                                        where       sysu.user_id=sysua.user_id
+                                                    ) as user_notified
+                                        from        sys.sys_user_application as sysua
+                                        where       sysua.user_group_menu_id=2525
+                                        order by    sysua.user_id;";
+        $queryGetUserForNotifications   =   $this->db->query($getUserforNotifications);
+        $userPenerima      =   $queryGetUserForNotifications->result_array();
+
+        foreach ($userPenerima as $user_notified) 
+        {
+
+            $sendNotifications      = " insert into     ds.ds_notifications (user_notified, document_type, document_id, document, action, \"user\", creation_date)
+                                            values      (
+                                                            '".$user_notified['user_notified']."',
+                                                            '".$document_type."',
+                                                            '".$header_id."',
+                                                            '".$data['no_kontrol']." - ".$data['no_revisi']."',
+                                                            '".$action."',
+                                                            '".$user_now."',
+                                                            '".$this->general->ambilWaktuEksekusi()."'
+                                                        )";
+            $this->db->query($sendNotifications);
+        }        
+    }
+
+    // All Document -------start---
+
+    public function ambilDaftarBP()
+    {
+        $ambilDaftarBP      = " select      bp.bp_id as id_business_process,
+                                            bp.bp_name as nama_business_process,
+                                            bp.no_kontrol as nomor_kontrol,
+                                            bp.no_revisi as nomor_revisi,
+                                            bp.tanggal as tanggal_revisi,
+                                            bp.bp_file as file
+                                from        ds.ds_business_process as bp
+                                order by    nomor_kontrol;";
+        $queryAmbilDaftarBP =   $this->db->query($ambilDaftarBP);
+        return $queryAmbilDaftarBP->result_array();
+    }
+
+    public function ambilJumlahBP()
+    {
+        $ambilJumlahBP      = " select      count(bp.no_kontrol) as jumlah_business_process
+                                from        ds.ds_business_process as bp";
+        $queryAmbilJumlahBP = $this->db->query($ambilJumlahBP);
+        return $queryAmbilJumlahBP->result_array();
+    }
+
+    public function ambilLinkBP($BP)
+    {
+        $ambilLinkBP        = " select      bp.bp_id as id_business_process,
+                                            bp.bp_name as nama_business_process,
+                                            bp.no_kontrol as nomor_kontrol,
+                                            bp.no_revisi as nomor_revisi
+                                from        ds.ds_business_process as bp
+                                where       bp.bp_id=".$BP.";";
+        $queryAmbilJumlahBP =   $this->db->query($ambilLinkBP);
+        return $queryAmbilJumlahBP->result_array();
+    }
+
+    public function ambilDaftarCD($BP)
+    {
+        $ambilDaftarBP      = " select      cd.cd_id as id_context_diagram,
+                                            cd.cd_name as nama_context_diagram,
+                                            cd.no_kontrol as nomor_kontrol,
+                                            cd.no_revisi as nomor_revisi,
+                                            cd.tanggal as tanggal_revisi,
+                                            cd.cd_file as file
+                                from        ds.ds_context_diagram as cd
+                                where       cd.bp_id=".$BP."
+                                order by    nomor_kontrol;";
+        $queryAmbilDaftarBP =   $this->db->query($ambilDaftarBP);
+        return $queryAmbilDaftarBP->result_array();
+    }
+
+    public function ambilJumlahCD($BP)
+    {
+        $ambilJumlahBP      = " select      count(cd.no_kontrol) as jumlah_context_diagram
+                                from        ds.ds_context_diagram as cd
+                                where       cd.bp_id=".$BP.";";
+        $queryAmbilJumlahBP = $this->db->query($ambilJumlahBP);
+        return $queryAmbilJumlahBP->result_array();
+    }
+
+    public function ambilLinkCD($CD)
+    {
+        $ambilLinkCD        = " select      cd.cd_id as id_context_diagram,
+                                            cd.cd_name as nama_context_diagram,
+                                            cd.no_kontrol as nomor_kontrol,
+                                            cd.no_revisi as nomor_revisi
+                                from        ds.ds_context_diagram as cd
+                                where       cd.cd_id=".$CD.";";
+        $queryAmbilLinkCD   =   $this->db->query($ambilLinkCD);
+        return $queryAmbilLinkCD->result_array();
+    }
+
+    public function ambilDaftarSOP($CD, $BP)
+    {
+        $ambilDaftarSOP     = " select      sop.sop_id as id_standard_operating_procedure,
+                                            sop.sop_name as nama_standard_operating_procedure,
+                                            sop.no_kontrol as nomor_kontrol,
+                                            sop.no_revisi as nomor_revisi,
+                                            sop.tanggal as tanggal_revisi,
+                                            sop.sop_file as file
+                                from        ds.ds_standard_operating_procedure as sop
+                                where       sop.bp_id=".$BP."
+                                            and     sop.cd_id=".$CD."
+                                order by    nomor_kontrol;";
+        $queryAmbilDaftarSOP=   $this->db->query($ambilDaftarSOP);
+        return $queryAmbilDaftarSOP->result_array();
+    }
+
+    public function ambilJumlahSOP($CD, $BP)
+    {
+        $ambilJumlahSOP     = " select      count(sop.no_kontrol) as jumlah_standard_operating_procedure
+                                from        ds.ds_standard_operating_procedure as sop
+                                where       sop.cd_id=".$CD."
+                                            and     sop.bp_id=".$BP.";";
+        $queryAmbilJumlahSOP=   $this->db->query($ambilJumlahSOP);
+        return $queryAmbilJumlahSOP->result_array();
+    }
+
+    public function ambilLinkSOP($SOP)
+    {
+        $ambilLinkSOP       = " select      sop.sop_id as id_standard_operating_procedure,
+                                            sop.sop_name as nama_standard_operating_procedure,
+                                            sop.no_kontrol as nomor_kontrol,
+                                            sop.no_revisi as nomor_revisi
+                                from        ds.ds_standard_operating_procedure as sop
+                                where       sop.sop_id=".$SOP.";";
+        $queryAmbilLinkSOP  =   $this->db->query($ambilLinkSOP);
+        return $queryAmbilLinkSOP->result_array();
+    }
+
+    public function ambilDaftarWIRooted($SOP, $CD, $BP)
+    {
+        $ambilDaftarWIRooted        = " select      wi.wi_id as id_work_instruction,
+                                                    wi.wi_name as nama_work_instruction,
+                                                    wi.no_kontrol as nomor_kontrol,
+                                                    wi.no_revisi as nomor_revisi,
+                                                    wi.tanggal as tanggal_revisi,
+                                                    wi.wi_file as file
+                                        from        ds.ds_work_instruction as wi
+                                        where       cast(split_part(wi.no_kontrol,'-',3) as integer)>0
+                                        order by    nomor_kontrol;";
+        $queryAmbilDaftarWIRooted   =   $this->db->query($ambilDaftarWIRooted);
+        return $queryAmbilDaftarWIRooted->result_array();
+    }
+
+    public function ambilJumlahWIRooted($SOP, $CD, $BP)
+    {
+        $ambilJumlahWIRooted     = "    select      count(wi.no_kontrol) as jumlah_work_instruction_berinduk
+                                        from        ds.ds_work_instruction as wi
+                                        where       wi.sop_id=".$SOP."
+                                                    and     wi.cd_id=".$CD."
+                                                    and     wi.bp_id=".$BP."
+                                                    and     cast(split_part(wi.no_kontrol,'-',3) as integer)>0;";
+        $queryAmbilJumlahWIRooted=   $this->db->query($ambilJumlahWIRooted);
+        return $queryAmbilJumlahWIRooted->result_array();
+   }
+
+   public function ambilDaftarCOPRooted($SOP, $CD, $BP)
+   {
+       $ambilDaftarCOPRooted    = " select      cop.cop_id as id_code_of_practice,
+                                                cop.cop_name as nama_code_of_practice,
+                                                cop.no_kontrol as nomor_kontrol,
+                                                cop.no_revisi as nomor_revisi,
+                                                cop.tanggal as tanggal_revisi,
+                                                cop.cop_file as file
+                                    from        ds.ds_code_of_practice as cop
+                                    where       cast(split_part(cop.no_kontrol,'-',3) as integer)>0
+                                    order by    nomor_kontrol;";
+        $queryAmbilDaftarCOPRooted  =   $this->db->query($ambilDaftarCOPRooted);
+        return $queryAmbilDaftarCOPRooted->result_array();
+   }
+
+   public function ambilJumlahCOPRooted($SOP, $CD, $BP)
+   {
+       $ambilJumlahCOPRooted        = " select      count(cop.no_kontrol) as jumlah_code_of_practice_berinduk
+                                        from        ds.ds_code_of_practice as cop
+                                        where       cop.sop_id=".$SOP."
+                                                    and     cop.cd_id=".$CD."
+                                                    and     cop.bp_id=".$BP."
+                                                    and     cast(split_part(cop.no_kontrol,'-',3) as integer)>0;";
+        $queryAmbilJumlahCOPRooted  =   $this->db->query($ambilJumlahCOPRooted);
+        return $queryAmbilJumlahCOPRooted->result_array();
+   }
+
+   public function ambilDaftarWIUnrooted($fungsi)
+   {
+        $ambilDaftarWIUnrooted      = " select      wi.wi_id as id_work_instruction,
+                                                    wi.wi_name as nama_work_instruction,
+                                                    wi.no_kontrol as nomor_kontrol,
+                                                    wi.no_revisi as nomor_revisi,
+                                                    wi.tanggal as tanggal_revisi,
+                                                    wi.wi_file as file
+                                        from        ds.ds_work_instruction as wi
+                                        where       cast(split_part(wi.no_kontrol,'-',3) as integer)=0
+                                                    and     split_part(wi.no_kontrol,'-',2)='".$fungsi."'
+                                        order by    nomor_kontrol;";
+        $queryAmbilDaftarWIUnrooted =   $this->db->query($ambilDaftarWIUnrooted);
+        return $queryAmbilDaftarWIUnrooted->result_array();
+   }
+
+   public function ambilDaftarCOPUnrooted($fungsi)
+   {
+       $ambilDaftarCOPUnrooted      = " select      cop.cop_id as id_code_of_practice,
+                                                    cop.cop_name as nama_code_of_practice,
+                                                    cop.no_kontrol as nomor_kontrol,
+                                                    cop.no_revisi as nomor_revisi,
+                                                    cop.tanggal as tanggal_revisi,
+                                                    cop.cop_file as file
+                                        from        ds.ds_code_of_practice as cop
+                                        where       cast(split_part(cop.no_kontrol,'-',3) as integer)=0
+                                                    and     split_part(cop.no_kontrol,'-',2)='".$fungsi."'
+                                        order by    nomor_kontrol;";
+        $queryAmbilDaftarCOPUnrooted=   $this->db->query($ambilDaftarCOPUnrooted);
+        return $queryAmbilDaftarCOPUnrooted->result_array();
+   }
+
+   public function ambilJumlahWIUnrooted($fungsi)
+   {
+
+        $ambilJumlahWIUnrooted   = "    select      count(wi.no_kontrol) as jumlah_work_instruction_tidak_berinduk
+                                        from        ds.ds_work_instruction as wi
+                                        where       cast(split_part(wi.no_kontrol,'-',3) as integer)=0
+                                                    and     split_part(wi.no_kontrol,'-',2)='".$fungsi."';   ";
+        $queryAmbilJumlahWIUnrooted =   $this->db->query($ambilJumlahWIUnrooted);
+        return $queryAmbilJumlahWIUnrooted->result_array();
+   }
+
+   public function ambilJumlahCOPUnrooted($fungsi)
+   {
+
+        $ambilJumlahCOPUnrooted  = "    select      count(cop.no_kontrol) as jumlah_code_of_practice_tidak_berinduk
+                                        from        ds.ds_code_of_practice as cop
+                                        where       cast(split_part(cop.no_kontrol,'-',3) as integer)=0
+                                                    and     split_part(cop.no_kontrol,'-',2)='".$fungsi."';";
+        $queryAmbilJumlahCOPUnrooted    =   $this->db->query($ambilJumlahCOPUnrooted);
+        return $queryAmbilJumlahCOPUnrooted->result_array();
+   }
+
+   public function ambilFungsi($CD)
+   {
+        $ambilFungsi        = " select      split_part(cd.no_kontrol,'-',2) as fungsi
+                                from        ds.ds_context_diagram as cd
+                                where       cd.cd_id=".$CD.";";
+        $queryAmbilFungsi   =   $this->db->query($ambilFungsi)       ;
+        $hasilAmbilFungsi   =   $queryAmbilFungsi->result_array();
+        return $hasilAmbilFungsi[0]['fungsi'];
+   }
+    // All Document ---------end---
 }
 
 /* End of file M_jobdesk.php */

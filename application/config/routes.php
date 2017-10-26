@@ -1209,8 +1209,11 @@ $route['CastingCost/edit/export_excel'] 	= 'CastingCost/MainMenu/C_ExportExcel/e
 
 $route['DocumentStandarization'] 								= 'DocumentStandarization/MainMenu/C_AllDoc';
 
-$route['DocumentStandarization/AllDoc'] 						= 'DocumentStandarization/MainMenu/C_AllDoc';
-$route['DocumentStandarization/AllDoc/(:any)'] 					= 'DocumentStandarization/MainMenu/C_AllDoc/$1';
+$route['DocumentStandarization/AllDoc'] 								= 'DocumentStandarization/MainMenu/C_AllDoc';
+$route['DocumentStandarization/AllDoc/(:any)'] 							= 'DocumentStandarization/MainMenu/C_AllDoc/$1';
+$route['DocumentStandarization/AllDoc/(:any)/(:any)'] 					= 'DocumentStandarization/MainMenu/C_AllDoc/$1/$2';
+$route['DocumentStandarization/AllDoc/(:any)/(:any)/(:any)'] 			= 'DocumentStandarization/MainMenu/C_AllDoc/$1/$2/$3';
+$route['DocumentStandarization/AllDoc/(:any)/(:any)/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_AllDoc/$1/$2/$3/$4';
 
 $route['DocumentStandarization/BP'] 							= 'DocumentStandarization/MainMenu/C_BusinessProcess';
 $route['DocumentStandarization/BP/(:any)'] 						= 'DocumentStandarization/MainMenu/C_BusinessProcess/$1';
@@ -1240,17 +1243,17 @@ $route['DocumentStandarization/DocumentHistory/(:any)/(:any)'] 	= 'DocumentStand
 // $route['DocumentStandarization/FlowProcess/(:any)'] 						= 'DocumentStandarization/MainMenu/C_FlowProcess/$1';
 // $route['DocumentStandarization/FlowProcess/(:any)/(:any)'] 					= 'DocumentStandarization/MainMenu/C_FlowProcess/$1/$2';
 
-$route['DocumentStandarization/MasterJobDesk'] 						= 'DocumentStandarization/MainMenu/C_Jobdesk';
-$route['DocumentStandarization/MasterJobDesk/(:any)'] 				= 'DocumentStandarization/MainMenu/C_Jobdesk/$1';
-$route['DocumentStandarization/MasterJobDesk/(:any)/(:any)'] 			= 'DocumentStandarization/MainMenu/C_Jobdesk/$1/$2';
+$route['DocumentStandarization/MasterJobDescription'] 					= 'DocumentStandarization/MainMenu/C_MasterJobDescription';
+$route['DocumentStandarization/MasterJobDescription/(:any)'] 			= 'DocumentStandarization/MainMenu/C_MasterJobDescription/$1';
+$route['DocumentStandarization/MasterJobDescription/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_MasterJobDescription/$1/$2';
 
-$route['DocumentStandarization/DocumentJobDesk'] 				= 'DocumentStandarization/MainMenu/C_JobdeskDocument';
-$route['DocumentStandarization/DocumentJobDesk/(:any)'] 		= 'DocumentStandarization/MainMenu/C_JobdeskDocument/$1';
-$route['DocumentStandarization/DocumentJobDesk/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdeskDocument/$1/$2';
+$route['DocumentStandarization/DocumentJobDescription'] 				= 'DocumentStandarization/MainMenu/C_DocumentJobDescription';
+$route['DocumentStandarization/DocumentJobDescription/(:any)'] 			= 'DocumentStandarization/MainMenu/C_DocumentJobDescription/$1';
+$route['DocumentStandarization/DocumentJobDescription/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_DocumentJobDescription/$1/$2';
 
-$route['DocumentStandarization/JobDeskPekerja'] 				= 'DocumentStandarization/MainMenu/C_JobdeskEmployee';
-$route['DocumentStandarization/JobDeskPekerja/(:any)'] 		= 'DocumentStandarization/MainMenu/C_JobdeskEmployee/$1';
-$route['DocumentStandarization/JobDeskPekerja/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdeskEmployee/$1/$2';
+$route['DocumentStandarization/JobDescriptionPekerja'] 					= 'DocumentStandarization/MainMenu/C_JobdescriptionEmployee';
+$route['DocumentStandarization/JobDescriptionPekerja/(:any)'] 			= 'DocumentStandarization/MainMenu/C_JobdescriptionEmployee/$1';
+$route['DocumentStandarization/JobDescriptionPekerja/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdescriptionEmployee/$1/$2';
 
 $route['DocumentStandarization/General'] 						= 'DocumentStandarization/MainMenu/C_General';
 $route['DocumentStandarization/General/(:any)'] 				= 'DocumentStandarization/MainMenu/C_General/$1';
@@ -1258,3 +1261,10 @@ $route['DocumentStandarization/General/(:any)/(:any)'] 			= 'DocumentStandarizat
 
 
 //---end------------------------------ Document Controller --------------------------------------------
+
+//---start---------------------------- Document Controller Pekerja ------------------------------------
+$route['DokumenPekerja'] 						=	'DokumenPekerja/C_DokumenCari';
+$route['DokumenPekerja/DokumenCari']			=	'DokumenPekerja/C_DokumenCari';
+$route['DokumenPekerja/DokumenCari/(:any)']		= 	'DokumenPekerja/C_DokumenCari/$1';
+$route['DokumenPekerja/DokumenAll']				=	'DokumenPekerja/C_DokumenAll';
+//---end------------------------------ Document Controller Pekerja ------------------------------------

@@ -57,7 +57,7 @@
                                                 <td style="white-space: nowrap;"><?php echo $row['nomor_dokumen'] ?></td>
                                                 <td style="white-space: nowrap;"><?php echo $row['nomor_revisi'] ?></td>
                                                 <td style="white-space: nowrap;"><?php echo $row['tanggal_revisi'] ?></td>
-												<td style="white-space: nowrap;"><a href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$row['file'];?>" target="_blank"><?php echo $row['nama_dokumen'] ?></a></td>
+												<td style="white-space: nowrap;"><a href="<?php echo base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$row['file'];?>" target="_blank"><?php echo $row['nama_dokumen'] ?></a></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
