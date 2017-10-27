@@ -186,6 +186,7 @@
 												
 												//Tax Invoice Number
 												$TaxInvNum = $row->TAX_NUMBER_DEPAN.$row->TAX_NUMBER_BELAKANG;
+												$TaxInvNum = preg_replace('/\D/', '', $TaxInvNum);//if they need check
 												if($row->TAX_NUMBER_BELAKANG == NULL){$TaxInvNum = '-';}
 											?>
 											<?php

@@ -243,25 +243,26 @@ class C_Report extends CI_Controller {
 			$newWorkSheet = new PHPExcel_Worksheet($objPHPExcel, $vdn);
 			$objPHPExcel->addSheet($newWorkSheet, $i);
 			$objPHPExcel->setActiveSheetIndex($i);
+			$activeSheetNow = $objPHPExcel->getActiveSheet();
 
-			$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(7);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(33);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(23);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(59);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+			$activeSheetNow->getColumnDimension('A')->setWidth(7);
+			$activeSheetNow->getColumnDimension('B')->setWidth(33);
+			$activeSheetNow->getColumnDimension('C')->setWidth(23);
+			$activeSheetNow->getColumnDimension('D')->setWidth(59);
+			$activeSheetNow->getColumnDimension('E')->setWidth(15);
+			$activeSheetNow->getColumnDimension('F')->setWidth(15);
+			$activeSheetNow->getColumnDimension('G')->setWidth(15);
+			$activeSheetNow->getColumnDimension('H')->setWidth(15);
+			$activeSheetNow->getColumnDimension('I')->setWidth(15);
 
-			$objPHPExcel->getActiveSheet()->mergeCells('A1:B1');
-			$objPHPExcel->getActiveSheet()->mergeCells('A2:B2');
-			$objPHPExcel->getActiveSheet()->mergeCells('C1:I1');
-			$objPHPExcel->getActiveSheet()->mergeCells('C2:I2');
-			$objPHPExcel->getActiveSheet()->SetCellValue('A1', 'NAMA SUPLIER : '.$splNPWP[0]['VENDOR_NAME']);
-			$objPHPExcel->getActiveSheet()->SetCellValue('A2', 'NPWP : '.$splNPWP[0]['NPWP']);
+			$activeSheetNow->mergeCells('A1:B1');
+			$activeSheetNow->mergeCells('A2:B2');
+			$activeSheetNow->mergeCells('C1:I1');
+			$activeSheetNow->mergeCells('C2:I2');
+			$activeSheetNow->SetCellValue('A1', 'NAMA SUPLIER : '.$splNPWP[0]['VENDOR_NAME']);
+			$activeSheetNow->SetCellValue('A2', 'NPWP : '.$splNPWP[0]['NPWP']);
 
-			$objPHPExcel->getActiveSheet()->getStyle("A4:I4")->applyFromArray(
+			$activeSheetNow->getStyle("A4:I4")->applyFromArray(
 				array(
 					'fill' => array(
 						'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -274,28 +275,31 @@ class C_Report extends CI_Controller {
 				)
 			);
 
-			$objPHPExcel->getActiveSheet()->SetCellValue('A4', 'NO');
-			$objPHPExcel->getActiveSheet()->SetCellValue('B4', 'NO.INVOICE');
-			$objPHPExcel->getActiveSheet()->SetCellValue('C4', 'TYPE');
-			$objPHPExcel->getActiveSheet()->SetCellValue('D4', 'DESCRIPTION');
-			$objPHPExcel->getActiveSheet()->SetCellValue('E4', 'TGL. PAYMENT');
-			$objPHPExcel->getActiveSheet()->SetCellValue('F4', 'PAYMENT METHOD');
-			$objPHPExcel->getActiveSheet()->SetCellValue('G4', 'QUANTITY');
-			$objPHPExcel->getActiveSheet()->SetCellValue('H4', 'UNIT PRICE');
-			$objPHPExcel->getActiveSheet()->SetCellValue('I4', 'AMOUNT');
+			$activeSheetNow->SetCellValue('A4', 'NO');
+			$activeSheetNow->SetCellValue('B4', 'NO.INVOICE');
+			$activeSheetNow->SetCellValue('C4', 'TYPE');
+			$activeSheetNow->SetCellValue('D4', 'DESCRIPTION');
+			$activeSheetNow->SetCellValue('E4', 'TGL. PAYMENT');
+			$activeSheetNow->SetCellValue('F4', 'PAYMENT METHOD');
+			$activeSheetNow->SetCellValue('G4', 'QUANTITY');
+			$activeSheetNow->SetCellValue('H4', 'UNIT PRICE');
+			$activeSheetNow->SetCellValue('I4', 'AMOUNT');
 
 			$baris = 5;
 			$nomorBaris = 1;
 			foreach ($detailInvoice as $dti) {
-				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$baris, $nomorBaris);
-				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$baris, $dti['INVOICE_NUM']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$baris, $dti['LINE_TYPE']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$baris, $dti['DESCRIPTION']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$baris, $dti['PAYMENT_DATE']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$baris, $dti['PAYMENT_METHOD']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('G'.$baris, $dti['QUANTITY_INVOICED']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('H'.$baris, $dti['UNIT_PRICE']);
-				$objPHPExcel->getActiveSheet()->SetCellValue('I'.$baris, $dti['AMOUNT']);
+				$activeSheetNow->SetCellValue('A'.$baris, $nomorBaris);
+				$activeSheetNow->SetCellValue('B'.$baris, $dti['INVOICE_NUM']);
+				$activeSheetNow->SetCellValue('C'.$baris, $dti['LINE_TYPE']);
+				$activeSheetNow->SetCellValue('D'.$baris, $dti['DESCRIPTION']);
+				$activeSheetNow->SetCellValue('E'.$baris, $dti['PAYMENT_DATE']);
+				$activeSheetNow->SetCellValue('F'.$baris, $dti['PAYMENT_METHOD']);
+				$activeSheetNow->SetCellValue('G'.$baris, $dti['QUANTITY_INVOICED']);
+				$activeSheetNow->SetCellValue('H'.$baris, $dti['UNIT_PRICE']);
+				$activeSheetNow->SetCellValue('I'.$baris, $dti['AMOUNT']);
+
+
+
 				$nomorBaris++;
 				$baris++;
 			};
