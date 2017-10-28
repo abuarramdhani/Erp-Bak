@@ -22,7 +22,7 @@ class M_invoice extends CI_Model{
 		}else if($invoice_status == 3){
 			$attribute = 'and aia.attribute3 is NULL ';
 		}
-		
+
 		$supplier 		= str_replace("'", "''", $supplier);
 
 		$oracle = $this->load->database("oracle",true);
@@ -453,6 +453,7 @@ class M_invoice extends CI_Model{
 								WHERE 
 								ATTRIBUTE5 = '$atr5'
 								AND ATTRIBUTE3 = '$atr3'
+								AND CANCELLED_DATE is NULL
 								");
 		return $query->result_array();
 
