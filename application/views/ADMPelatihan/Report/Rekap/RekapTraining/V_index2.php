@@ -3,39 +3,54 @@
 									<thead class="bg-primary">
 										<tr>
 											<th width="5%" style="text-align:center;">No</th>
-											<th width="10%" style="text-align:center;">Bulan</th>
-											<th width="10%" style="text-align:center;">Tahun</th>
+											<th width="20%">Tanggal</th>
 											<th >Nama Pelatihan</th>
+											<th width="10%">Sifat</th>
 											<th width="10%" style="text-align:center;">Sudah Terlaksana</th>
 											<th width="10%" style="text-align:center;">Belum Terlaksana</th>
 										</tr>
 									</thead>
 									<tbody>
-									<?php $no = 0; foreach ($report as $rc) { $no++;
-										foreach ($namaTrain as $nt) {
-											if ($rc['scheduling_id'] == $nt['scheduling_id']) {			
-												?>
+									<?php $no = 0; foreach ($report as $rc) { $no++;?>
 												<tr>
 													<td width="5%"><?php echo $no ?></td>
-													<td width="10%"><?php echo $rc['bulan']; ?></td>
-													<td width="10%"><?php echo $rc['tahun']; ?></td>
-													<td><?php echo $nt['scheduling_name']?></td>
-													<td width="10%"><?php echo $rc['persentase_terlaksana']?></td>
-													<td width="10%"><?php echo $rc['persentase_belum']?></td>
+													<td width="20%"><?php echo $rc['training_date']; ?>
+													<td><?php echo $rc['scheduling_name']?></td>
+													<td width="10%">
+														<?php if ($rc['sifat']==1) {
+															echo "Order";
+														} else {
+															echo "Tahunan";
+														} ?>		
+													</td>
+													<td width="10%" style="text-align:center;"><?php echo $rc['persentase_terlaksana']?></td>
+													<td width="10%" style="text-align:center;"><?php echo $rc['persentase_belum']?></td>
 												</tr>
-											<?php } 
-										} 
+											<?php 
 									}?>
 									</tbody>
 									<tfoot>
 										<tr>
-											<td colspan="4" style="text-align:center; background: #C2DFFF"><b>Total Rekap Training</b></td>
+											<td colspan="4" style="text-align:center; background: #C8EFFF"><b>Jumlah Training yang Belum/Telah Terlaksana</b></td>
+											<td  style="text-align:center;">
+												<?php foreach ($allpercentage as $pr) { 
+													echo $pr['terlaksana'];
+												} ?>
+											</td>
+											<td  style="text-align:center;">
+												<?php foreach ($allpercentage as $pr) { 
+													echo $pr['belum_terlaksana'];
+												} ?>
+											</td>
+										</tr>
+										<tr  style="text-align:center;"> 
+											<td colspan="4" style="text-align:center; background: #C2DFFF"><b>Total Presentase Rekap Training</b></td>
 											<td>
 												<?php foreach ($allpercentage as $pr) { 
 													echo $pr['persentase_terlaksana'];
 												} ?>
 											</td>
-											<td>
+											<td style="text-align:center;">
 												<?php foreach ($allpercentage as $pr) { 
 													echo $pr['persentase_belum'];
 												} ?>
