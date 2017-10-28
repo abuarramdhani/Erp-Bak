@@ -217,6 +217,11 @@ class C_ContextDiagram extends CI_Controller
 			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
 			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
 
+			if($fileDokumen=='')
+			{
+				$fileDokumen	=	NULL;
+			}
+
 			if($revisiBaru!=1)
 			{
 				$revisiBaru 		= 	0;
@@ -287,18 +292,17 @@ class C_ContextDiagram extends CI_Controller
 
 			if(is_null($fileDokumen))
 			{
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
-
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaContextDiagram, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 			}
 			else
 			{
-				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();			
 			}
 
-			if($revisiBaru==0)
-			{
-				$fileDokumen = $this->general->cekFile($namaContextDiagram, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-			}
+
 
 			if($revisiBaru==0)
 			{

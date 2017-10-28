@@ -57,9 +57,16 @@
                                                             <center>
                                                             <br/>
                                                                 <div class="btn-group-vertical">
-                                                                        <a type="button" class="btn btn-primary btn-lg buttonlistDocUpper buttonlistDoc" id="btnListDoc" title="'.$CD['nama_context_diagram'].'" href="'.$linkencode.'" style="width: 100%;">'.$CD['nomor_kontrol'].' - '.$CD['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$CD['nama_context_diagram'].'</h6></a>
-                                                                        <a type="button" class="btn btn-primary btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$CD['file']).'" target="_blank" style="width: 100%;"><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                </div>
+                                                                        <a type="button" class="btn btn-primary btn-lg buttonlistDocUpper buttonlistDoc" id="btnListDoc" title="'.$CD['nama_context_diagram'].'" href="'.$linkencode.'" style="width: 100%;">'.$CD['nomor_kontrol'].' - '.$CD['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$CD['nama_context_diagram'].'</h6></a>';
+                                                if($CD['file']==NULL || $CD['file']=='' || $CD['file']==' ')
+                                                {
+                                                    echo    '<a type="button" class="btn btn-primary btn-lg" title="Lihat Dokumen" disabled="" target="_blank" style="width: 100%;"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                else
+                                                {
+                                                    echo    '<a type="button" class="btn btn-primary btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$CD['file']).'" target="_blank" style="width: 100%;"><i class="fa fa-file-pdf-o fa-lg"></i></a>';                                                    
+                                                }
+                                                echo    '       </div>
                                                                 <br/>
                                                             </center>
                                                         </div>';
@@ -81,9 +88,16 @@
                                                             <center>
                                                             <br/>
                                                                 <div class="btn-group-vertical">
-                                                                        <a type="button" class="btn btn-primary btn-lg buttonlistDocUpper buttonlistDoc" id="btnListDoc" title="'.$CD['nama_context_diagram'].'" href="'.$linkencode.'" style="width: 100%;">'.$CD['nomor_kontrol'].' - '.$CD['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$CD['nama_context_diagram'].'</h6></a>
-                                                                        <a type="button" class="btn btn-primary btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$CD['file']).'" target="_blank" style="width: 100%;"><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                </div>
+                                                                        <a type="button" class="btn btn-primary btn-lg buttonlistDocUpper buttonlistDoc" id="btnListDoc" title="'.$CD['nama_context_diagram'].'" href="'.$linkencode.'" style="width: 100%;">'.$CD['nomor_kontrol'].' - '.$CD['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$CD['nama_context_diagram'].'</h6></a>';
+                                                if($CD['file']==NULL || $CD['file']=='' || $CD['file']==' ')
+                                                {
+                                                    echo    '<a type="button" class="btn btn-primary btn-lg" title="Lihat Dokumen" disabled="" target="_blank" style="width: 100%;"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                else
+                                                {
+                                                    echo    '<a type="button" class="btn btn-primary btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$CD['file']).'" target="_blank" style="width: 100%;"><i class="fa fa-file-pdf-o fa-lg"></i></a>';                                                    
+                                                }
+                                                echo    '       </div>
                                                                 <br/>
                                                             </center>
                                                         </div>';

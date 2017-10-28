@@ -322,7 +322,10 @@ class C_WorkInstruction extends CI_Controller
 			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
 			if(is_null($fileDokumen))
 			{
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 			}
 			else
 			{
@@ -341,8 +344,6 @@ class C_WorkInstruction extends CI_Controller
 				$ContextDiagram 	= 	$this->general->cekContextDiagram($SOP);
 				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
 			}
-
-			$fileDokumen = $this->general->cekFile($namaWI, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
 
 			if($revisiBaru==0)
 			{

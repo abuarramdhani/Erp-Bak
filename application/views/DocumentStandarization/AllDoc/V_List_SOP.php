@@ -76,9 +76,16 @@
                                                             <center>
                                                             <br/>
                                                                 <div class="btn-group-vertical">
-                                                                        <a type="button" class="btn btn-success btn-lg buttonlistDocUpper buttonlistDoc" title="'.$SOP['nama_standard_operating_procedure'].'" href="'.$linkencode.'">'.$SOP['nomor_kontrol'].' - '.$SOP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$SOP['nama_standard_operating_procedure'].'</h6></a>
-                                                                        <a type="button" class="btn btn-success btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$SOP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                </div>
+                                                                        <a type="button" class="btn btn-success btn-lg buttonlistDocUpper buttonlistDoc" title="'.$SOP['nama_standard_operating_procedure'].'" href="'.$linkencode.'">'.$SOP['nomor_kontrol'].' - '.$SOP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$SOP['nama_standard_operating_procedure'].'</h6></a>';
+                                                if($SOP['file']==NULL || $SOP['file']=='' || $SOP['file']==' ')
+                                                {
+                                                    echo    '<a type="button" class="btn btn-success btn-lg" title="Lihat Dokumen" disabled="" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                else
+                                                {
+                                                    echo    '<a type="button" class="btn btn-success btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$SOP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                echo '                </div>
                                                                 <br/>
                                                             </center>
                                                         </div>';
@@ -100,9 +107,16 @@
                                                             <center>
                                                             <br/>
                                                                 <div class="btn-group-vertical">
-                                                                        <a type="button" class="btn btn-success btn-lg buttonlistDocUpper buttonlistDoc" title="'.$SOP['nama_standard_operating_procedure'].'" href="'.$linkencode.'">'.$SOP['nomor_kontrol'].' - '.$SOP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$SOP['nama_standard_operating_procedure'].'</h6></a>
-                                                                        <a type="button" class="btn btn-success btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$SOP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                </div>
+                                                                        <a type="button" class="btn btn-success btn-lg buttonlistDocUpper buttonlistDoc" title="'.$SOP['nama_standard_operating_procedure'].'" href="'.$linkencode.'">'.$SOP['nomor_kontrol'].' - '.$SOP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$SOP['nama_standard_operating_procedure'].'</h6></a>';
+                                                if($SOP['file']==NULL || $SOP['file']=='' || $SOP['file']==' ')
+                                                {
+                                                    echo    '<a type="button" class="btn btn-success btn-lg" title="Lihat Dokumen" disabled="" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                else
+                                                {
+                                                    echo    '<a type="button" class="btn btn-success btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$SOP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                echo '                </div>
                                                                 <br/>
                                                             </center>
                                                         </div>';

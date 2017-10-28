@@ -250,6 +250,11 @@ class C_BusinessProcess extends CI_Controller
 			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
 			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
 
+			if($fileDokumen=='')
+			{
+				$fileDokumen	=	NULL;
+			}
+
 			if($revisiBaru!=1)
 			{
 				$revisiBaru 		=	0;
@@ -326,15 +331,14 @@ class C_BusinessProcess extends CI_Controller
 			if(!is_null($fileDokumen))
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			
 			}
 			else
 			{	
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
-			}
-
-			if($revisiBaru==0)
-			{
-				$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 			}
 			
 			if($revisiBaru==0)

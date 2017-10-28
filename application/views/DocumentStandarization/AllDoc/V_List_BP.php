@@ -46,9 +46,16 @@
                                                             <center>
                                                                 <br/>
                                                                 <div class="btn-group-vertical">
-                                                                        <a type="button" class="btn btn-danger btn-lg buttonlistDocUpper buttonlistDoc" title="'.$BP['nama_business_process'].'" href="'.$linkencode.'" style="width: 100%;">'.$BP['nomor_kontrol'].' - '.$BP['nomor_revisi'].'<br/><h6 style="white-space:normal;">'.$BP['nama_business_process'].'</h6></a>
-                                                                        <a type="button" class="btn btn-danger btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$BP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                </div>
+                                                                        <a type="button" class="btn btn-danger btn-lg buttonlistDocUpper buttonlistDoc" title="'.$BP['nama_business_process'].'" href="'.$linkencode.'" style="width: 100%;">'.$BP['nomor_kontrol'].' - '.$BP['nomor_revisi'].'<br/><h6 style="white-space:normal;">'.$BP['nama_business_process'].'</h6></a>';
+                                                if($BP['file']==NULL || $BP['file']=='' || $BP['file']==' ')
+                                                {
+                                                    echo    '<a type="button" class="btn btn-danger btn-lg" title="Lihat Dokumen" disabled="" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                else
+                                                {
+                                                    echo    '<a type="button" class="btn btn-danger btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$BP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                echo    '   </div>
                                                                 <br/>
                                                             </center>
                                                         </div>';
@@ -68,9 +75,16 @@
                                                             <center>
                                                                 <br/>
                                                                 <div class="btn-group-vertical">
-                                                                        <a type="button" class="btn btn-danger btn-lg buttonlistDocUpper buttonlistDoc" title="'.$BP['nama_business_process'].'" href="'.$linkencode.'" style="width: 100%;">'.$BP['nomor_kontrol'].' - '.$BP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$BP['nama_business_process'].'</h6></a>
-                                                                        <a type="button" class="btn btn-danger btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$BP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                </div>
+                                                                        <a type="button" class="btn btn-danger btn-lg buttonlistDocUpper buttonlistDoc" title="'.$BP['nama_business_process'].'" href="'.$linkencode.'" style="width: 100%;">'.$BP['nomor_kontrol'].' - '.$BP['nomor_revisi'].'<br/><h6 style="white-space:normal;">'.$BP['nama_business_process'].'</h6></a>';
+                                                if($BP['file']==NULL || $BP['file']=='' || $BP['file']==' ')
+                                                {
+                                                    echo    '<a type="button" class="btn btn-danger btn-lg" title="Lihat Dokumen" disabled="" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                else
+                                                {
+                                                    echo    '<a type="button" class="btn btn-danger btn-lg" title="Lihat Dokumen" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$BP['file']).'" target="_blank"><i class="fa fa-file-pdf-o fa-lg"></i></a>';
+                                                }
+                                                echo    '   </div>
                                                                 <br/>
                                                             </center>
                                                         </div>';
