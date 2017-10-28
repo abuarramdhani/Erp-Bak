@@ -39,7 +39,7 @@
 									<input name="txtDate2" class="form-control singledate">
 								</div>
 								<div class="col-lg-2">
-									<button class="btn btn-primary btn-flat btn-block" id="SearchReport3">Filter</button>
+									<button class="btn btn-primary btn-flat btn-block" id="SearchEfektifTrain">Filter</button>
 								</div>
 								<div class="col-lg-1" align="center" id="loading">
 								</div>
