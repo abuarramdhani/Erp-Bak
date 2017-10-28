@@ -281,9 +281,11 @@ class C_TransaksiHitungThr extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
+						$dt = explode("/",$row['PERIODE']);
+						$periode = str_replace(" ","",$dt[1]."-".$dt[0]);
 	                    $data = array(
 	                    	'id_data_thr' => $row['ID_THR'],
-							'periode' => $row['PERIODE'],
+							'periode' => $periode,
 							'noind' => $row['NOIND'],
 							'kd_status_kerja' => $row['KD_STATUS'],
 							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -295,7 +297,7 @@ class C_TransaksiHitungThr extends CI_Controller
 						
 						$data_transaksi = array(
 	                    	'id_transaksi_thr' => $row['ID_THR'],
-							'periode' => $row['PERIODE'],
+							'periode' => $periode,
 							'noind' => $row['NOIND'],
 							'kd_status_kerja' => $row['KD_STATUS'],
 							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -310,7 +312,7 @@ class C_TransaksiHitungThr extends CI_Controller
 	                    	$data_exist[$i] = $data;
 	                    	$i++;
 							$data_update = array(
-								'periode' => $row['PERIODE'],
+								'periode' => $periode,
 								'noind' => $row['NOIND'],
 								'kd_status_kerja' => $row['KD_STATUS'],
 								'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -329,7 +331,7 @@ class C_TransaksiHitungThr extends CI_Controller
 	                    	$data_exist[$i] = $data;
 	                    	$i++;
 							$data_update = array(
-								'periode' => $row['PERIODE'],
+								'periode' => $periode,
 								'noind' => $row['NOIND'],
 								'kd_status_kerja' => $row['KD_STATUS'],
 								'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -409,7 +411,7 @@ class C_TransaksiHitungThr extends CI_Controller
         foreach ($importData as $row) {
            $data = array(
                'id_data_thr' => $row['ID_THR'],
-				'periode' => $row['PERIODE'],
+				'periode' => $periode,
 				'noind' => $row['NOIND'],
 				'kd_status_kerja' => $row['KD_STATUS'],
 				'diangkat' => $row['DIANGKAT'],

@@ -125,12 +125,12 @@ class C_MasterParamPengurangPajak extends CI_Controller
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
-			'tgl_tberlaku' 	=> date('Y-m-d'),
+			'tgl_tberlaku' 	=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 		);
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'tgl_berlaku' 				=> date('Y-m-d'),
+			'tgl_berlaku' 				=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 			'tgl_tberlaku' 				=> '9999-12-31',
 			'max_jab' 					=> str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 			'persentase_jab' 			=> $this->input->post('txtPersentaseJab',TRUE),

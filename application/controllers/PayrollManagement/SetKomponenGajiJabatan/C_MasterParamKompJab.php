@@ -120,19 +120,62 @@ class C_MasterParamKompJab extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		$data = array(
-			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
-			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
-			'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
-			'ip' => $this->input->post('txtIp',TRUE),
-			'ik' => $this->input->post('txtIk',TRUE),
-			'ims' => $this->input->post('txtIms',TRUE),
-			'imm' => $this->input->post('txtImm',TRUE),
-			'pot_duka' => $this->input->post('txtPotDuka',TRUE),
-			'spsi' => $this->input->post('txtSpsi',TRUE),
+		
+		$check = $this->M_masterparamkompjab->get_by_id($this->input->post('txtIdKompJabNew',TRUE));
+		if($check){
+			$data = array(
+				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
+				'ip' => str_replace(",","",$this->input->post('txtIp',TRUE)),
+				'ik' => str_replace(",","",$this->input->post('txtIk',TRUE)),
+				'ims' => str_replace(",","",$this->input->post('txtIms',TRUE)),
+				'imm' => str_replace(",","",$this->input->post('txtImm',TRUE)),
+				'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
+				'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
+			);
+			$this->M_masterparamkompjab->update($this->input->post('txtIdKompJabNew',TRUE),$data);
+		}else{
+			$data = array(
+				'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
+				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
+				'ip' => str_replace(",","",$this->input->post('txtIp',TRUE)),
+				'ik' => str_replace(",","",$this->input->post('txtIk',TRUE)),
+				'ims' => str_replace(",","",$this->input->post('txtIms',TRUE)),
+				'imm' => str_replace(",","",$this->input->post('txtImm',TRUE)),
+				'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
+				'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
+			);
+			$this->M_masterparamkompjab->insert($data);
+		}
+		
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),			
 		);
-
-        $this->M_masterparamkompjab->insert($data);
+		
+		$ru_data = array(
+			'tgl_tberlaku' => $this->input->post('txtPeriodeKompJabatan',TRUE),
+		);
+        
+		$ri_data = array(
+			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+			'tgl_berlaku' => $this->input->post('txtPeriodeKompJabatan',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
+			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
+			'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
+			'ip' => str_replace(",","",$this->input->post('txtIp',TRUE)),
+			'ik' => str_replace(",","",$this->input->post('txtIk',TRUE)),
+			'ims' => str_replace(",","",$this->input->post('txtIms',TRUE)),
+			'imm' => str_replace(",","",$this->input->post('txtImm',TRUE)),
+			'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
+			'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
+			'kode_petugas' => $this->session->userdata('userid'),
+			'tgl_record' => date('Y-m-d H:i:s'),
+		);
+		
+		$this->M_masterparamkompjab->update_riwayat($ru_where,$ru_data);
+		$this->M_masterparamkompjab->insert_riwayat($ri_data);
         $this->session->set_flashdata('message', 'Create Record Success');
 		$ses=array(
 				 "success_insert" => 1

@@ -223,13 +223,22 @@ $('#dataTables-MasterJabatanUpah').DataTable( {
       ]
     });
 	
+$('#dataTables-KlaimGajiIndividual').DataTable( {
+	  "destroy": true,
+      dom: 'Bfrtip',
+	  "scrollX": true,
+      buttons: [
+        'excel'
+      ]
+    });
+	
 $('#dataTables-masterJabatan').DataTable( {
 	  "destroy": true,
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
-    });
+    });  
 
 	$('#dataTables-masterSeksi').DataTable( {
 	  "destroy": true,
@@ -608,7 +617,13 @@ $('#dataTables-reportRiwayatMutasi').DataTable( {
       ]
     });
 
-
+function change_komp_jab(){
+	var stat_krj = $('#cmbKdStatusKerja option:selected').attr('value'),
+		kd_jab = $('#cmbKdJabatan option:selected').attr('value'),
+		str = stat_krj+kd_jab
+		id_kom_jab = str.replace(" ", "");
+	$('#txtIdKompJabNew').val(id_kom_jab);
+}
 	
 function getMaxHutang(noind){
   $.ajax({

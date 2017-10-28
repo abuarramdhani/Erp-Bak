@@ -48,8 +48,9 @@ class C_MasterGajiKaryawan extends CI_Controller
         $user_id = $this->session->userid;
         
 		$periode = $this->input->post('txtPeriodeHitung',TRUE);
-		$year	 = substr($periode,0,4);
-		$month	 = substr($periode,5,2);
+		$dt = explode("/",$periode);
+		$year	 = $dt[1];
+		$month	 = $dt[0];
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Master Gaji';
         $data['SubMenuTwo'] = '';

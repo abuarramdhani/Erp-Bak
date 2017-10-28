@@ -4,6 +4,7 @@ class M_masterparamkompjab extends CI_Model
 {
 
     public $table = 'pr.pr_master_param_komp_jab';
+    public $table_riwayat = 'pr.pr_riwayat_param_komp_jab';
     public $id = 'id_komp_jab';
     public $order = 'DESC';
 
@@ -31,12 +32,24 @@ class M_masterparamkompjab extends CI_Model
     {
         $this->db->insert($this->table, $data);
     }
+	
+	// insert data
+    function insert_riwayat($data)
+    {
+        $this->db->insert($this->table_riwayat, $data);
+    }
 
     // update data
     function update($id, $data)
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+	
+	function update_riwayat($where, $data)
+    {
+        $this->db->where($where);
+        $this->db->update($this->table_riwayat, $data);
     }
 
     // delete data

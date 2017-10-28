@@ -40,7 +40,7 @@ class C_TransaksiPenggajian extends CI_Controller
         $this->load->view('PayrollManagement/BrowseTransaksiPenggajian/V_index', $data);
         $this->load->view('V_Footer',$data);
 		$this->session->unset_userdata('success_insert');
-		// $this->session->unset_userdata('session_date');
+		$this->session->unset_userdata('session_date');
     }
 	
 	public function Check(){
@@ -100,10 +100,9 @@ class C_TransaksiPenggajian extends CI_Controller
 		
 		$varYear	= $this->input->post('txtYear',TRUE);
 		$varMonth	= $this->input->post('txtMonth',TRUE);
-		exit();
 		$varDate	= $varYear."-".$varMonth."-20";
 		$date			= date('Y-m-d');
-		$spc = "";
+		$spc = "and b.noind='B0145'";
 		$getDataGajianPersonalia	= $this->M_transaksipenggajian->getDataGajianPersonalia($varYear,$varMonth,$date,$spc);
 		$no = 0;
 		foreach($getDataGajianPersonalia as $row1){
@@ -345,10 +344,10 @@ class C_TransaksiPenggajian extends CI_Controller
 						
 						$ttl_premi			= $fx_jkk + $fx_jkm + $fx_jkn_p + $fx_jht_p + $fx_jpp ;
 						$gaji_bruto			= $gaji_sbln + $ttl_premi;
-						if(($gaji_bruto * $p_persentase_jab) > $p_max_jab){
+						if((($gaji_bruto * $p_persentase_jab)/100) > $p_max_jab){
 							$fx_bea_jab		= $p_max_jab;
 						}else{
-							$fx_bea_jab		= $gaji_bruto * $p_persentase_jab;
+							$fx_bea_jab		= ($gaji_bruto * $p_persentase_jab)/100;
 						}
 						$pot					=  $fx_jht_k + $fx_jkn_k + $fx_jpk;
 						if($pot > $p_max_pensiun){
@@ -361,7 +360,6 @@ class C_TransaksiPenggajian extends CI_Controller
 						}
 						$gaji_sd_bln_tsb= $gaji_netto + $r_gaji_sd_bln_tsb;
 						$gaji_setahun		= $gaji_sd_bln_tsb+((12 - ((int)01)) * (($std_gaji + $ttl_premi)-$ttl_pot));
-						$test =  $gaji_netto + $r_gaji_sd_bln_tsb;
 						$gaji_kena_ptkp	= $gaji_setahun - $fx_ptkp;
 						if($gaji_kena_ptkp <= 0){
 							$gaji_kena_ptkp = 0;
@@ -633,39 +631,45 @@ class C_TransaksiPenggajian extends CI_Controller
 						}
 						
 						// REVIEW PERHITUNGAN
-						// echo "<table>";
-						// echo "<tr><td>trial</td><td>= ".$test."</td></tr>";
-						// echo "<tr><td>gaji pokok</td><td>= ".$fx_gaji_pokok."</td></tr>";
-						// echo "<tr><td>insentif</td><td>= ".$std_insentif."</td></tr>";
-						// echo "<tr><td>gaji pokok bln ini</td><td>= ".$gp_bln_ini."</td></tr>";
-						// echo "<tr><td>insentif bln ini</td><td>= ".$insentif_bln_ini."</td></tr>";
-						// echo "<tr><td>perjalanan dinas</td><td>= ".$fx_klaim_dl."</td></tr>";
-						// echo "<tr><td>thr</td><td>= ".$fx_thr."</td></tr>";
-						// echo "<tr><td>ubthr</td><td>= ".$fx_ubthr."</td></tr>";
-						// echo "<tr><td>lembur</td><td>= ".$fx_lembur."</td></tr>";
-						// echo "<tr><td>koreksi</td><td>= ".$fx_kp."</td></tr>";
-						// echo "<tr><td>penghasilan sebulan</td><td>= ".$gaji_sbln."</td></tr>";
-						// echo "<tr><td>premi jkk</td><td>= ".$fx_jkk."</td></tr>";
-						// echo "<tr><td>premi jk</td><td>= ".$fx_jkm."</td></tr>";
-						// echo "<tr><td>premi jkn</td><td>= ".$fx_jkn_p."</td></tr>";
-						// echo "<tr><td>premi jht</td><td>= ".$fx_jht_p."</td></tr>";
-						// echo "<tr><td>premi jp</td><td>= ".$fx_jpp."</td></tr>";
-						// echo "<tr><td>total premi</td><td>= ".$ttl_premi."</td></tr>";
-						// echo "<tr><td>jumlah penghasilan bruto</td><td>= ".$gaji_bruto."</td></tr>";
-						// echo "<tr><td>biaya jabatan</td><td>= ".$fx_bea_jab."</td></tr>";
-						// echo "<tr><td>pot jht</td><td>= ".$fx_jht_k."</td></tr>";
-						// echo "<tr><td>pot jkn</td><td>= ".$fx_jkn_k."</td></tr>";
-						// echo "<tr><td>pot jp</td><td>= ".$fx_jpk."</td></tr>";
-						// echo "<tr><td>total pengurangan</td><td>= ".$ttl_pot."</td></tr>";
-						// echo "<tr><td>penghasilan netto sebulan</td><td>= ".$gaji_netto."</td></tr>";
-						// echo "<tr><td>penghasilan netto setahun</td><td>= ".$gaji_setahun."</td></tr>";
-						// echo "<tr><td>PTKP</td><td>= ".$fx_ptkp."</td></tr>";
-						// echo "<tr><td>penghasilan kena pajak setahun</td><td>= ".$gaji_kena_ptkp."</td></tr>";
-						// echo "<tr><td>pembulatan</td><td>= ".$pemb_gaji_kena_ptkp."</td></tr>";
-						// echo "<tr><td>pph21 setahun</td><td>= ".$Pph21_setahun."</td></tr>";
-						// echo "<tr><td>pph21 sebulan</td><td>= ".$pajak_sebulan."</td></tr>";
-						// echo "<tr><td>yang harus di bayar</td><td>= ".$fx_pajak."</td></tr>";
-						// echo "</table>";
+						echo "<table>";
+						echo "<tr><td>Noind</td><td>= ".$noind."</td></tr>";
+						echo "<tr><td>std gaji pokok</td><td>= ".$fx_gaji_pokok."</td></tr>";
+						echo "<tr><td>std IK</td><td>= ".($r_ik * 25)."</td></tr>";
+						echo "<tr><td>std IP</td><td>= ".($r_ip * 25)."</td></tr>";
+						echo "<tr><td>std IF</td><td>= ".($r_i_f * 25)."</td></tr>";
+						echo "<tr><td>std UBT</td><td>= ".($r_ubt * 25)."</td></tr>";
+						echo "<tr><td>str UPAMK</td><td>= ".($pr_upamk * 25)."</td></tr>";
+						echo "<tr><td>std insentif</td><td>= ".$std_insentif."</td></tr>";
+						echo "<tr><td>gaji pokok bln ini</td><td>= ".$gp_bln_ini."</td></tr>";
+						echo "<tr><td>insentif bln ini</td><td>= ".$insentif_bln_ini."</td></tr>";
+						echo "<tr><td>perjalanan dinas</td><td>= ".$fx_klaim_dl."</td></tr>";
+						echo "<tr><td>thr</td><td>= ".$fx_thr."</td></tr>";
+						echo "<tr><td>ubthr</td><td>= ".$fx_ubthr."</td></tr>";
+						echo "<tr><td>lembur</td><td>= ".$fx_lembur."</td></tr>";
+						echo "<tr><td>koreksi</td><td>= ".$fx_kp."</td></tr>";
+						echo "<tr><td>penghasilan sebulan</td><td>= ".$gaji_sbln."</td></tr>";
+						echo "<tr><td>premi jkk</td><td>= ".$fx_jkk."</td></tr>";
+						echo "<tr><td>premi jk</td><td>= ".$fx_jkm."</td></tr>";
+						echo "<tr><td>premi jkn</td><td>= ".$fx_jkn_p."</td></tr>";
+						echo "<tr><td>premi jht</td><td>= ".$fx_jht_p."</td></tr>";
+						echo "<tr><td>premi jp</td><td>= ".$fx_jpp."</td></tr>";
+						echo "<tr><td>total premi</td><td>= ".$ttl_premi."</td></tr>";
+						echo "<tr><td>jumlah penghasilan bruto</td><td>= ".$gaji_bruto."</td></tr>";
+						echo "<tr><td>biaya jabatan</td><td>= ".$fx_bea_jab."</td></tr>";
+						echo "<tr><td>pot jht</td><td>= ".$fx_jht_k."</td></tr>";
+						echo "<tr><td>pot jkn</td><td>= ".$fx_jkn_k."</td></tr>";
+						echo "<tr><td>pot jp</td><td>= ".$fx_jpk."</td></tr>";
+						echo "<tr><td>total pengurangan</td><td>= ".$ttl_pot."</td></tr>";
+						echo "<tr><td>penghasilan netto sebulan</td><td>= ".$gaji_netto."</td></tr>";
+						echo "<tr><td>penghasilan netto setahun</td><td>= ".$gaji_setahun."</td></tr>";
+						echo "<tr><td>PTKP</td><td>= ".$fx_ptkp."</td></tr>";
+						echo "<tr><td>penghasilan kena pajak setahun</td><td>= ".$gaji_kena_ptkp."</td></tr>";
+						echo "<tr><td>pembulatan</td><td>= ".$pemb_gaji_kena_ptkp."</td></tr>";
+						echo "<tr><td>pph21 setahun</td><td>= ".$Pph21_setahun."</td></tr>";
+						echo "<tr><td>pph21 sebulan</td><td>= ".$pajak_sebulan."</td></tr>";
+						echo "<tr><td>yang harus di bayar</td><td>= ".$fx_pajak."</td></tr>";
+						echo "</table> <br><br>";
+						exit();
 					}
 		}
 		$this->session->set_flashdata('message', 'Session registered');
