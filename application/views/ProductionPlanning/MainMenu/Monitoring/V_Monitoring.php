@@ -71,35 +71,35 @@
                                                         ?>
                                                     </b>
                                                 </div>
-                                                <table class="table mon-fab-table dailyPlan" data-secid="<?php echo $selectedSection[$i]; ?>">
-                                                    <thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
+                                                <table class="table table-border-mon-prod mon-fab-table dailyPlan" data-secid="<?php echo $selectedSection[$i]; ?>" style="border: 2px solid #000;">
+                                                    <thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
                                                         <tr>
                                                             <td>
-                                                                No
+                                                                NO
                                                             </td>
                                                             <td>
-                                                                Item
+                                                                ITEM
                                                             </td>
                                                             <td>
-                                                                Desc
+                                                                DESC
                                                             </td>
                                                             <td>
-                                                                Priority
+                                                                PRIORITY
                                                             </td>
                                                             <td>
-                                                                Need Qty
+                                                                NEED QTY
                                                             </td>
                                                             <td>
-                                                                Due Time
+                                                                DUE TIME
                                                             </td>
                                                             <td>
-                                                                Achieve Qty
+                                                                ACHIEVE QTY
                                                             </td>
                                                             <td>
-                                                                Last Delivery
+                                                                LAST DELIVERY
                                                             </td>
                                                             <td>
-                                                                Status
+                                                                STATUS
                                                             </td>
                                                         </tr>
                                                     </thead>
@@ -257,15 +257,15 @@
                                         </div>
                                         <div class="col-md-4">
                                             <br>
-                                            <table class="table table-bordered infoJob" data-secid="<?php echo $selectedSection[$i]; ?>">
-                                                <thead>
+                                            <table class="table table-border-mon-prod infoJob" data-secid="<?php echo $selectedSection[$i]; ?>" style="border: 2px solid #000;">
+                                                <thead style="font-weight: bold; font-size: 14px;">
                                                     <tr>
                                                 		<td></td>
                                                 		<td class="text-center">JUMLAH JOB</td>
                                                 		<td class="text-center">JUMLAH PART (PCS)</td>
                                                 	</tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody style="font-weight: bold; font-size: 14px;">
                                                 	<tr>
                                                 		<td>JOB RELEASED</td>
                                                 		<td class="text-right">
@@ -314,7 +314,7 @@
                     <div class="col-lg-2 col-md-2">
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-bordered" id="achieveAllFab">
+                                <table class="table table-border-mon-prod" id="achieveAllFab" style="border: 2px solid #000;">
                                 	<tr>
                                 		<td colspan="2">
                                 			<b>ACHIEVEMENT ALL FAB</b>

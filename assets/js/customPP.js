@@ -101,7 +101,7 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
             maintainAspectRatio: false,
         }
     });
-    Chart.defaults.global.defaultFontColor = 'white';
+    Chart.defaults.global.defaultFontColor = '#000';
     var count = label.length;
     for (var i = 0; i < count; i++) {
         chartMF.data.datasets.push({

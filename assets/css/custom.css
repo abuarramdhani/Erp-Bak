@@ -584,8 +584,8 @@ table.t_riwayat_mutasi td {
     width: 100%;
     position: fixed;
     padding: 0px 5px 10px 5px;
-    background-color: #2C3E50;
-    color: #fff;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .plan-undone-high {
@@ -601,6 +601,14 @@ table.t_riwayat_mutasi td {
 .plan-done {
     background-color: #1bc171;
     color: #fff;
+}
+
+.table-border-mon-prod {
+    border: 2px solid #000;
+}
+
+.table-border-mon-prod > thead > tr > td, .table-border-mon-prod > tbody > tr > td {
+    border: 2px solid #000;
 }
 
 
