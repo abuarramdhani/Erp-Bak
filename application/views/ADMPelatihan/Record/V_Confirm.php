@@ -98,6 +98,19 @@
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat</label>
+									<div class="col-lg-9">
+										<?php if ($rc['sifat']==1) {?>
+											<input class="form-control" value="<?php echo "Order"?>" readonly >
+										<?php } ?>
+										<?php if ($rc['sifat']==2) {?>
+											<input class="form-control" value="<?php echo "Tahunan"?>" readonly >
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
 									<div class="col-lg-3">
 										<input class="form-control" value="<?php echo $rc['participant_type_description'] ?>" readonly >
@@ -269,19 +282,21 @@
 									</table>
 								</div>
 							</div>
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-12 control-label">*) Standar kelulusan :
-									<?php
-									if ($stafdata!=null && $nonstafdata!=null) {
-										echo '<br><br> <b>Staf:</b> <br> '.implode($stafdata, ', ').' = '.$rc['limit_1'];
-										echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
-									} elseif ($stafdata!=null && $nonstafdata==null) {
-										echo '<br><br> <b>Staf:</b> <br>'.implode($stafdata, ', ').' = '.$rc['limit_1'];
-									} else {
-										echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
-									}
-									?></label>
+							<div class="bg-primary disabled color-palette">
+								<div class="row" style="margin: 10px 10px">
+									<div class="form-group">
+										<label class="col-lg-12 control-label">*) Standar kelulusan :
+										<?php
+										if ($stafdata!=null && $nonstafdata!=null) {
+											echo '<br><br> <b>Staf:</b> <br> '.implode($stafdata, ', ').' = '.$rc['limit_1'];
+											echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
+										} elseif ($stafdata!=null && $nonstafdata==null) {
+											echo '<br><br> <b>Staf:</b> <br>'.implode($stafdata, ', ').' = '.$rc['limit_1'];
+										} else {
+											echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
+										}
+										?></label>
+									</div>
 								</div>
 							</div>
 							<hr>
