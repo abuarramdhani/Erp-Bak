@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
 
 class C_DataPlanDaily extends CI_Controller {
 
@@ -15,7 +16,8 @@ class C_DataPlanDaily extends CI_Controller {
         $this->load->library('upload');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+        $this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+		$this->load->model('ProductionPlanning/MainMenu/M_itemplan');
 		$this->load->model('ProductionPlanning/Settings/GroupSection/M_groupsection');
     }
 	
@@ -71,7 +73,7 @@ class C_DataPlanDaily extends CI_Controller {
 
 	public function CreateSubmit()
 	{
-		$user_id  = $this->session->userid;
+		$user_id    = $this->session->userid;
 		$section 	= $this->input->post('section');
 		$fileName 	= time().'-'.$_FILES['dataPlan']['name'];
         $config['upload_path'] = 'assets/upload/ProductionPlanning/data-plan';
@@ -102,150 +104,148 @@ class C_DataPlanDaily extends CI_Controller {
             		    <script type="text/javascript">
 							$("#messUpPP").modal("show");
 						</script>';
-            	$this->Create($message);
-        	}else{
-	        	$media	= $this->upload->data();
-	        	$inputFileName 	= 'assets/upload/ProductionPlanning/data-plan/'.$media['file_name'];
-                $subInv = $this->M_dataplan->getSection($user_id,$section);
+        	$this->Create($message);
+    	}else{
+        	$media	= $this->upload->data();
+        	$inputFileName 	= 'assets/upload/ProductionPlanning/data-plan/'.$media['file_name'];
 
-                try{
-                    $inputFileType  = PHPExcel_IOFactory::identify($inputFileName);
-                    $objReader      = PHPExcel_IOFactory::createReader($inputFileType);
-                    $objPHPExcel    = $objReader->load($inputFileName);
-                }catch(Exception $e){
-                    die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
-                }
+            try{
+                $inputFileType  = PHPExcel_IOFactory::identify($inputFileName);
+                $objReader      = PHPExcel_IOFactory::createReader($inputFileType);
+                $objPHPExcel    = $objReader->load($inputFileName);
+            }catch(Exception $e){
+                die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+            }
 
-                $sheet          = $objPHPExcel->getSheet(0);
-                $highestRow     = $sheet->getHighestRow();
-                $highestColumn  = $sheet->getHighestColumn();
-                $errStock       = 0;
+            $sheet          = $objPHPExcel->getSheet(0);
+            $highestRow     = $sheet->getHighestRow();
+            $highestColumn  = $sheet->getHighestColumn();
+            $errStock       = 0;
 
-                for ($row = 4; $row <= $highestRow; $row++){
-                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-                    if ($rowData[0][0] != null) {
-                        foreach ($subInv as $si) {
-                            if ($si['from_inventory'] == 'JOB') {
-                                $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$rowData[0][1],$si['locator_id']);
-                            }else{
-                                $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$si['from_inventory'],$si['to_inventory'],$rowData[0][1],$si['locator_id']);
-                            }
-                        }
-                        $datPoint = "1";
-                        if ($getItemTransaction == NULL) {
-                            $acvQty = 0;
-                            $lastDelv = null;
-                        }else{
-                            $acvQty = $getItemTransaction[0]['ACHIEVE_QTY'];
-                            $lastDelv = date('Y-m-d H:i:s', strtotime($getItemTransaction[0]['LAST_DELIVERY']));
-                        }
-
-                        $dataIns = array(
-                            'item_code'         => $rowData[0][1],
-                            'item_description'  => $rowData[0][2],
-                            'priority'          => $rowData[0][3],
-                            'need_qty'          => $rowData[0][4],
-                            'due_time'          => date('m-d-Y', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][5])),
-                            'achieve_qty'       => $acvQty,
-                            'last_delivery'     => $lastDelv,
-                            'section_id'        => $section,
-                            'created_by'        => $user_id,
-                            'created_date'      => date("Y-m-d H:i:s")
-                        );
-
-                        if (!is_numeric($rowData[0][4])) {
-                            $errStock++;
-                        }
-                        if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3]) || empty($rowData[0][4]) || empty($rowData[0][5])) {
-                            $errStock++;
-                        }
+            for ($row = 4; $row <= $highestRow; $row++){
+                $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+                if ($rowData[0][0] != null) {
+                    $is = $this->M_itemplan->getItemData($section,$rowData[0][1]);
+                    if (!empty($is) && $is[0]['from_inventory'] == NULL) {
+                        $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$is[0]['from_inventory'],$is[0]['completion'],$rowData[0][1],$is[0]['locator_id']);
+                    }elseif(!empty($is) && $is[0]['from_inventory'] !== NULL){
+                        $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$is[0]['from_inventory'],$is[0]['to_inventory'],$rowData[0][1],$is[0]['locator_id']);
+                    }
+                    $datPoint = "1";
+                    if ($getItemTransaction == NULL) {
+                        $acvQty = 0;
+                        $lastDelv = null;
                     }else{
-                        $datPoint = null;
+                        $acvQty = $getItemTransaction[0]['ACHIEVE_QTY'];
+                        $lastDelv = date('Y-m-d H:i:s', strtotime($getItemTransaction[0]['LAST_DELIVERY']));
                     }
 
-                    if ($datPoint !=null && $errStock == 0) {
-                     $this->M_dataplan->insertDataPlan($dataIns, 'pp.pp_daily_plans');
+                    $dataIns = array(
+                        'item_code'         => $rowData[0][1],
+                        'item_description'  => $rowData[0][2],
+                        'priority'          => $rowData[0][3],
+                        'need_qty'          => $rowData[0][4],
+                        'due_time'          => PHPExcel_Style_NumberFormat::toFormattedString($rowData[0][5], 'm-d-Y hh:mm:ss'),
+                        'achieve_qty'       => $acvQty,
+                        'last_delivery'     => $lastDelv,
+                        'section_id'        => $section,
+                        'created_by'        => $user_id,
+                        'created_date'      => date("Y-m-d H:i:s")
+                    );
+
+                    if (!is_numeric($rowData[0][4])) {
+                        $errStock++;
                     }
+                    if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3]) || empty($rowData[0][4]) || empty($rowData[0][5])) {
+                        $errStock++;
+                    }
+                }else{
+                    $datPoint = null;
                 }
 
-            	unlink($inputFileName);
-            	if ($errStock > 0) {
-            		$message = '
-                    	<div class="modal fade" id="uploadMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="text-center">
-                                        <h2 class="modal-title" id="myModalLabel"><b>Format Data Tidak Sesuai!</b></h2>
-                                        <small>Mohon sesuaikan format data yg akan diinputkan, berikut contoh yang benar.</small>
-                                    </div>
-                                    <br>
-                                    <table class="table table-bordered table-striped table-hover">
-                                        <thead class="bg-warning text-center" style="font-weight:bold; vertical-align:middle;">
-                                            <td>No</td>
-                                            <td>ITEM</td>
-                                            <td>DESCRIPTION</td>
-                                            <td>PRIORITY</td>
-                                            <td>Type Assembly</td>
-                                            <td>Item</td>
-                                            <td>Locator</td>
-                                            <td>Alamat</td>
-                                            <td>LPPB  / MO / KIB</td>
-                                            <td>PICKLIST</td>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>102</td>
-                                                <td>KOM2-DM</td>
-                                                <td>AAG1000AA1AZ-6</td>
-                                                <td>BOXER</td>
-                                                <td>AAF1BA0391AY-0</td>
-                                                <td>SELATAN</td>
-                                                <td>PANGGUNG TIMUR</td>
-                                                <td>1</td>
-                                                <td>0</td>
-                                            </tr>
-                                            <tr style="color:red;">
-                                                <td>(Harus Diisi)</td>
-                                                <td>(Not Null)</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>(1 untuk Yes, 0 untuk No)</td>
-                                                <td>(1 untuk Yes, 0 untuk No)</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                if ($datPoint !=null && $errStock == 0) {
+                    $this->M_dataplan->insertDataPlan($dataIns, 'pp.pp_daily_plans');
+                }
+            }
+
+        	unlink($inputFileName);
+        	if ($errStock > 0) {
+        		$message = '
+                	<div class="modal fade" id="uploadMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <h2 class="modal-title" id="myModalLabel"><b>Format Data Tidak Sesuai!</b></h2>
+                                    <small>Mohon sesuaikan format data yg akan diinputkan, berikut contoh yang benar.</small>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
+                                <br>
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead class="bg-warning text-center" style="font-weight:bold; vertical-align:middle;">
+                                        <td>No</td>
+                                        <td>ITEM</td>
+                                        <td>DESCRIPTION</td>
+                                        <td>PRIORITY</td>
+                                        <td>Type Assembly</td>
+                                        <td>Item</td>
+                                        <td>Locator</td>
+                                        <td>Alamat</td>
+                                        <td>LPPB  / MO / KIB</td>
+                                        <td>PICKLIST</td>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>102</td>
+                                            <td>KOM2-DM</td>
+                                            <td>AAG1000AA1AZ-6</td>
+                                            <td>BOXER</td>
+                                            <td>AAF1BA0391AY-0</td>
+                                            <td>SELATAN</td>
+                                            <td>PANGGUNG TIMUR</td>
+                                            <td>1</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr style="color:red;">
+                                            <td>(Harus Diisi)</td>
+                                            <td>(Not Null)</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>(1 untuk Yes, 0 untuk No)</td>
+                                            <td>(1 untuk Yes, 0 untuk No)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("#uploadMessage").modal("show");
-                        });
-                    </script>';
-            	}else{
-            		$message = '<div class="row">
-                                <div class="col-md-12">
-                                    <div id="eror" class="alert alert-dismissible alert-success" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        Upload Completed!
-                                    </div>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        $("#uploadMessage").modal("show");
+                    });
+                </script>';
+        	}else{
+        		$message = '<div class="row">
+                            <div class="col-md-12">
+                                <div id="eror" class="alert alert-dismissible alert-success" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    Upload Completed!
                                 </div>
-                            </div>';
-            	}
-            	$this->Create($message);
-	        }
+                            </div>
+                        </div>';
+        	}
+        	$this->Create($message);
+        }
 	}
 
 	public function DownloadSample()
