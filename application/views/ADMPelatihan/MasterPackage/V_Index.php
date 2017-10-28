@@ -49,17 +49,7 @@
 									<?php
 										$no=0;
 										foreach($GetPackage as $gp){
-											foreach($TrainingType as $tt){
-												if($gp['training_type']==$tt['training_type_id']){
-													$trgtype=$tt['training_type_description'];
-												}else{
-													$trgtype='Orientasi';
-												}
-											}
-
 											$no++;
-											// $trgtype='Orientasi';
-											// $ptctype='Staf';
 											if($gp['participant_type']==1){
 												$ptctype='Non Staf';
 											}elseif ($gp['participant_type']==0) {
@@ -71,7 +61,15 @@
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $gp['package_name'] ?></td>
-										<td><?php echo $trgtype ?></td>
+										<td>
+										<?php
+											if($gp['training_type']==1){
+													echo "ORIENTASI";
+												}else{
+													echo "NON ORIENTASI";
+												}
+										 ?>
+										</td>
 										<td ><?php echo $ptctype; ?>
 										</td>
 										<td>
@@ -102,7 +100,7 @@
 										</div>
 									</div>
 
-									<?php } ?>
+									<?php }  ?>
 								</tbody>																			
 							</table>
 						</div>
