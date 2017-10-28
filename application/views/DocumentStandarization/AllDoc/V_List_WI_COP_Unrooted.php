@@ -46,30 +46,60 @@
 
                                                         foreach ($listWIUnrooted as $WI) 
                                                         {
-                                                            echo '  <div class="col-lg-'.(12/$jumlahWIUnrooted).'">
-                                                                        <center>
-                                                                        <br/>
-                                                                            <div class="btn-group-vertical">
-                                                                                    <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" title="'.$WI['nama_work_instruction'].'" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$WI['file']).'" target="_blank">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                            if($WI['file']==NULL || $WI['file']=='' || $WI['file']==' ')
+                                                            {
+                                                                echo '  <div class="col-lg-'.(12/$listWIUnrooted).'">
+                                                                            <center>
                                                                             <br/>
-                                                                        </center>
-                                                                    </div>';
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';
+                                                            }
+                                                            else
+                                                            {
+                                                                echo '  <div class="col-lg-2">
+                                                                            <center>
+                                                                            <br/>
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$WI['file']).'" target="_blank">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';                                                                
+                                                            }
                                                         }
                                                     }
                                                     elseif($jumlahWIUnrooted>3)
                                                     {
                                                         foreach ($listWIUnrooted as $WI) 
                                                         {
-
-                                                            echo '  <div class="col-lg-4">
-                                                                        <center>
-                                                                        <br/>
-                                                                            <div class="btn-group-vertical">
-                                                                                    <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" title="'.$WI['nama_work_instruction'].'" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$WI['file']).'" target="_blank">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                            </div>
+                                                            if($WI['file']==NULL || $WI['file']=='' || $WI['file']==' ')
+                                                            {
+                                                                echo '  <div class="col-lg-'.(12/$jumlahWIUnrooted).'">
+                                                                            <center>
                                                                             <br/>
-                                                                        </center>
-                                                                    </div>';
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';
+                                                            }
+                                                            else
+                                                            {
+                                                                echo '  <div class="col-lg-2">
+                                                                            <center>
+                                                                            <br/>
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$WI['file']).'" target="_blank">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';                                                                
+                                                            }
                                                         }
                                                     }
                                                     elseif($jumlahWIUnrooted==0)
@@ -102,16 +132,30 @@
 
                                                         foreach ($listCOPUnrooted as $COP) 
                                                         {
-
-                                                            echo '  <div class="col-lg-'.(12/$jumlahCOPUnrooted).'">
-                                                                        <center>
-                                                                        <br/>
-                                                                            <div class="btn-group-vertical">
-                                                                                    <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" title="'.$COP['nama_code_of_practice'].'" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_code_of_practice'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                            </div>
+                                                            if($COP['file']==NULL || $COP['file']=='' || $COP['file']==' ')
+                                                            {
+                                                                echo '  <div class="col-lg-'.(12/$jumlahCOPRooted).'">
+                                                                            <center>
                                                                             <br/>
-                                                                        </center>
-                                                                    </div>';
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';
+                                                            }
+                                                            else
+                                                            {
+                                                                echo '  <div class="col-lg-4">
+                                                                            <center>
+                                                                            <br/>
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';
+                                                            }
                                                         }
                                                     }
                                                     elseif($jumlahCOPUnrooted>3)
@@ -125,15 +169,30 @@
 
                                                             $linkencode = base_url('DocumentStandarization/AllDoc/WI_COP/'.$SOPencode.'/'.$CDencode.'/'.$BPencode);
 
-                                                            echo '  <div class="col-lg-4">
-                                                                        <center>
-                                                                        <br/>
-                                                                            <div class="btn-group-vertical">
-                                                                                    <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" title="'.$listCOPUnrooted['nama_code_of_practice'].'" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$listCOPUnrooted['file']).'" target="_blank">'.$listCOPUnrooted['nomor_kontrol'].' - '.$listCOPUnrooted['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$listCOPUnrooted['nama_code_of_practice'].'</h6><br/><i class="fa fa-file-pdf-o fa-lg"></i></a>
-                                                                            </div>
+                                                            if($COP['file']==NULL || $COP['file']=='' || $COP['file']==' ')
+                                                            {
+                                                                echo '  <div class="col-lg-'.(12/$jumlahCOPRooted).'">
+                                                                            <center>
                                                                             <br/>
-                                                                        </center>
-                                                                    </div>';
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';
+                                                            }
+                                                            else
+                                                            {
+                                                                echo '  <div class="col-lg-4">
+                                                                            <center>
+                                                                            <br/>
+                                                                                <div class="btn-group-vertical">
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                </div>
+                                                                            <br/>
+                                                                            </center>
+                                                                        </div>';
+                                                            }
                                                         }
                                                     }
                                                     elseif($jumlahCOPUnrooted==0)

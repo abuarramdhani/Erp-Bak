@@ -238,6 +238,11 @@ class C_CodeOfPractice extends CI_Controller
 			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
 			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
 
+			if($fileDokumen=='')
+			{
+				$fileDokumen	=	NULL;
+			}
+
 			if($revisiBaru!=1)
 			{
 				$revisiBaru 		=	0;
@@ -316,8 +321,11 @@ class C_CodeOfPractice extends CI_Controller
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
 			}
 			else
-			{	
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+			{
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 			}
 			$ContextDiagram;
 			$BusinessProcess;

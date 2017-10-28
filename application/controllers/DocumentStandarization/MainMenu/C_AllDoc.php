@@ -243,6 +243,8 @@ class C_AllDoc extends CI_Controller
 		$fungsi 	= str_replace(array('-', '_', '~'), array('+', '/', '='), $fungsi);
 		$fungsi 	= $this->encrypt->decode($fungsi);
 
+		// echo $fungsi;
+		// exit();
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
