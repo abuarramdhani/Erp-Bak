@@ -88,8 +88,9 @@ class C_AllDoc extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['listBP'] 		= 	$this->M_general->ambilDaftarBP();
-		$data['jumlahBP'] 		= 	$this->M_general->ambilJumlahBP()[0]['jumlah_business_process'];
+		$data['listBP'] 		= 	$this->M_general->ambilDaftarBP();		
+		$data['jumlahBP'] 		= 	$this->M_general->ambilJumlahBP();
+		$data['jumlahBP'] 		= 	$data['jumlahBP'][0]['jumlah_business_process'];
 
 
 		$this->load->view('V_Header',$data);
@@ -117,11 +118,14 @@ class C_AllDoc extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['listCD'] 		= 	$this->M_general->ambilDaftarCD($BP);
-		$data['jumlahCD'] 		= 	$this->M_general->ambilJumlahCD($BP)[0]['jumlah_context_diagram'];
+		$data['jumlahCD']		=	$this->M_general->ambilJumlahCD($BP);
+		$data['jumlahCD'] 		= 	$data['jumlahCD'][0]['jumlah_context_diagram'];
 
-		$data['namaBP'] 		= 	$this->M_general->ambilLinkBP($BP)[0]['nama_business_process'];
-		$data['idBP'] 			= 	$this->M_general->ambilLinkBP($BP)[0]['id_business_process'];
-		$data['nomorBP'] 		= 	$this->M_general->ambilLinkBP($BP)[0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkBP($BP)[0]['nomor_revisi'];
+		$data['bp']				=	$this->M_general->ambilLinkBP($BP);
+
+		$data['namaBP'] 		= 	$data['bp'][0]['nama_business_process'];
+		$data['idBP'] 			= 	$data['bp'][0]['id_business_process'];
+		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$data['bp'][0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
@@ -152,15 +156,19 @@ class C_AllDoc extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['listSOP'] 		= 	$this->M_general->ambilDaftarSOP($CD, $BP);
-		$data['jumlahSOP'] 		= 	$this->M_general->ambilJumlahSOP($CD, $BP)[0]['jumlah_standard_operating_procedure'];
+		$data['jumlahSOP']		=	$this->M_general->ambilJumlahSOP($CD, $BP);
+		$data['jumlahSOP'] 		= 	$data['jumlahSOP'][0]['jumlah_standard_operating_procedure'];
 
-		$data['namaBP'] 		= 	$this->M_general->ambilLinkBP($BP)[0]['nama_business_process'];
-		$data['idBP'] 			= 	$this->M_general->ambilLinkBP($BP)[0]['id_business_process'];
-		$data['nomorBP'] 		= 	$this->M_general->ambilLinkBP($BP)[0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkBP($BP)[0]['nomor_revisi'];
+		$data['bp']				=	$this->M_general->ambilLinkBP($BP);
+		$data['cd']				=	$this->M_general->ambilLinkCD($CD);
 
-		$data['namaCD'] 		= 	$this->M_general->ambilLinkCD($CD)[0]['nama_context_diagram'];
-		$data['idCD'] 			= 	$this->M_general->ambilLinkCD($CD)[0]['id_context_diagram'];
-		$data['nomorCD'] 		= 	$this->M_general->ambilLinkCD($CD)[0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkCD($CD)[0]['nomor_revisi'];
+		$data['namaBP'] 		= 	$data['bp'][0]['nama_business_process'];
+		$data['idBP'] 			= 	$data['bp'][0]['id_business_process'];
+		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$data['bp'][0]['nomor_revisi'];
+
+		$data['namaCD'] 		= 	$data['cd'][0]['nama_context_diagram'];
+		$data['idCD'] 			= 	$data['cd'][0]['id_context_diagram'];
+		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$data['cd'][0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
@@ -194,26 +202,34 @@ class C_AllDoc extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['listWIRooted'] 		= 	$this->M_general->ambilDaftarWIRooted($SOP, $CD, $BP);
-		$data['jumlahWIRooted'] 	= 	$this->M_general->ambilJumlahWIRooted($SOP, $CD, $BP)[0]['jumlah_work_instruction_berinduk'];
+		$data['jumlahWIRooted']		=	$this->M_general->ambilJumlahWIRooted($SOP, $CD, $BP);
+		$data['jumlahWIRooted'] 	= 	$data['jumlahWIRooted'][0]['jumlah_work_instruction_berinduk'];
 		$data['listCOPRooted'] 		= 	$this->M_general->ambilDaftarCOPRooted($SOP, $CD, $BP);
-		$data['jumlahCOPRooted'] 	= 	$this->M_general->ambilJumlahCOPRooted($SOP, $CD, $BP)[0]['jumlah_code_of_practice_berinduk'];
+		$data['jumlahCOPRooted']	=	$this->M_general->ambilJumlahCOPRooted($SOP, $CD, $BP);
+		$data['jumlahCOPRooted'] 	= 	$data['jumlahCOPRooted'][0]['jumlah_code_of_practice_berinduk'];
 
 		$data['fungsi'] 			= 	$this->M_general->ambilFungsi($CD);
 
-		$data['jumlahWIUnrooted'] 	= 	$this->M_general->ambilJumlahWIUnrooted($data['fungsi'])[0]['jumlah_work_instruction_tidak_berinduk'];
-		$data['jumlahCOPUnrooted'] 	= 	$this->M_general->ambilJumlahCOPUnrooted($data['fungsi'])[0]['jumlah_code_of_practice_tidak_berinduk'];
+		$data['jumlahWIUnrooted']	=	$this->M_general->ambilJumlahWIUnrooted($data['fungsi']);
+		$data['jumlahWIUnrooted'] 	= 	$data['jumlahWIUnrooted'][0]['jumlah_work_instruction_tidak_berinduk'];
+		$data['jumlahCOPUnrooted']	=	$this->M_general->ambilJumlahCOPUnrooted($data['fungsi']);
+		$data['jumlahCOPUnrooted'] 	= 	$data['jumlahCOPUnrooted'][0]['jumlah_code_of_practice_tidak_berinduk'];
 
-		$data['namaBP'] 		= 	$this->M_general->ambilLinkBP($BP)[0]['nama_business_process'];
-		$data['idBP'] 			= 	$this->M_general->ambilLinkBP($BP)[0]['id_business_process'];
-		$data['nomorBP'] 		= 	$this->M_general->ambilLinkBP($BP)[0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkBP($BP)[0]['nomor_revisi'];
+		$data['bp']				=	$this->M_general->ambilLinkBP($BP);
+		$data['cd']				= 	$this->M_general->ambilLinkCD($CD);
+		$data['sop']			=	$this->M_general->ambilLinkSOP($SOP);
 
-		$data['namaCD'] 		= 	$this->M_general->ambilLinkCD($CD)[0]['nama_context_diagram'];
-		$data['idCD'] 			= 	$this->M_general->ambilLinkCD($CD)[0]['id_context_diagram'];
-		$data['nomorCD'] 		= 	$this->M_general->ambilLinkCD($CD)[0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkCD($CD)[0]['nomor_revisi'];
+		$data['namaBP'] 		= 	$data['bp'][0]['nama_business_process'];
+		$data['idBP'] 			= 	$data['bp'][0]['id_business_process'];
+		$data['nomorBP'] 		= 	$data['bp'][0]['nomor_kontrol'].' - '.$data['bp'][0]['nomor_revisi'];
 
-		$data['namaSOP'] 		= 	$this->M_general->ambilLinkSOP($SOP)[0]['nama_standard_operating_procedure'];
-		$data['idSOP'] 			= 	$this->M_general->ambilLinkSOP($SOP)[0]['id_standard_operating_procedure'];
-		$data['nomorSOP'] 		= 	$this->M_general->ambilLinkSOP($SOP)[0]['nomor_kontrol'].' - '.$this->M_general->ambilLinkSOP($SOP)[0]['nomor_revisi'];
+		$data['namaCD'] 		= 	$data['cd'][0]['nama_context_diagram'];
+		$data['idCD'] 			= 	$data['cd'][0]['id_context_diagram'];
+		$data['nomorCD'] 		= 	$data['cd'][0]['nomor_kontrol'].' - '.$data['cd'][0]['nomor_revisi'];
+
+		$data['namaSOP'] 		= 	$data['sop'][0]['nama_standard_operating_procedure'];
+		$data['idSOP'] 			= 	$data['sop'][0]['id_standard_operating_procedure'];
+		$data['nomorSOP'] 		= 	$data['sop'][0]['nomor_kontrol'].' - '.$data['sop'][0]['nomor_revisi'];
 
 
 		$this->load->view('V_Header',$data);
@@ -240,8 +256,11 @@ class C_AllDoc extends CI_Controller
 		$data['UserSubMenuOne'] 	= $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] 	= $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['jumlahWIUnrooted'] 	= 	$this->M_general->ambilJumlahWIUnrooted($fungsi)[0]['jumlah_work_instruction_tidak_berinduk'];
-		$data['jumlahCOPUnrooted'] 	= 	$this->M_general->ambilJumlahCOPUnrooted($fungsi)[0]['jumlah_code_of_practice_tidak_berinduk'];
+		$data['jumlahWIUnrooted']	=	$this->M_general->ambilJumlahWIUnrooted($fungsi);
+		$data['jumlahCOPUnrooted']	=	$this->M_general->ambilJumlahCOPUnrooted($fungsi);
+
+		$data['jumlahWIUnrooted'] 	= 	$data['jumlahWIUnrooted'][0]['jumlah_work_instruction_tidak_berinduk'];
+		$data['jumlahCOPUnrooted'] 	= 	$data['jumlahCOPUnrooted'][0]['jumlah_code_of_practice_tidak_berinduk'];
 
 		$data['listWIUnrooted'] 	= 	$this->M_general->ambilDaftarWIUnrooted($fungsi);
 		$data['listCOPUnrooted'] 	= 	$this->M_general->ambilDaftarCOPUnrooted($fungsi);

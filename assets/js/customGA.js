@@ -127,12 +127,6 @@ $('#dataTables-fleetKecelakaanDetail').DataTable( {
         'excel'
       ]
     });
-$('#dataTables-fleetKecelakaan').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
 $('#daterangepicker').daterangepicker({
     "showDropdowns": true,
     "autoApply": true,
@@ -381,7 +375,10 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
 
-
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
     $.ajax(
     {
       type    : 'POST',
@@ -395,7 +392,9 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
         console.log(data);
         // alert(data);
         var   data  = JSON.parse(data);
-
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');
         DataTableMonitoringNomorPolisi.fnClearTable();
         for(i=0; i < data['monitoringNomorPolisi'].length; i++)
         {
@@ -417,7 +416,10 @@ $(document).on('click', '#ProsesMonitoringLastProcessNomorPolisi',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
 
-
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
     $.ajax(
     {
       type    : 'POST',
@@ -431,7 +433,9 @@ $(document).on('click', '#ProsesMonitoringLastProcessNomorPolisi',function()
         console.log(data);
         // alert(data);
         var   data  = JSON.parse(data);
-
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');
         DataTableMonitoringNomorPolisi.fnClearTable();
         for(i=0; i < data['monitoringNomorPolisi'].length; i++)
         {
@@ -453,6 +457,11 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   Kategori      =   $('#cmbKategori').val();
     var   Periode       =   $('#daterangepicker').val();
+
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');    
     $.ajax(
     {
       type    : 'POST',
@@ -466,6 +475,9 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');        
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
@@ -486,6 +498,11 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
 {
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   Kategori      =   $('#cmbKategori').val();
+
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');    
     $.ajax(
     {
       type    : 'POST',
@@ -498,6 +515,9 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');        
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
