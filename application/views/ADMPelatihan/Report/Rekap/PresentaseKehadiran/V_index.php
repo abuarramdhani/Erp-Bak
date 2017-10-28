@@ -30,39 +30,13 @@
 					<div class="box-body">
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-1 control-label">Bulan</label>
+								<label class="col-lg-1 control-label">Periode</label>
 								<div class="col-lg-2">
-									<div class="form-group">
-							            <div class='input-group date'>
-							                <select class="form-control SlcRuang" name="slcBulan" data-placeholder="Bulan" required>
-												<option></option>
-												<?php foreach ($bulanTrain as $bt) {?>
-													<option value="<?php echo $bt['bulan'];?>"><?php echo $bt['bulan']; ?></option>
-												<?php } ?>
-											</select>
-							                <span class="input-group-addon">
-							                    <span class="glyphicon glyphicon-calendar">
-							                    </span>
-							                </span>
-							            </div>
-							        </div>
+									<input name="txtDate1" class="form-control singledate">
 								</div>
-								<label class="col-lg-1 control-label">Tahun</label>
+								<label class="col-lg-1 control-label" align="center">s/d</label>
 								<div class="col-lg-2">
-									<div class="form-group">
-							            <div class='input-group date'>
-							                <select class="form-control SlcRuang" name="slcTahun" data-placeholder="Tahun" required>
-												<option></option>
-												<?php foreach($tahunTrain as $tt){?>
-												<option value="<?php echo $tt['tahun']; ?>"><?php echo $tt['tahun']; ?></option>
-												<?php }?>
-											</select>
-							                <span class="input-group-addon">
-							                    <span class="glyphicon glyphicon-calendar">
-							                    </span>
-							                </span>
-							            </div>
-							        </div>
+									<input name="txtDate2" class="form-control singledate">
 								</div>
 								<div class="col-lg-2">
 									<button class="btn btn-primary btn-flat btn-block" id="SearchPersenPeserta">Filter</button>
