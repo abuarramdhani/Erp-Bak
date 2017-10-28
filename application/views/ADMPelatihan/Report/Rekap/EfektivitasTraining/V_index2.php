@@ -3,21 +3,40 @@
 									<thead class="bg-primary">
 										<tr>
 											<th width="7%" style="text-align:center;">No</th>
-											<th >Jenis Training</th>
-											<th width="20%" style="text-align:center;">Presentase Kelulusan</th>
+											<th  width="15%">Tanggal</th>
+											<th >Nama Pelatihan</th>
+											<th width="10%">Jenis Training</th>
+											<th width="8%" style="text-align:center;">Lulus</th>
+											<th width="8%" style="text-align:center;">Tidak Lulus</th>
+											<th width="8%" style="text-align:center;">Presentase Kelulusan</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td style="text-align:center;">1</td>
-											<td>Pelatihan Orientasi</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td style="text-align:center;">2</td>
-											<td>Pelatihan Non Orientasi</td>
-											<td></td>
-										</tr>
+									<?php $no=0 ;foreach ($efekTrain as $et) {
+										$no++;  ?>
+											<tr>
+												<td style="text-align:center;"><?php echo $no?></td>
+												<td><?php echo $et['training_date']?></td>
+												<td><?php echo $et['scheduling_name']?></td>
+												<?php 
+													$traintype='';
+													if ($et['training_type']==1) {$traintype='ORIENTASI' ;}
+													if ($et['training_type']==2) {$traintype='NON ORIENTASI' ;}
+												?>
+												<td width="20%">
+														<?php echo $traintype; ?>
+												</td>
+												<td width="8%" style="text-align:center;"><?php echo $et['kelulusan']?></td>
+												<td width="8%" style="text-align:center;"><?php echo $et['ketidak_kelulusan']?></td>
+												<?php foreach ($efekTrainall as $eta) { 
+													if ($et['scheduling_id']==$eta['scheduling_id']) {
+													  ?>
+													<td  width="8%" style="text-align:center;">
+														 <?php echo $eta['persentase']; ?>
+													</td>
+												<?php } }?>
+											</tr>
+									<?php  } ?>
 									</tbody>															
 								</table>
-							</div>	
+							</div>
