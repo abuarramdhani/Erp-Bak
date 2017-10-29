@@ -34,7 +34,7 @@
                                 <center>
                                     <br>
                                     <div class="btn-group-vertical">
-                                            <a type="button" class="btn bg-maroon btn-lg buttonlistDocUpper buttonlistDoc" title="CV. KARYA HIDUP SENTOSA YOGYAKARTA" href="<?php echo site_url('ADMPelatihan/Report/Rekap/RekapTraining'); ?>" style="width: 259px; height: 79px;">REKAP TRAINING<br><h6 style="white-space:normal;">REKAPITULASI SEMUA TRAINING YANG TELAH TERLAKSANA</h6></a>
+                                            <a type="button" class="btn bg-teal btn-lg buttonlistDocUpper buttonlistDoc" title="REKAP TRAINING" href="<?php echo site_url('ADMPelatihan/Report/Rekap/RekapTraining'); ?>" style="width: 259px; height: 79px;">REKAP TRAINING<br><h6 style="white-space:normal;">REKAPITULASI SEMUA TRAINING YANG BELUM/TELAH TERLAKSANA</h6></a>
                                     </div>
                                     <br>
                                 </center>
@@ -43,7 +43,7 @@
                                 <center>
                                     <br>
                                     <div class="btn-group-vertical">
-                                            <a type="button" class="btn bg-purple btn-lg buttonlistDocUpper buttonlistDoc" title="CV. KARYA HIDUP SENTOSA YOGYAKARTA" href="<?php echo site_url('ADMPelatihan/Report/Rekap/PresentaseKehadiran'); ?>" style="width: 259px; height: 79px;">PRESENTASE KEHADIRAN<br><h6 style="white-space:normal;">REKAPITULASI KEHADIRAN PESERTA TRAINING</h6></a>
+                                            <a type="button" class="btn bg-orange btn-lg buttonlistDocUpper buttonlistDoc" title="PRESENTASE KEHADIRAN" href="<?php echo site_url('ADMPelatihan/Report/Rekap/PresentaseKehadiran'); ?>" style="width: 259px; height: 79px;">PRESENTASE KEHADIRAN<br><h6 style="white-space:normal;">REKAPITULASI KEHADIRAN PESERTA TRAINING</h6></a>
                                     </div>
                                     <br>
                                 </center>
@@ -52,7 +52,7 @@
                                 <center>
                                     <br>
                                     <div class="btn-group-vertical ">
-                                            <a type="button" class="btn bg-olive btn-lg buttonlistDocUpper buttonlistDoc" title="CV. KARYA HIDUP SENTOSA TUKSONO PLANT" href="<?php echo site_url('ADMPelatihan/Report/Rekap/EfektivitasTraining'); ?>" style="width: 259px; height: 79px;">EFEKTIVITAS TRAINING<br><h6 style="white-space:normal;">REKAPITULASI EFEKTIVITAS TRAINING</h6></a>
+                                            <a type="button" class="btn bg-purple btn-lg buttonlistDocUpper buttonlistDoc" title="EFEKTIVITAS TRAINING" href="<?php echo site_url('ADMPelatihan/Report/Rekap/EfektivitasTraining'); ?>" style="width: 259px; height: 79px;">EFEKTIVITAS TRAINING<br><h6 style="white-space:normal;">REKAPITULASI EFEKTIVITAS TRAINING</h6></a>
                                     </div>
                                     <br>
                                 </center>

@@ -123,6 +123,17 @@
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat</label>
+									<div class="col-lg-9">
+										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan" required>
+											<option value="1" <?php if ($rc['sifat']==1) { echo "selected"; } ?>>Order</option>
+											<option value="2" <?php if ($rc['sifat']==2) { echo "selected"; } ?>>Tahunan</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
 									<div class="col-lg-3" >
 										<!-- <select class="form-control select2" name="slcPeserta" >

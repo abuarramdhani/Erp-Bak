@@ -134,17 +134,18 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['report'] 		= $this->M_report->GetRkpTraining($year = FALSE,$month = FALSE);
-		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($year,$month);
-		$data['namaTrain'] 		= $this->M_report->GetSchName($year,$month);
-		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
-		$data['bulanTrain'] 	= $this->M_report->getMonthTraining();
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['report'] 		= $this->M_report->GetRkpTraining($date1,$date2);
+		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($date1,$date2);		
+		$data['getsifat'] 		= $this->M_report->GetSifat($date1,$date2);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index',$data);
 		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index2',$data);
 		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index3',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index4',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -161,11 +162,10 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
-		$data['bulanTrain'] 	= $this->M_report->getMonthTraining();
-		$data['prcentpart']		= $this->M_report->GetPercentParticipant($year = FALSE,$month = FALSE);
-		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($year,$month);
-		$data['namaTrain'] 		= $this->M_report->GetSchName($year,$month);
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['prcentpart']		= $this->M_report->GetPercentParticipant($date1,$date2);
+		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($date1,$date2);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -187,6 +187,11 @@ class C_Report extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['efekTrain']		= $this->M_report->GetEfektivitasTraining($date1,$date2);
+		$data['efekTrainall'] 	= $this->M_report->GetEfektivitasTrainingAll($date1,$date2);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -276,28 +281,37 @@ class C_Report extends CI_Controller {
 	//REKAP TRAINING
 	public function GetRkpTraining(){
 		
-		$month	 				= $this->input->POST('month');
-		$year 					= $this->input->POST('year');
-		$data['report']		 	= $this->M_report->GetRkpTraining($year,$month);
-		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($year,$month);
-		$data['namaTrain']		= $this->M_report->GetSchName($year,$month);
+		$date1	 				= $this->input->POST('date1');
+		$date2 					= $this->input->POST('date2');
+		$data['report']		 	= $this->M_report->GetRkpTraining($date1,$date2);
+		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($date1,$date2);
+		$data['getsifat'] 		= $this->M_report->GetSifat($date1,$date2);
 		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index3',$data);
 	}
 
 	//PERSENTASE PESERTA TRAINING
 	public function GetPercentParticipant(){
 		
-		$month	 				= $this->input->POST('month');
-		$year 					= $this->input->POST('year');
-		$data['prcentpart']	 	= $this->M_report->GetPercentParticipant($year,$month);
-		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($year,$month);
-		$data['namaTrain']		= $this->M_report->GetSchName($year,$month);
-		// echo "<pre>";
-		// print_r($data['prcentpart']);
-		// print_r($data['namaTrain']);
-		// echo "</pre>";
-		// exit();
+		$date1	 				= $this->input->POST('date1');
+		$date2 					= $this->input->POST('date2');
+		$data['prcentpart']	 	= $this->M_report->GetPercentParticipant($date1,$date2);
+		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($date1,$date2);
 		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index2',$data);
+	}
+
+	//EFEKTIVITAS TRAINING
+	public function GetEfektivitasTraining(){
+		
+		$date1	 				= $this->input->POST('date1');
+		$date2 					= $this->input->POST('date2');
+		$data['efekTrain']	 	= $this->M_report->GetEfektivitasTraining($date1,$date2);
+		$data['efekTrainall'] 	= $this->M_report->GetEfektivitasTrainingAll($date1,$date2);
+		// echo "<pre>";
+		// print_r($data['efekTrain']);
+		// echo "<pre>";
+		// exit();
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index2',$data);
 	}
 
 	//HALAMAN FINISHED

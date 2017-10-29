@@ -168,6 +168,7 @@ class C_Record extends CI_Controller {
 		$ruangan 		= $this->input->post('slcRuang', TRUE);
 		$evaluasi		= $this->input->post('slcEvaluasi', TRUE);
 		$evaluasi2 		= implode(',', $evaluasi);
+		$sifat			= $this->input->post('slcSifat');
 		$jmlpeserta		= $this->input->post('txtJumlahPeserta', TRUE);
 
 		$kirim = array(
@@ -177,6 +178,7 @@ class C_Record extends CI_Controller {
 			'end_time'			=> $waktuakhir,
 			'room' 				=> $ruangan,
 			'evaluation'		=> $evaluasi2,
+			'sifat'				=> $sifat,
 			'participant_number'=> $jmlpeserta 
 			);
 
@@ -199,6 +201,12 @@ class C_Record extends CI_Controller {
 				}
 				$j++;
 			}
+
+		// echo "<pre>";
+		// print_r($kirim);
+		// echo "</pre>";
+		// exit();
+
 		$this->M_record->UpdateSchedule($kirim, $id);
 		redirect('ADMPelatihan/Record/Detail/'.$id);
 	}

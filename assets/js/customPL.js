@@ -390,14 +390,14 @@ $(document).ready(function(){
 		$('#SearchRekapTraining').click(function(){
 			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
 			
-			var month 	= $('select[name=slcBulan]').val();
-			var year 		= $('select[name=slcTahun]').val();
+			var date1 	= $('input[name=txtDate1]').val();
+			var date2 		= $('input[name=txtDate2]').val();
 
 			$.ajax({
 				type: "POST",
 				data:{
-						month:month,
-						year:year,
+						date1:date1,
+						date2:date2,
 				},
 				url:baseurl+"ADMPelatihan/Report/GetRkpTraining",
 				success:function(result)
@@ -416,16 +416,42 @@ $(document).ready(function(){
 		$('#SearchPersenPeserta').click(function(){
 			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
 			
-			var month 		= $('select[name=slcBulan]').val();
-			var year 		= $('select[name=slcTahun]').val();
+			var date1 		= $('input[name=txtDate1]').val();
+			var date2 		= $('input[name=txtDate2]').val();
 
 			$.ajax({
 				type: "POST",
 				data:{
-						month:month,
-						year:year,
+						date1:date1,
+						date2:date2,
 				},
 				url:baseurl+"ADMPelatihan/Report/GetPercentParticipant",
+				success:function(result)
+				{	
+					// console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
+
+	//GET EFEKTIVITAS TRAINING
+	$(document).ready(function() {	
+		$('#SearchEfektifTrain').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var date1 		= $('input[name=txtDate1]').val();
+			var date2 		= $('input[name=txtDate2]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						date1:date1,
+						date2:date2,
+				},
+				url:baseurl+"ADMPelatihan/Report/GetEfektivitasTraining",
 				success:function(result)
 				{	
 					// console.log(result);
