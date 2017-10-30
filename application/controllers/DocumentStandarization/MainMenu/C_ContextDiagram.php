@@ -112,6 +112,11 @@ class C_ContextDiagram extends CI_Controller
 			$fileDokumen;
 			$tanggalUpload;
 
+			if($pekerjaPemeriksa1=='' OR $pekerjaPemeriksa1==NULL OR $pekerjaPemeriksa1==' ')
+			{
+				$pekerjaPemeriksa1=NULL;
+			}
+
 			if($pekerjaPemeriksa2=='' OR $pekerjaPemeriksa2==NULL OR $pekerjaPemeriksa2==' ')
 			{
 				$pekerjaPemeriksa2=NULL;
@@ -250,6 +255,11 @@ class C_ContextDiagram extends CI_Controller
 				$jenis_doc 		= 	'CD';
 				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
 
+				if($diperiksa_1==NULL OR $diperiksa_1=='' OR $diperiksa_1==' ')
+				{
+					$diperiksa_1=NULL;
+				}
+
 				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
 				{
 					$diperiksa_2=NULL;
@@ -282,6 +292,11 @@ class C_ContextDiagram extends CI_Controller
 			}
 			// Salin sampai sini
 
+
+			if($pekerjaPemeriksa1=='' OR $pekerjaPemeriksa1==NULL OR $pekerjaPemeriksa1==' ')
+			{
+				$pekerjaPemeriksa1=NULL;
+			}
 
 			if($pekerjaPemeriksa2=='' OR $pekerjaPemeriksa2==NULL OR $pekerjaPemeriksa2==' ')
 			{

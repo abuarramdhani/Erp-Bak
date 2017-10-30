@@ -139,6 +139,11 @@ class C_BusinessProcess extends CI_Controller
 			$fileDokumen;
 			$tanggalUpload;
 
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
+
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
@@ -283,6 +288,11 @@ class C_BusinessProcess extends CI_Controller
 				$jenis_doc 		= 	'BP';
 				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
 
+				if($diperiksa_1==NULL OR $diperiksa_1=='' OR $diperiksa_1==' ')
+				{
+					$diperiksa_1=NULL;
+				}
+
 				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
 				{
 					$diperiksa_2=NULL;
@@ -314,6 +324,11 @@ class C_BusinessProcess extends CI_Controller
 				$this->M_businessprocess->inputDataLamakeHistory($recordLama);
 			}
 			// Salin sampai sini
+
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
