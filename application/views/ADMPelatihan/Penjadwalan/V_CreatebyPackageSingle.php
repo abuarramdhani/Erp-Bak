@@ -53,7 +53,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input name="txtTanggalPelaksanaan" class="form-control singledate" placeholder="Tanggal" required >
+										<input name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
 									</div>
 								</div>
 							</div>
