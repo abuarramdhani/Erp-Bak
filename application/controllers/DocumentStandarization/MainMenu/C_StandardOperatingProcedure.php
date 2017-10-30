@@ -84,7 +84,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
@@ -199,7 +199,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
