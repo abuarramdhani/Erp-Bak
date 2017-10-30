@@ -83,7 +83,7 @@
 											<div class="form-group">
                                                 <label for="txtDiperiksa1Header" class="control-label col-lg-4">Diperiksa 1</label>
                                                 <div class="col-lg-4">
-                                                     <select id="cmbPekerjaPemeriksa1" name="cmbPekerjaDiperiksa1" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                     <select id="cmbPekerjaPemeriksa1" name="cmbPekerjaDiperiksa1" class="select2" data-placeholder="Pilih" style="width: 100%">
                                                         <option value=""></option>
                                                         <?php
                                                         /*
