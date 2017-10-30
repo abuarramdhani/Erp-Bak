@@ -53,14 +53,18 @@ $(document).ready(function(){
 	});
 
 	//DATEPICKER UNTUK FORM PENJADWALAN
-	$('.singledateADM').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		locale: {
-			format: 'DD/MM/YYYY'
-		},
+	// $('.singledateADM').daterangepicker({
+	// 	"singleDatePicker": true,
+	// 	"timePicker": false,
+	// 	"timePicker24Hour": true,
+	// 	"showDropdowns": false,
+	// 	locale: {
+	// 		format: 'DD/MM/YYYY'
+	// 	},
+	// });
+
+	$('.singledateADM').datepicker({
+    	format:'dd/mm/yyyy'
 	});
 
     $(".startdate").datepicker({
