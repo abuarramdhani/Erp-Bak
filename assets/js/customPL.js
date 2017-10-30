@@ -53,7 +53,7 @@ $(document).ready(function(){
 	});
 
 	//DATEPICKER UNTUK FORM PENJADWALAN
-	$('.singledate').daterangepicker({
+	$('.singledateADM').daterangepicker({
 		"singleDatePicker": true,
 		"timePicker": false,
 		"timePicker24Hour": true,
@@ -94,8 +94,8 @@ $(document).ready(function(){
 	//SET START DATE APABILA DIGUNAKAN SAAT EDIT
 	if (typeof $('#scheduledate').val() !== 'undefined'){
 		var startDate = $('#scheduledate').val()
-		$(".singledate").data('daterangepicker').setStartDate(startDate);
-		$(".singledate").data('daterangepicker').setEndDate(startDate)
+		$(".singledateADM").data('daterangepicker').setStartDate(startDate);
+		$(".singledateADM").data('daterangepicker').setEndDate(startDate)
 	};
 
 	//SELECT ROOM

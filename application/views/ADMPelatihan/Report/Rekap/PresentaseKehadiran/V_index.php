@@ -32,11 +32,11 @@
 							<div class="form-group">
 								<label class="col-lg-1 control-label">Periode</label>
 								<div class="col-lg-2">
-									<input name="txtDate1" class="form-control singledate">
+									<input name="txtDate1" class="form-control singledateADM">
 								</div>
 								<label class="col-lg-1 control-label" align="center">s/d</label>
 								<div class="col-lg-2">
-									<input name="txtDate2" class="form-control singledate">
+									<input name="txtDate2" class="form-control singledateADM">
 								</div>
 								<div class="col-lg-2">
 									<button class="btn btn-primary btn-flat btn-block" id="SearchPersenPeserta">Filter</button>
