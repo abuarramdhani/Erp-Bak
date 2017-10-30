@@ -117,6 +117,11 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$fileDokumen;
 			$tanggalUpload;
 
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
+
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
@@ -125,9 +130,12 @@ class C_StandardOperatingProcedure extends CI_Controller
 			// echo 'sampai sini bisa';
 			// exit();
 			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
-			if(is_null($fileDokumen)==FALSE)
+			if(!(is_null($fileDokumen)))
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			}
+			else{
+				$tanggalUpload 		= 	NULL;
 			}
 
 			$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
@@ -279,6 +287,11 @@ class C_StandardOperatingProcedure extends CI_Controller
 				$jenis_doc 		= 	'SOP';
 				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
 
+				if($diperiksa_1==NULL OR $diperiksa_1=='' OR $diperiksa_1==' ')
+				{
+					$diperiksa_1=NULL;
+				}
+
 				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
 				{
 					$diperiksa_2=NULL;
@@ -314,6 +327,11 @@ class C_StandardOperatingProcedure extends CI_Controller
 				$this->M_standardoperatingprocedure->inputDataLamakeHistory($recordLama);
 			}
 			// Salin sampai sini
+
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
