@@ -64,8 +64,8 @@ class C_Monitoring extends CI_Controller {
         $data['achieveAll']     = $this->M_monitoring->getAchievementAllFab();
         $data['selectedSection']= $section;
         
-        $data['highPriority']= array();
-        $data['normalPriority']= array();
+        $data['highPriority']   = array();
+        $data['normalPriority'] = array();
 
         foreach ($datplan as $dp => $val1) {
             $h = 0;
@@ -83,8 +83,11 @@ class C_Monitoring extends CI_Controller {
                 }
             }
         }
-        
-        $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_Monitoring', $data);
+        if (count($section) > 1) {
+            $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringMultiple', $data);
+        }else{
+            $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringSingle', $data);
+        }
     }
 
     public function getSumPlanMonth()
@@ -154,11 +157,11 @@ class C_Monitoring extends CI_Controller {
             echo '<thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
                     <tr>
                         <td>NO</td>
-                        <td>ITEM</td>
+                        <td style="width: 15%;">ITEM</td>
                         <td>DESC</td>
                         <td>PRIORITY</td>
                         <td>NEED QTY</td>
-                        <td>DUE TIME</td>
+                        <td style="width: 15%;">DUE TIME</td>
                         <td>ACHIEVE QTY</td>
                         <td>LAST DELIVERY</td>
                         <td>STATUS</td>
@@ -178,8 +181,8 @@ class C_Monitoring extends CI_Controller {
                             <td>'.$no++.'</td>
                             <td>'.$h['item_code'].'</td>
                             <td>';
-                                if (strlen($h['item_description']) > 20) {
-                                    echo substr($h['item_description'],0,20).'...';
+                                if (strlen($h['item_description']) > 15) {
+                                    echo substr($h['item_description'],0,15).' ...';
                                 }else{
                                     echo $h['item_description'];
                                 }
@@ -217,7 +220,13 @@ class C_Monitoring extends CI_Controller {
                         } echo '>
                         <td>'.$no++.'</td>
                         <td>'.$n['item_code'].'</td>
-                        <td>'.$n['item_description'].'</td>
+                        <td>';
+                            if (strlen($n['item_description']) > 15) {
+                                echo substr($n['item_description'],0,15).' ...';
+                            }else{
+                                echo $n['item_description'];
+                            }
+                        echo '</td>
                         <td>'.$n['priority'].'</td>
                         <td>'.$n['need_qty'].'</td>
                         <td>'.$n['due_time'].'</td>
