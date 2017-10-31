@@ -608,7 +608,11 @@ table.t_riwayat_mutasi td {
 }
 
 .table-border-mon-prod > thead > tr > td, .table-border-mon-prod > tbody > tr > td {
-    border: 2px solid #000;
+    border: 1px solid #000;
+}
+
+.bg-green-plan {
+    background-color: #3ce771;
 }
 
 
