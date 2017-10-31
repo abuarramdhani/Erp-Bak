@@ -118,7 +118,7 @@ class M_monitoring extends CI_Model {
                   from
                     (
                       SELECT
-                                to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
+                                to_char(dp.due_time, 'dd-Mon-yyyy') as hari,
                                 sum(dp.need_qty) plan_qty
                             FROM
                               pp.pp_daily_plans dp,
@@ -127,7 +127,7 @@ class M_monitoring extends CI_Model {
                               dp.section_id = pmp.section_id
                               AND to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
                               AND dp.section_id = $section
-                                AND dp.created_date between
+                                AND dp.due_time between
                                   date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
                             group by 1
                             order by 1
@@ -140,7 +140,7 @@ class M_monitoring extends CI_Model {
                   from
                     (
                       SELECT
-                                to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
+                                to_char(dp.due_time, 'dd-Mon-yyyy') as hari,
                                 sum(dp.achieve_qty) achieve_qty
                             FROM
                               pp.pp_daily_plans dp,
@@ -149,8 +149,8 @@ class M_monitoring extends CI_Model {
                               dp.section_id = pmp.section_id
                               AND to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
                               AND dp.section_id = $section
-                                AND dp.created_date between
-                                  date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day') 
+                                AND dp.due_time between
+                                  date_trunc('month', current_date) and (date_trunc('month', current_date) + interval '1 month' - interval '1 day')
                             group by 1
                             order by 1
                     ) b
@@ -159,8 +159,8 @@ class M_monitoring extends CI_Model {
                 ,2) prosentase_achieve
             from
               (SELECT
-                    to_char(dp.created_date, 'dd-Mon-yyyy') as hari,
-                    to_char(dp.created_date, 'dd') as label,
+                    to_char(dp.due_time, 'dd-Mon-yyyy') as hari,
+                    to_char(dp.due_time, 'dd') as label,
                 pmp.monthly_plan_quantity,
                     sum(dp.need_qty) plan_qty,
                     sum(dp.achieve_qty) achieve_qty
@@ -171,7 +171,7 @@ class M_monitoring extends CI_Model {
                   dp.section_id = pmp.section_id
                   AND to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
                   AND dp.section_id = $section
-                    AND dp.created_date between
+                    AND dp.due_time between
                       date_trunc('month', current_date)
                       and
                       (date_trunc('month', current_date) + interval '1 month')
@@ -227,13 +227,9 @@ class M_monitoring extends CI_Model {
               from
                 pp.pp_daily_plans dp
               where
-                dp.created_date between
-                  (
-                    case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
-                      then to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
-                      else to_timestamp((to_char(TIMESTAMP 'yesterday', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
-                    END
-                  )
+                (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty
+                and dp.due_time between
+                  to_timestamp((to_char(date_trunc('month', current_date), 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
                   and
                   (
                     case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')

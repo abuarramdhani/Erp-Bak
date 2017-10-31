@@ -16,20 +16,16 @@ class M_dataplan extends CI_Model {
     }elseif (!$sid == FALSE){
       $this->db->select("dp.*,(case when dp.achieve_qty>=dp.need_qty then 'OK' else 'NOT OK' end) status");
       $this->db->from('pp.pp_daily_plans dp');
-      $this->db->where("dp.created_date between
-    (
-      case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
-        then to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
-        else to_timestamp((to_char(TIMESTAMP 'yesterday', 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
-      END
-    )
-    and
-    (
-      case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
-        then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
-        else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
-      END
-    ) AND dp.section_id =", $sid);
+      $this->db->where("
+        (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty AND dp.due_time between
+        to_timestamp((to_char(date_trunc('month', current_date), 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
+        and
+        (
+          case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+            then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+            else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+          END
+        ) AND dp.section_id =", $sid);
       $this->db->order_by('dp.priority, status, dp.created_date', 'ASC');
    	}elseif (!$id == FALSE) {
       $this->db->select('*');
