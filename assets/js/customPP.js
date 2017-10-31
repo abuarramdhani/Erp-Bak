@@ -1,7 +1,23 @@
 window.onload = function() {
-    $('.time-form').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd'
+    $('.time-form').daterangepicker({
+        "singleDatePicker": true,
+        "showDropdowns": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "timePickerSeconds": true,
+         "opens": "left",
+         "drops": "up",
+        locale: {
+            format: 'MM/DD/YYYY HH:mm:ss',
+            cancelLabel: 'Clear'
+        },
+         "autoUpdateInput": false
+    });
+    $('.time-form').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY/MM/DD HH:mm:ss'));
+    });
+    $('.time-form').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
     });
     $('.date-month-year').datepicker({
         autoclose: true,
@@ -53,7 +69,7 @@ function getDataLineChartPP(section, canvasid) {
             value.push(temp);
             value.push(temp1);
         }
-        chartFabricationMon(canvasid, labels, value, ['rgba(163, 60, 82, 0.5)', 'rgba(94, 169, 218, 0.7)'], ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'], ['% PLAN', '% ACHIEV']);
+        chartFabricationMon(canvasid, labels, value, ['rgba(231, 76, 60, 1)', 'rgba(51, 122, 183, 1)'], ['rgba(231, 76, 60, 1)', 'rgba(51, 122, 183, 1)'], ['% PLAN', '% ACHIEV']);
     });
 }
 
@@ -72,6 +88,7 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
                     display: true,
                     scaleLabel: {
                         display: true,
+                        fontWeight: "bold",
                         labelString: "DATE"
                     },
                     gridLines: {
@@ -87,6 +104,9 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
                             return value + "%"
                         },
                         stepSize: 20,
+                        fontSize: 14,
+                        fontColor: "black",
+                        fontWeight: "bold"
                     },
                     scaleLabel: {
                         display: true,
@@ -105,7 +125,7 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
     var count = label.length;
     for (var i = 0; i < count; i++) {
         chartMF.data.datasets.push({
-            borderWidth: 1,
+            borderWidth: 2,
             fill: false,
             label: label[i],
             backgroundColor: color[i],
@@ -120,7 +140,7 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
     $('canvas#' + canvasid).height("250px");
 }
 
-function showHideNormalPlanning() {
+function showHideNormalPlanningMultiple() {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
     var ckBegin = [];
@@ -140,6 +160,23 @@ function showHideNormalPlanning() {
                 $('table[data-secid="' + id[i] + '"] tbody#normalPriority tr[data-showid="' + tempShowId + '"]').attr('data-showstat', '1');
             });
         }
+    }
+}
+
+function showHideNormalPlanningSingle() {
+    var id = $('input[name="sectionId0"]').val();
+    var ckBegin = Number($('input[name="checkpointBegin"][data-secid="' + id + '"]').val());
+    var ckEnd = Number($('input[name="checkpointEnd"][data-secid="' + id + '"]').val());
+    if (ckBegin <= 6 && ckBegin < ckEnd) {
+        $('tbody#normalPriority tr:first').fadeOut("slow", function() {
+            $('tbody#normalPriority tr:first').attr('data-showstat', '0');
+            var tempElem = $('table[data-secid="' + id + '"] tbody#normalPriority tr').get(0);
+            $('tbody#normalPriority tr:first').remove();
+            $('tbody#normalPriority').append(tempElem);
+            var tempShowId = $('table[data-secid="' + id + '"] tbody#normalPriority tr[data-showstat*="0"]:first').attr('data-showid');
+            $('tbody#normalPriority tr[data-showid="' + tempShowId + '"]').fadeIn('fast');
+            $('tbody#normalPriority tr[data-showid="' + tempShowId + '"]').attr('data-showstat', '1');
+        });
     }
 }
 
