@@ -355,7 +355,7 @@
             , 20000*checkpointEnd);
 
             var showhide = setInterval(function(){
-                showHideNormalPlanning();
+                showHideNormalPlanningMultiple();
                 getSectionMon();
                 getAchieveAllFab();
                 getInfoJob();
