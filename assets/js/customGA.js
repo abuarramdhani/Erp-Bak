@@ -273,19 +273,6 @@ var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKate
 
 function TambahBarisMaintenanceKendaraan(base){  
       var e = jQuery.Event( "click" );
-      // var rowid = $('#DetailMaintenanceKendaraan tr:last').attr('row-id');
-      // var rowid = $('#DetailMaintenanceKendaraan tr').length;      
-      // alert(rowid);
-      // counter = Number(rowid)+1;
-      // alert(counter);
-
-          // var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
-          //           +"<td >"+ counter +" </td>"
-          //           +"<td>"
-          //             +"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
-          //             +"<input type='hidden' name='idSegment[]'' value='0'>"
-          //           +"</td>"
-          //           +"</tr>");
 
           var newRow  = jQuery("<tr>"
                                 +"<td style='text-align:center; width:'"+"30px"+"'></td>"
@@ -313,19 +300,6 @@ function TambahBarisMaintenanceKendaraan(base){
 
 function TambahBarisKecelakaanDetail(base){  
       var e = jQuery.Event( "click" );
-      // var rowid = $('#DetailMaintenanceKendaraan tr:last').attr('row-id');
-      // var rowid = $('#DetailMaintenanceKendaraan tr').length;      
-      // alert(rowid);
-      // counter = Number(rowid)+1;
-      // alert(counter);
-
-          // var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
-          //           +"<td >"+ counter +" </td>"
-          //           +"<td>"
-          //             +"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
-          //             +"<input type='hidden' name='idSegment[]'' value='0'>"
-          //           +"</td>"
-          //           +"</tr>");
 
           var newRow  = jQuery( "<tr>"
                                   +"<td style='text-align:center; width:'"+"30px"+"'></td>"

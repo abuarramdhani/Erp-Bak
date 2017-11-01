@@ -15,6 +15,7 @@ class C_DocumentJobDescription extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('DocumentStandarization/MainMenu/M_jobdeskdocument');
+		$this->load->model('DocumentStandarization/MainMenu/M_general');
 
 		$this->checkSession();
 	}
@@ -45,7 +46,8 @@ class C_DocumentJobDescription extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['JobdeskDocument'] = $this->M_jobdeskdocument->getJobdeskDocument();
+		$data['JobDescription'] 		= 	$this->M_jobdeskdocument->ambilJobDescription();
+		$data['DocumentJobDescription']	=	$this->M_jobdeskdocument->ambilDokumenJobDescription();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -70,21 +72,28 @@ class C_DocumentJobDescription extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
-
+		$this->form_validation->set_rules('cmbDepartemen', 'Departemen', 'required');
+		$this->form_validation->set_rules('cmbJD', 'Job Description', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['ambilDepartemen'] 	= 	$this->M_general->ambilDepartemen();
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/DocumentJobDescription/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$data = array(
-				'jd_id' => $this->input->post('txtJdIdHeader'),
-				'document_id' => $this->input->post('txtDocumentIdHeader'),
-				'document_type' => $this->input->post('txtDocumentTypeHeader'),
-    		);
-			$this->M_jobdeskdocument->setJobdeskDocument($data);
-			$header_id = $this->db->insert_id();
+			$jobdescID 					= 	$this->input->post('cmbJD');
+			$dokumenJobDescription 		= 	$this->input->post('cmbDokumenJobDescription');
+
+			foreach ($dokumenJobDescription as $dokumenJD) 
+			{
+				$data 	= 	array(
+						'jd_id' 		=> 	$jobdescID,
+						'document_id' 	=> 	$dokumenJD
+					);
+				$this->M_jobdeskdocument->setJobdeskDocument($data);
+			}
 
 			redirect(site_url('DocumentStandarization/DocumentJobDescription'));
 		}

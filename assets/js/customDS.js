@@ -11,27 +11,38 @@
 // 			{
 				$('#dataTables-allDocument').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});	
 				$('#dataTables-businessProcess').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-contextDiagram').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-standardOperatingProcedure').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-workInstruction').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-COP').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-flowProcess').DataTable({
 					"lengthChange": false,
@@ -39,19 +50,27 @@
 				});
 				$('#dataTables-masterJobDescription').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
-				$('#dataTables-jobdeskDocument').DataTable({
+				$('#dataTables-documentJobDescription').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-jobdeskEmployee').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 				$('#dataTables-Pekerja-cariDokumen').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"scrollX": true,
+					"scroller": true
 				});
 
 //			}
@@ -725,7 +744,7 @@
 
 
 		});
-//			General Behaviour
+//			General Behavior
 //			{
 				function previousPage()
 				{
@@ -789,23 +808,23 @@
 					var count = $('.clone').length;
 					$('#rowid').html(count);
 				};
-			function delSpesifikRowDokumenJobDescriptionCreate(th) {
-				var count = $('.clone').length;
-				if(count<=1)
-				{
-					alert('Minimal 1 baris!');
+				function delSpesifikRowDokumenJobDescriptionCreate(th) {
+					var count = $('.clone').length;
+					if(count<=1)
+					{
+						alert('Minimal 1 baris!');
+					}
+					else
+					{
+						$(th).closest('tr').remove(); 				
+					}   					   			  
 				}
-				else
-				{
-					$(th).closest('tr').remove(); 				
-				}   					   			  
-			}
 
-			setInterval(function() {
-  				$('#DetailKecelakaan tr').each(function (idx) {
-     				$(this).children("#DokumenJobDescription tr td:eq(0)").html(idx + 1);
-  				});
-			}, 10);
+				setInterval(function() {
+	  				$('#DokumenJobDescription tr').each(function (idx) {
+	     				$(this).children("#DokumenJobDescription tr td:eq(0)").html(idx + 1);
+	  				});
+				}, 10);
 //			}  
 // 	}
 

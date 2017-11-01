@@ -37,7 +37,7 @@
                                             </div>
                                             <div class="box-body">
                                                 <?php
-                                                    if($jumlahWIUnrooted<4 && $jumlahWIUnrooted>0)
+                                                    if($jumlahWIUnrooted<3 && $jumlahWIUnrooted>0)
                                                     {
                                                         if(12 % $jumlahWIUnrooted!=0)
                                                         {
@@ -52,7 +52,7 @@
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
-                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc disabled">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
                                                                                 </div>
                                                                             <br/>
                                                                             </center>
@@ -60,7 +60,7 @@
                                                             }
                                                             else
                                                             {
-                                                                echo '  <div class="col-lg-2">
+                                                                echo '  <div class="col-lg-'.(12/$listWIUnrooted).'">
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
@@ -72,17 +72,17 @@
                                                             }
                                                         }
                                                     }
-                                                    elseif($jumlahWIUnrooted>3)
+                                                    elseif($jumlahWIUnrooted>2)
                                                     {
                                                         foreach ($listWIUnrooted as $WI) 
                                                         {
                                                             if($WI['file']==NULL || $WI['file']=='' || $WI['file']==' ')
                                                             {
-                                                                echo '  <div class="col-lg-'.(12/$jumlahWIUnrooted).'">
+                                                                echo '  <div class="col-lg-6">
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
-                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc disabled">'.$WI['nomor_kontrol'].' - '.$WI['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$WI['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
                                                                                 </div>
                                                                             <br/>
                                                                             </center>
@@ -90,7 +90,7 @@
                                                             }
                                                             else
                                                             {
-                                                                echo '  <div class="col-lg-2">
+                                                                echo '  <div class="col-lg-6">
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
@@ -123,7 +123,7 @@
                                             </div>
                                             <div class="box-body">
                                                 <?php
-                                                    if($jumlahCOPUnrooted<4 && $jumlahCOPUnrooted>0)
+                                                    if($jumlahCOPUnrooted<3 && $jumlahCOPUnrooted>0)
                                                     {
                                                         if(12 % $jumlahCOPUnrooted!=0)
                                                         {
@@ -138,7 +138,7 @@
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
-                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc disabled">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_code_of_practice'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
                                                                                 </div>
                                                                             <br/>
                                                                             </center>
@@ -146,11 +146,11 @@
                                                             }
                                                             else
                                                             {
-                                                                echo '  <div class="col-lg-4">
+                                                                echo '  <div class="col-lg-'.(12/$jumlahCOPRooted).'">
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
-                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_code_of_practice'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
                                                                                 </div>
                                                                             <br/>
                                                                             </center>
@@ -158,24 +158,17 @@
                                                             }
                                                         }
                                                     }
-                                                    elseif($jumlahCOPUnrooted>3)
+                                                    elseif($jumlahCOPUnrooted>2)
                                                     {
-                                                        foreach ($listCOPUnrooted as $listCOPUnrooted) 
+                                                        foreach ($listCOPUnrooted as $COP) 
                                                         {
-                                                            $SOPencode  = str_replace(array('+', '/', '='), array('-', '_', '~'), $listCOPUnrooted['id_standard_operating_procedure']);
-
-                                                            $CDencode   = str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encrypt->encode($idCD)); 
-                                                            $BPencode   = str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encrypt->encode($idBP));
-
-                                                            $linkencode = base_url('DocumentStandarization/AllDoc/WI_COP/'.$SOPencode.'/'.$CDencode.'/'.$BPencode);
-
                                                             if($COP['file']==NULL || $COP['file']=='' || $COP['file']==' ')
                                                             {
-                                                                echo '  <div class="col-lg-'.(12/$jumlahCOPRooted).'">
+                                                                echo '  <div class="col-lg-6">
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
-                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc disabled">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_code_of_practice'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
                                                                                 </div>
                                                                             <br/>
                                                                             </center>
@@ -183,11 +176,11 @@
                                                             }
                                                             else
                                                             {
-                                                                echo '  <div class="col-lg-4">
+                                                                echo '  <div class="col-lg-6">
                                                                             <center>
                                                                             <br/>
                                                                                 <div class="btn-group-vertical">
-                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_work_instruction'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
+                                                                                        <a type="button" class="btn btn-warning btn-lg buttonlistDocUpper buttonlistDoc" href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen'.'/'.$COP['file']).'" target="_blank">'.$COP['nomor_kontrol'].' - '.$COP['nomor_revisi'].'<br/><h6 style="white-space: normal;">'.$COP['nama_code_of_practice'].'</h6><i class="fa fa-file-pdf-o fa-lg"></i></a>
                                                                                 </div>
                                                                             <br/>
                                                                             </center>
