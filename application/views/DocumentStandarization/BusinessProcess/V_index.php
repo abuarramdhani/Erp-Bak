@@ -28,7 +28,7 @@
                                 </a>
                             </div>
                             <div class="box-body">
-                                <?php
+<!--                                 <?php
                                     if($jumlahNotifikasi>0)
                                     {
                                         echo '  <div class="row">';
@@ -71,9 +71,9 @@
                                         echo    '   </div>';
                                     }
 
-                                ?>
-                                <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-businessProcess" style="font-size:12px; overflow-x: auto;">
+                                ?> -->
+                                <div>
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-businessProcess" style="font-size:12px; overflow-x: auto; width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>

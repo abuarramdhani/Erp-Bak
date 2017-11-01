@@ -28,16 +28,13 @@
                                 </a>
                             </div>
                             <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-masterJobDescription" style="font-size:12px; overflow-x: auto;">
+                                <div>
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-masterJobDescription" style="font-size:12px; overflow-x: auto; width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-                                                <th style="text-align: center; white-space: nowrap;">Departemen</th>
-                                                <th style="text-align: center; white-space: nowrap;">Bidang</th>
-                                                <th style="text-align: center; white-space: nowrap;">Unit</th>
-                                                <th style="text-align: center; white-space: nowrap;">Seksi</th>
+                                                <th style="text-align: center; white-space: nowrap;">Hirarki</th>
 												<th>Job Desk</th>
 												<th>Detail Job Desk</th>
 											</tr>
@@ -56,12 +53,16 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/MasterJobDescription/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('DocumentStandarization/MasterJobDescription/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-												<td style="text-align: center; white-space: nowrap;"><?php echo $row['departemen'];?></td>
-                                                <td style="text-align: center; white-space: nowrap;"><?php echo $row['bidang'];?></td>
-                                                <td style="text-align: center; white-space: nowrap;"><?php echo $row['unit'];?></td>
-                                                <td style="text-align: center; white-space: nowrap;"><?php echo $row['seksi'];?></td>
+												<td style="white-space: nowrap;">
+                                                    <ul>
+                                                        <li>Departemen : <b><?php echo $row['departemen'];?></b></li>
+                                                        <li>Bidang : <b><?php echo $row['bidang'];?></b></li>
+                                                        <li>Unit : <b><?php echo $row['unit'];?></b></li>
+                                                        <li>Seksi : <b><?php echo $row['seksi'];?></b></li>
+                                                    </ul>
+                                                </td>
 												<td style="white-space: nowrap;"><?php echo $row['nama_jobdesc'] ?></td>
-												<td style="white-space: nowrap;"><?php echo $row['detail_jobdesc'] ?></td>
+												<td><?php echo $row['detail_jobdesc'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

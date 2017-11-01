@@ -821,6 +821,17 @@ class M_general extends CI_Model
         }        
     }
 
+    public function ambilJobDescription($keywordJobDescription)
+    {
+        $ambilJobDescription        = " select      jd.jd_id as id_job_description,
+                                                    jd.jd_name as nama_job_description
+                                        from        ds.ds_jobdesk as jd
+                                        where       jd.jd_name like '%".$keywordJobDescription."%'
+                                        order by    id_job_description;";
+        $queryAmbilJobDescription   =   $this->db->query($ambilJobDescription);
+        return $queryAmbilJobDescription->result_array();
+    }
+
     // All Document -------start---
 
     public function ambilDaftarBP()
@@ -941,6 +952,9 @@ class M_general extends CI_Model
                                                     wi.wi_file as file
                                         from        ds.ds_work_instruction as wi
                                         where       cast(split_part(wi.no_kontrol,'-',3) as integer)>0
+                                                    and     wi.sop_id=".$SOP."
+                                                    and     wi.cd_id=".$CD."
+                                                    and     wi.bp_id=".$BP."
                                         order by    nomor_kontrol;";
         $queryAmbilDaftarWIRooted   =   $this->db->query($ambilDaftarWIRooted);
         return $queryAmbilDaftarWIRooted->result_array();
@@ -968,6 +982,9 @@ class M_general extends CI_Model
                                                 cop.cop_file as file
                                     from        ds.ds_code_of_practice as cop
                                     where       cast(split_part(cop.no_kontrol,'-',3) as integer)>0
+                                                and     cop.sop_id=".$SOP."
+                                                and     cop.cd_id=".$CD."
+                                                and     cop.bp_id=".$BP."
                                     order by    nomor_kontrol;";
         $queryAmbilDaftarCOPRooted  =   $this->db->query($ambilDaftarCOPRooted);
         return $queryAmbilDaftarCOPRooted->result_array();
@@ -1049,6 +1066,75 @@ class M_general extends CI_Model
         return $hasilAmbilFungsi[0]['fungsi'];
    }
     // All Document ---------end---
+
+   public function ambilKodesieJobDescription($jobDescription)
+   {
+       $ambilKodesieJobDescription      = " select      jd.kodesie
+                                            from        ds.ds_jobdesk as jd
+                                            where       jd.jd_id=".$jobDescription.";";
+        $queryAmbilKodesieJobDescription=   $this->db->query($ambilKodesieJobDescription);
+        $hasilAmbilKodesieJobDescription=   $queryAmbilKodesieJobDescription->result_array();
+        return $hasilAmbilKodesieJobDescription[0]['kodesie'];
+   }
+
+   public function ambilHirarki($kodesieJobDescription)
+   {
+       $ambilHirarki        = " select      seksi.section_code as kodesie,
+                                            seksi.department_name as nama_departemen,
+                                            seksi.field_name as nama_bidang,
+                                            seksi.unit_name as nama_unit,
+                                            seksi.section_name as nama_seksi
+                                from        er.er_section as seksi
+                                where       seksi.section_code='".$kodesieJobDescription."';";
+        $queryAmbilHirarki  =   $this->db->query($ambilHirarki);
+        return $queryAmbilHirarki->result_array();
+   }
+
+   public function ambilJobDescriptionBerdasarKodesie($kodesie)
+   {
+       $ambilJobDescriptionBerdasarKodesie      = " select      jd.jd_id as id_job_description,
+                                                                jd.jd_name as nama_job_description
+                                                    from        ds.ds_jobdesk as jd
+                                                    where       substring(jd.kodesie,1,7)='".$kodesie."'";
+        $queryAmbilJobDescriptionBerdasarKodesie=   $this->db->query($ambilJobDescriptionBerdasarKodesie);
+        return $queryAmbilJobDescriptionBerdasarKodesie->result_array();
+   }
+
+   public function ambilDokumenJobDescription($keywordDokumenJobDescription)
+   {
+       $ambilDokumenJobDescription      = " select      concat_ws('-', 'BP',bp.bp_id) as kode_dokumen,
+                                                        concat_ws(' - ', bp.no_kontrol, bp.no_revisi, bp.bp_name) as daftar_nama_dokumen,
+                                                        1 as level
+                                            from        ds.ds_business_process as bp
+                                            where       concat_ws(' - ', bp.no_kontrol, bp.no_revisi, bp.bp_name) like '%".$keywordDokumenJobDescription."%'
+                                            union
+                                            select      concat_ws('-', 'CD', cd.cd_id) as kode_dokumen,
+                                                        concat_ws(' - ', cd.no_kontrol, cd.no_revisi, cd.cd_name) as daftar_nama_dokumen,
+                                                        2 as level
+                                            from        ds.ds_context_diagram as cd
+                                            where       concat_ws(' - ', cd.no_kontrol, cd.no_revisi, cd.cd_name) like '%".$keywordDokumenJobDescription."%'
+                                            union
+                                            select      concat_ws('-', 'SOP', sop.sop_id) as kode_dokumen,
+                                                        concat_ws(' - ', sop.no_kontrol, sop.no_revisi, sop.sop_name) as daftar_nama_dokumen,
+                                                        3 as level
+                                            from        ds.ds_standard_operating_procedure as sop
+                                            where       concat_ws(' - ', sop.no_kontrol, sop.no_revisi, sop.sop_name) like '%".$keywordDokumenJobDescription."%'
+                                            union
+                                            select      concat_ws('-', 'WI', wi.wi_id) as kode_dokumen,
+                                                        concat_ws(' - ', wi.no_kontrol, wi.no_revisi, wi.wi_name) as daftar_nama_dokumen,
+                                                        4 as level
+                                            from        ds.ds_work_instruction as wi
+                                            where       concat_ws(' - ', wi.no_kontrol, wi.no_revisi, wi.wi_name) like '%".$keywordDokumenJobDescription."%'
+                                            union
+                                            select      concat_ws('-', 'COP', cop.cop_id) as kode_dokumen,
+                                                        concat_ws(' - ', cop.no_kontrol, cop.no_revisi, cop.cop_name) as daftar_nama_dokumen,
+                                                        5 as level
+                                            from        ds.ds_code_of_practice as cop
+                                            where       concat_ws(' - ', cop.no_kontrol, cop.no_revisi, cop.cop_name) like '%".$keywordDokumenJobDescription."%'
+                                            order by    level, daftar_nama_dokumen;";
+        $queryAmbilDokumenJobDescription=   $this->db->query($ambilDokumenJobDescription);
+        return $queryAmbilDokumenJobDescription->result_array();
+   }
 }
 
 /* End of file M_jobdesk.php */

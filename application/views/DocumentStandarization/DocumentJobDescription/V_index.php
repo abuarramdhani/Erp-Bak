@@ -28,22 +28,22 @@
                                 </a>
                             </div>
                             <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblJobdeskDocument" style="font-size:12px; overflow-x: auto;">
+                                <div>
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-documentJobDescription" style="font-size:12px; overflow-x: auto; width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-												<th>Jd Id</th>
-												<th>Document Id</th>
-												<th>Document Type</th>
+												<th>Hirarki</th>
+												<th>Job Description</th>
+												<th>Dokumen Job Description</th>
 											</tr>
                                         </thead>
                                         <tbody>
                                             <?php 
                                             	$no = 1; 
-                                            	foreach($JobdeskDocument as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['jd_d_id']);
+                                            	foreach($JobDescription as $JD):
+                                            	$encrypted_string = $this->encrypt->encode($JD['kode_jobdesc']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
@@ -53,9 +53,32 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('DocumentStandarization/DocumentJobDescription/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('DocumentStandarization/DocumentJobDescription/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-												<td><?php echo $row['jd_id'] ?></td>
-												<td><?php echo $row['document_id'] ?></td>
-												<td><?php echo $row['document_type'] ?></td>
+                                                <td style="white-space: nowrap;">
+                                                    <ul>
+                                                        <li>Departemen : <b><?php echo $JD['departemen'];?></b></li>
+                                                        <li>Bidang : <b><?php echo $JD['bidang'];?></b></li>
+                                                        <li>Unit : <b><?php echo $JD['unit'];?></b></li>
+                                                        <li>Seksi : <b><?php echo $JD['seksi'];?></b></li>
+                                                    </ul>
+                                                </td>
+												<td><?php echo $JD['nama_jobdesc'] ?></td>
+												<td>
+                                                    <ul>
+                                                        <?php
+                                                            foreach ($DocumentJobDescription as $dokumenJD) 
+                                                            {
+                                                                if($dokumenJD['kode_jobdesc']==$JD['kode_jobdesc'])
+                                                                {
+                                                                    echo '  <li>
+                                                                                <a href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$row['file'].'" target="_blank">
+                                                                                    '.$dokumenJD['nama_dokumen'].'
+                                                                                </a>
+                                                                            </li>';
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </ul>
+                                                </td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
