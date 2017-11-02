@@ -1346,6 +1346,11 @@ class C_DataAssets extends CI_Controller {
 
 	}
 
+	public function DeleteANT($astId){
+		$khueri = $this->M_dataassets->deleteWithoutTag($astId);
+		return $khueri;
+	}
+
 	// public function testChamber(){
 
 	// 	$tag_num = $this->input->post('txtTag');
