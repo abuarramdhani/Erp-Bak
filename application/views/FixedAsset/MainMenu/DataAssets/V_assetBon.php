@@ -67,7 +67,10 @@
 									$num++;?>
 									<tr class="data-row">
 										<td><?php echo $num; ?></td>
-										<td id="17"><button type="button" id="btnEdt" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-edit"></i></button></td>
+										<td id="17">
+											<button type="button" id="btnEdt" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-edit"></i></button>
+											<button type="button" class="btnDelANT btn btn-sm btn-danger" targast="<?php echo $asset['id'] ?>"><i class="glyphicon glyphicon-remove"></i></button>
+										</td>
 										<td id="01"><?php echo $asset['id'] ?></td>
 										<td id="02"><?php echo $asset['no_pp'] ?></td>
 										<td id="03"><?php echo $asset['kode_barang'] ?></td>

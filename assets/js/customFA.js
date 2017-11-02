@@ -503,6 +503,28 @@ $(document).ready(function() {
 		});
 	});
 
+	$('.btnDelANT').each(function(){
+		$(this).click(function(){
+			var confTrue = confirm('apakah anda yakin akan melakukan delete data?');
+			var astId = $(this).attr('targast');
+			if (confTrue == true) {
+				$.ajax({
+					url: base+"FixedAsset/DataAssets/DeleteANT/"+astId,
+					success: function() {
+						alert('data deleted');
+						window.location.reload();
+					},
+					error: function(){
+						alert('deleteError');
+					}
+				});
+			}else{
+				alert('delete canceled');
+			}
+		});
+	});
+		
+
 	// 
 	// $('#btnReceipt').attr('disabled', 'disabled');
 	// var ppnum = $('#txtReceipt').val();
