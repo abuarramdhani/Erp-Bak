@@ -271,7 +271,7 @@ class C_Limbah extends CI_Controller
 	}
 
 	/* READ DATA */
-	 function read($id)
+	public function read($id)
 	{
 		$user_id = $this->session->userid;
 
