@@ -749,8 +749,19 @@
 
 		$(document).on('change', '#area', function() {
 			var destination = $(this).val();
-			$('.outstation-area').select2('val', destination);
+			$('#area_lines').select2('val', destination);
+			// var destination_name = $("#area option[value='"+destination+"']").text()
+			// alert(destination);
+			// $('#area_lines').val(destination);
+			// $('#area_lines option[value='+destination+']').attr('selected','selected');
 		});
+
+		// $(document).on('change', '#area_lines', function() {
+		// 	var destination = $(this).val();
+		// 	// var destination_name = $("#area option[value='"+destination+"']").text()
+		// 	alert(destination);
+		// 	// $('#area_lines').val(destination);
+		// });
 
 		$('#submit-simulation').click(function(){
 			$('.alert').alert('close');

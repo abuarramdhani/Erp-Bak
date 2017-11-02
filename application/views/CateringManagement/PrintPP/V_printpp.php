@@ -111,7 +111,7 @@
 </table>
 <table style="width:100%;">
 	<tr>
-		<td style="border:1px solid black;font-size: 7px;width: 20%;padding-left: 10px"><b>No. PR: </b>
+		<td style="border:1px solid black;font-size: 10px;width: 20%;padding-left: 10px"><b>No. PR: </b>
 		</td>	
 		<td rowspan = "2" style="border:1px solid black;font-size: 8px;text-align: center;width:16%"><b>Diterima</b>
 			<p style="margin-bottom: 0"><b>Sie Pembelian</b></p>

@@ -372,6 +372,8 @@ $route['Outstation/simulation/delete/(:any)'] = 'general-afair/outstation/Outsta
 
 //--------Outstation Realization------------
 $route['Outstation/realization'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/index';
+$route['Outstation/realization/download/(:any)'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/DownloadFile/$1';
+$route['Outstation/realization/upload'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/UploadFile';
 $route['Outstation/realization/print/(:any)'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/print_realization/$1';
 $route['Outstation/realization/new'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/new_Realization';
 $route['Outstation/realization/new/process'] = 'general-afair/outstation/OutstationTransaction/C_OutstationRealization/load_process';

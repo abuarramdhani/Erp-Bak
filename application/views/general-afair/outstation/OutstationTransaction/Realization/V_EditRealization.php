@@ -103,6 +103,11 @@
 											<?php
 													}
 											?>
+												<tr>
+													<td>
+														<input type="file" name="fileOutstation[]" id="fileOutstation" value="" multiple/>
+													</td>
+												</tr>
 											</table>
 										<label>Estimate Allowance</label>
 										<div class="row2" id="estimate-allowance">
