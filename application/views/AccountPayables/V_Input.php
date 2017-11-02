@@ -11,7 +11,7 @@
 				                    	<div class="box-body">
 				                    	<table>	
 					                    	<tr>
-					                    		<td width="150px">
+					                    		<td width="123px">
 					                    			<label for="exampleInputPassword1">Scan QR Code</label>
 					                    		</td>
 					                    		<td>
@@ -94,7 +94,7 @@
 
 								                 	<table>	
 								                 		<tr>
-								                 			<td width="150px">
+								                 			<td width="123px">
 								                 				<label for="exampleInputPassword1">Product</label>
 								                 			</td>
 								                 			<td>
@@ -142,7 +142,7 @@
 								                 	</table>
 								                 	<table>	
 								                 		<tr>
-								                 			<td width="150px">
+								                 			<td width="123px">
 								                 				<label for="exampleInputPassword1">Address</label>
 								                 			</td>
 								                 			<td>
@@ -230,7 +230,7 @@
 
 								                 	<table>	
 								                 		<tr>
-								                 			<td width="150px">
+								                 			<td width="123px">
 								                 				<label for="exampleInputPassword1">Product</label>
 								                 			</td>
 								                 			<td>
