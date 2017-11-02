@@ -1,15 +1,16 @@
 //---------------------invoice faktur pajak----------------//
 $(document).ready(function() {
-
-	if ($('#qr_code').val() == '') {
-		$('#save').attr('disabled','disabled')
-		$('#savewithinvoice').attr('disabled','disabled')		
-		$('#btnRst').attr('disabled','disabled')
-	}else{
-		$('#save').removeAttr('disabled','disabled')
-		$('#savewithinvoice').removeAttr('disabled','disabled')		
-		$('#btnRst').removeAttr('disabled','disabled')
-	};
+	$(document).on('tableLoaded', function(){
+		if ($('#qr_code').val() == '') {
+			$('#save').attr('disabled','disabled')
+			$('#savewithinvoice').attr('disabled','disabled')		
+			$('#btnRst').attr('disabled','disabled')
+		}else{
+			$('#save').removeAttr('disabled','disabled')
+			$('#savewithinvoice').removeAttr('disabled','disabled')		
+			$('#btnRst').removeAttr('disabled','disabled')
+		};
+	});
 	$("#slcSupplier").select2({
 		placeholder: "SUPPLIER",
 		minimumInputLength: 2,
@@ -137,7 +138,7 @@ $(document).ready(function() {
 	}
 	
 	//ONCHANGE QRCODE
-	$(document).ready(function() {	
+	$(document).on('modalShowed', function() {	
 		$('#qr_code').change(function(){
 			$('#ldg').html('<img src="'+baseurl+'assets/img/gif/loading3.gif" width="34px"/>');
 
@@ -268,7 +269,7 @@ $(document).ready(function() {
 	});
 	
 	//INSPECT QRCODE
-	$(document).ready(function() {	
+	$(document).ajaxSuccess(function() {	
 		$('.inspectqr').click(function(){
 			
 			$('.qrarea').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
@@ -315,6 +316,86 @@ $(document).ready(function() {
 	$('#tanggal_awal_pilih').datepicker();
 	$("#invStat").select2({
 	    minimumResultsForSearch: -1
+	});
+
+	$(document).on('tableLoaded', function(){
+		$('.InputFakQr').each(function(){
+			$(this).click(function(){
+				var inv_id = $(this).attr('inv_id');
+				$.ajax({
+					type: "POST",
+					url: baseurl + "AccountPayables/Invoice/inputTaxNumber/"+inv_id, 
+					// data:,
+					cache:false,
+					success:function(data){
+						$('#contentFakMod').html(data);
+						$('#modalInputFaktur').modal('show');
+						$(document).trigger('modalShowed');
+					},
+					error: function (xhr, ajaxOptions, thrownError){
+						console.log(xhr.responseText);
+					}
+				});
+			});
+		});
+		$('.InputFakMn').each(function(){
+			$(this).click(function(){
+				var inv_id = $(this).attr('inv_id');
+				$.ajax({
+					type: "POST",
+					url: baseurl + "AccountPayables/Invoice/inputTaxManual/"+inv_id, 
+					// data:,
+					cache:false,
+					success:function(data){
+						$('#contentFakMod').html(data);
+						$('#modalInputFaktur').modal('show');
+						$(document).trigger('modalShowed');
+					},
+					error: function (xhr, ajaxOptions, thrownError){
+						console.log(xhr.responseText);
+					}
+				});
+			});
+		});
+		$('.DeleteFak').each(function(){
+			$(this).click(function(){
+				var inv_num = $(this).attr('invnum');
+				var trgt = $(this).attr('trgt');
+				var mksrdel = confirm('anda yakin akan menghapus data '+inv_num);
+				if (mksrdel == true) {
+					$.ajax({
+						type: "POST",
+						url: baseurl + "AccountPayables/Invoice/deleteTaxNumber/"+trgt, 
+						// data:,
+						cache:false,
+						success:function(data){
+							alert('data dihapus');
+							$('#smbt').click();
+						},
+						error: function (xhr, ajaxOptions, thrownError){
+							console.log(xhr.responseText);
+						}
+					});
+				};	
+			});
+		});
+	});
+
+	$('#fakturSAbtn').click(function(){
+		$.ajax({
+			type: "POST",
+			url: baseurl + "AccountPayables/Invoice/faktursa", 
+			// data:,
+			cache:false,
+			success:function(data){
+				$('#contentFakMod').html(data);
+				$('#modalInputFaktur').modal('show');
+				$(document).trigger('modalShowed');
+			},
+			error: function (xhr, ajaxOptions, thrownError){
+				console.log(xhr.responseText);
+			}
+		});
 	});
 
 })
@@ -428,103 +509,18 @@ $(document).ready(function() {
 });
 
 $(document).ready(function(){
-	if ($('#nomor_cari').val() != undefined && $('#npwp').val() != undefined) {
-
-		var res0 = $('#npwp').val().replace(/[\D]/g, '');
-		$('#npwp').val( res0 );
-
-		var dppkn = Math.round($('#dpp1').val());
-		var ppnkn = Math.round($('#ppn1').val());
-		$('#dpp1').val(dppkn);
-		$('#ppn1').val(ppnkn);
-
-		var dppiv = parseFloat($('#dpp1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-		var dppires = 'Rp. '+dppiv;
-		$('#dpp1').val(dppires);
-		var ppniv = parseFloat($('#ppn1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-		var ppnires = 'Rp. '+ppniv;
-		$('#ppn1').val(ppnires);
-	};
-
-	$('#save').click(function(){
-		var npwp = $('#npwpPenjual').val();
-		var dpp = $('#jumlahDpp').val();
-		var ppn = $('#jumlahPpn').val();
-		var dppv = dpp.replace(/[\D]/g, '');
-		$('#jumlahDpp').val(dppv);
-		var ppnv = ppn.replace(/[\D]/g, '');
-		$('#jumlahPpn').val(ppnv);
-		//show modal
-		$('#comentModal').modal('show');
-	});
-
-	$('#btnConfirm').click(function(){
-		var pass = $('#passwd').val();
-		if (pass == '110993') {
-			// alert('HAUHAU');
-        	$('#pph').submit();
-		}else{
-			// alert('NAAAH');
-		};
-	});
-
-	$('#savewithinvoice').click(function(){
-		var npwp = $('#npwpPenjual').val();
-		var dpp = $('#jumlahDpp').val();
-		var ppn = $('#jumlahPpn').val();
-		var npwp1 = $('#npwp').val();
-		var dpp1 = $('#dpp1').val();
-		var ppn1 = $('#ppn1').val();
-		var hppn = $('#hppn').val();
-		var hppn1 = $('#hppn1').val();
-		var ppnplus = Math.abs(hppn1 - hppn);
-
-		var dppv = dpp.replace(/[\D]/g, '');
-		$('#jumlahDpp').val(dppv);
-		var ppnv = ppn.replace(/[\D]/g, '');
-		$('#jumlahPpn').val(ppnv);
-		var dpp1v = dpp1.replace(/[\D]/g, '');
-		$('#dpp1').val(dpp1v);
-		var ppn1v = ppn1.replace(/[\D]/g, '');
-		$('#ppn1').val(ppn1v);
-
-		if (parseFloat(ppn1v) > parseFloat(ppnv)) {
-			if (ppnplus > 100 || npwp != npwp1) {
-        		// alert('NAAAH');
-				$('#comentModal').modal('show');
-			}else{
-				// alert('HAUHAU');
-        		$('#pph').submit();
-			};
-		}else if (parseFloat(ppn1v) <= parseFloat(ppnv) && npwp == npwp1) {
-			$('#pph').submit();
-		};
-	});
-
-	$("#saveManual").click(function(){
-
-		var tglf = $('#tanggalFaktur').val().replace(/[\D]/g, '');
-		var datef = tglf.slice(0,2);
-		var monthf = tglf.slice(2,4);
-		var yearf = tglf.slice(-4);
-		var resf = monthf+'/'+datef+'/'+yearf;
-		$('#tanggalFakturCon').val(resf);
-		var nfRes = $('#nomorFaktur').val().replace(/[\D]/g, '');
-		$('#nomorFaktur').val(nfRes);
-
-		// alert($('#nomorFaktur').val());
-		$('#pph').submit();
-	});
-
-	$("#btnCls").click(function(){
-		var dppfv = parseFloat($('#jumlahDpp').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-		var dppfres = 'Rp. '+dppfv;
-		$('#jumlahDpp').val(dppfres);
-		var ppnfv = parseFloat($('#jumlahPpn').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-		var ppnfres = 'Rp. '+ppnfv;
-		$('#jumlahPpn').val(ppnfres);
-
+	$(document).on('modalShowed', function(){
+		$('#tanggalFaktur').datepicker();
 		if ($('#nomor_cari').val() != undefined && $('#npwp').val() != undefined) {
+
+			var res0 = $('#npwp').val().replace(/[\D]/g, '');
+			$('#npwp').val( res0 );
+
+			var dppkn = Math.round($('#dpp1').val().replace(/[\D]/g, ''));
+			var ppnkn = Math.round($('#ppn1').val().replace(/[\D]/g, ''));
+			$('#dpp1').val(dppkn);
+			$('#ppn1').val(ppnkn);
+
 			var dppiv = parseFloat($('#dpp1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 			var dppires = 'Rp. '+dppiv;
 			$('#dpp1').val(dppires);
@@ -532,29 +528,156 @@ $(document).ready(function(){
 			var ppnires = 'Rp. '+ppniv;
 			$('#ppn1').val(ppnires);
 		};
+
+		$('#saveFakSa').click(function(){
+			var npwp = $('#npwpPenjual').val();
+			var dpp = $('#jumlahDpp').val();
+			var ppn = $('#jumlahPpn').val();
+			var dppv = dpp.replace(/[\D]/g, '');
+			$('#jumlahDpp').val(dppv);
+			var ppnv = ppn.replace(/[\D]/g, '');
+			$('#jumlahPpn').val(ppnv);
+			//show modal
+			// $('#modalInputFaktur').modal('hide');
+			setTimeout(function(){$('#comentModal').modal('show');}, 500)
+		});
+
+		$('#btnConfirm').click(function(){
+			var pass = $('#passwd').val();
+			if (pass == '110993') {
+				// alert('HAUHAU');
+	        	// $('#pph').submit();
+	        	ajaxForSubmitFaktur();
+			}else{
+				alert('Password tidak sesuai');
+			};
+		});
+
+		$('#savewithinvoice').click(function(){
+			var npwp = $('#npwpPenjual').val();
+			var dpp = $('#jumlahDpp').val();
+			var ppn = $('#jumlahPpn').val();
+			var npwp1 = $('#npwp').val();
+			var dpp1 = $('#dpp1').val();
+			var ppn1 = $('#ppn1').val();
+			var hppn = $('#hppn').val();
+			var hppn1 = $('#hppn1').val();
+			var ppnplus = Math.abs(hppn1 - hppn);
+
+			var dppv = dpp.replace(/[\D]/g, '');
+			$('#jumlahDpp').val(dppv);
+			var ppnv = ppn.replace(/[\D]/g, '');
+			$('#jumlahPpn').val(ppnv);
+			var dpp1v = dpp1.replace(/[\D]/g, '');
+			$('#dpp1').val(dpp1v);
+			var ppn1v = ppn1.replace(/[\D]/g, '');
+			$('#ppn1').val(ppn1v);
+
+			if (parseFloat(ppn1v) > parseFloat(ppnv)) {
+				if (ppnplus > 100 || npwp != npwp1) {
+	        		// alert('NAAAH');
+					// $('#modalInputFaktur').modal('hide');
+					setTimeout(function(){$('#comentModal').modal('show');}, 500)
+				}else{
+					// alert('HAUHAU');
+	        		ajaxForSubmitFaktur();
+				};
+			}else if (parseFloat(ppn1v) <= parseFloat(ppnv) && npwp == npwp1) {
+				ajaxForSubmitFaktur();
+			};
+		});
+
+		$("#saveManual").click(function(){
+
+			var tglf = $('#tanggalFaktur').val().replace(/[\D]/g, '');
+			var datef = tglf.slice(0,2);
+			var monthf = tglf.slice(2,4);
+			var yearf = tglf.slice(-4);
+			var resf = monthf+'/'+datef+'/'+yearf;
+			$('#tanggalFakturCon').val(resf);
+			var nfRes = $('#nomorFaktur').val().replace(/[\D]/g, '');
+			$('#nomorFaktur').val(nfRes);
+
+			// alert($('#nomorFaktur').val());
+			$('#pph').submit();
+		});
+
+		$("#btnClsModFak").click(function(){
+			var dppfv = parseFloat($('#jumlahDpp').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			var dppfres = 'Rp. '+dppfv;
+			$('#jumlahDpp').val(dppfres);
+			var ppnfv = parseFloat($('#jumlahPpn').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			var ppnfres = 'Rp. '+ppnfv;
+			$('#jumlahPpn').val(ppnfres);
+
+			if ($('#nomor_cari').val() != undefined && $('#npwp').val() != undefined) {
+				var dppiv = parseFloat($('#dpp1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+				var dppires = 'Rp. '+dppiv;
+				$('#dpp1').val(dppires);
+				var ppniv = parseFloat($('#ppn1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+				var ppnires = 'Rp. '+ppniv;
+				$('#ppn1').val(ppnires);
+			};
+			$('#comentModal').modal('hide');
+		});
+
+		$('#btnRst').click(function(){
+			$('#qr_code').val('');
+			$('#ldg').html('');
+			$('#btnRst').attr('disabled','disabled');
+			$('#save').attr('disabled','disabled');
+			$('#savewithinvoice').attr('disabled','disabled');		
+			$( "#nomorFaktur" ).val('');
+			$( "#namaPenjual" ).val('');
+			$( "#tanggalFaktur" ).val('');
+			$( "#jumlahDpp" ).val('');
+			$( "#jumlahPpn" ).val('');
+			$( "#npwpPenjual" ).val('');
+			$( "#alamatPenjual" ).val('');
+			$( "#nama" ).val('');
+			$( "#hppn1" ).val('');
+			$("#jumlahPpn").css('background-color','');
+			$("#ppn1").css('background-color','');
+			$("#jumlahDpp").css('background-color','');
+			$("#dpp1").css('background-color','');
+			$("#npwpPenjual").css('background-color','');
+			$("#npwp").css('background-color','');
+		});
 	});
 
-	$('#btnRst').click(function(){
-		$('#qr_code').val('');
-		$('#ldg').html('');
-		$('#btnRst').attr('disabled','disabled');
-		$('#save').attr('disabled','disabled');
-		$('#savewithinvoice').attr('disabled','disabled');		
-		$( "#nomorFaktur" ).val('');
-		$( "#namaPenjual" ).val('');
-		$( "#tanggalFaktur" ).val('');
-		$( "#jumlahDpp" ).val('');
-		$( "#jumlahPpn" ).val('');
-		$( "#npwpPenjual" ).val('');
-		$( "#alamatPenjual" ).val('');
-		$( "#nama" ).val('');
-		$( "#hppn1" ).val('');
-		$("#jumlahPpn").css('background-color','');
-		$("#ppn1").css('background-color','');
-		$("#jumlahDpp").css('background-color','');
-		$("#dpp1").css('background-color','');
-		$("#npwpPenjual").css('background-color','');
-		$("#npwp").css('background-color','');
+	$('#smbt').click(function(){
+		var tgl_Awal = $('#tanggal_awal').val();
+		var tgl_Akhir = $('#tanggal_akhir').val();
+		var supplier = $('#slcSupplier').val();
+		var invoice_number = $('#slcInvoiceNumber').val();
+		var invoice_status = $('#invStat').val();
+		var voucher_number = $('#slcVoucherNumber').val();
+		var loadingImgGif = "<img style='width:93px; height:auto;' id='InvTableSrcRslt' src='"+baseurl+"assets/img/gif/loading3.gif'>";
+		$('#searchResultTableHere').html(loadingImgGif);
+
+		$.ajax({
+			type: "POST",
+			url: baseurl + "AccountPayables/Invoice/search", 
+			data:	{
+						tanggal_awal:tgl_Awal,
+						tanggal_akhir:tgl_Akhir,
+						supplier:supplier,
+						invoice_number:invoice_number,
+						invoice_status:invoice_status,
+						voucher_number:voucher_number,
+					},
+			cache:false,
+			success:function(data){
+				$('#InvTableSrcRslt').remove();
+				$('#searchResultTableHere').html(data);
+				$(document).trigger('tableLoaded');
+			},
+			error: function (xhr, ajaxOptions, thrownError){
+				$('#InvTableSrcRslt').remove();
+				console.log(xhr.responseText);
+			}
+		});
+		return false;
 	});
 
 });
@@ -702,3 +825,98 @@ $(document).ready(function(){
 	$('#DInvoiceVdr').select2();
 });
 // ---------------------------------------------ReportDerailInvoice[END]-------------------------------------------
+
+function ajaxForSubmitFaktur(){
+	var invId 				= $('[name=invoice_id]').val();
+	var fakType 			= $('[name=faktur_type]').val();
+	var tanggalFaktur 		= $('[name=tanggalFaktur]').val();
+	var tanggalFakturCon	= $('[name=tanggalFakturCon]').val();
+	var npwpPenjual 		= $('[name=npwpPenjual]').val();
+	var namaPenjual 		= $('[name=namaPenjual]').val();
+	var alamatPenjual 		= $('[name=alamatPenjual]').val();
+	var jumlahDpp 			= $('[name=jumlahDpp]').val();
+	var jumlahPpn 			= $('[name=jumlahPpn]').val();
+	var ppnbm 				= $('[name=ppnbm]').val();
+	var txaCmt 				= $('[name=txaCmt]').val();
+	var nomorFaktur 		= $('[name=nomorFaktur]').val();
+	//first step ajax --- CheckInvoice
+	$.ajax({
+		type: "POST",
+		url: baseurl + "AccountPayables/Invoice/chkInvExist/"+invId, 
+		data:	{},
+		cache:false,
+		success:function(result){
+			if (result == 'true') {
+				var invchk = confirm('Data sudah ada di faktur aplikasi. Tetap simpan[replace]?');
+			}else{
+				var invchk = true
+			};
+			
+			if (invchk == true) {
+				//second step ajax --- CheckFaktur
+				$.ajax({
+					type: "POST",
+					url: baseurl + "AccountPayables/Invoice/chkFakExist/"+nomorFaktur, 
+					data:	{},
+					cache:false,
+					success:function(result){
+						if (result == 'true') {
+							var fakChk = confirm('Data sudah ada di faktur oracle. Tetap simpan[replace]?');
+						}else{
+							var fakChk = true
+						};
+						if (fakChk == true) {
+							//third step ajax --- InputData
+							$.ajax({
+								type: "POST",
+								url: baseurl + "AccountPayables/Invoice/saveTaxNumber", 
+								data:	{
+											invoice_id		: invId,
+											faktur_type		: fakType,
+											tanggalFaktur 	: tanggalFaktur,
+											tanggalFakturCon: tanggalFakturCon,
+											npwpPenjual		: npwpPenjual,
+											namaPenjual		: namaPenjual,
+											alamatPenjual	: alamatPenjual,
+											jumlahDpp		: jumlahDpp,
+											jumlahPpn		: jumlahPpn,
+											ppnbm			: ppnbm,
+											txaCmt			: txaCmt,
+											nomorFaktur		: nomorFaktur
+										},
+								cache:false,
+								success:function(){
+									alert('input berhasil');
+									$('#modalInputFaktur').modal('hide');
+									$('#comentModal').modal('hide');
+									$('#smbt').click();
+								},
+								error: function (xhr, ajaxOptions, thrownError){
+									alert("Error: \n"+xhr.responseText)
+									console.log(xhr.responseText);
+								}
+							});
+						}else{
+							alert('canceled');
+							$('#modalInputFaktur').modal('hide');
+							$('#comentModal').modal('hide');
+						}
+					},
+					error: function (xhr, ajaxOptions, thrownError){
+						alert("Error: \n"+xhr.responseText);
+						console.log(xhr.responseText);
+					}
+				});
+			}else {
+				alert('canceled');
+				$('#modalInputFaktur').modal('hide');
+				$('#comentModal').modal('hide');
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError){
+			alert("Error: \n"+xhr.responseText)
+			console.log(xhr.responseText);
+		}
+	});
+							
+};
