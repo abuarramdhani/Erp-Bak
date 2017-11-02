@@ -8,7 +8,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Input Data Plans
+                                        Daily Data Plans
                                     </b>
                                 </h1>
                             </div>
@@ -37,67 +37,117 @@
                                         </i>
                                     </button>
                                 </a>
-                                Employee List
+                                Plan List
                             </div>
                             <div class="panel-body">
-                                <table class="table table-striped table-bordered table-hover" id="tbdataplan">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <td>
-                                                No
-                                            </td>
-                                            <td>
-                                                Item
-                                            </td>
-                                            <td>
-                                                Description
-                                            </td>
-                                            <td>
-                                                Priority
-                                            </td>
-                                            <td>
-                                                Status
-                                            </td>
-                                            <td>
-                                                Action
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($plan as $pl) {
-											if ($pl['achieve_qty'] >= $pl['need_qty']) {
-												$status = "OK";
-												$color  = "class='bg-success'";
-											}else{
-												$status = "NOT OK";
-												$color  = "class='bg-warning'";
-											}
-										?>
-                                        <tr>
-                                            <td>
-                                                <?php echo $no++; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $pl['item_code']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $pl['item_description']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $pl['priority']; ?>
-                                            </td>
-                                            <td <?php echo $color; ?>>
-                                                <?php echo $status; ?>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlanDaily/Edit/'.$pl['daily_plan_id']); ?>">
-                                                    EDIT
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                <div class="row" id="loadingDailyArea"></div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <tr>
+                                                <td width="20%">
+                                                    <select name="section" id="section" data-placeholder="Section" class="form-control select4">
+                                                        <option></option>
+                                                        <?php foreach ($section as $sc) { ?>
+                                                            <option value="<?php echo $sc['section_id'] ?>"><?php echo $sc['section_name'] ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </td>
+                                                <td width="30%">
+                                                    <input type="text" class="form-control toupper time-form-range" placeholder="Plan Time" name="planTime" id="planTime" />
+                                                </td>
+                                                <td width="30%">
+                                                    <select name="itemCode" id="itemCode" data-placeholder="Item Code" class="form-control select4">
+                                                        <option></option>
+                                                        <?php foreach ($item as $it) { ?>
+                                                            <option value="<?php echo $it['item_code'] ?>"><?php echo $it['item_code'].' | '.$it['item_description']; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </td>
+                                                <td width="10%">
+                                                    <select name="Status" id="Status" data-placeholder="Status" class="form-control select4">
+                                                        <option></option>
+                                                        <option value="OK">OK</option>
+                                                        <option value="NOT OK">NOT OK</option>
+                                                    </select>
+                                                </td>
+                                                <td width="10%">
+                                                    <button onclick="searchDailyPlans(this)" class="btn btn-primary" style="width: 100%;">Search</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div id="tableDailyArea">
+                                    <table class="table table-striped table-bordered table-hover" id="tbdataplan">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <td>
+                                                    No
+                                                </td>
+                                                <td>
+                                                    Item
+                                                </td>
+                                                <td>
+                                                    Description
+                                                </td>
+                                                <td>
+                                                    Priority
+                                                </td>
+                                                <td>
+                                                    Due Time
+                                                </td>
+                                                <td>
+                                                    Section
+                                                </td>
+                                                <td>
+                                                    Status
+                                                </td>
+                                                <td>
+                                                    Action
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($plan as $pl) {
+    											if ($pl['status'] == 'OK') {
+    												$color  = "class='bg-success'";
+    											}else{
+    												$color  = "class='bg-warning'";
+    											}
+    										?>
+                                            <tr>
+                                                <td>
+                                                    <?php echo $no++; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['item_code']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['item_description']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['priority']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['due_time']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['section_name']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['status']; ?>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlanDaily/Edit/'.$pl['daily_plan_id']); ?>">
+                                                        EDIT
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
