@@ -41,29 +41,31 @@ class C_DataPlanDaily extends CI_Controller {
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['plan']			= $this->M_dataplan->getDataPlan();
-		$data['no']				= 1;
-		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ProductionPlanning/MainMenu/DataPlan/Daily/V_Index',$data);
-		$this->load->view('V_Footer',$data);
-	}
+		$data['plan']			= $this->M_dataplan->getDataPlan(FALSE,FALSE,$user_id);
+        $data['section']        = $this->M_dataplan->getSection($user_id);
+		$data['item'] 		    = $this->M_itemplan->getItemData(FALSE,FALSE,$user_id);
+        $data['no']             = 1;
+        
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('ProductionPlanning/MainMenu/DataPlan/Daily/V_Index',$data);
+        $this->load->view('V_Footer',$data);
+    }
 
-	public function Create($message = FALSE)
-	{
-		$this->checkSession();
-		$user_id  = $this->session->userid;
-		$no_induk = $this->session->user;
-		$data['message'] = $message;
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
+    public function Create($message = FALSE)
+    {
+        $this->checkSession();
+        $user_id  = $this->session->userid;
+        $no_induk = $this->session->user;
+        $data['message'] = $message;
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['section'] 		= $this->M_dataplan->getSection($user_id);
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['section']        = $this->M_dataplan->getSection($user_id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -287,5 +289,57 @@ class C_DataPlanDaily extends CI_Controller {
             $this->M_dataplan->update('pp.pp_daily_plans','daily_plan_id',$data,$id);
             redirect(base_url('ProductionPlanning/DataPlanDaily'));
         }
+    }
+
+    public function searchDailyPlans()
+    {
+        $user_id    = $this->session->userid;
+        $section    = $this->input->post('section');
+        $due_time   = $this->input->post('planTime');
+        if (!empty($due_time)) {
+            $time   = explode(' - ', $due_time);
+            $time1 = $time[0];
+            $time2 = $time[1];
+        }else{
+            $time1 = FALSE;
+            $time2 = FALSE;
+        }
+        $itemCode   = $this->input->post('itemCode');
+        $status     = $this->input->post('status');
+        $data       = $this->M_dataplan->getDataPlan(FALSE,$section,$user_id,$time1,$time2,$itemCode,$status);
+
+        $no = 1;
+        echo '<table class="table table-striped table-bordered table-hover" id="tbdataplan">
+                <thead class="bg-primary">
+                    <tr>
+                        <td>No</td>
+                        <td>Item</td>
+                        <td>Description</td>
+                        <td>Priority</td>
+                        <td>Due Time</td>
+                        <td>Section</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>';
+        foreach ($data as $dt) {
+                echo "<tr>
+                        <td>".$no++."</td>
+                        <td>".$dt['item_code']."</td>
+                        <td>".$dt['item_description']."</td>
+                        <td>".$dt['priority']."</td>
+                        <td>".$dt['due_time']."</td>
+                        <td>".$dt['section_name']."</td>
+                        <td>".$dt['status']."</td>
+                        <td>
+                            <a class='btn btn-default' href='".base_url('ProductionPlanning/DataPlanDaily/Edit/'.$dt['daily_plan_id'])."'>
+                                EDIT
+                            </a>
+                        </td>
+                    </tr>";
+        }
+            echo "</tbody>
+            </table>";
     }
 }
