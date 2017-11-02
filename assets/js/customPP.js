@@ -5,10 +5,10 @@ window.onload = function() {
         "timePicker": true,
         "timePicker24Hour": true,
         "timePickerSeconds": true,
-         "opens": "left",
-         "drops": "up",
+        "opens": "left",
+        "drops": "down",
         locale: {
-            format: 'MM/DD/YYYY HH:mm:ss',
+            format: 'YYYY/MM/DD HH:mm:ss',
             cancelLabel: 'Clear'
         },
          "autoUpdateInput": false
@@ -19,6 +19,25 @@ window.onload = function() {
     $('.time-form').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
+    $('.time-form-range').daterangepicker({
+        "showDropdowns": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "timePickerSeconds": true,
+        "opens": "left",
+        "drops": "down",
+        locale: {
+            format: 'YYYY/MM/DD HH:mm:ss',
+            cancelLabel: 'Clear'
+        },
+         "autoUpdateInput": false
+    });
+    $('.time-form-range').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY/MM/DD HH:mm:ss')+' - '+picker.endDate.format('YYYY/MM/DD HH:mm:ss'));
+    });
+    $('.time-form-range').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
     $('.date-month-year').datepicker({
         autoclose: true,
         changeMonth: true,
@@ -26,7 +45,9 @@ window.onload = function() {
         startView: "months",
         minViewMode: "months"
     });
-    $('#tbdataplan').DataTable();
+    $('#tbdataplan').DataTable({
+        dom: 'rtip'
+    });
     $('#tbdatagroupsection').DataTable();
     $('#tbitemData').DataTable();
     $('#tblSection').DataTable({
@@ -247,4 +268,48 @@ function groupSectionDelConf(th, id) {
     $('div#deleteConfirm tbody').html(elm);
     $('div#deleteConfirm tbody td.del-col').remove();
     $('#deleteConfirm').modal('show');
+}
+
+function searchDailyPlans(th){
+    var section     = $(th).closest('tr').find('select#section').val();
+    var planTime    = $(th).closest('tr').find('input#planTime').val();
+    var itemCode    = $(th).closest('tr').find('select#itemCode').val();
+    var status     = $(th).closest('tr').find('select#Status').val();
+
+    $('div#loadingDailyArea').html('');
+    $.ajax({
+        type: 'POST',
+        url: baseurl + 'ProductionPlanning/DataPlanDaily/searchDailyPlans',
+        data: {
+            section: section,
+            planTime: planTime,
+            status: status,
+            itemCode: itemCode
+        },
+        beforeSend: function() {
+            $('div#loadingDailyArea').html(
+                                    '<div id="loadingDaily" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">'
+                                        +'<div class="modal-dialog modal-lg" role="document">'
+                                            +'<div style="text-align: center; width: 100%; height: 100%; vertical-align: middle;">'
+                                                +'<img src="'+baseurl+'assets/img/gif/loading4.gif" style="display: block; margin: auto;">'
+                                            +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
+                            +'<script type="text/javascript">'
+                                +'$("#loadingDaily").modal("show");'
+                            +'</script>');
+            $('div#tableDailyArea').html('');
+        },
+        success: function(data) {
+            $('div#loadingDailyArea div#loadingDaily').html('<script type="text/javascript">'
+                                                                +'$("#loadingDaily").modal("hide");'
+                                                            +'</script>');
+            $('div#tableDailyArea').html(data);
+            $('#tbdataplan').DataTable({
+                dom: 'rtip'
+            });
+        }
+    });
 }
