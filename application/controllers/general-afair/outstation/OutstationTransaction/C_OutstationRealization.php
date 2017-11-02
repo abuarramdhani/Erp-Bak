@@ -478,6 +478,24 @@ class C_OutstationRealization extends CI_Controller {
 			}
 		}
 
+		if(!empty($_FILES['fileOutstation']['name'])){
+			$count = count($_FILES['fileOutstation']['name']);
+			for ($i = 0; $i < $count; $i++) {
+	    		$config['upload_path']          = './assets/outstation';
+				$config['allowed_types']        = '*';
+	        	$config['max_size']             = 20480;
+	        	$config['file_name']		 	= filter_var($_FILES['fileOutstation']['name'][$i], FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
+	        	
+	        	$this->upload->initialize($config);
+
+	    		if ($this->upload->do_upload('fileOutstation')) {
+	        		$this->upload->data();
+	    		} else {
+	    			$errorinfo = $this->upload->display_errors();
+	    		}
+	    	}
+	    }
+
 		redirect('Outstation/realization');
 	}
 
@@ -995,10 +1013,13 @@ class C_OutstationRealization extends CI_Controller {
 		redirect('Outstation/realization');
 	}
 
-	public function DownloadFile()
+	public function DownloadFile($realization_id)
     {
-            $this->load->library("Excel/PHPExcel");
-  
-            $this->load->view('', $data, true);
+        $this->load->library('Excel');
+
+        $data['data_realization_detail'] = $this->M_Realization->select_edit_realization_detail($realization_id);
+        $data['Component'] = $this->M_Realization->show_component();
+
+        $this->load->view('general-afair/outstation/OutstationTransaction/Realization/V_DownloadExcel', $data, true);
     }
 }

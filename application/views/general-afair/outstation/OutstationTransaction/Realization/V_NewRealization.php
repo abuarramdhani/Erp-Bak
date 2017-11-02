@@ -86,7 +86,7 @@
 													</td>
 												</tr>
 												<tr>
-													<td><input type="file" name="fileOutstation" id="fileOutstation" /></td>
+													<td><input type="file" name="fileOutstation[]" id="fileOutstation" multiple /></td>
 												</tr>
 											</table>
 										<label>Estimate Allowance</label>
@@ -151,7 +151,7 @@
 											<tbody>
 												<tr class="multiRow">
 													<td><input type="text" name="txtTglOutstation[]" class="form-control date-picker"></td>
-													<td><select id="area" name="txt_Lokasi[]"  class="form-control outstation-area select2" data-placeholder="Pilih Salah Satu" required>
+													<td><select id="area_lines" name="txt_Lokasi[]"  class="form-control outstation-area select2" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
 															<?php foreach($City as $ct){?>
 																<option value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
