@@ -116,8 +116,7 @@ class C_Limbah extends CI_Controller
 	        		} else {
 	        			$errorinfo = $this->upload->display_errors();
 	        		}
-	        }
-        }
+	        	}
 
 			$data = array(
 				'tanggal_kirim' => date("Y-m-d", strtotime($this->input->post('txtTanggalKirimHeader',true))),
@@ -254,7 +253,6 @@ class C_Limbah extends CI_Controller
 				'temuan_level_limbah_status' => $this->input->post('cmbTemuanLevelLimbahStatusHeader',TRUE),
 				'temuan_lain_lain_status' => $this->input->post('cmbTemuanLainLainStatusHeader',TRUE),
     		);
-
 
 
 			if(empty($_FILES['fileFoto']['name'])){
