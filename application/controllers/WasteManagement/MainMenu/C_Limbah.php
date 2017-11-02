@@ -104,19 +104,20 @@ class C_Limbah extends CI_Controller
         	}
 
         	if(!empty($_FILES['fileLimbah']['name'])){
-	        		$config['upload_path']          = './assets/limbah/kondisi-limbah';
-					$config['allowed_types']        = '*';
-		        	$config['max_size']             = 20480;
-		        	$config['file_name']		 	= filter_var($_FILES['fileLimbah']['name'], FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
-		        	
-		        	$this->upload->initialize($config);
+		        		$config['upload_path']          = './assets/limbah/kondisi-limbah';
+						$config['allowed_types']        = '*';
+			        	$config['max_size']             = 20480;
+			        	$config['file_name']		 	= filter_var($_FILES['fileLimbah']['name'], FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
+			        	
+			        	$this->upload->initialize($config);
 
-		    		if ($this->upload->do_upload('fileLimbah')) {
-	            		$this->upload->data();
-	        		} else {
-	        			$errorinfo = $this->upload->display_errors();
-	        		}
-	        	}
+			    		if ($this->upload->do_upload('fileLimbah')) {
+		            		$this->upload->data();
+		        		} else {
+		        			$errorinfo = $this->upload->display_errors();
+		        		}
+	        }
+        
 
 			$data = array(
 				'tanggal_kirim' => date("Y-m-d", strtotime($this->input->post('txtTanggalKirimHeader',true))),
@@ -253,6 +254,7 @@ class C_Limbah extends CI_Controller
 				'temuan_level_limbah_status' => $this->input->post('cmbTemuanLevelLimbahStatusHeader',TRUE),
 				'temuan_lain_lain_status' => $this->input->post('cmbTemuanLainLainStatusHeader',TRUE),
     		);
+
 
 
 			if(empty($_FILES['fileFoto']['name'])){
