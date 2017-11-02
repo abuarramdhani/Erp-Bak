@@ -61,7 +61,7 @@
 								<div class="form-group">
 									<label class="col-lg-2 control-label">Status</label>
 									<div class="col-lg-3">
-										<select class="form-control select4" name="slcStatus" required>
+										<select class="form-control select4" name="slcStatus" required disabled="TRUE">
 											<?php
 												$a='';$b='';
 												if($dt['trainer_status'] == 1){$a='selected';}

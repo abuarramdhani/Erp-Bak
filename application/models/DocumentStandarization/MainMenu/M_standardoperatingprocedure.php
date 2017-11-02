@@ -140,6 +140,20 @@ class M_standardoperatingprocedure extends CI_Model
         $this->db->where('sop_id', $id);
         $this->db->delete('ds.ds_standard_operating_procedure');
     }
+
+    public function ambilDataLama($id)
+    {
+        $ambilDataLama                      = " select  *
+                                                from    ds.ds_standard_operating_procedure
+                                                where   sop_id=$id";
+        $queryAmbilDataLama                 =   $this->db->query($ambilDataLama);
+        return $queryAmbilDataLama->result_array();
+    }
+
+    public function inputDataLamakeHistory($recordLama)
+    {
+        return $this->db->insert('ds.ds_history', $recordLama);
+    }    
 }
 
 /* End of file M_standardoperatingprocedure.php */

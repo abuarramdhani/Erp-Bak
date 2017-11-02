@@ -23,6 +23,8 @@ class M_invoice extends CI_Model{
 			$attribute = 'and aia.attribute3 is NULL ';
 		}
 
+		$supplier 		= str_replace("'", "''", $supplier);
+
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("select
 								aia.invoice_id, ass.vendor_name,aia.invoice_num,aia.invoice_date,aila.description,aia.invoice_amount-nvl(aia.total_tax_amount,0) DPP,
@@ -47,6 +49,7 @@ class M_invoice extends CI_Model{
 		return $query->result();
 	}
 	public function getSupplier($supplier){
+		$supplier 		= str_replace("'", "''", $supplier);
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("SELECT vendor_name FROM ap_suppliers WHERE vendor_name LIKE '%$supplier%'");
 		return $query->result_array();
@@ -308,6 +311,11 @@ class M_invoice extends CI_Model{
 	
 	public function saveTaxNumber($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment ){
 
+		$npwpPenjual 	= str_replace("'", "''", $npwpPenjual);
+		$namaPenjual 	= str_replace("'", "''", $namaPenjual);
+		$alamatPenjual 	= str_replace("'", "''", $alamatPenjual);
+		$comment 		= str_replace("'", "''", $comment);
+
 		$checkFak = $this->M_Invoice->checkFaktur($tax_number);
 		$oracle = $this->load->database("oracle",true);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
@@ -358,7 +366,7 @@ class M_invoice extends CI_Model{
 		return $query*$query1;
 	}
 
-	public function saveTaxNumberManual($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment ){
+	public function saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir){
 
 		$oracle = $this->load->database("oracle",true);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
@@ -433,6 +441,19 @@ class M_invoice extends CI_Model{
 		$query = $oracle->query("SELECT FAKTUR_PAJAK
 								FROM khs_faktur_web
 								WHERE FAKTUR_PAJAK = '$faktur'
+								");
+		return $query->result_array();
+
+	}
+
+	public function checkInvFak($atr5, $atr3){
+		$oracle = $this->load->database("oracle",true);
+		$query = $oracle->query("SELECT ATTRIBUTE3, ATTRIBUTE5
+								FROM ap_invoices_all
+								WHERE 
+								ATTRIBUTE5 = '$atr5'
+								AND ATTRIBUTE3 = '$atr3'
+								AND CANCELLED_DATE is NULL
 								");
 		return $query->result_array();
 

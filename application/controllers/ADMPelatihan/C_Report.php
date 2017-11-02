@@ -64,15 +64,19 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['report'] = $this->M_report->GetReport2($year = FALSE,$section = FALSE);
+		$data['section'] 	= $this->M_report->GetSeksi($term=FALSE);
+		$data['tahunTrain'] 	= $this->M_report->getYearTraining();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ADMPelatihan/ReportBySection/V_Index',$data);
-		$this->load->view('ADMPelatihan/ReportBySection/V_Index2',$data);
-		$this->load->view('ADMPelatihan/ReportBySection/V_Index3',$data);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index',$data);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index2',$data);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index3',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
-	//HALAMAN RECORD BY NAME
+	//HALAMAN RECORD BY TRAINING
 	public function reportbytraining(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -98,6 +102,106 @@ class C_Report extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
+	//HALAMAN REKAP 
+	public function rekap(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Rekap Pelatihan';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN REKAP TRAINING
+	public function rekaptraining(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Rekap Training';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['report'] 		= $this->M_report->GetRkpTraining($date1,$date2);
+		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($date1,$date2);		
+		$data['getsifat'] 		= $this->M_report->GetSifat($date1,$date2);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index3',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index4',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN PRESENTASE KEHADIRAN
+	public function PresentaseKehadiran(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Presentase Kehadiran';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['prcentpart']		= $this->M_report->GetPercentParticipant($date1,$date2);
+		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($date1,$date2);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN EFEKTIVITAS TRAINING
+	public function EfektivitasTraining(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Efektivitas Training';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['efekTrain']		= $this->M_report->GetEfektivitasTraining($date1,$date2);
+		$data['efekTrainall'] 	= $this->M_report->GetEfektivitasTrainingAll($date1,$date2);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+
 //----------------------------------- JAVASCRIPT RELATED --------------------//
 //----------------------------------- JAVASCRIPT RELATED --------------------//
 
@@ -116,12 +220,52 @@ class C_Report extends CI_Controller {
 		echo "]";
 	}
 
+	public function GetSeksi(){
+		$term = $this->input->get("term");
+		$data = $this->M_report->GetSeksi($term);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{
+					"Nama_Seksi":"'.$data['section_name'].'"
+				}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
+	public function GetTrainingPrtcp($id)
+	{	
+		$section 	= $this->input->post('section');
+		$report 	= $this->M_report->GetTrainingPrtcp($id, $section);
+		$no =1;
+		foreach ($report as $rc) {
+			echo "<tr>
+					<td>".$no++."</td>
+					<td>".$rc['participant_name']."</td>
+				</tr>";
+		}
+
+	}
+
 	//REPORT 1
 	public function GetReport1(){
 		
 		$name 			= $this->input->POST('name');
 		$data['report'] = $this->M_report->GetReport1($name);
 		$this->load->view('ADMPelatihan/Report/ReportByName/V_Index2',$data);
+	}
+
+	//REPORT 2
+	public function GetReport2(){
+		
+		$section 		= $this->input->POST('section');
+		$year 			= $this->input->POST('year');
+		$data['report'] = $this->M_report->GetReport2($year,$section);
+		$this->load->view('ADMPelatihan/Report/ReportBySection/V_Index2',$data);
 	}
 
 	//REPORT 3
@@ -132,6 +276,42 @@ class C_Report extends CI_Controller {
 		$data['report'] 	= $this->M_report->GetReport3($date1,$date2);
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index2',$data);
+	}
+
+	//REKAP TRAINING
+	public function GetRkpTraining(){
+		
+		$date1	 				= $this->input->POST('date1');
+		$date2 					= $this->input->POST('date2');
+		$data['report']		 	= $this->M_report->GetRkpTraining($date1,$date2);
+		$data['allpercentage'] 	= $this->M_report->GetRkpTrainingAll($date1,$date2);
+		$data['getsifat'] 		= $this->M_report->GetSifat($date1,$date2);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index2',$data);
+		$this->load->view('ADMPelatihan/Report/Rekap/RekapTraining/V_index3',$data);
+	}
+
+	//PERSENTASE PESERTA TRAINING
+	public function GetPercentParticipant(){
+		
+		$date1	 				= $this->input->POST('date1');
+		$date2 					= $this->input->POST('date2');
+		$data['prcentpart']	 	= $this->M_report->GetPercentParticipant($date1,$date2);
+		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($date1,$date2);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index2',$data);
+	}
+
+	//EFEKTIVITAS TRAINING
+	public function GetEfektivitasTraining(){
+		
+		$date1	 				= $this->input->POST('date1');
+		$date2 					= $this->input->POST('date2');
+		$data['efekTrain']	 	= $this->M_report->GetEfektivitasTraining($date1,$date2);
+		$data['efekTrainall'] 	= $this->M_report->GetEfektivitasTrainingAll($date1,$date2);
+		// echo "<pre>";
+		// print_r($data['efekTrain']);
+		// echo "<pre>";
+		// exit();
+		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index2',$data);
 	}
 
 	//HALAMAN FINISHED
@@ -149,6 +329,7 @@ class C_Report extends CI_Controller {
 		
 		$data['record'] = $this->M_record->GetRecordFinished();
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['section'] = $this->M_record->GetSeksi();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -281,6 +462,7 @@ class C_Report extends CI_Controller {
 		$ParticipantId 		= $this->input->post('txtId');
 		$ParticipantStatus 	= $this->input->post('slcStatus');
 		$ScoreEval2Pre 		= $this->input->post('txtPengetahuanPre');
+		$ScoreEval2Post		= $this->input->post('txtPengetahuanPost');
 		$ScoreEval3Pre 		= $this->input->post('txtPerilakuPre');
 		$ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
 		$ScoreEval3PostR1 	= $this->input->post('txtPerilakuPostRem1');
@@ -296,6 +478,7 @@ class C_Report extends CI_Controller {
 				if(empty($ScoreEval3PostR1[$i])){$ScoreEval3PostR1[$i] = NULL;}
 				if(empty($ScoreEval3PostR2[$i])){$ScoreEval3PostR2[$i] = NULL;}
 				if(empty($ScoreEval3PostR3[$i])){$ScoreEval3PostR3[$i] = NULL;}
+				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
 				
 				$data_participant[$i] = array(
 					'status' 			=> $ParticipantStatus[$i],
@@ -305,6 +488,7 @@ class C_Report extends CI_Controller {
 					'score_eval3_post2' => $ScoreEval3PostR1[$i],
 					'score_eval3_post3' => $ScoreEval3PostR2[$i],
 					'score_eval3_post4' => $ScoreEval3PostR3[$i],
+					'score_eval2_post' 	=> $ScoreEval2Post[$i],
 				);
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;

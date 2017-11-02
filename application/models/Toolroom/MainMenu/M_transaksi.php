@@ -26,7 +26,7 @@ class M_transaksi extends CI_Model {
 			$sql = "select tmi.item_id,tmi.item_name,
 					(
 						tmi.item_qty 
-						- (select coalesce(sum(ttl.item_qty), 0) from tr.tr_transaction_list ttl where ttl.item_id=tmi.item_id and ttl.status='0')
+						- (select coalesce(sum(ttl.item_qty)-sum(ttl.item_qty_return), 0) from tr.tr_transaction_list ttl where ttl.item_id=tmi.item_id and ttl.status='0')
 					) stok 
 					from tr.tr_master_item tmi where tmi.item_id='$id'";
 			$query = $this->db->query($sql);
@@ -138,14 +138,14 @@ class M_transaksi extends CI_Model {
 				$sql = "select ttl.item_id,tmi.item_name,max(ttl.item_awl) item_qty,sum(ttl.item_qty) item_dipakai,min(ttl.item_akh) item_sisa,sum(ttl.item_qty_return) item_qty_return ,ttl.status
 						from tr.tr_transaction_list ttl
 						join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
-						where date_trunc('day', ttl.date_lend)=current_date and ttl.status='0'
+						where /* date_trunc('day', ttl.date_lend)=current_date and */ ttl.status='0'
 						group by ttl.item_id,tmi.item_name,ttl.status
 						order by ttl.item_id";
 			}else{
 				$sql = "select ttl.transaction_id,ttl.item_id,tmi.item_name,(ttl.item_awl) item_qty,(ttl.item_qty) item_dipakai,(ttl.item_akh) item_sisa,ttl.item_qty_return,ttl.status
 					from tr.tr_transaction_list ttl
 					join tr.tr_master_item tmi on tmi.item_id=ttl.item_id
-					where ttl.transaction_id='$id'
+					where ttl.transaction_id='$id' and status='0'
 					order by ttl.item_id";
 			}
 			
@@ -153,15 +153,13 @@ class M_transaksi extends CI_Model {
 			return $query->result_array();
 		}
 		
-		public function addItemLending($id,$trans=FALSE,$date,$datenow){
+		public function addItemLending($id,$trans=FALSE,$date,$datenow,$all){
 			if($trans == FALSE){
 				$sql = "update tr.tr_transaction_list set status = (CASE
 						WHEN item_qty_return=item_qty-1 THEN '1' else status
 						END),date_return='$datenow',item_qty_return=(CASE
 						WHEN item_qty_return<item_qty THEN item_qty_return+1 else item_qty_return
-						END) where date_trunc('day', date_lend)='$date' 
-						and item_id='$id' and status='0' and transaction_list_id=(select min(transaction_list_id) from tr.tr_transaction_list where date_trunc('day', date_lend)='$date' 
-						and item_id='$id' and status='0')";
+						END) where $all item_id='$id' and status='0' and transaction_list_id=(select min(transaction_list_id) from tr.tr_transaction_list where $all item_id='$id' and status='0')";
 			}else{
 				$sql = "update  tr.tr_transaction_list set status = (CASE
 						WHEN item_qty_return=item_qty-1 THEN '1' else status

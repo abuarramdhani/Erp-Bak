@@ -24,7 +24,7 @@ class C_DocumentHistory extends CI_Controller
 
 		$this->checkSession();
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 	}
 	
 	/* CHECK SESSION */
@@ -44,7 +44,7 @@ class C_DocumentHistory extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Document History';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Document History';
 		$data['SubMenuTwo'] = '';
 
@@ -66,7 +66,7 @@ class C_DocumentHistory extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Document History';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Document History';
 		$data['SubMenuTwo'] = '';
 

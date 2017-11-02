@@ -23,7 +23,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 
 		$this->checkSession();
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 
 	}
 
@@ -45,7 +45,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 
@@ -67,7 +67,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 
@@ -84,7 +84,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
@@ -97,10 +97,10 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$this->load->view('DocumentStandarization/StandardOperatingProcedure/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaSOP 				= 	$this->input->post('txtSopNameHeader');
+			$namaSOP 				= 	strtoupper($this->input->post('txtSopNameHeader'));
 			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram');			
-			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader');
-			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
+			$nomorRevisi	  		= 	strtoupper($this->input->post('txtNoRevisiHeader'));
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
 			$info 					= 	$this->input->post('txaSopInfoHeader');
@@ -117,6 +117,11 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$fileDokumen;
 			$tanggalUpload;
 
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
+
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
@@ -125,9 +130,12 @@ class C_StandardOperatingProcedure extends CI_Controller
 			// echo 'sampai sini bisa';
 			// exit();
 			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
-			if(is_null($fileDokumen)==FALSE)
+			if(!(is_null($fileDokumen)))
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			}
+			else{
+				$tanggalUpload 		= 	NULL;
 			}
 
 			$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
@@ -172,7 +180,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 
@@ -199,7 +207,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
@@ -212,10 +220,10 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$this->load->view('DocumentStandarization/StandardOperatingProcedure/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaSOP 				= 	$this->input->post('txtSopNameHeader', TRUE);
+			$namaSOP 				= 	strtoupper($this->input->post('txtSopNameHeader', TRUE));
 			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram', TRUE);			
-			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader', TRUE);
-			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader', TRUE);
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader', TRUE));
+			$nomorRevisi	  		= 	strtoupper($this->input->post('txtNoRevisiHeader', TRUE));
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
 			$info 					= 	$this->input->post('txaSopInfoHeader', TRUE);
@@ -232,6 +240,99 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$fileDokumen 			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)),'datetime');
 
+			// Salin dari sini
+			$revisiBaru 			= 	$this->input->post('checkboxRevisi');
+
+			$nomorRevisiLama 		= 	$this->input->post('txtNoRevisiLamaHeader');
+			$tanggalRevisiLama 		= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalLamaHeader')), 'tanggal');
+
+			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
+			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($fileDokumen=='')
+			{
+				$fileDokumen	=	NULL;
+			}
+
+			if($revisiBaru!=1)
+			{
+				$revisiBaru 		= 	0;
+			}
+
+			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
+			{
+				$kodeBusinessProcess 	= 	$plaintext_string;
+				$dataLama 	= 	$this->M_standardoperatingprocedure->ambilDataLama($kodeBusinessProcess);
+
+				$doc_id 		= 	$dataLama[0]['sop_id'];
+				$name 			= 	$dataLama[0]['sop_name'];
+				$file 			= 	$dataLama[0]['sop_file'];
+				$no_kontrol 	= 	$dataLama[0]['no_kontrol'];
+				$no_revisi 		=	$dataLama[0]['no_revisi'];
+				$tanggal 		= 	$dataLama[0]['tanggal'];
+				$dibuat 		= 	$dataLama[0]['dibuat'];
+				$diperiksa_1 	= 	$dataLama[0]['diperiksa_1'];
+				$diperiksa_2 	= 	$dataLama[0]['diperiksa_2'];
+				$diputuskan 	= 	$dataLama[0]['diputuskan'];
+				$jml_halaman 	= 	$dataLama[0]['jml_halaman'];
+				$info 			= 	$dataLama[0]['sop_info'];
+				$tgl_upload 	= 	$dataLama[0]['tgl_upload'];
+				$tgl_insert 	= 	$dataLama[0]['tgl_insert'];
+
+				$sop_tujuan 		= 	$dataLama[0]['sop_tujuan'];
+				$sop_ruang_lingkup 	=	$dataLama[0]['sop_ruang_lingkup'];
+				$sop_referensi 		= 	$dataLama[0]['sop_referensi'];
+				$sop_definisi 		= 	$dataLama[0]['sop_definisi'];
+
+				$jenis_doc 		= 	'SOP';
+				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
+
+				if($diperiksa_1==NULL OR $diperiksa_1=='' OR $diperiksa_1==' ')
+				{
+					$diperiksa_1=NULL;
+				}
+
+				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
+				{
+					$diperiksa_2=NULL;
+				}
+
+				if($info==NULL OR $info=='' OR $info==' ')
+				{
+					$info=NULL;
+				}
+
+				$recordLama 	= 	array(
+											'doc_id'		=> 	$doc_id,
+											'name' 			=> 	$name,
+											'file' 			=> 	$file,
+											'no_kontrol'	=>	$no_kontrol,
+											'no_revisi'		=>	$no_revisi,
+											'tanggal' 		=> 	$tanggal,
+											'dibuat' 		=> 	$dibuat,
+											'diperiksa_1' 	=>	$diperiksa_1,
+											'diperiksa_2' 	=> 	$diperiksa_2,
+											'diputuskan' 	=> 	$diputuskan,
+											'jml_halaman' 	=> 	$jml_halaman,
+											'info' 			=> 	$info,
+											'tgl_upload' 	=> 	$tgl_upload,
+											'tgl_insert' 	=> 	$tgl_insert,
+											'jenis_doc' 	=> 	$jenis_doc,
+											'tgl_update' 	=> 	$tgl_update,
+											'sop_tujuan' 		=> 	$sop_tujuan,
+											'sop_ruang_lingkup'	=> 	$sop_ruang_lingkup,
+											'sop_referensi' 	=> 	$sop_referensi,
+											'sop_definisi' 		=>	$sop_definisi
+									);
+				$this->M_standardoperatingprocedure->inputDataLamakeHistory($recordLama);
+			}
+			// Salin sampai sini
+
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
+
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
@@ -241,39 +342,67 @@ class C_StandardOperatingProcedure extends CI_Controller
 
 			if(is_null($fileDokumen))
 			{
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaSOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 
 			}
 			else
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			
 			}	
 
 			$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
 
-			$fileDokumen = $this->general->cekFile($namaSOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-
-			$data = array(
-				'sop_name' 			=> $namaSOP,
-				'sop_file' 			=> $fileDokumen,
-				'no_kontrol' 		=> $nomorKontrol,
-				'no_revisi' 		=> $nomorRevisi,
-				'tanggal' 			=> $tanggalRevisi,
-				'dibuat' 			=> $pekerjaDibuat,
-				'diperiksa_1' 		=> $pekerjaDiperiksa1,
-				'diperiksa_2' 		=> $pekerjaDiperiksa2,
-				'diputuskan' 		=> $pekerjaDiputuskan,
-				'jml_halaman' 		=> $jumlahHalaman,
-				'sop_info' 			=> $info,
-				'tgl_upload'		=> $tanggalUpload,
-				'bp_id' 			=> $BusinessProcess,
-				'cd_id' 			=> $ContextDiagram,
-				'sop_tujuan' 		=> $tujuanSOP,
-				'sop_ruang_lingkup' => $ruanglingkupSOP,
-				'sop_referensi' 	=> $referensiSOP,
-				'sop_definisi' 		=> $definisiSOP,
+			if($revisiBaru==1)
+			{
+				$data = array(
+					'sop_name' 			=> $namaSOP,
+					'sop_file' 			=> $fileDokumen,
+					'no_kontrol' 		=> $nomorKontrol,
+					'no_revisi' 		=> $nomorRevisi,
+					'tanggal' 			=> $tanggalRevisi,
+					'dibuat' 			=> $pekerjaDibuat,
+					'diperiksa_1' 		=> $pekerjaDiperiksa1,
+					'diperiksa_2' 		=> $pekerjaDiperiksa2,
+					'diputuskan' 		=> $pekerjaDiputuskan,
+					'jml_halaman' 		=> $jumlahHalaman,
+					'sop_info' 			=> $info,
+					'tgl_upload'		=> $tanggalUpload,
+					'bp_id' 			=> $BusinessProcess,
+					'cd_id' 			=> $ContextDiagram,
+					'sop_tujuan' 		=> $tujuanSOP,
+					'sop_ruang_lingkup' => $ruanglingkupSOP,
+					'sop_referensi' 	=> $referensiSOP,
+					'sop_definisi' 		=> $definisiSOP,
+					'update_revisi' 	=> $this->general->ambilWaktuEksekusi(),
     			);
-    		
+    		}
+    		elseif($revisiBaru==0)
+    		{
+				$data = array(
+					'sop_name' 			=> $namaSOP,
+					'sop_file' 			=> $fileDokumen,
+					'no_kontrol' 		=> $nomorKontrol,
+					'no_revisi' 		=> $nomorRevisi,
+					'tanggal' 			=> $tanggalRevisi,
+					'dibuat' 			=> $pekerjaDibuat,
+					'diperiksa_1' 		=> $pekerjaDiperiksa1,
+					'diperiksa_2' 		=> $pekerjaDiperiksa2,
+					'diputuskan' 		=> $pekerjaDiputuskan,
+					'jml_halaman' 		=> $jumlahHalaman,
+					'sop_info' 			=> $info,
+					'tgl_upload'		=> $tanggalUpload,
+					'bp_id' 			=> $BusinessProcess,
+					'cd_id' 			=> $ContextDiagram,
+					'sop_tujuan' 		=> $tujuanSOP,
+					'sop_ruang_lingkup' => $ruanglingkupSOP,
+					'sop_referensi' 	=> $referensiSOP,
+					'sop_definisi' 		=> $definisiSOP,
+    			);    			
+    		}
     		// echo '<pre>';
     		// print_r($data);
     		// echo "</pre>";
@@ -291,7 +420,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Standard Operating Procedure';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'SOP';
 		$data['SubMenuTwo'] = '';
 

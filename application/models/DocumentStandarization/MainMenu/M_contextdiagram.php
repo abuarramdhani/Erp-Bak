@@ -121,6 +121,20 @@ class M_contextdiagram extends CI_Model
         $this->db->where('cd_id', $id);
         $this->db->delete('ds.ds_context_diagram');
     }
+
+    public function ambilDataLama($id)
+    {
+        $ambilDataLama                      = " select  *
+                                                from    ds.ds_context_diagram
+                                                where   cd_id=$id";
+        $queryAmbilDataLama                 =   $this->db->query($ambilDataLama);
+        return $queryAmbilDataLama->result_array();
+    }
+
+    public function inputDataLamakeHistory($recordLama)
+    {
+        return $this->db->insert('ds.ds_history', $recordLama);
+    }    
 }
 
 /* End of file M_contextdiagram.php */

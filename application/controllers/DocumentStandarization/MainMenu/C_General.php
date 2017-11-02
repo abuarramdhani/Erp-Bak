@@ -90,7 +90,7 @@ class C_General extends CI_Controller
 
     			// $nama_STNK 							= filter_var($_FILES[$inputfile]['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
-				$config['upload_path']          = './assets/upload/IA/StandarisasiDokumen';
+				$config['upload_path']          = './assets/upload/PengembanganSistem/StandarisasiDokumen';
 				$config['allowed_types'] 		= '*';
 	        	// $config['file_name']		 	= filter_var($_FILES[$inputfile]['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 	        	$config['file_name']		 	= $fileDokumen;
@@ -193,6 +193,40 @@ class C_General extends CI_Controller
 
 		$resultSeksi						= 	$this->M_general->ambilSeksi($keywordSeksi, $departemen, $bidang, $unit);
 		echo json_encode($resultSeksi);
+	}
+
+	public function cariJobDescription()
+	{
+
+		$keywordJobDescription		= 	strtoupper($this->input->get('term'));
+		
+		$resultJobDescription 		= 	$this->M_general->ambilJobDescription($keywordJobDescription);
+		echo json_encode($resultJobDescription);
+	}
+
+	public function ambilSeksidariJobDesc()
+	{
+		$jobDescription 		= 	$this->input->post('jd');
+		$kodesieJobDescription 	= 	$this->M_general->ambilKodesieJobDescription($jobDescription);
+
+		$hirarki				= 	$this->M_general->ambilHirarki($kodesieJobDescription);
+		echo json_encode($hirarki);
+	}
+
+	public function cariJobDesc()
+	{
+		$kodesie 		= 	substr(($this->input->get('kodesie')), 0, 7);
+
+		$daftarJobDescription	= 	$this->M_general->ambilJobDescriptionBerdasarKodesie($kodesie);
+		echo json_encode($daftarJobDescription);
+	}
+
+	public function cariDokumenJobDescription()
+	{
+		$keywordDokumenJobDescription 	= 	strtoupper($this->input->get('term'));
+		$resultDokumenJobDescription 	= 	$this->M_general->ambilDokumenJobDescription($keywordDokumenJobDescription);
+
+		echo json_encode($resultDokumenJobDescription);
 	}
 
 }

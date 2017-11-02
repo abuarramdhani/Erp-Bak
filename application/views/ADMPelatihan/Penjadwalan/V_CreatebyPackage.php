@@ -112,9 +112,9 @@
 														</td>
 														<td style="text-align:left;">
 															<div class="col-lg-9">
-																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1"> Wawasan<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2"> Pengetahuan<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3"> Perilaku
+																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1"> Reaksi<br>
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2"> Pembelajaran<br>
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3"> Sikap / Perilaku
 															</div>
 														</td>
 													</tr>
@@ -122,6 +122,21 @@
 												</tbody>
 											</table>
 										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="col-lg-offset-2 col-lg-8">
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat </label>
+									<div class="col-lg-9">
+										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan" required>
+											<option></option>
+											<option value="1">Order</option>
+											<option value="2">Tahunan</option>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -144,6 +159,20 @@
 									<div class="col-lg-4">
 										<input class="form-control" value="<?php echo $Peserta ?>" readonly>
 										<input name="txtPeserta" value="<?php echo $pse['participant_type'] ?>" type="hidden">
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-3 control-label">Jenis Training </label>
+									<div class="col-lg-9">
+										<?php 
+											$jenis='';
+											if ($pse['training_type']=='1') {$jenis='ORIENTASI';}
+											if ($pse['training_type']=='2') {$jenis='NON ORIENTASI';} ?>
+										<input  class="form-control toupper" value="<?php echo $jenis ?>" disabled>
+										<input  name="txtjenis" value="<?php echo $pse['training_type']?>" hidden>
+										</input>
 									</div>
 								</div>
 							</div>

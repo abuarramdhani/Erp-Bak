@@ -21,8 +21,8 @@ class C_MasterTarifJkk extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Tarif JKK';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -45,8 +45,8 @@ class C_MasterTarifJkk extends CI_Controller
         $row = $this->M_mastertarifjkk->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif JKK',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -76,8 +76,8 @@ class C_MasterTarifJkk extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif JKK',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -100,7 +100,14 @@ class C_MasterTarifJkk extends CI_Controller
     public function save()
     {
         $this->formValidation();
-
+		
+		$getId = $this->M_mastertarifjkk->getId();
+		if(empty($getId)){
+			$get = 1 ;
+		}else{
+			$get = (int)$getId->id_tarif_jkk + 1;
+		}
+		
         //MASTER DELETE CURRENT
 		$md_where = array(
 			'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
@@ -109,7 +116,7 @@ class C_MasterTarifJkk extends CI_Controller
 		
 		//MASTER INSERT NEW
         $data = array(
-			'id_tarif_jkk' => $this->input->post('txtIdTarifJkk_new',TRUE),
+			'id_tarif_jkk' => $get,
 			'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
 			'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
 			'tarif_jkk' => $this->input->post('txtTarifJkk',TRUE),
@@ -133,7 +140,7 @@ class C_MasterTarifJkk extends CI_Controller
 			'id_kantor_asal'	=> $this->input->post('cmbIdKantorAsal',TRUE),
 			'id_lokasi_kerja' 	=> $this->input->post('cmbIdLokasiKerja',TRUE),
 			'tarif_jkk' 		=> $this->input->post('txtTarifJkk',TRUE),
-			'kd_petugas' 		=> '0000001',
+			'kd_petugas' 		=> $this->session->userdata('userid'),
 			'tgl_rec' 		=> date('Y-m-d H:i:s'),
 			'status_aktif' 		=> '1',
 		);
@@ -158,8 +165,8 @@ class C_MasterTarifJkk extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif JKK',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -186,14 +193,22 @@ class C_MasterTarifJkk extends CI_Controller
     {
         $this->formValidation();
 
-            $data = array(
-				'id_tarif_jkk' => $this->input->post('txtIdTarifJkk_new',TRUE),
-                'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
-                'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
-                'tarif_jkk' => $this->input->post('txtTarifJkk',TRUE),
-			);
-
+		$data = array(
+			'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
+			'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
+			'tarif_jkk' => $this->input->post('txtTarifJkk',TRUE),
+		);
+		$ru_data = array(
+			'tgl_berlaku' 		=> date('Y-m-d'),
+			'tarif_jkk' => $this->input->post('txtTarifJkk',TRUE),
+		);	
+		$ru_where = array(
+			'id_kantor_asal' 	=> $this->input->post('cmbIdKantorAsal',TRUE),
+			'id_lokasi_kerja' 	=> $this->input->post('cmbIdLokasiKerja',TRUE),
+			'tgl_tberlaku' 		=> '9999-12-31',
+		);
             $this->M_mastertarifjkk->update($this->input->post('txtIdTarifJkk', TRUE), $data);
+			$this->M_mastertarifjkk->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/MasterTarifJkk'));
         

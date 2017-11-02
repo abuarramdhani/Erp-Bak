@@ -40,13 +40,13 @@
 									<div class="form-group">
                                             <label for="txtUmNew" class="control-label col-lg-4">UM</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="UM" name="txtUmNew" id="txtUmNew" class="form-control money" value="<?php echo rtrim($um); ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
+                                                <input type="text" placeholder="UM" name="txtUmNew" id="txtUmNew" class="form-control number" value="<?php echo rtrim($um); ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtUbt" class="control-label col-lg-4">UBT</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="UBT" name="txtUbt" id="txtUbt" class="form-control money" value="<?php echo rtrim($ubt); ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
+                                                <input type="text" placeholder="UBT" name="txtUbt" id="txtUbt" class="form-control number" value="<?php echo rtrim($ubt); ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
                                             </div>
                                     </div>
 									<input type="hidden" name="txtUm" value="<?php echo $um; ?>"/>

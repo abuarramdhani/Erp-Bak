@@ -40,28 +40,28 @@
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control class-datepicker-erp-pr" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
 												<select class="form-control select2-getNoind" id="txtNoind" name="txtNoind" style="width:100%;" required>
-														<option value=""></option>
+														<option value="<?php echo $noind; ?>"><?php echo $noind; ?></option>
 												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
-	                                            <label for="cmbKdBank" class="control-label col-lg-4">Kd Bank</label>
-	                                            <div class="col-lg-4">
-	                                                <select id="cmbKdBank" name="cmbKdBank" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                            <label for="cmbKdBank" class="control-label col-lg-4">Kd Bank <?php echo $kd_bank; ?></label>
+	                                            <div class="col-lg-2">
+	                                                <select id="cmbKdBank" name="cmbKdBank" class="form-control select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_master_bank_data as $row) {
                                                             $slc = '';
-                                                            if ($row->kd_bank == $kd_bank) {
+                                                            if ($row->kd_bank_induk == $kd_bank) {
                                                                 $slc = 'selected';
                                                             }
-                                                            echo '<option value="'.$row->kd_bank.'" '.$slc.'>'.$row->bank.'</option>';
+                                                            echo '<option value="'.$row->kd_bank_induk.'" '.$slc.'>'.$row->kd_bank_induk.'</option>';
                                                         }
                                                         ?></select>
 	                                            </div>

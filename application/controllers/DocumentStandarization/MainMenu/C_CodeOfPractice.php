@@ -20,7 +20,7 @@ class C_CodeOfPractice extends CI_Controller
 
 		date_default_timezone_set('Asia/Jakarta');
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 
 		$this->checkSession();
 	}
@@ -43,7 +43,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 
@@ -65,7 +65,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 
@@ -82,7 +82,7 @@ class C_CodeOfPractice extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
@@ -95,9 +95,9 @@ class C_CodeOfPractice extends CI_Controller
 			$this->load->view('DocumentStandarization/CodeOfPractice/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaCOP 				= 	$this->input->post('txtCopNameHeader');
+			$namaCOP 				= 	strtoupper($this->input->post('txtCopNameHeader'));
 			$SOP 					= 	$this->input->post('cmbSOP');			
-			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader');
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
@@ -110,6 +110,11 @@ class C_CodeOfPractice extends CI_Controller
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaCOP);
 			$fileDokumen;
 			$tanggalUpload;
+
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
@@ -172,7 +177,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 
@@ -199,7 +204,7 @@ class C_CodeOfPractice extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
@@ -213,9 +218,9 @@ class C_CodeOfPractice extends CI_Controller
 			$this->load->view('DocumentStandarization/CodeOfPractice/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaCOP 				= 	$this->input->post('txtCopNameHeader');
+			$namaCOP 				= 	strtoupper($this->input->post('txtCopNameHeader'));
 			$SOP 					= 	$this->input->post('cmbSOP');			
-			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader');
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader');
@@ -228,6 +233,90 @@ class C_CodeOfPractice extends CI_Controller
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaCOP);
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');
+
+			// Salin dari sini
+			$revisiBaru 			= 	$this->input->post('checkboxRevisi');
+
+			$nomorRevisiLama 		= 	$this->input->post('txtNoRevisiLamaHeader');
+			$tanggalRevisiLama 		= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalLamaHeader')), 'tanggal');
+
+			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
+			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($fileDokumen=='')
+			{
+				$fileDokumen	=	NULL;
+			}
+
+			if($revisiBaru!=1)
+			{
+				$revisiBaru 		=	0;
+			}
+
+			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
+			{
+				$kodeBusinessProcess 	= 	$plaintext_string;
+				$dataLama 	= 	$this->M_codeofpractice->ambilDataLama($kodeBusinessProcess);
+
+				$doc_id 		= 	$dataLama[0]['cop_id'];
+				$name 			= 	$dataLama[0]['cop_name'];
+				$file 			= 	$dataLama[0]['cop_file'];
+				$no_kontrol 	= 	$dataLama[0]['no_kontrol'];
+				$no_revisi 		=	$dataLama[0]['no_revisi'];
+				$tanggal 		= 	$dataLama[0]['tanggal'];
+				$dibuat 		= 	$dataLama[0]['dibuat'];
+				$diperiksa_1 	= 	$dataLama[0]['diperiksa_1'];
+				$diperiksa_2 	= 	$dataLama[0]['diperiksa_2'];
+				$diputuskan 	= 	$dataLama[0]['diputuskan'];
+				$jml_halaman 	= 	$dataLama[0]['jml_halaman'];
+				$info 			= 	$dataLama[0]['cop_info'];
+				$tgl_upload 	= 	$dataLama[0]['tgl_upload'];
+				$tgl_insert 	= 	$dataLama[0]['tgl_insert'];
+
+				$jenis_doc 		= 	'COP';
+				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
+
+				if($diperiksa_1==NULL OR $diperiksa_1=='' OR $diperiksa_1==' ')
+				{
+					$diperiksa_1=NULL;
+				}
+
+				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
+				{
+					$diperiksa_2=NULL;
+				}
+
+				if($info==NULL OR $info=='' OR $info==' ')
+				{
+					$info=NULL;
+				}
+
+				$recordLama 	= 	array(
+											'doc_id'		=> 	$doc_id,
+											'name' 			=> 	$name,
+											'file' 			=> 	$file,
+											'no_kontrol'	=>	$no_kontrol,
+											'no_revisi'		=>	$no_revisi,
+											'tanggal' 		=> 	$tanggal,
+											'dibuat' 		=> 	$dibuat,
+											'diperiksa_1' 	=>	$diperiksa_1,
+											'diperiksa_2' 	=> 	$diperiksa_2,
+											'diputuskan' 	=> 	$diputuskan,
+											'jml_halaman' 	=> 	$jml_halaman,
+											'info' 			=> 	$info,
+											'tgl_upload' 	=> 	$tgl_upload,
+											'tgl_insert' 	=> 	$tgl_insert,
+											'jenis_doc' 	=> 	$jenis_doc,
+											'tgl_update' 	=> 	$tgl_update
+									);
+				$this->M_codeofpractice->inputDataLamakeHistory($recordLama);
+			}
+			// Salin sampai sini
+
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
@@ -247,8 +336,11 @@ class C_CodeOfPractice extends CI_Controller
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
 			}
 			else
-			{	
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+			{
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 			}
 			$ContextDiagram;
 			$BusinessProcess;
@@ -263,7 +355,11 @@ class C_CodeOfPractice extends CI_Controller
 				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
 			}
 
-			$fileDokumen = $this->general->cekFile($namaCOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			if($revisiBaru==0)
+			{
+				$fileDokumen = $this->general->cekFile($namaCOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+			}
+			
 			$data = array(
 				'cop_name' 		=> $namaCOP,
 				'cop_file' 		=> $fileDokumen,
@@ -296,7 +392,7 @@ class C_CodeOfPractice extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Code Of Practice';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Code of Practice';
 		$data['SubMenuTwo'] = '';
 

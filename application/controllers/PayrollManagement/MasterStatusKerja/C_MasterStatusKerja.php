@@ -22,8 +22,8 @@ class C_MasterStatusKerja extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Data';
+        $data['SubMenuOne'] = 'Master Status Kerja';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -81,8 +81,8 @@ class C_MasterStatusKerja extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Data',
+            'SubMenuOne' => 'Master Status Kerja',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -128,8 +128,8 @@ class C_MasterStatusKerja extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Data',
+                'SubMenuOne' => 'Master Status Kerja',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -210,15 +210,16 @@ class C_MasterStatusKerja extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KD_STAT', $row)){
+					$check = $this->M_masterstatuskerja->get_by_id($row['KD_STAT']);
+                    if($check){
                         $data = array(
                             'status_kerja' => $row['STAT_KER'],
                         );
                         $this->M_masterstatuskerja->update($row['KD_STAT'],$data);
                     }else{
                         $data = array(
-                            'kd_status_kerja' => strtoupper($row['kd_status_kerja']),
-                            'status_kerja' => strtoupper($row['status_kerja']),
+                            'kd_status_kerja' => strtoupper($row['KD_STAT']),
+                            'status_kerja' => strtoupper($row['STAT_KER']),
                         );
                         $this->M_masterstatuskerja->insert($data);
                     }

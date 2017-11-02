@@ -20,8 +20,8 @@ class C_MasterParamPtkp extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Tarif PTKP';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -49,8 +49,8 @@ class C_MasterParamPtkp extends CI_Controller
         $row = $this->M_masterparamptkp->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif PTKP',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -84,14 +84,14 @@ class C_MasterParamPtkp extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif PTKP',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterParamPtkp/save'),
-				'id_setting' => set_value(''),
+			'id_setting' => set_value(''),
 			'periode' => set_value('periode'),
 			'status_pajak' => set_value('status_pajak'),
 			'ptkp_per_tahun' => set_value('ptkp_per_tahun'),
@@ -164,8 +164,8 @@ class C_MasterParamPtkp extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif PTKP',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -199,12 +199,22 @@ class C_MasterParamPtkp extends CI_Controller
         }
         else{
             $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
+				'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
 				'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
-				'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
+				'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
+			);
+			
+			$data_riwayat = array(
+				'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
+				'tgl_berlaku' => date('Y-m-d'),
+				'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
+				'tgl_berlaku' 			=> date('Y-m-d'),
+				'kode_petugas' 			=> $this->session->userdata('userid'),
+				'tgl_record' 			=> date('Y-m-d H:i:s'),
 			);
 
             $this->M_masterparamptkp->update($this->input->post('txtIdSetting', TRUE), $data);
+            $this->M_masterparamptkp->update_riwayat(strtoupper($this->input->post('txtStatusPajak',TRUE)), $data_riwayat);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
 					 "success_update" => 1

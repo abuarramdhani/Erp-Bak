@@ -35,7 +35,6 @@
                     <b>Riwayat Rekening Pekerja</b>
 		          </div>
 		          <div class="box-body">
-					<div class="table-responsive">
 						<div class="row">
 			              	<form method="post" action="<?php echo base_url('PayrollManagement/RiwayatRekeningPekerja/upload')?>" enctype="multipart/form-data">
 								<div class="row" style="margin: 10px 0 10px 10px">
@@ -92,7 +91,6 @@
 							<?php } ?>
 		                </tbody>                                      
 		              </table>
-		            </div>
 		          </div>
 		        </div>
 	        </div>

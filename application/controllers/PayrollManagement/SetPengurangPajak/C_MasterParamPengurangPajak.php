@@ -21,8 +21,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Pengurang Pajak';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,8 +50,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $row = $this->M_masterparampengurangpajak->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Pengurang Pajak',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -86,8 +86,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Pengurang Pajak',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -125,12 +125,12 @@ class C_MasterParamPengurangPajak extends CI_Controller
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
-			'tgl_tberlaku' 	=> date('Y-m-d'),
+			'tgl_tberlaku' 	=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 		);
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'tgl_berlaku' 				=> date('Y-m-d'),
+			'tgl_berlaku' 				=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 			'tgl_tberlaku' 				=> '9999-12-31',
 			'max_jab' 					=> str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 			'persentase_jab' 			=> $this->input->post('txtPersentaseJab',TRUE),
@@ -163,8 +163,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Pengurang Pajak',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -202,8 +202,22 @@ class C_MasterParamPengurangPajak extends CI_Controller
 				'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 			);
-
+			
+			$data_riwayat = array(
+				'tgl_berlaku' => $this->input->post('txtPeriodePengurangPajak',TRUE),
+				'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
+				'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
+				'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
+				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
+				'kode_petugas' 				=> $this->session->userdata('userid'),
+				'tgl_record' 				=> date('Y-m-d H:i:s'),
+			);
+			
+			$ru_where = array(
+				'tgl_tberlaku' => '9999-12-31',
+			);
             $this->M_masterparampengurangpajak->update($this->input->post('txtIdSetting', TRUE), $data);
+            $this->M_masterparampengurangpajak->riwayat_update($ru_where, $data_riwayat);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
 					 "success_update" => 1

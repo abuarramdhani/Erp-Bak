@@ -25,7 +25,7 @@ class C_BusinessProcess extends CI_Controller
 
 		$this->checkSession();
 
-		define('direktoriUpload', './assets/upload/IA/StandarisasiDokumen/');
+		define('direktoriUpload', './assets/upload/PengembanganSistem/StandarisasiDokumen/');
 	}
 
 	/* CHECK SESSION */
@@ -46,7 +46,7 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
@@ -92,7 +92,7 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
@@ -110,7 +110,7 @@ class C_BusinessProcess extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
@@ -138,6 +138,11 @@ class C_BusinessProcess extends CI_Controller
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
 			$fileDokumen;
 			$tanggalUpload;
+
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
 
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
@@ -168,8 +173,13 @@ class C_BusinessProcess extends CI_Controller
 				'tgl_upload' 	=> $tanggalUpload,
 				'tgl_insert' 	=> $this->general->ambilWaktuEksekusi(),
     		);
-			$this->M_businessprocess->setBusinessProcess($data);
+
+			$user_now 	= 	$this->session->user;
+
+			$this->M_businessprocess->setBusinessProcess($data, $user);
 			$header_id = $this->db->insert_id();
+
+			$this->M_general->inputNotifications('BP', $header_id, $user_now, $data, 'CREATE');
 
 			redirect(site_url('DocumentStandarization/BP'));
 		}
@@ -181,7 +191,7 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
@@ -209,7 +219,7 @@ class C_BusinessProcess extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalHeader', 'Tanggal Revisi', 'required');
 		$this->form_validation->set_rules('txtJmlHalamanHeader', 'Jumlah Halaman', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDibuat', 'Pekerja Pembuat', 'required');
-		$this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
+		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
 		if ($this->form_validation->run() === FALSE) 
@@ -221,8 +231,8 @@ class C_BusinessProcess extends CI_Controller
 		} 
 		else 
 		{
-			$namaBusinessProcess 	= 	$this->input->post('txtBpNameHeader', TRUE);
-			$nomorKontrol 			= 	$this->input->post('txtNoKontrolHeader', TRUE);
+			$namaBusinessProcess 	= 	strtoupper($this->input->post('txtBpNameHeader', TRUE));
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader', TRUE));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader', TRUE);
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader', TRUE)),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
@@ -244,6 +254,16 @@ class C_BusinessProcess extends CI_Controller
 
 			$angkaRevisiBaru 		= 	(int) $nomorRevisi;
 			$angkaRevisiLama 		= 	(int) $nomorRevisiLama;
+
+			if($fileDokumen=='')
+			{
+				$fileDokumen	=	NULL;
+			}
+
+			if($revisiBaru!=1)
+			{
+				$revisiBaru 		=	0;
+			}
 
 			if($revisiBaru==1 AND $angkaRevisiBaru>$angkaRevisiLama AND strtotime($tanggalRevisi)>strtotime($tanggalRevisiLama))
 			{
@@ -267,6 +287,11 @@ class C_BusinessProcess extends CI_Controller
 
 				$jenis_doc 		= 	'BP';
 				$tgl_update 	= 	$this->general->ambilWaktuEksekusi();
+
+				if($diperiksa_1==NULL OR $diperiksa_1=='' OR $diperiksa_1==' ')
+				{
+					$diperiksa_1=NULL;
+				}
 
 				if($diperiksa_2==NULL OR $diperiksa_2=='' OR $diperiksa_2==' ')
 				{
@@ -300,6 +325,11 @@ class C_BusinessProcess extends CI_Controller
 			}
 			// Salin sampai sini
 
+			if($pekerjaDiperiksa1=='' OR $pekerjaDiperiksa1==NULL OR $pekerjaDiperiksa1==' ')
+			{
+				$pekerjaDiperiksa1=NULL;
+			}
+
 			if($pekerjaDiperiksa2=='' OR $pekerjaDiperiksa2==NULL OR $pekerjaDiperiksa2==' ')
 			{
 				$pekerjaDiperiksa2=NULL;
@@ -316,13 +346,15 @@ class C_BusinessProcess extends CI_Controller
 			if(!is_null($fileDokumen))
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
+			
 			}
 			else
 			{	
-				$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
+				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
+				{
+					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
+				}					
 			}
-
-			$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
 			
 			if($revisiBaru==0)
 			{
@@ -372,13 +404,14 @@ class C_BusinessProcess extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Business Process';
-		$data['Menu'] = 'Dokumen';
+		$data['Menu'] = 'Upload Dokumen';
 		$data['SubMenuOne'] = 'Business Process';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);

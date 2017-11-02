@@ -93,7 +93,7 @@
                                             <div class="form-group">
                                                 <label for="txtDiperiksa1Header" class="control-label col-lg-4">Diperiksa 1</label>
                                                 <div class="col-lg-4">
-                                                     <select id="cmbPekerjaPemeriksa1" name="cmbPekerjaDiperiksa1" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                     <select id="cmbPekerjaPemeriksa1" name="cmbPekerjaDiperiksa1" class="select2" data-placeholder="Pilih" style="width: 100%">
                                                         <option value=""></option>
                                                         <option value="<?php echo $headerRow['kode_pekerja_pemeriksa_1'];?>" selected><?php echo $headerRow['pekerja_pemeriksa_1'];?></option>
                                                         <?php
@@ -170,7 +170,7 @@
                                                 <label for="txtBpFileHeader" class="control-label col-lg-4">Upload File</label>
                                                 <div class="col-lg-4">
                                                     <input type="file" name="txtBpFileHeader" id="txtBpFileHeader" class="form-control"  />
-                                                    <a target="_blank" href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/'.$headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
+                                                    <a target="_blank" href="<?php echo base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/'.$headerRow['file']);?>"><?php echo $headerRow['file'];?></a>
                                                     <input type="text" name="DokumenAwal" id="DokumenAwal" hidden="" value="<?php echo $headerRow['file'];?>">
                                                     <input type="text" name="WaktuUpload" id="WaktuUpload" hidden="" value="<?php echo $headerRow['waktu_upload_file'];?>">
                                                 </div>

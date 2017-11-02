@@ -2,12 +2,43 @@
 <aside class="main-sidebar">
 	<!-- sidebar: style can be found in sidebar.less -->
 	<section class="sidebar">
-		<div class="user-panel" style="height:70px;">
+		<div class="user-panel" style="height:100px;">
             <div class="pull-left image">
-              <img src="<?php echo base_url('assets/theme/img/user.png');?>" class="img-circle" alt="User Image" />
+<!--               <img src="<?php echo base_url('assets/theme/img/user.png');?>" class="img-circle" alt="User Image" /> -->
+              <?php
+				$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'jpg';
+				$file_headers 	= 	@get_headers($file);
+				if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
+				{
+					$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+					$file_headers 	= 	@get_headers($file);
+					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
+					{
+						$ekstensi 	= 	'Not Found';
+					}
+					else
+					{
+						$ekstensi 	= 	'JPG';
+					}
+				}
+				else
+				{
+					$ekstensi 	= 	"jpg";
+				}
+
+				if($ekstensi=='jpg' || $ekstensi=='JPG')
+				{
+					echo '<img src="http://quick.com/aplikasi/photo/'.$this->session->user.'.'.$ekstensi.'" class="img-circle" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
+				}
+				else
+				{
+					echo '<img src="'.base_url('assets/theme/img/user.png').'" class="img-circle" alt="User Image" />';
+				}
+              ?>
             </div>
             <div class="pull-left info">
               <p><?php echo $this->session->user;?></p>
+              <p><h6><strong><?php echo $this->session->employee;?></strong></h6></p>
               <a href="<?php echo base_url('ChangePassword');?>">Change Password</a>
 			  <br />
 			  <small>Online &nbsp;&nbsp;<i class="fa fa-circle text-success"></i> </small>

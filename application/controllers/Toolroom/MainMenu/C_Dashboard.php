@@ -60,8 +60,35 @@ class C_Dashboard extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/Dashboard/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/Dashboard/V_Index',$data);
 		$this->load->view('V_Footer',$data);
+	}
+	
+	public function send_email($to, $subject, $message) {
+		$config = Array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'mail.gmx.com',
+			'smtp_port' => 587,
+			'smtp_user' => 'myself@gmx.com',
+			'smtp_pass' => 'PASSWORD',
+			'smtp_crypto' => 'tls',
+			'smtp_timeout' => '20',
+			'mailtype'  => 'html', 
+			'charset'   => 'iso-8859-1'
+		);
+		$config['newline'] = "\r\n";
+		$config['crlf'] = "\r\n";
+		$this->CI->load->library('email', $config);
+		$this->CI->email->from('myself@gmx.com', 'Admin');
+		$this->CI->email->to($to);
+		$this->CI->email->subject($subject);
+		$this->CI->email->message($message);
+
+		//$this->email->send();
+		if ( ! $this->CI->email->send()) {
+			return false;
+		}
+		return true;
 	}
 	
 	public function checkSession(){

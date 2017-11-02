@@ -61,7 +61,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItem'] = $this->M_master_item->getItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItem/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItem/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -82,7 +82,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItemGroup'] = $this->M_master_item->getGroupItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItem/V_Create',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItem/V_Create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -105,18 +105,33 @@ class C_MasterItem extends CI_Controller {
 		{
 			redirect('Toolroom/MasterItem/Usable');
 		}else{
-			$data = array(
-					'item_id' 	=> strtoupper($this->input->post('txtBarcodeId')),
+			$id = strtoupper($this->input->post('txtBarcodeId'));
+			$check = $this->M_master_item->check_item($id);
+			if($check){
+				$data = array(
 					'item_name'		=> strtoupper($this->input->post('txtTool')),
 					'item_qty'		=> $qty,
 					'item_qty_min'	=> $qty_min,
-					'item_desc'	=> $this->input->post('txtDesc'),
+					'item_desc'		=> $this->input->post('txtDesc'),
 					'creation_date'	=>  $this->input->post('hdnDate'),
 					'created_by'	=>  $this->input->post('hdnUser'),
 					'item_group_id'	=>  $group
 				);
-				
-			$this->M_master_item->saveUsableItem($data);
+				$this->M_master_item->updateUsableItem($data,$id);
+			}else{
+				$data = array(
+					'item_id' 	=> $id,
+					'item_name'		=> strtoupper($this->input->post('txtTool')),
+					'item_qty'		=> $qty,
+					'item_qty_min'	=> $qty_min,
+					'item_desc'		=> $this->input->post('txtDesc'),
+					'creation_date'	=>  $this->input->post('hdnDate'),
+					'created_by'	=>  $this->input->post('hdnUser'),
+					'item_group_id'	=>  $group
+				);
+				$this->M_master_item->saveUsableItem($data);
+			}
+			
 			$message = '<div class="row"> <div class="col-md-12 " style="margin-top: 10px">
                            <div id="eror" class="alert alert-dismissible " role="alert" style="background-color:#3cbc81; text-align:center; color:white; "><b>Input Success!</b></div>
                       </div>';
@@ -139,7 +154,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItem'] = $this->M_master_item->getItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItem/V_Import',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItem/V_Import',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -150,16 +165,16 @@ class C_MasterItem extends CI_Controller {
 		$config['allowed_types'] = 'xlsx';
 		$config['max_size']      = '100000';
 		$config['overwrite']     = TRUE;
-		$config['file_name']     = "master-item-toolroom";
+		$config['file_name']     = "master-item-Toolroom";
 
-		$doc_name	= "master-item-toolroom";
+		$doc_name	= "master-item-Toolroom";
 
 		$this->upload->initialize($config);
 		if ( ! $this->upload->do_upload('fileScan')){
 			$error = array('error' => $this->upload->display_errors());
 			print_r($error);
 		}else{
-			$inputFileName = 'assets/upload/master-item-toolroom.xlsx';
+			$inputFileName = 'assets/upload/master-item-Toolroom.xlsx';
         try {
                 $inputFileType = IOFactory::identify($inputFileName);
                 $objReader = IOFactory::createReader($inputFileType);
@@ -178,7 +193,6 @@ class C_MasterItem extends CI_Controller {
                 $check = $this->M_master_item->getItemUsable($rowData[0][0]);
 				if($check){
 					$data = array(
-						"item_id"=> $rowData[0][0],
 						"item_name"=> $rowData[0][1],
 						"item_barcode"=> $rowData[0][2],
 						"item_group_id"=> $rowData[0][3],
@@ -236,7 +250,7 @@ class C_MasterItem extends CI_Controller {
 		{
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('ToolRoom/MainMenu/MasterItem/V_Update',$data);
+			$this->load->view('Toolroom/MainMenu/MasterItem/V_Update',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
 			$qty = $this->input->post('txtQuantity');
@@ -248,7 +262,6 @@ class C_MasterItem extends CI_Controller {
 				$qty_min = null;
 			}
 			$data = array(
-					'item_id' 	=> strtoupper($this->input->post('txtBarcodeId')),
 					'item_name'		=> strtoupper($this->input->post('txtTool')),
 					'item_qty'		=> $qty,
 					'item_qty_min'		=> $qty_min,
@@ -287,7 +300,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItemGroup'] = $this->M_master_item->getGroupItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_Index',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -306,7 +319,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItemGroup'] = $this->M_master_item->getGroupItemUsable();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_Create',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_Create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -363,7 +376,7 @@ class C_MasterItem extends CI_Controller {
 		{
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_Update',$data);
+			$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_Update',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
 			$data = array(
@@ -396,7 +409,7 @@ class C_MasterItem extends CI_Controller {
 		$data['AllUsableItem'] = $this->M_master_item->getListGroupItemUsable($plaintext_string);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ToolRoom/MainMenu/MasterItemGroup/V_View',$data);
+		$this->load->view('Toolroom/MainMenu/MasterItemGroup/V_View',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	

@@ -20,6 +20,11 @@ class M_riwayatrekeningpekerja extends CI_Model
 		$this->db->where('tgl_tberlaku>',$date);
     	return $this->db->get($this->table)->result();
     }
+	
+	function checkExist($id){
+		$this->db->where('noind=',$id);
+		return $this->db->get($this->table)->row();
+	}
 
     // get data by id
     function get_by_id($id)
@@ -65,7 +70,7 @@ class M_riwayatrekeningpekerja extends CI_Model
 // association
             function get_pr_master_bank_data()
             {
-                return $this->db->get('pr.pr_master_bank')->result();
+                return $this->db->get('pr.pr_master_bank_induk')->result();
             }
 
 }

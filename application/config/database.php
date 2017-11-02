@@ -247,7 +247,7 @@ $db['oracle_dev'] = array(
 
 $db['quickerpdev'] = array(
 	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'quickerpdev',

@@ -27,15 +27,20 @@
 							<div class="box-header with-border">
 								Header
 							</div>
+							<?php if($msg != null){ ?>
+							<div class="alert alert-danger alert-dismissable"  style="width:100%;" >
+								<b> Alert!</b> Tidak ada data transaksi
+							</div>
+							<?php } ?>
 							<div class="box-body">
 								<div class="row col-lg-12">
 									<div class="form-group">
 										<form method="post" action="<?php echo site_url('Toolroom/Report/SearchReportStok') ?>">
-											<div class="col-md-3">
-												<input type="text" name="txtPeriode" id="txtPeriode" class="form-control daterangepicker-range" data-date-format="d F Y" placeholder="[Periode]"></input>
+											<div class="col-md-2">
+												<input type="text" name="txtPeriode" id="" class="form-control datepicker-range" data-date-format="yyyy-mm-dd" placeholder="[Periode]" required></input>
 											</div>
 											<div class="col-md-2">
-												<select name="txsShift" id="txsShift" class="form-control">
+												<select name="txsShift" id="txsShift" class="form-control" required>
 													<option value="">[Select Shift]</option>
 													<option value="S1">SHIFT 1</option>
 													<option value="S2">SHIFT 2</option>
@@ -48,8 +53,13 @@
 											</div>
 											<div class="col-md-1">
 												<button class="btn btn-md btn-primary btn-flat" >Search</button>
-											</div>
-											<div class="col-md-4">
+											</div> 
+											<div class="col-md-4 col-lg-offset-3 text-right">
+											<?php 
+												if(!empty($shift)){
+													echo "<span style='font-size:18px;'><b>".$shift." / ".date("d F Y",strtotime($str_dt))." - ".date("d F Y",strtotime($str_end))."</b></span>";
+												}
+											?>
 											</div>
 										</form>
 									</div>

@@ -85,16 +85,29 @@
 									<div class="col-lg-9">
 										<?php
 											$eval='';
-											if($rc['evaluation']=='1'){$eval='Wawasan';}
-											if($rc['evaluation']=='2'){$eval='Pengetahuan';}
-											if($rc['evaluation']=='3'){$eval='Sikap/Perilaku';}
-											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Wawasan, Pengetahuan';}
-											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Wawasan, Sikap/Perilaku';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pengetahuan, Sikap/Perilaku';}
+											if($rc['evaluation']=='1'){$eval='Reaksi';}
+											if($rc['evaluation']=='2'){$eval='Pembelajaran';}
+											if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';}
+											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
+											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Sikap / Perilaku';}
 											if($rc['evaluation']=='1,2,3'|| $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-												{$eval='Wawasan, Pengetahuan, Sikap/Perilaku';}
+												{$eval='Reaksi, Pembelajaran, Sikap/Perilaku';}
 										?>
 										<input class="form-control" value="<?php echo $eval?>" readonly >
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat</label>
+									<div class="col-lg-9">
+										<?php if ($rc['sifat']==1) {?>
+											<input class="form-control" value="<?php echo "Order"?>" readonly >
+										<?php } ?>
+										<?php if ($rc['sifat']==2) {?>
+											<input class="form-control" value="<?php echo "Tahunan"?>" readonly >
+										<?php } ?>
 									</div>
 								</div>
 							</div>

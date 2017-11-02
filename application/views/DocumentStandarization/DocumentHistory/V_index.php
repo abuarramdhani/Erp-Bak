@@ -29,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-allDocument" style="font-size:12px; overflow-x: auto;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-allDocument" style="font-size:12px; overflow-x: auto; width: 100%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -57,7 +57,7 @@
                                                 <td style="white-space: nowrap;"><?php echo $row['nomor_dokumen'] ?></td>
                                                 <td style="white-space: nowrap;"><?php echo $row['nomor_revisi'] ?></td>
                                                 <td style="white-space: nowrap;"><?php echo $row['tanggal_revisi'] ?></td>
-												<td style="white-space: nowrap;"><a href="<?php echo base_url('assets/upload/IA/StandarisasiDokumen/').'/'.$row['file'];?>" target="_blank"><?php echo $row['nama_dokumen'] ?></a></td>
+												<td style="white-space: nowrap;"><a href="<?php echo base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$row['file'];?>" target="_blank"><?php echo $row['nama_dokumen'] ?></a></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

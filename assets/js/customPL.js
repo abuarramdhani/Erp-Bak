@@ -53,14 +53,18 @@ $(document).ready(function(){
 	});
 
 	//DATEPICKER UNTUK FORM PENJADWALAN
-	$('.singledate').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		locale: {
-			format: 'DD/MM/YYYY'
-		},
+	// $('.singledateADM').daterangepicker({
+	// 	"singleDatePicker": true,
+	// 	"timePicker": false,
+	// 	"timePicker24Hour": true,
+	// 	"showDropdowns": false,
+	// 	locale: {
+	// 		format: 'DD/MM/YYYY'
+	// 	},
+	// });
+
+	$('.singledateADM').datepicker({
+    	format:'dd/mm/yyyy'
 	});
 
     $(".startdate").datepicker({
@@ -94,8 +98,8 @@ $(document).ready(function(){
 	//SET START DATE APABILA DIGUNAKAN SAAT EDIT
 	if (typeof $('#scheduledate').val() !== 'undefined'){
 		var startDate = $('#scheduledate').val()
-		$(".singledate").data('daterangepicker').setStartDate(startDate);
-		$(".singledate").data('daterangepicker').setEndDate(startDate)
+		$(".singledateADM").data('daterangepicker').setStartDate(startDate);
+		$(".singledateADM").data('daterangepicker').setEndDate(startDate)
 	};
 
 	//SELECT ROOM
@@ -231,7 +235,7 @@ $(document).ready(function(){
 	});
 
 	//FILTER
-	$(document).ready(function() {	
+	$(document).ready(function() {
 		$('#FilterRecord').click(function(){
 			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
 			
@@ -284,6 +288,34 @@ $(document).ready(function(){
 		}
 	});
 
+	//SELECT SEKSI UNTUK REPORT
+	$(".js-slcReportSection").select2({
+		placeholder: "Nama Seksi",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetSeksi",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportSection').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return {
+							id:obj.Nama_Seksi,
+							text:obj.Nama_Seksi
+						};
+					})
+				};
+			}
+		}
+	});
+
 	//GET REPORT1
 	$(document).ready(function() {	
 		$('#SearchReport1').click(function(){
@@ -297,6 +329,31 @@ $(document).ready(function(){
 						name:name,
 				},
 				url:baseurl+"ADMPelatihan/C_Report/GetReport1",
+				success:function(result)
+				{
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
+
+	//GET REPORT2
+	$(document).ready(function() {	
+		$('#SearchReport2').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var section 	= $('select[name=slcReportSection]').val();
+			var year 		= $('select[name="slcTahun"]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						section:section,
+						year:year,
+				},
+				url:baseurl+"ADMPelatihan/C_Report/GetReport2",
 				success:function(result)
 				{
 					$('#loading').html('');
@@ -332,9 +389,83 @@ $(document).ready(function(){
 		});
 	});
 
+	//GET REKAP TRAINING
+	$(document).ready(function() {	
+		$('#SearchRekapTraining').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var date1 	= $('input[name=txtDate1]').val();
+			var date2 		= $('input[name=txtDate2]').val();
 
-	
+			$.ajax({
+				type: "POST",
+				data:{
+						date1:date1,
+						date2:date2,
+				},
+				url:baseurl+"ADMPelatihan/Report/GetRkpTraining",
+				success:function(result)
+				{	
+					// console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
 
+	//GET PERSENTASE PESERTA TRAINING
+	$(document).ready(function() {	
+		$('#SearchPersenPeserta').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var date1 		= $('input[name=txtDate1]').val();
+			var date2 		= $('input[name=txtDate2]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						date1:date1,
+						date2:date2,
+				},
+				url:baseurl+"ADMPelatihan/Report/GetPercentParticipant",
+				success:function(result)
+				{	
+					// console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
+
+	//GET EFEKTIVITAS TRAINING
+	$(document).ready(function() {	
+		$('#SearchEfektifTrain').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var date1 		= $('input[name=txtDate1]').val();
+			var date2 		= $('input[name=txtDate2]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						date1:date1,
+						date2:date2,
+				},
+				url:baseurl+"ADMPelatihan/Report/GetEfektivitasTraining",
+				success:function(result)
+				{	
+					// console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
 
 });
 	
@@ -382,7 +513,7 @@ $(document).ready(function(){
 									+"<td >"+ counter +" </td>"
 									+"<td>"
 										+"<input "+onkeyup+" id='segment' name='txtSegment[]' class='form-control segment' data-toggle='tooltip' data-placement='top' title='Tekan Enter untuk Menyimpan'> "
-										+"<input type='hidden' name='idSegment[]'' value='0'>"
+										+"<input type='hidden' name='idSegment[]' value='0'>"
 									+"</td>"
 									+"<td>"
 										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
@@ -401,7 +532,10 @@ $(document).ready(function(){
 										+"<td >"+ counter +" </td>"
 										+"<td>"
 											+"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
-											+"<input type='hidden' name='idSegment[]'' value='0'>"
+											+"<input type='hidden' name='idSegment[]' value='0'>"
+										+"</td>"
+										+"<td>"
+											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateSegment("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
 				jQuery("#tbodyQuestionnaireSegmentC").append(newRow);
@@ -427,6 +561,10 @@ $(document).ready(function(){
 									+"<td >"+ counter +" </td>"
 									+"<td>"
 										+"<input id='segmentessay' name='txtSegmentEssay[]' class='form-control segmentessay' placeholder='Nama Bagian'>"
+										+"<input type='hidden' name='idSegment[]' value='0'>"
+									+"</td>"
+									+"<td>"
+										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateSegmentEssay("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 									+"</td>"
 									+"</tr>");
 			jQuery("#tbodyQuestionnaireSegmentEssay").append(newRow);
@@ -475,14 +613,19 @@ $(document).ready(function(){
 			jQuery("#tbodyStatement").append(newRow);
 	}
 
-	function AddStatementC(id,inputName){
+	function AddStatementC(numb,id,inputName){
 			var n = $('#tbodyStatementC'+id+' tr').length;
+			// n=1;
+			var tbID = String('tblStatement');
+			var tbodyID = String('tbodyStatementC');
 			counter = n+1;
 	        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
 										+"<td >"+ counter +" </td>"
 										+"<td>"
-											+"<input id='statement' name='"+inputName+"[]' class='form-control statement'> "
-											+"<input type='hidden' name='idStatement[]' value='0'>"
+											+"<input id='statement"+numb+"' name='"+inputName+"[]' class='form-control statement'> "
+										+"</td>"
+										+"<td>"
+											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateStatement("+numb+","+counter+","+id+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
 				jQuery("#tbodyStatementC"+id).append(newRow);
@@ -704,7 +847,6 @@ $(document).ready(function(){
 
 		// alert(rowCount);
 			$("select#slcEmployee:last").val("").change();
-			// delete_row();
 		}else{
 			alert('Jumlah peserta sudah maksimal');
 		}
@@ -800,7 +942,6 @@ $(document).ready(function(){
 					});
 
 			$("select#slcEmployee:last").val("").change();
-			// delete_row();
 		}else{
 			alert('Jumlah peserta sudah maksimal');		
 		}
@@ -917,6 +1058,24 @@ $(document).ready(function(){
     	});
 	});
 
+function delCreateSegment(rowid,segmentid) {
+	if (segmentid == '0') {
+		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegmentC tr[row-id="'+rowid+'"]').remove();
+	}
+}
+function delCreateSegmentEssay(rowid,segmentid) {
+	if (segmentid == '0') {
+		$('#tblQuestionnaireSegmentEssay #tbodyQuestionnaireSegmentEssay tr[row-id="'+rowid+'"]').remove();
+	}
+}
+function delCreateStatement(tbID,rowid,id,statementid) {
+	// console.log('#tblStatement'+tbID);
+	// console.log('#tbodyStatementC'+id);
+	if (statementid == '0') {
+		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
+	}
+}
+
 function delSpesifikRow(rowid,segmentid) {
 	if (segmentid == '0') {
 		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
@@ -991,3 +1150,18 @@ function insertKuesAjax(event, th){
 }
 
 
+// MODAL SHOW PESERTA DI SECTION
+function showModPar(schid,section){
+	$.ajax({
+		type: "POST",
+		data:{
+			section:section
+		},
+		url:baseurl+"ADMPelatihan/Report/GetTrainingPrtcp/"+schid,
+		success:function(result)
+		{
+			$('#showModPar table tbody').html(result);
+			$('div#showModPar').modal('show');
+		}
+	});
+}

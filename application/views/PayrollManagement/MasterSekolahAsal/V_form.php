@@ -40,7 +40,9 @@
 									<div class="form-group">
                                         <label for="txtNoindNew" class="control-label col-lg-4">No Induk</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pendidikan" name="txtNoindNew" id="txtNoindNew" class="form-control" value="<?php echo $noind; ?>" maxlength="7" />
+                                           	 <select name="txtNoindNew" id="txtNoindNew" class="form-control cmbNoindHeader">
+												<option value="<?php echo $noind ?>"><?php echo $noind; ?></option>
+											</select>
                                         </div>
                                     </div>
 									<div class="form-group">

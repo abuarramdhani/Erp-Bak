@@ -107,6 +107,12 @@ class M_masterpekerja extends CI_Model
 				$query = $this->db->get_where('pr.pr_master_pekerja', $dataCekUpdate);
 				return $query;
 			}
+//json get noind
+	public function get_noind($string){
+		$sql = "select noind,nama from pr.pr_master_pekerja where nama like '%$string%' or noind like '%$string%'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 
 }
 

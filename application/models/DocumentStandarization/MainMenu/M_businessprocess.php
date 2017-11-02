@@ -5,7 +5,8 @@ class M_businessprocess extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
+        $this->load->library('General');
     }
 
     public function getBusinessProcess($id = FALSE)
@@ -91,9 +92,9 @@ class M_businessprocess extends CI_Model
     	return $query->result_array();
     }
 
-    public function setBusinessProcess($data)
+    public function setBusinessProcess($data, $user)
     {
-        return $this->db->insert('ds.ds_business_process', $data);
+        $this->db->insert('ds.ds_business_process', $data);
     }
 
     public function updateBusinessProcess($data, $id)
@@ -110,11 +111,11 @@ class M_businessprocess extends CI_Model
 
     public function ambilDataLama($id)
     {
-        $ambilDataLamaBusinessProcess       = " select  *
+        $ambilDataLama                      = " select  *
                                                 from    ds.ds_business_process
                                                 where   bp_id=$id";
-        $queryAmbilDataLamaBusinessProcess  =   $this->db->query($ambilDataLamaBusinessProcess);
-        return $queryAmbilDataLamaBusinessProcess->result_array();
+        $queryAmbilDataLama                 =   $this->db->query($ambilDataLama);
+        return $queryAmbilDataLama->result_array();
     }
 
     public function inputDataLamakeHistory($recordLama)

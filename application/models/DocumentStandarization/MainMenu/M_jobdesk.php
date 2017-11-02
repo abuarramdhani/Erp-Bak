@@ -11,9 +11,32 @@ class M_jobdesk extends CI_Model
     public function getJobdesk($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ds.ds_jobdesk');
+            $query  = " select      jd.jd_id as kode_jobdesc,
+                                    seksi.department_name as departemen,
+                                    seksi.field_name as bidang,
+                                    seksi.unit_name as unit,
+                                    seksi.section_name as seksi,
+                                    jd.jd_name as nama_jobdesc,
+                                    jd.jd_detail as detail_jobdesc
+                        from        ds.ds_jobdesk as jd
+                                    join    er.er_section as seksi
+                                            on  seksi.section_code=jd.kodesie;";
+            $query  =   $this->db->query($query);
+
     	} else {
-    		$query = $this->db->get_where('ds.ds_jobdesk', array('jd_id' => $id));
+            $query  = " select      jd.jd_id as kode_jobdesc,
+                                    seksi.department_name as departemen,
+                                    seksi.field_name as bidang,
+                                    seksi.unit_name as unit,
+                                    seksi.section_name as seksi,
+                                    jd.jd_name as nama_jobdesc,
+                                    jd.jd_detail as detail_jobdesc,
+                                    jd.kodesie as kodesie
+                        from        ds.ds_jobdesk as jd
+                                    join    er.er_section as seksi
+                                            on  seksi.section_code=jd.kodesie
+                        where       jd.jd_id=$id;";
+            $query  =   $this->db->query($query);
     	}
 
     	return $query->result_array();

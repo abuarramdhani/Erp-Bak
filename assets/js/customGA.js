@@ -1,5 +1,4 @@
 // Sistem Kendaraan
-// var base_url = 'http://192.168.168.50/khs-erp/';
 $(function(){
 
 // Tabel Jenis Kendaraan -------------------------------------------------------------------------
@@ -69,24 +68,12 @@ $('#dataTables-fleetKendaraanDeleted').DataTable( {
 $('#dataTables-fleetPajak').DataTable({"lengthChange": false});
 $('#dataTables-fleetPajakDeleted').DataTable({"lengthChange": false});
 
-// -----------------------------------------------------------------------------------------------
-
-// Tabel Kir ------------------------------------------------------------------------------------_
-
 $('#dataTables-fleetKir').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
-$('#dataTables-fleetKirDeleted').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-// -----------------------------------------------------------------------------------------------
-
 
 // Tabel PIC Kendaraan ---------------------------------------------------------------------------_
 
@@ -121,7 +108,6 @@ $('#dataTables-fleetMaintenanceKategoriDeleted').DataTable( {
     });
 // -----------------------------------------------------------------------------------------------
 
-// Tabel Maintenance Kendaraan ---------------------------------------------------------------------
 
 $('#dataTables-fleetMaintenanceKendaraan').DataTable( {
       dom: 'Bfrtip',
@@ -129,36 +115,12 @@ $('#dataTables-fleetMaintenanceKendaraan').DataTable( {
         'excel'
       ]
     });
-$('#dataTables-fleetMaintenanceKendaraanDeleted').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-// -----------------------------------------------------------------------------------------------
-
-// Tabel Kendaraan ---------------------------------------------------------------------------------
-
 $('#dataTables-fleetKecelakaan').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
     });
-
-$('#dataTables-fleetKecelakaanDeleted').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-// -----------------------------------------------------------------------------------------------
-
-// Tabel Monitoring ---------------------------------------------------------------------------------
-
-
-
-
 $('#dataTables-fleetKecelakaanDetail').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -205,7 +167,6 @@ $('#daterangepicker').daterangepicker({
 }, function(start, end, label) {
   console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 });
-
 $('#daterangepickersingledate').daterangepicker({
     "singleDatePicker": true,
     "showDropdowns": true,
@@ -247,6 +208,7 @@ $('#daterangepickersingledate').daterangepicker({
 }, function(start, end, label) {
   console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 });
+
 $('.daterangepickersingledatewithtime').daterangepicker({
     "timePicker": true,
     "timePicker24Hour": true,
@@ -311,19 +273,6 @@ var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKate
 
 function TambahBarisMaintenanceKendaraan(base){  
       var e = jQuery.Event( "click" );
-      // var rowid = $('#DetailMaintenanceKendaraan tr:last').attr('row-id');
-      // var rowid = $('#DetailMaintenanceKendaraan tr').length;      
-      // alert(rowid);
-      // counter = Number(rowid)+1;
-      // alert(counter);
-
-          // var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
-          //           +"<td >"+ counter +" </td>"
-          //           +"<td>"
-          //             +"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
-          //             +"<input type='hidden' name='idSegment[]'' value='0'>"
-          //           +"</td>"
-          //           +"</tr>");
 
           var newRow  = jQuery("<tr>"
                                 +"<td style='text-align:center; width:'"+"30px"+"'></td>"
@@ -351,19 +300,6 @@ function TambahBarisMaintenanceKendaraan(base){
 
 function TambahBarisKecelakaanDetail(base){  
       var e = jQuery.Event( "click" );
-      // var rowid = $('#DetailMaintenanceKendaraan tr:last').attr('row-id');
-      // var rowid = $('#DetailMaintenanceKendaraan tr').length;      
-      // alert(rowid);
-      // counter = Number(rowid)+1;
-      // alert(counter);
-
-          // var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
-          //           +"<td >"+ counter +" </td>"
-          //           +"<td>"
-          //             +"<input id='segment' name='txtSegment[]' class='form-control segment' placeholder='Nama Bagian'> "
-          //             +"<input type='hidden' name='idSegment[]'' value='0'>"
-          //           +"</td>"
-          //           +"</tr>");
 
           var newRow  = jQuery( "<tr>"
                                   +"<td style='text-align:center; width:'"+"30px"+"'></td>"
@@ -413,7 +349,10 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
 
-
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
     $.ajax(
     {
       type    : 'POST',
@@ -427,7 +366,9 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
         console.log(data);
         // alert(data);
         var   data  = JSON.parse(data);
-
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');
         DataTableMonitoringNomorPolisi.fnClearTable();
         for(i=0; i < data['monitoringNomorPolisi'].length; i++)
         {
@@ -449,7 +390,10 @@ $(document).on('click', '#ProsesMonitoringLastProcessNomorPolisi',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
 
-
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
     $.ajax(
     {
       type    : 'POST',
@@ -463,7 +407,9 @@ $(document).on('click', '#ProsesMonitoringLastProcessNomorPolisi',function()
         console.log(data);
         // alert(data);
         var   data  = JSON.parse(data);
-
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');
         DataTableMonitoringNomorPolisi.fnClearTable();
         for(i=0; i < data['monitoringNomorPolisi'].length; i++)
         {
@@ -485,6 +431,11 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   Kategori      =   $('#cmbKategori').val();
     var   Periode       =   $('#daterangepicker').val();
+
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');    
     $.ajax(
     {
       type    : 'POST',
@@ -498,6 +449,9 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');        
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
@@ -518,6 +472,11 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
 {
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   Kategori      =   $('#cmbKategori').val();
+
+    // $('.alert').alert('close');
+    // $('body').addClass('noscroll');
+    // $('#loadingAjax').addClass('overlay_loading');
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');    
     $.ajax(
     {
       type    : 'POST',
@@ -530,6 +489,9 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
+        // $('body').removeClass('noscroll');
+        // $('#loadingAjax').html('');
+        // $('#loadingAjax').removeClass('overlay_loading');        
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
@@ -864,4 +826,3 @@ $(document).ready(function(){
        }
     });
 });
-
