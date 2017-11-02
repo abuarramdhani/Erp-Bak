@@ -1,19 +1,21 @@
 <?php
 class M_dataplan extends CI_Model {
 
-	public function __construct()
-	{
-		$this->load->database();
+  public function __construct()
+  {
+    $this->load->database();
     $this->oracle = $this->load->database ( 'oracle', TRUE );
-	}
+  }
 
-	public function getDataPlan($id = FALSE, $sid = FALSE)
-	{
-		if ($id === FALSE && $sid === FALSE){
-  		$this->db->select('*');
-  		$this->db->from('pp.pp_daily_plans');
-  		$this->db->order_by('priority, created_date', 'ASC');
-    }elseif (!$sid == FALSE){
+  public function getDataPlan($id=FALSE, $section=FALSE, $user_id=FALSE, $time1=FALSE, $time2=FALSE, $itemCode=FALSE, $status=FALSE)
+  {
+    if ($id == FALSE && $section == FALSE && $user_id == FALSE && $itemCode == FALSE){
+      $this->db->select('pdp.*, ps.section_name');
+      $this->db->from('pp.pp_section ps, pp.pp_daily_plans pdp');
+      $this->db->where('pdp.section_id = ps.section_id');
+      $this->db->order_by('pdp.due_time', 'DESC');
+      $query = $this->db->get();
+    }elseif (!$section == FALSE && $id == FALSE && $user_id == FALSE && $itemCode == FALSE){
       $this->db->select("dp.*,(case when dp.achieve_qty>=dp.need_qty then 'OK' else 'NOT OK' end) status");
       $this->db->from('pp.pp_daily_plans dp');
       $this->db->where("
@@ -25,15 +27,59 @@ class M_dataplan extends CI_Model {
             then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
             else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
           END
-        ) AND dp.section_id =", $sid);
+        ) AND dp.section_id =", $section);
       $this->db->order_by('dp.priority, status, dp.created_date', 'ASC');
-   	}elseif (!$id == FALSE) {
+      $query = $this->db->get();
+    }elseif (!$id == FALSE && $section == FALSE && $user_id == FALSE && $itemCode == FALSE) {
       $this->db->select('*');
       $this->db->from('pp.pp_daily_plans');
       $this->db->where('daily_plan_id', $id);
       $this->db->order_by('priority, created_date', 'ASC');
+      $query = $this->db->get();
+    }elseif (!$user_id==FALSE && $id == FALSE) {
+      if (!$section==FALSE) {
+        $a = "and pdp.section_id = $section";
+      }else{
+        $a = "";
+      }
+
+      if (!$time1==FALSE) {
+        $b = "and pdp.due_time between
+          to_timestamp('$time1', 'YYYY/MM/DD HH24:MI:SS')
+          and
+          to_timestamp('$time2', 'YYYY/MM/DD HH24:MI:SS')";
+      }else{
+        $b = "";
+      }
+
+      if (!$itemCode==FALSE) {
+        $c = "and pdp.item_code = '$itemCode'";
+      }else{
+        $c = "";
+      }
+
+      if (!$status==FALSE) {
+        $d = "and (case when pdp.achieve_qty>=pdp.need_qty then 'OK' else 'NOT OK' end) = '$status'";
+      }else{
+        $d = "";
+      }
+      $sql = "SELECT pdp.*,(case when pdp.achieve_qty>=pdp.need_qty then 'OK' else 'NOT OK' end) status, a.section_name
+              from
+                (select
+                  ps.section_id,
+                  ps.section_name
+                from
+                  pp.pp_section ps right join pp.pp_user_group pug on ps.section_id = pug.section_id,
+                  pp.pp_user pu
+                where
+                  pug.pp_user_id = pu.pp_user_id
+                  and pu.user_id = $user_id) a ,
+                pp.pp_daily_plans pdp
+              where pdp.section_id = a.section_id $a $b $c $d
+              order by status, pdp.due_time ASC";
+      $query = $this->db->query($sql);
     }
-    $query = $this->db->get();
+
     return $query->result_array();
   }
 
