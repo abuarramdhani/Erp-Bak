@@ -8,7 +8,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Input Data Plans
+                                        Monthly Data Plans
                                     </b>
                                 </h1>
                             </div>
@@ -38,10 +38,10 @@
                                         </i>
                                     </button>
                                 </a>
-                                Employee List
+                                Monthly List
                             </div>
                             <div class="panel-body">
-                                <table class="table table-striped table-bordered table-hover" id="tbdataplan">
+                                <table class="table table-striped table-bordered table-hover" id="tbitemData">
                                     <thead class="bg-primary">
                                         <tr>
                                             <td>
