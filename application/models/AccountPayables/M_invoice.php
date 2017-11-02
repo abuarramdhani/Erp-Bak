@@ -366,7 +366,7 @@ class M_invoice extends CI_Model{
 		return $query*$query1;
 	}
 
-	public function saveTaxNumberManual($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment ){
+	public function saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir){
 
 		$oracle = $this->load->database("oracle",true);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
