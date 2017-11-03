@@ -83,6 +83,7 @@ class C_Monitoring extends CI_Controller {
                 }
             }
         }
+
         if (count($section) > 1) {
             $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringMultiple', $data);
         }else{
@@ -124,21 +125,20 @@ class C_Monitoring extends CI_Controller {
         $a = $this->M_dataplan->getDataPlan($id=false,$section);
         if (!empty($a)) {
             foreach ($a as $aval) {
-                $subInv = $this->M_dataplan->getSection($user_id,$aval['section_id']);
-                foreach ($subInv as $si) {
-                    if ($si['from_inventory'] == 'JOB') {
-                        $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
-                    }else{
-                        $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$si['from_inventory'],$si['to_inventory'],$aval['item_code'],$si['locator_id']);
-                    }
-                    if (!empty($getItemTransaction)) {
-                        $dataUpd = array(
-                            'achieve_qty'       => $getItemTransaction[0]['ACHIEVE_QTY'],
-                            'last_delivery'     => $getItemTransaction[0]['LAST_DELIVERY'],
-                            'last_updated_date' => date("Y-m-d H:i:s")
-                        );
-                        $this->M_dataplan->update($dataUpd, $aval['daily_plan_id']);
-                    }
+                $is = $this->M_itemplan->getItemData($section,$aval['item_code']);
+                if (!empty($is) && $is[0]['from_inventory'] == NULL) {
+                    $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$is[0]['from_inventory'],$is[0]['completion'],$rowData[0][1],$is[0]['locator_id']);
+                }elseif(!empty($is) && $is[0]['from_inventory'] !== NULL){
+                    $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$is[0]['from_inventory'],$is[0]['to_inventory'],$rowData[0][1],$is[0]['locator_id']);
+                }
+                if (!empty($getItemTransaction)) {
+                    $dataUpd = array(
+                        'achieve_qty'       => $getItemTransaction[0]['ACHIEVE_QTY'],
+                        'last_delivery'     => $getItemTransaction[0]['LAST_DELIVERY'],
+                        'last_updated_by'   => $user_id,
+                        'last_updated_date' => date("Y-m-d H:i:s")
+                    );
+                    $this->M_dataplan->update($dataUpd, $aval['daily_plan_id']);
                 }
             }
             $b = $this->M_dataplan->getDataPlan($id=false,$section);
@@ -302,6 +302,10 @@ class C_Monitoring extends CI_Controller {
     {
         $secid  = $this->input->post('sectionId');
         $achieve= $this->M_monitoring->getDailyAchieve($secid);
-        echo "ACHIEVEMENT = ".$achieve[0]['percentage'];
+        if (empty($achieve)) {
+            echo "ACHIEVEMENT = 0 %";
+        }else{
+            echo "ACHIEVEMENT = ".$achieve[0]['percentage'];
+        }
     }
 }
