@@ -55,10 +55,10 @@
                                                 </td>
                                                 <td style="white-space: nowrap;">
                                                     <ul>
-                                                        <li>Departemen : <b><?php echo $JD['departemen'];?></b></li>
-                                                        <li>Bidang : <b><?php echo $JD['bidang'];?></b></li>
-                                                        <li>Unit : <b><?php echo $JD['unit'];?></b></li>
-                                                        <li>Seksi : <b><?php echo $JD['seksi'];?></b></li>
+                                                        <li>Departemen : <b><?php echo $JD['nama_departemen'];?></b></li>
+                                                        <li>Bidang : <b><?php echo $JD['nama_bidang'];?></b></li>
+                                                        <li>Unit : <b><?php echo $JD['nama_unit'];?></b></li>
+                                                        <li>Seksi : <b><?php echo $JD['nama_seksi'];?></b></li>
                                                     </ul>
                                                 </td>
 												<td><?php echo $JD['nama_jobdesc'] ?></td>
@@ -69,11 +69,20 @@
                                                             {
                                                                 if($dokumenJD['kode_jobdesc']==$JD['kode_jobdesc'])
                                                                 {
-                                                                    echo '  <li>
-                                                                                <a href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$row['file'].'" target="_blank">
-                                                                                    '.$dokumenJD['nama_dokumen'].'
-                                                                                </a>
-                                                                            </li>';
+                                                                                if($dokumenJD['file']==NULL)
+                                                                                {
+                                                                                    echo '  <li>
+                                                                                                '.$dokumenJD['nama_dokumen'].'
+                                                                                            </li>';
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    echo '  <li>
+                                                                                                <a href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$dokumenJD['file'].'" target="_blank">
+                                                                                                    '.$dokumenJD['nama_dokumen'].'
+                                                                                                </a>
+                                                                                            </li>';
+                                                                                }
                                                                 }
                                                             }
                                                         ?>

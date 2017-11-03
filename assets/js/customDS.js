@@ -52,7 +52,11 @@
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"fixedColumns" : true,
+			  		"fixedColumns" : {
+						"leftColumns" : 3
+					}, 
 				});
 				$('#dataTables-documentJobDescription').DataTable({
 					"lengthChange": false,
@@ -804,7 +808,9 @@
 								};
 							}
 						}
-					});					    
+					});
+					$(".cmbDokumenJobDescription:last").select2("val", "");
+					$(".hdndetailDokumenJobDesc:last").val("").change();
 					var count = $('.clone').length;
 					$('#rowid').html(count);
 				};
@@ -824,7 +830,7 @@
 	  				$('#DokumenJobDescription tr').each(function (idx) {
 	     				$(this).children("#DokumenJobDescription tr td:eq(0)").html(idx + 1);
 	  				});
-				}, 10);
+				}, 400);
 //			}  
 // 	}
 
