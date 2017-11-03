@@ -291,7 +291,7 @@ function searchDailyPlans(th){
                                     '<div id="loadingDaily" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">'
                                         +'<div class="modal-dialog modal-lg" role="document">'
                                             +'<div style="text-align: center; width: 100%; height: 100%; vertical-align: middle;">'
-                                                +'<img src="'+baseurl+'assets/img/gif/loading4.gif" style="display: block; margin: auto;">'
+                                                +'<img src="'+baseurl+'assets/img/gif/loading11.gif" style="display: block; margin: auto; width: 80%;">'
                                             +'</div>'
                                         +'</div>'
                                     +'</div>'
