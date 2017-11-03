@@ -16,20 +16,22 @@ class M_dataplan extends CI_Model {
       $this->db->order_by('pdp.due_time', 'DESC');
       $query = $this->db->get();
     }elseif (!$section == FALSE && $id == FALSE && $user_id == FALSE && $itemCode == FALSE){
-      $this->db->select("dp.*,(case when dp.achieve_qty>=dp.need_qty then 'OK' else 'NOT OK' end) status");
-      $this->db->from('pp.pp_daily_plans dp');
-      $this->db->where("
-        (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty AND dp.due_time between
-        to_timestamp((to_char(date_trunc('month', current_date), 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
-        and
-        (
-          case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
-            then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
-            else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
-          END
-        ) AND dp.section_id =", $section);
-      $this->db->order_by('dp.priority, status, dp.created_date', 'ASC');
-      $query = $this->db->get();
+      $sql = "SELECT
+                dp.*,
+                (case when dp.achieve_qty>=dp.need_qty then 'OK' else 'NOT OK' end) status
+              from pp.pp_daily_plans dp
+              where
+                (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty
+                AND dp.due_time <=
+                      (
+                        case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+                          then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                          else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                        END
+                      )
+                  AND dp.section_id = $section
+              order by dp.due_time, status asc";
+      $query = $this->db->query($sql);
     }elseif (!$id == FALSE && $section == FALSE && $user_id == FALSE && $itemCode == FALSE) {
       $this->db->select('*');
       $this->db->from('pp.pp_daily_plans');
