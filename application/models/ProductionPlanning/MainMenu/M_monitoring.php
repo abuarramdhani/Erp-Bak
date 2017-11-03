@@ -228,9 +228,7 @@ class M_monitoring extends CI_Model {
                 pp.pp_daily_plans dp
               where
                 (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty
-                and dp.due_time between
-                  to_timestamp((to_char(date_trunc('month', current_date), 'DD-MM-YYYY') || ' 06:00:00'), 'DD-MM-YYYY HH24:MI:SS')
-                  and
+                and dp.due_time <=
                   (
                     case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
                       then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
