@@ -168,10 +168,10 @@
                                                 ?>
                                                 </tbody>
                                             <?php
-                                            }
-                                            if (!empty($normalPriority[$i][0])) {
+                                            } ?>
+                                            <input type="hidden" name="checkpointBegin" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
+                                            <?php if (!empty($normalPriority[$i][0])) {
                                             ?>
-                                                <input type="hidden" name="checkpointBegin" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                                 <tbody id="normalPriority" style="font-weight: bold;">
                                                 <?php
                                                     foreach ($normalPriority[$i] as $npl ){
@@ -243,10 +243,10 @@
                                                     }
                                                 ?>
                                                 </tbody>
-                                                <input type="hidden" name="checkpointEnd" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                             <?php
                                             }
                                             ?>
+                                            <input type="hidden" name="checkpointEnd" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                         </table>
                                     </div>
                                 </div>
