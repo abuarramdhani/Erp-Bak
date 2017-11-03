@@ -30,18 +30,55 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-                                                    <?php foreach ($JobdeskDocument as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jd Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jd_id']; ?></td>
+                                                    <?php foreach ($JobDescription as $headerRow): ?>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Departemen</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_departemen']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Document Id</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['document_id']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Bidang</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_bidang']; ?></td>
                                                         </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Document Type</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['document_type']; ?></td>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Unit</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_unit']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Seksi</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_seksi']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Job Description</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_jobdesc']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Dokumen</strong></td>
+                                                            <td style="border: 0">
+                                                                <ul>
+                                                                    <?php
+                                                                        foreach ($DocumentJobDescription as $dokumenJD) 
+                                                                        {
+                                                                            if($dokumenJD['kode_jobdesc']==$headerRow['kode_jobdesc'])
+                                                                            {
+                                                                                if($dokumenJD['file']==NULL)
+                                                                                {
+                                                                                    echo '  <li>
+                                                                                                '.$dokumenJD['nama_dokumen'].'
+                                                                                            </li>';
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    echo '  <li>
+                                                                                                <a href="'.base_url('assets/upload/PengembanganSistem/StandarisasiDokumen/').'/'.$dokumenJD['file'].'" target="_blank">
+                                                                                                    '.$dokumenJD['nama_dokumen'].'
+                                                                                                </a>
+                                                                                            </li>';
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </ul>
+                                                            </td>
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

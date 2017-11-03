@@ -119,27 +119,63 @@ class C_DocumentJobDescription extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['JobdeskDocument'] = $this->M_jobdeskdocument->getJobdeskDocument($plaintext_string);
+		$data['JobDescription'] 			= $this->M_jobdeskdocument->ambilJobDescription($plaintext_string);
+		$data['DocumentJobDescription'] 	= $this->M_jobdeskdocument->ambilDokumenJobDescription($plaintext_string);
 
 		/* LINES DATA */
 
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
+		$this->form_validation->set_rules('cmbDepartemen', 'Departemen', 'required');
+		$this->form_validation->set_rules('cmbJD', 'Job Description', 'required');
 
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['ambilDepartemen'] 	= 	$this->M_general->ambilDepartemen();
+			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/DocumentJobDescription/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$data = array(
-				'jd_id' => $this->input->post('txtJdIdHeader',TRUE),
-				'document_id' => $this->input->post('txtDocumentIdHeader',TRUE),
-				'document_type' => $this->input->post('txtDocumentTypeHeader',TRUE),
-    			);
-			$this->M_jobdeskdocument->updateJobdeskDocument($data, $plaintext_string);
+			$jobdescID 					= 	$this->input->post('cmbJD');
+
+			$dokumenJobDescription			= $this->input->post('cmbDokumenJobDescription'); // inputan
+			$detailIDDokumenJobDescription 	= $this->input->post('hdndetailDokumenJobDesc'); //value detail hidden
+			
+			$jumlahIndexDetailIDDokumenJD	= 	count($detailIDDokumenJobDescription);
+			for ($i=0; $i < $jumlahIndexDetailIDDokumenJD; $i++) 
+			{ 
+				$detailIDDokumenJobDescription[$i] 	= 	$this->encrypt->decode(str_replace(array('-', '_', '~'), array('+', '/', '='), $detailIDDokumenJobDescription[$i]));
+			}
+
+			$detailIDDokumenJD 	= 	implode(', ', array_filter($detailIDDokumenJobDescription));
+
+			// Langkah update
+			// 1. Hapus yang tidak ada (data sebelumnya yang sudah tidak dipakai)
+			$this->M_jobdeskdocument->deleteUnusedDocumentJD($jobdescID, $detailIDDokumenJD);
+
+			// 2. Update data yang sudah ada
+			foreach ($dokumenJobDescription as $i => $loop) 
+			{
+				if($detailIDDokumenJobDescription[$i] != NULL OR $detailIDDokumenJobDescription[$i] != '') 
+				{
+					$dataUpdate[$i] = array(
+						'document_id' 	=> 	$dokumenJobDescription[$i]
+					);
+					$this->M_jobdeskdocument->updateExistDocumentJD($dataUpdate[$i], $detailIDDokumenJobDescription[$i]);
+				} 
+				elseif($detailIDDokumenJobDescription[$i] == NULL OR $detailIDDokumenJobDescription == '')
+				{
+			// 3. Inputkan data baru yang belum ada sebelumnya di database
+					$dataInsert[$i] = array(
+						'jd_id' 		=> 	$jobdescID,
+						'document_id' 	=> 	$dokumenJobDescription[$i]
+					);	
+					$this->M_jobdeskdocument->setJobdeskDocument($dataInsert[$i]);
+				}
+			}
 
 			redirect(site_url('DocumentStandarization/DocumentJobDescription'));
 		}
@@ -165,7 +201,8 @@ class C_DocumentJobDescription extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['JobdeskDocument'] = $this->M_jobdeskdocument->getJobdeskDocument($plaintext_string);
+		$data['JobDescription'] 			= $this->M_jobdeskdocument->ambilJobDescription($plaintext_string);
+		$data['DocumentJobDescription'] 	= $this->M_jobdeskdocument->ambilDokumenJobDescription($plaintext_string);
 
 		/* LINES DATA */
 
