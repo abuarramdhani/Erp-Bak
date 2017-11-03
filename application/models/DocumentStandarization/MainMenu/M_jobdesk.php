@@ -17,10 +17,12 @@ class M_jobdesk extends CI_Model
                                     seksi.unit_name as unit,
                                     seksi.section_name as seksi,
                                     jd.jd_name as nama_jobdesc,
-                                    jd.jd_detail as detail_jobdesc
+                                    jd.jd_detail as detail_jobdesc,
+                                    jd.kodesie as kodesie
                         from        ds.ds_jobdesk as jd
                                     join    er.er_section as seksi
-                                            on  seksi.section_code=jd.kodesie;";
+                                            on  seksi.section_code=jd.kodesie
+                        order by    kodesie, kode_jobdesc;";
             $query  =   $this->db->query($query);
 
     	} else {
