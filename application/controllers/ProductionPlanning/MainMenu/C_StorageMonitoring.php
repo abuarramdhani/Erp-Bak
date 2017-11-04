@@ -14,6 +14,8 @@ class C_StorageMonitoring extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('ProductionPlanning/MainMenu/M_storagemonitoring');
+        $this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+		$this->load->model('ProductionPlanning/MainMenu/M_monitoring');
     }
 	
 	public function checkSession()
@@ -38,11 +40,6 @@ class C_StorageMonitoring extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $data['storagepp']      = $this->M_storagemonitoring->getStoragePP();
-
-        // echo "<pre>";
-        // print_r($data['storagepp']);
-        // echo "</pre>";
-        // exit();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -52,7 +49,14 @@ class C_StorageMonitoring extends CI_Controller {
 
     public function Open()
     {
-        $storage_id = $this->input->post('storagepp');
+        $storage_name = $this->input->post('storage_name');
+        $data['storage'] = $this->M_storagemonitoring->getStoragePP($storage_name);
+        $data['section']        = $this->M_dataplan->getSection();
+        // $data['plan']	= $this->
+        // $data['secAchieve']     = $datDailyAchieve;
+        $data['infoJob']        = $this->M_monitoring->getInfoJobs();
+        $data['achieveAll']     = $this->M_monitoring->getAchievementAllFab();
+
 		$this->load->view('ProductionPlanning/MainMenu/StorageMonitoring/V_StorageMonitoring',$data);
     }
 }
