@@ -16,7 +16,8 @@ class C_ItemPlan extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ProductionPlanning/MainMenu/M_itemplan');
-		$this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+        $this->load->model('ProductionPlanning/MainMenu/M_dataplan');
+		$this->load->model('ProductionPlanning/MainMenu/M_storagemonitoring');
     }
 	
 	public function checkSession(){
@@ -134,6 +135,18 @@ class C_ItemPlan extends CI_Controller {
                         }
                     }
                     $datPoint = "1";
+                    if (!empty($rowData[0][5])) {
+                        $stgId = $this->M_storagemonitoring->getStoragePP($rowData[0][5]);
+                    }elseif (empty($rowData[0][5]) && !empty($rowData[0][6])) {
+                        $stgId = $this->M_storagemonitoring->getStoragePP($rowData[0][6]);
+                    }
+
+                    if (empty($stgId)) {
+                        $stgIdVal = null;
+                    }else{
+                        $stgIdVal = $stgId[0]['storage_id'];
+                    }
+                    
                     $dataIns = array(
                         'item_code'         => $rowData[0][1],
                         'item_description'  => $rowData[0][2],
@@ -142,7 +155,8 @@ class C_ItemPlan extends CI_Controller {
                         'to_inventory'      => $rowData[0][5],
                         'completion'        => $rowData[0][6],
                         'created_by'        => $user_id,
-                        'created_date'      => date('Y-m-d H:i:s')
+                        'created_date'      => date('Y-m-d H:i:s'),
+                        'storage_id'        => $stgIdVal
                     );
                     if ($secCheckPoint == 0) {
                         $errSection .= 'Nama Seksi Ada yang tidak sesuai. '.strtoupper(preg_replace('/\s+/', '', $rowData[0][3])).'<br>';
