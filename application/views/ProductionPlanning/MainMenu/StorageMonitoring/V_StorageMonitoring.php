@@ -26,26 +26,12 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-10 col-md-10">
-                        <div id="monFabCarsl" class="carousel slide" data-ride="carousel" data-interval="20000">
-                            <div class="carousel-inner" role="listbox">
-                                <?php
-                                    $count = count($selectedSection);
-                                    $crslActive = 'active';
-                                    for ($i=0; $i < $count; $i++) {
-                                ?>
-                                <div class="item <?php echo $crslActive; ?>">
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12">
                                             <div class="col-md-6 text-left">
-                                                <?php
-                                                foreach ($section as $sc) {
-                                                    if ($selectedSection[$i] == $sc['section_id'] ) { ?>
                                                     <b>
-                                                        SEKSI : <?php echo $sc['section_name']; ?>
+                                                        STORAGE NAME : <?php echo $storage[0]['storage_name']; ?>
                                                     </b>
-                                                <?php
-                                                    }
-                                                } ?>
                                             </div>
                                             <div class="col-md-6 text-right">
                                                 <b>
@@ -59,19 +45,19 @@
                                                         TARGET PENGIRIMAN KOMPONEN
                                                     </b>
                                                 </div>
-                                                <div class="col-md-6 text-right achievement" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                                <div class="col-md-6 text-right achievement">
                                                     <b>
                                                         ACHIEVEMENT =
                                                         <?php
-                                                            if (!empty($secAchieve[$i])) {
-                                                                echo $secAchieve[$i][0]['percentage'];
-                                                            }else{
+                                                            // if (!empty($secAchieve[$i])) {
+                                                            //     echo $secAchieve[$i][0]['percentage'];
+                                                            // }else{
                                                                 echo "0 %";
-                                                            }
+                                                            // }
                                                         ?>
                                                     </b>
                                                 </div>
-                                                <table class="table mon-fab-table dailyPlan" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                                <table class="table mon-fab-table dailyPlan">
                                                     <thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
                                                         <tr>
                                                             <td>
@@ -104,11 +90,11 @@
                                                         </tr>
                                                     </thead>
                                                     <?php
-                                                    $no=1;
-                                                    $checkpoint = 1;
-                                                    if (!empty($highPriority[$i][0])) {
+                                                    // $no=1;
+                                                    // $checkpoint = 1;
+                                                    // if (!empty($highPriority[$i][0])) {
                                                     ?>
-                                                        <tbody id="highPriority">
+                                                        <!-- <tbody id="highPriority">
                                                             <?php
                                                             foreach ($highPriority[$i] as $hpl ){
                                                                 if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
@@ -170,12 +156,12 @@
                                                                 $checkpoint++;
                                                             }
                                                         ?>
-                                                        </tbody>
+                                                        </tbody> -->
                                                     <?php
-                                                    }
-                                                    if (!empty($normalPriority[$i][0])) {
+                                                    // }
+                                                    // if (!empty($normalPriority[$i][0])) {
                                                     ?>
-                                                        <input type="hidden" name="checkpointBegin" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
+                                                        <!-- <input type="hidden" name="checkpointBegin" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                                         <tbody id="normalPriority">
                                                         <?php
                                                             foreach ($normalPriority[$i] as $npl ){
@@ -243,19 +229,12 @@
                                                         </tbody>
                                                         <input type="hidden" name="checkpointEnd" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
                                                     <?php
-                                                    }
-                                                    ?>
+                                                    // }
+                                                    ?> -->
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <?php $crslActive = '';
-                                    }
-                                ?>
-                                <input type="hidden" name="sectionCount" value="<?php echo $count; ?>">
-                            </div>
-                        </div>
                     </div>
                     <div class="col-lg-2 col-md-2">
                         <div class="row">

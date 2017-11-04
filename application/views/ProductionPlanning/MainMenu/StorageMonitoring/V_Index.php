@@ -42,10 +42,10 @@
 	                			<div class="form-group">
 	                				<label class="control-label col-lg-4" for="dp2">STORAGE PRODUCTION</label>
 	                				<div class="col-lg-8">
-	                					<select class="form-control select4" name="storagepp" required>
+	                					<select class="form-control select4" name="storage_name" required>
 	                						<option></option>
                                             <?php foreach ($storagepp as $sp) { ?>
-                                                <option value="<?php echo $sp['storage_id']; ?>">
+                                                <option value="<?php echo $sp['storage_name']; ?>">
                                                     <?php echo $sp['storage_name']; ?>
                                                 </option>
                                             <?php } ?>
