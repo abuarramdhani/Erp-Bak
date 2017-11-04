@@ -14,7 +14,8 @@ class C_Monitoring extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('ProductionPlanning/MainMenu/M_dataplan');
-		$this->load->model('ProductionPlanning/MainMenu/M_monitoring');
+        $this->load->model('ProductionPlanning/MainMenu/M_monitoring');
+		$this->load->model('ProductionPlanning/MainMenu/M_itemplan');
     }
 	
 	public function checkSession()
@@ -127,9 +128,9 @@ class C_Monitoring extends CI_Controller {
             foreach ($a as $aval) {
                 $is = $this->M_itemplan->getItemData($section,$aval['item_code']);
                 if (!empty($is) && $is[0]['from_inventory'] == NULL) {
-                    $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$is[0]['from_inventory'],$is[0]['completion'],$rowData[0][1],$is[0]['locator_id']);
+                    $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$is[0]['from_inventory'],$is[0]['completion'],$aval['item_code'],$is[0]['locator_id']);
                 }elseif(!empty($is) && $is[0]['from_inventory'] !== NULL){
-                    $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$is[0]['from_inventory'],$is[0]['to_inventory'],$rowData[0][1],$is[0]['locator_id']);
+                    $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$is[0]['from_inventory'],$is[0]['to_inventory'],$aval['item_code'],$is[0]['locator_id']);
                 }
                 if (!empty($getItemTransaction)) {
                     $dataUpd = array(
