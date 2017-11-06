@@ -126,7 +126,7 @@
 											<div class="form-group">
                                                 <label for="txtJdNameHeader" class="control-label col-lg-4">Nama Job Description</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jd Name" name="txtJdNameHeader" id="txtJdNameHeader" class="form-control" style="text-transform: uppercase;"> value="<?php echo $headerRow['nama_jobdesc']; ?>"/>
+                                                    <input type="text" placeholder="Jd Name" name="txtJdNameHeader" id="txtJdNameHeader" class="form-control" style="text-transform: uppercase;" value="<?php echo $headerRow['nama_jobdesc']; ?>"/>
                                                 </div>
                                             </div>
 
