@@ -201,6 +201,22 @@ function showHideNormalPlanningSingle() {
     }
 }
 
+function showHideNormalPlanningStorage() {
+    var ckBegin = Number($('input[name="checkpointBegin"]').val());
+    var ckEnd = Number($('input[name="checkpointEnd"]').val());
+    if (ckBegin <= 12 && ckBegin < ckEnd) {
+        $('tbody#normalPriority tr:first').fadeOut("slow", function() {
+            $('tbody#normalPriority tr:first').attr('data-showstat', '0');
+            var tempElem = $('table tbody#normalPriority tr').get(0);
+            $('tbody#normalPriority tr:first').remove();
+            $('tbody#normalPriority').append(tempElem);
+            var tempShowId = $('table tbody#normalPriority tr[data-showstat*="0"]:first').attr('data-showid');
+            $('tbody#normalPriority tr[data-showid="' + tempShowId + '"]').fadeIn('fast');
+            $('tbody#normalPriority tr[data-showid="' + tempShowId + '"]').attr('data-showstat', '1');
+        });
+    }
+}
+
 function getDailyPlan(sectionId) {
     var count = $('input[name="sectionCount"]').val();
     var id = [];
@@ -216,6 +232,20 @@ function getDailyPlan(sectionId) {
         }).done(function(data) {
             console.log('update table plans');
             $('table.dailyPlan[data-secid="' + a + '"]').html(data);
+        });
+    }
+}
+
+function getDailyPlanStorage() {
+        id = $('input[name="storage_name"]').val();
+        $.ajax({
+            url: baseurl + 'ProductionPlanning/StorageMonitoring/getDailyPlanStg',
+            data: {
+                storage_name: id
+            },
+            type: 'POST',
+        }).done(function(data) {
+            $('table.dailyPlan').html(data);
         });
     }
 }
@@ -262,6 +292,18 @@ function getAchievement() {
     }
 }
 
+function getAchievementStorage() {
+    $.ajax({
+        url: baseurl + 'ProductionPlanning/StorageMonitoring/getAchievement',
+        type: 'POST',
+        data: {
+            storage_name: $('input[name="storage_name"]').val()
+        },
+    }).done(function(data) {
+        $('div.achievement b').html(data);
+    });
+}
+
 function groupSectionDelConf(th, id) {
     var elm = $(th).closest('tr').clone();
     $('div.modal-footer a').attr("href", baseurl + "ProductionPlanning/Setting/GroupSection/Delete/" + id);
@@ -291,7 +333,7 @@ function searchDailyPlans(th){
                                     '<div id="loadingDaily" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">'
                                         +'<div class="modal-dialog modal-lg" role="document">'
                                             +'<div style="text-align: center; width: 100%; height: 100%; vertical-align: middle;">'
-                                                +'<img src="'+baseurl+'assets/img/gif/loading11.gif" style="display: block; margin: auto; width: 80%;">'
+                                                +'<img src="'+baseurl+'assets/img/gif/loading14.gif" style="display: block; margin: auto; width: 80%;">'
                                             +'</div>'
                                         +'</div>'
                                     +'</div>'
