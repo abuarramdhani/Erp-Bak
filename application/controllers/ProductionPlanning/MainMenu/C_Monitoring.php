@@ -122,7 +122,6 @@ class C_Monitoring extends CI_Controller {
     {
         $user_id    = $this->session->userid;
         $section    = $this->input->post('sectionId');
-        $datplan    = array();
         $a = $this->M_dataplan->getDataPlan($id=false,$section);
         if (!empty($a)) {
             foreach ($a as $aval) {
