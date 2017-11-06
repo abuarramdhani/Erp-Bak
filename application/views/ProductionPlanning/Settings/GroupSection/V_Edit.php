@@ -55,15 +55,23 @@
                                                     <div class="col-lg-8">
                                                         <select class="form-control select4" name="section[]" multiple="">
                                                             <option></option>
-                                                            <?php foreach ($section as $s) {
-                                                                foreach ($sectionGroup as $sg) { ?>
-                                                                <option value="<?php echo $s['section_id']; ?>" <?php if ($s['section_id'] == $sg['section_id']) {
-                                                                    echo "selected";
-                                                                } ?>>
-                                                                    <?php echo $s['section_name']; ?>
-                                                                </option>
-                                                            <?php }
-                                                            } ?>
+                                                            <?php
+                                                            foreach ($section as $s) {
+                                                                if (in_array($s['section_id'], $sectionGroup)) {
+                                                                ?>
+                                                                    <option value="<?php echo $s['section_id']; ?>" selected>
+                                                                        <?php echo $s['section_name']; ?>
+                                                                    </option>
+                                                                <?php
+                                                                }else{
+                                                                ?>
+                                                                    <option value="<?php echo $s['section_id']; ?>">
+                                                                        <?php echo $s['section_name']; ?>
+                                                                    </option>
+                                                                <?php
+                                                                }
+                                                            }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
