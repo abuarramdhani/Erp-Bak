@@ -107,13 +107,8 @@
                                                 <tbody id="highPriority" style="font-weight: bold;">
                                                     <?php
                                                     foreach ($highPriority[$i] as $hpl ){
-                                                        if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
-                                                            $classStatus = "plan-done";
-                                                        }else{
-                                                            $classStatus = "plan-undone-high";
-                                                        }
                                                     ?>
-                                                        <tr class="<?php echo $classStatus; ?>">
+                                                        <tr class="plan-undone-high">
                                                             <td>
                                                                 <?php echo $no++; ?>
                                                             </td>
@@ -175,13 +170,8 @@
                                                 <tbody id="normalPriority" style="font-weight: bold;">
                                                 <?php
                                                     foreach ($normalPriority[$i] as $npl ){
-                                                        if ($npl['achieve_qty'] >= $npl['need_qty']) {
-                                                            $classStatus = "plan-done";
-                                                        }else{
-                                                            $classStatus = "plan-undone-normal";
-                                                        }
                                                     ?>
-                                                        <tr class="<?php echo $classStatus; ?>" <?php if ($checkpoint > 6) {
+                                                        <tr class="plan-undone-normal" <?php if ($checkpoint > 6) {
                                                             echo " data-showid='".$checkpoint."'";
                                                             echo " data-showstat='0'";
                                                             echo " style='display:none;'";

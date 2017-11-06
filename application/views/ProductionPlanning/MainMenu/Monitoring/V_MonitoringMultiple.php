@@ -17,11 +17,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
-                        <h3 class="text-center">
+                        <h2 class="text-center">
                             <b>
                                 MONITOR ACHIEVEMENT FABRIKASI
                             </b>
-                        </h3>
+                        </h2>
                     </div>
                 </div>
                 <div class="row">
@@ -77,7 +77,7 @@
                                                             <td>
                                                                 NO
                                                             </td>
-                                                            <td>
+                                                            <td style="width: 15%;">
                                                                 ITEM
                                                             </td>
                                                             <td>
@@ -89,7 +89,7 @@
                                                             <td>
                                                                 NEED QTY
                                                             </td>
-                                                            <td>
+                                                            <td style="width: 15%;">
                                                                 DUE TIME
                                                             </td>
                                                             <td>
@@ -108,16 +108,11 @@
                                                     $checkpoint = 1;
                                                     if (!empty($highPriority[$i][0])) {
                                                     ?>
-                                                        <tbody id="highPriority">
+                                                        <tbody id="highPriority" style="font-weight: bold;">
                                                             <?php
                                                             foreach ($highPriority[$i] as $hpl ){
-                                                                if ($hpl['achieve_qty'] >= $hpl['need_qty']) {
-                                                                    $classStatus = "plan-done";
-                                                                }else{
-                                                                    $classStatus = "plan-undone-high";
-                                                                }
                                                             ?>
-                                                                <tr class="<?php echo $classStatus; ?>">
+                                                                <tr class="plan-undone-high">
                                                                     <td>
                                                                         <?php echo $no++; ?>
                                                                     </td>
@@ -176,16 +171,11 @@
                                                     if (!empty($normalPriority[$i][0])) {
                                                     ?>
                                                         <input type="hidden" name="checkpointBegin" data-secid="<?php echo $selectedSection[$i]; ?>" value="<?php echo $checkpoint; ?>">
-                                                        <tbody id="normalPriority">
+                                                        <tbody id="normalPriority" style="font-weight: bold;">
                                                         <?php
                                                             foreach ($normalPriority[$i] as $npl ){
-                                                                if ($npl['achieve_qty'] >= $npl['need_qty']) {
-                                                                    $classStatus = "plan-done";
-                                                                }else{
-                                                                    $classStatus = "plan-undone-normal";
-                                                                }
                                                             ?>
-                                                                <tr class="<?php echo $classStatus; ?>" <?php if ($checkpoint > 6) {
+                                                                <tr class="plan-undone-normal" <?php if ($checkpoint > 6) {
                                                                     echo " data-showid='".$checkpoint."'";
                                                                     echo " data-showstat='0'";
                                                                     echo " style='display:none;'";
@@ -202,7 +192,13 @@
                                                                         <?php echo $npl['item_code']; ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php echo $npl['item_description']; ?>
+                                                                        <?php
+                                                                            if (strlen($npl['item_description']) > 15) {
+                                                                                echo substr($npl['item_description'],0,15).' ...';
+                                                                            }else{
+                                                                                echo $npl['item_description'];
+                                                                            }
+                                                                        ?>
                                                                     </td>
                                                                     <td>
                                                                         <?php echo $npl['priority']; ?>
@@ -216,7 +212,7 @@
                                                                     <td>
                                                                         <?php
                                                                             if ($npl['achieve_qty'] == null) {
-                                                                                echo "-";
+                                                                                echo "0";
                                                                             }else{
                                                                                 echo $npl['achieve_qty'];
                                                                             }
@@ -257,7 +253,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <br>
-                                            <table class="table table-border-mon-prod infoJob" data-secid="<?php echo $selectedSection[$i]; ?>" style="border: 2px solid #000;">
+                                            <table class="table table-border-mon-prod infoJob bg-green-plan" data-secid="<?php echo $selectedSection[$i]; ?>">
                                                 <thead style="font-weight: bold; font-size: 14px;">
                                                     <tr>
                                                 		<td></td>
@@ -314,7 +310,7 @@
                     <div class="col-lg-2 col-md-2">
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-border-mon-prod" id="achieveAllFab" style="border: 2px solid #000;">
+                                <table class="table table-border-mon-prod bg-green-plan" id="achieveAllFab">
                                 	<tr>
                                 		<td colspan="2">
                                 			<b>ACHIEVEMENT ALL FAB</b>
