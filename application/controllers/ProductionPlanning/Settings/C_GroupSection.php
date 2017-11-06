@@ -101,9 +101,14 @@ class C_GroupSection extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['userGroup'] 		= $this->M_groupsection->getUserGroup($id);
-		$data['sectionGroup']	= $this->M_groupsection->getSectionGroup($data['userGroup'][0]['pp_user_id']);
+		$sectionGroup 			= $this->M_groupsection->getSectionGroup($data['userGroup'][0]['pp_user_id']);
 		$data['regUser'] 		= $this->M_groupsection->getRegisteredUser();
 		$data['section'] 		= $this->M_groupsection->getPpSection();
+		$data['sectionGroup'] 	= array();
+
+		foreach ($sectionGroup as $sg) {
+			array_push($data['sectionGroup'], $sg['section_id']);
+		}
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
