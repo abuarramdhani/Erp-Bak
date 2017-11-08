@@ -1090,12 +1090,13 @@ class M_general extends CI_Model
         return $queryAmbilHirarki->result_array();
    }
 
-   public function ambilJobDescriptionBerdasarKodesie($kodesie)
+   public function ambilJobDescriptionBerdasarKodesie($kodesie, $keywordJobDescription)
    {
        $ambilJobDescriptionBerdasarKodesie      = " select      jd.jd_id as id_job_description,
                                                                 jd.jd_name as nama_job_description
                                                     from        ds.ds_jobdesk as jd
-                                                    where       substring(jd.kodesie,1,7)='".$kodesie."'";
+                                                    where       substring(jd.kodesie,1,7)='".$kodesie."'
+                                                                and     jd.jd_name like '%".$keywordJobDescription."%'";
         $queryAmbilJobDescriptionBerdasarKodesie=   $this->db->query($ambilJobDescriptionBerdasarKodesie);
         return $queryAmbilJobDescriptionBerdasarKodesie->result_array();
    }
@@ -1134,6 +1135,23 @@ class M_general extends CI_Model
                                             order by    level, daftar_nama_dokumen;";
         $queryAmbilDokumenJobDescription=   $this->db->query($ambilDokumenJobDescription);
         return $queryAmbilDokumenJobDescription->result_array();
+   }
+
+   public function ambilPekerjaAktifBerdasarHirarki($kodesie, $keywordPekerja)
+   {
+       $ambilPekerjaAktifBerdasarHirarki            = " select      pkj.employee_code as nomor_induk_pekerja,
+                                                                    pkj.employee_name as nama_pekerja
+                                                        from        er.er_employee_all as pkj
+                                                        where       pkj.resign=0
+                                                                    and     pkj.employee_code!='Z0000'
+                                                                    and     substring(pkj.section_code,1,7)='".$kodesie."'
+                                                                    and     (
+                                                                                pkj.employee_name like '%".$keywordPekerja."%'
+                                                                                or  pkj.employee_code like '%".$keywordPekerja."%'
+                                                                            )
+                                                        order by    pkj.employee_code;";
+        $queryAmbilPekerjaAktifBerdasarHirarki      =   $this->db->query($ambilPekerjaAktifBerdasarHirarki);
+        return $queryAmbilPekerjaAktifBerdasarHirarki->result_array();
    }
 }
 

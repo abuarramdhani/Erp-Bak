@@ -52,7 +52,7 @@
                                                             <td style="border: 0">: <?php echo $headerRow['nama_jobdesc']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Detail</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tugas Utama</strong></td>
                                                             <td style="border: 0"><?php echo $headerRow['detail_jobdesc']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>

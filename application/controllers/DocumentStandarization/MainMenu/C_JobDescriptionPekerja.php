@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class C_JobdeskEmployee extends CI_Controller
+class C_JobDescriptionPekerja extends CI_Controller
 {
 	function __construct()
 	{
@@ -14,7 +14,9 @@ class C_JobdeskEmployee extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('DocumentStandarization/MainMenu/M_jobdeskemployee');
+		$this->load->model('DocumentStandarization/MainMenu/M_jobdescriptionpekerja');
+		$this->load->model('DocumentStandarization/MainMenu/M_jobdeskdocument');
+				$this->load->model('DocumentStandarization/MainMenu/M_general');
 
 		$this->checkSession();
 	}
@@ -36,20 +38,21 @@ class C_JobdeskEmployee extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jobdesk Employee';
-		$data['Menu'] = 'O T H E R S';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Job Description Pekerja';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Job Description Pekerja';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['JobdeskEmployee'] = $this->M_jobdeskemployee->getJobdeskEmployee();
+		$data['JobDescriptionPekerja'] 	= $this->M_jobdescriptionpekerja->getJobdeskEmployee();
+		$data['DocumentJobDescription']	=	$this->M_jobdeskdocument->ambilDokumenJobDescription();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('DocumentStandarization/JobdeskEmployee/V_index', $data);
+		$this->load->view('DocumentStandarization/JobDescriptionPekerja/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -58,9 +61,9 @@ class C_JobdeskEmployee extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jobdesk Employee';
-		$data['Menu'] = 'O T H E R S';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Job Description Pekerja';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Job Description Pekerja';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -70,22 +73,31 @@ class C_JobdeskEmployee extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
-
+		$this->form_validation->set_rules('cmbDepartemen', 'Departemen', 'required');
+		$this->form_validation->set_rules('cmbPekerja-JobDesc', 'Pekerja', 'required');
+		$this->form_validation->set_rules('cmbJD', 'Job Description', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
+			$data['ambilDepartemen'] 	= 	$this->M_general->ambilDepartemen();
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('DocumentStandarization/JobdeskEmployee/V_create', $data);
+			$this->load->view('DocumentStandarization/JobDescriptionPekerja/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$data = array(
-				'jd_id' => $this->input->post('txtJdIdHeader'),
-				'employee_id' => $this->input->post('txtEmployeeIdHeader'),
-    		);
-			$this->M_jobdeskemployee->setJobdeskEmployee($data);
+
+
+			$jobDescription 		= 	$this->input->post('cmbJD');
+			$pekerja 				= 	$this->input->post('cmbPekerja-JobDesc');
+
+			$data 	=	array(
+							'jd_id' 			=> $jobDescription,
+							'employee_code' 	=> $pekerja,
+    					);
+			$this->M_jobdescriptionpekerja->setJobdeskEmployee($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('OTHERS/JobdeskEmployee'));
+			redirect(site_url('DocumentStandarization/JobDescriptionPekerja'));
 		}
 	}
 
@@ -94,9 +106,9 @@ class C_JobdeskEmployee extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jobdesk Employee';
-		$data['Menu'] = 'O T H E R S';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Job Description Pekerja';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Job Description Pekerja';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -109,7 +121,7 @@ class C_JobdeskEmployee extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['JobdeskEmployee'] = $this->M_jobdeskemployee->getJobdeskEmployee($plaintext_string);
+		$data['JobdeskEmployee'] = $this->M_jobdescriptionpekerja->getJobdeskEmployee($plaintext_string);
 
 		/* LINES DATA */
 
@@ -121,16 +133,16 @@ class C_JobdeskEmployee extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('DocumentStandarization/JobdeskEmployee/V_update', $data);
+			$this->load->view('DocumentStandarization/JobDescriptionPekerja/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
 				'jd_id' => $this->input->post('txtJdIdHeader',TRUE),
 				'employee_id' => $this->input->post('txtEmployeeIdHeader',TRUE),
     			);
-			$this->M_jobdeskemployee->updateJobdeskEmployee($data, $plaintext_string);
+			$this->M_jobdescriptionpekerja->updateJobdeskEmployee($data, $plaintext_string);
 
-			redirect(site_url('OTHERS/JobdeskEmployee'));
+			redirect(site_url('DocumentStandarization/JobDescriptionPekerja'));
 		}
 	}
 
@@ -139,9 +151,9 @@ class C_JobdeskEmployee extends CI_Controller
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Jobdesk Employee';
-		$data['Menu'] = 'O T H E R S';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Job Description Pekerja';
+		$data['Menu'] = 'Job Description';
+		$data['SubMenuOne'] = 'Job Description Pekerja';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -154,13 +166,15 @@ class C_JobdeskEmployee extends CI_Controller
 		$data['id'] = $id;
 
 		/* HEADER DATA */
-		$data['JobdeskEmployee'] = $this->M_jobdeskemployee->getJobdeskEmployee($plaintext_string);
+		$data['JobDescriptionPekerja'] 		= $this->M_jobdescriptionpekerja->getJobdeskEmployee($plaintext_string);
+		$data['AmbilKodeJobDescription'] 	= $this->M_jobdescriptionpekerja->ambilKodeJobDescription($plaintext_string);
+		$data['DocumentJobDescription'] 	= $this->M_jobdeskdocument->ambilDokumenJobDescription($data['AmbilKodeJobDescription']);
 
 		/* LINES DATA */
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('DocumentStandarization/JobdeskEmployee/V_read', $data);
+		$this->load->view('DocumentStandarization/JobDescriptionPekerja/V_read', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -170,9 +184,9 @@ class C_JobdeskEmployee extends CI_Controller
         $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$this->M_jobdeskemployee->deleteJobdeskEmployee($plaintext_string);
+		$this->M_jobdescriptionpekerja->deleteJobdeskEmployee($plaintext_string);
 
-		redirect(site_url('OTHERS/JobdeskEmployee'));
+		redirect(site_url('DocumentStandarization/JobDescriptionPekerja'));
     }
 
 

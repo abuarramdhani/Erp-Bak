@@ -35,8 +35,8 @@
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
                                                 <th style="text-align: center; white-space: nowrap;">Hirarki</th>
-												<th>Job Desk</th>
-												<th>Detail Job Desk</th>
+												<th>Job Description</th>
+												<th>Tugas Utama</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -62,7 +62,7 @@
                                                     </ul>
                                                 </td>
 												<td style="white-space: nowrap;"><?php echo $row['nama_jobdesc'] ?></td>
-												<td><?php echo $row['detail_jobdesc'] ?></td>
+												<td style="white-space: normal;"><?php echo $row['detail_jobdesc'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

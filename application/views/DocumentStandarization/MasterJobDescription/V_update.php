@@ -131,7 +131,7 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="txaJdDetailHeader" class="control-label col-lg-4">Detail</label>
+                                                <label for="txaJdDetailHeader" class="control-label col-lg-4">Tugas Utama</label>
                                                 <div class="col-lg-7">
                                                     <textarea name="txaJdDetailHeader" id="txaJdDetailHeader" class="form-control ckeditor" placeholder="Jd Detail"><?php echo $headerRow['detail_jobdesc']; ?></textarea>
                                                 </div>
