@@ -311,8 +311,17 @@ class C_LimbahTransaksi extends CI_Controller
 			$data['tanggalawal'] = $tanggalawal; 
 			$data['tanggalakhir'] = $tanggalakhir; 
 
+			$datetime1 = new DateTime($data['tanggalawal']);
+			$datetime2 = new DateTime($data['tanggalakhir']);
+			$interval = $datetime1->diff($datetime2);
+			$data['jumlahHari'] = (int)$interval->format('%a');
+
+			$data['tanggalawalformatindo'] 	= date('d-M-Y',strtotime($tanggalawal));
+			$data['tanggalakhirformatindo']	= date('d-M-Y',strtotime($tanggalakhir));
+
+			$data['perlakuan'] = $this->M_limbahtransaksi->getPerlakuan();
             $data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
-           
+            
             $this->load->view('WasteManagement/LimbahTransaksi/V_Excel', $data, true);
     }
 

@@ -134,6 +134,7 @@ class M_limbahtransaksi extends CI_Model
                                 WHERE   id_transaksi = $id";
         $sqlReject     =   $this->db->query($queryReject);
     }
+
 }
 
 /* End of file M_limbahtransaksi.php */
