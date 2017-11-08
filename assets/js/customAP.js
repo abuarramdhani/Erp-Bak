@@ -516,15 +516,15 @@ $(document).ready(function(){
 			var res0 = $('#npwp').val().replace(/[\D]/g, '');
 			$('#npwp').val( res0 );
 
-			var dppkn = Math.round($('#dpp1').val().replace(/[\D]/g, ''));
-			var ppnkn = Math.round($('#ppn1').val().replace(/[\D]/g, ''));
+			var dppkn = Math.round($('#dpp1').val());
+			var ppnkn = Math.round($('#ppn1').val());
 			$('#dpp1').val(dppkn);
 			$('#ppn1').val(ppnkn);
 
-			var dppiv = parseFloat($('#dpp1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			var dppiv = parseFloat(Math.round($('#dpp1').val())).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 			var dppires = 'Rp. '+dppiv;
 			$('#dpp1').val(dppires);
-			var ppniv = parseFloat($('#ppn1').val()).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+			var ppniv = parseFloat(Math.round($('#ppn1').val())).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 			var ppnires = 'Rp. '+ppniv;
 			$('#ppn1').val(ppnires);
 		};
@@ -598,8 +598,10 @@ $(document).ready(function(){
 			var nfRes = $('#nomorFaktur').val().replace(/[\D]/g, '');
 			$('#nomorFaktur').val(nfRes);
 
+			ajaxForSubmitFakturManual();
+
 			// alert($('#nomorFaktur').val());
-			$('#pph').submit();
+			// $('#pph').submit();
 		});
 
 		$("#btnClsModFak").click(function(){
@@ -824,7 +826,7 @@ $(document).ready(function(){
 	});
 	$('#DInvoiceVdr').select2();
 });
-// ---------------------------------------------ReportDerailInvoice[END]-------------------------------------------
+// ---------------------------------------------ReportDetailInvoice[END]-------------------------------------------
 
 function ajaxForSubmitFaktur(){
 	var invId 				= $('[name=invoice_id]').val();
@@ -907,6 +909,62 @@ function ajaxForSubmitFaktur(){
 						console.log(xhr.responseText);
 					}
 				});
+			}else {
+				alert('canceled');
+				$('#modalInputFaktur').modal('hide');
+				$('#comentModal').modal('hide');
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError){
+			alert("Error: \n"+xhr.responseText)
+			console.log(xhr.responseText);
+		}
+	});
+							
+};
+function ajaxForSubmitFakturManual(){
+	var invId 				= $('[name=invoice_id]').val();
+	var tanggalFaktur 		= $('[name=tanggalFaktur]').val();
+	var tanggalFakturCon	= $('[name=tanggalFakturCon]').val();
+	var nomorFaktur 		= $('[name=nomorFaktur]').val();
+	//first step ajax --- CheckInvoice
+	$.ajax({
+		type: "POST",
+		url: baseurl + "AccountPayables/Invoice/chkInvExist/"+invId, 
+		data:	{},
+		cache:false,
+		success:function(result){
+			if (result == 'true') {
+				var invchk = confirm('Data sudah ada di faktur aplikasi. Tetap simpan[replace]?');
+			}else{
+				var invchk = true
+			};
+			
+			if (invchk == true) {
+				//second step ajax --- CheckFaktur
+				
+				$.ajax({
+					type: "POST",
+					url: baseurl + "AccountPayables/Invoice/saveTaxNumberManual", 
+					data:	{
+								invoice_id		: invId,
+								tanggalFaktur 	: tanggalFaktur,
+								tanggalFakturCon: tanggalFakturCon,
+								nomorFaktur		: nomorFaktur
+							},
+					cache:false,
+					success:function(){
+						alert('input berhasil');
+						$('#modalInputFaktur').modal('hide');
+						$('#comentModal').modal('hide');
+						$('#smbt').click();
+					},
+					error: function (xhr, ajaxOptions, thrownError){
+						alert("Error: \n"+xhr.responseText)
+						console.log(xhr.responseText);
+					}
+				});
+						
 			}else {
 				alert('canceled');
 				$('#modalInputFaktur').modal('hide');
