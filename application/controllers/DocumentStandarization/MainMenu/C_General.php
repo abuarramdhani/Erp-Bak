@@ -158,6 +158,15 @@ class C_General extends CI_Controller
 		echo json_encode($resultPekerjaPemberiKeputusan);
 	}
 
+	public function cariPekerjaAktifBerdasarHirarki()
+	{
+		$kodesie 				= 	substr(($this->input->get('kodesie')), 0, 7);
+		$keywordPekerja 		= 	strtoupper($this->input->get('term'));
+
+		$daftarNamaPekerja		= 	$this->M_general->ambilPekerjaAktifBerdasarHirarki($kodesie, $keywordPekerja);
+		echo json_encode($daftarNamaPekerja);
+	}
+
 	public function cariDepartemen()
 	{
 		$keywordDepartemen 					= 	strtoupper($this->input->get('term'));
@@ -215,9 +224,10 @@ class C_General extends CI_Controller
 
 	public function cariJobDesc()
 	{
-		$kodesie 		= 	substr(($this->input->get('kodesie')), 0, 7);
+		$kodesie 				= 	substr(($this->input->get('kodesie')), 0, 7);
+		$keywordJobDescription 	= 	strtoupper($this->input->get('term'));
 
-		$daftarJobDescription	= 	$this->M_general->ambilJobDescriptionBerdasarKodesie($kodesie);
+		$daftarJobDescription	= 	$this->M_general->ambilJobDescriptionBerdasarKodesie($kodesie, $keywordJobDescription);
 		echo json_encode($daftarJobDescription);
 	}
 

@@ -11,7 +11,7 @@ class C_CodeOfPractice extends CI_Controller
 
 		$this->load->library('form_validation');
 		$this->load->library('session');
-		$this->load->library('encrypt');
+		$this->load->library('encryption');
 		$this->load->library('General');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');

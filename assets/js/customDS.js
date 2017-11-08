@@ -64,7 +64,7 @@
 					"scrollX": true,
 					"scroller": true
 				});
-				$('#dataTables-jobdeskEmployee').DataTable({
+				$('#dataTables-jobDescriptionPekerja').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
@@ -432,6 +432,7 @@
 					var departemen = $(this).val();
 
 					$('#cmbBidang-DocumentJobDesc').select2('val','');
+					$('#cmbPekerja-JobDesc').select2('val','');
 					// $('#cmbUnit-DocumentJobDesc').select2('val','');
 					// $('#cmbSeksi-DocumentJobDesc').select2('val','');
 					// $('#cmbJD').select2('val','');
@@ -454,6 +455,30 @@
 								return {
 									results: $.map(data, function(obj){
 										return {id: obj.kode_bidang, text: obj.nama_bidang};
+									})
+								};
+							}
+						}
+					});
+
+					$('#cmbPekerja-JobDesc').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariPekerjaAktifBerdasarHirarki',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									kodesie: departemen
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.nomor_induk_pekerja, text: obj.nomor_induk_pekerja+' - '+obj.nama_pekerja};
 									})
 								};
 							}
@@ -490,7 +515,8 @@
 					var bidang 		= $(this).val();
 					
 					$('#cmbUnit-DocumentJobDesc').select2('val','');
-					$('#cmbSeksi-DocumentJobDesc').select2('val','');				
+					$('#cmbSeksi-DocumentJobDesc').select2('val','');
+					$('#cmbPekerja-JobDesc').select2('val', '');
 					$('#cmbUnit-DocumentJobDesc').select2(
 					{
 						allowClear: true,
@@ -509,6 +535,30 @@
 								return {
 									results: $.map(data, function(obj){
 										return {id: obj.kode_unit, text: obj.nama_unit};
+									})
+								};
+							}
+						}
+					});
+
+					$('#cmbPekerja-JobDesc').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariPekerjaAktifBerdasarHirarki',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									kodesie: bidang
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.nomor_induk_pekerja, text: obj.nomor_induk_pekerja+' - '+obj.nama_pekerja};
 									})
 								};
 							}
@@ -545,6 +595,7 @@
 					var unit 		= $(this).val();
 
 					$('#cmbSeksi-DocumentJobDesc').select2('val','');
+					$('#cmbPekerja-JobDesc').select2('val', '');
 					$('#cmbJD').select2('val','');
 					$('#cmbSeksi-DocumentJobDesc').select2(
 					{
@@ -564,6 +615,30 @@
 								return {
 									results: $.map(data, function(obj){
 										return {id: obj.kode_seksi, text: obj.nama_seksi};
+									})
+								};
+							}
+						}
+					});
+
+					$('#cmbPekerja-JobDesc').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariPekerjaAktifBerdasarHirarki',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									kodesie: unit
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.nomor_induk_pekerja, text: obj.nomor_induk_pekerja+' - '+obj.nama_pekerja};
 									})
 								};
 							}
@@ -598,6 +673,7 @@
 
 				$(document).on('change', '#cmbSeksi-DocumentJobDesc', function(){
 					var seksi 		= $(this).val();
+					$('#cmbPekerja-JobDesc').select2('val', '');
 					$('#cmbJD').select2('val','');
 					$('#cmbJD').select2(
 					{
@@ -617,6 +693,30 @@
 								return {
 									results: $.map(data, function(obj){
 										return {id: obj.id_job_description, text: obj.nama_job_description};
+									})
+								};
+							}
+						}
+					});
+
+					$('#cmbPekerja-JobDesc').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih",
+						ajax: 
+						{
+							url: baseurl+'DocumentStandarization/General/cariPekerjaAktifBerdasarHirarki',
+							dataType: 'json',
+							data: function (params){
+								return {
+									term: params.term,
+									kodesie: seksi
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.nomor_induk_pekerja, text: obj.nomor_induk_pekerja+' - '+obj.nama_pekerja};
 									})
 								};
 							}

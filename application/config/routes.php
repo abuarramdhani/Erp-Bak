@@ -1259,9 +1259,9 @@ $route['DocumentStandarization/DocumentJobDescription'] 				= 'DocumentStandariz
 $route['DocumentStandarization/DocumentJobDescription/(:any)'] 			= 'DocumentStandarization/MainMenu/C_DocumentJobDescription/$1';
 $route['DocumentStandarization/DocumentJobDescription/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_DocumentJobDescription/$1/$2';
 
-$route['DocumentStandarization/JobDescriptionPekerja'] 					= 'DocumentStandarization/MainMenu/C_JobdescriptionEmployee';
-$route['DocumentStandarization/JobDescriptionPekerja/(:any)'] 			= 'DocumentStandarization/MainMenu/C_JobdescriptionEmployee/$1';
-$route['DocumentStandarization/JobDescriptionPekerja/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobdescriptionEmployee/$1/$2';
+$route['DocumentStandarization/JobDescriptionPekerja'] 					= 'DocumentStandarization/MainMenu/C_JobDescriptionPekerja';
+$route['DocumentStandarization/JobDescriptionPekerja/(:any)'] 			= 'DocumentStandarization/MainMenu/C_JobDescriptionPekerja/$1';
+$route['DocumentStandarization/JobDescriptionPekerja/(:any)/(:any)'] 	= 'DocumentStandarization/MainMenu/C_JobDescriptionPekerja/$1/$2';
 
 $route['DocumentStandarization/General'] 						= 'DocumentStandarization/MainMenu/C_General';
 $route['DocumentStandarization/General/(:any)'] 				= 'DocumentStandarization/MainMenu/C_General/$1';

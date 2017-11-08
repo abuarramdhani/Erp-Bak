@@ -113,10 +113,7 @@ class C_BusinessProcess extends CI_Controller
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
-
-
-
-
+		
 		if ($this->form_validation->run() === FALSE) {
 
 			$this->load->view('V_Header',$data);
