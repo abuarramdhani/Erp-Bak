@@ -241,4 +241,69 @@ class M_monitoring extends CI_Model {
     $query = $this->db->query($sql);
     return $query->result_array();
   }
+
+  public function updateAttr10($job=FALSE,$invSrc,$invDst,$itemCode,$locatorID,$terpakai,$trnscDate)
+  {
+    if ($job == FALSE) {
+      $sql = "UPDATE MTL_MATERIAL_TRANSACTIONS MMT
+              SET MMT.ATTRIBUTE10 = NVL(MMT.ATTRIBUTE10,0)+$terpakai
+              WHERE
+                MMT.TRANSACTION_ID = (
+                  SELECT
+                    MMT.TRANSACTION_ID
+                  FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
+                  WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
+                    AND MMT.ORGANIZATION_ID = MSIB.ORGANIZATION_ID
+                    AND MMT.ORGANIZATION_ID = 102
+                    AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                    AND MMT.SUBINVENTORY_CODE = '$invSrc'
+                    AND MMT.TRANSFER_SUBINVENTORY = '$invDst'
+                    AND MSIB.SEGMENT1 = '$itemCode'
+                    AND MMT.TRANSACTION_DATE BETWEEN
+                      (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                        (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                        ELSE
+                        (trunc(sysdate-1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                      END)
+                      AND
+                      (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                        (trunc(sysdate+1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                        ELSE
+                        (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                      END)
+                    AND MMT.TRANSACTION_DATE = TO_DATE('$trnscDate', 'DD-MONTH-YYYY HH24:MI:SS')
+              )";
+    }else{
+      $sql = "UPDATE MTL_MATERIAL_TRANSACTIONS MMT
+              SET MMT.ATTRIBUTE10 = NVL(MMT.ATTRIBUTE10,0)+$terpakai
+              WHERE
+                MMT.TRANSACTION_ID = (
+                  SELECT
+                    MMT.TRANSACTION_ID
+                  FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
+                  WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
+                    AND MMT.ORGANIZATION_ID = MSIB.ORGANIZATION_ID
+                    AND MMT.ORGANIZATION_ID = 102
+                    AND MSIB.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                    AND MMT.SUBINVENTORY_CODE = '$invDst'
+                    AND MMT.LOCATOR_ID = $locatorID
+                    AND MMT.TRANSACTION_TYPE_ID = 44
+                    AND MSIB.SEGMENT1 = '$itemCode'
+                    AND MMT.TRANSACTION_DATE BETWEEN
+                      (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                        (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                        ELSE
+                        (trunc(sysdate-1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                      END)
+                      AND
+                      (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
+                        (trunc(sysdate+1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
+                        ELSE
+                        (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
+                      END)
+                    AND MMT.TRANSACTION_DATE = TO_DATE('$trnscDate', 'DD-MONTH-YYYY HH24:MI:SS')
+              )";
+    }
+    $this->oracle->query($sql);
+  }
 }
