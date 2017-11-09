@@ -21,33 +21,69 @@ class M_storagemonitoring extends CI_Model {
     return $query->result_array();
   }
 
-  public function getPlanStorage($storage_name)
+  public function getPlanStorage($storage_name, $update=FALSE)
   {
-    $sql = "SELECT pdp.*,
-              (case when pdp.achieve_qty>=pdp.need_qty then 'OK' else 'NOT OK' end) status
-            from pp.pp_daily_plans pdp,
-              (select psg.storage_name, pid.*
-              from
-                pp.pp_storage psg left join pp.pp_item_data pid on psg.storage_id = pid.storage_id
-              where storage_name = '$storage_name') a
-            where
-              pdp.item_code = a.item_code
-              and (case when pdp.achieve_qty is null then 0 else pdp.achieve_qty end) < pdp.need_qty
-              AND pdp.due_time <=
-                (
-                  case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
-                    then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
-                    else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
-                  end
-                )
-            order by pdp.priority, pdp.due_time asc";
+    // if ($update==FALSE) {
+      $sql = "SELECT pdp.*,
+                (case when pdp.achieve_qty>=pdp.need_qty then 'OK' else 'NOT OK' end) status
+              from pp.pp_daily_plans pdp,
+                (select psg.storage_name, pid.*
+                from
+                  pp.pp_storage psg left join pp.pp_item_data pid on psg.storage_id = pid.storage_id
+                where storage_name = '$storage_name') a
+              where
+                pdp.item_code = a.item_code
+                and (case when pdp.achieve_qty is null then 0 else pdp.achieve_qty end) < pdp.need_qty
+                AND pdp.due_time <=
+                  (
+                    case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+                      then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                      else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                    end
+                  )
+              order by pdp.priority, pdp.due_time asc";
+    // }else{
+    //   $sql = "SELECT
+    //             pdp.*,
+    //             (case when pdp.achieve_qty>=pdp.need_qty then 'OK' else 'NOT OK' end) status
+    //           from
+    //             pp.pp_daily_plans pdp,
+    //             (
+    //               select
+    //                 pdps.item_code,
+    //                 min(pdps.due_time) due_time
+    //               from
+    //                 pp.pp_daily_plans pdps,
+    //                 (
+    //                   select psg.storage_name, pid.*
+    //                   from
+    //                     pp.pp_storage psg left join pp.pp_item_data pid on psg.storage_id = pid.storage_id
+    //                   where storage_name = '$storage_name') sa
+    //               where
+    //                 pdps.item_code = sa.item_code
+    //                 and (case when pdps.achieve_qty is null then 0 else pdps.achieve_qty end) < pdps.need_qty
+    //                 AND pdps.due_time <=
+    //                   (
+    //                     case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+    //                       then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+    //                       else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+    //                     end
+    //                   )
+    //               group by pdps.item_code
+    //             ) a
+    //           where
+    //             pdp.item_code = a.item_code
+    //             and pdp.due_time = a.due_time
+    //           order by pdp.due_time asc";
+    // }
+
     $query = $this->db->query($sql);
     return $query->result_array();
   }
 
   public function getDailyAchieve($storage_name)
   {
-    $sql = "select
+    $sql = "SELECT
               (case when a.to_inventory = null then a.completion else a.to_inventory end) gudang,
               coalesce(round(
                 cast((
