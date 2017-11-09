@@ -230,24 +230,22 @@ function getDailyPlan(sectionId) {
             },
             type: 'POST',
         }).done(function(data) {
-            console.log('update table plans');
             $('table.dailyPlan[data-secid="' + a + '"]').html(data);
         });
     }
 }
 
 function getDailyPlanStorage() {
-        id = $('input[name="storage_name"]').val();
-        $.ajax({
-            url: baseurl + 'ProductionPlanning/StorageMonitoring/getDailyPlanStg',
-            data: {
-                storage_name: id
-            },
-            type: 'POST',
-        }).done(function(data) {
-            $('table.dailyPlan').html(data);
-        });
-    }
+    id = $('input[name="storage_name"]').val();
+    $.ajax({
+        url: baseurl + 'ProductionPlanning/StorageMonitoring/getDailyPlanStg',
+        data: {
+            storage_name: id
+        },
+        type: 'POST',
+    }).done(function(data) {
+        $('table.dailyPlan').html(data);
+    });
 }
 
 function getAchieveAllFab() {
