@@ -1279,3 +1279,13 @@ $route['DokumenPekerja/DokumenCari']			=	'DokumenPekerja/C_DokumenCari';
 $route['DokumenPekerja/DokumenCari/(:any)']		= 	'DokumenPekerja/C_DokumenCari/$1';
 $route['DokumenPekerja/DokumenAll']				=	'DokumenPekerja/C_DokumenAll';
 //---end------------------------------ Document Controller Pekerja ------------------------------------
+
+
+
+//------------------------------------ LOG SERVER --------------------------------------------
+$route['LogServer']									= 'LogServer/C_LogServer/index';
+$route['MonitoringServer/Monitoring']				= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/index';
+$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/detail/$1';
+$route['MonitoringServer/InputMonitoring']			= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/index';
+$route['MonitoringServer/InputMonitoring/save']		= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/save';
+$route['MonitoringServer/InputMonitoring/upload']	= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/upload';
