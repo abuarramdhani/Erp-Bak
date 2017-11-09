@@ -298,17 +298,17 @@ class C_Monitoring extends CI_Controller {
                     <input type="hidden" name="checkpointEnd" data-secid="'.$section.'" value="'.$checkpoint.'">';
             }
         }else{
-            echo '<thead class="bg-primary" style="font-weight: bold; font-size: 16px;">
+            echo '<thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
                     <tr>
-                        <td>No</td>
-                        <td>Item</td>
-                        <td>Desc</td>
-                        <td>Priority</td>
-                        <td>Need Qty</td>
-                        <td>Due Time</td>
-                        <td>Achieve Qty</td>
-                        <td>Last Delivery</td>
-                        <td>Status</td>
+                        <td>NO</td>
+                        <td style="width: 15%;">ITEM</td>
+                        <td>DESC</td>
+                        <td>PRIORITY</td>
+                        <td>NEED QTY</td>
+                        <td style="width: 15%;">DUE TIME</td>
+                        <td>ACHIEVE QTY</td>
+                        <td>LAST DELIVERY</td>
+                        <td>STATUS</td>
                     </tr>
                 </thead>';
         }
