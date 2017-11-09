@@ -125,6 +125,12 @@ class M_dataplan extends CI_Model {
     if ($job==FALSE) {
       $sql = "  SELECT
                   (SUM(MMT.TRANSACTION_QUANTITY)*-1) ACHIEVE_QTY,
+                  (CASE WHEN TO_NUMBER(SUM(MMT.ATTRIBUTE10)) IS NULL THEN 0 ELSE TO_NUMBER(SUM(MMT.ATTRIBUTE10)) END) TERPAKAI,
+                  (
+                    TO_NUMBER(SUM(MMT.TRANSACTION_QUANTITY)*-1)
+                    -
+                    (CASE WHEN TO_NUMBER(SUM(MMT.ATTRIBUTE10)) IS NULL THEN 0 ELSE TO_NUMBER(SUM(MMT.ATTRIBUTE10)) END)
+                  ) ACHIEVE_READY,
                   TO_CHAR(MAX(MMT.TRANSACTION_DATE), 'DD-MON-YYYY HH24:MI:SS') LAST_DELIVERY
                 FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
                 WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
@@ -137,13 +143,13 @@ class M_dataplan extends CI_Model {
                   AND MMT.TRANSACTION_DATE BETWEEN
                     (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
                       (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
-                    ELSE
+                      ELSE
                       (trunc(sysdate-1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
                     END)
                     AND
                     (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
                       (trunc(sysdate+1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
-                    ELSE
+                      ELSE
                       (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
                     END)
                 group by msib.SEGMENT1
@@ -151,6 +157,12 @@ class M_dataplan extends CI_Model {
     }else{
       $sql = "  SELECT
                   SUM(MMT.TRANSACTION_QUANTITY) ACHIEVE_QTY,
+                  (CASE WHEN TO_NUMBER(SUM(MMT.ATTRIBUTE10)) IS NULL THEN 0 ELSE TO_NUMBER(SUM(MMT.ATTRIBUTE10)) END) TERPAKAI,
+                  (
+                    TO_NUMBER(SUM(MMT.TRANSACTION_QUANTITY))
+                    -
+                    (CASE WHEN TO_NUMBER(SUM(MMT.ATTRIBUTE10)) IS NULL THEN 0 ELSE TO_NUMBER(SUM(MMT.ATTRIBUTE10)) END)
+                  ) ACHIEVE_READY,
                   TO_CHAR(MAX(MMT.TRANSACTION_DATE), 'DD-MON-YYYY HH24:MI:SS') LAST_DELIVERY
                 FROM MTL_MATERIAL_TRANSACTIONS MMT, MTL_SYSTEM_ITEMS_B MSIB
                 WHERE MMT.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
@@ -164,13 +176,13 @@ class M_dataplan extends CI_Model {
                   AND MMT.TRANSACTION_DATE BETWEEN
                     (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
                       (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
-                    ELSE
+                      ELSE
                       (trunc(sysdate-1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
                     END)
                     AND
                     (CASE WHEN TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS') THEN
                       (trunc(sysdate+1 - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 5.9998/24)
-                    ELSE
+                      ELSE
                       (trunc(sysdate - 7/24) + trunc(to_char(sysdate - 7/24,'HH24')/12)/2 + 6/24)
                     END)
                 group by msib.SEGMENT1
@@ -195,6 +207,44 @@ class M_dataplan extends CI_Model {
     $this->db->order_by('pmp.plan_time, ps.section_name ASC');
 
     $query = $this->db->get();
+    return $query->result_array();
+  }
+
+  public function getDataPlanUpdate($section_id)
+  {
+    $sql = "SELECT
+                dp.*,
+                (case when dp.achieve_qty>=dp.need_qty then 'OK' else 'NOT OK' end) status
+              from pp.pp_daily_plans dp,
+                (select
+                  dp.item_code,
+                  min(dp.due_time) due_time
+                from pp.pp_daily_plans dp
+                where
+                  (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty
+                  AND dp.due_time <=
+                        (
+                          case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+                            then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                            else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                          END
+                        )
+                    AND dp.section_id = $section_id
+                group by dp.item_code) dps
+              where
+                dp.item_code = dps.item_code
+                and dp.due_time = dps.due_time
+                and (case when dp.achieve_qty is null then 0 else dp.achieve_qty end) < dp.need_qty
+                AND dp.due_time <=
+                      (
+                        case when to_char(current_timestamp, 'HH24:MI:SS') >= to_char(to_timestamp('05:59:59', 'HH24:MI:SS'), 'HH24:MI:SS')
+                          then to_timestamp((to_char(TIMESTAMP 'tomorrow', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                          else to_timestamp((to_char(TIMESTAMP 'today', 'DD-MM-YYYY') || ' 05:59:59'), 'DD-MM-YYYY HH24:MI:SS')
+                        END
+                      )
+              order by dp.due_time, status asc";
+
+    $query = $this->db->query($sql);
     return $query->result_array();
   }
 }
