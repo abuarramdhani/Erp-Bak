@@ -122,26 +122,70 @@ class C_Monitoring extends CI_Controller {
     {
         $user_id    = $this->session->userid;
         $section    = $this->input->post('sectionId');
-        $a = $this->M_dataplan->getDataPlan($id=false,$section);
+        $a          = $this->M_dataplan->getDataPlanUpdate($section);
         if (!empty($a)) {
             foreach ($a as $aval) {
                 $is = $this->M_itemplan->getItemData($section,$aval['item_code']);
+                
+                // ---- ngambil data transaction di oracle hari ini ----
                 if (!empty($is) && $is[0]['from_inventory'] == NULL) {
                     $getItemTransaction = $this->M_dataplan->getItemTransaction(1,$is[0]['from_inventory'],$is[0]['completion'],$aval['item_code'],$is[0]['locator_id']);
                 }elseif(!empty($is) && $is[0]['from_inventory'] !== NULL){
                     $getItemTransaction = $this->M_dataplan->getItemTransaction(FALSE,$is[0]['from_inventory'],$is[0]['to_inventory'],$aval['item_code'],$is[0]['locator_id']);
                 }
-                if (!empty($getItemTransaction)) {
+
+                if (!empty($getItemTransaction) && $getItemTransaction[0]['ACHIEVE_READY'] > 0) {
+
+                    // ---- checking achieve qty di postg apakah kosong atau tidak----
+                    if ($aval['achieve_qty'] !== null || $aval['achieve_qty'] !== 0) {
+                        $kurang = $aval['need_qty'] - $aval['achieve_qty'];
+
+                        // ---- checking achieve ready apakah lebih besar atau lebih kecil ----
+                        if ($getItemTransaction[0]['ACHIEVE_READY'] > $kurang) {
+                            $achieve_sisa   = $getItemTransaction[0]['ACHIEVE_READY'] - $kurang;
+                            $achieve_qty    = $aval['achieve_qty']+$kurang;
+                            $terpakai_baru  = $kurang;
+                        }else{
+                            $achieve_sisa   = 0;
+                            $achieve_qty    = $aval['achieve_qty']+$getItemTransaction[0]['ACHIEVE_READY'];
+                            $terpakai_baru  = $getItemTransaction[0]['ACHIEVE_READY'];
+                        }
+                    }else{
+
+                        // ---- checking achieve ready apakah lebih besar atau lebih kecil ----
+                        if ($getItemTransaction[0]['ACHIEVE_READY'] > $aval['need_qty']) {
+                            $achieve_sisa   = $getItemTransaction[0]['ACHIEVE_READY'] - $aval['need_qty'];
+                            $achieve_qty    = $aval['need_qty'];
+                            $terpakai_baru  = $aval['need_qty'];
+                        }else{
+                            $achieve_sisa   = 0;
+                            $achieve_qty    = $getItemTransaction[0]['ACHIEVE_READY'];
+                            $terpakai_baru  = $getItemTransaction[0]['ACHIEVE_READY'];
+                        }
+                    }
+
                     $dataUpd = array(
-                        'achieve_qty'       => $getItemTransaction[0]['ACHIEVE_QTY'],
+                        'achieve_qty'       => $achieve_qty,
                         'last_delivery'     => $getItemTransaction[0]['LAST_DELIVERY'],
                         'last_updated_by'   => $user_id,
                         'last_updated_date' => date("Y-m-d H:i:s")
                     );
-                    $this->M_dataplan->update($dataUpd, $aval['daily_plan_id']);
+                    
+                    // ---- Update achieve_QTY dan last deliv di postgre ----
+                    $this->M_dataplan->update('pp.pp_daily_plans', 'daily_plan_id', $dataUpd, $aval['daily_plan_id']);
+
+                    // ---- Update attributer10 di oracle utk tanda QTY yang sudah terpakai ----
+                    if ($is[0]['from_inventory'] == NULL) {
+                        $attrUpd = $this->M_monitoring->updateAttr10(1,$is[0]['from_inventory'],$is[0]['completion'],$aval['item_code'],$is[0]['locator_id'],$terpakai_baru,$getItemTransaction[0]['LAST_DELIVERY']);
+                    }elseif($is[0]['from_inventory'] !== NULL){
+                        $attrUpd = $this->M_monitoring->updateAttr10(FALSE,$is[0]['from_inventory'],$is[0]['to_inventory'],$aval['item_code'],$is[0]['locator_id'],$terpakai_baru,$getItemTransaction[0]['LAST_DELIVERY']);
+                    }
                 }
             }
-            $b = $this->M_dataplan->getDataPlan($id=false,$section);
+        }
+
+        $b = $this->M_dataplan->getDataPlan($id=false,$section);
+        if (!empty($b)) {
             $high   = array();
             $normal = array();
             $h = 0;
@@ -167,17 +211,12 @@ class C_Monitoring extends CI_Controller {
                         <td>STATUS</td>
                     </tr>
                 </thead>';
-            $no = 1;
+            $no         = 1;
             $checkpoint = 1;
             if (!empty($high)) {
-                echo '<tbody id="highPriority">';
+                echo '<tbody id="highPriority" style="font-weight: bold;">';
                 foreach ($high as $h){
-                    if ($h['achieve_qty'] >= $h['need_qty']) {
-                        $classStatus = "plan-done";
-                    }else{
-                        $classStatus = "plan-undone-high";
-                    }
-                    echo '<tr class="'.$classStatus.'">
+                    echo '<tr class="plan-undone-high">
                             <td>'.$no++.'</td>
                             <td>'.$h['item_code'].'</td>
                             <td>';
@@ -190,24 +229,32 @@ class C_Monitoring extends CI_Controller {
                             <td>'.$h['priority'].'</td>
                             <td>'.$h['need_qty'].'</td>
                             <td>'.$h['due_time'].'</td>
-                            <td>'.$h['achieve_qty'].'</td>
-                            <td>'.$h['last_delivery'].'</td>
+                            <td>';
+                                if ($h['achieve_qty'] == null) {
+                                    echo "0";
+                                }else{
+                                    echo $h['achieve_qty'];
+                                }
+                            echo '</td>
+                            <td>';
+                                if ($h['last_delivery'] == null) {
+                                    echo "-";
+                                }else{
+                                    echo $h['last_delivery'];
+                                }
+                            echo '</td>
                             <td>'.$h['status'].'</td>
                         </tr>';
                     $checkpoint++;
                 }
                 echo '</tbody>';
             }
+
             if (!empty($normal)) {
                 echo '<input type="hidden" name="checkpointBegin" data-secid="'.$section.'" value="'.$checkpoint.'">
-                <tbody id="normalPriority">';
+                <tbody id="normalPriority" style="font-weight: bold;">';
                 foreach ($normal as $n ){
-                    if ($n['achieve_qty'] >= $n['need_qty']) {
-                        $classStatus = "plan-done";
-                    }else{
-                        $classStatus = "plan-undone-normal";
-                    }
-                    echo '<tr class="'.$classStatus.'"';
+                    echo '<tr class="plan-undone-normal"';
                         if ($checkpoint > 6) {
                             echo " data-showid='".$checkpoint."'";
                             echo " data-showstat='0'";
@@ -230,8 +277,20 @@ class C_Monitoring extends CI_Controller {
                         <td>'.$n['priority'].'</td>
                         <td>'.$n['need_qty'].'</td>
                         <td>'.$n['due_time'].'</td>
-                        <td>'.$n['achieve_qty'].'</td>
-                        <td>'.$n['last_delivery'].'</td>
+                        <td>';
+                            if ($n['achieve_qty'] == null) {
+                                echo "0";
+                            }else{
+                                echo $n['achieve_qty'];
+                            }
+                        echo '</td>
+                        <td>';
+                            if ($n['last_delivery'] == null) {
+                                echo "-";
+                            }else{
+                                echo $n['last_delivery'];
+                            }
+                        echo '</td>
                         <td>'.$n['status'].'</td>
                     </tr>';
                 }
