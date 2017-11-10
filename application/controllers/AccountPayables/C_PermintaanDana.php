@@ -155,7 +155,7 @@ class C_PermintaanDana extends CI_Controller {
 					'CREATION_DATE' => date("d-M-Y H:i:s", strtotime($this->input->post('hdnDate'))),
 					'CREATED_BY' 	=> $this->input->post('hdnUser')
 				);
-				// $this->M_Permintaandana->setDemandLines($data_demand_l[$i]);
+				$this->M_Permintaandana->setDemandLines($data_demand_l[$i]);
 			}
 
 			$data['DemandHeader'] = $data_demand_h;
