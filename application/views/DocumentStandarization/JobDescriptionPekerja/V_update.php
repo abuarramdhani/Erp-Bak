@@ -30,17 +30,65 @@
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-											<div class="form-group">
-                                                <label for="txtJdIdHeader" class="control-label col-lg-4">Jd Id</label>
+                                            <div class="form-group">
+                                                <label for="cmbDepartemen-DocumentJobDesc" class="control-label col-lg-4">Departemen</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Jd Id" name="txtJdIdHeader" id="txtJdIdHeader" class="form-control" value="<?php echo $headerRow['jd_id']; ?>"/>
+                                                    <select id="cmbDepartemen-DocumentJobDesc" name="cmbDepartemen" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                        <?php
+                                                            foreach ($ambilDepartemen as $Departemen) 
+                                                            {
+                                                                echo '  <option value="'.$Departemen['kode_departemen'].'">
+                                                                            '.$Departemen['nama_departemen'].'
+                                                                        </option>';
+                                                            }
+                                                        ?>
+                                                    </select>   
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="txtEmployeeIdHeader" class="control-label col-lg-4">Employee Id</label>
+                                            <div class="form-group">
+                                                <label for="cmbBidang-DocumentJobDesc" class="control-label col-lg-4">Bidang</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Employee Id" name="txtEmployeeIdHeader" id="txtEmployeeIdHeader" class="form-control" value="<?php echo $headerRow['employee_id']; ?>"/>
+                                                    <select id="cmbBidang-DocumentJobDesc" name="cmbBidang" class="select2" data-placeholder="Pilih" style="width: 100%">
+                                                        <option value=""></option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbUnit-DocumentJobDesc" class="control-label col-lg-4">Unit</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbUnit-DocumentJobDesc" name="cmbUnit" class="select2" data-placeholder="Pilih" style="width: 100%">
+                                                        <option value=""></option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbSeksi-DocumentJobDesc" class="control-label col-lg-4">Seksi</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbSeksi-DocumentJobDesc" name="cmbSeksi" class="select2" data-placeholder="Pilih" style="width: 100%">
+                                                        <option value=""></option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbPekerja-JobDesc" class="control-label col-lg-4">Pekerja</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbPekerja-JobDesc" name="cmbPekerja-JobDesc" class="select2" data-placeholder="Pilih" style="width: 100%" required="">
+                                                        <option value=""></option>
+                                                    </select>   
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbJD" class="control-label col-lg-4">Job Description</label>
+                                                <div class="col-lg-4">
+                                                    <select name="cmbJD" id="cmbJD" class="select2" required="" data-placeholder="Pilih" style="width: 100%">
+                                                        <option value=""></option>
+                                                    </select>
                                                 </div>
                                             </div>
 
