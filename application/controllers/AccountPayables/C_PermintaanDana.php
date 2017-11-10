@@ -140,16 +140,16 @@ class C_PermintaanDana extends CI_Controller {
 				'CREATION_DATE'	=> date("d-M-Y H:i:s", strtotime($this->input->post('hdnDate'))),
 				'CREATED_BY'	=> $this->input->post('hdnUser')
 			);
-			// $this->M_Permintaandana->setDemand($data_demand_h);
+			$this->M_Permintaandana->setDemand($data_demand_h);
 			
-		    // $insert_id = $this->M_Permintaandana->getLastInserted('KHS_DEMAND_FOR_FUND_HEADERS', 'HEADER_ID');
+		    $insert_id = $this->M_Permintaandana->getLastInserted('KHS_DEMAND_FOR_FUND_HEADERS', 'HEADER_ID');
 
 			$desc = $this->input->post('txtExpenseDescription');
 			$amount = $this->input->post('txtExpenseAmount');
 
 			foreach($amount as $i => $loop) {
 				$data_demand_l[$i] = array(
-					'HEADER_ID' 	=> 1,
+					'HEADER_ID' 	=> $insert_id,
 					'DESCRIPTION' 	=> $desc[$i],
 					'AMOUNT' 		=> $amount[$i],
 					'CREATION_DATE' => date("d-M-Y H:i:s", strtotime($this->input->post('hdnDate'))),
