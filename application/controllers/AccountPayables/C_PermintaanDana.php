@@ -140,29 +140,30 @@ class C_PermintaanDana extends CI_Controller {
 				'CREATION_DATE'	=> date("d-M-Y H:i:s", strtotime($this->input->post('hdnDate'))),
 				'CREATED_BY'	=> $this->input->post('hdnUser')
 			);
-			$this->M_Permintaandana->setDemand($data_demand_h);
+			// $this->M_Permintaandana->setDemand($data_demand_h);
 			
-		    $insert_id = $this->M_Permintaandana->getLastInserted('KHS_DEMAND_FOR_FUND_HEADERS', 'HEADER_ID');
-
-		    echo $insert_id;
+		    // $insert_id = $this->M_Permintaandana->getLastInserted('KHS_DEMAND_FOR_FUND_HEADERS', 'HEADER_ID');
 
 			$desc = $this->input->post('txtExpenseDescription');
 			$amount = $this->input->post('txtExpenseAmount');
 
 			foreach($amount as $i => $loop) {
 				$data_demand_l[$i] = array(
-					'HEADER_ID' 	=> $insert_id,
+					'HEADER_ID' 	=> 1,
 					'DESCRIPTION' 	=> $desc[$i],
 					'AMOUNT' 		=> $amount[$i],
 					'CREATION_DATE' => date("d-M-Y H:i:s", strtotime($this->input->post('hdnDate'))),
 					'CREATED_BY' 	=> $this->input->post('hdnUser')
 				);
-				$this->M_Permintaandana->setDemandLines($data_demand_l[$i]);
+				// $this->M_Permintaandana->setDemandLines($data_demand_l[$i]);
 			}
 
 			$data['DemandHeader'] = $data_demand_h;
 			$data['DemandLine'] = $data_demand_l;
 			$data['BalanceDate'] = date("d M Y", strtotime($this->input->post('hdnBalanceDate', true)));
+			$data['type'] = $this->input->post('txtLackAmountHidden', true);
+			$data['LackAmount'] = $this->input->post('txtLackAmount', true);
+			$data['TotalDemand'] = $this->input->post('txtTotalDemand', true);
 
 			$stylesheet = file_get_contents(base_url('assets/css/custom.css'));
 			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
