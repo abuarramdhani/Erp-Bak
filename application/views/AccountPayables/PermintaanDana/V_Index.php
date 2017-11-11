@@ -97,12 +97,12 @@
 												<div class="table-responsive">
 													<table width="100%">
 														<tr>
-															<td class="col-lg-7">PLAFON HARIAN OPERASIONAL</td>
+															<td class="col-lg-7">PLAFON OPERASIONAL (2 HARI)</td>
 															<td class="col-lg-5">
 																<div class="col-lg-6">
 																	<div class="input-group">
 																		<span class="input-group-addon" id="basic-addon1">Rp</span>
-																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtCashLimit" id="txtCashLimit" value="50000000">
+																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtCashLimit" id="txtCashLimit" value="100000000">
 																	</div>
 																</div>
 															</td>
