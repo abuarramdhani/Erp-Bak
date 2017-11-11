@@ -101,6 +101,12 @@
                                                     Section
                                                 </td>
                                                 <td>
+                                                    Need Qty
+                                                </td>
+                                                <td>
+                                                    Achieve Qty
+                                                </td>
+                                                <td>
                                                     Status
                                                 </td>
                                                 <td>
@@ -134,6 +140,18 @@
                                                 </td>
                                                 <td>
                                                     <?php echo $pl['section_name']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $pl['need_qty']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    if ($pl['achieve_qty'] == null) {
+                                                        echo "0";
+                                                    }else{
+                                                        echo $pl['achieve_qty'];
+                                                    }
+                                                    ?>
                                                 </td>
                                                 <td>
                                                     <?php echo $pl['status']; ?>
