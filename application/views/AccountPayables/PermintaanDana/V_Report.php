@@ -31,7 +31,7 @@
 				<div class="col-lg-12">
 					<table style="font-size: 11px;" width="100%">
 						<tr>
-							<td width="50%">Plafon Harian Operasional</td>
+							<td width="50%">Plafon Operasional (2 Hari)</td>
 							<td width="3%">Rp </td>
 							<td width="15%" class="text-right"><?= number_format($DemandHeader['CASH_LIMIT'],0,",",".") ?></td>
 							<td width="5%"></td>
