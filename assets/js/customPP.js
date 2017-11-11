@@ -46,7 +46,10 @@ window.onload = function() {
         minViewMode: "months"
     });
     $('#tbdataplan').DataTable({
-        dom: 'rtip'
+        dom: 'rtBp',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     });
     $('#tbdatagroupsection').DataTable();
     $('#tbitemData').DataTable();
@@ -348,7 +351,10 @@ function searchDailyPlans(th){
                                                             +'</script>');
             $('div#tableDailyArea').html(data);
             $('#tbdataplan').DataTable({
-                dom: 'rtip'
+                dom: 'rtBp',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
         }
     });
