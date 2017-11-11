@@ -1093,7 +1093,8 @@ $route['WasteManagement/LimbahTransaksi'] = 'WasteManagement/MainMenu/C_LimbahTr
 $route['WasteManagement/LimbahTransaksi/(:any)'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/$1';
 $route['WasteManagement/LimbahTransaksi/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/$1/$2';
 $route['WasteManagement/LimbahTransaksi/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/$1/$2/$3';
-$route['WasteManagement/LimbahTransaksi/Report'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/Report';
+$route['WasteManagement/LimbahTransaksi/ReportHarian'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/ReportHarian';
+$route['WasteManagement/LimbahTransaksi/ReportBulanan'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/ReportBulanan';
 $route['WasteManagement/LimbahTransaksi/Record'] = 'WasteManagement/MainMenu/C_LimbahTransaksi/Record';
 
 //----------------------------WasteManagement-TransaksiLimbahKeluar---------------------------------//

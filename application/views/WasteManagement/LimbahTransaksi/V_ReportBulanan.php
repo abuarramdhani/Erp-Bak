@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/LimbahTransaksi/Report');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/LimbahTransaksi/ReportBulanan');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -23,7 +23,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <form action="<?php echo site_url('WasteManagement/LimbahTransaksi/FilterDataReport/');?>" method="post" enctype="multipart/form-data">
+                                <form action="<?php echo site_url('WasteManagement/LimbahTransaksi/FilterDataReportBulanan/');?>" method="post" enctype="multipart/form-data">
                                         <div class="col-md-2">
                                         <div class="input-group">
                                         <select id="jenis_limbah" name="jenis_limbah" class="select select2" data-placeholder="Pilih Jenis Limbah " style="width: 100%">
@@ -56,7 +56,7 @@
                                                     $tanggalawallink    =   str_replace('-', '.', $tanggalawalformatindo);
                                                     $tanggalakhirlink   =   str_replace('-', '.', $tanggalakhirformatindo);
                                                     ?>
-                                                    <form method="POST" action="<?php echo site_url('WasteManagement/LimbahTransaksi/cetakExcel/'.$tanggalawallink.'/'.$tanggalakhirlink) ?>";">
+                                                    <form method="POST" action="<?php echo site_url('WasteManagement/LimbahTransaksi/cetakExcelBulanan/'.$tanggalawallink.'/'.$tanggalakhirlink) ?>";">
                                                     <input type="hidden" name="excelTglAwal" id="excelTglAwal" value="<?php echo $tanggalawal; ?>">
                                                     <input type="hidden" name="excelTglAkhir" id="excelTglAkhir" value="<?php echo $tanggalakhir; ?>">
                                                     <input type="hidden" name="exceljenislimbah" id="exceljenislimbah" value="<?php echo $jenislimbah; ?>">
