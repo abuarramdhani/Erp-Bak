@@ -41,8 +41,8 @@ class C_Limbah extends CI_Controller
 
 
 		$data['Title'] = 'Koreksi Limbah';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Koreksi';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -67,8 +67,8 @@ class C_Limbah extends CI_Controller
 		$data['jenis_limbah'] = $this->M_limbah->getJenisLimbah();
 
 		$data['Title'] = 'Koreksi Limbah';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Koreksi';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -164,8 +164,8 @@ class C_Limbah extends CI_Controller
 		$data['jenis_limbah'] = $this->M_limbah->getJenisLimbah();
 
 		$data['Title'] = 'Koreksi Limbah';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Koreksi';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -276,8 +276,8 @@ class C_Limbah extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Koreksi Limbah';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Koreksi';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -340,8 +340,8 @@ class C_Limbah extends CI_Controller
 
 
 		$data['Title'] = 'Report Koreksi Limbah';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Report Limbah';
+		$data['SubMenuOne'] = 'Report Limbah Koreksi';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -364,8 +364,8 @@ class C_Limbah extends CI_Controller
 
 
 		$data['Title'] = 'Record Koreksi Limbah';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Record Limbah';
+		$data['SubMenuOne'] = 'Record Limbah Koreksi';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

@@ -135,6 +135,26 @@ class M_limbahtransaksi extends CI_Model
         $sqlReject     =   $this->db->query($queryReject);
     }
 
+    public function TotalLimbahBulanan()
+    {
+        $sqlTotalLimbahBulanan = "select liman.limbah_perlakuan as perlakuanlimbah, 
+                                    linis.jenis_limbah as jenis,
+                                    dmsi.nama_seksi as seksi,
+                                    date_part('month', limsi.tanggal_transaksi) as bulan, 
+                                    sum(limsi.jumlah) as jumlah
+                                    FROM ga.ga_limbah_transaksi AS limsi 
+                                                            LEFT JOIN dm.dm_seksi AS dmsi
+                                                            ON limsi.sumber_limbah=dmsi.seksi_id
+                                                            LEFT JOIN ga.ga_limbah_jenis AS linis
+                                                            ON limsi.jenis_limbah=linis.id_jenis_limbah
+                                                            LEFT JOIN ga.ga_limbah_perlakuan AS liman
+                                                            ON limsi.perlakuan=liman.id_perlakuan
+                                                        WHERE limsi.konfirmasi='1'
+                                    group by bulan, perlakuanlimbah, jenis, seksi";
+        $query = $this->db->query($sqlTotalLimbahBulanan);
+        return $query->result_array();
+    }
+
 }
 
 /* End of file M_limbahtransaksi.php */

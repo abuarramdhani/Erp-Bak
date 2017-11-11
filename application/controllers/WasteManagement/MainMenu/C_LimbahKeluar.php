@@ -38,8 +38,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -63,8 +63,8 @@ class C_LimbahKeluar extends CI_Controller
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
 
 		$data['Title'] = 'Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -108,8 +108,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -161,8 +161,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Limbah';
+		$data['SubMenuOne'] = 'Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -224,8 +224,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Record Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Record Limbah';
+		$data['SubMenuOne'] = 'Record Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -246,8 +246,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Record Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Record Limbah';
+		$data['SubMenuOne'] = 'Record Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -289,8 +289,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Report Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Report Limbah';
+		$data['SubMenuOne'] = 'Report Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -311,8 +311,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Report Limbah Keluar';
-		$data['Menu'] = 'General Affair';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Report Limbah';
+		$data['SubMenuOne'] = 'Report Limbah Keluar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
