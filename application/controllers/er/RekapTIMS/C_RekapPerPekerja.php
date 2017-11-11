@@ -118,8 +118,8 @@ class C_RekapPerPekerja extends CI_Controller {
 			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
-			$begin = new DateTime(date('Y-m-d 00:00:00', strtotime($periode1)));
-			$end = new DateTime(date('Y-m-d 23:59:59', strtotime($periode2)));
+			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
+			$end = new DateTime(date('Y-m-t 23:59:59', strtotime($periode2)));
 			$interval = new DateInterval('P1M');
 
 			$start_year_month = date('Y-m', strtotime($periode1));
@@ -135,21 +135,25 @@ class C_RekapPerPekerja extends CI_Controller {
 				if ($perMonth == $start_year_month) {
 					$firstdate = date('Y-m-'.$start_date.' 00:00:00', strtotime($perMonth));
 				} else {
-					$firstdate = date('Y-m-d 00:00:00', strtotime($perMonth));
+					$firstdate = date('Y-m-01 00:00:00', strtotime($perMonth));
 				}
 
 				if ($perMonth == $end_year_month) {
 					$lastdate = date('Y-m-'.$end_date.' 23:59:59', strtotime($perMonth));
 				} else {
-					$lastdate = date('Y-m-d 23:59:59', strtotime($perMonth));
+					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
 
 				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName, $status);
+				// $data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($periode1,$periode2,$nomer_induk,$monthName, $status);
+
 			}
+
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 			$data['periode1']	= $period1;
 			$data['periode2']	= $period2;
+
 			$data['status']	= $status;
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
 			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);
