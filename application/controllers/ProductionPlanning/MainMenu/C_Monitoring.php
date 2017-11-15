@@ -110,7 +110,16 @@ class C_Monitoring extends CI_Controller {
                     $checkout = 1;
                 }
                 elseif ($checkout == 0) {
-                    $valPlan[$i] = $valPlanDefault;
+                    if ($i !== 1) {
+                        $valPlanCumul = array(
+                            'label' => $i,
+                            'prosentase_plan' => $valPlan[$i-1]['prosentase_plan'],
+                            'prosentase_achieve' => $valPlan[$i-1]['prosentase_achieve']
+                        );
+                        $valPlan[$i] = $valPlanCumul;
+                    }else{
+                        $valPlan[$i] = $valPlanDefault;
+                    }
                 }
             }
         }
@@ -200,12 +209,12 @@ class C_Monitoring extends CI_Controller {
             }
             echo '<thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
                     <tr>
-                        <td>NO</td>
+                        <td style="width: 5%;">NO</td>
                         <td style="width: 15%;">ITEM</td>
-                        <td>DESC</td>
-                        <td>PRIORITY</td>
+                        <td style="width: 25%;">DESC</td>
+                        <td>PRIOR</td>
                         <td>NEED QTY</td>
-                        <td style="width: 15%;">DUE TIME</td>
+                        <td>DUE TIME</td>
                         <td>ACHIEVE QTY</td>
                         <td>LAST DELIVERY</td>
                         <td>STATUS</td>
@@ -220,15 +229,21 @@ class C_Monitoring extends CI_Controller {
                             <td>'.$no++.'</td>
                             <td>'.$h['item_code'].'</td>
                             <td>';
-                                if (strlen($h['item_description']) > 15) {
-                                    echo substr($h['item_description'],0,15).' ...';
+                                if (strlen($h['item_description']) > 25) {
+                                    echo substr($h['item_description'],0,25).' ...';
                                 }else{
                                     echo $h['item_description'];
                                 }
                             echo '</td>
-                            <td>'.$h['priority'].'</td>
+                            <td>';
+                                if ($h['priority'] == 'NORMAL') {
+                                    echo "N";
+                                }else{
+                                    echo $h['priority'];
+                                }
+                            echo '</td>
                             <td>'.$h['need_qty'].'</td>
-                            <td>'.$h['due_time'].'</td>
+                            <td>'.date('d/m H:i', strtotime($h['due_time'])).'</td>
                             <td>';
                                 if ($h['achieve_qty'] == null) {
                                     echo "0";
@@ -268,15 +283,21 @@ class C_Monitoring extends CI_Controller {
                         <td>'.$no++.'</td>
                         <td>'.$n['item_code'].'</td>
                         <td>';
-                            if (strlen($n['item_description']) > 15) {
-                                echo substr($n['item_description'],0,15).' ...';
+                            if (strlen($n['item_description']) > 25) {
+                                echo substr($n['item_description'],0,25).' ...';
                             }else{
                                 echo $n['item_description'];
                             }
                         echo '</td>
-                        <td>'.$n['priority'].'</td>
+                        <td>';
+                            if ($n['priority'] == 'NORMAL') {
+                                echo "N";
+                            }else{
+                                echo $n['priority'];
+                            }
+                        echo '</td>
                         <td>'.$n['need_qty'].'</td>
-                        <td>'.$n['due_time'].'</td>
+                        <td>'.date('d/m H:i', strtotime($n['due_time'])).'</td>
                         <td>';
                             if ($n['achieve_qty'] == null) {
                                 echo "0";
@@ -300,12 +321,12 @@ class C_Monitoring extends CI_Controller {
         }else{
             echo '<thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
                     <tr>
-                        <td>NO</td>
+                        <td style="width: 5%;">NO</td>
                         <td style="width: 15%;">ITEM</td>
-                        <td>DESC</td>
-                        <td>PRIORITY</td>
+                        <td style="width: 25%;">DESC</td>
+                        <td>PRIOR</td>
                         <td>NEED QTY</td>
-                        <td style="width: 15%;">DUE TIME</td>
+                        <td>DUE TIME</td>
                         <td>ACHIEVE QTY</td>
                         <td>LAST DELIVERY</td>
                         <td>STATUS</td>
