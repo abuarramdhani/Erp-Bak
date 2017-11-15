@@ -61,6 +61,8 @@ class C_LimbahKeluar extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
+		$data['perlakuan']= $this->M_limbahkeluar->getPerlakuan();
+		$data['satuan'] = $this->M_limbahkeluar->getSatuan();
 
 		$data['Title'] = 'Limbah Keluar';
 		$data['Menu'] = 'Master Limbah';
@@ -85,15 +87,17 @@ class C_LimbahKeluar extends CI_Controller
 		} else {
 			$data = array(
 				'tanggal_keluar' => date("Y-m-d", strtotime($this->input->post('txtTanggalKeluarHeader'))),
-				'jumlah_keluar' => $this->input->post('txtJumlahKeluarHeader'),
-				'tujuan_limbah' => $this->input->post('txtTujuanLimbahHeader'),
-				'nomor_dok' => $this->input->post('txtNomorDokHeader'),
-				'sisa_limbah' => $this->input->post('txtSisaLimbahHeader'),
+				'jumlah_keluar' => $this->input->post('txtJumlahKeluarHeader', TRUE),
+				'tujuan_limbah' => $this->input->post('txtTujuanLimbahHeader', TRUE),
+				'nomor_dok' => $this->input->post('txtNomorDokHeader', TRUE),
+				'sisa_limbah' => $this->input->post('txtSisaLimbahHeader', TRUE),
 				'start_date' => date('Y-m-d h:i:s'),
 				'end_date' => date('Y-m-d h:i:s'),
 				'creation_date' => date('Y-m-d h:i:s'),
 				'created_by' => $this->session->userid,
-				'jenis_limbah' => $this->input->post('cmbJenisLimbahHeader'),
+				'jenis_limbah' => $this->input->post('cmbJenisLimbahHeader', TRUE),
+				'perlakuan' => $this->input->post('cmbPerlakuanHeader',TRUE),
+				'satuan' => $this->input->post('cmbSatuanHeader', TRUE),
     		);
 			$this->M_limbahkeluar->setLimbahKeluar($data);
 			$header_id = $this->db->insert_id();
@@ -124,6 +128,8 @@ class C_LimbahKeluar extends CI_Controller
 		/* HEADER DATA */
 		$data['LimbahKeluar'] = $this->M_limbahkeluar->getLimbahKeluar($plaintext_string);
 		$data['jenis_limbah'] = $this->M_limbahkeluar->getJenisLimbah();
+		$data['perlakuan']= $this->M_limbahkeluar->getPerlakuan();
+		$data['satuan'] = $this->M_limbahkeluar->getSatuan();
 
 		/* LINES DATA */
 
@@ -148,6 +154,8 @@ class C_LimbahKeluar extends CI_Controller
 				'last_updated' => date('Y-m-d h:i:s'),
 				'last_updated_by' => $this->session->userid,
 				'jenis_limbah' => $this->input->post('cmbJenisLimbahHeader',TRUE),
+				'perlakuan' => $this->input->post('cmbPerlakuanHeader',TRUE),
+				'satuan' => $this->input->post('cmbSatuanHeader', TRUE),
     			);
 			$this->M_limbahkeluar->updateLimbahKeluar($data, $plaintext_string);
 
@@ -288,21 +296,22 @@ class C_LimbahKeluar extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Report Limbah Keluar';
+		$data['Title'] = 'Logbook Harian';
 		$data['Menu'] = 'Report Limbah';
-		$data['SubMenuOne'] = 'Report Limbah Keluar';
+		$data['SubMenuOne'] = 'Logbook Harian';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['data'] = $this->M_limbahkeluar->getLimbahKeluar();
+		$data['limbah_keluar'] = $this->M_limbahkeluar->getLimbahKeluar();
+		$data['limbah_masuk'] = $this->M_limbahkeluar->getLimbahTransaksi();
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagement/LimbahKeluar/V_Report', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_Logbook', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -310,9 +319,9 @@ class C_LimbahKeluar extends CI_Controller
 	{	
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Report Limbah Keluar';
+		$data['Title'] = 'Logbook Harian Limbah B3';
 		$data['Menu'] = 'Report Limbah';
-		$data['SubMenuOne'] = 'Report Limbah Keluar';
+		$data['SubMenuOne'] = 'Logbook Harian';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -342,11 +351,12 @@ class C_LimbahKeluar extends CI_Controller
 		$data['tanggalakhirformatindo']	= date('d-m-Y',strtotime($tanggalakhir));
 
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
-		$data['filter_data'] = $this->M_limbahkeluar->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
+		$data['filterMasuk'] = $this->M_limbahkeluar->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenislimbah); 
+		$data['filterKeluar'] = $this->M_limbahkeluar->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenislimbah); 
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagement/LimbahKeluar/V_Report', $data);
+		$this->load->view('WasteManagement/LimbahKeluar/V_Logbook', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -365,10 +375,11 @@ class C_LimbahKeluar extends CI_Controller
 			if($tanggalakhir == '') $tanggalakhir = '';
 			if($jenisLimbah == null) $jenisLimbah == '';
 
-			$data['tanggalawal'] = $tanggalawal; 
-			$data['tanggalakhir'] = $tanggalakhir; 
+			$data['tanggalawal'] = date('d F Y', strtotime($tanggalawal)); 
+			$data['tanggalakhir'] = date('d F Y', strtotime($tanggalakhir)); 
 
-            $data['filter_data'] = $this->M_limbahkeluar->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
+            $data['filterMasuk'] = $this->M_limbahkeluar->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenisLimbah); 
+			$data['filterKeluar'] = $this->M_limbahkeluar->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenisLimbah);
            
             $this->load->view('WasteManagement/LimbahKeluar/V_Excel', $data, true);
     } 

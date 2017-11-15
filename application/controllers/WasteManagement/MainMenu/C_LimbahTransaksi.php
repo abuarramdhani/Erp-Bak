@@ -46,7 +46,6 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
 		$data['data'] = $this->M_limbahtransaksi->getLimbahTransaksi();
 
 		$this->load->view('V_Header',$data);
@@ -63,6 +62,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
 		$data['getSeksi']= $this->M_limbahtransaksi->getSeksi();
 		$data['perlakuan']= $this->M_limbahtransaksi->getPerlakuan();
+		$data['satuan'] = $this->M_limbahtransaksi->getSatuan();
 
 		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'Master Limbah';
@@ -114,6 +114,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
 		$data['getSeksi']= $this->M_limbahtransaksi->getSeksi();
 		$data['perlakuan']= $this->M_limbahtransaksi->getPerlakuan();
+		$data['satuan'] = $this->M_limbahtransaksi->getSatuan();
 
 		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'Master Limbah';
@@ -225,95 +226,28 @@ class C_LimbahTransaksi extends CI_Controller
 		redirect(site_url('WasteManagement/LimbahTransaksi'));
 	}
 
-	public function ReportHarian()
-	{
-		$user = $this->session->username;
-
-		$user_id = $this->session->userid;
-
-		$data['Title'] = 'Report Limbah Masuk';
-		$data['Menu'] = 'Report Limbah';
-		$data['SubMenuOne'] = 'Report Limbah Masuk';
-		$data['SubMenuTwo'] = 'Report Limbah Masuk Harian'; 
-
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
-		$data['data'] = $this->M_limbahtransaksi->getLimbahTransaksi();
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagement/LimbahTransaksi/V_ReportHarian', $data);
-		$this->load->view('V_Footer',$data);
-	}
-
 	public function ReportBulanan()
 	{
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Report Limbah Masuk';
+		$data['Title'] = 'Neraca Limbah B3';
 		$data['Menu'] = 'Report Limbah';
-		$data['SubMenuOne'] = 'Report Limbah Masuk';
-		$data['SubMenuTwo'] = 'Report Limbah Masuk Bulanan';
+		$data['SubMenuOne'] = 'Neraca';
+		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
-		$data['data'] = $this->M_limbahtransaksi->getLimbahTransaksi();
+		$data['LimbahMasuk'] = $this->M_limbahtransaksi->getLimbahTransaksi();
+		$data['LimbahKeluar'] = $this->M_limbahtransaksi->getLimbahKeluar();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagement/LimbahTransaksi/V_ReportBulanan', $data);
-		$this->load->view('V_Footer',$data);
-	}
-
-	public function FilterDataReportHarian()
-	{	
-		$user_id = $this->session->userid;
-
-		$data['Title'] = 'Report Limbah Masuk';
-		$data['Menu'] = 'Report Limbah';
-		$data['SubMenuOne'] = 'Report Limbah Masuk';
-		$data['SubMenuTwo'] = 'Report Limbah Masuk Harian';
-
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$jenislimbah = $this->input->post('jenis_limbah',true);
-
-		$periode = $this->input->post('periode', true);
-		if($periode == '') {
-			$tanggalawal = '';
-			$tanggalakhir = '';
-		} else {
-			$periode = explode('-', $periode);
-
-			$buattanggalawal 	= str_replace('/', '-', $periode[0]);
-			$buattanggalakhir	= str_replace('/', '-', $periode[1]);
-			$tanggalawal 		= date('Y-m-d', strtotime($buattanggalawal));
-			$tanggalakhir 		= date('Y-m-d', strtotime($buattanggalakhir));
-		}
-		
-		$data['tanggalawal'] = $tanggalawal;
-		$data['tanggalakhir']= $tanggalakhir;
-		$data['jenislimbah'] = $jenislimbah;
-
-		$data['tanggalawalformatindo'] 	= date('d-m-Y',strtotime($tanggalawal));
-		$data['tanggalakhirformatindo']	= date('d-m-Y',strtotime($tanggalakhir));
-
-		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
-		$data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagement/LimbahTransaksi/V_ReportHarian', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_Neraca', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -353,45 +287,14 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['tanggalakhirformatindo']	= date('d-m-Y',strtotime($tanggalakhir));
 
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
-		$data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
+		$data['filterMasuk'] = $this->M_limbahtransaksi->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenislimbah);
+		$data['filterKeluar'] = $this->M_limbahtransaksi->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenislimbah);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagement/LimbahTransaksi/V_ReportBulanan', $data);
+		$this->load->view('WasteManagement/LimbahTransaksi/V_Neraca', $data);
 		$this->load->view('V_Footer',$data);
 	}
-
-	public function cetakExcelHarian($tanggalawallink,$tanggalakhirlink)
-    {
-            $this->load->library("Excel");
-
-            $tanggalawalx = str_replace('.', '-', $tanggalawallink);
-            $tanggalakhirx = str_replace('.', '-', $tanggalakhirlink);
-
-            $tanggalawal = $this->input->post('excelTglAwal');
-            $tanggalakhir = $this->input->post('excelTglAkhir');
-            $jenisLimbah = $this->input->post('exceljenislimbah'); 
-
-			if($tanggalawal == '') $tanggalawal = '';
-			if($tanggalakhir == '') $tanggalakhir = '';
-			if($jenisLimbah == null) $jenisLimbah == ''; 
-
-			$data['tanggalawal'] = $tanggalawal; 
-			$data['tanggalakhir'] = $tanggalakhir; 
-
-			$datetime1 = new DateTime($data['tanggalawal']);
-			$datetime2 = new DateTime($data['tanggalakhir']);
-			$interval = $datetime1->diff($datetime2);
-			$data['jumlahHari'] = (int)$interval->format('%a');
-
-			$data['tanggalawalformatindo'] 	= date('d-M-Y',strtotime($tanggalawal));
-			$data['tanggalakhirformatindo']	= date('d-M-Y',strtotime($tanggalakhir));
-
-			$data['perlakuan'] = $this->M_limbahtransaksi->getPerlakuan();
-            $data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
-            
-            $this->load->view('WasteManagement/LimbahTransaksi/V_ExcelHarian', $data, true);
-    }
 
     public function cetakExcelBulanan($tanggalawallink,$tanggalakhirlink)
     {
@@ -464,9 +367,10 @@ class C_LimbahTransaksi extends CI_Controller
 
 			$data['perlakuan'] = $this->M_limbahtransaksi->getPerlakuan();
 			$data['jumlahlimbah'] = $this->M_limbahtransaksi->TotalLimbahBulanan();
-            $data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenisLimbah);
+            $data['filterMasuk'] = $this->M_limbahtransaksi->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenisLimbah);
+			$data['filterKeluar'] = $this->M_limbahtransaksi->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenisLimbah);
             
-            $this->load->view('WasteManagement/LimbahTransaksi/V_ExcelBulanan', $data, true);
+            $this->load->view('WasteManagement/LimbahTransaksi/V_Excel', $data, true);
     }
 
 	public function Record()

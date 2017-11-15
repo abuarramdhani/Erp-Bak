@@ -77,10 +77,7 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Satuan</strong></td>
-                                                            <td style="border: 0">: <?php if($headerRow['satuan']==1){
-                                                                            echo "TON";}
-                                                                        elseif ($headerRow['satuan']==0) {
-                                                                            echo "PCS";} ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['satuan_limbah'] ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Jumlah</strong></td>

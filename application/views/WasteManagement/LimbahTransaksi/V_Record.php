@@ -37,7 +37,7 @@
                                         <div class="col-md-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                                <input id="periode" class="form-control datepicker-month"  data-date-format="d M Y" autocomplete="off" type="text" name="periode" style="width:170px" placeholder="Masukkan Periode" value="" />
+                                                <input id="periode" class="form-control"  data-date-format="d M Y" autocomplete="off" type="text" name="periode" style="width:170px" placeholder="Masukkan Periode" value="" />
                                         </div>
                                         </div>
                                         <div class="col-md-1">

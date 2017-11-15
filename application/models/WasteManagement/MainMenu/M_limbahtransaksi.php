@@ -14,7 +14,8 @@ class M_limbahtransaksi extends CI_Model
     		$sql = "SELECT limsi.*, 
                             dmsi.nama_seksi AS sumber,
                             linis.jenis_limbah AS jenis,
-                            liman.limbah_perlakuan AS limbah_perlakuan  
+                            liman.limbah_perlakuan AS limbah_perlakuan,
+                            limsa.limbah_satuan as satuan_limbah  
                     FROM ga.ga_limbah_transaksi AS limsi 
                         LEFT JOIN dm.dm_seksi AS dmsi
                         ON limsi.sumber_limbah=dmsi.seksi_id
@@ -22,12 +23,15 @@ class M_limbahtransaksi extends CI_Model
                         ON limsi.jenis_limbah=linis.id_jenis_limbah
                         LEFT JOIN ga.ga_limbah_perlakuan AS liman
                         ON limsi.perlakuan=liman.id_perlakuan
+                        left join ga.ga_limbah_satuan as limsa
+                        on cast(limsi.satuan as integer)=limsa.id_satuan
                         Order By limsi.tanggal_transaksi";
     	} else {
     		$sql = "SELECT limsi.*, 
                             dmsi.nama_seksi AS sumber,
                             linis.jenis_limbah AS jenis,
-                            liman.limbah_perlakuan AS limbah_perlakuan  
+                            liman.limbah_perlakuan AS limbah_perlakuan,
+                            limsa.limbah_satuan as satuan_limbah  
                     FROM ga.ga_limbah_transaksi AS limsi 
                         LEFT JOIN dm.dm_seksi AS dmsi
                         ON limsi.sumber_limbah=dmsi.seksi_id
@@ -35,6 +39,8 @@ class M_limbahtransaksi extends CI_Model
                         ON limsi.jenis_limbah=linis.id_jenis_limbah
                         LEFT JOIN ga.ga_limbah_perlakuan AS liman
                         ON limsi.perlakuan=liman.id_perlakuan
+                        left join ga.ga_limbah_satuan as limsa
+                        on cast(limsi.satuan as integer)=limsa.id_satuan
                     WHERE limsi.id_transaksi = $id
                     Order By limsi.tanggal_transaksi";
     	}
@@ -81,6 +87,13 @@ class M_limbahtransaksi extends CI_Model
         return $query->result_array();
     }
 
+    public function getSatuan()
+    {
+        $sqlSatuan = "SELECT * FROM ga.ga_limbah_satuan";
+        $query = $this->db->query($sqlSatuan);
+        return $query->result_array();
+    }
+
     public function getUser()
     {
         $sqlgetUser = "SELECT * FROM ga.ga_limbah_user";
@@ -88,7 +101,39 @@ class M_limbahtransaksi extends CI_Model
         return $query->result_array();
     }
 
-    public function filterData($tanggalawal = FALSE,$tanggalakhir = FALSE, $jenislimbah = FALSE)
+    public function filterLimbahKeluar($tanggalawal = FALSE,$tanggalakhir = FALSE, $jenislimbah = FALSE)
+    {   
+        $condition = '';
+        if($jenislimbah == '' && $tanggalawal == '') {
+            $condition = '';
+        } else if($jenislimbah == true || $tanggalawal == true) {
+            if($jenislimbah == true && $tanggalawal == true) {
+                $condition = "and limar.jenis_limbah='$jenislimbah' and limar.tanggal_keluar BETWEEN '$tanggalawal' AND '$tanggalakhir'";
+            } elseif($jenislimbah != '') {
+                $condition = "and limar.jenis_limbah='$jenislimbah'";    
+            } elseif($tanggalawal != '') {
+                $condition = "and limar.tanggal_keluar BETWEEN '$tanggalawal' AND '$tanggalakhir'";    
+            }
+        }
+
+        $sqlfilterData = "SELECT limar.*, limnis.jenis_limbah as jenis,
+                            liman.limbah_perlakuan as limbah_perlakuan,
+                            limsa.limbah_satuan as satuan_limbah
+                            FROM ga.ga_limbah_keluar as limar
+                            LEFT JOIN ga.ga_limbah_jenis as limnis
+                            ON limar.jenis_limbah = limnis.id_jenis_limbah
+                            left join ga.ga_limbah_perlakuan as liman
+                            on limar.perlakuan = liman.id_perlakuan
+                            left join ga.ga_limbah_satuan limsa
+                            on cast(limar.satuan as integer)=limsa.id_satuan
+                            WHERE limar.konfirmasi_status='1' $condition 
+                            Order By limar.tanggal_keluar ";
+
+        $query = $this->db->query($sqlfilterData);
+        return $query->result_array();
+    }
+
+    public function filterLimbahMasuk($tanggalawal = FALSE,$tanggalakhir = FALSE, $jenislimbah = FALSE)
     {
         $condition = '';
         if($jenislimbah == '' && $tanggalawal == '') {
@@ -106,7 +151,8 @@ class M_limbahtransaksi extends CI_Model
         $sqlfilterData = "SELECT limsi.*, 
                             dmsi.nama_seksi AS sumber,
                             linis.jenis_limbah AS jenis,
-                            liman.limbah_perlakuan AS limbah_perlakuan  
+                            liman.limbah_perlakuan AS limbah_perlakuan,
+                            limsa.limbah_satuan as satuan_limbah   
                     FROM ga.ga_limbah_transaksi AS limsi 
                         LEFT JOIN dm.dm_seksi AS dmsi
                         ON limsi.sumber_limbah=dmsi.seksi_id
@@ -114,7 +160,10 @@ class M_limbahtransaksi extends CI_Model
                         ON limsi.jenis_limbah=linis.id_jenis_limbah
                         LEFT JOIN ga.ga_limbah_perlakuan AS liman
                         ON limsi.perlakuan=liman.id_perlakuan
-                    WHERE limsi.konfirmasi='1'".$condition;
+                        left join ga.ga_limbah_satuan as limsa
+                        on cast(limsi.satuan as integer)=limsa.id_satuan
+                    WHERE limsi.konfirmasi='1' $condition
+                    Order By limsi.tanggal_transaksi";
         $query = $this->db->query($sqlfilterData);
         return $query->result_array();
     }
@@ -153,6 +202,38 @@ class M_limbahtransaksi extends CI_Model
                                     group by bulan, perlakuanlimbah, jenis, seksi";
         $query = $this->db->query($sqlTotalLimbahBulanan);
         return $query->result_array();
+    }
+
+    public function getLimbahKeluar($id = FALSE)
+    {
+        if ($id === FALSE) {
+            $query = "SELECT limar.*, limnis.jenis_limbah as jenis, 
+                            liman.limbah_perlakuan as limbah_perlakuan,
+                            limsa.limbah_satuan as satuan_limbah
+                            FROM ga.ga_limbah_keluar as limar
+                            LEFT JOIN ga.ga_limbah_jenis as limnis
+                            ON limar.jenis_limbah = limnis.id_jenis_limbah
+                            left join ga.ga_limbah_perlakuan as liman
+                            on limar.perlakuan = liman.id_perlakuan
+                            left join ga.ga_limbah_satuan limsa
+                            on cast(limar.satuan as integer)=limsa.id_satuan
+                            Order By limar.tanggal_keluar";                          
+        } else {
+            $query = "SELECT limar.*, limnis.jenis_limbah as jenis, 
+                            liman.limbah_perlakuan as limbah_perlakuan,
+                            limsa.limbah_satuan as satuan_limbah
+                            FROM ga.ga_limbah_keluar as limar
+                            LEFT JOIN ga.ga_limbah_jenis as limnis
+                            ON limar.jenis_limbah = limnis.id_jenis_limbah
+                            left join ga.ga_limbah_perlakuan as liman
+                            on limar.perlakuan = liman.id_perlakuan
+                            left join ga.ga_limbah_satuan as limsa
+                            on cast(limar.satuan as integer)=limsa.id_satuan
+                            WHERE id_limbah_keluar = $id 
+                            Order By limar.tanggal_keluar";
+        }
+        $sql = $this->db->query($query);
+        return $sql->result_array();
     }
 
 }

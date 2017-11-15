@@ -74,8 +74,9 @@
                                                 <div class="col-lg-4">
                                                     <select id="cmbSatuanHeader" name="cmbSatuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
                                                         <option value=""></option>
-                                                        <option value="1">TON</option>
-                                                        <option value="0">PCS</option>
+                                                        <?php foreach ($satuan as $stn) { ?>
+                                                        <option value="<?php echo $stn['id_satuan']; ?>"><?php echo $stn['limbah_satuan'];?></option>
+                                                        <?php }?>
                                                     </select>
                                                 </div>
                                             </div>

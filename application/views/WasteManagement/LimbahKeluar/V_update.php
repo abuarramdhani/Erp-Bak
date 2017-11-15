@@ -77,6 +77,32 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="cmbPerlakuanHeader" class="control-label col-lg-4">Perlakuan</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbPerlakuanHeader" name="cmbPerlakuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php foreach ($perlakuan as $plkn) { ?>
+                                                        <option value="<?php echo $plkn['id_perlakuan']; ?>" <?php if($plkn['id_perlakuan']==$headerRow['perlakuan']) {echo "selected";} ?>><?php echo $plkn['limbah_perlakuan']; ?>
+                                                        </option>
+                                                        <?php }?> 
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbSatuanHeader" name="cmbSatuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php foreach ($satuan as $stn) { ?>
+                                                        <option value="<?php echo $stn['id_satuan']; ?>" <?php if($stn['id_satuan']==$headerRow['satuan']) {echo "selected";} ?>><?php echo $stn['limbah_satuan']; ?>
+                                                        </option>
+                                                        <?php }?> 
+                                                    </select>
+                                                </div>
+                                            </div>
+
 
                                         </div>
 
