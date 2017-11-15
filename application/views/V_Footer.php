@@ -4,7 +4,8 @@
 	   <!-- FOOTER -->
 		<footer class="main-footer" style="margin:0;">
         <div class="pull-right hidden-xs">
-			<strong>Copyright &copy; Quick 2015.</strong> All rights reserved.
+        	Page rendered in <strong>{elapsed_time}</strong> seconds.
+			<strong>Copyright &copy; Quick 2015<?php if(date('Y')>2015){echo '-'.date('Y');};?>.</strong> All rights reserved.
         </div>
 		<b>Version</b> 1.0.0
 		</footer>

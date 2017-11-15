@@ -16,7 +16,7 @@ class C_DokumenCari extends CI_Controller
 		$this->load->library('General');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('DokumenPekerja/M_dokumencari');
+		$this->load->model('DokumenPekerja/M_dokumenpekerja');
 
 		$this->load->library('upload');
 
@@ -85,9 +85,34 @@ class C_DokumenCari extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('DokumenPekerja/V_DokumenCari', $data);
-		$this->load->view('V_Footer',$data);
+		$data['direktoriUpload']	=	direktoriUpload;
+
+		$this->form_validation->set_rules('DokumenPekerja-cmbPencarianDokumenBerdasarkan', 'Kategori Pencarian', 'required');
+		$this->form_validation->set_rules('DokumenPekerja-txtKataKunciPencarianDokumen', 'Kata Kunci Pencarian', 'required');
+
+		if ($this->form_validation->run() === FALSE)
+		{
+			$data['daftarDokumen']= 	$this->M_dokumenpekerja->ambilDaftarDokumen();
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('DokumenPekerja/V_DokumenCari', $data);
+			$this->load->view('V_Footer',$data);
+		}
+		else
+		{
+			$kategoriPencarian 		= 	$this->input->post('DokumenPekerja-cmbPencarianDokumenBerdasarkan');
+			$katakunciPencarian 	= 	strtoupper(filter_var($this->input->post('DokumenPekerja-txtKataKunciPencarianDokumen'), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH));
+
+
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('DokumenPekerja/V_DokumenCari', $data);
+			$this->load->view('V_Footer',$data);
+
+		}
+
+
 	}
 }
