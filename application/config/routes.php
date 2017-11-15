@@ -1108,6 +1108,19 @@ $route['WasteManagement/LimbahKeluar/Record'] = 'WasteManagement/MainMenu/C_Limb
 //-------------------------------Waste Management-----------------------------------------//
 $route['WasteManagement'] = 'WasteManagement/C_WasteManagement';
 
+//--------------------------------Waste Management - Master-----------------------------------//
+$route['WasteManagement/LimbahJenis'] 				= 'WasteManagement/MainMenu/C_LimbahJenis';
+$route['WasteManagement/LimbahJenis/(:any)'] 		= 'WasteManagement/MainMenu/C_LimbahJenis/$1';
+$route['WasteManagement/LimbahJenis/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahJenis/$1/$2';
+
+$route['WasteManagement/LimbahPerlakuan'] 				= 'WasteManagement/MainMenu/C_LimbahPerlakuan';
+$route['WasteManagement/LimbahPerlakuan/(:any)'] 		= 'WasteManagement/MainMenu/C_LimbahPerlakuan/$1';
+$route['WasteManagement/LimbahPerlakuan/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahPerlakuan/$1/$2';
+
+$route['WasteManagement/LimbahSatuan'] 				 = 'WasteManagement/MainMenu/C_LimbahSatuan';
+$route['WasteManagement/LimbahSatuan/(:any)'] 		 = 'WasteManagement/MainMenu/C_LimbahSatuan/$1';
+$route['WasteManagement/LimbahSatuan/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahSatuan/$1/$2';
+
 //------------------------------------ Calibration Report ----------------------------
 $route['CalibrationReport'] = 'CalibrationReport/C_Index';
 $route['CalibrationReport/Calibration'] = 'CalibrationReport/MainMenu/C_Component';

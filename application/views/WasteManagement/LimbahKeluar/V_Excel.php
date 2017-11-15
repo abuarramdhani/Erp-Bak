@@ -20,11 +20,13 @@ $styleArray = array(
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
-	$objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleArray);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); 
-	$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A5:G5')->getAlignment()->setHorizontal('center'); 
-	$objPHPExcel->getActiveSheet()->getStyle('A5:G5')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A:K')->applyFromArray($styleArray);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
+	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getAlignment()->setHorizontal('center'); 
+	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+2).':K'.($hitung+2))->getAlignment()->setHorizontal('center'); 
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+5).':K'.($hitung+5))->getFont()->setBold(true);
 	// $objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleBorder);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -34,7 +36,7 @@ $styleArray = array(
 	// Redirect output to a client?s web browser (Excel5)
 
 	header('Content-type: application/vnd-ms-excel');
-	header('Content-Disposition: attachment; filename="Data_Limbah_Keluar.xlsx"');
+	header('Content-Disposition: attachment; filename="LogbookHarian-LimbahB3.xlsx"');
 	header('Cache-Control: max-age=0');
 	// If you're serving to IE 9, then the following may be needed
 	header('Cache-Control: max-age=1');
@@ -56,39 +58,46 @@ $styleArray = array(
 
 	$objset = $objPHPExcel->setActiveSheetIndex(0);
 	$objget = $objPHPExcel->getActiveSheet();
-	$objget->getStyle("A6:G6")->applyFromArray(
-		array(
-			'fill' => array(
-				'type' => PHPExcel_Style_Fill::FILL_SOLID,
-				'color' => array('rgb' => '92d050')
-			),
-			'font' => array(
-				'color' => array('rgb' => '000000'),
-				'bold'  => true,
-			),	
-		)				
-	);
+	// $objget->getStyle("")->applyFromArray(
+	// 	array(
+	// 		'fill' => array(
+	// 			'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	// 			'color' => array('rgb' => '92d050')
+	// 		),
+	// 		'font' => array(
+	// 			'color' => array('rgb' => '000000'),
+	// 			'bold'  => true,
+	// 		),	
+	// 	)				
+	// );
 
 	// Add some data
+
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A1', 'Logbook Harian Limbah Bahan Berbahaya Dan Beracun')
-				->setCellValue('A3', 'Periode :'.$tanggalawal.' - '.$tanggalakhir)
-				->setCellValue('A5', 'Keluarnya Limbah B3 dari TPS')
+				->setCellValue('A3', 'Periode : '.$tanggalawal.' - '.$tanggalakhir)
+				->setCellValue('A5', 'Masuknya Limbah B3 Ke TPS')
+				->setCellValue('G5', 'Keluarnya Limbah B3 dari TPS')
 				->setCellValue('A6', 'No')
-				->setCellValue('B6', 'Tanggal Keluar Limbah B3')
-				->setCellValue('C6', 'Jumlah Limbah B3 Keluar')
-				->setCellValue('D6', 'Tujuan Penyerahan')
-				->setCellValue('E6', 'Bukti Nomer Dokumen')
-				->setCellValue('F6', 'Sisa Limbah B3 Yang Ada Di TPS')
-				->setCellValue('G6', 'Jenis Limbah');
+				->setCellValue('B6', 'Jenis Limbah B3 Masuk')
+				->setCellValue('C6', 'Tanggal Limbah B3 Masuk')
+				->setCellValue('D6', 'Sumber Limbah B3')
+				->setCellValue('E6', 'Jumlah Limbah B3')
+				->setCellValue('F6', 'Maksimal Penyimpanan s/d Tanggal')
+				->setCellValue('G6', 'Tanggal Keluar Limbah B3')
+				->setCellValue('H6', 'Jumlah Limbah B3 Keluar')
+				->setCellValue('I6', 'Tujuan Penyerahan')
+				->setCellValue('J6', 'Bukti Nomer Dokumen')
+				->setCellValue('K6', 'Sisa Limbah B3 Yang Ada Di TPS');
 
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:G1');
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:G3');
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A5:G5');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:K1');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:K3');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A5:F5');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('G5:K5');
 
 	$no = 0;
 	$i=6;	
-	foreach ($filter_data as $FD) {												
+	foreach ($filterMasuk as $FM) {												
 	
 	$i++;
 	$no++;
@@ -99,19 +108,55 @@ $styleArray = array(
 	$kolomD='D'.$i;
 	$kolomE='E'.$i;
 	$kolomF='F'.$i;
-	$kolomG='G'.$i;
 
-    $tanggalkeluar = date('d M Y', strtotime($FD['tanggal_keluar']));
+    $tanggalMasuk = date('d/m/Y', strtotime($FM['tanggal_transaksi']));
+    $maksPenyimpanan = date('d/m/Y', strtotime($FM['maks_penyimpanan']));
 	
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomA, $no, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $tanggalkeluar, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomC, $FD['jumlah_keluar'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, $FD['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomE, $FD['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomF, $FD['sisa_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomG, $FD['jenis'], PHPExcel_Cell_DataType::TYPE_STRING);
+				->setCellValueExplicit($kolomB, $FM['jenis'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomC, $tanggalMasuk, PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomD, $FM['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomE, $FM['jumlah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomF, $maksPenyimpanan, PHPExcel_Cell_DataType::TYPE_STRING);
 	}
+
+
+	$o=6;
+	foreach ($filterKeluar as $FK) {
+
+	$o++;
+
+	//load ke excel
+	$kolomG='G'.$o;
+	$kolomH='H'.$o;
+	$kolomI='I'.$o;
+	$kolomJ='J'.$o;
+	$kolomK='K'.$o;
+
+    $tanggalKeluar = date('d/m/Y', strtotime($FK['tanggal_keluar']));
+	
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValueExplicit($kolomG, $tanggalKeluar, PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomI, $FK['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomJ, $FK['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomK, $FK['sisa_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
+	}
+
+	if ($i > $o) {
+		$hitung = $i;
+	}else{
+		$hitung = $o;
+	}
+
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.($hitung+2).':K'.($hitung+2));
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.($hitung+5).':K'.($hitung+5));
+
+	$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('H'.($hitung+2), 'Kepala Seksi Waste Management')
+				->setCellValue('H'.($hitung+5), 'AYU TENANAN');
+
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
 exit;

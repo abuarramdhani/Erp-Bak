@@ -74,6 +74,30 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="cmbPerlakuanHeader" class="control-label col-lg-4">Perlakuan</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbPerlakuanHeader" name="cmbPerlakuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php foreach ($perlakuan as $plkn) { ?>
+                                                        <option value="<?php echo $plkn['id_perlakuan']; ?>"><?php echo $plkn['limbah_perlakuan'];?></option>
+                                                        <?php }?> 
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbSatuanheader" class="control-label col-lg-4">Satuan</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbSatuanheader" name="cmbSatuanheader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php foreach ($satuan as $stn) { ?>
+                                                        <option value="<?php echo $stn['id_satuan']; ?>"><?php echo $stn['limbah_satuan'];?></option>
+                                                        <?php }?> 
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div class="col-lg-12">

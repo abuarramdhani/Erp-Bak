@@ -67,10 +67,7 @@
                                                             elseif ($row['jenis_sumber']==0) {
                                                                 echo "Diluar Proses Produksi";} ?>
                                                 </td>
-												<td><?php if($row['satuan']==1){
-                                                                echo "TON";}
-                                                            elseif ($row['satuan']==0) {
-                                                                echo "PCS";} ?></td>
+												<td><?php echo $row['satuan_limbah'] ?></td>
 												<td><?php echo $row['jumlah'] ?></td>
 												<td><?php echo $row['limbah_perlakuan'] ?></td>
 												<td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>

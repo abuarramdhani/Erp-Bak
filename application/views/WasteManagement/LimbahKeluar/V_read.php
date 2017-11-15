@@ -80,6 +80,14 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['jenis']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Perlakuan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['limbah_perlakuan']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Satuan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['satuan_limbah']; ?></td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>
