@@ -13,40 +13,54 @@
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});	
 				$('#dataTables-businessProcess').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-contextDiagram').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-standardOperatingProcedure').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-workInstruction').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-COP').DataTable({
 					"lengthChange": false,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-flowProcess').DataTable({
 					"lengthChange": false,
-					"responsive": true
+					"responsive": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-masterJobDescription').DataTable({
 					"lengthChange": false,
@@ -56,25 +70,34 @@
 					"fixedColumns" : true,
 			  		"fixedColumns" : {
 						"leftColumns" : 3
-					}, 
+					},
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-documentJobDescription').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
 				$('#dataTables-jobDescriptionPekerja').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					"pagingType": "full_numbers",
 				});
-				$('#dataTables-Pekerja-cariDokumen').DataTable({
+				$('#dataTables-DokumenPekerja-cariDokumen').DataTable({
 					"lengthChange": false,
 					"responsive": true,
 					"scrollX": true,
-					"scroller": true
+					"scroller": true,
+					"lengthMenu": [ [2, 4, 8, -1], [2, 4, 8, "All"] ],
+   					"pageLength": 4,
+					"pagingType": "full_numbers",
 				});
 
 //			}
@@ -843,6 +866,16 @@
         				}
     				});
     				$('.btn-group-vertical .buttonlistDoc').width(largestBox);
+				});
+//			}
+
+//			Iframe Dokumen Pekerja
+//			{
+				$(document).on('change', '#DokumenPekerja-COP', function(){
+					var link_dokumen 	= 	$(this).val();
+					var iframe = document.getElementById('DokumenPekerja-previewDokumen');
+					iframe.src = link_dokumen;
+
 				});
 //			}
 

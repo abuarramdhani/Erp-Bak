@@ -354,11 +354,6 @@ class C_CodeOfPractice extends CI_Controller
 				$ContextDiagram 	= 	$this->general->cekContextDiagram($SOP);
 				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
 			}
-
-			if($revisiBaru==0)
-			{
-				$fileDokumen = $this->general->cekFile($namaCOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-			}
 			
 			$data = array(
 				'cop_name' 		=> $namaCOP,

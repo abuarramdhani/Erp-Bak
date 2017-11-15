@@ -25,14 +25,14 @@
                             <div class="box-header with-border">                              
                             </div>
                             <div class="box-body">
-                                <form>
+                                <form method="post" action="<?php echo base_url('DokumenPekerja/DokumenCari/Cari');?>">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <center>
                                                 <div class="form-group">
-                                                    <select id="cmbPencarianDokumenBerdasarkan" name="cmbPencarianDokumenBerdasarkan" class="select2" data-placeholder="Cari WI/COP berdasarkan" required="" autofocus="" style="width: 100%">
+                                                    <select id="DokumenPekerja-cmbPencarianDokumenBerdasarkan" name="DokumenPekerja-cmbPencarianDokumenBerdasarkan" class="select2" data-placeholder="Cari WI/COP berdasarkan" required="" autofocus="" style="width: 100%">
                                                         <option value=""></option>
-                                                        <option value="all">Semua Dokumen</option>
+                                                        <option value="ALL">Semua Dokumen</option>
                                                         <option value="BP">Business Process</option>
                                                         <option value="CD">Context Diagram</option>
                                                         <option value="SOP">Standard Operating Procedure</option>
@@ -45,7 +45,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <input type="text" name="txtKataKunciPencarianDokumen" id="txtKataKunciPencarianDokumen" class="col-lg-3 form-control" style="text-transform: uppercase" placeholder="Kata Kunci" required=""/>
+                                                    <input type="text" name="DokumenPekerja-txtKataKunciPencarianDokumen" id="DokumenPekerja-txtKataKunciPencarianDokumen" class="col-lg-3 form-control" style="text-transform: uppercase" placeholder="Kata Kunci" required=""/>
                                                     <span class="input-group-btn">
                                                         <button type="submit" class="btn btn-success">Cari</button>
                                                     </span>
@@ -54,15 +54,119 @@
                                         </div>
                                     </div>
                                 </form>
-                                <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-Pekerja-cariDokumen" style="font-size:12px;">
+                                <div>
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-DokumenPekerja-cariDokumen" style="font-size:12px;">
                                         <thead>
                                             <th>No</th>
                                             <th>Business Process</th>
                                             <th>Context Diagram</th>
                                             <th>Standard Operating Procedure</th>
-                                            <th>Work Instruction / Code of Practice</th>
+                                            <th>Work Instruction</th>
+                                            <th>Code of Practice</th>
                                         </thead>
+                                        <tbody>
+                                            <?php
+                                                $no = 1;
+                                                foreach ($daftarDokumen as $dokumen) 
+                                                {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $no++;?></td>
+                                                <td>
+                                                    <?php
+                                                        if($dokumen['link_bp']=='#')
+                                                        {
+                                                    ?>
+                                                    <?php echo $dokumen['business_process'];?>
+                                                    <?php
+                                                        }
+                                                        else
+                                                        {
+                                                    ?>
+                                                    <a href="<?php echo base_url($direktoriUpload.$dokumen['link_bp']);?>">
+                                                        <?php echo $dokumen['business_process'];?>
+                                                    </a>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                        if($dokumen['link_cd']=='#')
+                                                        {
+                                                    ?>
+                                                    <?php echo $dokumen['context_diagram'];?>
+                                                    <?php
+                                                        }
+                                                        else
+                                                        {
+                                                    ?>
+                                                    <a href="<?php echo base_url($direktoriUpload.$dokumen['link_cd']);?>">
+                                                        <?php echo $dokumen['context_diagram'];?>
+                                                    </a>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                        if($dokumen['link_sop']=='#')
+                                                        {
+                                                    ?>
+                                                    <?php echo $dokumen['standard_operating_procedure'];?>
+                                                    <?php
+                                                        }
+                                                        else
+                                                        {
+                                                    ?>
+                                                    <a href="<?php echo base_url($direktoriUpload.$dokumen['link_sop']);?>">
+                                                        <?php echo $dokumen['standard_operating_procedure'];?>
+                                                    </a>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                        if($dokumen['link_wi']=='#')
+                                                        {
+                                                    ?>
+                                                    <?php echo $dokumen['work_instruction'];?>
+                                                    <?php
+                                                        }
+                                                        else
+                                                        {
+                                                    ?>
+                                                    <a href="<?php echo base_url($direktoriUpload.$dokumen['link_wi']);?>">
+                                                        <?php echo $dokumen['work_instruction'];?>
+                                                    </a>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                        if($dokumen['link_cop']=='#')
+                                                        {
+                                                    ?>
+                                                    <?php echo $dokumen['code_of_practice'];?>
+                                                    <?php
+                                                        }
+                                                        else
+                                                        {
+                                                    ?>
+                                                    <a href="<?php echo base_url($direktoriUpload.$dokumen['link_cop']);?>">
+                                                        <?php echo $dokumen['code_of_practice'];?>
+                                                    </a>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                                }
+                                            ?>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

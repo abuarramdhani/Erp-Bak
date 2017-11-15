@@ -227,9 +227,9 @@ class C_WorkInstruction extends CI_Controller
 			$this->load->view('DocumentStandarization/WorkInstruction/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$namaWI 				= 	$this->input->post('txtWiNameHeader', TRUE);
+			$namaWI 				= 	strtoupper($this->input->post('txtWiNameHeader', TRUE));
 			$SOP 					= 	$this->input->post('cmbSOP', TRUE);			
-			$nomorKontrol 			= 	$this->input->post('txtNoDocHeader', TRUE);
+			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader', TRUE));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader', TRUE);
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader', TRUE)),'tanggal');
 			$jumlahHalaman 			= 	$this->input->post('txtJmlHalamanHeader', TRUE);
