@@ -202,7 +202,7 @@ class M_monitoring extends CI_Model {
                 where to_char(pmp.plan_time, 'mm-yyyy') = to_char(current_date, 'mm-yyyy')
                   and pmp.section_id = ps.section_id
                 ) as decimal) *100
-              ,2),0) || ' %' percentage
+              ,0),0) || ' %' percentage
             from
               pp.pp_section ps
             where
