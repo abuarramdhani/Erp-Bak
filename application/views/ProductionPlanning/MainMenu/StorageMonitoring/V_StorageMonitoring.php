@@ -17,7 +17,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
-                        <h2 class="text-center">
+                        <h2 class="text-center" style="font-family: cursive;">
                             <b>
                                 MONITOR ACHIEVEMENT FABRIKASI
                             </b>
@@ -61,32 +61,32 @@
                                     <table class="table mon-fab-table dailyPlan table-border-mon-prod">
                                         <thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
                                             <tr>
-                                                <td>
-                                                    No
+                                                <td style="width: 5%;">
+                                                    NO
                                                 </td>
                                                 <td style="width: 15%;">
-                                                    Item
+                                                    ITEM
+                                                </td>
+                                                <td style="width: 25%;">
+                                                    DESC
                                                 </td>
                                                 <td>
-                                                    Desc
+                                                    PRIOR
                                                 </td>
                                                 <td>
-                                                    Priority
+                                                    NEED QTY
                                                 </td>
                                                 <td>
-                                                    Need Qty
-                                                </td>
-                                                <td style="width: 15%;">
-                                                    Due Time
+                                                    DUE TIME
                                                 </td>
                                                 <td>
-                                                    Achieve Qty
+                                                    ACHIEVE QTY
                                                 </td>
                                                 <td>
-                                                    Last Delivery
+                                                    LAST DELIVERY
                                                 </td>
                                                 <td>
-                                                    Status
+                                                    STATUS
                                                 </td>
                                             </tr>
                                         </thead>
@@ -108,8 +108,8 @@
                                                         </td>
                                                         <td>
                                                             <?php
-                                                                if (strlen($hpl['item_description']) > 15) {
-                                                                    echo substr($hpl['item_description'],0,15).'...';
+                                                                if (strlen($hpl['item_description']) > 25) {
+                                                                    echo substr($hpl['item_description'],0,25).'...';
                                                                 }else{
                                                                     echo $hpl['item_description'];
                                                                 }
@@ -122,7 +122,7 @@
                                                             <?php echo $hpl['need_qty']; ?>
                                                         </td>
                                                         <td>
-                                                            <?php echo $hpl['due_time']; ?>
+                                                            <?php echo date('d/m H:i', strtotime($hpl['due_time'])); ?>
                                                         </td>
                                                         <td>
                                                             <?php
@@ -180,8 +180,8 @@
                                                         </td>
                                                         <td>
                                                             <?php
-                                                                if (strlen($npl['item_description']) > 15) {
-                                                                    echo substr($npl['item_description'],0,15).'...';
+                                                                if (strlen($npl['item_description']) > 25) {
+                                                                    echo substr($npl['item_description'],0,25).'...';
                                                                 }else{
                                                                     echo $npl['item_description'];
                                                                 }
@@ -194,7 +194,7 @@
                                                             <?php echo $npl['need_qty']; ?>
                                                         </td>
                                                         <td>
-                                                            <?php echo $npl['due_time']; ?>
+                                                            <?php echo date('d/m H:i', strtotime($npl['due_time'])); ?>
                                                         </td>
                                                         <td>
                                                             <?php
