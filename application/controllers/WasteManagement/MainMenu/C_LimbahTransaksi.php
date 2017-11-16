@@ -389,7 +389,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
-		$data['data'] = $this->M_limbahtransaksi->getLimbahTransaksi();
+		$data['LimbahTransaksi'] = $this->M_limbahtransaksi->getLimbahTransaksi();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -430,7 +430,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['jenislimbah'] = $jenislimbah;
 
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
-		$data['filter_data'] = $this->M_limbahtransaksi->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
+		$data['filterTransaksi'] = $this->M_limbahtransaksi->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenislimbah);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

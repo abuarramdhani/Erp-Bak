@@ -57,6 +57,7 @@
                                                 <th>Jenis Limbah</th>
 												<th>Tanggal Keluar</th>
 												<th>Jumlah Keluar</th>
+                                                <th>Satuan</th>
 												<th>Tujuan Limbah</th>
 												<th>Nomor Dok</th>
 												<th>Sisa Limbah</th>
@@ -66,10 +67,10 @@
                                         <tbody>
                                             <?php 
                                             	$no = 1;
-                                                if(!isset($data)){
-                                                    $data_item = $filter_data;
+                                                if(!isset($limbah_keluar)){
+                                                    $data_item = $filterKeluar;
                                                 }else{
-                                                    $data_item = $data;
+                                                    $data_item = $limbah_keluar;
                                                 }  
                                             	foreach($data_item as $row):
 											?>
@@ -78,6 +79,7 @@
                                                 <td><?php echo $row['jenis'] ?></td>
 												<td><?php echo date('d M Y',strtotime($row['tanggal_keluar'])); ?></td>
 												<td><?php echo $row['jumlah_keluar'] ?></td>
+                                                <td><?php echo $row['satuan_limbah'] ?></td>
 												<td><?php echo $row['tujuan_limbah'] ?></td>
 												<td><?php echo $row['nomor_dok'] ?></td>
 												<td><?php echo $row['sisa_limbah'] ?></td>

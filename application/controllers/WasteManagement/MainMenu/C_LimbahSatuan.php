@@ -70,7 +70,7 @@ class C_LimbahSatuan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
-
+		$this->form_validation->set_rules('txtLimbahSatuanHeader', 'satuan', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -115,7 +115,7 @@ class C_LimbahSatuan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
-
+		$this->form_validation->set_rules('txtLimbahSatuanHeader', 'satuan', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);

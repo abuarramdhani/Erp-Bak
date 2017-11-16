@@ -240,7 +240,7 @@ class C_LimbahKeluar extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['data'] = $this->M_limbahkeluar->getLimbahKeluar();
+		$data['limbah_keluar'] = $this->M_limbahkeluar->getLimbahKeluar();
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
 
 		$this->load->view('V_Header',$data);
@@ -282,7 +282,7 @@ class C_LimbahKeluar extends CI_Controller
 		$data['jenislimbah'] = $jenislimbah;
 
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
-		$data['filter_data'] = $this->M_limbahkeluar->filterData($tanggalawal,$tanggalakhir,$jenislimbah);
+		$data['filterKeluar'] = $this->M_limbahkeluar->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenislimbah);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
