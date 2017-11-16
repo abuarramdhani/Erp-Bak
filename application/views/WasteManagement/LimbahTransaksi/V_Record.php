@@ -67,10 +67,10 @@
                                         <tbody>
                                             <?php 
                                                 $no = 1;
-                                                if(!isset($data)){
-                                                    $data_item = $filter_data;
+                                                if(!isset($LimbahTransaksi)){
+                                                    $data_item = $filterTransaksi;
                                                 }else{
-                                                    $data_item = $data;
+                                                    $data_item = $LimbahTransaksi;
                                                 } 
                                                 foreach($data_item as $row):
                                                 $encrypted_string = $this->encrypt->encode($row['id_transaksi']);
@@ -86,10 +86,7 @@
                                                             elseif ($row['jenis_sumber']==0) {
                                                                 echo "Diluar Proses Produksi";} ?>
                                                 </td>
-                                                <td><?php if($row['satuan']==1){
-                                                                echo "TON";}
-                                                            elseif ($row['satuan']==0) {
-                                                                echo "PCS";} ?></td>
+                                                <td><?php echo $row['satuan_limbah'] ?></td>
                                                 <td><?php echo $row['jumlah'] ?></td>
                                                 <td><?php echo $row['limbah_perlakuan'] ?></td>
                                                 <td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>

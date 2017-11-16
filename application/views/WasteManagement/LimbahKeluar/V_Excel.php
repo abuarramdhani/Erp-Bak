@@ -25,8 +25,7 @@ $styleArray = array(
 	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getAlignment()->setHorizontal('center'); 
 	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+2).':K'.($hitung+2))->getAlignment()->setHorizontal('center'); 
-	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+5).':K'.($hitung+5))->getFont()->setBold(true);
+	
 	// $objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleBorder);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -117,7 +116,7 @@ $styleArray = array(
 				->setCellValueExplicit($kolomB, $FM['jenis'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomC, $tanggalMasuk, PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomD, $FM['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomE, $FM['jumlah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomE, $FM['jumlah'].' '.$FM['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomF, $maksPenyimpanan, PHPExcel_Cell_DataType::TYPE_STRING);
 	}
 
@@ -138,10 +137,10 @@ $styleArray = array(
 	
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomG, $tanggalKeluar, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomI, $FK['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomJ, $FK['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomK, $FK['sisa_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
+				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
 	}
 
 	if ($i > $o) {
@@ -149,6 +148,10 @@ $styleArray = array(
 	}else{
 		$hitung = $o;
 	}
+
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+2).':K'.($hitung+2))->getAlignment()->setHorizontal('center'); 
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+2).':K'.($hitung+2))->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($hitung+5).':K'.($hitung+5))->getAlignment()->setHorizontal('center');
 
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.($hitung+2).':K'.($hitung+2));
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('H'.($hitung+5).':K'.($hitung+5));

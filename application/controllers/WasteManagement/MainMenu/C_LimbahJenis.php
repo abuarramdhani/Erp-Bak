@@ -70,7 +70,7 @@ class C_LimbahJenis extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
-
+		$this->form_validation->set_rules('txtJenisLimbahHeader', 'jenislimbah', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -119,7 +119,7 @@ class C_LimbahJenis extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
-
+		$this->form_validation->set_rules('txtJenisLimbahHeader', 'jenislimbah', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);

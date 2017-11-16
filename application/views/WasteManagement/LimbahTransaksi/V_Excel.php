@@ -28,7 +28,7 @@ $styleArray = array(
 	// Redirect output to a client?s web browser (Excel5)
 
 	header('Content-type: application/vnd-ms-excel');
-	header('Content-Disposition: attachment; filename="Report_Limbah_Transaksi_Bulanan.xlsx"');
+	header('Content-Disposition: attachment; filename="NeracaBulanan-LimbahB3.xlsx"');
 	header('Cache-Control: max-age=0');
 	// If you're serving to IE 9, then the following may be needed
 	header('Cache-Control: max-age=1');
