@@ -331,7 +331,7 @@
                                                     $a = date('d');
                                                     $b = date('t');
                                                     $c = ($a/$b)*100;
-                                                    echo $c.'%';
+                                                    echo round($c,0).'%';
                                                 ?>
                                             </b></h2>
                                         </td>
