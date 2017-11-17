@@ -131,7 +131,7 @@
                                                     <label for='txtTanggalCekAsuransi' class="control-label">Tanggal Cek Asuransi</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                        <input type="text" name="txtTanggalCekAsuransi" id="daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_cek_asuransi'];?>" <?php echo $status_input;?>>
+                                                        <input type="text" name="txtTanggalCekAsuransi" id="ManajemenKendaraan-daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_cek_asuransi'];?>" <?php echo $status_input;?>>
                                                 </div>
                                             </div>
 

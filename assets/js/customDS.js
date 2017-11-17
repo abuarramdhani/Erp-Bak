@@ -10,95 +10,128 @@
 // 			DataTables Main Menu
 // 			{
 				$('#dataTables-allDocument').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": false,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});	
 				$('#dataTables-businessProcess').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": false,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
 				$('#dataTables-contextDiagram').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": false,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
 				$('#dataTables-standardOperatingProcedure').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": false,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
 				$('#dataTables-workInstruction').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": false,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
 				$('#dataTables-COP').DataTable({
-					"lengthChange": false,
+					// "lengthChange": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
-				$('#dataTables-flowProcess').DataTable({
-					"lengthChange": false,
-					"responsive": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
-				});
+				// $('#dataTables-flowProcess').DataTable({
+					// "lengthChange": false,
+					// "responsive": false,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
+				// });
 				$('#dataTables-masterJobDescription').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": true,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"fixedColumns" : true,
-			  		"fixedColumns" : {
-						"leftColumns" : 3
-					},
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "fixedColumns" : true,
+			  // 		"fixedColumns" : {
+					// 	"leftColumns" : 3
+					// },
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
 				$('#dataTables-documentJobDescription').DataTable({
-					"lengthChange": false,
-					"responsive": true,
+					// "lengthChange": false,
+					// "responsive": false,
 					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+					// "scroller": true,
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
 				$('#dataTables-jobDescriptionPekerja').DataTable({
-					"lengthChange": false,
-					"responsive": true,
-					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-					"pagingType": "full_numbers",
+			  //       lengthChange: true,
+			  //       responsive: true,
+			        scrollX:        true,
+			  //       scrollCollapse: true,
+			  //       paging:         true,
+			  //       deferRender : true,
+					// "lengthChange": true,
+					// "responsive": false,
+					// "scrollX": true,
+					// "scroller": true,
+					// fixedColumns: {
+				 //        leftColumns: 3
+				 //    },
+					// "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+					// "pagingType": "full_numbers",
 				});
-				$('#dataTables-DokumenPekerja-cariDokumen').DataTable({
-					"lengthChange": false,
-					"responsive": true,
-					"scrollX": true,
-					"scroller": true,
-					"lengthMenu": [ [2, 4, 8, -1], [2, 4, 8, "All"] ],
-   					"pageLength": 4,
-					"pagingType": "full_numbers",
-				});
+				// $('#dataTables-DokumenPekerja-cariDokumen').DataTable({
+					// "lengthChange": false,
+     //    			"pageLength": 50,
+					// "searching": false,
+					// "responsive": {
+					// 	details: false
+					// }
+					// ,
+					// "scrollX": true,
+					// fixedColumns:{
+					// 	leftColumns: 3
+					// },
+					// scrollX: true,
+					// "scroller": true,
+			  //       dom: 'Bfrtip',
+			  //       "pageLength": 10,
+			  //       lengthMenu: [
+			  //           [ 10, 25, 50, -1 ],
+			  //           [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+			  //       ],
+			  //       buttons: [
+			  //           'pageLength'
+			  //       ],
+			  //       // scrollY:        "300px",
+     //    			scrollCollapse: true,
+     //    			paging:         false,
+     //    			fixedColumns:   {
+     //        			leftColumns: 3
+     //    			},
+     //    			scrollX:        true,
+			  //       "lengthMenu": [[25, 50, 100, 500, 1000],[25, 50, 100, 500, "Max"]],
+					// "pagingType": "full_numbers",
+				// });			
 
 //			}
 //
@@ -965,6 +998,35 @@
 	  				});
 				}, 400);
 //			}  
+
+		//	Individual Functions
+		//	{
+				$(document).ready(function() {
+				    // Setup - add a text input to each footer cell
+				    $('#dataTables-DokumenPekerja-cariDokumen tfoot th').each( function () {
+				        var title = $(this).text();
+				        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+				    } );
+				 
+				    // DataTable
+				    var table = $('#dataTables-DokumenPekerja-cariDokumen').DataTable({
+				    	ordering: false,
+				    });
+				 
+				    // Apply the search
+				    table.columns().every( function () {
+				        var that = this;
+				        console.log($( 'input', this.footer() ));
+				        $( 'input', this.footer() ).on( 'keyup change', function () {
+				            if ( that.search() !== this.value ) {
+				                that
+				                    .search( this.value )
+				                    .draw();
+				            }
+				        } );
+				    } );
+				} );				
+		//	}
 // 	}
 
 // 	Document Controller ----------------------------------------------------------------------------end---

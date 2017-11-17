@@ -98,7 +98,7 @@
                                                     <label for='txtTanggalCekAsuransi' class="control-label">Tanggal Cek Asuransi</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                        <input type="text" name="txtTanggalCekAsuransi" id="daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" disabled="" required="" >
+                                                        <input type="text" name="txtTanggalCekAsuransi" id="ManajemenKendaraan-daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" disabled="" required="" >
                                                 </div>
                                             </div>
 

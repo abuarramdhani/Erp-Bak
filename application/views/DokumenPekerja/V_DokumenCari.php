@@ -25,7 +25,7 @@
                             <div class="box-header with-border">                              
                             </div>
                             <div class="box-body">
-                                <form method="post" action="<?php echo base_url('DokumenPekerja/DokumenCari/Cari');?>">
+<!--                                 <form method="post" action="<?php echo base_url('DokumenPekerja/DokumenCari/Cari');?>">
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <center>
@@ -53,17 +53,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </form> -->
                                 <div>
                                     <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-DokumenPekerja-cariDokumen" style="font-size:12px;">
                                         <thead>
-                                            <th>No</th>
-                                            <th>Business Process</th>
-                                            <th>Context Diagram</th>
-                                            <th>Standard Operating Procedure</th>
-                                            <th>Work Instruction</th>
-                                            <th>Code of Practice</th>
+                                            <tr>
+                                            <!-- <th>No</th> -->
+                                                <th>Business Process</th>
+                                                <th>Context Diagram</th>
+                                                <th>Standard Operating Procedure</th>
+                                                <th>Work Instruction</th>
+                                                <th>Code of Practice</th>
+                                            </tr>
                                         </thead>
+                                       <tfoot style="display: table-header-group;">
+                                            <tr>
+                                                <!-- <th>No</th> -->
+                                                <th>Business Process</th>
+                                                <th>Context Diagram</th>
+                                                <th>Standard Operating Procedure</th>
+                                                <th>Work Instruction</th>
+                                                <th>Code of Practice</th>
+                                            </tr>
+                                        </tfoot>
                                         <tbody>
                                             <?php
                                                 $no = 1;
@@ -71,7 +83,7 @@
                                                 {
                                             ?>
                                             <tr>
-                                                <td><?php echo $no++;?></td>
+                                                <!-- <td><?php echo $no++;?></td> -->
                                                 <td>
                                                     <?php
                                                         if($dokumen['link_bp']=='#')
