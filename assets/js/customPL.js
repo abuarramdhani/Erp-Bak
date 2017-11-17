@@ -67,17 +67,17 @@ $(document).ready(function(){
     	format:'dd/mm/yyyy'
 	});
 
-    $(".startdate").datepicker({
-    	//format:'dd/mm/yyyy'
-    });
+    // $(".startdate").datepicker({
+    // 	//format:'dd/mm/yyyy'
+    // });
 
-    $(".enddate").datepicker({
-    	//format:'dd/mm/yyyy'
-    });
+    // $(".enddate").datepicker({
+    // 	//format:'dd/mm/yyyy'
+    // });
 
-    $(".dday-tgl").datepicker({
-    	//format:'dd/mm/yyyy'
-    });
+    // $(".dday-tgl").datepicker({
+    // 	//format:'dd/mm/yyyy'
+    // });
 
 	$('.startdate').change(function() {
 		var range 	= $('#dayrange').val();
@@ -850,7 +850,6 @@ $(document).ready(function(){
 		}else{
 			alert('Jumlah peserta sudah maksimal');
 		}
-		
 	}
 
 	function AddParticipantEdit(base){

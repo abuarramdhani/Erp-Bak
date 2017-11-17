@@ -85,12 +85,12 @@
 											$eval='';$ev1='';$ev2='';$ev3='';
 											if($rc['evaluation']=='1'){$eval='Reaksi';$ev1='Y';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';$ev2='Y';}
-											if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';$ev3='Y';}
+											// if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';$ev3='Y';}
 											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';$ev1='Y';$ev2='Y';}
-											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';$ev1='Y';$ev3='Y';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Sikap / Perilaku';$ev2='Y';$ev3='Y';}
-											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-												{$eval='Reaksi, Pembelajaran, Sikap / Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';$ev1='Y';$ev3='Y';}
+											// if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Sikap / Perilaku';$ev2='Y';$ev3='Y';}
+											// if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+											// 	{$eval='Reaksi, Pembelajaran, Sikap / Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
@@ -214,6 +214,7 @@
 												$nonstafdata = array();
 												foreach ($participant as $pt){ $no++;
 
+												// STATUS HADIR/TIDAK HADIR
 												if('2'==$pt['status'])
 												{
 													$hadir='';
@@ -225,6 +226,7 @@
 													$tidakhadir='';
 												}
 
+												// NOMOR INDUK YANG STAF
 												$staffCode = array('B', 'D', 'J', 'Q');
 												$indCode = substr($pt['noind'], 0, 1);
 												if (in_array($indCode, $staffCode)) {
@@ -234,6 +236,10 @@
 													$a='nonstaf';
 													array_push($nonstafdata, $pt['noind'] );
 												}
+
+												//NILAI KELULUSAN
+												
+
 												?>
 											<tr>
 												<td><?php echo $no ?></td>
@@ -247,23 +253,23 @@
 													</select>
 												</td>
 													<?php if ($ev1=='Y') { ?>
-												<td>
-													<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval1_post'];?>">
+												<td class="has-error" >
+													<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onkeypress="return isNumberKey(event)" onkeyup="typeKKM()" value="<?php echo $pt['score_eval1_post'];?>">
 												</td>	
 													<?php } if($ev2=='Y'){ ?>
-												<td>
-													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
+												<td class="has-error">
+													<input type="text" class="form-control bg-success" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
 												</td>
-												<td>
+												<td class="has-error">
 													<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
 												</td>
 													<?php } if($ev3=='Y'){ ?>
-												<td>
+												<!-- <td>
 													<input type="text" class="form-control" name="txtPerilakuPre[]" Placeholder="Perilaku (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_pre'];?>">
 												</td>
 												<td>
 													<input type="text" class="form-control" name="txtPerilakuPost[]" Placeholder="Perilaku (Post)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post1'];?>">
-												</td>
+												</td> -->
 												<td>
 													<!-- <input type="text" class="form-control" name="txtPerilakuEvalLap[]" Placeholder="Eval" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post2'];?>"> -->
 													<select class="form-control SlcRuang" name="txtPerilakuEvalLap[]" data-placeholder="Eval" required>

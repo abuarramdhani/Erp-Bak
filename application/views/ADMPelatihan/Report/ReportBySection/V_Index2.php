@@ -1,4 +1,4 @@
-						<div class="table-responsive" style="overflow:hidden;">
+
 							<table class="table table-striped table-bordered table-hover text-left" id="tblrecord" style="font-size:14px;table-layout:fixed;width:1080px;">
 								<thead class="bg-primary">
 									<tr>

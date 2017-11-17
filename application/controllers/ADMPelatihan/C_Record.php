@@ -152,7 +152,6 @@ class C_Record extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
-
 	}
 
 	public function EditSave($id)
