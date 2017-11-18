@@ -126,7 +126,7 @@ class C_Record extends CI_Controller {
 	}
 
 	//HALAMAN EDIT
-	public function edit($id){
+	public function Edit($id){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -138,18 +138,78 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['ptctype'] = $this->M_penjadwalan->GetParticipantType();
 		$data['room'] = $this->M_penjadwalan->GetRoom();
 		$data['record'] = $this->M_record->GetRecordId($id);
 		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['id'] 	= $id;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
+
 	}
 
+	public function EditSave($id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$namapelatihan 	= $this->input->post('txtNamaPelatihan', TRUE);
+		$tanggal 		= str_replace('/', '-', $this->input->post('txtTanggalPelaksanaan', TRUE));
+		$tanggal 		= date('Y-m-d', strtotime($tanggal));
+		$waktuawal 		= $this->input->post('txtWaktuMulai', TRUE);
+		$waktuakhir 	= $this->input->post('txtWaktuSelesai', TRUE);
+		$ruangan 		= $this->input->post('slcRuang', TRUE);
+		$evaluasi		= $this->input->post('slcEvaluasi', TRUE);
+		$evaluasi2 		= implode(',', $evaluasi);
+		$sifat			= $this->input->post('slcSifat');
+		$jmlpeserta		= $this->input->post('txtJumlahPeserta', TRUE);
+
+		$kirim = array(
+			'scheduling_name' 	=> $namapelatihan,
+			'date'			  	=> $tanggal,
+			'start_time'		=> $waktuawal,
+			'end_time'			=> $waktuakhir,
+			'room' 				=> $ruangan,
+			'evaluation'		=> $evaluasi2,
+			'sifat'				=> $sifat,
+			'participant_number'=> $jmlpeserta 
+			);
+
+		$participant	= $this->input->post('slcEmployee', TRUE);
+		$j=0;
+			foreach($participant as $loop){
+				$dataemployee	= $this->M_record->GetEmployeeData($loop);
+					foreach ($dataemployee as $de) {
+						$noind		= $de['employee_code'];
+						$name		= $de['employee_name'];
+					}
+				$data_participant[$j] = array(
+					'scheduling_id' 	=> $id,
+					'participant_name' 	=> $name,
+					'noind' 			=> $noind,
+					'status'			=> '0',
+				);
+				if( !empty($participant[$j]) ){
+					$this->M_record->AddParticipant($data_participant[$j]);
+				}
+				$j++;
+			}
+
+		// echo "<pre>";
+		// print_r($kirim);
+		// echo "</pre>";
+		// exit();
+
+		$this->M_record->UpdateSchedule($kirim, $id);
+		redirect('ADMPelatihan/Record/Detail/'.$id);
+	}
 
 	//HALAMAN KONFIRMASI
 	public function confirm($id){
@@ -188,17 +248,17 @@ class C_Record extends CI_Controller {
 		}
 
 		//---GET NOINDUK
-
-
+		$staf = array();
+		$nonstaf = array();
 		$data['record'] = $this->M_record->GetRecordId($id);
 		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
-		$data['purpose'] = $this->M_record->GetPurpose($id);
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ADMPelatihan/Record/V_Confirm',$data);
+		$this->load->view('ADMPelatihan/Record/V_Confirm',$data,$staf,$nonstaf);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -211,31 +271,31 @@ class C_Record extends CI_Controller {
 
 		$ParticipantId 		= $this->input->post('txtId');
 		$ParticipantStatus 	= $this->input->post('slcStatus');
+		$ScoreEval1Post		= $this->input->post('txtReaksiPost');
 		$ScoreEval2Pre 		= $this->input->post('txtPengetahuanPre');
+		$ScoreEval2Post		= $this->input->post('txtPengetahuanPost');
 		$ScoreEval3Pre 		= $this->input->post('txtPerilakuPre');
 		$ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
-		$ScoreEval3PostR1 	= $this->input->post('txtPerilakuPostRem1');
-		$ScoreEval3PostR2 	= $this->input->post('txtPerilakuPostRem2');
-		$ScoreEval3PostR3 	= $this->input->post('txtPerilakuPostRem3');
+		$ScoreEval3Eval 	= $this->input->post('txtPerilakuEvalLap');
 		
 			$i=0;
 			foreach($ParticipantId as $loop){
 				$id = $ParticipantId[$i];
+				if(empty($ScoreEval1Post[$i])){$ScoreEval1Post[$i] = NULL;}
 				if(empty($ScoreEval2Pre[$i])){$ScoreEval2Pre[$i] = NULL;}
 				if(empty($ScoreEval3Pre[$i])){$ScoreEval3Pre[$i] = NULL;}
 				if(empty($ScoreEval3Post[$i])){$ScoreEval3Post[$i] = NULL;}
-				if(empty($ScoreEval3PostR1[$i])){$ScoreEval3PostR1[$i] = NULL;}
-				if(empty($ScoreEval3PostR2[$i])){$ScoreEval3PostR2[$i] = NULL;}
-				if(empty($ScoreEval3PostR3[$i])){$ScoreEval3PostR3[$i] = NULL;}
+				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
+				if(empty($ScoreEval3Eval[$i])){$ScoreEval3Eval[$i] = NULL;}
 				
 				$data_participant[$i] = array(
 					'status' 			=> $ParticipantStatus[$i],
+					'score_eval1_post' 	=> $ScoreEval1Post[$i],
 					'score_eval2_pre' 	=> $ScoreEval2Pre[$i],
 					'score_eval3_pre' 	=> $ScoreEval3Pre[$i],
 					'score_eval3_post1' => $ScoreEval3Post[$i],
-					'score_eval3_post2' => $ScoreEval3PostR1[$i],
-					'score_eval3_post3' => $ScoreEval3PostR2[$i],
-					'score_eval3_post4' => $ScoreEval3PostR3[$i],
+					'score_eval2_post' 	=> $ScoreEval2Post[$i],
+					'score_eval3_post2' => $ScoreEval3Eval[$i],
 				);
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;
@@ -250,6 +310,11 @@ class C_Record extends CI_Controller {
 		$this->M_record->DeleteScheduleParticipant($id);
 		$this->M_record->DeleteScheduleObjective($id);
 		redirect('ADMPelatihan/Record');
+	}
+
+	public function deleteParticipant($pid,$schID)
+	{
+		$this->M_record->deleteParticipant($pid, $schID);
 	}
 
 	//FILTER RECORD
@@ -270,5 +335,20 @@ class C_Record extends CI_Controller {
 		}else{
 			redirect('');
 		}
+	}
+
+	public function GetNoInduk(){
+		$term = $this->input->get("term");
+		$data = $this->M_record->GetNoInduk($term);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{"NoInduk":"'.$data['employee_code'].'","Nama":"'.$data['employee_name'].'"}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
 	}
 }

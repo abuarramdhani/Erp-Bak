@@ -37,7 +37,7 @@
 	?>
 		<tr >
 			<td height="40px" style="border: 1px solid #000;font-size: 15px; vertical-align: middle"><center><?php echo $no++; ?></center></td>
-			<td style="padding-left: 5px;border: 1px solid #000; font-size: 15px; vertical-align: top;">Bea DL <?php echo $jk.' '.$drel['employee_name'].' / '.$drel['employee_code'].' Ke '.$drel['area_name'].' tgl '.$depart[2].'/'.$depart[1].'/'.$depart[0].' - '.$return[2].'/'.$return[1].'/'.$return[0]?></td>
+			<td style="padding-left: 5px;border: 1px solid #000; font-size: 15px; vertical-align: top;">Bea DL <?php echo $jk.' '.$drel['employee_name'].' / '.$drel['employee_code'].' Ke '.$drel['city_province'].' ('.$drel['city_name'].') tgl '.$depart[2].'/'.$depart[1].'/'.$depart[0].' - '.$return[2].'/'.$return[1].'/'.$return[0]?></td>
 			<td style="padding-left: 3px;text-align: right ;border: 1px solid #000;font-size: 15px; vertical-align: middle"><?php if (!empty($total)){ echo number_format($total['total_real'], 0, ',', '.'); } else{echo "N/A";} ?>&nbsp;</td>
 		</tr>
 		<tr>

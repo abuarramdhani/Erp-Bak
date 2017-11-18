@@ -43,7 +43,7 @@
 	                                                <select style="width:100%"  id="txtLokasiKerja" name="txtLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_lokasi_kerja_data as $row) {
-															$slc='';if($row->id_lokasi_kerja==$id_lokasi_kerja){$slc='selected';}
+															$slc='';if(str_replace(" ","",$row->id_lokasi_kerja)==str_replace(" ","",$id_lokasi_kerja)){$slc='selected';}
                                                             echo '<option '.$slc.' value="'.$row->id_lokasi_kerja.'">'.$row->lokasi_kerja.'</option>';
                                                         }
                                                         ?></select>

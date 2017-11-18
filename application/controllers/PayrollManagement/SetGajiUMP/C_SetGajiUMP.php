@@ -21,8 +21,8 @@ class C_SetGajiUMP extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Gaji UMP';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,8 +50,8 @@ class C_SetGajiUMP extends CI_Controller
         $row = $this->M_setgajiump->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif UMP',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -83,8 +83,8 @@ class C_SetGajiUMP extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif UMP',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -156,15 +156,17 @@ class C_SetGajiUMP extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif UMP',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/SetGajiUMP/saveUpdate'),
 				'kode_ump' => set_value('txtKdStatusKerja', $row->kode_ump),
+				'id_lokasi_kerja' => set_value('txtLokasiKerja', $row->id_lokasi_kerja),
 				'ump' => set_value('txtStatusKerja', $row->ump),
+				'pr_lokasi_kerja_data' => $this->M_setgajiump->get_lokasi_kerja(),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -184,11 +186,21 @@ class C_SetGajiUMP extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kode_ump' => $this->input->post('txtKodeUMPNew',TRUE),
 			'ump' => str_replace(',','',$this->input->post('txtUMP',TRUE)),
+		);
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
+		);
+		$ru_data = array(
+			'tgl_berlaku' => date('Y-m-d'),
+			'ump' => str_replace(',','',$this->input->post('txtUMP',TRUE)),
+			'kd_petugas'	=> $this->session->userdata('userid'),
+			'tgl_rec'	=> date('Y-m-d H:i:s'),
 		);
 
             $this->M_setgajiump->update($this->input->post('txtKodeUMP', TRUE), $data);
+			$this->M_setgajiump->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
 					 "success_update" => 1

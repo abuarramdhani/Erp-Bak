@@ -41,20 +41,20 @@
                                         <label for="txtNoind" class="control-label col-lg-4">No induk</label>
                                         <div class="col-lg-4">
                                             <select style="width:100%" id="txtNoind" name="txtNoind" class="select2-getNoind"  data-placeholder="Choose an option" onchange="getKlaimCuti()">
-													<option value=""></option>
+													<option value="<?php echo $noind; ?>"><?php echo $noind; ?></option>
 												</select>
                                         </div>
                                     </div>
 									<div class="form-group">
 	                                    <label for="txtPeriode" class="control-label col-lg-4">Periode</label>
 	                                    <div class="col-lg-4">
-	                                        <input type="text" placeholder="<?php echo date('Y-m')?>" name="txtPeriode" id="txtPeriodeHitung" value="<?php echo $periode ?>" onchange="getKlaimCuti()" class="form-control" onkeypress="return isNumberKeyAndStrip(event)"  maxlength="7"/>
+	                                        <input type="text" placeholder="<?php echo date('Y-m')?>" name="txtPeriode" id="txtPeriodeHitung" value="<?php echo $periode ?>" onkeyup="getKlaimCuti()" class="form-control" onkeypress="return isNumberKeyAndStrip(event)"  maxlength="7"/>
 	                                    </div>
 	                                </div>
 									<div class="form-group">
                                         <label for="txtSisaCuti" class="control-label col-lg-4">Sisa Cuti</label>
                                         <div class="col-lg-2">
-                                            <input type="text" placeholder="Sisa Cuti" name="txtSisaCuti" id="txtSisaCuti" class="form-control" value="<?php echo $sisa_cuti; ?>" onchange="getKlaimCuti()"  onkeypress="return isNumberKey(event)" maxlength="2"/>
+                                            <input type="text" placeholder="Sisa Cuti" name="txtSisaCuti" id="txtSisaCuti" class="form-control" value="<?php echo $sisa_cuti; ?>" onkeyup="getKlaimCuti()"  onkeypress="return isNumberKey(event)" maxlength="2"/>
                                         </div>
                                     </div>
 									<div class="form-group">

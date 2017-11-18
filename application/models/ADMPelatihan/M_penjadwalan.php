@@ -8,7 +8,7 @@ class M_penjadwalan extends CI_Model {
 		
 		//AMBIL DATA TRAINING
 		public function GetTraining(){
-			$sql = "select * from pl.pl_master_training where status=0";
+			$sql = "select * from pl.pl_master_training ";
 			$sql2 = "select * from pl.pl_master_training_purpose";
 			$sql3 = "SELECT
 						SUM(tr.kapasitas_kelas) jumlah, 
@@ -29,14 +29,6 @@ class M_penjadwalan extends CI_Model {
 
 		public function GetAlert($date,$start_time,$end_time,$room,$training_id)
 		{
-			// $sql="	SELECT pst.date,pst.start_time,pst.end_time,pst.room,pmt.training_name,pst.trainer
-			// 		from pl.pl_scheduling_training pst, pl.pl_master_training pmt
-			// 		WHERE date = to_date('$date','DD-MM-YYYY') 
-			// 		AND
-			// 		pst.training_id = pmt.training_id
-			// 		AND room = '$room'
-			// 		order by room;";
-
 			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
 					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
 					where pst.training_id = pmt.training_id 
@@ -112,6 +104,11 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
+		public function GetObjectiveId($id){
+		$sql = " select * from pl.pl_master_training_purpose where training_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 		//Get Trainer
 		public function GetObjective($term){
 			if ($term === FALSE) {
@@ -178,22 +175,22 @@ class M_penjadwalan extends CI_Model {
 
 
 		//Create New Master
-		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi,$trainers){
+		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis){
 			$sql = "
 			insert INTO pl.pl_scheduling_training
-			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer)values
-			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi','$trainers')";
+			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer,sifat,training_type)values
+			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi2','$trainers','$sifat',$jenis)";
 			$query = $this->db->query($sql);
 			$insert_id = $this->db->insert_id();
 			return  $insert_id;
 		}
 
 		//Create New Master
-		public function AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi,$trainers){
+		public function AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers,$sifat,$jenis){
 			$sql = "
 			insert INTO pl.pl_scheduling_training
-			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,room,participant_type,participant_number,evaluation,trainer)values
-			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi','$trainers')";
+			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,room,participant_type,participant_number,evaluation,trainer,sifat,training_type)values
+			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi2','$trainers',$sifat,$jenis)";
 			$query = $this->db->query($sql);
 			return;
 		}

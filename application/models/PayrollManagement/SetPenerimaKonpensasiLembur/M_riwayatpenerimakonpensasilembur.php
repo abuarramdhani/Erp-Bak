@@ -69,6 +69,7 @@ class M_riwayatpenerimakonpensasilembur extends CI_Model
 // association
             function get_pr_master_status_kerja_data()
             {
+				$this->db->order_by('kd_status_kerja','asc');
                 return $this->db->get('pr.pr_master_status_kerja')->result();
             }
 
@@ -77,6 +78,7 @@ class M_riwayatpenerimakonpensasilembur extends CI_Model
 // association
             function get_pr_master_jabatan_data()
             {
+				$this->db->order_by('kd_jabatan','asc');
                 return $this->db->get('pr.pr_master_jabatan')->result();
             }
 

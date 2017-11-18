@@ -21,8 +21,8 @@ class C_DataKlaimPekerjaKeluar extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Data Hari Masuk Pekerja Keluar/Klaim Individual';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -44,8 +44,8 @@ class C_DataKlaimPekerjaKeluar extends CI_Controller
 		$this->checkSession();
         $user_id = $this->session->userid;
         $kd_transaksi = "2";
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Data Hari Masuk Pekerja Keluar/Klaim Individual';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -82,8 +82,8 @@ class C_DataKlaimPekerjaKeluar extends CI_Controller
 		$this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Penggajian';
+        $data['SubMenuOne'] = 'Data Hari Masuk Pekerja Keluar/Klaim Individual';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

@@ -28,7 +28,6 @@
                     <b>Transaksi Penggajian</b>
 		          </div>
 		          <div class="box-body">
-		           <div class="table-responsive"> 
 				   <div class="row">
 						    <div class="row" style="margin: 10px 0 10px 0px">
 							  <div class="col-lg-5">
@@ -71,7 +70,6 @@
 						  </form>
 			          </div>
 		            </div>
-		           </div> 
 		          </div>
 		        </div>
 	        </div>

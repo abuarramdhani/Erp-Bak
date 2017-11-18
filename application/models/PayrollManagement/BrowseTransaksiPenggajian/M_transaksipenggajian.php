@@ -108,7 +108,7 @@ class M_transaksipenggajian extends CI_Model
 	}
 	
 	function getMasterPtkp($stat_pajak,$jt_pajak,$date){
-		$query	= "select * from pr.pr_master_param_ptkp where periode<='$date' and right(status_pajak,1)='0' and left(status_pajak,1)=left('$stat_pajak',1)";
+		$query	= "select * from pr.pr_master_param_ptkp where periode<='$date' and right(status_pajak,1)='$jt_pajak' and left(status_pajak,1)=left('$stat_pajak',1)";
 		$sql		= $this->db->query($query);
 		return $sql->result();
 	}

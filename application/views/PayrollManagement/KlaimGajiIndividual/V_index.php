@@ -52,7 +52,6 @@
 									</form>
 								</div>
 					</div>
-		            <div class="table-responsive">
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-KlaimGajiIndividual" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
@@ -158,7 +157,6 @@
 							} ?>
 		                </tbody>                                      						
 		              </table>
-		            </div>
 		          </div>
 		        </div>
 	        </div>

@@ -56,7 +56,7 @@
 							<th style='text-align:center;'><div style="width:100px"></div>Nama</th>
 							<th style='text-align:center;'><div style="width:100px">Jabatan</div></th>
 							<th style='text-align:center;'><div style="width:100px"></div>Jabatan Upah</th>
-							<th style='text-align:center;'><div style="width:100px"></div>Seksi</th>
+							<th style='text-align:center;'><div style="width:100px"></div>Kodesie</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Bank</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Gaji Pokok</th>
 							<th style='text-align:center;'><div style="width:100px"></div>Gaji Asuransi</th>

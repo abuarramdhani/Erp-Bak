@@ -56,9 +56,9 @@
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-2">
-										<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadfm')?>" class="btn btn-warning btn-block">Cancel</a>
+										<a href="<?php echo base_url('AccountPayables/Invoice/downloadfm')?>" class="btn btn-warning btn-block">Cancel</a>
 									</div>
-									<form method="post" action="<?php echo base_url('AccountPayables/C_Invoice/confirmfm')?>" enctype="multipart/form-data">
+									<form method="post" action="<?php echo base_url('AccountPayables/Invoice/confirmfm')?>" enctype="multipart/form-data">
 										<input type="hidden" name="TxtFileName" class="form-control" value="<?php echo $filename ?>" readonly>
 										<div class="col-md-2">
 											<button class="btn btn-success btn-block">Confirm</button>

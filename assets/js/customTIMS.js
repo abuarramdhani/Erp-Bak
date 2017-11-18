@@ -93,11 +93,12 @@
 
 		$(".js-slcNoInduk").select2({
 			placeholder: "No Induk",
-			minimumInputLength: 0,
+			minimumInputLength: 3,
 			ajax: {		
 				url:baseurl+"RekapTIMSPromosiPekerja/GetNoInduk",
 				dataType: 'json',
 				type: "GET",
+				delay: 500,
 				data: function (params) {
 					var queryParameters = {
 						term: params.term,

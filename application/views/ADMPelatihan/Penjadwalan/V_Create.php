@@ -69,7 +69,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input name="txtTanggalPelaksanaan" class="form-control singledate" placeholder="Tanggal" required >
+										<input name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
 									</div>
 								</div>
 							</div>
@@ -130,7 +130,7 @@
 										<!-- <input type="checkbox" name="chk1" value="1"> Wawasan<br>
 	  									<input type="checkbox" name="chk2" value="2"> Pengetahuan<br>
 	  									<input type="checkbox" name="chk3" value="3"> Perilaku -->
-	  									<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" required>
+	  									<select class="form-control select4" name="slcEvaluasi[]" data-placeholder="   Evaluasi" id="slcEvaluasi" multiple="multiple" required>
 												<option value=""></option>
 												<?php foreach($GetEvaluationType as $et){ ?>
 													<option value="<?php echo $et['evaluation_type_id']?>">
@@ -143,18 +143,32 @@
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat </label>
+									<div class="col-lg-9">
+										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan" required>
+											<option></option>
+											<option value="1">Order</option>
+											<option value="2">Tahunan</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<!-- ORIENTASI/NON ORIENTASI -->
+							<?php  ?>
+							<input name="txtJenis" value="2" hidden></input>	
+
+							<!-- PESERTA -->
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
 									<div class="col-lg-4">
-										<!-- <input type="radio" name="txtPeserta" value="0"> Staff<br>
-										<input type="radio" name="txtPeserta" value="1"> Non-Staff<br>
-										<input type="radio" name="txtPeserta" value="2"> Staff & Non Staff<br> -->
 										<select class="form-control select2" name="slcPeserta">
 										<?php foreach($ptctype as $py) {?> 
 											<option value="<?php echo $py['participant_type_id']?>">
 												<?php echo $py['participant_type_description']?>
 											</option>
 										<?php }?>
-									</select>
+										</select>
 									</div>
 									<label class="col-lg-1 control-label">Jumlah Peserta</label>
 									<div class="col-lg-4">
@@ -183,7 +197,7 @@
 													</thead>
 													<tbody id="tbodyParticipant">
 														<tr class="clone">
-															<td ><?php echo $no++;?></td>
+															<td ><?php echo $number++;?></td>
 															<td>
 																<div class="input-group">
 																	<div class="input-group-addon">

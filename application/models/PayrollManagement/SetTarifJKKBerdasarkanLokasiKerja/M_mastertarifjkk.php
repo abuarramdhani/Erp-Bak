@@ -62,6 +62,11 @@ class M_mastertarifjkk extends CI_Model
         return $this->db->get('pr.pr_lokasi_kerja')->result();
     }
 	
+	function getId(){
+		$this->db->select_max('id_tarif_jkk');
+		return $this->db->get($this->table)->row();
+	}
+	
 //------------------------- RIWAYAT RELATION -------------------------	
 	
 	//MASTER DELETE CURRENT

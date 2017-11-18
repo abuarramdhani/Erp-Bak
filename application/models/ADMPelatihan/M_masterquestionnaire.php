@@ -95,20 +95,22 @@ class M_masterquestionnaire extends CI_Model {
 
 		// UPDATE DATA
 		// public function UpdateData($data, $id)
-		public function UpdateData($Q_id, $Q_name, $StDes, $SgDes, $id)
-		{
+		// public function UpdateData($Q_id, $Q_name, $StDes, $SgDes, $id)
+		// {
 
-			$queryUpdateData1	= "	UPDATE 	pl.pl_master_questionnaire
-									SET 	questionnaire_title='".$Q_name."'
-									WHERE 	questionnaire_id=".$Q_id.";";
-			$queryUpdateData3 	= " UPDATE 	pl.pl_master_questionnaire_statement
-			 						SET 	statement_description='".$StDes."'
-			 						WHERE 	questionnaire_id=".$Q_id.";";
-			$sqlUpdateData1 	=	$this->db->query($queryUpdateData1);
-			$sqlUpdateData3		=	$this->db->query($queryUpdateData3);
-		}
+		// 	$queryUpdateData1	= "	UPDATE 	pl.pl_master_questionnaire
+		// 							SET 	questionnaire_title='".$Q_name."'
+		// 							WHERE 	questionnaire_id=".$Q_id.";";
+		// 	$queryUpdateData3 	= " UPDATE 	pl.pl_master_questionnaire_statement
+		// 	 						SET 	statement_description='".$StDes."'
+		// 	 						WHERE 	questionnaire_id=".$Q_id.";";
+		// 	$sqlUpdateData1 	=	$this->db->query($queryUpdateData1);
+		// 	$sqlUpdateData3		=	$this->db->query($queryUpdateData3);
+		// }
 
-		public function insertDes($Q_id,$Des,$SgID)
+
+
+		public function insertDes($Q_id,$Des)
 		{
 			$sql="
 				INSERT into pl.pl_master_questionnaire_segment
@@ -118,6 +120,8 @@ class M_masterquestionnaire extends CI_Model {
 			";
 			$this->db->query($sql);
 
+			$last_insert_id = $this->db->insert_id();
+			return $last_insert_id;
 		}
 		
 		public function insertStDes($Q_id,$SgID,$TDes)
@@ -130,6 +134,14 @@ class M_masterquestionnaire extends CI_Model {
 			";
 			$this->db->query($sql);
 
+		}
+
+		public function updateTitle($Q_id, $Q_name)
+		{
+			$sql 	= "UPDATE pl.pl_master_questionnaire
+						SET questionnaire_title='".$Q_name."'
+						where questionnaire_id=".$Q_id."";
+			$this->db->query($sql);
 		}
 
 		public function updateDes($Q_id,$Des, $SgID)

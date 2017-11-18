@@ -35,7 +35,7 @@
 						<b>Form Edit Master Kuesioner</b>
 					</div>
 					<div class="box-body">
-						<form method="post" action="<?php echo site_url('ADMPelatihan/MasterQuestionnaire/editSave/'.$id);?>">					
+						<form method="post" action="<?php echo site_url('ADMPelatihan/MasterQuestionnaire/editSave/'.$id);?>" onkeypress="return event.keyCode != 13;">					
 						<?php foreach($questionnaire as $qs) {?>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -54,7 +54,7 @@
 							<div class="col-md-8">
 								<div class="panel panel-default">
 									<div class="panel-heading text-right">
-										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegment('<?php echo base_url(''); ?>')"><i class="fa fa-plus"></i></a>
+										<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddSegment" title="Tambah Baris" onclick="AddSegment('edit')"><i class="fa fa-plus"></i></a>
 										<b style="float:left;">Edit Segment</b>
 									</div>
 									<div class="panel-body">
@@ -77,7 +77,7 @@
 													<tr class="clone" row-id="<?php echo $no; ?>">
 														<td ><?php echo $no; ?></td>
 														<td>
-															<input id="segment" name="txtSegment[]" class="form-control segment" value="<?php echo $sg['segment_description']?>">
+															<input id="segment" name="txtSegment[]" class="form-control segment" value="<?php echo $sg['segment_description']?>" onkeyup="insertKuesAjax(event, this)" data-id="<?php echo $sg['segment_id'] ?>" data-toggle="tooltip" data-placement="top" title="Tekan Enter untuk Menyimpan!">
 															<input type="hidden" name="idSegment[]" value="<?php echo $sg['segment_id'] ?>">
 														</td>
 														<td>
@@ -91,7 +91,7 @@
 										</table>
 									</div>
 								</div> 
-								<br>
+							<br>
 						</div>
 							</div>
 								<div class="form-group">

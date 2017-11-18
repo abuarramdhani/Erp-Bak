@@ -20,7 +20,7 @@
 							</div>
 							<div class="box-body">
 								<fieldset class="row2" style="background:#F8F8F8 ;">
-								 	<form action="<?php echo base_URL('AccountPayables/C_Invoice/search')?>" method="post" enctype="multipart/form-data" id="pph">
+								 	<form action="<?php echo base_URL('AccountPayables/Invoice/search')?>" method="post" enctype="multipart/form-data" id="pph">
 				                    	<div class="box-body">
 
 					                     	<table>
@@ -32,7 +32,7 @@
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
-															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date("d-m-y"); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
+															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date("d-m-y"); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_awal" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 														</div>
 					                     			</td>
@@ -43,7 +43,7 @@
 					                     				<div class="input-group">
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 														<div class="date" data-date="" data-date-format="dd-M-yyyy" data-link-field="dtp_input2" data-link-format="dd-M-yyyy">
-															<input id="tanggal_awal" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date("d-m-y"); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
+															<input id="tanggal_akhir" onkeypress="return hanyaAngka(event, false)" class="form-control datepicker" value="<?php echo date("d-m-y"); ?>"  data-date-format="dd-M-yyyy" type="text" name="tanggal_akhir" riquaite placeholder=" Date" autocomplete="off">
 														</div>
 													</div>
 					                     			</td>
@@ -119,13 +119,58 @@
 										</div>
 							 	</fieldset>
 							 	<div class="box-footer">
-									<button type="submit" class="btn btn-primary btn-sm" id="sbmt"><b>Cari Data</b></button>
+									<button type="button" class="btn btn-primary btn-sm" id="smbt"><b>Cari Data</b></button>
 									<a id="ClearSearch" class="btn btn-danger btn-sm"><b>Clear</b></a>
-									<!-- a <a class="btn btn-danger btn-sm" title="Edit" class="btn btn-default leftmargin"  onclick="test2()" > Cancel</a> -->
 									<div style="float: right;">
-									<a href="<?php echo base_URL('AccountPayables/Invoice/faktursa') ?>" id="fti" class="btn btn-info btn-lg">Faktur tanpa Invoice</a>
-				            	</div>
+										<button type="button" class="btn btn-info btn-lg" id="fakturSAbtn">Faktur tanpa Invoice</button>
+									</div>
+				            	</div><br><br><br>
+				            	<div id="searchResultTableHere" style="width: 100%;"></div>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="example-modal"><!--PURRRFECT-->
+				<div class="modal fade in" id="modalInputFaktur">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Modal Input Faktur</h4>
+							</div>
+							<div class="modal-body"  id="contentFakMod">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="example-modal">
+				<div class="modal fade in" id="comentModal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Comment Modal</h4>
+							</div>
+			  			    <div class="modal-body">
+			  			    	<p>Lanjutkan input Faktur</p>
+			  			    	<label for="passwd">PASSWORD : </label>
+			  			    		<input type="password" name="passwd" id="passwd" style="width: 45%"><br>
+			  			    	<label for="txaCmt">COMMENT : </label><br>
+			  			    		<textarea name="txaCmt" id="txaCmt" style="width: 100%"></textarea>
+			  			    </div>
+			  			    <div class="modal-footer">
+			  			    	<button type="button" id="btnClsModFak" class="btn btn-danger">Cancel</button>
+			  			    	<button type="button" class="btn btn-info" id="btnConfirm">Proceed</button>
+			  			    </div>
+			  			    </div>
 						</div>
 					</div>
 				</div>

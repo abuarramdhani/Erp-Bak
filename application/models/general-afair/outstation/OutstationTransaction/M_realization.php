@@ -7,13 +7,13 @@ class M_Realization extends CI_Model {
     }
 	
 	public function show_realization(){
-		$sql="select * from ga.ga_outstation_realization aa, ga.ga_outstation_area ar, ga.ga_outstation_city_type ct, er.er_employee_all emp, er.er_section sec where aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id and aa.employee_id=emp.employee_id and emp.section_code= sec.section_code order by aa.realization_id";
+		$sql="select * from ga.ga_outstation_realization aa, ga.ga_outstation_city ct, er.er_employee_all emp, er.er_section sec where aa.city_id=ct.city_id and aa.employee_id=emp.employee_id and emp.section_code= sec.section_code order by aa.realization_id";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	} 
 
-	public function new_realization($employee_id,$area_id,$city_type_id,$depart,$return,$bon){
-		$sql="insert into ga.ga_outstation_realization (employee_id,area_id,city_type_id,depart_time,return_time,bon_nominal) values ('$employee_id','$area_id','$city_type_id','$depart','$return','$bon')";
+	public function new_realization($employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon,$include_acc){
+		$sql="insert into ga.ga_outstation_realization (employee_id,city_id,area_id,city_type_id,depart_time,return_time,bon_nominal,accomodation_option) values ('$employee_id','$city_id','$area_id','$city_type_id','$depart','$return','$bon','$include_acc')";
 		$query = $this->db->query($sql);
 		return;
 	}
@@ -25,7 +25,7 @@ class M_Realization extends CI_Model {
 	}
 
 	public function select_edit_realization($realization_id){
-		$sql="select * from ga.ga_outstation_realization aa, ga.ga_outstation_area ar, er.er_employee_all emp, er.er_section sec, ga.ga_outstation_position pst, ga.ga_outstation_city_type ct where aa.area_id=ar.area_id and aa.city_type_id=ct.city_type_id and aa.employee_id = emp.employee_id and emp.section_code = sec.section_code and emp.outstation_position = pst.position_id and aa.realization_id = '$realization_id'";
+		$sql="select * from ga.ga_outstation_realization aa, er.er_employee_all emp, er.er_section sec, ga.ga_outstation_position pst, ga.ga_outstation_city ct where aa.city_id=ct.city_id and aa.employee_id = emp.employee_id and emp.section_code = sec.section_code and emp.outstation_position = pst.position_id and aa.realization_id = '$realization_id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -36,8 +36,8 @@ class M_Realization extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function update_realization($realization_id,$employee_id,$area_id,$city_type_id,$depart,$return,$bon){
-		$sql="update ga.ga_outstation_realization set employee_id='$employee_id', area_id='$area_id', city_type_id='$city_type_id', depart_time='$depart', return_time='$return', bon_nominal='$bon' where realization_id='$realization_id'";
+	public function update_realization($realization_id,$employee_id,$city_id,$area_id,$city_type_id,$depart,$return,$bon,$include_acc){
+		$sql="update ga.ga_outstation_realization set employee_id='$employee_id', city_id='$city_id', area_id='$area_id', city_type_id='$city_type_id', depart_time='$depart', return_time='$return', bon_nominal='$bon', accomodation_option='$include_acc' where realization_id='$realization_id'";
 		$query = $this->db->query($sql);
 		return;
 	}
@@ -121,6 +121,12 @@ class M_Realization extends CI_Model {
 			values ('$id','$sub','$to','$cc','$bcc',now(),'$val','$status')";
 		$query = $this->db->query($sql);
 		return;
+	}
+
+	public function show_city(){
+		$sql="select * from ga.ga_outstation_city where end_date > now()";
+		$query = $this->db->query($sql);
+		return $query->result_array();
 	}
 }
 ?>

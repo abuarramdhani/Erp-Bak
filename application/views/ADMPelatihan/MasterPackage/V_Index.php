@@ -49,28 +49,29 @@
 									<?php
 										$no=0;
 										foreach($GetPackage as $gp){
-											foreach($TrainingType as $tt){
-												if($gp['training_type']==$tt['training_type_id']){
-													$trgtype=$tt['training_type_description'];
-												}else{
-													$trgtype='Orientasi';
-												}
-											}
-
 											$no++;
-											// $trgtype='Orientasi';
-											// $ptctype='Staf';
 											if($gp['participant_type']==1){
 												$ptctype='Non Staf';
 											}elseif ($gp['participant_type']==0) {
 												$ptctype='Staf';
+											}else{
+												$ptctype='Staf & Non Staf';
 											}
 									?>
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $gp['package_name'] ?></td>
-										<td><?php echo 'pelatihan '.$trgtype ?></td>
-										<td ><?php echo $ptctype ?></td>
+										<td>
+										<?php
+											if($gp['training_type']==1){
+													echo "ORIENTASI";
+												}else{
+													echo "NON ORIENTASI";
+												}
+										 ?>
+										</td>
+										<td ><?php echo $ptctype; ?>
+										</td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/MasterPackage/View/'.$gp['package_id'])?>" class="btn btn-xs btn-warning"><i class="fa fa-search"></i> View</a>
 											<a href="<?php echo base_url('ADMPelatihan/MasterPackage/Edit/'.$gp['package_id'])?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
@@ -99,7 +100,7 @@
 										</div>
 									</div>
 
-									<?php } ?>
+									<?php }  ?>
 								</tbody>																			
 							</table>
 						</div>

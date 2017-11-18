@@ -80,79 +80,90 @@
 						</div>
 						<br>
 						<?php } ?>
-						<?php $bagnum=0; foreach($segment as $sg){ $bagnum++ ?>
-						<div class="row" style="margin: 10px 10px">
-							<div class="table-responsive col-lg-12" >
-								<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;">
-									<thead>
-										<tr class="bg-primary">
-											<th width="5%">No</th>
-											<th width="10%">Id Statement</th>
-											<th width="55%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
-											<th>Sangat Setuju</th>
-											<th>Setuju</th>
-											<th>Tidak Setuju</th>
-											<th>Sangat Tidak Setuju</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php 
-											$no=0;
-											foreach($statement as $st){
-												if($sg['segment_id']==$st['segment_id']){ $no++
-										?>
-										<tr>
-											<td><?php echo $no?></td>
-											<td><?php echo $st['statement_id']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-											<td style="text-align:left;"><?php echo $st['statement_description']?></td>
-											<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
-											<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
-											<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
-											<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
-										</tr>
-										<?php }} ?>
-									</tbody>
-								</table>
+						<?php
+						$bagnum=0;
+						$sgIdDat = array();
+						foreach($segmentessay as $sge){
+							$sgIdDat[] = $sge['segment_id'];
+						}
+						foreach($segment as $sg){
+								if (!in_array($sg['segment_id'], $sgIdDat)) {
+									$bagnum++; ?>
+							<div class="row" style="margin: 10px 10px">
+								<div class="table-responsive col-lg-12" >
+									<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;">
+										<thead>
+											<tr class="bg-primary">
+												<th width="5%">No</th>
+												<th width="55%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
+												<th>Sangat Setuju</th>
+												<th>Setuju</th>
+												<th>Tidak Setuju</th>
+												<th>Sangat Tidak Setuju</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php 
+												$no=0;
+												foreach($statement as $st){
+													if($sg['segment_id']==$st['segment_id']){
+														 $no++ ?>
+											<tr>
+												<td><?php echo $no?></td>
+												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
+												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
+												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
+												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
+												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
+											</tr>
+											<?php 	}
+												}
+												?>
+										</tbody>
+									</table>
+								</div>
 							</div>
-						</div>
-						<br>
-						<?php }?>
-						<?php foreach($segmentessay as $sge){ $bagnum++ ?>
-						<div class="row" style="margin: 10px 10px">
-							<div class="table-responsive col-lg-12" >
-								<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;">
-									<thead>
-										<tr class="bg-primary">
-											<th width="5%">No</th>
-											<th width="10%">Id Statement</th>
-											<th width="55%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
-											<th>Jawab</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php 
-											$no=0;
-											foreach($statement as $st){
-												if($sge['segment_id']==$st['segment_id']){ $no++
-										?>
-										<tr>
-											<td><?php echo $no?></td>
-											<td><?php echo $st['statement_id']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-											<td style="text-align:left;"><?php echo $st['statement_description']?></td>
-											<td>
-												<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" required>
-											</td>
-										</tr>
-										<?php }} ?>
-									</tbody>
-								</table>
+							<br>
+						<?php }
+						}?>
+						<?php
+						foreach($segmentessay as $sge){
+							$bagnum++ ?>
+							<div class="row" style="margin: 10px 10px">
+								<div class=" col-lg-12" >
+									<table class="table table-bordered table-hover text-center" width="100%">
+										<thead>
+											<tr class="bg-primary">
+												<th width="1px">No</th>
+												<th width="100px"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
+												<th>Jawab</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php 
+												$no=0;
+												foreach($statement as $st){
+													if($sge['segment_id']==$st['segment_id']){ $no++
+											?>
+											<tr>
+												<td><?php echo $no?></td>
+												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
+												<td>
+													<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" >
+												</td>
+											</tr>
+											<?php }} ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
-						</div>
-						<br>
+							<br>
 						<?php }?>
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-12 text-right">
+								<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+								&nbsp;&nbsp;
 								<a href="<?php echo base_url('ADMPelatihan/Record/Finished')?>" class="btn btn-danger btn btn-flat">Close</a>
 								&nbsp;&nbsp;
 								<?php if($sbm<$participant_number){?>

@@ -21,8 +21,8 @@ class C_MasterParameterTarifPph extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Tarif PPH';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -45,8 +45,8 @@ class C_MasterParameterTarifPph extends CI_Controller
         $row = $this->M_masterparametertarifpph->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif PPH',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -76,8 +76,8 @@ class C_MasterParameterTarifPph extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif PPH',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -152,8 +152,8 @@ class C_MasterParameterTarifPph extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif PPH',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -184,8 +184,18 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
+		
+		$data_riwayat = array(
+			'batas_bawah' => str_replace(',','',$this->input->post('txtBatasBawah',TRUE)),
+			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
+			'persen' => $this->input->post('txtPersen',TRUE),
+			'tgl_berlaku' 		=> date('Y-m-d'),
+			'kode_petugas' 		=> $this->session->userdata('userid'),
+			'tgl_jam_record' 	=> date('Y-m-d H:i:s'),
+		);
 
         $this->M_masterparametertarifpph->update($this->input->post('txtKdPph', TRUE), $data);
+        $this->M_masterparametertarifpph->update_riwayat($this->input->post('txtKdPphNew', TRUE), $data_riwayat);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/MasterParameterTarifPph'));
     }

@@ -217,7 +217,7 @@ $(document).ready(function() {
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://personalia.quick.com/cronjob/fingerprint/cronjob.frontpresensi.tpresensi.all.php?start="+start+"&end="+end+"", '_blank');
+				window.open("http://personalia.quick.com/cronjob/postgres/fingerprint/cronjob.frontpresensi.tpresensi.all.php?start="+start+"&end="+end+"", '_blank');
 			}
 		});
 		
@@ -228,12 +228,12 @@ $(document).ready(function() {
 			if( start == '' || end == ''){
 				alert('plesae complete your fill data !!!');
 			}else{
-				window.open("http://personalia.quick.com/cronjob/fingerprint/cronjob.frontpresensi.tpresensi.loc.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
+				window.open("http://personalia.quick.com/cronjob/postgres/fingerprint/cronjob.frontpresensi.tpresensi.loc.php?start="+start+"&end="+end+"&loc="+loc+"", '_blank');
 			}
 		});
 		
 		$(document).on("click", "#execute-cronjob-hrd", function () {
-				window.open("http://personalia.quick.com/cronjob/fingerprint/cronjob.presence.monitoring.php", '_blank');
+				window.open("http://personalia.quick.com/cronjob/postgres/fingerprint/cronjob.presence.monitoring.php", '_blank');
 		});
 		
 		$(document).on("click", "#update-fingercode", function () {
@@ -269,6 +269,7 @@ $(document).ready(function() {
 				$('#datatable-presensi-presence-management tbody').html(data);
 				$('#desLocationSection').val(loc);
 				$('#desLocationPerson').val(loc);
+				$('#txtLocation-Mutation').val(loc);
 			  }
 			});
 	});

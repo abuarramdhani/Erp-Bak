@@ -840,6 +840,8 @@ class C_Monitoring extends CI_Controller {
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 			
+			$data['lokasi']		=	$this->M_monitoring->GetLocationSpot();
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_SingleAccess',$data);

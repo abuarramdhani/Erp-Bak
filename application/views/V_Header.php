@@ -11,6 +11,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
@@ -18,6 +19,8 @@
     
 	<!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" />
+    <!-- <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" /> -->
+
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/select2/select2.min.css');?>" type="text/css" />
     <!-- FontAwesome 3.2.0 -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome/3.2.0/css/font-awesome.css');?>" />
@@ -55,6 +58,9 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/switch/static/stylesheets/bootstrap-switch.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/qtip/jquery.qtip.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/iCheck/skins/all.css');?>">
+
 	<!-- PAGE LEVEL STYLES FOR TEXTAREA -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>" />
