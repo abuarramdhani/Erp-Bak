@@ -227,7 +227,7 @@ $(document).ready(function() {
 			var invoice_num = $('input[name="TxtInvoiceNumber"]').val();
 			var name 		= $('select[name="TxtNama"]').val();
 			var tanggal_awal 	= $('input[name="tanggal_awal"]').val();
-    		var tanggal_akhir 	= $('input[name="tanggal_akhir"]').val();
+			var tanggal_akhir 	= $('input[name="tanggal_akhir"]').val();
 
 			var ket1		= 'no'; if(document.getElementById('ket1').checked){ket1= 'yes';}
 			var ket2		= 'no'; if(document.getElementById('ket2').checked){ket2= 'yes';}
@@ -254,7 +254,7 @@ $(document).ready(function() {
 						typ1:typ1, 
 						typ2:typ2, 
 						tanggal_awal:tanggal_awal,
-    					tanggal_akhir:tanggal_akhir,
+						tanggal_akhir:tanggal_akhir,
 
 					},
 				url:baseurl+"AccountPayables/C_Invoice/FindFaktur",
@@ -305,7 +305,7 @@ $(document).ready(function() {
 			$("#slcSupplier").select2("val", "");
 			$("#slcInvoiceNumber").val("");
 			$("#invStat").select2({
-			    minimumResultsForSearch: -1
+				minimumResultsForSearch: -1
 			});
 		});
 	});
@@ -315,7 +315,7 @@ $(document).ready(function() {
 	$('#tanggal_akhir_pilih').datepicker();
 	$('#tanggal_awal_pilih').datepicker();
 	$("#invStat").select2({
-	    minimumResultsForSearch: -1
+		minimumResultsForSearch: -1
 	});
 
 	$(document).on('tableLoaded', function(){
@@ -434,8 +434,8 @@ $(document).ready(function(){
 
 		klik_upload.on('sending', function(file, xhr, formData){
 			var type = $('select#type').val();
-            formData.append('fileType', type);
-        });
+			formData.append('fileType', type);
+		});
 
 		//upload
 		klik_upload.on("success",function(file, response){
@@ -691,14 +691,14 @@ $(document).ready(function(){
 		"searching": true,
 		"bLengthChange": false,
 		"scrollX": false,
-    	"paging": false
+		"paging": false
 	});
 
 	$('#txtReceiptDate').daterangepicker({
 		autoclose: true,
 		locale: {
-            format: 'DD/MMM/YYYY'
-        }
+			format: 'DD/MMM/YYYY'
+		}
 	});
 
 	$('#btnSearch').click(function(){

@@ -94,7 +94,7 @@ class C_Lppb extends CI_Controller {
 		};
 
 		if ($data['inven'] == '' || $data['inven'] == NULL) {
-			$sqlInventory = "AND ((MP.ORGANIZATION_ID IN (101, 102)) OR (MP.ORGANIZATION_CODE LIKE 'Y%'))";
+			$sqlInventory = "AND ((MP.ORGANIZATION_ID IN (101, 102, 124, 122, 286)) OR (MP.ORGANIZATION_CODE LIKE 'Y%'))";
 		} else {
 			$sqlInventory = "AND MP.ORGANIZATION_ID IN (".$data['inven'].")";
 		};

@@ -29,7 +29,7 @@ class M_lppb extends CI_Model{
 			WHERE
 				MP.ORGANIZATION_CODE LIKE 'Y%'
 				OR
-				MP.ORGANIZATION_ID IN (101, 102)
+				MP.ORGANIZATION_ID IN (101, 102, 124, 122, 286)--+124[EXP]
 			ORDER BY
 				MP.ORGANIZATION_CODE
 		");
@@ -68,7 +68,7 @@ class M_lppb extends CI_Model{
 				AND
 				ATT.TERM_ID = POH.TERMS_ID
 				AND 
-				RT.TRANSACTION_TYPE = 'RECEIVE'
+				RT.TRANSACTION_TYPE IN ('DELIVER')
 				AND
 				RT.QUANTITY-nvl(QUANTITY_BILLED,0) > 0
 				AND
@@ -78,7 +78,7 @@ class M_lppb extends CI_Model{
 				$sqlPo
 			having sum(NVL(RT.QUANTITY_BILLED,0)) = 0
 			group by
-				 POV.VENDOR_NAME,
+				POV.VENDOR_NAME,
 				MP.ORGANIZATION_CODE,
 				RSH.RECEIPT_NUM,
 				RSH.CREATION_DATE,
