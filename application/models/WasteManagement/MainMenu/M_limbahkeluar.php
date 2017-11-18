@@ -96,7 +96,7 @@ class M_limbahkeluar extends CI_Model
 
     public function getUser()
     {
-        $sqlGetUser = "SELECT * FROM ga.ga_limbah_user";
+        $sqlGetUser = "SELECT * FROM ga.ga_limbah_user Order by nama";
         $query = $this->db->query($sqlGetUser);
         return $query->result_array();
     }

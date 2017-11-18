@@ -1110,6 +1110,10 @@ $route['WasteManagement/LimbahKeluar/Record'] = 'WasteManagement/MainMenu/C_Limb
 $route['WasteManagement'] = 'WasteManagement/C_WasteManagement';
 
 //--------------------------------Waste Management - Master-----------------------------------//
+$route['WasteManagement/MasterData'] 				= 'WasteManagement/MainMenu/C_LimbahMaster';
+$route['WasteManagement/MasterData/(:any)'] 		= 'WasteManagement/MainMenu/C_LimbahMaster/$1';
+$route['WasteManagement/MasterData/(:any)/(:any)'] 	= 'WasteManagement/MainMenu/C_LimbahMaster/$1/$2';
+
 $route['WasteManagement/LimbahJenis'] 				= 'WasteManagement/MainMenu/C_LimbahJenis';
 $route['WasteManagement/LimbahJenis/(:any)'] 		= 'WasteManagement/MainMenu/C_LimbahJenis/$1';
 $route['WasteManagement/LimbahJenis/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahJenis/$1/$2';

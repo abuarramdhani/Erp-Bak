@@ -308,6 +308,7 @@ class C_LimbahKeluar extends CI_Controller
 		$data['limbah_keluar'] = $this->M_limbahkeluar->getLimbahKeluar();
 		$data['limbah_masuk'] = $this->M_limbahkeluar->getLimbahTransaksi();
 		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
+		$data['user_name'] = $this->M_limbahkeluar->getUser();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -329,6 +330,7 @@ class C_LimbahKeluar extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$jenislimbah = $this->input->post('jenis_limbah',true);
+		$username = $this->input->post('user_name',true);
 
 		$periode = $this->input->post('periode', true);
 		if($periode == '') {
@@ -344,13 +346,15 @@ class C_LimbahKeluar extends CI_Controller
 		}
 
 		$data['tanggalawal'] = $tanggalawal;
-		$data['tanggalakhir']= $tanggalakhir;
+		$data['tanggalakhir'] = $tanggalakhir;
 		$data['jenislimbah'] = $jenislimbah;
+		$data['NamaUser'] = $username;
 
 		$data['tanggalawalformatindo'] 	= date('d-m-Y',strtotime($tanggalawal));
 		$data['tanggalakhirformatindo']	= date('d-m-Y',strtotime($tanggalakhir));
 
-		$data['jenis_limbah']= $this->M_limbahkeluar->getJenisLimbah();
+		$data['jenis_limbah'] = $this->M_limbahkeluar->getJenisLimbah();
+		$data['user_name'] = $this->M_limbahkeluar->getUser();
 		$data['filterMasuk'] = $this->M_limbahkeluar->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenislimbah); 
 		$data['filterKeluar'] = $this->M_limbahkeluar->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenislimbah); 
 
@@ -369,14 +373,70 @@ class C_LimbahKeluar extends CI_Controller
 
             $tanggalawal = $this->input->post('excelTglAwal');
             $tanggalakhir = $this->input->post('excelTglAkhir');
-            $jenisLimbah = $this->input->post('exceljenislimbah'); 
+            $jenisLimbah = $this->input->post('exceljenislimbah');
+            $UserName = $this->input->post('excelusername'); 
 
 			if($tanggalawal == '') $tanggalawal = '';
 			if($tanggalakhir == '') $tanggalakhir = '';
 			if($jenisLimbah == null) $jenisLimbah == '';
 
-			$data['tanggalawal'] = date('d F Y', strtotime($tanggalawal)); 
-			$data['tanggalakhir'] = date('d F Y', strtotime($tanggalakhir)); 
+			$data['tanggalawal'] = $tanggalawal; 
+			$data['tanggalakhir'] = $tanggalakhir;
+			$data['user'] = $UserName;
+
+			$listBulan = array();
+			$tgl = date("Ym", strtotime($data['tanggalawal']));
+			while($tgl <= date("Ym", strtotime($data['tanggalakhir']))){
+				$hasil = substr($tgl, 4);
+				array_push($listBulan, $hasil);
+			    if(substr($tgl, 4, 2) == "12")
+			        $tgl = (date("Y", strtotime($tgl."01")) + 1)."01";
+			    else
+			        $tgl++;
+			}
+
+			$data['listBulan']=array();
+			foreach ($listBulan as $i => $bulan) {
+				if($bulan == '01') {
+					$bulan = 'Januari';
+				}elseif($bulan == '02') {
+					$bulan = 'Februari';
+				}elseif($bulan == '03') {
+					$bulan = 'Maret';
+				}elseif($bulan == '04') {
+					$bulan = 'April';
+				}elseif($bulan == '05') {
+					$bulan = 'Mei';
+				}elseif($bulan == '06') {
+					$bulan = 'Juni';
+				}elseif($bulan == '07') {
+					$bulan = 'Juli';
+				}elseif($bulan == '08') {
+					$bulan = 'Agustus';
+				}elseif($bulan == '09') {
+					$bulan = 'September';
+				}elseif($bulan == '10') {
+					$bulan = 'Oktober';
+				}elseif($bulan == '11') {
+					$bulan = 'November';
+				}elseif($bulan == '12') {
+					$bulan = 'Desember';
+				}																				
+				array_push($data['listBulan'], $bulan);
+															
+			}
+
+			$allBulan = '';
+			$jmlBulan = count($data['listBulan']);
+			for($b = 0; $b < $jmlBulan; $b++) {
+				if($b == ($jmlBulan-1)) {
+					$allBulan .= $data['listBulan'][$b];
+				} else {
+					$allBulan .= $data['listBulan'][$b].', ';	
+				}
+			}
+
+			$data['allBulan'] = $allBulan;
 
             $data['filterMasuk'] = $this->M_limbahkeluar->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenisLimbah); 
 			$data['filterKeluar'] = $this->M_limbahkeluar->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenisLimbah);
