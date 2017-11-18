@@ -37,7 +37,17 @@
                                 <div class="col-md-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                                <input id="periode" class="form-control"  data-date-format="d M Y" autocomplete="off" type="text" name="periode" style="width:170px" placeholder="Masukkan Periode" value="" />
+                                                <input id="periode" class="form-control"  data-date-format="d M Y" autocomplete="off" type="text" name="periode" style="width:100%" placeholder="Masukkan Periode" value="" />
+                                        </div>
+                                </div>
+                                <div class="col-md-5">
+                                        <div class="input-group">
+                                        <select name="user_name" class="form-control select2" data-placeholder="Pilih Kasie" style="width:250px">
+                                            <option value=""></option>
+                                            <?php foreach ($user_name as $user) { ?>
+                                            <option value="<?php echo $user['nama']; ?>"><?php echo $user['nama']; ?></option>
+                                            <?php }?> 
+                                        </select>
                                         </div>
                                 </div>
                                 <div class="col-md-1">
@@ -60,6 +70,7 @@
                                                     <input type="hidden" name="excelTglAwal" id="excelTglAwal" value="<?php echo $tanggalawal; ?>">
                                                     <input type="hidden" name="excelTglAkhir" id="excelTglAkhir" value="<?php echo $tanggalakhir; ?>">
                                                     <input type="hidden" name="exceljenislimbah" id="exceljenislimbah" value="<?php echo $jenislimbah; ?>">
+                                                    <input type="hidden" name="excelusername" id="excelusername" value="<?php echo $NamaUser; ?>">
 
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"></i></button>
                                                     </form>

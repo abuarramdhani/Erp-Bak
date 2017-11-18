@@ -71,10 +71,14 @@ $styleArray = array(
 	// );
 
 	// Add some data
+	foreach(range('A','K') as $columnID)
+	{
+    	$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+	}
 
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('A1', 'Logbook Harian Limbah Bahan Berbahaya Dan Beracun')
-				->setCellValue('A3', 'Periode : '.$tanggalawal.' - '.$tanggalakhir)
+				->setCellValue('A3', 'Bulan : '.$allBulan)
 				->setCellValue('A5', 'Masuknya Limbah B3 Ke TPS')
 				->setCellValue('G5', 'Keluarnya Limbah B3 dari TPS')
 				->setCellValue('A6', 'No')
@@ -141,7 +145,7 @@ $styleArray = array(
 				->setCellValueExplicit($kolomI, $FK['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomJ, $FK['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
-	}
+	}				
 
 	if ($i > $o) {
 		$hitung = $i;
@@ -158,7 +162,7 @@ $styleArray = array(
 
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('H'.($hitung+2), 'Kepala Seksi Waste Management')
-				->setCellValue('H'.($hitung+5), 'AYU TENANAN');
+				->setCellValue('H'.($hitung+5), $user);
 
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');

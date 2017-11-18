@@ -324,7 +324,7 @@ class C_LimbahTransaksi extends CI_Controller
 			    else
 			        $tgl++;
 			}
-			
+
 			$data['listBulan']=array();
 			foreach ($listBulan as $i => $bulan) {
 				if($bulan == '01') {
