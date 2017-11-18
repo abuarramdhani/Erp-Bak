@@ -225,7 +225,7 @@ $(document).ready(function() {
 			var invoice_num = $('input[name="TxtInvoiceNumber"]').val();
 			var name 		= $('select[name="TxtNama"]').val();
 			var tanggal_awal 	= $('input[name="tanggal_awal"]').val();
-    		var tanggal_akhir 	= $('input[name="tanggal_akhir"]').val();
+			var tanggal_akhir 	= $('input[name="tanggal_akhir"]').val();
 
 			var ket1		= 'no'; if(document.getElementById('ket1').checked){ket1= 'yes';}
 			var ket2		= 'no'; if(document.getElementById('ket2').checked){ket2= 'yes';}
@@ -252,7 +252,7 @@ $(document).ready(function() {
 						typ1:typ1, 
 						typ2:typ2, 
 						tanggal_awal:tanggal_awal,
-    					tanggal_akhir:tanggal_akhir,
+						tanggal_akhir:tanggal_akhir,
 
 					},
 				url:baseurl+"AccountPayables/C_Invoice/FindFaktur",
@@ -303,7 +303,7 @@ $(document).ready(function() {
 			$("#slcSupplier").select2("val", "");
 			$("#slcInvoiceNumber").val("");
 			$("#invStat").select2({
-			    minimumResultsForSearch: -1
+				minimumResultsForSearch: -1
 			});
 		});
 	});
@@ -313,7 +313,7 @@ $(document).ready(function() {
 	$('#tanggal_akhir_pilih').datepicker();
 	$('#tanggal_awal_pilih').datepicker();
 	$("#invStat").select2({
-	    minimumResultsForSearch: -1
+		minimumResultsForSearch: -1
 	});
 
 })
@@ -352,8 +352,8 @@ $(document).ready(function(){
 
 		klik_upload.on('sending', function(file, xhr, formData){
 			var type = $('select#type').val();
-            formData.append('fileType', type);
-        });
+			formData.append('fileType', type);
+		});
 
 		//upload
 		klik_upload.on("success",function(file, response){
@@ -461,7 +461,7 @@ $(document).ready(function(){
 		var pass = $('#passwd').val();
 		if (pass == '110993') {
 			// alert('HAUHAU');
-        	$('#pph').submit();
+			$('#pph').submit();
 		}else{
 			// alert('NAAAH');
 		};
@@ -489,11 +489,11 @@ $(document).ready(function(){
 
 		if (parseFloat(ppn1v) > parseFloat(ppnv)) {
 			if (ppnplus > 100 || npwp != npwp1) {
-        		// alert('NAAAH');
+				// alert('NAAAH');
 				$('#comentModal').modal('show');
 			}else{
 				// alert('HAUHAU');
-        		$('#pph').submit();
+				$('#pph').submit();
 			};
 		}else if (parseFloat(ppn1v) <= parseFloat(ppnv) && npwp == npwp1) {
 			$('#pph').submit();
@@ -565,14 +565,14 @@ $(document).ready(function(){
 		"searching": true,
 		"bLengthChange": false,
 		"scrollX": false,
-    	"paging": false
+		"paging": false
 	});
 
 	$('#txtReceiptDate').daterangepicker({
 		autoclose: true,
 		locale: {
-            format: 'DD/MMM/YYYY'
-        }
+			format: 'DD/MMM/YYYY'
+		}
 	});
 
 	$('#btnSearch').click(function(){
@@ -587,17 +587,17 @@ $(document).ready(function(){
 
 	// $('#chkTerima').click(function(){
 	// 	if($('#chkTerima').is(':checked')) {
-	// 	    $("#hdnTerima").val('YA');
+	// 		$("#hdnTerima").val('YA');
 	// 	} else {
-	// 	    $("#hdnTerima").val('TIDAK');
+	// 		$("#hdnTerima").val('TIDAK');
 	// 	};
 	// });
 
 
 	// if($('#chkTerima').is(':checked')) {
-	//     $("#hdnTerima").val('YA');
+	//	 $("#hdnTerima").val('YA');
 	// } else {
-	//     $("#hdnTerima").val('TIDAK');
+	//	 $("#hdnTerima").val('TIDAK');
 	// };
 
 	$('button').click(function(){
