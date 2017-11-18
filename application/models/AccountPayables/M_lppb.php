@@ -68,7 +68,7 @@ class M_lppb extends CI_Model{
 				AND
 				ATT.TERM_ID = POH.TERMS_ID
 				AND 
-				RT.TRANSACTION_TYPE IN ('RECEIVE','DELIVER')
+				RT.TRANSACTION_TYPE IN ('DELIVER')
 				AND
 				RT.QUANTITY-nvl(QUANTITY_BILLED,0) > 0
 				AND
