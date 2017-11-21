@@ -268,6 +268,9 @@ function getInfoJob() {
         var a = id[i];
         $.ajax({
             url: baseurl + 'ProductionPlanning/Monitoring/getInfoJob',
+            data: {
+                sectionId:id[i]
+            },
             type: 'POST',
         }).done(function(data) {
             $('table.infoJob[data-secid="' + a + '"] tbody').html(data);
