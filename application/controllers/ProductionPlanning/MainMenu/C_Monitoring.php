@@ -49,8 +49,57 @@ class C_Monitoring extends CI_Controller {
 
     public function Open()
     {
-    	$user_id 	= $this->session->userid;
-    	$section 	= $this->input->post('section');
+        $user_id        = $this->session->userid;
+        $section        = $this->input->post('section');
+        $datplan        = array();
+        $datDailyAchieve= array();
+        $datsec         = array();
+        $infoJob        = array();
+        $indeks         = 0;
+        foreach ($section as $val) {
+            $datplan[]          = $this->M_dataplan->getDataPlan($id=false,$val);
+            $datDailyAchieve[]  = $this->M_monitoring->getDailyAchieve($val);
+            $datsec[]           = $this->M_dataplan->getSection($user_id,$val);
+            $infoJob[]          = $this->M_monitoring->getInfoJobs($datsec[$indeks][0]['org_id'],$datsec[$indeks][0]['department_class_code'],$datsec[$indeks][0]['routing_class']);
+            $indeks++;
+        }
+
+        $data['section']        = $this->M_dataplan->getSection();
+        $data['secAchieve']     = $datDailyAchieve;
+        $data['infoJob']        = $infoJob;
+        $data['achieveAll']     = $this->M_monitoring->getAchievementAllFab();
+        $data['selectedSection']= $section;
+        
+        $data['highPriority']   = array();
+        $data['normalPriority'] = array();
+
+        foreach ($datplan as $dp => $val1) {
+            $h = 0;
+            $n = 0;
+            if (empty($val1)) {
+                $data['highPriority'][$dp][0] = false;
+                $data['normalPriority'][$dp][0] = false;
+            }else{
+                foreach ($val1 as $key => $val2) {
+                    if ($val2['priority'] == '1') {
+                        $data['highPriority'][$dp][$h++] = $val2;
+                    }else{
+                        $data['normalPriority'][$dp][$n++] = $val2;
+                    }
+                }
+            }
+        }
+
+        if (count($section) > 1) {
+            $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringMultiple', $data);
+        }else{
+            $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringSingle', $data);
+        }
+    }
+
+    public function OpenAja()
+    {
+    	$section 	= array('11');
         $datplan    = array();
     	$datDailyAchieve= array();
     	$datsec 	= array();
@@ -85,11 +134,7 @@ class C_Monitoring extends CI_Controller {
             }
         }
 
-        if (count($section) > 1) {
-            $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringMultiple', $data);
-        }else{
-            $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringSingle', $data);
-        }
+        $this->load->view('ProductionPlanning/MainMenu/Monitoring/V_MonitoringSingle', $data);
     }
 
     public function getSumPlanMonth()
@@ -207,7 +252,7 @@ class C_Monitoring extends CI_Controller {
                     $normal[$n++] = $dp;
                 }
             }
-            echo '<thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
+            echo '<thead class="bg-dark-plan" style="font-weight: bold; font-size: 14px;">
                     <tr>
                         <td style="width: 5%;">NO</td>
                         <td style="width: 15%;">ITEM</td>
@@ -225,7 +270,7 @@ class C_Monitoring extends CI_Controller {
             if (!empty($high)) {
                 echo '<tbody id="highPriority" style="font-weight: bold;">';
                 foreach ($high as $h){
-                    echo '<tr class="plan-undone-high">
+                    echo '<tr class="bg-danger-plan">
                             <td>'.$no++.'</td>
                             <td>'.$h['item_code'].'</td>
                             <td>';
@@ -269,7 +314,7 @@ class C_Monitoring extends CI_Controller {
                 echo '<input type="hidden" name="checkpointBegin" data-secid="'.$section.'" value="'.$checkpoint.'">
                 <tbody id="normalPriority" style="font-weight: bold;">';
                 foreach ($normal as $n ){
-                    echo '<tr class="plan-undone-normal"';
+                    echo '<tr class="bg-success-plan"';
                         if ($checkpoint > 6) {
                             echo " data-showid='".$checkpoint."'";
                             echo " data-showstat='0'";
@@ -319,7 +364,7 @@ class C_Monitoring extends CI_Controller {
                     <input type="hidden" name="checkpointEnd" data-secid="'.$section.'" value="'.$checkpoint.'">';
             }
         }else{
-            echo '<thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
+            echo '<thead class="bg-dark-plan" style="font-weight: bold; font-size: 14px;">
                     <tr>
                         <td style="width: 5%;">NO</td>
                         <td style="width: 15%;">ITEM</td>
@@ -343,12 +388,23 @@ class C_Monitoring extends CI_Controller {
             <td colspan="2"><b>ACHIEVEMENT ALL FAB</b></td>
         </tr>';
         foreach ($achieveAll as $aa) {
+            $a = date('d');
+            $b = date('t');
+            $c = ($a/$b)*100;
+            if ($aa['percentage'] < round($c,0)) {
+                $percenStyle = 'bg-danger-plan';
+                $percenVal = '<span class="faa-flash faa-slow animated">'.$aa['percentage'].'</span>';
+            }else{
+                $percenStyle = 'bg-success-plan';
+                $percenVal = $aa['percentage'];
+            }
+
             echo '<tr>
                 <td style="width: 70%">
                     <b>'.$aa['section_name'].'</b>
                 </td>
-                <td style="width: 30%">
-                    <b>'.$aa['percentage'].'</b>
+                <td style="width: 30%" class="'.$percenStyle.'">
+                    <b>'.$percenVal.'</b>
                 </td>
             </tr>}';
         }
@@ -356,19 +412,24 @@ class C_Monitoring extends CI_Controller {
 
     public function getInfoJob()
     {
-        $data = $this->M_monitoring->getInfoJobs();
+        $secid    = $this->input->post('sectionId');
+        $section  = $this->M_dataplan->getSection(FALSE,$secid);
+        foreach ($section as $sc) {
+            $data = $this->M_monitoring->getInfoJobs($sc['org_id'],$sc['department_class_code'],$sc['routing_class']);
+        }
+
         echo '<tr>
             <td>JOB RELEASED</td>
             <td class="text-right">'.$data[0]['RELEASED_JUMLAH_JOB'].'</td>
             <td class="text-right">'.$data[0]['RELEASED_JUMLAH_PART'].'</td>
         </tr>
         <tr>
-            <td>JOB PENDING PICKLIST</td>
+            <td>JOB PENDING PICK.</td>
             <td class="text-right">'.$data[0]['PENDING_JUMLAH_JOB'].'</td>
             <td class="text-right">'.$data[0]['PENDING_JUMLAH_PART'].'</td>
         </tr>
         <tr>
-            <td>TOTAL JOB COMPLETE 1 BULAN</td>
+            <td>JOB CMPLTE.</td>
             <td class="text-right">'.$data[0]['COMPLETE_JUMLAH_JOB'].'</td>
             <td class="text-right">'.$data[0]['COMPLETE_JUMLAH_PART'].'</td>
         </tr>
