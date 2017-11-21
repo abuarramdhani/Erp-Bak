@@ -7,16 +7,248 @@ class M_monitoring extends CI_Model {
     $this->oracle = $this->load->database ('oracle', TRUE);
   }
 
-  public function getInfoJobs()
+  public function getInfoJobs($org_id=FALSE,$dept=FALSE,$routing=FALSE)
   {
-    $sql = "  SELECT
+    if ($org_id == FALSE) {
+      $sql = "SELECT
+                  sum(a.RELEASED_JUMLAH_JOB) RELEASED_JUMLAH_JOB,
+                  SUM(a.RELEASED_JUMLAH_PART) RELEASED_JUMLAH_PART,
+                  SUM(a.PENDING_JUMLAH_JOB) PENDING_JUMLAH_JOB,
+                  SUM(a.PENDING_JUMLAH_PART) PENDING_JUMLAH_PART,
+                  SUM(a.COMPLETE_JUMLAH_JOB) COMPLETE_JUMLAH_JOB,
+                  SUM(a.COMPLETE_JUMLAH_PART) COMPLETE_JUMLAH_PART,
+                  MIN(a.JOB_TERLAMA) JOB_TERLAMA
+              FROM 
+              ((SELECT
+                      (
+                        SELECT
+                          COUNT(WDJ.WIP_ENTITY_ID)
+                        FROM
+                          WIP_DISCRETE_JOBS WDJ
+                          ,WIP_OPERATIONS WO
+                          ,BOM_DEPARTMENTS BD
+                        WHERE
+                          wdj.STATUS_TYPE = 3
+                          AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                          AND WDJ.ORGANIZATION_ID = 102
+                          AND WDJ.SCHEDULED_START_DATE BETWEEN
+                            trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                      ) RELEASED_JUMLAH_JOB,
+                      (
+                        SELECT
+                          COUNT(WRO.INVENTORY_ITEM_ID)
+                        FROM
+                          WIP_REQUIREMENT_OPERATIONS WRO,
+                          WIP_DISCRETE_JOBS WDJ,
+                          WIP_OPERATIONS WO,
+                          BOM_DEPARTMENTS BD
+                        WHERE
+                          WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                          AND WDJ.ORGANIZATION_ID = 102
+                          AND WDJ.STATUS_TYPE = 3
+                          AND WDJ.SCHEDULED_START_DATE BETWEEN
+                            trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                      ) RELEASED_JUMLAH_PART,
+                      (
+                        SELECT COUNT(*) 
+                        FROM (
+                          SELECT WRO.WIP_ENTITY_ID
+                          FROM
+                            WIP_DISCRETE_JOBS WDJ,
+                            WIP_REQUIREMENT_OPERATIONS WRO,
+                            WIP_OPERATIONS WO,
+                            BOM_DEPARTMENTS BD
+                          WHERE
+                            WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                            AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                            AND WDJ.ORGANIZATION_ID = 102
+                            AND WDJ.STATUS_TYPE = 3
+                            AND WRO.WIP_SUPPLY_TYPE = 1
+                            AND nvl(WRO.QUANTITY_ALLOCATED,0) < WRO.REQUIRED_QUANTITY
+                          GROUP BY WRO.WIP_ENTITY_ID)
+                      ) PENDING_JUMLAH_JOB,
+                      (
+                        SELECT COUNT(*) 
+                        FROM
+                          WIP_REQUIREMENT_OPERATIONS WRO,
+                          WIP_DISCRETE_JOBS WDJ,
+                          WIP_OPERATIONS WO,
+                            BOM_DEPARTMENTS BD
+                        WHERE
+                          WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                          AND WDJ.ORGANIZATION_ID = 102
+                          AND WDJ.STATUS_TYPE = 3
+                          AND WRO.WIP_SUPPLY_TYPE = 1
+                          AND nvl(WRO.QUANTITY_ALLOCATED,0) < WRO.REQUIRED_QUANTITY
+                      ) PENDING_JUMLAH_PART,
+                      (
+                        SELECT COUNT(*) 
+                        FROM
+                          (SELECT
+                            WRO.WIP_ENTITY_ID
+                          FROM
+                            WIP_DISCRETE_JOBS WDJ,
+                            WIP_REQUIREMENT_OPERATIONS WRO,
+                            WIP_OPERATIONS WO,
+                            BOM_DEPARTMENTS BD
+                          WHERE
+                            WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                            AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                            AND WDJ.ORGANIZATION_ID = 102
+                            AND WDJ.STATUS_TYPE = 3
+                            AND WRO.WIP_SUPPLY_TYPE = 1
+                            AND WDJ.SCHEDULED_START_DATE BETWEEN
+                              trunc(sysdate,'MM') AND SYSDATE
+                            AND nvl(WRO.QUANTITY_ALLOCATED,0) >= WRO.REQUIRED_QUANTITY
+                          GROUP BY WRO.WIP_ENTITY_ID)
+                      ) COMPLETE_JUMLAH_JOB,
+                      (
+                        SELECT
+                          COUNT(*) 
+                        FROM
+                          WIP_DISCRETE_JOBS WDJ,
+                          WIP_REQUIREMENT_OPERATIONS WRO,
+                          WIP_OPERATIONS WO,
+                            BOM_DEPARTMENTS BD
+                        WHERE
+                          WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                          AND WDJ.ORGANIZATION_ID = 102
+                          AND WDJ.STATUS_TYPE = 3
+                          AND WRO.WIP_SUPPLY_TYPE = 1
+                          AND WDJ.SCHEDULED_START_DATE BETWEEN
+                            trunc(sysdate,'MM') AND SYSDATE
+                          AND nvl(WRO.QUANTITY_ALLOCATED,0) >= WRO.REQUIRED_QUANTITY
+                      ) COMPLETE_JUMLAH_PART,
+                      (
+                        SELECT MIN(WDJ.SCHEDULED_START_DATE) 
+                        FROM
+                          WIP_DISCRETE_JOBS WDJ,
+                          WIP_OPERATIONS WO,
+                            BOM_DEPARTMENTS BD
+                        WHERE
+                          WDJ.ORGANIZATION_ID = 102
+                          AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                          AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                          AND BD.DEPARTMENT_CLASS_CODE = '$dept'
+                          AND WDJ.STATUS_TYPE = 3
+                      ) JOB_TERLAMA
+              FROM DUAL
+              UNION ALL
+              SELECT
+                      (
+                      SELECT COUNT(GBH.BATCH_NO)
+                        FROM GME_BATCH_HEADER GBH
+                            ,GMD_ROUTINGS_VL GRV
+                       WHERE GBH.BATCH_STATUS = 2
+                         AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                         AND GRV.ROUTING_CLASS = '$routing'
+                         AND GBH.ORGANIZATION_ID = 101
+                         AND GBH.PLAN_START_DATE BETWEEN
+                              trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                              ) RELEASED_JUMLAH_JOB,
+                              (
+                                 SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                                   FROM GME_MATERIAL_DETAILS GMD
+                                       ,GME_BATCH_HEADER GBH
+                                       ,GMD_ROUTINGS_VL GRV
+                                  WHERE GMD.LINE_TYPE = 1
+                                    AND GBH.BATCH_STATUS = 2
+                                    AND GRV.ROUTING_CLASS = '$routing'
+                            AND GBH.BATCH_ID = GMD.BATCH_ID
+                            AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                            AND GBH.ORGANIZATION_ID = 101
+                            AND GBH.PLAN_START_DATE BETWEEN
+                                  trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                           ) RELEASED_JUMLAH_PART,
+                  (
+                      SELECT COUNT(GBH.BATCH_NO)
+                        FROM GME_BATCH_HEADER GBH
+                            ,GMD_ROUTINGS_VL GRV
+                       WHERE GBH.BATCH_STATUS = 1
+                         AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                         AND GRV.ROUTING_CLASS = '$routing'
+                         AND GBH.ORGANIZATION_ID = 101
+                         AND GBH.PLAN_START_DATE BETWEEN
+                              trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                              ) JOB_PENDING_PICKLIST
+                           ,(
+                                 SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                                   FROM GME_MATERIAL_DETAILS GMD
+                                       ,GME_BATCH_HEADER GBH
+                                       ,GMD_ROUTINGS_VL GRV
+                                  WHERE GMD.LINE_TYPE = 1
+                                    AND GBH.BATCH_STATUS = 1
+                                    AND GRV.ROUTING_CLASS = '$routing'
+                            AND GBH.BATCH_ID = GMD.BATCH_ID
+                            AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                            AND GBH.ORGANIZATION_ID = 101
+                            AND GBH.PLAN_START_DATE BETWEEN
+                                  trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                           ) PENDING_JUMLAH_PART
+                   ,(
+                      SELECT COUNT(GBH.BATCH_NO)
+                        FROM GME_BATCH_HEADER GBH
+                            ,GMD_ROUTINGS_VL GRV
+                       WHERE GBH.BATCH_STATUS = 3
+                         AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                         AND GRV.ROUTING_CLASS = '$routing'
+                         AND GBH.ORGANIZATION_ID = 101
+                         AND GBH.PLAN_START_DATE BETWEEN
+                              trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                              ) JOB_COMPLETE
+                           ,(
+                                 SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                                   FROM GME_MATERIAL_DETAILS GMD
+                                       ,GME_BATCH_HEADER GBH
+                                       ,GMD_ROUTINGS_VL GRV
+                                  WHERE GMD.LINE_TYPE = 1
+                                    AND GBH.BATCH_STATUS = 3
+                                    AND GRV.ROUTING_CLASS = '$routing'
+                            AND GBH.BATCH_ID = GMD.BATCH_ID
+                            AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                            AND GBH.ORGANIZATION_ID = 101
+                            AND GBH.PLAN_START_DATE BETWEEN
+                                  trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                           ) COMPLETE_JUMLAH_PART
+                    ,(
+                          SELECT MIN(GBH.PLAN_START_DATE)
+                        FROM GME_BATCH_HEADER GBH
+                            ,GMD_ROUTINGS_VL GRV
+                       WHERE GBH.BATCH_STATUS = 1 
+                         AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                         AND GRV.ROUTING_CLASS = '$routing'
+                         AND GBH.ORGANIZATION_ID = 101
+                        )JOB_TERLAMA
+              FROM DUAL)) a";
+    }elseif ($org_id == 'ODM') {
+      $sql = "  SELECT
                 (
                   SELECT
                     COUNT(WDJ.WIP_ENTITY_ID) 
                   FROM
-                    WIP_DISCRETE_JOBS WDJ
+                    WIP_DISCRETE_JOBS WDJ,
+                    WIP_OPERATIONS WO,
+                    BOM_DEPARTMENTS BD
                   WHERE
                     wdj.STATUS_TYPE = 3
+                    AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                    AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                     AND WDJ.ORGANIZATION_ID = 102
                     AND WDJ.SCHEDULED_START_DATE BETWEEN
                       trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
@@ -26,9 +258,14 @@ class M_monitoring extends CI_Model {
                     COUNT(WRO.INVENTORY_ITEM_ID)
                   FROM
                     WIP_REQUIREMENT_OPERATIONS WRO,
-                    WIP_DISCRETE_JOBS WDJ
+                    WIP_DISCRETE_JOBS WDJ,
+                    WIP_OPERATIONS WO,
+                    BOM_DEPARTMENTS BD
                   WHERE
                     WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                    AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                     AND WDJ.ORGANIZATION_ID = 102
                     AND WDJ.STATUS_TYPE = 3
                     AND WDJ.SCHEDULED_START_DATE BETWEEN
@@ -40,9 +277,14 @@ class M_monitoring extends CI_Model {
                     SELECT WRO.WIP_ENTITY_ID
                     FROM
                       WIP_DISCRETE_JOBS WDJ,
-                      WIP_REQUIREMENT_OPERATIONS WRO
+                      WIP_REQUIREMENT_OPERATIONS WRO,
+                      WIP_OPERATIONS WO,
+                      BOM_DEPARTMENTS BD
                     WHERE
                       WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                      AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                    AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                       AND WDJ.ORGANIZATION_ID = 102
                       AND WDJ.STATUS_TYPE = 3
                       AND WRO.WIP_SUPPLY_TYPE = 1
@@ -53,9 +295,14 @@ class M_monitoring extends CI_Model {
                   SELECT COUNT(*) 
                   FROM
                     WIP_REQUIREMENT_OPERATIONS WRO,
-                    WIP_DISCRETE_JOBS WDJ
+                    WIP_DISCRETE_JOBS WDJ,
+                    WIP_OPERATIONS WO,
+                    BOM_DEPARTMENTS BD
                   WHERE
                     WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                    AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                     AND WDJ.ORGANIZATION_ID = 102
                     AND WDJ.STATUS_TYPE = 3
                     AND WRO.WIP_SUPPLY_TYPE = 1
@@ -68,9 +315,14 @@ class M_monitoring extends CI_Model {
                       WRO.WIP_ENTITY_ID
                     FROM
                       WIP_DISCRETE_JOBS WDJ,
-                      WIP_REQUIREMENT_OPERATIONS WRO
+                      WIP_REQUIREMENT_OPERATIONS WRO,
+                      WIP_OPERATIONS WO,
+                      BOM_DEPARTMENTS BD
                     WHERE
                       WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                      AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                      AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                      AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                       AND WDJ.ORGANIZATION_ID = 102
                       AND WDJ.STATUS_TYPE = 3
                       AND WRO.WIP_SUPPLY_TYPE = 1
@@ -84,9 +336,14 @@ class M_monitoring extends CI_Model {
                     COUNT(*) 
                   FROM
                     WIP_DISCRETE_JOBS WDJ,
-                    WIP_REQUIREMENT_OPERATIONS WRO
+                    WIP_REQUIREMENT_OPERATIONS WRO,
+                    WIP_OPERATIONS WO,
+                    BOM_DEPARTMENTS BD
                   WHERE
                     WRO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                    AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                     AND WDJ.ORGANIZATION_ID = 102
                     AND WDJ.STATUS_TYPE = 3
                     AND WRO.WIP_SUPPLY_TYPE = 1
@@ -97,12 +354,233 @@ class M_monitoring extends CI_Model {
                 (
                   SELECT MIN(WDJ.SCHEDULED_START_DATE) 
                   FROM
-                    WIP_DISCRETE_JOBS WDJ
+                    WIP_DISCRETE_JOBS WDJ,
+                    WIP_OPERATIONS WO,
+                    BOM_DEPARTMENTS BD
                   WHERE
                     WDJ.ORGANIZATION_ID = 102
+                    AND BD.DEPARTMENT_ID = WO.DEPARTMENT_ID
+                    AND WO.WIP_ENTITY_ID = WDJ.WIP_ENTITY_ID
+                    AND BD.DEPARTMENT_CLASS_CODE = '$dept'
                     AND WDJ.STATUS_TYPE = 3
                 ) JOB_TERLAMA
               FROM DUAL";
+    }elseif ($org_id == 'OPM') {
+      $sql = "SELECT
+                (
+                  SELECT COUNT(GBH.BATCH_NO)
+                  FROM
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GBH.BATCH_STATUS = 2
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.ORGANIZATION_ID = 101
+                    AND GBH.PLAN_START_DATE BETWEEN
+                      trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                ) RELEASED_JUMLAH_JOB,
+                (
+                  SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                  FROM
+                    GME_MATERIAL_DETAILS GMD,
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GMD.LINE_TYPE = 1
+                    AND GBH.BATCH_STATUS = 2
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.BATCH_ID = GMD.BATCH_ID
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GBH.ORGANIZATION_ID = 101
+                    AND GBH.PLAN_START_DATE BETWEEN
+                      trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                ) RELEASED_JUMLAH_PART,
+                (
+                  SELECT COUNT(GBH.BATCH_NO)
+                  FROM
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GBH.BATCH_STATUS = 1
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.ORGANIZATION_ID = 101
+                    AND GBH.PLAN_START_DATE BETWEEN
+                      trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                ) PENDING_JUMLAH_JOB,
+                (
+                  SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                  FROM
+                    GME_MATERIAL_DETAILS GMD,
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GMD.LINE_TYPE = 1
+                    AND GBH.BATCH_STATUS = 1
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.BATCH_ID = GMD.BATCH_ID
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GBH.ORGANIZATION_ID = 101
+                    AND GBH.PLAN_START_DATE BETWEEN
+                      trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                ) PENDING_JUMLAH_PART,
+                (
+                  SELECT COUNT(GBH.BATCH_NO)
+                  FROM
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GBH.BATCH_STATUS = 3
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.ORGANIZATION_ID = 101
+                    AND GBH.PLAN_START_DATE BETWEEN
+                      trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                ) COMPLETE_JUMLAH_JOB,
+                (
+                  SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                  FROM
+                    GME_MATERIAL_DETAILS GMD,
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GMD.LINE_TYPE = 1
+                    AND GBH.BATCH_STATUS = 3
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.BATCH_ID = GMD.BATCH_ID
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GBH.ORGANIZATION_ID = 101
+                    AND GBH.PLAN_START_DATE BETWEEN
+                      trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                ) COMPLETE_JUMLAH_PART,
+                (
+                  SELECT MIN(GBH.PLAN_START_DATE)
+                  FROM
+                    GME_BATCH_HEADER GBH,
+                    GMD_ROUTINGS_VL GRV
+                  WHERE GBH.BATCH_STATUS = 1 
+                    AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                    AND GRV.ROUTING_CLASS = '$routing'
+                    AND GBH.ORGANIZATION_ID = 101
+                ) JOB_TERLAMA
+              FROM DUAL";
+    }elseif ($org_id == 'FDY') {
+      if ($routing == FALSE) {
+        $param = "AND FMD.ATTRIBUTE2 IN ('".$dept."')";
+      }else{
+        $param = "AND FMD.ATTRIBUTE2 IN ('".$dept."','".$routing."')";
+      }
+      $sql = "SELECT
+                (
+                            SELECT COUNT(GBH.BATCH_NO)
+                              FROM GME_BATCH_HEADER GBH
+                                  ,GMD_ROUTINGS_VL GRV
+                                  ,FM_MATL_DTL FMD
+                             WHERE GBH.BATCH_STATUS = 2
+                               AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                               $param
+                               AND FMD.LINE_TYPE = 1
+                               AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                               AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                               AND GBH.ORGANIZATION_ID = 101
+                               AND GBH.PLAN_START_DATE BETWEEN
+                                    trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                            ) RELEASED_JUMLAH_JOB,
+                            (
+                               SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                                 FROM GME_MATERIAL_DETAILS GMD
+                                     ,GME_BATCH_HEADER GBH
+                                     ,GMD_ROUTINGS_VL GRV
+                                     ,FM_MATL_DTL FMD
+                                WHERE GMD.LINE_TYPE = 1
+                                  AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                                  $param
+                                  AND FMD.LINE_TYPE = 1
+                                  AND GBH.BATCH_STATUS = 2
+                                  AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                                  AND GBH.BATCH_ID = GMD.BATCH_ID
+                                  AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                                  AND GBH.ORGANIZATION_ID = 101
+                                  AND GBH.PLAN_START_DATE BETWEEN
+                                        trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                                 ) RELEASED_JUMLAH_PART,
+                        (
+                            SELECT COUNT(GBH.BATCH_NO)
+                              FROM GME_BATCH_HEADER GBH
+                                  ,GMD_ROUTINGS_VL GRV
+                                  ,FM_MATL_DTL FMD
+                             WHERE GBH.BATCH_STATUS = 1 -- pending
+                              AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                                $param
+                               AND FMD.LINE_TYPE = 1
+                               AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                               AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                               AND GBH.ORGANIZATION_ID = 101
+                               AND GBH.PLAN_START_DATE BETWEEN
+                                    trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                            ) PENDING_JUMLAH_JOB
+                         ,(
+                               SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                                 FROM GME_MATERIAL_DETAILS GMD
+                                     ,GME_BATCH_HEADER GBH
+                                     ,GMD_ROUTINGS_VL GRV
+                                     ,FM_MATL_DTL FMD
+                                WHERE GMD.LINE_TYPE = 1
+                                 AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                                $param
+                               AND FMD.LINE_TYPE = 1
+                                  AND GBH.BATCH_STATUS = 1
+                                  AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                                  AND GBH.BATCH_ID = GMD.BATCH_ID
+                                  AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                                  AND GBH.ORGANIZATION_ID = 101
+                                  AND GBH.PLAN_START_DATE BETWEEN
+                                        trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                                 ) PENDING_JUMLAH_PART
+                         ,(
+                            SELECT COUNT(GBH.BATCH_NO)
+                              FROM GME_BATCH_HEADER GBH
+                                  ,GMD_ROUTINGS_VL GRV
+                                  ,FM_MATL_DTL FMD
+                             WHERE GBH.BATCH_STATUS = 3
+                              AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                                $param
+                               AND FMD.LINE_TYPE = 1
+                               AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                               AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                               AND GBH.ORGANIZATION_ID = 101
+                               AND GBH.PLAN_START_DATE BETWEEN
+                                    trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                            ) COMPLETE_JUMLAH_JOB
+                         ,(
+                               SELECT COUNT(GMD.INVENTORY_ITEM_ID)
+                                 FROM GME_MATERIAL_DETAILS GMD
+                                     ,GME_BATCH_HEADER GBH
+                                     ,GMD_ROUTINGS_VL GRV
+                                     ,FM_MATL_DTL FMD
+                                WHERE GMD.LINE_TYPE = 1
+                                 AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                                $param
+                               AND FMD.LINE_TYPE = 1
+                                  AND GBH.BATCH_STATUS = 3
+                                  AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                                  AND GBH.BATCH_ID = GMD.BATCH_ID
+                                  AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                                  AND GBH.ORGANIZATION_ID = 101
+                                  AND GBH.PLAN_START_DATE BETWEEN
+                                        trunc(trunc(sysdate,'MM')-1,'MM') AND SYSDATE
+                                 ) COMPLETE_JUMLAH_PART
+                          ,(
+                                SELECT MIN(GBH.PLAN_START_DATE)
+                              FROM GME_BATCH_HEADER GBH
+                                  ,GMD_ROUTINGS_VL GRV
+                                  ,FM_MATL_DTL FMD
+                             WHERE GBH.BATCH_STATUS = 1 
+                              AND FMD.FORMULA_ID = GBH.FORMULA_ID
+                                $param
+                               AND FMD.LINE_TYPE = 1
+                               AND GBH.ROUTING_ID = GRV.ROUTING_ID
+                               AND GRV.ROUTING_CLASS in ('FDGR','FDCR','FDMD','FDMT','FDSH')
+                               AND GBH.ORGANIZATION_ID = 101
+                              ) JOB_TERLAMA
+            FROM DUAL";
+    }
+    
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
