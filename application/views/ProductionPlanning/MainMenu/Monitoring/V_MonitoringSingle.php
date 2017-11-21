@@ -9,6 +9,7 @@
             <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
             <!-- GLOBAL STYLES -->
             <link href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" rel="stylesheet"/>
+            <link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome/4.3.0/css/font-awesome-animation.css');?>" type="text/css" />
             <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/custom.css');?>">
         </link>
     </head>
@@ -17,38 +18,42 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-10 col-md-10">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12">
-                                <h2 class="text-center" style="font-family: cursive;">
-                                    <b>
-                                        MONITOR ACHIEVEMENT FABRIKASI
-                                    </b>
-                                </h2>
-                            </div>
-                        </div>
                         <?php
                             $count = count($selectedSection);
                             for ($i=0; $i < $count; $i++) {
                         ?>
                             <div class="row">
-                                <div class="col-md-6 text-left">
-                                    <?php
-                                    foreach ($section as $sc) {
-                                        if ($selectedSection[$i] == $sc['section_id'] ) { ?>
+                                <div class="col-lg-3 col-md-3 text-left">
+                                    <div style="margin-top: 15px; width: 100%; border-radius: 5px 60px 5px 5px; padding: 10px 5px 10px 5px;" class="bg-success-plan">
+                                        <?php
+                                        foreach ($section as $sc) {
+                                            if ($selectedSection[$i] == $sc['section_id'] ) { ?>
+                                            <h4><b>
+                                                SEKSI : <?php echo $sc['section_name']; ?>
+                                            </b></h4>
+                                        <?php
+                                            }
+                                        } ?>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <h2 class="text-center" style="font-family: cursive;">
                                         <b>
-                                            SEKSI : <?php echo $sc['section_name']; ?>
+                                            MONITOR ACHIEVEMENT FABRIKASI
                                         </b>
-                                    <?php
-                                        }
-                                    } ?>
+                                    </h2>
                                 </div>
-                                <div class="col-md-6 text-right">
-                                    <b>
-                                        TANGGAL :
-                                        <?php echo date('d-m-Y'); ?>
-                                    </b>
+                                <div class="col-lg-3 col-md-3 text-right">
+                                    <div style="margin-top: 15px; width: 100%; border-radius: 60px 5px 5px 5px; padding: 10px 5px 10px 5px;" class="bg-success-plan">
+                                        <h4><b>
+                                            TANGGAL :
+                                            <?php echo date('d-m-Y'); ?>
+                                        </b></h4>
+                                    </div>
                                 </div>
-                                <div class="col-lg-12 col-md-12" style="padding-top: 20px;">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
                                     <div class="col-md-6 text-left">
                                         <b>
                                             TARGET PENGIRIMAN KOMPONEN
@@ -66,8 +71,8 @@
                                             ?>
                                         </b>
                                     </div>
-                                    <table class="table mon-fab-table dailyPlan table-border-mon-prod" data-secid="<?php echo $selectedSection[$i]; ?>">
-                                        <thead class="bg-primary" style="font-weight: bold; font-size: 14px;">
+                                    <table class="table mon-fab-table dailyPlan table-border-dark" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                        <thead class="bg-dark-plan" style="font-weight: bold; font-size: 14px;">
                                             <tr>
                                                 <td style="width: 5%;">
                                                     NO
@@ -107,7 +112,7 @@
                                                 <?php
                                                 foreach ($highPriority[$i] as $hpl ){
                                                 ?>
-                                                    <tr class="plan-undone-high">
+                                                    <tr class="bg-danger-plan">
                                                         <td>
                                                             <?php echo $no++; ?>
                                                         </td>
@@ -176,7 +181,7 @@
                                             <?php
                                                 foreach ($normalPriority[$i] as $npl ){
                                                 ?>
-                                                    <tr class="plan-undone-normal" <?php if ($checkpoint > 6) {
+                                                    <tr class="bg-success-plan" <?php if ($checkpoint > 6) {
                                                         echo " data-showid='".$checkpoint."'";
                                                         echo " data-showstat='0'";
                                                         echo " style='display:none;'";
@@ -258,7 +263,7 @@
                                     </canvas>
                                 </div>
                                 <div class="col-md-4">
-                                    <table class="table table-border-mon-prod infoJob bg-green-plan" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                    <table class="table table-border-light infoJob bg-dark-plan" data-secid="<?php echo $selectedSection[$i]; ?>">
                                         <thead style="font-weight: bold; font-size: 12px;">
                                             <tr>
                                         		<td></td>
@@ -270,34 +275,34 @@
                                         	<tr>
                                         		<td>JOB RELEASED</td>
                                         		<td class="text-right">
-                                                    <?php echo $infoJob[0]['RELEASED_JUMLAH_JOB']; ?>
+                                                    <?php echo $infoJob[0][0]['RELEASED_JUMLAH_JOB']; ?>
                                                 </td>
                                         		<td class="text-right">
-                                                    <?php echo $infoJob[0]['RELEASED_JUMLAH_PART']; ?>
-                                                </td>
-                                        	</tr>
-                                        	<tr>
-                                        		<td>JOB PENDING PICKLIST</td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['PENDING_JUMLAH_JOB']; ?>
-                                                </td>
-                                        		<td class="text-right">
-                                                    <?php echo $infoJob[0]['PENDING_JUMLAH_PART']; ?>
+                                                    <?php echo $infoJob[0][0]['RELEASED_JUMLAH_PART']; ?>
                                                 </td>
                                         	</tr>
                                         	<tr>
-                                        		<td>TOTAL JOB COMPLETE 1 BULAN</td>
+                                        		<td>JOB PENDING PICK.</td>
                                         		<td class="text-right">
-                                                    <?php echo $infoJob[0]['COMPLETE_JUMLAH_JOB']; ?>
+                                                    <?php echo $infoJob[0][0]['PENDING_JUMLAH_JOB']; ?>
                                                 </td>
                                         		<td class="text-right">
-                                                    <?php echo $infoJob[0]['COMPLETE_JUMLAH_PART']; ?>
+                                                    <?php echo $infoJob[0][0]['PENDING_JUMLAH_PART']; ?>
+                                                </td>
+                                        	</tr>
+                                        	<tr>
+                                        		<td>JOB CMPLTE.</td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0][0]['COMPLETE_JUMLAH_JOB']; ?>
+                                                </td>
+                                        		<td class="text-right">
+                                                    <?php echo $infoJob[0][0]['COMPLETE_JUMLAH_PART']; ?>
                                                 </td>
                                         	</tr>
                                         	<tr>
                                         		<td>JOB TERLAMA</td>
                                         		<td colspan="2">
-                                        			<?php echo date('d, F Y', strtotime($infoJob[0]['JOB_TERLAMA'])); ?>
+                                        			<?php echo date('d, F Y', strtotime($infoJob[0][0]['JOB_TERLAMA'])); ?>
                                         		</td>
                                         	</tr>
                                         </tbody>
@@ -312,7 +317,7 @@
                     <div class="col-lg-2 col-md-2">
                         <div class="row" style="padding-top: 15px;">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-border-mon-prod bg-green-plan" id="minPercenDaily" style="text-align: center; vertical-align: middle;">
+                                <table class="table table-border-light bg-dark-plan" id="minPercenDaily" style="text-align: center; vertical-align: middle;">
                                     <tr>
                                         <td><b>MINIMUM PERCENTAGE</b></td>
                                     </tr>
@@ -333,7 +338,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-border-mon-prod bg-green-plan" id="achieveAllFab">
+                                <table class="table table-border-light bg-dark-plan" id="achieveAllFab">
                                 	<tr>
                                 		<td colspan="2">
                                 			<b>ACHIEVEMENT ALL FAB</b>
@@ -344,8 +349,19 @@
                                             <td style="width: 70%">
                                                 <b><?php echo $aa['section_name']; ?></b>
                                             </td>
-                                            <td style="width: 30%">
-                                                <b><?php echo $aa['percentage']; ?></b>
+                                            <?php
+                                                if ($aa['percentage'] < round($c,0)) {
+                                                    $percenStyle = 'bg-danger-plan';
+                                                    $percenVal = '<span class="faa-flash faa-slow animated">'.$aa['percentage'].'</span>';
+                                                }else{
+                                                    $percenStyle = 'bg-success-plan';
+                                                    $percenVal = $aa['percentage'];
+                                                }
+                                            ?>
+                                            <td style="width: 30%;" class="<?php echo $percenStyle; ?>">
+                                                <b><?php
+                                                    echo $percenVal;
+                                                ?></b>
                                             </td>
                                         </tr>
                                     <?php } ?>
