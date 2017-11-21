@@ -87,17 +87,22 @@ class M_dataplan extends CI_Model {
 
   public function getSection($id = FALSE, $section_id = FALSE)
   {
-  	if ($id == FALSE) {
-  		$this->db->select('*');
-    	$this->db->from('pp.pp_section');
-    	$this->db->order_by('section_id', 'ASC');
-  	}elseif ($section_id == FALSE) {
-  		$this->db->select('ps.*');
-    	$this->db->from('pp.pp_section ps, pp.pp_user_group pug, pp.pp_user pu');
+  	if ($id == FALSE && $section_id == FALSE) {
+      $this->db->select('*');
+      $this->db->from('pp.pp_section');
+      $this->db->order_by('section_id', 'ASC');
+    }elseif ($id !== FALSE && $section_id == FALSE) {
+      $this->db->select('ps.*');
+      $this->db->from('pp.pp_section ps, pp.pp_user_group pug, pp.pp_user pu');
       $this->db->where('ps.section_id = pug.section_id AND pug.pp_user_id = pu.pp_user_id');
-    	$this->db->where('pu.user_id', $id);
-    	$this->db->order_by('ps.section_name', 'ASC');
-  	}else{
+      $this->db->where('pu.user_id', $id);
+      $this->db->order_by('ps.section_name', 'ASC');
+    }elseif ($id == FALSE && $section_id !== FALSE) {
+      $this->db->select('*');
+      $this->db->from('pp.pp_section');
+      $this->db->where('section_id', $section_id);
+      $this->db->order_by('section_id', 'ASC');
+    }else{
       $this->db->select('ps.*');
       $this->db->from('pp.pp_section ps, pp.pp_user_group pug, pp.pp_user pu');
       $this->db->where('ps.section_id = pug.section_id AND pug.pp_user_id = pu.pp_user_id');
