@@ -320,7 +320,8 @@ function searchDailyPlans(th){
     var section     = $(th).closest('tr').find('select#section').val();
     var planTime    = $(th).closest('tr').find('input#planTime').val();
     var itemCode    = $(th).closest('tr').find('select#itemCode').val();
-    var status     = $(th).closest('tr').find('select#Status').val();
+    var status      = $(th).closest('tr').find('select#Status').val();
+    var action      = $(th).closest('tr').find('select#Action').val();
 
     $('div#loadingDailyArea').html('');
     $.ajax({
@@ -330,14 +331,15 @@ function searchDailyPlans(th){
             section: section,
             planTime: planTime,
             status: status,
-            itemCode: itemCode
+            itemCode: itemCode,
+            action: action
         },
         beforeSend: function() {
             $('div#loadingDailyArea').html(
                                     '<div id="loadingDaily" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">'
                                         +'<div class="modal-dialog modal-lg" role="document">'
                                             +'<div style="text-align: center; width: 100%; height: 100%; vertical-align: middle;">'
-                                                +'<img src="'+baseurl+'assets/img/gif/loading14.gif" style="display: block; margin: auto; width: 80%;">'
+                                                +'<img src="'+baseurl+'assets/img/gif/loading13.gif" style="display: block; margin: auto; width: auto;">'
                                             +'</div>'
                                         +'</div>'
                                     +'</div>'
@@ -357,8 +359,52 @@ function searchDailyPlans(th){
                 dom: 'rtBp',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                bAutoWidth: false,
+                columns: [
+                    { sWidth: "2%" }, //no
+                    { sWidth: "13%" }, //item code
+                    { sWidth: "20%" }, //description
+                    { sWidth: "5%" }, //priority
+                    { sWidth: "20%" }, //due time
+                    { sWidth: "15%" }, //section
+                    { sWidth: "7%" }, //need qty
+                    { sWidth: "8%" }, //achieve qty
+                    { sWidth: "10%" }, //status
                 ]
             });
+        }
+    });
+}
+
+function editDailyPlan(th){
+    var value   = $(th).val();
+    var name    = $(th).attr('name');
+    var id      = $(th).closest('tr').find('input[type="hidden"][name="daily_plan_id"]').val();
+    $.ajax({
+        url: baseurl + 'ProductionPlanning/DataPlanDaily/EditAjax/'+id,
+        type: 'POST',
+        data: {
+            name:name,
+            value:value
+        },
+        success: function(){
+            // $('div#alertArea').html('<div class="row"><div class="col-md-12"><div id="eror" class="alert alert-dismissible alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Update Success!</div></div></div>');
+            $.toaster('Update Success!', name, 'success');
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $('div#alertArea').html(
+                '<div class="row">'
+                    +'<div class="col-md-12">'
+                        +'<div id="eror" class="alert alert-dismissible alert-success" role="alert">'
+                            +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                                +'<span aria-hidden="true">&times;</span>'
+                            +'</button>'
+                            +'Status : '+textStatus+'<br>'
+                            +'Error : '+errorThrown+'<br>'
+                        +'</div>'
+                    +'</div>'
+                +'</div>');
         }
     });
 }
