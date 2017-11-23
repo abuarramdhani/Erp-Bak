@@ -306,40 +306,67 @@ class C_DataPlanDaily extends CI_Controller {
         }
         $itemCode   = $this->input->post('itemCode');
         $status     = $this->input->post('status');
+        $action     = $this->input->post('action');
         $data       = $this->M_dataplan->getDataPlan(FALSE,$section,$user_id,$time1,$time2,$itemCode,$status);
-
         $no = 1;
-        echo '<table class="table table-striped table-bordered table-hover" id="tbdataplan">
-                <thead class="bg-primary">
-                    <tr>
-                        <td>No</td>
-                        <td>Item</td>
-                        <td>Description</td>
-                        <td>Priority</td>
-                        <td>Due Time</td>
-                        <td>Section</td>
-                        <td>Status</td>
-                        <td>Action</td>
-                    </tr>
-                </thead>
-                <tbody>';
-        foreach ($data as $dt) {
-                echo "<tr>
-                        <td>".$no++."</td>
-                        <td>".$dt['item_code']."</td>
-                        <td>".$dt['item_description']."</td>
-                        <td>".$dt['priority']."</td>
-                        <td>".$dt['due_time']."</td>
-                        <td>".$dt['section_name']."</td>
-                        <td>".$dt['status']."</td>
-                        <td>
-                            <a class='btn btn-default' href='".base_url('ProductionPlanning/DataPlanDaily/Edit/'.$dt['daily_plan_id'])."'>
-                                EDIT
-                            </a>
-                        </td>
-                    </tr>";
+
+        if ($action == 0 || empty($action)) {
+            echo '
+            <div class="table-responsive" style="overflow:auto;">
+                <table class="table table-striped table-bordered table-hover" id="tbdataplan">
+                    <thead class="bg-primary">
+                        <tr>
+                            <td>No</td>
+                            <td>Item</td>
+                            <td>Description</td>
+                            <td style="width:20px;">Priority</td>
+                            <td>Due Time</td>
+                            <td>Section</td>
+                            <td>Need Qty</td>
+                            <td>Achieve Qty</td>
+                            <td>Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>';
+                foreach ($data as $dt) {
+                    echo '<tr>
+                            <input type="hidden" name="daily_plan_id" value="'.$dt['daily_plan_id'].'">
+                            <td>'.$no++."</td>
+                            <td>".$dt['item_code']."</td>
+                            <td>".$dt['item_description']."</td>
+                            <td>".$dt['priority']."</td>
+                            <td>".$dt['due_time']."</td>
+                            <td>".$dt['section_name']."</td>
+                            <td>".$dt['need_qty']."</td>
+                            <td>";
+                                if ($dt['achieve_qty'] == null) {
+                                    echo "0";
+                                }else{
+                                    echo $dt['achieve_qty'];
+                                }
+                            echo "</td>
+                            <td>".$dt['status']."</td>
+                        </tr>";
+                }
+                echo "</tbody>
+                </table>
+            </div>";
+        }else{
+            $val['data']= $data;
+            $val['no']  =  $no;
+
+            $this->load->view('ProductionPlanning/MainMenu/DataPlan/Daily/V_EditAjax', $val);
         }
-            echo "</tbody>
-            </table>";
+    }
+    public function EditAjax($id)
+    {
+        $name = $this->input->post('name');
+        $value = $this->input->post('value');
+
+        $data = array(
+            $name => $value
+        );
+
+        $this->M_dataplan->update('pp.pp_daily_plans','daily_plan_id',$data,$id);
     }
 }
