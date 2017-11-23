@@ -389,22 +389,10 @@ function editDailyPlan(th){
             value:value
         },
         success: function(){
-            // $('div#alertArea').html('<div class="row"><div class="col-md-12"><div id="eror" class="alert alert-dismissible alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Update Success!</div></div></div>');
             $.toaster('Update Success!', name, 'success');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $('div#alertArea').html(
-                '<div class="row">'
-                    +'<div class="col-md-12">'
-                        +'<div id="eror" class="alert alert-dismissible alert-success" role="alert">'
-                            +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
-                                +'<span aria-hidden="true">&times;</span>'
-                            +'</button>'
-                            +'Status : '+textStatus+'<br>'
-                            +'Error : '+errorThrown+'<br>'
-                        +'</div>'
-                    +'</div>'
-                +'</div>');
+            $.toaster(textStatus+' | '+errorThrown, name, 'danger');
         }
     });
 }
