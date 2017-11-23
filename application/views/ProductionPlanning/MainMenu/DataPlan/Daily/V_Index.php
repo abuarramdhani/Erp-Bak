@@ -45,7 +45,7 @@
                                     <div class="col-md-12">
                                         <table class="table">
                                             <tr>
-                                                <td width="20%">
+                                                <td width="15%">
                                                     <select name="section" id="section" data-placeholder="Section" class="form-control select4">
                                                         <option></option>
                                                         <?php foreach ($section as $sc) { ?>
@@ -56,7 +56,7 @@
                                                 <td width="30%">
                                                     <input type="text" class="form-control toupper time-form-range" placeholder="Plan Time" name="planTime" id="planTime" />
                                                 </td>
-                                                <td width="30%">
+                                                <td width="25%">
                                                     <select name="itemCode" id="itemCode" data-placeholder="Item Code" class="form-control select4">
                                                         <option></option>
                                                         <?php foreach ($item as $it) { ?>
@@ -72,46 +72,53 @@
                                                     </select>
                                                 </td>
                                                 <td width="10%">
+                                                    <select name="Action" id="Action" data-placeholder="Action" class="form-control select4">
+                                                        <option></option>
+                                                        <option value="0" selected>READ</option>
+                                                        <option value="1">EDIT</option>
+                                                    </select>
+                                                </td>
+                                                <td width="10%">
                                                     <button onclick="searchDailyPlans(this)" class="btn btn-primary" style="width: 100%;">Search</button>
                                                 </td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
-                                <div id="tableDailyArea">
+                                <div id="tableDailyArea" style="overflow-x:auto;">
                                     <table class="table table-striped table-bordered table-hover" id="tbdataplan">
                                         <thead class="bg-primary">
-                                            <tr>
-                                                <td>
+                                            <tr style="font-weight: bold; text-align: center; vertical-align: middle;">
+                                                <td style="min-width: 30px">
                                                     No
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 100px">
                                                     Item
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 220px">
                                                     Description
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 50px">
                                                     Priority
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 120px">
                                                     Due Time
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 100px">
                                                     Section
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 50px">
                                                     Need Qty
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 50px">
                                                     Achieve Qty
                                                 </td>
-                                                <td>
+                                                <td style="min-width: 50px">
                                                     Status
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                     Action
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -156,11 +163,11 @@
                                                 <td>
                                                     <?php echo $pl['status']; ?>
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                     <a class="btn btn-default" href="<?php echo base_url('ProductionPlanning/DataPlanDaily/Edit/'.$pl['daily_plan_id']); ?>">
                                                         EDIT
                                                     </a>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                             <?php } ?>
                                         </tbody>
