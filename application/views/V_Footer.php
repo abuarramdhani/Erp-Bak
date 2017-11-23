@@ -121,6 +121,7 @@
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/jquery.toaster/jquery.toaster.js');?>"></script>
     
 	<script src="<?php echo base_url('assets/js/formsInit.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/ajaxSearch.js')?>" type="text/javascript"></script>
