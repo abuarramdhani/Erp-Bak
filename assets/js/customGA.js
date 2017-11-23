@@ -52,7 +52,11 @@ $('#dataTables-fleetKendaraan').DataTable( {
       dom: 'Bfrtip',
       buttons: [
         'excel'
-      ]
+      ],
+      fixedColumns:   {
+        leftColumns: 3,
+      },
+      scrollX: true,
     });
 $('#dataTables-fleetKendaraanDeleted').DataTable( {
       dom: 'Bfrtip',
@@ -127,7 +131,7 @@ $('#dataTables-fleetKecelakaanDetail').DataTable( {
         'excel'
       ]
     });
-$('#daterangepicker').daterangepicker({
+$('#ManajemenKendaraan-daterangepicker').daterangepicker({
     "showDropdowns": true,
     "autoApply": true,
     "locale": {
@@ -167,7 +171,7 @@ $('#daterangepicker').daterangepicker({
 }, function(start, end, label) {
   console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 });
-$('#daterangepickersingledate').daterangepicker({
+$('#ManajemenKendaraan-daterangepickersingledate').daterangepicker({
     "singleDatePicker": true,
     "showDropdowns": true,
     "autoApply": true,
@@ -209,7 +213,7 @@ $('#daterangepickersingledate').daterangepicker({
   console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 });
 
-$('.daterangepickersingledatewithtime').daterangepicker({
+$('.ManajemenKendaraan-daterangepickersingledatewithtime').daterangepicker({
     "timePicker": true,
     "timePicker24Hour": true,
     "singleDatePicker": true,

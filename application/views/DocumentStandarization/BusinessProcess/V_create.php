@@ -51,7 +51,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtTanggalHeader" class="form-control daterangepickersingledate"  data-inputmask="'alias': 'dd-mm-yyyy'"  required="">
+                                                    <input type="text" name="txtTanggalHeader" class="form-control DocumentStandarization-daterangepickersingledate"  data-inputmask="'alias': 'dd-mm-yyyy'"  required="">
 
                                                 </div>
                                             </div>
