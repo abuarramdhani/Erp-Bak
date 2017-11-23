@@ -77,7 +77,7 @@
                                             <div class="form-group">
                                                 <label for="txtTanggalHeader" class="control-label col-lg-4">Tanggal Revisi</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" name="txtTanggalHeader" class="date form-control daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" value="<?php echo $headerRow['tanggal_revisi'];?>" data-inputmask="'alias': 'dd-mm-yyyy'" required="" />
+                                                    <input type="text" maxlength="10" name="txtTanggalHeader" class="date form-control DocumentStandarization-daterangepickersingledate" data-date-format="yyyy-mm-dd" id="txtTanggalHeader" value="<?php echo $headerRow['tanggal_revisi'];?>" data-inputmask="'alias': 'dd-mm-yyyy'" required="" />
                                                     <input class="hidden" name="txtTanggalLamaHeader" type="text" readonly="" value="<?php echo $headerRow['tanggal_revisi'];?>">
                                                 </div>
                                             </div>

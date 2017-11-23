@@ -44,7 +44,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalKecelakaanHeader" class="control-label col-lg-4">Tanggal Kecelakaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd"  required="" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" class="ManajemenKendaraan-ManajemenKendaraan-daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd"  required="" />
                                                 </div>
                                            </div>
 
@@ -108,7 +108,7 @@
                                                     <label for='txtTanggalMasukBengkel' class="control-label">Tanggal Masuk Bengkel</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalMasukBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" disabled="" required=""/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalMasukBengkel" class="ManajemenKendaraan-ManajemenKendaraan-daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" disabled="" required=""/>
                                                 </div>
                                             </div>
 
@@ -128,7 +128,7 @@
                                                     <label for='txtTanggalKeluarBengkel' class="control-label">Tanggal Keluar Bengkel</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                        <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalKeluarBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" disabled="" required=""/>
+                                                        <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalKeluarBengkel" class="ManajemenKendaraan-ManajemenKendaraan-daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" disabled="" required=""/>
                                                 </div>
                                             </div>
 

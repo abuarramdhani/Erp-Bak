@@ -7,8 +7,8 @@ $(document).ready(function() {
 	// JAVASCRIPT & JQUERY PRESENCE MANAGEMENT > PIC : ALFIAN AFIEF N
 	//======== START
 	$('#datatable-presensi-presence-management').dataTable({
-	 "bLengthChange": false,
-	 "ordering": false
+	 // "bLengthChange": false,
+	 // "ordering": false
 	});
 	
 	$('#registered-presensi').dataTable({
@@ -128,6 +128,7 @@ $(document).ready(function() {
 			placeholder: "[ Select Location Device ]",
 			minimumInputLength: 0,
 			ajax: {
+				delay: 500,
 				url:baseurl+"PresenceManagement/Monitoring/JsonLocation",
 				dataType: 'json',
 				type: "GET",

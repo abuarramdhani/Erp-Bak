@@ -853,7 +853,7 @@ $(document).ready(function(){
 	production_monitoring();
 	function production_monitoring(){
 		$('#production_monitoring').DataTable({
-			responsive: true,
+			responsive: false,
 			"scrollX": true,
 			scrollCollapse: true,
 			"lengthChange": false,

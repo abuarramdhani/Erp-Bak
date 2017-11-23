@@ -84,7 +84,7 @@
 				});
 				$('#dataTables-jobDescriptionPekerja').DataTable({
 			  //       lengthChange: true,
-			  //       responsive: true,
+			  //       responsive: false,
 			        scrollX:        true,
 			  //       scrollCollapse: true,
 			  //       paging:         true,
@@ -137,7 +137,7 @@
 //
 // 			DateRangePicker
 // 			{
-				$('.daterangepicker').daterangepicker({
+				$('.DocumentStandarization-daterangepicker').daterangepicker({
 				    "showDropdowns": true,
 				    "autoApply": true,
 				    "locale": {
@@ -178,7 +178,7 @@
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 				});
 
-				$('.daterangepickersingledate').daterangepicker({
+				$('.DocumentStandarization-daterangepickersingledate').daterangepicker({
 				    "singleDatePicker": true,
 				    "showDropdowns": true,
 				    "autoApply": true,
@@ -221,7 +221,7 @@
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 				});
 
-				$('.daterangepickersingledatewithtime').daterangepicker({
+				$('.DocumentStandarization-daterangepickersingledatewithtime').daterangepicker({
 				    "timePicker": true,
 				    "timePicker24Hour": true,
 				    "singleDatePicker": true,
