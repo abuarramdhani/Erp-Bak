@@ -14,25 +14,35 @@ class M_limbahmaster extends CI_Model
             $sql = "select limnis.id_jenis_limbah,
                             limnis.jenis_limbah as limbah_jenis,
                             liman.limbah_satuan as satuan,
-                            limer.sumber as sumber_limbah
+                            liman.id_satuan as satuan_id,
+                            limer.id_sumber as sumber_id,
+                            limer.sumber as sumber_limbah,
+                            limver.id_konversi as konversi_id,
+                            limver.konversi as konversi
                     from ga.ga_limbah_jenis as limnis
                         left join ga.ga_limbah_sumber as limer
                         on limnis.id_jenis_limbah = limer.id_jenis_limbah
                         left join ga.ga_limbah_satuan as liman
-                        on limnis.id_jenis_limbah=liman.id_jenis_limbah";
+                        on limnis.id_jenis_limbah=liman.id_jenis_limbah
+                        left join ga.ga_limbah_konversi as limver 
+                        on limnis.id_jenis_limbah=limver.id_jenis_limbah";
         } else {
             $sql = "select limnis.id_jenis_limbah,
                             limnis.jenis_limbah as limbah_jenis,
                             liman.limbah_satuan as satuan,
                             liman.id_satuan as satuan_id,
                             limer.id_sumber as sumber_id,
-                            limer.sumber as sumber_limbah
+                            limer.sumber as sumber_limbah,
+                            limver.id_konversi as konversi_id,
+                            limver.konversi as konversi
                     from ga.ga_limbah_jenis as limnis
                         left join ga.ga_limbah_sumber as limer
                         on limnis.id_jenis_limbah = limer.id_jenis_limbah
                         left join ga.ga_limbah_satuan as liman
                         on limnis.id_jenis_limbah=liman.id_jenis_limbah
-                    where cast(limnis.id_jenis_limbah as integer)=".$id;
+                        left join ga.ga_limbah_konversi as limver 
+                        on limnis.id_jenis_limbah=limver.id_jenis_limbah
+                    where limnis.id_jenis_limbah='".$id."'";
         }
 
         $query = $this->db->query($sql);
@@ -54,6 +64,11 @@ class M_limbahmaster extends CI_Model
         return $this->db->insert('ga.ga_limbah_sumber', $sumber);
     }
 
+    public function setLimbahKonversi($konversi)
+    {
+        return $this->db->insert('ga.ga_limbah_konversi', $konversi);
+    }
+
     public function updateLimbahJenis($data, $id)
     {
         $this->db->where('id_jenis_limbah', $id);
@@ -72,11 +87,36 @@ class M_limbahmaster extends CI_Model
         $this->db->update('ga.ga_limbah_sumber', $sumber);
     }
 
+    public function updateLimbahKonversi($konversi, $id)
+    {
+        $this->db->where('id_konversi', $id);
+        $this->db->update('ga.ga_limbah_konversi', $konversi);
+    }
+
     public function deleteLimbahJenis($id)
     {
         $this->db->where('id_jenis_limbah', $id);
         $this->db->delete('ga.ga_limbah_jenis');
     }
+
+    public function deleteLimbahSatuan($id)
+    {
+        $this->db->where('id_jenis_limbah', $id);
+        $this->db->delete('ga.ga_limbah_satuan');
+    }
+
+    public function deleteLimbahSumber($id)
+    {
+        $this->db->where('id_jenis_limbah', $id);
+        $this->db->delete('ga.ga_limbah_sumber');
+    }
+
+    public function deleteLimbahKonversi($id)
+    {
+        $this->db->where('id_jenis_limbah', $id);
+        $this->db->delete('ga.ga_limbah_konversi');
+    }
+
 }
 
 /* End of file M_limbahjenis.php */

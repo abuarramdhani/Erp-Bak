@@ -36,8 +36,9 @@
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
                                                 <th>Jenis Limbah</th>
-                                                <th>Perlakuan</th>
                                                 <th>Satuan</th>
+                                                <th>Sumber Limbah</th>
+                                                <th>Perlakuan</th> 
 												<th>Tanggal Keluar</th>
 												<th>Jumlah Keluar</th>
 												<th>Tujuan Limbah</th>
@@ -60,9 +61,10 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('WasteManagement/LimbahKeluar/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('WasteManagement/LimbahKeluar/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
-                                                <td><?php echo $row['jenis'] ?></td>
+                                                <td><?php echo $row['jenis_limbah'] ?></td>
+                                                <td><?php echo $row['satuan'] ?></td>
+                                                <td><?php echo $row['sumber_limbah'] ?></td>
                                                 <td><?php echo $row['limbah_perlakuan'] ?></td>
-                                                <td><?php echo $row['satuan_limbah'] ?></td>
 												<td><?php echo date('d M Y',strtotime($row['tanggal_keluar'])); ?></td>
 												<td><?php echo $row['jumlah_keluar'] ?></td>
 												<td><?php echo $row['tujuan_limbah'] ?></td>

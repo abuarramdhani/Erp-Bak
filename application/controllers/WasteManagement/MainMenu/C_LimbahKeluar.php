@@ -95,15 +95,16 @@ class C_LimbahKeluar extends CI_Controller
 				'end_date' => date('Y-m-d h:i:s'),
 				'creation_date' => date('Y-m-d h:i:s'),
 				'created_by' => $this->session->userid,
-				'jenis_limbah' => $this->input->post('cmbJenisLimbahHeader', TRUE),
+				'jenis_limbah' => $this->input->post('cmbJenisLimbahKeluarHeader', TRUE),
 				'perlakuan' => $this->input->post('cmbPerlakuanHeader',TRUE),
 				'satuan' => $this->input->post('cmbSatuanHeader', TRUE),
+				'sumber_limbah' => $this->input->post('cmbJenisSumberHeader', TRUE),
     		);
+
 			$this->M_limbahkeluar->setLimbahKeluar($data);
-			$header_id = $this->db->insert_id();
 
 			redirect(site_url('WasteManagement/LimbahKeluar'));
-		}
+		} //t coba create dulu
 	}
 
 	/* UPDATE DATA */
@@ -153,9 +154,10 @@ class C_LimbahKeluar extends CI_Controller
 				'sisa_limbah' => $this->input->post('txtSisaLimbahHeader',TRUE),
 				'last_updated' => date('Y-m-d h:i:s'),
 				'last_updated_by' => $this->session->userid,
-				'jenis_limbah' => $this->input->post('cmbJenisLimbahHeader',TRUE),
+				'jenis_limbah' => $this->input->post('cmbJenisLimbahKeluarHeader',TRUE),
 				'perlakuan' => $this->input->post('cmbPerlakuanHeader',TRUE),
 				'satuan' => $this->input->post('cmbSatuanHeader', TRUE),
+				'sumber_limbah' => $this->input->post('cmbJenisSumberHeader', TRUE),
     			);
 			$this->M_limbahkeluar->updateLimbahKeluar($data, $plaintext_string);
 
@@ -442,7 +444,23 @@ class C_LimbahKeluar extends CI_Controller
 			$data['filterKeluar'] = $this->M_limbahkeluar->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenisLimbah);
            
             $this->load->view('WasteManagement/LimbahKeluar/V_Excel', $data, true);
-    } 
+    }
+
+    public function selectJenisLimbah(){
+		$JenisLimbah_id = $this->input->post('cmbJenisLimbahKeluarHeader');
+		$SatuanLimbahKeluar = $this->M_limbahkeluar->selectSatuanLimbah($JenisLimbah_id);
+		$SumberLimbahKeluar = $this->M_limbahkeluar->selectSumberLimbah($JenisLimbah_id);
+
+		foreach ($SatuanLimbahKeluar as $SL) {
+			$data['limbah_satuan'] = $SL['limbah_satuan'];
+		}
+
+		foreach ($SumberLimbahKeluar as $Sumber) {
+			$data['sumber'] = $Sumber['sumber'];
+		}
+		
+		echo json_encode($data);
+	} 
 
 
 }

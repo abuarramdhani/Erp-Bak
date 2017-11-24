@@ -117,10 +117,10 @@ $styleArray = array(
 	
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomA, $no, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $FM['jenis'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomB, $FM['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomC, $tanggalMasuk, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, $FM['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomE, $FM['jumlah'].' '.$FM['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomD, $FM['nama_seksi'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomE, $FM['jumlah'].' '.$FM['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomF, $maksPenyimpanan, PHPExcel_Cell_DataType::TYPE_STRING);
 	}
 
@@ -136,15 +136,17 @@ $styleArray = array(
 	$kolomI='I'.$o;
 	$kolomJ='J'.$o;
 	$kolomK='K'.$o;
+	$kolomL='L'.$o;
 
     $tanggalKeluar = date('d/m/Y', strtotime($FK['tanggal_keluar']));
 	
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomG, $tanggalKeluar, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomI, $FK['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomJ, $FK['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
+				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomL, $FK['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
 	}				
 
 	if ($i > $o) {

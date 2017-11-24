@@ -46,4 +46,51 @@ $(function() {
 		$(this).val('');
 	});
 
-})
+});
+
+
+//Limbah Transaksi
+$('#cmbJenisLimbahHeader').change(function(){
+    var val = $('#cmbJenisLimbahHeader option:selected').val();
+    if(val) {
+      $.ajax({
+        type:'POST',
+        data:{cmbJenisLimbahHeader:val},
+        url:baseurl+"WasteManagement/LimbahTransaksi/selectJenisLimbah",
+        success:function(result)
+        {
+          var result = JSON.parse(result);
+
+          $('#SatuanLimbah').val(result['limbah_satuan']);
+          $('#SumberLimbah').val(result['sumber']);
+        }
+
+      });
+    } else {
+      $('#SatuanLimbah').val('');
+      $('#SumberLimbah').val('');
+    }
+});
+
+//Limbah Keluar
+$('#cmbJenisLimbahKeluarHeader').change(function(){
+    var val = $('#cmbJenisLimbahKeluarHeader option:selected').val();
+    if(val) {
+      $.ajax({
+        type:'POST',
+        data:{cmbJenisLimbahKeluarHeader:val},
+        url:baseurl+"WasteManagement/LimbahKeluar/selectJenisLimbah",
+        success:function(result)
+        {
+          var result = JSON.parse(result);
+
+          $('#SatuanLimbahKeluar').val(result['limbah_satuan']);
+          $('#SumberLimbahKeluar').val(result['sumber']);
+        }
+
+      });
+    } else {
+      $('#SatuanLimbahKeluar').val('');
+      $('#SumberLimbahKeluar').val('');
+    }
+});

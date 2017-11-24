@@ -107,7 +107,58 @@ $styleArray = array(
 	$awal = 7;	
 	$akhir = 13;
 	$countperlakuan = count($perlakuan);
-	foreach ($jumlahlimbah as $key => $LT) {
+	foreach ($header as $key3 => $HE) {
+	// foreach ($jumlahlimbah as $key => $LT) {
+	// 	if($LT['bulan'] == '1') {
+	// 		$dataTanggal = 'Januari';
+	// 	}elseif($LT['bulan'] == '2') {
+	// 		$dataTanggal = 'Februari';
+	// 	}elseif($LT['bulan'] == '3') {
+	// 		$dataTanggal = 'Maret';
+	// 	}elseif($LT['bulan'] == '4') {
+	// 		$dataTanggal = 'April';
+	// 	}elseif($LT['bulan'] == '5') {
+	// 		$dataTanggal = 'Mei';
+	// 	}elseif($LT['bulan'] == '6') {
+	// 		$dataTanggal = 'Juni';
+	// 	}elseif($LT['bulan'] == '7') {
+	// 		$dataTanggal = 'Juli';
+	// 	}elseif($LT['bulan'] == '8') {
+	// 		$dataTanggal = 'Agustus';
+	// 	}elseif($LT['bulan'] == '9') {
+	// 		$dataTanggal = 'September';
+	// 	}elseif($LT['bulan'] == '10') {
+	// 		$dataTanggal = 'Oktober';
+	// 	}elseif($LT['bulan'] == '11') {
+	// 		$dataTanggal = 'November';
+	// 	}elseif($LT['bulan'] == '12') {
+	// 		$dataTanggal = 'Desember';
+	// 	}
+	// 	// $dataTanggal = (int)$dataTanggal[1];
+
+	// 	$dataPerlakuan = $LT['limbah_perlakuan'];
+	// 	$dataJenisLimbah = $LT['jenis_limbah'];
+
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($awal+($countperlakuan*$key3).':A'.($akhir+($countperlakuan*$key3))));
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.($awal+($countperlakuan*$key3).':B'.($akhir+($countperlakuan*$key3))));
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('C'.($awal+($countperlakuan*$key3).':C'.($akhir+($countperlakuan*$key3))));
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('D'.($awal+($countperlakuan*$key3).':D'.($akhir+($countperlakuan*$key3))));
+
+	//load ke excel
+	$kolomA = 'A'.($awal+($countperlakuan*$key3));
+	$kolomB = 'B'.($awal+($countperlakuan*$key3));
+	$kolomC = 'C'.($awal+($countperlakuan*$key3));
+	$kolomD = 'D'.($awal+($countperlakuan*$key3));
+	$kolomF = 'F'.($awal+($countperlakuan*$key3));
+
+		$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValueExplicit($kolomA, $key3+1, PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomB, $HE['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomC, $HE['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomD, 'TON', PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomF, '', PHPExcel_Cell_DataType::TYPE_STRING);
+
+		foreach ($jumlahlimbah as $key => $LT) {
 		if($LT['bulan'] == '1') {
 			$dataTanggal = 'Januari';
 		}elseif($LT['bulan'] == '2') {
@@ -135,46 +186,30 @@ $styleArray = array(
 		}
 		// $dataTanggal = (int)$dataTanggal[1];
 
-		$dataPerlakuan = $LT['perlakuanlimbah'];
+		$dataPerlakuan = $LT['limbah_perlakuan'];
+		$dataJenisLimbah = $LT['id_jenis_limbah'];
 
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($awal+($countperlakuan*$key).':A'.($akhir+($countperlakuan*$key))));
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.($awal+($countperlakuan*$key).':B'.($akhir+($countperlakuan*$key))));
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('C'.($awal+($countperlakuan*$key).':C'.($akhir+($countperlakuan*$key))));
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('D'.($awal+($countperlakuan*$key).':D'.($akhir+($countperlakuan*$key))));
-
-	//load ke excel
-	$kolomA = 'A'.($awal+($countperlakuan*$key));
-	$kolomB = 'B'.($awal+($countperlakuan*$key));
-	$kolomC = 'C'.($awal+($countperlakuan*$key));
-	$kolomD = 'D'.($awal+($countperlakuan*$key));
-	$kolomF = 'F'.($awal+($countperlakuan*$key));
 	
-	$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomA, $key+1, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $LT['jenis'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomC, $LT['seksi'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, 'TON', PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomF, '', PHPExcel_Cell_DataType::TYPE_STRING);
-
-		// for perlakuan
+		//for perlakuan
 		foreach ($perlakuan as $key1 => $plkn) {
 			$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit('E'.(($awal+($countperlakuan*$key))+$key1), $plkn['limbah_perlakuan'], PHPExcel_Cell_DataType::TYPE_STRING);
+				->setCellValueExplicit('E'.(($awal+($countperlakuan*$key3))+$key1), $plkn['limbah_perlakuan'], PHPExcel_Cell_DataType::TYPE_STRING);
 
 			// for jumlah bulan
 			foreach ($listBulan as $key2 => $bulan) {
 				$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValueExplicit($kolomBulan[$key2].'6', $bulan);
 
-				if($plkn['limbah_perlakuan'] == $dataPerlakuan && ($bulan == $dataTanggal)) {
+				if(($plkn['limbah_perlakuan'] == $dataPerlakuan) && ($bulan == $dataTanggal) && ($HE['id_jenis_limbah'] == $dataJenisLimbah)) {
 					$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValueExplicit($kolomBulan[$key2].''.(($awal+($countperlakuan*$key))+$key1), $LT['jumlah']);
-				}
+						->setCellValueExplicit($kolomBulan[$key2].''.(($awal+($countperlakuan*$key3))+$key1), $LT['total_limbah']);
+				} 
 			}
 		}
+	  }	
 	}
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
 exit;
 		
-	?>		 	 	 	 	
+?>		 	 	 	 	

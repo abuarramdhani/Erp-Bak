@@ -36,16 +36,29 @@
                                                     <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" value="<?php echo date('d M Y', strtotime($headerRow['tanggal_transaksi'])) ;?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" />
                                                 </div>
                                             </div>
-
 											<div class="form-group">
                                                 <label for="cmbJenisLimbahHeader" class="control-label col-lg-4">Jenis Limbah</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbJenisLimbahHeader" name="cmbJenisLimbahHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                    <select id="cmbJenisLimbahHeader" name="cmbJenisLimbahHeader" class="select2" data-placeholder="Choose an option" style="width: 100%">
                                                         <option value=""></option>
                                                         <?php foreach ($jenis_limbah as $limbah) { ?>
-                                                        <option value="<?php echo $limbah['id_jenis_limbah']; ?>" <?php if($limbah['id_jenis_limbah']==$headerRow['jenis_limbah']) echo "selected"; ?>><?php echo $limbah['jenis_limbah']; ?></option>
+                                                        <option value="<?php echo $limbah['id_jenis_limbah']; ?>" <?php if($limbah['id_jenis_limbah'] == $headerRow['id_jenis_limbah']) echo "selected"; ?>><?php echo $limbah['jenis_limbah']; ?></option>
                                                         <?php }?> 
                                                     </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" name="cmbSatuanHeader" class="form-control" id="SatuanLimbah" value="<?php echo $headerRow['satuan'] ?>" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbJenisSumberHeader" class="control-label col-lg-4">Jenis Sumber</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" name="cmbJenisSumberHeader" class="form-control" id="SumberLimbah" value="<?php echo $headerRow['jenis_sumber'] ?>" readonly>
                                                 </div>
                                             </div>
 
@@ -57,29 +70,6 @@
                                                         <?php foreach ($getSeksi as $seksi) { ?>
                                                         <option value="<?php echo $seksi['seksi_id']; ?>" <?php if($seksi['seksi_id']==$headerRow['sumber_limbah']) {echo "selected";} ?>><?php echo $seksi['nama_seksi']; ?></option>
                                                         <?php }?> 
-                                                    </select>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="cmbJenisSumberHeader" class="control-label col-lg-4">Jenis Sumber</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbJenisSumberHeader" name="cmbJenisSumberHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
-                                                        <option value=""></option>
-                                                        <option value="1" <?php if ($headerRow['jenis_sumber'] == "1") { echo "selected"; }?>>Proses Produksi</option>
-                                                        <option value="0" <?php if ($headerRow['jenis_sumber'] == "0") { echo "selected"; }?>>Diluar Proses Produksi</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbSatuanHeader" name="cmbSatuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
-                                                        <option value=""></option>
-                                                        <?php foreach ($satuan as $stn) { ?>
-                                                        <option value="<?php echo $stn['id_satuan']; ?>" <?php if($stn['id_satuan']==$headerRow['satuan']) echo "selected"; ?>><?php echo $stn['limbah_satuan']; ?></option>
-                                                        <?php }?>
                                                     </select>
                                                 </div>
                                             </div>
