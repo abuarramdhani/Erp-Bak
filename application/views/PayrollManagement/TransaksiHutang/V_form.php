@@ -7,7 +7,7 @@
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
-                                <h1><b>Transaksi Hutang</b></h1>
+                                <h1><b>Transaksi Hutang </b></h1>
 
                                 </div>
                             </div>
@@ -38,24 +38,20 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                        <label for="txtIdTransaksiHutangNew" class="control-label col-lg-4">ID Transaksi Hutang</label>
+                                        <label for="txtNoHutang" class="control-label col-lg-4">Noind</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="ID Transaksi Hutang" name="txtIdTransaksiHutangNew" id="txtIdTransaksiHutangNew" class="form-control" value="<?php echo $id_transaksi_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="14" />
-                                        </div>
-                                    </div>
-									<div class="form-group">
-                                        <label for="txtNoHutang" class="control-label col-lg-4">No Hutang</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="No Hutang" name="txtNoHutang" id="txtNoHutang" class="form-control" value="<?php echo $no_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="11"/>
+                                            <select name="txtNoind" id="txtNoind" class="form-control cmbNoindHeader">
+												<option value="<?php echo $noind ?>"><?php echo $noind; ?></option>
+											</select>
                                         </div>
                                     </div>
 									<div class="form-group">
 	                                    <label for="txtTglTransaksi" class="control-label col-lg-4">Tanggal Transaksi</label>
 	                                    <div class="col-lg-4">
-											<input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTransaksi" value="<?php echo $tgl_transaksi ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTransaksi" />
+											<input type="text" maxlength="10" placeholder="<?php echo date('d/m/Y')?>" name="txtTglTransaksi" value="<?php echo $tgl_transaksi ?>" class="form-control datepicker-erp-pr" data-date-format="dd/mm/yyyy" id="txtTglTransaksi" />
 	                                    </div>
 	                                </div>
-									<div class="form-group">
+								<!--	<div class="form-group">
 	                                    <label for="cmbJenisTransaksi" class="control-label col-lg-4">Jenis Transaksi</label>
 	                                    <div class="col-lg-4">
 	                                        <select style="width:100%" id="cmbJenisTransaksi" name="cmbJenisTransaksi" class="select2" data-placeholder="Choose an option"><option value=""></option>
@@ -67,12 +63,22 @@
                                                 ?>
 											</select>
 	                                    </div>
-									</div>
+									</div>  -->
+									
 									<div class="form-group">
-                                        <label for="txtJumlahTransaksi" class="control-label col-lg-4">Jumlah Transaksi</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" placeholder="Jumlah Transaksi" name="txtJumlahTransaksi" id="txtJumlahTransaksi" class="form-control" value="<?php echo $jumlah_transaksi; ?>" onkeypress="return isNumberKeyAndDot(event)" maxlength="7"/>
-                                        </div>
+	                                   <label for="txtJumlahTransaksi" class="control-label col-lg-4">Jumlah Transaksi</label>
+	                                    <div class="col-lg-4">
+											<input type="text" maxlength="10" placeholder="Rp." name="txtJumlahTransaksi" value="<?php echo $jumlah_transaksi ?>" onkeypress="return isNumberKey(event)" class="form-control number" id="txtJumlahTransaksi" />
+	                                    </div>
+	                                </div>
+									<div class="form-group">
+                                        <label for="txtJumlahTransaksi" class="control-label col-lg-4">Jumlah Angsuran</label>
+                                        <div class="col-lg-2">
+											<div class="input-group">
+												<input type="text" class="form-control" name="txtJumlahAngsuran" id="txtJumlahAngsuran" placeholder="[ 1-12 ]" value="<?php echo $jumlah_angsuran ?>" onkeypress="return isNumberKey(event)" maxlength="2">
+												<span class="input-group-addon">Bulan</span>
+											</div>
+										</div>
                                     </div>
 									<div class="form-group">
 	                                    <label for="cmbLunas" class="control-label col-lg-4">Lunas</label>
@@ -87,7 +93,7 @@
 											</select>
 	                                    </div>
 	                                </div>
-									<input type="hidden" name="txtIdTransaksiHutang" value="<?php echo $id_transaksi_hutang; ?>" />
+									<input type="hidden" name="txtIdTransaksiHutang" value="<?php echo $no_hutang; ?>" />
 								</div>
                                 
                             </div>

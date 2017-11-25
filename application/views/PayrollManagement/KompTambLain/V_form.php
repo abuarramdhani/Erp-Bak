@@ -40,7 +40,7 @@
 									<div class="form-group">
                                             <label for="txtPeriode" class="control-label col-lg-4">Periode</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Periode" name="txtPeriode" id="txtTanggal" class="form-control" value="<?php echo $tanggal; ?>"/>
+                                                <input type="text" placeholder="Periode" name="txtPeriode" id="txtPeriodeHitung" class="form-control" value="<?php echo $tanggal; ?>"/>
                                             </div>
                                     </div>
 									<div class="form-group">
@@ -54,13 +54,13 @@
 									<div class="form-group">
                                             <label for="txtTambahan" class="control-label col-lg-4">Tambahan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Tambahan" name="txtTambahan" id="txtTambahan" class="form-control money" value="<?php echo $pot_lain; ?>"/>
+                                                <input type="text" placeholder="Tambahan" name="txtTambahan" id="txtTambahan" class="form-control number" value="<?php echo $pot_lain; ?>"/>
                                             </div>
                                     </div>
 									<div class="form-group">
 	                                            <label for="cmbStat" class="control-label col-lg-4">Potongan</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" placeholder="Tambahan" name="txtPotongan" id="txtTambahan" class="form-control money" value="<?php echo $tamb_lain; ?>"/>
+	                                                <input type="text" placeholder="Tambahan" name="txtPotongan" id="txtTambahan" class="form-control number" value="<?php echo $tamb_lain; ?>"/>
 	                                            </div>
 	                                        </div>
 									<div class="form-group">

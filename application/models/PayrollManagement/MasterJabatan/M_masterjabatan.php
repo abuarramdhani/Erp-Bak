@@ -6,6 +6,7 @@ class M_masterjabatan extends CI_Model
     public $table = 'pr.pr_master_jabatan';
     public $id = 'kd_jabatan';
     public $order = 'DESC';
+    public $asc = 'ASC';
 
     function __construct()
     {
@@ -16,6 +17,7 @@ class M_masterjabatan extends CI_Model
     // get all data
     function get_all()
     {
+		$this->db->order_by($this->id, $this->asc);
     	return $this->db->get($this->table)->result();
     }
 

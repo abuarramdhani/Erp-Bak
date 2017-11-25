@@ -84,10 +84,7 @@ class C_Invoice extends CI_Controller {
 		$query = $this->M_Invoice->alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status, $voucher_number);
 		$data['data']=$query;
 		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_SearchResult',$data);
-		$this->load->view('V_Footer',$data);
 	}
 
 	public function generateQR(){
@@ -185,10 +182,7 @@ class C_Invoice extends CI_Controller {
 		$query2 = $this->M_Invoice->findSingleFaktur($invoice_id);
 		$data['data']=$query;
 		$data['data_faktur']=$query2;
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_Input',$data);
-		$this->load->view('V_Footer',$data);
 	}
 	public function inputTaxManual($invoice_id){
 		
@@ -209,10 +203,7 @@ class C_Invoice extends CI_Controller {
 		$query2 = $this->M_Invoice->findSingleFaktur($invoice_id);
 		$data['data']=$query;
 		$data['data_faktur']=$query2;
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_Manual',$data);
-		$this->load->view('V_Footer',$data);
 	}
 
 	public function saveTaxNumber(){
@@ -234,57 +225,22 @@ class C_Invoice extends CI_Controller {
 		$tax_number = $this->input->post('nomorFaktur');//kiri
 		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
 		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
-
-		$checkInv = $this->M_Invoice->checkInvoice($invoice_id);
-		if ($checkInv[0]['ATTRIBUTE3'] != NULL || $checkInv[0]['ATTRIBUTE3'] != '') {
-		$invoice_id = $this->input->post('invoice_id');
-			echo"
-				<script>
-				var inv = confirm('Data sudah ada di faktur oracle. Tetap simpan[replace]?');
-				if(inv != true) {
-					window.stop();
-					window.location.assign('".base_url()."/AccountPayables/C_Invoice/inputTaxNumber/".$invoice_id."');
-				};
-				</script>
-			";
-		};
-
-		$checkFak = $this->M_Invoice->checkFaktur($tax_number);
-		if ($checkFak) {
-		$invoice_id = $this->input->post('invoice_id');
-			echo"
-				<script>
-				var fak = confirm('Data sudah ada di faktur aplikasi. Tetap simpan[replace]?');
-				if(fak != true) {
-					window.stop();
-					window.location.assign('".base_url()."/AccountPayables/C_Invoice/inputTaxNumber/".$invoice_id."');
-				};
-				</script>
-			";
-		};
 		
 		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment );
-		
-		if($query){
-			echo "
-				<script>
-				    alert('Input Berhasil');
-				</script>
-			";
-		}else{
-			echo "
-			<script>
-			    alert('Input Gagal');
-			</script>
-			";
-		}
 
-		if ($invoice_id != NULL || $invoice_id != '') {
-			$this->inputTaxNumber($invoice_id);
-		}else if ($invoice_id == NULL || $invoice_id == '') {
-			redirect('AccountPayables/Invoice/faktursa');
-		}
+	}
+	public function saveTaxNumberManual(){
 
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$invoice_id = $this->input->post('invoice_id');
+		$tanggalFakturCon = $this->input->post('tanggalFakturCon');
+		$tax_number = $this->input->post('nomorFaktur');
+		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
+		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
+
+		$query = $this->M_Invoice->saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir);
 	}	
 
 	public function deleteTaxNumber($invoice_id,$invoice_num){
@@ -564,12 +520,33 @@ class C_Invoice extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_Faktursa',$data);
-		$this->load->view('V_Footer',$data);
 		
 
+	}
+
+	public function chkInvExist($invoice){
+		if ($invoice == 'undefined') {
+			$retval = 'false';
+		}else{
+			$checkInv = $this->M_Invoice->checkInvoice($invoice);
+			if ($checkInv[0]['ATTRIBUTE3'] != NULL || $checkInv[0]['ATTRIBUTE3'] != '') {
+				$retval = 'true';
+			}else{
+				$retval = 'false';
+			};
+		};
+		echo $retval;
+	}
+
+	public function chkFakExist($faktur){
+		$checkFak = $this->M_Invoice->checkFaktur($faktur);
+		if ($checkFak) {
+			$retval = 'true';
+		}else{
+			$retval = 'false';
+		};
+		echo $retval;
 	}
 
 }

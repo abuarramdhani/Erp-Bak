@@ -11,13 +11,16 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
 	
     
 	<!-- GLOBAL STYLES -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" />
+    <!-- <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" /> -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
+
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/select2/select2.min.css');?>" type="text/css" />
     <!-- FontAwesome 3.2.0 -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome/3.2.0/css/font-awesome.css');?>" />
@@ -34,8 +37,8 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/skins/_all-skins.min.css');?>" type="text/css" />
   
-  <!-- PAGE LEVEL STYLES FOR DATATABLES-->
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+  	<!-- PAGE LEVEL STYLES FOR DATATABLES-->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
@@ -55,16 +58,26 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/switch/static/stylesheets/bootstrap-switch.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/validator/bootstrapValidator.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/qtip/jquery.qtip.css');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/iCheck/skins/all.css');?>">
+
+	<!-- PAGE LEVEL STYLES FOR TEXTAREA -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>" />
 	<!-- Fine Uploader New/Modern CSS file -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader-new.min.css');?>" />
 
 	<!-- END PAGE LEVEL  STYLES -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
 
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/multiselect/css/bootstrap-multiselect.css');?>" />
+
 	<!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
+    <!-- <script src="<?php echo base_url('assets/plugins/jQuery/jquery-3.2.1.min.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>" type="text/javascript"></script>
-    <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
+    <!-- <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script> -->
+    <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
     <!-- END GLOBAL SCRIPTS -->
 	

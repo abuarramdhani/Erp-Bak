@@ -396,4 +396,43 @@ class M_dataassets extends CI_Model {
 		$sql= $this->db->query("select * from fa.fa_data_assets WHERE asset_data_id = $id");
 		return $sql->result_array();
 	}
+
+	public function getassetBon(){
+		$sql=$this->db->query("select * from fa.fa_asset_belum_proses");
+		return $sql->result_array();
+	}
+
+	public function getassetId($id){
+		$sql=$this->db->query("select * from fa.fa_asset_belum_proses where id = $id");
+		return $sql->result_array();
+	}
+
+	public function setTagNumber($tag_num, $cost_cen, $umur_tek, $location, $item_code, $specification, $description, $pp_num, $add_by, $add_by_date, $own_date){
+		// $add_date = date_format($add_by_date,'Y/m/d H:i:s');
+
+		$sql=$this->db->query("
+			INSERT INTO 
+			fa.fa_data_assets
+			(tag_number, location, item_code, specification, description, pp_number, add_by, 
+			add_by_date, ownership_date, asset_age, cost_center)
+			VALUES
+			('$tag_num', '$location', '$item_code', '$specification', '$description', '$pp_num', '$add_by', '$add_by_date', '$own_date', '$umur_tek', '$cost_cen' )
+			");
+		return $sql;
+	}
+
+	public function deleteWithoutTag($id_assets){
+		$query = $this->db->query("
+				DELETE
+				FROM fa.fa_asset_belum_proses
+				WHERE id = '$id_assets'
+			");
+	}
+
+	public function checkTagNum($tag_num){
+		$sql = "select count(tag_number) from fa.fa_data_assets where tag_number = '$tag_num'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 }

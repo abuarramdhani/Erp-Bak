@@ -40,13 +40,19 @@
 									<div class="form-group">
                                         <label for="txtIdKompJabNew" class="control-label col-lg-4">Id Komponen Jabatan</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Ip" name="txtIdKompJabNew" id="txtIdKompJabNew" class="form-control" value="<?php echo $id_komp_jab; ?>" maxlength="6"/>
+                                            <input type="text" placeholder="Ip" name="txtIdKompJabNew" id="txtIdKompJabNew" class="form-control" value="<?php echo $id_komp_jab; ?>" maxlength="6" readonly />
                                         </div>
+                                    </div>
+									<div class="form-group">
+                                            <label for="txtPeriodePengurangPajak" class="control-label col-lg-4">Tanggal Berlaku</label>
+                                            <div class="col-lg-4">
+                                                <input type="text" placeholder="Periode Pengurang Pajak" name="txtPeriodeKompJabatan" id="txtPeriodePengurangPajak" class="form-control" value="" maxlength="6"/>
+                                            </div>
                                     </div>
 									<div class="form-group">
 	                                    <label for="cmbKdStatusKerja" class="control-label col-lg-4">Status Kerja</label>
 											<div class="col-lg-4">
-												<select style="width:100%" id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
+												<select style="width:100%" id="cmbKdStatusKerja" name="cmbKdStatusKerja" class="select2" data-placeholder="Choose an option" onchange="change_komp_jab()"><option value=""></option>
                                                     <?php
                                                         foreach ($pr_master_status_kerja_data as $row) {
 														$slc='';if($row->kd_status_kerja==$kd_status_kerja){$slc='selected';}
@@ -59,7 +65,7 @@
 									<div class="form-group">
 	                                        <label for="cmbKdJabatan" class="control-label col-lg-4">Jabatan</label>
 	                                        <div class="col-lg-4">
-	                                        <select style="width:100%" id="cmbKdJabatan" name="cmbKdJabatan" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                        <select style="width:100%" id="cmbKdJabatan" name="cmbKdJabatan" class="select2" data-placeholder="Choose an option" onchange="change_komp_jab()"><option value=""></option>
                                                 <?php
 													foreach ($pr_master_jabatan_data as $row) {
 													$slc2='';if($row->kd_jabatan==$kd_jabatan){$slc2='selected';}
@@ -72,37 +78,37 @@
 									<div class="form-group">
                                         <label for="txtIp" class="control-label col-lg-4">Ip</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Ip" name="txtIp" id="txtIp" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $ip; ?>" maxlength="10"/>
+                                            <input type="text" placeholder="Ip" name="txtIp" id="txtIp" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $ip; ?>" maxlength="10"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtIk" class="control-label col-lg-4">Ik</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Ik" name="txtIk" id="txtIk" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $ik; ?>" maxlength="10"/>
+                                            <input type="text" placeholder="Ik" name="txtIk" id="txtIk" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $ik; ?>" maxlength="10"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtIms" class="control-label col-lg-4">Ims</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Ims" name="txtIms" id="txtIms" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $ims; ?>" maxlength="10"/>
+                                            <input type="text" placeholder="Ims" name="txtIms" id="txtIms" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $ims; ?>" maxlength="10"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtImm" class="control-label col-lg-4">Imm</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Imm" name="txtImm" id="txtImm" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $imm; ?>" maxlength="10"/>
+                                            <input type="text" placeholder="Imm" name="txtImm" id="txtImm" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $imm; ?>" maxlength="10"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPotDuka" class="control-label col-lg-4">Pot Duka</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Pot Duka" name="txtPotDuka" id="txtPotDuka" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $pot_duka; ?>" maxlength="10"/>
+                                            <input type="text" placeholder="Pot Duka" name="txtPotDuka" id="txtPotDuka" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $pot_duka; ?>" maxlength="10"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtSpsi" class="control-label col-lg-4">Spsi</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Spsi" name="txtSpsi" id="txtSpsi" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo $spsi; ?>" maxlength="10"/>
+                                            <input type="text" placeholder="Spsi" name="txtSpsi" id="txtSpsi" class="form-control money" onkeypress="return isNumberKey(event)" value="<?php echo $spsi; ?>" maxlength="10"/>
                                         </div>
                                     </div>
 									<input type="hidden" name="txtIdKompJab" value="<?php echo $id_komp_jab; ?>" />

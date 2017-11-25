@@ -77,11 +77,11 @@
 	                                        </div>
 									<div class="form-group">
 	                                            <label for="cmbKdJabatan" class="control-label col-lg-4">Jabatan</label>
-	                                            <div class="col-lg-4">
-	                                                <select id="cmbKdJabatan" name="cmbKdJabatan" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                            <div class="col-lg-5">
+	                                                <select id="cmbKdJabatan" name="cmbKdJabatan" class="select2 form-control" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_master_jabatan_data as $row) {
-															$slc4='';if($row->kd_jabatan==$kd_jabatan){$slc4='selected';}
+															$slc4='';if(str_replace(" ","",$row->kd_jabatan) == str_replace(" ","",$kd_jabatan)){$slc4='selected';}
                                                             echo '<option '.$slc4.' value="'.$row->kd_jabatan.'">'.$row->jabatan.'</option>';
                                                         }
                                                         ?></select>
@@ -89,20 +89,22 @@
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtMinMasaKerja" class="control-label col-lg-4">Min Masa Kerja</label>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-2">
                                                 <input type="text" placeholder="Min Masa Kerja" name="txtMinMasaKerja" id="txtMinMasaKerja" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo rtrim($min_masa_kerja); ?>" maxlength="2"/>
                                             </div>
+											 <label for="txtProsentase" class="control-label col-lg-1" style="text-align:left;">tahun</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtProsentase" class="control-label col-lg-4">Prosentase</label>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-2">
                                                 <input type="text" placeholder="Prosentase" name="txtProsentase" id="txtProsentase" class="form-control" onkeypress="return isNumberKey(event)" value="<?php echo rtrim($prosentase); ?>" maxlength="5"/>
                                             </div>
+											 <label for="txtProsentase" class="control-label col-lg-1"  style="text-align:left;">% (percent)</label>
                                     </div>
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
+	                                            <div class="col-lg-2">
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control class-datepicker-erp-pr" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 	    <input type="hidden" name="txtIdRiwayat" value="<?php echo $id_riwayat; ?>" /> </div>

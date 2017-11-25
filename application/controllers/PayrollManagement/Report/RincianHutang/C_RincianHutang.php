@@ -22,8 +22,8 @@ class C_RincianHutang extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Laporan Penggajian';
+        $data['SubMenuOne'] = 'Lap. Rincian Hutang';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -46,7 +46,7 @@ class C_RincianHutang extends CI_Controller
         $row = $this->M_hutangkaryawan->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
+            	'Menu' => 'Laporan Penggajian',
             	'SubMenuOne' => '',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
@@ -81,7 +81,7 @@ class C_RincianHutang extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
+            'Menu' => 'Laporan Penggajian',
             'SubMenuOne' => '',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
@@ -151,7 +151,7 @@ class C_RincianHutang extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
+                'Menu' => 'Laporan Penggajian',
                 'SubMenuOne' => '',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),

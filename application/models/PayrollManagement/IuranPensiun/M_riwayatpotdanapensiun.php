@@ -21,6 +21,11 @@ class M_riwayatpotdanapensiun extends CI_Model
 		$this->db->where('tgl_tberlaku>',$date);
     	return $this->db->get($this->table)->result();
     }
+	
+	function checkExist($id){
+		$this->db->where('noind=',$id);
+		return $this->db->get($this->table_master)->row();
+	}
 
     // get data by id
     function get_by_id($id)

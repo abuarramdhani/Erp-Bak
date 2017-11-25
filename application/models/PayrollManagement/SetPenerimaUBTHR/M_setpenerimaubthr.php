@@ -16,6 +16,8 @@ class M_setpenerimaubthr extends CI_Model
     // get all data
     function get_all()
     {
+		$this->db->where('tgl_tberlaku','9999-12-31');
+		$this->db->order_by('kd_status_kerja','asc');
     	return $this->db->get($this->table)->result();
     }
 
@@ -38,6 +40,13 @@ class M_setpenerimaubthr extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
+	
+	// update data
+    function update_data($ru_where,$ru_data)
+    {
+        $this->db->where($ru_where);
+        $this->db->update($this->table, $ru_data);
+    }
 
     // delete data
     function delete($id)
@@ -49,6 +58,7 @@ class M_setpenerimaubthr extends CI_Model
 	// association
     function get_pr_master_status_kerja()
     {
+		$this->db->order_by('kd_status_kerja','asc');
         return $this->db->get('pr.pr_master_status_kerja')->result();
     }
 

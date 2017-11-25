@@ -493,6 +493,7 @@
 			} );
 		} ).draw();
 
+		/*
 		$('#submit-simulation').click(function(){
 			$('.alert').alert('close');
 			$('#loadAjax').show();
@@ -582,6 +583,7 @@
 				}
 			});
 		});
+		*/
 
 		$(".select2-component").select2({
 			placeholder: function(){
@@ -589,6 +591,82 @@
 			},
 			allowClear: true,
 		});
+
+		$(".select-employee").select2({
+			  ajax: {
+			        url: baseurl+'CateringManagement/PrintPP/Employee',
+			        dataType: 'json',
+			        delay: 250,
+			        data: function (params) {
+			          return {
+			            q: params.term,
+			        };
+			        },
+			        processResults: function (data) {
+			          return {
+			                results: $.map(data, function (item) {
+			                    return {
+			                      id: item.employee_id,
+			                      text: item.employee_name,
+			                    }
+			                })
+			            };
+			      },
+			      cache: true
+			    },
+			    minimumInputLength: 2,
+			    allowClear: true,
+			});
+
+		$(document).on('click', '#add-row-printpp', function (){
+			var count = $('#printpp tr').length;
+			if(count >= 13) {
+				alert('gak boleh lebih dari 13');
+			} else {
+				$(".multiRow:last .date").datepicker("destroy");
+				var form = $('.multiRow').last().clone();
+
+				$('#printpp').append(form);
+				
+				$(".multiRow:last .form-control").val("").change();
+
+				$('.date').datepicker({
+		    		"autoclose": true,
+		    		"todayHiglight": true,
+		    		"format": 'dd M yyyy'
+		      	});	
+			}
+		});
+
+		$(document).on('click', '.delete-row-printpp', function (e){
+			e.preventDefault();
+			var count = $('#printpp tr').length;
+			if(count == 1) {
+				alert('gak boleh dihapus, awas kalo dihapus');
+			} else {
+				$(this).closest('tr').remove();
+			}
+		});
+
+		$(document).on('click', '.delete-row-update-printpp', function (e){
+			e.preventDefault();
+			var count = $('#printpp tr').length;
+			var row = $(this);
+			if(count == 1) {
+				alert('gak boleh dihapus, awas kalo dihapus');
+			} else {
+				var id = $(this).attr('data-id');
+				$.ajax({
+					type: 'POST',
+					data: {idKU: id},
+					url:baseurl+"CateringManagement/PrintPP/deleteLines",
+				})
+				.done(function(data) {
+					row.closest('tr').remove();
+				});
+			}
+		});
+		
 
 		$('#add-row').on( 'click', function () {
 			var new_form = $('<tr>').addClass('multiRow');
@@ -650,7 +728,6 @@
 			});
 		}
 
-
 		$('#submit-realization').click(function(){
 			$('.alert').alert('close');
 			$('#loadAjax').show();
@@ -669,6 +746,42 @@
 				}
 			});
 		});
+
+		$(document).on('change', '#area', function() {
+			var destination = $(this).val();
+			$('#area_lines').select2('val', destination);
+			// var destination_name = $("#area option[value='"+destination+"']").text()
+			// alert(destination);
+			// $('#area_lines').val(destination);
+			// $('#area_lines option[value='+destination+']').attr('selected','selected');
+		});
+
+		// $(document).on('change', '#area_lines', function() {
+		// 	var destination = $(this).val();
+		// 	// var destination_name = $("#area option[value='"+destination+"']").text()
+		// 	alert(destination);
+		// 	// $('#area_lines').val(destination);
+		// });
+
+		$('#submit-simulation').click(function(){
+			$('.alert').alert('close');
+			$('#loadAjax').show();
+			$.ajax({
+				type:'POST',
+				data:$("#simulation-form").serialize(),
+				url:baseurl+"Outstation/simulation/new/process",
+				success:function(result)
+				{
+					$('#estimate-allowance').html(result);
+					$('#loadAjax').hide();
+				},
+				error: function() {
+					$('#loadAjax').hide();
+					document.getElementById("errordiv").innerHTML = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Outstation Position/Destination/City Type Invalid!</div>';
+				}
+			});
+		});
+
 	});
 
 
@@ -751,7 +864,7 @@ $(document).ready(function(){
 	production_monitoring();
 	function production_monitoring(){
 		$('#production_monitoring').DataTable({
-			responsive: true,
+			responsive: false,
 			"scrollX": true,
 			scrollCollapse: true,
 			"lengthChange": false,
@@ -823,4 +936,20 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$('#dataTables-limbah').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'pdf'
+      ]
+    });
+
+    $('#dataTables-limbahTransaksi').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 });
+
+

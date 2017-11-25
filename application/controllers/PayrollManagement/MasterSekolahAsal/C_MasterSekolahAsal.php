@@ -21,15 +21,15 @@ class C_MasterSekolahAsal extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Data';
+        $data['SubMenuOne'] = 'Master Sekolah Asal';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $masterSekolahAsal = $this->M_mastersekolahasal->get_all();
-
+		
         $data['masterSekolahAsal_data'] = $masterSekolahAsal;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
@@ -50,8 +50,8 @@ class C_MasterSekolahAsal extends CI_Controller
         $row = $this->M_mastersekolahasal->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Data',
+            	'SubMenuOne' => 'Master Sekolah Asal',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -85,14 +85,14 @@ class C_MasterSekolahAsal extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Data',
+            'SubMenuOne' => 'Master Sekolah Asal',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterSekolahAsal/save'),
-				'noind' => set_value(''),
+			'noind' => set_value(''),
 			'pendidikan' => set_value('pendidikan'),
 			'sekolah' => set_value('sekolah'),
 			'jurusan' => set_value('jurusan'),
@@ -135,8 +135,8 @@ class C_MasterSekolahAsal extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Data',
+                'SubMenuOne' => 'Master Sekolah Asal',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),

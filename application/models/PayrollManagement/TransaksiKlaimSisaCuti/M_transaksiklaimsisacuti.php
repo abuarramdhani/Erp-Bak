@@ -23,7 +23,7 @@ class M_transaksiklaimsisacuti extends CI_Model
 	function getGajiPokok($data_where)
     {
 		$this->db->where($data_where);
-        return $this->db->get($this->table_gaji)->row()->gaji_pokok;
+        return $this->db->get($this->table_gaji)->row();
     }
 
 	function check($id,$periode){
@@ -33,7 +33,7 @@ class M_transaksiklaimsisacuti extends CI_Model
 	}
 	
 	function update_import($noind,$periode,$data_update){
-		$this->db->where('noind', $id);
+		$this->db->where('noind', $noind);
 		$this->db->where('periode', $periode);
         return $this->db->update($this->table,$data_update);
 	}

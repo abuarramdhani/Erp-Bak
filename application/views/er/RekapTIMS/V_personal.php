@@ -160,6 +160,46 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="box box-info">
+							<div class="box-header with-border">
+								<h3 class="box-title">Sakit</h3>
+								<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+								</div>
+							</div>
+							<div class="box-body" style="display: block;">
+								<table class="table table-striped table-bordered table-responsive table-hover data-tims-personal">
+									<thead class="bg-primary">
+										<tr>
+											<td style="text-align:center;">No</td>
+											<td style="text-align:center;">Nomor Induk</td>
+											<td style="text-align:center;">Tanggal</td>
+											<td style="text-align:center;">Keluar</td>
+										</tr>
+									</thead>
+									<tbody>
+										<?php $no=1; foreach ($Sakit as $SK) { ?>
+										<tr>
+											<td style="text-align:center;"><?php echo $no++; ?></td>
+											<td style="text-align:center;"><?php echo $SK['noind']; 
+											if ($info_item['noind']!=$SK['noind'])
+												{
+													echo " - Lama";
+												}
+												?></td>
+											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($SK['tanggal'])); ?></td>
+											<td style="text-align:center;"><?php echo $SK['keterangan']; ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 			<div class="col-md-6">
 				<div class="row">

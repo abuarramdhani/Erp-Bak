@@ -115,26 +115,32 @@
 									<td align='center'><?php echo $no++;?></td>
 									<td align='center'><?php echo $row['no_induk'] ?></td>
 									<td align='center'><?php echo $row['nama'] ?></td>
-									<td align='center'><?php echo $row['ptkp'] ?></td>
-									<td align='center'><?php echo $row['gaji_pokok'] ?></td>
-									<td align='center'><?php echo $row['i_f'] ?></td>
-									<td align='center'><?php echo $row['i_p'] ?></td>
-									<td align='center'><?php echo $row['i_k'] ?></td>
-									<td align='center'><?php echo $row['ubt'] ?></td>
-									<td align='center'><?php echo $row['upamk'] ?></td>
-									<td align='center'><?php echo $row['i_mahal'] ?></td>
-									<td align='center'><?php echo $row['jht'] ?></td>
-									<td align='center'><?php echo $row['jkn'] ?></td>
-									<td align='center'><?php echo $row['pot_duka'] ?></td>
-									<td align='center'><?php echo $row['pot_spsi'] ?></td>
-									<td align='center'><?php echo $row['pot_ikop'] ?></td>
-									<td align='center'><?php echo $row['thp'] ?></td>
+									<td align='center'><?php echo number_format((int)$row['ptkp'],0,",","."); ?></td>
+									<td align='center'><?php echo  number_format((int)$row['gaji_pokok'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['i_f'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['i_p'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['i_k'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['ubt'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['upamk'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['i_mahal'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['jht'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['jkn'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['pot_duka'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['pot_spsi'],0,",","."); ?></td>
+									<td align='center'><?php echo number_format((int)$row['pot_ikop'],0,",",".");  ?></td>
+									<td align='center'><?php echo number_format((int)$row['thp'],0,",","."); ?></td>
 								</tr>
 							<?php 
 								}
 							} 
 							?>
-		                </tbody>                                      
+		                </tbody>  
+						<tfoot>
+							<tr>
+								<th class="text-center" colspan="4">Total</th>
+								<th></th>
+							</tr>
+						</tfoot>
 		              </table>
 		            </div>
 		          </div>

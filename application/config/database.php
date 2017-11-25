@@ -175,6 +175,54 @@ $db['quickcom'] = array(
 	'port' => 3306
 );
 
+
+$db['kaizen'] = array(
+	'dsn'	=> '',
+	'hostname' => 'quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	'database' => 'kaizen',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'port' => 3306
+);
+
+
+
+$db['ticket'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ictsupport.quick.com',
+	'username' => 'admin',
+	'password' => '123456',
+	'database' => 'ticket1',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
 $db['oracle_dev'] = array(
 	'dsn'	=> '',
 	'hostname' => '192.168.7.3:1522/DEV',

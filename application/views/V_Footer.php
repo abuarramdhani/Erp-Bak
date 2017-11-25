@@ -4,13 +4,13 @@
 	   <!-- FOOTER -->
 		<footer class="main-footer" style="margin:0;">
         <div class="pull-right hidden-xs">
-			<strong>Copyright &copy; Quick 2015.</strong> All rights reserved.
+        	Page rendered in <strong>{elapsed_time}</strong> seconds.
+			<strong>Copyright &copy; Quick 2015<?php if(date('Y')>2015){echo '-'.date('Y');};?>.</strong> All rights reserved.
         </div>
 		<b>Version</b> 1.0.0
 		</footer>
 		<!--END FOOTER -->
      
-	
 	
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
@@ -19,7 +19,7 @@
 	<!-- AdminLTE App -->
     <script src="<?php echo base_url('assets/theme/js/app.min.js');?>" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS FOR DATATABLES-->
-    <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.print.min.js');?>"></script>
@@ -29,12 +29,29 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
 
+	<script src="<?php echo base_url('assets/plugins/canvasjs/canvasjs.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.js');?>"></script>
+	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');?>"></script>
+
+	<!-- InputMask -->
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/jquery.inputmask.bundle.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone-be.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/phone-codes/phone-ru.js"></script>
+	<script src="<?php echo base_url('assets/plugins/input-mask/3.x');?>/dist/inputmask/bindings/inputmask.binding.js"></script>
+
+	<!-- MULTISELECT -->
+	<script src="<?php echo base_url('assets/plugins/multiselect/js/bootstrap-multiselect.js');?>"></script>
+
 	<script src="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
 
 	<!--<script src="<?php echo base_url('assets/plugins/jquery-autocomplete/jquery.autocomplete.min.js');?>"></script>-->
 	<!-- Fine Uploader JS file -->
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/jquery.fine-uploader.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.bundle.min.js');?>"></script>
 
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
@@ -43,14 +60,24 @@
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
+	<!--<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customKL.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
-    <script src="<?php echo base_url('assets/js/customPK.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/js/customTR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/formValidation.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customWM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customSL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
+	<!--	<script src="<?php echo base_url('assets/js/customLKH.js');?>" type="text/javascript"></script>-->
+	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customDS.js');?>" type="text/javascript"></script>	
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){
@@ -68,6 +95,9 @@
 				"searching": false,
 				"bLengthChange": false
 			});
+
+			//bootstrap WYSIHTML5 - text editor
+    		$(".textarea").wysihtml5();
          });
     </script>
 	<script language=Javascript>
@@ -114,13 +144,18 @@
 	<script src="<?php echo base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/switch/static/js/bootstrap-switch.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.dualListbox-1.3/jquery.dualListBox-1.3.min.js');?>"></script>
+	<!-- <script src="<?php echo base_url('assets/plugins/DualListBox-master/dist/dual-list-box.min.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/autosize/jquery.autosize.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jasny/js/bootstrap-inputmask.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery-validation-1.11.1/dist/jquery.validate.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
-    
+	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/iCheck/icheck.js');?>"></script>
+
+<!-- 	<script src="<?php echo base_url('assets/plugins/ckeditor/config.js');?>"></script>
+ -->    
 	<script src="<?php echo base_url('assets/js/formsInit.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/ajaxSearch.js')?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/HtmlFunction.js')?>" type="text/javascript"></script>
@@ -128,6 +163,7 @@
 	<!--
 	<script src="<?php echo base_url('assets/js/formValidation.js')?>" type="text/javascript"></script>
 	-->
+	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		
@@ -140,6 +176,18 @@
 		
 		
 	</script>
+
+	<script type="text/javascript">
+		$('.pp-date').datepicker({
+    		"autoclose": true,
+    		"todayHiglight": true,
+    		"allowClear" : true,
+    		"format": 'dd M yyyy'
+      	});			
+	</script>
+
+
+
 	<?php
 	if (empty($alert)) {
 		$alert = '';
