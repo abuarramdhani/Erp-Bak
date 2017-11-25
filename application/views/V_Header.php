@@ -37,16 +37,10 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/skins/_all-skins.min.css');?>" type="text/css" />
   
-  <!-- PAGE LEVEL STYLES FOR DATATABLES-->
-<!--     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+  	<!-- PAGE LEVEL STYLES FOR DATATABLES-->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" /> -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/datatables.min.css');?>">
-<!--     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/DataTables-1.10.16/css/dataTables.bootstrap.min.css');?>">
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/FixedColumns-3.2.3/css/fixedColumns.dataTables.min.css');?>">
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/FixedColumns-3.2.3/css/fixedColumns.bootstrap.min.css');?>">
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/Buttons-1.4.2/css/buttons.dataTables.min.css');?>"> -->
-
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />	
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
