@@ -41,6 +41,7 @@ $styleNumber = array(
 	)
 );
 
+
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);
@@ -49,103 +50,151 @@ $styleNumber = array(
 	$worksheet->setTitle('Sheet1');
 
 	// set lebar kolom
-	$worksheet->getColumnDimension('A')->setWidth(12);
-	$worksheet->getColumnDimension('B')->setWidth(40);
-	$worksheet->getColumnDimension('C')->setWidth(40);
-	$worksheet->getColumnDimension('D')->setWidth(40);
+	$worksheet->getColumnDimension('A')->setWidth(20);
+	$worksheet->getColumnDimension('B')->setWidth(20);
+	$worksheet->getColumnDimension('C')->setWidth(20);
+	$worksheet->getColumnDimension('D')->setWidth(20);
 
-	// title
-	$worksheet->mergeCells('A1:D1');
-	$worksheet->getStyle('A1:D1')->applyFromArray($styleTitle);
-	foreach ($questionnaire as $qe) {
-		$worksheet->setCellValue('A1', $qe['questionnaire_title']);
-	}
-	
-	// data
-	$worksheet->setCellValue('A3', 'NAMA TRAINER');
-	$i = 3;
-	foreach($training as $tr) {
-		$strainer = explode(',', $tr['trainer']);
-		foreach($strainer as $st){
-			foreach($trainer as $tn){
-				if($st==$tn['trainer_id']){
-					$worksheet->setCellValue('B'.$i++, $tn['trainer_name']);
+	// INFO
+		// judul kuesioner
+		$worksheet->mergeCells('A1:D1');
+		$worksheet->getStyle('A1:D1')->applyFromArray($styleTitle);
+		foreach ($questionnaire as $qe) {
+			$worksheet->setCellValue('A1', $qe['questionnaire_title']);
+		}
+		
+		// nama trainer 
+		$worksheet->setCellValue('A3', 'NAMA TRAINER');
+		$i = 3;
+		foreach($training as $tr) {
+			$strainer = explode(',', $tr['trainer']);
+			foreach($strainer as $st){
+				foreach($trainer as $tn){
+					if($st==$tn['trainer_id']){
+						$worksheet->setCellValue('B'.$i++, $tn['trainer_name']);
+					}
 				}
 			}
 		}
-	}
 
-	$rowTb = $worksheet->getHighestRow()+2;
-	$worksheet->setCellValue('A'.$rowTb, 'RUANG');
-	foreach ($training as $tr) {
-		$worksheet->setCellValue('B'.$rowTb, $tr['room']);
-		$worksheet->setCellValue('C'.$rowTb, 'TANGGAL PELAKSANAAN');
-		$worksheet->setCellValue('D'.$rowTb, $tr['date_format']);
-	}
+		// ruangan dan tanggal
+		$rowTb = $worksheet->getHighestRow()+2;
+		$worksheet->setCellValue('A'.$rowTb, 'RUANG');
+		foreach ($training as $tr) {
+			$worksheet->setCellValue('B'.$rowTb, $tr['room']);
+			$worksheet->setCellValue('C'.$rowTb, 'TANGGAL PELAKSANAAN');
+			$worksheet->setCellValue('D'.$rowTb, $tr['date_format']);
+		}
 
-	$worksheet->setCellValue('C3', 'PROGRAM PELATIHAN');
-	foreach ($training as $tr) {
-		$worksheet->setCellValue('D3', $tr['scheduling_name']);
-	}
+		// nama pelatihan
+		$worksheet->setCellValue('C3', 'PROGRAM PELATIHAN');
+		foreach ($training as $tr) {
+			$worksheet->setCellValue('D3', $tr['scheduling_name']);
+		}
+	// --INFO
 
-	//tabel
-	$rowTb = $worksheet->getHighestRow()+2;
-	$worksheet->setCellValue('A'.$rowTb, 'No');
-	$cellAwal = 'A'.$rowTb;
+	//TABEL
+		// ambil highest row untuk segment & statement
+		$rowSt = $worksheet->getHighestRow('A')+2;
+		$rowSt2 = $worksheet->getHighestRow('B')+2;
+		$rowSt++;
+		$rowSt2++;
+		// awal border dan nomor border
+		$cellAwal = 'A'.$rowSt;
+		$rowNumb1 = $worksheet->getHighestRow('A')+2;
+		$worksheet->mergeCells('A'.$rowNumb1.':B'.$rowNumb1);
+		$worksheet->mergeCells('A'.$rowNumb1.':B'.$rowNumb1);
+		$cellNumb = 'A'.$rowNumb1;
 
-	$colTb = $worksheet->getHighestColumn($rowTb);
-	$colTb++;
-	foreach($segment as $sg){
-		foreach($statement as $st){
-			if ($sg['segment_id'] == $st['segment_id']) {
-				$worksheet->getColumnDimension($colTb)->setWidth(40);
-				$worksheet->setCellValue($colTb++.$rowTb, $sg['segment_description'].' - '.$st['statement_description']);
+		// ambil highest row untuk nomor & isian kuesioner
+		$rowTb = $worksheet->getHighestRow('C')+2;
+		$number = 1;
+		$colTb2 = $worksheet->getHighestColumn($rowTb);
+		$colTb2++;
+
+		$colTb  = $worksheet->getHighestColumn($rowTb+1);
+		$colTb++;
+		$colTb++;
+		$rowHeader = $rowTb;
+		
+		// looping segment dan statement
+		foreach($segment as $sg){
+			foreach($statement as $st){
+				if ($sg['segment_id'] == $st['segment_id']) {
+					$worksheet->setCellValue('A'.$rowSt++, $sg['segment_description']);
+					$worksheet->setCellValue('B'.$rowSt2++, $st['statement_description']);
+				}
 			}
 		}
-	}
-	
-	$number = 1;
-	foreach($sheet as $se){
-		$rowTb++;
-		$colTb = $worksheet->getHighestColumn($rowTb);
-		$worksheet->setCellValue($colTb++.$rowTb,$number++);
-		$stj = explode('||', $se['join_input']);
-	
-		$hasil = array();
-		$j = 0;
-		$k = 0;
-		for ($i = 0; $i < count($stj); $i++) {
-			if($stj[$i] == 1 || $stj[$i] == 2 || $stj[$i] == 3 || $stj[$i] == 4){
-				$hasil[$j]['nilai'] = $stj[$i];
-			} else {
-				$hasil[$j]['essay'][$k] = $stj[$i];
-				$k++;
-			}
-			if(($i+1) == count($stj)) {
 
-			} else {
-				if($stj[($i+1)] == 3) $j++;
-			}				
-			if($stj[$i] == 1){
-				$worksheet->setCellValue($colTb++.$rowTb, 'Sangat Tidak Setuju');
-			}else if($stj[$i] == 2){
-				$worksheet->setCellValue($colTb++.$rowTb, 'Tidak Setuju');
-			}else if($stj[$i] == 3){
-				$worksheet->setCellValue($colTb++.$rowTb, 'Setuju');
-			}else if($stj[$i] == 4){
-				$worksheet->setCellValue($colTb++.$rowTb, 'Sangat Setuju');
-			}else{
-				$worksheet->setCellValue($colTb++.$rowTb, $stj[$i]);
+		// looping isian kuesioner
+		foreach($sheet as $se){
+			$rowAwal = $rowTb+1;
+			$rowAwal2 = $rowTb;
+			$worksheet->setCellValue($colTb2++.$rowAwal2,$number++);
+			$stj = explode('||', $se['join_input']);
+
+			$hasil = array(); 
+			$j = 0;
+			$k = 0;
+			for ($i = 0; $i < count($stj); $i++) {
+				if($stj[$i] == 1 || $stj[$i] == 2 || $stj[$i] == 3 || $stj[$i] == 4){
+					$hasil[$j]['nilai'] = $stj[$i];
+				} else {
+					$hasil[$j]['essay'][$k] = $stj[$i];
+					$k++;
+				}
+
+				if(($i+1) == count($stj)) {
+
+				} else {
+					if($stj[($i+1)] == 3) $j++;
+				}
+
+				// isian kuesioner
+				if($stj[$i] == 1){
+					$worksheet->setCellValue($colTb.$rowAwal++, 'Sangat Tidak Setuju');
+				}else if($stj[$i] == 2){
+					$worksheet->setCellValue($colTb.$rowAwal++, 'Tidak Setuju');
+				}else if($stj[$i] == 3){
+					$worksheet->setCellValue($colTb.$rowAwal++, 'Setuju');
+				}else if($stj[$i] == 4){
+					$worksheet->setCellValue($colTb.$rowAwal++, 'Sangat Setuju');
+				}else if(empty($stj[$i])){
+					$worksheet->setCellValue($colTb.$rowAwal++, '-');
+				}else{
+					$worksheet->setCellValue($colTb.$rowAwal++, $stj[$i]);
+				}
 			}
+			$colTb++;
 		}
-	}
-	
-		$rowBorder = $worksheet->getHighestRow();
-		$colBorder = $worksheet->getHighestColumn($rowTb);
-		$cellAkhir = $colBorder.$rowBorder;
+		
+		// untuk inputan dinamis(mendapat nomor baris dan kolom tertinggi)
+			$rowBorder = $worksheet->getHighestRow();
+			$colBorder = $worksheet->getHighestColumn($rowTb);
+			$cellAkhir = $colBorder.$rowBorder;
 
-	$worksheet->getStyle($cellAwal.':'.$cellAkhir)->applyFromArray($styleBorder);
+		$worksheet->getStyle($cellAwal.':'.$cellAkhir)->applyFromArray($styleBorder);
+		$worksheet->getStyle($cellNumb.':'.$cellAkhir)->applyFromArray($styleBorder);
 
+	// --TABEL
+	$objset = $objPHPExcel->setActiveSheetIndex(0);
+	$objget = $objPHPExcel->getActiveSheet();
+	$colHeaderLast = $worksheet->getHighestColumn($rowHeader);
+	// echo $colHeaderLast.$rowHeader;
+	// exit();
+	$objget->getStyle('A'.$rowHeader.':'.$colHeaderLast.$rowHeader)->applyFromArray(
+		array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => '92d050')
+			),
+			'font' => array(
+				'color' => array('rgb' => '000000'),
+				'bold'  => true,
+			),	
+		)				
+	);
 
 // Redirect output to a client?s web browser (Excel5)
 //tambahkan paling atas

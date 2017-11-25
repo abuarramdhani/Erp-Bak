@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -131,7 +131,7 @@ $db['mssql'] = array(
 
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
@@ -154,7 +154,7 @@ $db['personalia'] = array(
 
 $db['quickcom'] = array(
 	'dsn'	=> '',
-	'hostname' => 'quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'amri',
 	'password' => 'amri',
 	'database' => 'fp_distribusi',
@@ -272,7 +272,7 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
+		$dsn = 'mysql:dbname=fp_distribusi;host=dev.quick.com';
 		$user = 'amri';
 		$password = 'amri';
 
@@ -318,7 +318,7 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
+		$dsn = 'mysql:dbname=fp_distribusi;host=dev.quick.com';
 		$user = 'amri';
 		$password = 'amri';
 

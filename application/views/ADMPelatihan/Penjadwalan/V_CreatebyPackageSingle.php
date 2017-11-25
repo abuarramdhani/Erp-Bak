@@ -30,6 +30,7 @@
 					<div class="box-body">
 					<?php foreach($details as $dt){?>
 						<div class="row" style="margin: 10px 10px">
+						<?php echo $alert; ?>
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $dt['training_name']?></b></h3>
 							</label>
@@ -97,9 +98,12 @@
 									<div class="col-lg-9">
 	  									<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" data-placeholder=" Evaluasi" required>
 												<option value="" ></option>
-												<?php foreach($GetEvaluationType as $et){ ?>
-													<option value="<?php echo $et['evaluation_type_id']?>">
-														<?php echo $et['evaluation_type_description']?>
+												<?php foreach($GetEvaluationType as $et){ 
+													// $selectReaksi='selected'
+													?>
+													<option value="<?php echo $et['evaluation_type_id']?>" 
+													<?php if ($et['evaluation_type_id']==1) { echo "selected"; } ?>>
+														<?php echo $et['evaluation_type_description'];?>
 													</option>
 												<?php } ?>
 										</select>

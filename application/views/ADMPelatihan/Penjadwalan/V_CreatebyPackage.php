@@ -103,7 +103,7 @@
 															</select>
 														</td>
 														<td>
-															<select class="form-control select4" name="<?php echo 'slcTrainer'.$no.'[]' ?>" id="slcTrainer" multiple="multiple" required style="width:95%">
+															<select class="form-control select4" name="<?php echo 'slcTrainer'.$no.'[]' ?>" id="slcTrainer" multiple="multiple" style="width:95%">
 																<option value=""></option>
 																<?php foreach($trainer as $tr){ ?>
 																<option value="<?php echo $tr['trainer_id']?>"><?php echo $tr['trainer_name']?></option>
@@ -112,9 +112,10 @@
 														</td>
 														<td style="text-align:left;">
 															<div class="col-lg-9">
-																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1"> Reaksi<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2"> Pembelajaran<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3"> Sikap / Perilaku
+																<?php $checkreaksi='checked'; ?>
+																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1" <?php echo $checkreaksi; ?>> Reaksi<br>
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2" > Pembelajaran<br>
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3" > Evaluasi Lapangan
 															</div>
 														</td>
 													</tr>
@@ -132,7 +133,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Sifat </label>
 									<div class="col-lg-9">
-										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan" required>
+										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan">
 											<option></option>
 											<option value="1">Order</option>
 											<option value="2">Tahunan</option>

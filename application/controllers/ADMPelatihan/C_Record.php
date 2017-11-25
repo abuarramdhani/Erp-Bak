@@ -58,7 +58,7 @@ class C_Record extends CI_Controller {
 		
 		$data['record'] = $this->M_record->GetRecord();
 		$data['trainer'] = $this->M_record->GetTrainer();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Index',$data);
@@ -152,7 +152,6 @@ class C_Record extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
-
 	}
 
 	public function EditSave($id)
@@ -201,12 +200,6 @@ class C_Record extends CI_Controller {
 				}
 				$j++;
 			}
-
-		// echo "<pre>";
-		// print_r($kirim);
-		// echo "</pre>";
-		// exit();
-
 		$this->M_record->UpdateSchedule($kirim, $id);
 		redirect('ADMPelatihan/Record/Detail/'.$id);
 	}
@@ -246,15 +239,33 @@ class C_Record extends CI_Controller {
 				}
 			}
 		}
-
 		//---GET NOINDUK
+		
 		$staf = array();
 		$nonstaf = array();
 		$data['record'] = $this->M_record->GetRecordId($id);
 		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
+
+		//AMBIL NILAI DARI TOS 
+		$prt = $this->M_record->GetParticipantId($id);
+		if (!empty($prt) && $data['record'][0]['package_training_id']!=0) {
+			$noindPtc = $prt[0]['noind'];
+			$schName = $data['record'][0]['scheduling_name'];
+			$tgl 	= $data['record'][0]['date_foredit'];
+			$pid 	= $data['record'][0]['package_training_id'];
+			$mysql	= $this->M_record->GetScoreO($noindPtc,$schName,$tgl);
+			$psg	= $this->M_record->GetScoreS($pid);
+			
+			if (!empty($mysql)) {
+				$a = $this->M_record->UpdateScore($mysql[0]['id_num'],strtoupper($mysql[0]['nama']),strtoupper($mysql[0]['kategori']),$mysql[0]['time_record'],$mysql[0]['result']);
+			}
+		}
+		//--AMBIL NILAI DARI TOS 
+
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
+
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -277,6 +288,7 @@ class C_Record extends CI_Controller {
 		$ScoreEval3Pre 		= $this->input->post('txtPerilakuPre');
 		$ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
 		$ScoreEval3Eval 	= $this->input->post('txtPerilakuEvalLap');
+		$Comment		 	= $this->input->post('txtKeterangan');
 		
 			$i=0;
 			foreach($ParticipantId as $loop){
@@ -287,6 +299,7 @@ class C_Record extends CI_Controller {
 				if(empty($ScoreEval3Post[$i])){$ScoreEval3Post[$i] = NULL;}
 				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
 				if(empty($ScoreEval3Eval[$i])){$ScoreEval3Eval[$i] = NULL;}
+				if(empty($Comment[$i])){$Comment[$i] = NULL;}
 				
 				$data_participant[$i] = array(
 					'status' 			=> $ParticipantStatus[$i],
@@ -296,6 +309,7 @@ class C_Record extends CI_Controller {
 					'score_eval3_post1' => $ScoreEval3Post[$i],
 					'score_eval2_post' 	=> $ScoreEval2Post[$i],
 					'score_eval3_post2' => $ScoreEval3Eval[$i],
+					'comment' 			=> $Comment[$i],
 				);
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;
