@@ -48,13 +48,15 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($daftarPekerjaSakit_data as $row) { ?>
+							<?php $no = 1; foreach($daftarPekerjaSakit_data as $row) { 
+								$e_id = $this->encrypt->encode($row->id_setting);
+								$e_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $e_id);?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
-                              	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/read/'.$row->id_setting.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/update/'.$row->id_setting.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/delete/'.$row->id_setting.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/read/'.$e_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/update/'.$e_id.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/DaftarPekerjaSakit/delete/'.$e_id.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
 							<td align='center'><?php echo $row->tanggal ?></td>
 							<td align='center'><?php echo $row->noind ?></td>

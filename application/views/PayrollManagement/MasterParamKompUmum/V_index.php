@@ -56,8 +56,8 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamKompUmum/update/'.$row->um.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
 								<a href="<?php echo base_url('PayrollManagement/MasterParamKompUmum/delete/'.$row->um.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td align='right'><?php echo number_format((int)$row->um);?></td>
-							<td align='right'><?php echo number_format((int)$row->ubt) ?></td>
+							<td align='right'><?php echo number_format((int)$row->um,0,",",".");?></td>
+							<td align='right'><?php echo number_format((int)$row->ubt,0,",",".") ?></td>
 							<td align='center'><?php echo $row->tgl_berlaku ?></td>
 							</tr>
 							<?php } ?>

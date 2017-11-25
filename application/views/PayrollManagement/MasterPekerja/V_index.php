@@ -71,11 +71,11 @@
 								<th style="text-align:center"><div style="width:40px"></div>NO</th>
 								<th style='text-align:center'><div style="width:120px"></div>ACTION</th>
 								<th style="text-align:center"><div style="width:80px"></div>No Induk</th>
+								<th style="text-align:center"><div style="width:200px"></div>Nama</th>
 								<th style="text-align:center"><div style="width:50px"></div>Kode Hub Kerja</th>
 								<th style="text-align:center"><div style="width:50px"></div>Kode Status Kerja</th>
 								<th style="text-align:center"><div style="width:120px"></div>NIK</th>
 								<th style="text-align:center"><div style="width:120px"></div>No KK</th>
-								<th style="text-align:center"><div style="width:200px"></div>Nama</th>
 								<th style="text-align:center"><div style="width:40px"></div>Id Kantor Asal</th>
 								<th style="text-align:center"><div style="width:40px"></div>Id Lokasi Kerja</th>
 								<th style="text-align:center"><div style="width:40px"></div>Jenis Kelamin</th>
@@ -133,11 +133,11 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterPekerja/delete/'.$row->noind.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a> -->
                               </td>
 							<td><?php echo $row->noind ?></td>
+							<td><?php echo $row->nama ?></td>
 							<td><?php echo $row->kd_hubungan_kerja ?></td>
 							<td><?php echo $row->kd_status_kerja ?></td>
 							<td><?php echo $row->nik ?></td>
 							<td><?php echo $row->no_kk ?></td>
-							<td><?php echo $row->nama ?></td>
 							<td><?php echo $row->id_kantor_asal ?></td>
 							<td><?php echo $row->id_lokasi_kerja ?></td>
 							<td><?php echo $row->jns_kelamin ?></td>

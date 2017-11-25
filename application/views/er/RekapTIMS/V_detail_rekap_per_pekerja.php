@@ -33,6 +33,17 @@ foreach ($rekap as $rekap_data) {}
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 							</button>
 						</form>
+						<form target="_blank" id="export_detail_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail-pdf") ?>">
+							<input type="hidden" name="txtDetail" value="1">
+							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
+							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
+							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">
+							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($rekap); foreach ($rekap as $rkp_export) { $count--; if ($count !== 0) { echo "'".$rkp_export['noind']."'".",";} else { echo "'".$rkp_export['noind']."'";} } ?>">
+							<button class="btn btn-default pull-right">
+								<i class="fa fa-file-pdf-o"></i> EXPORT PDF
+							</button>
+						</form>
+
 							<table class="table table-bordered table-hover table-striped" id="rekap-tims-detail" width="100%">
 								<thead>
 									<tr class="bg-primary">
@@ -218,7 +229,7 @@ foreach ($rekap as $rekap_data) {}
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 100px">
-														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-01',strtotime($ex_period1[0])).'/'.date('Y-m-t', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
+														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-d',strtotime($ex_period1[0])).'/'.date('Y-m-d', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
 															<?php echo $rekap_data['noind']?>
 														</a>
 													</div>
@@ -226,7 +237,7 @@ foreach ($rekap as $rekap_data) {}
 												</td>
 												<td>
 													<div style="width: 300px">
-														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-01',strtotime($ex_period1[0])).'/'.date('Y-m-t', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
+														<a target="_blank" href="<?php echo base_url()?>RekapTIMSPromosiPekerja/RekapTIMS/employee/<?php echo date('Y-m-d',strtotime($ex_period1[0])).'/'.date('Y-m-d', strtotime($ex_period2[0])).'/'.$rekap_data['nik']; ?>">
 															<?php echo $rekap_data['nama']?>
 														</a>
 													</div>

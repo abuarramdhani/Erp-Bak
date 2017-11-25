@@ -38,23 +38,23 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-	                                            <label for="txtTanggal" class="control-label col-lg-4">Tanggal</label>
+	                                            <label for="txtTglTransaksi" class="control-label col-lg-4">Tanggal</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggal" value="<?php echo $tanggal ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTanggal" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('d/m/Y')?>" name="txtTglTransaksi" value="<?php echo $tanggal ?>" class="form-control datepicker-erp-pr" data-date-format="dd/mm/yyyy" id="txtTglTransaksi" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
                                                 <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option">
-													<option value=""></option>
+													<option value="<?php echo $noind; ?>"><?php echo $noind; ?></option>
 												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtKlaimDl" class="control-label col-lg-4">Klaim Dl</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Klaim Dl" name="txtKlaimDl" id="txtKlaimDl" class="form-control money" value="<?php echo rtrim($klaim_dl); ?>"/>
+                                                <input type="text" placeholder="Klaim Dl" name="txtKlaimDl" id="txtKlaimDl" class="form-control number" value="<?php echo rtrim($klaim_dl); ?>"/>
                                             </div>
                                     </div>
 

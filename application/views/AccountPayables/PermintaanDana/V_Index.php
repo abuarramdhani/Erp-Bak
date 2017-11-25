@@ -97,12 +97,12 @@
 												<div class="table-responsive">
 													<table width="100%">
 														<tr>
-															<td class="col-lg-7">PLAFON HARIAN OPERASIONAL</td>
+															<td class="col-lg-7">PLAFON OPERASIONAL (2 HARI)</td>
 															<td class="col-lg-5">
 																<div class="col-lg-6">
 																	<div class="input-group">
 																		<span class="input-group-addon" id="basic-addon1">Rp</span>
-																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtCashLimit" id="txtCashLimit" value="50000000">
+																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtCashLimit" id="txtCashLimit" value="100000000">
 																	</div>
 																</div>
 															</td>
@@ -119,12 +119,13 @@
 															</td>
 														</tr>
 														<tr>
-															<td class="col-lg-7">KEKURANGAN DANA</td>
+															<td class="col-lg-7"><span id="saldoType"></span> DANA</td>
 															<td class="col-lg-5">
 																<div class="col-lg-6">
 																	<div class="input-group">
 																		<span class="input-group-addon" id="basic-addon1">Rp</span>
-																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtLackAmount" id="txtLackAmount"  value="0">
+																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtLackAmount" id="txtLackAmount" value="0">
+																		<input type="hidden" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtLackAmountHidden" id="txtLackAmountHidden" value="0">
 																	</div>
 																</div>
 															</td>
@@ -162,7 +163,7 @@
 															</tr>
 														</tbody>
 													</table>
-													<div class="col-lg-7">TOTAL</div>
+													<div class="col-lg-7">TOTAL RENCANA PENGELUARAN</div>
 													<div class="col-lg-5">
 														<div class="col-lg-6">
 															<div class="input-group">
@@ -225,25 +226,48 @@ $(document).on('click', '.del-fund-row', function () {
   	var amount = $('.expAmount[data-id="'+id+'"]').val();
   	var subtotal = $('#txtExpenseTotal').val();
   	var total = $('#txtTotalDemand').val();
+  	var lack = parseInt($('#txtLackAmountHidden').val());
+  	var countLines = $('#tblDemandForFunds tbody tr').length;
+  	
+  	if(countLines == 1) {
+  		alert('maaf, baris tidak dapat dihapus');
+  	} else {
+  		$(this).closest('tr').fadeTo(400, 0, function () { 
+    		$(this).remove();
+	  	});
+	  	$('#txtExpenseTotal').val(subtotal - amount);
 
-  	$(this).closest('tr').fadeTo(400, 0, function () { 
-    	$(this).remove();
-  	});
-  	$('#txtExpenseTotal').val(subtotal - amount);
-	$('#txtTotalDemand').val(total - amount);
+	  	if(lack <= 0) {
+	  		if(subtotal-amount > Math.abs(lack)) {
+				$('#txtTotalDemand').val(Math.abs(total - amount));	
+	  		} else {
+	  			$('#txtTotalDemand').val(0);
+	  		}
+	  	} else {
+			$('#txtTotalDemand').val(Math.abs(total - amount));
+	  	}
+  	}
 
   	return false;
 });
 
 $(document).on('keyup', '#txtExpenseAmount', function (){
     var total = 0;
-    var lack = parseInt($('#txtLackAmount').val());
+    var lack = parseInt($('#txtLackAmountHidden').val());
 
     $('.expAmount').each(function() {
         total += parseInt($(this).val(),10);
 	});
 	$('#txtExpenseTotal').val(total);
-	$('#txtTotalDemand').val(total + lack);
+	if(lack <= 0) {
+		if(total > Math.abs(lack)) {
+			$('#txtTotalDemand').val(Math.abs(total + lack));
+		} else {
+			$('#txtTotalDemand').val(0);
+		}
+	} else {
+		$('#txtTotalDemand').val(Math.abs(total + lack));
+	}
 });
 
 $(document).on('click', '#btnBalanceDate', function(){
@@ -264,13 +288,17 @@ $(document).on('click', '#btnBalanceDate', function(){
 	    dataType: 'json',
 	    success: function (data) {
 	    	$('#txtCashBalance').val(data);
-	    	$('#txtLackAmount').val(plafon-data)
-	    	$('#txtTotalDemand').val(plafon-data);
+	    	$('#txtLackAmount').val(Math.abs(plafon-data));
+	    	$('#txtLackAmountHidden').val(plafon-data);
+	    	if(plafon-data <= 0) {
+	    		$('#txtTotalDemand').val(0);
+	    		$('#saldoType').text('KELEBIHAN');
+	    	} else {
+	    		$('#txtTotalDemand').val(Math.abs(plafon-data));
+	    		$('#saldoType').text('KEKURANGAN');
+	    	}
 	    },
   	});
 })
 
 </script>
-
-
-		

@@ -45,53 +45,41 @@
 													<td>Employee Name</td>
 													<td><p id="employee_name"><?php echo $drel['employee_name'] ?></p></td>
 													<td>Destination</td>
-													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
+													<td><select id="area" name="txt_city_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
-															<?php foreach($Area as $ar){?>
+															<?php foreach($City as $ct){?>
 																<?php
 																	$selected = '';
-																	if ($drel['area_id'] == $ar['area_id']) {
+																	if ($drel['city_id'] == $ct['city_id']) {
 																		$selected = 'selected';
 																	}
 																?>
-																<option <?php echo $selected ?> value="<?php echo $ar['area_id'] ?>"><?php echo $ar['area_name'] ?></option>
+																<option <?php echo $selected ?> value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
 															<?php } ?>
 														</select></td>
 												</tr>
 												<tr>
 													<td>Section</td>
 													<td><p id="section_name"><?php echo $drel['section_name'] ?></p></td>
-													<td>City Type</td>
-													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
-															<option value=""></option>
-															<?php foreach($CityType as $ci){?>
-																<?php
-																	$selected = '';
-																	if ($drel['city_type_id'] == $ci['city_type_id']) {
-																		$selected = 'selected';
-																	}
-																?>
-																<option <?php echo $selected ?> value="<?php echo $ci['city_type_id'] ?>"><?php echo $ci['city_type_name'] ?></option>
-															<?php } ?>
-														</select></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" value="<?php echo $drel['depart_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
+													<td>Unit</td>
+													<td><p id="unit_name"><?php echo $drel['unit_name'] ?></p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" value="<?php echo $drel['return_time'] ?> " class="form-control date-picker" required></td>
 												</tr>
 												<tr>
+													<td>Departemen</td>
+													<td><p id="department_name"><?php echo $drel['department_name'] ?></p></td>
+													<td>Bon</td>
+													<td><input  id="txt_bon" type="text" name="txt_bon" value="<?php echo str_replace(',00', '', $drel['bon_nominal']); ?> " class="form-control input_money" ></td>
+												</tr>
+												<tr>
 													<td>Outstation Position</td>
 													<td><p id="outstation-position"><?php echo $drel['position_name'] ?><input type="hidden" name="txt_position_id" value="<?php echo $drel['position_id'] ?>"></p></td>
-													<td>Bon</td>
-													<td><input  id="txt_bon" type="text" name="txt_bon" value="<?php echo str_replace(',00', '', $drel['bon_nominal']); ?> " class="form-control input_money" required></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" <?php if($drel['accomodation_option'] == 1){echo"checked";} ?> >&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td colspan="4">
@@ -115,6 +103,11 @@
 											<?php
 													}
 											?>
+												<tr>
+													<td>
+														<input type="file" name="fileOutstation[]" id="fileOutstation" value="" multiple/>
+													</td>
+												</tr>
 											</table>
 										<label>Estimate Allowance</label>
 										<div class="row2" id="estimate-allowance">
@@ -185,7 +178,41 @@
 													</div>
 													<div class="col-md-8">
 														<div class="row">
-															<p id="ush-estimate"><?php echo $total_ush  ?></p>
+															<table>
+								
+																<?php
+																$ush_id="";
+																$ush_count = 0;
+																foreach ($detail_ush as $du) {
+																	if($du['id'] == $ush_id || $ush_id == ""){
+																		$ush_count++;
+																		$ush_name = $du['id'];
+																		$ush_nom = $du['nominal'];
+																		$ush_tot = $ush_count*$ush_nom;
+																	}else{
+																		echo'
+																		<tr>
+																			<td>'.$ush_count.' '.$ush_name.'</td>
+																			<td>&emsp;X&emsp;</td>
+																			<td align="right">Rp.'.number_format($ush_nom , 2, ',', '.').'</td>
+																			<td>&emsp;=&emsp;</td>
+																			<td align="right">Rp.'.number_format($ush_tot , 2, ',', '.').'</td>
+																		</tr>';
+
+																		$ush_count = 1;
+																		$ush_name = $du['id'];
+																		$ush_nom = $du['nominal'];
+																		$ush_tot = $ush_count*$ush_nom;
+																	}
+																	$ush_id = $du['id'];
+																}
+																?>
+																<tr>
+																	<td colspan="3">Total USH Allowance</td>
+																	<td>&emsp;=&emsp;</td>
+																	<td><?php echo $total_ush  ?></td>
+																</tr>
+															</table>
 														</div>
 													</div>
 												</div>
@@ -206,11 +233,14 @@
 											<table id="realization_detail" class="table table-bordered table-striped table-hover">
 												<thead>
 													<tr class="bg-primary">
-														<th width="30%"><center>Component</center></th>
-														<th width="25%"><center>Info</center></th>
-														<th width="10%"><center>Qty</center></th>
-														<th width="15%"><center>Nominal</center></th>
-														<th width="15%"><center>Total</center></th>
+														<th width="10%"><center>Tanggal</center></th>
+														<th width="10%"><center>Lokasi</center></th>
+														<th width="18%"><center>Component</center></th>
+														<th width="18%"><center>Info</center></th>
+														<th width="8%"><center>No. Urut</center></th>
+														<th width="7%"><center>Qty</center></th>
+														<th width="12%"><center>Nominal</center></th>
+														<th width="12%"><center>Total</center></th>
 														<th width="5%"><center><span id="add-row" class="btn btn-primary btn-sm pull-right" style="margin-right: 10px;"><i class="fa fa-plus"></i></span></center></th>
 													</tr>
 												</thead>
@@ -219,8 +249,22 @@
 														foreach ($data_realization_detail as $real_det) {
 													?>
 														<tr class="multiRow">
+															<td><input type="text" name="txtTglOutstation[]" class="form-control date-picker" value="" required></td>
+															<td><select id="area" name="txt_Lokasi[]"  class="form-control select2" data-placeholder="Pilih Salah Satu" required>
+															<option value=""></option>
+															<?php foreach($City as $ct){?>
+																<?php
+																	$selected = '';
+																	if ($real_det['city_id'] == $ct['city_id']) {
+																		$selected = 'selected';
+																	}
+																?>
+																<option <?php echo $selected ?> value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
+															<?php } ?>
+															</select></td>
+															<!-- <td><input type="text" name="txt_Lokasi[]" class="form-control" value="<?php echo $real_det['provinsi'].' - '.$real_det['kota'] ?>" required/></td> -->
 															<td>
-																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 																	<option value=""></option>
 																	<?php foreach($Component as $comp){ ?>
 																		<?php
@@ -234,32 +278,38 @@
 																</select>
 															</td>
 															<td><input type="text" name="txt_info[]" class="form-control" value="<?php echo $real_det['info'] ?>" required/></td>
+															<td><input type="text" name="txt_NomerUrut[]" class="form-control" value="" required/></td>
 															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="<?php echo $real_det['qty'] ?>" required/></td>
-															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/></td>
+															<td>
+															<input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="Rp<?php echo number_format(str_replace(',00', '', $real_det['nominal']), 0,',','.')?>" required/>
+															</td>
 															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
 															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 														</tr>
 													<?php
 														} ?>
 														<tr class="multiRow">
+															<td><input type="text" name="txtTglOutstation[]" class="form-control date-picker" value="" required></td>
+															<td><input type="text" name="txt_Lokasi[]" class="form-control" value="" required/></td>
 															<td>
-																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+																<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 																	<option value=""></option>
 																	<?php foreach($Component as $comp){ ?>
 																		<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
 																	<?php } ?>
 																</select>
 															</td>
-															<td><input type="text" name="txt_info[]" class="form-control" value="" required/></td>
-															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" required/></td>
-															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" required/></td>
-															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+															<td><input type="text" name="txt_info[]" class="form-control" value="" /></td>
+															<td><input type="text" name="txt_NomerUrut[]" class="form-control" value="" required/></td>
+															<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" /></td>
+															<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" /></td>
+															<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal"  readonly/></td>
 															<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 														</tr>
 												</tbody>
 												<tfoot>
 													<tr>
-														<td colspan="4" style="text-align: right">Total Estimate Allowance</td>
+														<td colspan="7" style="text-align: right">Total Estimate Allowance</td>
 														<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
 														<td></td>
 													</tr>

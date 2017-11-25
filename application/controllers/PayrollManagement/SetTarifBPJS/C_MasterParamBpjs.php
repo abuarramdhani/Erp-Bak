@@ -21,8 +21,8 @@ class C_MasterParamBpjs extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Tarif BPJS';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,8 +50,8 @@ class C_MasterParamBpjs extends CI_Controller
         $row = $this->M_masterparambpjs->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif BPJS',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -88,8 +88,8 @@ class C_MasterParamBpjs extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif BPJS',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -141,7 +141,7 @@ class C_MasterParamBpjs extends CI_Controller
 			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 			'jpn_tg_kary' 	=> $this->input->post('txtJpnTgKary',TRUE),
 			'jpn_tg_prshn' 	=> $this->input->post('txtJpnTgPrshn',TRUE),
-			'kode_petugas' 	=> '0001225',
+			'kode_petugas' 	=> $this->session->userdata('userid'),
 			'tgl_record' 	=> date('Y-m-d H:i:s'),
 		);
 
@@ -169,8 +169,8 @@ class C_MasterParamBpjs extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif BPJS',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -214,8 +214,22 @@ class C_MasterParamBpjs extends CI_Controller
 				'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
 				'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
 			);
-
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
+			'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
+			'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
+			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
+			'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
+			'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+			'kode_petugas' 	=> $this->session->userdata('userid'),
+		);
+		
             $this->M_masterparambpjs->update($this->input->post('txtIdSetting', TRUE), $data);
+			$this->M_masterparambpjs->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
 					 "success_update" => 1

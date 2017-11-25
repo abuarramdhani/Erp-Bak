@@ -21,8 +21,8 @@ class C_MasterParamKompUmum extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Komponen Gaji Umum';
         $data['SubMenuTwo'] = '';
 		$dt	= date('Y-m-d');
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,8 +50,8 @@ class C_MasterParamKompUmum extends CI_Controller
         $row = $this->M_masterparamkompumum->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Komponen Gaji Umum',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -82,8 +82,8 @@ class C_MasterParamKompUmum extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Komponen Gaji Umum',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -104,16 +104,16 @@ class C_MasterParamKompUmum extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'um' => str_replace(',','',$this->input->post('txtUmNew',TRUE)),
-				'ubt' => str_replace(',','',$this->input->post('txtUbt',TRUE)),
+				'um' => str_replace('.','',$this->input->post('txtUmNew',TRUE)),
+				'ubt' => str_replace('.','',$this->input->post('txtUbt',TRUE)),
 			);
 			
 			$data_riwayat = array(
 				'id_riwayat' => date('YmdHis'),
 				'tgl_berlaku' => date('Y-m-d'),
 				'tgl_tberlaku' => '9999-12-31',
-				'um' => str_replace(',','',$this->input->post('txtUmNew',TRUE)),
-				'ubt' => str_replace(',','',$this->input->post('txtUbt',TRUE)),
+				'um' => str_replace('.','',$this->input->post('txtUmNew',TRUE)),
+				'ubt' => str_replace('.','',$this->input->post('txtUbt',TRUE)),
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
@@ -152,15 +152,15 @@ class C_MasterParamKompUmum extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Komponen Gaji Umum',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/MasterParamKompUmum/saveUpdate'),
-				'um' => set_value('txtUm', $row->um),
-				'ubt' => set_value('txtUbt', $row->ubt),
+				'um' => set_value('txtUm', number_format((int)$row->um,0,",",".")),
+				'ubt' => set_value('txtUbt', number_format((int)$row->ubt,0,",",".")),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);

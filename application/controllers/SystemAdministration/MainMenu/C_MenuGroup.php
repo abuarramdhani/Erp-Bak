@@ -227,8 +227,6 @@ class C_MenuGroup extends CI_Controller {
 					}
 				}
 			}
-			 // print_r($data_menu);
-			// print_r($MenuGroupList[0]['menu_id']);
 			redirect('SystemAdministration/MenuGroup');
 		}
 			

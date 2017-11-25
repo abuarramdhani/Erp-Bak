@@ -22,8 +22,8 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Pekerja';
+        $data['SubMenuOne'] = 'Iuran Pensiun';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -51,8 +51,8 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         $row = $this->M_riwayatpotdanapensiun->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Pekerja',
+            	'SubMenuOne' => 'Iuran Pensiun',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -89,8 +89,8 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Pekerja',
+            'SubMenuOne' => 'Iuran Pensiun',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -163,8 +163,8 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Pekerja',
+                'SubMenuOne' => 'Iuran Pensiun',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -261,9 +261,35 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('NOIND', $row)){
-                    	
- 						//ROW DATA
+					$check = $this->M_riwayatpotdanapensiun->checkExist($row['NOIND']);
+					if(empty($check)){
+						//ROW DATA
+                		$data = array(
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'pot_pensiun' => $row['POT_PENSIUN'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$noind = $row['NOIND'];
+	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							);
+							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatpotdanapensiun->insert($data);
+	                    }else{
+	                    	$this->M_riwayatpotdanapensiun->insert($data);
+	                    }
+					}else{
+						//ROW DATA
 	                    $data = array(
 	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
 							'tgl_tberlaku' => '9999-12-31',
@@ -289,41 +315,14 @@ class C_RiwayatPotDanaPensiun extends CI_Controller
 	                    	$this->M_riwayatpotdanapensiun->insert($data);
 	                    }
 
-                	}else{
-                		//ROW DATA
-                		$data = array(
-	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
-							'tgl_tberlaku' => '9999-12-31',
-							'noind' => $row['NOIND'],
-							'pot_pensiun' => $row['POT_PENSIUN'],
-							'kd_petugas' => $this->session->userdata('userid'),
-							'tgl_jam_record' => date('Y-m-d H:i:s'),
-	                    );
-
-	                    //CHECK IF EXIST
-                    	$noind = $row['NOIND'];
-	                   	$check = $this->M_riwayatpotdanapensiun->check($noind);
-
-	                    if($check){
-	                    	$data_exist[$i] = $data;
-	                    	$i++;
-							$data_update = array(
-								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
-							);
-							$this->M_riwayatpotdanapensiun->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
-							$this->M_riwayatpotdanapensiun->insert($data);
-	                    }else{
-	                    	$this->M_riwayatpotdanapensiun->insert($data);
-	                    }
-	                    
-                	}
+					}
                 }
 
                 //LOAD EXIST DATA VERIFICATION PAGE
                 $this->checkSession();
         		$user_id = $this->session->userid;
         
-        		$data['Menu'] = 'Payroll Management';
+        		$data['Menu'] = 'Master Pekerja';
         		$data['SubMenuOne'] = '';
         		$data['SubMenuTwo'] = '';
 

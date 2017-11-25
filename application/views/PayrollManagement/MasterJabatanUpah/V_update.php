@@ -41,19 +41,6 @@
 
 											<input type="hidden" name="txtKdJabatanUpahHeader" value="<?php echo $kd_jabatan_upah; ?>" /> 
                                         </div>
-
-                                        <div class="col-lg-12">
-                                            <br />
-                                            <br />
-                                            <div class="row">
-                                                <div class="nav-tabs-custom">
-                                                    <ul class="nav nav-tabs">
-                                                    </ul>
-                                                    <div class="tab-content">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row text-right">

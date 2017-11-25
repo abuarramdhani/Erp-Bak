@@ -14,6 +14,7 @@ class C_DaftarPekerjaSakit extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -21,8 +22,8 @@ class C_DaftarPekerjaSakit extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Komponen Penggajian';
+        $data['SubMenuOne'] = 'Pekerja Sakit Berkepanjangan';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,8 +51,8 @@ class C_DaftarPekerjaSakit extends CI_Controller
         $row = $this->M_daftarpekerjasakit->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Komponen Penggajian',
+            	'SubMenuOne' => 'Pekerja Sakit Berkepanjangan',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -85,8 +86,8 @@ class C_DaftarPekerjaSakit extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Komponen Penggajian',
+            'SubMenuOne' => 'Pekerja Sakit Berkepanjangan',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -107,11 +108,13 @@ class C_DaftarPekerjaSakit extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		$varTgl	= $this->input->post('txtTanggal',TRUE);
+		$dt = explode("/",$this->input->post('txtTglTransaksi',TRUE));
+		$varTgl = $dt[2]."-".$dt[1]."-".$dt[0];
 		$varBln	= ($this->input->post('txtBulanSakit',TRUE) - 1); 
 		$tgl_tberlaku = date("Y-m-d", strtotime("+".$varBln." month",strtotime($varTgl)));
             $data = array(
-				'tanggal' => $this->input->post('txtTanggal',TRUE),
+				'id_setting' => str_replace(" ","",$this->input->post('txtNoind',TRUE).date('Ymd')),
+				'tanggal' => $varTgl,
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'bulan_sakit' => $this->input->post('txtBulanSakit',TRUE),
 				'tgl_tberlaku' => $tgl_tberlaku,
@@ -131,20 +134,21 @@ class C_DaftarPekerjaSakit extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_daftarpekerjasakit->get_by_id($id);
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Komponen Penggajian',
+                'SubMenuOne' => 'Pekerja Sakit Berkepanjangan',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/DaftarPekerjaSakit/saveUpdate'),
 				'id_setting' => set_value('txtIdSetting', $row->id_setting),
-				'tanggal' => set_value('txtTanggal', $row->tanggal),
+				'tanggal' => set_value('txtTglTransaksi', date("d/m/Y",strtotime($row->tanggal))),
 				'noind' => set_value('txtNoind', $row->noind),
 				'bulan_sakit' => set_value('txtBulanSakit', $row->bulan_sakit),
 				);
@@ -170,11 +174,12 @@ class C_DaftarPekerjaSakit extends CI_Controller
             // $this->update();
         // }
         // else{
-			$varTgl	= $this->input->post('txtTanggal',TRUE);
+			$dt = explode("/",$this->input->post('txtTglTransaksi',TRUE));
+			$varTgl = $dt[2]."-".$dt[1]."-".$dt[0];
 			$varBln	= $this->input->post('txtBulanSakit',TRUE);
 			$tgl_tberlaku = date("Y-m-d", strtotime("+".$varBln." month",strtotime($varTgl)));
             $data = array(
-				'tanggal' => $this->input->post('txtTanggal',TRUE),
+				'tanggal' => $varTgl,
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'bulan_sakit' => $this->input->post('txtBulanSakit',TRUE),
 				'tgl_tberlaku' => $tgl_tberlaku,
@@ -192,6 +197,8 @@ class C_DaftarPekerjaSakit extends CI_Controller
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_daftarpekerjasakit->get_by_id($id);
 
         if ($row) {
