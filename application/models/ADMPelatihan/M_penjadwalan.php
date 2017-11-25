@@ -53,12 +53,11 @@ class M_penjadwalan extends CI_Model {
 					order by pst.room";
 			$query=$this->db->query($sql);
 			return $query->result_array();
-			// return $sql;
 		}
 
 		public function GetEvaluationType()
 		{
-			$sql = "select * from pl.pl_evaluation_type where (evaluation_type_id=1 or evaluation_type_id=2)";
+			$sql = "select * from pl.pl_evaluation_type";
 			$query=$this->db->query($sql);
 			return $query->result_array();
 		}

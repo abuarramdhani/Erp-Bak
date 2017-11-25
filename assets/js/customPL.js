@@ -67,18 +67,18 @@ $(document).ready(function(){
     	format:'dd/mm/yyyy'
 	});
 
-    // $(".startdate").datepicker({
-    // 	//format:'dd/mm/yyyy'
-    // });
+	 $(".startdate").datepicker({
+    	//format:'dd/mm/yyyy'
+    });
 
-    // $(".enddate").datepicker({
-    // 	//format:'dd/mm/yyyy'
-    // });
+    $(".enddate").datepicker({
+    	//format:'dd/mm/yyyy'
+    });
 
-    // $(".dday-tgl").datepicker({
-    // 	//format:'dd/mm/yyyy'
-    // });
-
+    $(".dday-tgl").datepicker({
+    	//format:'dd/mm/yyyy'
+    });
+	
 	$('.startdate').change(function() {
 		var range 	= $('#dayrange').val();
 		var rrange 	= parseInt(range)-1;
@@ -1068,8 +1068,6 @@ function delCreateSegmentEssay(rowid,segmentid) {
 	}
 }
 function delCreateStatement(tbID,rowid,id,statementid) {
-	// console.log('#tblStatement'+tbID);
-	// console.log('#tbodyStatementC'+id);
 	if (statementid == '0') {
 		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
 	}
@@ -1085,7 +1083,6 @@ function delSpesifikRow(rowid,segmentid) {
 			success:function(result)
 			{
 				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
-				// $('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
 			}
 		});
 	}
@@ -1163,4 +1160,34 @@ function showModPar(schid,section){
 			$('div#showModPar').modal('show');
 		}
 	});
+}
+
+// WARNING NILAI MINIMAL
+function stafKKM(th,col,row) {
+	var kkm = $('input#kkmStaff').val();
+	var nilai = $(th).val();
+
+	if (nilai < kkm) {
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
+		console.log(kkm);
+		console.log(nilai);
+	}else{
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+	}
+
+}
+
+function nonstafKKM(th,col,row) {
+	var kkm = $('input#kkmNonStaff').val();
+	var nilai = $(th).val();
+
+	if (nilai < kkm) {
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
+		console.log(kkm);
+		console.log(nilai);
+	}else{
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+	}
 }

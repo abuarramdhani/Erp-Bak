@@ -21,8 +21,7 @@
 										<td width="7%" style="text-align:center;">
 											<a href="javascript:void(0)" class="btn btn-flat btn-sm btn-warning" name="showModPar" onclick="showModPar('<?php echo $rc['scheduling_id']."','".$rc['section_name'] ?>')">
 												<i class="fa fa-search"></i>
-											</a><!-- 
-											<button class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip" title="View" onclick="ShowModalPartcpnt('<?php echo $rc['section_name']."','".$rc['tahun']; ?>')"><i class="fa fa-search"></i></</button> -->
+											</a>
 										</td>
 										<td><?php echo $rc['nama'] ?></td>
 										<td style="text-align:center;"><?php echo $rc['tahun'] ?></td>
@@ -36,7 +35,7 @@
 					  <div class="modal-dialog modal-md" role="document">
 					    <div class="modal-content" style="align-content: center;">
 					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
 					        <h4 class="modal-title"><h3>DAFTAR PESERTA</h3></h4>
 					      </div>
 					      <div class="modal-body">

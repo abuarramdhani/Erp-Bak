@@ -87,12 +87,12 @@
 											$eval='';
 											if($rc['evaluation']=='1'){$eval='Reaksi';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';}
-											// if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';}
+											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';}
 											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
-											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';}
-											// if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Sikap / Perilaku';}
-											// if($rc['evaluation']=='1,2,3'|| $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-											// 	{$eval='Reaksi, Pembelajaran, Sikap/Perilaku';}
+											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Evaluasi Lapangan';}
+											if($rc['evaluation']=='1,2,3'|| $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+												{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';}
 										?>
 										<input class="form-control" value="<?php echo $eval?>" readonly >
 									</div>

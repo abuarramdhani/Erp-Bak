@@ -91,7 +91,7 @@
 						<hr>
 						<div class="form-group">
 							<div class="col-lg-offset-3 col-lg-6 text-right">
-								<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="<?php echo base_url('ADMPelatihan/Record/Finished')?>" class="btn btn-primary btn btn-flat">Back</a>
 							</div>
 						</div>
 					<?php } ?>

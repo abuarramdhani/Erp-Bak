@@ -305,6 +305,10 @@ class C_Penjadwalan extends CI_Controller {
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
 	public function addbypackage(){
+		echo "<pre>";
+		var_dump($_POST);
+		echo "</pre>";
+		exit();
 
 		$package_scheduling_id	= $this->input->post('txtPackageSchedulingId');
 		$package_training_id	= $this->input->post('txtPackageTrainingId');
@@ -333,12 +337,7 @@ class C_Penjadwalan extends CI_Controller {
 			}
 		}
 		
-		// $GetTrainerAlert = array();
-		// for ($o=0; $o < count($training_id) ; $o++) { 
-			$GetTrainerAlert= $this->M_penjadwalan->GetTrainerPackage();
-		// }
-		// $alerttrainer	= explode(',', $GetAlertPackage[0][0]['trainer']);  // ini bakal error
-		// $trainerName 	= array(); // ini buat apa?
+		$GetTrainerAlert= $this->M_penjadwalan->GetTrainerPackage();
 
 		$AlertVal=array();
 		foreach ($GetAlertPackage as $key => $value) {
@@ -349,13 +348,7 @@ class C_Penjadwalan extends CI_Controller {
 					}
 				}
 			}
-		}
-		// echo "<pre>";
-		// print_r($GetAlertPackage);
-		// print_r($AlertVal);
-		// echo "</pre>";
-		// exit();
-		
+		}		
 
 		if ($dataAlert == 0) {
 			$i=0;
@@ -394,7 +387,6 @@ class C_Penjadwalan extends CI_Controller {
 				$pkgid 			= $maxid[0]->scheduling_id;
 				
 				// //INPUT PARTICIPANT
-					// $participant	= $this->input->post('slcEmployee');
 					$j=0;
 					foreach($participant as $loop){
 						$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
@@ -510,18 +502,6 @@ class C_Penjadwalan extends CI_Controller {
 		$count 			= count($GetAlertPackage);
 		$alerttrainer	= explode(',', $GetAlertPackage[0]['trainer']);
 		$trainerName 	= array();
-
-		// echo "<pre>";
-		// // var_dump($_POST);
-		// print_r($GetAlertPackage);
-		// echo "<br>";
-		// print_r($GetTrainerAlert);
-		// echo "<br>";
-		// print_r($count);
-		// echo "<br>";
-		// print_r($alerttrainer);
-		// echo "</pre>";
-		// exit();
 
 		if ($count == 0) {
 		$trainer		= $this->input->post('slcTrainer');

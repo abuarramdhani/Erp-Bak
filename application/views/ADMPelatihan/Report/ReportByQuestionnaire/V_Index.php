@@ -6,7 +6,7 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Record Pelatihan</b></h1>
+						<h1><b>Report Pelatihan</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
@@ -25,24 +25,23 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
-						<b data-toogle="tooltip" title="Halaman yang menampilkan daftar pelatihan yang telah terjadwalkan.">Jadwal Pelatihan</b>
+						<b data-toogle="tooltip" title="">Report Kuesioner</b>
 					</div>
 					<div class="box-body">
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-1 control-label">Tanggal</label>
 								<div class="col-lg-2">
-									<input name="TxtStartDate" class="form-control singledateADM">
+									<input name="txtDate1" class="form-control singledateADM">
 								</div>
 								<label class="col-lg-1 control-label" align="center">s/d</label>
 								<div class="col-lg-2">
-									<input name="TxtEndDate" class="form-control singledateADM">
-									<input name="TxtStatus" type="text" value="1" hidden>
+									<input name="txtDate2" class="form-control singledateADM">
 								</div>
 								<div class="col-lg-2">
-									<button class="btn btn-primary btn-flat btn-block" id="FilterRecord">Filter</button>
+									<button class="btn btn-primary btn-flat btn-block" id="SearchReport3">Filter</button>
 								</div>
-								<div class="col-lg-1" align="center"  id="loading">
+								<div class="col-lg-1" align="center" id="loading">
 								</div>
 							</div>
 						</div>

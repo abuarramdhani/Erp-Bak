@@ -51,7 +51,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input type="text" name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
+										<input type="text" name="txtTanggalPelaksanaan" value="<?php echo $rc['date_foredit']?>" class="form-control singledateADM" placeholder="Tanggal" required >
 										<input type="text" id="scheduledate" value="<?php echo $rc['date_foredit']?>" hidden>
 									</div>
 								</div>
@@ -102,12 +102,12 @@
 											$eval='';
 											if($rc['evaluation']=='1'){$eval='Reaksi';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';}
-											// if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';}
+											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';}
 											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
-											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';}
-											// if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Sikap / Perilaku';}
-											// if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-											// 	{$eval='Reaksi, Pembelajaran, Sikap / Perilaku';}
+											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Evaluasi Lapangan';}
+											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+												{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';}
 										?>
 										<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" >
 												<?php
