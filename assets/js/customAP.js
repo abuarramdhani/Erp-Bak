@@ -941,7 +941,7 @@ function ajaxForSubmitFakturManual(){
 			};
 			
 			if (invchk == true) {
-				//second step ajax --- CheckFaktur
+				//second step ajax --- InputTaxNumber
 				
 				$.ajax({
 					type: "POST",

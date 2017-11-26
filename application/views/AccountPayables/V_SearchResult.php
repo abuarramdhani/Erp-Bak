@@ -29,11 +29,15 @@
 				$TaxInvNum = $row->TAX_NUMBER_DEPAN.$row->TAX_NUMBER_BELAKANG;
 				$TaxInvNum = preg_replace('/\D/', '', $TaxInvNum);//if they need check
 				if($row->TAX_NUMBER_BELAKANG == NULL){$TaxInvNum = '-';}
-				if ($TaxInvNum != '-') {
-					$fakCheck = $this->M_Invoice->checkFaktur($TaxInvNum);
-				}else{
-					$fakCheck = false;
-				}
+
+
+				// if ($TaxInvNum != '-') {
+				// 	$fakCheck = $this->M_Invoice->checkFaktur($TaxInvNum);
+				// }else{
+				// 	$fakCheck = false;
+				// }
+
+				
 			?>
 			<?php
 		
@@ -58,11 +62,11 @@
 					<input type="hidden" class="uniqpartcode" value="<?php echo $uniqpartcode?>">
 				</td>
 				<td rowspan="<?php echo $row->JML?>"><?php
-					if ($fakCheck) {
-						echo  $TaxInvNum."<span style='color: green; font-weight: bold; font-size:13px'>&check;</span>";
-					}else{
-						echo  $TaxInvNum."<span style='color: red; font-weight: bold; font-size:13px'>&cross;</span>";
-					} 
+					// if ($fakCheck) {
+					// 	echo  $TaxInvNum."<span style='color: green; font-weight: bold; font-size:13px'>&check;</span>";
+					// }else{
+					// 	echo  $TaxInvNum."<span style='color: red; font-weight: bold; font-size:13px'>&cross;</span>";
+					// } 
 				?></td>
 				<td rowspan="<?php echo $row->JML?>"><?php echo $row->VOUCHER_NUMBER;?></td>
 				<td rowspan="<?php echo $row->JML?>">

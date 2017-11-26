@@ -2,7 +2,7 @@
 						<table class="table table-striped table-bordered table-hover text-left" id="tabel-retur-faktur" style="font-size:14px;">
 							<thead class="bg-primary">
 								<tr>
-									<th>INVOICE</th>
+									<!-- <th>INVOICE</th> -->
 									<th>FM</th>
 									<th><div style="width:120px;">KODE JENIS TRANS</div></th>
 									<th><div style="width:100px;">FG PENGGANTI</div></th>
@@ -36,17 +36,17 @@
 											$bkg = substr($num, 5);
 											$atr5 = $typ.$alt.'.'.$dpn.'-'.$tgh.'.';
 											$atr3 = $bkg;
-											$invcheck = $this->M_Invoice->checkInvFak($atr5, $atr3);
+											// $invcheck = $this->M_Invoice->checkInvFak($atr5, $atr3);
 								?>
 								<tr>
-									<td>
-										<?php if ($invcheck) {
-											echo "<span style='color: green; font-weight: bold; font-size:20px'>&check;</span>";
-										}else{
-											echo "<span style='color: red; font-weight: bold; font-size:20px'>&cross;</span>";
+									<!-- <td>
+										<?php //if ($invcheck) {
+											//echo "<span style='color: green; font-weight: bold; font-size:20px'>&check;</span>";
+										//}else{
+											//echo "<span style='color: red; font-weight: bold; font-size:20px'>&cross;</span>";
 										} ?>
 										
-									</td>
+									</td> -->
 									<td><?php echo $FF->FM?></td>
 									<td><?php echo $typ?></td>
 									<td><?php echo $alt?></td>
