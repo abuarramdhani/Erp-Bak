@@ -154,7 +154,7 @@ $db['personalia'] = array(
 
 $db['quickcom'] = array(
 	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
+	'hostname' => 'quick.com',
 	'username' => 'amri',
 	'password' => 'amri',
 	'database' => 'fp_distribusi',
