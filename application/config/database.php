@@ -272,7 +272,7 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=dev.quick.com';
+		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
 		$user = 'amri';
 		$password = 'amri';
 
@@ -318,7 +318,7 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=dev.quick.com';
+		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
 		$user = 'amri';
 		$password = 'amri';
 
