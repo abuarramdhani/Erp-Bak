@@ -37,7 +37,7 @@
 				// 	$fakCheck = false;
 				// }
 
-				
+
 			?>
 			<?php
 		
@@ -62,6 +62,7 @@
 					<input type="hidden" class="uniqpartcode" value="<?php echo $uniqpartcode?>">
 				</td>
 				<td rowspan="<?php echo $row->JML?>"><?php
+					echo  $TaxInvNum
 					// if ($fakCheck) {
 					// 	echo  $TaxInvNum."<span style='color: green; font-weight: bold; font-size:13px'>&check;</span>";
 					// }else{
