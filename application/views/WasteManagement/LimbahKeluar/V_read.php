@@ -55,7 +55,23 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-                                                   
+                                                        
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['jenis_limbah']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Satuan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['satuan']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Sumber</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['sumber_limbah']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Perlakuan</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['limbah_perlakuan']; ?></td>
+                                                        </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Tanggal Keluar</strong></td>
                                                             <td style="border: 0">: <?php echo date('d M Y',strtotime($headerRow['tanggal_keluar'])); ?></td>
@@ -75,18 +91,6 @@
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Sisa Limbah</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['sisa_limbah']; ?></td>
-                                                        </tr>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jenis']; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Perlakuan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['limbah_perlakuan']; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Satuan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['satuan_limbah']; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>

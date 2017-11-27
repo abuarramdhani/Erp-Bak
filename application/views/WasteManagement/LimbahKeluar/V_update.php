@@ -37,6 +37,33 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="cmbJenisLimbahKeluarHeader" class="control-label col-lg-4">Jenis Limbah</label>
+                                                <div class="col-lg-4">
+                                                    <select id="cmbJenisLimbahKeluarHeader" name="cmbJenisLimbahKeluarHeader" class="select2" data-placeholder="Choose an option" style="width: 100%">
+                                                        <option value=""></option>
+                                                        <?php foreach ($jenis_limbah as $limbah) { ?>
+                                                        <option value="<?php echo $limbah['id_jenis_limbah']; ?>" <?php if($limbah['id_jenis_limbah']==$headerRow['id_jenis_limbah']) echo "selected"; ?>><?php echo $limbah['jenis_limbah']; ?></option>
+                                                        <?php }?> 
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" name="cmbSatuanHeader" class="form-control" id="SatuanLimbah" value="<?php 
+                                                   echo $headerRow['satuan'] ?>" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbJenisSumberHeader" class="control-label col-lg-4">Jenis Sumber</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" name="cmbJenisSumberHeader" class="form-control" id="SumberLimbah" value="<?php echo $headerRow['sumber_limbah'] ?>" readonly>
+                                                </div>
+                                            </div>
+
 											<div class="form-group">
                                                 <label for="txtJumlahKeluarHeader" class="control-label col-lg-4">Jumlah Keluar</label>
                                                 <div class="col-lg-4">
@@ -65,22 +92,10 @@
                                                 </div>
                                             </div>
 
-											<div class="form-group">
-                                                <label for="cmbJenisLimbahHeader" class="control-label col-lg-4">Jenis Limbah</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbJenisLimbahHeader" name="cmbJenisLimbahHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
-                                                        <option value=""></option>
-                                                        <?php foreach ($jenis_limbah as $limbah) { ?>
-                                                        <option value="<?php echo $limbah['id_jenis_limbah']; ?>" <?php if($limbah['id_jenis_limbah']==$headerRow['jenis_limbah']) echo "selected"; ?>><?php echo $limbah['jenis_limbah']; ?></option>
-                                                        <?php }?> 
-                                                    </select>
-                                                </div>
-                                            </div>
-
                                             <div class="form-group">
                                                 <label for="cmbPerlakuanHeader" class="control-label col-lg-4">Perlakuan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbPerlakuanHeader" name="cmbPerlakuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                    <select id="cmbPerlakuanHeader" name="cmbPerlakuanHeader" class="select2" data-placeholder="Choose an option" style="width: 100%">
                                                         <option value=""></option>
                                                         <?php foreach ($perlakuan as $plkn) { ?>
                                                         <option value="<?php echo $plkn['id_perlakuan']; ?>" <?php if($plkn['id_perlakuan']==$headerRow['perlakuan']) {echo "selected";} ?>><?php echo $plkn['limbah_perlakuan']; ?>
@@ -89,20 +104,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbSatuanHeader" name="cmbSatuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
-                                                        <option value=""></option>
-                                                        <?php foreach ($satuan as $stn) { ?>
-                                                        <option value="<?php echo $stn['id_satuan']; ?>" <?php if($stn['id_satuan']==$headerRow['satuan']) {echo "selected";} ?>><?php echo $stn['limbah_satuan']; ?>
-                                                        </option>
-                                                        <?php }?> 
-                                                    </select>
-                                                </div>
-                                            </div>
-
 
                                         </div>
 

@@ -26,7 +26,7 @@
                                 <form action="<?php echo site_url('WasteManagement/LimbahKeluar/FilterDataReport/');?>" method="post" enctype="multipart/form-data">
                                 <div class="col-md-2">
                                         <div class="input-group">
-                                        <select id="jenis_limbah" name="jenis_limbah" class="select select2" data-placeholder="Pilih Jenis Limbah " style="width: 100%">
+                                        <select id="jenis_limbah" name="jenis_limbah" class="select2" data-placeholder="Pilih Jenis Limbah " style="width: 100%">
                                                         <option value=""></option>
                                                         <?php foreach ($jenis_limbah as $limbah) { ?>
                                                         <option value="<?php echo $limbah['id_jenis_limbah']; ?>"><?php echo $limbah['jenis_limbah']; ?></option>
@@ -121,14 +121,11 @@
                                                 <tr>
                                                     <td align='center'><?php echo $no++;?></td>
                                                     <td><?php echo date('d M Y', strtotime($row['tanggal_transaksi'])) ;?></td>
-                                                    <td><?php echo $row['jenis'] ?></td>
-                                                    <td><?php echo $row['sumber'] ?></td>
-                                                    <td><?php if($row['jenis_sumber']==1){
-                                                                    echo "Proses Produksi";}
-                                                                elseif ($row['jenis_sumber']==0) {
-                                                                    echo "Diluar Proses Produksi";} ?>
+                                                    <td><?php echo $row['jenis_limbah'] ?></td>
+                                                    <td><?php echo $row['nama_seksi'] ?></td>
+                                                    <td><?php echo $row['jenis_sumber'] ?>
                                                     </td>
-                                                    <td><?php echo $row['satuan_limbah'] ?></td>
+                                                    <td><?php echo $row['satuan'] ?></td>
                                                     <td><?php echo $row['jumlah'] ?></td>
                                                     <td><?php echo $row['limbah_perlakuan'] ?></td>
                                                     <td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>
@@ -159,6 +156,7 @@
                                                     <th>Perlakuan</th> 
     												<th>Jumlah Keluar</th>
                                                     <th>Satuan</th>
+                                                    <th>Jenis Sumber</th>
     												<th>Tujuan Limbah</th>
     												<th>Nomor Dok</th>
     												<th>Sisa Limbah</th>
@@ -178,10 +176,11 @@
                                                 <tr>
                                                     <td align='center'><?php echo $no++;?></td>
                                                     <td><?php echo date('d M Y',strtotime($row['tanggal_keluar'])); ?></td>
-                                                    <td><?php echo $row['jenis'] ?></td>
+                                                    <td><?php echo $row['jenis_limbah'] ?></td>
                                                     <td><?php echo $row['limbah_perlakuan'] ?></td>
     												<td><?php echo $row['jumlah_keluar'] ?></td>
-                                                    <td><?php echo $row['satuan_limbah'] ?></td>
+                                                    <td><?php echo $row['satuan'] ?></td>
+                                                    <td><?php echo $row['sumber_limbah'] ?></td>
     												<td><?php echo $row['tujuan_limbah'] ?></td>
     												<td><?php echo $row['nomor_dok'] ?></td>
     												<td><?php echo $row['sisa_limbah'] ?></td>
