@@ -1,7 +1,7 @@
 <div class="table-responsive" style="overflow:auto;">
     <table class="table table-striped table-bordered table-hover table-responsive" id="tbdataplan">
         <thead class="bg-primary">
-            <tr>
+            <tr class="text-center">
                 <td>No</td>
                 <td>Item</td>
                 <td>Description</td>
@@ -21,18 +21,18 @@
 					<td><?php echo $dt['item_code']; ?></td>
 					<td><?php echo $dt['item_description']; ?></td>
 					<td>
-						<select class="form-control select4" onchange="editDailyPlan(this)" name="priority">
+						<select class="form-control select4" onchange="editDailyPlan(this)" name="priority" style="width: 70px">
 							<option></option>
 							<option value="1" <?php if ($dt['priority']=='1') {echo "selected";} ?>>1</option>
 							<option value="NORMAL" <?php if ($dt['priority']=='NORMAL') {echo "selected";} ?>>N</option>
 						</select>
 					</td>
 					<td>
-						<input type="text" name="due_time" class="form-control time-form" value="<?php echo $dt['due_time']; ?>">
+						<input type="text" name="due_time" style="width: 170px" class="form-control time-form" value="<?php echo $dt['due_time']; ?>">
 					</td>
 					<td><?php echo $dt['section_name']; ?></td>
 					<td>
-						<input type="number" name="need_qty" onchange="editDailyPlan(this)" class="form-control" value="<?php echo $dt['need_qty']; ?>">
+						<input type="number" name="need_qty" style="width: 80px" onchange="editDailyPlan(this)" class="form-control" value="<?php echo $dt['need_qty']; ?>">
 					</td>
 					<td>
 						<?php
