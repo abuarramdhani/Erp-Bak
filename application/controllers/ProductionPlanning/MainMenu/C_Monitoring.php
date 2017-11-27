@@ -103,14 +103,19 @@ class C_Monitoring extends CI_Controller {
         $datplan    = array();
     	$datDailyAchieve= array();
     	$datsec 	= array();
+        $infoJob        = array();
+        $indeks         = 0;
     	foreach ($section as $val) {
             $datplan[] = $this->M_dataplan->getDataPlan($id=false,$val);
     		$datDailyAchieve[] = $this->M_monitoring->getDailyAchieve($val);
+            $datsec[]           = $this->M_dataplan->getSection(94,$val);
+            $infoJob[]          = $this->M_monitoring->getInfoJobs($datsec[$indeks][0]['org_id'],$datsec[$indeks][0]['department_class_code'],$datsec[$indeks][0]['routing_class']);
+            $indeks++;
     	}
 
         $data['section']        = $this->M_dataplan->getSection();
         $data['secAchieve']     = $datDailyAchieve;
-        $data['infoJob']        = $this->M_monitoring->getInfoJobs();
+        $data['infoJob']        = $infoJob;
         $data['achieveAll']     = $this->M_monitoring->getAchievementAllFab();
         $data['selectedSection']= $section;
         
@@ -315,7 +320,7 @@ class C_Monitoring extends CI_Controller {
                 <tbody id="normalPriority" style="font-weight: bold;">';
                 foreach ($normal as $n ){
                     echo '<tr class="bg-success-plan"';
-                        if ($checkpoint > 6) {
+                        if ($checkpoint > 12) {
                             echo " data-showid='".$checkpoint."'";
                             echo " data-showstat='0'";
                             echo " style='display:none;'";
