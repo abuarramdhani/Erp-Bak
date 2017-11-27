@@ -496,15 +496,15 @@ table.t_riwayat_mutasi td {
 }
 .bg-danger-plan {
     background-color: #FF5252;
-    color: #fff;
+    color: #000;
 }
 .bg-success-plan {
     background-color: #1976D2;
-    color: #fff;
+    color: #000;
 }
 .bg-dark-plan {
     background-color: #212121;
-    color: #fff;
+    color: #000;
 }
 .table-border-dark {
     border: 2px solid #000;
