@@ -18,8 +18,8 @@
 	
     
 	<!-- GLOBAL STYLES -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" />
-    <!-- <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" /> -->
+    <!-- <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" /> -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
 
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/select2/select2.min.css');?>" type="text/css" />
     <!-- FontAwesome 3.2.0 -->
@@ -37,8 +37,8 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/skins/_all-skins.min.css');?>" type="text/css" />
   
-  <!-- PAGE LEVEL STYLES FOR DATATABLES-->
-    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+  	<!-- PAGE LEVEL STYLES FOR DATATABLES-->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
 	<!-- PAGE LEVEL STYLES FOR FORM -->
@@ -74,8 +74,10 @@
 
 	<!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.1.4.min.js');?>" type="text/javascript"></script>
+    <!-- <script src="<?php echo base_url('assets/plugins/jQuery/jquery-3.2.1.min.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>" type="text/javascript"></script>
-    <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script>
+    <!-- <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.6/js/bootstrap.min.js');?>" type="text/javascript"></script> -->
+    <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
     <!-- END GLOBAL SCRIPTS -->
 	

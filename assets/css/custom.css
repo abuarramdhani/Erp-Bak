@@ -594,3 +594,8 @@ table.t_riwayat_mutasi td
 #res .input-sm {
     max-width: 100px;
 }
+
+.header_table {
+    vertical-align: middle !important; 
+    text-align: center;
+}

@@ -65,7 +65,7 @@ class M_monitoring extends CI_Model {
 		//select
 		public function GetRegisteredPeople($id){
 			$quickcom	= $this->load->database('quickcom',true);
-			$sql = "SELECT a.*,b.jabatan,(SELECT COUNT(xx.noind) FROM fp_distribusi.tb_jari_tks AS xx WHERE a.noind=xx.noind) AS fp_code 
+			$sql = "SELECT a.*,b.jabatan,(SELECT COUNT(xx.noind) FROM ceklembur.tb_jari_tks AS xx WHERE a.noind=xx.noind) AS fp_code 
 					FROM fp_distribusi.tb_fppribadi AS a 
 					LEFT JOIN hrd_khs.tpribadi AS b ON a.noind=b.noind
 					WHERE a.id_lokasi='$id' order by a.noind";
@@ -344,7 +344,7 @@ class M_monitoring extends CI_Model {
 		
 		public function checkAllFinger($id,$qfinger){
 				$quickcom 	= $this->load->database("quickcom",true);
-				$sql	= "select a.id_finger,a.noind,a.finger,b.jari from fp_distribusi.tb_jari_tks as a
+				$sql	= "select a.id_finger,a.noind,a.finger,b.jari from ceklembur.tb_jari_tks as a
 							left join fp_distribusi.tb_jari as b on a.id_finger=b.id_finger where a.noind='$id'
 							 $qfinger";
 				$query	= $quickcom->query($sql);
@@ -384,7 +384,7 @@ class M_monitoring extends CI_Model {
 		
 		public function get_finger($noind,$qfinger){
 			$quickcom = $this->load->database("quickcom",true);
-			$sql	= "select * from fp_distribusi.tb_jari_tks where noind='$noind' $qfinger";
+			$sql	= "select * from ceklembur.tb_jari_tks where noind='$noind' $qfinger";
 			$query	= $quickcom->query($sql);
 			return $query->result_array();
 		}
@@ -536,7 +536,7 @@ class M_monitoring extends CI_Model {
 		
 		public function get_finger_svr($noind){
 			$quickcom	= $this->load->database("quickcom",true);
-			$sql				= "select * from fp_distribusi.tb_jari_tks where noind='$noind' and id_finger in ('06','07')";
+			$sql				= "select distinct * from ceklembur.tb_jari_tks where noind='$noind' and id_finger in ('06','07')";
 			$query			= $quickcom->query($sql);
 			return $query->result_array();
 		}

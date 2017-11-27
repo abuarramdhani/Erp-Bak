@@ -1,4 +1,4 @@
-<section class="content">
+
 	<div class="inner" >
 	<div class="row">
 		<div class="col-lg-12">

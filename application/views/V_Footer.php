@@ -19,7 +19,7 @@
 	<!-- AdminLTE App -->
     <script src="<?php echo base_url('assets/theme/js/app.min.js');?>" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS FOR DATATABLES-->
-    <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.print.min.js');?>"></script>
@@ -28,6 +28,7 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+
 	<script src="<?php echo base_url('assets/plugins/canvasjs/canvasjs.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.js');?>"></script>
 	<!-- PAGE LEVEL SCRIPTS FOR TEXT AREA-->
@@ -143,6 +144,7 @@
 	<script src="<?php echo base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/switch/static/js/bootstrap-switch.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.dualListbox-1.3/jquery.dualListBox-1.3.min.js');?>"></script>
+	<!-- <script src="<?php echo base_url('assets/plugins/DualListBox-master/dist/dual-list-box.min.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/autosize/jquery.autosize.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jasny/js/bootstrap-inputmask.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery-validation-1.11.1/dist/jquery.validate.min.js');?>"></script>

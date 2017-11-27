@@ -81,7 +81,7 @@
 											<div class="form-group hidden">
                                                 <label for="txtMasaAktifPICHeader" class="control-label col-lg-4">Masa Penggunaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="masaAktifPIC" class="date form-control" id="daterangepicker" />
+                                                    <input type="text" name="masaAktifPIC" class="date form-control" id="ManajemenKendaraan-daterangepicker" />
                                                 </div>
                                             </div>
 

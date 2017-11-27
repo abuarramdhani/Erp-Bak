@@ -44,7 +44,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalMaintenanceHeader" class="control-label col-lg-4">Tanggal Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" name="txtTanggalMaintenanceHeader" class="date form-control daterangepickersingledatewithtime" required="" />
+                                                    <input type="text" maxlength="10" name="txtTanggalMaintenanceHeader" class="date form-control ManajemenKendaraan-daterangepickersingledatewithtime" required="" />
                                                 </div>
                                             </div>
 

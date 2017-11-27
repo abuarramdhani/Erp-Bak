@@ -44,13 +44,13 @@
 											<div class="form-group">
                                                 <label for="txtTanggalKirHeader" class="control-label col-lg-4">Tanggal KIR</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalKir" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepickersingledate" required=""/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalKir" class="date form-control" data-date-format="yyyy-mm-dd" id="ManajemenKendaraan-daterangepickersingledate" required=""/>
                                                 </div>
                                             </div>
 											<div class="form-group">
                                                 <label for="txtPeriodeAwalKirHeader" class="control-label col-lg-4">Periode KIR</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtPeriodeKir" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepicker" required=""/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtPeriodeKir" class="date form-control" data-date-format="yyyy-mm-dd" id="ManajemenKendaraan-daterangepicker" required=""/>
                                                 </div>
                                             </div>
 											<div class="form-group">

@@ -696,7 +696,7 @@ $(document).ready(function() {
           'excel'
         ],
         "scrollX": true,
-        responsive: true,
+        responsive: false,
       });
 
 
@@ -708,7 +708,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Kondite/showList",
           type: "post",
@@ -727,7 +727,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
           type: "post",
@@ -746,7 +746,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
           type: "post",
@@ -765,7 +765,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Tambahan/showList",
           type: "post",
@@ -784,7 +784,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Potongan/showList",
           type: "post",
@@ -803,7 +803,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/MasterData/TargetBenda/showList",
           type: "post",
@@ -822,7 +822,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/MasterData/MasterPekerja/showList",
           type: "post",
@@ -841,7 +841,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/MasterData/DataGaji/showList",
           type: "post",
@@ -863,7 +863,7 @@ $(document).ready(function() {
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: true,
+        responsive: false,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/HitungGaji/showList",
           type: "post",

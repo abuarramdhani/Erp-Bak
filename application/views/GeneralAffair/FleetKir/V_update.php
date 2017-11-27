@@ -52,14 +52,14 @@
 											<div class="form-group">
                                                 <label for="txtTanggalKirHeader" class="control-label col-lg-4">Tanggal Kir</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalKirHeader" value="<?php echo $headerRow['tanggal_kir'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepickersingledate" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalKirHeader" value="<?php echo $headerRow['tanggal_kir'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="ManajemenKendaraan-daterangepickersingledate" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtPeriodeAwalKirHeader" class="control-label col-lg-4">Periode KIR</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtPeriodeKirHeader" value="<?php echo $headerRow['periode_kir'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="daterangepicker" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtPeriodeKirHeader" value="<?php echo $headerRow['periode_kir'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="ManajemenKendaraan-daterangepicker" />
                                                 </div>
                                            </div>
 											<div class="form-group">

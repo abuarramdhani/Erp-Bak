@@ -53,13 +53,13 @@
                                             <div class="form-group">
                                                 <label for="txtPeriodeAwalPajakHeader" class="control-label col-lg-4">Tanggal Pajak</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalPajak" class="date form-control" data-date-format="dd-mm-yyyy" id="daterangepickersingledate" value="<?php echo $headerRow['tanggal_pajak'];?>" required/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtTanggalPajak" class="date form-control" data-date-format="dd-mm-yyyy" id="ManajemenKendaraan-daterangepickersingledate" value="<?php echo $headerRow['tanggal_pajak'];?>" required/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="txtPeriodeAkhirPajakHeader" class="control-label col-lg-4">Periode Pajak</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtPeriodePajak" class="date form-control" data-date-format="dd-mm-yyyy" id="daterangepicker" value="<?php echo $headerRow['periode_pajak'];?>" required/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y')?>" name="txtPeriodePajak" class="date form-control" data-date-format="dd-mm-yyyy" id="ManajemenKendaraan-daterangepicker" value="<?php echo $headerRow['periode_pajak'];?>" required/>
                                                 </div>
                                             </div>
                                             <div class="form-group">

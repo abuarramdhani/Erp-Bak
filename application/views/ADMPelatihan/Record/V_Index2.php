@@ -27,13 +27,19 @@
 
 										$datestatus="";
 										if($dday == $tomorrow || $dday == $today){$datestatus="danger";}
+										// elseif ($dday<$today && $dday<$week && $rc['tidak_terlaksana']){$datestatus=1;}
 										elseif ($dday>$today && $dday<$week){$datestatus="warning";}
 										elseif ($dday<$today && $dday<$week){$datestatus="success";}
 
 										$packagedate=$rc['start_date_format'].' - '.$rc['end_date_format'];
 										if(is_null($rc['start_date_format']) OR is_null($rc['start_date_format'])){$packagedate="";}
+
+										if ($dday<$today && $dday<$week && $rc['tidak_terlaksana']==1) {?>
+											<tr style="background-color: #C39BD3"> 
+										<?php } else{?>
+											<tr class=" <?php echo $datestatus;?>"> 
+										<?php }
 									?>
-									<tr class="<?php echo $datestatus ?>">
 										<td align="center"><?php echo $no ?></td>
 										<td>
 											<?php if ($no==1) { ?>

@@ -101,6 +101,30 @@ class C_Report extends CI_Controller {
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index3',$data);
 		$this->load->view('V_Footer',$data);
 	}
+	//HALAMAN RECORD BY QUESTIONNAIRE
+	public function reportbyquestionnaire(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Report by Questionnaire';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$date1='1/1/1900';
+		$date2='1/1/1900';
+		$data['report'] = $this->M_report->GetReport3($date1,$date2);
+				
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index2',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 
 	//HALAMAN REKAP 
 	public function rekap(){

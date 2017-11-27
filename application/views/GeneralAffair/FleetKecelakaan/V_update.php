@@ -54,7 +54,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalKecelakaanHeader" class="control-label col-lg-4">Tanggal Kecelakaan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" value="<?php echo $headerRow['tanggal_kecelakaan'] ?>" class="date form-control daterangepickersingledatewithtime" data-date-format="yyyy-mm-dd"  required="" value="<?php echo $headerRow['tanggal_kecelakaan'];?>"/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggalKecelakaanHeader" value="<?php echo $headerRow['tanggal_kecelakaan'] ?>" class="date form-control ManajemenKendaraan-daterangepickersingledatewithtime" data-date-format="yyyy-mm-dd"  required="" value="<?php echo $headerRow['tanggal_kecelakaan'];?>"/>
                                                 </div>
                                             </div>
 
@@ -131,7 +131,7 @@
                                                     <label for='txtTanggalCekAsuransi' class="control-label">Tanggal Cek Asuransi</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                        <input type="text" name="txtTanggalCekAsuransi" id="daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_cek_asuransi'];?>" <?php echo $status_input;?>>
+                                                        <input type="text" name="txtTanggalCekAsuransi" id="ManajemenKendaraan-daterangepickersingledate" maxlength="10" class="date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_cek_asuransi'];?>" <?php echo $status_input;?>>
                                                 </div>
                                             </div>
 
@@ -141,7 +141,7 @@
                                                     <label for='txtTanggalMasukBengkel' class="control-label">Tanggal Masuk Bengkel</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalMasukBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_masuk_bengkel'];?>" <?php echo $status_input;?>/>
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalMasukBengkel" class="ManajemenKendaraan-daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_masuk_bengkel'];?>" <?php echo $status_input;?>/>
                                                 </div>
                                             </div>
 
@@ -175,7 +175,7 @@
                                                     <label for='txtTanggalKeluarBengkel' class="control-label">Tanggal Keluar Bengkel</label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                        <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalKeluarBengkel" class="daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_keluar_bengkel'];?>" <?php echo $status_input;?>/>
+                                                        <input type="text" maxlength="10" placeholder="<?php echo date('d-m-Y H:i')?>" name="txtTanggalKeluarBengkel" class="ManajemenKendaraan-daterangepickersingledatewithtime date form-control" data-date-format="yyyy-mm-dd" required="" value="<?php echo $headerRow['tanggal_keluar_bengkel'];?>" <?php echo $status_input;?>/>
                                                 </div>
                                             </div>
 

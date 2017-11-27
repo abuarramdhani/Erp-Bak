@@ -130,28 +130,35 @@ class M_report extends CI_Model {
 		}else{
 			$s="and es.section_name like '%$section%'";
 		}
-		$sql="	select	section_name, jumlah.jml, jumlah.nama, jumlah.tahun,jumlah.scheduling_id
+		$sql="	select	es.section_name, jumlah.jml, jumlah.nama, jumlah.tahun,jumlah.scheduling_id
 				from	
 				er.er_section es,
-				(select 
-							pea.section_code,
+				(
+					select 
+							ees.section_name,
 							pst.scheduling_name as nama,
 							to_char(pst.date,'YYYY')as tahun,
 							pst.scheduling_id,
 							count(pp.participant_name)as jml
 							from	pl.pl_participant pp,
 									er.er_employee_all pea,
+									er.er_section ees,
 									pl.pl_scheduling_training pst
 							where
-							pp.noind = pea.employee_code
-							and
-							pp.scheduling_id=pst.scheduling_id
+								pp.noind = pea.employee_code
+								and ees.section_code = pea.section_code
+								and pp.scheduling_id=pst.scheduling_id
 							$p
-							group by pea.section_code, pst.scheduling_name, 3,4) as jumlah
+							group by
+								ees.section_name,
+								pst.scheduling_name,
+								3,
+								4
+							) as jumlah
 				where jumlah.jml is not null
-				and jumlah.section_code = es.section_code
+				and jumlah.section_name = es.section_name
 				$s
-				group by section_name,es.section_code,2,3,4,5";
+				group by es.section_name,2,3,4,5;";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -630,5 +637,6 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+
 }
 ?>

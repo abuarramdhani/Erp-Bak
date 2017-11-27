@@ -98,7 +98,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label col-lg-4">Periode</label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="PeriodeKategori" id="daterangepicker" class="date form-control">
+                                                            <input type="text" name="PeriodeKategori" id="ManajemenKendaraan-daterangepicker" class="date form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">

@@ -37,10 +37,10 @@
 								<label class="col-lg-1 control-label" align="center">s/d</label>
 								<div class="col-lg-2">
 									<input name="TxtEndDate" class="form-control singledateADM">
-									<input name="TxtStatus" type="text" value="0" hidden>
+									<input name="TxtStatus" type="text" value="1" hidden>
 								</div>
 								<div class="col-lg-2">
-									<button class="btn btn-primary btn-flat btn-block" id="ShowBCAbydate">Filter</button>
+									<button class="btn btn-primary btn-flat btn-block" id="FilterRecord">Filter</button>
 								</div>
 								<div class="col-lg-1" align="center"  id="loading">
 								</div>

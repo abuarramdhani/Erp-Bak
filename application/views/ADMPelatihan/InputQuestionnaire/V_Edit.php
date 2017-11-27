@@ -160,7 +160,7 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%">No</th>
-												<th width="55%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
+												<th width="40%"><?php echo 'Bagian '.$bagnum.' - '.$sg['segment_description'] ?></th>
 												<th>Jawab</th>
 											</tr>
 										</thead>
