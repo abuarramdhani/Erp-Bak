@@ -174,7 +174,7 @@ class M_limbahtransaksi extends CI_Model
         $sqlReject     =   $this->db->query($queryReject);
     }
 
-    public function TotalLimbahBulanan()
+    public function TotalLimbahBulanan($tanggalawal,$tanggalakhir)
     {
         $sqlTotalLimbahBulanan = "select            x.id_jenis_limbah,
                 x.id_perlakuan,
@@ -234,7 +234,8 @@ from            (
                     where               limar.konfirmasi_status='1'
                     order by            id_jenis_limbah,
                                         id_perlakuan
-                ) as x";
+                ) as x
+where       x.bulan between date_part('month', '$tanggalawal'::date) and date_part('month', '$tanggalakhir'::date)";
         $query = $this->db->query($sqlTotalLimbahBulanan);
         return $query->result_array();
     }
@@ -285,6 +286,72 @@ from            (
                 left join ga.ga_limbah_sumber as limer
                 on limnis.id_jenis_limbah=limer.id_jenis_limbah";
         $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function PeriodeSebelum($tanggalawal)
+    {
+        $sqlPeriodeSebelum = "select            x.id_jenis_limbah,
+                x.id_perlakuan,
+                x.sumber,
+                x.satuan,
+                x.bulan,
+                (
+                    select      limnis.jenis_limbah
+                    from        ga.ga_limbah_jenis as limnis
+                    where       limnis.id_jenis_limbah=x.id_jenis_limbah
+                ) as jenis_limbah,
+                (
+                    select      liman.limbah_perlakuan
+                    from        ga.ga_limbah_perlakuan as liman
+                    where       liman.id_perlakuan=x.id_perlakuan
+                ) as limbah_perlakuan,
+                (
+                    (
+                        (
+                            select      coalesce(sum(limsi.jumlah),0)
+                            from        ga.ga_limbah_transaksi as limsi
+                            where       limsi.jenis_limbah=x.id_jenis_limbah
+                                        and     limsi.perlakuan=x.id_perlakuan
+                                        and     date_part('month',limsi.tanggal_transaksi)=x.bulan
+                        )
+                        +
+                        (
+                            select      coalesce(sum(limar.jumlah_keluar),0)
+                            from        ga.ga_limbah_keluar as limar
+                            where       limar.jenis_limbah=x.id_jenis_limbah
+                                        and     limar.perlakuan=x.id_perlakuan
+                                        and     date_part('month',limar.tanggal_keluar)=x.bulan
+                        )
+                    )
+                    *
+                    (
+                        select      coalesce((limver.konversi),0)
+                        from        ga.ga_limbah_konversi as limver
+                        where       limver.id_jenis_limbah=x.id_jenis_limbah
+                    )
+                )as total_limbah
+from            (
+                    select distinct     limsi.jenis_limbah as id_jenis_limbah,
+                                        limsi.perlakuan as id_perlakuan,
+                                        limsi.jenis_sumber as sumber,
+                                        limsi.satuan as satuan,
+                                        date_part('month', limsi.tanggal_transaksi) as bulan 
+                    from                ga.ga_limbah_transaksi as limsi
+                    where               limsi.konfirmasi='1'
+                    union
+                    select distinct     limar.jenis_limbah as id_jenis_limbah,
+                                        limar.perlakuan as id_perlakuan,
+                                        limar.sumber_limbah as sumber,
+                                        limar.satuan as satuan,
+                                        date_part('month', limar.tanggal_keluar) as bulan
+                    from                ga.ga_limbah_keluar as limar
+                    where               limar.konfirmasi_status='1'
+                    order by            id_jenis_limbah,
+                                        id_perlakuan
+                ) as x
+where x.bulan = date_part('month', '$tanggalawal'::date)-'1'";
+        $query = $this->db->query($sqlPeriodeSebelum);
         return $query->result_array();
     }
 

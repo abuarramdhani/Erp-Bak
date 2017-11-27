@@ -24,7 +24,7 @@ $styleArray = array(
 	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
 	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getAlignment()->setHorizontal('center'); 
-	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:K6')->getFont()->setBold(true);
 	
 	// $objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleBorder);
 
@@ -136,7 +136,6 @@ $styleArray = array(
 	$kolomI='I'.$o;
 	$kolomJ='J'.$o;
 	$kolomK='K'.$o;
-	$kolomL='L'.$o;
 
     $tanggalKeluar = date('d/m/Y', strtotime($FK['tanggal_keluar']));
 	
@@ -145,8 +144,7 @@ $styleArray = array(
 				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomI, $FK['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomJ, $FK['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomL, $FK['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
+				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING);
 	}				
 
 	if ($i > $o) {

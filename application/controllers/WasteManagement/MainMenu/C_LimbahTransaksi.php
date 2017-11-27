@@ -356,21 +356,16 @@ class C_LimbahTransaksi extends CI_Controller
 															
 			}
 
-			$data['tanggalawalformatindo'] 	= date('d-F-Y',strtotime($tanggalawal));
-			$data['tanggalakhirformatindo']	= date('d-F-Y',strtotime($tanggalakhir));
-
-			$tglindo1 = explode('-', $data['tanggalawalformatindo']);
-			$tglindo2 = explode('-', $data['tanggalakhirformatindo']);
-
-			$data['tglindo1'] = $tglindo1[1].' - '.$tglindo1[2];
-			$data['tglindo2'] = $tglindo2[1].' - '.$tglindo2[2];
+			$data['tanggalawalformatindo'] 	= date('F-Y',strtotime($tanggalawal));
+			$data['tanggalakhirformatindo']	= date('F-Y',strtotime($tanggalakhir));
 
 			$data['perlakuan'] = $this->M_limbahtransaksi->getPerlakuan();
-			$data['jumlahlimbah'] = $this->M_limbahtransaksi->TotalLimbahBulanan();
+			$data['jumlahlimbah'] = $this->M_limbahtransaksi->TotalLimbahBulanan($tanggalawal,$tanggalakhir);
+			$data['SisaSebelum'] = $this->M_limbahtransaksi->PeriodeSebelum($tanggalawal);
 			$data['header'] = $this->M_limbahtransaksi->HeaderExcel();
             $data['filterMasuk'] = $this->M_limbahtransaksi->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenisLimbah);
 			$data['filterKeluar'] = $this->M_limbahtransaksi->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenisLimbah);
-            
+
             $this->load->view('WasteManagement/LimbahTransaksi/V_Excel', $data, true);
     }
 
