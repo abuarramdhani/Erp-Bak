@@ -161,7 +161,7 @@ function chartFabricationMon(canvasid, labels, value, color, color2, label) {
         }
         chartMF.update();
     }
-    $('canvas#' + canvasid).height("250px");
+    $('canvas#' + canvasid).height("180px");
 }
 
 function showHideNormalPlanningMultiple() {
