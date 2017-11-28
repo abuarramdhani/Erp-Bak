@@ -314,7 +314,7 @@
 													echo " - Lama";
 												}
 												?></td>
-											<td style="text-align:center;"><?php echo date('Y-m-g', strtotime($CT['tanggal'])); ?></td>
+											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($CT['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $CT['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $CT['keluar']; ?></td>
 										</tr>
