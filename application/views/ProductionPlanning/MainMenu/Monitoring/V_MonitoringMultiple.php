@@ -28,31 +28,31 @@
                                 <div class="item <?php echo $crslActive; ?>">
                                     <div class="row">
                                         <div class="col-md-3 text-left">
-                                            <div style="margin-top: 15px; width: 100%; border-radius: 5px 60px 5px 5px; padding: 10px 5px 10px 5px;" class="bg-success-plan">
+                                            <div style="margin-top: 15px; width: 100%; border-radius: 5px 60px 5px 5px; padding: 4px 5px 4px 5px;" class="bg-success-plan">
                                                 <?php
                                                 foreach ($section as $sc) {
                                                     if ($selectedSection[$i] == $sc['section_id'] ) { ?>
-                                                    <h4><b>
+                                                    <h5><b>
                                                         SEKSI : <?php echo $sc['section_name']; ?>
-                                                    </b></h4>
+                                                    </b></h5>
                                                 <?php
                                                     }
                                                 } ?>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
-                                            <h2 class="text-center" style="font-family: cursive;">
+                                            <h3 class="text-center" style="font-family: cursive;">
                                                 <b>
                                                     MONITOR ACHIEVEMENT FABRIKASI
                                                 </b>
-                                            </h2>
+                                            </h3>
                                         </div>
                                         <div class="col-md-3 text-right">
-                                            <div style="margin-top: 15px; width: 100%; border-radius: 60px 5px 5px 5px; padding: 10px 5px 10px 5px;" class="bg-success-plan">
-                                                <h4><b>
+                                            <div style="margin-top: 15px; width: 100%; border-radius: 60px 5px 5px 5px; padding: 4px 5px 4px 5px;" class="bg-success-plan">
+                                                <h5><b>
                                                     TANGGAL :
                                                     <?php echo date('d-m-Y'); ?>
-                                                </b></h4>
+                                                </b></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -76,7 +76,7 @@
                                                 </b>
                                             </div>
                                             <table class="table mon-fab-table dailyPlan table-border-dark" data-secid="<?php echo $selectedSection[$i]; ?>">
-                                                <thead class="bg-dark-plan" style="font-weight: bold; font-size: 14px;">
+                                                <thead style="font-weight: bold; font-size: 14px;">
                                                     <tr>
                                                         <td style="width: 5%;">
                                                             NO
@@ -185,7 +185,7 @@
                                                     <?php
                                                         foreach ($normalPriority[$i] as $npl ){
                                                         ?>
-                                                            <tr class="bg-success-plan" <?php if ($checkpoint > 6) {
+                                                            <tr class="bg-success-plan" <?php if ($checkpoint > 12) {
                                                                 echo " data-showid='".$checkpoint."'";
                                                                 echo " data-showstat='0'";
                                                                 echo " style='display:none;'";
@@ -261,13 +261,13 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-7">
                                             <input type="hidden" name="sectionId<?php echo $i; ?>" value="<?php echo $selectedSection[$i]; ?>">
-                                            <canvas id="month-fabrication<?php echo $selectedSection[$i]; ?>" height="250">
+                                            <canvas id="month-fabrication<?php echo $selectedSection[$i]; ?>" height="180">
                                             </canvas>
                                         </div>
-                                        <div class="col-md-4">
-                                            <table class="table table-border-light infoJob bg-dark-plan" data-secid="<?php echo $selectedSection[$i]; ?>">
+                                        <div class="col-md-5">
+                                            <table class="table table-border-dark infoJob" data-secid="<?php echo $selectedSection[$i]; ?>">
                                                 <thead style="font-weight: bold; font-size: 12px;">
                                                     <tr>
                                                 		<td></td>
@@ -324,7 +324,7 @@
                     <div class="col-lg-2 col-md-2">
                         <div class="row" style="padding-top: 15px;">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-border-light bg-dark-plan" id="minPercenDaily" style="text-align: center; vertical-align: middle;">
+                                <table class="table table-border-dark" id="minPercenDaily" style="text-align: center; vertical-align: middle;">
                                     <tr>
                                         <td><b>MINIMUM PERCENTAGE</b></td>
                                     </tr>
@@ -345,7 +345,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <table class="table table-border-light bg-dark-plan"" id="achieveAllFab">
+                                <table class="table table-border-dark"" id="achieveAllFab">
                                 	<tr>
                                 		<td colspan="2">
                                 			<b>ACHIEVEMENT ALL FAB</b>
