@@ -181,6 +181,7 @@ class M_limbahtransaksi extends CI_Model
                 x.sumber,
                 x.satuan,
                 x.bulan,
+                x.periode,
                 (
                     select      limnis.jenis_limbah
                     from        ga.ga_limbah_jenis as limnis
@@ -198,7 +199,7 @@ class M_limbahtransaksi extends CI_Model
                             from        ga.ga_limbah_transaksi as limsi
                             where       limsi.jenis_limbah=x.id_jenis_limbah
                                         and     limsi.perlakuan=x.id_perlakuan
-                                        and     date_part('month',limsi.tanggal_transaksi)=x.bulan
+                                        and     to_char(limsi.tanggal_transaksi,'MM-YYYY')=x.periode
                         )
                         +
                         (
@@ -206,7 +207,7 @@ class M_limbahtransaksi extends CI_Model
                             from        ga.ga_limbah_keluar as limar
                             where       limar.jenis_limbah=x.id_jenis_limbah
                                         and     limar.perlakuan=x.id_perlakuan
-                                        and     date_part('month',limar.tanggal_keluar)=x.bulan
+                                        and     to_char(limar.tanggal_keluar,'MM-YYYY')=x.periode
                         )
                     )
                     *
@@ -216,12 +217,13 @@ class M_limbahtransaksi extends CI_Model
                         where       limver.id_jenis_limbah=x.id_jenis_limbah
                     )
                 )as total_limbah
-from            (
+    from            (
                     select distinct     limsi.jenis_limbah as id_jenis_limbah,
                                         limsi.perlakuan as id_perlakuan,
                                         limsi.jenis_sumber as sumber,
                                         limsi.satuan as satuan,
-                                        date_part('month', limsi.tanggal_transaksi) as bulan 
+                                        date_part('month', limsi.tanggal_transaksi) as bulan,
+                                        to_char(limsi.tanggal_transaksi,'MM-YYYY') as periode 
                     from                ga.ga_limbah_transaksi as limsi
                     where               limsi.konfirmasi='1'
                     union
@@ -229,13 +231,14 @@ from            (
                                         limar.perlakuan as id_perlakuan,
                                         limar.sumber_limbah as sumber,
                                         limar.satuan as satuan,
-                                        date_part('month', limar.tanggal_keluar) as bulan
+                                        date_part('month', limar.tanggal_keluar) as bulan,
+                                        to_char(limar.tanggal_keluar,'MM-YYYY') as periode
                     from                ga.ga_limbah_keluar as limar
                     where               limar.konfirmasi_status='1'
                     order by            id_jenis_limbah,
                                         id_perlakuan
                 ) as x
-where       x.bulan between date_part('month', '$tanggalawal'::date) and date_part('month', '$tanggalakhir'::date)";
+    where to_date(x.periode,'MM-YYYY') between to_date(to_char('$tanggalawal'::date,'MM-YYYY'),'MM-YYYY') and to_date(to_char('$tanggalakhir'::date,'MM-YYYY'),'MM-YYYY')";
         $query = $this->db->query($sqlTotalLimbahBulanan);
         return $query->result_array();
     }
@@ -296,6 +299,7 @@ where       x.bulan between date_part('month', '$tanggalawal'::date) and date_pa
                 x.sumber,
                 x.satuan,
                 x.bulan,
+                x.periode,
                 (
                     select      limnis.jenis_limbah
                     from        ga.ga_limbah_jenis as limnis
@@ -313,7 +317,7 @@ where       x.bulan between date_part('month', '$tanggalawal'::date) and date_pa
                             from        ga.ga_limbah_transaksi as limsi
                             where       limsi.jenis_limbah=x.id_jenis_limbah
                                         and     limsi.perlakuan=x.id_perlakuan
-                                        and     date_part('month',limsi.tanggal_transaksi)=x.bulan
+                                        and     to_char(limsi.tanggal_transaksi,'MM-YYYY')=x.periode
                         )
                         +
                         (
@@ -321,7 +325,7 @@ where       x.bulan between date_part('month', '$tanggalawal'::date) and date_pa
                             from        ga.ga_limbah_keluar as limar
                             where       limar.jenis_limbah=x.id_jenis_limbah
                                         and     limar.perlakuan=x.id_perlakuan
-                                        and     date_part('month',limar.tanggal_keluar)=x.bulan
+                                        and     to_char(limar.tanggal_keluar,'MM-YYYY')=x.periode
                         )
                     )
                     *
@@ -331,12 +335,13 @@ where       x.bulan between date_part('month', '$tanggalawal'::date) and date_pa
                         where       limver.id_jenis_limbah=x.id_jenis_limbah
                     )
                 )as total_limbah
-from            (
+    from            (
                     select distinct     limsi.jenis_limbah as id_jenis_limbah,
                                         limsi.perlakuan as id_perlakuan,
                                         limsi.jenis_sumber as sumber,
                                         limsi.satuan as satuan,
-                                        date_part('month', limsi.tanggal_transaksi) as bulan 
+                                        date_part('month', limsi.tanggal_transaksi) as bulan,
+                                        to_char(limsi.tanggal_transaksi,'MM-YYYY') as periode 
                     from                ga.ga_limbah_transaksi as limsi
                     where               limsi.konfirmasi='1'
                     union
@@ -344,13 +349,14 @@ from            (
                                         limar.perlakuan as id_perlakuan,
                                         limar.sumber_limbah as sumber,
                                         limar.satuan as satuan,
-                                        date_part('month', limar.tanggal_keluar) as bulan
+                                        date_part('month', limar.tanggal_keluar) as bulan,
+                                        to_char(limar.tanggal_keluar,'MM-YYYY') as periode
                     from                ga.ga_limbah_keluar as limar
                     where               limar.konfirmasi_status='1'
                     order by            id_jenis_limbah,
                                         id_perlakuan
                 ) as x
-where x.bulan = date_part('month', '$tanggalawal'::date)-'1'";
+where to_date(x.periode, 'MM-YYYY') = '$tanggalawal'::date-interval '1 month'";
         $query = $this->db->query($sqlPeriodeSebelum);
         return $query->result_array();
     }
