@@ -57,11 +57,12 @@
 		)				
 	);
 
-	$kolomBulan = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
+	// $kolomBulan = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
+	$kolomBulan = array('F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA');
 
 	$jumlahBulan = count($listBulan);
 
-	///merge cell
+	//merge cell
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:Z1');
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A4:A6');
 	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B4:B6');
@@ -511,11 +512,16 @@
 
 //Persentase Penataan
 	$NilaiLimbahDihasilkan=$objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+1].''.$kolomTotal)->getValue();
+	if((float)$NilaiLimbahDihasilkan == 0) {
+		$pembagiNilaiLimbahDihasilkan = 1;
+	} else {
+		$pembagiNilaiLimbahDihasilkan = $NilaiLimbahDihasilkan;
+	}
 
 	//Disimpan Di TPS
 	$PersentaseDisimpan= $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+2].''.$kolomTotal)->getValue();
 
-	$TotalPersentaseDisimpan = round((((float)$PersentaseDisimpan/(float)$NilaiLimbahDihasilkan)*100), 2);
+	$TotalPersentaseDisimpan = round((((float)$PersentaseDisimpan/(float)$pembagiNilaiLimbahDihasilkan)*100), 2);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.($kolomTotal+1), $TotalPersentaseDisimpan.'%');
@@ -523,7 +529,7 @@
 	//Dimanfaatkan Sendiri
 	$PersentaseDimanfaatkan= $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+3].''.$kolomTotal)->getValue();
 
-	$TotalPersentaseDimanfaatkan = round((((float)$PersentaseDimanfaatkan/(float)$NilaiLimbahDihasilkan)*100), 2);
+	$TotalPersentaseDimanfaatkan = round((((float)$PersentaseDimanfaatkan/(float)$pembagiNilaiLimbahDihasilkan)*100), 2);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.($kolomTotal+1), $TotalPersentaseDimanfaatkan.'%');
@@ -531,7 +537,7 @@
 	//Diolah Sendiri
 	$PersentaseDiolah= $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+4].''.$kolomTotal)->getValue();
 
-	$TotalPersentaseDiolah = round((((float)$PersentaseDiolah/(float)$NilaiLimbahDihasilkan)*100), 2);
+	$TotalPersentaseDiolah = round((((float)$PersentaseDiolah/(float)$pembagiNilaiLimbahDihasilkan)*100), 2);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.($kolomTotal+1), $TotalPersentaseDiolah.'%');
@@ -539,15 +545,15 @@
 	//Ditimbun Sendiri
 	$PersentaseDitimbun= $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+5].''.$kolomTotal)->getValue();
 
-	$TotalPersentaseDitimbun = round((((float)$PersentaseDitimbun/(float)$NilaiLimbahDihasilkan)*100), 2);
+	$TotalPersentaseDitimbun = round((((float)$PersentaseDitimbun/(float)$pembagiNilaiLimbahDihasilkan)*100), 2);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.($kolomTotal+1), $TotalPersentaseDitimbun.'%');
-
+		
 	//Diserahkan Kepihak Ketiga
 	$PersentaseDiserahkan= $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+6].''.$kolomTotal)->getValue();
 
-	$TotalPersentaseDiserahkan = round((((float)$PersentaseDiserahkan/(float)$NilaiLimbahDihasilkan)*100), 2);
+	$TotalPersentaseDiserahkan = round((((float)$PersentaseDiserahkan/(float)$pembagiNilaiLimbahDihasilkan)*100), 2);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.($kolomTotal+1), $TotalPersentaseDiserahkan.'%');
@@ -555,7 +561,7 @@
 	//Tidak Dikelola
 	$PersentaseTidakDikelola= $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+7].''.$kolomTotal)->getValue();
 
-	$TotalPersentaseTidakDikelola = round((((float)$PersentaseTidakDikelola/(float)$NilaiLimbahDihasilkan)*100), 2);
+	$TotalPersentaseTidakDikelola = round((((float)$PersentaseTidakDikelola/(float)$pembagiNilaiLimbahDihasilkan)*100), 2);
 
 	$objPHPExcel->setActiveSheetIndex(0)
 		->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.($kolomTotal+1), $TotalPersentaseTidakDikelola.'%');

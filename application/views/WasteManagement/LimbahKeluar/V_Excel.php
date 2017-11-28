@@ -10,13 +10,8 @@ $styleArray = array(
             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
         ),
 	);
-// $styleBorder = array(
-// 	'borders' => array(
-//         'allborders' => array(
-//         	'style' => PHPExcel_Style_Border::BORDER_THIN
-//         	)
-//       	)		
-// 	);
+$border_all     = array('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('black'),)));
+
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
@@ -54,21 +49,6 @@ $styleArray = array(
 								 ->setDescription("Sistem")
 								 ->setKeywords("Sistem")
 								 ->setCategory("Sistem");
-
-	$objset = $objPHPExcel->setActiveSheetIndex(0);
-	$objget = $objPHPExcel->getActiveSheet();
-	// $objget->getStyle("")->applyFromArray(
-	// 	array(
-	// 		'fill' => array(
-	// 			'type' => PHPExcel_Style_Fill::FILL_SOLID,
-	// 			'color' => array('rgb' => '92d050')
-	// 		),
-	// 		'font' => array(
-	// 			'color' => array('rgb' => '000000'),
-	// 			'bold'  => true,
-	// 		),	
-	// 	)				
-	// );
 
 	// Add some data
 	foreach(range('A','K') as $columnID)
@@ -163,6 +143,8 @@ $styleArray = array(
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('H'.($hitung+2), 'Kepala Seksi Waste Management')
 				->setCellValue('H'.($hitung+5), $user);
+
+	$objPHPExcel->getActiveSheet()->getStyle('A5:K'.$hitung) ->applyFromArray($border_all);
 
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
