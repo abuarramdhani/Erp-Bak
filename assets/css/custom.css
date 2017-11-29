@@ -489,3 +489,35 @@ table.t_riwayat_mutasi td {
     vertical-align: middle !important; 
     text-align: center;
 }
+#mon-area {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    padding: 0px 5px 10px 5px;
+    background-color: #ffffff;
+    color: #000000;
+}
+.bg-danger-plan {
+    background-color: #FF5252;
+    color: #000;
+}
+.bg-success-plan {
+    background-color: #51a2f3;
+    color: #000;
+}
+.bg-dark-plan {
+    background-color: #212121;
+    color: #000;
+}
+.table-border-dark {
+    border: 2px solid #000;
+}
+.table-border-dark>thead>tr>td, .table-border-dark>tbody>tr>td {
+    border: 1px solid #000;
+}
+.table-border-light {
+    border: 2px solid #fff;
+}
+.table-border-light>thead>tr>td, .table-border-light>tbody>tr>td {
+    border: 1px solid #fff;
+}
