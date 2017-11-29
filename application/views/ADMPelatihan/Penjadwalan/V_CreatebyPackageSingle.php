@@ -30,6 +30,7 @@
 					<div class="box-body">
 					<?php foreach($details as $dt){?>
 						<div class="row" style="margin: 10px 10px">
+						<?php echo $alert; ?>
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $dt['training_name']?></b></h3>
 							</label>
@@ -53,7 +54,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input name="txtTanggalPelaksanaan" class="form-control singledate" placeholder="Tanggal" required >
+										<input name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
 									</div>
 								</div>
 							</div>
@@ -95,25 +96,50 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Evaluasi</label>
 									<div class="col-lg-9">
-										<input type="checkbox" name="chk1" value="1"> Wawasan<br>
-	  									<input type="checkbox" name="chk2" value="2"> Pengetahuan<br>
-	  									<input type="checkbox" name="chk3" value="3"> Perilaku
+	  									<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" data-placeholder=" Evaluasi" required>
+												<option value="" ></option>
+												<?php foreach($GetEvaluationType as $et){ 
+													// $selectReaksi='selected'
+													?>
+													<option value="<?php echo $et['evaluation_type_id']?>" 
+													<?php if ($et['evaluation_type_id']==1) { echo "selected"; } ?>>
+														<?php echo $et['evaluation_type_description'];?>
+													</option>
+												<?php } ?>
+										</select>
 									</div>
 								</div>
 							</div>
-							<?php foreach($packscheduling as $pse){
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat </label>
+									<div class="col-lg-9">
+										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan" required>
+											<option></option>
+											<option value="1">Order</option>
+											<option value="2">Tahunan</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<!-- ORIENTASI/NON ORIENTASI -->
+							<input name="txtJenis" value="2" hidden></input>	
+
+							<!-- PESERTA -->
+							 <?php foreach($packscheduling as $pse){
 								$participanttype=$pse['participant_type'];
-								$radioa='';$radiob='';
-								if($pse['participant_type']==0){$radioa='checked';}
-								if($pse['participant_type']==1){$radiob='checked';}
-							?>
+								if($pse['participant_type']==0){$peserta='Staff';}
+								if($pse['participant_type']==1){$peserta='Non-Staff';}
+								if($pse['participant_type']==2){$peserta='Staff & Non-Staff';}
+							?> 
+							
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
 									<div class="col-lg-4">
-										<input type="radio" value="0" <?php echo $radioa ?> disabled> Staff<br>
-										<input type="radio" value="1" <?php echo $radiob ?> disabled> Non-Staff<br>
-										<input name="txtPeserta" value="<?php echo $pse['participant_type'] ?>" hidden>
+										<input name="txtPeserta" class="form-control toupper" value="<?php echo $peserta ?>" disabled></input>
+										<input name="txtPeserta" value="<?php echo $pse['participant_type'] ?>" hidden></input>
 									</div>
 									<label class="col-lg-1 control-label">Jumlah Peserta</label>
 									<div class="col-lg-4">
@@ -127,21 +153,25 @@
 								<div class="col-md-12">
 									<div class="panel panel-default">
 										<div class="panel-heading text-right">
+											<div class="panel-heading text-right">
 											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddParticipant" title="Tambah Baris" onclick="AddParticipant('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
 											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelParticipant" title="Hapus Baris" onclick="deleteRow('tblParticipant')"><i class="fa fa-remove"></i></a>
 											<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
+										</div>
 										</div>
 										<div class="panel-body">
 											<div class="table-responsive" >
 												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblParticipant" id="tblParticipant">
 													<thead>
 														<tr class="bg-primary">
+															<th width="5%" class="sorting_disabled" rowspan="1" colspan="1" style="width: 48.7778px;">NO</th>
 															<th width="90%">Daftar Peserta</th>
 															<th width="10%"></th>
 														</tr>
 													</thead>
 													<tbody id="tbodyParticipant">
-														<tr class="clone">
+														<tr class="clone" row-id="<?php echo $number;?>">
+															<td ><?php echo $number;?></td>
 															<td>
 																<div class="input-group">
 																	<div class="input-group-addon">
@@ -153,7 +183,7 @@
 																</div>
 															</td>
 															<td>
-																<button type="button" class="btn btn-danger list-del"><i class="fa fa-remove"></i></button>
+																<button type="button" class="btn btn-danger" onclick="deleteRowAjax(<?php echo $number++?>)"><i class="fa fa-remove"></i></button>
 															</td>
 														</tr>
 													</tbody>
@@ -168,33 +198,82 @@
 								<div class="col-md-12">
 									<div class="panel panel-default">
 										<div class="panel-heading text-right">
-											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddApplicant" title="Tambah Baris" onclick="AddApplicant('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
-											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelApplicant" title="Hapus Baris" onclick="deleteRow('tblParticipant')"><i class="fa fa-remove"></i></a>
+											<div class="panel-heading text-right">
+											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddParticipant" title="Tambah Baris" onclick="AddParticipant('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelParticipant" title="Hapus Baris" onclick="deleteRow('tblParticipant')"><i class="fa fa-remove"></i></a>
 											<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
+										</div>
 										</div>
 										<div class="panel-body">
 											<div class="table-responsive" >
 												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblParticipant" id="tblParticipant">
 													<thead>
 														<tr class="bg-primary">
+															<th width="5%" class="sorting_disabled" rowspan="1" colspan="1" style="width: 48.7778px;">NO</th>
 															<th width="90%">Daftar Peserta</th>
 															<th width="10%"></th>
 														</tr>
 													</thead>
 													<tbody id="tbodyParticipant">
-														<tr class="clone">
+														<tr class="clone" row-id="<?php echo $number;?>">
+															<td ><?php echo $number;?></td>
 															<td>
 																<div class="input-group">
 																	<div class="input-group-addon">
 																		<i class="glyphicon glyphicon-user"></i>
 																	</div>
-																	<select class="form-control js-slcApplicant" name="slcApplicant[]" id="slcApplicant" required>
+																	<select class="form-control js-slcEmployee" name="slcEmployee[]" id="slcEmployee" required>
 																		<option value=""></option>
 																	</select>
 																</div>
 															</td>
 															<td>
-																<button type="button" class="btn btn-danger list-del"><i class="fa fa-remove"></i></button>
+																<button type="button" class="btn btn-danger" onclick="deleteRowAjax(<?php echo $number++?>)"><i class="fa fa-remove"></i></button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php } elseif($participanttype==2){?>
+							<div class="row" style="margin: 10px 10px">
+								<div class="col-md-12">
+									<div class="panel panel-default">
+										<div class="panel-heading text-right">
+											<div class="panel-heading text-right">
+											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddParticipant" title="Tambah Baris" onclick="AddParticipant('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
+											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelParticipant" title="Hapus Baris" onclick="deleteRow('tblParticipant')"><i class="fa fa-remove"></i></a>
+											<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
+										</div>
+										</div>
+										<div class="panel-body">
+											<div class="table-responsive" >
+												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblParticipant" id="tblParticipant">
+													<thead>
+														<tr class="bg-primary">
+															<th width="5%" class="sorting_disabled" rowspan="1" colspan="1" style="width: 48.7778px;">NO</th>
+															<th width="90%">Daftar Peserta</th>
+															<th width="10%"></th>
+														</tr>
+													</thead>
+													<tbody id="tbodyParticipant">
+														<tr class="clone" row-id="<?php echo $number;?>">
+															<td ><?php echo $number;?></td>
+															<td>
+																<div class="input-group">
+																	<div class="input-group-addon">
+																		<i class="glyphicon glyphicon-user"></i>
+																	</div>
+																	<select class="form-control js-slcEmployee" name="slcEmployee[]" id="slcEmployee" required>
+																		<option value=""></option>
+																	</select>
+																</div>
+															</td>
+															<td>
+																<button type="button" class="btn btn-danger" onclick="deleteRowAjax(<?php echo $number++?>)"><i class="fa fa-remove"></i></button>
 															</td>
 														</tr>
 													</tbody>
@@ -209,7 +288,7 @@
 							<hr>
 							<div class="form-group">
 								<div class="col-lg-12 text-right">
-									<a href="<?php echo site_url('ADMPelatihan/Penjadwalan');?>"  class="btn btn-primary btn btn-flat">Back</a>
+									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 									<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 								</div>

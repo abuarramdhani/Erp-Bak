@@ -37,7 +37,7 @@
 		          <div class="box-body">
 
 		            <div class="table-responsive">
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-kompTamb" style="font-size:12px;">
+		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-kompTamb-lain" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
@@ -51,22 +51,40 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($KompTambLain_data as $row) { ?>
+							<?php 
+								$no = 1; 
+								$total_tamb = 0;
+								$total_pot = 0;
+							
+							foreach($KompTambLain_data as $row) { 
+								$e_id = $this->encrypt->encode($row->id_komp_pot_tam);
+								$e_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $e_id);
+								$total_tamb = $total_tamb + $row->tamb_lain;
+								$total_pot = $total_pot + $row->pot_lain;
+							?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
-                              	<a href="<?php echo base_url('PayrollManagement/KompTambLain/read/'.$row->id_komp_pot_tam.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/KompTambLain/update/'.$row->id_komp_pot_tam.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/KompTambLain/delete/'.$row->id_komp_pot_tam.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/KompTambLain/read/'.$e_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/KompTambLain/update/'.$e_id.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/KompTambLain/delete/'.$e_id.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
 							<td align='center'><?php echo $row->tanggal ?></td>
 							<td align='center'><?php echo $row->noind ?></td>
-							<td align='center'><?php echo number_format((int)$row->tamb_lain); ?></td>
-							<td align='right'><?php echo number_format((int)$row->pot_lain); ?></td>
+							<td align='center'><?php echo number_format((int)$row->tamb_lain,0,",","."); ?></td>
+							<td align='right'><?php echo number_format((int)$row->pot_lain,0,",","."); ?></td>
 							<td><?php echo $row->ket ?></td>
 							</tr>
 							<?php } ?>
-		                </tbody>                                      
+		                </tbody>
+						<tfoot>
+							<tr>
+								<th colspan="4" class="text-center">Total</th>
+								<th><?php echo number_format((int)$row->pot_lain,0,",","."); ?></th>
+								<th><?php echo number_format((int)$row->pot_lain,0,",","."); ?></th>
+								<th>&nbsp;</th>
+							</tr>
+						</tfoot>
 		              </table>
 		            </div>
 		          </div>

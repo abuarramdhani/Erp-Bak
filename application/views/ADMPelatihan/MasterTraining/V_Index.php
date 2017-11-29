@@ -40,8 +40,9 @@
 									<tr>
 										<th width="5%">NO</th>
 										<th width="55%">Nama Pelatihan</th>
+										<th width="10%">Kapasitas Kelas</th>
 										<th width="10%">Standar Nilai</th>
-										<th width="10%" style="text-align:center;">Status</th>
+										<!-- <th width="10%" style="text-align:center;">Status</th> -->
 										<th width="20%">Action</th>
 									</tr>
 								</thead>
@@ -50,14 +51,14 @@
 									<tr>
 										<td><?php echo $no ?></td>
 										<td><?php echo $tr['training_name'] ?></td>
-										<td><?php echo $tr['limit'] ?></td>
-										<td align="center">
-											<?php
-												$status="";
-												if($tr['status']==0){$status="<span class='label label-warning'>Reguler</span>";}
-												elseif($tr['status']==1){$status="<span class='label label-primary'>Paket</span>";}
-												echo $status;
-											?>
+										<td><?php echo $tr['kapasitas_kelas']?></td>
+										<td> <?php if($tr['limit_1'] && $tr['limit_2']) {
+												echo 'Staf : '.$tr['limit_1'].', Non Staf : '.$tr['limit_2'];
+											}elseif($tr['limit_1']){
+												echo 'Staf : '.$tr['limit_1'];		
+											}else{
+												echo 'Non Staf : '.$tr['limit_2'];
+												}?>
 										</td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/MasterTraining/Edit/'.$tr['training_id'])?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>

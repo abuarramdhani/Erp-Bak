@@ -118,10 +118,11 @@
 						<option value="">[ change location ]</option>
 						<?php foreach($lokasi as $data_lokasi){ ?>
 							<option value="<?php echo $data_lokasi['id_lokasi'] ?>"><?php echo strtoupper($data_lokasi['lokasi']) ?></option>
-						<?php } ?>
+						<?php } ?>	
 						</select>
-						<input type="hidden" name="txtLocation" id="txtLocation" value="<?php echo $location; ?>" class="form-control"></input>
+						<input type="hidden" name="txtLocation" id="txtLocation-Mutation" class="form-control"></input>
 						<input type="hidden" name="txtID" id="txtID" value="" class="form-control"></input>
+
                     <p>Do you want to proceed?</p>
                 </div>
                 <div class="modal-footer">

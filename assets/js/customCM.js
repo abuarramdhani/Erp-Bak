@@ -1,34 +1,114 @@
 $(document).ready(function(){
-	
+				$('.cmdaterange').daterangepicker({
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});
+				$('.cmsingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});				
 	// DATE RANGE PICKER UNTUK 'RECEIPT DATE'
-	$('.singledate').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		locale: {
-			format: 'YYYY-MM-DD'
-		},
-	});
-	if (typeof $('#receipt-date').val() !== 'undefined'){
-	var startDate = $('#receipt-date').val()
-	$(".singledate").data('daterangepicker').setStartDate(startDate);
-	$(".singledate").data('daterangepicker').setEndDate(startDate)};
+	// $('.singledate').daterangepicker({
+	// 	"singleDatePicker": true,
+	// 	"timePicker": false,
+	// 	"timePicker24Hour": true,
+	// 	"showDropdowns": false,
+	// 	locale: {
+	// 		format: 'YYYY-MM-DD'
+	// 	},
+	// });
+	// if (typeof $('#receipt-date').val() !== 'undefined'){
+	// var startDate = $('#receipt-date').val()
+	// $(".singledate").data('daterangepicker').setStartDate(startDate);
+	// $(".singledate").data('daterangepicker').setEndDate(startDate)};
 	
-	// DATE RANGE PICKER UNTUK 'ORDER DATE'
-	$('.doubledate').daterangepicker({
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		locale: {
-			format: 'YYYY-MM-DD'
-		},
-	});
-	if (typeof $('#order-start-date').val() !== 'undefined'){
-	var startDate = $('#order-start-date').val()
-	var endDate = $('#order-end-date').val()
-	$(".doubledate").data('daterangepicker').setStartDate(startDate);
-	$(".doubledate").data('daterangepicker').setEndDate(endDate)};
+	// // DATE RANGE PICKER UNTUK 'ORDER DATE'
+	// $('.doubledate').daterangepicker({
+	// 	"timePicker": false,
+	// 	"timePicker24Hour": true,
+	// 	"showDropdowns": false,
+	// 	locale: {
+	// 		format: 'YYYY-MM-DD'
+	// 	},
+	// });
+	// if (typeof $('#order-start-date').val() !== 'undefined'){
+	// var startDate = $('#order-start-date').val()
+	// var endDate = $('#order-end-date').val()
+	// $(".doubledate").data('daterangepicker').setStartDate(startDate);
+	// $(".doubledate").data('daterangepicker').setEndDate(endDate)};
 	
 	$("#catering").change(cekpph);
 	$("#pphverify").click(cekpph);
@@ -113,6 +193,48 @@ $(document).ready(function(){
 			allowClear : true,
 		});
 		
+			$('.cmsingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});	
+						
 		$("select#finetype:last").val("").change();
 		$("input#fineprice:last").val("").change();
 		$("input#fineqty:last").val("").change();
@@ -199,20 +321,20 @@ $(document).ready(function(){
 			calculationalias();
 		}
 		
-		$('.singledate:last').daterangepicker({
-			"singleDatePicker": true,
-			"timePicker": false,
-			"timePicker24Hour": true,
-			"showDropdowns": false,
-			locale: {
-				format: 'YYYY-MM-DD'
-			},
-		});
+		// $('.singledate:last').daterangepicker({
+		// 	"singleDatePicker": true,
+		// 	"timePicker": false,
+		// 	"timePicker24Hour": true,
+		// 	"showDropdowns": false,
+		// 	locale: {
+		// 		format: 'YYYY-MM-DD'
+		// 	},
+		// });
 		
-		if (typeof $('#receipt-date').val() !== 'undefined'){
-		var startDate = $('#receipt-date').val()
-		$(".singledate:last").data('daterangepicker').setStartDate(startDate);
-		$(".singledate:last").data('daterangepicker').setEndDate(startDate)};
+		// if (typeof $('#receipt-date').val() !== 'undefined'){
+		// var startDate = $('#receipt-date').val()
+		// $(".singledate:last").data('daterangepicker').setStartDate(startDate);
+		// $(".singledate:last").data('daterangepicker').setEndDate(startDate)};
 	}
 
 	//RECEIPT MANAGEMENT AUTO-ADD-REMOVE ROW

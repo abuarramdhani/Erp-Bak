@@ -35,36 +35,29 @@
 													<td>Employee Name</td>
 													<td><p id="employee_name">-</p></td>
 													<td>Destination</td>
-													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
+													<td><select id="area" name="txt_city_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
-															<?php foreach($Area as $ar){?>
-																<option value="<?php echo $ar['area_id'] ?>"><?php echo $ar['area_name'] ?></option>
+															<?php foreach($City as $ct){?>
+																<option value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'] ." - ".$ct['city_name']  ?></option>
 															<?php } ?>
 														</select></td>
 												</tr>
 												<tr>
 													<td>Section</td>
-													<td><p id="section_name">-</p>
-													</td>
-													<td>City Type</td>
-													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
-															<option value=""></option>
-															<?php foreach($CityType as $ci){?>
-																<option value="<?php echo $ci['city_type_id'] ?>"><?php echo $ci['city_type_name'] ?></option>
-															<?php } ?>
-														</select></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name">-</p></td>
+													<td><p id="section_name">-</p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name">-</p></td>
+													<td>Unit</td>
+													<td><p id="unit_name">-</p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" class="form-control date-picker" required></td>
+												</tr>
+												<tr>
+													<td>Departemen</td>
+													<td><p id="department_name">-</p></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" checked="checked">&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td>Outstation Position</td>
@@ -87,6 +80,7 @@
 													</td>
 												</tr>
 											</table>
+											<!--
 											<label>Simulation Table</label>
 											<table id="simulation_detail" class="table table-bordered table-striped table-hover">
 												<thead>
@@ -115,6 +109,47 @@
 													</tr>
 												</tfoot>
 											</table>
+											-->
+											<label>Estimate Allowance</label>
+											<div class="row2" id="estimate-allowance">
+												<div class="col-md-4">
+													<div class="row">
+														<div class="col-md-7">
+															Meal Allowance
+														</div>
+														<div class="col-md-5">
+															<p id="meal-estimate">Rp0,00</p>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-7">
+															Accomodation Allowance
+														</div>
+														<div class="col-md-5">
+															<p id="accomodation-estimate">Rp0,00</p>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-md-7">
+															 USH
+														</div>
+														<div class="col-md-5">
+															<p id="ush-estimate">Rp0,00</p>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="row">
+														<div class="col-md-5">
+															Total Estimated
+														</div>
+														<div class="col-md-5">
+															<p id="total-estimate">Rp0,00</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											
 											<table width="100%">
 												<tr>
 													<td colspan="8"><center><a style="margin: 10px; width: 100px;" onclick="window.history.back()" class="btn btn-primary">Back</a><a style="margin: 10px; width: 100px;" onclick="location.reload()" class="btn btn-primary">Reset</a><button style="margin: 10px; width: 100px;" class="btn btn-primary">Save</button></center></td>

@@ -34,16 +34,24 @@
 		          <!--  <div class="table-responsive">  -->
 					 <div class="row">
 					  <div class="row" style="margin: 10px 0 10px 0">
-						 <form class="form-inline" method="post" action="<?php echo $action; ?>">
+						 <form class="form-inline" method="post" action="<?php echo $action2; ?>">
 							  <div class="col-lg-1">
-									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('Y-m');?>" style="width:100px;" required>
+									<input type="text" class="form-control" id="txtPeriodeSearch" name="txtPeriodeHitung" placeholder="<?php echo date('m/Y');?>" style="width:100px;" required>
+							  </div>
+							  <div class=" col-lg-1">
+							    <button type="submit" style="margin-left:25px;" class="btn btn-warning">Search</button>
+							  </div>
+						</form>
+						<form class="form-inline" method="post" action="<?php echo $action; ?>">
+							  <div class="col-lg-1">
+									<input type="text" class="form-control" id="txtPeriodeHitung" name="txtPeriodeHitung" placeholder="<?php echo date('m/Y');?>" style="width:100px;" required>
 							  </div>
 							  <div class=" col-lg-1">
 							    <button type="submit" style="margin-left:25px;" class="btn btn-primary">Hitung</button>
 							  </div>
-						</form>			             
+						</form>						
 						 <form method="post" action="<?php echo base_url('PayrollManagement/TransaksiHitungThr/upload')?>" enctype="multipart/form-data">
-							  <div class="col-lg-offset-6 col-lg-3">
+							  <div class="col-lg-offset-4 col-lg-3">
 							    <input name="importfile" type="file" class="form-control" readonly required>
 							  </div>
 							  <div class=" col-lg-1">
@@ -66,10 +74,10 @@
 				 	    }
 					  ?>
 		            </div>
-		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiHitungThr" style="font-size:12px;width:100%;">
+		            <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiKlaimDl" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
-		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
+		                    <th style="text-align:center;">NO</th>
                             <th style='text-align:center'>ACTION</th>
 							<th style='text-align:center'>Tanggal</th>
 							<th style='text-align:center'>Periode</th>
@@ -86,7 +94,16 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php if(!empty($transaksiHitungThr_data)){ $no = 1; foreach($transaksiHitungThr_data as $row) { ?>
+							<?php 		$ttl_gp = 0;
+										$ttl_thr = 0;
+										$ttl_ubthr = 0;
+										$no = 1; 
+							if(!empty($transaksiHitungThr_data)){
+							foreach($transaksiHitungThr_data as $row) { 
+								$ttl_gp = $ttl_gp +  $row->gaji_pokok;
+											$ttl_thr = $ttl_thr + $row->thr;
+											$ttl_ubthr = $ttl_ubthr + $row->ubthr;
+							?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center'>
@@ -105,8 +122,18 @@
 							<td align='center'><?php echo $row->persentase_ubthr ?></td>
 							<td align='right'><?php echo number_format((int)$row->ubthr) ?></td>
 							</tr>
-							<?php } } ?>
-		                </tbody>                                      
+							<?php } }?>
+		                </tbody>
+						<tfoot>
+						<tr>
+							<th colspan="9" class="text-center">Total</th>
+							<th class="text-right"><?php echo number_format((int)$ttl_gp); ?></th>
+							<th>&nbsp;</th>
+							<th class="text-right"><?php echo number_format((int)$ttl_thr); ?></th>
+							<th>&nbsp;</th>
+							<th class="text-right"><?php echo number_format((int)$ttl_ubthr); ?></th>
+						</tr>
+					  </tfoot>  
 		              </table>
 					  <?php if(!empty($enc_dt)){?>
 		              <a data-toggle="tooltip" id="btn-reg-person" title="Cetak Struk" href='<?php echo site_URL() ?>PayrollManagement/TransaksiHitungThr/CetakStruk/<?php echo $enc_dt; ?>' class="btn btn-success btn-md btn-refresh-db" target="blank_">Cetak Struk</a>

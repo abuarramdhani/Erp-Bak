@@ -12,7 +12,7 @@ class M_masterstatuskerja extends CI_Model
         parent::__construct();
         $this->load->database();
     }
-
+	
     // get all data
     function get_all()
     {

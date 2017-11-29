@@ -21,8 +21,8 @@
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
 	        
-	        $data['Menu'] = 'Payroll Management';
-	        $data['SubMenuOne'] = '';
+	        $data['Menu'] = 'Laporan Penggajian';
+	        $data['SubMenuOne'] = 'Lap. Riwayat Kenaikan Gaji';
 	        $data['SubMenuTwo'] = '';
 
 	        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -45,8 +45,8 @@
 			$periode = $this->input->post('txtPeriodeHitung',TRUE);
 			$year	 = substr($periode,0,4);
 			$month	 = substr($periode,5,2);
-	        $data['Menu'] = 'Payroll Management';
-	        $data['SubMenuOne'] = '';
+	        $data['Menu'] = 'Laporan Penggajian';
+	        $data['SubMenuOne'] = 'Lap. Riwayat Kenaikan Gaji';
 	        $data['SubMenuTwo'] = '';
 
 	        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

@@ -12,7 +12,6 @@ $(document).ready(function() {
 		
 		$(".jsKodeCatMasuk").select2({
 		tags: true,
-		//var cust_id = $('input#hdnCustomerId').val();
 		placeholder: " Input Kode Cat",
 		minimumInputLength: 0,
 		ajax: {		
@@ -22,7 +21,6 @@ $(document).ready(function() {
 					data: function (params) {
 						var queryParameters = {
 							term: params.term,
-							// cust: $('input#hdnCustomerId').val(),
 							type: $('select#slcKodeCat').val()
 						}
 						return queryParameters; 

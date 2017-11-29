@@ -3,13 +3,13 @@
 								<thead class="bg-primary">
 									<tr>
 										<th width="5%" style="text-align:center;">NO</th>
+										<th width="15%">Action</th>
+										<th width="15%">Trainer</th>
 										<th width="20%">Nama Pelatihan</th>
 										<th width="10%">Tanggal</th>
 										<th width="20%">Nama Paket</th>
 										<th width="10%">Tanggal Paket</th>
 										<th width="5%" style="text-align:center;">Jumlah Peserta</th>
-										<th width="20%">Trainer</th>
-										<th width="10%">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -27,19 +27,43 @@
 
 										$datestatus="";
 										if($dday == $tomorrow || $dday == $today){$datestatus="danger";}
+										// elseif ($dday<$today && $dday<$week && $rc['tidak_terlaksana']){$datestatus=1;}
 										elseif ($dday>$today && $dday<$week){$datestatus="warning";}
 										elseif ($dday<$today && $dday<$week){$datestatus="success";}
 
 										$packagedate=$rc['start_date_format'].' - '.$rc['end_date_format'];
 										if(is_null($rc['start_date_format']) OR is_null($rc['start_date_format'])){$packagedate="";}
+
+										if ($dday<$today && $dday<$week && $rc['tidak_terlaksana']==1) {?>
+											<tr style="background-color: #C39BD3"> 
+										<?php } else{?>
+											<tr class=" <?php echo $datestatus;?>"> 
+										<?php }
 									?>
-									<tr class="<?php echo $datestatus ?>">
 										<td align="center"><?php echo $no ?></td>
-										<td><?php echo $rc['scheduling_name'] ?></td>
-										<td><?php echo $rc['date_format'] ?></td>
-										<td><?php echo $rc['package_scheduling_name'] ?></td>
-										<td><?php echo $packagedate ?></td>
-										<td align="center"><?php echo $rc['participant_number'] ?></td>
+										<td>
+											<?php if ($no==1) { ?>
+												<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View"><i class="fa fa-search"></i></a>
+												<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip1" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
+												<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
+											<?php } else { ?>
+												<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>
+												<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
+												<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
+											<?php }?>
+
+											<?php if($rc['status']==0){ ?>
+											<!--<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip" title="Confirm"><i class="fa fa-check"></i></a>-->
+											<?php } ?>
+
+											<!--<a href="<?php echo site_url('ADMPelatihan/Record/Edit/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>-->
+
+											<?php if($rc['status']==1){ ?>
+											<!--<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip" title="Input Questionnaire"><i class="fa fa-file-text-o"></i></a>-->
+											<?php } ?>
+
+											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-remove"></i></a>
+										</td>
 										<td>
 											<?php 
 												foreach ($strainer as $st){
@@ -51,21 +75,11 @@
 												};
 											?>
 										</td>
-										<td>
-											<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>
-
-											<?php if($rc['status']==0){ ?>
-											<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip" title="Confirm"><i class="fa fa-check"></i></a>
-											<?php } ?>
-
-											<!--<a href="<?php echo site_url('ADMPelatihan/Record/Edit/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>-->
-
-											<?php if($rc['status']==1){ ?>
-											<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip" title="Input Questionnaire"><i class="fa fa-file-text-o"></i></a>
-											<?php } ?>
-
-											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger btn-sm"><i class="fa fa-remove"></i></a>
-										</td>
+										<td><?php echo $rc['scheduling_name'] ?></td>
+										<td><?php echo $rc['date_format'] ?></td>
+										<td><?php echo $rc['package_scheduling_name'] ?></td>
+										<td><?php echo $packagedate ?></td>
+										<td align="center"><?php echo $rc['participant_number'] ?></td>
 									</tr>
 									
 									<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$rc['scheduling_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

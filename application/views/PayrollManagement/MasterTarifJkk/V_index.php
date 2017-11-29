@@ -59,7 +59,7 @@
                               </td>
 							<td align='center'><?php echo $row->id_lokasi_kerja ?></td>
 							<td align='center'><?php echo $row->lokasi_kerja ?></td>
-							<td align='right'><?php echo number_format((int)$row->tarif_jkk) ?></td>
+							<td align='center'><?php echo $row->tarif_jkk." %" ?></td>
 
 							</tr>
 							<?php } ?>

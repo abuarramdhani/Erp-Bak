@@ -16,9 +16,12 @@ class M_riwayatgaji extends CI_Model
     // get all data
     function get_all($date)
     {
-		$this->db->where('tgl_berlaku<=',$date);
-		$this->db->where('tgl_tberlaku>',$date);
-    	return $this->db->get($this->table)->result();
+		$this->db->select('*');
+		$this->db->from($this->table);
+		$this->db->join('pr.pr_hub_kerja', 'pr.pr_hub_kerja.kd_hubungan_kerja = pr.pr_riwayat_gaji.kd_hubungan_kerja');
+		$this->db->where('pr.pr_riwayat_gaji.tgl_berlaku<=',$date);
+		$this->db->where('pr.pr_riwayat_gaji.tgl_tberlaku>',$date);
+		return $this->db->get()->result();
     }
 
     // get data by id

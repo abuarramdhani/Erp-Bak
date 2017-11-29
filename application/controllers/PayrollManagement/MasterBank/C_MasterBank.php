@@ -20,8 +20,8 @@ class C_MasterBank extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Data';
+        $data['SubMenuOne'] = 'Master Bank';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -48,8 +48,8 @@ class C_MasterBank extends CI_Controller
         $row = $this->M_masterbank->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Data',
+            	'SubMenuOne' => 'Master Bank',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -81,23 +81,29 @@ class C_MasterBank extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-
+		
+		$create = $this->M_masterbank->get_kode_bank();
+		if($create){
+			$kd = (int)$create+1;
+		}else{
+			$kd = 1;
+		}
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Data',
+            'SubMenuOne' => 'Master Bank',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterBank/save'),
-				'kd_bank' => set_value(''),
+			'kd_bank' => $kd,
 			'bank' => set_value('bank'),
 			'pot_transfer' => set_value('pot_transfer'),
 			'pot_transfer_tg_prshn' => set_value('pot_transfer_tg_prshn'),
 			'pr_master_bank_induk_data' => $this->M_masterbank->get_pr_master_bank_induk_data(),
 			'kd_bank_induk' => set_value('kd_bank_induk'),
 		);
-
+		
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterBank/V_form', $data);
@@ -130,8 +136,8 @@ class C_MasterBank extends CI_Controller
 		$data = array(
 			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
 			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
-			'pot_transfer' => str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' => str_replace('.','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace('.','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 		
@@ -156,8 +162,8 @@ class C_MasterBank extends CI_Controller
 			'bank' 					=> strtoupper($this->input->post('txtBank',TRUE)),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'pot_transfer' 			=> str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' 			=> str_replace('.','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace('.','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kode_petugas' 			=> '0001225',
 			'tgl_record' 			=> date('Y-m-d H:i:s'),
 			'kd_bank_induk' 		=> strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
@@ -188,8 +194,8 @@ class C_MasterBank extends CI_Controller
         
 		if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Data',
+                'SubMenuOne' => 'Master Bank',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -197,8 +203,8 @@ class C_MasterBank extends CI_Controller
                 'action' => site_url('PayrollManagement/MasterBank/saveUpdate'),
 				'kd_bank' => set_value('cmbKdBank', $row->kd_bank),
 				'bank' => set_value('cmbBank', $row->bank),
-				'pot_transfer' => set_value('cmbPotTransfer', $row->pot_transfer),
-				'pot_transfer_tg_prshn' => set_value('cmbPotTransferTgPrshn', $row->pot_transfer_tg_prshn),
+				'pot_transfer' => set_value('cmbPotTransfer', number_format((int)$row->pot_transfer,0,",",".")),
+				'pot_transfer_tg_prshn' => set_value('cmbPotTransferTgPrshn', number_format((int)$row->pot_transfer_tg_prshn,0,",",".")),
 				'kd_bank_induk' => set_value('cmbKdBankInduk', $row->kd_bank_induk),
 				'pr_master_bank_induk_data' => $this->M_masterbank->get_pr_master_bank_induk_data(),
 				);
@@ -220,14 +226,13 @@ class C_MasterBank extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kd_bank' => strtoupper($this->input->post('txtKdBankNew',TRUE)),
 			'bank' => strtoupper($this->input->post('txtBank',TRUE)),
-			'pot_transfer' => str_replace(',','',$this->input->post('txtPotTransfer',TRUE)),
-			'pot_transfer_tg_prshn' => str_replace(',','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
+			'pot_transfer' => str_replace('.','',$this->input->post('txtPotTransfer',TRUE)),
+			'pot_transfer_tg_prshn' => str_replace('.','',$this->input->post('txtPotTransferTgPrshn',TRUE)),
 			'kd_bank_induk' => strtoupper($this->input->post('cmbKdBankInduk',TRUE)),
 		);
 
-        $this->M_masterbank->update(strtoupper($this->input->post('txtKdBank', TRUE)), $data);
+        $this->M_masterbank->update(strtoupper($this->input->post('txtKdBankNew', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
 		$ses=array(
 				 "success_update" => 1

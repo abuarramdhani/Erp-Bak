@@ -69,7 +69,8 @@ class C_Invoice extends CI_Controller {
 		$tanggal_awal = $this->input->post('tanggal_awal');
 		$tanggal_akhir = $this->input->post('tanggal_akhir');
 		$supplier = $this->input->post('supplier');
-		$invoice_number = $this->input->post('invoice_number');
+		$inum = $this->input->post('invoice_number');
+		$invoice_number = strtoupper($inum);
 		$invoice_status = $this->input->post('invoice_status');
 		$voucher_number = $this->input->post('voucher_number');
 
@@ -83,10 +84,7 @@ class C_Invoice extends CI_Controller {
 		$query = $this->M_Invoice->alldata($tanggal_awal, $tanggal_akhir, $supplier, $invoice_number, $invoice_status, $voucher_number);
 		$data['data']=$query;
 		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AccountPayables/V_SearchResult',$data);
-		$this->load->view('V_Footer',$data);
 	}
 
 	public function generateQR(){
@@ -111,7 +109,8 @@ class C_Invoice extends CI_Controller {
 	}	
 	
 	public function getSupplier(){
-		$supplier = $this->input->GET('term');
+		$supply = $this->input->GET('term');
+		$supplier = strtoupper($supply);
 		$query = $this->M_Invoice->getSupplier($supplier);
 		echo json_encode($query);
 		// print_r($query);
@@ -176,13 +175,35 @@ class C_Invoice extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		
+
 
 		$query = $this->M_Invoice->getDetail($invoice_id);
+		$query2 = $this->M_Invoice->findSingleFaktur($invoice_id);
 		$data['data']=$query;
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+		$data['data_faktur']=$query2;
 		$this->load->view('AccountPayables/V_Input',$data);
-		$this->load->view('V_Footer',$data);
+	}
+	public function inputTaxManual($invoice_id){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+
+
+		$query = $this->M_Invoice->getDetail($invoice_id);
+		$query2 = $this->M_Invoice->findSingleFaktur($invoice_id);
+		$data['data']=$query;
+		$data['data_faktur']=$query2;
+		$this->load->view('AccountPayables/V_Manual',$data);
 	}
 
 	public function saveTaxNumber(){
@@ -190,34 +211,41 @@ class C_Invoice extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
+		$invoice_id = $this->input->post('invoice_id');//kanan
+		$faktur_type = $this->input->post('faktur_type');//hidden
+		$tanggalFaktur = $this->input->post('tanggalFaktur');//kiri
+		$tanggalFakturCon = $this->input->post('tanggalFakturCon');//hide
+		$npwpPenjual = $this->input->post('npwpPenjual');//kiri
+		$namaPenjual = $this->input->post('namaPenjual');//kiri
+		$alamatPenjual = $this->input->post('alamatPenjual');//kiri
+		$dpp = $this->input->post('jumlahDpp');//kiri
+		$ppn = $this->input->post('jumlahPpn');//kiri
+		$ppnbm = $this->input->post('ppnbm');//entah
+		$comment = $this->input->post('txaCmt');//modal 2-2 nya
+		$tax_number = $this->input->post('nomorFaktur');//kiri
+		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
+		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
+		
+		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $tanggalFaktur, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $npwpPenjual, $namaPenjual, $alamatPenjual, $dpp, $ppn, $ppnbm, $faktur_type, $comment );
+
+	}
+	public function saveTaxNumberManual(){
+
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
 		$invoice_id = $this->input->post('invoice_id');
-		
-		$invoice_date = $this->input->post('invoice_date');
-		$tax_number = $this->input->post('tax_number');
-		$tax_number_awal = substr($tax_number, 0, 11);
-		$tax_number_akhir = substr($tax_number, 11, strlen($tax_number)-11);
-		
-		$query = $this->M_Invoice->saveTaxNumber($invoice_id, $invoice_date, $tax_number_awal, $tax_number_akhir);
-		if($query){
-			echo "
-				<script>
-				    alert('Input Berhasil');
-				</script>
-			";
-		}else{
-			echo "
-			<script>
-			    alert('Input Gagal');
-			</script>
-			";
-		}
-		$this->inputTaxNumber($invoice_id);
+		$tanggalFakturCon = $this->input->post('tanggalFakturCon');
+		$tax_number = $this->input->post('nomorFaktur');
+		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
+		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
+
+		$query = $this->M_Invoice->saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir);
 	}	
 
 	public function deleteTaxNumber($invoice_id,$invoice_num){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-
 		$query = $this->M_Invoice->deleteTaxNumber($invoice_id,$invoice_num);
 		if($query>0){
 			echo "
@@ -421,6 +449,104 @@ class C_Invoice extends CI_Controller {
 		}
 		unlink($file_path);
         redirect(base_url().'AccountPayables/C_Invoice/downloadfm');
+	}
+
+	function qrcode(){
+		$doc = new DOMDocument();
+		$url = $_POST['url'];
+		$doc->load($url);//xml file loading here
+		$xml = $doc->getElementsByTagName( "resValidateFakturPm" );
+		$xml1 = $doc->getElementsByTagName( "detailTransaksi" );
+		$i=0;
+		foreach ($xml1 as $xml1) {
+			$namas = $xml1->getElementsByTagName( "nama" );
+			$nama = $namas->item(0)->nodeValue;
+			if($i>0){
+				$data['nama'] = $data['nama']."\n".$nama;
+			}else{
+			  	$data['nama'] = $nama;
+			}
+			$i=$i+1;
+		}
+		foreach( $xml as $xml ){
+			  $nomorFakturs = $xml->getElementsByTagName( "nomorFaktur" );
+			  $nomorFaktur = $nomorFakturs->item(0)->nodeValue;
+			  $data['nomorFaktur'] = $nomorFaktur;
+
+			  $namaPenjuals = $xml->getElementsByTagName( "namaPenjual" );
+			  $namaPenjual = $namaPenjuals->item(0)->nodeValue;
+			  $data['namaPenjual'] = $namaPenjual;
+
+			  $tanggalFakturs = $xml->getElementsByTagName( "tanggalFaktur" );
+			  $tanggalFaktur = $tanggalFakturs->item(0)->nodeValue;
+			  $data['tanggalFaktur'] = $tanggalFaktur;
+
+			  $jumlahDpps = $xml->getElementsByTagName( "jumlahDpp" );
+			  $jumlahDpp = $jumlahDpps->item(0)->nodeValue;
+			  $data['jumlahDpp'] = $jumlahDpp;
+
+			  $jumlahPpns = $xml->getElementsByTagName( "jumlahPpn" );
+			  $jumlahPpn = $jumlahPpns->item(0)->nodeValue;
+			  $data['jumlahPpn'] = $jumlahPpn;
+
+			  $npwpPenjuals = $xml->getElementsByTagName( "npwpPenjual" );
+			  $npwpPenjual = $npwpPenjuals->item(0)->nodeValue;
+			  $data['npwpPenjual'] = $npwpPenjual;
+
+			  $alamatPenjuals = $xml->getElementsByTagName( "alamatPenjual" );
+			  $alamatPenjual = $alamatPenjuals->item(0)->nodeValue;
+			  $data['alamatPenjual'] = $alamatPenjual;
+
+			  $kdJenisTransaksis = $xml->getElementsByTagName( "kdJenisTransaksi" );
+			  $kdJenisTransaksi = $kdJenisTransaksis->item(0)->nodeValue;
+			  $data['kdJenisTransaksi'] = $kdJenisTransaksi;
+
+			  $fgPenggantis = $xml->getElementsByTagName( "fgPengganti" );
+			  $fgPengganti = $fgPenggantis->item(0)->nodeValue;
+			  $data['fgPengganti'] = $fgPengganti;	  
+		}
+		echo json_encode($data);
+	}
+
+	public function faktursa(){
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('AccountPayables/V_Faktursa',$data);
+		
+
+	}
+
+	public function chkInvExist($invoice){
+		if ($invoice == 'undefined') {
+			$retval = 'false';
+		}else{
+			$checkInv = $this->M_Invoice->checkInvoice($invoice);
+			if ($checkInv[0]['ATTRIBUTE3'] != NULL || $checkInv[0]['ATTRIBUTE3'] != '') {
+				$retval = 'true';
+			}else{
+				$retval = 'false';
+			};
+		};
+		echo $retval;
+	}
+
+	public function chkFakExist($faktur){
+		$checkFak = $this->M_Invoice->checkFaktur($faktur);
+		if ($checkFak) {
+			$retval = 'true';
+		}else{
+			$retval = 'false';
+		};
+		echo $retval;
 	}
 
 }

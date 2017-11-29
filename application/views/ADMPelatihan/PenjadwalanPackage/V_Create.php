@@ -60,7 +60,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Nama Penjadwalan</label>
 								<div class="col-lg-6">
-									<input name="txtSchedulingName" class="form-control toupper" placeholder="Nama Penjadwalan Paket Pelatihan" required >
+									<input name="txtSchedulingName" class="form-control toupper" value="<?php echo $gpn['package_name']?>" readonly >
 								</div>
 							</div>
 						</div>
@@ -68,8 +68,8 @@
 					<?php } ?>
 						<div class="form-group">
 							<div class="col-lg-8 text-right">
-								<a onclick="goBack()" class="btn btn-primary btn btn-flat">Back</a>
-								&nbsp;&nbsp;
+								<a href="<?php echo site_url('ADMPelatihan/PenjadwalanPackage');?>"  class="btn btn-primary btn btn-flat">Back</a>
+									&nbsp;&nbsp;
 								<button type="submit" class="btn btn-success btn btn-flat">Save Data</button>
 							</div>
 						</div>

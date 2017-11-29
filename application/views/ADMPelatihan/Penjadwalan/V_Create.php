@@ -30,6 +30,7 @@
 					<div class="box-body">
 					<?php foreach($details as $dt){?>
 						<div class="row" style="margin: 10px 10px">
+							<?php echo $alert; ?>
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $dt['training_name']?></b></h3>
 							</label>
@@ -40,7 +41,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Nama Pelatihan</label>
 									<div class="col-lg-9">
-										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>">
+										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>" readonly>
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
 									</div>
 								</div>
@@ -49,30 +50,13 @@
 							<div class="row" style="margin: 10px 10px">
 								<div class="col-lg-12">
 									<div class="panel panel-default">
-										<div class="panel-heading text-right">
-											<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddObjective" title="Tambah Baris" onclick="AddObjective('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
-											<a href="javascript:void(0);" class="btn btn-sm btn-danger" id="DelObjective" title="Hapus Baris" onclick="deleteRow('tblObjective')"><i class="fa fa-remove"></i></a>
-											<a id="HiddenDelObjective" onclick="deleteRow('tblParticipant')" hidden >Hidden</a>
+										<div class="panel-heading">
+											<b>Tujuan Pelatihan :</b>
 										</div>
 										<div class="panel-body">
-											<div class="table-responsive" >
-												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblObjective" id="tblObjective">
-													<thead>
-														<tr class="bg-primary">
-															<th width="100%">Tujuan Pelatihan</th>
-														</tr>
-													</thead>
-													<tbody id="tbodyObjective">
-														<tr class="obclone">
-															<td>
-																<select class="form-control js-slcObjective" name="slcObjective[]" id="slcObjective" required>
-																		<option value=""></option>
-																</select>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
+											<?php foreach($purpose as $pr){ ?>
+											<i class="fa fa-angle-right"></i><?php echo ' '.$pr['purpose'] ?><br>
+											<?php } ?>
 										</div>
 									</div>
 								</div>
@@ -85,7 +69,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input name="txtTanggalPelaksanaan" class="form-control singledate" placeholder="Tanggal" required >
+										<input name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
 									</div>
 								</div>
 							</div>
@@ -143,19 +127,49 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Evaluasi</label>
 									<div class="col-lg-9">
-										<input type="checkbox" name="chk1" value="1"> Wawasan<br>
+										<!-- <input type="checkbox" name="chk1" value="1"> Wawasan<br>
 	  									<input type="checkbox" name="chk2" value="2"> Pengetahuan<br>
-	  									<input type="checkbox" name="chk3" value="3"> Perilaku
+	  									<input type="checkbox" name="chk3" value="3"> Perilaku -->
+	  									<select class="form-control select4" name="slcEvaluasi[]" data-placeholder="   Evaluasi" id="slcEvaluasi" multiple="multiple" required>
+												<option value=""></option>
+												<?php foreach($GetEvaluationType as $et){ ?>
+													<option value="<?php echo $et['evaluation_type_id']?>" 
+													<?php if ($et['evaluation_type_id']==1) { echo "selected"; } ?>>
+														<?php echo $et['evaluation_type_description'];?>
+													</option>
+												<?php } ?>
+										</select>
 									</div>
 								</div>
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
+									<label class="col-lg-3 control-label">Sifat </label>
+									<div class="col-lg-9">
+										<select class="form-control SlcRuang" name="slcSifat" data-placeholder="Order/Tahunan" required>
+											<option></option>
+											<option value="1">Order</option>
+											<option value="2">Tahunan</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<!-- ORIENTASI/NON ORIENTASI -->
+							<?php  ?>
+							<input name="txtJenis" value="2" hidden></input>	
+
+							<!-- PESERTA -->
+							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
 									<label class="col-lg-3 control-label">Peserta</label>
 									<div class="col-lg-4">
-										<input type="radio" name="txtPeserta" value="0"> Staff<br>
-										<input type="radio" name="txtPeserta" value="1"> Non-Staff<br>
-										<input type="radio" name="txtPeserta" value="2"> Staff & Non Staff<br>
+										<select class="form-control select2" name="slcPeserta">
+										<?php foreach($ptctype as $py) {?> 
+											<option value="<?php echo $py['participant_type_id']?>">
+												<?php echo $py['participant_type_description']?>
+											</option>
+										<?php }?>
+										</select>
 									</div>
 									<label class="col-lg-1 control-label">Jumlah Peserta</label>
 									<div class="col-lg-4">
@@ -177,12 +191,14 @@
 												<table class="table table-sm table-bordered table-hover text-center" style="table-layout: fixed;" name="tblParticipant" id="tblParticipant">
 													<thead>
 														<tr class="bg-primary">
+															<th width="5%" class="sorting_disabled" rowspan="1" colspan="1" style="width: 48.7778px;">NO</th>
 															<th width="90%">Daftar Peserta</th>
 															<th width="10%"></th>
 														</tr>
 													</thead>
 													<tbody id="tbodyParticipant">
 														<tr class="clone">
+															<td ><?php echo $number++;?></td>
 															<td>
 																<div class="input-group">
 																	<div class="input-group-addon">
@@ -214,7 +230,7 @@
 								</div>
 							</div>
 						</div>
-					<form>
+					</form>
 					<?php } ?>
 					</div>
 				</div>
@@ -223,6 +239,4 @@
 		</div>		
 	</div>
 	</div>
-</section>			
-			
-				
+</section>

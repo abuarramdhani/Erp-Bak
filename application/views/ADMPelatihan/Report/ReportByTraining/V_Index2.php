@@ -11,8 +11,8 @@
 										<th width="10%">Tanggal Paket</th>
 										<th width="6%">Jumlah Kelulusan</th>
 										<th width="6%">Persentase Kelulusan</th>
-										<th width="7%">Nilai Terendah</th>
 										<th width="7%">Nilai Tertinggi</th>
+										<th width="7%">Nilai Terendah</th>
 										<th width="7%">Nilai Rata-rata</th>
 									</tr>
 								</thead>
@@ -26,7 +26,7 @@
 									?>
 									<tr>
 										<td align="center"><?php echo $no ?></td>
-										<td><?php echo $rc['scheduling_name'] ?></td>
+										<td><a href='<?php echo base_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>'><?php echo $rc['scheduling_name'] ?></a></td>
 										<td><?php echo $rc['training_date'] ?></td>
 										<td>
 											<?php 
@@ -42,8 +42,10 @@
 										<td align="center"><?php echo $rc['participant_number'] ?></td>
 										<td></td>
 										<td></td>
-										<td></td>
-										<td></td>
+										<td><?php echo $rc['kelulusan'] ?></td>
+										<td><?php $PersentaseKelulusan=$rc['kelulusan']/$rc['participant_number']*100; 
+										echo number_format((float)$PersentaseKelulusan, 2, '.', '');
+											?> %</td>
 										<td><?php echo $rc['nilai_maximum'] ?></td>
 										<td><?php echo $rc['nilai_minimum'] ?></td>
 										<td><?php echo $rc['nilai_rerata'] ?></td>

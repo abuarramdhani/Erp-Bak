@@ -93,11 +93,12 @@
 
 		$(".js-slcNoInduk").select2({
 			placeholder: "No Induk",
-			minimumInputLength: 0,
+			minimumInputLength: 3,
 			ajax: {		
 				url:baseurl+"RekapTIMSPromosiPekerja/GetNoInduk",
 				dataType: 'json',
 				type: "GET",
+				delay: 500,
 				data: function (params) {
 					var queryParameters = {
 						term: params.term,
@@ -173,7 +174,7 @@
 	//---------------------------------REKAP TIMS.end-------------------------------
 function rekap_datatable() {
 	var rekap_table = $('#rekap-tims').DataTable({
-		responsive: true,
+		responsive: false,
 		scrollCollapse: true,
 		"lengthChange": false,
 		"dom": '<"pull-left"f>tp',
@@ -190,7 +191,7 @@ function rekap_datatable() {
 
 function rekap_datatable_detail() {
 	var rekap_table_detail = $('#rekap-tims-detail').DataTable({
-		responsive: true,
+		responsive: false,
 		"scrollX": true,
 		scrollCollapse: true,
 		"lengthChange": false,

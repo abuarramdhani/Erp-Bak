@@ -8,8 +8,66 @@ class M_penjadwalan extends CI_Model {
 		
 		//AMBIL DATA TRAINING
 		public function GetTraining(){
-			$sql = "select * from pl.pl_master_training where status=0";
+			$sql = "select * from pl.pl_master_training ";
+			$sql2 = "select * from pl.pl_master_training_purpose";
+			$sql3 = "SELECT
+						SUM(tr.kapasitas_kelas) jumlah, 
+						pc.package_id,
+						pc.package_name
+					FROM
+						pl.pl_master_training tr,
+						pl.pl_master_package pc,
+						pl.pl_master_package_training pt
+					WHERE tr.training_id = pt.training_id 
+						and pt.package_id = pc.package_id
+					group by pc.package_id, pc.package_name;";
 			$query = $this->db->query($sql);
+			$query2 = $this->db->query($sql2);
+			$query3 = $this->db->query($sql3);
+			return $query->result_array();
+		}
+
+		public function GetAlert($date,$start_time,$end_time,$room,$training_id)
+		{
+			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
+					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
+					where pst.training_id = pmt.training_id 
+						AND pst.date = to_date('$date','MM-DD-YYYY')
+						and (pst.start_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
+							AND to_timestamp('$end_time', 'HH24:MI')::time without time zone
+						OR end_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
+							and to_timestamp('$end_time', 'HH24:MI')::time without time zone)
+						AND pst.room = '$room'
+					order by pst.room";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetAlertPackage($date,$room,$training_id)
+		{
+			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
+					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
+					where pst.training_id = pmt.training_id 
+						AND pst.date = to_date('$date','MM-DD-YYYY')
+						AND pst.room = '$room'
+					order by pst.room";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetEvaluationType()
+		{
+			$sql = "select * from pl.pl_evaluation_type";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetParticipantType()
+		{
+			$sql = "
+					SELECT * FROM pl.pl_participant_type ORDER BY participant_type_id ASC 
+				";
+			$query=$this->db->query($sql);
 			return $query->result_array();
 		}
 
@@ -44,6 +102,13 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
+		public function GetTrainerPackage(){
+			$sql = "select * from pl.pl_master_trainer
+					order by noind";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
 		public function GetTrainerDirect($term){
 			if ($term === FALSE) {
 				$sql = "
@@ -58,15 +123,20 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
+		public function GetObjectiveId($id){
+		$sql = " select * from pl.pl_master_training_purpose where training_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 		//Get Trainer
 		public function GetObjective($term){
 			if ($term === FALSE) {
 				$sql = "
-					SELECT DISTINCT(objective) FROM pl.pl_objective ORDER BY objective ASC
+					SELECT purpose FROM pl.pl_master_training_purpose GROUP BY purpose ORDER BY purpose ASC
 				";
 			}else{
 				$sql = "
-					SELECT DISTINCT(objective) FROM pl.pl_objective WHERE (objective ILIKE '%$term%') ORDER BY objective ASC 
+					SELECT purpose FROM pl.pl_master_training_purpose WHERE (purpose LIKE '%$term%') GROUP BY purpose ORDER BY purpose ASC 
 				";
 			}
 			$query = $this->db->query($sql);
@@ -124,21 +194,22 @@ class M_penjadwalan extends CI_Model {
 
 
 		//Create New Master
-		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi,$trainers){
+		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis){
 			$sql = "
 			insert INTO pl.pl_scheduling_training
-			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer)values
-			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi','$trainers')";
+			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer,sifat,training_type)values
+			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi2','$trainers','$sifat',$jenis)";
 			$query = $this->db->query($sql);
-			return;
+			$insert_id = $this->db->insert_id();
+			return  $insert_id;
 		}
 
 		//Create New Master
-		public function AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi,$trainers){
+		public function AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers,$sifat,$jenis){
 			$sql = "
 			insert INTO pl.pl_scheduling_training
-			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,room,participant_type,participant_number,evaluation,trainer)values
-			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi','$trainers')";
+			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,room,participant_type,participant_number,evaluation,trainer,sifat,training_type)values
+			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi2','$trainers',$sifat,$jenis)";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -148,9 +219,9 @@ class M_penjadwalan extends CI_Model {
 			return $this->db->insert('pl.pl_scheduling_training', $data);
 		}
 
-		//Insert Master Objective
+		//Insert Objective -> Training Purpose
 		public function AddObjective($data){
-			return $this->db->insert('pl.pl_objective', $data);
+			return $this->db->insert('pl.pl_master_training_purpose', $data);
 		}
 
 		//Insert Master Objective
@@ -205,6 +276,13 @@ class M_penjadwalan extends CI_Model {
 			";
 			$query = $this->db->query($sql);
 			return;
+		}
+
+		public function pp($objective)
+		{
+			$sql = "select count(*) from pl.pl_master_training_purpose WHERE purpose LIKE '%$objective%'; ";
+			$query = $this->db->query($sql);
+			return $query->result_array();
 		}
 
 }

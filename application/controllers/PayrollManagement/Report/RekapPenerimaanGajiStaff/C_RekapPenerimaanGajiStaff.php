@@ -21,8 +21,8 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Laporan Penggajian';
+        $data['SubMenuOne'] = 'Lap. Rekap Gaji Staff';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -42,8 +42,8 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
 	        			
-	        $data['Menu'] = 'Payroll Management';
-	        $data['SubMenuOne'] = '';
+	        $data['Menu'] = 'Laporan Penggajian';
+	        $data['SubMenuOne'] = 'Lap. Rekap Gaji Staff';
 	        $data['SubMenuTwo'] = '';
 
 	        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

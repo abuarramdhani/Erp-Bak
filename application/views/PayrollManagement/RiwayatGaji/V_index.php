@@ -73,7 +73,7 @@
                               </td>
 							<td align='center'><?php echo $row->tgl_berlaku ?></td>
 							<td align='center'><?php echo $row->noind ?></td>
-							<td align='center'><?php echo $row->kd_hubungan_kerja ?></td>
+							<td align='center'><?php echo $row->hubungan_kerja ?></td>
 							<td align='center'><?php echo $row->kd_status_kerja ?></td>
 							<td align='center'><?php echo $row->kd_jabatan ?></td>
 							<td align='right'><?php echo number_format((int)$row->gaji_pokok) ?></td>

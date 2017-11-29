@@ -53,7 +53,7 @@
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
                                                 <select class="form-control select2-getNoind" id="txtNoind" name="txtNoind" style="width:100%;" required>
-														<option value=""></option>
+														<option value="<?php echo $noind; ?>"><?php echo $noind; ?></option>
 												</select>
                                             </div>
                                     </div>

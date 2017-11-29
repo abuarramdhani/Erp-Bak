@@ -35,41 +35,35 @@
 													<td>Employee Name</td>
 													<td><p id="employee_name">-</p></td>
 													<td>Destination</td>
-													<td><select id="area" name="txt_area_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
+													<td><select id="area" name="txt_city_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
 															<option value=""></option>
-															<?php foreach($Area as $ar){?>
-																<option value="<?php echo $ar['area_id'] ?>"><?php echo $ar['area_name'] ?></option>
+															<?php foreach($City as $ct){?>
+																<option value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
 															<?php } ?>
 														</select></td>
 												</tr>
 												<tr>
 													<td>Section</td>
 													<td><p id="section_name">-</p></td>
-													<td>City Type</td>
-													<td><select id="citytype" name="txt_city_type_id"  class="form-control select2" style="width: 100%" data-placeholder="Pilih Salah Satu" required>
-															<option value=""></option>
-															<?php foreach($CityType as $ci){?>
-																<option value="<?php echo $ci['city_type_id'] ?>"><?php echo $ci['city_type_name'] ?></option>
-															<?php } ?>
-														</select></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td><p id="unit_name">-</p></td>
 													<td>Depart</td>
 													<td><input type="text" name="txt_depart" class="form-control date-picker" required></td>
 												</tr>
 												<tr>
-													<td>Departemen</td>
-													<td><p id="department_name">-</p></td>
+													<td>Unit</td>
+													<td><p id="unit_name">-</p></td>
 													<td>Return</td>
 													<td><input type="text" name="txt_return" class="form-control date-picker" required></td>
 												</tr>
 												<tr>
+													<td>Departemen</td>
+													<td><p id="department_name">-</p></td>
+													<td>Bon</td>
+													<td><input id="txt_bon" type="text" name="txt_bon" class="form-control input_money"></td>
+												</tr>
+												<tr>
 													<td>Outstation Position</td>
 													<td><p id="outstation-position">-</p></td>
-													<td>Bon</td>
-													<td><input id="txt_bon" type="text" name="txt_bon" class="form-control input_money" required></td>
+													<td colspan="2"><input type="checkbox" name="acc_check" class="" value="1" checked="checked">&nbsp;&nbsp;  Include Accomodation Allowance</td>
 												</tr>
 												<tr>
 													<td colspan="4">
@@ -90,6 +84,9 @@
 															</div>
 														</div>
 													</td>
+												</tr>
+												<tr>
+													<td><input type="file" name="fileOutstation[]" id="fileOutstation" multiple /></td>
 												</tr>
 											</table>
 										<label>Estimate Allowance</label>
@@ -140,34 +137,46 @@
 										<table id="realization_detail" class="table table-bordered table-striped table-hover">
 											<thead>
 												<tr class="bg-primary">
-													<th width="25%"><center>Component</center></th>
-													<th width="25%"><center>Info</center></th>
-													<th width="10%"><center>Qty</center></th>
-													<th width="15%"><center>Nominal</center></th>
-													<th width="15%"><center>Total</center></th>
+														<th width="10%"><center>Tanggal</center></th>
+														<th width="10%"><center>Lokasi</center></th>
+														<th width="18%"><center>Component</center></th>
+														<th width="18%"><center>Info</center></th>
+														<th width="8%"><center>No. Urut</center></th>
+														<th width="7%"><center>Qty</center></th>
+														<th width="12%"><center>Nominal</center></th>
+														<th width="12%"><center>Total</center></th>
 													<th width="5%"><center>Action</center></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr class="multiRow">
+													<td><input type="text" name="txtTglOutstation[]" class="form-control date-picker"></td>
+													<td><select id="area_lines" name="txt_Lokasi[]"  class="form-control outstation-area select2" data-placeholder="Pilih Salah Satu" required>
+															<option value=""></option>
+															<?php foreach($City as $ct){?>
+																<option value="<?php echo $ct['city_id'].'-'.$ct['area_id'].'-'.$ct['city_type_id'] ?>"><?php echo $ct['city_province'].' - '.$ct['city_name'] ?></option>
+															<?php } ?>
+														</select>
+													</td>
 													<td>
-														<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" required>
+														<select name="txt_component[]" class="form-control select2-component" data-placeholder="Pilih Salah Satu!" style="width: 100%" >
 															<option value=""></option>
 															<?php foreach($Component as $comp){ ?>
 																<option value="<?php echo $comp['component_id'] ?>"><?php echo $comp['component_name'] ?></option>
 															<?php } ?>
 														</select>
 													</td>
-													<td><input type="text" name="txt_info[]" class="form-control" value="" required/></td>
-													<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" required/></td>
-													<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" required/></td>
-													<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal" required readonly/></td>
+													<td><input type="text" name="txt_info[]" class="form-control" value="" /></td>
+													<td><input type="text" name="txt_NomerUrut[]" class="form-control" value="" /></td>
+													<td><input type="number" onkeypress="return isNumberKeyAndComma(event)" name="txt_qty[]" class="form-control quantity" value="" /></td>
+													<td><input onkeypress="return isNumberKeyAndComma(event)" type="text" name="txt_component_nominal[]" class="form-control input_money nominal" value="" /></td>
+													<td><input style="text-align: right;" type="text" name="txt_total[]" class="form-control total-nominal"  readonly/></td>
 													<td><span class="btn btn-primary btn-sm delete-row"><i class="fa fa-minus"></i></span></td>
 												</tr>
 											</tbody>
 											<tfoot>
 												<tr>
-													<td colspan="4" style="text-align: right">Total Estimate Allowance</td>
+													<td colspan="7" style="text-align: right">Total Estimate Allowance</td>
 													<td style="text-align: right"><span id="total-final">Rp0,00</span></td>
 													<td></td>
 												</tr>

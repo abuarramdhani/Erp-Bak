@@ -22,8 +22,8 @@ class C_TransaksiHitungThr extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Komponen Penggajian';
+        $data['SubMenuOne'] = 'THR';
         $data['SubMenuTwo'] = '';
 		
 		$enc_dt	= $this->input->get('id');
@@ -31,6 +31,7 @@ class C_TransaksiHitungThr extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['action2'] = site_url('PayrollManagement/TransaksiHitungThr/search');
         $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
 		if(!empty($enc_dt)){
 			$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_dt);
@@ -60,8 +61,8 @@ class C_TransaksiHitungThr extends CI_Controller
         $row = $this->M_transaksihitungthr->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Komponen Penggajian',
+            	'SubMenuOne' => 'THR',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -105,8 +106,8 @@ class C_TransaksiHitungThr extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Komponen Penggajian',
+            'SubMenuOne' => 'THR',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -175,8 +176,8 @@ class C_TransaksiHitungThr extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Komponen Penggajian',
+                'SubMenuOne' => 'THR',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -280,9 +281,11 @@ class C_TransaksiHitungThr extends CI_Controller
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
+						$dt = explode("/",$row['PERIODE']);
+						$periode = str_replace(" ","",$dt[1]."-".$dt[0]);
 	                    $data = array(
 	                    	'id_data_thr' => $row['ID_THR'],
-							'periode' => $row['PERIODE'],
+							'periode' => $periode,
 							'noind' => $row['NOIND'],
 							'kd_status_kerja' => $row['KD_STATUS'],
 							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -294,7 +297,7 @@ class C_TransaksiHitungThr extends CI_Controller
 						
 						$data_transaksi = array(
 	                    	'id_transaksi_thr' => $row['ID_THR'],
-							'periode' => $row['PERIODE'],
+							'periode' => $periode,
 							'noind' => $row['NOIND'],
 							'kd_status_kerja' => $row['KD_STATUS'],
 							'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -309,7 +312,7 @@ class C_TransaksiHitungThr extends CI_Controller
 	                    	$data_exist[$i] = $data;
 	                    	$i++;
 							$data_update = array(
-								'periode' => $row['PERIODE'],
+								'periode' => $periode,
 								'noind' => $row['NOIND'],
 								'kd_status_kerja' => $row['KD_STATUS'],
 								'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -328,7 +331,7 @@ class C_TransaksiHitungThr extends CI_Controller
 	                    	$data_exist[$i] = $data;
 	                    	$i++;
 							$data_update = array(
-								'periode' => $row['PERIODE'],
+								'periode' => $periode,
 								'noind' => $row['NOIND'],
 								'kd_status_kerja' => $row['KD_STATUS'],
 								'diangkat' => date("Y-m-d",strtotime($row['DIANGKAT'])),
@@ -347,7 +350,7 @@ class C_TransaksiHitungThr extends CI_Controller
                 $this->checkSession();
         		$user_id = $this->session->userid;
         
-        		$data['Menu'] = 'Payroll Management';
+        		$data['Menu'] = 'Komponen Penggajian';
         		$data['SubMenuOne'] = '';
         		$data['SubMenuTwo'] = '';
 
@@ -408,7 +411,7 @@ class C_TransaksiHitungThr extends CI_Controller
         foreach ($importData as $row) {
            $data = array(
                'id_data_thr' => $row['ID_THR'],
-				'periode' => $row['PERIODE'],
+				'periode' => $periode,
 				'noind' => $row['NOIND'],
 				'kd_status_kerja' => $row['KD_STATUS'],
 				'diangkat' => $row['DIANGKAT'],
@@ -430,7 +433,8 @@ class C_TransaksiHitungThr extends CI_Controller
     }
 
     public function hitung(){
-        $periode = $this->input->post('txtPeriodeHitung');
+		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
+		$periode = $dt[1]."-".$dt[0];
         $hitung_data = $this->M_transaksihitungthr->get_hitung_data($periode);
 		
 		if(!empty($hitung_data)){
@@ -518,6 +522,29 @@ class C_TransaksiHitungThr extends CI_Controller
             redirect(site_url());
         }
     }
+	
+	public function search(){
+		$this->checkSession();
+        $user_id = $this->session->userid;
+        
+        $data['Menu'] = 'Komponen Penggajian';
+        $data['SubMenuOne'] = 'THR';
+        $data['SubMenuTwo'] = '';
+		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
+		$enc_dt = $dt[1]."-".$dt[0];
+		
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['action2'] = site_url('PayrollManagement/TransaksiHitungThr/search');
+        $data['action'] = site_url('PayrollManagement/TransaksiHitungThr/hitung');
+        $data['transaksiHitungThr_data'] = $this->M_transaksihitungthr->get_by_period($enc_dt);
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('PayrollManagement/TransaksiHitungThr/V_index', $data);
+        $this->load->view('V_Footer',$data);
+	}
 
     public function formValidation()
     {

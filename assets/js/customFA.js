@@ -2,20 +2,20 @@ $(document).ready(function() {
 		var base = $('#txtBaseUrl').val();
 		var org_id = $('#txtOrgId').val();
 		
-		//-------------- confirm ---------------------------
-		var deleteLinks = document.querySelectorAll('.confirm');
+		//-------------- confirm [not_working && conflict_with_confirm_delete_below]---------------------------
+		// var deleteLinks = document.querySelectorAll('.confirm');
 
-		for (var i = 0; i < deleteLinks.length; i++) {
-		  deleteLinks[i].addEventListener('click', function(event) {
-			  event.preventDefault();
+		// for (var i = 0; i < deleteLinks.length; i++) {
+		//   deleteLinks[i].addEventListener('click', function(event) {
+		// 	  event.preventDefault();
 
-			  var choice = confirm(this.getAttribute('data-confirm'));
+		// 	  var choice = confirm(this.getAttribute('data-confirm'));
 
-			  if (choice) {
-				window.location.href = this.getAttribute('href');
-			  }
-		  });
-		}
+		// 	  if (choice) {
+		// 		window.location.href = this.getAttribute('href');
+		// 	  }
+		//   });
+		// }
 		
 		
 		// document.querySelectorAll('form#frmDeleteAsset #btnDeleteAssets').onclick= function() {return confirm('Delete All Shown Assets?')};
@@ -387,9 +387,169 @@ $(document).ready(function() {
 			allowClear : false,
 	});
 		
+	//------------------------------------BonAssets----------------------------------------------
+	$('#dpDigunakan').datepicker({
+		autoclose: true,
+	});
+
+	$('#tbReceipt').DataTable({
+        "searching"		: true,
+        "lengthChange"	: false,
+        "scrollX"		: false,
+        "paging"		: false
+
+    });
+
+	$('button#btnSbmt').on('click', function(){
+		var v2=$(this).closest('.data-row').find('td#2').html();
+		var v3=$(this).closest('.data-row').find('td#3').html();
+		var v4=$(this).closest('.data-row').find('td#4').html();
+		var v6=$(this).closest('.data-row').find('td#6').html();
+	   	$('#hdnKode').val(v2);
+	   	$('#hdnDeskripsi').val(v3);
+	   	$('#hdnPp').val(v4);
+	   	$('#hdnQuantity').val(v6);
+       	$('#formInput').submit();
+	});
+
+	$('button#btnEdt').on('click', function(){
+		var vasset=$(this).closest('.data-row').find('td#01').html();
+	   	$('#asset_id').val(vasset);
+       	$('#formEdit').submit();
+	});
+
+	if ($('#txtKode').val() != undefined && $('#divKva').val() != undefined && $('#divPlat').val() != undefined) {
+		var rgxMesin = /\bNC/g;   //regex untuk tipe mesin
+		var rgxKendaraan = /\bND/g;   //regex untuk tipe kendaraan
+		var kode = $('#txtKode').val();
+		var mesin = kode.match(rgxMesin);
+		var kendaraan = kode.match(rgxKendaraan);
+
+		if (mesin == null && kendaraan != null) {
+			$('#divPlat').removeAttr('hidden','hidden');
+			$('#divKva').attr('hidden','hidden');
+			$('#divNgr').attr('hidden','hidden');
+		} else if (kendaraan == null && mesin != null) {
+			$('#divKva').removeAttr('hidden','hidden');
+			$('#divNgr').removeAttr('hidden','hidden');
+			$('#divPlat').attr('hidden','hidden');
+		} else if (mesin == null && kendaraan == null) {
+			$('#divKva').attr('hidden','hidden');
+			$('#divNgr').attr('hidden','hidden');
+			$('#divPlat').attr('hidden','hidden');
+		};
+	};
+
+	$('#btnExport').click(function(){
+		$('#formReceipt').submit();
+	});
+
+	$('#btnAddTag').attr('disabled','disabled');
+	$('#btnExport').attr('disabled','disabled');
+	
+	$(document).on('keypress', function(){
+		if ($('#txtTag').val() == '') {
+			$('#btnAddTag').attr('disabled','disabled');
+		}else{
+			$('#btnAddTag').removeAttr('disabled','disabled');
+		}
+
+		if ($('#txaSpek').val() == '' || $('#dpDigunakan').val() == '') {
+			$('#btnExport').attr('disabled','disabled');
+		}else{
+			$('#btnExport').removeAttr('disabled','disabled');
+		}
+	});
+
+	$(document).on('change', function(){
+		if ($('#txtTag').val() == '') {
+			$('#btnAddTag').attr('disabled','disabled');
+		}else{
+			$('#btnAddTag').removeAttr('disabled','disabled');
+		}
+
+		if ($('#txaSpek').val() == '' || $('#dpDigunakan').val() == '') {
+			$('#btnExport').attr('disabled','disabled');
+		}else{
+			$('#btnExport').removeAttr('disabled','disabled');
+		}
+	});
+
+	$("#txtDocNum").css('background-color', '#EEEEEE');
+	var defNum = $("#hdnNum").val();
+	var nowNum = 'N'+defNum;
+	$("#txtDocNum").val(nowNum);
+	$('#chckRev').click(function(){
+		if($('#chckRev').is(':checked')) {
+		    $("#txtDocNum").removeAttr('readonly', 'readonly');
+		    $("#txtDocNum").css('background-color', 'white');
+		} else {
+		    $("#txtDocNum").attr('readonly', 'readonly');
+		    $("#txtDocNum").css('background-color', '#EEEEEE');
+		    $("#txtDocNum").val(nowNum);
+		}
+	});
+
+	$(document).ajaxComplete(function(){
+		$("a[name=btnDelConf]").click(function(event){
+			var r = confirm('Are you sure to delete this item?');
+			if (r == false) {
+				alert('delete canceled');
+				event.preventDefault();
+			} else {
+				alert('data akan segera dihapus');
+			}
+		
+		});
+	});
+
+	$('.btnDelANT').each(function(){
+		$(this).click(function(){
+			var confTrue = confirm('apakah anda yakin akan melakukan delete data?');
+			var astId = $(this).attr('targast');
+			if (confTrue == true) {
+				$.ajax({
+					url: base+"FixedAsset/DataAssets/DeleteANT/"+astId,
+					success: function() {
+						alert('data deleted');
+						window.location.reload();
+					},
+					error: function(){
+						alert('deleteError');
+					}
+				});
+			}else{
+				alert('delete canceled');
+			}
+		});
+	});
+		
+
+	// 
+	// $('#btnReceipt').attr('disabled', 'disabled');
+	// var ppnum = $('#txtReceipt').val();
+	// var ponum = $('#txtPonum').val();
+	// $('#txtReceipt').change(function(){
+	// 	if (ppnum == '' && ponum == '') {
+	// 		$('#btnReceipt').attr('disabled', 'disabled');
+	// 	}else{
+	// 		$('#btnReceipt').removeAttr('disabled', 'disabled');			
+	// 	};
+	// });
+	// $('#txtPonum').change(function(){
+	// 	if (ppnum == '' && ponum == '') {
+	// 		$('#btnReceipt').attr('disabled', 'disabled');
+	// 	}else{
+	// 		$('#btnReceipt').removeAttr('disabled', 'disabled');			
+	// 	};
+	// });
+
 });
 
-document.getElementById('btnDeleteAssets').onclick= function() {return confirm('Delete All Shown Assets?')};
+// document.getElementById('btnDeleteAssets').onclick= function() {return confirm('Delete All Shown Assets?')};
+$(document).on('click', '#btnDeleteAssets', function() {
+	return confirm('Delete All Shown Assets?');
+});
 
 function ConfirmDelete() {
   return confirm("Are you sure you want to delete?");

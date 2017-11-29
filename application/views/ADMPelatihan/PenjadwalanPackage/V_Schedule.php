@@ -91,7 +91,7 @@
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 							<div class="col-lg-12 text-right">
-								<a href="<?php echo site_url('ADMPelatihan/PenjadwalanPackage');?>" class="btn btn-primary btn btn-flat">Back</a>
+								<a href="<?php echo site_url('ADMPelatihan/PenjadwalanPackage');?>"  class="btn btn-primary btn btn-flat">Back</a>
 							</div>
 						</div>
 					</div>

@@ -39,6 +39,13 @@ class M_masterparamptkp extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
+	
+	// update riwayat
+    function update_riwayat($id, $data)
+    {
+        $this->db->where('status_pajak', $id);
+        $this->db->update($this->table_riwayat, $data);
+    }
 
     // delete data
     function delete($id)
