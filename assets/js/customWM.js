@@ -17,12 +17,6 @@ $(function() {
 		"format": 'dd M yyyy'
   	});
 
-  	$('#txtMaksPenyimpananHeader').datepicker({
-		"autoclose": true,
-		"todayHiglight": true,
-		"format": 'dd M yyyy'
-  	});
-
   	$('#txtTanggalKeluarHeader').datepicker({
 		"autoclose": true,
 		"todayHiglight": true,
@@ -94,3 +88,25 @@ $('#cmbJenisLimbahKeluarHeader').change(function(){
       $('#SumberLimbahKeluar').val('');
     }
 });
+
+//date interval for maks penyimpanan
+$(document).on('change', '#txtTanggalTransaksiHeader', function(){
+  var tgl = $(this).val();
+  
+  if (tgl) {
+    var date = new Date(tgl);
+    var newdate = new Date(date);
+    newdate.setDate(newdate.getDate() + 90);
+    var nd = new Date(newdate);
+    var dd = ("0" + nd.getDate()).slice(-2);
+    var mm = ("0" + (nd.getMonth() + 1)).slice(-2);
+    var y = nd.getFullYear();
+    var someFormattedDate = dd + '-' + mm + '-' + y;
+
+    $('#txtMaksPenyimpananHeader').val(someFormattedDate);
+  }else{
+    $('#txtMaksPenyimpananHeader').val('');
+  }
+  
+
+})
