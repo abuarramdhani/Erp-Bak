@@ -33,13 +33,13 @@
 											<div class="form-group">
                                                 <label for="txtTanggalTransaksiHeader" class="control-label col-lg-4">Tanggal Masuk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" value="<?php echo date('d M Y', strtotime($headerRow['tanggal_transaksi'])) ;?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" />
+                                                    <input type="text" maxlength="10" name="txtTanggalTransaksiHeader" value="<?php echo date('d M Y', strtotime($headerRow['tanggal_transaksi'])) ;?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" required/>
                                                 </div>
                                             </div>
 											<div class="form-group">
                                                 <label for="cmbJenisLimbahHeader" class="control-label col-lg-4">Jenis Limbah</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbJenisLimbahHeader" name="cmbJenisLimbahHeader" class="select2" data-placeholder="Choose an option" style="width: 100%">
+                                                    <select id="cmbJenisLimbahHeader" name="cmbJenisLimbahHeader" class="select2" data-placeholder="Choose an option" style="width: 100%" required>
                                                         <option value=""></option>
                                                         <?php foreach ($jenis_limbah as $limbah) { ?>
                                                         <option value="<?php echo $limbah['id_jenis_limbah']; ?>" <?php if($limbah['id_jenis_limbah'] == $headerRow['id_jenis_limbah']) echo "selected"; ?>><?php echo $limbah['jenis_limbah']; ?></option>
@@ -97,7 +97,7 @@
 											<div class="form-group">
                                                 <label for="txtMaksPenyimpananHeader" class="control-label col-lg-4">Maks Penyimpanan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtMaksPenyimpananHeader" value="<?php echo date('d M Y',strtotime($headerRow['maks_penyimpanan'])) ;?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtMaksPenyimpananHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtMaksPenyimpananHeader" value="<?php echo date('d M Y',strtotime($headerRow['maks_penyimpanan'])) ;?>" class="date form-control" id="txtMaksPenyimpananHeader" readonly/>
                                                 </div>
                                             </div>
 

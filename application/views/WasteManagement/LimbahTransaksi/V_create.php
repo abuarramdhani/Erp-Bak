@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="txtTanggalTransaksiHeader" class="control-label col-lg-4">Tanggal Masuk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" required/>
                                                 </div>
                                             </div>
 
@@ -94,7 +94,7 @@
 											<div class="form-group">
                                                 <label for="txtMaksPenyimpananHeader" class="control-label col-lg-4">Maks Penyimpanan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtMaksPenyimpananHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtMaksPenyimpananHeader" />
+                                                    <input type="text" placeholder="<?php echo date('d M Y')?>" name="txtMaksPenyimpananHeader" class="form-control" " id="txtMaksPenyimpananHeader" readonly/>
                                                 </div>
                                             </div>
 
