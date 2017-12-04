@@ -27,17 +27,54 @@
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtSectionNameHeader" class="control-label col-lg-4">Section Name</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Section Name" name="txtSectionNameHeader" id="txtSectionNameHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="LocatorId" class="control-label col-lg-4">Locator Id</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Locator Id" name="LocatorId" id="LocatorId" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="OrganizationId" class="control-label col-lg-4">Organization Id</label>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control select4" data-placeholder="Organization Id" name="OrganizationId" id="OrganizationId" required="">
+                                                        <option></option>
+                                                        <option value="ODM">ODM</option>
+                                                        <option value="OPM">OPM</option>
+                                                        <option value="0">ODM & OPM</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="DepartementClass" class="control-label col-lg-4">Departement Class</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Departement Class" name="DepartementClass" id="DepartementClass" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+											<div class="form-group">
+                                                <label for="RoutingClass" class="control-label col-lg-4">Routing Class</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Routing Class" name="RoutingClass" id="RoutingClass" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row text-right">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+                                            <a href="<?php echo site_url('ProductionPlanning/Setting/Section/');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
                                             &nbsp;&nbsp;
                                             <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
                                         </div>

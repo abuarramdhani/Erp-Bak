@@ -37,6 +37,43 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="LocatorId" class="control-label col-lg-4">Locator Id</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Locator Id" name="LocatorId" id="LocatorId" class="form-control" value="<?php echo $headerRow['locator_id']; ?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="OrganizationId" class="control-label col-lg-4">Organization Id</label>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control select4" data-placeholder="Organization Id" name="OrganizationId" id="OrganizationId" required="">
+                                                        <option></option>
+                                                        <option value="ODM" <?php if ($headerRow['org_id'] == 'ODM') { echo "selected"; } ?>>ODM</option>
+                                                        <option value="OPM" <?php if ($headerRow['org_id'] == 'OPM') { echo "selected"; } ?>>OPM</option>
+                                                        <option value="0" <?php if ($headerRow['org_id'] == NULL) { echo "selected"; } ?>>ODM & OPM</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="DepartementClass" class="control-label col-lg-4">Departement Class</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Departement Class" name="DepartementClass" id="DepartementClass" class="form-control" value="<?php echo $headerRow['department_class_code'] ?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="RoutingClass" class="control-label col-lg-4">Routing Class</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Routing Class" name="RoutingClass" id="RoutingClass" class="form-control" value="<?php echo $headerRow['routing_class'] ?>" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row text-right">
