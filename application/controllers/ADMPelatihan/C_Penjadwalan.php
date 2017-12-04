@@ -120,11 +120,6 @@ class C_Penjadwalan extends CI_Controller {
 		$data['ptctype'] = $this->M_penjadwalan->GetParticipantType();
 		$data['alert'] = $alert;
 
-		// echo "<pre>";
-		// print_r($data['packscheduling']);
-		// echo "</pre>";
-		// exit();
-
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Penjadwalan/V_CreatebyPackage',$data);
@@ -305,10 +300,6 @@ class C_Penjadwalan extends CI_Controller {
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
 	public function addbypackage(){
-		echo "<pre>";
-		var_dump($_POST);
-		echo "</pre>";
-		exit();
 
 		$package_scheduling_id	= $this->input->post('txtPackageSchedulingId');
 		$package_training_id	= $this->input->post('txtPackageTrainingId');

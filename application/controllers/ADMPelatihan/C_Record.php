@@ -56,8 +56,49 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$data['record'] = $this->M_record->GetRecord();
 		$data['trainer'] = $this->M_record->GetTrainer();
+
+		$paket          = $this->M_record->paket();
+		$pelatihan		= $this->M_record->pelatihan();
+        $record             = array();
+        $checkoutData       = array();
+        $iRec               = 0;
+        $iCheck             = 0;
+        foreach ($pelatihan as $key => $valPL) {
+            if ($valPL['package_scheduling_id'] == 0) {
+                $record[$iRec] = $valPL;
+                $iRec++;
+            }else{
+                foreach ($paket as $i => $valPK) {
+                    if ($valPL['package_scheduling_id'] == $valPK['package_scheduling_id'] && !in_array($valPL['package_scheduling_id'], $checkoutData)) {
+                        $dataPaket   = array(
+                            'scheduling_id'             => '-',
+                            'package_scheduling_id'     => $valPK['package_scheduling_id'],
+                            'scheduling_name'           => '-',
+                            'date'                      => '-',
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => '-',
+                            'evaluation'                => '-',
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => '-',
+                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'] 
+                        );
+                        $record[$iRec] = $dataPaket;
+                        $checkoutData[$iCheck] = $valPL['package_scheduling_id'];
+                        $iRec++;
+                        $iCheck++;
+                    }
+                }
+            }
+        }
+
+        $data['record'] = $record;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -67,7 +108,6 @@ class C_Record extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 		
 	}
-
 	//HALAMAN FINISHED
 	public function finished(){
 		$this->checkSession();
@@ -81,8 +121,50 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$data['record'] = $this->M_record->GetRecordFinished();
+		// $data['record'] = $this->M_record->GetRecordFinished();
 		$data['trainer'] = $this->M_record->GetTrainer();
+
+		$GetRecordFinished2 = $this->M_record->paket();
+		$GetRecordFinished1	= $this->M_record->GetRecordFinished1();
+        $record             = array();
+        $checkoutData       = array();
+        $iRec               = 0;
+        $iCheck             = 0;
+        foreach ($GetRecordFinished1 as $key => $valPL) {
+            if ($valPL['package_scheduling_id'] == 0) {
+                $record[$iRec] = $valPL;
+                $iRec++;
+            }else{
+                foreach ($GetRecordFinished2 as $i => $valPK) {
+                    if ($valPL['package_scheduling_id'] == $valPK['package_scheduling_id'] && !in_array($valPL['package_scheduling_id'], $checkoutData)) {
+                        $dataPaket   = array(
+                            'scheduling_id'             => '-',
+                            'package_scheduling_id'     => $valPK['package_scheduling_id'],
+                            'scheduling_name'           => '-',
+                            'date'                      => '-',
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => '-',
+                            'evaluation'                => '-',
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => '-',
+                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'] 
+                        );
+                        $record[$iRec] = $dataPaket;
+                        $checkoutData[$iCheck] = $valPL['package_scheduling_id'];
+                        $iRec++;
+                        $iCheck++;
+                    }
+                }
+            }
+        }
+
+        $data['record'] = $record;
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -331,6 +413,15 @@ class C_Record extends CI_Controller {
 		$this->M_record->deleteParticipant($pid, $schID);
 	}
 
+
+	public function checkSession(){
+		if($this->session->is_logged){
+			
+		}else{
+			redirect('');
+		}
+	}
+// ----------------------------------------------------------------------JAVASCRIPT---------------------------------------------------------------
 	//FILTER RECORD
 	public function FilterRecord(){
 		
@@ -342,15 +433,6 @@ class C_Record extends CI_Controller {
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$this->load->view('ADMPelatihan/Record/V_Index2',$data);
 	}
-
-	public function checkSession(){
-		if($this->session->is_logged){
-			
-		}else{
-			redirect('');
-		}
-	}
-
 	public function GetNoInduk(){
 		$term = $this->input->get("term");
 		$data = $this->M_record->GetNoInduk($term);
@@ -364,5 +446,23 @@ class C_Record extends CI_Controller {
 			}
 		}
 		echo "]";
+	}
+
+	public function GetPackageID($id)
+	{
+		$data['recPackage'] = $this->M_record->GetRecordPackage($id);
+		$data['trainer']	= $this->M_record->GetTrainer();
+		$data['paketdetail']		= $this->M_record->paketdetail($id);
+
+		$this->load->view('ADMPelatihan/Record/V_Index2_2', $data);
+	}
+
+	public function GetPackageIDfinish($id)
+	{
+		$data['recPackage'] = $this->M_record->GetRecordFinished($id);
+		$data['trainer']	= $this->M_record->GetTrainer();
+		$data['paketdetailfinish']		= $this->M_record->paketdetailfinish($id);
+
+		$this->load->view('ADMPelatihan/Record/V_Index2_3', $data);
 	}
 }

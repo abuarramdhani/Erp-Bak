@@ -5,35 +5,26 @@
 										<th width="2%" style="text-align:center;">No</th>
 										<th width="10%">Nama Pelatihan</th>
 										<th width="10%">Kuesioner</th>
-										<th width="10%">Sub 1 (Segment)</th>
-										<th width="10%">Sub 2 (Presentase hasil Kuesioner)</th>
+										<th width="10%">Komponen Evaluasi</th>
+										<th width="5%">Total</th>
+										<th width="5%">Rata-rata</th>
+										<th width="10%">Keterangan</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
-										$no=0; foreach($report as $rc){ $no++;
-										$strainer = explode(',', $rc['trainer']);
+										$no=0; foreach($GetSchName_QuesName as $sq){ $no++;
 									?>
 									<tr>
 										<td align="center"><?php echo $no ?></td>
-										<td><a href='<?php echo base_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>'><?php echo $rc['scheduling_name'] ?></a></td>
-										<td><?php echo $rc['training_date'] ?></td>
-										<td>
-											<?php 
-												foreach ($strainer as $st){
-													foreach ($trainer as $tr){
-														if ($st == $tr['trainer_id']){
-															echo '<i class="fa fa-angle-right"></i> '.$tr['trainer_name'].'<br>';
-														}
-													}
-												};
-											?>
-										</td>
-										<td align="center"><?php echo $rc['participant_number'] ?></td>
+										<td><a href="<?php echo base_url('ADMPelatihan/Report/reportbyquestionnaire_1/'.$sq['scheduling_id'].'/'.$sq['questionnaire_id']);?>"><?php echo $sq['scheduling_name'] ?></a></td>
+										<td><?php echo $sq['questionnaire_title'] ?></td>
+										<td><?php echo $sq['segment_description']; ?></td>
+										<td></td>
 										<td></td>
 										<td></td>
 									</tr>
 									<?php } ?>
-								</tbody>															
+								</tbody>
 							</table>
 						</div>

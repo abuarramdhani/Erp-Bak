@@ -52,10 +52,10 @@ $styleNumber = array(
 	// set lebar kolom
 	$worksheet->getColumnDimension('A')->setWidth(20);
 	$worksheet->getColumnDimension('B')->setWidth(20);
-	$worksheet->getColumnDimension('C')->setWidth(20);
-	$worksheet->getColumnDimension('D')->setWidth(20);
+	$worksheet->getColumnDimension('C')->setWidth(10);
+	$worksheet->getColumnDimension('D')->setWidth(10);
 
-	// INFO
+	// INFO-------------------------------------------------------------------------------------------------------------------------------------------
 		// judul kuesioner
 		$worksheet->mergeCells('A1:D1');
 		$worksheet->getStyle('A1:D1')->applyFromArray($styleTitle);
@@ -91,9 +91,9 @@ $styleNumber = array(
 		foreach ($training as $tr) {
 			$worksheet->setCellValue('D3', $tr['scheduling_name']);
 		}
-	// --INFO
+	// --INFO-----------------------------------------------------------------------------------------------------------------------------------------
 
-	//TABEL
+	//TABEL-------------------------------------------------------------------------------------------------------------------------------------------
 		// ambil highest row untuk segment & statement
 		$rowSt = $worksheet->getHighestRow('A')+2;
 		$rowSt2 = $worksheet->getHighestRow('B')+2;
@@ -103,8 +103,11 @@ $styleNumber = array(
 		$cellAwal = 'A'.$rowSt;
 		$rowNumb1 = $worksheet->getHighestRow('A')+2;
 		$worksheet->mergeCells('A'.$rowNumb1.':B'.$rowNumb1);
-		$worksheet->mergeCells('A'.$rowNumb1.':B'.$rowNumb1);
+		// $worksheet->setCellValue('A'.$rowNumb1.':B'.$rowNumb1,'Komponen Evaluasi');
 		$cellNumb = 'A'.$rowNumb1;
+		$cellNumb2 = 'B'.$rowNumb1;
+		$cellNumb3 = 'C'.$rowNumb1;
+		$worksheet->setCellValue('A'.$rowNumb1,'Komponen Evaluasi');
 
 		// ambil highest row untuk nomor & isian kuesioner
 		$rowTb = $worksheet->getHighestRow('C')+2;
@@ -131,7 +134,7 @@ $styleNumber = array(
 		foreach($sheet as $se){
 			$rowAwal = $rowTb+1;
 			$rowAwal2 = $rowTb;
-			$worksheet->setCellValue($colTb2++.$rowAwal2,$number++);
+			$worksheet->setCellValue($colTb2++.$rowAwal2,'Subjek - '.$number++);
 			$stj = explode('||', $se['join_input']);
 
 			$hasil = array(); 
@@ -153,15 +156,15 @@ $styleNumber = array(
 
 				// isian kuesioner
 				if($stj[$i] == 1){
-					$worksheet->setCellValue($colTb.$rowAwal++, 'Sangat Tidak Setuju');
+					$worksheet->setCellValue($colTb.$rowAwal++, '1');
 				}else if($stj[$i] == 2){
-					$worksheet->setCellValue($colTb.$rowAwal++, 'Tidak Setuju');
+					$worksheet->setCellValue($colTb.$rowAwal++, '2');
 				}else if($stj[$i] == 3){
-					$worksheet->setCellValue($colTb.$rowAwal++, 'Setuju');
+					$worksheet->setCellValue($colTb.$rowAwal++, '3');
 				}else if($stj[$i] == 4){
-					$worksheet->setCellValue($colTb.$rowAwal++, 'Sangat Setuju');
+					$worksheet->setCellValue($colTb.$rowAwal++, '4');
 				}else if(empty($stj[$i])){
-					$worksheet->setCellValue($colTb.$rowAwal++, '-');
+					$worksheet->setCellValue($colTb.$rowAwal++, '0');
 				}else{
 					$worksheet->setCellValue($colTb.$rowAwal++, $stj[$i]);
 				}
@@ -177,12 +180,14 @@ $styleNumber = array(
 		$worksheet->getStyle($cellAwal.':'.$cellAkhir)->applyFromArray($styleBorder);
 		$worksheet->getStyle($cellNumb.':'.$cellAkhir)->applyFromArray($styleBorder);
 
-	// --TABEL
+	// --TABEL-----------------------------------------------------------------------------------------------------------------------------------------
+	//middle layout
+	$objPHPExcel->getActiveSheet()->getStyle($cellNumb3.':'.$cellAkhir)->getAlignment()->setHorizontal('center');
+	//border table
 	$objset = $objPHPExcel->setActiveSheetIndex(0);
 	$objget = $objPHPExcel->getActiveSheet();
 	$colHeaderLast = $worksheet->getHighestColumn($rowHeader);
-	// echo $colHeaderLast.$rowHeader;
-	// exit();
+
 	$objget->getStyle('A'.$rowHeader.':'.$colHeaderLast.$rowHeader)->applyFromArray(
 		array(
 			'fill' => array(

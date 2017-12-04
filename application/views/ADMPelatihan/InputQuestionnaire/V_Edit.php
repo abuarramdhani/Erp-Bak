@@ -8,12 +8,12 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Master Training</b></h1>
+						<h1><b>Input Kuesioner</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/MasterTraining');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/Record/Finished');?>">
                                 <i class="icon-wrench icon-2x"></i>
                                 <span><br/></span>	
                             </a>
