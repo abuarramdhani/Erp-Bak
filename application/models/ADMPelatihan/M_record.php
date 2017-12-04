@@ -9,9 +9,9 @@ class M_record extends CI_Model {
     }
 		
 	//Ambil Data Penjadwalan Untuk Index
-	public function GetRecord(){
+	public function GetRecordPackage($id){
 		$sql = "
-			select
+			SELECT
 			a.scheduling_id,
 			a.package_scheduling_id,
 			a.scheduling_name,
@@ -43,35 +43,108 @@ class M_record extends CI_Model {
 			from pl.pl_scheduling_training a
 			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
 			where (a.date >= now()::date or a.status = null or a.date < now()::date)
+			and a.package_scheduling_id=$id
+			and a.status is null
 			order by a.date asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-	public function GetTrainingId($id){
-			$sql = "select * from pl.pl_master_training	where training_id = $id";
-			$query = $this->db->query($sql);
-			return $query->result_array();
-		} 
-	public function GetEvaluationType()
-		{
-			$sql = "select * from pl.pl_evaluation_type";
-			$query=$this->db->query($sql);
-			return $query->result_array();
-		}
-	public function GetParticipantType()
-		{
-			$sql = "
-					SELECT * FROM pl.pl_participant_type ORDER BY participant_type_id ASC 
-				";
-			$query=$this->db->query($sql);
-			return $query->result_array();
-		}
+	//ambil untuk index---------------------------------------------------------------------
+	public function paket()
+	  {
+	    $sql = "SELECT
+	              *
+	            from
+	              pl.pl_scheduling_package b ";
+	    $query = $this->db->query($sql);
+	    return $query->result_array();
+	  }
+
+	  public function paketdetail($id)
+	  {
+	  	$sql = "SELECT
+	              *
+	            from
+	              pl.pl_scheduling_package b 
+	            where b.package_scheduling_id=$id";
+	    $query = $this->db->query($sql);
+	    return $query->result_array();
+	  }
+
+	  public function pelatihan()
+	  {
+	    $sql = "SELECT
+	              a.scheduling_id,
+	              a.package_scheduling_id,
+	              a.scheduling_name,
+	              a.date,
+	              a.room,
+	              a.participant_type,
+	              a.trainer,
+	              a.evaluation,
+	              a.sifat,
+	              a.participant_number,
+	              a.status,
+	              b.package_scheduling_name,
+	              case
+	                when b.start_date is null then null
+	                else to_char(
+	                  b.start_date,
+	                  'DD MONTH YYYY'
+	                )
+	              end as start_date_format,
+	              case
+	                when b.end_date is null then null
+	                else to_char(
+	                  b.end_date,
+	                  'DD MONTH YYYY'
+	                )
+	              end as end_date_format,
+	              case
+	                when a.date is null then null
+	                else to_char(
+	                  a.date,
+	                  'DD MONTH YYYY'
+	                )
+	              end as date_format,
+	              case
+	                when a.date < now()::date
+	                and a.status is null then 1
+	              end as tidak_terlaksana
+	            from
+	              pl.pl_scheduling_training a left join pl.pl_scheduling_package b on
+	              a.package_scheduling_id = b.package_scheduling_id
+	            where
+	              (
+	                a.date >= now()::date
+	                or a.status = null
+	                or a.date < now()::date
+	              )
+	            order by
+	              a.date asc";
+	    $query = $this->db->query($sql);
+	    return $query->result_array();
+	  }
+	//ambil untuk index------------------------------------------------------------------------
+
 
 	//Ambil Data Penjadwalan Untuk Finished
-	public function GetRecordFinished(){
+	//ambil untuk index finished--------------------------------------------------------------------------------
+	public function paketdetailfinish($id)
+	  {
+	  	$sql = "SELECT
+	              *
+	            from
+	              pl.pl_scheduling_package b 
+	            where b.package_scheduling_id=$id";
+	    $query = $this->db->query($sql);
+	    return $query->result_array();
+	  }
+
+	public function GetRecordFinished($id){
 		$sql = "
-			select
+			SELECT
 			a.scheduling_id,
 			a.package_scheduling_id,
 			a.scheduling_name,
@@ -103,10 +176,66 @@ class M_record extends CI_Model {
 			from pl.pl_scheduling_training a
 			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
 			where a.status = 1
+			and a.package_scheduling_id=$id
 			order by a.status asc, a.date desc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	public function GetRecordFinished1(){
+		$sql = "
+			 SELECT
+			  a.scheduling_id,
+			  a.package_scheduling_id,
+			  a.scheduling_name,
+			  a.date,
+			  a.room,
+			  a.participant_type,
+			  a.trainer,
+			  a.evaluation,
+			  a.sifat,
+			  a.participant_number,
+			  a.status,
+			  b.package_scheduling_name,
+			  case
+			    when b.start_date is null then null
+			    else to_char(
+			      b.start_date,
+			      'DD MONTH YYYY'
+			    )
+			  end as start_date_format,
+			  case
+			    when b.end_date is null then null
+			    else to_char(
+			      b.end_date,
+			      'DD MONTH YYYY'
+			    )
+			  end as end_date_format,
+			  case
+			    when a.date is null then null
+			    else to_char(
+			      a.date,
+			      'DD MONTH YYYY'
+			    )
+			  end as date_format,
+			  case
+			    when a.date < now()::date
+			    and a.status is null then 1
+			  end as tidak_terlaksana
+			from
+			  pl.pl_scheduling_training a left join pl.pl_scheduling_package b on
+			  a.package_scheduling_id = b.package_scheduling_id
+			where
+			  (
+			    a.date >= now()::date
+			    or a.date < now()::date
+			  )
+			and a.status = 1
+			order by
+			  a.date asc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	//ambil untuk index finished--------------------------------------------------------------------------------
 
 	public function FilterRecord($start,$end,$status){
 		$d_parameter="date >= now()::date";
@@ -116,7 +245,7 @@ class M_record extends CI_Model {
 			$s_parameter="OR a.status = 1";
 		}
 		$sql = "
-			select
+			SELECT
 			a.scheduling_id,
 			a.package_scheduling_id,
 			a.scheduling_name,
@@ -154,10 +283,29 @@ class M_record extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetTrainingId($id){
+			$sql = "SELECT * from pl.pl_master_training	where training_id = $id";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		} 
+	public function GetEvaluationType()
+		{
+			$sql = "SELECT * from pl.pl_evaluation_type";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+	public function GetParticipantType()
+		{
+			$sql = "
+					SELECT * FROM pl.pl_participant_type ORDER BY participant_type_id ASC 
+				";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
 	//Ambil Data Penjadwalan dari Record Tertentu
 	public function GetRecordId($id){
 		$sql = "
-			select 
+			SELECT 
  				a.scheduling_id,
  				a.package_scheduling_id,
  				a.package_training_id,
@@ -194,42 +342,42 @@ class M_record extends CI_Model {
 
 	//Ambil data Objective tujuan pelatihan dari Record Tertentu
 	public function GetObjectiveId($id){
-		$sql = " select * from pl.pl_master_training_purpose where training_id='$id'";
+		$sql = " SELECT * from pl.pl_master_training_purpose where training_id='$id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	//Ambil tipe Training
 	public function GetTrainingType($id){
-		$sql = " select status from pl.pl_master_training where training_id='$id'";
+		$sql = " SELECT status from pl.pl_master_training where training_id='$id'";
 		$query = $this->db->query($sql);
 		return $query->result();
 	}
 
 	//Ambil data Peserta dari Record Tertentu
 	public function GetParticipantId($id){
-		$sql = " select * from pl.pl_participant where scheduling_id='$id' order by participant_name";
+		$sql = " SELECT * from pl.pl_participant where scheduling_id='$id' order by participant_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	//Ambil data Peserta dari Record Tertentu
 	public function GetApplicantDataId($id){
-		$sql = " select * from pl.pl_tberkas where kodelamaran='$id'";
+		$sql = " SELECT * from pl.pl_tberkas where kodelamaran='$id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	//Ambil data Peserta dari Record Tertentu
 	public function GetEmployeeByNIK($NIK){
-		$sql = " select * from pr.pr_master_pekerja where NIK='$NIK'";
+		$sql = " SELECT * from pr.pr_master_pekerja where NIK='$NIK'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function GetEmployeeData($id){
 			$sql = "
-				select employee_code, employee_name
+				SELECT employee_code, employee_name
 				from er.er_employee_all
 				where employee_code='$id'";
 			$query = $this->db->query($sql);
@@ -277,7 +425,7 @@ class M_record extends CI_Model {
 
 	//Ambil data Trainer Lengkap
 	public function GetTrainer(){
-		$sql = "select * from pl.pl_master_trainer order by trainer_status DESC";
+		$sql = "SELECT * from pl.pl_master_trainer order by trainer_status DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -330,7 +478,7 @@ class M_record extends CI_Model {
 
 	public function GetScoreS($pid)
 	{
-		$sql 	 = "select	pp.scheduling_id,pst.scheduling_name, pp.noind, pp.participant_name, pst.date, pp.score_eval2_post
+		$sql 	 = "SELECT	pp.scheduling_id,pst.scheduling_name, pp.noind, pp.participant_name, pst.date, pp.score_eval2_post
 					from 	pl.pl_participant pp,
 							pl.pl_scheduling_training pst
 					where	pp.scheduling_id=pst.scheduling_id
@@ -346,7 +494,7 @@ class M_record extends CI_Model {
 						score_eval2_post = $result
 					where
 						participant_id =(
-							select
+							SELECT
 								pp.participant_id
 							from
 								pl.pl_participant pp,

@@ -638,5 +638,43 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetSchName_QuesName()
+	{
+		$sql="	SELECT	a.scheduling_id,sg.questionnaire_id, sg.segment_id,a.scheduling_name , c.questionnaire_title, sg.segment_description
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id,
+						(
+							select	sg.questionnaire_id,sg.segment_id,sg.segment_description
+							from	pl.pl_master_questionnaire_segment sg
+						)sg
+				where sg.questionnaire_id=b.questionnaire_id
+				group by 1,2,3,4,5,6
+				order by sg.segment_id asc";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSheet($id,$qe)
+	{
+		$sql="	SELECT *
+				from pl.pl_questionnaire_sheet qs
+				WHERE (qs.scheduling_id =$id
+				AND qs.questionnaire_id =$qe)";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetQuestParticipant($id)
+	{
+		$sql="	SELECT count(scheduling_id)as peserta_kuesioner
+				from	pl.pl_participant
+				where	scheduling_id=$id
+				and 	status=1";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
 }
 ?>

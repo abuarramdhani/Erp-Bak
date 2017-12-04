@@ -70,7 +70,6 @@ class C_InputQuestionnaire extends CI_Controller {
 			$trainData[] = $this->M_inputquestionnaire->GetTrain($ti);
 		}
 		
-
 		$quesData = array();
 		foreach ($trainData as $td => $value) {
 			$qid = explode(',', $value[$td]['questionnaire']);
@@ -85,7 +84,7 @@ class C_InputQuestionnaire extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/InputQuestionnaire/V_ToCreate',$data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	//HALAMAN CREATE TRAINER INTERNAL

@@ -8,12 +8,12 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Master Training</b></h1>
+						<h1><b>Input Kuesioner</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/MasterTraining');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/Record/Finished');?>">
                                 <i class="icon-wrench icon-2x"></i>
                                 <span><br/></span>	
                             </a>
@@ -80,7 +80,7 @@
 						</div>
 						<br>
 						<?php } ?>
-						<?php $bagnum=0; // foreach($segment as $sg){ $bagnum++ ?>
+						<?php $bagnum=0;?>
 						<div class="col-lg-12 text-right">
 							<div class="form-group">
 								<div class="col-lg-12 text-right">
@@ -93,15 +93,14 @@
 							<div  style="overflow-x: auto;">
 								 <table class="datatable table table-striped table-bordered table-hover text-left" id="tblPenjadwalan">
 										<?php 
-											$no=0;
-													$no++
+											$no=0; $no++;
 										?>
 									<thead>
 										<tr class="bg-primary">
 											<td style="background-color: white; min-width:800px; margin: 0px;" hidden="true"></td>
-											<td style="background-color: #337ab7; position: absolute; min-width:800px; height: 100px;"></td>
+											<td style="background-color: #337ab7; position: absolute; min-width:800px; height: 100px;text-align:center"><h4><b>Komponen Evaluasi</b></h4></td>
 											<?php foreach($sheet as $se){ ?>
-												<td style="min-width:150px;"><?php echo $no++; ?></td>
+												<td style="min-width:300px;"><?php echo '<b>'.$no++.'</b>'; ?></td>
 											<?php } ?>
 										</tr>
 									</thead>
@@ -121,6 +120,7 @@
 											<?php
 												$n=0;
 												$i=0;
+												$number=1;
 											foreach($segment as $sg){
 												foreach($statement as $st => $val){
 													if ($sg['segment_id'] == $val['segment_id']) {
@@ -128,7 +128,7 @@
 												<tr>
 													<td style="position: absolute; background-color: white; outline: transparent; min-width:800px; margin: 0px;">
 														<?php
-															echo "<b>".$sg['segment_description']."</b>".' - '.$val['statement_description'];
+															echo "<b>".$number++.'. '.$sg['segment_description']."</b>".' - '.$val['statement_description'];
 														?>
 													</td>
 													<?php
@@ -140,7 +140,7 @@
 														else if($stj[$i] == 3) echo "<td>Setuju</td>";
 														else if($stj[$i] == 4) echo "<td>Sangat Setuju</td>";
 														else if(empty($stj[$i]))echo "<td>-</td>";
-														else echo '<td style="min-width:150px">'.$stj[$i].'</td>';													
+														else echo '<td>'.$stj[$i].'</td>';										
 														}
 														$i++;
 													?>
@@ -180,6 +180,3 @@
 	</div>
 	</div>
 </section>
-	
-			
-				

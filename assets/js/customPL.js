@@ -501,11 +501,7 @@ $(document).ready(function(){
 			var disable = '';
 			var onkeyup = '';
 		}
-		// var newgroup = $('<tr>').addClass('clone');
 		var e = jQuery.Event( "click" );
-		// e.preventDefault();
-		
-		// $('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegment'
 		var n = $('#tbodyQuestionnaireSegment tr').length;
 		counter = n+1;
 
@@ -543,15 +539,6 @@ $(document).ready(function(){
 		}
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
-	// function AddSegmentEssay(base){
-	// 	var newgroup = $('<tr>').addClass('cclone');
-	// 	var e = jQuery.Event( "click" );
-	// 	e.preventDefault();
-		
-	// 	$('.cclone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegmentEssay');
-
-	// 	$("input#segmentessay:last").val("").change();
-	// }
 	function  AddSegmentEssayC(base){
 			var e = jQuery.Event( "click" );
 			var n = $('#tbodyQuestionnaireSegmentEssay tr').length;
@@ -572,14 +559,6 @@ $(document).ready(function(){
 
 
 	//MENGHAPUS ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
-	// function delStatRow(id){
-	// 	var rowCount = $("#tbodyStatement"+id+" tr").size();
-	// 	if(rowCount > 1){
-	// 		$("#tbodyStatement"+id+" tr:last").remove();
-	// 	}else{
-	// 		alert('Minimal harus ada satu baris tersisa');
-	// 	}
-	// }
 	function delStatRow(id){
 			var rowCount = $("#tbodyStatementC"+id+" tr").size();
 			if(rowCount > 1){
@@ -591,12 +570,6 @@ $(document).ready(function(){
 
 	//MENAMBAH ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
 	function AddStatement(id){
-		// var newgroup = $('<tr>').addClass('clone'+id);
-		// e.preventDefault();
-		// $('.clone'+id).last().clone().appendTo(newgroup).appendTo('#tbodyStatement'+id);
-		// $("input#statement"+id+":last").val("").change();
-
-
 		var e = jQuery.Event( "click" );
 		var n = $('#tbodyStatement tr').length;
 		counter = n+1;
@@ -615,7 +588,6 @@ $(document).ready(function(){
 
 	function AddStatementC(numb,id,inputName){
 			var n = $('#tbodyStatementC'+id+' tr').length;
-			// n=1;
 			var tbID = String('tblStatement');
 			var tbodyID = String('tbodyStatementC');
 			counter = n+1;
@@ -844,8 +816,6 @@ $(document).ready(function(){
 							}
 						}	
 					});
-
-		// alert(rowCount);
 			$("select#slcEmployee:last").val("").change();
 		}else{
 			alert('Jumlah peserta sudah maksimal');
@@ -1190,4 +1160,28 @@ function nonstafKKM(th,col,row) {
 		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
 		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
 	}
+}
+
+function recordPackage(id) {
+	$.ajax({
+		type: "POST",
+		url:baseurl+"ADMPelatihan/Record/GetPackageID/"+id,
+		success:function(result)
+		{
+			$('div#modalPaketArea').html(result);
+			$('#rincian_paket').modal('show');
+		}
+	});
+}
+
+function recordPackageFinish(id) {
+	$.ajax({
+		type: "POST",
+		url:baseurl+"ADMPelatihan/Record/GetPackageIDfinish/"+id,
+		success:function(result)
+		{
+			$('div#modalPaketAreafinish').html(result);
+			$('#rincian_paket_finished').modal('show');
+		}
+	});
 }

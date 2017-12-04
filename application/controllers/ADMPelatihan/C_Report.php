@@ -16,6 +16,7 @@ class C_Report extends CI_Controller {
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('ADMPelatihan/M_report');
+		$this->load->model('ADMPelatihan/M_inputquestionnaire');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -115,13 +116,61 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$date1='1/1/1900';
 		$date2='1/1/1900';
-		$data['report'] = $this->M_report->GetReport3($date1,$date2);
+		$data['GetSchName_QuesName'] = $this->M_report->GetSchName_QuesName();
+		// echo "<pre>";
+		// print_r($data['GetSchName_QuesName']);
+		// echo "</pre>";
 				
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index',$data);
 		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index2',$data);
 		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function reportbyquestionnaire_1($id,$qe){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Report by Questionnaire';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['GetSchName_QuesName'] = $this->M_report->GetSchName_QuesName();
+		$data['GetQuestParticipant'] = $this->M_report->GetQuestParticipant($id);
+
+		$data['sheet'] = $this->M_report->GetSheet($id,$qe);
+		$data['segment'] 		= $this->M_inputquestionnaire->GetQuestionnaireSegmentId($qe);
+		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
+		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
+		$data['stj_temp'] 		= array();
+		$sgstCount	= array();
+		foreach ($data['segment'] as $key => $sg) {
+			$rowspan	= 0;
+			foreach ($data['statement'] as $i => $val) {
+				if ($sg['segment_id'] == $val['segment_id']) {
+					$rowspan++;
+				}
+			}
+			$sgstCount[$key] = array(
+				'segment_id' => $sg['segment_id'],
+				'rowspan' => $rowspan
+				);
+		}
+		$data['sgstCount'] 		= $sgstCount;
+		// echo "<pre>";
+		// print_r($data['GetQuestParticipant']);
+		// echo "</pre>";
+		// exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Detail',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
