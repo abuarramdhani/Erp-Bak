@@ -5,7 +5,8 @@ class M_section extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
+        $this->oracle = $this->load->database('oracle',TRUE);
     }
 
     public function getSection($id = FALSE)
@@ -35,8 +36,12 @@ class M_section extends CI_Model
         $this->db->where('section_id', $id);
         $this->db->delete('pp.pp_section');
     }
-}
 
-/* End of file M_section.php */
-/* Location: ./application/models/ProductionPlanning/MainMenu/M_section.php */
-/* Generated automatically on 2017-10-23 10:54:54 */
+    public function getLocatorName()
+    {
+        $sql = "SELECT mil.INVENTORY_LOCATION_ID, mil.SEGMENT1 from mtl_item_locations mil where mil.DISABLE_DATE is null";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+}
