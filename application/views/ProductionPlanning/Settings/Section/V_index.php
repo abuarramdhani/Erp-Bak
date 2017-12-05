@@ -35,7 +35,7 @@
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; width:80px">Action</th>
                                                 <th>Section Name</th>
-                                                <th>Locator Id</th>
+                                                <th>Locator Name</th>
                                                 <th>Organization Id</th>
                                                 <th>Department Class</th>
                                                 <th>Routing Class</th>
@@ -55,7 +55,7 @@
                                                 	<a href="<?php echo base_url('ProductionPlanning/Setting/Section/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $row['section_name'] ?></td>
-                                                <td><?php echo $row['locator_id'] ?></td>
+                                                <td><?php echo $row['locator_name'] ?></td>
                                                 <td><?php echo $row['org_id'] ?></td>
                                                 <td><?php echo $row['department_class_code'] ?></td>
 												<td><?php echo $row['routing_class'] ?></td>

@@ -10,7 +10,7 @@
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/Section/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('ProductionPlanning/Setting/Section/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
                                     </a>                             
@@ -39,9 +39,16 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group">
-                                                <label for="LocatorId" class="control-label col-lg-4">Locator Id</label>
+                                                <label for="LocatorId" class="control-label col-lg-4">Locator Name</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Locator Id" name="LocatorId" id="LocatorId" class="form-control" value="<?php echo $headerRow['locator_id']; ?>" />
+                                                    <select name="LocatorId" data-placeholder="Locator Id" id="LocatorId" class="form-control select4">
+                                                        <option></option>
+                                                        <?php foreach ($locator as $lc) { ?>
+                                                            <option value="<?php echo $lc['INVENTORY_LOCATION_ID'].' | '.$lc['SEGMENT1'] ?>" <?php if ($lc['INVENTORY_LOCATION_ID'] == $headerRow['locator_id']) { echo "selected"; } ?>>
+                                                                <?php echo $lc['SEGMENT1'] ?>
+                                                            </option>
+                                                        <?php } ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
