@@ -1,4 +1,4 @@
-						<div class="table-responsive" style="overflow:hidden;">
+						<div class="table-responsive" style="overflow:scroll;">
 							<table class="table table-striped table-bordered table-hover text-left" id="tblrecord" style="font-size:14px;table-layout:fixed;width:1800px;">
 								<thead class="bg-primary">
 									<tr>
@@ -13,18 +13,65 @@
 								</thead>
 								<tbody>
 									<?php
-										$no=0; foreach($GetSchName_QuesName as $sq){ $no++;
+										$no=1; foreach($GetSchName_QuesName as $sq){ 
+											$checkpoint_sg_desc = 0;
+											foreach ($GetSchName_QuesName_segmen as $segmen) {
+												if ($sq['scheduling_id'] == $segmen['scheduling_id'] && $sq['questionnaire_id'] == $segmen['questionnaire_id']) {
+											$n=0;
+											$i=0;
 									?>
-									<tr>
-										<td align="center"><?php echo $no ?></td>
-										<td><a href="<?php echo base_url('ADMPelatihan/Report/reportbyquestionnaire_1/'.$sq['scheduling_id'].'/'.$sq['questionnaire_id']);?>"><?php echo $sq['scheduling_name'] ?></a></td>
-										<td><?php echo $sq['questionnaire_title'] ?></td>
-										<td><?php echo $sq['segment_description']; ?></td>
-										<td></td>
-										<td></td>
-										<td></td>
-									</tr>
-									<?php } ?>
+										<tr>
+											<?php if ($checkpoint_sg_desc == 0) {
+												$checkpoint_sch_id = 0;
+												foreach ($sgCount as $key => $value) {
+													if ($value['scheduling_id']==$segmen['scheduling_id'] && $value['questionnaire_id']==$segmen['questionnaire_id'] && $checkpoint_sch_id == 0) {?>
+														<td align="center" rowspan="<?php echo $value['rowspan']; ?>"><?php echo $no++ ?></td>
+														<td rowspan="<?php echo $value['rowspan']; ?>"><a href="<?php echo base_url('ADMPelatihan/Report/reportbyquestionnaire_1/'.$sq['scheduling_id'].'/'.$sq['questionnaire_id']);?>" rowspan="<?php echo $value['rowspan']; ?>"><?php echo $sq['scheduling_name']?></a></td>
+														<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px"><?php echo $sq['questionnaire_title']; ?></td>
+													<?php $checkpoint_sch_id = 1;
+													}
+													$checkpoint_sg_desc = 1;
+												}
+											} ?>
+											<?php
+												
+													echo '<td>'.$segmen['segment_description'].'</td>';
+												
+											?>
+											<td>
+												<?php 
+													foreach ($t_nilai as $tot) {
+														if ($tot['scheduling_id'] == $segmen['scheduling_id'] && $tot['questionnaire_id'] == $segmen['questionnaire_id'] && $tot['segment_id'] == $segmen['segment_id']) {
+															echo $tot['f_total'];
+														}
+													}
+												?>
+											</td>
+											<td>
+												<?php 
+													foreach ($t_nilai as $tot) {
+														if ($tot['scheduling_id'] == $segmen['scheduling_id'] && $tot['questionnaire_id'] == $segmen['questionnaire_id'] && $tot['segment_id'] == $segmen['segment_id']) {
+															echo $tot['f_rata'];
+														}
+													}
+												?>
+											</td>
+											<td>
+												<?php
+													foreach ($t_nilai as $tot) {
+														if ($tot['scheduling_id'] == $segmen['scheduling_id'] && $tot['questionnaire_id'] == $segmen['questionnaire_id'] && $tot['segment_id'] == $segmen['segment_id']) {
+															if (1<=$tot['f_rata'] && $tot['f_rata']<=1.74) {echo "Kurang";}
+															elseif (1.75<=$tot['f_rata'] && $tot['f_rata']<=2.49) {echo "Sedang";}
+															elseif (2.5<=$tot['f_rata'] && $tot['f_rata']<=3.24) {echo "Baik";}
+															elseif (3.25<=$tot['f_rata'] && $tot['f_rata']<=4) {echo "Baik Sekali";}
+														}
+													}
+												?>
+											</td>
+										</tr>
+									<?php $i++; }
+										}
+									}?>
 								</tbody>
 							</table>
 						</div>
