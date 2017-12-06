@@ -48,7 +48,7 @@
 										</thead>
 										<tbody>
 											<?php
-												$no=1; foreach ($GetSchName_QuesName as $gsq) { ?>
+												$no=1; foreach ($GetSchName_QuesName_detail as $gsq) { ?>
 												<input type="text" name="txtID" value="<?php echo $gsq['scheduling_id'];?>" hidden>
 											<tr>	
 												<?php

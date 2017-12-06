@@ -226,7 +226,7 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$data['GetSchName_QuesName'] = $this->M_report->GetSchName_QuesName();
+		$data['GetSchName_QuesName_detail'] = $this->M_report->GetSchName_QuesName_detail($id,$qe);
 		$data['GetQuestParticipant'] = $this->M_report->GetQuestParticipant($id);
 
 		$data['sheet'] = $this->M_report->GetSheet($id,$qe);

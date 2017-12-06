@@ -679,6 +679,22 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetSchName_QuesName_detail($id,$qe)
+	{
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+						where	a.scheduling_id=$id
+				and		c.questionnaire_id=$qe
+				group by 1,2,3,4";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+
 	public function GetSheet($id,$qe)
 	{
 		$sql="	SELECT *
