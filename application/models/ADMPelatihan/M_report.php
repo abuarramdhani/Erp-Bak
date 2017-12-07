@@ -612,6 +612,14 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetStatement()
+	{
+		$sql="	select	st.*
+				from	pl.pl_master_questionnaire_statement st";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
 	//Ambil data Trainer Lengkap
 	public function GetTrainer(){
 		$sql = "select * from pl.pl_master_trainer order by trainer_status DESC";
@@ -638,24 +646,54 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function GetSchName_QuesName()
+	public function GetSchName_QuesName_segmen()
 	{
-		$sql="	SELECT	a.scheduling_id,sg.questionnaire_id, sg.segment_id,a.scheduling_name , c.questionnaire_title, sg.segment_description
+		$sql="	SELECT	a.scheduling_id,sg.questionnaire_id, sg.segment_id,a.scheduling_name , sg.segment_description
 				from	pl.pl_scheduling_training a
 						inner join	pl.pl_questionnaire_sheet b 
 						on a.scheduling_id=b.scheduling_id
 						inner join pl.pl_master_questionnaire c 
 						on b.questionnaire_id=c.questionnaire_id,
 						(
-							select	sg.questionnaire_id,sg.segment_id,sg.segment_description
+							select	sg.questionnaire_id,sg.segment_id,sg.segment_description, sg.segment_type
 							from	pl.pl_master_questionnaire_segment sg
 						)sg
 				where sg.questionnaire_id=b.questionnaire_id
-				group by 1,2,3,4,5,6
+				and sg.segment_type=1
+				group by 1,2,3,4,5
 				order by sg.segment_id asc";
 		$query=$this->db->query($sql);
 		return $query->result_array();
 	}
+
+	public function GetSchName_QuesName()
+	{
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+				group by 1,2,3,4";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSchName_QuesName_detail($id,$qe)
+	{
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+						where	a.scheduling_id=$id
+				and		c.questionnaire_id=$qe
+				group by 1,2,3,4";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
 
 	public function GetSheet($id,$qe)
 	{
@@ -667,6 +705,17 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetSheetAll()
+	{
+		$sql="	SELECT *
+				from pl.pl_questionnaire_sheet qs
+				inner join pl.pl_master_questionnaire_segment mq
+				on qs.questionnaire_id=mq.questionnaire_id
+				order by mq.segment_id";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
 	public function GetQuestParticipant($id)
 	{
 		$sql="	SELECT count(scheduling_id)as peserta_kuesioner
@@ -674,6 +723,20 @@ class M_report extends CI_Model {
 				where	scheduling_id=$id
 				and 	status=1";
 		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetQuestionnaireSegmentId($id,$qe){
+		$sql = "
+			select *
+			from pl.pl_master_questionnaire_segment sg,
+			(	select pst.scheduling_id
+				from	pl.pl_scheduling_training pst
+				where	pst.scheduling_id=$id
+			)pst
+			where questionnaire_id=$qe
+			order by segment_order";
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 }
