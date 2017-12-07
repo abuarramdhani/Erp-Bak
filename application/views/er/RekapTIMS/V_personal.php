@@ -176,7 +176,7 @@
 											<td style="text-align:center;">No</td>
 											<td style="text-align:center;">Nomor Induk</td>
 											<td style="text-align:center;">Tanggal</td>
-											<td style="text-align:center;">Keluar</td>
+											<td style="text-align:center;">Keterangan</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -273,7 +273,7 @@
 													echo " - Lama";
 												}
 												?></td>
-											<td style="text-align:center;"><?php echo date('Y-m-g', strtotime($IP['tanggal'])); ?></td>
+											<td style="text-align:center;"><?php echo date('Y-m-d', strtotime($IP['tanggal'])); ?></td>
 											<td style="text-align:center;"><?php echo $IP['masuk']; ?></td>
 											<td style="text-align:center;"><?php echo $IP['keluar']; ?></td>
 										</tr>
