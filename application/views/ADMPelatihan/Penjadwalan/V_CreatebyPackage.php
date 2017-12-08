@@ -92,7 +92,7 @@
 															<input name="txtPackageTrainingId[]" value="<?php echo $tl['package_training_id']?>" hidden>
 														</td>
 														<td>
-															<input class="dday-tgl form-control" name ="txtTanggalPelaksanaan[]" value="" placeholder="Tanggal" style="width:95%">
+															<input class="dday-tgl form-control checkdateSch" id="checkdateSch" name ="txtTanggalPelaksanaan[]" value="" placeholder="Tanggal" style="width:95%">
 														</td>
 														<td>
 															<select class="form-control SlcRuang" name="slcRuang[]" data-placeholder="Ruang" style="width:95%">
@@ -112,8 +112,8 @@
 														</td>
 														<td style="text-align:left;">
 															<div class="col-lg-9">
-																<?php $checkreaksi='checked'; ?>
-																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1" <?php echo $checkreaksi; ?>> Reaksi<br>
+																<!-- <?php $checkreaksi='checked'; ?> -->
+																<!-- <input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1" <?php echo $checkreaksi; ?>> Reaksi -->
 							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2" > Pembelajaran<br>
 							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3" > Evaluasi Lapangan
 															</div>

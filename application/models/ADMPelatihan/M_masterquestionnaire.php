@@ -133,7 +133,6 @@ class M_masterquestionnaire extends CI_Model {
 					('$Q_id','$SgID','$TDes')
 			";
 			$this->db->query($sql);
-
 		}
 
 		public function updateTitle($Q_id, $Q_name)
@@ -142,14 +141,15 @@ class M_masterquestionnaire extends CI_Model {
 						SET questionnaire_title='".$Q_name."'
 						where questionnaire_id=".$Q_id."";
 			$this->db->query($sql);
+			// return $sql;
 		}
 
 		public function updateDes($Q_id,$Des, $SgID)
 		{
 			$sql 	= " UPDATE 	pl.pl_master_questionnaire_segment
-			 						SET 	segment_description='".$Des."'
-			 						WHERE 	questionnaire_id=".$Q_id."
-			 						AND 	segment_id=".$SgID."";
+ 						SET 	segment_description='".$Des."'
+ 						WHERE 	questionnaire_id=".$Q_id."
+ 						AND 	segment_id=".$SgID."";
 			$this->db->query($sql);
 		}
 
@@ -173,12 +173,12 @@ class M_masterquestionnaire extends CI_Model {
 		}
 
 		public function deleteSt($StID)
-				{
-					$sql="DELETE 
-						from pl.pl_master_questionnaire_statement
-						where statement_id = ".$StID."";
-					$this->db->query($sql);
-				}
+		{
+			$sql="DELETE 
+				from pl.pl_master_questionnaire_statement
+				where statement_id = ".$StID."";
+			$this->db->query($sql);
+		}
 
 
 		//AMBIL DATA RUANGAN YANG DIPILIH

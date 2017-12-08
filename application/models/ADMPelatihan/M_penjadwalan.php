@@ -57,7 +57,7 @@ class M_penjadwalan extends CI_Model {
 
 		public function GetEvaluationType()
 		{
-			$sql = "select * from pl.pl_evaluation_type";
+			$sql = "select * from pl.pl_evaluation_type where (evaluation_type_id=2 or evaluation_type_id=3)";
 			$query=$this->db->query($sql);
 			return $query->result_array();
 		}

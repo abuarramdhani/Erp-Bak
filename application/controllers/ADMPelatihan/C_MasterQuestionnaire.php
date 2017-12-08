@@ -395,7 +395,7 @@ class C_MasterQuestionnaire extends CI_Controller {
 	public function delSt($StID)
 		{		
 			
-				$delete = $this->M_masterquestionnaire->deleteSt($StID);
+			$delete = $this->M_masterquestionnaire->deleteSt($StID);
 		}
 
 	public function checkSession(){

@@ -122,6 +122,7 @@ class C_Report extends CI_Controller {
 		$statement= $this->M_report->GetStatement();
 		$nilai = $this->M_report->GetSheetAll();
 
+
 		// HITUNG TOTAL NILAI---------------------------------------------------------------------------
 		$t_nilai = array();
 		$x = 0;
@@ -141,7 +142,6 @@ class C_Report extends CI_Controller {
 							$a_tot = 0;
 							foreach ($nilai as $index => $score) {								
 								if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
-								// if ($st['segment_id']==$score['segment_id']) {
 									$a=explode('||', $score['join_input']);
 									$b=explode('||', $score['join_statement_id']);
 									foreach ($b as $bi => $bb) {

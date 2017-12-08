@@ -81,7 +81,7 @@
 															<input type="hidden" name="idSegment[]" value="<?php echo $sg['segment_id'] ?>">
 														</td>
 														<td>
-															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSegment" title="Hapus Baris" onclick="delSpesifikRow(<?php echo $no++.','.$sg['segment_id']; ?>)"><i class="fa fa-remove"></i>Delete</a>
+															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSegment" title="Hapus Baris" onclick="delSpesifikRow121(<?php echo $no++.','.$sg['segment_id']; ?>)"><i class="fa fa-remove"></i>Delete</a>
 															<a href="<?php echo base_url('ADMPelatihan/MasterQuestionnaire/EditStatement')."/".$Qs_id."/".$Sg_id;?>" data-toggle="modal" data-target="<?php echo base_url('')?>" class="btn btn-xs btn-warning"><i class="fa fa-search"></i></i> Statement</a>
 														</td>
 													</tr>

@@ -35,11 +35,11 @@
 											if(is_null($rc['start_date_format']) OR is_null($rc['start_date_format'])){$packagedate="";}
 
 											if ($dday<$today && $dday<$week && $rc['tidak_terlaksana']==1) {
-									?>
+											?>
 												<tr style="background-color: #C39BD3"> 
-										<?php } else{?>
+											<?php } else{?>
 												<tr class=" <?php echo $datestatus;?>"> 
-										<?php }
+											<?php }
 									?>
 													<input type="text"  name="viewPackage" value="<?php echo $rc['package_scheduling_id']?>" hidden>		
 													<td align="center"><?php echo $no ?></td>
