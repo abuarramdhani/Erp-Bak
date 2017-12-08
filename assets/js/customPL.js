@@ -1070,7 +1070,6 @@ function delSpesifikRow121(rowid,segmentid) {
 			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
 			success:function(result)
 			{
-				console.log(result);
 				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 			}
 		});
