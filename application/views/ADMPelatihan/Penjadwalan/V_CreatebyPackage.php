@@ -92,7 +92,7 @@
 															<input name="txtPackageTrainingId[]" value="<?php echo $tl['package_training_id']?>" hidden>
 														</td>
 														<td>
-															<input class="dday-tgl form-control" name ="txtTanggalPelaksanaan[]" value="" placeholder="Tanggal" style="width:95%">
+															<input class="dday-tgl form-control checkdateSch" id="checkdateSch" name ="txtTanggalPelaksanaan[]" value="" placeholder="Tanggal" style="width:95%">
 														</td>
 														<td>
 															<select class="form-control SlcRuang" name="slcRuang[]" data-placeholder="Ruang" style="width:95%">

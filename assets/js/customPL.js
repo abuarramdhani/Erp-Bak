@@ -104,6 +104,15 @@ $(document).ready(function(){
   		});
 	});
 
+	// ALERT DATEPICKER
+	$('#checkdateSch').change(function(){
+		var selectedDate = $('#checkdateSch').datepicker('getDate'); 
+		var now = new Date(); now.setHours(0,0,0,0); 
+		if (selectedDate < now) {  
+			alert('Set tanggal salah, cek kembali tanggal yang di pilih');
+		} 
+	});
+
 	//SET START DATE APABILA DIGUNAKAN SAAT EDIT
 	if (typeof $('#scheduledate').val() !== 'undefined'){
 		var startDate = $('#scheduledate').val()
@@ -1196,3 +1205,4 @@ function recordPackageFinish(id) {
 		}
 	});
 }
+
