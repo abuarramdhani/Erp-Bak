@@ -127,14 +127,10 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Evaluasi</label>
 									<div class="col-lg-9">
-										<!-- <input type="checkbox" name="chk1" value="1"> Wawasan<br>
-	  									<input type="checkbox" name="chk2" value="2"> Pengetahuan<br>
-	  									<input type="checkbox" name="chk3" value="3"> Perilaku -->
 	  									<select class="form-control select4" name="slcEvaluasi[]" data-placeholder="   Evaluasi" id="slcEvaluasi" multiple="multiple" required>
 												<option value=""></option>
 												<?php foreach($GetEvaluationType as $et){ ?>
-													<option value="<?php echo $et['evaluation_type_id']?>" 
-													<?php if ($et['evaluation_type_id']==1) { echo "selected"; } ?>>
+													<option value="<?php echo $et['evaluation_type_id']?>">
 														<?php echo $et['evaluation_type_description'];?>
 													</option>
 												<?php } ?>

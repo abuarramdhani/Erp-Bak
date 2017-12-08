@@ -112,8 +112,8 @@
 														</td>
 														<td style="text-align:left;">
 															<div class="col-lg-9">
-																<?php $checkreaksi='checked'; ?>
-																<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1" <?php echo $checkreaksi; ?>> Reaksi<br>
+																<!-- <?php $checkreaksi='checked'; ?> -->
+																<!-- <input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1" <?php echo $checkreaksi; ?>> Reaksi -->
 							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2" > Pembelajaran<br>
 							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3" > Evaluasi Lapangan
 															</div>

@@ -1,5 +1,5 @@
-						<div class="table-responsive" style="overflow:scroll;">
-							<table class="table table-striped table-bordered table-hover text-left" id="tblrecord" style="font-size:14px;table-layout:fixed;width:1800px;">
+						<div class="table-responsive" style="overflow:scroll; max-height: 500px">
+							<table class="table table-striped table-bordered table-hover text-left" id="tblreportque" style="font-size:14px;table-layout:fixed;width:1300px; ">
 								<thead class="bg-primary">
 									<tr>
 										<th width="2%" style="text-align:center;">No</th>
@@ -8,7 +8,7 @@
 										<th width="10%">Komponen Evaluasi</th>
 										<th width="5%">Total</th>
 										<th width="5%">Rata-rata</th>
-										<th width="10%">Keterangan</th>
+										<th width="5%">Keterangan</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -34,8 +34,7 @@
 												}
 											} ?>
 											<?php
-												
-													echo '<td>'.$segmen['segment_description'].'</td>';
+												echo '<td>'.$segmen['segment_description'].'</td>';
 												
 											?>
 											<td>

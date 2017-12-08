@@ -83,14 +83,14 @@
 									<div class="col-lg-9">
  										<?php
 											$eval='';$ev1='';$ev2='';$ev3='';
-											if($rc['evaluation']=='1'){$eval='Reaksi';$ev1='Y';}
+											// if($rc['evaluation']=='1'){$eval='Reaksi';$ev1='Y';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';$ev2='Y';}
 											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';$ev3='Y';}
-											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';$ev1='Y';$ev2='Y';}
-											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';$ev1='Y';$ev3='Y';}
+											// if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';$ev1='Y';$ev2='Y';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';$ev1='Y';$ev3='Y';}
 											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Evaluasi Lapangan';$ev2='Y';$ev3='Y';}
-											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-												{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';$ev1='Y';$ev2='Y';$ev3='Y';}
+											// if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+											// 	{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';$ev1='Y';$ev2='Y';$ev3='Y';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
@@ -196,9 +196,9 @@
 												<th  rowspan="2" class="header_table">No Induk</th>
 												<th  rowspan="2" style="min-width: 300px" class="header_table" >Nama Peserta</th>
 												<th  rowspan="2" style="min-width: 200px" class="header_table">Status</th>
-													<?php if ($ev1=='Y') { ?>
+													<!-- <?php if ($ev1=='Y') { ?>
 														<th  rowspan="2"  class="header_table">Reaksi (Post)</th>
-													<?php } ?>
+													<?php } ?> -->
 													<?php if($ev2=='Y'){ ?>
 														<th colspan="2" class="header_table">Pembelajaran</th>
 													<?php } if($ev3=='Y'){ ?>
@@ -256,11 +256,10 @@
 														<option value="2" <?php echo $tidakhadir;?> >Tidak Hadir</option>
 													</select>
 												</td>
-													<?php if ($ev1=='Y') { ?>
-												<td col-id="reaksi">
-													<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onchange="<?php echo $a; ?>(this,'reaksi','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval1_post'];?>">
-												</td>	
-													<?php } if($ev2=='Y'){ ?>
+												<!-- <td col-id="reaksi">
+														<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onchange="<?php echo $a; ?>(this,'reaksi','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval1_post'];?>">
+												</td>  -->
+													<?php if($ev2=='Y'){ ?>
 												<td col-id="pre">
 													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onchange="<?php echo $a; ?>(this,'pre','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
 												</td>

@@ -98,11 +98,9 @@
 									<div class="col-lg-9">
 	  									<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" data-placeholder=" Evaluasi" required>
 												<option value="" ></option>
-												<?php foreach($GetEvaluationType as $et){ 
-													// $selectReaksi='selected'
+												<?php foreach($GetEvaluationType as $et){
 													?>
-													<option value="<?php echo $et['evaluation_type_id']?>" 
-													<?php if ($et['evaluation_type_id']==1) { echo "selected"; } ?>>
+													<option value="<?php echo $et['evaluation_type_id']?>">
 														<?php echo $et['evaluation_type_description'];?>
 													</option>
 												<?php } ?>

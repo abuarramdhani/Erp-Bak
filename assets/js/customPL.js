@@ -42,6 +42,15 @@ $(document).ready(function(){
 		});
 	}	
 
+	//DATATABLE REPORT KUESIONER
+	$('#tblreportque').DataTable({
+		// "filter": true,
+		// "lengthChange": true,
+		// "ordering": true,
+		// "autoWidth": true,
+		// "scrollX": true,
+	});
+
 	//TIMEPICKER UNTUK FORM PENJADWALAN
 	$('#TrainingStartTime').timepicker({
 		showMeridian: false
@@ -512,7 +521,7 @@ $(document).ready(function(){
 										+"<input type='hidden' name='idSegment[]' value='0'>"
 									+"</td>"
 									+"<td>"
-										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
+										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow121("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"<a "+disable+" data-id='segment-button' href='"+baseurl+"ADMPelatihan/MasterQuestionnaire/Edit' data-toggle='modal'  class='btn btn-xs btn-warning' style='margin:2px'><i class='fa fa-search'></i></i> Statement</a>"
 									+"</td>"
 									+"</tr>");
@@ -597,7 +606,7 @@ $(document).ready(function(){
 											+"<input id='statement"+numb+"' name='"+inputName+"[]' class='form-control statement'> "
 										+"</td>"
 										+"<td>"
-											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateStatement("+numb+","+counter+","+id+",0)'><i class='fa fa-remove'></i>Delete</a>"
+											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelStatment' title='Hapus Baris' onclick='delCreateStatement("+numb+","+counter+","+id+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
 				jQuery("#tbodyStatementC"+id).append(newRow);
@@ -1043,7 +1052,7 @@ function delCreateStatement(tbID,rowid,id,statementid) {
 	}
 }
 
-function delSpesifikRow(rowid,segmentid) {
+function delSpesifikRow121(rowid,segmentid) {
 	if (segmentid == '0') {
 		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 	}else{
@@ -1052,6 +1061,7 @@ function delSpesifikRow(rowid,segmentid) {
 			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
 			success:function(result)
 			{
+				console.log(result);
 				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 			}
 		});
@@ -1060,6 +1070,7 @@ function delSpesifikRow(rowid,segmentid) {
 }
 
 function delSpesifikRowSt(rowid,statementid) {
+
 	if(statementid == '0'){
 			$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
 	}
