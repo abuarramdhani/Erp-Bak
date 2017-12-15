@@ -232,7 +232,7 @@ class C_RekapPerPekerja extends CI_Controller {
 
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
-		$worksheet->getColumnDimension('C')->setWidth(45);
+		$worksheet->getColumnDimension('C')->setAutoSize(true);
 		$worksheet->getColumnDimension('D')->setWidth(24);
 		$worksheet->getColumnDimension('E')->setAutoSize(true);
 		$worksheet->getColumnDimension('F')->setAutoSize(true);
