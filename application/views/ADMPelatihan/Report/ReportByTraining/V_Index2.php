@@ -40,8 +40,20 @@
 											?>
 										</td>
 										<td align="center"><?php echo $rc['participant_number'] ?></td>
-										<td></td>
-										<td></td>
+										<td>
+											<?php foreach ($sch_package as $sp) {
+												if ($sp['package_scheduling_id']==$rc['package_scheduling_id']) {
+													echo $sp['package_scheduling_name'];
+												}
+											} ?>
+										</td>
+										<td>
+											<?php foreach ($sch_package as $sp) {
+												if ($sp['package_scheduling_id']==$rc['package_scheduling_id']) {
+													echo $sp['start_date'].' <b><b>---</b></b> '.$sp['end_date'];
+												}
+											} ?>
+										</td>
 										<td><?php echo $rc['kelulusan'] ?></td>
 										<td><?php $PersentaseKelulusan=$rc['kelulusan']/$rc['participant_number']*100; 
 										echo number_format((float)$PersentaseKelulusan, 2, '.', '');

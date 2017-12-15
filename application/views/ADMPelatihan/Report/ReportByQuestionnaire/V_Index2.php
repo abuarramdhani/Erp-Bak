@@ -1,9 +1,11 @@
 						<div class="table-responsive" style="overflow:scroll; max-height: 500px">
-							<table class="table table-striped table-bordered table-hover text-left" id="tblreportque" style="font-size:14px;table-layout:fixed;width:1300px; ">
+							<table class="table table-striped table-bordered table-hover text-left" id="tblreportque" style="font-size:14px;table-layout:fixed;width:1500px; ">
 								<thead class="bg-primary">
 									<tr>
 										<th width="2%" style="text-align:center;">No</th>
 										<th width="10%">Nama Pelatihan</th>
+										<th width="5%">Tanggal</th>
+										<th width="10%">Trainer</th>
 										<th width="10%">Kuesioner</th>
 										<th width="10%">Komponen Evaluasi</th>
 										<th width="5%">Total</th>
@@ -14,6 +16,7 @@
 								<tbody>
 									<?php
 										$no=1; foreach($GetSchName_QuesName as $sq){ 
+											$strainer = explode(',', $sq['trainer']);
 											$checkpoint_sg_desc = 0;
 											foreach ($GetSchName_QuesName_segmen as $segmen) {
 												if ($sq['scheduling_id'] == $segmen['scheduling_id'] && $sq['questionnaire_id'] == $segmen['questionnaire_id']) {
@@ -27,6 +30,18 @@
 													if ($value['scheduling_id']==$segmen['scheduling_id'] && $value['questionnaire_id']==$segmen['questionnaire_id'] && $checkpoint_sch_id == 0) {?>
 														<td align="center" rowspan="<?php echo $value['rowspan']; ?>"><?php echo $no++ ?></td>
 														<td rowspan="<?php echo $value['rowspan']; ?>"><a href="<?php echo base_url('ADMPelatihan/Report/reportbyquestionnaire_1/'.$sq['scheduling_id'].'/'.$sq['questionnaire_id']);?>" rowspan="<?php echo $value['rowspan']; ?>"><?php echo $sq['scheduling_name']?></a></td>
+														<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px"><?php echo $sq['date']; ?></td>
+														<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px">
+														<?php
+															foreach ($strainer as $st) {
+																foreach ($trainer as $tr) {
+																	if ($st==$tr['trainer_id']) {
+																		echo $tr['trainer_name'].'<br>';
+																	}
+																}
+															}
+														?>
+														</td>
 														<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px"><?php echo $sq['questionnaire_title']; ?></td>
 													<?php $checkpoint_sch_id = 1;
 													}
@@ -35,7 +50,6 @@
 											} ?>
 											<?php
 												echo '<td>'.$segmen['segment_description'].'</td>';
-												
 											?>
 											<td>
 												<?php 
