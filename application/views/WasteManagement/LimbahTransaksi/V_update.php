@@ -78,6 +78,7 @@
                                                 <label for="txtJumlahHeader" class="control-label col-lg-4">Jumlah</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Jumlah" name="txtJumlahHeader" id="txtJumlahHeader" class="form-control" value="<?php echo $headerRow['jumlah']; ?>"/>
+                                                    <p class="help-block"> Example : 0.123 (gunakan titik pengganti koma)</p>
                                                 </div>
                                             </div>
 
