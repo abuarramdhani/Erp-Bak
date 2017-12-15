@@ -193,8 +193,9 @@ function rekap_datatable_detail() {
 	var rekap_table_detail = $('#rekap-tims-detail').DataTable({
 		responsive: false,
 		"scrollX": true,
+		scrollY: "400px",
 		scrollCollapse: true,
-		"lengthChange": false,
+		"lengthChange": true,
 		"dom": '<"pull-left"f>tp',
 		"info": false,
 		language: {
