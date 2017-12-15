@@ -33,6 +33,7 @@ class C_Record extends CI_Controller {
 		$this->load->model('ADMPelatihan/M_record');
 		$this->load->model('ADMPelatihan/M_penjadwalan');
 		$this->load->model('ADMPelatihan/M_report');
+		$this->load->model('ADMPelatihan/M_inputquestionnaire');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -56,7 +57,7 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['trainer'] = $this->M_record->GetTrainer();
 
 		$paket          = $this->M_record->paket();
@@ -123,6 +124,10 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		// $data['record'] = $this->M_record->GetRecordFinished();
+		$schedule = $this->M_report->GetSchName_QuesName();
+		$data['GetSchName_QuesName'] = $schedule;
+		$questionnaireID= $schedule[0]['questionnaire_id'];
+		$data['qe']=$questionnaireID;
 		$data['trainer'] = $this->M_record->GetTrainer();
 
 		$GetRecordFinished2 = $this->M_record->paket();
@@ -362,7 +367,7 @@ class C_Record extends CI_Controller {
 				if ($sch['scheduling_id']==$value['scheduling_id'] && $sch['questionnaire_id']==$value['questionnaire_id']) {
 
 					$total_nilai=array();
-					$id = 0;
+					$tid = 0;
 					$tot_p = 0;
 					$tot_s = 0;
 					$tot_p_checkpoint = 0;
@@ -386,7 +391,7 @@ class C_Record extends CI_Controller {
 								}
 							}
 							
-							$total_nilai[$id++] = array(
+							$total_nilai[$tid++] = array(
 								'segment_id' => $st['segment_id'], 
 								'statement_id' => $st['statement_id'], 
 								'total' => $a_tot, 
@@ -434,12 +439,33 @@ class C_Record extends CI_Controller {
 						'total'			=> $jumlah
 			);
 		}
-		// echo "<pre>";
-		// print_r($data_scd);
-		// echo "</pre>";
-		// exit();
-		// $data['t_nilai']= $t_nilai;
+		// AMBIL NILAI DARI REPORT BY QUESTIONNAIRE
+		$qe= $schedule[0]['questionnaire_id'];
+		$data['qe']=$qe;
+		$data['sheet'] = $this->M_report->GetSheet($id,$qe);
+		$data['segment'] 		= $this->M_report->GetQuestionnaireSegmentId($id,$qe);
+		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
+		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
+		$data['GetSchName_QuesName_detail'] = $this->M_report->GetSchName_QuesName_detail($id,$qe);
+		$data['GetQuestParticipant'] = $this->M_report->GetQuestParticipant($id);
 
+		// HITUNG ROWSPAN---------------------------------------------------------------------------
+		$data['stj_temp'] 		= array();
+		$sgstCount	= array();
+		foreach ($data['segment'] as $key => $sg) {
+			$rowspan	= 0;
+			foreach ($data['statement'] as $i => $val) {
+				if ($sg['segment_id'] == $val['segment_id']) {
+					$rowspan++;
+				}
+			}
+			$sgstCount[$key] = array(
+				'segment_id' => $sg['segment_id'],
+				'rowspan' => $rowspan
+				);
+		}
+		$data['sgstCount'] 		= $sgstCount;
+		// HITUNG ROWSPAN---------------------------------------------------------------------------
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -524,6 +550,7 @@ class C_Record extends CI_Controller {
 		$data['record'] = $this->M_record->FilterRecord($start,$end,$status);
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$this->load->view('ADMPelatihan/Record/V_Index2',$data);
+		$this->load->view('ADMPelatihan/Record/V_Index2_4',$data);
 	}
 	public function GetNoInduk(){
 		$term = $this->input->get("term");

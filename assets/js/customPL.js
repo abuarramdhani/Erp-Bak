@@ -3,6 +3,12 @@ function goBack() {
 }
 
 $(document).ready(function(){
+	$('.singledateADM').datepicker({
+    	format:'dd/mm/yyyy'
+	});
+	$('.singledateADM_Que').datepicker({
+    	format:'yyyy/mm/dd'
+	});
 
 	//DATATABLE
 	$('#master-index').DataTable({
@@ -42,15 +48,6 @@ $(document).ready(function(){
 		});
 	}	
 
-	//DATATABLE REPORT KUESIONER
-	$('#tblreportque').DataTable({
-		// "filter": true,
-		// "lengthChange": true,
-		// "ordering": true,
-		// "autoWidth": true,
-		// "scrollX": true,
-	});
-
 	//TIMEPICKER UNTUK FORM PENJADWALAN
 	$('#TrainingStartTime').timepicker({
 		showMeridian: false
@@ -72,9 +69,7 @@ $(document).ready(function(){
 	// 	},
 	// });
 
-	$('.singledateADM').datepicker({
-    	format:'dd/mm/yyyy'
-	});
+	
 
 	 $(".startdate").datepicker({
     	//format:'dd/mm/yyyy'
@@ -334,6 +329,62 @@ $(document).ready(function(){
 		}
 	});
 
+	//SELECT TRAINER UNTUK REPORT
+	$(".js-slcReportTrainer").select2({
+		placeholder: "Nama Trainer",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetTrainerFilter",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportTrainer').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { 
+							id:obj.trainer_id, 
+							text:obj.trainer_name
+						};
+					})
+				};
+			}
+		}
+	});
+
+	//SELECT PELATIHAN UNTUK REPORT
+	$(".js-slcReportTraining").select2({
+		placeholder: "Nama Training",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetTrainingFilter",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportTraining').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { 
+							id:obj.Nama_Training, 
+							text:obj.Nama_Training
+						};
+					})
+				};
+			}
+		}
+	});
+
 	//GET REPORT1
 	$(document).ready(function() {	
 		$('#SearchReport1').click(function(){
@@ -399,6 +450,34 @@ $(document).ready(function(){
 				url:baseurl+"ADMPelatihan/C_Report/GetReport3",
 				success:function(result)
 				{
+					console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
+
+	//GET REPORT4
+	$(document).ready(function() {	
+		$('#SearchReportQue').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var pelatihan	= $('select[name=slcReportTraining]').val();
+			var date 		= $('input[name=txtDate1]').val();
+			var trainer		= $('select[name=slcReportTrainer]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						pelatihan:pelatihan,
+						date:date,
+						trainer:trainer,
+				},
+				url:baseurl+"ADMPelatihan/C_Report/GetReport4",
+				success:function(result)
+				{
 					$('#loading').html('');
 					$("#table-full").html(result);
 					recorddatatable();
@@ -424,7 +503,6 @@ $(document).ready(function(){
 				url:baseurl+"ADMPelatihan/Report/GetRkpTraining",
 				success:function(result)
 				{	
-					// console.log(result);
 					$('#loading').html('');
 					$("#table-full").html(result);
 					recorddatatable();
@@ -484,7 +562,6 @@ $(document).ready(function(){
 			});
 		});
 	});
-
 });
 	
 	//MENAMBAH ROW UNTUK TRAINING (MASTER PACKAGE)
