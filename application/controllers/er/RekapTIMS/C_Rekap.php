@@ -534,38 +534,53 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue($P_PSP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekpsp']+$rekap_data['frekpsps']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($P_IP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($P_CT.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue
+			if(($rekap_data['totalhk']+$rekap_data['totalhks']) == 0)
+			{
+				$worksheet->setCellValue
 						(
 							$P_Tot.$highestRow, 
-							round(
-									(
+							(
+								0
+							),
+							PHPExcel_Cell_DataType::TYPE_STRING
+						);	
+			}
+			else
+			{
+				$worksheet->setCellValue
+						(
+							$P_Tot.$highestRow, 
+							(
+								round(
 										(
 											(
-												($rekap_data['totalhk']+$rekap_data['totalhks'])
-												-
 												(
-													($rekap_data['freki']+$rekap_data['frekis'])
-													+
-													($rekap_data['frekm']+$rekap_data['frekms'])
-													+
-													($rekap_data['freksk']+$rekap_data['freksks'])
-													+
-													($rekap_data['frekpsp']+$rekap_data['frekpsps'])
-													+
-													($rekap_data['frekip']+$rekap_data['frekips'])
-													+
-													($rekap_data['frekct']+$rekap_data['frekcts'])
+													($rekap_data['totalhk']+$rekap_data['totalhks'])
+													-
+													(
+														($rekap_data['freki']+$rekap_data['frekis'])
+														+
+														($rekap_data['frekm']+$rekap_data['frekms'])
+														+
+														($rekap_data['freksk']+$rekap_data['freksks'])
+														+
+														($rekap_data['frekpsp']+$rekap_data['frekpsps'])
+														+
+														($rekap_data['frekip']+$rekap_data['frekips'])
+														+
+														($rekap_data['frekct']+$rekap_data['frekcts'])
+													)
 												)
+												/
+												($rekap_data['totalhk']+$rekap_data['totalhks'])
 											)
-											/
-											($rekap_data['totalhk']+$rekap_data['totalhks'])
-										)
-										*100
-									),
-								2).'%', 
+											*100
+										),
+									2).'%'
+							),
 							PHPExcel_Cell_DataType::TYPE_STRING
-						);					
-
+						);				
+			}
 			$highestRow++;
 		}
 
@@ -604,12 +619,13 @@ class C_Rekap extends CI_Controller {
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		ob_end_clean();
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xlsx"');
+		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xls"');
 		$objWriter->save("php://output");
 	}
 
