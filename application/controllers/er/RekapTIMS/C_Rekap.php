@@ -553,6 +553,7 @@ class C_Rekap extends CI_Controller {
 							(
 								round(
 										(
+											(float)
 											(
 												(
 													($rekap_data['totalhk']+$rekap_data['totalhks'])

@@ -482,6 +482,7 @@ foreach ($rekap as $rekap_data) {}
 															echo 
 																round(
 																	(
+																		(float)
 																		(
 																			(
 																				($rekap_data['totalhk']+$rekap_data['totalhks'])
