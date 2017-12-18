@@ -550,7 +550,6 @@ class C_Record extends CI_Controller {
 		$data['record'] = $this->M_record->FilterRecord($start,$end,$status);
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$this->load->view('ADMPelatihan/Record/V_Index2',$data);
-		$this->load->view('ADMPelatihan/Record/V_Index2_4',$data);
 	}
 	public function GetNoInduk(){
 		$term = $this->input->get("term");
