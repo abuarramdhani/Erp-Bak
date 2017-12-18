@@ -3,6 +3,15 @@ function goBack() {
 }
 
 $(document).ready(function(){
+
+	$(document).on('show.bs.modal', '.modal', function () {
+	    var zIndex = 1050 + (10 * $('.modal:visible').length);
+	    $(this).css('z-index', zIndex);
+	    setTimeout(function() {
+	        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+	    }, 0);
+	});
+
 	$('.singledateADM').datepicker({
     	format:'dd/mm/yyyy'
 	});
@@ -1282,3 +1291,8 @@ function recordPackageFinish(id) {
 	});
 }
 
+ function showModalDel(schid,schname) {
+	$('#showModalDel .modal-body b#data-id').html(schname);
+	$('#showModalDel .modal-body a').attr('href', baseurl+'ADMPelatihan/Record/Delete/'+schid);
+	$('#showModalDel').modal('show');
+}
