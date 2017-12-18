@@ -36,7 +36,8 @@
 	//-------------------------- Ambil Data Seksi.Rekap TIMS -----------------------------
 	//AJAX JAVASCRIPT
 	$(document).ready(function() {
-		$('#departemen_select').change(function(){
+		$('#departemen_select').change(function()
+		{
 			$('#bidang_select').select2("val", "");
 			$('#unit_select').select2("val", "");
 			$('#section_select').select2("val", "");
@@ -49,6 +50,7 @@
 			var value = $('#departemen_select').val();
 			$.ajax({
 				type:'POST',
+				delay: 500,
 				data:{data_name:value,modul:'bidang'},
 				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
 				success:function(result)
@@ -67,6 +69,7 @@
 			var value = $('#bidang_select').val();
 			$.ajax({
 				type:'POST',
+				delay: 500,
 				data:{data_name:value,modul:'unit'},
 				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
 				success:function(result)
@@ -82,6 +85,7 @@
 			var value = $('#unit_select').val();
 			$.ajax({
 				type:'POST',
+				delay: 500,
 				data:{data_name:value,modul:'seksi'},
 				url:baseurl+"RekapTIMSPromosiPekerja/RekapTIMS/select-section",
 				success:function(result)
