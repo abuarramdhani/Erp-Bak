@@ -176,6 +176,9 @@ $route['SystemAdministration/ReportGroup/(:any)/(:any)'] = 'SystemAdministration
 $route['SystemAdministration/Responsibility'] = 'SystemAdministration/MainMenu/C_Responsibility/index';
 $route['SystemAdministration/Responsibility/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1';
 $route['SystemAdministration/Responsibility/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1/$2';
+$route['SystemAdministration/Module'] = 'SystemAdministration/MainMenu/C_Module/index';
+$route['SystemAdministration/Module/(:any)'] = 'SystemAdministration/MainMenu/C_Module/$1';
+$route['SystemAdministration/Module/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Module/$1/$2';
 
 //sales monitoring routes
 $route['SalesMonitoring'] = 'SalesMonitoring/C_SalesMonitoring/index';
