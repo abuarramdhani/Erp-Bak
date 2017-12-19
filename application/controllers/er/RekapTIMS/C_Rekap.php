@@ -551,33 +551,37 @@ class C_Rekap extends CI_Controller {
 						(
 							$P_Tot.$highestRow, 
 							(
-								round(
-										(
-											(float)
+								substr(
+									round(
 											(
+												(float)
 												(
-													($rekap_data['totalhk']+$rekap_data['totalhks'])
-													-
 													(
-														($rekap_data['freki']+$rekap_data['frekis'])
-														+
-														($rekap_data['frekm']+$rekap_data['frekms'])
-														+
-														($rekap_data['freksk']+$rekap_data['freksks'])
-														+
-														($rekap_data['frekpsp']+$rekap_data['frekpsps'])
-														+
-														($rekap_data['frekip']+$rekap_data['frekips'])
-														+
-														($rekap_data['frekct']+$rekap_data['frekcts'])
+														($rekap_data['totalhk']+$rekap_data['totalhks'])
+														-
+														(
+															($rekap_data['freki']+$rekap_data['frekis'])
+															+
+															($rekap_data['frekm']+$rekap_data['frekms'])
+															+
+															($rekap_data['freksk']+$rekap_data['freksks'])
+															+
+															($rekap_data['frekpsp']+$rekap_data['frekpsps'])
+															+
+															($rekap_data['frekip']+$rekap_data['frekips'])
+															+
+															($rekap_data['frekct']+$rekap_data['frekcts'])
+														)
 													)
+													/
+													($rekap_data['totalhk']+$rekap_data['totalhks'])
 												)
-												/
-												($rekap_data['totalhk']+$rekap_data['totalhks'])
-											)
-											*100
-										),
-									2).'%'
+												*100
+											),
+										2),
+								0,
+								5)
+								.'%'
 							),
 							PHPExcel_Cell_DataType::TYPE_STRING
 						);				
