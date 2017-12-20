@@ -18,7 +18,7 @@ class M_monitoring extends CI_Model {
                   SUM(a.COMPLETE_JUMLAH_JOB) COMPLETE_JUMLAH_JOB,
                   SUM(a.COMPLETE_JUMLAH_PART) COMPLETE_JUMLAH_PART,
                   MIN(a.JOB_TERLAMA) JOB_TERLAMA
-              FROM 
+              FROM
               ((SELECT
                       (
                         SELECT
