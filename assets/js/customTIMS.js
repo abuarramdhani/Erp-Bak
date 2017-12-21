@@ -233,15 +233,8 @@ function rekap_datatable_detail() {
 						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
 					});
 					$('.RekapTIMS-StatistikPresensiHarian').DataTable({
+						searching: false,
 						lengthChange: false,
-						scrollX: false,
-						scrollY: 76,
-						// responsive: true,
-						fixedColumns: {
-							leftColumns: 4
-						},
-						pageLength: 5,
-						lengthMenu: [ [5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"] ],
 					});
 
 			//	}
