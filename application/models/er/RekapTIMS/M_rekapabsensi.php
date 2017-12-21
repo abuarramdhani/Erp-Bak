@@ -78,6 +78,10 @@
 																tblpkj.nama as nama,
 																tblpkj.lokasi_kerja as lokasi_kerja,
 																sftpkj.kodesie as kode_seksi,
+																sftpkj.kd_shift as kode_shift,
+																sftpkj.jam_msk as jam_masuk,
+																sftpkj.jam_akhmsk as jam_batas_masuk,
+																sftpkj.jam_plg as jam_pulang,
 																(
 																	select 		tseksi.dept
 																	from 		hrd_khs.tseksi as tseksi
@@ -103,48 +107,85 @@
 																	(
 																		(
 																			select 		tshift.shift
-																			from 		\"Presensi\".tshiftpekerja as sftpkj
-																						join 	\"Presensi\".tshift as tshift
-																								on 	tshift.kd_shift=sftpkj.kd_shift
-																			where 		sftpkj.tanggal=tabeltanggal.tanggal
-																						and 	sftpkj.noind=tblpkj.noind
+																			from 		\"Presensi\".tshift as tshift
+																			where 		tshift.kd_shift=sftpkj.kd_shift
 																		)
 																		,
 																		'-'
 																	)
 																) as shift,
 																(
-																	concat_ws
-																	(
-																		'; ',
-																		(
-																			select distinct array_to_string(array_agg(rtrim(pres_ket.keterangan)), '; ')
-																			from 			\"Presensi\".tdatapresensi as datapres
-																							join 	\"Presensi\".tketerangan as pres_ket
-																								on 	pres_ket.kd_ket=datapres.kd_ket
-																			where 			datapres.tanggal=tabeltanggal.tanggal
-																							and 	datapres.noind=tblpkj.noind
-																		),
-																		(
-																			select 			array_to_string(array_agg(rtrim(pres_ket.keterangan)), '; ')
-																			from 			\"Presensi\".tdatatim as tim
-																							join 	\"Presensi\".tketerangan as pres_ket
-																								on 	pres_ket.kd_ket=tim.kd_ket
-																			where 			tim.tanggal=tabeltanggal.tanggal
-																							and 	tim.noind=tblpkj.noind
-																		),
-																		(
-																			case 	when	tabeltanggal.tanggal=current_date
-																						and 	(
-																										select 		count(frontpres3.waktu)
-																										from 		\"FrontPresensi\".tpresensi as frontpres3
-																										where 		frontpres3.tanggal=tabeltanggal.tanggal
-																													and 	frontpres3.noind=tblpkj.noind
-																									)>=1
-																					then 	'Kerja (hari berjalan)'
-																			end
-																		)
-																	)
+																	case 	when 	concat_ws
+																					('; ',
+																						(
+																							select distinct array_to_string(array_agg(rtrim(pres_ket.keterangan)), '; ')
+																							from 			\"Presensi\".tdatapresensi as datapres
+																											join 	\"Presensi\".tketerangan as pres_ket
+																												on 	pres_ket.kd_ket=datapres.kd_ket
+																							where 			datapres.tanggal=tabeltanggal.tanggal
+																											and 	datapres.noind=tblpkj.noind
+																						),
+																						(
+																							select 			array_to_string(array_agg(rtrim(pres_ket.keterangan)), '; ')
+																							from 			\"Presensi\".tdatatim as tim
+																											join 	\"Presensi\".tketerangan as pres_ket
+																												on 	pres_ket.kd_ket=tim.kd_ket
+																							where 			tim.tanggal=tabeltanggal.tanggal
+																											and 	tim.noind=tblpkj.noind
+																						)
+																					)!=''
+																			then 	concat_ws
+																					('; ',
+																						(
+																							select distinct array_to_string(array_agg(rtrim(pres_ket.keterangan)), '; ')
+																							from 			\"Presensi\".tdatapresensi as datapres
+																											join 	\"Presensi\".tketerangan as pres_ket
+																												on 	pres_ket.kd_ket=datapres.kd_ket
+																							where 			datapres.tanggal=tabeltanggal.tanggal
+																											and 	datapres.noind=tblpkj.noind
+																						),
+																						(
+																							select 			array_to_string(array_agg(rtrim(pres_ket.keterangan)), '; ')
+																							from 			\"Presensi\".tdatatim as tim
+																											join 	\"Presensi\".tketerangan as pres_ket
+																												on 	pres_ket.kd_ket=tim.kd_ket
+																							where 			tim.tanggal=tabeltanggal.tanggal
+																											and 	tim.noind=tblpkj.noind
+																						)
+																					)
+																			else 	(
+																						case 	when	tabeltanggal.tanggal=current_date
+																										then 	(
+																													case 	when 	current_time < sftpkj.jam_akhmsk::time
+																																	then	(
+																																				case 	when 	(
+																																									select 		count(frontpres.waktu)
+																																									from 		\"FrontPresensi\".tpresensi as frontpres
+																																									where 		frontpres.tanggal=tabeltanggal.tanggal
+																																												and 	frontpres.noind=tblpkj.noind
+																																												and 	frontpres.waktu::time<=current_time
+																																								)>0
+																																								then	'Kerja (hari berjalan)'
+																																						else 	'-'
+																																				end
+																																			)
+																															else 	(
+																																		case 	when 	(
+																																							select 		count(frontpres.waktu)
+																																							from 		\"FrontPresensi\".tpresensi as frontpres
+																																							where 		frontpres.tanggal=tabeltanggal.tanggal
+																																										and 	frontpres.noind=tblpkj.noind
+																																										and 	frontpres.waktu::time<=current_time
+																																						)>0
+																																						then 	'Kerja (hari berjalan)'
+																																				else 	'Mangkir'
+																																		end
+																																	)
+																													end
+																												)
+																						end
+																					)
+																	end
 																) as keterangan,
 																(
 																	coalesce
@@ -189,6 +230,10 @@
 																nomor_induk,
 																nama,
 																kode_seksi,
+																kode_shift,
+																jam_masuk,
+																jam_batas_masuk,
+																jam_pulang,
 																lokasi_kerja
 												order by 		tanggal_presensi,
 																kode_seksi,

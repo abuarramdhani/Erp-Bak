@@ -127,6 +127,24 @@
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu 4</th>
                                         </tr>
                                     </thead>
+                                    <tfoot style="display: table-header-group;">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Tanggal</th>
+                                            <th>Nomor Induk</th>
+                                            <th>Nama</th>
+                                            <th>Departemen</th>
+                                            <th>Bidang</th>
+                                            <th>Unit</th>
+                                            <th>Seksi</th>
+                                            <th>Shift</th>
+                                            <th>Keterangan</th>
+                                            <th>Waktu 1</th>
+                                            <th>Waktu 2</th>
+                                            <th>Waktu 3</th>
+                                            <th>Waktu 4</th>
+                                        </tr>
+                                    </tfoot>
                                     <tbody>
                                     <?php
                                         $no     =   1;

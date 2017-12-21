@@ -222,16 +222,17 @@ function rekap_datatable_detail() {
 		{
 			// 	DataTables
 			//	{
-					$('.RekapTIMS-DaftarPresensiHarian').DataTable({
-						// lengthChange: false,
-						dom: 'Bfrtip',
-						buttons: [
-							'excel', 'print'
-						],
-						scrollX: true,
-						// scrollY: 400,
-						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
-					});
+					// $('.RekapTIMS-DaftarPresensiHarian').DataTable({
+					// 	// lengthChange: false,
+					// 	searching: false,
+						// dom: 'Bfrtip',
+						// buttons: [
+						// 	'excel', 'print'
+						// ],
+						// scrollX: true,
+					// 	// scrollY: 400,
+					// 	lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+					// });
 					$('.RekapTIMS-StatistikPresensiHarian').DataTable({
 						searching: false,
 						lengthChange: false,
@@ -442,4 +443,38 @@ function rekap_datatable_detail() {
 
 			//	}
 		});
+
+		//	Individual Functions
+		//	{
+				$(document).ready(function() {
+					    // Setup - add a text input to each footer cell
+					    $('.RekapTIMS-DaftarPresensiHarian tfoot th').each( function () {
+					        var title = $(this).text();
+					        $(this).html( '<input type="text" placeholder="Cari '+title+'" />' );
+					    } );
+					 
+					    // DataTable
+					    var table = $('.RekapTIMS-DaftarPresensiHarian').DataTable({
+					    	ordering: true,
+					    	dom: 'Bfrtip',
+							buttons: [
+								'excel', 'print'
+							],
+							scrollX: true,
+					    });
+					 
+					    // Apply the search
+					    table.columns().every( function () {
+					        var that = this;
+					        console.log($( 'input', this.footer() ));
+					        $( 'input', this.footer() ).on( 'keyup change', function () {
+					            if ( that.search() !== this.value ) {
+					                that
+					                    .search( this.value )
+					                    .draw();
+					            }
+					        } );
+					    } );
+					} );
+		//	}
 //	}
