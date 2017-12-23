@@ -820,5 +820,16 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+
+	public function GetAttendant(){
+		$sql = " SELECT
+					a.scheduling_id, 
+					count(participant_id) as attendant
+				from pl.pl_participant a
+				where status=1
+				group by 1";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 }
 ?>
