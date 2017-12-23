@@ -335,7 +335,7 @@ class M_limbahtransaksi extends CI_Model
                         where       limver.id_jenis_limbah=x.id_jenis_limbah
                     )
                 )as total_limbah
-    from            (
+            from            (
                     select distinct     limsi.jenis_limbah as id_jenis_limbah,
                                         limsi.perlakuan as id_perlakuan,
                                         limsi.jenis_sumber as sumber,
@@ -356,7 +356,7 @@ class M_limbahtransaksi extends CI_Model
                     order by            id_jenis_limbah,
                                         id_perlakuan
                 ) as x
-where to_date(x.periode, 'MM-YYYY') = '$tanggalawal'::date-interval '1 month'";
+            where to_date(x.periode, 'MM-YYYY') = '$tanggalawal'::date-interval '1 month'";
         $query = $this->db->query($sqlPeriodeSebelum);
         return $query->result_array();
     }

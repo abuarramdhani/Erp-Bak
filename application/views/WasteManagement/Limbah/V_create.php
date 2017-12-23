@@ -92,6 +92,7 @@
                                                 <label for="fileLimbah" class="control-label col-lg-4">Kondisi Limbah</label>
                                                 <div class="col-lg-4">
                                                     <input type="file" name="fileLimbah" id="fileLimbah" />
+                                                    <p style="margin-top:7px">Tipe Gambar <strong>.jpeg/.jpg</strong></p>
                                                 </div>
                                             </div>
 
@@ -174,6 +175,7 @@
                                                 <label for="fileFoto" class="control-label col-lg-4">Standar Foto</label>
                                                 <div class="col-lg-4">
                                                     <input type="file" name="fileFoto" id="fileFoto" />
+                                                    <p style="margin-top:7px">Tipe Gambar <strong>.jpeg/.jpg</strong></p>
                                                 </div>
                                             </div>
                                            
