@@ -6,6 +6,7 @@
 										<th width="10%">Nama Pelatihan</th>
 										<th width="5%">Tanggal</th>
 										<th width="10%">Trainer</th>
+										<th width="4%" style="text-align:center;" title="yang mengisi kuesioner">Jumlah Partisipan</th>
 										<th width="10%">Kuesioner</th>
 										<th width="10%">Komponen Evaluasi</th>
 										<th width="5%">Total</th>
@@ -42,6 +43,11 @@
 															}
 														?>
 														</td>
+														<?php foreach ($attendant as $ga) {
+															if ($ga['scheduling_id']==$sq['scheduling_id']) {?>
+																<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px; text-align:center"><?php echo $ga['attendant']; ?></td>
+															<?php }
+														} ?>
 														<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px"><?php echo $sq['questionnaire_title']; ?></td>
 													<?php $checkpoint_sch_id = 1;
 													}

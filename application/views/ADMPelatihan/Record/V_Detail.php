@@ -54,20 +54,22 @@
 									</div>
 								</div>
 							</div>
-							<?php if(!empty($rc['start_time'])) {?>
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-3 control-label">Waktu</label>
-									<div class="col-lg-4 ">
-										<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
+							<?php if ($rc['package_scheduling_id']==0 && $rc['package_training_id']==0) {
+								if(!empty($rc['start_time'])) {?>
+									<div class="row" style="margin: 10px 10px">
+										<div class="form-group">
+											<label class="col-lg-3 control-label">Waktu</label>
+											<div class="col-lg-4 ">
+												<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
+											</div>
+											<label class="col-lg-1 control-label" align="center">-</label>
+											<div class="col-lg-4">
+												<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
+											</div>
+										</div>
 									</div>
-									<label class="col-lg-1 control-label" align="center">-</label>
-									<div class="col-lg-4">
-										<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
-									</div>
-								</div>
-							</div>
-							<?php }?>
+								<?php }
+							}?>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Ruang</label>

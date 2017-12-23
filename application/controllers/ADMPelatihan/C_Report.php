@@ -93,7 +93,7 @@ load->helper('form');
 		
 		$date1='1/1/1900';
 		$date2='1/1/1900';
-		$data['report'] = $this->M_report->GetReport3($date1,$date2);
+		$data['report'] 	= $this->M_report->GetReport3($date1,$date2);
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
 				
 		$this->load->view('V_Header',$data);
@@ -119,13 +119,14 @@ load->helper('form');
 		$pelatihan 	= $this->input->POST('pelatihan');
 		$date 		= $this->input->POST('date');
 		$trainer	= $this->input->POST('trainer');
-		
-		$data['trainer']= $this->M_report->GetTrainerQue($trainer = FALSE);
-		$schedule = $this->M_report->GetSchName_QuesName($pelatihan = FALSE, $date = FALSE);
-		$data['GetSchName_QuesName'] = $schedule;
-		$segment = $this->M_report->GetSchName_QuesName_segmen();
-		$statement= $this->M_report->GetStatement();
-		$nilai = $this->M_report->GetSheetAll();
+
+		$data['attendant'] 				= $this->M_report->GetAttendant();
+		$data['trainer']				= $this->M_report->GetTrainerQue($trainer = FALSE);
+		$schedule 						= $this->M_report->GetSchName_QuesName($pelatihan = FALSE, $date = FALSE);
+		$data['GetSchName_QuesName'] 	= $schedule;
+		$segment						= $this->M_report->GetSchName_QuesName_segmen();
+		$statement						= $this->M_report->GetStatement();
+		$nilai 							= $this->M_report->GetSheetAll();
 
 		// HITUNG TOTAL NILAI---------------------------------------------------------------------------
 		$t_nilai = array();
