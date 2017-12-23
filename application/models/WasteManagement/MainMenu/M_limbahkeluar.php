@@ -62,7 +62,7 @@ class M_limbahkeluar extends CI_Model
 
     public function getPerlakuan()
     {
-        $sqlperlakuan = "SELECT * FROM ga.ga_limbah_perlakuan";
+        $sqlperlakuan = "SELECT * FROM ga.ga_limbah_perlakuan order by id_perlakuan";
         $query = $this->db->query($sqlperlakuan);
         return $query->result_array();
     }

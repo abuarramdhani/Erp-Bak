@@ -57,7 +57,6 @@
 		)				
 	);
 
-	// $kolomBulan = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
 	$kolomBulan = array('F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA');
 
 	$jumlahBulan = count($listBulan);
@@ -115,18 +114,18 @@
 	$objPHPExcel->getActiveSheet()->getStyle('A4:'.$kolomBulan[$jumlahBulan+9].'6')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A'.$awal.':'.'E'.($kolomTotal-1))->getAlignment()->setHorizontal('center');
 	
-		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$kolomTotal, 'JUMLAH LIMBAH B3')
-					->setCellValue('A'.($kolomTotal+1), 'PERSENTASE PENATAAN');
+	$objPHPExcel->setActiveSheetIndex(0)
+		->setCellValue('A'.$kolomTotal, 'JUMLAH LIMBAH B3')
+		->setCellValue('A'.($kolomTotal+1), 'PERSENTASE PENATAAN');
 
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal);
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getAlignment()->setHorizontal('right');
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getFont()->setBold(true);
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2));
-		$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getAlignment()->setHorizontal('right');
-		$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getFont()->setBold(true);
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2));
-		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2))->getAlignment()->setHorizontal('center');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getAlignment()->setHorizontal('right');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getFont()->setBold(true);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2));
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getAlignment()->setHorizontal('right');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getFont()->setBold(true);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2))->getAlignment()->setHorizontal('center');
 
 	$totalJumlahDihasilkan = 0;
 	$totalJumlahDiSimpanTPS = 0;
@@ -135,7 +134,56 @@
 	$totalJumlahDitimbun = 0;
 	$totalJumlahDiserahkan = 0;
 	$totalJumlahTidakDikelola = 0;
+
 	foreach ($header as $key3 => $HE) {
+		$totalBulanSebelumnya = 0;
+		foreach ($SisaSebelum as $key5 => $sisa) {
+			if($HE['id_jenis_limbah'] == $sisa['id_jenis_limbah']) {
+				if($sisa['limbah_perlakuan'] == 'DIHASILKAN') {
+					$dihasilkan = (float)$sisa['total_limbah'];
+				} else {
+					$dihasilkan = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DISIMPAN DI TPS') {
+					$disimpan = (float)$sisa['total_limbah'];
+				} else {
+					$disimpan = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DIMANFAATKAN SENDIRI') {
+					$dimanfaatkan = (float)$sisa['total_limbah'];
+				} else {
+					$dimanfaatkan = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DIOLAH SENDIRI') {
+					$diolah = (float)$sisa['total_limbah'];
+				} else {
+					$diolah = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DITIMBUN SENDIRI') {
+					$ditimbun = (float)$sisa['total_limbah'];
+				} else {
+					$ditimbun = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DISERAHKAN KEPIHAK KETIGA BERIZIN') {
+					$diserahkan = (float)$sisa['total_limbah'];
+				} else {
+					$diserahkan = 0;
+				}
+
+				$totalBulanSebelum = ($disimpan + $dihasilkan) - ($dimanfaatkan + $diolah + $ditimbun + $diserahkan);
+
+				$totalBulanSebelumnya += $totalBulanSebelum;
+			}
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0)
+			->setCellValueExplicit('F'.(($awal+($countperlakuan*$key3))+1), $totalBulanSebelumnya);
+
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($awal+($countperlakuan*$key3).':A'.($akhir+($countperlakuan*$key3))));
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.($awal+($countperlakuan*$key3).':B'.($akhir+($countperlakuan*$key3))));
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('C'.($awal+($countperlakuan*$key3).':C'.($akhir+($countperlakuan*$key3))));
@@ -148,10 +196,10 @@
 		$kolomD = 'D'.($awal+($countperlakuan*$key3));
 
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomA, $key3+1, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $HE['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomC, $HE['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, 'TON', PHPExcel_Cell_DataType::TYPE_STRING);
+			->setCellValueExplicit($kolomA, $key3+1, PHPExcel_Cell_DataType::TYPE_STRING)
+			->setCellValueExplicit($kolomB, $HE['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+			->setCellValueExplicit($kolomC, $HE['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
+			->setCellValueExplicit($kolomD, 'TON', PHPExcel_Cell_DataType::TYPE_STRING);
 
 
 		$totalPerHeaderDihasilkan = 0;
@@ -162,14 +210,6 @@
 		$totalPerHeaderTidakDikelola = 0;
 		foreach ($listBulan as $key2 => $bulan) {
 			foreach ($perlakuan as $key1 => $plkn) {
-
-				foreach ($SisaSebelum as $key5 => $sisa) {
-				if($HE['id_jenis_limbah'] == $sisa['id_jenis_limbah'] && $plkn['id_perlakuan']==$sisa['id_perlakuan']) {
-					$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValueExplicit('F'.(($awal+($countperlakuan*$key3))+$key1), $sisa['total_limbah']);
-					}
-				}
-
 				foreach ($jumlahlimbah as $key => $LT) {
 					if($LT['bulan'] == '1') {
 						$dataTanggal = 'Januari';
