@@ -43,6 +43,24 @@ class M_limbahtransaksi extends CI_Model
     	return $query->result_array();
     }
 
+    function LimbahWaiting(){
+        $sql    = "SELECT limsi.*,
+                            limnis.jenis_limbah,
+                            limnis.id_jenis_limbah,
+                            liman.limbah_perlakuan,
+                            dmsi.nama_seksi
+                    from ga.ga_limbah_transaksi as limsi
+                        left join ga.ga_limbah_jenis limnis
+                            on limsi.jenis_limbah = limnis.id_jenis_limbah
+                        left join ga.ga_limbah_perlakuan as liman
+                            on limsi.perlakuan = liman.id_perlakuan
+                        left join dm.dm_seksi as dmsi
+                            on limsi.sumber_limbah=dmsi.seksi_id
+                        where limsi.konfirmasi='0'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function setLimbahTransaksi($data)
     {
         return $this->db->insert('ga.ga_limbah_transaksi', $data);
