@@ -12,14 +12,11 @@
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperation/Core/');?>">
                                         <i class="icon-wrench icon-2x"></i>
-                                        <span ><br /></span>
                                     </a>                             
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <br />
-                
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -33,9 +30,11 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-4">Component Code</label>
                                                 <div class="col-md-6">
-                                                    <select class="form-control select4" name="component_code" required="" data-placeholder="Component Code" onchange="getCompDescMO(this)">
+                                                    <select class="form-control jsSlcComp toupper" name="component_code" required="" data-placeholder="Component Code" onchange="getCompDescMO(this)">
                                                         <option></option>
-                                                        <option value="AA123456MD" <?php if ($val['component_code']=='AA123456MD') { echo "selected"; } ?>>AA123456MD</option>
+                                                        <option value="<?php echo $val['component_code'].'|'.$val['component_description'] ?>" selected>
+                                                            <?php echo $val['component_code'].' | '.$val['component_description'] ?>
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -52,9 +51,28 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label class="control-label col-md-4">Print Code</label>
+                                                <div class="col-md-6">
+                                                    <input type="radio" name="print_code" placeholder="Print Code" value="<?php echo $val['print_code'] ?>" required checked> <?php echo $val['print_code'] ?>
+                                                </div>
+                                                <div id="print_code_area">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="control-label col-md-4">Core Quantity</label>
                                                 <div class="col-md-6">
                                                     <input type="number" value="<?php echo $val['core_quantity']; ?>" name="core_quantity" required="" class="form-control" placeholder="Core Quantity">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">Employee</label>
+                                                <div class="col-md-6">
+                                                    <select class="form-control select4" multiple="" name="employee_id[]" required>
+                                                        <option></option>
+                                                        <?php foreach ($employee as $value) { ?>
+                                                            <option value="<?php echo $value['noind'] ?>"><?php echo $value['noind'].' | '.$value['nama'] ?></option>
+                                                        <?php } ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
