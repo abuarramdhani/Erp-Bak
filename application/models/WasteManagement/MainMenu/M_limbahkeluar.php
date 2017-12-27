@@ -46,7 +46,8 @@ class M_limbahkeluar extends CI_Model
                             on limar.jenis_limbah = limnis.id_jenis_limbah
                             left join ga.ga_limbah_perlakuan as liman
                             on limar.perlakuan = liman.id_perlakuan
-                        where konfirmasi_status='0'";
+                        where konfirmasi_status='0'
+                        order by creation_date desc";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
