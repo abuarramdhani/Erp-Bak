@@ -11,13 +11,11 @@
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperation/Core');?>">
                                     <i class="icon-wrench icon-2x"></i>
-                                    <br/>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br/>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -37,6 +35,8 @@
                                                 <th style="text-align:center;">Description</th>
                                                 <th style="text-align:center;">Date</th>
                                                 <th style="text-align:center;">Quantity</th>
+                                                <th style="text-align:center;">Print Code</th>
+                                                <th style="text-align:center;">Employee</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -57,6 +57,8 @@
                                                 <td align='center'><?php echo $row['component_description'];?></td>
                                                 <td align='center'><?php echo $row['production_date'];?></td>
                                                 <td align='center'><?php echo $row['core_quantity'];?></td>
+                                                <td align='center'><?php echo $row['print_code'];?></td>
+                                                <td align='center'><?php echo $row['employee_id'];?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
