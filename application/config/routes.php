@@ -1392,3 +1392,23 @@ $route['ProductionPlanning/Setting/GroupSection/(:any)/(:any)']	= 'ProductionPla
 $route['ProductionPlanning/Setting/Section']					= 'ProductionPlanning/Settings/C_Section';
 $route['ProductionPlanning/Setting/Section/(:any)']				= 'ProductionPlanning/Settings/C_Section/$1';
 $route['ProductionPlanning/Setting/Section/(:any)/(:any)']		= 'ProductionPlanning/Settings/C_Section/$1/$2';
+
+//------------------------------------ Manufacturing Operation ----------------------------------------
+$route['ManufacturingOperation']								= 'ManufacturingOperation/C_Index/index';
+$route['ManufacturingOperation/Core']							= 'ManufacturingOperation/MainMenu/C_Core';
+$route['ManufacturingOperation/Core/(:any)']					= 'ManufacturingOperation/MainMenu/C_Core/$1';
+$route['ManufacturingOperation/Core/(:any)/(:any)'] 			= 'ManufacturingOperation/MainMenu/C_Core/$1/$2';
+$route['ManufacturingOperation/Mixing']							= 'ManufacturingOperation/MainMenu/C_Mixing';
+$route['ManufacturingOperation/Mixing/(:any)']					= 'ManufacturingOperation/MainMenu/C_Mixing/$1';
+$route['ManufacturingOperation/Mixing/(:any)/(:any)']			= 'ManufacturingOperation/MainMenu/C_Mixing/$1/$2';
+$route['ManufacturingOperation/Moulding']						= 'ManufacturingOperation/MainMenu/C_Moulding';
+$route['ManufacturingOperation/Moulding/(:any)']				= 'ManufacturingOperation/MainMenu/C_Moulding/$1';
+$route['ManufacturingOperation/Moulding/(:any)/(:any)']			= 'ManufacturingOperation/MainMenu/C_Moulding/$1/$2';
+$route['ManufacturingOperation/QualityControl']					= 'ManufacturingOperation/MainMenu/C_QualityControl';
+$route['ManufacturingOperation/QualityControl/(:any)']			= 'ManufacturingOperation/MainMenu/C_QualityControl/$1';
+$route['ManufacturingOperation/QualityControl/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_QualityControl/$1/$2';
+$route['ManufacturingOperation/Selep']							= 'ManufacturingOperation/MainMenu/C_Selep';
+$route['ManufacturingOperation/Selep/(:any)']					= 'ManufacturingOperation/MainMenu/C_Selep/$1';
+$route['ManufacturingOperation/Selep/(:any)/(:any)']			= 'ManufacturingOperation/MainMenu/C_Selep/$1/$2';
+$route['ManufacturingOperation/Ajax/(:any)']					= 'ManufacturingOperation/Ajax/C_Ajax/$1';
+$route['ManufacturingOperation/Ajax/(:any)/(:any)']				= 'ManufacturingOperation/Ajax/C_Ajax/$1/$2s';
