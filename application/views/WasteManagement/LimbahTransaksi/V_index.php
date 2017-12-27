@@ -68,7 +68,7 @@
 												<td><?php echo $row['jumlah'] ?></td>
 												<td><?php echo $row['limbah_perlakuan'] ?></td>
 												<td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>
-                                                <td align="center"><?php if(empty($row['konfirmasi'])) {
+                                                <td align="center"><?php if($row['konfirmasi']==0) {
                                                                 echo "<h4><span class='label label-warning'>Waiting</span></h4>";
                                                             }elseif ($row['konfirmasi']==1) {
                                                                 echo "<h4><span class='label label-success'>Confirmed</span></h4>";

@@ -36,6 +36,21 @@ class M_limbahkeluar extends CI_Model
     	return $sql->result_array();
     }
 
+    function LimbahWaiting(){
+        $sql    = "SELECT limar.* ,
+                            limnis.jenis_limbah,
+                            limnis.id_jenis_limbah,
+                            liman.limbah_perlakuan
+                        from ga.ga_limbah_keluar as limar
+                            left join ga.ga_limbah_jenis as limnis
+                            on limar.jenis_limbah = limnis.id_jenis_limbah
+                            left join ga.ga_limbah_perlakuan as liman
+                            on limar.perlakuan = liman.id_perlakuan
+                        where konfirmasi_status='0'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function setLimbahKeluar($data)
     {
         return $this->db->insert('ga.ga_limbah_keluar', $data);
