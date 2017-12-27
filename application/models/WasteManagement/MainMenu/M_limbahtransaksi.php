@@ -56,7 +56,8 @@ class M_limbahtransaksi extends CI_Model
                             on limsi.perlakuan = liman.id_perlakuan
                         left join dm.dm_seksi as dmsi
                             on limsi.sumber_limbah=dmsi.seksi_id
-                        where limsi.konfirmasi='0'";
+                        where limsi.konfirmasi='0'
+                        order by creation_date desc";
         $query = $this->db->query($sql);
         return $query->result_array();
     }

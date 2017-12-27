@@ -62,7 +62,7 @@
                                                 <td><?php echo $row["jenis_limbah"] ?></td>
                                                 <td><?php echo $row["nama_seksi"] ?></td>
                                                 <td align="center">
-                                                	<a style="margin-right:4px" href="<?php echo base_url('WasteManagement/LimbahTransaksi/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
+                                                	<a href="<?php echo base_url('WasteManagement/LimbahTransaksi/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
@@ -97,7 +97,7 @@
                                                 <td><?php echo $rows["jenis_limbah"] ?></td>
                                                 <td><?php echo $rows["nomor_dok"] ?></td>
                                                 <td align="center">
-                                                	<a style="margin-right:4px" href="<?php echo base_url('WasteManagement/LimbahKeluar/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
+                                                	<a href="<?php echo base_url('WasteManagement/LimbahKeluar/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
