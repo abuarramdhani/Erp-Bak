@@ -182,7 +182,7 @@
 		}
 
 		$objPHPExcel->setActiveSheetIndex(0)
-			->setCellValueExplicit('F'.(($awal+($countperlakuan*$key3))+1), round($totalBulanSebelumnya,3));
+			->setCellValueExplicit('F'.(($awal+($countperlakuan*$key3))+1), number_format($totalBulanSebelumnya,3,'.',''));
 
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($awal+($countperlakuan*$key3).':A'.($akhir+($countperlakuan*$key3))));
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.($awal+($countperlakuan*$key3).':B'.($akhir+($countperlakuan*$key3))));
@@ -249,7 +249,7 @@
 
 					if(($plkn['limbah_perlakuan'] == $dataPerlakuan) && ($bulan == $dataTanggal) && ($HE['id_jenis_limbah'] == $dataJenisLimbah)) {
 						$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+$key1), round($LT['total_limbah'],3));
+							->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+$key1), number_format($LT['total_limbah'],3,'.',''));
 					}
 					else {
 						$cols = $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+$key1))->getValue();
@@ -298,7 +298,7 @@
 			$totalPerBulan = $hasilHitungPerBulan - $totalLimbahPerlakuan;
 
 			$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+1), round($totalPerBulan,3));
+				->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+1), number_format($totalPerBulan,3,'.',''));
 
 			$limbahDihasilkan = $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))))->getValue();
 			if($limbahDihasilkan == '' || $limbahDihasilkan == NULL) {
@@ -424,31 +424,31 @@
 
 		//Dihasilkan
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.(($awal+($countperlakuan*$key3))), round($totalLimbahDihasilkan,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.(($awal+($countperlakuan*$key3))), number_format($totalLimbahDihasilkan,3,'.',''));
 
 		//Disimpan Di TPS
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.(($awal+($countperlakuan*$key3))+1), round($nilaiSimpanTPS,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.(($awal+($countperlakuan*$key3))+1), number_format($nilaiSimpanTPS,3,'.',''));
 
 		//Dimanfaatkan Sendiri
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.(($awal+($countperlakuan*$key3))+2), round($totalLimbahDimanfaatkan,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.(($awal+($countperlakuan*$key3))+2), number_format($totalLimbahDimanfaatkan,3,'.',''));
 
 		//Diolah Sendiri
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.(($awal+($countperlakuan*$key3))+3), round($totalLimbahDiolah,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.(($awal+($countperlakuan*$key3))+3), number_format($totalLimbahDiolah,3,'.',''));
 
 		//Ditimbun Sendiri
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.(($awal+($countperlakuan*$key3))+4), round($totalLimbahDitimbun,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.(($awal+($countperlakuan*$key3))+4), number_format($totalLimbahDitimbun,3,'.',''));
 
 		//Diserahkan Ke Pihak Ketiga
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.(($awal+($countperlakuan*$key3))+5), round($totalLimbahDiserahkan,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.(($awal+($countperlakuan*$key3))+5), number_format($totalLimbahDiserahkan,3,'.',''));
 
 		//Tidak Dikelola
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.(($awal+($countperlakuan*$key3))+6), round($totalLimbahTidakDikelola,3));
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.(($awal+($countperlakuan*$key3))+6), number_format($totalLimbahTidakDikelola,3,'.',''));
 
 		//Jumlah Limbah Dihasilkan
 		$JumlahLimbahDihasilkan = $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+1].(($awal+($countperlakuan*$key3))))->getValue();
@@ -524,31 +524,31 @@
 	
 	//Jumlah Limbah Dihasilkan
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.$kolomTotal, round($totalJumlahDihasilkan,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.$kolomTotal, number_format($totalJumlahDihasilkan,3,'.',''));
 
 	//Jumlah Limbah Disimpan TPS
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.$kolomTotal, round($totalJumlahDiSimpanTPS,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.$kolomTotal, number_format($totalJumlahDiSimpanTPS,3,'.',''));
 
 	//Jumlah Limbah Dimanfaatkan
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.$kolomTotal, round($totalJumlahDimanfaatkan,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.$kolomTotal, number_format($totalJumlahDimanfaatkan,3,'.',''));
 
 	//Jumlah Limbah Diolah
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.$kolomTotal, round($totalJumlahDiolah,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.$kolomTotal, number_format($totalJumlahDiolah,3,'.',''));
 
 	//Jumlah Limbah Ditimbun
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.$kolomTotal, round($totalJumlahDitimbun,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.$kolomTotal, number_format($totalJumlahDitimbun,3,'.',''));
 
 	//Jumlah Limbah Diserahkan
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.$kolomTotal, round($totalJumlahDiserahkan,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.$kolomTotal, number_format($totalJumlahDiserahkan,3,'.',''));
 
 	//Jumlah Limbah Tidak Dikelola
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.$kolomTotal, round($totalJumlahTidakDikelola,3));
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.$kolomTotal, number_format($totalJumlahTidakDikelola,3,'.',''));
 
 //Persentase Penataan
 	$NilaiLimbahDihasilkan=$objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+1].''.$kolomTotal)->getValue();
