@@ -1374,15 +1374,6 @@ $route['DokumenPekerja/DokumenAll']				=	'DokumenPekerja/C_DokumenAll';
 //---end------------------------------ Document Controller Pekerja ------------------------------------
 
 
-
-//------------------------------------ LOG SERVER --------------------------------------------
-$route['LogServer']									= 'LogServer/C_LogServer/index';
-$route['MonitoringServer/Monitoring']				= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/index';
-$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/detail/$1';
-$route['MonitoringServer/InputMonitoring']			= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/index';
-$route['MonitoringServer/InputMonitoring/save']		= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/save';
-$route['MonitoringServer/InputMonitoring/upload']	= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/upload';
-
 //------------------------------------ Production Planning ----------------------------------------
 $route['ProductionPlanning']  									= 'ProductionPlanning/C_Index/index';
 $route['ProductionPlanning/Monitoring']  						= 'ProductionPlanning/MainMenu/C_Monitoring/index';
@@ -1404,3 +1395,34 @@ $route['ProductionPlanning/Setting/GroupSection/(:any)/(:any)']	= 'ProductionPla
 $route['ProductionPlanning/Setting/Section']					= 'ProductionPlanning/Settings/C_Section';
 $route['ProductionPlanning/Setting/Section/(:any)']				= 'ProductionPlanning/Settings/C_Section/$1';
 $route['ProductionPlanning/Setting/Section/(:any)/(:any)']		= 'ProductionPlanning/Settings/C_Section/$1/$2';
+
+
+//------------------------------------MONITORING ICT --------------------------------------------
+
+/*MONITORING LOG SERVER */
+$route['MonitoringICT']								= 'MonitoringICT/C_Index/index';
+$route['MonitoringServer/Monitoring']				= 'MonitoringICT/MainMenu/MonitoringLogServer/C_MonitoringServer/index';
+$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'MonitoringICT/MainMenu/MonitoringLogServer/C_MonitoringServer/detail/$1';
+$route['MonitoringServer/InputMonitoring']			= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/index';
+$route['MonitoringServer/InputMonitoring/save']		= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/save';
+$route['MonitoringServer/InputMonitoring/upload']	= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/upload';
+
+/*MONITORING FILE SERVER */
+$route['MonitoringFileServer/Monitoring']			= 'MonitoringICT/MainMenu/MonitoringFileServer/C_MonitoringFIleServer/index';
+$route['MonitoringFileServer/InputMonitoring']		= 'MonitoringICT/MainMenu/MonitoringFileServer/C_InputFIleServer/index';
+$route['MonitoringFileServer/InputMonitoring/save']		= 'MonitoringICT/MainMenu/MonitoringFileServer/C_InputFIleServer/save';
+
+$route['MonitoringICT/JobListMonitoring'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/index';
+$route['MonitoringICT/JobListMonitoring/create'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/create';
+$route['MonitoringICT/JobListMonitoring/Detail/(:any)/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/detail/$1/$2';
+$route['MonitoringICT/JobListMonitoring/Detail/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/detail/$1/$2';
+$route['MonitoringICT/JobListMonitoring/Edit/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/edit/$1';
+$route['MonitoringICT/JobListMonitoring/Delete'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/delete';
+$route['MonitoringICT/JobListMonitoring/saveEdit'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/saveEdit';
+$route['MonitoringICT/JobListMonitoring/searchHasil'] = 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/searchHasil';
+
+$route['MonitoringICT/PlotingJoblist']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/index';
+$route['MonitoringICT/PlotingJoblist/Edit/(:any)']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/indexEdit/$1';
+$route['MonitoringICT/PlotingJoblist/saveEdit']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/saveEdit';
+
+$route['MonitoringICT/MonitoringAll']	= 'MonitoringICT/MainMenu/MonitoringAll/C_MonitoringAll/index';
