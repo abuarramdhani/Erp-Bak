@@ -9,7 +9,7 @@ class M_MonitoringFileServer extends CI_Model
 
 	public function getServer()
 		{
-			$query = $this->db->get('sc.sc_perangkat');
+			$query = $this->db->get('sc.sc_perangkat'); 
 			return $query->result_array();
 		}
 

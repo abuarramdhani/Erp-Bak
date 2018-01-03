@@ -12,7 +12,7 @@ class C_PlotingJobList extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringICT/MainMenu/PlotingJobList/M_PlotingJobList');
+			$this->load->model('MonitoringICT/MainMenu/PlotingJobList/M_plotingjobList');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -38,10 +38,10 @@ class C_PlotingJobList extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$JobList = $this->M_PlotingJobList->getJobList();
+			$JobList = $this->M_plotingjobList->getJobList();
 				$x = 0;
 				foreach ($JobList as $JL) {
-								$JobList[$x]['pic'] = $this->M_PlotingJobList->getPIC($JL['perangkat_id']);
+								$JobList[$x]['pic'] = $this->M_plotingjobList->getPIC($JL['perangkat_id']);
 								$x++;
 							}		
 			// print_r($JobList);
@@ -62,12 +62,12 @@ class C_PlotingJobList extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['pic'] = $this->M_PlotingJobList->getPICAll(); 
-			$data['period'] = $this->M_PlotingJobList->getPeriod(); 
-			$JobList = $this->M_PlotingJobList->getJobList($id);
+			$data['pic'] = $this->M_plotingjobList->getPICAll(); 
+			$data['period'] = $this->M_plotingjobList->getPeriod(); 
+			$JobList = $this->M_plotingjobList->getJobList($id);
 				$x = 0;
 				foreach ($JobList as $JL) {
-								$JobList[$x]['pic'] = $this->M_PlotingJobList->getPIC($JL['perangkat_id']);
+								$JobList[$x]['pic'] = $this->M_plotingjobList->getPIC($JL['perangkat_id']);
 								$x++;
 							}	
 			$data['dataJoblist'] = $JobList;
@@ -89,29 +89,29 @@ class C_PlotingJobList extends CI_Controller
 					$data = array('employee_id' => $key, 
 								  'perangkat_id' => $perangkat_id,
 								  'periode_monitoring_id' => $periode );
-					$checkJob = $this->M_PlotingJobList->getPlotExits($data);
+					$checkJob = $this->M_plotingjobList->getPlotExits($data);
 					if ($checkJob == 0){
-						$checkExist = $this->M_PlotingJobList->getExist($key,$perangkat_id);
+						$checkExist = $this->M_plotingjobList->getExist($key,$perangkat_id);
 						if ($checkExist == 0) {
-							$ins = $this->M_PlotingJobList->InsertNew($data);
+							$ins = $this->M_plotingjobList->InsertNew($data);
 							$PicNew[] = $ins;
 						}else{
-							$upd = $this->M_PlotingJobList->UpdateJob($key,$perangkat_id,$data);
+							$upd = $this->M_plotingjobList->UpdateJob($key,$perangkat_id,$data);
 							foreach ($upd as $value) {
 								$PicNew[] = $value['ploting_id'];
 							}
 						}
 					}else{
-						$getIdPlot = $this->M_PlotingJobList->getIdPlot($data);
+						$getIdPlot = $this->M_plotingjobList->getIdPlot($data);
 						foreach ($getIdPlot as $idPlot) {
 							$PicNew[] = $idPlot['ploting_id'];
 						}
 					}
 				}
 				$PicNew = implode(',', $PicNew);
-				$this->M_PlotingJobList->delPlot($PicNew,$perangkat_id);
+				$this->M_plotingjobList->delPlot($PicNew,$perangkat_id);
 			}else {
-				$this->M_PlotingJobList->delPlot2($perangkat_id);
+				$this->M_plotingjobList->delPlot2($perangkat_id);
 			}
 		$this->index();
 		} 

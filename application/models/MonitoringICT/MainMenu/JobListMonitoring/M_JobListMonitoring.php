@@ -8,7 +8,7 @@ class M_JobListMonitoring extends CI_model
 			$this->load->database();
 		}
 
-	public function getData($user_id)
+	public function getData($user_id) 
 		{
 			$sql ="SELECT sp.perangkat_id, sp.jenis_perangkat , sp.host , spl.periode_monitoring, spl.periode_monitoring_id , shm.tgl_monitoring
 					FROM sc.sc_perangkat sp

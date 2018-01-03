@@ -12,7 +12,7 @@ class C_MonitoringFileServer extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringICT/MainMenu/MonitoringFileServer/M_MonitoringFileServer');
+			$this->load->model('MonitoringICT/MainMenu/MonitoringFileServer/M_monitoringfileserver');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');

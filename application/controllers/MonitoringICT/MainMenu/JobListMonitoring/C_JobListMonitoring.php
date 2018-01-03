@@ -12,7 +12,7 @@ class C_JobListMonitoring extends CI_controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringICT/MainMenu/JobListMonitoring/M_JobListMonitoring');
+			$this->load->model('MonitoringICT/MainMenu/JobListMonitoring/M_joblistmonitoring');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -38,7 +38,7 @@ class C_JobListMonitoring extends CI_controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['DataMonitoring'] = $this->M_JobListMonitoring->getData($user_id);
+			$data['DataMonitoring'] = $this->M_joblistmonitoring->getData($user_id);
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MonitoringICT/MainMenu/JobListMonitoring/V_JobListMonitoring',$data);
@@ -54,15 +54,15 @@ class C_JobListMonitoring extends CI_controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['DataPerangkat']  = $this->M_JobListMonitoring->getDetPerangkat($id_perangkat,$periode_id);
-			$data['Aspek'] 			= $this->M_JobListMonitoring->getAspek($id_perangkat,$periode_id);
-			$dataHasil = $this->M_JobListMonitoring->getHasil($id_perangkat);
+			$data['DataPerangkat']  = $this->M_joblistmonitoring->getDetPerangkat($id_perangkat,$periode_id);
+			$data['Aspek'] 			= $this->M_joblistmonitoring->getAspek($id_perangkat,$periode_id);
+			$dataHasil = $this->M_joblistmonitoring->getHasil($id_perangkat);
 			$i = 0;
 			foreach ($dataHasil as $key) {
-				$dataHasil[$i]['aspek_hasil'] = $this->M_JobListMonitoring->getDetailHasil($key['hasil_monitoring_id']);
+				$dataHasil[$i]['aspek_hasil'] = $this->M_joblistmonitoring->getDetailHasil($key['hasil_monitoring_id']);
 				if ($dataHasil[$i]['nomor_order'] != null) {
 					$idTicket = $dataHasil[$i]['nomor_order'];
-					$statusOrder = $this->M_JobListMonitoring->getStatusOrder($idTicket);
+					$statusOrder = $this->M_joblistmonitoring->getStatusOrder($idTicket);
 					if ($statusOrder) {
 						$dataHasil[$i]['status_order'] = $statusOrder[0]['state'];
 						$dataHasil[$i]['ticket_id'] = $statusOrder[0]['ticket_id'];
@@ -84,13 +84,13 @@ class C_JobListMonitoring extends CI_controller
 		{
 			$limit = $this->input->post('limit');
 			$id_perangkat = $this->input->post('perangkat');
-			$dataHasil = $this->M_JobListMonitoring->getHasil($id_perangkat,$limit);
+			$dataHasil = $this->M_joblistmonitoring->getHasil($id_perangkat,$limit);
 			$i = 0;
 			foreach ($dataHasil as $key) {
-				$dataHasil[$i]['aspek_hasil'] = $this->M_JobListMonitoring->getDetailHasil($key['hasil_monitoring_id']);
+				$dataHasil[$i]['aspek_hasil'] = $this->M_joblistmonitoring->getDetailHasil($key['hasil_monitoring_id']);
 				if ($dataHasil[$i]['nomor_order'] != null) {
 					$idTicket = $dataHasil[$i]['nomor_order'];
-					$statusOrder = $this->M_JobListMonitoring->getStatusOrder($idTicket);
+					$statusOrder = $this->M_joblistmonitoring->getStatusOrder($idTicket);
 					if ($statusOrder) {
 						$dataHasil[$i]['status_order'] = $statusOrder[0]['state'];
 						$dataHasil[$i]['ticket_id'] = $statusOrder[0]['ticket_id'];
@@ -114,7 +114,7 @@ class C_JobListMonitoring extends CI_controller
 			$aspek_id 	 = $this->input->post('aspID[]');
 			$aspek_desc  = $this->input->post('aspDESC[]');
 				$user_id 	 = $this->session->userid;
-				$employeeid  = $this->M_JobListMonitoring->getEmployeeId($user_id);
+				$employeeid  = $this->M_joblistmonitoring->getEmployeeId($user_id);
 			$employee_id = $employeeid[0]['employee_id'];
 			$employee_name = $employeeid[0]['employee_name'];
 			//proses save monitoring
@@ -123,7 +123,7 @@ class C_JobListMonitoring extends CI_controller
 							  'info' 		   => $info ,
 							  'perangkat_id'   => $file_server,
 							  'periode_monitoring_id' => $period);
-			$save 	= $this->M_JobListMonitoring->save($data);
+			$save 	= $this->M_joblistmonitoring->save($data);
 			$idMon  = $save;
 			//proses save hasil monitoring
 			//cek standar
@@ -175,7 +175,7 @@ class C_JobListMonitoring extends CI_controller
 								'hasil_pengecekan' => $hasil_penilaian,
 								'jenis_standar' => $jenis_penilaian);
 
-				$this->M_JobListMonitoring->saveDetail($data2);
+				$this->M_joblistmonitoring->saveDetail($data2);
 
 
 			}  
@@ -246,7 +246,7 @@ class C_JobListMonitoring extends CI_controller
 				    return (!isset($question) || trim($question)==='');
 				}
 
-				$this->M_JobListMonitoring->insTicketNumb($idMon,$ticket_id);
+				$this->M_joblistmonitoring->insTicketNumb($idMon,$ticket_id);
 			}
 
 			redirect('MonitoringICT/JobListMonitoring');
@@ -262,13 +262,13 @@ class C_JobListMonitoring extends CI_controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['DataHasil'] = $this->M_JobListMonitoring->getHasilEdit($id);
+			$data['DataHasil'] = $this->M_joblistmonitoring->getHasilEdit($id);
 			$id_perangkat = $data['DataHasil'][0]['perangkat_id'];
 			$id_period = $data['DataHasil'][0]['periode_monitoring_id'];
 			$data['id_perangkat'] = $id_perangkat;
 			$data['id_periode'] = $id_period;
 			$data['id_monitoring'] = $id;
-			$data['Aspek'] 			= $this->M_JobListMonitoring->getAspek($id_perangkat,$id_period);
+			$data['Aspek'] 			= $this->M_joblistmonitoring->getAspek($id_perangkat,$id_period);
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MonitoringICT/MainMenu/JobListMonitoring/V_EditJoblist',$data);
@@ -280,7 +280,7 @@ class C_JobListMonitoring extends CI_controller
 			$id_perangkat = $this->input->post('idPerangkat');
 			$id_period = $this->input->post('idPeriod');
 			$id_monitoring = $this->input->post('idMonitoring');
-			$this->M_JobListMonitoring->delete($id_monitoring);
+			$this->M_joblistmonitoring->delete($id_monitoring);
 			$this->detail($id_perangkat,$id_period);
 		}
 
@@ -296,12 +296,12 @@ class C_JobListMonitoring extends CI_controller
 			$aspek_desc  = $this->input->post('aspDESC[]');
 			$detail_id   = $this->input->post('detID[]');
 				$user_id 	 = $this->session->userid;
-				$employeeid  = $this->M_JobListMonitoring->getEmployeeId($user_id);
+				$employeeid  = $this->M_joblistmonitoring->getEmployeeId($user_id);
 			$employee_id = $employeeid[0]['employee_id'];
 			$employee_name = $employeeid[0]['employee_name'];
 			//proses save monitoring
 				$data = array('info' 		   => $info );
-				$this->M_JobListMonitoring->saveEdit($data,$id_monitoring);
+				$this->M_joblistmonitoring->saveEdit($data,$id_monitoring);
 			//proses save hasil monitoring
 			//cek standar
 			$i = 0;
@@ -350,7 +350,7 @@ class C_JobListMonitoring extends CI_controller
 								'standar' => $standar_penilaian,
 								'hasil_pengecekan' => $hasil_penilaian,
 								'jenis_standar' => $jenis_penilaian);
-				$this->M_JobListMonitoring->saveEditDetail($data2,$detail_id[$i]);
+				$this->M_joblistmonitoring->saveEditDetail($data2,$detail_id[$i]);
 				$i++;
 
 
@@ -422,7 +422,7 @@ class C_JobListMonitoring extends CI_controller
 				    return (!isset($question) || trim($question)==='');
 				}
 
-				$this->M_JobListMonitoring->insTicketNumb($idMon,$ticket_id);
+				$this->M_joblistmonitoring->insTicketNumb($idMon,$ticket_id);
 			}
 
 			$this->detail($file_server,$period);

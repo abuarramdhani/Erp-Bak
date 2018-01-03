@@ -13,7 +13,7 @@ class M_PlotingJobList extends CI_Model
 			$sql = "SELECT distinct(scp.perangkat_id) 
 						   , scp.jenis_perangkat 
 						   , scp.host  
-						   , table1.periode_monitoring_id
+						   , table1.periode_monitoring_id 
 						   , table1.periode_monitoring
 					FROM sc.sc_perangkat scp 
 					LEFT JOIN (SELECT scpl.periode_monitoring_id
