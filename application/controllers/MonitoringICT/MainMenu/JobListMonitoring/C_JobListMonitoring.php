@@ -166,7 +166,7 @@ class C_JobListMonitoring extends CI_controller
 					}
 					$txt[] ="(Aspek : ".$aspek_desc[$i]." ; "
 						  ."Standar :".$tStd." ;"
-						  ."Hasil :".$tHasil." ) ";
+						  ."Hasil :".$tHasil.") ";
 
 				$i++;
 				$data2 =  array('hasil_monitoring_id' => $idMon, 
@@ -206,7 +206,7 @@ class C_JobListMonitoring extends CI_controller
 					'phone' 	  =>  '12300',  // phone number aka User/Client Phone Number
 				    'subject'     =>   'Monitoring '.$server_name.' tidak sesuai standar',  // test subject, aka Issue Summary
 				    'purpose'     =>   'Agar perangkat sesuai dengan standarnya' ,
-				    'message'     =>   'Petugas '.$employee_name.' melakukan pengecekan '.$server_name.' pada '.date('d M Y').'  dengan hasil : '. 					implode(',', $txt).' .Tolong diperiksa dan diperbaiki agar perangkat tersebut sesuai dengan standarnya',
+				    'message'     =>   'Petugas '.$employee_name.' melakukan pengecekan '.$server_name.' pada '.date('d M Y').'  dengan hasil : '. 					implode(' || ', $txt).' .Tolong diperiksa dan diperbaiki agar perangkat tersebut sesuai dengan standarnya',
 				    'ip'          =>    $_SERVER['REMOTE_ADDR'], 
 					 'topicId'    =>    '68',
 				);
