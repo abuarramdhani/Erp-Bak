@@ -11,7 +11,7 @@ class M_MonitoringAll extends CI_Model
 
 	function getPeriodeMonitoring()
 		{
-			$this->db->order_by('periode_monitoring_id');
+			$this->db->order_by('periode_monitoring_id'); 
 			$query = $this->db->get('sc.sc_periode_monitoring');
 			return $query->result_array();
 		}

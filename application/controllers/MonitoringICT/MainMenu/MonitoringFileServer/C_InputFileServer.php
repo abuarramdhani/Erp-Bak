@@ -11,7 +11,7 @@ class C_InputFileServer extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringICT/MainMenu/MonitoringFileServer/M_MonitoringFileServer');
+			$this->load->model('MonitoringICT/MainMenu/MonitoringFileServer/M_monitoringfileserver');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -36,9 +36,9 @@ class C_InputFileServer extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['RuangServer'] = $this->M_MonitoringFileServer->getServer();
-			$data['Petugas']   = $this->M_MonitoringFileServer->getPetugas();
-			$data['Aspek'] = $this->M_MonitoringFileServer->getAspek();
+			$data['RuangServer'] = $this->M_monitoringfileserver->getServer();
+			$data['Petugas']   = $this->M_monitoringfileserver->getPetugas();
+			$data['Aspek'] = $this->M_monitoringfileserver->getAspek();
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MonitoringICT/MainMenu/MonitoringFileServer/V_InputFileServer',$data);
@@ -62,7 +62,7 @@ class C_InputFileServer extends CI_Controller
 							  'info' 		   => $info ,
 							  'perangkat_id'   => $file_server);
 
-			$save 	= $this->M_MonitoringFileServer->save($data);
+			$save 	= $this->M_monitoringfileserver->save($data);
 			$idMon  = $save;
 			//proses save hasil monitoring
 			//cek standar
@@ -110,7 +110,7 @@ class C_InputFileServer extends CI_Controller
 								'hasil_pengecekan' => $hasil_penilaian,
 								'jenis_standar' => $jenis_penilaian);
 
-				$this->M_MonitoringFileServer->saveDetail($data2);
+				$this->M_monitoringfileserver->saveDetail($data2);
 
 
 			}  implode('|', $txt);

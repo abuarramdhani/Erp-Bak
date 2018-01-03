@@ -10,7 +10,7 @@ class M_MonitoringServer extends CI_Model
 
 	public function getData($id_log=null)
 		{
-			if ($id_log == null) {
+			if ($id_log == null) { 
 				$where_log = "";
 			}else{
 				$where_log = "WHERE sc_lrs.log_id = $id_log ";

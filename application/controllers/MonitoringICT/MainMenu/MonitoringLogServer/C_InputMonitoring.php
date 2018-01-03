@@ -13,7 +13,7 @@ class C_InputMonitoring extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringICT/MainMenu/MonitoringLogServer/M_MonitoringServer');
+			$this->load->model('MonitoringICT/MainMenu/MonitoringLogServer/M_monitoringserver');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -38,8 +38,8 @@ class C_InputMonitoring extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['PekerjaLS']   = $this->M_MonitoringServer->getPekerjaLS();
-			$data['RuangServer'] = $this->M_MonitoringServer->getRuangServer();
+			$data['PekerjaLS']   = $this->M_monitoringserver->getPekerjaLS();
+			$data['RuangServer'] = $this->M_monitoringserver->getRuangServer();
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MonitoringICT/MainMenu/MonitoringLogServer/V_InputMonitoring',$data);
@@ -55,10 +55,10 @@ class C_InputMonitoring extends CI_Controller
 			$jamKeluar 	  = $this->input->post('timeOutLS');
 			$keperluan 	  = $this->input->post('KeperluanLS');
 			$pemberi_izin = $this->session->userid;
-			$save_log   =   $this->M_MonitoringServer->save_log($tanggal,$jamMasuk,$jamKeluar,$keperluan,$pemberi_izin,$ruang_server);
+			$save_log   =   $this->M_monitoringserver->save_log($tanggal,$jamMasuk,$jamKeluar,$keperluan,$pemberi_izin,$ruang_server);
 				$id_log =  $save_log[0]['log_id']; 
 			foreach ($pekerja as $pkj) {
-				$this->M_MonitoringServer->save_petugas($pkj,$id_log);
+				$this->M_monitoringserver->save_petugas($pkj,$id_log);
 			}
 			redirect('MonitoringServer/Monitoring');
 		}
