@@ -168,14 +168,14 @@
 															if (isset($DHasil['status_order'])) {
 															 echo $DHasil['status_order'] == 'closed' 
 															 ?'<a target="_blank"  
-															 	href="http://localhost/ticket-master/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
+															 	href="http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
 															 	<span class="badge bg-green ">'.$DHasil['nomor_order'].' (CLOSED)</span></a>'
 															 :'<a target="_blank"  
-															 	href="http://localhost/ticket-master/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
+															 	href="http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
 															 	<span class="badge bg-red faa-flash faa-slow animated">'.$DHasil['nomor_order'].'</span></a>';
 															}else{
 															 echo '<a target="_blank"  
-															 	href="http://localhost/ticket-master/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
+															 	href="http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
 															 	<span class="badge bg-red faa-flash faa-slow animated">'.$DHasil['nomor_order'].'</span> </a>';
 															}
 														}else{
