@@ -1426,3 +1426,18 @@ $route['MonitoringICT/PlotingJoblist/Edit/(:any)']	= 'MonitoringICT/MainMenu/Plo
 $route['MonitoringICT/PlotingJoblist/saveEdit']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/saveEdit';
 
 $route['MonitoringICT/MonitoringAll']	= 'MonitoringICT/MainMenu/MonitoringAll/C_MonitoringAll/index';
+
+
+// -------start--------------------------- Monitoring OJT ----------------------------
+
+$route['OnJobTraining']		=	'MonitoringOJT/C_Index';
+
+	//	Master Orientasi
+	//	{
+			$route['OnJobTraining/MasterOrientasi']		=	'MonitoringOJT/C_MasterOrientasi';
+
+			$route['OnJobTraining/MasterOrientasi/OrientasiBaru/Save']	=	'MonitoringOJT/C_MasterOrientasi/OrientasiBaru_Save';
+	//	}
+
+// -------end----------------------------- Monitoring OJT ----------------------------
+
