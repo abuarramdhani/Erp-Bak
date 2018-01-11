@@ -54,20 +54,22 @@
 									</div>
 								</div>
 							</div>
-							<?php if(!empty($rc['start_time'])) {?>
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-3 control-label">Waktu</label>
-									<div class="col-lg-4 ">
-										<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
+							<?php if ($rc['package_scheduling_id']==0 && $rc['package_training_id']==0) {
+								if(!empty($rc['start_time'])) {?>
+									<div class="row" style="margin: 10px 10px">
+										<div class="form-group">
+											<label class="col-lg-3 control-label">Waktu</label>
+											<div class="col-lg-4 ">
+												<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
+											</div>
+											<label class="col-lg-1 control-label" align="center">-</label>
+											<div class="col-lg-4">
+												<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
+											</div>
+										</div>
 									</div>
-									<label class="col-lg-1 control-label" align="center">-</label>
-									<div class="col-lg-4">
-										<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
-									</div>
-								</div>
-							</div>
-							<?php }?>
+								<?php }
+							}?>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Ruang</label>
@@ -85,14 +87,14 @@
 									<div class="col-lg-9">
 										<?php
 											$eval='';
-											if($rc['evaluation']=='1'){$eval='Reaksi';}
+											// if($rc['evaluation']=='1'){$eval='Reaksi';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';}
-											if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';}
-											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
-											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Sikap / Perilaku';}
-											if($rc['evaluation']=='1,2,3'|| $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-												{$eval='Reaksi, Pembelajaran, Sikap/Perilaku';}
+											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';}
+											// if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Evaluasi Lapangan';}
+											// if($rc['evaluation']=='1,2,3'|| $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+											// 	{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';}
 										?>
 										<input class="form-control" value="<?php echo $eval?>" readonly >
 									</div>

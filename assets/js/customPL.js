@@ -4,6 +4,21 @@ function goBack() {
 
 $(document).ready(function(){
 
+	$(document).on('show.bs.modal', '.modal', function () {
+	    var zIndex = 1050 + (10 * $('.modal:visible').length);
+	    $(this).css('z-index', zIndex);
+	    setTimeout(function() {
+	        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+	    }, 0);
+	});
+
+	$('.singledateADM').datepicker({
+    	format:'dd/mm/yyyy'
+	});
+	$('.singledateADM_Que').datepicker({
+    	format:'yyyy/mm/dd'
+	});
+
 	//DATATABLE
 	$('#master-index').DataTable({
 		"filter": true,
@@ -63,11 +78,9 @@ $(document).ready(function(){
 	// 	},
 	// });
 
-	$('.singledateADM').datepicker({
-    	format:'dd/mm/yyyy'
-	});
+	
 
-    $(".startdate").datepicker({
+	 $(".startdate").datepicker({
     	//format:'dd/mm/yyyy'
     });
 
@@ -78,7 +91,7 @@ $(document).ready(function(){
     $(".dday-tgl").datepicker({
     	//format:'dd/mm/yyyy'
     });
-
+	
 	$('.startdate').change(function() {
 		var range 	= $('#dayrange').val();
 		var rrange 	= parseInt(range)-1;
@@ -93,6 +106,15 @@ $(document).ready(function(){
 	 		date2.setDate(date2.getDate()+rrange); 
 	  		$(this).find('.dday-tgl').datepicker('setDate', date2);
   		});
+	});
+
+	// ALERT DATEPICKER
+	$('#checkdateSch').change(function(){
+		var selectedDate = $('#checkdateSch').datepicker('getDate'); 
+		var now = new Date(); now.setHours(0,0,0,0); 
+		if (selectedDate < now) {  
+			alert('Set tanggal salah, cek kembali tanggal yang di pilih');
+		} 
 	});
 
 	//SET START DATE APABILA DIGUNAKAN SAAT EDIT
@@ -316,6 +338,62 @@ $(document).ready(function(){
 		}
 	});
 
+	//SELECT TRAINER UNTUK REPORT
+	$(".js-slcReportTrainer").select2({
+		placeholder: "Nama Trainer",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetTrainerFilter",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportTrainer').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { 
+							id:obj.trainer_id, 
+							text:obj.trainer_name
+						};
+					})
+				};
+			}
+		}
+	});
+
+	//SELECT PELATIHAN UNTUK REPORT
+	$(".js-slcReportTraining").select2({
+		placeholder: "Nama Training",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetTrainingFilter",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportTraining').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { 
+							id:obj.Nama_Training, 
+							text:obj.Nama_Training
+						};
+					})
+				};
+			}
+		}
+	});
+
 	//GET REPORT1
 	$(document).ready(function() {	
 		$('#SearchReport1').click(function(){
@@ -381,6 +459,34 @@ $(document).ready(function(){
 				url:baseurl+"ADMPelatihan/C_Report/GetReport3",
 				success:function(result)
 				{
+					console.log(result);
+					$('#loading').html('');
+					$("#table-full").html(result);
+					recorddatatable();
+				}
+			});
+		});
+	});
+
+	//GET REPORT4
+	$(document).ready(function() {	
+		$('#SearchReportQue').click(function(){
+			$('#loading').html('<img src="'+baseurl+'assets/img/gif/loading12.gif" width="34px"/>');
+			
+			var pelatihan	= $('select[name=slcReportTraining]').val();
+			var date 		= $('input[name=txtDate1]').val();
+			var trainer		= $('select[name=slcReportTrainer]').val();
+
+			$.ajax({
+				type: "POST",
+				data:{
+						pelatihan:pelatihan,
+						date:date,
+						trainer:trainer,
+				},
+				url:baseurl+"ADMPelatihan/C_Report/GetReport4",
+				success:function(result)
+				{
 					$('#loading').html('');
 					$("#table-full").html(result);
 					recorddatatable();
@@ -406,7 +512,6 @@ $(document).ready(function(){
 				url:baseurl+"ADMPelatihan/Report/GetRkpTraining",
 				success:function(result)
 				{	
-					// console.log(result);
 					$('#loading').html('');
 					$("#table-full").html(result);
 					recorddatatable();
@@ -466,7 +571,6 @@ $(document).ready(function(){
 			});
 		});
 	});
-
 });
 	
 	//MENAMBAH ROW UNTUK TRAINING (MASTER PACKAGE)
@@ -501,11 +605,7 @@ $(document).ready(function(){
 			var disable = '';
 			var onkeyup = '';
 		}
-		// var newgroup = $('<tr>').addClass('clone');
 		var e = jQuery.Event( "click" );
-		// e.preventDefault();
-		
-		// $('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegment'
 		var n = $('#tbodyQuestionnaireSegment tr').length;
 		counter = n+1;
 
@@ -516,7 +616,7 @@ $(document).ready(function(){
 										+"<input type='hidden' name='idSegment[]' value='0'>"
 									+"</td>"
 									+"<td>"
-										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
+										+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delSpesifikRow121("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"<a "+disable+" data-id='segment-button' href='"+baseurl+"ADMPelatihan/MasterQuestionnaire/Edit' data-toggle='modal'  class='btn btn-xs btn-warning' style='margin:2px'><i class='fa fa-search'></i></i> Statement</a>"
 									+"</td>"
 									+"</tr>");
@@ -543,15 +643,6 @@ $(document).ready(function(){
 		}
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
-	// function AddSegmentEssay(base){
-	// 	var newgroup = $('<tr>').addClass('cclone');
-	// 	var e = jQuery.Event( "click" );
-	// 	e.preventDefault();
-		
-	// 	$('.cclone').last().clone().appendTo(newgroup).appendTo('#tbodyQuestionnaireSegmentEssay');
-
-	// 	$("input#segmentessay:last").val("").change();
-	// }
 	function  AddSegmentEssayC(base){
 			var e = jQuery.Event( "click" );
 			var n = $('#tbodyQuestionnaireSegmentEssay tr').length;
@@ -572,14 +663,6 @@ $(document).ready(function(){
 
 
 	//MENGHAPUS ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
-	// function delStatRow(id){
-	// 	var rowCount = $("#tbodyStatement"+id+" tr").size();
-	// 	if(rowCount > 1){
-	// 		$("#tbodyStatement"+id+" tr:last").remove();
-	// 	}else{
-	// 		alert('Minimal harus ada satu baris tersisa');
-	// 	}
-	// }
 	function delStatRow(id){
 			var rowCount = $("#tbodyStatementC"+id+" tr").size();
 			if(rowCount > 1){
@@ -591,12 +674,6 @@ $(document).ready(function(){
 
 	//MENAMBAH ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
 	function AddStatement(id){
-		// var newgroup = $('<tr>').addClass('clone'+id);
-		// e.preventDefault();
-		// $('.clone'+id).last().clone().appendTo(newgroup).appendTo('#tbodyStatement'+id);
-		// $("input#statement"+id+":last").val("").change();
-
-
 		var e = jQuery.Event( "click" );
 		var n = $('#tbodyStatement tr').length;
 		counter = n+1;
@@ -615,7 +692,6 @@ $(document).ready(function(){
 
 	function AddStatementC(numb,id,inputName){
 			var n = $('#tbodyStatementC'+id+' tr').length;
-			// n=1;
 			var tbID = String('tblStatement');
 			var tbodyID = String('tbodyStatementC');
 			counter = n+1;
@@ -625,7 +701,7 @@ $(document).ready(function(){
 											+"<input id='statement"+numb+"' name='"+inputName+"[]' class='form-control statement'> "
 										+"</td>"
 										+"<td>"
-											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateStatement("+numb+","+counter+","+id+",0)'><i class='fa fa-remove'></i>Delete</a>"
+											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelStatment' title='Hapus Baris' onclick='delCreateStatement("+numb+","+counter+","+id+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
 				jQuery("#tbodyStatementC"+id).append(newRow);
@@ -844,13 +920,10 @@ $(document).ready(function(){
 							}
 						}	
 					});
-
-		// alert(rowCount);
 			$("select#slcEmployee:last").val("").change();
 		}else{
 			alert('Jumlah peserta sudah maksimal');
 		}
-		
 	}
 
 	function AddParticipantEdit(base){
@@ -1069,14 +1142,12 @@ function delCreateSegmentEssay(rowid,segmentid) {
 	}
 }
 function delCreateStatement(tbID,rowid,id,statementid) {
-	// console.log('#tblStatement'+tbID);
-	// console.log('#tbodyStatementC'+id);
 	if (statementid == '0') {
 		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
 	}
 }
 
-function delSpesifikRow(rowid,segmentid) {
+function delSpesifikRow121(rowid,segmentid) {
 	if (segmentid == '0') {
 		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 	}else{
@@ -1086,7 +1157,6 @@ function delSpesifikRow(rowid,segmentid) {
 			success:function(result)
 			{
 				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
-				// $('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
 			}
 		});
 	}
@@ -1094,6 +1164,7 @@ function delSpesifikRow(rowid,segmentid) {
 }
 
 function delSpesifikRowSt(rowid,statementid) {
+
 	if(statementid == '0'){
 			$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
 	}
@@ -1164,4 +1235,64 @@ function showModPar(schid,section){
 			$('div#showModPar').modal('show');
 		}
 	});
+}
+
+// WARNING NILAI MINIMAL
+function stafKKM(th,col,row) {
+	var kkm = $('input#kkmStaff').val();
+	var nilai = $(th).val();
+
+	if (nilai < kkm) {
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
+		console.log(kkm);
+		console.log(nilai);
+	}else{
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+	}
+
+}
+
+function nonstafKKM(th,col,row) {
+	var kkm = $('input#kkmNonStaff').val();
+	var nilai = $(th).val();
+
+	if (nilai < kkm) {
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
+		console.log(kkm);
+		console.log(nilai);
+	}else{
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
+		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+	}
+}
+
+function recordPackage(id) {
+	$.ajax({
+		type: "POST",
+		url:baseurl+"ADMPelatihan/Record/GetPackageID/"+id,
+		success:function(result)
+		{
+			$('div#modalPaketArea').html(result);
+			$('#rincian_paket').modal('show');
+		}
+	});
+}
+
+function recordPackageFinish(id) {
+	$.ajax({
+		type: "POST",
+		url:baseurl+"ADMPelatihan/Record/GetPackageIDfinish/"+id,
+		success:function(result)
+		{
+			$('div#modalPaketAreafinish').html(result);
+			$('#rincian_paket_finished').modal('show');
+		}
+	});
+}
+
+ function showModalDel(schid,schname) {
+	$('#showModalDel .modal-body b#data-id').html(schname);
+	$('#showModalDel .modal-body a').attr('href', baseurl+'ADMPelatihan/Record/Delete/'+schid);
+	$('#showModalDel').modal('show');
 }

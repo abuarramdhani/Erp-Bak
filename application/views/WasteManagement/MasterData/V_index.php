@@ -37,6 +37,7 @@
                                                 <th>Jenis Limbah</th>
                                                 <th>Satuan Limbah</th>
                                                 <th>Sumber Limbah</th>
+                                                <th>Konversi Limbah (TON)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,6 +57,7 @@
                                                 <td><?php echo $row['limbah_jenis'] ?></td>
                                                 <td><?php echo $row['satuan'] ?></td>
                                                 <td><?php echo $row['sumber_limbah'] ?></td>
+                                                <td><?php echo $row['konversi'] ?></td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

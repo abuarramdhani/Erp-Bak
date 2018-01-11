@@ -102,7 +102,7 @@ class C_LimbahTransaksi extends CI_Controller
 			$this->M_limbahtransaksi->setLimbahTransaksi($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('WasteManagement/LimbahTransaksi'));
+			redirect(base_url('WasteManagement/LimbahTransaksi'));
 		}
 	}
 
@@ -114,7 +114,7 @@ class C_LimbahTransaksi extends CI_Controller
 		$data['jenis_limbah']= $this->M_limbahtransaksi->getJenisLimbah();
 		$data['getSeksi']= $this->M_limbahtransaksi->getSeksi();
 		$data['perlakuan']= $this->M_limbahtransaksi->getPerlakuan();
-		$data['satuan'] = $this->M_limbahtransaksi->getSatuan();
+
 
 		$data['Title'] = 'Limbah Masuk';
 		$data['Menu'] = 'Master Limbah';
@@ -161,7 +161,7 @@ class C_LimbahTransaksi extends CI_Controller
     			);
 			$this->M_limbahtransaksi->updateLimbahTransaksi($data, $plaintext_string);
 
-			redirect(site_url('WasteManagement/LimbahTransaksi'));
+			redirect(base_url('WasteManagement/LimbahTransaksi'));
 		}
 	}
 
@@ -255,10 +255,10 @@ class C_LimbahTransaksi extends CI_Controller
 	{	
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Report Limbah Masuk';
+		$data['Title'] = 'Neraca Limbah B3';
 		$data['Menu'] = 'Report Limbah';
-		$data['SubMenuOne'] = 'Report Limbah Masuk';
-		$data['SubMenuTwo'] = 'Report Limbah Masuk Bulanan';
+		$data['SubMenuOne'] = 'Neraca';
+		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -356,20 +356,16 @@ class C_LimbahTransaksi extends CI_Controller
 															
 			}
 
-			$data['tanggalawalformatindo'] 	= date('d-F-Y',strtotime($tanggalawal));
-			$data['tanggalakhirformatindo']	= date('d-F-Y',strtotime($tanggalakhir));
-
-			$tglindo1 = explode('-', $data['tanggalawalformatindo']);
-			$tglindo2 = explode('-', $data['tanggalakhirformatindo']);
-
-			$data['tglindo1'] = $tglindo1[1].' - '.$tglindo1[2];
-			$data['tglindo2'] = $tglindo2[1].' - '.$tglindo2[2];
+			$data['tanggalawalformatindo'] 	= date('F-Y',strtotime($tanggalawal));
+			$data['tanggalakhirformatindo']	= date('F-Y',strtotime($tanggalakhir));
 
 			$data['perlakuan'] = $this->M_limbahtransaksi->getPerlakuan();
-			$data['jumlahlimbah'] = $this->M_limbahtransaksi->TotalLimbahBulanan();
+			$data['jumlahlimbah'] = $this->M_limbahtransaksi->TotalLimbahBulanan($tanggalawal,$tanggalakhir);
+			$data['SisaSebelum'] = $this->M_limbahtransaksi->PeriodeSebelum($tanggalawal);
+			$data['header'] = $this->M_limbahtransaksi->HeaderExcel();
             $data['filterMasuk'] = $this->M_limbahtransaksi->filterLimbahMasuk($tanggalawal,$tanggalakhir,$jenisLimbah);
 			$data['filterKeluar'] = $this->M_limbahtransaksi->filterLimbahKeluar($tanggalawal,$tanggalakhir,$jenisLimbah);
-            
+
             $this->load->view('WasteManagement/LimbahTransaksi/V_Excel', $data, true);
     }
 
@@ -436,6 +432,21 @@ class C_LimbahTransaksi extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('WasteManagement/LimbahTransaksi/V_Record', $data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function selectJenisLimbah(){
+		$JenisLimbah_id = $this->input->post('cmbJenisLimbahHeader');
+		$SatuanLimbah = $this->M_limbahtransaksi->selectSatuanLimbah($JenisLimbah_id);
+		$SumberLimbah = $this->M_limbahtransaksi->selectSumberLimbah($JenisLimbah_id);
+
+		foreach ($SatuanLimbah as $SL) {
+			$data['limbah_satuan'] = $SL['limbah_satuan'];
+		}
+
+		foreach ($SumberLimbah as $Sumber) {
+			$data['sumber'] = $Sumber['sumber'];
+		}
+		echo json_encode($data);
 	}
 
 }

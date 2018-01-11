@@ -51,29 +51,31 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input type="text" name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
+										<input type="text" name="txtTanggalPelaksanaan" value="<?php echo $rc['date_foredit']?>" class="form-control singledateADM" placeholder="Tanggal" required >
 										<input type="text" id="scheduledate" value="<?php echo $rc['date_foredit']?>" hidden>
 									</div>
 								</div>
 							</div>
 						
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-3 control-label">Waktu</label>
-									<div class="col-lg-4 ">
-										<div class="bootstrap-timepicker timepicker">
-											<input type="text" name="txtWaktuMulai" class="form-control" placeholder="Waktu" id="TrainingStartTime" onkeypress="return isNumberKey(event)" value="<?php echo $rc['start_time']?>" required >
-										</div>
+							<?php if ($rc['package_scheduling_id']==0 && $rc['package_training_id']==0) {?>
+								<div class="row" style="margin: 10px 10px">
+									<div class="form-group">
+										<label class="col-lg-3 control-label">Waktu</label>
+										<div class="col-lg-4 ">
+											<div class="bootstrap-timepicker timepicker">
+												<input type="text" name="txtWaktuMulai" class="form-control" placeholder="Waktu" id="TrainingStartTime" onkeypress="return isNumberKey(event)" value="<?php echo $rc['start_time']?>" required >
+											</div>
 
-									</div>
-									<label class="col-lg-1 control-label" align="center">-</label>
-									<div class="col-lg-4">
-										<div class="bootstrap-timepicker timepicker">
-											<input type="text" name="txtWaktuSelesai" class="form-control"  placeholder="Waktu" id="TrainingEndTime" onkeypress="return isNumberKey(event)"  value="<?php echo $rc['end_time']?>" required >
+										</div>
+										<label class="col-lg-1 control-label" align="center">-</label>
+										<div class="col-lg-4">
+											<div class="bootstrap-timepicker timepicker">
+												<input type="text" name="txtWaktuSelesai" class="form-control"  placeholder="Waktu" id="TrainingEndTime" onkeypress="return isNumberKey(event)"  value="<?php echo $rc['end_time']?>" required >
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							<?php } ?>
 
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
@@ -100,14 +102,14 @@
 										<?php
 											$evalData = explode(',', $rc['evaluation']);
 											$eval='';
-											if($rc['evaluation']=='1'){$eval='Reaksi';}
+											// if($rc['evaluation']=='1'){$eval='Reaksi';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';}
-											if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';}
-											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
-											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Sikap / Perilaku';}
-											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-												{$eval='Reaksi, Pembelajaran, Sikap / Perilaku';}
+											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';}
+											// if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Evaluasi Lapangan';}
+											// if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+											// 	{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';}
 										?>
 										<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" >
 												<?php

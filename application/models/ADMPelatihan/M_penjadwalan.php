@@ -32,7 +32,7 @@ class M_penjadwalan extends CI_Model {
 			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
 					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
 					where pst.training_id = pmt.training_id 
-						AND pst.date = to_date('$date','DD-MM-YYYY')
+						AND pst.date = to_date('$date','MM-DD-YYYY')
 						and (pst.start_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
 							AND to_timestamp('$end_time', 'HH24:MI')::time without time zone
 						OR end_time::time without time zone BETWEEN to_timestamp('$start_time', 'HH24:MI')::time without time zone
@@ -43,9 +43,21 @@ class M_penjadwalan extends CI_Model {
 			return $query->result_array();
 		}
 
+		public function GetAlertPackage($date,$room,$training_id)
+		{
+			$sql =" SELECT pst.date,pst.start_time,pst.end_time,pst.room,pst.trainer, pmt.training_name
+					from pl.pl_scheduling_training pst, pl.pl_master_training pmt
+					where pst.training_id = pmt.training_id 
+						AND pst.date = to_date('$date','MM-DD-YYYY')
+						AND pst.room = '$room'
+					order by pst.room";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+
 		public function GetEvaluationType()
 		{
-			$sql = "select * from pl.pl_evaluation_type";
+			$sql = "select * from pl.pl_evaluation_type where (evaluation_type_id=2 or evaluation_type_id=3)";
 			$query=$this->db->query($sql);
 			return $query->result_array();
 		}
@@ -86,6 +98,13 @@ class M_penjadwalan extends CI_Model {
 		//Get Trainer
 		public function GetTrainer(){
 			$sql = "select * from pl.pl_master_trainer order by noind";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function GetTrainerPackage(){
+			$sql = "select * from pl.pl_master_trainer
+					order by noind";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

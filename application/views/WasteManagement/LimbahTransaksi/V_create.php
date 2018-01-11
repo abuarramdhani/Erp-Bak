@@ -30,19 +30,33 @@
 											<div class="form-group">
                                                 <label for="txtTanggalTransaksiHeader" class="control-label col-lg-4">Tanggal Masuk</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtTanggalTransaksiHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtTanggalTransaksiHeader" required/>
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="cmbJenisLimbahHeader" class="control-label col-lg-4">Jenis Limbah</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbJenisLimbahHeader" name="cmbJenisLimbahHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
+                                                    <select name="cmbJenisLimbahHeader" id="cmbJenisLimbahHeader" class="select2" data-placeholder="Choose an option" style="width: 100%" required>
                                                         <option value=""></option>
                                                         <?php foreach ($jenis_limbah as $limbah) { ?>
                                                         <option value="<?php echo $limbah['id_jenis_limbah']; ?>"><?php echo $limbah['jenis_limbah']; ?></option>
                                                         <?php }?> 
                                                     </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbJenisSumberHeader" class="control-label col-lg-4">Jenis Sumber</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" name="cmbJenisSumberHeader" class="form-control" id="SumberLimbah" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan Limbah</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" name="cmbSatuanHeader" class="form-control" id="SatuanLimbah" readonly>
                                                 </div>
                                             </div>
 
@@ -59,32 +73,10 @@
                                             </div>
 
 											<div class="form-group">
-                                                <label for="cmbJenisSumberHeader" class="control-label col-lg-4">Jenis Sumber</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbJenisSumberHeader" name="cmbJenisSumberHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
-                                                        <option value=""></option>
-                                                        <option value="1">Proses Produksi</option>
-                                                        <option value="0">Diluar Proses Produksi</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="cmbSatuanHeader" class="control-label col-lg-4">Satuan</label>
-                                                <div class="col-lg-4">
-                                                    <select id="cmbSatuanHeader" name="cmbSatuanHeader" class="select select2" data-placeholder="Choose an option" style="width: 100%">
-                                                        <option value=""></option>
-                                                        <?php foreach ($satuan as $stn) { ?>
-                                                        <option value="<?php echo $stn['id_satuan']; ?>"><?php echo $stn['limbah_satuan'];?></option>
-                                                        <?php }?>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
                                                 <label for="txtJumlahHeader" class="control-label col-lg-4">Jumlah</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Jumlah" name="txtJumlahHeader" id="txtJumlahHeader" class="form-control" />
+                                                    <p class="help-block"> Example : 0.123 (gunakan titik pengganti koma)</p>
                                                 </div>
                                             </div>
 
@@ -103,7 +95,7 @@
 											<div class="form-group">
                                                 <label for="txtMaksPenyimpananHeader" class="control-label col-lg-4">Maks Penyimpanan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtMaksPenyimpananHeader" class="date form-control" data-date-format="yyyy-mm-dd" id="txtMaksPenyimpananHeader" />
+                                                    <input type="text" placeholder="<?php echo date('d M Y')?>" name="txtMaksPenyimpananHeader" class="form-control" " id="txtMaksPenyimpananHeader" readonly/>
                                                 </div>
                                             </div>
 

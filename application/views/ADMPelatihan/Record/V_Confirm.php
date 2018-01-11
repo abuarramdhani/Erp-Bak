@@ -55,18 +55,20 @@
 								</div>
 							</div>
 
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-3 control-label">Waktu</label>
-									<div class="col-lg-4 ">
-										<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
-									</div>
-									<label class="col-lg-1 control-label" align="center">-</label>
-									<div class="col-lg-4">
-										<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
+							<?php if ($rc['package_scheduling_id']==0 && $rc['package_training_id']==0) {?>
+								<div class="row" style="margin: 10px 10px">
+									<div class="form-group">
+										<label class="col-lg-3 control-label">Waktu</label>
+										<div class="col-lg-4 ">
+											<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
+										</div>
+										<label class="col-lg-1 control-label" align="center">-</label>
+										<div class="col-lg-4">
+											<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
+										</div>
 									</div>
 								</div>
-							</div>
+							<?php }?>
 
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
@@ -83,14 +85,14 @@
 									<div class="col-lg-9">
  										<?php
 											$eval='';$ev1='';$ev2='';$ev3='';
-											if($rc['evaluation']=='1'){$eval='Reaksi';$ev1='Y';}
+											// if($rc['evaluation']=='1'){$eval='Reaksi';$ev1='Y';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';$ev2='Y';}
-											if($rc['evaluation']=='3'){$eval='Sikap / Perilaku';$ev3='Y';}
-											if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';$ev1='Y';$ev2='Y';}
-											if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Sikap / Perilaku';$ev1='Y';$ev3='Y';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Sikap / Perilaku';$ev2='Y';$ev3='Y';}
-											if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-												{$eval='Reaksi, Pembelajaran, Sikap / Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
+											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';$ev3='Y';}
+											// if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';$ev1='Y';$ev2='Y';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';$ev1='Y';$ev3='Y';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Evaluasi Lapangan';$ev2='Y';$ev3='Y';}
+											// if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
+											// 	{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';$ev1='Y';$ev2='Y';$ev3='Y';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
@@ -186,26 +188,33 @@
 							</div>
 							<form method="post" action="<?php echo base_url('ADMPelatihan/Record/DoConfirm')?>">
 							<div class="row" style="margin: 10px 10px">
-								<div class="col-md-12">
+								<div class="col-md-12" >
 									<input type="text" name="txtSchnum" value="<?php echo $rc['scheduling_id']?>" hidden></input>
-									<table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+									<div style="overflow: scroll;">
+									<table class="datatable table table-striped table-bordered table-hover" style="min-width: 1500px">
 										<thead class="bg-primary">
 											<tr>
-												<th width="5%">No</th>
-												<th width="8%">No Induk</th>
-												<th width="20%">Nama Peserta</th>
-												<th width="12%">Status</th>
-													<?php if ($ev1=='Y') { ?>
-														<th width="8%">Reaksi (Post)</th>
-													<?php } ?>
+												<th  rowspan="2"  class="header_table">No</th>
+												<th  rowspan="2" class="header_table">No Induk</th>
+												<th  rowspan="2" style="min-width: 300px" class="header_table" >Nama Peserta</th>
+												<th  rowspan="2" style="min-width: 200px" class="header_table">Status</th>
+													<!-- <?php if ($ev1=='Y') { ?>
+														<th  rowspan="2"  class="header_table">Reaksi (Post)</th>
+													<?php } ?> -->
 													<?php if($ev2=='Y'){ ?>
-														<th width="10%">Pembelajaran (Pre)</th>
-														<th width="10%">Pembelajaran (Post)</th>
+														<th colspan="2" class="header_table">Pembelajaran</th>
 													<?php } if($ev3=='Y'){ ?>
-														<th width="8%">Sikap / Perilaku (Pre)</th>
-														<th width="8%">Sikap / Perilaku (Post)</th>
-														<th width="8%">Evaluasi Lapangan</th>
+														<th  colspan="2" class="header_table">Perubahan Perilaku (Evaluasi Lapangan)</th>
 													<?php } ?>
+											</tr>
+											<tr>
+												<?php if($ev2=='Y'){ ?>
+													<th   class="header_table">(Pre)</th>
+													<th   class="header_table">(Post)</th>
+												<?php } if($ev3=='Y'){ ?>
+													<th   class="header_table">Kompetensi</th>
+													<th   class="header_table" style="min-width: 300px">Keterangan</th>
+												<?php } ?>
 											</tr>
 										</thead>
 										<tbody>
@@ -214,6 +223,7 @@
 												$nonstafdata = array();
 												foreach ($participant as $pt){ $no++;
 
+												// STATUS HADIR/TIDAK HADIR
 												if('2'==$pt['status'])
 												{
 													$hadir='';
@@ -225,17 +235,19 @@
 													$tidakhadir='';
 												}
 
+												// NOMOR INDUK YANG STAF
 												$staffCode = array('B', 'D', 'J', 'Q');
 												$indCode = substr($pt['noind'], 0, 1);
 												if (in_array($indCode, $staffCode)) {
-													$a='staf';
+													$a='stafKKM';
 													array_push($stafdata, $pt['noind'] );
 												}else{
-													$a='nonstaf';
+													$a='nonstafKKM';
 													array_push($nonstafdata, $pt['noind'] );
 												}
+
 												?>
-											<tr>
+											<tr row-id="<?php echo $no ?>">
 												<td><?php echo $no ?></td>
 												<td><?php echo $pt['noind'] ?></td>
 												<td><?php echo $pt['participant_name'] ?></td>
@@ -246,26 +258,18 @@
 														<option value="2" <?php echo $tidakhadir;?> >Tidak Hadir</option>
 													</select>
 												</td>
-													<?php if ($ev1=='Y') { ?>
-												<td>
-													<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval1_post'];?>">
-												</td>	
-													<?php } if($ev2=='Y'){ ?>
-												<td>
-													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
+												<!-- <td col-id="reaksi">
+														<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onchange="<?php echo $a; ?>(this,'reaksi','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval1_post'];?>">
+												</td>  -->
+													<?php if($ev2=='Y'){ ?>
+												<td col-id="pre">
+													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onchange="<?php echo $a; ?>(this,'pre','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
 												</td>
-												<td>
-													<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
+												<td col-id="post">
+													<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
 												</td>
 													<?php } if($ev3=='Y'){ ?>
 												<td>
-													<input type="text" class="form-control" name="txtPerilakuPre[]" Placeholder="Perilaku (pre)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_pre'];?>">
-												</td>
-												<td>
-													<input type="text" class="form-control" name="txtPerilakuPost[]" Placeholder="Perilaku (Post)" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post1'];?>">
-												</td>
-												<td>
-													<!-- <input type="text" class="form-control" name="txtPerilakuEvalLap[]" Placeholder="Eval" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval3_post2'];?>"> -->
 													<select class="form-control SlcRuang" name="txtPerilakuEvalLap[]" data-placeholder="Eval" required>
 														<option value="0" <?php if ($pt['score_eval3_post2'] == 0) {
 															echo "selected";
@@ -275,11 +279,15 @@
 														} ?> >Kompeten</option>
 													</select>
 												</td>
+												<td>
+													<input type="text" class="form-control" name="txtKeterangan[]" Placeholder="Keterangan" value="<?php echo $pt['comment'];?>">
+												</td>
 													<?php } ?>
 											</tr>
 											<?php } ?>
 										</tbody>
 									</table>
+								</div>
 								</div>
 							</div>
 							<div class="bg-primary disabled color-palette">
@@ -287,6 +295,9 @@
 									<div class="form-group">
 										<label class="col-lg-12 control-label">*) Standar kelulusan :
 										<?php
+										echo '<input type="hidden" id="kkmStaff" value="'.$rc['limit_1'].'">';
+										echo '<input type="hidden" id="kkmNonStaff" value="'.$rc['limit_2'].'">';
+
 										if ($stafdata!=null && $nonstafdata!=null) {
 											echo '<br><br> <b>Staf:</b> <br> '.implode($stafdata, ', ').' = '.$rc['limit_1'];
 											echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
@@ -297,6 +308,103 @@
 										}
 										?></label>
 									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="row" style="margin: 10px 10px">
+								<div class="col-md-12">
+									<div class="table-responsive" style="overflow:hidden;overflow:scroll;max-height: 380px;">
+									<table class="table table-striped table-bordered table-hover text-left" id="tblrecord" style="font-size:14px;width:1800px;">
+										<?php 
+												$no=0; $no++;
+											?>
+										<thead>
+											<tr class="bg-primary">
+												<th>No</th>
+												<th>Segmen</th>
+												<th>Statement</th>
+												<?php foreach($sheet as $se){ ?>
+													<td style="min-width:150px;text-align: center;"><?php echo '<b>Subjek - '.$no++.'</b>'; ?></td>
+												<?php } ?>
+												<th style="min-width: 70px">Total</th>
+												<th style="min-width: 70px">Rata-Rata</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+												$no=1; foreach ($GetSchName_QuesName_detail as $gsq) { ?>
+												<input type="text" name="txtID" value="<?php echo $gsq['scheduling_id'];?>" hidden>
+											<tr>	
+												<?php
+												$n=0;
+												$i=0;
+												foreach($segment as $sg){
+													if ($sg['scheduling_id']==$gsq['scheduling_id']) {
+														$checkpoint_sg_desc = 0;
+														foreach($statement as $st => $val){
+															if ($sg['segment_id'] == $val['segment_id']) {
+													?>
+														<tr>
+															<?php if ($checkpoint_sg_desc == 0) {
+																foreach ($sgstCount as $key => $value) {
+																	if ($value['segment_id'] == $sg['segment_id']) { ?>
+																		<td rowspan="<?php echo $value['rowspan']; ?>" align="center" style="max-width: 5px"> <?php echo $no++; ?> </td>
+																		<td rowspan="<?php echo $value['rowspan']; ?>" style="min-width: 100px"><?php echo $sg['segment_description']; ?></td>
+																	<?php }
+																}
+																$checkpoint_sg_desc = 1;
+															} ?>
+															<td style="min-width: 300px"><?php echo $val['statement_description']; ?></td>
+															<?php
+																$indeks_sheet = 0;
+																foreach($sheet as $se){
+																	$stj = explode('||', $se['join_input']);
+																	$stj_id = explode('||', $se['join_statement_id']);
+																	$stj_temp[$i][$indeks_sheet++] = array(
+																		'join_statement_id' => $stj_id[$i],
+																		'join_input'		=> $stj[$i]
+																	);
+																if($stj[$i] == 1) echo "<td>1</td>";
+																else if($stj[$i] == 2) echo "<td>2</td>";
+																else if($stj[$i] == 3) echo "<td>3</td>";
+																else if($stj[$i] == 4) echo "<td>4</td>";
+																else if(empty($stj[$i]))echo "<td>-</td>";
+																else echo '<td style="min-width:150px">'.$stj[$i].'</td>';}
+															?>
+															<td style="min-width: 70px">
+																<?php
+																	$total = 0;
+																	for ($n=0; $n < count($stj_temp[$i]); $n++) { 
+																		$total = $total + $stj_temp[$i][$n]['join_input'];
+																	}
+																	echo $total;
+																?>
+															</td>
+															<td style="min-width: 70px">
+																<?php
+																	$total = 0;
+																	for ($n=0; $n < count($stj_temp[$i]); $n++) { 
+																		$total = $total + $stj_temp[$i][$n]['join_input'];
+																		foreach ($GetQuestParticipant as $key => $qp) {
+																			$rata_rata = $total/$qp['peserta_kuesioner'];
+																		}
+																	}
+																	echo $rata_rata;
+																?>
+															</td>
+														</tr>
+															<?php
+																$i++;
+															}
+														}
+													}
+													?>
+												<?php }
+												}
+											?>
+										</tbody>
+									</table>
+								</div>
 								</div>
 							</div>
 							<hr>

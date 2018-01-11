@@ -8,12 +8,12 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Master Training</b></h1>
+						<h1><b>Input Kuesioner</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/MasterTraining');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/Record/Finished');?>">
                                 <i class="icon-wrench icon-2x"></i>
                                 <span><br/></span>	
                             </a>
@@ -80,7 +80,7 @@
 						</div>
 						<br>
 						<?php } ?>
-						<?php $bagnum=0; // foreach($segment as $sg){ $bagnum++ ?>
+						<?php $bagnum=0;?>
 						<div class="col-lg-12 text-right">
 							<div class="form-group">
 								<div class="col-lg-12 text-right">
@@ -89,75 +89,70 @@
 							</div>
 						</div>
 						<div class="row" style="margin: 10px 10px">
-							<div class="table-responsive col-lg-12" >
-								 <table class="datatable table table-striped table-bordered table-hover text-left" id="tblPenjadwalan" style="table-layout: fixed; min-width:1500px;">
+							<div class=" col-lg-12">
+							<div  style="overflow-x: auto;">
+								 <table class="datatable table table-striped table-bordered table-hover text-left" id="tblPenjadwalan">
 										<?php 
-											$no=0;
-													$no++
+											$no=0; $no++;
 										?>
 									<thead>
 										<tr class="bg-primary">
-											<th style="width: 30px">No</th>
-											<th style="width: 80px">Action</th>
-											<?php
-											foreach($segment as $sg){
-												foreach($statement as $st){
-													if ($sg['segment_id'] == $st['segment_id']) {
-											?>
-												<th>
-													<?php echo $sg['segment_description'].' - '.$st['statement_description'] ?>
-												</th>
-											<?php }
-												}
-											}
-											?>
+											<td style="background-color: white; min-width:800px; margin: 0px;" hidden="true"></td>
+											<td style="background-color: #337ab7; position: absolute; min-width:800px; height: 100px;text-align:center"><h4><b>Komponen Evaluasi</b></h4></td>
+											<?php foreach($sheet as $se){ ?>
+												<td style="min-width:300px;"><?php echo '<b>'.$no++.'</b>'; ?></td>
+											<?php } ?>
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach($sheet as $se){ ?>
 										<tr>
-											<td><?php echo $no++; ?></td>
-											<td>
-												<a href="<?php echo base_url('ADMPelatihan/InputQuestionnaire/edit/'.$se['scheduling_id'].'/'.$se['questionnaire_id'].'/'.$se['questionnaire_sheet_id']);?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
-												<a href="<?php $id1=$SchedulingId;$id2=$QuestionnaireId;$id3=$se['questionnaire_sheet_id'];echo base_url('ADMPelatihan/InputQuestionnaire/delete/'.$id1.'/'.$id2.'/'.$id3)?>"  class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
-												<?php
-													foreach($statement as $st){
-												?>
-														<input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden>
-												<?php
-													}
-												
-												?>
-											</td>
-												<?php
-													$stj = explode('||', $se['join_input']);
-													$hasil = array();
-													$j = 0;
-													$k = 0;
-													for ($i = 0; $i < count($stj); $i++) {
-														if($stj[$i] == 1 || $stj[$i] == 2 || $stj[$i] == 3 || $stj[$i] == 4){
-															$hasil[$j]['nilai'] = $stj[$i];
-														} else {
-															$hasil[$j]['essay'][$k] = $stj[$i];
-															$k++;
-														}
-														if(($i+1) == count($stj)) {
-
-														} else {
-															if($stj[($i+1)] == 3) $j++;	
-														}
-															
-															if($stj[$i] == 1) echo "<td>Sangat Tidak Setuju</td>";
-															else if($stj[$i] == 2) echo "<td>Tidak Setuju</td>";
-															else if($stj[$i] == 3) echo "<td>Setuju</td>";
-															else if($stj[$i] == 4) echo "<td>Sangat Setuju</td>";
-															else echo '<td>'.$stj[$i].'</td>';
-													}
-												?>
-										</tr>
+											<td style="background-color: white; min-width:800px; margin: 0px;"></td>
+											<?php foreach($sheet as $se){ ?>
+												<td style="min-width:150px"><a href="<?php echo base_url('ADMPelatihan/InputQuestionnaire/edit/'.$se['scheduling_id'].'/'.$se['questionnaire_id'].'/'.$se['questionnaire_sheet_id']);?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
+													<a href="<?php $id1=$SchedulingId;$id2=$QuestionnaireId;$id3=$se['questionnaire_sheet_id'];echo base_url('ADMPelatihan/InputQuestionnaire/delete/'.$id1.'/'.$id2.'/'.$id3)?>"  class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
+													<?php foreach($statement as $st){ ?>
+															<input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden>
+													<?php } ?>
+												</td>
 										<?php } ?>
+										</tr> 
+										
+											<?php
+												$n=0;
+												$i=0;
+												$number=1;
+											foreach($segment as $sg){
+												foreach($statement as $st => $val){
+													if ($sg['segment_id'] == $val['segment_id']) {
+											?>
+												<tr>
+													<td style="position: absolute; background-color: white; outline: transparent; min-width:800px; margin: 0px;">
+														<?php
+															echo "<b>".$number++.'. '.$sg['segment_description']."</b>".' - '.$val['statement_description'];
+														?>
+													</td>
+													<?php
+														foreach($sheet as $se){
+															$stj = explode('||', $se['join_input']);
+
+														if($stj[$i] == 1) echo "<td>Sangat Tidak Setuju</td>";
+														else if($stj[$i] == 2) echo "<td>Tidak Setuju</td>";
+														else if($stj[$i] == 3) echo "<td>Setuju</td>";
+														else if($stj[$i] == 4) echo "<td>Sangat Setuju</td>";
+														else if(empty($stj[$i]))echo "<td>-</td>";
+														else echo '<td>'.$stj[$i].'</td>';										
+														}
+														$i++;
+													?>
+												</tr>
+													<?php
+													}
+												}
+											}
+											?>
 									</tbody>
 								</table>
+							</div>
 							</div>
 						</div>
 						<br>
@@ -185,6 +180,3 @@
 	</div>
 	</div>
 </section>
-	
-			
-				

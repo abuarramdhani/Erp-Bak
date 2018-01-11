@@ -73,7 +73,6 @@
 					<li class="header">MENU</li>
 				</ul>
 				<!-----------------------Menu Level 1------------------->
-				
 				<ul class="sidebar-menu">
 					<?php
 						foreach($UserMenu as $UserMenu_item){

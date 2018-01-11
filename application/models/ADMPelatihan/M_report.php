@@ -22,6 +22,28 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetTrainingFilter($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "where training_name ILIKE '%$term%'";}
+		
+		$sql = "
+				SELECT * FROM pl.pl_master_training $iftermtrue
+			";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetTrainerFilter($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "where trainer_name ILIKE '%$term%'";}
+		
+		$sql = "
+				SELECT * from pl.pl_master_trainer $iftermtrue order by trainer_status DESC
+			";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	public function GetSeksi($term){
 		if ($term === FALSE) {
 			$iftermtrue = "";
@@ -130,85 +152,98 @@ class M_report extends CI_Model {
 		}else{
 			$s="and es.section_name like '%$section%'";
 		}
-		$sql="	select	section_name, jumlah.jml, jumlah.nama, jumlah.tahun,jumlah.scheduling_id
+		$sql="	select	es.section_name, jumlah.jml, jumlah.nama, jumlah.tahun,jumlah.scheduling_id
 				from	
 				er.er_section es,
-				(select 
-							pea.section_code,
+				(
+					select 
+							ees.section_name,
 							pst.scheduling_name as nama,
 							to_char(pst.date,'YYYY')as tahun,
 							pst.scheduling_id,
 							count(pp.participant_name)as jml
 							from	pl.pl_participant pp,
 									er.er_employee_all pea,
+									er.er_section ees,
 									pl.pl_scheduling_training pst
 							where
-							pp.noind = pea.employee_code
-							and
-							pp.scheduling_id=pst.scheduling_id
+								pp.noind = pea.employee_code
+								and ees.section_code = pea.section_code
+								and pp.scheduling_id=pst.scheduling_id
 							$p
-							group by pea.section_code, pst.scheduling_name, 3,4) as jumlah
+							group by
+								ees.section_name,
+								pst.scheduling_name,
+								3,
+								4
+							) as jumlah
 				where jumlah.jml is not null
-				and jumlah.section_code = es.section_code
+				and jumlah.section_name = es.section_name
 				$s
-				group by section_name,es.section_code,2,3,4,5";
+				group by es.section_name,2,3,4,5;";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
 	public function GetReport3($date1,$date2){
 		$sql = "
-				WITH Training_Stat
-					AS(
- 						SELECT
-  							 scheduling_id
-  							,CASE WHEN MAX(score_eval2_post) IS NULL THEN '0' ELSE MAX(score_eval2_post) END as Nilai_Maximum
-  							,CASE WHEN MIN(score_eval2_post) IS NULL THEN '0' ELSE MIN(score_eval2_post) END as Nilai_Minimum
-  							,CASE WHEN AVG(score_eval2_post) IS NULL THEN '0' ELSE ROUND(AVG(score_eval2_post),2) END as Nilai_Rerata
- 						from pl.pl_participant
-						group by scheduling_id
+				with Training_Stat as(
+				select
+					scheduling_id,
+					case
+						when max( score_eval2_post ) is null then '0'
+						else max( score_eval2_post )
+					end as Nilai_Maximum,
+					case
+						when min( score_eval2_post ) is null then '0'
+						else min( score_eval2_post )
+					end as Nilai_Minimum,
+					case
+						when avg( score_eval2_post ) is null then '0'
+						else round( avg( score_eval2_post ), 2 )
+					end as Nilai_Rerata
+				from
+					pl.pl_participant
+				group by
+					scheduling_id
+			) select
+				a.scheduling_id,
+				a.scheduling_name,
+				case
+					when a.date is null then null
+					else to_char(
+						a.date,
+						'DD MONTH YYYY'
 					)
-				SELECT
-					 a.scheduling_id
-					,a.scheduling_name
-					,case when a.date
-  					 is null then null
- 					 else to_char(a.date,'DD MONTH YYYY')
-					 end as training_date
-					,a.trainer
-					,a.participant_number
-					,(select 
-						sum(case when c.score_eval2_post>=
-						(case when 
-							substring(noind,0, 2) like 'B' or 
-							substring(noind,0, 2) like 'D' or 
-							substring(noind,0, 2) like 'J' or 
-							substring(noind,0, 2) like 'G' or 
-							substring(noind,0, 2) like 'L' or 
-							substring(noind,0, 2) like 'Q' or 
-							substring(noind,0, 2) like 'Z' 
-							then 
-								cast(
-									(case when substring(d.standar_kelulusan,0,3) is null or
-								 	substring(d.standar_kelulusan,0,3) = '' then '0' else substring(d.standar_kelulusan,0,3) end)	
-								as int)
-								else cast(
-									(case when substring(d.standar_kelulusan,4,3) is null or 
-									substring(d.standar_kelulusan,4,3) = '' then '0' else substring(d.standar_kelulusan,4,3) end)
-								as int)end) 
-							then 1
-							else 0 
-						end) as lulus
-						from pl.pl_participant c
-							left join pl.pl_scheduling_training d on c.scheduling_id=d.scheduling_id 
-						where c.scheduling_id=a.scheduling_id) as kelulusan
-					,b.Nilai_Maximum
-					,b.Nilai_Minimum
-					,b.Nilai_Rerata
-				from pl.pl_scheduling_training a
-				left join Training_Stat b on a.scheduling_id=b.scheduling_id
-				where a.date between TO_DATE('$date1', 'DD/MM/YYYY') and TO_DATE('$date2', 'DD/MM/YYYY')
-				order by a.date asc";
+				end as training_date,
+				a.trainer,
+				a.participant_number,
+				(
+					select
+						sum( case when c.score_eval2_post >=( case when substring( noind, 1, 1 ) in( 'B', 'D', 'J', 'G', 'L', 'Q', 'Z' ) then cast(( case when split_part( d.standar_kelulusan, ',', 1 ) is null or split_part( d.standar_kelulusan, ',', 1 )= '' then '0' else split_part( d.standar_kelulusan, ',', 1 ) end ) as int ) else cast(( case when split_part( d.standar_kelulusan, ',', 2 ) is null or split_part( d.standar_kelulusan, ',', 2 )= '' then '0' else split_part( d.standar_kelulusan, ',', 2 ) end ) as int ) end ) then 1 else 0 end ) as lulus
+					from
+						pl.pl_participant c left join pl.pl_scheduling_training d on
+						c.scheduling_id = d.scheduling_id
+					where
+						c.scheduling_id = a.scheduling_id
+				) as kelulusan,
+				b.Nilai_Maximum,
+				b.Nilai_Minimum,
+				b.Nilai_Rerata,
+				a.package_scheduling_id
+			from
+				pl.pl_scheduling_training a left join Training_Stat b on
+				a.scheduling_id = b.scheduling_id
+			where
+				a.date between TO_DATE(
+					'$date1',
+					'DD/MM/YYYY'
+				) and TO_DATE(
+					'$date2',
+					'DD/MM/YYYY'
+				)
+			order by
+				a.date asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -452,79 +487,68 @@ class M_report extends CI_Model {
 	// EFEKTIFITAS TRAINING
 	public function GetEfektivitasTraining($date1,$date2)
 	{
-		$sql="WITH Training_Stat
-					AS(
- 						SELECT
-  							 scheduling_id
-  							,CASE WHEN MAX(score_eval2_post) IS NULL THEN '0' ELSE MAX(score_eval2_post) END as Nilai_Maximum
-  							,CASE WHEN MIN(score_eval2_post) IS NULL THEN '0' ELSE MIN(score_eval2_post) END as Nilai_Minimum
-  							,CASE WHEN AVG(score_eval2_post) IS NULL THEN '0' ELSE ROUND(AVG(score_eval2_post),2) END as Nilai_Rerata
- 						from pl.pl_participant
-						group by scheduling_id
+		$sql="with Training_Stat as(
+				select
+					scheduling_id,
+					case
+						when max( score_eval2_post ) is null then '0'
+						else max( score_eval2_post )
+					end as Nilai_Maximum,
+					case
+						when min( score_eval2_post ) is null then '0'
+						else min( score_eval2_post )
+					end as Nilai_Minimum,
+					case
+						when avg( score_eval2_post ) is null then '0'
+						else round( avg( score_eval2_post ), 2 )
+					end as Nilai_Rerata
+				from
+					pl.pl_participant
+				group by
+					scheduling_id
+			) select
+				a.training_type,
+				a.scheduling_id,
+				a.scheduling_name,
+				a.participant_number,
+				case
+					when a.date is null then null
+					else to_char(
+						a.date,
+						'DD MONTH YYYY'
 					)
-				SELECT
-					a.training_type
-					,a.scheduling_id
-					,a.scheduling_name
-					,a.participant_number
-					,case when a.date
-  					 is null then null
- 					 else to_char(a.date,'DD MONTH YYYY')
-					 end as training_date
-					,(select 
-						sum(case when c.score_eval2_post>=
-						(case when 
-							substring(noind,0, 2) like 'B' or 
-							substring(noind,0, 2) like 'D' or 
-							substring(noind,0, 2) like 'J' or 
-							substring(noind,0, 2) like 'G' or 
-							substring(noind,0, 2) like 'L' or 
-							substring(noind,0, 2) like 'Q' or 
-							substring(noind,0, 2) like 'Z' 
-							then 
-								cast(
-									(case when substring(d.standar_kelulusan,0,3) is null or
-								 	substring(d.standar_kelulusan,0,3) = '' then '0' else substring(d.standar_kelulusan,0,3) end)	
-								as int)
-								else cast(
-									(case when substring(d.standar_kelulusan,4,3) is null or 
-									substring(d.standar_kelulusan,4,3) = '' then '0' else substring(d.standar_kelulusan,4,3) end)
-								as int)end) 
-							then 1
-							else 0 
-						end) as lulus
-						from pl.pl_participant c
-							left join pl.pl_scheduling_training d on c.scheduling_id=d.scheduling_id 
-						where c.scheduling_id=a.scheduling_id) as kelulusan,
-					(select 
-						sum(case when c.score_eval2_post<=
-						(case when 
-							substring(noind,0, 2) like 'B' or 
-							substring(noind,0, 2) like 'D' or 
-							substring(noind,0, 2) like 'J' or 
-							substring(noind,0, 2) like 'G' or 
-							substring(noind,0, 2) like 'L' or 
-							substring(noind,0, 2) like 'Q' or 
-							substring(noind,0, 2) like 'Z' 
-							then 
-								cast(
-									(case when substring(d.standar_kelulusan,0,3) is null or
-								 	substring(d.standar_kelulusan,0,3) = '' then '0' else substring(d.standar_kelulusan,0,3) end)	
-								as int)
-								else cast(
-									(case when substring(d.standar_kelulusan,4,3) is null or 
-									substring(d.standar_kelulusan,4,3) = '' then '0' else substring(d.standar_kelulusan,4,3) end)
-								as int)end) 
-							then 1
-							else 0 
-						end) as lulus
-						from pl.pl_participant c
-							left join pl.pl_scheduling_training d on c.scheduling_id=d.scheduling_id 
-						where c.scheduling_id=a.scheduling_id) as ketidak_kelulusan
-				from pl.pl_scheduling_training a
-				left join Training_Stat b on a.scheduling_id=b.scheduling_id
-				where a.date between TO_DATE('$date1', 'DD/MM/YYYY') and TO_DATE('$date2', 'DD/MM/YYYY')
-				order by a.date asc";
+				end as training_date,
+				(
+					select
+						sum( case when c.score_eval2_post >=( case when substring( noind, 1, 1 ) in( 'B', 'D', 'J', 'G', 'L', 'Q', 'Z' ) then cast(( case when split_part( d.standar_kelulusan, ',', 1 ) is null or split_part( d.standar_kelulusan, ',', 1 )= '' then '0' else split_part( d.standar_kelulusan, ',', 1 ) end ) as int ) else cast(( case when split_part( d.standar_kelulusan, ',', 2 ) is null or split_part( d.standar_kelulusan, ',', 2 )= '' then '0' else split_part( d.standar_kelulusan, ',', 2 ) end ) as int ) end ) then 1 else 0 end ) as lulus
+					from
+						pl.pl_participant c left join pl.pl_scheduling_training d on
+						c.scheduling_id = d.scheduling_id
+					where
+						c.scheduling_id = a.scheduling_id
+				) as kelulusan,
+				(
+					select
+						sum( case when c.score_eval2_post <=( case when substring( noind, 1, 1 ) in( 'B', 'D', 'J', 'G', 'L', 'Q', 'Z' ) then cast(( case when split_part( d.standar_kelulusan, ',', 1 ) is null or split_part( d.standar_kelulusan, ',', 1 )= '' then '0' else split_part( d.standar_kelulusan, ',', 1 ) end ) as int ) else cast(( case when split_part( d.standar_kelulusan, ',', 2 ) is null or split_part( d.standar_kelulusan, ',', 2 )= '' then '0' else split_part( d.standar_kelulusan, ',', 2 ) end ) as int ) end ) then 1 else 0 end ) as lulus
+					from
+						pl.pl_participant c left join pl.pl_scheduling_training d on
+						c.scheduling_id = d.scheduling_id
+					where
+						c.scheduling_id = a.scheduling_id
+				) as ketidak_kelulusan
+			from
+				pl.pl_scheduling_training a left join Training_Stat b on
+				a.scheduling_id = b.scheduling_id
+			where
+				a.date between TO_DATE(
+					'$date1',
+					'DD/MM/YYYY'
+				) and TO_DATE(
+					'$date2',
+					'DD/MM/YYYY'
+				)
+			order by
+				a.date ASC";
 		$query=$this->db->query($sql);
 		return $query->result_array();
 	}
@@ -532,64 +556,75 @@ class M_report extends CI_Model {
 	public function GetEfektivitasTrainingAll($date1,$date2)
 	{
 		$sql="with Training_Stat as(
-					select
-						scheduling_id,
-						case
-							when max( score_eval2_post ) is null then '0'
-							else max( score_eval2_post )
-						end as Nilai_Maximum,
-						case
-							when min( score_eval2_post ) is null then '0'
-							else min( score_eval2_post )
-						end as Nilai_Minimum,
-						case
-							when avg( score_eval2_post ) is null then '0'
-							else round( avg( score_eval2_post ), 2 )
-						end as Nilai_Rerata
-					from
-						pl.pl_participant
-					group by
-						scheduling_id
-				) select
-					tabel.*,
-					round(( cast(( tabel.kelulusan ) as decimal )/ cast(( tabel.participant_number ) as decimal ))* 100, 0 )|| ' %' as persentase
+				select
+					scheduling_id,
+					case
+						when max( score_eval2_post ) is null then '0'
+						else max( score_eval2_post )
+					end as Nilai_Maximum,
+					case
+						when min( score_eval2_post ) is null then '0'
+						else min( score_eval2_post )
+					end as Nilai_Minimum,
+					case
+						when avg( score_eval2_post ) is null then '0'
+						else round( avg( score_eval2_post ), 2 )
+					end as Nilai_Rerata
 				from
-					(
-						select
-							a.training_type,
-							b.scheduling_id,
-							a.participant_number,
-							case
-								when a.date is null then null
-								else to_char(
-									a.date,
-									'DD MONTH YYYY'
-								)
-							end as training_date,
-							(to_char(a.date, 'MONTH'))as bulan,
-							extract(year from date) as yyyy,
-							(
-								select
-									sum( case when c.score_eval2_post >=( case when substring( noind, 0, 2 ) like 'B' or substring( noind, 0, 2 ) like 'D' or substring( noind, 0, 2 ) like 'J' or substring( noind, 0, 2 ) like 'G' or substring( noind, 0, 2 ) like 'L' or substring( noind, 0, 2 ) like 'Q' or substring( noind, 0, 2 ) like 'Z' then cast(( case when substring( d.standar_kelulusan, 0, 3 ) is null or substring( d.standar_kelulusan, 0, 3 )= '' then '0' else substring( d.standar_kelulusan, 0, 3 ) end ) as int ) else cast(( case when substring( d.standar_kelulusan, 4, 3 ) is null or substring( d.standar_kelulusan, 4, 3 )= '' then '0' else substring( d.standar_kelulusan, 4, 3 ) end ) as int ) end ) then 1 else 0 end ) as lulus
-								from
-									pl.pl_participant c left join pl.pl_scheduling_training d on
-									c.scheduling_id = d.scheduling_id
-								where
-									c.scheduling_id = a.scheduling_id
-							) as kelulusan
-						from
-							pl.pl_scheduling_training a left join Training_Stat b on
-							a.scheduling_id = b.scheduling_id
-						where
-							a.date between TO_DATE(
-								'$date1',
-								'DD/MM/YYYY'
-							) and TO_DATE(
-								'$date2',
-								'DD/MM/YYYY'
+					pl.pl_participant
+				group by
+					scheduling_id
+			) select
+				tabel.*,
+				round(( cast(( tabel.kelulusan ) as decimal )/ cast(( tabel.participant_number ) as decimal ))* 100, 0 )|| ' %' as persentase
+			from
+				(
+					select
+						a.training_type,
+						b.scheduling_id,
+						a.participant_number,
+						case
+							when a.date is null then null
+							else to_char(
+								a.date,
+								'DD MONTH YYYY'
 							)
-						order by 6,5 DESC
-					) as tabel";
+						end as training_date,
+						(
+							to_char(
+								a.date,
+								'MONTH'
+							)
+						) as bulan,
+						extract(
+							year
+						from
+							date
+						) as yyyy,
+						(
+							select
+								sum( case when c.score_eval2_post >=( case when substring( noind, 1, 1 ) in( 'B', 'D', 'J', 'G', 'L', 'Q', 'Z' ) then cast(( case when split_part( d.standar_kelulusan, ',', 1 ) is null or split_part( d.standar_kelulusan, ',', 1 )= '' then '0' else split_part( d.standar_kelulusan, ',', 1 ) end ) as int ) else cast(( case when split_part( d.standar_kelulusan, ',', 2 ) is null or split_part( d.standar_kelulusan, ',', 2 )= '' then '0' else split_part( d.standar_kelulusan, ',', 2 ) end ) as int ) end ) then 1 else 0 end ) as lulus
+							from
+								pl.pl_participant c left join pl.pl_scheduling_training d on
+								c.scheduling_id = d.scheduling_id
+							where
+								c.scheduling_id = a.scheduling_id
+						) as kelulusan
+					from
+						pl.pl_scheduling_training a left join Training_Stat b on
+						a.scheduling_id = b.scheduling_id
+					where
+						a.date between TO_DATE(
+							'$date1',
+							'DD/MM/YYYY'
+						) and TO_DATE(
+							'$date2',
+							'DD/MM/YYYY'
+						)
+					order by
+						6,
+						5 desc
+				) as tabel";
 		$query=$this->db->query($sql);
 		return $query->result_array();
 	}
@@ -605,9 +640,28 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
-	//Ambil data Trainer Lengkap
+	public function GetStatement()
+	{
+		$sql="	select	st.*
+				from	pl.pl_master_questionnaire_statement st";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	//Ambil data Trainer untuk view kedua
 	public function GetTrainer(){
 		$sql = "select * from pl.pl_master_trainer order by trainer_status DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	//Ambil data Trainer untuk view kedua
+	public function GetTrainerQue($trainer=FALSE){
+		if ($trainer==FALSE) {
+			$p='';
+		}else{
+			$p="where trainer_id = '$trainer'";
+		}
+		$sql = "select * from pl.pl_master_trainer $p order by trainer_status DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -627,6 +681,153 @@ class M_report extends CI_Model {
 		$sql 	 = "SELECT REPLACE((to_char(pst.date, 'MONTH')), ' ', '') as bulan
 					FROM pl.pl_scheduling_training pst
 					group by bulan";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSchName_QuesName_segmen()
+	{
+		$sql="	SELECT	a.scheduling_id,sg.questionnaire_id, sg.segment_id,a.scheduling_name , sg.segment_description
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id,
+						(
+							select	sg.questionnaire_id,sg.segment_id,sg.segment_description, sg.segment_type
+							from	pl.pl_master_questionnaire_segment sg
+						)sg
+				where sg.questionnaire_id=b.questionnaire_id
+				and sg.segment_type=1
+				group by 1,2,3,4,5
+				order by sg.segment_id asc";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSchName_QuesName($pelatihan = FALSE, $date = FALSE, $trainer = FALSE)
+	{
+		if ($pelatihan == FALSE && $date == FALSE && $trainer == FALSE) {
+			$p='';
+			$s='';
+			$t='';
+		}elseif ($pelatihan == FALSE && $date == TRUE && $trainer == FALSE) {
+			$p='';
+			$s=" WHERE a.date=TO_DATE('$date', 'YYYY/MM/DD')";
+			$t='';
+		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == FALSE) {
+			$p=" WHERE a.scheduling_name='$pelatihan'";
+			$s='';
+			$t='';
+		}elseif ($pelatihan == TRUE && $date == TRUE && $trainer == FALSE) {
+			$p=" WHERE a.scheduling_name='$pelatihan'";
+			$s=" AND a.date=TO_DATE('$date', 'YYYY/MM/DD')";
+			$t='';
+		}elseif ($pelatihan == TRUE && $date == TRUE && $trainer == TRUE) {
+			$p=" WHERE a.scheduling_name='$pelatihan'";
+			$s=" AND a.date=TO_DATE('$date', 'YYYY/MM/DD')";
+			$t=" AND a.trainer like '%$trainer%'";
+		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == TRUE) {
+			$p=" WHERE a.scheduling_name='$pelatihan'";
+			$s='';
+			$t=" AND a.trainer like '%$trainer%'";
+		}elseif ($pelatihan == FALSE && $date == FALSE && $trainer == TRUE) {
+			$p='';
+			$s='';
+			$t=" WHERE a.trainer like '%$trainer%'";
+		}elseif ($pelatihan == FALSE && $date == TRUE && $trainer == TRUE) {
+			$p='';
+			$s=" WHERE a.date=TO_DATE('$date', 'YYYY/MM/DD')";
+			$t= "AND a.trainer like '%$trainer%'";
+		}
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+				$p $s $t
+				group by 1,2,3,4,5,6";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSchName_QuesName_detail($id,$qe)
+	{
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+						where	a.scheduling_id=$id
+				and		c.questionnaire_id=$qe
+				group by 1,2,3,4";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+		// return $sql;
+	}
+
+
+	public function GetSheet($id,$qe)
+	{
+		$sql="	SELECT *
+				from pl.pl_questionnaire_sheet qs
+				WHERE (qs.scheduling_id =$id
+				AND qs.questionnaire_id =$qe)";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSheetAll()
+	{
+		$sql="	SELECT *
+				from pl.pl_questionnaire_sheet qs
+				inner join pl.pl_master_questionnaire_segment mq
+				on qs.questionnaire_id=mq.questionnaire_id
+				order by mq.segment_id";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetQuestParticipant($id)
+	{
+		$sql="	SELECT count(scheduling_id)as peserta_kuesioner
+				from	pl.pl_participant
+				where	scheduling_id=$id
+				and 	status=1";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetQuestionnaireSegmentId($id,$qe){
+		$sql = "
+			select *
+			from pl.pl_master_questionnaire_segment sg,
+			(	select pst.scheduling_id
+				from	pl.pl_scheduling_training pst
+				where	pst.scheduling_id=$id
+			)pst
+			where questionnaire_id=$qe
+			order by segment_order";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetSchPackage()
+	{
+		$sql="select * from pl.pl_scheduling_package";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetAttendant(){
+		$sql = " SELECT
+					a.scheduling_id, 
+					count(participant_id) as attendant
+				from pl.pl_participant a
+				where status=1
+				group by 1";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

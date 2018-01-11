@@ -7,7 +7,8 @@ class C_Report extends CI_Controller {
     {
         parent::__construct();
 		  
-        $this->load->helper('form');
+        $this->
+load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
@@ -16,6 +17,7 @@ class C_Report extends CI_Controller {
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('ADMPelatihan/M_report');
+		$this->load->model('ADMPelatihan/M_inputquestionnaire');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -91,7 +93,7 @@ class C_Report extends CI_Controller {
 		
 		$date1='1/1/1900';
 		$date2='1/1/1900';
-		$data['report'] = $this->M_report->GetReport3($date1,$date2);
+		$data['report'] 	= $this->M_report->GetReport3($date1,$date2);
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
 				
 		$this->load->view('V_Header',$data);
@@ -101,6 +103,166 @@ class C_Report extends CI_Controller {
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index3',$data);
 		$this->load->view('V_Footer',$data);
 	}
+	//HALAMAN RECORD BY QUESTIONNAIRE
+	public function reportbyquestionnaire(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Report by Questionnaire';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$pelatihan 	= $this->input->POST('pelatihan');
+		$date 		= $this->input->POST('date');
+		$trainer	= $this->input->POST('trainer');
+
+		$data['attendant'] 				= $this->M_report->GetAttendant();
+		$data['trainer']				= $this->M_report->GetTrainerQue($trainer = FALSE);
+		$schedule 						= $this->M_report->GetSchName_QuesName($pelatihan = FALSE, $date = FALSE);
+		$data['GetSchName_QuesName'] 	= $schedule;
+		$segment						= $this->M_report->GetSchName_QuesName_segmen();
+		$statement						= $this->M_report->GetStatement();
+		$nilai 							= $this->M_report->GetSheetAll();
+
+		// HITUNG TOTAL NILAI---------------------------------------------------------------------------
+		$t_nilai = array();
+		$x = 0;
+		foreach ($schedule as $sch) {
+			foreach ($segment as $key => $value) {
+				if ($sch['scheduling_id']==$value['scheduling_id'] && $sch['questionnaire_id']==$value['questionnaire_id']) {
+
+					$total_nilai=array();
+					$id = 0;
+					$tot_p = 0;
+					$tot_s = 0;
+					$tot_p_checkpoint = 0;
+
+					foreach ($statement as $st) {
+
+						if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+							$a_tot = 0;
+							foreach ($nilai as $index => $score) {								
+								if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+									$a=explode('||', $score['join_input']);
+									$b=explode('||', $score['join_statement_id']);
+									foreach ($b as $bi => $bb) {
+										if ($bb==$st['statement_id']) {
+											$a_tot+=$a[$bi];
+											if ($tot_p_checkpoint == 0) {
+												$tot_p++;
+											}
+										}
+									}
+								}
+							}
+							
+							$total_nilai[$id++] = array(
+								'segment_id' => $st['segment_id'], 
+								'statement_id' => $st['statement_id'], 
+								'total' => $a_tot, 
+							);
+							$tot_s++;
+							$tot_p_checkpoint = 1;
+						}
+					}
+
+					$final_total=0;
+					foreach ($total_nilai as $n => $tn) {
+						$final_total+=$tn['total'];
+					}
+					$t_rerata=$final_total/($tot_s*$tot_p);
+
+					$t_nilai[$x++]= array(
+						'scheduling_id'		=> $value['scheduling_id'], 
+						'questionnaire_id'	=> $value['questionnaire_id'], 
+						'segment_id'		=> $value['segment_id'], 
+						'f_total'			=> $final_total, 
+						'f_rata'			=> $t_rerata 
+					);
+				}
+			}
+		}
+		$data['t_nilai']= $t_nilai;
+
+		// HITUNG ROWSPAN---------------------------------------------------------------------------
+		$data['sheet_all'] = '';
+		$data['GetSchName_QuesName_segmen'] = $segment;
+		$data['index_temp'] 		= array();
+		$sgCount	= array();
+
+		foreach ($data['GetSchName_QuesName'] as $i => $val) {
+			$rowspan	= 0;
+			foreach ($data['GetSchName_QuesName_segmen'] as $key => $sg) {
+				if ($sg['scheduling_id'] == $val['scheduling_id'] && $sg['questionnaire_id'] == $val['questionnaire_id']) {
+					$rowspan++;
+				}
+			}
+			$sgCount[$i] = array(
+				'scheduling_id' => $val['scheduling_id'],
+				'questionnaire_id' => $val['questionnaire_id'],
+				'rowspan' => $rowspan
+				);
+		}
+		$data['sgCount'] 		= $sgCount;
+		// ------------------------------------------------------------------------------------------
+		
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index2',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index3',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function reportbyquestionnaire_1($id,$qe){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Report by Questionnaire';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['GetSchName_QuesName_detail'] = $this->M_report->GetSchName_QuesName_detail($id,$qe);
+		$data['GetQuestParticipant'] = $this->M_report->GetQuestParticipant($id);
+
+		$data['sheet'] = $this->M_report->GetSheet($id,$qe);
+		$data['segment'] 		= $this->M_report->GetQuestionnaireSegmentId($id,$qe);
+		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
+		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
+
+		// HITUNG ROWSPAN---------------------------------------------------------------------------
+		$data['stj_temp'] 		= array();
+		$sgstCount	= array();
+		foreach ($data['segment'] as $key => $sg) {
+			$rowspan	= 0;
+			foreach ($data['statement'] as $i => $val) {
+				if ($sg['segment_id'] == $val['segment_id']) {
+					$rowspan++;
+				}
+			}
+			$sgstCount[$key] = array(
+				'segment_id' => $sg['segment_id'],
+				'rowspan' => $rowspan
+				);
+		}
+		$data['sgstCount'] 		= $sgstCount;
+		// HITUNG ROWSPAN---------------------------------------------------------------------------
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Detail',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 
 	//HALAMAN REKAP 
 	public function rekap(){
@@ -237,19 +399,50 @@ class C_Report extends CI_Controller {
 		echo "]";
 	}
 
+	public function GetTrainerFilter(){
+		$term = $this->input->get("term");
+		$data = $this->M_report->GetTrainerFilter($term);
+
+		echo json_encode($data);
+	}
+
+	public function GetTrainingFilter(){
+		$term = $this->input->get("term");
+		$data = $this->M_report->GetTrainingFilter($term);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{
+					"Nama_Training":"'.$data['training_name'].'"
+				}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
 	public function GetTrainingPrtcp($id)
 	{	
 		$section 	= $this->input->post('section');
 		$report 	= $this->M_report->GetTrainingPrtcp($id, $section);
 		$no =1;
 		foreach ($report as $rc) {
-			echo "<tr>
-					<td>".$no++."</td>
-					<td>".$rc['participant_name']."</td>
-				</tr>";
+			echo "
+				<tr>
+				    <td>
+				        ".$no++."
+				    </td>
+				    <td>
+				        ".$rc['participant_name']."
+				    </td>
+				</tr>
+			";
 		}
 
 	}
+
 
 	//REPORT 1
 	public function GetReport1(){
@@ -275,7 +468,105 @@ class C_Report extends CI_Controller {
 		$date2 				= $this->input->POST('date2');
 		$data['report'] 	= $this->M_report->GetReport3($date1,$date2);
 		$data['trainer'] 	= $this->M_report->GetTrainer($date1,$date2);
+		$data['sch_package'] 	= $this->M_report->GetSchPackage();
+
 		$this->load->view('ADMPelatihan/Report/ReportByTraining/V_Index2',$data);
+	}
+	//REPORT 4
+	public function GetReport4(){
+		
+		$pelatihan 			= $this->input->POST('pelatihan');
+		$date 				= $this->input->POST('date');
+		$trainer			= $this->input->POST('trainer');
+		$data['trainer']	= $this->M_report->GetTrainerQue($trainer);
+		$schedule = $this->M_report->GetSchName_QuesName($pelatihan, $date, $trainer);
+
+		$data['GetSchName_QuesName'] = $schedule;
+		$segment = $this->M_report->GetSchName_QuesName_segmen();
+		$statement= $this->M_report->GetStatement();
+		$nilai = $this->M_report->GetSheetAll();
+		// HITUNG TOTAL NILAI---------------------------------------------------------------------------
+		$t_nilai = array();
+		$x = 0;
+		foreach ($schedule as $sch) {
+			foreach ($segment as $key => $value) {
+				if ($sch['scheduling_id']==$value['scheduling_id'] && $sch['questionnaire_id']==$value['questionnaire_id']) {
+
+					$total_nilai=array();
+					$id = 0;
+					$tot_p = 0;
+					$tot_s = 0;
+					$tot_p_checkpoint = 0;
+
+					foreach ($statement as $st) {
+
+						if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+							$a_tot = 0;
+							foreach ($nilai as $index => $score) {								
+								if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+									$a=explode('||', $score['join_input']);
+									$b=explode('||', $score['join_statement_id']);
+									foreach ($b as $bi => $bb) {
+										if ($bb==$st['statement_id']) {
+											$a_tot+=$a[$bi];
+											if ($tot_p_checkpoint == 0) {
+												$tot_p++;
+											}
+										}
+									}
+								}
+							}
+							
+							$total_nilai[$id++] = array(
+								'segment_id' => $st['segment_id'], 
+								'statement_id' => $st['statement_id'], 
+								'total' => $a_tot, 
+							);
+							$tot_s++;
+							$tot_p_checkpoint = 1;
+						}
+					}
+
+					$final_total=0;
+					foreach ($total_nilai as $n => $tn) {
+						$final_total+=$tn['total'];
+					}
+					$t_rerata=$final_total/($tot_s*$tot_p);
+
+					$t_nilai[$x++]= array(
+						'scheduling_id'		=> $value['scheduling_id'], 
+						'questionnaire_id'	=> $value['questionnaire_id'], 
+						'segment_id'		=> $value['segment_id'], 
+						'f_total'			=> $final_total, 
+						'f_rata'			=> $t_rerata 
+					);
+				}
+			}
+		}
+		$data['t_nilai']= $t_nilai;
+
+		// HITUNG ROWSPAN---------------------------------------------------------------------------
+		$data['sheet_all'] = '';
+		$data['GetSchName_QuesName_segmen'] = $segment;
+		$data['index_temp'] 		= array();
+		$sgCount	= array();
+
+		foreach ($data['GetSchName_QuesName'] as $i => $val) {
+			$rowspan	= 0;
+			foreach ($data['GetSchName_QuesName_segmen'] as $key => $sg) {
+				if ($sg['scheduling_id'] == $val['scheduling_id'] && $sg['questionnaire_id'] == $val['questionnaire_id']) {
+					$rowspan++;
+				}
+			}
+			$sgCount[$i] = array(
+				'scheduling_id' => $val['scheduling_id'],
+				'questionnaire_id' => $val['questionnaire_id'],
+				'rowspan' => $rowspan
+				);
+		}
+		$data['sgCount'] 		= $sgCount;
+		// ------------------------------------------------------------------------------------------
+		$this->load->view('ADMPelatihan/Report/ReportByQuestionnaire/V_Index2',$data);
 	}
 
 	//REKAP TRAINING
@@ -307,10 +598,6 @@ class C_Report extends CI_Controller {
 		$date2 					= $this->input->POST('date2');
 		$data['efekTrain']	 	= $this->M_report->GetEfektivitasTraining($date1,$date2);
 		$data['efekTrainall'] 	= $this->M_report->GetEfektivitasTrainingAll($date1,$date2);
-		// echo "<pre>";
-		// print_r($data['efekTrain']);
-		// echo "<pre>";
-		// exit();
 		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index2',$data);
 	}
 

@@ -98,7 +98,7 @@
 															<input type="hidden" name="idStatement[]" value="<?php echo $st['statement_id'] ?>">
 														</td>
 														<td>
-															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSegment" title="Hapus Baris" onclick="delSpesifikRowSt(<?php echo $no++.','.$st['statement_id']; ?>)"><i class="fa fa-remove"></i>Delete</a>
+															<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelStatment" title="Hapus Baris" onclick="delSpesifikRowSt(<?php echo $no++.','.$st['statement_id']; ?>)"><i class="fa fa-remove"></i>Delete</a>
 														</td>
 													</tr>
 												<?php } ?> 			

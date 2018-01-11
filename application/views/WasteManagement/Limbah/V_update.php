@@ -95,6 +95,7 @@
                                                 <div class="col-lg-4">
                                                     <input type="file" name="fileLimbah" id="fileLimbah" />
                                                     <a target="_blank" href="<?php echo base_url('/assets/limbah/kondisi-limbah/').$headerRow['kondisi_limbah'];?>"><?php echo $headerRow['kondisi_limbah'];?></a>
+                                                    <p style="margin-top:7px">Tipe Gambar <strong>.jpeg/.jpg</strong></p>
                                                 </div>
                                             </div>
 
@@ -178,6 +179,7 @@
                                                 <div class="col-lg-4">
                                                     <input type="file" name="fileFoto" id="fileFoto" />
                                                     <a target="_blank" href="<?php echo base_url('/assets/limbah/standar-foto/').$headerRow['standar_foto'];?>"><?php echo $headerRow['standar_foto'];?></a>
+                                                    <p style="margin-top:7px">Tipe Gambar <strong>.jpeg/.jpg</strong></p>
                                                 </div>
                                             </div>
 

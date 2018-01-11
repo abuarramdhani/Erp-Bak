@@ -30,6 +30,7 @@
 					<div class="box-body">
 					<?php foreach($details as $dt){?>
 						<div class="row" style="margin: 10px 10px">
+						<?php echo $alert; ?>
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $dt['training_name']?></b></h3>
 							</label>
@@ -53,7 +54,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Tanggal</label>
 									<div class="col-lg-9">
-										<input name="txtTanggalPelaksanaan" class="form-control singledateADM" placeholder="Tanggal" required >
+										<input name="txtTanggalPelaksanaan" class="form-control singledateADM checkdateSch" placeholder="Tanggal" id="checkdateSch" required >
 									</div>
 								</div>
 							</div>
@@ -97,9 +98,10 @@
 									<div class="col-lg-9">
 	  									<select class="form-control select4" name="slcEvaluasi[]" id="slcEvaluasi" multiple="multiple" data-placeholder=" Evaluasi" required>
 												<option value="" ></option>
-												<?php foreach($GetEvaluationType as $et){ ?>
+												<?php foreach($GetEvaluationType as $et){
+													?>
 													<option value="<?php echo $et['evaluation_type_id']?>">
-														<?php echo $et['evaluation_type_description']?>
+														<?php echo $et['evaluation_type_description'];?>
 													</option>
 												<?php } ?>
 										</select>

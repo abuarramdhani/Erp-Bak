@@ -29,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-customer" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -60,18 +60,15 @@
                                                 	<a href="<?php echo base_url('WasteManagement/LimbahTransaksi/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
 												<td><?php echo date('d M Y', strtotime($row['tanggal_transaksi'])) ;?></td>
-												<td><?php echo $row['jenis'] ?></td>
-												<td><?php echo $row['sumber'] ?></td>
-												<td><?php if($row['jenis_sumber']==1){
-                                                                echo "Proses Produksi";}
-                                                            elseif ($row['jenis_sumber']==0) {
-                                                                echo "Diluar Proses Produksi";} ?>
+												<td><?php echo $row['jenis_limbah'] ?></td>
+												<td><?php echo $row['nama_seksi'] ?></td>
+												<td><?php echo $row['jenis_sumber'] ?>
                                                 </td>
-												<td><?php echo $row['satuan_limbah'] ?></td>
+												<td><?php echo $row['satuan'] ?></td>
 												<td><?php echo $row['jumlah'] ?></td>
 												<td><?php echo $row['limbah_perlakuan'] ?></td>
 												<td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>
-                                                <td align="center"><?php if(empty($row['konfirmasi'])) {
+                                                <td align="center"><?php if($row['konfirmasi']==0) {
                                                                 echo "<h4><span class='label label-warning'>Waiting</span></h4>";
                                                             }elseif ($row['konfirmasi']==1) {
                                                                 echo "<h4><span class='label label-success'>Confirmed</span></h4>";
