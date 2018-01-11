@@ -252,6 +252,7 @@
 																									select 		count(distinct frontpres.noind)
 																									from 		\"FrontPresensi\".tpresensi as frontpres
 																									where 		frontpres.tanggal=tabeltanggal.tanggal
+																												and 	frontpres.waktu::time<=current_time
 																												and 	$klausaWhereKodesie
 																								)
 																				else 	(
@@ -292,6 +293,19 @@
 																			where 		tim.tanggal=tabeltanggal.tanggal
 																						and 	$klausaWhereKodesie
 																						and 	tim.kd_ket='TM'
+																		)
+																		+
+																		(
+																			case 	when 	current_date=tabeltanggal.tanggal
+																							then	(
+																										select 		count(frontpres.waktu)
+																										from 		\"FrontPresensi\".tpresensi as frontpres
+																										where 		frontpres.tanggal=tabeltanggal.tanggal
+																													and 	frontpres.noind=tblpkj.noind
+																													and 	frontpres.waktu::time<=current_time
+																									)
+																					else 	0
+																			end
 																		)
 																	) as jumlah_pekerja_tidak_hadir
 													from 			(
