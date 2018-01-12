@@ -88,11 +88,8 @@
 </section>
 
 <script type="text/javascript">
-    
-    window.onload = function() {
-        setTimeout(function() {
+    $(window).load(function(){
             var     tahun   = $('#TahunPeriodeMaintenance').val();
             rekapMaintenance(tahun);
-        }, 1000);
-    }
+    });    
 </script>

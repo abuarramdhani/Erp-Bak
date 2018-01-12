@@ -40,7 +40,7 @@ class C_FleetMonitoring extends CI_Controller
 
 		$data['Title'] = 'Monitoring';
 		$data['Menu'] = 'Monitoring';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Monitoring All';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
