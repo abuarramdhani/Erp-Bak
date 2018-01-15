@@ -599,3 +599,25 @@ table.t_riwayat_mutasi td
     vertical-align: middle !important; 
     text-align: center;
 }
+
+:focus{
+outline:none;
+}
+
+.radio2{
+-webkit-appearance:button;
+-moz-appearance:button;
+ appearance:button;
+border:4px solid #ccc;
+ border-top-color:#bbb;
+border-left-color:#bbb;
+background:#fff;
+width:30px;
+height:30px;
+border-radius:50%;
+}
+
+.radio2:checked{
+border:10px solid
+#4099ff;
+}

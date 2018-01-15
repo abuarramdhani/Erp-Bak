@@ -363,6 +363,42 @@ load->helper('form');
 		$this->load->view('V_Footer',$data);
 	}
 
+	//HALAMAN INDEX CREATE REPORT
+	public function createReportIndex(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Create Report Index';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/CreateReport/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	//HALAMAN CREATE REPORT
+	public function createReport(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Create Report';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
+		$this->load->view('V_Footer',$data);
+	}
 
 //----------------------------------- JAVASCRIPT RELATED --------------------//
 //----------------------------------- JAVASCRIPT RELATED --------------------//
@@ -442,7 +478,6 @@ load->helper('form');
 		}
 
 	}
-
 
 	//REPORT 1
 	public function GetReport1(){
@@ -589,6 +624,13 @@ load->helper('form');
 		$data['prcentpart']	 	= $this->M_report->GetPercentParticipant($date1,$date2);
 		$data['prcentpartall'] 	= $this->M_report->GetPercentParticipantAll($date1,$date2);
 		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index2',$data);
+	}
+
+	public function GetDetailParticipant()
+	{
+		$schid 					= $this->input->POST('schid');
+		$data['modal_part'] 	= $this->M_report->GetDetailParticipant($schid);
+		$this->load->view('ADMPelatihan/Report/Rekap/PresentaseKehadiran/V_index_modal',$data);
 	}
 
 	//EFEKTIVITAS TRAINING

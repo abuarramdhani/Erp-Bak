@@ -59,6 +59,7 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['participant_confirm'] = $this->M_record->GetParticipant();
 
 		$paket          = $this->M_record->paket();
 		$pelatihan		= $this->M_record->pelatihan();
@@ -68,11 +69,44 @@ class C_Record extends CI_Controller {
         $iCheck             = 0;
         foreach ($pelatihan as $key => $valPL) {
             if ($valPL['package_scheduling_id'] == 0) {
-                $record[$iRec] = $valPL;
+            	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+            	if ($cekNumRow == 0) {
+            		$questStatus = '';
+            	}else{
+            		$questStatus = 'font-weight:bold';
+            	}
+
+            	$dataPaket   = array(
+                            'scheduling_id'             => $valPL['scheduling_id'],
+                            'package_scheduling_id'     => $valPL['package_scheduling_id'],
+                            'scheduling_name'           => $valPL['scheduling_name'],
+                            'date'                      => $valPL['date'],
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => $valPL['trainer'],
+                            'evaluation'                => $valPL['evaluation'],
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => $valPL['date_format'],
+                            'tidak_terlaksana'          => $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus
+                        );
+                $record[$iRec] = $dataPaket;
+                // $record[$iRec] = $valPL;
                 $iRec++;
-            }else{
+           }else{
                 foreach ($paket as $i => $valPK) {
                     if ($valPL['package_scheduling_id'] == $valPK['package_scheduling_id'] && !in_array($valPL['package_scheduling_id'], $checkoutData)) {
+		            	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+		            	if ($cekNumRow == 0) {
+		            		$questStatus = '';
+		            	}else{
+		            		$questStatus = 'font-weight:bold';
+		            	}
                         $dataPaket   = array(
                             'scheduling_id'             => '-',
                             'package_scheduling_id'     => $valPK['package_scheduling_id'],
@@ -89,7 +123,8 @@ class C_Record extends CI_Controller {
                             'start_date_format'         => $valPL['start_date_format'],
                             'end_date_format'           => $valPL['end_date_format'],
                             'date_format'               => '-',
-                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'] 
+                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus 
                         );
                         $record[$iRec] = $dataPaket;
                         $checkoutData[$iCheck] = $valPL['package_scheduling_id'];
@@ -99,7 +134,6 @@ class C_Record extends CI_Controller {
                 }
             }
         }
-
         $data['record'] = $record;
 
 		$this->load->view('V_Header',$data);
@@ -124,11 +158,12 @@ class C_Record extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		// $data['record'] = $this->M_record->GetRecordFinished();
-		$schedule = $this->M_report->GetSchName_QuesName();
-		$data['GetSchName_QuesName'] = $schedule;
-		$questionnaireID= $schedule[0]['questionnaire_id'];
-		$data['qe']=$questionnaireID;
-		$data['trainer'] = $this->M_record->GetTrainer();
+		$schedule 						= $this->M_report->GetSchName_QuesName();
+		$data['GetSchName_QuesName'] 	= $schedule;
+		$questionnaireID 				= $schedule[0]['questionnaire_id'];
+		$data['qe'] 					=$questionnaireID;
+		$data['trainer'] 				= $this->M_record->GetTrainer();
+		$data['participant_confirm'] = $this->M_record->GetParticipant();
 
 		$GetRecordFinished2 = $this->M_record->paket();
 		$GetRecordFinished1	= $this->M_record->GetRecordFinished1();
@@ -138,11 +173,47 @@ class C_Record extends CI_Controller {
         $iCheck             = 0;
         foreach ($GetRecordFinished1 as $key => $valPL) {
             if ($valPL['package_scheduling_id'] == 0) {
-                $record[$iRec] = $valPL;
+
+            	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+            	if ($cekNumRow == 0) {
+            		$questStatus = '';
+            	}else{
+            		$questStatus = 'font-weight:bold';
+            	}
+
+            	$dataPaket   = array(
+                            'scheduling_id'             => $valPL['scheduling_id'],
+                            'package_scheduling_id'     => $valPL['package_scheduling_id'],
+                            'scheduling_name'           => $valPL['scheduling_name'],
+                            'date'                      => $valPL['date'],
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => $valPL['trainer'],
+                            'evaluation'                => $valPL['evaluation'],
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => $valPL['date_format'],
+                            'tidak_terlaksana'          => $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus
+                        );
+                $record[$iRec] = $dataPaket;
+                // $record[$iRec] = $valPL;
                 $iRec++;
             }else{
                 foreach ($GetRecordFinished2 as $i => $valPK) {
                     if ($valPL['package_scheduling_id'] == $valPK['package_scheduling_id'] && !in_array($valPL['package_scheduling_id'], $checkoutData)) {
+                    	
+                    	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+                    	if ($cekNumRow == 0) {
+                    		$questStatus = '';
+                    	}else{
+                    		$questStatus = 'font-weight:bold';
+                    	}
+
                         $dataPaket   = array(
                             'scheduling_id'             => '-',
                             'package_scheduling_id'     => $valPK['package_scheduling_id'],
@@ -159,7 +230,8 @@ class C_Record extends CI_Controller {
                             'start_date_format'         => $valPL['start_date_format'],
                             'end_date_format'           => $valPL['end_date_format'],
                             'date_format'               => '-',
-                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'] 
+                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus
                         );
                         $record[$iRec] = $dataPaket;
                         $checkoutData[$iCheck] = $valPL['package_scheduling_id'];
@@ -171,7 +243,7 @@ class C_Record extends CI_Controller {
         }
 
         $data['record'] = $record;
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Indexf',$data);
@@ -235,7 +307,7 @@ class C_Record extends CI_Controller {
 		$data['participant'] = $this->M_record->GetParticipantId($id);
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$data['id'] 	= $id;
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Record/V_Edit',$data);
@@ -419,26 +491,6 @@ class C_Record extends CI_Controller {
 
 		}
 
-		$data_scd = array();
-		foreach ($schedule as $key => $va) {
-			$jumlah_segment = 0;
-			$jumlah=0;
-			foreach ($t_nilai as $k => $value) {
-				if ($value['scheduling_id']==$va['scheduling_id'] && $value['questionnaire_id']==$va['questionnaire_id']) {
-					$jumlah_segment++;
-					$jumlah += $value['f_total'];
-				}
-			}
-
-			$nilai_reaksi=
-
-			$data_scd [$key]= array(
-						'scheduling_id'		=> $va['scheduling_id'],
-						'questionnaire_id'		=> $va['questionnaire_id'],
-						'segment'		=> $jumlah_segment,
-						'total'			=> $jumlah
-			);
-		}
 		// AMBIL NILAI DARI REPORT BY QUESTIONNAIRE
 		$qe= $schedule[0]['questionnaire_id'];
 		$data['qe']=$qe;
@@ -489,6 +541,7 @@ class C_Record extends CI_Controller {
 		$ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
 		$ScoreEval3Eval 	= $this->input->post('txtPerilakuEvalLap');
 		$Comment		 	= $this->input->post('txtKeterangan');
+		$Others			 	= $this->input->post('txtOthers');
 		
 			$i=0;
 			foreach($ParticipantId as $loop){
@@ -500,6 +553,7 @@ class C_Record extends CI_Controller {
 				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
 				if(empty($ScoreEval3Eval[$i])){$ScoreEval3Eval[$i] = NULL;}
 				if(empty($Comment[$i])){$Comment[$i] = NULL;}
+				if(empty($Others[$i])){$Others[$i] = NULL;}
 				
 				$data_participant[$i] = array(
 					'status' 			=> $ParticipantStatus[$i],
@@ -510,6 +564,7 @@ class C_Record extends CI_Controller {
 					'score_eval2_post' 	=> $ScoreEval2Post[$i],
 					'score_eval3_post2' => $ScoreEval3Eval[$i],
 					'comment' 			=> $Comment[$i],
+					'keterangan_kehadiran'=> $Others[$i],
 				);
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;
@@ -546,9 +601,88 @@ class C_Record extends CI_Controller {
 		$start 			= $this->input->POST('start');
 		$end 			= $this->input->POST('end');
 		$status 		= $this->input->POST('status');
+		$data['participant_confirm'] = $this->M_record->GetParticipant();
 		
-		$data['record'] = $this->M_record->FilterRecord($start,$end,$status);
+		// $data['record'] = $this->M_record->FilterRecord($start,$end,$status);
 		$data['trainer'] = $this->M_record->GetTrainer();
+		$data['sheet'] = $this->M_record->GetQueSheet();
+		$filter				= $this->M_record->FilterRecord($start,$end,$status);
+        $record             = array();
+        $checkoutData       = array();
+        $iRec               = 0;
+        $iCheck             = 0;
+        foreach ($filter as $key => $valPL) {
+            if ($valPL['package_scheduling_id'] == 0) {
+
+            	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+            	if ($cekNumRow == 0) {
+            		$questStatus = '';
+            	}else{
+            		$questStatus = 'font-weight:bold';
+            	}
+
+            	$dataPaket   = array(
+                            'scheduling_id'             => $valPL['scheduling_id'],
+                            'package_scheduling_id'     => $valPL['package_scheduling_id'],
+                            'scheduling_name'           => $valPL['scheduling_name'],
+                            'date'                      => $valPL['date'],
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => $valPL['trainer'],
+                            'evaluation'                => $valPL['evaluation'],
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => $valPL['date_format'],
+                            'tidak_terlaksana'          => $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus
+                        );
+                $record[$iRec] = $dataPaket;
+                // $record[$iRec] = $valPL;
+                $iRec++;
+            }else{
+                foreach ($filter as $i => $valPK) {
+                    if ($valPL['package_scheduling_id'] == $valPK['package_scheduling_id'] && !in_array($valPL['package_scheduling_id'], $checkoutData)) {
+                    	
+                    	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+                    	if ($cekNumRow == 0) {
+                    		$questStatus = '';
+                    	}else{
+                    		$questStatus = 'font-weight:bold';
+                    	}
+
+                        $dataPaket   = array(
+                            'scheduling_id'             => '-',
+                            'package_scheduling_id'     => $valPK['package_scheduling_id'],
+                            'scheduling_name'           => '-',
+                            'date'                      => '-',
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => '-',
+                            'evaluation'                => '-',
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => '-',
+                            'tidak_terlaksana'          => '' || $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus
+                        );
+                        $record[$iRec] = $dataPaket;
+                        $checkoutData[$iCheck] = $valPL['package_scheduling_id'];
+                        $iRec++;
+                        $iCheck++;
+                    }
+                }
+            }
+        }
+        $data['record'] = $record;
+
 		$this->load->view('ADMPelatihan/Record/V_Index2',$data);
 	}
 	public function GetNoInduk(){
@@ -568,18 +702,61 @@ class C_Record extends CI_Controller {
 
 	public function GetPackageID($id)
 	{
-		$data['recPackage'] = $this->M_record->GetRecordPackage($id);
-		$data['trainer']	= $this->M_record->GetTrainer();
+		$data['recPackage'] 		= $this->M_record->GetRecordPackage($id);
+		$data['participant_confirm'] = $this->M_record->GetParticipant();
+		$data['trainer']			= $this->M_record->GetTrainer();
 		$data['paketdetail']		= $this->M_record->paketdetail($id);
+		$data['sheet'] 				= $this->M_record->GetQueSheet();
 
 		$this->load->view('ADMPelatihan/Record/V_Index2_2', $data);
 	}
 
 	public function GetPackageIDfinish($id)
 	{
-		$data['recPackage'] = $this->M_record->GetRecordFinished($id);
-		$data['trainer']	= $this->M_record->GetTrainer();
-		$data['paketdetailfinish']		= $this->M_record->paketdetailfinish($id);
+		// $data['recPackage'] 		= $this->M_record->GetRecordFinished($id);
+		$data['participant_confirm'] = $this->M_record->GetParticipant();
+		$data['trainer']			= $this->M_record->GetTrainer();
+		$data['paketdetailfinish']	= $this->M_record->paketdetailfinish($id);
+		$data['sheet']				 = $this->M_record->GetQueSheet();
+		
+		$paket_value		= $this->M_record->GetRecordFinished($id);
+        $record             = array();
+        $checkoutData       = array();
+        $iRec               = 0;
+        $iCheck             = 0;
+        foreach ($paket_value as $key => $valPL) {
+            if ($valPL['package_scheduling_id'] != 0) {
+            	$cekNumRow = $this->M_record->cekNumRowQuestRecord($valPL['scheduling_id']);
+            	if ($cekNumRow == 0) {
+            		$questStatus = '';
+            	}else{
+            		$questStatus = 'font-weight:bold';
+            	}
+            	$dataPaket   = array(
+                            'scheduling_id'             => $valPL['scheduling_id'],
+                            'package_scheduling_id'     => $valPL['package_scheduling_id'],
+                            'scheduling_name'           => $valPL['scheduling_name'],
+                            'date'                      => $valPL['date'],
+                            'room'                      => $valPL['room'],
+                            'participant_type'          => $valPL['participant_type'],
+                            'trainer'                   => $valPL['trainer'],
+                            'evaluation'                => $valPL['evaluation'],
+                            'sifat'                     => $valPL['sifat'],
+                            'participant_number'        => $valPL['participant_number'],
+                            'status'                    => $valPL['status'],
+                            'package_scheduling_name'   => $valPL['package_scheduling_name'],
+                            'start_date_format'         => $valPL['start_date_format'],
+                            'end_date_format'           => $valPL['end_date_format'],
+                            'date_format'               => $valPL['date_format'],
+                            'tidak_terlaksana'          => $valPL['tidak_terlaksana'],
+                            'quest_status'		        => $questStatus
+                        );
+                $record[$iRec] = $dataPaket;
+                // $record[$iRec] = $valPL;
+                $iRec++;
+            }
+         }
+         $data['recPackage'] = $record;
 
 		$this->load->view('ADMPelatihan/Record/V_Index2_3', $data);
 	}

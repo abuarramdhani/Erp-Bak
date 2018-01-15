@@ -3,7 +3,7 @@ function goBack() {
 }
 
 $(document).ready(function(){
-
+	// SETTIMEOUT Z-INDEX
 	$(document).on('show.bs.modal', '.modal', function () {
 	    var zIndex = 1050 + (10 * $('.modal:visible').length);
 	    $(this).css('z-index', zIndex);
@@ -12,11 +12,19 @@ $(document).ready(function(){
 	    }, 0);
 	});
 
+	// DATEPICKER ADM_PELATIHAN
 	$('.singledateADM').datepicker({
     	format:'dd/mm/yyyy'
 	});
 	$('.singledateADM_Que').datepicker({
     	format:'yyyy/mm/dd'
+	});
+	$('.singledateADM_Trainer').datepicker({
+    	dateFormat: 'dd/mm/yy',
+    	changeMonth : true,
+    	changeYear: true,
+    	yearRange: "-70:",
+    	maxDate: "-13Y"
 	});
 
 	//DATATABLE
@@ -67,20 +75,7 @@ $(document).ready(function(){
 		showMeridian: false
 	});
 
-	//DATEPICKER UNTUK FORM PENJADWALAN
-	// $('.singledateADM').daterangepicker({
-	// 	"singleDatePicker": true,
-	// 	"timePicker": false,
-	// 	"timePicker24Hour": true,
-	// 	"showDropdowns": false,
-	// 	locale: {
-	// 		format: 'DD/MM/YYYY'
-	// 	},
-	// });
-
-	
-
-	 $(".startdate").datepicker({
+	$(".startdate").datepicker({
     	//format:'dd/mm/yyyy'
     });
 
@@ -597,6 +592,7 @@ $(document).ready(function(){
 	}
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
+	// ADD SAAT EDIT
 	function AddSegment(base){
 		if (base == 'edit') {
 			var disable = 'disabled';
@@ -623,6 +619,7 @@ $(document).ready(function(){
 			jQuery("#tbodyQuestionnaireSegment").append(newRow);
 			
 	}
+	// ADD SAAT CREATE
 	function AddSegmentCreate(base){
 			var e = jQuery.Event( "click" );
 			var n = $('#tbodyQuestionnaireSegmentC tr').length;
@@ -638,8 +635,7 @@ $(document).ready(function(){
 											+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelSegment' title='Hapus Baris' onclick='delCreateSegment("+counter+",0)'><i class='fa fa-remove'></i>Delete</a>"
 										+"</td>"
 										+"</tr>");
-				jQuery("#tbodyQuestionnaireSegmentC").append(newRow);
-				
+				jQuery("#tbodyQuestionnaireSegmentC").append(newRow);	
 		}
 
 	//MENAMBAH ROW UNTUK SEGMENT KUESIONER (MASTER QUESTIONNAIRE SEGMENT)
@@ -660,17 +656,6 @@ $(document).ready(function(){
 									+"</tr>");
 			jQuery("#tbodyQuestionnaireSegmentEssay").append(newRow);
 	}
-
-
-	//MENGHAPUS ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
-	function delStatRow(id){
-			var rowCount = $("#tbodyStatementC"+id+" tr").size();
-			if(rowCount > 1){
-				$("#tbodyStatementC"+id+" tr:last").remove();
-			}else{
-				alert('Minimal harus ada satu baris tersisa');
-			}
-		}
 
 	//MENAMBAH ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
 	function AddStatement(id){
@@ -707,7 +692,17 @@ $(document).ready(function(){
 				jQuery("#tbodyStatementC"+id).append(newRow);
 		}
 
-	//MENAMBAH ROW UNTUK OBJECTIVE (MASTER TRAINING)
+	//MENGHAPUS ROW UNTUK STATEMENT KUESIONER (MASTER QUESTIONNAIRE STATEMENT)
+	function delStatRow(id){
+			var rowCount = $("#tbodyStatementC"+id+" tr").size();
+			if(rowCount > 1){
+				$("#tbodyStatementC"+id+" tr:last").remove();
+			}else{
+				alert('Minimal harus ada satu baris tersisa');
+			}
+		}
+
+	//MENAMBAH ROW UNTUK OBJECTIVE (MASTER TRAINING) >> UNTUK TUJUAN
 	function AddObjective(base){
 		var newgroup = $('<tr>').addClass('obclone');
 		var e = jQuery.Event( "click" );
@@ -926,6 +921,7 @@ $(document).ready(function(){
 		}
 	}
 
+	// TAMBAHKAN PARTISIPAN SAAT EDIT
 	function AddParticipantEdit(base){
 		var row = $('input#jmlpeserta').val();
 		var maxrow = parseInt(row)+1;
@@ -1131,168 +1127,336 @@ $(document).ready(function(){
     	});
 	});
 
-function delCreateSegment(rowid,segmentid) {
-	if (segmentid == '0') {
-		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegmentC tr[row-id="'+rowid+'"]').remove();
+	// DELETE ROW SAAT CREATE SEGMENT
+	function delCreateSegment(rowid,segmentid) {
+		if (segmentid == '0') {
+			$('#tblQuestionnaireSegment #tbodyQuestionnaireSegmentC tr[row-id="'+rowid+'"]').remove();
+		}
 	}
-}
-function delCreateSegmentEssay(rowid,segmentid) {
-	if (segmentid == '0') {
-		$('#tblQuestionnaireSegmentEssay #tbodyQuestionnaireSegmentEssay tr[row-id="'+rowid+'"]').remove();
-	}
-}
-function delCreateStatement(tbID,rowid,id,statementid) {
-	if (statementid == '0') {
-		$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
-	}
-}
 
-function delSpesifikRow121(rowid,segmentid) {
-	if (segmentid == '0') {
-		$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
-	}else{
-		$.ajax({
-			type:'POST',
-			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
-			success:function(result)
-			{
-				$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
-			}
-		});
+	// DELETE ROW SAAT CREATE SEGMENT ESSAY
+	function delCreateSegmentEssay(rowid,segmentid) {
+		if (segmentid == '0') {
+			$('#tblQuestionnaireSegmentEssay #tbodyQuestionnaireSegmentEssay tr[row-id="'+rowid+'"]').remove();
+		}
 	}
-	
-}
 
-function delSpesifikRowSt(rowid,statementid) {
-
-	if(statementid == '0'){
-			$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
+	// DELETE ROW SAAT CREATE STATEMENT
+	function delCreateStatement(tbID,rowid,id,statementid) {
+		if (statementid == '0') {
+			$('#tblStatement'+tbID+' #tbodyStatementC'+id+' tr[row-id="'+rowid+'"]').remove();
+		}
 	}
-	else{
-		$.ajax({
-			type:'POST',
-			url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSt/"+statementid,
-			success:function(result)
-			{
+
+	// DELETE ROW SAAT CREATE SEGMENT EDIT
+	function delSpesifikRow121(rowid,segmentid) {
+		if (segmentid == '0') {
+			$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
+				success:function(result)
+				{
+					$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
+				}
+			});
+		}
+		
+	}
+
+	// DELETE ROW SAAT CREATE STATEMENT EDIT
+	function delSpesifikRowSt(rowid,statementid) {
+
+		if(statementid == '0'){
 				$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
+		}
+		else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSt/"+statementid,
+				success:function(result)
+				{
+					$('#tblQuestionnaireStatement #tbodyStatement tr[row-id="'+rowid+'"]').remove();
+				}
+			});
+		}
+		
+	}
+
+	// DELETE ROW PARTISIPAN DI RECORD
+	function deleteRowAjax(rowid,dataID,schID) {
+		if(dataID == '0'){
+				$('#tblParticipant #tbodyParticipant tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/Record/deleteParticipant/"+dataID+'/'+schID,
+				success:function(result)
+				{
+					$('#tblParticipant #tbodyParticipant tr[row-id="'+rowid+'"]').remove();
+				}
+			})
+		}
+	}
+
+	// SAVE SEGMEN DENGAN ENTER DI MASTER KUESIONER
+	function insertKuesAjax(event, th){
+		event.preventDefault();
+		if (event.keyCode === 13) {
+			var quID = $('input[name="txtQuestionnaireId"]').val();
+			var quesId = $(th).attr('data-id');
+			var value = $(th).val();
+			$.ajax({
+				url : baseurl+"ADMPelatihan/MasterQuestionnaire/editSave/"+quID,
+				type: 'POST',
+				data: {
+					accessType : 'ajax',
+					txtSegment : value, 
+					txtQuestionnaireId : quID,
+					idSegment : quID,
+					lineId : quesId,
+				},
+				success:function(result)
+				{
+					$(th).closest('tr').find('a[data-id="segment-button"]').removeAttr("disabled"); 
+					$(th).closest('tr').find('a[data-id="segment-button"]').attr("href", baseurl+"ADMPelatihan/MasterQuestionnaire/EditStatement/"+quID+'/'+result);
+				}
+			})
+		}
+	}
+
+	// MODAL SHOW PESERTA DI RECORD BY SECTION
+	function showModPar(schid,section){
+		$.ajax({
+			type: "POST",
+			data:{
+				section:section
+			},
+			url:baseurl+"ADMPelatihan/Report/GetTrainingPrtcp/"+schid,
+			success:function(result)
+			{
+				$('#showModPar table tbody').html(result);
+				$('div#showModPar').modal('show');
 			}
 		});
 	}
-	
-}
-
-function deleteRowAjax(rowid,dataID,schID) {
-	if(dataID == '0'){
-			$('#tblParticipant #tbodyParticipant tr[row-id="'+rowid+'"]').remove();
-	}else{
+	// MODAL SHOW PESERTA DI REKAP PRESENTASE TRAINING
+	function showModParHadir(schid){
 		$.ajax({
-			type:'POST',
-			url:baseurl+"ADMPelatihan/Record/deleteParticipant/"+dataID+'/'+schID,
-			success:function(result)
-			{
-				$('#tblParticipant #tbodyParticipant tr[row-id="'+rowid+'"]').remove();
-			}
-		})
-	}
-}
-function insertKuesAjax(event, th){
-	event.preventDefault();
-	if (event.keyCode === 13) {
-		var quID = $('input[name="txtQuestionnaireId"]').val();
-		var quesId = $(th).attr('data-id');
-		var value = $(th).val();
-		$.ajax({
-			url : baseurl+"ADMPelatihan/MasterQuestionnaire/editSave/"+quID,
-			type: 'POST',
-			data: {
-				accessType : 'ajax',
-				txtSegment : value, 
-				txtQuestionnaireId : quID,
-				idSegment : quID,
-				lineId : quesId,
+			type: "POST",
+			data:{
+				schid:schid
 			},
+			url:baseurl+"ADMPelatihan/Report/Rekap/GetDetailParticipant/"+schid,
 			success:function(result)
 			{
-				$(th).closest('tr').find('a[data-id="segment-button"]').removeAttr("disabled"); 
-				$(th).closest('tr').find('a[data-id="segment-button"]').attr("href", baseurl+"ADMPelatihan/MasterQuestionnaire/EditStatement/"+quID+'/'+result);
+				// $('#showModParHadir table tbody').html(result);
+				// $('div#showModParHadir').modal('show');
+				
+				$('div#ModalHadir').html(result);
+				$('#showModParHadir').modal('show');
 			}
-		})
-	}
-}
-
-
-// MODAL SHOW PESERTA DI SECTION
-function showModPar(schid,section){
-	$.ajax({
-		type: "POST",
-		data:{
-			section:section
-		},
-		url:baseurl+"ADMPelatihan/Report/GetTrainingPrtcp/"+schid,
-		success:function(result)
-		{
-			$('#showModPar table tbody').html(result);
-			$('div#showModPar').modal('show');
-		}
-	});
-}
-
-// WARNING NILAI MINIMAL
-function stafKKM(th,col,row) {
-	var kkm = $('input#kkmStaff').val();
-	var nilai = $(th).val();
-
-	if (nilai < kkm) {
-		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
-		console.log(kkm);
-		console.log(nilai);
-	}else{
-		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
-		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+		});
 	}
 
-}
+	// WARNING NILAI MINIMAL
+		// STAF
+		function stafKKM(th,col,row) {
+			var kkm = $('input#kkmStaff').val();
+			var nilai = $(th).val();
 
-function nonstafKKM(th,col,row) {
-	var kkm = $('input#kkmNonStaff').val();
-	var nilai = $(th).val();
+			if (nilai < kkm) {
+				$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
+				console.log(kkm);
+				console.log(nilai);
+			}else{
+				$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
+				$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+			}
 
-	if (nilai < kkm) {
-		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
-		console.log(kkm);
-		console.log(nilai);
-	}else{
-		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
-		$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+		}
+		// NONSTAF
+		function nonstafKKM(th,col,row) {
+			var kkm = $('input#kkmNonStaff').val();
+			var nilai = $(th).val();
+
+			if (nilai < kkm) {
+				$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-error');
+				console.log(kkm);
+				console.log(nilai);
+			}else{
+				$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').removeClass('has-error');
+				$('tr[row-id="'+row+'"] td[col-id="'+col+'"]').addClass('has-success');
+			}
+		}
+
+	// UNTUK MODAL SHOW RECORD JENIS PAKET (BELUM TERLAKSANA)
+	function recordPackage(id) {
+		$.ajax({
+			type: "POST",
+			url:baseurl+"ADMPelatihan/Record/GetPackageID/"+id,
+			success:function(result)
+			{
+				$('div#modalPaketArea').html(result);
+				$('#rincian_paket').modal('show');
+			}
+		});
 	}
-}
+	// UNTUK MODAL SHOW RECORD JENIS PAKET (SUDAH TERLAKSANA)
+	function recordPackageFinish(id) {
+		$.ajax({
+			type: "POST",
+			url:baseurl+"ADMPelatihan/Record/GetPackageIDfinish/"+id,
+			success:function(result)
+			{
+				$('div#modalPaketAreafinish').html(result);
+				$('#rincian_paket_finished').modal('show');
+			}
+		});
+	}
+	// MODAL DELETE RECORD JENIS PAKET
+	function showModalDel(schid,schname) {
+		$('#showModalDel .modal-body b#data-id').html(schname);
+		$('#showModalDel .modal-body a').attr('href', baseurl+'ADMPelatihan/Record/Delete/'+schid);
+		$('#showModalDel').modal('show');
+	}
+	// MODAL DELETE MATERI DI MASTER MATERI
+	function showDeleteMateri(materiname) {
+		$('#showDeleteMateri .modal-body b#data-id').html(materiname);
+		$('#showDeleteMateri .modal-body a').attr('href', baseurl+'ADMPelatihan/MasterTrainingMaterial/delete/'+materiname);
+		$('#showDeleteMateri').modal('show');
+	}
+	// ADD SAAT CREATE TRAINER EXPERIENCE
+	function AddPengalaman(){
+		var e = jQuery.Event( "click" );
+		var n = $('#tbodyTrainerPengalaman tr').length;
+		counter = n+1;
+		var delCoun = '"'+counter+'"';
+		var delIdex = '0';
+		var delTrainer = '0';
 
-function recordPackage(id) {
-	$.ajax({
-		type: "POST",
-		url:baseurl+"ADMPelatihan/Record/GetPackageID/"+id,
-		success:function(result)
-		{
-			$('div#modalPaketArea').html(result);
-			$('#rincian_paket').modal('show');
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+								+"<td >"+counter+" </td>"
+								+"<td>"
+									+"<input name='txtPengalaman[]' class='form-control segment' placeholder='Pengalaman Trainer' id='txtPengalaman[]'> "
+									// +"<input type='hidden' name='txtPengalaman[]' value='0'>"
+									+'<input type="text" name="idPengalaman[]" value="0" hidden>'
+								+"</td>"
+								+"<td>"
+									+"<input name='txtTanggalPengalaman[]' class='form-control singledateADM' placeholder='Tanggal' id='txtTanggalPengalaman[]'>"
+								+"</td>"
+								+"<td>"
+									+"<a href='javascript:void(0);' class='btn btn-danger btn-xs' id='DelPengalaman' title='Hapus Baris' onclick='delPengalaman("+delCoun+","+delTrainer+","+delIdex+")'><i class='fa fa-remove'></i>Delete</a>"
+								+"</td>"
+							+"</tr>");
+		jQuery("#tbodyTrainerPengalaman").append(newRow);
+		$('.singledateADM').datepicker({
+    		format:'dd/mm/yyyy'
+		});	
+	}
+	// DELETE ROW SAAT TRAINER EXPERIENCE
+	function delPengalaman(rowid,trainer_id,idex) {
+		if (idex == '0') {
+			$('#tblPengalaman #tbodyTrainerPengalaman tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/MasterTrainer/delete_exp/"+trainer_id+'/'+idex,
+				success:function(result)
+				{
+					$('#tblPengalaman #tbodyTrainerPengalaman tr[row-id="'+rowid+'"]').remove();
+				}
+			});
 		}
-	});
-}
+	}
 
-function recordPackageFinish(id) {
-	$.ajax({
-		type: "POST",
-		url:baseurl+"ADMPelatihan/Record/GetPackageIDfinish/"+id,
-		success:function(result)
-		{
-			$('div#modalPaketAreafinish').html(result);
-			$('#rincian_paket_finished').modal('show');
+	// ADD SAAT CREATE SERTIFIKAT TRAINER 
+	function AddSertifikat(){
+		var e = jQuery.Event( "click" );
+		var n = $('#tbodyTrainerSertifikat tr').length;
+		counter = n+1;
+		var delCoun = '"'+counter+'"';
+		var delSert = '0';
+		var delTrainer = '0';
+
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+								+"<td >"+counter+"</td>"
+								+"<td>"
+									+"<input name='txtSertifikat[]' class='form-control segment' data-placement='top' placeholder='Nama Training' id='txtSertifikat[]'>"
+									// +"<input type='hidden' name='txtSertifikat[]' value='0'>"
+									+'<input type="text" name="idsertifikat[]" value="0" hidden>'
+								+"</td>"
+								+"<td>"
+									+"<input name='txtTanggalSertifikat[]' class='form-control singledateADM' placeholder='Tanggal' id='txtTanggalSertifikat[]'>"
+								+"</td>"
+								+"<td>"
+									+"<a href='javascript:void(0);'class='btn btn-danger btn-xs' id='DelSertifikat' title='Hapus Baris' onclick='delSertifikat("+delCoun+","+delTrainer+","+delSert+")'><i class='fa fa-remove'></i>Delete</a>"
+								+"</td>"
+							+"</tr>");
+		jQuery("#tbodyTrainerSertifikat").append(newRow);	
+        $('.singledateADM').datepicker({
+	    	format:'dd/mm/yyyy'
+		});
+	}
+	// DELETE ROW SAAT SERTIFIKAT TRAINER
+	function delSertifikat(rowid,trainer_id,idser) {
+		if (idser == '0') {
+			$('#tblSertifikat #tbodyTrainerSertifikat tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/MasterTrainer/delete_sertifikat/"+trainer_id+'/'+idser,
+				success:function(result)
+				{
+					$('#tblSertifikat #tbodyTrainerSertifikat tr[row-id="'+rowid+'"]').remove();
+				}
+			});
 		}
-	});
-}
+	}
+	// ADD SAAT CREATE TIM TRAINER 
+	function AddTim(){
+		var e = jQuery.Event( "click" );
+		var n = $('#tbodyTrainerTim tr').length;
+		counter = n+1;
+		var delCoun = '"'+counter+'"';
+		var delTeam = '0';
+		var delTrainer = '0';
 
- function showModalDel(schid,schname) {
-	$('#showModalDel .modal-body b#data-id').html(schname);
-	$('#showModalDel .modal-body a').attr('href', baseurl+'ADMPelatihan/Record/Delete/'+schid);
-	$('#showModalDel').modal('show');
-}
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+								+"<td >"+counter+"</td>"
+								+"<td>"
+									+"<input id='segment' name='txtKegiatan[]' class='form-control segment' data-placement='top' placeholder='Nama Training' id='txtKegiatan[]'>"
+									// +"<input type='hidden' name='txtKegiatan[]' value='0'>"
+									+'<input type="text" name="idteam[]" value="0" hidden>'
+								+"</td>"
+								+"<td>"
+									+"<input name='txtTanggalkegiatan[]' class='form-control singledateADM' placeholder='Tanggal' id='txtTanggalkegiatan[]'>"
+								+"</td>"
+								+"<td>"
+									+"<input name='txtJabatan[]' class='form-control segment'  data-placement='top' placeholder='Jabatan' id='txtJabatan[]'>"
+								+"</td>"
+								+"<td>"
+									+"<a href='javascript:void(0);'class='btn btn-danger btn-xs' id='DelTrainerTim' title='Hapus Baris' onclick='DelTrainerTim("+delCoun+","+delTrainer+","+delTeam+")'><i class='fa fa-remove'></i>Delete</a>"
+								+"</td>"
+							+"</tr>");
+		jQuery("#tbodyTrainerTim").append(newRow);	
+        $('.singledateADM').datepicker({
+	    	format:'dd/mm/yyyy'
+		});
+	}
+	// DELETE ROW SAAT TIM TRAINER
+	function DelTrainerTim(rowid,trainer_id,idteam) {
+		if (idteam == '0') {
+			$('#tblTim #tbodyTrainerTim tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/MasterTrainer/delete_team/"+trainer_id+'/'+idteam,
+				success:function(result)
+				{
+					$('#tblTim #tbodyTrainerTim tr[row-id="'+rowid+'"]').remove();
+				}
+			});
+		}
+	}

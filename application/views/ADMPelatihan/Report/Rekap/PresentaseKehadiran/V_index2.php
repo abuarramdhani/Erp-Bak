@@ -13,23 +13,30 @@
 									</thead>
 									<tbody>
 										<?php $no = 0; foreach ($prcentpart as $pp) { $no++;
-												?>
-													<tr>
-														<td><?php echo $no; ?></td>
-														<td><?php echo $pp['bulan']; ?></td>
-														<td><?php echo $pp['tahun']; ?></td>
-														<td><?php echo $pp['scheduling_name']?></td>
-														<td style="text-align:center;"><?php echo $pp['participant_number']?></td>
-														<td style="text-align:center;"><?php echo $pp['hadir']?></td>
-														<td style="text-align:center;">
-															<?php if ($pp['persentase_kehadiran']!=NULL) { ?>
-																<?php echo $pp['persentase_kehadiran']?>		
-															<?php } else{
-																echo "0 %";
-																} ?>
-														</td>
-													</tr>
-												<?php
+											?>
+												<tr>
+													<td><?php echo $no; ?></td>
+													<td><?php echo $pp['bulan']; ?></td>
+													<td><?php echo $pp['tahun']; ?></td>
+													<td>
+														<?php echo $pp['scheduling_name']?>
+														<input type="text" name="txtsch_id" value="$pp['scheduling_id']" hidden >
+													</td>
+													<td style="text-align:center;">
+														<a href="javascript:void(0)" name="showModParHadir" onclick="showModParHadir('<?php echo $pp['scheduling_id'] ?>')">
+															<?php echo $pp['participant_number']?>
+														</a>
+													</td>
+													<td style="text-align:center;"><?php echo $pp['hadir']?></td>
+													<td style="text-align:center;">
+														<?php if ($pp['persentase_kehadiran']!=NULL) { ?>
+															<?php echo $pp['persentase_kehadiran']?>		
+														<?php } else{
+															echo "0 %";
+															} ?>
+													</td>
+												</tr>
+											<?php
 										} ?>
 									</tbody>
 									<tfoot>
@@ -51,3 +58,4 @@
 									</tfoot>																
 								</table>
 							</div>
+							<div id="ModalHadir"></div>

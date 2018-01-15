@@ -111,10 +111,10 @@
 											<tr>
 												<td><?php echo $no?></td>
 												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
-												<td><input type="radio" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
+												<td><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
+												<td><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
+												<td><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
+												<td><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
 											</tr>
 											<?php 	}
 												}

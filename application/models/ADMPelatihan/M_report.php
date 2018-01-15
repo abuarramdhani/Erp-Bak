@@ -483,6 +483,43 @@ class M_report extends CI_Model {
 		$query=$this->db->query($sql);
 		return $query->result_array();
 	}
+	// public function GetPercentParticipantAll($date1,$date2)
+	// {	
+	// 	$sql="select	es.section_name, training.partisipan, training.noind, training.nama, training.tahun,training.scheduling_id, training.status, training.ket
+	// 			from	
+	// 			er.er_section es,
+	// 			(
+	// 				select 
+	// 						ees.section_name,
+	// 						pst.scheduling_name as nama,
+	// 						to_char(pst.date,'YYYY')as tahun,
+	// 						pst.scheduling_id,
+	// 						pp.participant_name as partisipan,
+	// 						pp.noind,
+	// 						pp.status,
+	// 						pp.keterangan_kehadiran as ket
+	// 						from	pl.pl_participant pp,
+	// 								er.er_employee_all pea,
+	// 								er.er_section ees,
+	// 								pl.pl_scheduling_training pst
+	// 						where
+	// 							pp.noind = pea.employee_code
+	// 							and ees.section_code = pea.section_code
+	// 							and pp.scheduling_id=pst.scheduling_id
+	// 						group by
+	// 							ees.section_name,
+	// 							pst.scheduling_name,
+	// 							3,4,5,6,7,8
+	// 						) as training
+	// 			where training.partisipan is not null
+	// 			and training.scheduling_id = ''
+	// 			and training.section_name = es.section_name
+	// 			and pst.date between TO_DATE('$date1', 'DD/MM/YYYY') and TO_DATE('$date2', 'DD/MM/YYYY'
+	// 			group by es.section_name,2,3,4,5,6,7,8
+	// 			)";
+	// 	$query=$this->db->query($sql);
+	// 	return $query->result_array();
+	// }
 
 	// EFEKTIFITAS TRAINING
 	public function GetEfektivitasTraining($date1,$date2)
@@ -625,6 +662,42 @@ class M_report extends CI_Model {
 						6,
 						5 desc
 				) as tabel";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetDetailParticipant($schid)
+	{
+		$sql = "select	es.section_name, training.partisipan, training.noind, training.nama, training.date,training.scheduling_id, training.status, training.ket
+				from	
+				er.er_section es,
+				(
+					select 
+							ees.section_name,
+							pst.scheduling_name as nama,
+							to_char(pst.date,'DD/MM/YYYY')as date,
+							pst.scheduling_id,
+							pp.participant_name as partisipan,
+							pp.noind,
+							pp.status,
+							pp.keterangan_kehadiran as ket
+							from	pl.pl_participant pp,
+									er.er_employee_all pea,
+									er.er_section ees,
+									pl.pl_scheduling_training pst
+							where
+								pp.noind = pea.employee_code
+								and ees.section_code = pea.section_code
+								and pp.scheduling_id=pst.scheduling_id
+							group by
+								ees.section_name,
+								pst.scheduling_name,
+								3,4,5,6,7,8
+							) as training
+				where training.partisipan is not null
+				and training.scheduling_id = '$schid'
+				and training.section_name = es.section_name
+				group by es.section_name,2,3,4,5,6,7,8";
 		$query=$this->db->query($sql);
 		return $query->result_array();
 	}

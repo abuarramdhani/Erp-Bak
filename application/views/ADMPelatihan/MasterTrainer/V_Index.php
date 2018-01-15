@@ -56,7 +56,8 @@
 													?>
 												</td>
 												<td>
-													<a href="<?php echo site_url('ADMPelatihan/MasterTrainer/Edit/'.$tr['trainer_id']);?>" class="btn btn-xs btn-success"><i class="fa fa-edit"></i> Edit</a>
+													<a href="<?php echo site_url('ADMPelatihan/MasterTrainer/View/'.$tr['trainer_id']);?>" class="btn btn-xs btn-success"><i class="fa fa-search"></i> View</a>
+													<a href="<?php echo site_url('ADMPelatihan/MasterTrainer/Edit/'.$tr['trainer_id']);?>" class="btn btn-xs btn-warning"><i class="fa fa-edit"></i> Edit</a>
 													<a data-toggle="modal" data-target="<?php echo '#deletealert'.$tr['trainer_id'] ?>" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a>
 												</td>
 											</tr>

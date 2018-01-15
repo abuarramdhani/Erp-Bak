@@ -28,30 +28,42 @@
 					<?php $number=0;  foreach ($recPackage as $rp) {
 							$strainer = explode(',', $rp['trainer']);
 							$number++;?>
-						<tr>
-							<td><?php echo $number ?></td>
-							<td>
-								<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View" ><i class="fa fa-search"></i></a>
-								<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip1" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
-								<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
-								<a data-toggle="modal" onclick="showModalDel('<?php echo $rp['scheduling_id'] ?>','<?php echo $rp['scheduling_name'] ?>')" class="btn btn-flat btn-danger btn-sm" title="Hapus Pelatihan"><i class="fa fa-remove"></i></a>
-								<!-- <a data-toggle="modal" data-target="<?php echo '#deletealert'.$rp['scheduling_id'] ?>" class="btn btn-flat btn-danger btn-sm" data-toggle="tooltip1" title="Hapus Pelatihan"><i class="fa fa-remove"></i></a> -->
-							</td>
-							<td>
-								<?php 
-								foreach ($strainer as $st){
-									foreach ($trainer as $tr){
-										if ($st == $tr['trainer_id']){
-											echo '<i class="fa fa-angle-right"></i> '.$tr['trainer_name'].'<br>';
+							<tr>
+								<td><?php echo $number ?></td>
+								<td>
+									<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View" ><i class="fa fa-search"></i></a>
+									<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip1" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
+									<?php $sudahCetak = 0; foreach ($participant_confirm as $pc) {
+										if ($pc['scheduling_id']==$rp['scheduling_id'] && $sudahCetak==0) {
+											$sudahCetak=1;
+											if ($pc['status']==NULL && $pc['score_eval2_pre']==NULL && $pc['score_eval2_post']==NULL ) { ?>
+												<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
+											<?php }elseif ($pc['status']==NULL && $pc['score_eval3_post']==NULL && $pc['comment']==NULL) {?>
+												<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
+											<?php }else{?>
+												<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
+											<?php }
 										}
-									}
-								};
-							?>
-							</td>
-							<td><?php echo $rp['scheduling_name'] ?></td>
-							<td><?php echo $rp['date_format'] ?></td>
-							<td align="center"><?php echo $rp['participant_number'] ?></td>
-						</tr>
+									} ?>
+									<!-- <a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a> -->
+									<a data-toggle="modal" onclick="showModalDel('<?php echo $rp['scheduling_id'] ?>','<?php echo $rp['scheduling_name'] ?>')" class="btn btn-flat btn-danger btn-sm" title="Hapus Pelatihan"><i class="fa fa-remove"></i></a>
+									
+								</td>
+									<td>
+										<?php 
+										foreach ($strainer as $st){
+											foreach ($trainer as $tr){
+												if ($st == $tr['trainer_id']){
+													echo '<i class="fa fa-angle-right"></i> '.$tr['trainer_name'].'<br>';
+												}
+											}
+										};
+									?>
+									</td>
+									<td><?php echo $rp['scheduling_name'] ?></td>
+									<td><?php echo $rp['date_format'] ?></td>
+									<td align="center"><?php echo $rp['participant_number'] ?></td>
+							</tr>
 						<?php } ?>
 					</tbody>
 				</table>		
