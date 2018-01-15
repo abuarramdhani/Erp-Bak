@@ -245,6 +245,76 @@
 
 		public function statistikPresensiHarian($tanggalHitung, $klausaWhereKodesie)
 		{
+			// $statistikPresensiHarian			= "	select			tabeltanggal.tanggal,
+			// 														(
+			// 															case 	when 	tabeltanggal.tanggal=current_date
+			// 																			then	(
+			// 																						select 		count(distinct frontpres.noind)
+			// 																						from 		\"FrontPresensi\".tpresensi as frontpres
+			// 																						where 		frontpres.tanggal=tabeltanggal.tanggal
+			// 																									and 	frontpres.waktu::time<=current_time
+			// 																									and 	$klausaWhereKodesie
+			// 																					)
+			// 																	else 	(
+			// 																					select		count(distinct noind)
+			// 																					from 		\"Presensi\".tdatapresensi as datapres
+			// 																					where		datapres.tanggal=tabeltanggal.tanggal
+			// 																								and 	$klausaWhereKodesie
+			// 																								and 	(
+			// 																											datapres.kd_ket='PKJ'
+			// 																											or 	datapres.kd_ket='PLB'
+			// 																											or 	datapres.kd_ket='PID'
+			// 																											or 	datapres.kd_ket='PDL'
+			// 																											or 	datapres.kd_ket='PDB'
+			// 																											or 	datapres.kd_ket='PSP'
+			// 																										)
+			// 																			)
+			// 															end
+			// 														) as jumlah_pekerja_hadir,
+			// 														(
+			// 															(
+			// 																select 		count(distinct noind)
+			// 																from 		\"Presensi\".tdatapresensi as datapres
+			// 																where 		datapres.tanggal=tabeltanggal.tanggal
+			// 																			and 	$klausaWhereKodesie
+			// 																			and 	(
+			// 																						datapres.kd_ket!='PKJ'
+			// 																						and 	datapres.kd_ket!='PLB'
+			// 																						and 	datapres.kd_ket!='PID'
+			// 																						and 	datapres.kd_ket!='PDL'
+			// 																						and 	datapres.kd_ket!='PDB'
+			// 																						and 	datapres.kd_ket!='PSP'
+			// 																					)
+			// 															)
+			// 															+
+			// 															(
+			// 																select 		count(distinct noind)
+			// 																from 		\"Presensi\".tdatatim as tim
+			// 																where 		tim.tanggal=tabeltanggal.tanggal
+			// 																			and 	$klausaWhereKodesie
+			// 																			and 	tim.kd_ket='TM'
+			// 															)
+			// 															+
+			// 															(
+			// 																case 	when 	current_date=tabeltanggal.tanggal
+			// 																				then	(
+			// 																							select 		count(frontpres.waktu)
+			// 																							from 		\"FrontPresensi\".tpresensi as frontpres
+			// 																							where 		frontpres.tanggal=tabeltanggal.tanggal
+			// 																										and 	frontpres.noind=tblpkj.noind
+			// 																										and 	frontpres.waktu::time<=current_time
+			// 																						)
+			// 																		else 	0
+			// 																end
+			// 															)
+			// 														) as jumlah_pekerja_tidak_hadir
+			// 										from 			(
+			// 															select distinct	frontpres.tanggal::date as tanggal
+			// 															from 			\"FrontPresensi\".tpresensi as frontpres
+			// 															where 			frontpres.tanggal between '$tanggalHitung' and '$tanggalHitung'
+			// 																			and 	$klausaWhereKodesie
+			// 															order by 		tanggal
+			// 														) as tabeltanggal;";
 			$statistikPresensiHarian			= "	select			tabeltanggal.tanggal,
 																	(
 																		case 	when 	tabeltanggal.tanggal=current_date
@@ -252,7 +322,6 @@
 																									select 		count(distinct frontpres.noind)
 																									from 		\"FrontPresensi\".tpresensi as frontpres
 																									where 		frontpres.tanggal=tabeltanggal.tanggal
-																												and 	frontpres.waktu::time<=current_time
 																												and 	$klausaWhereKodesie
 																								)
 																				else 	(
@@ -294,19 +363,6 @@
 																						and 	$klausaWhereKodesie
 																						and 	tim.kd_ket='TM'
 																		)
-																		+
-																		(
-																			case 	when 	current_date=tabeltanggal.tanggal
-																							then	(
-																										select 		count(frontpres.waktu)
-																										from 		\"FrontPresensi\".tpresensi as frontpres
-																										where 		frontpres.tanggal=tabeltanggal.tanggal
-																													and 	frontpres.noind=tblpkj.noind
-																													and 	frontpres.waktu::time<=current_time
-																									)
-																					else 	0
-																			end
-																		)
 																	) as jumlah_pekerja_tidak_hadir
 													from 			(
 																		select distinct	frontpres.tanggal::date as tanggal
@@ -314,7 +370,7 @@
 																		where 			frontpres.tanggal between '$tanggalHitung' and '$tanggalHitung'
 																						and 	$klausaWhereKodesie
 																		order by 		tanggal
-																	) as tabeltanggal;";
+																	) as tabeltanggal;";																	
 			$queryStatistikPresensiHarian		=	$this->personalia->query($statistikPresensiHarian);
 			return $queryStatistikPresensiHarian->result_array();
 		}
