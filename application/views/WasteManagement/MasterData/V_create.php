@@ -48,6 +48,14 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="txtKonversiLimbahHeader" class="control-label col-lg-4">Konversi Limbah (TON)</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Konversi Limbah" name="txtKonversiLimbahHeader" id="txtKonversiLimbahHeader" class="form-control" required/>
+                                                    <p class="help-block"> Example : 0.123 (gunakan titik pengganti koma)</p>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div class="col-lg-12">

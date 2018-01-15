@@ -61,23 +61,20 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['jenis']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['jenis_limbah']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Sumber Limbah</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['sumber']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['nama_seksi']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Jenis Sumber</strong></td>
-                                                            <td style="border: 0">: <?php if($headerRow['jenis_sumber']==1){
-                                                                                echo "Proses Produksi";}
-                                                                        elseif ($headerRow['jenis_sumber']==0) {
-                                                                                echo "Diluar Proses Produksi";} ?>
+                                                            <td style="border: 0">: <?php echo $headerRow['jenis_sumber'] ;?>
                                                             </td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Satuan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['satuan_limbah'] ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['satuan'] ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Jumlah</strong></td>

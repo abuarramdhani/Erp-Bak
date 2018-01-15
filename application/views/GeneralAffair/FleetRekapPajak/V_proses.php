@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <br/>
-          
+        
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -89,11 +89,8 @@
 </section>
 
 <script type="text/javascript">
-    
-    window.onload = function() {
-        setTimeout(function() {
-            var     tahun   = $('#TahunPeriodePajak').val();
-            rekapPajak(tahun);
-        }, 1000);
-    }
+    $(window).load(function(){
+        var     tahun   = $('#TahunPeriodePajak').val();
+        rekapPajak(tahun);
+    });
 </script>

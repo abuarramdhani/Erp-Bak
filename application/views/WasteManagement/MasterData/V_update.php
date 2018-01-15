@@ -60,6 +60,15 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="txtSumberLimbahHeader" class="control-label col-lg-4">Konversi Limbah (TON)</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Konversi Limbah" name="txtKonversiLimbahHeader" id="txtKonversiLimbahHeader" class="form-control" value="<?php echo $headerRow['konversi']; ?>" required/>
+                                                    <input type="hidden" placeholder="Konversi Limbah" name="txtIDKonversiLimbahHeader" id="txtIDKonversiLimbahHeader" class="form-control" value="<?php echo $headerRow['konversi_id'] ?>"/>
+                                                    <p class="help-block"> Example : 0.123 (gunakan titik pengganti koma)</p>
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div class="col-lg-12">

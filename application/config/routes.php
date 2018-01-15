@@ -176,6 +176,9 @@ $route['SystemAdministration/ReportGroup/(:any)/(:any)'] = 'SystemAdministration
 $route['SystemAdministration/Responsibility'] = 'SystemAdministration/MainMenu/C_Responsibility/index';
 $route['SystemAdministration/Responsibility/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1';
 $route['SystemAdministration/Responsibility/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1/$2';
+$route['SystemAdministration/Module'] = 'SystemAdministration/MainMenu/C_Module/index';
+$route['SystemAdministration/Module/(:any)'] = 'SystemAdministration/MainMenu/C_Module/$1';
+$route['SystemAdministration/Module/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Module/$1/$2';
 
 //sales monitoring routes
 $route['SalesMonitoring'] = 'SalesMonitoring/C_SalesMonitoring/index';
@@ -405,6 +408,15 @@ $route['RekapTIMSPromosiPekerja/RekapTIMS/employee/(:any)/(:any)/(:any)'] = 'er/
 $route['RekapTIMSPromosiPekerja/RekapTIMS/export-employee/(:any)/(:any)/(:any)'] = 'er/RekapTIMS/C_RekapPerPekerja/ExportEmployee/$1/$2/$3';
 
 $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/GetNoInduk';
+
+
+	// 	Rekap Absensi Pekerja
+	//	{
+			$route['RekapTIMSPromosiPekerja/RekapAbsensiPekerja']			=	'er/RekapTIMS/C_RekapAbsensi';
+			$route['RekapTIMSPromosiPekerja/RekapAbsensiPekerja/(:any)']	=	'er/RekapTIMS/C_RekapAbsensi/$1';
+	//	}
+
+
 
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
@@ -1369,11 +1381,70 @@ $route['DokumenPekerja/DokumenAll']				=	'DokumenPekerja/C_DokumenAll';
 //---end------------------------------ Document Controller Pekerja ------------------------------------
 
 
+//------------------------------------ Production Planning ----------------------------------------
+$route['ProductionPlanning']  									= 'ProductionPlanning/C_Index/index';
+$route['ProductionPlanning/Monitoring']  						= 'ProductionPlanning/MainMenu/C_Monitoring/index';
+$route['ProductionPlanning/Monitoring/(:any)']  				= 'ProductionPlanning/MainMenu/C_Monitoring/$1';
+$route['ProductionPlanning/StorageMonitoring']  				= 'ProductionPlanning/MainMenu/C_StorageMonitoring/index';
+$route['ProductionPlanning/StorageMonitoring/(:any)']  			= 'ProductionPlanning/MainMenu/C_StorageMonitoring/$1';
+$route['ProductionPlanning/DataPlanMonthly']  					= 'ProductionPlanning/MainMenu/C_DataPlanMonthly/index';
+$route['ProductionPlanning/DataPlanMonthly/(:any)']  			= 'ProductionPlanning/MainMenu/C_DataPlanMonthly/$1';
+$route['ProductionPlanning/DataPlanMonthly/(:any)/(:any)']		= 'ProductionPlanning/MainMenu/C_DataPlanMonthly/$1/$2';
+$route['ProductionPlanning/DataPlanDaily']  					= 'ProductionPlanning/MainMenu/C_DataPlanDaily/index';
+$route['ProductionPlanning/DataPlanDaily/(:any)']  				= 'ProductionPlanning/MainMenu/C_DataPlanDaily/$1';
+$route['ProductionPlanning/DataPlanDaily/(:any)/(:any)']		= 'ProductionPlanning/MainMenu/C_DataPlanDaily/$1/$2';
+$route['ProductionPlanning/ItemPlan']  							= 'ProductionPlanning/MainMenu/C_ItemPlan/index';
+$route['ProductionPlanning/ItemPlan/(:any)']  					= 'ProductionPlanning/MainMenu/C_ItemPlan/$1';
+$route['ProductionPlanning/ItemPlan/(:any)/(:any)']				= 'ProductionPlanning/MainMenu/C_ItemPlan/$1/$2';
+$route['ProductionPlanning/Setting/GroupSection']  				= 'ProductionPlanning/Settings/C_GroupSection/index';
+$route['ProductionPlanning/Setting/GroupSection/(:any)']		= 'ProductionPlanning/Settings/C_GroupSection/$1';
+$route['ProductionPlanning/Setting/GroupSection/(:any)/(:any)']	= 'ProductionPlanning/Settings/C_GroupSection/$1/$2';
+$route['ProductionPlanning/Setting/Section']					= 'ProductionPlanning/Settings/C_Section';
+$route['ProductionPlanning/Setting/Section/(:any)']				= 'ProductionPlanning/Settings/C_Section/$1';
+$route['ProductionPlanning/Setting/Section/(:any)/(:any)']		= 'ProductionPlanning/Settings/C_Section/$1/$2';
 
-//------------------------------------ LOG SERVER --------------------------------------------
-$route['LogServer']									= 'LogServer/C_LogServer/index';
-$route['MonitoringServer/Monitoring']				= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/index';
-$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/detail/$1';
-$route['MonitoringServer/InputMonitoring']			= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/index';
-$route['MonitoringServer/InputMonitoring/save']		= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/save';
-$route['MonitoringServer/InputMonitoring/upload']	= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/upload';
+
+//------------------------------------MONITORING ICT --------------------------------------------
+
+/*MONITORING LOG SERVER */
+$route['MonitoringICT']								= 'MonitoringICT/C_Index/index';
+$route['MonitoringServer/Monitoring']				= 'MonitoringICT/MainMenu/MonitoringLogServer/C_MonitoringServer/index';
+$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'MonitoringICT/MainMenu/MonitoringLogServer/C_MonitoringServer/detail/$1';
+$route['MonitoringServer/InputMonitoring']			= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/index';
+$route['MonitoringServer/InputMonitoring/save']		= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/save';
+$route['MonitoringServer/InputMonitoring/upload']	= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/upload';
+
+/*MONITORING FILE SERVER */
+$route['MonitoringFileServer/Monitoring']			= 'MonitoringICT/MainMenu/MonitoringFileServer/C_MonitoringFIleServer/index';
+$route['MonitoringFileServer/InputMonitoring']		= 'MonitoringICT/MainMenu/MonitoringFileServer/C_InputFIleServer/index';
+$route['MonitoringFileServer/InputMonitoring/save']		= 'MonitoringICT/MainMenu/MonitoringFileServer/C_InputFIleServer/save';
+
+$route['MonitoringICT/JobListMonitoring'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/index';
+$route['MonitoringICT/JobListMonitoring/create'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/create';
+$route['MonitoringICT/JobListMonitoring/Detail/(:any)/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/detail/$1/$2';
+$route['MonitoringICT/JobListMonitoring/Detail/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/detail/$1/$2';
+$route['MonitoringICT/JobListMonitoring/Edit/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/edit/$1';
+$route['MonitoringICT/JobListMonitoring/Delete'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/delete';
+$route['MonitoringICT/JobListMonitoring/saveEdit'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/saveEdit';
+$route['MonitoringICT/JobListMonitoring/searchHasil'] = 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/searchHasil';
+
+$route['MonitoringICT/PlotingJoblist']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/index';
+$route['MonitoringICT/PlotingJoblist/Edit/(:any)']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/indexEdit/$1';
+$route['MonitoringICT/PlotingJoblist/saveEdit']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/saveEdit';
+
+$route['MonitoringICT/MonitoringAll']	= 'MonitoringICT/MainMenu/MonitoringAll/C_MonitoringAll/index';
+
+
+// -------start--------------------------- Monitoring OJT ----------------------------
+
+$route['OnJobTraining']		=	'MonitoringOJT/C_Index';
+
+	//	Master Orientasi
+	//	{
+			$route['OnJobTraining/MasterOrientasi']		=	'MonitoringOJT/C_MasterOrientasi';
+
+			$route['OnJobTraining/MasterOrientasi/OrientasiBaru/Save']	=	'MonitoringOJT/C_MasterOrientasi/OrientasiBaru_Save';
+	//	}
+
+// -------end----------------------------- Monitoring OJT ----------------------------
+

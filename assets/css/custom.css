@@ -2,7 +2,6 @@
 a.logo:hover {
     background-color: #336699 !important;
 }
-
 .flyover {
     text-align: center;
     left: 100%;
@@ -14,15 +13,12 @@ a.logo:hover {
     z-index: 1050;
     transition: left 0.6s ease-out 0s;
 }
-
 .flyover-top {
     bottom: 80%;
 }
-
 .flyover.in {
     left: 64%;
 }
-
 .overlay_loading {
     opacity: 0.7;
     /*filter: alpha(opacity=20);*/
@@ -34,31 +30,25 @@ a.logo:hover {
     left: 0;
     position: fixed;
 }
-
 .noscroll {
     overflow: hidden;
 }
-
 .autocomplete-suggestions {
     width: 100%
 }
-
 .autocomplete-suggestion {
     padding: 10px 5px;
     font-size: 1.2em;
     white-space: nowrap;
     overflow: hidden;
 }
-
 .autocomplete-selected {
     background: #f0f0f0;
 }
-
 .autocomplete-suggestions strong {
     font-weight: normal;
     color: #3399ff;
 }
-
 .dataTables_wrapper .dataTables_processing {
     font-weight: bold;
     color: #fff;
@@ -80,7 +70,6 @@ a.logo:hover {
     background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 25%, rgba(255, 255, 255, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
     background: linear-gradient(to right, rgb(167, 212, 251) 0%, rgb(51, 122, 183) 25%, rgb(51, 122, 183) 75%, rgb(149, 196, 236) 100%);
 }
-
 .s2 {
     position: absolute;
     height: 100px;
@@ -90,7 +79,6 @@ a.logo:hover {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
 .s1 {
     position: absolute;
     height: 100px;
@@ -101,7 +89,6 @@ a.logo:hover {
     transform: translate(-50%, -50%) rotate(45deg);
     background-color: transparent;
 }
-
 .bigcon {
     position: absolute;
     height: 95px;
@@ -114,12 +101,10 @@ a.logo:hover {
     animation: bigcon 2s infinite linear;
     animation-delay: 0.25s;
 }
-
 .b {
     border-radius: 50%;
     position: absolute;
 }
-
 .s {
     width: 25px;
     height: 25px;
@@ -127,27 +112,22 @@ a.logo:hover {
     box-shadow: 0px 2px rgba(0, 0, 0, 0.3);
     background-color: #46b9ff;
 }
-
 .s:nth-child(1) {
     top: 0%;
     left: 0%;
 }
-
 .s:nth-child(2) {
     top: 0%;
     right: 0%;
 }
-
 .s:nth-child(3) {
     right: 0%;
     bottom: 0%;
 }
-
 .s:nth-child(4) {
     bottom: 0%;
     left: 0%;
 }
-
 .big {
     width: 20px;
     height: 20px;
@@ -157,39 +137,30 @@ a.logo:hover {
     background-color: #54f7f8;
     animation: bigball 1s infinite linear;
 }
-
 .sb1 {
     animation-delay: -1.75s;
 }
-
 .sb6 {
     animation-delay: -1.5s;
 }
-
 .sb2 {
     animation-delay: -1.25s;
 }
-
 .sb7 {
     animation-delay: -1s;
 }
-
 .sb3 {
     animation-delay: -0.75s;
 }
-
 .sb8 {
     animation-delay: -0.5s;
 }
-
 .sb4 {
     animation-delay: -0.25s;
 }
-
 .sb5 {
     animation-delay: -0s;
 }
-
 @keyframes bigcon {
     0% {
         transform-origin: center;
@@ -200,7 +171,6 @@ a.logo:hover {
         transform: translate(-50%, -50%) rotate(405deg);
     }
 }
-
 @keyframes small {
     0% {
         transform: scale(1);
@@ -222,12 +192,10 @@ a.logo:hover {
         background-color: #46b9ff;
     }
 }
-
 .fileUpload {
     position: relative;
     overflow: hidden;
 }
-
 .fileUpload input.upload {
     position: absolute;
     top: 0;
@@ -239,358 +207,280 @@ a.logo:hover {
     opacity: 0;
     filter: alpha(opacity=0);
 }
-
 .form-inline .form-control {
     width: 400px;
 }
-
 #fine-uploader-manual-trigger .qq-upload-button {
     margin-right: 15px;
 }
-
 #fine-uploader-manual-trigger .buttons {
     width: 36%;
 }
-
 #fine-uploader-manual-trigger .qq-uploader .qq-total-progress-bar-container {
     width: 60%;
 }
-
 .img-selected {
     border-width: 4px;
     border-color: #4387fd;
     border-style: solid;
     opacity: 0.5;
 }
-
-.autocomplete-suggestions { width: 100% }
-.autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
-.autocomplete-selected { background: #f0f0f0; }
-.autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
-
-table.t_riwayat_gaji
-{
-	margin: 0px auto;
-	border: 2px solid black;
-	border-collapse: collapse;	
-	border-spacing: 10px;
+.autocomplete-suggestions {
+    width: 100%
 }
-
-table.t_riwayat_gaji th
-{
-	border: 1px solid black;
-	text-align: center;
-	padding: 3px;
+.autocomplete-suggestion {
+    padding: 10px 5px;
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
 }
-
-table.t_riwayat_gaji td
-{
-	border: 1px solid black;
-	padding: 3px;
+.autocomplete-selected {
+    background: #f0f0f0;
 }
-
-table.t_riwayat_gaji td#nama
-{
-	border: 1px solid black;
-	width: 300px;
-	padding: 3px;
+.autocomplete-suggestions strong {
+    font-weight: normal;
+    color: #3399ff;
 }
-
-table.t_rincian_hutang
-{
-	margin: 0px auto;
-	border: 2px solid black;
-	border-collapse: collapse;	
-	border-spacing: 10px;
-}
-
-table.t_rincian_hutang th
-{
-	border: 1px solid black;
-	height: 20px;
-	text-align: center;
-	padding: 3px;
-}
-
-table.t_rincian_hutang th#cicilan
-{
-	width: 100px;
-}
-
-table.t_rincian_hutang td
-{
-	border: 1px solid black;
-	height: 18px;
-	padding: 3px;
-}
-
-td.c_rincian_hutang_a{ width: 120px; }
-
-td.c_rincian_hutang_b{ width: 160px; }
-
-td.c_rincian_hutang_space{ width: 10px; }
-
-hr.hl_rincian_hutang { width:100%; height:2px; background: #000000 }
-
-table.t_bawah_ptkp
-{
-	margin: 0px auto;
-	border: 2px solid black;
-	border-collapse: collapse;	
-	border-spacing: 10px;
-}
-
-table.t_bawah_ptkp th
-{
-	border: 1px solid black;
-	height: 20px;
-	text-align: center;
-}
-
-table.t_bawah_ptkp td
-{
-	border: 1px solid black;
-	height: 16px;
-}
-
-table.t_bawah_ptkp td#nama
-{
-	padding-left: 10px;
-}
-
-table.t_master_gaji
-{
-	margin: 0px auto;
-	border: 2px solid black;
-	border-collapse: collapse;	
-	border-spacing: 10px;
-}
-
-table.t_master_gaji th
-{
-	border: 1px solid black;
-	height: 20px;
-	text-align: center;
-}
-
-table.t_master_gaji td
-{
-	border: 1px solid black;
-	height: 16px;
-}
-
-table.t_master_gaji td#nama
-{
-	padding-left: 10px;
-}
-
-table.t_master_gaji td#uang
-{
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-.h_master_gaji
-{
-	line-height: 10px;
-}
-
-table.t_dana_pensiun
-{
-	margin: 0px auto;
-	border: 2px solid black;
-	border-collapse: collapse;	
-	border-spacing: 10px;
-}
-
-table.t_dana_pensiun th
-{
-	border: 1px solid black;
-	text-align: center;
-}
-
-table.t_dana_pensiun td
-{
-	border: 1px solid black;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-table.t_dana_pensiun td#uang
-{
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
-table.t_dana_pensiun td#total
-{
-	height: 25px;
-	padding-right: 20px;
-	font-size: 14px; 
-	font-weight: bold;
-}
-
-table.t_potongan
-{
+table.t_riwayat_gaji {
     margin: 0px auto;
     border: 2px solid black;
-    border-collapse: collapse;  
+    border-collapse: collapse;
     border-spacing: 10px;
 }
-
-table.t_potongan th
-{
+table.t_riwayat_gaji th {
+    border: 1px solid black;
+    text-align: center;
+    padding: 3px;
+}
+table.t_riwayat_gaji td {
+    border: 1px solid black;
+    padding: 3px;
+}
+table.t_riwayat_gaji td#nama {
+    border: 1px solid black;
+    width: 300px;
+    padding: 3px;
+}
+table.t_rincian_hutang {
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;
+    border-spacing: 10px;
+}
+table.t_rincian_hutang th {
+    border: 1px solid black;
+    height: 20px;
+    text-align: center;
+    padding: 3px;
+}
+table.t_rincian_hutang th#cicilan {
+    width: 100px;
+}
+table.t_rincian_hutang td {
+    border: 1px solid black;
+    height: 18px;
+    padding: 3px;
+}
+td.c_rincian_hutang_a {
+    width: 120px;
+}
+td.c_rincian_hutang_b {
+    width: 160px;
+}
+td.c_rincian_hutang_space {
+    width: 10px;
+}
+hr.hl_rincian_hutang {
+    width: 100%;
+    height: 2px;
+    background: #000000
+}
+table.t_bawah_ptkp {
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;
+    border-spacing: 10px;
+}
+table.t_bawah_ptkp th {
+    border: 1px solid black;
+    height: 20px;
+    text-align: center;
+}
+table.t_bawah_ptkp td {
+    border: 1px solid black;
+    height: 16px;
+}
+table.t_bawah_ptkp td#nama {
+    padding-left: 10px;
+}
+table.t_master_gaji {
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;
+    border-spacing: 10px;
+}
+table.t_master_gaji th {
+    border: 1px solid black;
+    height: 20px;
+    text-align: center;
+}
+table.t_master_gaji td {
+    border: 1px solid black;
+    height: 16px;
+}
+table.t_master_gaji td#nama {
+    padding-left: 10px;
+}
+table.t_master_gaji td#uang {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.h_master_gaji {
+    line-height: 10px;
+}
+table.t_dana_pensiun {
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;
+    border-spacing: 10px;
+}
+table.t_dana_pensiun th {
     border: 1px solid black;
     text-align: center;
 }
-
-table.t_potongan td
-{
+table.t_dana_pensiun td {
     border: 1px solid black;
     padding-left: 5px;
     padding-right: 5px;
 }
-
-table.t_potongan td#uang
-{
+table.t_dana_pensiun td#uang {
     padding-left: 15px;
     padding-right: 15px;
 }
-
-table.t_potongan td#total
-{
+table.t_dana_pensiun td#total {
     height: 25px;
     padding-right: 20px;
-    font-size: 14px; 
+    font-size: 14px;
     font-weight: bold;
 }
-
-table.t_rekap_pembayaran
-{
+table.t_potongan {
     margin: 0px auto;
     border: 2px solid black;
-    border-collapse: collapse;  
+    border-collapse: collapse;
     border-spacing: 10px;
 }
-
-table.t_rekap_pembayaran th
-{
+table.t_potongan th {
+    border: 1px solid black;
+    text-align: center;
+}
+table.t_potongan td {
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+table.t_potongan td#uang {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+table.t_potongan td#total {
+    height: 25px;
+    padding-right: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+table.t_rekap_pembayaran {
+    margin: 0px auto;
+    border: 2px solid black;
+    border-collapse: collapse;
+    border-spacing: 10px;
+}
+table.t_rekap_pembayaran th {
     border: 1px solid black;
     text-align: center;
     padding-left: 10px;
-    padding-right: 10px;    
+    padding-right: 10px;
 }
-
-table.t_rekap_pembayaran td
-{
+table.t_rekap_pembayaran td {
     border: 1px solid black;
     padding-left: 5px;
     padding-right: 5px;
 }
-
-table.t_rekap_pembayaran td#uang
-{
+table.t_rekap_pembayaran td#uang {
     padding-left: 15px;
     padding-right: 15px;
 }
-
-table.t_rekap_pembayaran td#total
-{
+table.t_rekap_pembayaran td#total {
     height: 25px;
     padding-right: 20px;
-    font-size: 14px; 
+    font-size: 14px;
     font-weight: bold;
 }
-
-table.t_summary_dept
-{
+table.t_summary_dept {
     margin: 0px auto;
     border: 2px solid black;
-    border-collapse: collapse;  
+    border-collapse: collapse;
     border-spacing: 10px;
 }
-
-table.t_summary_dept th
-{
+table.t_summary_dept th {
     border: 1px solid black;
     text-align: center;
     width: 140px;
     height: 30px;
 }
-
-table.t_summary_dept td
-{
+table.t_summary_dept td {
     border-left: 1px solid black;
     padding-left: 5px;
     padding-right: 5px;
     height: 22px;
 }
-
-table.t_summary_dept td#total
-{
+table.t_summary_dept td#total {
     height: 30px;
     border: 1px solid black;
 }
-
-table.t_rekap_gaji_bank
-{
+table.t_rekap_gaji_bank {
     margin: 0px auto;
     border: 2px solid black;
-    border-collapse: collapse;  
+    border-collapse: collapse;
     border-spacing: 10px;
 }
-
-table.t_rekap_gaji_bank th
-{
+table.t_rekap_gaji_bank th {
     font-size: 11px;
     border: 1px solid black;
     text-align: center;
     padding-left: 8px;
     padding-right: 8px;
 }
-
-table.t_rekap_gaji_bank td
-{
+table.t_rekap_gaji_bank td {
     font-size: 11px;
     border: 1px solid black;
     padding-left: 8px;
     padding-right: 8px;
 }
-
-td.garis_bawah
-{
+td.garis_bawah {
     border-bottom: 1px solid black;
 }
-
-table.t_riwayat_mutasi
-{
+table.t_riwayat_mutasi {
     margin: 0px auto;
     border: 2px solid black;
-    border-collapse: collapse;  
+    border-collapse: collapse;
     border-spacing: 10px;
 }
-
-table.t_riwayat_mutasi th
-{
+table.t_riwayat_mutasi th {
     font-size: 11px;
     border: 1px solid black;
     text-align: center;
     padding-left: 8px;
     padding-right: 8px;
 }
-
-table.t_riwayat_mutasi td
-{
+table.t_riwayat_mutasi td {
     font-size: 11px;
     border: 1px solid black;
     padding-left: 8px;
     padding-right: 8px;
 }
-
 .hidden {
     display: none;
 }
-
 #res .input-sm {
     max-width: 100px;
 }
@@ -599,25 +489,35 @@ table.t_riwayat_mutasi td
     vertical-align: middle !important; 
     text-align: center;
 }
-
-:focus{
-outline:none;
+#mon-area {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    padding: 0px 5px 10px 5px;
+    background-color: #ffffff;
+    color: #000000;
 }
-
-.radio2{
--webkit-appearance:button;
--moz-appearance:button;
- appearance:button;
-border:4px solid #ccc;
- border-top-color:#bbb;
-border-left-color:#bbb;
-background:#fff;
-width:30px;
-height:30px;
-border-radius:50%;
+.bg-danger-plan {
+    background-color: #FF5252;
+    color: #000;
 }
-
-.radio2:checked{
-border:10px solid
-#4099ff;
+.bg-success-plan {
+    background-color: #51a2f3;
+    color: #000;
+}
+.bg-dark-plan {
+    background-color: #212121;
+    color: #000;
+}
+.table-border-dark {
+    border: 2px solid #000;
+}
+.table-border-dark>thead>tr>td, .table-border-dark>tbody>tr>td {
+    border: 1px solid #000;
+}
+.table-border-light {
+    border: 2px solid #fff;
+}
+.table-border-light>thead>tr>td, .table-border-light>tbody>tr>td {
+    border: 1px solid #fff;
 }

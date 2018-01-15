@@ -50,14 +50,15 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-customer" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
-                                                <th>Jenis Limbah</th>
 												<th>Tanggal Keluar</th>
-												<th>Jumlah Keluar</th>
+                                                <th>Jenis Limbah</th>
                                                 <th>Satuan</th>
+                                                <th>Sumber Limbah</th>
+												<th>Jumlah Keluar</th>
 												<th>Tujuan Limbah</th>
 												<th>Nomor Dok</th>
 												<th>Sisa Limbah</th>
@@ -76,10 +77,11 @@
 											?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
-                                                <td><?php echo $row['jenis'] ?></td>
 												<td><?php echo date('d M Y',strtotime($row['tanggal_keluar'])); ?></td>
+                                                <td><?php echo $row['jenis_limbah'] ?></td>
+                                                <td><?php echo $row['satuan'] ?></td>
+                                                <td><?php echo $row['sumber_limbah'] ?></td>
 												<td><?php echo $row['jumlah_keluar'] ?></td>
-                                                <td><?php echo $row['satuan_limbah'] ?></td>
 												<td><?php echo $row['tujuan_limbah'] ?></td>
 												<td><?php echo $row['nomor_dok'] ?></td>
 												<td><?php echo $row['sisa_limbah'] ?></td>

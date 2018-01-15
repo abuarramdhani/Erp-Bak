@@ -49,15 +49,15 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-customer" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th>Tanggal Masuk</th>
                                                 <th>Jenis Limbah</th>
-                                                <th>Sumber Limbah</th>
-                                                <th>Jenis Sumber</th>
                                                 <th>Satuan</th>
+                                                <th>Jenis Sumber</th>
+                                                <th>Sumber Limbah</th> 
                                                 <th>Jumlah</th>
                                                 <th>Perlakuan</th>
                                                 <th>Maks Penyimpanan</th>
@@ -79,14 +79,10 @@
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td><?php echo date('d M Y', strtotime($row['tanggal_transaksi'])) ;?></td>
-                                                <td><?php echo $row['jenis'] ?></td>
-                                                <td><?php echo $row['sumber'] ?></td>
-                                                <td><?php if($row['jenis_sumber']==1){
-                                                                echo "Proses Produksi";}
-                                                            elseif ($row['jenis_sumber']==0) {
-                                                                echo "Diluar Proses Produksi";} ?>
-                                                </td>
-                                                <td><?php echo $row['satuan_limbah'] ?></td>
+                                                <td><?php echo $row['jenis_limbah'] ?></td>
+                                                <td><?php echo $row['satuan'] ?></td>
+                                                <td><?php echo $row['jenis_sumber'] ?></td>
+                                                <td><?php echo $row['nama_seksi'] ?></td>
                                                 <td><?php echo $row['jumlah'] ?></td>
                                                 <td><?php echo $row['limbah_perlakuan'] ?></td>
                                                 <td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>

@@ -256,8 +256,12 @@ class C_Rekap extends CI_Controller {
 
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(17);
-		$worksheet->getColumnDimension('C')->setWidth(45);
+		$worksheet->getColumnDimension('C')->setAutoSize(true);
 		$worksheet->getColumnDimension('D')->setWidth(24);
+		$worksheet->getColumnDimension('E')->setAutoSize(true);
+		$worksheet->getColumnDimension('F')->setAutoSize(true);
+		$worksheet->getColumnDimension('G')->setAutoSize(true);
+		$worksheet->getColumnDimension('H')->setAutoSize(true);
 
 		$worksheet->mergeCells('A1:B1');
 		$worksheet->mergeCells('A2:B2');
@@ -292,13 +296,21 @@ class C_Rekap extends CI_Controller {
 		$worksheet->mergeCells('B6:B7');
 		$worksheet->mergeCells('C6:C7');
 		$worksheet->mergeCells('D6:D7');
+		$worksheet->mergeCells('E6:E7');
+		$worksheet->mergeCells('F6:F7');
+		$worksheet->mergeCells('G6:G7');
+		$worksheet->mergeCells('H6:H7');
 
 		$worksheet->setCellValue('A6', 'No');
 		$worksheet->setCellValue('B6', 'NIK');
 		$worksheet->setCellValue('C6', 'NAMA');
 		$worksheet->setCellValue('D6', 'MASA KERJA');
+		$worksheet->setCellValue('E6', 'DEPARTEMEN');
+		$worksheet->setCellValue('F6', 'BIDANG');
+		$worksheet->setCellValue('G6', 'UNIT');
+		$worksheet->setCellValue('H6', 'SEKSI');
 
-		$col = '4';
+		$col = '8';
 		if ($detail == 1) {
 			foreach ($p as $d) {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
@@ -350,6 +362,7 @@ class C_Rekap extends CI_Controller {
 		$P_PSP = PHPExcel_Cell::stringFromColumnIndex($col+13);
 		$P_IP = PHPExcel_Cell::stringFromColumnIndex($col+14);
 		$P_CT = PHPExcel_Cell::stringFromColumnIndex($col+15);
+		$P_Tot	=	PHPExcel_Cell::stringFromColumnIndex($col+16);
 		$worksheet->getColumnDimension($T)->setWidth(3);
 		$worksheet->getColumnDimension($I)->setWidth(3);
 		$worksheet->getColumnDimension($M)->setWidth(3);
@@ -366,6 +379,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->getColumnDimension($P_PSP)->setWidth(10);
 		$worksheet->getColumnDimension($P_IP)->setWidth(10);
 		$worksheet->getColumnDimension($P_CT)->setWidth(10);
+		$worksheet->getColumnDimension($P_Tot)->setWidth(10);
 		$head_merge = $col+7;
 		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 		$worksheet->mergeCells($T.'6:'.$headCol.'6');
@@ -391,6 +405,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->setCellValue($P_PSP.'7', 'PSP');
 		$worksheet->setCellValue($P_IP.'7', 'IP');
 		$worksheet->setCellValue($P_CT.'7', 'CT');
+		$worksheet->setCellValue($P_Tot.'7', 'Total');
 
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
@@ -426,8 +441,12 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
 			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
+			$worksheet->setCellValue('E'.$highestRow, $rekap_data['dept']);
+			$worksheet->setCellValue('F'.$highestRow, $rekap_data['bidang']);
+			$worksheet->setCellValue('G'.$highestRow, $rekap_data['unit']);
+			$worksheet->setCellValue('H'.$highestRow, $rekap_data['seksi']);			
 
-			$col = 4;
+			$col = 8;
 			if ($detail == 1) {
 				foreach ($p as $d) {
 					$monthName = $d->format('M_y');
@@ -515,7 +534,58 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue($P_PSP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekpsp']+$rekap_data['frekpsps']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($P_IP.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($P_CT.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
-
+			if(($rekap_data['totalhk']+$rekap_data['totalhks']) == 0)
+			{
+				$worksheet->setCellValue
+						(
+							$P_Tot.$highestRow, 
+							(
+								0
+							),
+							PHPExcel_Cell_DataType::TYPE_STRING
+						);	
+			}
+			else
+			{
+				$worksheet->setCellValue
+						(
+							$P_Tot.$highestRow, 
+							(
+								substr(
+									round(
+											(
+												(float)
+												(
+													(
+														($rekap_data['totalhk']+$rekap_data['totalhks'])
+														-
+														(
+															($rekap_data['freki']+$rekap_data['frekis'])
+															+
+															($rekap_data['frekm']+$rekap_data['frekms'])
+															+
+															($rekap_data['freksk']+$rekap_data['freksks'])
+															+
+															($rekap_data['frekpsp']+$rekap_data['frekpsps'])
+															+
+															($rekap_data['frekip']+$rekap_data['frekips'])
+															+
+															($rekap_data['frekct']+$rekap_data['frekcts'])
+														)
+													)
+													/
+													($rekap_data['totalhk']+$rekap_data['totalhks'])
+												)
+												*100
+											),
+										2),
+								0,
+								5)
+								.'%'
+							),
+							PHPExcel_Cell_DataType::TYPE_STRING
+						);				
+			}
 			$highestRow++;
 		}
 
@@ -554,12 +624,13 @@ class C_Rekap extends CI_Controller {
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		ob_end_clean();
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xlsx"');
+		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xls"');
 		$objWriter->save("php://output");
 	}
 

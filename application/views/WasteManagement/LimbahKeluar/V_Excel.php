@@ -10,13 +10,8 @@ $styleArray = array(
             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
         ),
 	);
-// $styleBorder = array(
-// 	'borders' => array(
-//         'allborders' => array(
-//         	'style' => PHPExcel_Style_Border::BORDER_THIN
-//         	)
-//       	)		
-// 	);
+$border_all     = array('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('black'),)));
+
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
@@ -24,7 +19,7 @@ $styleArray = array(
 	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
 	$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getAlignment()->setHorizontal('center'); 
-	$objPHPExcel->getActiveSheet()->getStyle('A5:K5')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:K6')->getFont()->setBold(true);
 	
 	// $objPHPExcel->getActiveSheet()->getStyle('A:G')->applyFromArray($styleBorder);
 
@@ -54,21 +49,6 @@ $styleArray = array(
 								 ->setDescription("Sistem")
 								 ->setKeywords("Sistem")
 								 ->setCategory("Sistem");
-
-	$objset = $objPHPExcel->setActiveSheetIndex(0);
-	$objget = $objPHPExcel->getActiveSheet();
-	// $objget->getStyle("")->applyFromArray(
-	// 	array(
-	// 		'fill' => array(
-	// 			'type' => PHPExcel_Style_Fill::FILL_SOLID,
-	// 			'color' => array('rgb' => '92d050')
-	// 		),
-	// 		'font' => array(
-	// 			'color' => array('rgb' => '000000'),
-	// 			'bold'  => true,
-	// 		),	
-	// 	)				
-	// );
 
 	// Add some data
 	foreach(range('A','K') as $columnID)
@@ -117,10 +97,10 @@ $styleArray = array(
 	
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomA, $no, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $FM['jenis'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomB, $FM['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomC, $tanggalMasuk, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, $FM['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomE, $FM['jumlah'].' '.$FM['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomD, $FM['nama_seksi'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomE, $FM['jumlah'].' '.$FM['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomF, $maksPenyimpanan, PHPExcel_Cell_DataType::TYPE_STRING);
 	}
 
@@ -141,10 +121,10 @@ $styleArray = array(
 	
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomG, $tanggalKeluar, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomH, $FK['jumlah_keluar'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomI, $FK['tujuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
 				->setCellValueExplicit($kolomJ, $FK['nomor_dok'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan_limbah'], PHPExcel_Cell_DataType::TYPE_STRING);
+				->setCellValueExplicit($kolomK, $FK['sisa_limbah'].' '.$FK['satuan'], PHPExcel_Cell_DataType::TYPE_STRING);
 	}				
 
 	if ($i > $o) {
@@ -163,6 +143,8 @@ $styleArray = array(
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValue('H'.($hitung+2), 'Kepala Seksi Waste Management')
 				->setCellValue('H'.($hitung+5), $user);
+
+	$objPHPExcel->getActiveSheet()->getStyle('A5:K'.$hitung) ->applyFromArray($border_all);
 
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');

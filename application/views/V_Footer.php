@@ -77,7 +77,9 @@
 	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
 	<!--	<script src="<?php echo base_url('assets/js/customLKH.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customDS.js');?>" type="text/javascript"></script>	
+	<script src="<?php echo base_url('assets/js/customDS.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPP.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customICT.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){
@@ -153,6 +155,7 @@
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/iCheck/icheck.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/jquery.toaster/jquery.toaster.js');?>"></script>
 
 <!-- 	<script src="<?php echo base_url('assets/plugins/ckeditor/config.js');?>"></script>
  -->    

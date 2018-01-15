@@ -100,6 +100,12 @@ class C_LimbahMaster extends CI_Controller
 				);
 				$this->M_limbahmaster->setLimbahSumber($sumber);
 
+				$konversi = array(
+					'id_jenis_limbah' => $header_id,
+					'konversi' => $this->input->post('txtKonversiLimbahHeader'),
+				);
+				$this->M_limbahmaster->setLimbahKonversi($konversi);
+
 			redirect(site_url('WasteManagement/MasterData'));
 		}
 	}
@@ -163,6 +169,14 @@ class C_LimbahMaster extends CI_Controller
 
 				$this->M_limbahmaster->updateLimbahSumber($sumber, $id_sumber);
 
+					$id_konversi = $this->input->post('txtIDKonversiLimbahHeader',TRUE);
+
+					$konversi = array(
+						'konversi' => $this->input->post('txtKonversiLimbahHeader'),
+					);
+
+				$this->M_limbahmaster->updateLimbahKonversi($konversi, $id_konversi);
+
 			redirect(site_url('WasteManagement/MasterData'));
 		}
 	}
@@ -188,7 +202,6 @@ class C_LimbahMaster extends CI_Controller
 
 		/* HEADER DATA */
 		$data['LimbahJenis'] = $this->M_limbahmaster->getLimbahJenis($plaintext_string);
-
 		/* LINES DATA */
 
 		$this->load->view('V_Header',$data);
@@ -204,6 +217,9 @@ class C_LimbahMaster extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_limbahmaster->deleteLimbahJenis($plaintext_string);
+		$this->M_limbahmaster->deleteLimbahSatuan($plaintext_string);
+		$this->M_limbahmaster->deleteLimbahSumber($plaintext_string);
+		$this->M_limbahmaster->deleteLimbahKonversi($plaintext_string);
 
 		redirect(site_url('WasteManagement/MasterData'));
     }

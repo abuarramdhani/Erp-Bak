@@ -31,6 +31,8 @@ class C_WasteManagement extends CI_Controller {
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('WasteManagement/MainMenu/M_limbahtransaksi');
+		$this->load->model('WasteManagement/MainMenu/M_limbahkeluar');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -54,6 +56,10 @@ class C_WasteManagement extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['Transaksi'] = $this->M_limbahtransaksi->LimbahWaiting();
+		$data['keluar'] = $this->M_limbahkeluar->LimbahWaiting();
+		$data['user'] = $this->M_limbahtransaksi->getUser();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('WasteManagement/V_Index',$data);

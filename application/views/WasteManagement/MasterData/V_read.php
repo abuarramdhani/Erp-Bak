@@ -47,6 +47,10 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['sumber_limbah']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Konversi Limbah (TON)</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['konversi']; ?></td>
+                                                        </tr>
                                                     <?php endforeach; ?>
                                                     </table>
                                                 </div>

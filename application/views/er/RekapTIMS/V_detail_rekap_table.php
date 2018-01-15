@@ -59,6 +59,26 @@ foreach ($rekap as $rekap_data) {}
 												MASA KERJA
 											</div>
 										</th>
+										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px;">
+											<div style="width: 160px">
+												DEPARTEMEN
+											</div>
+										</th>
+										<th rowspan="2"style="text-align: center;vertical-align:middle;font-size:20px;">
+											<div style="width: 160px">
+												BIDANG
+											</div>
+										</th>
+										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px;">
+											<div style="width: 160px">
+												UNIT
+											</div>
+										</th>
+										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px;">
+											<div style="width: 160px">
+												SEKSI
+											</div>
+										</th>
 										<?php
 											$no = 0;
 											foreach ($p as $d) {
@@ -83,7 +103,7 @@ foreach ($rekap as $rekap_data) {}
 										?>
 										<th colspan="8" style="text-align: center"><div style="width: 200px">REKAP</div></th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">TOTAL HARI KERJA</th>
-										<th colspan="7" style="text-align: center">PERSENTASE</th>
+										<th colspan="8" style="text-align: center">PERSENTASE</th>
 									</tr>
 									<tr class="bg-primary">
 									<?php
@@ -133,80 +153,85 @@ foreach ($rekap as $rekap_data) {}
 										}
 									?>
 										<th style="text-align: center">
-												<div style="width: 20px">
-													T
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													I
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													M
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													S
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													PSP
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													IP
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													CT
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													SP
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													T
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													I
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													M
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													S
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													PSP
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													IP
-												</div>
-											</th>
-											<th style="text-align: center">
-												<div style="width: 20px">
-													CT
-												</div>
-											</th>
+											<div style="width: 20px">
+												T
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												I
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												M
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												S
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												PSP
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												IP
+										</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												CT
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												SP
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												T
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												I
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												M
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												S
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												PSP
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												IP
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												CT
+											</div>
+										</th>
+										<th style="text-align: center">
+											<div style="width: 20px">
+												Total
+											</div>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -283,6 +308,18 @@ foreach ($rekap as $rekap_data) {}
 														?>
 													</div>
 													
+												</td>
+												<td style="text-align:center; vertical-align: middle; white-space: nowrap;">
+													<?php echo $rekap_data['dept']; ?>
+												</td>
+												<td style="text-align:center; vertical-align: middle; white-space: nowrap;">
+													<?php echo $rekap_data['bidang']; ?>
+												</td>
+												<td style="text-align:center; vertical-align: middle; white-space: nowrap;">
+													<?php echo $rekap_data['unit']; ?>
+												</td>
+												<td style="text-align:center; vertical-align: middle; white-space: nowrap;">
+													<?php echo $rekap_data['seksi']; ?>
 												</td>
 												<?php
 													foreach ($p as $d) {
@@ -433,7 +470,46 @@ foreach ($rekap as $rekap_data) {}
 												</td>
 												<td style="text-align:center;">
 													<?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?>
-												</td>												
+												</td>
+												<td style="text-align: center;">
+													<?php
+														if (($rekap_data['totalhk']+$rekap_data['totalhks'])==0) 
+														{
+															echo '-';
+														}
+														else
+														{
+															echo 
+																round(
+																	(
+																		(float)
+																		(
+																			(
+																				($rekap_data['totalhk']+$rekap_data['totalhks'])
+																				-
+																				(
+																					($rekap_data['freki']+$rekap_data['frekis'])
+																					+
+																					($rekap_data['frekm']+$rekap_data['frekms'])
+																					+
+																					($rekap_data['freksk']+$rekap_data['freksks'])
+																					+
+																					($rekap_data['frekpsp']+$rekap_data['frekpsps'])
+																					+
+																					($rekap_data['frekip']+$rekap_data['frekips'])
+																					+
+																					($rekap_data['frekct']+$rekap_data['frekcts'])
+																				)
+																			)
+																			/
+																			($rekap_data['totalhk']+$rekap_data['totalhks'])
+																		)
+																		*100
+																	),
+																2).'%';
+														}
+													?>
+												</td>
 											</tr>
 									<?php
 										}
