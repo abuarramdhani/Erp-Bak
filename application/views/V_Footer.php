@@ -166,6 +166,7 @@
 	<!--
 	<script src="<?php echo base_url('assets/js/formValidation.js')?>" type="text/javascript"></script>
 	-->
+	<script src="<?php echo base_url('assets/plugins/jQuery/jquery.toaster.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });

@@ -877,10 +877,16 @@ $route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)/(:any)/(:any)']	= 'ADMPela
 $route['ADMPelatihan/MasterTrainer'] 					= 'ADMPelatihan/C_MasterTrainer';
 $route['ADMPelatihan/MasterTrainer/(:any)'] 			= 'ADMPelatihan/C_MasterTrainer/$1';
 $route['ADMPelatihan/MasterTrainer/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2';
+$route['ADMPelatihan/MasterTrainer/(:any)/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2/$3';
+$route['ADMPelatihan/MasterTrainer/(:any)/(:any)/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2/$3/$4';
 
 $route['ADMPelatihan/MasterRoom'] 						= 'ADMPelatihan/C_MasterRoom';
 $route['ADMPelatihan/MasterRoom/(:any)'] 				= 'ADMPelatihan/C_MasterRoom/$1';
 $route['ADMPelatihan/MasterRoom/(:any)/(:any)']			= 'ADMPelatihan/C_MasterRoom/$1/$2';
+
+$route['ADMPelatihan/MasterTrainingMaterial'] 						= 'ADMPelatihan/C_MasterMateri';
+$route['ADMPelatihan/MasterTrainingMaterial/(:any)'] 				= 'ADMPelatihan/C_MasterMateri/$1';
+$route['ADMPelatihan/MasterTrainingMaterial/(:any)/(:any)']			= 'ADMPelatihan/C_MasterMateri/$1/$2';
 
 $route['ADMPelatihan/Penjadwalan'] 						= 'ADMPelatihan/C_Penjadwalan';
 $route['ADMPelatihan/Penjadwalan/(:any)'] 				= 'ADMPelatihan/C_Penjadwalan/$1';
@@ -901,6 +907,7 @@ $route['ADMPelatihan/Report/Rekap']						= 'ADMPelatihan/C_Report/Rekap';
 $route['ADMPelatihan/Report/Rekap/RekapTraining']		= 'ADMPelatihan/C_Report/RekapTraining';
 $route['ADMPelatihan/Report/Rekap/PresentaseKehadiran']	= 'ADMPelatihan/C_Report/PresentaseKehadiran';
 $route['ADMPelatihan/Report/Rekap/EfektivitasTraining']	= 'ADMPelatihan/C_Report/EfektivitasTraining';
+$route['ADMPelatihan/Report/Rekap/GetDetailParticipant/(:any)']	= 'ADMPelatihan/C_Report/GetDetailParticipant/$1';
 $route['ADMPelatihan/Report/(:any)']					= 'ADMPelatihan/C_Report/$1';
 $route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Report/$1/$2';
 $route['ADMPelatihan/Report/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Report/$1/$2/$3';

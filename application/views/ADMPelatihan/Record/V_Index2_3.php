@@ -29,7 +29,7 @@
 					<?php $number=0;  foreach ($recPackage as $rp) {
 							$strainer = explode(',', $rp['trainer']);
 							$number++;?>
-						<tr>
+						<tr style="<?php echo $rp['quest_status'];?>">
 							<td><?php echo $number ?></td>
 							<td>
 								<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View" ><i class="fa fa-search"></i></a>

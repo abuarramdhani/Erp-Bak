@@ -36,9 +36,9 @@
 
 											if ($dday<$today && $dday<$week && $rc['tidak_terlaksana']==1) {
 											?>
-												<tr style="background-color: #C39BD3"> 
+												<tr style="background-color: #C39BD3; <?php echo $rc['quest_status'];?>"> 
 											<?php } else{?>
-												<tr class=" <?php echo $datestatus;?>"> 
+												<tr class=" <?php echo $datestatus;?>" style="<?php echo $rc['quest_status'];?>"> 
 											<?php }
 									?>
 													<input type="text"  name="viewPackage" value="<?php echo $rc['package_scheduling_id']?>" hidden>		
@@ -47,7 +47,20 @@
 														<?php if ($rc['package_scheduling_id']==0) {?>
 															<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View" ><i class="fa fa-search"></i></a>
 															<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip1" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
-															<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
+															
+															<?php $sudahCetak = 0; foreach ($participant_confirm as $pc) {
+																if ($pc['scheduling_id']==$rc['scheduling_id'] && $sudahCetak==0) {
+																	$sudahCetak=1;
+																	if ($pc['status']==NULL && $pc['score_eval2_pre']==NULL && $pc['score_eval2_post']==NULL ) { ?>
+																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
+																	<?php }elseif ($pc['status']==NULL && $pc['score_eval3_post']==NULL && $pc['comment']==NULL) {?>
+																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
+																	<?php }else{?>
+																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
+																	<?php }
+																}
+															} ?>
+
 															<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger btn-sm" data-toggle="tooltip1" title="Hapus Pelatihan"><i class="fa fa-remove"></i></a>
 														<?php } else 
 															{

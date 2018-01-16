@@ -510,5 +510,33 @@ class M_record extends CI_Model {
 		$query = $this->db->query($sql);
 		return;
 	}
+
+	public function GetQueSheet()
+	{
+		$sql="	select *
+				from	pl.pl_questionnaire_sheet";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekNumRowQuestRecord($scheduling_id)
+	{
+		$sql="	select *
+				from		pl.pl_questionnaire_sheet a
+				inner join	pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id
+				where a.scheduling_id=$scheduling_id
+				order by a.scheduling_id ASC";
+		$query = $this->db->query($sql);
+		return $query->num_rows();
+	}
+
+	public function GetParticipant()
+	{
+		$sql="select *
+				from pl.pl_participant pp
+				inner join pl.pl_scheduling_training pst on pp.scheduling_id=pst.scheduling_id";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
 }
 ?>
