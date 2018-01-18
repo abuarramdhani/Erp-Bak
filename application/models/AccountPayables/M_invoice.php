@@ -230,49 +230,51 @@ class M_invoice extends CI_Model{
 	function FindFakturCSV($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir)
 	{	
 		//VARIABLES
-		$qmonth 	= "'$month'"; if($month==""){$qmonth="month";}
-		$qyear 		= "'$year'"; if($year==""){$qyear="year";}
-		$qinvnum 	= "'$invoice_num'"; if($invoice_num==""){$qinvnum="faktur_pajak";}
-		$qname 		= "'$name'"; if($name==""){$qname="name";}
+		$qmonth 	= "AND month = '$month'"; if($month==""){$qmonth="";}
+		$qyear 		= "AND year = '$year'"; if($year==""){$qyear="";}
+		$qinvnum 	= "AND faktur_pajak = '$invoice_num'"; if($invoice_num==""){$qinvnum="";}
+		$qname 		= "AND name = '$name'"; if($name==""){$qname="";}
 		
-		$qket		= "description";
-						if($ket1=="yes" && $ket2=="no"){$qket="'REPORTED'";}
-						else if($ket1=="no" && $ket2=="yes"){$qket="'UNREPORTED'";}
+		$qket		= "";
+						if($ket1=="yes" && $ket2=="no"){$qket="and description = 'REPORTED'";}
+						else if($ket1=="no" && $ket2=="yes"){$qket="and description = 'UNREPORTED'";}
+						else{$qket="";}
 		
-		$qsta		= "status";
+		$qsta		= "";
 						if($sta1=="yes"){
 							if($sta2=="yes"){
 								if($sta3=="yes"){
-									$qsta="'NORMAL' or 'PENGGANTI' or 'DIGANTI'"; //semua
+									$qsta="and (status = 'NORMAL' or 'PENGGANTI' or 'DIGANTI')"; //semua
 								} else {
-									$qsta="'NORMAL' or 'PENGGANTI'"; // A dan B
+									$qsta="and (status = 'NORMAL' or 'PENGGANTI')"; // A dan B
 								}
 							} else {
 								if($sta3=="yes"){
-									$qsta="'NORMAL' or 'DIGANTI'"; // A dan C
+									$qsta="and (status = 'NORMAL' or 'DIGANTI')"; // A dan C
 								} else {
-									$qsta="'NORMAL'"; // A
+									$qsta="and (status = 'NORMAL')"; // A
 								}
 							}
 						} else {
 							if($sta2=="yes"){
 								if($sta3=="yes"){
-									$qsta="'PENGGANTI' or 'DIGANTI'"; // B dan C
+									$qsta="and (status = 'PENGGANTI' or 'DIGANTI')"; // B dan C
 								} else {
-									$qsta="'PENGGANTI'"; // B
+									$qsta="and (status = 'PENGGANTI')"; // B
 								}
 							} else {
 								if($sta3=="yes"){
-									$qsta="'DIGANTI'"; // C
+									$qsta="and (status = 'DIGANTI')"; // C
 								} else {
-									$qsta="status"; //semua
+									$qsta=""; //semua
 								}
 							}
 						}
 
-		$qtyp		= "faktur_type";
-						if($typ1=="yes" && $typ2=="no"){$qtyp="'Y'";}
-						else if($typ1=="no" && $typ2=="yes"){$qtyp="'N'";}
+		$qtyp		= "";
+						if($typ1=="yes" && $typ2=="no"){$qtyp="and faktur_type = 'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="and faktur_type = 'N'";}
+						else if($typ1=="yes" && $typ2=="yes"){$qtyp="";}
 						
 		$this->load->dbutil();
 		
@@ -297,13 +299,15 @@ class M_invoice extends CI_Model{
 				,IS_CREDITABLE_FLAG
 
 			FROM khs_faktur_web
-			where month=$qmonth
-				and year=$qyear
-				and faktur_pajak = $qinvnum
-				and name = $qname
-				and description = $qket
-				and (status = $qsta)
-				and faktur_type = $qtyp
+			where 
+				1=1
+				$qmonth
+				$qyear
+				$qinvnum
+				$qname
+				$qket
+				$qsta
+				$qtyp
 				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 		"
 		);
