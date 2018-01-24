@@ -1,0 +1,74 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
+
+class C_RekapBon extends CI_Controller
+{
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->helper('form');
+		$this->load->helper('url');
+		$this->load->helper('html');
+		$this->load->helper('file');
+
+		$this->load->library('form_validation');
+		$this->load->library('session');
+		$this->load->library('encrypt');
+		$this->load->library('upload');
+
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('WorkRelationship/MainMenu/M_rekapbon');
+
+		$this->checkSession();
+	}
+
+	/* CHECK SESSION */
+	public function checkSession()
+	{
+		if($this->session->is_logged){
+
+		} else {
+			redirect('index');
+		}
+	}
+
+	/* LIST DATA */
+	public function index()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+
+		$data['Title'] = 'asdasd';
+		$data['Menu'] = 'zxczxc';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$dataBon = $data['bon'] = $this->M_rekapbon->getBill();
+
+		foreach ($dataBon as $key => $bon) {
+			$noind = explode('/', $bon['INVOICE_NUM']);
+			$noind = $noind[2];
+			
+			$employee = $this->M_rekapbon->getEmployee($noind);
+
+			$data['bon'][$key]['NOIND'] = $employee[0]['noind'];
+			$data['bon'][$key]['NAMA'] = $employee[0]['nama'];
+			$data['bon'][$key]['JABATAN'] = $employee[0]['jabatan'];
+			$data['bon'][$key]['DEPT'] = $employee[0]['dept'];
+			$data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
+			$data['bon'][$key]['UNIT'] = $employee[0]['unit'];
+			$data['bon'][$key]['SEKSI'] = $employee[0]['seksi'];
+		}
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('WorkRelationship/RekapBon/V_index', $data);
+		$this->load->view('V_Footer',$data);
+	}
+}

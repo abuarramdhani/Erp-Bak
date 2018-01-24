@@ -1448,3 +1448,9 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 
 // -------end----------------------------- Monitoring OJT ----------------------------
 
+//------------------------- Work Relationship (Hubker) ------------------------------------------------//
+$route['WorkRelationship'] = 'WorkRelationship/C_WorkRelationship';
+/* Bon Pekerja */
+$route['WorkRelationship/RekapBon'] = 'WorkRelationship/MainMenu/C_RekapBon';
+$route['WorkRelationship/RekapBon/(:any)'] = 'WorkRelationship/MainMenu/C_RekapBon/$1';
+$route['WorkRelationship/RekapBon/(:any)/(:any)'] = 'WorkRelationship/MainMenu/C_RekapBon/$1/$2';
