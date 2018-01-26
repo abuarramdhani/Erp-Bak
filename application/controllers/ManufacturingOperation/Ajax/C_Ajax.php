@@ -76,4 +76,36 @@ class C_Ajax extends CI_Controller
                 <br><input type="radio" name="print_code" placeholder="Print Code" value="XTM22 W" required> XT'.$bulan.$val[2].' '.$tahun.'
             </div>';
 	}
+
+	public function getJobData()
+	{
+		$jobCode	= $this->input->post('jobCode');
+		$startDate	= $this->input->post('startDate');
+		$endDate	= $this->input->post('endDate');
+
+		$data['jobData'] = $this->M_ajax->getJobData($jobCode, $startDate, $endDate);
+		$this->load->view('ManufacturingOperation/ReplaceComp/V_jobtable', $data);
+	}
+
+	public function setRejectComp()
+	{
+		$user_id = $this->session->userid;
+		$value = array(
+			'job_number'			=> $this->input->post('jobNumber'),
+			'assy_code'				=> $this->input->post('assyCode'),
+			'assy_description'		=> $this->input->post('assyDesc'),
+			'section'				=> $this->input->post('section'),
+			'component_code'		=> $this->input->post('compCode'),
+			'component_description' => $this->input->post('compDesc'),
+			'picklist_quantity'		=> $this->input->post('qty'),
+			'uom'					=> $this->input->post('uom'),
+			'return_quantity'		=> $this->input->post('returnQty'),
+			'return_information'	=> $this->input->post('returnInfo'),
+			'created_by'			=> $user_id,
+			'created_date'			=> date('Y-m-d H:i:s')
+		);
+
+		$data = $this->M_ajax->setRejectComp($value);
+		echo json_encode($data);
+	}
 }
