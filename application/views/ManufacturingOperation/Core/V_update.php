@@ -69,8 +69,12 @@
                                                 <div class="col-md-6">
                                                     <select class="form-control select4" multiple="" name="employee_id[]" required>
                                                         <option></option>
-                                                        <?php foreach ($employee as $value) { ?>
-                                                            <option value="<?php echo $value['noind'] ?>"><?php echo $value['noind'].' | '.$value['nama'] ?></option>
+                                                        <?php
+                                                        $employee = explode(',', $val['employee_id']);
+                                                        foreach ($employee as $value) { ?>
+                                                            <option value="<?php echo $value['noind'] ?>" <?php if (in_array($employee, $value['noind'])){echo "selected";} ?>>
+                                                                <?php echo $value['noind'].' | '.$value['nama'] ?>
+                                                            </option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
