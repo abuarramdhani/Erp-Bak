@@ -221,6 +221,7 @@ class M_invoice extends CI_Model{
 				$qsta
 				$qtyp
 				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
+				and NPWP IS NOT NULL
 		");
 		
 		return $query->result();
@@ -309,6 +310,7 @@ class M_invoice extends CI_Model{
 				$qsta
 				$qtyp
 				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
+				and NPWP IS NOT NULL
 		"
 		);
 		$delimiter = ",";

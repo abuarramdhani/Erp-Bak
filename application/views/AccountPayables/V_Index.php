@@ -111,7 +111,7 @@
 					                     				<label for="exampleInputPassword1">Voucher Number</label>
 					                     			</td>
 					                     			<td>
-					                     				<input id="slcVoucherNumber" name="voucher_number" class="form-control" style="width:265px;" placeholder="VOUCHER NUMBER"></input>
+					                     				<input type="text" id="slcVoucherNumber" name="voucher_number" class="form-control" style="width:265px;" placeholder="VOUCHER NUMBER"></input>
 					                     			</td>
 					                     		</tr>
 					                     	</table>
