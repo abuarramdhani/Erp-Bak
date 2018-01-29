@@ -12,7 +12,7 @@
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('FixedAsset/DataAssets');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('WorkRelationship/RekapBon');?>">
                                 <i class="fa fa-bookmark fa-2x"></i>
                                 <span ><br /></span>
                             </a>
@@ -45,9 +45,8 @@
 										<th class="text-center">No Induk</th>
 										<th class="text-center">Nama</th>
 										<th class="text-center">Seksi</th>
-										<th class="text-center">No Invoice</th>
-										<th class="text-center">Tgl Invoice</th>
-										<th class="text-center">Jumlah</th>
+										<th class="text-center" style="width: 13%">Jumlah Invoice</th>
+										<th class="text-center" style="width: 13%">Jumlah Yang Belum Terbayar</th>
 										<th class="text-center">Deskripsi</th>
 									</tr>
 								</thead>
@@ -57,33 +56,9 @@
 										<td><?php echo $key+1; ?></td>
 										<td><?php echo $bon_data['NOIND']; ?></td>
 										<td><?php echo $bon_data['NAMA']; ?></td>
-										<td>
-											<table>
-												<tr>
-													<td>Dept</td>
-													<td>:</td>
-													<td><?php echo $bon_data['DEPT']; ?></td>
-												</tr>
-												<tr>
-													<td>Bidang</td>
-													<td>:</td>
-													<td><?php echo $bon_data['BIDANG']; ?></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td>:</td>
-													<td><?php echo $bon_data['UNIT']; ?></td>
-												</tr>
-												<tr>
-													<td>Seksi</td>
-													<td>:</td>
-													<td><?php echo $bon_data['SEKSI']; ?></td>
-												</tr>
-											</table>
-										</td>
-										<td><?php echo $bon_data['INVOICE_NUM']; ?></td>
-										<td><?php echo $bon_data['INVOICE_DATE']; ?></td>
-										<td><?php echo $bon_data['INVOICE_CURRENCY_CODE'].' '.number_format($bon_data['INVOICE_AMOUNT'], 2, ',', '.'); ?></td>
+										<td><?php echo $bon_data['SEKSI']; ?></td></td>
+										<td><span class="pull-right"><?php echo number_format($bon_data['AMOUNT_IDR'], 2, ',', '.'); ?></span></td>
+										<td style="background-color: #FEF8B5;"><span class="pull-right"><?php echo number_format($bon_data['SALDO_PREPAYMENT'], 2, ',', '.'); ?></span></td>
 										<td><?php echo $bon_data['DESCRIPTION']; ?></td>
 									</tr>
 									<?php endforeach; ?>

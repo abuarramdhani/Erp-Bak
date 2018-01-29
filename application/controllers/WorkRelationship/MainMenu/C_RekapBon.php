@@ -52,17 +52,16 @@ class C_RekapBon extends CI_Controller
 		$dataBon = $data['bon'] = $this->M_rekapbon->getBill();
 
 		foreach ($dataBon as $key => $bon) {
-			$noind = explode('/', $bon['INVOICE_NUM']);
-			$noind = $noind[2];
+			$noind = $bon['VENDOR_SITE_CODE'];
 			
 			$employee = $this->M_rekapbon->getEmployee($noind);
 
 			$data['bon'][$key]['NOIND'] = $employee[0]['noind'];
 			$data['bon'][$key]['NAMA'] = $employee[0]['nama'];
-			$data['bon'][$key]['JABATAN'] = $employee[0]['jabatan'];
-			$data['bon'][$key]['DEPT'] = $employee[0]['dept'];
-			$data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
-			$data['bon'][$key]['UNIT'] = $employee[0]['unit'];
+			// $data['bon'][$key]['JABATAN'] = $employee[0]['jabatan'];
+			// $data['bon'][$key]['DEPT'] = $employee[0]['dept'];
+			// $data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
+			// $data['bon'][$key]['UNIT'] = $employee[0]['unit'];
 			$data['bon'][$key]['SEKSI'] = $employee[0]['seksi'];
 		}
 		
