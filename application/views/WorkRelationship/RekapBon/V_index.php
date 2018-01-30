@@ -12,7 +12,7 @@
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('FixedAsset/DataAssets');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('WorkRelationship/RekapBon');?>">
                                 <i class="fa fa-bookmark fa-2x"></i>
                                 <span ><br /></span>
                             </a>
@@ -37,58 +37,10 @@
 					</div>
 					
 					<div class="box-body">
-						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-condensed" id="wr-rekapbon">
-								<thead class="bg-blue">
-									<tr>
-										<th class="text-center">No</th>
-										<th class="text-center">No Induk</th>
-										<th class="text-center">Nama</th>
-										<th class="text-center">Seksi</th>
-										<th class="text-center">No Invoice</th>
-										<th class="text-center">Tgl Invoice</th>
-										<th class="text-center">Jumlah</th>
-										<th class="text-center">Deskripsi</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach ($bon as $key => $bon_data): ?>
-									<tr>
-										<td><?php echo $key+1; ?></td>
-										<td><?php echo $bon_data['NOIND']; ?></td>
-										<td><?php echo $bon_data['NAMA']; ?></td>
-										<td>
-											<table>
-												<tr>
-													<td>Dept</td>
-													<td>:</td>
-													<td><?php echo $bon_data['DEPT']; ?></td>
-												</tr>
-												<tr>
-													<td>Bidang</td>
-													<td>:</td>
-													<td><?php echo $bon_data['BIDANG']; ?></td>
-												</tr>
-												<tr>
-													<td>Unit</td>
-													<td>:</td>
-													<td><?php echo $bon_data['UNIT']; ?></td>
-												</tr>
-												<tr>
-													<td>Seksi</td>
-													<td>:</td>
-													<td><?php echo $bon_data['SEKSI']; ?></td>
-												</tr>
-											</table>
-										</td>
-										<td><?php echo $bon_data['INVOICE_NUM']; ?></td>
-										<td><?php echo $bon_data['INVOICE_DATE']; ?></td>
-										<td><?php echo $bon_data['INVOICE_CURRENCY_CODE'].' '.number_format($bon_data['INVOICE_AMOUNT'], 2, ',', '.'); ?></td>
-										<td><?php echo $bon_data['DESCRIPTION']; ?></td>
-									</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
+						<select class="select2 col-lg-4" id="slcWrEmployeeAll"></select>
+						<br>
+						<div class="table-responsive" id="tbWrEmployeeAllContainer">
+							
 						</div>
 					</div>
 				</div>
