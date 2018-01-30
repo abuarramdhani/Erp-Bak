@@ -101,6 +101,9 @@
                                                         DESCRIPTION
                                                     </td>
                                                     <td>
+                                                        SUBINVENTORY
+                                                    </td>
+                                                    <td>
                                                         PICKLIST QUANTITY
                                                     </td>
                                                     <td>
@@ -118,7 +121,7 @@
                                                     <tr row-id="<?php echo $no; ?>">
                                                         <input name="compCode" type="hidden" value="<?php echo $val['SEGMENT1']; ?>">
                                                         <input name="compDesc" type="hidden" value="<?php echo $val['DESCRIPTION']; ?>">
-                                                        <input name="qty" type="hidden" value="<?php echo $val['ITEM_NUM']; ?>">
+                                                        <input name="qty" type="hidden" value="<?php echo $val['COMPONENT_QUANTITY']; ?>">
                                                         <input name="uom" type="hidden" value="<?php echo $val['PRIMARY_UOM_CODE']; ?>">
                                                         <td>
                                                             <?php echo $no; ?>
@@ -130,16 +133,19 @@
                                                             <?php echo $val['DESCRIPTION']; ?>
                                                         </td>
                                                         <td>
-                                                            <?php echo $val['ITEM_NUM']; ?>
+                                                            <?php echo $val['SUBINVENTORY_CODE']; ?>
                                                         </td>
-                                                        <td class="rejectArea" data-reject="0">
-                                                            -
+                                                        <td>
+                                                            <?php echo $val['COMPONENT_QUANTITY']; ?>
+                                                        </td>
+                                                        <td class="rejectArea" data-reject="<?php echo $val['REJECT_QTY']; ?>">
+                                                            <?php echo $val['REJECT_QTY']; ?>
                                                         </td>
                                                         <td>
                                                             <?php echo $val['PRIMARY_UOM_CODE']; ?>
                                                         </td>
                                                         <td>
-                                                            <button class="btn btn-block" onclick="modalReject(this,'<?php echo $no++ ?>')" type="button" data-toggle="tooltip" data-placement="left" title="Add Reject Component">
+                                                            <button class="btn btn-block" onclick="modalReject(this,'<?php echo $no++ ?>')" type="button" data-toggle="tooltip" data-placement="left" title="Add Reject Component" <?php if ($val['COMPONENT_QUANTITY'] == $val['REJECT_QTY']) {echo "disabled";} ?>>
                                                                 <i class="fa fa-plus">
                                                                 </i>
                                                             </button>
@@ -190,6 +196,21 @@
                                                     </td>
                                                 </thead>
                                                 <tbody>
+                                                    <?php $numb=1; foreach ($jobLineReject as $rj) { ?>
+                                                        <tr>
+                                                            <td><?php echo $numb++; ?></td>
+                                                            <td><?php echo $rj['component_code'] ?></td>
+                                                            <td><?php echo $rj['component_description'] ?></td>
+                                                            <td><?php echo $rj['return_quantity'] ?></td>
+                                                            <td><?php echo $rj['uom'] ?></td>
+                                                            <td><?php echo $rj['return_information'] ?></td>
+                                                            <td>
+                                                                <a href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/deleteRejectComp/'.$value['WIP_ENTITY_NAME'].'/'.$rj['replacement_component_id']) ?>" onclick="confirm('Are you sure to remove this data?');" class="btn btn-danger btn-block" data-toggle="tooltip" data-placement="left" title="Remove Reject Component">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
                                                 </tbody>
                                             </table>
                                         </div>
