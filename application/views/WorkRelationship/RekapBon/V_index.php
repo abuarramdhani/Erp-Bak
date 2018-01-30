@@ -37,7 +37,7 @@
 					</div>
 					
 					<div class="box-body">
-						<select class="select2 col-lg-4" id="slcWrEmployeeAll"></select>
+						<select class="select2 col-lg-12" id="slcWrEmployeeAll"></select>
 						<br>
 						<div class="table-responsive" id="tbWrEmployeeAllContainer">
 							

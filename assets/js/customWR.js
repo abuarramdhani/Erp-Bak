@@ -19,7 +19,7 @@ $(document).ready(function() {
 			cache: true
 	    },
 	    minimumInputLength: 2,
-	    placeholder: 'Masukkan kode/deskripsi barang'
+	    placeholder: 'Masukkan kode/nama pekerja'
 	});
 	$('#slcWrEmployeeAll').change(function(event) {
 		var loadImg = '<img src="'+baseurl+'assets/img/gif/loading3.gif" width="130px" width="auto">'
