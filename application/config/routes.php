@@ -1415,3 +1415,4 @@ $route['ManufacturingOperation/Ajax/(:any)/(:any)']				= 'ManufacturingOperation
 $route['ManufacturingOperation/Job/ReplaceComp']				= 'ManufacturingOperation/MainMenu/C_ReplaceComp';
 $route['ManufacturingOperation/Job/ReplaceComp/(:any)']			= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1';
 $route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1/$2';
+$route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1/$2/$3';
