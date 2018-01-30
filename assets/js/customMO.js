@@ -137,7 +137,6 @@ function modalReject(th,rowid) {
 function proceedRejectComp(argument) {
     event.preventDefault();
     var rowid = $('form#rejectForm input[name="rowID"]').val();
-    console.log(rowid);
     $('#rejectForm #btnSubmit').html('<i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>');
     if ($('table#rejectTable tbody tr td').hasClass('dataTables_empty')) {
         $('table#rejectTable tbody tr').remove();
@@ -153,10 +152,17 @@ function proceedRejectComp(argument) {
         },
         success:function(results){
             $('#rejectTable').DataTable().destroy();
-            var rejectQty = $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject');
+
+            var rejectQty   = $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject');
+            var picklistQty = $('table#jobTable tbody tr[row-id="'+rowid+'"] input[name="qty"]').val();
+
             var data = JSON.parse(results);
             var newRjctQty = Number(rejectQty)+Number(data[0]['return_quantity']);
             $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').html(newRjctQty);
+
+            if (newRjctQty == picklistQty) {
+                $('table#jobTable tbody tr[row-id="'+rowid+'"] button').attr('disabled', true);
+            }
             $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject', newRjctQty);
             $('#modalReject').modal('hide');
             var newRow = jQuery("<tr>"
@@ -167,7 +173,7 @@ function proceedRejectComp(argument) {
                                     +"<td>"+ data[0]['uom'] +"</td>"
                                     +"<td>"+ data[0]['return_information'] +"</td>"
                                     +"<td>"
-                                        +"<button type='button' class='btn btn-danger btn-block' data-toggle='tooltip' data-placement='left' title='Add Reject Component'><i class='fa fa-minus'></i></button>"
+                                        +"<a onclick='deleteRejectComp("+data[0]['replacement_component_id']+");' class='btn btn-danger btn-block' data-toggle='tooltip' data-placement='left' title='Remove Reject Component'><i class='fa fa-minus'></i></a>"
                                     +"</td>"
                                 +"</tr>");
             jQuery("table#rejectTable").append(newRow);
@@ -181,4 +187,17 @@ function proceedRejectComp(argument) {
             $.toaster(textStatus+' | '+errorThrown, name, 'danger');
         }
     });
+}
+function deleteRejectComp(argument) {
+    $.ajax({
+        type: 'POST',
+        url: baseurl+'ManufacturingOperation/Ajax/deleteRejectComp/',
+        success:function(results){
+
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown){
+            $('#modalReject').modal('hide');
+            $.toaster(textStatus+' | '+errorThrown, name, 'danger');
+        }
+    })
 }
