@@ -172,7 +172,7 @@
 															 	<span class="badge bg-green ">'.$DHasil['nomor_order'].' (CLOSED)</span></a>'
 															 :'<a target="_blank"  
 															 	href="http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
-															 	<span class="badge bg-red faa-flash faa-slow animated">'.$DHasil['nomor_order'].'</span></a>';
+															 	<span class="badge bg-blue faa-flash faa-slow animated">'.$DHasil['nomor_order'].$DHasil['status_order'].'</span></a>';
 															}else{
 															 echo '<a target="_blank"  
 															 	href="http://ictsupport.quick.com/ticket/upload/scp/tickets.php?id='.$DHasil['ticket_id'].'">
