@@ -49,22 +49,22 @@ class C_RekapBon extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$noInduk='';
-		$dataBon = $data['bon'] = $this->M_rekapbon->getBill($noInduk);
+		// $noInduk='';
+		// $dataBon = $data['bon'] = $this->M_rekapbon->getBill($noInduk);
 
-		foreach ($dataBon as $key => $bon) {
-			$noind = $bon['VENDOR_SITE_CODE'];
+		// foreach ($dataBon as $key => $bon) {
+		// 	$noind = $bon['VENDOR_SITE_CODE'];
 			
-			$employee = $this->M_rekapbon->getEmployee($noind);
+		// 	$employee = $this->M_rekapbon->getEmployee($noind);
 
-			$data['bon'][$key]['NOIND'] = $employee[0]['noind'];
-			$data['bon'][$key]['NAMA'] = $employee[0]['nama'];
-			// $data['bon'][$key]['JABATAN'] = $employee[0]['jabatan'];
-			// $data['bon'][$key]['DEPT'] = $employee[0]['dept'];
-			// $data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
-			// $data['bon'][$key]['UNIT'] = $employee[0]['unit'];
-			$data['bon'][$key]['SEKSI'] = $employee[0]['seksi'];
-		}
+		// 	$data['bon'][$key]['NOIND'] = $employee[0]['noind'];
+		// 	$data['bon'][$key]['NAMA'] = $employee[0]['nama'];
+		// 	// $data['bon'][$key]['JABATAN'] = $employee[0]['jabatan'];
+		// 	// $data['bon'][$key]['DEPT'] = $employee[0]['dept'];
+		// 	// $data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
+		// 	// $data['bon'][$key]['UNIT'] = $employee[0]['unit'];
+		// 	$data['bon'][$key]['SEKSI'] = $employee[0]['seksi'];
+		// }
 		
 		// $data['employeeAll'] = $this->M_rekapbon->getEmployeeAll();
 		
