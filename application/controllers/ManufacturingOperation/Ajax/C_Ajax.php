@@ -108,4 +108,9 @@ class C_Ajax extends CI_Controller
 		$data = $this->M_ajax->setRejectComp($value);
 		echo json_encode($data);
 	}
+
+	public function deleteRejectComp($id)
+	{
+		$this->M_ajax->deleteRejectComp($id);
+	}
 }

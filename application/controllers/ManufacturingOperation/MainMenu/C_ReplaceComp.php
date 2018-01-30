@@ -15,6 +15,7 @@ class C_ReplaceComp extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ManufacturingOperation/MainMenu/M_replacecomp');
+		$this->load->model('ManufacturingOperation/Ajax/M_ajax');
 
 		$this->checkSession();
 	}
@@ -60,11 +61,38 @@ class C_ReplaceComp extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserMenu']		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['jobHeader'] = $this->M_replacecomp->getJobHeader($id);
-		$data['jobLine'] = $this->M_replacecomp->getJobLine($id);
+		$jobLine 				= $this->M_replacecomp->getJobLine($id);
+		$jobLineReject 			= $this->M_replacecomp->getJobLineReject($id);
+		$data['jobHeader']		= $this->M_replacecomp->getJobHeader($id);
+		$data['jobLineReject']	= $jobLineReject;
+		$dataJobLine			= array();
+		foreach ($jobLine as $key => $val) {
+			$reject = 0;
+			foreach ($jobLineReject as $value) {
+				if ($val['SEGMENT1'] == $value['component_code']) {
+					$reject += $value['return_quantity'];
+				}
+			}
+
+			$dataJobLine[$key] = array(
+				'WIP_ENTITY_NAME'		=> $val['WIP_ENTITY_NAME'],
+				'ASSY'					=> $val['ASSY'],
+				'DESCRIPTION'			=> $val['DESCRIPTION'],
+				'SEKSI'					=> $val['SEKSI'],
+				'ITEM_NUM'				=> $val['ITEM_NUM'],
+				'SEGMENT1'				=> $val['SEGMENT1'],
+				'COMPONENT_QUANTITY'	=> $val['COMPONENT_QUANTITY'],
+				'PRIMARY_UOM_CODE'		=> $val['PRIMARY_UOM_CODE'],
+				'SUPPLY_TYPESUPPLY_TYPE'=> $val['SUPPLY_TYPE'],
+				'SUBINVENTORY_CODE'		=> $val['SUBINVENTORY_CODE'],
+				'REJECT_QTY'			=> $reject
+			);
+		}
+
+		$data['jobLine']		= $dataJobLine;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -91,5 +119,11 @@ class C_ReplaceComp extends CI_Controller
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
+	}
+
+	public function deleteRejectComp($id,$crID)
+	{
+		$this->M_ajax->deleteRejectComp($crID);
+		redirect(base_url('ManufacturingOperation/Job/ReplaceComp/viewJob/'.$id));
 	}
 }
