@@ -49,9 +49,15 @@ class M_ajax extends CI_Model
     public function getJobData($jobCode=FALSE, $startDate=FALSE, $endDate=FALSE)
     {
       if ($startDate==FALSE || $endDate==FALSE) {
-        $wStartDate = '';
+        $wDate = '';
       }else{
-        $wStartDate = "AND TO_CHAR(wdj.DATE_RELEASED,'YYYY/MM/DD hh:mi:ss') BETWEEN '$startDate' AND '$endDate'";
+        $wDate = "AND TO_CHAR(wdj.DATE_RELEASED,'YYYY/MM/DD hh:mi:ss') BETWEEN '$startDate' AND '$endDate'";
+      }
+
+      if ($jobCode==FALSE) {
+        $wJobCode = '';
+      }else{
+        $wJobCode = "AND we.WIP_ENTITY_NAME LIKE '%$jobCode%'";
       }
       $sql = "SELECT we.WIP_ENTITY_NAME ,
                      TO_CHAR(wdj.DATE_RELEASED,'DD/MM/YYYY hh:mi:ss') RELEASE ,
@@ -64,7 +70,7 @@ class M_ajax extends CI_Model
                 AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
                 AND wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
                 AND wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
-                $wStartDate
+                $wDate $wJobCode
               ORDER BY wdj.DATE_RELEASED";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -80,5 +86,11 @@ class M_ajax extends CI_Model
       $this->db->where('replacement_component_id', $id);
       $query = $this->db->get();
       return $query->result_array();
+    }
+
+    public function deleteRejectComp($id)
+    {
+      $this->db->where('replacement_component_id', $id);
+      $this->db->delete('mo.mo_replacement_component');
     }
 }

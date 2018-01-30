@@ -33,14 +33,15 @@ class M_replacecomp extends CI_Model
     {
       $sql = "SELECT we.WIP_ENTITY_NAME ,
                      msib.segment1 ASSY ,
-                     msib.DESCRIPTION ,
+                     msib.DESCRIPTION ASSY_DESC,
                      mil.SEGMENT1 Seksi ,
                      bcb.ITEM_NUM ,
                      msib2.SEGMENT1,
                      msib2.DESCRIPTION ,
                      bcb.COMPONENT_QUANTITY,
                      msib2.PRIMARY_UOM_CODE ,
-                     decode(bcb.WIP_SUPPLY_TYPE, 1,'Push',3,'Pull') supply_type
+                     decode(bcb.WIP_SUPPLY_TYPE, 1,'Push',3,'Pull') supply_type,
+                     mmt.SUBINVENTORY_CODE
               FROM bom_bill_of_materials bbom ,
                    bom_components_b bcb ,
                    mtl_system_items_b msib ,
@@ -48,7 +49,8 @@ class M_replacecomp extends CI_Model
                    wip_entities we ,
                    wip_discrete_jobs wdj ,
                    bom_operational_routings bor ,
-                   mtl_item_locations mil
+                   mtl_item_locations mil,
+                   mtl_material_transactions mmt
               WHERE bbom.BILL_SEQUENCE_ID = bcb.BILL_SEQUENCE_ID
                 AND bbom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
                 AND bbom.ORGANIZATION_ID = msib.ORGANIZATION_ID
@@ -66,6 +68,8 @@ class M_replacecomp extends CI_Model
                 AND bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
                 AND bor.COMPLETION_LOCATOR_ID = mil.INVENTORY_LOCATION_ID
                 AND mil.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                AND mmt.TRANSACTION_SOURCE_ID = we.WIP_ENTITY_ID
+                AND mmt.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
               GROUP BY we.WIP_ENTITY_NAME ,
                        msib.segment1 ,
                        msib.DESCRIPTION ,
@@ -75,7 +79,8 @@ class M_replacecomp extends CI_Model
                        msib2.DESCRIPTION ,
                        bcb.COMPONENT_QUANTITY,
                        msib2.PRIMARY_UOM_CODE ,
-                       bcb.WIP_SUPPLY_TYPE
+                       bcb.WIP_SUPPLY_TYPE,
+                       mmt.SUBINVENTORY_CODE
               ORDER BY bcb.ITEM_NUM ASC";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -85,5 +90,14 @@ class M_replacecomp extends CI_Model
     {
       $this->db->where('job_number', $id);
       $this->db->delete('mo.mo_replacement_component');
+    }
+
+    public function getJobLineReject($id)
+    {
+      $this->db->select('*');
+      $this->db->from('mo.mo_replacement_component');
+      $this->db->where('job_number', $id);
+      $query = $this->db->get();
+      return $query->result_array();
     }
 }
