@@ -49,42 +49,44 @@
                                     <input name="assyDesc" type="hidden" value="<?php echo $value['DESCRIPTION']; ?>">
                                     <input name="section" type="hidden" value="<?php echo $section; ?>">
                                     <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                JOB NUMBER
+                                        <strong>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    JOB NUMBER
+                                                </div>
+                                                <div class="col-md-9">
+                                                    :
+                                                    <?php echo $value['WIP_ENTITY_NAME']; ?>
+                                                </div>
                                             </div>
-                                            <div class="col-md-8">
-                                                :
-                                                <?php echo $value['WIP_ENTITY_NAME']; ?>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    ASSY CODE
+                                                </div>
+                                                <div class="col-md-9">
+                                                    :
+                                                    <?php echo $value['SEGMENT1']; ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                ASSY CODE
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    DESCRIPTION
+                                                </div>
+                                                <div class="col-md-9">
+                                                    :
+                                                    <?php echo $value['DESCRIPTION']; ?>
+                                                </div>
                                             </div>
-                                            <div class="col-md-8">
-                                                :
-                                                <?php echo $value['SEGMENT1']; ?>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    SECTION
+                                                </div>
+                                                <div class="col-md-9">
+                                                    :
+                                                    <?php echo $section; ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                DESCRIPTION
-                                            </div>
-                                            <div class="col-md-8">
-                                                :
-                                                <?php echo $value['DESCRIPTION']; ?>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                SECTION
-                                            </div>
-                                            <div class="col-md-8">
-                                                :
-                                                <?php echo $section; ?>
-                                            </div>
-                                        </div>
+                                        </strong>
                                     </div>
                                     <div class="col-md-12">
                                         <br>
@@ -123,6 +125,7 @@
                                                         <input name="compDesc" type="hidden" value="<?php echo $val['DESCRIPTION']; ?>">
                                                         <input name="qty" type="hidden" value="<?php echo $val['COMPONENT_QUANTITY']; ?>">
                                                         <input name="uom" type="hidden" value="<?php echo $val['PRIMARY_UOM_CODE']; ?>">
+                                                        <input name="subinv" type="hidden" value="<?php echo $val['SUBINVENTORY_CODE']; ?>">
                                                         <td>
                                                             <?php echo $no; ?>
                                                         </td>
@@ -192,6 +195,9 @@
                                                         INFORMATION
                                                     </td>
                                                     <td>
+                                                        SUBINVENTORY
+                                                    </td>
+                                                    <td>
                                                         ACTION
                                                     </td>
                                                 </thead>
@@ -204,8 +210,9 @@
                                                             <td><?php echo $rj['return_quantity'] ?></td>
                                                             <td><?php echo $rj['uom'] ?></td>
                                                             <td><?php echo $rj['return_information'] ?></td>
+                                                            <td><?php echo $rj['subinventory_code'] ?></td>
                                                             <td>
-                                                                <a href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/deleteRejectComp/'.$value['WIP_ENTITY_NAME'].'/'.$rj['replacement_component_id']) ?>" onclick="confirm('Are you sure to remove this data?');" class="btn btn-danger btn-block" data-toggle="tooltip" data-placement="left" title="Remove Reject Component">
+                                                                <a href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/deleteRejectComp/'.$value['WIP_ENTITY_NAME'].'/'.$rj['replacement_component_id']) ?>" onclick="return confirm('Are you sure to remove this data?');" class="btn btn-danger btn-block" data-toggle="tooltip" data-placement="left" title="Remove Reject Component">
                                                                     <i class="fa fa-minus"></i>
                                                                 </a>
                                                             </td>
@@ -216,10 +223,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="panel-footer">
+                                <div class="panel-footer" id="generateBtnArea">
                                     <div class="row text-right">
-                                        <a class="btn btn-default" href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/clearJob/'.$value['WIP_ENTITY_NAME']); ?>">CLEAR</a>
-                                        <a target="_blank" class="btn btn-primary" href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/submitJob/'.$value['WIP_ENTITY_NAME']); ?>">SUBMIT</a>
+                                        <a id="btnClearRjc" class="btn btn-default btnReject" href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/clearJob/'.$value['WIP_ENTITY_NAME']); ?>" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>CLEAR</a>
+                                        <button id="btnFormRjc" class="btn btn-primary btnReject" data-toggle="modal" data-target="#modalFormReject" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>FORM REJECT</button>
+                                        <button id="btnKIBRjc" class="btn btn-primary btnReject" onclick="submitJobKIB(this, '<?php echo $value['WIP_ENTITY_NAME'] ?>')" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>KIB</button>
                                     </div>
                                 </div>
                             </div>
@@ -247,50 +255,101 @@
             <form method="post" class="form-horizontal" onsubmit="proceedRejectComp()" id="rejectForm">
                 <input type="hidden" name="rowID">
                 <div class="modal-body">
-                    <div class="col-md-6">
-                        <div class="form-group col-md-12">
-                            <label>Job Number</label>
-                            <input name="jobNumber" type="text" class="form-control" readonly="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label>Job Number</label>
+                                <input name="jobNumber" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Assy Code</label>
+                                <input name="assyCode" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Assy Description</label>
+                                <input name="assyDesc" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Section</label>
+                                <input name="section" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>SubInventory</label>
+                                <input name="subinv" type="text" class="form-control" readonly="">
+                            </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <label>Assy Code</label>
-                            <input name="assyCode" type="text" class="form-control" readonly="">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label>Component Code</label>
+                                <input name="compCode" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Component Description</label>
+                                <input name="compDesc" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Picklist Quantity</label>
+                                <input name="qty" type="text" class="form-control" readonly="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>UOM</label>
+                                <input name="uom" type="text" class="form-control" readonly="">
+                            </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <label>Assy Description</label>
-                            <input name="assyDesc" type="text" class="form-control" readonly="">
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label>Section</label>
-                            <input name="section" type="text" class="form-control" readonly="">
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <label>Return Quantity</label> 
+                                <input type="number" name="returnQty" class="form-control" placeholder="Return Quantity" min="1" required="">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Return Information</label>
+                                <textarea class="form-control toupper" name="returnInfo" rows="3" placeholder="Return Information" required=""></textarea>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group col-md-12">
-                            <label>Component Code</label>
-                            <input name="compCode" type="text" class="form-control" readonly="">
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label>Component Description</label>
-                            <input name="compDesc" type="text" class="form-control" readonly="">
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label>Picklist Quantity</label>
-                            <input name="qty" type="text" class="form-control" readonly="">
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label>UOM</label>
-                            <input name="uom" type="text" class="form-control" readonly="">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Return Quantity</label> 
-                            <input type="number" name="returnQty" class="form-control" placeholder="Return Quantity" min="1" required="">
-                        </div>
-                        <div class="form-group">
-                            <label>Return Information</label>
-                            <textarea class="form-control toupper" name="returnInfo" rows="3" placeholder="Return Information" required=""></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">
+                        CANCEL
+                    </button>
+                    <button class="btn btn-primary" type="submit" id="btnSubmit">
+                        PROCEED
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalFormReject" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+                <h4 class="modal-title">
+                    Select Subinventory
+                </h4>
+            </div>
+            <form method="post" target="_blank" action="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/submitJobForm/'.$id) ?>">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Subinventory</label>
+                            <div id="subinvArea">
+                                <?php
+                                $a = array();
+                                foreach ($jobLineReject as $key => $jlr) {
+                                    if (!in_array($jlr['subinventory_code'], $a)) {
+                                        array_push($a, $jlr['subinventory_code']); ?>
+                                        <input type="radio" name="subinvFormReject" value="<?php echo $jlr['subinventory_code'] ?>"> <?php echo $jlr['subinventory_code'] ?>
+                                    <?php }
+                                }
+                                $b = implode(',', $a); ?>
+                            </div>
+                            <input type="hidden" name="subInvData" value="<?php echo $b; ?>">
                         </div>
                     </div>
                 </div>
