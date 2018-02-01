@@ -92,7 +92,8 @@ class C_ReplaceComp extends CI_Controller
 			);
 		}
 
-		$data['jobLine']		= $dataJobLine;
+		$data['jobLine']	= $dataJobLine;
+		$data['id']			= $id;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -106,7 +107,7 @@ class C_ReplaceComp extends CI_Controller
 		redirect(base_url('ManufacturingOperation/Job/ReplaceComp/viewJob/'.$id));
 	}
 
-	public function submitJob($id)
+	public function submitJobForm($id)
 	{
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
@@ -115,7 +116,22 @@ class C_ReplaceComp extends CI_Controller
 		$data['jobHeader'] = $this->M_replacecomp->getJobHeader($id);
 		$data['jobLine'] = $this->M_replacecomp->getJobLine($id);
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_report', $data, true);
+		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportform', $data, true);
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
+	}
+
+	public function submitJobKIB($id)
+	{
+		$this->load->library('Pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8','A4-P', 0, '', 9, 9, 9, 9); 
+		$filename = 'Report_Job_'.$id.'.pdf';
+		$data['jobHeader'] = $this->M_replacecomp->getJobHeader($id);
+		$data['jobLine'] = $this->M_replacecomp->getJobLine($id);
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportkib', $data, true);
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');

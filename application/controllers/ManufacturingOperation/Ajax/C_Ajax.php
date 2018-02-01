@@ -99,6 +99,7 @@ class C_Ajax extends CI_Controller
 			'component_description' => $this->input->post('compDesc'),
 			'picklist_quantity'		=> $this->input->post('qty'),
 			'uom'					=> $this->input->post('uom'),
+			'subinventory_code'		=> $this->input->post('subinv'),
 			'return_quantity'		=> $this->input->post('returnQty'),
 			'return_information'	=> $this->input->post('returnInfo'),
 			'created_by'			=> $user_id,
@@ -111,6 +112,8 @@ class C_Ajax extends CI_Controller
 
 	public function deleteRejectComp($id)
 	{
+		$data = $this->M_ajax->getRejectComp($id);
 		$this->M_ajax->deleteRejectComp($id);
+		echo json_encode($data);
 	}
 }
