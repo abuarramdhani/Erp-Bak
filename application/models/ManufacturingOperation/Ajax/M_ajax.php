@@ -93,4 +93,13 @@ class M_ajax extends CI_Model
       $this->db->where('replacement_component_id', $id);
       $this->db->delete('mo.mo_replacement_component');
     }
+
+    public function getRejectComp($id)
+    {
+      $this->db->select('*');
+      $this->db->from('mo.mo_replacement_component');
+      $this->db->where('replacement_component_id', $id);
+      $query = $this->db->get();
+      return $query->result_array();
+    }
 }
