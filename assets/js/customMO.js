@@ -120,10 +120,12 @@ function modalReject(th,rowid) {
     var compDesc = $(th).closest('tr').find('input[name="compDesc"]').val();
     var qty = $(th).closest('tr').find('input[name="qty"]').val();
     var uom = $(th).closest('tr').find('input[name="uom"]').val();
+    var subinv = $(th).closest('tr').find('input[name="subinv"]').val();
     $('form#rejectForm input[name="compCode"]').val(compCode);
     $('form#rejectForm input[name="compDesc"]').val(compDesc);
     $('form#rejectForm input[name="qty"]').val(qty);
     $('form#rejectForm input[name="uom"]').val(uom);
+    $('form#rejectForm input[name="subinv"]').val(subinv);
 
     var qtyReject = $(th).closest('tr').find('td.rejectArea').attr('data-reject');
     var maxReturn = Number(qty)-Number(qtyReject);
@@ -134,53 +136,65 @@ function modalReject(th,rowid) {
     $('#rejectForm #btnSubmit').html('PROCEED');
     $('#modalReject').modal('show');
 }
-function proceedRejectComp(argument) {
+function proceedRejectComp() {
     event.preventDefault();
     var rowid = $('form#rejectForm input[name="rowID"]').val();
-    $('#rejectForm #btnSubmit').html('<i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>');
-    if ($('table#rejectTable tbody tr td').hasClass('dataTables_empty')) {
-        $('table#rejectTable tbody tr').remove();
-    }
-    var rowCount    = $('table#rejectTable tbody tr').length;
-    var rowNumb     = rowCount+1;
     $.ajax({
         type: 'POST',
         url: baseurl+'ManufacturingOperation/Ajax/setRejectComp',
         data: $('form#rejectForm').serialize(),
         beforeSend: function() {
-            $('div#jobTableArea').html('<img src="'+baseurl+'assets/img/gif/loading5.gif" style="width: auto;">');
+            $('#rejectForm #btnSubmit').html('<i class="fa fa-spinner fa-pulse" aria-hidden="true"></i>');
         },
         success:function(results){
+            var data = JSON.parse(results);
             $('#rejectTable').DataTable().destroy();
-
+            var rowCount    = $('table#rejectTable tbody tr').length;
+            var rowNumb     = rowCount+1;
             var rejectQty   = $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject');
             var picklistQty = $('table#jobTable tbody tr[row-id="'+rowid+'"] input[name="qty"]').val();
+            var newRjctQty  = Number(rejectQty)+Number(data[0]['return_quantity']);
 
-            var data = JSON.parse(results);
-            var newRjctQty = Number(rejectQty)+Number(data[0]['return_quantity']);
+            if ($('#generateBtnArea .btnReject').attr('disabled', true)) {
+                $('#generateBtnArea .btnReject').attr('disabled', false);
+            }
             $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').html(newRjctQty);
-
             if (newRjctQty == picklistQty) {
                 $('table#jobTable tbody tr[row-id="'+rowid+'"] button').attr('disabled', true);
             }
             $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject', newRjctQty);
-            $('#modalReject').modal('hide');
-            var newRow = jQuery("<tr>"
+
+            var deleteSendData = data[0]['replacement_component_id']+","+rowNumb+","+rowid;
+            var newRow = jQuery("<tr row-id='"+rowNumb+"'>"
                                     +"<td>"+ rowNumb +"</td>"
                                     +"<td>"+ data[0]['component_code'] +"</td>"
                                     +"<td>"+ data[0]['component_description'] +"</td>"
                                     +"<td>"+ data[0]['return_quantity'] +"</td>"
                                     +"<td>"+ data[0]['uom'] +"</td>"
                                     +"<td>"+ data[0]['return_information'] +"</td>"
+                                    +"<td>"+ data[0]['subinventory_code'] +"</td>"
                                     +"<td>"
-                                        +"<a onclick='deleteRejectComp("+data[0]['replacement_component_id']+");' class='btn btn-danger btn-block' data-toggle='tooltip' data-placement='left' title='Remove Reject Component'><i class='fa fa-minus'></i></a>"
+                                        +"<a onclick='deleteRejectComp("+deleteSendData+");' class='btn btn-danger btn-block' data-toggle='tooltip' data-placement='left' title='Remove Reject Component'><i class='fa fa-minus'></i></a>"
                                     +"</td>"
                                 +"</tr>");
             jQuery("table#rejectTable").append(newRow);
-            $.toaster('New Reject Component Recorded!', 'Success', 'success');
+            var subInvData = $('#modalFormReject input[name="subInvData"]').val();
+            if (subInvData.trim() == '') {
+                $('#modalFormReject input[name="subInvData"]').val(data[0]['subinventory_code']);
+                $('#modalFormReject #subinvArea').html('<input type="radio" value="'+data[0]['subinventory_code']+'"> '+data[0]['subinventory_code']);
+            }else{
+                var subInvDataArr = subInvData.split(',');
+                if (jQuery.inArray(data[0]['subinventory_code'], subInvDataArr) == -1) {
+                    var subInvDataVal = subInvData+','+data[0]['subinventory_code'];
+                    $('#modalFormReject input[name="subInvData"]').val(subInvDataVal);
+                    $('#modalFormReject #subinvArea').html('<input type="radio" value="'+data[0]['subinventory_code']+'"> '+data[0]['subinventory_code']);
+                }
+            }
             $('#rejectTable').DataTable({
                 dom: 'frtip'
             });
+            $('#modalReject').modal('hide');
+            $.toaster('New Reject Component Recorded!', 'Success', 'success');
         },
         error:function(XMLHttpRequest, textStatus, errorThrown){
             $('#modalReject').modal('hide');
@@ -188,16 +202,30 @@ function proceedRejectComp(argument) {
         }
     });
 }
-function deleteRejectComp(argument) {
+function deleteRejectComp(replacement_component_id, rowNumb, rowid) {
     $.ajax({
-        type: 'POST',
-        url: baseurl+'ManufacturingOperation/Ajax/deleteRejectComp/',
+        url: baseurl+'ManufacturingOperation/Ajax/deleteRejectComp/'+replacement_component_id,
         success:function(results){
-
+            var data = JSON.parse(results);
+            $('table#rejectTable tbody tr[row-id="'+rowNumb+'"]').remove();
+            $('#rejectTable').DataTable().destroy();
+            var rowCount = $('table#rejectTable tbody tr').length;
+            if (rowCount == 0) {
+                $('#generateBtnArea .btnReject').attr('disabled', true);
+            }
+            var rejectQty   = $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject');
+            var newRjctQty  = Number(rejectQty)+Number(data[0]['return_quantity']);
+            $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject', newRjctQty);
+            $('#rejectTable').DataTable({
+                dom: 'frtip'
+            });
+            $.toaster('Data was deleted!', 'Deleted', 'success');
         },
         error:function(XMLHttpRequest, textStatus, errorThrown){
-            $('#modalReject').modal('hide');
             $.toaster(textStatus+' | '+errorThrown, name, 'danger');
         }
     })
+}
+function submitJobKIB(th, jobID) {
+    window.open(baseurl+'ManufacturingOperation/Job/ReplaceComp/submitJobKIB/'+jobID, '_blank');
 }
