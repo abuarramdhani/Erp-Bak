@@ -1,3 +1,8 @@
+<?php
+echo "<pre>";
+print_r($jobHeader);
+echo "</pre>";
+?>
 <table class="table table-bordered">
 	<tr>
 		<td colspan="2" rowspan="3">
