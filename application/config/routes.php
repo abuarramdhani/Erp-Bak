@@ -1436,7 +1436,7 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 	//	{
 			$route['OnJobTraining/MasterOrientasi']		=	'MonitoringOJT/C_MasterOrientasi';
 
-			$route['OnJobTraining/MasterOrientasi/OrientasiBaru/Save']	=	'MonitoringOJT/C_MasterOrientasi/OrientasiBaru_Save';
+			$route['OnJobTraining/MasterOrientasi/(:any)']	=	'MonitoringOJT/C_MasterOrientasi/$1';
 	//	}
 
 // -------end----------------------------- Monitoring OJT ----------------------------
