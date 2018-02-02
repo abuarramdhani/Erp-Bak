@@ -124,17 +124,46 @@ class C_Rekap extends CI_Controller {
 		$periode2	= $this->input->post('rekapEnd');
 		$status 	= $this->input->post('statushubker');
 		$data['statusExport'] = $status;
-		$departemen	= $this->input->post('departemen');
-		$data['departemen'] = $departemen;
-		$bidang 	= $this->input->post('bidang');
-		$data['bidang'] = $bidang;
-		$unit 		= $this->input->post('unit');
-		$data['unit'] = $unit;
-		$section 	= $this->input->post('section');
-		$data['section'] = $section;
 		$detail 	= $this->input->post('detail');
 
-		
+		$departemen 	=	$this->input->post('cmbDepartemen', TRUE);
+		$bidang 		=	$this->input->post('cmbBidang', TRUE);
+		$unit 			=	$this->input->post('cmbUnit', TRUE);
+		$section 			=	$this->input->post('cmbSeksi', TRUE);
+
+		$bidang 		=	substr($bidang, -2);
+		$unit 			=	substr($unit, -2);
+		$section 			=	substr($section, -2);
+
+		$kodesie 		=	$departemen.$bidang.$unit.$section;
+
+		if(substr($kodesie, 0, 1)=='0')
+		{
+			$data['departemen'] 	=	'All';
+			$data['bidang']			=	'All';
+			$data['unit']			=	'All';
+			$data['section']		=	'All';
+
+			$departemen 			=	$data['departemen'];
+			$bidang 				=	$data['bidang'];
+			$unit 					=	$data['unit'];
+			$section 					=	$data['section'];
+		}
+		else
+		{
+			$ambilSeksi 	= 	$this->M_rekapmssql->ambilInfoSeksi($kodesie);
+			
+			$data['departemen'] 	=	$ambilSeksi[0]['departemen'];
+			$data['bidang']			=	$ambilSeksi[0]['bidang'];
+			$data['unit']			=	$ambilSeksi[0]['unit'];
+			$data['section']		=	$ambilSeksi[0]['seksi'];
+
+			$departemen 			=	$data['departemen'];
+			$bidang 				=	$data['bidang'];
+			$unit 					=	$data['unit'];
+			$section 					=	$data['section'];
+		}
+
 		//$this->load->view('V_Header',$data);
 		//$this->load->view('V_Sidemenu',$data);
 		if ($detail==NULL) {

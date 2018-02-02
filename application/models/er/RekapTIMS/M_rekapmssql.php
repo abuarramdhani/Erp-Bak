@@ -965,5 +965,36 @@ clASs M_rekapmssql extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function ambilInfoSeksi($kodesie)
+	{
+		$ambilInfoSeksi 		= "	select 		(
+													case 	when 	trim(tseksi.dept)='-'
+																	then 	'All'
+															else 	rtrim(tseksi.dept)
+													end
+												) as departemen,
+												(
+													case 	when 	trim(tseksi.bidang)='-'
+																	then 	'All'
+															else 	rtrim(tseksi.bidang)
+													end
+												) as bidang,
+												(
+													case 	when 	trim(tseksi.unit)='-'
+																	then 	'All'
+															else 	rtrim(tseksi.unit)
+													end
+												) as unit,
+												(
+													case 	when 	trim(tseksi.seksi)='-'
+																	then 	'All'
+															else 	rtrim(tseksi.seksi)
+													end
+												) as seksi
+									from 		hrd_khs.tseksi as tseksi
+									where 		trim(tseksi.kodesie) like '$kodesie%';";
+		$queryAmbilInfoSeksi 	=	$this->personalia->query($ambilInfoSeksi);
+		return $queryAmbilInfoSeksi->result_array();
+	}
 }
 ?>

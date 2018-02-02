@@ -47,7 +47,7 @@ class C_Index extends CI_Controller {
 			$user_id = $this->session->userid;
 			//$data['user'] = $usr;
 			$data['Menu'] = 'dashboard';
-			
+
 			$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
 			
 			$this->load->view('V_Header',$data);

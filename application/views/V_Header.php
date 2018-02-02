@@ -93,7 +93,7 @@
 </head>
      <!-- END HEAD -->
      <!-- BEGIN BODY -->
-<body  class="skin-blue-light sidebar-mini"  >
+<body  class="skin-blue-light sidebar-mini fixed"  >
 	<div id="loadingAjax"></div>
 
      <!-- MAIN WRAPPER -->
