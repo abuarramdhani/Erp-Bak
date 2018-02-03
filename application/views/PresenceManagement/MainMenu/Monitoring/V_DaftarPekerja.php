@@ -52,6 +52,7 @@
 											$array = explode(",", $data_lokasi['lokasi']);
 											$count = count($array);
 											$no++;
+											$noind=$data_lokasi['noind'];
 										 ?>	
 										 	<tr>
 										 		<td><?php echo $no; ?></td>
@@ -64,9 +65,10 @@
 											 		}
 										 		 ?></td>
 										 		<td>
-										 			<select>
+										 			<select class="form-control" id="select_lokasi_finger" onchange="insert_into_lokasi('<?php echo $noind; ?>')">
 										 				<?php foreach ($persebaran_finger as $data_persebaran_finger) {?>
-										 					<option value="<?php echo $data_persebaran_finger['id_lokasi'] ?>"><?php echo $data_persebaran_finger['lokasi'] ?></option>
+										 					<option value=''></option>
+										 					<option  value="<?php echo $data_persebaran_finger['id_lokasi'] ?>"><?php echo $data_persebaran_finger['lokasi'] ?></option>
 										 				<?php } ?>
 										 			</select>
 										 		</td>

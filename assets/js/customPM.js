@@ -247,7 +247,7 @@ $(document).ready(function() {
 		});
 		
 		var host	= window.location.origin;
-		var url_loc	= host+"/erp/PresenceManagement/Monitoring";
+		var url_loc	= baseurl+"PresenceManagement/Monitoring";
 		var url_mon	= window.location.href;
 		if(url_mon == url_loc){
 			setTimeout(function(){
@@ -262,14 +262,14 @@ $(document).ready(function() {
 	$(document).on("click", ".btn-refresh-db", function () {
 		$('#modal-loader').modal('show');
 	});
-	
+
 	$(document).on("change", "#txtLocation", function () {
 		 var loc = $('#txtLocation').val();
 		 var host	= window.location.origin;
 		 $.ajax({
 			  type:"POST",
 			  dataType: 'html',
-			  url: host+"/erp/PresenceManagement/Monitoring/SwitchTable",
+			  url: baseurl+"PresenceManagement/Monitoring/SwitchTable",
 			  data: {loc:loc},
 			  success: function(data) {
 				$('#datatable-presensi-presence-management tbody').html(data);
@@ -279,11 +279,10 @@ $(document).ready(function() {
 			  }
 			});
 	});
-
 	//========================================================
 	//				SKRONISASI PRESENCE MANAGEMENT
 	//========================================================
-	var url_loc2	= host+"/erp_presence/PresenceManagement/Monitoring/ListPresensi";
+	var url_loc2	= baseurl+"PresenceManagement/Monitoring/ListPresensi";
 	if(url_mon.slice(0,-3) == url_loc2){
 		var rows=0;
 		$("#table-finger-per-lokasi tbody tr").each(function() {
@@ -292,7 +291,7 @@ $(document).ready(function() {
 			$.ajax({
 			  type:"POST",
 			  dataType: 'json',
-			  url: host+"/erp_presence/PresenceManagement/Monitoring/LoadPresensiFinger",
+			  url: baseurl+"PresenceManagement/Monitoring/LoadPresensiFinger",
 			  data: {loc:loc},
 			  success: function(data) {
 				$('span#txtnum'+rows).text(data);

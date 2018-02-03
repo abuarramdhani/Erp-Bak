@@ -285,7 +285,7 @@ class M_monitoring extends CI_Model {
 		
 		public function getListLocation(){
 			$quickcom	= $this->load->database('quickcom',true);
-			$sql = "select * from fp_distribusi.tb_lokasi order by id_lokasi";
+			$sql = "select * from fp_distribusi.tb_lokasi order by lokasi";
 			$query = $quickcom->query($sql);
 			return $query->result_array();
 		}
