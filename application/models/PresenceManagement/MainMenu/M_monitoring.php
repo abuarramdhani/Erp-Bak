@@ -694,5 +694,28 @@ class M_monitoring extends CI_Model {
 				return $query->result_array();
 			}
 		}
+
+		public function presensi_per_lokasi_kerja($id){
+			$fpdistribusi = $this->load->database('quickcom',true);
+			$sql = "select *,if(lokasi_kerja=1,'Pusat',if(lokasi_kerja=2,'Tuksono','Mlati')) as lokasi_kerja_desc from fp_distribusi.tb_lokasi a where lokasi_kerja='$id' order by lokasi_kerja,id_lokasi";
+			$query = $fpdistribusi->query($sql);
+			return $query->result_array();
+		}
+
+		public function getdatapekerjaallfinger(){
+			$fpdistribusi = $this->load->database('quickcom',true);
+			$sql = "select a.noind,a.nama,c.seksi,GROUP_concat(b.lokasi) lokasi from hrd_khs.tpribadi a
+					  left join 
+					  (
+					  	select b.id_lokasi,e.lokasi,b.noind from fp_distribusi.tb_fppribadi b
+					  	inner join fp_distribusi.tb_lokasi e on b.id_lokasi=e.id_lokasi
+					  ) 
+					  b on a.noind=b.noind
+					  left join hrd_khs.tseksi c on a.kodesie=c.kodesie
+					  where a.keluar='0' and left(a.noind,1) not in ('M')
+					  group by a.Noind, a.Nama,c.kodesie";
+			$query = $fpdistribusi->query($sql);
+			return $query->result_array();
+		}
 }
 ?>

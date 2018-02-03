@@ -847,6 +847,69 @@ class C_Monitoring extends CI_Controller {
 			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_SingleAccess',$data);
 			$this->load->view('V_Footer',$data);
 		}
+
+		public function DistribusiCatering(){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Catering List';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/Catering/V_Index',$data);
+			$this->load->view('V_Footer',$data);
+		}
+
+		public function ListPresensi($id){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Catering List';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$data['data_finger'] = $this->M_monitoring->presensi_per_lokasi_kerja($id);
+			$data['id']=$id;
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/Catering/V_List',$data);
+			$this->load->view('V_Footer',$data);
+		}
+
+		public function LoadPresensiFinger(){
+			$id = $this->input->post('loc');
+			echo $id;
+		}
+
+		public function DaftarPekerja(){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Single Access';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$data['lokasi']		=	$this->M_monitoring->getdatapekerjaallfinger();
+			$data['persebaran_finger'] = $this->M_monitoring->getListLocation();
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_DaftarPekerja',$data);
+			$this->load->view('V_Footer',$data);
+		}
 	
 	//=========================
 	// 	PRESENCE MANAGEMENT END

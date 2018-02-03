@@ -10,6 +10,11 @@ $(document).ready(function() {
 	 // "bLengthChange": false,
 	 // "ordering": false
 	});
+
+	$('#data-presensi-data-pekerja').dataTable({
+	 // "bLengthChange": false,
+	 // "ordering": false
+	});
 	
 	$('#registered-presensi').dataTable({
 	 "bLengthChange": false,
@@ -275,4 +280,25 @@ $(document).ready(function() {
 			});
 	});
 
+	//========================================================
+	//				SKRONISASI PRESENCE MANAGEMENT
+	//========================================================
+	var url_loc2	= host+"/erp_presence/PresenceManagement/Monitoring/ListPresensi";
+	if(url_mon.slice(0,-3) == url_loc2){
+		var rows=0;
+		$("#table-finger-per-lokasi tbody tr").each(function() {
+			rows = rows+1;
+			var loc = $('span#txtloc'+rows).text();
+			$.ajax({
+			  type:"POST",
+			  dataType: 'json',
+			  url: host+"/erp_presence/PresenceManagement/Monitoring/LoadPresensiFinger",
+			  data: {loc:loc},
+			  success: function(data) {
+				$('span#txtnum'+rows).text(data);
+			  }
+			});
+		});
+	}
+	
 });
