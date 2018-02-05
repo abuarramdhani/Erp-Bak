@@ -203,7 +203,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php $numb=1; foreach ($jobLineReject as $rj) { ?>
-                                                        <tr>
+                                                        <tr row-id="<?php echo $numb; ?>" data-subinv="<?php echo $rj['subinventory_code'] ?>">
                                                             <td><?php echo $numb++; ?></td>
                                                             <td><?php echo $rj['component_code'] ?></td>
                                                             <td><?php echo $rj['component_description'] ?></td>
@@ -226,7 +226,7 @@
                                 <div class="panel-footer" id="generateBtnArea">
                                     <div class="row text-right">
                                         <a id="btnClearRjc" class="btn btn-default btnReject" href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/clearJob/'.$value['WIP_ENTITY_NAME']); ?>" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>CLEAR</a>
-                                        <button id="btnFormRjc" class="btn btn-primary btnReject" data-toggle="modal" data-target="#modalFormReject" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>FORM REJECT</button>
+                                        <button id="btnFormRjc" class="btn btn-primary btnReject" onclick="submitFormRjc()" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>FORM REJECT</button>
                                         <button id="btnKIBRjc" class="btn btn-primary btnReject" onclick="submitJobKIB(this, '<?php echo $value['WIP_ENTITY_NAME'] ?>')" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>KIB</button>
                                     </div>
                                 </div>
@@ -357,7 +357,7 @@
                     <button class="btn btn-default" data-dismiss="modal" type="button">
                         CANCEL
                     </button>
-                    <button class="btn btn-primary" type="submit" id="btnSubmit">
+                    <button class="btn btn-primary" type="submit" id="btnSubmit" <?php if (empty($a)) { echo "disabled";} ?>>
                         PROCEED
                     </button>
                 </div>
