@@ -109,6 +109,7 @@ class C_ReplaceComp extends CI_Controller
 
 	public function submitJobForm($id)
 	{
+		$subinv = $this->input->post('subinvFormReject');
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9); 
@@ -126,14 +127,16 @@ class C_ReplaceComp extends CI_Controller
 	{
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8','A4-P', 0, '', 9, 9, 9, 9); 
+		$pdf = new mPDF('utf-8','A4-P', 0, '', 4, 4, 9, 9); 
 		$filename = 'Report_Job_'.$id.'.pdf';
 		$data['jobHeader'] = $this->M_replacecomp->getJobHeader($id);
-		$data['jobLine'] = $this->M_replacecomp->getJobLine($id);
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$data['jobLine'] = $this->M_replacecomp->getJobLineReject($id);
+		echo "<pre>";
+		print_r($data['jobLine']);
+		echo "</pre>";
+		exit();
 		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportkib', $data, true);
-		$pdf->WriteHTML($stylesheet,1);
-		$pdf->WriteHTML($html,2);
+		$pdf->WriteHTML($html,0);
 		$pdf->Output($filename, 'I');
 	}
 
