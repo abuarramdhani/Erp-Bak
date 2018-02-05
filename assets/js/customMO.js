@@ -164,8 +164,8 @@ function proceedRejectComp() {
             }
             $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject', newRjctQty);
 
-            var deleteSendData = data[0]['replacement_component_id']+","+rowNumb+","+rowid;
-            var newRow = jQuery("<tr row-id='"+rowNumb+"'>"
+            var deleteSendData = "'"+data[0]['replacement_component_id']+"','"+rowNumb+"','"+rowid+"'";
+            var newRow = jQuery("<tr row-id='"+rowNumb+"' data-subinv='"+data[0]['subinventory_code']+"'>"
                                     +"<td>"+ rowNumb +"</td>"
                                     +"<td>"+ data[0]['component_code'] +"</td>"
                                     +"<td>"+ data[0]['component_description'] +"</td>"
@@ -174,7 +174,7 @@ function proceedRejectComp() {
                                     +"<td>"+ data[0]['return_information'] +"</td>"
                                     +"<td>"+ data[0]['subinventory_code'] +"</td>"
                                     +"<td>"
-                                        +"<a onclick='deleteRejectComp("+deleteSendData+");' class='btn btn-danger btn-block' data-toggle='tooltip' data-placement='left' title='Remove Reject Component'><i class='fa fa-minus'></i></a>"
+                                        +'<a onclick="deleteRejectComp('+deleteSendData+')" class="btn btn-danger btn-block" data-toggle="tooltip" data-placement="left" title="Remove Reject Component"><i class="fa fa-minus"></i></a>'
                                     +"</td>"
                                 +"</tr>");
             jQuery("table#rejectTable").append(newRow);
@@ -207,18 +207,26 @@ function deleteRejectComp(replacement_component_id, rowNumb, rowid) {
         url: baseurl+'ManufacturingOperation/Ajax/deleteRejectComp/'+replacement_component_id,
         success:function(results){
             var data = JSON.parse(results);
-            $('table#rejectTable tbody tr[row-id="'+rowNumb+'"]').remove();
+            // ----- action untuk tabel bawah -----
             $('#rejectTable').DataTable().destroy();
+            $('#rejectTable tbody tr[row-id="'+rowNumb+'"]').remove();
             var rowCount = $('table#rejectTable tbody tr').length;
             if (rowCount == 0) {
                 $('#generateBtnArea .btnReject').attr('disabled', true);
             }
-            var rejectQty   = $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject');
-            var newRjctQty  = Number(rejectQty)+Number(data[0]['return_quantity']);
-            $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject', newRjctQty);
             $('#rejectTable').DataTable({
                 dom: 'frtip'
             });
+            // ----- action untuk tabel atas -----
+            var rejectQty   = $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject');
+            var picklistQty = $('table#jobTable tbody tr[row-id="'+rowid+'"] input[name="qty"]').val();
+            var newRjctQty  = Number(rejectQty)-Number(data[0]['return_quantity']);
+            $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').attr('data-reject', newRjctQty);
+            $('table#jobTable tbody tr[row-id="'+rowid+'"] td.rejectArea').html(newRjctQty);
+            if (newRjctQty == picklistQty) {
+                $('table#jobTable tbody tr[row-id="'+rowid+'"] button').attr('disabled', true);
+            }
+
             $.toaster('Data was deleted!', 'Deleted', 'success');
         },
         error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -228,4 +236,12 @@ function deleteRejectComp(replacement_component_id, rowNumb, rowid) {
 }
 function submitJobKIB(th, jobID) {
     window.open(baseurl+'ManufacturingOperation/Job/ReplaceComp/submitJobKIB/'+jobID, '_blank');
+}
+function submitFormRjc() {
+    // var subInvData = $('#modalFormReject input[name="subInvData"]').val();
+    // var a = subInvData.split(',');
+    // for (var i = 0; i < a.length; i++) {
+    //     a[i]
+    // }
+    $('#modalFormReject').modal('show');
 }
