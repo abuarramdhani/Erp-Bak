@@ -216,7 +216,7 @@ function rekap_datatable_detail() {
 	rekap_datatable_detail();
 //});
 
-// 	Rekap Absensi Pekerja
+// 	Rekap Absensi Pekerja dan Rekap Jam Kerja
 //	{
 		$(function()
 		{
@@ -237,6 +237,16 @@ function rekap_datatable_detail() {
 						searching: false,
 						lengthChange: false,
 					});
+
+					$('#RekapJamKerja-hasil').DataTable({
+						lengthChange: true,
+						scrollX: true,
+						dom: 'Bfrtip',
+						buttons: [
+							'excel'
+						],
+					});
+
 
 			//	}
 			//	DateRangePicker
@@ -301,6 +311,29 @@ function rekap_datatable_detail() {
 								return {
 									results: $.map(data, function(obj){
 										return {id: obj.kode_departemen, text: obj.nama_departemen};
+									})
+								}
+							}
+						}
+					});
+
+					$('.RekapJamKerja-cmbLokasiKerja').select2(
+					{
+						minimumResultsForSearch: -1,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RekapJamKerja/daftarLokasiKerja',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_lokasi_kerja, text: obj.kode_lokasi_kerja +' - '+obj.nama_lokasi_kerja};
 									})
 								}
 							}
