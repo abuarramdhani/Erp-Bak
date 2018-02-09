@@ -226,7 +226,7 @@
                                 <div class="panel-footer" id="generateBtnArea">
                                     <div class="row text-right">
                                         <a id="btnClearRjc" class="btn btn-default btnReject" href="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/clearJob/'.$value['WIP_ENTITY_NAME']); ?>" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>CLEAR</a>
-                                        <button id="btnFormRjc" class="btn btn-primary btnReject" onclick="submitFormRjc()" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>FORM REJECT</button>
+                                        <button id="btnFormRjc" class="btn btn-primary btnReject" onclick="submitFormRjc('<?php echo $value['WIP_ENTITY_NAME']; ?>')" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>FORM REJECT</button>
                                         <button id="btnKIBRjc" class="btn btn-primary btnReject" onclick="submitJobKIB(this, '<?php echo $value['WIP_ENTITY_NAME'] ?>')" <?php if (empty($jobLineReject)) { echo "disabled"; } ?>>KIB</button>
                                     </div>
                                 </div>
@@ -321,7 +321,7 @@
     </div>
 </div>
 <div class="modal fade" id="modalFormReject" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button aria-label="Close" class="close" data-dismiss="modal" type="button">
@@ -330,26 +330,20 @@
                     </span>
                 </button>
                 <h4 class="modal-title">
-                    Select Subinventory
+                    Set Report
                 </h4>
             </div>
             <form method="post" target="_blank" action="<?php echo base_url('ManufacturingOperation/Job/ReplaceComp/submitJobForm/'.$id) ?>">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
-                            <label>Subinventory</label>
-                            <div id="subinvArea">
-                                <?php
-                                $a = array();
-                                foreach ($jobLineReject as $key => $jlr) {
-                                    if (!in_array($jlr['subinventory_code'], $a)) {
-                                        array_push($a, $jlr['subinventory_code']); ?>
-                                        <input type="radio" name="subinvFormReject" value="<?php echo $jlr['subinventory_code'] ?>"> <?php echo $jlr['subinventory_code'] ?>
-                                    <?php }
-                                }
-                                $b = implode(',', $a); ?>
-                            </div>
-                            <input type="hidden" name="subInvData" value="<?php echo $b; ?>">
+                        <div class="col-md-6">
+                            <label>Select Subinventory</label>
+                            <div id="subinvArea"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Select Paper Size</label><br>
+                            <input type="radio" name="paperSize" value="A4" required="" checked="true"> Letter A4 (210 x 279.4 mm)<br>
+                            <input type="radio" name="paperSize" value="A5" required=""> A5 (148 x 211 mm)
                         </div>
                     </div>
                 </div>
@@ -357,7 +351,7 @@
                     <button class="btn btn-default" data-dismiss="modal" type="button">
                         CANCEL
                     </button>
-                    <button class="btn btn-primary" type="submit" id="btnSubmit" <?php if (empty($a)) { echo "disabled";} ?>>
+                    <button class="btn btn-primary" type="submit" id="btnSubmit" disabled="true">
                         PROCEED
                     </button>
                 </div>
