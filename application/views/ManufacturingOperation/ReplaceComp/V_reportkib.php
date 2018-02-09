@@ -12,9 +12,9 @@
     </head>
     <body>
         <div style="width: 100%; display: inline-table;">
-            <?php foreach ($jobLine as $ln) { ?>
+            <?php foreach ($jobLineReject as $lr) { ?>
                 <div style="width: 50%; float: left;">
-                    <div style="display: inline-block; border: 1px solid #b3b3b3;padding: 10px;">
+                    <div style="display: inline-block; border: 1px solid #b3b3b3;padding: 5px;">
                         <div style="float: left;width: 50%;">
                             CV Karya Hidup Sentosa
                             <br>
@@ -30,94 +30,96 @@
                         </div>
                         <table class="table table-bordered text-center">
                             <tr>
-                                <td style="padding: 4px">
-                                    Dikembalikan ke Gudang :
+                                <td style="padding: 3px">
+                                    <small>Dikembalikan ke Gudang :</small>
                                     <br><b>
-                                        KOM1-DM
+                                        <?php echo $lr['subinventory_code']; ?>
                                     </b>
                                 </td>
-                                <td style="padding: 4px">
-                                    No. WIP Return/Line
+                                <td style="padding: 3px">
+                                    <small>No. WIP Return/Line</small>
                                     <br><b>
-                                        KOM1-180108001 / 1
+                                        <?php echo $replacement_number; ?>
                                     </b>
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Seksi/Subkon ditemukan Barang :
+                                <td style="padding: 3px">
+                                    <small>Seksi/Subkon ditemukan Barang :</small>
                                     <br><b>
-                                        PERAKITAN B
+                                        <?php echo $lr['section']; ?>
                                     </b>
                                 </td>
-                                <td>
-                                    Seksi/Subkon Pembuat Barang :
+                                <td style="padding: 3px">
+                                    <small>Seksi/Subkon Pembuat Barang :</small>
                                     <br><b>
                                         SHEET METAL
                                     </b>
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    No. Job/Batch :
+                                <td style="padding: 3px">
+                                    <small>No. Job/Batch :</small>
                                     <br><b>
-                                        D180010001
+                                        <?php echo $lr['job_number']; ?>
                                     </b>
                                 </td>
-                                <td>
-                                    Item Assy
+                                <td style="padding: 3px">
+                                    <small>Item Assy</small>
                                     <br><b>
-                                        AAL5C0A001BY-1
+                                        <?php echo $lr['assy_code']; ?>
                                     </b>
                                 </td>
                             </tr>
                         </table>
-                        <table class="table table-bordered">
+                        <table class="table">
                             <tr>
-                                <td>
-                                    Kode Barang:
-                                    <br>
+                                <td style="width: 50%; padding: 3px 3px 0px 3px;">
+                                    <small>Kode Barang :</small>
                                 </td>
-                                <td>
-                                    Type Product:
+                                <td style="text-align: right; padding: 3px 3px 0px 3px;">
+                                    <small>Type Product :</small>
+                                </td>
+                                <td style="padding: 3px 3px 0px 3px;">
+                                    <small><?php echo $lr['assy_description']; ?></small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0px 3px 3px 3px;">
+                                    <b><?php echo $lr['component_code']; ?></b><br>
+                                </td>
+                                <td style="text-align: right; padding: 0px 3px 3px 3px">
+                                    <small>QTY : </small>
+                                </td>
+                                <td style="padding: 0px 3px 3px 3px">
+                                    <b><?php echo $lr['return_quantity']; ?></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px;" colspan="3">
+                                    <small>Description :</small>
+                                    <br>
+                                    <?php echo $lr['component_description']; ?>
                                     <br>
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Description:
+                                <td colspan="3" style="padding: 3px;">
+                                    <small>Keterangan Reject :</small>
                                     <br>
-                                </td>
-                                <td>
-                                    QTY:
-                                    <br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Keterangan Reject:
-                                    <br>
+                                    <?php echo $lr['return_information']; ?>
                                 </td>
                             </tr>
                         </table>
-                        <br>
                         <span>
                             Status Barang:
                         </span>
                         <table class="table table-bordered" style="text-align: center">
                             <tr>
-                                <td>
-                                    Diterima
-                                </td>
-                                <td>
-                                    Diterima
-                                </td>
-                                <td>
-                                    Verifikasi
-                                </td>
-                                <td colspan="2">
-                                    Keputusan QC
-                                </td>
+                                <td style="padding: 3px;">Diterima</td>
+                                <td style="padding: 3px;">Diterima</td>
+                                <td style="padding: 3px;">Verifikasi</td>
+                                <td style="padding: 3px;" colspan="2">Keputusan QC</td>
                             </tr>
                             <tr>
                                 <td rowspan="3">
@@ -126,38 +128,32 @@
                                 </td>
                                 <td rowspan="3">
                                 </td>
-                                <td style="text-align: left">
+                                <td style="padding: 3px; text-align: left">
                                     <input type="checkbox"/>
                                     Scrap
                                 </td>
-                                <td style="text-align: left">
+                                <td style="padding: 3px; text-align: left">
                                     QTY:
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align: left">
+                                <td style="padding: 3px; text-align: left">
                                     <input type="checkbox"/>
                                     Repair
                                 </td>
-                                <td style="text-align: left">
+                                <td style="padding: 3px; text-align: left">
                                     QTY:
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" rowspan="2" style="text-align: left;height:40px;vertical-align: text-top;">
+                                <td colspan="2" rowspan="2" style="padding: 3px; text-align: left;height:40px;vertical-align: text-top;">
                                     Catatan :
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Seksi Asal
-                                </td>
-                                <td>
-                                    Gudang
-                                </td>
-                                <td>
-                                    QC
-                                </td>
+                                <td style="padding: 3px;">Seksi Asal</td>
+                                <td style="padding: 3px;">Gudang</td>
+                                <td style="padding: 3px;">QC</td>
                             </tr>
                         </table>
                         <i style="font-size: 7px">
