@@ -62,15 +62,27 @@ class M_ajax extends CI_Model
       $sql = "SELECT we.WIP_ENTITY_NAME ,
                      TO_CHAR(wdj.DATE_RELEASED,'DD/MM/YYYY hh:mi:ss') RELEASE ,
                      msib.SEGMENT1 ,
-                     msib.DESCRIPTION
-              FROM mtl_system_items_b msib ,
-                   wip_entities we ,
-                   wip_discrete_jobs wdj
+                     msib.DESCRIPTION,
+                     mil.segment1
+              FROM mtl_system_items_b msib,
+                   wip_entities we,
+                   wip_discrete_jobs wdj,
+                   bom_operational_routings bor,
+                   mtl_item_locations mil
               WHERE msib.ORGANIZATION_ID = 102
                 AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
                 AND wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
                 AND wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                AND bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                AND bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                AND wdj.COMPLETION_LOCATOR_ID = mil.INVENTORY_LOCATION_ID
                 $wDate $wJobCode
+              GROUP BY we.WIP_ENTITY_NAME,
+                       wdj.DATE_RELEASED,
+                       msib.SEGMENT1,
+                       msib.DESCRIPTION,
+                       mil.segment1,
+                       wdj.COMPLETION_SUBINVENTORY
               ORDER BY wdj.DATE_RELEASED";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -100,6 +112,16 @@ class M_ajax extends CI_Model
       $this->db->from('mo.mo_replacement_component');
       $this->db->where('replacement_component_id', $id);
       $query = $this->db->get();
+      return $query->result_array();
+    }
+
+    public function getRejectSubInv($id)
+    {
+      $sql = "SELECT subinventory_code
+              FROM mo.mo_replacement_component
+              WHERE job_number = '$id'
+              GROUP BY subinventory_code";
+      $query = $this->db->query($sql);
       return $query->result_array();
     }
 }
