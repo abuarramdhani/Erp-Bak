@@ -178,18 +178,6 @@ function proceedRejectComp() {
                                     +"</td>"
                                 +"</tr>");
             jQuery("table#rejectTable").append(newRow);
-            var subInvData = $('#modalFormReject input[name="subInvData"]').val();
-            if (subInvData.trim() == '') {
-                $('#modalFormReject input[name="subInvData"]').val(data[0]['subinventory_code']);
-                $('#modalFormReject #subinvArea').html('<input type="radio" value="'+data[0]['subinventory_code']+'"> '+data[0]['subinventory_code']);
-            }else{
-                var subInvDataArr = subInvData.split(',');
-                if (jQuery.inArray(data[0]['subinventory_code'], subInvDataArr) == -1) {
-                    var subInvDataVal = subInvData+','+data[0]['subinventory_code'];
-                    $('#modalFormReject input[name="subInvData"]').val(subInvDataVal);
-                    $('#modalFormReject #subinvArea').html('<input type="radio" value="'+data[0]['subinventory_code']+'"> '+data[0]['subinventory_code']);
-                }
-            }
             $('#rejectTable').DataTable({
                 dom: 'frtip'
             });
@@ -237,11 +225,26 @@ function deleteRejectComp(replacement_component_id, rowNumb, rowid) {
 function submitJobKIB(th, jobID) {
     window.open(baseurl+'ManufacturingOperation/Job/ReplaceComp/submitJobKIB/'+jobID, '_blank');
 }
-function submitFormRjc() {
-    // var subInvData = $('#modalFormReject input[name="subInvData"]').val();
-    // var a = subInvData.split(',');
-    // for (var i = 0; i < a.length; i++) {
-    //     a[i]
-    // }
-    $('#modalFormReject').modal('show');
+function submitFormRjc(jobID) {
+    $.ajax({
+        url: baseurl+'ManufacturingOperation/Ajax/getRejectSubInv/'+jobID,
+        success:function(results){
+            var data = JSON.parse(results);
+            console.log(data);
+            var htm = '';
+            for (var i = 0; i < data.length; i++) {
+                htm += '<input type="radio" name="subinvFormReject" onclick="enaDisBtnFormRjc(this)" value="'+data[i]['subinventory_code']+'"> '+data[i]['subinventory_code']+'<br>';
+            }
+            $('#modalFormReject #subinvArea').html(htm);
+            $('#modalFormReject').modal('show');
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown){
+            $.toaster(textStatus+' | '+errorThrown, name, 'danger');
+        }
+    });
+}
+function enaDisBtnFormRjc(th) {
+    if ($(th).attr('selected', true)) {
+        $('#modalFormReject #btnSubmit').attr('disabled', false);
+    }
 }
