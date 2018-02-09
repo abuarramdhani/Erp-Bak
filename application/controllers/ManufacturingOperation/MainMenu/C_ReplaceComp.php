@@ -109,32 +109,134 @@ class C_ReplaceComp extends CI_Controller
 
 	public function submitJobForm($id)
 	{
+		$user_id = $this->session->userid;
 		$subinv = $this->input->post('subinvFormReject');
-		$this->load->library('Pdf');
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9); 
-		$filename = 'Report_Job_'.$id.'.pdf';
-		$data['jobHeader'] = $this->M_replacecomp->getJobHeader($id);
-		$data['jobLine'] = $this->M_replacecomp->getJobLine($id);
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportform', $data, true);
-		$pdf->WriteHTML($stylesheet,1);
-		$pdf->WriteHTML($html,2);
-		$pdf->Output($filename, 'I');
+		$paperSize = $this->input->post('paperSize');
+		$jobHeader = $this->M_replacecomp->getJobHeader($id);
+		$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id);
+
+		if (empty($jobReplacementNumber)) {
+			$codeNumber = date('ym');
+			$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
+
+			if (!empty($lastNumber)) {
+				$nextNumber = strval(intval(substr($lastNumber[0]['max'], 4))+1);
+				$tambahanKarakter = '';
+
+				for ($i=5; $i > strlen($nextNumber) ; $i--) { 
+					$tambahanKarakter .= '0';
+				}
+				$finalNumber = strval($tambahanKarakter.$nextNumber);
+
+			}else{
+				$nextNumber = '00001';
+			}
+			$replacement_number = $codeNumber.$finalNumber;
+			$inputData = array(
+				'replacement_number'	=> $replacement_number,
+				'job_number'			=> $id,
+				'assy_code'				=> $jobHeader[0]['SEGMENT1'],
+				'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
+				'section'				=> $jobHeader[0]['SEKSI'],
+				'created_by'			=> $user_id,
+				'created_date'			=> date('Y-m-d')
+			);
+			$jobReplacementNumber = $this->M_replacecomp->setJobReplacementNumber($inputData);
+
+			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
+		}else{
+			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
+		}
+		// ------ GENERATE QRCODE ------
+			$this->load->library('ciqrcode');
+			// ------ create directory temporary qrcode ------
+				if(!is_dir('./assets/upload/ManufacturingOperation'))
+				{
+					mkdir('./assets/upload/ManufacturingOperation', 0777, true);
+					chmod('./assets/upload/ManufacturingOperation', 0777);
+				}
+				if(!is_dir('./assets/upload/ManufacturingOperation/temp'))
+				{
+					mkdir('./assets/upload/ManufacturingOperation/temp', 0777, true);
+					chmod('./assets/upload/ManufacturingOperation/temp', 0777);
+				}
+				if(!is_dir('./assets/upload/ManufacturingOperation/temp/qrcode'))
+				{
+					mkdir('./assets/upload/ManufacturingOperation/temp/qrcode', 0777, true);
+					chmod('./assets/upload/ManufacturingOperation/temp/qrcode', 0777);
+				}
+			$params['data']		= $data['replacement_number'];
+			$params['level']	= 'H';
+			$params['size']		= 10;
+			$params['black']	= array(255,255,255);
+			$params['white']	= array(0,0,0);
+			$params['savename'] = './assets/upload/ManufacturingOperation/temp/qrcode/'.$data['replacement_number'].'.png';
+			$this->ciqrcode->generate($params);
+		// ------ GENERATE PDF ------
+			$this->load->library('Pdf');
+			$pdf = $this->pdf->load();
+			if ($paperSize == 'A4') {
+				$pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9);
+			}elseif ($paperSize == 'A5') {
+				$pdf = new mPDF('utf-8','A5-L', 0, '', 9, 9, 9, 9);
+			}
+			$filename = 'Report_Job_'.$id.'_'.$subinv.'.pdf';
+			$data['jobHeader'] = $jobHeader;
+			$data['jobLineReject'] = $this->M_replacecomp->getJobLineReject($id,$subinv);
+			$data['subinv'] = $subinv;
+			$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportform', $data, true);
+			$pdf->WriteHTML($html,0);
+			$pdf->Output($filename, 'I');
+		if(is_file($params['savename'])){
+			unlink($params['savename']);
+		}
 	}
 
 	public function submitJobKIB($id)
 	{
+		$user_id = $this->session->userid;
 		$this->load->library('Pdf');
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8','A4-P', 0, '', 4, 4, 9, 9); 
-		$filename = 'Report_Job_'.$id.'.pdf';
-		$data['jobHeader'] = $this->M_replacecomp->getJobHeader($id);
-		$data['jobLine'] = $this->M_replacecomp->getJobLineReject($id);
-		echo "<pre>";
-		print_r($data['jobLine']);
-		echo "</pre>";
-		exit();
+		$jobHeader				= $this->M_replacecomp->getJobHeader($id);
+		$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id);
+
+		if (empty($jobReplacementNumber)) {
+			$codeNumber = date('ym');
+			$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
+
+			if (!empty($lastNumber)) {
+				$nextNumber = strval(intval(substr($lastNumber[0]['max'], 4))+1);
+				$tambahanKarakter = '';
+
+				for ($i=5; $i > strlen($nextNumber) ; $i--) { 
+					$tambahanKarakter .= '0';
+				}
+				$finalNumber = strval($tambahanKarakter.$nextNumber);
+
+			}else{
+				$nextNumber = '00001';
+			}
+			$replacement_number = $codeNumber.$finalNumber;
+			$inputData = array(
+				'replacement_number'	=> $replacement_number,
+				'job_number'			=> $id,
+				'assy_code'				=> $jobHeader[0]['SEGMENT1'],
+				'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
+				'section'				=> $jobHeader[0]['SEKSI'],
+				'created_by'			=> $user_id,
+				'created_date'			=> date('Y-m-d')
+			);
+			$jobReplacementNumber = $this->M_replacecomp->setJobReplacementNumber($inputData);
+
+			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
+		}else{
+			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
+		}
+
+		$data['jobHeader']		= $jobHeader;
+		$data['jobLineReject']	= $this->M_replacecomp->getJobLineReject($id);
+		$pdf 					= $this->pdf->load();
+		$pdf 					= new mPDF('utf-8','A4-P', 0, '', 4, 4, 9, 9);
+		$filename				= 'KIB_Report_Job_'.$id.'.pdf';
 		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportkib', $data, true);
 		$pdf->WriteHTML($html,0);
 		$pdf->Output($filename, 'I');
