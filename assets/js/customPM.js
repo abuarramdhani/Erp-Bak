@@ -11,10 +11,9 @@ $(document).ready(function() {
 	 // "ordering": false
 	});
 
-	$('#data-presensi-data-pekerja').dataTable({
-	 // "bLengthChange": false,
-	 // "ordering": false
-	});
+	// $('#data-presensi-data-pekerja').dataTable({
+	//  	'paging'      : true,
+	// });
 	
 	$('#registered-presensi').dataTable({
 	 "bLengthChange": false,
@@ -299,5 +298,205 @@ $(document).ready(function() {
 			});
 		});
 	}
-	
+
+	$(document).on('click', '.pagination', function() {
+		$('.select_lokasi_finger').select2({
+		ajax: {
+		  	url: baseurl+"PresenceManagement/Monitoring/LokasiKerja",
+		  	dataType: 'json',
+		  	type: 'get',
+		  	data: function(params){
+		  		return { p: params.term };
+		  	},
+		  	processResults: function (data) {
+		  		return {
+		  			results: $.map(data, function(item) {
+		  				return {
+		  					id: item.id_lokasi,
+		  					text: item.lokasi,
+		  				}
+		  			})
+		  		};
+		  	},
+		  	cache: true
+		  },
+		  minimumInputLength: 2,
+		  placeholder: 'Select Lokasi Kerja',
+		  allowClear: true,
+		});
+	});
+
+	$('.select-nama').select2({
+		ajax: {
+		    url: baseurl+"PresenceManagement/Monitoring/pekerja",
+		    dataType: 'json',
+		    type: "get",
+		    data: function (params) {
+		      return { p: params.term };
+		    },
+		    processResults: function (data) {
+		      return {
+		        results: $.map(data, function (item) {
+		          return {
+		            id: item.noind,
+		            text: item.noind+' - '+item.nama,
+		          }
+		        })
+		      };
+		    },
+		    cache: true
+		  },
+	  minimumInputLength: 2,
+	  placeholder: 'Select Nama Pekerja',
+	  allowClear: true,
+	});
+
+	function SelectNama(){
+		var val = $('#NamaPekerja').val();
+		if (val) {
+			$('#CariLokasiPekerja').removeAttr('disabled', 'disabled'); 
+		    $('#CariLokasiPekerja').removeClass('disabled'); 
+		  }else{
+		    $('#CariLokasiPekerja').attr('disabled', 'disabled');
+		    $('#CariLokasiPekerja').addClass('disabled', 'disabled');
+		  }
+	}
+
+	$(document).on('change', '#NamaPekerja', function() {
+		SelectNama();
+	});
+
+	$(document).on('click', '#CariLokasiPekerja', function(e) {
+		e.preventDefault();
+		var nama = $('#NamaPekerja').val();
+		$.ajax({
+			url: baseurl+"PresenceManagement/Monitoring/DataLokasiFinger",
+		    type: "get",
+		    data: {nama: nama}
+		}).done(function(data) {
+			var html = '';
+			var data = $.parseJSON(data);
+			
+			var lokasi = data['cariLokasiFinger'][0]['lokasi'].split(',');
+			var idlokasi = data['cariLokasiFinger'][0]['id_lokasi'].split(',');
+			var count = lokasi.length;
+			console.log(data['cariLokasiFinger']);
+
+			html += '<tr>';
+			html += '<td>'+data['cariLokasiFinger'][0]['noind']+'</td>';
+			html += '<td>'+data['cariLokasiFinger'][0]['nama']+'</td>';
+			html += '<td>'+data['cariLokasiFinger'][0]['seksi']+'</td>';
+			html += '<td>';
+			for (var i = 0; i < count; i++) {
+				html += '<button class="btn btn-warning" id="DeleteLokasi"><a onclick="return confirm(\'Apakah yakin ingin menghapus?\');" href="'+baseurl+'PresenceManagement/Monitoring/deleteLokasiFinger/'+data['cariLokasiFinger'][0]['noind']+'/'+idlokasi[i]+'"><b> X </b> </a>'+lokasi[i]+'</button> ';
+			}
+			html += '</td>';
+			html += '<td><Select class="form-control select_lokasi_finger" style="width:100%" data-noind="'+data['cariLokasiFinger'][0]['noind']+'" id="lokasi_finger" onchange="InsertLokasiFinger(this)"></Select</td>';
+			html += '</tr>';
+
+			$('tbody#TampilDataLokasi').append(html);
+
+			$('.select_lokasi_finger').select2({
+			  ajax: {
+			  	url: baseurl+"PresenceManagement/Monitoring/LokasiKerja",
+			  	dataType: 'json',
+			  	type: 'get',
+			  	data: function(params){
+			  		return { p: params.term };
+			  	},
+			  	processResults: function (data) {
+			  		return {
+			  			results: $.map(data, function(item) {
+			  				return {
+			  					id: item.id_lokasi,
+			  					text: item.lokasi,
+			  				}
+			  			})
+			  		};
+			  	},
+			  	cache: true
+			  },
+			  minimumInputLength: 2,
+			  placeholder: 'Select Lokasi Kerja',
+			  allowClear: true,
+			});
+		 $('#table-presensi').removeClass('hidden');
+		})
+	});
+
 });
+
+$(document).ready(function(){
+	$('.select_lokasi_finger').select2({
+	  ajax: {
+	  	url: baseurl+"PresenceManagement/Monitoring/LokasiKerja",
+	  	dataType: 'json',
+	  	type: 'get',
+	  	data: function(params){
+	  		return { p: params.term };
+	  	},
+	  	processResults: function (data) {
+	  		return {
+	  			results: $.map(data, function(item) {
+	  				return {
+	  					id: item.id_lokasi,
+	  					text: item.lokasi,
+	  				}
+	  			})
+	  		};
+	  	},
+	  	cache: true
+	  },
+	  minimumInputLength: 2,
+	  placeholder: 'Select Lokasi Kerja',
+	  allowClear: true,
+	});
+})
+
+
+$('#data-presensi-data-pekerja').on( 'search.dt', function () {
+    $('.select_lokasi_finger').select2({
+       ajax: {
+	  	url: baseurl+"PresenceManagement/Monitoring/LokasiKerja",
+	  	dataType: 'json',
+	  	type: 'get',
+	  	data: function(params){
+	  		return { p: params.term };
+	  	},
+	  	processResults: function (data) {
+	  		return {
+	  			results: $.map(data, function(item) {
+	  				return {
+	  					id: item.id_lokasi,
+	  					text: item.lokasi,
+	  				}
+	  			})
+	  		};
+	  	},
+	  	cache: true
+	  },
+	  minimumInputLength: 2,
+	  placeholder: 'Select Lokasi Kerja',
+	  allowClear: true,
+	});
+} );
+
+function InsertLokasiFinger(th) {
+	var noind = $(th).attr('data-noind');
+	var lokasi = $('#lokasi_finger[data-noind="'+noind+'"]').val();
+
+	var check = confirm("Apakah anda yakin ingin menambahkan lokasi finger tersebut?");
+	if (check) {
+		$.ajax({
+		    url: baseurl+"PresenceManagement/Monitoring/SaveLokasiFinger",
+		    type: "POST",
+		    data: {lokasi: lokasi, noind: noind}
+		  }).done(function(data) {
+		    // location.reload();
+		    window.location = baseurl+"PresenceManagement/Monitoring/DaftarPekerja";
+		  });
+	}else{
+		alert("batal memilih");
+	}
+}
+

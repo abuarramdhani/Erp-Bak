@@ -702,9 +702,25 @@ class M_monitoring extends CI_Model {
 			return $query->result_array();
 		}
 
-		public function getdatapekerjaallfinger(){
+		// public function getdatapekerjaallfinger(){
+		// 	$fpdistribusi = $this->load->database('quickcom',true);
+		// 	$sql = "select a.noind,a.nama,c.seksi,GROUP_concat(b.lokasi) lokasi from hrd_khs.tpribadi a
+		// 			  left join 
+		// 			  (
+		// 			  	select b.id_lokasi,e.lokasi,b.noind from fp_distribusi.tb_fppribadi b
+		// 			  	inner join fp_distribusi.tb_lokasi e on b.id_lokasi=e.id_lokasi
+		// 			  ) 
+		// 			  b on a.noind=b.noind
+		// 			  left join hrd_khs.tseksi c on a.kodesie=c.kodesie
+		// 			  where a.keluar='0' and left(a.noind,1) not in ('M')
+		// 			  group by a.Noind, a.Nama,c.kodesie";
+		// 	$query = $fpdistribusi->query($sql);
+		// 	return $query->result_array();
+		// }
+
+		public function getdatapekerjaallfinger($cariNama){
 			$fpdistribusi = $this->load->database('quickcom',true);
-			$sql = "select a.noind,a.nama,c.seksi,GROUP_concat(b.lokasi) lokasi from hrd_khs.tpribadi a
+			$sql = "select a.noind,a.nama,c.seksi,GROUP_concat(b.lokasi) lokasi, GROUP_concat(b.id_lokasi) as id_lokasi from hrd_khs.tpribadi a
 					  left join 
 					  (
 					  	select b.id_lokasi,e.lokasi,b.noind from fp_distribusi.tb_fppribadi b
@@ -712,10 +728,176 @@ class M_monitoring extends CI_Model {
 					  ) 
 					  b on a.noind=b.noind
 					  left join hrd_khs.tseksi c on a.kodesie=c.kodesie
-					  where a.keluar='0' and left(a.noind,1) not in ('M')
+					  where a.keluar='0' and left(a.noind,1) not in ('M') and a.noind='$cariNama'
 					  group by a.Noind, a.Nama,c.kodesie";
 			$query = $fpdistribusi->query($sql);
 			return $query->result_array();
+		}
+
+		public function insertDataJari($Idfinger,$Noind,$Finger,$Noindbaru,$lokasi){
+			@$loadConSQL = $this->load->database('my_'.$lokasi.'',TRUE);
+			@$checkSQL = $loadConSQL->initialize();
+			if($checkSQL === FALSE){
+				return "failed";
+			}else{
+				$sql		= "insert into coba_jari.tb_jari_tks (id_finger,noind,finger,noind_baru) values ('$Idfinger','$Noind','$Finger','$Noindbaru')";
+				$query	= $loadConSQL->query($sql);
+				return;
+			}
+		}
+
+		public function insertDataPribadi($Noind,$Nama,$Jenkel,$Alamat,$Telepon,$Nohp,$Diangkat,$Masukkerja,$Kodesie,$TglKeluar,$Noindbaru,$Kodestatuskerja,$Lokasikerja,$Nik,$Tmplahir,$Tgllahir,$lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "insert into hrd_khs.tpribadi (noind,nama,jenkel,alamat,telepon,nohp,diangkat,masukkerja,kodesie,tglkeluar,noind_baru,kode_status_kerja,lokasi_kerja,nik,templahir,tgllahir) values ('$Noind','$Nama','$Jenkel','$Alamat','$Telepon','$Nohp','$Diangkat','$Masukkerja','$Kodesie','$TglKeluar','$Noindbaru','$Kodestatuskerja','$Lokasikerja','$Nik','$Tmplahir','$Tgllahir')";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+
+		public function insertTmpPribadi($Noind,$Nama,$Kodesie,$Dept,$Seksi,$Pekerjaan,$Jumlahttl,$Pointttl,$Nonttl,$Photo,$Pathphoto,$Noindbaru,$lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "insert into frontpresensi.ttmppribadi (noind,nama,kodesie,dept,seksi,pekerjaan,jmlttl,pointttl,nonttl,photo,path_photo,noind_baru) values ('$Noind','$Nama','$Kodesie','$Dept','$Seksi','$Pekerjaan','$Jumlahttl','$Pointttl','$Nonttl','$Photo','$Pathphoto','$Noindbaru')";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+
+		public function insertShiftPekerja($Tgl,$Noind,$Kd_shift,$Kodesie,$Tukar,$Jam_msk,$Jam_akhmsk,$Jam_plg,$Break_mulai,$Break_selesai,$Ist_mulai,$Ist_selesai,$Jam_kerja,$User,$Noind_baru,$lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "insert into presensi_local.tshiftpekerja (tanggal,noind,kd_shift,kodesie,tukar,jam_msk,jam_akhmsk,jam_plg,break_mulai,break_selesai,ist_mulai,ist_selesai,jam_kerja,user_,noind_baru) values ('$Tgl','$Noind','$Kd_shift','$Kodesie','$Tukar','$Jam_msk','$Jam_akhmsk','$Jam_plg','$Break_mulai','$Break_selesai','$Ist_mulai','$Ist_selesai','$Jam_kerja','$User','$Noind_baru')";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+
+		public function getPribadi($noind){
+			$sqlserver = $this->load->database('personalia', true);
+			$query = "select * from hrd_khs.tpribadi where noind='$noind'";
+			$sql = $sqlserver->query($query);
+
+			return $sql->result_array();
+
+		}
+
+		public function getTmpPribadi($noind){
+			$sqlserver = $this->load->database('personalia',true);
+			$query = "select * from \"FrontPresensi\".ttmppribadi where noind='$noind'";
+			$sql = $sqlserver->query($query);
+
+			return $sql->result_array();
+		}
+
+		public function getShiftPekerja($noind){
+			$sqlserver = $this->load->database('personalia',true);
+			$query = "Select * from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal between current_date and (to_date(to_char(current_date + interval '1 month', 'YYYY-MM'), 'YYYY-MM')) - interval '1 day'";
+			$sql = $sqlserver->query($query);
+
+			return $sql->result_array();
+		}
+
+		public function getDataJari($noind){
+			$sqlserver = $this->load->database('quick',true);
+			$query = "select * from ceklembur.tb_jari_tks where noind = '$noind' and id_finger in ('06','07')";
+			$sql = $sqlserver->query($query);
+
+			return $sql->result_array();
+		}
+
+		public function getLokasiKerja($lokasi){
+			$quickcom	= $this->load->database('quickcom',true);
+			$sql = "select * from fp_distribusi.tb_lokasi where lokasi like '%$lokasi%' order by lokasi";
+			$query = $quickcom->query($sql);
+			return $query->result_array();
+		}
+
+		public function insertFPPribadi($lokasi,$noind){
+			$quickcom	= $this->load->database('quickcom',true);
+			$sql		= "INSERT INTO fp_distribusi.tb_fppribadi (noind,nama,jenkel,alamat,nohp,diangkat,masukkerja,kodesie,keluar,tglkeluar,noind_baru,kode_status_kerja,lokasi_kerja,access,id_lokasi)
+							SELECT DISTINCT(noind),nama,jenkel,alamat,nohp,diangkat,masukkerja,kodesie,keluar,tglkeluar,noind_baru,kode_status_kerja,lokasi_kerja,access,'$lokasi'
+							FROM fp_distribusi.tb_fppribadi
+							WHERE noind='$noind'";
+			$query		= $quickcom->query($sql);
+			return;
+		}
+
+		public function getFpPribadi($noind){
+			$quickcom = $this->load->database('quickcom',true);
+			$sql = "Select * from fp_distribusi.tb_fppribadi where noind='$noind'";
+			$query = $quickcom->query($sql);
+			return $query;
+		}
+
+		public function deleteFpPribadi($noind,$lokasi){
+			$quickcom = $this->load->database('quickcom',true);
+			$sql = "delete from fp_distribusi.tb_fppribadi where noind='$noind' and id_lokasi='$lokasi'";
+			$query = $quickcom->query($sql);
+			return $query;
+		}
+
+		public function deleteFinger($noind,$lokasi){
+			@$loadConSQL = $this->load->database('my_'.$lokasi.'',TRUE);
+			@$checkSQL = $loadConSQL->initialize();
+			if($checkSQL === FALSE){
+				return "failed";
+			}else{
+				$sql		= "delete from coba_jari.tb_jari_tks where noind='$noind'";
+				$query	= $loadConSQL->query($sql);
+				return;
+			}
+		}
+
+		public function deleteTTMPribadi($noind,$lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql	= "delete from frontpresensi.ttmppribadi where noind='$noind'";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+
+		public function deleteShiftPekerja($noind,$lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql	= "delete from presensi_local.tshiftpekerja where noind='$noind'";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+
+		public function deleteTPribadi($noind,$lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checlPostgres = $loadConPostgres->initialize();
+			if($checlPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql	= "delete from hrd_khs.tpribadi where noind='$noind'";
+				$query	= $loadConPostgres->query($sql);
+				return;
+			}
+		}
+
+		public function getPekerja($employee){
+			$pgPersonalia = $this->load->database('personalia', true);
+			$sql = $pgPersonalia->query("Select * from hrd_khs.tpribadi where upper(nama) like '%$employee%' and keluar=false");
+			return $sql->result_array();
 		}
 }
 ?>
