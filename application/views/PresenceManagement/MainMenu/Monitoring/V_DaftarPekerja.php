@@ -32,50 +32,36 @@
 						<div class="table-responsive" style="overflow:hidden;">
 						<div class="box box-primary">
 							<div class="row" style="margin: 10px 10px">
+								<div class="form-group">
+				                  <label for="nama" class="col-sm-2 control-label">Nama :</label>
+
+				                  <div class="col-sm-4">
+				                    <select type="text" class="form-control select-nama" id="NamaPekerja" name="NamaPekerja" style="width: 100%"></select>
+				                  </div>
+				                  <div class="col-sm-2">
+				                  	<a href="" class="btn btn-primary disabled" id="CariLokasiPekerja">SEARCH</a>
+				                  </div>
+				                </div> 
 							</div>
 							<br>
 						</div>
+						<div id="table-presensi" class="hidden">
 							<table class="table table-striped table-bordered table-hover text-left" id="data-presensi-data-pekerja" style="font-size:14px;">
 								<thead class="bg-primary">
 									<tr>
-										<th style="text-align:center;" width="5%">NO</th>
-										<th style="text-align:center;" width="5%">NOIND</th>
-										<th style="text-align:center;" width="15%">NAMA</th>
-										<th style="text-align:center;" width="25%">SEKSI</th>
-										<th style="text-align:center;" width="40%">LOKASI FINGER</th>
-										<th style="text-align:center;" width="10%">ADD LOKASI</th>
+										<th style="text-align:center;width:5%">NOIND</th>
+										<th style="text-align:center;width:15%">NAMA</th>
+										<th style="text-align:center;width:25%"">SEKSI</th>
+										<th style="text-align:center;width:35%">LOKASI FINGER</th>
+										<th style="text-align:center;width:20%">ADD LOKASI</th>
 									</tr>
 								</thead>
-								<tbody>
-									<?php $no = 0;
-										foreach ($lokasi as $data_lokasi) {
-											$array = explode(",", $data_lokasi['lokasi']);
-											$count = count($array);
-											$no++;
-											$noind=$data_lokasi['noind'];
-										 ?>	
-										 	<tr>
-										 		<td><?php echo $no; ?></td>
-										 		<td><?php echo $data_lokasi['noind']; ?></td>
-										 		<td><?php echo $data_lokasi['nama']; ?></td>
-										 		<td><?php echo $data_lokasi['seksi']; ?></td>
-										 		<td><?php 
-											 		for($i=0;$i<$count;$i++){
-											 			echo "<button id='' class='btn btn-sm btn-warning'>".$array[$i]."</button>";
-											 		}
-										 		 ?></td>
-										 		<td>
-										 			<select class="form-control" id="select_lokasi_finger" onchange="insert_into_lokasi('<?php echo $noind; ?>')">
-										 				<?php foreach ($persebaran_finger as $data_persebaran_finger) {?>
-										 					<option value=''></option>
-										 					<option  value="<?php echo $data_persebaran_finger['id_lokasi'] ?>"><?php echo $data_persebaran_finger['lokasi'] ?></option>
-										 				<?php } ?>
-										 			</select>
-										 		</td>
-											</tr>
-										<?php } ?>
+								<tbody id="TampilDataLokasi">
 								</tbody>
 							</table>
+						</div>
+						
+							
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12 text-right">

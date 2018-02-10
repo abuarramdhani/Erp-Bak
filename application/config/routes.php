@@ -494,6 +494,7 @@ $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Monitoring/index';
 $route['PresenceManagement/Monitoring/(:any)']		= 'PresenceManagement/MainMenu/C_Monitoring/$1';
 $route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
+$route['PresenceManagement/Monitoring/(:any)/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2/$3';
 
 //---------------------------------Payroll Management----------------------------------
 
