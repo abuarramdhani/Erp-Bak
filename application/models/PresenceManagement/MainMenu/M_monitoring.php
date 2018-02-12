@@ -899,5 +899,27 @@ class M_monitoring extends CI_Model {
 			$sql = $pgPersonalia->query("Select * from hrd_khs.tpribadi where upper(nama) like '%$employee%' and keluar=false");
 			return $sql->result_array();
 		}
+
+		public function ambilNamaLokasi($lokasi){
+			$myPersonalia	= $this->load->database('quickcom',true);
+			$sql		= "select * from fp_distribusi.tb_lokasi where id_lokasi='$lokasi'";
+			$query		= $myPersonalia->query($sql);
+			return $query->result_array();
+		}
+
+		public function cetakDataPresensiPerLokasi($lokasi){
+			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
+			@$checkPostgres = $loadConPostgres->initialize();
+			if($checkPostgres === FALSE){
+				return "failed";
+			}else{
+				$sql		= "select a.*, b.seksi as seksi from hrd_khs.tpribadi as a
+								left join hrd_khs.tseksi as b
+								on a.kodesie=b.kodesie
+								order by a.noind";
+				$query	= $loadConPostgres->query($sql);
+				return $query->result_array();
+			}
+		}
 }
 ?>

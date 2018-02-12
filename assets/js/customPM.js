@@ -271,6 +271,8 @@ $(document).ready(function() {
 			  url: baseurl+"PresenceManagement/Monitoring/SwitchTable",
 			  data: {loc:loc},
 			  success: function(data) {
+			  	$('#btn-excel').removeClass('hidden');
+			  	$('#excelLokasi').val(loc);
 				$('#datatable-presensi-presence-management tbody').html(data);
 				$('#desLocationSection').val(loc);
 				$('#desLocationPerson').val(loc);

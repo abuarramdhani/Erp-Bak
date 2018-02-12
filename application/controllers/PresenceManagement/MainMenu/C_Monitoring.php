@@ -1041,6 +1041,17 @@ class C_Monitoring extends CI_Controller {
 
 			echo json_encode($data);
 		}
+
+		public function ExportPresensi(){
+			$this->checkSession();
+			$this->load->library('Excel');
+			$lokasi = $this->input->post('excelLokasi');
+			$NamaLokasi = $this->M_monitoring->ambilNamaLokasi($lokasi);
+			$data['lokasi'] = $NamaLokasi[0];
+			$data['cetakData'] = $this->M_monitoring->cetakDataPresensiPerLokasi($lokasi);
+
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_ExportPresensi',$data);
+		}
 	
 	//=========================
 	// 	PRESENCE MANAGEMENT END
