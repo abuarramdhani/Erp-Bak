@@ -46,7 +46,15 @@
 									</div>
 								</div>
 							</div>
-							<br>
+							
+							<div class="box-body">
+			                  <div class="form-group">
+			                    <form method="POST" action="<?php echo base_url('PresenceManagement/Monitoring/ExportPresensi')?>">
+			                      <input type="hidden" name="excelLokasi" id="excelLokasi">
+			                      <button type="submit" id="btn-excel" class="btn btn-success pull-right hidden">Cetak Excel</button>
+			                    </form> 
+			                  </div>
+				            </div>
 						</div>
 							<table class="table table-striped table-bordered table-hover text-left" id="datatable-presensi-presence-management" style="font-size:14px;">
 								<thead class="bg-primary">
