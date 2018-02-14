@@ -109,44 +109,45 @@ class C_ReplaceComp extends CI_Controller
 
 	public function submitJobForm($id)
 	{
-		$user_id = $this->session->userid;
-		$subinv = $this->input->post('subinvFormReject');
-		$paperSize = $this->input->post('paperSize');
-		$jobHeader = $this->M_replacecomp->getJobHeader($id);
-		$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id);
+		$user_id	= $this->session->userid;
+		$subinv 	= $this->input->post('subinvFormReject');
+		$paperSize	= $this->input->post('paperSize');
+		$jobHeader 	= $this->M_replacecomp->getJobHeader($id);
 
-		if (empty($jobReplacementNumber)) {
-			$codeNumber = date('ym');
-			$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
+		// ------ GENERATE REJECT NUMBER ------
+			$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id);
+			if (empty($jobReplacementNumber)) {
+				$codeNumber = date('ym');
+				$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
 
-			if (!empty($lastNumber)) {
-				$nextNumber = strval(intval(substr($lastNumber[0]['max'], 4))+1);
-				$tambahanKarakter = '';
+				if (!empty($lastNumber)) {
+					$nextNumber = strval(intval(substr($lastNumber[0]['max'], 4))+1);
+					$tambahanKarakter = '';
 
-				for ($i=5; $i > strlen($nextNumber) ; $i--) { 
-					$tambahanKarakter .= '0';
+					for ($i=5; $i > strlen($nextNumber) ; $i--) { 
+						$tambahanKarakter .= '0';
+					}
+					$finalNumber = strval($tambahanKarakter.$nextNumber);
+
+				}else{
+					$nextNumber = '00001';
 				}
-				$finalNumber = strval($tambahanKarakter.$nextNumber);
+				$replacement_number = $codeNumber.$finalNumber;
+				$inputData = array(
+					'replacement_number'	=> $replacement_number,
+					'job_number'			=> $id,
+					'assy_code'				=> $jobHeader[0]['SEGMENT1'],
+					'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
+					'section'				=> $jobHeader[0]['SEKSI'],
+					'created_by'			=> $user_id,
+					'created_date'			=> date('Y-m-d')
+				);
+				$jobReplacementNumber = $this->M_replacecomp->setJobReplacementNumber($inputData);
 
+				$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
 			}else{
-				$nextNumber = '00001';
+				$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
 			}
-			$replacement_number = $codeNumber.$finalNumber;
-			$inputData = array(
-				'replacement_number'	=> $replacement_number,
-				'job_number'			=> $id,
-				'assy_code'				=> $jobHeader[0]['SEGMENT1'],
-				'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
-				'section'				=> $jobHeader[0]['SEKSI'],
-				'created_by'			=> $user_id,
-				'created_date'			=> date('Y-m-d')
-			);
-			$jobReplacementNumber = $this->M_replacecomp->setJobReplacementNumber($inputData);
-
-			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
-		}else{
-			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
-		}
 		// ------ GENERATE QRCODE ------
 			$this->load->library('ciqrcode');
 			// ------ create directory temporary qrcode ------
@@ -176,14 +177,68 @@ class C_ReplaceComp extends CI_Controller
 			$this->load->library('Pdf');
 			$pdf = $this->pdf->load();
 			if ($paperSize == 'A4') {
-				$pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9);
+				// $pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9);
+				$pdf = new mPDF('utf-8','A5-L', 0, '', 4, 4, 4, 4);
 			}elseif ($paperSize == 'A5') {
-				$pdf = new mPDF('utf-8','A5-L', 0, '', 9, 9, 9, 9);
+				$pdf = new mPDF('utf-8','A5-L', 0, '', 4, 4, 4, 4);
 			}
-			$filename = 'Report_Job_'.$id.'_'.$subinv.'.pdf';
-			$data['jobHeader'] = $jobHeader;
-			$data['jobLineReject'] = $this->M_replacecomp->getJobLineReject($id,$subinv);
-			$data['subinv'] = $subinv;
+			$filename				= 'Report_Job_'.$id.'_'.$subinv.'.pdf';
+			$jobLineReject 			= $this->M_replacecomp->getJobLineReject($id,$subinv);
+			$rowCount = 0;
+			$rowPerPage = 15;
+			$page = 0;
+			$RejectPerPage = array();
+			foreach ($jobLineReject as $value) {
+				// ---- masukin data ke page mana ----
+					if ($rowCount < $rowPerPage) {
+						$RejectPerPage[$page][] = $value;
+					}elseif ($rowCount >= $rowPerPage) {
+						$page++;
+						$rowCount = 0;
+						$RejectPerPage[$page][] = $value;
+					}
+				// ---- baca panjang data deskripsi ----
+					if (strlen($value['component_description']) > strlen($value['return_information'])) {
+						$panjangData = strlen($value['component_description']);
+					}else{
+						$panjangData = strlen($value['return_information']);
+					}
+				// ---- cek data udah memakan berapa row ----
+					if ($panjangData < 37) {
+						$rowCount += 1;
+					}elseif ($panjangData >= 37 && $panjangData < 74) {
+						$rowCount += 2;
+					}elseif ($panjangData >= 74 && $panjangData < 111) {
+						$rowCount += 3;
+					}elseif ($panjangData >= 111 && $panjangData < 148) {
+						$rowCount += 4;
+					}elseif ($panjangData >= 148 && $panjangData < 185) {
+						$rowCount += 5;
+					}elseif ($panjangData >= 185 && $panjangData < 222) {
+						$rowCount += 6;
+					}else{
+						$rowCount += 7;
+					}
+			}
+			$dataPerPage = array();
+			for ($i=0; $i <= $page ; $i++) { 
+				$dataPerPage[] = array(
+					'i'	=> $i,
+					'WIP_ENTITY_NAME'	=> $jobHeader[0]['WIP_ENTITY_NAME'],
+					'RELEASE'			=> $jobHeader[0]['RELEASE'],
+					'SEGMENT1'			=> $jobHeader[0]['SEGMENT1'],
+					'DESCRIPTION'		=> $jobHeader[0]['DESCRIPTION'],
+					'SEKSI'				=> $jobHeader[0]['SEKSI'],
+					'DATA_BODY'			=> $RejectPerPage[$i]
+				);
+			}
+			// echo "<pre>";
+			// print_r($dataPerPage);
+			// echo "</pre>";
+			// exit();
+			$data['rejectData']		= $dataPerPage;
+			// $data['jobLineReject']	= $jobLineReject;
+			$data['subinv']			= $subinv;
 			$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportform', $data, true);
 			$pdf->WriteHTML($html,0);
 			$pdf->Output($filename, 'I');
