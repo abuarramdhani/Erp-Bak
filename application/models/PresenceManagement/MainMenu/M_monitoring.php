@@ -832,6 +832,16 @@ class M_monitoring extends CI_Model {
 			return;
 		}
 
+		public function insertNewFPPribadi($lokasi,$noind){
+			$quickcom	= $this->load->database('quickcom',true);
+			$sql		= "INSERT INTO fp_distribusi.tb_fppribadi (noind,nama,jenkel,alamat,nohp,diangkat,masukkerja,kodesie,keluar,tglkeluar,noind_baru,kode_status_kerja,lokasi_kerja,access,id_lokasi)
+							SELECT Noind,Nama,Jenkel,Alamat,NoHp,Diangkat,Masukkerja,Kodesie,
+							keluar,Tglkeluar,Noind_Baru,Kode_Status_Kerja,Lokasi_Kerja,null,'$lokasi' 
+							from hrd_khs.tpribadi where Noind='$noind'";
+			$query		= $quickcom->query($sql);
+			return;
+		}
+
 		public function getFpPribadi($noind){
 			$quickcom = $this->load->database('quickcom',true);
 			$sql = "Select * from fp_distribusi.tb_fppribadi where noind='$noind'";
@@ -920,6 +930,13 @@ class M_monitoring extends CI_Model {
 				$query	= $loadConPostgres->query($sql);
 				return $query->result_array();
 			}
+		}
+
+		public function getHost($lokasi){
+			$myPersonalia	= $this->load->database('quickcom',true);
+			$sql		= "select * from fp_distribusi.tb_mysql where id_lokasi='$lokasi'";
+			$query		= $myPersonalia->query($sql);
+			return $query->row();
 		}
 }
 ?>

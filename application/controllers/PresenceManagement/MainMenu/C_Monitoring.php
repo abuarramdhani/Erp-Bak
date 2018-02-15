@@ -918,7 +918,14 @@ class C_Monitoring extends CI_Controller {
 			$lokasi = $this->input->post('lokasi');
 
 			$getPribadi = $this->M_monitoring->getPribadi($noind);
-			$insertFPPribadi = $this->M_monitoring->insertFPPribadi($lokasi,$noind);
+			$getFpPribadi = $this->M_monitoring->getFpPribadi($noind)->num_rows();
+			
+			if($getFpPribadi==0) {
+				$insertNewFPPribadi = $this->M_monitoring->insertNewFPPribadi($lokasi,$noind);
+			}else{
+				$insertFPPribadi = $this->M_monitoring->insertFPPribadi($lokasi,$noind);
+			}
+			
 			
 				$Noind = $getPribadi[0]['noind'];
 				$Nama = $getPribadi[0]['nama'];
@@ -1008,6 +1015,15 @@ class C_Monitoring extends CI_Controller {
 		public function deleteLokasiFinger($noind,$lokasi){
 			$this->checkSession();
 
+			// $host = $this->M_monitoring->getHost($lokasi);
+			// // $Path = $host->host."/Absensi/assets/files/Absensi/Photo/".$noind.".JPG";
+			// $Path2 = $host->host."/Absensi/assets/files/Absensi/Photo/".$noind.".jpg";
+			// print_r(file_exists($Path2));
+			// exit();
+
+			// unlink($Path);
+			// unlink($Path2);
+
 			$getFpPribadi = $this->M_monitoring->getFpPribadi($noind)->num_rows();
 			if ($getFpPribadi>1) {
 				$deleteFpPribadi = $this->M_monitoring->deleteFpPribadi($noind,$lokasi);
@@ -1015,6 +1031,8 @@ class C_Monitoring extends CI_Controller {
 				$deleteTTMPribadi = $this->M_monitoring->deleteTTMPribadi($noind,$lokasi);
 				$deleteShiftPekerja = $this->M_monitoring->deleteShiftPekerja($noind,$lokasi);
 				$deleteTPribadi = $this->M_monitoring->deleteTPribadi($noind,$lokasi);
+				// unlink($Path);
+				// unlink($Path2);
 
 				redirect('PresenceManagement/Monitoring/DaftarPekerja');
 			}else{

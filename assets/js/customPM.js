@@ -379,50 +379,69 @@ $(document).ready(function() {
 			var html = '';
 			var data = $.parseJSON(data);
 			
-			var lokasi = data['cariLokasiFinger'][0]['lokasi'].split(',');
-			var idlokasi = data['cariLokasiFinger'][0]['id_lokasi'].split(',');
-			var count = lokasi.length;
-			console.log(data['cariLokasiFinger']);
+			var lokasi = data['cariLokasiFinger'][0]['lokasi'];
+			var idlokasi = data['cariLokasiFinger'][0]['id_lokasi'];
 
-			html += '<tr>';
-			html += '<td>'+data['cariLokasiFinger'][0]['noind']+'</td>';
-			html += '<td>'+data['cariLokasiFinger'][0]['nama']+'</td>';
-			html += '<td>'+data['cariLokasiFinger'][0]['seksi']+'</td>';
-			html += '<td>';
-			for (var i = 0; i < count; i++) {
-				html += '<button class="btn btn-warning" id="DeleteLokasi"><a onclick="return confirm(\'Apakah yakin ingin menghapus?\');" href="'+baseurl+'PresenceManagement/Monitoring/deleteLokasiFinger/'+data['cariLokasiFinger'][0]['noind']+'/'+idlokasi[i]+'"><b> X </b> </a>'+lokasi[i]+'</button> ';
+			if (lokasi && idlokasi) {
+				var lokasiSplit = lokasi.split(',');
+				var idlokasiSplit = idlokasi.split(',');
+				var count = lokasiSplit.length;
+
+				console.log(data['cariLokasiFinger']);
+				$('tbody#TampilDataLokasi').empty(html);
+				html += '<tr>';
+				html += '<td>'+data['cariLokasiFinger'][0]['noind']+'</td>';
+				html += '<td>'+data['cariLokasiFinger'][0]['nama']+'</td>';
+				html += '<td>'+data['cariLokasiFinger'][0]['seksi']+'</td>';
+				html += '<td>';
+				for (var i = 0; i < count; i++) {
+					html += '<button class="btn btn-warning" id="DeleteLokasi"><a onclick="return confirm(\'Apakah yakin ingin menghapus?\');" href="'+baseurl+'PresenceManagement/Monitoring/deleteLokasiFinger/'+data['cariLokasiFinger'][0]['noind']+'/'+idlokasiSplit[i]+'"><b> X </b> </a>'+lokasiSplit[i]+'</button> ';
+				}
+				html += '</td>';
+				html += '<td><Select class="form-control select_lokasi_finger" style="width:100%" data-noind="'+data['cariLokasiFinger'][0]['noind']+'" id="lokasi_finger" onchange="InsertLokasiFinger(this)"></Select</td>';
+				html += '</tr>';
+			} else {
+				console.log(data['cariLokasiFinger']);
+				$('tbody#TampilDataLokasi').empty(html);
+				html += '<tr>';
+				html += '<td>'+data['cariLokasiFinger'][0]['noind']+'</td>';
+				html += '<td>'+data['cariLokasiFinger'][0]['nama']+'</td>';
+				html += '<td>'+data['cariLokasiFinger'][0]['seksi']+'</td>';
+				html += '<td>';
+				html += '</td>';
+				html += '<td><Select class="form-control select_lokasi_finger" style="width:100%" data-noind="'+data['cariLokasiFinger'][0]['noind']+'" id="lokasi_finger" onchange="InsertLokasiFinger(this)"></Select</td>';
+				html += '</tr>';
+				
+				
 			}
-			html += '</td>';
-			html += '<td><Select class="form-control select_lokasi_finger" style="width:100%" data-noind="'+data['cariLokasiFinger'][0]['noind']+'" id="lokasi_finger" onchange="InsertLokasiFinger(this)"></Select</td>';
-			html += '</tr>';
-
 			$('tbody#TampilDataLokasi').append(html);
 
-			$('.select_lokasi_finger').select2({
-			  ajax: {
-			  	url: baseurl+"PresenceManagement/Monitoring/LokasiKerja",
-			  	dataType: 'json',
-			  	type: 'get',
-			  	data: function(params){
-			  		return { p: params.term };
-			  	},
-			  	processResults: function (data) {
-			  		return {
-			  			results: $.map(data, function(item) {
-			  				return {
-			  					id: item.id_lokasi,
-			  					text: item.lokasi,
-			  				}
-			  			})
-			  		};
-			  	},
-			  	cache: true
-			  },
-			  minimumInputLength: 2,
-			  placeholder: 'Select Lokasi Kerja',
-			  allowClear: true,
-			});
-		 $('#table-presensi').removeClass('hidden');
+				$('.select_lokasi_finger').select2({
+				  ajax: {
+				  	url: baseurl+"PresenceManagement/Monitoring/LokasiKerja",
+				  	dataType: 'json',
+				  	type: 'get',
+				  	data: function(params){
+				  		return { p: params.term };
+				  	},
+				  	processResults: function (data) {
+				  		return {
+				  			results: $.map(data, function(item) {
+				  				return {
+				  					id: item.id_lokasi,
+				  					text: item.lokasi,
+				  				}
+				  			})
+				  		};
+				  	},
+				  	cache: true
+				  },
+				  minimumInputLength: 2,
+				  placeholder: 'Select Lokasi Kerja',
+				  allowClear: true,
+				});
+
+			$('#table-presensi').removeClass('hidden');
 		})
 	});
 
@@ -494,7 +513,6 @@ function InsertLokasiFinger(th) {
 		    type: "POST",
 		    data: {lokasi: lokasi, noind: noind}
 		  }).done(function(data) {
-		    // location.reload();
 		    window.location = baseurl+"PresenceManagement/Monitoring/DaftarPekerja";
 		  });
 	}else{
