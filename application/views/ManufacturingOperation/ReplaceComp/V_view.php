@@ -126,6 +126,7 @@
                                                         <input name="qty" type="hidden" value="<?php echo $val['COMPONENT_QUANTITY']; ?>">
                                                         <input name="uom" type="hidden" value="<?php echo $val['PRIMARY_UOM_CODE']; ?>">
                                                         <input name="subinv" type="hidden" value="<?php echo $val['SUBINVENTORY_CODE']; ?>">
+                                                        <input name="asal" type="hidden" value="<?php echo $val['ASAL']; ?>">
                                                         <td>
                                                             <?php echo $no; ?>
                                                         </td>
@@ -295,6 +296,10 @@
                                 <label>UOM</label>
                                 <input name="uom" type="text" class="form-control" readonly="">
                             </div>
+                            <div class="col-md-12">
+                                <label>Section Source</label>
+                                <input name="asal" type="text" class="form-control" readonly="">
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="col-md-12">
@@ -339,11 +344,6 @@
                         <div class="col-md-6">
                             <label>Select Subinventory</label>
                             <div id="subinvArea"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Select Paper Size</label><br>
-                            <input type="radio" name="paperSize" value="A4" required="" checked="true"> Letter A4 (210 x 279.4 mm)<br>
-                            <input type="radio" name="paperSize" value="A5" required=""> A5 (148 x 211 mm)
                         </div>
                     </div>
                 </div>
