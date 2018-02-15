@@ -13,8 +13,8 @@
     <body>
         <div style="width: 100%; display: inline-table;">
             <?php foreach ($jobLineReject as $lr) { ?>
-                <div style="width: 50%; float: left;">
-                    <div style="display: inline-block; border: 1px solid #b3b3b3;padding: 5px;">
+                <div style="width: 48%; float: left; margin: 8px;">
+                    <div style="display: inline-block; border: 1px solid #b3b3b3; padding: 8px;">
                         <div style="float: left;width: 50%;">
                             CV Karya Hidup Sentosa
                             <br>
@@ -53,7 +53,7 @@
                                 <td style="padding: 3px">
                                     <small>Seksi/Subkon Pembuat Barang :</small>
                                     <br><b>
-                                        SHEET METAL
+                                        <?php echo $lr['section_source']; ?>
                                     </b>
                                 </td>
                             </tr>
