@@ -116,16 +116,18 @@ function modalReject(th,rowid) {
     $('form#rejectForm input[name="assyDesc"]').val(assyDesc);
     $('form#rejectForm input[name="section"]').val(section);
 
-    var compCode = $(th).closest('tr').find('input[name="compCode"]').val();
-    var compDesc = $(th).closest('tr').find('input[name="compDesc"]').val();
-    var qty = $(th).closest('tr').find('input[name="qty"]').val();
-    var uom = $(th).closest('tr').find('input[name="uom"]').val();
-    var subinv = $(th).closest('tr').find('input[name="subinv"]').val();
+    var compCode    = $(th).closest('tr').find('input[name="compCode"]').val();
+    var compDesc    = $(th).closest('tr').find('input[name="compDesc"]').val();
+    var qty         = $(th).closest('tr').find('input[name="qty"]').val();
+    var uom         = $(th).closest('tr').find('input[name="uom"]').val();
+    var subinv      = $(th).closest('tr').find('input[name="subinv"]').val();
+    var asal        = $(th).closest('tr').find('input[name="asal"]').val();
     $('form#rejectForm input[name="compCode"]').val(compCode);
     $('form#rejectForm input[name="compDesc"]').val(compDesc);
     $('form#rejectForm input[name="qty"]').val(qty);
     $('form#rejectForm input[name="uom"]').val(uom);
     $('form#rejectForm input[name="subinv"]').val(subinv);
+    $('form#rejectForm input[name="asal"]').val(asal);
 
     var qtyReject = $(th).closest('tr').find('td.rejectArea').attr('data-reject');
     var maxReturn = Number(qty)-Number(qtyReject);
