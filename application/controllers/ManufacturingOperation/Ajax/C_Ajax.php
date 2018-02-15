@@ -100,6 +100,7 @@ class C_Ajax extends CI_Controller
 			'picklist_quantity'		=> $this->input->post('qty'),
 			'uom'					=> $this->input->post('uom'),
 			'subinventory_code'		=> $this->input->post('subinv'),
+			'section_source'		=> $this->input->post('asal'),
 			'return_quantity'		=> $this->input->post('returnQty'),
 			'return_information'	=> $this->input->post('returnInfo'),
 			'created_by'			=> $user_id,

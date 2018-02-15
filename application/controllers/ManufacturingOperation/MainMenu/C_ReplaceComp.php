@@ -84,10 +84,11 @@ class C_ReplaceComp extends CI_Controller
 				'SEKSI'					=> $val['SEKSI'],
 				'ITEM_NUM'				=> $val['ITEM_NUM'],
 				'SEGMENT1'				=> $val['SEGMENT1'],
-				'COMPONENT_QUANTITY'	=> $val['COMPONENT_QUANTITY'],
+				'COMPONENT_QUANTITY'	=> $val['QUANTITY_ISSUED'],
 				'PRIMARY_UOM_CODE'		=> $val['PRIMARY_UOM_CODE'],
 				'SUPPLY_TYPESUPPLY_TYPE'=> $val['SUPPLY_TYPE'],
 				'SUBINVENTORY_CODE'		=> $val['SUBINVENTORY_CODE'],
+				'ASAL'					=> $val['ASAL'],
 				'REJECT_QTY'			=> $reject
 			);
 		}
@@ -111,7 +112,6 @@ class C_ReplaceComp extends CI_Controller
 	{
 		$user_id	= $this->session->userid;
 		$subinv 	= $this->input->post('subinvFormReject');
-		$paperSize	= $this->input->post('paperSize');
 		$jobHeader 	= $this->M_replacecomp->getJobHeader($id);
 
 		// ------ GENERATE REJECT NUMBER ------
@@ -176,12 +176,7 @@ class C_ReplaceComp extends CI_Controller
 		// ------ GENERATE PDF ------
 			$this->load->library('Pdf');
 			$pdf = $this->pdf->load();
-			if ($paperSize == 'A4') {
-				// $pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9);
-				$pdf = new mPDF('utf-8','A5-L', 0, '', 4, 4, 4, 4);
-			}elseif ($paperSize == 'A5') {
-				$pdf = new mPDF('utf-8','A5-L', 0, '', 4, 4, 4, 4);
-			}
+			$pdf = new mPDF('utf-8','A5-L', 0, '', 4, 4, 4, 4);
 			$filename				= 'Report_Job_'.$id.'_'.$subinv.'.pdf';
 			$jobLineReject 			= $this->M_replacecomp->getJobLineReject($id,$subinv);
 			$rowCount = 0;
@@ -220,6 +215,16 @@ class C_ReplaceComp extends CI_Controller
 						$rowCount += 7;
 					}
 			}
+			for ($i=$rowCount; $i < 15; $i++) { 
+				$RejectPerPage[$page][] = array(
+					'component_code'		=> '',
+					'component_description' => '',
+					'uom'					=> '',
+					'picklist_quantity'		=> '',
+					'return_quantity'		=> '',
+					'return_information'	=> '',
+				);
+			}
 			$dataPerPage = array();
 			for ($i=0; $i <= $page ; $i++) { 
 				$dataPerPage[] = array(
@@ -232,12 +237,7 @@ class C_ReplaceComp extends CI_Controller
 					'DATA_BODY'			=> $RejectPerPage[$i]
 				);
 			}
-			// echo "<pre>";
-			// print_r($dataPerPage);
-			// echo "</pre>";
-			// exit();
 			$data['rejectData']		= $dataPerPage;
-			// $data['jobLineReject']	= $jobLineReject;
 			$data['subinv']			= $subinv;
 			$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportform', $data, true);
 			$pdf->WriteHTML($html,0);
