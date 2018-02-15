@@ -43,17 +43,15 @@ class M_replacecomp extends CI_Model
 
     public function getJobLine($id=FALSE)
     {
-      $sql = "SELECT we.WIP_ENTITY_NAME ,
-                     msib.segment1 ASSY ,
-                     msib.DESCRIPTION ASSY_DESC,
-                     mil.SEGMENT1 Seksi ,
-                     bcb.ITEM_NUM ,
-                     msib2.SEGMENT1,
-                     msib2.DESCRIPTION ,
-                     bcb.COMPONENT_QUANTITY,
-                     msib2.PRIMARY_UOM_CODE ,
-                     decode(bcb.WIP_SUPPLY_TYPE, 1,'Push',3,'Pull') supply_type,
-                     mmt.SUBINVENTORY_CODE
+      $sql = "SELECT we.WIP_ENTITY_NAME, msib.segment1 ASSY , msib.DESCRIPTION ASSY_DESC, mil.SEGMENT1 Seksi , bcb.ITEM_NUM , msib2.SEGMENT1, msib2.DESCRIPTION , wro.QUANTITY_ISSUED, msib2.PRIMARY_UOM_CODE , decode(bcb.WIP_SUPPLY_TYPE, 1,'Push',3,'Pull') supply_type, mmt.SUBINVENTORY_CODE,
+                (SELECT mil2.segment1
+                 FROM mtl_item_locations mil2,
+                      bom_operational_routings bor2
+                 WHERE bor2.ASSEMBLY_ITEM_ID = msib2.INVENTORY_ITEM_ID
+                   AND bor2.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+                   AND bor2.COMPLETION_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID
+                   AND bor2.ALTERNATE_ROUTING_DESIGNATOR IS NULL
+                   AND mil2.ORGANIZATION_ID = msib2.ORGANIZATION_ID) ASAL
               FROM bom_bill_of_materials bbom ,
                    bom_components_b bcb ,
                    mtl_system_items_b msib ,
@@ -62,7 +60,8 @@ class M_replacecomp extends CI_Model
                    wip_discrete_jobs wdj ,
                    bom_operational_routings bor ,
                    mtl_item_locations mil,
-                   mtl_material_transactions mmt
+                   mtl_material_transactions mmt,
+                   WIP_REQUIREMENT_OPERATIONS WRO
               WHERE bbom.BILL_SEQUENCE_ID = bcb.BILL_SEQUENCE_ID
                 AND bbom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
                 AND bbom.ORGANIZATION_ID = msib.ORGANIZATION_ID
@@ -82,6 +81,7 @@ class M_replacecomp extends CI_Model
                 AND mil.ORGANIZATION_ID = msib.ORGANIZATION_ID
                 AND mmt.TRANSACTION_SOURCE_ID = we.WIP_ENTITY_ID
                 AND mmt.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
+                AND WRO.WIP_ENTITY_ID = WE.WIP_ENTITY_ID
               GROUP BY we.WIP_ENTITY_NAME ,
                        msib.segment1 ,
                        msib.DESCRIPTION ,
@@ -92,7 +92,10 @@ class M_replacecomp extends CI_Model
                        bcb.COMPONENT_QUANTITY,
                        msib2.PRIMARY_UOM_CODE ,
                        bcb.WIP_SUPPLY_TYPE,
-                       mmt.SUBINVENTORY_CODE
+                       mmt.SUBINVENTORY_CODE,
+                       msib2.INVENTORY_ITEM_ID,
+                       msib2.ORGANIZATION_ID,
+                       wro.QUANTITY_ISSUED
               ORDER BY bcb.ITEM_NUM ASC";
       $query = $this->oracle->query($sql);
       return $query->result_array();
