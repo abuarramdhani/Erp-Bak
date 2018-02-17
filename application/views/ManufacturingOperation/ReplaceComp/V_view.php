@@ -308,7 +308,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label>Return Information</label>
-                                <textarea class="form-control toupper" name="returnInfo" rows="3" placeholder="Return Information" required="" maxlength="250"></textarea>
+                                <textarea class="form-control toupper" name="returnInfo" rows="3" placeholder="Return Information" required="" maxlength="180"></textarea>
                             </div>
                         </div>
                     </div>
