@@ -290,7 +290,7 @@ class C_ReplaceComp extends CI_Controller
 		$data['jobHeader']		= $jobHeader;
 		$data['jobLineReject']	= $this->M_replacecomp->getJobLineReject($id);
 		$pdf 					= $this->pdf->load();
-		$pdf 					= new mPDF('utf-8','A4-P', 0, '', 4, 4, 9, 9);
+		$pdf 					= new mPDF('utf-8','A4-P', 0, '', 3, 3, 3, 3);
 		$filename				= 'KIB_Report_Job_'.$id.'.pdf';
 		$html = $this->load->view('ManufacturingOperation/ReplaceComp/V_reportkib', $data, true);
 		$pdf->WriteHTML($html,0);
