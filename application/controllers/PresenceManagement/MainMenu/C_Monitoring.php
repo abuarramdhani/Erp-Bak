@@ -943,6 +943,7 @@ class C_Monitoring extends CI_Controller {
 				$Nik = $getPribadi[0]['nik'];
 				$Tmplahir = $getPribadi[0]['templahir'];
 				$Tgllahir = $getPribadi[0]['tgllahir'];
+				$Keluar = '';
 
 				if ($getPribadi[0]['keluar']===false || $getPribadi[0]['keluar']=='f') {
 					$Keluar = 0;
@@ -950,7 +951,7 @@ class C_Monitoring extends CI_Controller {
 					$Keluar = 1;
 				}
 	
-			$insertDataPribadi = $this->M_monitoring->insertDataPribadi($Noind,$Nama,$Jenkel,$Alamat,$Telepon,$Nohp,$Diangkat,$Masukkerja,$Kodesie,$TglKeluar,$Noindbaru,$Kodestatuskerja,$Lokasikerja,$Nik,$Tmplahir,$Tgllahir,$lokasi);
+			$insertDataPribadi = $this->M_monitoring->insertDataPribadi($Noind,$Nama,$Jenkel,$Alamat,$Telepon,$Nohp,$Diangkat,$Masukkerja,$Kodesie,$Keluar,$TglKeluar,$Noindbaru,$Kodestatuskerja,$Lokasikerja,$Nik,$Tmplahir,$Tgllahir,$lokasi);
 
 			$getTmpPribadi = $this->M_monitoring->getTmpPribadi($noind);
 

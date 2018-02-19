@@ -746,13 +746,13 @@ class M_monitoring extends CI_Model {
 			}
 		}
 
-		public function insertDataPribadi($Noind,$Nama,$Jenkel,$Alamat,$Telepon,$Nohp,$Diangkat,$Masukkerja,$Kodesie,$TglKeluar,$Noindbaru,$Kodestatuskerja,$Lokasikerja,$Nik,$Tmplahir,$Tgllahir,$lokasi){
+		public function insertDataPribadi($Noind,$Nama,$Jenkel,$Alamat,$Telepon,$Nohp,$Diangkat,$Masukkerja,$Kodesie,$Keluar,$TglKeluar,$Noindbaru,$Kodestatuskerja,$Lokasikerja,$Nik,$Tmplahir,$Tgllahir,$lokasi){
 			@$loadConPostgres = $this->load->database('pg_'.$lokasi.'',TRUE);
 			@$checlPostgres = $loadConPostgres->initialize();
 			if($checlPostgres === FALSE){
 				return "failed";
 			}else{
-				$sql		= "insert into hrd_khs.tpribadi (noind,nama,jenkel,alamat,telepon,nohp,diangkat,masukkerja,kodesie,tglkeluar,noind_baru,kode_status_kerja,lokasi_kerja,nik,templahir,tgllahir) values ('$Noind','$Nama','$Jenkel','$Alamat','$Telepon','$Nohp','$Diangkat','$Masukkerja','$Kodesie','$TglKeluar','$Noindbaru','$Kodestatuskerja','$Lokasikerja','$Nik','$Tmplahir','$Tgllahir')";
+				$sql		= "insert into hrd_khs.tpribadi (noind,nama,jenkel,alamat,telepon,nohp,diangkat,masukkerja,kodesie,keluar,tglkeluar,noind_baru,kode_status_kerja,lokasi_kerja,nik,templahir,tgllahir) values ('$Noind','$Nama','$Jenkel','$Alamat','$Telepon','$Nohp','$Diangkat','$Masukkerja','$Kodesie','$Keluar','$TglKeluar','$Noindbaru','$Kodestatuskerja','$Lokasikerja','$Nik','$Tmplahir','$Tgllahir')";
 				$query	= $loadConPostgres->query($sql);
 				return;
 			}
