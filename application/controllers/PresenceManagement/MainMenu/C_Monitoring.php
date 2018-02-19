@@ -966,7 +966,8 @@ class C_Monitoring extends CI_Controller {
 				$Nonttl = $getTmpPribadi[0]['nonttl'];
 				$Photo = $getTmpPribadi[0]['photo'];
 				$Pathphoto = $getTmpPribadi[0]['path_photo'];
-				$Noindbaru = $getTmpPribadi[0]['noind_baru'];
+				// $Noindbaru = $getTmpPribadi[0]['noind_baru'];
+				$Noindbaru = $getPribadi[0]['noind_baru'];
 			
 			$insertTmpPribadi = $this->M_monitoring->insertTmpPribadi($Noind,$Nama,$Kodesie,$Dept,$Seksi,$Pekerjaan,$Jumlahttl,$Pointttl,$Nonttl,$Photo,$Pathphoto,$Noindbaru,$lokasi);
 
