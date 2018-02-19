@@ -460,6 +460,32 @@ class C_LimbahKeluar extends CI_Controller
 		}
 		
 		echo json_encode($data);
+	}
+
+	public function ApproveLimbahKeluar(){
+		$this->checkSession();
+
+		$id_lines = $this->input->post('idKeluar');
+		$idLimbah = explode(',', $id_lines);
+		for ($i=0; $i < (count($idLimbah)-1); $i++) { 
+			$id = $idLimbah[$i];
+			$this->M_limbahkeluar->approval($id);
+		}
+
+		echo json_encode(true);
+	}
+
+	public function RejectLimbahKeluar(){
+		$this->checkSession();
+
+		$id_lines = $this->input->post('idKeluar');
+		$idLimbah = explode(',', $id_lines);
+		for ($i=0; $i < (count($idLimbah)-1); $i++) { 
+			$id = $idLimbah[$i];
+			$this->M_limbahkeluar->reject($id);
+		}
+
+		echo json_encode(true);
 	} 
 
 }

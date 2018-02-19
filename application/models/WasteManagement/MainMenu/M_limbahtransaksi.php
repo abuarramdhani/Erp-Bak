@@ -181,7 +181,7 @@ class M_limbahtransaksi extends CI_Model
     {
         $queryApprove   = " UPDATE  ga.ga_limbah_transaksi
                                 SET     konfirmasi = 1      
-                                WHERE   id_transaksi = $id";
+                                WHERE   id_transaksi = '$id'";
         $sqlApprove     =   $this->db->query($queryApprove);
     }
 
@@ -189,7 +189,7 @@ class M_limbahtransaksi extends CI_Model
     {
         $queryReject   = " UPDATE  ga.ga_limbah_transaksi
                                 SET     konfirmasi = 2      
-                                WHERE   id_transaksi = $id";
+                                WHERE   id_transaksi = '$id'";
         $sqlReject     =   $this->db->query($queryReject);
     }
 
