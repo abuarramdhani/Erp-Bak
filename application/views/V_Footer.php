@@ -82,6 +82,7 @@
 	<script src="<?php echo base_url('assets/js/customPP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customICT.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMP.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){

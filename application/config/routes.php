@@ -1454,3 +1454,28 @@ $route['WorkRelationship'] = 'WorkRelationship/C_WorkRelationship';
 $route['WorkRelationship/RekapBon'] = 'WorkRelationship/MainMenu/C_RekapBon';
 $route['WorkRelationship/RekapBon/(:any)'] = 'WorkRelationship/MainMenu/C_RekapBon/$1';
 $route['WorkRelationship/RekapBon/(:any)/(:any)'] = 'WorkRelationship/MainMenu/C_RekapBon/$1/$2';
+
+
+//------------------------------------ Production Planning ----------------------------------------
+$route['ProductionEngineering'] = 'MonitoringPEIA/C_AccountReceivables';
+$route['ProductionEngineering/Seksi'] = 'MonitoringPEIA/C_AccountReceivables/seksi';
+$route['ProductionEngineering/Seksi/New'] = 'MonitoringPEIA/C_AccountReceivables/NewSeksi';
+$route['ProductionEngineering/Seksi/add'] = 'MonitoringPEIA/C_AccountReceivables/insertSeksi';
+$route['ProductionEngineering/Seksi/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateSeksi';
+$route['ProductionEngineering/Seksi/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditSeksi/$1';
+$route['ProductionEngineering/Seksi/Delete/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/deleteSeksi/$1';
+$route['ProductionEngineering/Order'] = 'MonitoringPEIA/C_AccountReceivables/order';
+$route['ProductionEngineering/Order/New'] = 'MonitoringPEIA/C_AccountReceivables/NewOrder';
+$route['ProductionEngineering/Order/add'] = 'MonitoringPEIA/C_AccountReceivables/insertOrder';
+$route['ProductionEngineering/Order/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateOrder';
+$route['ProductionEngineering/Order/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditOrder/$1';
+$route['ProductionEngineering/JenisOrder'] = 'MonitoringPEIA/C_AccountReceivables/JenisOrder';
+$route['ProductionEngineering/JenisOrder/New'] = 'MonitoringPEIA/C_AccountReceivables/NewJenisOrder';
+$route['ProductionEngineering/JenisOrder/add'] = 'MonitoringPEIA/C_AccountReceivables/InsertJenisOrder';
+$route['ProductionEngineering/JenisOrder/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateJenisOrder';
+$route['ProductionEngineering/JenisOrder/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditJenisOrder/$1';
+$route['ProductionEngineering/Laporan'] = 'MonitoringPEIA/C_AccountReceivables/Laporan';
+$route['ProductionEngineering/Input'] = 'MonitoringPEIA/C_AccountReceivables/NewLaporan';
+$route['ProductionEngineering/Laporan/add'] = 'MonitoringPEIA/C_AccountReceivables/insertSemua';
+$route['ProductionEngineering/Laporan/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditLaporan/$1';
+$route['ProductionEngineering/Laporan/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateLaporan';
