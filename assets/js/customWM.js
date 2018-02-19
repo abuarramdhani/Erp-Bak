@@ -2,7 +2,7 @@
 
 $(function() { 
 	$('.dataTable-limbah').DataTable( {
-      dom: 'frtip',
+      dom: 'frtp',
     });
 
     $('#txtTanggalKirimHeader').datepicker({
@@ -107,6 +107,128 @@ $(document).on('change', '#txtTanggalTransaksiHeader', function(){
   }else{
     $('#txtMaksPenyimpananHeader').val('');
   }
-  
+});
 
-})
+
+function CekApproval(){
+  var cekLimbahMasuk = $("input.cekLimbahMasuk:checked").length;
+  var cekLimbahKeluar = $("input.cekLimbahKeluar:checked").length;
+
+  if (cekLimbahMasuk > 0) {
+    $('#ApproveLimbahMasuk').removeAttr('disabled', 'disabled');
+    $('#RejectLimbahMasuk').removeAttr('disabled', 'disabled');
+  }else{
+    $('#ApproveLimbahMasuk').attr('disabled', 'disabled');
+    $('#RejectLimbahMasuk').attr('disabled', 'disabled');
+  }
+
+  if (cekLimbahKeluar > 0) {
+    $('#ApproveLimbahKeluar').removeAttr('disabled', 'disabled');
+    $('#RejectLimbahKeluar').removeAttr('disabled', 'disabled');
+  }else{
+    $('#ApproveLimbahKeluar').attr('disabled', 'disabled');
+    $('#RejectLimbahKeluar').attr('disabled', 'disabled');
+  }
+}
+
+$('input.cekLimbahMasuk').on('change', function(){
+  CekApproval();
+});
+
+$('input.cekLimbahKeluar').on('change', function(){
+  CekApproval();
+});
+
+$(document).on('click', '#ApproveLimbahMasuk', function(e){
+  e.preventDefault();
+  // var idMasuk = $('input.cekLimbahMasuk:checked').attr('data-limbah-masuk');
+  var idMasuk = '';
+    $('input.cekLimbahMasuk:checked').each(function(index){
+      var id = $(this).attr('data-limbah-masuk');
+      idMasuk += id+',';
+    });
+
+  var check = confirm("Apakah anda yakin ingin melakukan approve pada data tersebut?");
+  if (check) {
+    $.ajax({
+        url: baseurl+"WasteManagement/LimbahTransaksi/ApproveLimbahMasuk",
+        type: "POST",
+        data: {idMasuk: idMasuk}
+      }).done(function(data) {
+        window.location = baseurl+"WasteManagement";
+      });
+  }else{
+    alert("batal melakukan approve");
+  }
+});
+
+$(document).on('click', '#RejectLimbahMasuk', function(e){
+  e.preventDefault();
+
+  var idMasuk = '';
+    $('input.cekLimbahMasuk:checked').each(function(index){
+      var id = $(this).attr('data-limbah-masuk');
+      idMasuk += id+',';
+    });
+
+  var check = confirm("Apakah anda yakin ingin melakukan reject pada data tersebut?");
+  if (check) {
+    $.ajax({
+        url: baseurl+"WasteManagement/LimbahTransaksi/RejectLimbahMasuk",
+        type: "POST",
+        data: {idMasuk: idMasuk}
+      }).done(function(data) {
+        window.location = baseurl+"WasteManagement";
+      });
+  }else{
+    alert("batal melakukan reject");
+  }
+});
+
+$(document).on('click', '#ApproveLimbahKeluar', function(e){
+  e.preventDefault();
+
+  var idKeluar = '';
+    $('input.cekLimbahKeluar:checked').each(function(index){
+      var id = $(this).attr('data-limbah-keluar');
+      idKeluar += id+',';
+    });
+
+  var check = confirm("Apakah anda yakin ingin melakukan approve pada data tersebut?");
+  if (check) {
+    $.ajax({
+        url: baseurl+"WasteManagement/LimbahKeluar/ApproveLimbahKeluar",
+        type: "POST",
+        data: {idKeluar: idKeluar}
+      }).done(function(data) {
+        window.location = baseurl+"WasteManagement";
+      });
+  }else{
+    alert("batal melakukan approve");
+  }
+
+});
+
+$(document).on('click', '#RejectLimbahKeluar', function(e){
+  e.preventDefault();
+
+  var idKeluar = '';
+    $('input.cekLimbahKeluar:checked').each(function(index){
+      var id = $(this).attr('data-limbah-keluar');
+      idKeluar += id+',';
+    });
+
+  var check = confirm("Apakah anda yakin ingin melakukan reject pada data tersebut?");
+  if (check) {
+    $.ajax({
+        url: baseurl+"WasteManagement/LimbahKeluar/RejectLimbahKeluar",
+        type: "POST",
+        data: {idKeluar: idKeluar}
+      }).done(function(data) {
+        window.location = baseurl+"WasteManagement";
+      });
+  }else{
+    alert("batal melakukan reject");
+  }
+
+});

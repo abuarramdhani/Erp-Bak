@@ -47,6 +47,7 @@
                                                 <th>Jenis Limbah</th>
                                                 <th>Sumber Limbah</th>
                                                 <th>Status Approval</th>
+                                                <th>Approve/Reject</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -63,10 +64,15 @@
                                                 <td><?php echo $row["nama_seksi"] ?></td>
                                                 <td align="center">
                                                 	<a href="<?php echo base_url('WasteManagement/LimbahTransaksi/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
+                                                <td align="center">
+                                                    <input type="checkbox" name="cekLimbahMasuk[]" class="cekLimbahMasuk" data-limbah-masuk="<?php echo $row['id_transaksi'];?>">
+                                                </td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
                                     </table>
+                                    <a href="" class="btn btn-success" style="margin-right: 20px" id="ApproveLimbahMasuk" disabled="">Approve</a>
+                                    <a href="" class="btn btn-danger" id="RejectLimbahMasuk" disabled="">Reject</a>
                                 </div>
                                 </div>
 
@@ -82,6 +88,7 @@
                                                 <th>Jenis Limbah</th>
                                                 <th>Nomor Dokumen</th>
                                                 <th>Status Approval</th>
+                                                <th>Approve/Reject</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -98,14 +105,21 @@
                                                 <td><?php echo $rows["nomor_dok"] ?></td>
                                                 <td align="center">
                                                 	<a href="<?php echo base_url('WasteManagement/LimbahKeluar/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
+                                                <td align="center">
+                                                    <input type="checkbox" name="cekLimbahKeluar" class="cekLimbahKeluar" data-limbah-keluar="<?php echo $rows['id_limbah_keluar'];?>">
+                                                </td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
                                     </table>
+                                    <a href="" class="btn btn-success" style="margin-right: 20px" id="ApproveLimbahKeluar" disabled="">Approve</a>
+                                    <a href="" class="btn btn-danger" id="RejectLimbahKeluar" disabled="">Reject</a>
                                 </div>
                                 </div>
+                                 
                             </div>   
                             </div>
+
                         </div>
                     </div>
                 </div>    
