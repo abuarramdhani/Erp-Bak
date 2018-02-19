@@ -5,7 +5,7 @@ clASs M_creditlimit extends CI_Model {
     public function __construct()
     {
         parent::__construct();
-        $this->postgre = $this->load->database ( 'erp', TRUE );
+        $this->load->database();
     }
 	
 	public function showDataSemua()
@@ -13,7 +13,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,tanggal,seksi,nama,order_,jenis_order,keterangan
  				FROM pe.pe_table_order";
 		
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -22,7 +22,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,seksi,deskripsi
 				FROM pe.pe_seksi";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -31,7 +31,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,seksi,deskripsi
 				FROM pe.pe_seksi WHERE id=$id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -40,7 +40,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT seksi
 				FROM pe.pe_seksi";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -49,7 +49,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,order_,deskripsi
 				FROM pe.pe_order";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -58,7 +58,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,order_,deskripsi
 				FROM pe.pe_order WHERE id=$id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -67,7 +67,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT order_
 				FROM pe.pe_order";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -76,7 +76,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,jenis_order,deskripsi
 				FROM pe.pe_jenis_order";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -84,7 +84,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "SELECT id,jenis_order,deskripsi
 				FROM pe.pe_jenis_order WHERE id=$id";
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -93,7 +93,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT jenis_order
 				FROM pe.pe_jenis_order";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -102,7 +102,7 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "SELECT id,tanggal,seksi,nama,order_,jenis_order,keterangan
  				FROM pe.pe_table_order WHERE id = $id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
@@ -110,7 +110,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "INSERT INTO pe.pe_seksi(seksi,deskripsi) values('$seksi','$deskripsi')";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -118,7 +118,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "UPDATE pe.pe_seksi set seksi ='$seksi', deskripsi='$deskripsi' where id = '$id'";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -126,7 +126,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "INSERT INTO pe.pe_order(order_,deskripsi) values('$order_','$deskripsi')";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -134,7 +134,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "UPDATE pe.pe_order set order_ ='$order_', deskripsi='$deskripsi' where id = '$id'";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -142,7 +142,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "INSERT INTO pe.pe_jenis_order(jenis_order,deskripsi) values('$jenisorder','$deskripsi')";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -150,7 +150,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "UPDATE pe.pe_jenis_order set jenis_order ='$jenisorder', deskripsi='$deskripsi' where id = '$id'";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -158,7 +158,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "DELETE FROM pe.pe_seksi WHERE id = $id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -166,7 +166,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "DELETE FROM pe.pe_order WHERE id = $id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -174,14 +174,14 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "DELETE FROM pe.pe_jenis_order WHERE id = $id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 	public function insertSemua($tanggal,$seksi,$nama,$order_,$jenis_order,$keterangan)
 	{
 		$sql = "INSERT INTO pe.pe_table_order(tanggal,seksi,nama,order_,jenis_order,keterangan) values('$tanggal','$seksi','$nama','$order_','$jenis_order','$keterangan')";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -189,7 +189,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "UPDATE pe.pe_table_order set tanggal ='$tanggal', seksi='$seksi', nama='$nama', order_='$order_', jenis_order='$jenis_order', keterangan='$keterangan' where id = '$id'";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 
@@ -197,7 +197,7 @@ clASs M_creditlimit extends CI_Model {
 	{
 		$sql = "DELETE FROM pe.pe_table_order WHERE id = $id";
 
-		$query = $this->postgre->query($sql);
+		$query = $this->db->query($sql);
 		
 	}
 }
