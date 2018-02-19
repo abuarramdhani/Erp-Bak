@@ -82,7 +82,7 @@ class C_ReplaceComp extends CI_Controller
 				'ASSY'					=> $val['ASSY'],
 				'DESCRIPTION'			=> $val['DESCRIPTION'],
 				'SEKSI'					=> $val['SEKSI'],
-				'ITEM_NUM'				=> $val['ITEM_NUM'],
+				'OPERATION_SEQ_NUM'		=> $val['OPERATION_SEQ_NUM'],
 				'SEGMENT1'				=> $val['SEGMENT1'],
 				'COMPONENT_QUANTITY'	=> $val['QUANTITY_ISSUED'],
 				'PRIMARY_UOM_CODE'		=> $val['PRIMARY_UOM_CODE'],
