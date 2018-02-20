@@ -51,7 +51,9 @@ class M_replacecomp extends CI_Model
                    AND bor2.ORGANIZATION_ID = msib2.ORGANIZATION_ID
                    AND bor2.COMPLETION_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID
                    AND bor2.ALTERNATE_ROUTING_DESIGNATOR IS NULL
-                   AND mil2.ORGANIZATION_ID = msib2.ORGANIZATION_ID) asal
+                   AND mil2.ORGANIZATION_ID = msib2.ORGANIZATION_ID) asal,
+                   msib2.INVENTORY_ITEM_ID,
+                   we.ORGANIZATION_ID
               FROM mtl_system_items_b msib ,
                    mtl_system_items_b msib2 ,
                    wip_entities we ,
@@ -75,7 +77,7 @@ class M_replacecomp extends CI_Model
                 AND WRO.WIP_ENTITY_ID = WE.WIP_ENTITY_ID
                 AND WRO.ORGANIZATION_ID = msib2.ORGANIZATION_ID
                 AND wro.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
-                AND we.ORGANIZATION_ID = 102
+                -- AND we.ORGANIZATION_ID = 102
               GROUP BY we.WIP_ENTITY_NAME ,
                        msib.segment1 ,
                        msib.DESCRIPTION ,
@@ -88,7 +90,8 @@ class M_replacecomp extends CI_Model
                        msib2.ORGANIZATION_ID,
                        wro.QUANTITY_ISSUED,
                        WRO.OPERATION_SEQ_NUM,
-                       wro.WIP_SUPPLY_TYPE
+                       wro.WIP_SUPPLY_TYPE,
+                       we.ORGANIZATION_ID
               ORDER BY wro.OPERATION_SEQ_NUM ASC";
       $query = $this->oracle->query($sql);
       return $query->result_array();
