@@ -22,9 +22,14 @@
     </head>
     <body>
         <div style="width: 100%; display: inline-table;">
-            <?php foreach ($jobLineReject as $lr) { ?>
+            <?php
+                $checkout=0; foreach ($jobLineReject as $lr) {
+                    if ($checkout!==0 && $checkout%6 == 0) {
+                        echo '<div style="page-break-after:always;"></div>';
+                    }
+            ?>
                 <div style="width: 48%; float: left; margin-left: 6px; margin-bottom: 6px;">
-                    <div style="display: inline-block; border: 1px solid #b3b3b3; padding: 6px;">
+                    <div style="display: inline-block; border: 1px solid #b3b3b3; padding: 6px; height: 350px;">
                         <div style="float: left;width: 50%; font-size: 8px">
                             CV KARYA HIDUP SENTOSA
                             <br>
@@ -47,7 +52,13 @@
                                 <td style="padding: 2px">
                                     <small>No. WIP Return/Line</small>
                                     <br><b>
-                                        <?php echo $replacement_number; ?>
+                                        <?php
+                                            foreach ($replacement_number as $rplNumb) {
+                                                if ($rplNumb['subinventory_code'] == $lr['subinventory_code']) {
+                                                    echo $rplNumb['replacement_number'];
+                                                }
+                                            }
+                                        ?>
                                     </b>
                                 </td>
                             </tr>
@@ -86,47 +97,49 @@
                                 </td>
                             </tr>
                         </table>
-                        <table class="table" style="margin-bottom: 5px">
-                            <tr>
-                                <td style="width: 50%; padding: 2px 2px 0px 3px;">
-                                    <small>Kode Barang :</small>
-                                </td>
-                                <td style="text-align: right; padding: 2px 2px 0px 3px;">
-                                    <small>Type Product :</small>
-                                </td>
-                                <td style="padding: 3px 3px 0px 3px;">
-                                    <small><?php echo $lr['assy_description']; ?></small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 0px 2px 2px 2px;">
-                                    <b><?php echo $lr['component_code']; ?></b><br>
-                                </td>
-                                <td style="text-align: right; padding: 0px 2px 2px 2px">
-                                    <small>Qty : </small>
-                                </td>
-                                <td style="padding: 0px 2px 2px 2px">
-                                    <b><?php echo $lr['return_quantity'].' '.$lr['uom']; ?></b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 2px;" colspan="3">
-                                    <small>Description :</small>
-                                    <br>
-                                    <?php echo $lr['component_description']; ?>
-                                    <br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" style="padding: 2px;">
-                                    <small>Keterangan Reject :</small>
-                                    <br>
-                                    <?php echo $lr['return_information']; ?>
-                                </td>
-                            </tr>
-                        </table>
+                        <div style="height: 119px">
+                            <table class="table" style="margin-bottom: 5px">
+                                <tr>
+                                    <td style="width: 50%; padding: 2px 2px 0px 3px;">
+                                        <small>Kode Barang :</small>
+                                    </td>
+                                    <td style="text-align: right; padding: 2px 2px 0px 3px;">
+                                        <small>Type Product :</small>
+                                    </td>
+                                    <td style="padding: 3px 3px 0px 3px;">
+                                        <small><?php echo $lr['assy_description']; ?></small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0px 2px 2px 2px;">
+                                        <b><?php echo $lr['component_code']; ?></b><br>
+                                    </td>
+                                    <td style="text-align: right; padding: 0px 2px 2px 2px">
+                                        <small>Qty : </small>
+                                    </td>
+                                    <td style="padding: 0px 2px 2px 2px">
+                                        <b><?php echo $lr['return_quantity'].' '.$lr['uom']; ?></b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 2px;" colspan="3">
+                                        <small>Description :</small>
+                                        <br>
+                                        <?php echo $lr['component_description']; ?>
+                                        <br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding: 2px;">
+                                        <small>Keterangan Reject :</small>
+                                        <br>
+                                        <?php echo $lr['return_information']; ?>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                         <small>
-                            Status Barang:
+                            Status Barang :
                         </small>
                         <table class="table table-bordered" style="text-align: center; margin-bottom: 5px;">
                             <tr>
@@ -175,7 +188,10 @@
                         </i>
                     </div>
                 </div>
-            <?php } ?>
+            <?php
+                $checkout++;
+                }
+            ?>
         </div>
     </body>
 </html>
