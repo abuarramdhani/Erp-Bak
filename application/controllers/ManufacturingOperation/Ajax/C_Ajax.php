@@ -103,6 +103,8 @@ class C_Ajax extends CI_Controller
 			'section_source'		=> $this->input->post('asal'),
 			'return_quantity'		=> $this->input->post('returnQty'),
 			'return_information'	=> $this->input->post('returnInfo'),
+			'inventory_item_id'		=> $this->input->post('inventory_item_id'),
+			'organization_id'		=> $this->input->post('organization_id'),
 			'created_by'			=> $user_id,
 			'created_date'			=> date('Y-m-d H:i:s')
 		);

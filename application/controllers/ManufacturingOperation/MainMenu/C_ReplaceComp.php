@@ -89,6 +89,8 @@ class C_ReplaceComp extends CI_Controller
 				'SUPPLY_TYPESUPPLY_TYPE'=> $val['SUPPLY_TYPE'],
 				'SUBINVENTORY_CODE'		=> $val['SUBINVENTORY_CODE'],
 				'ASAL'					=> $val['ASAL'],
+				'INVENTORY_ITEM_ID'		=> $val['INVENTORY_ITEM_ID'],
+				'ORGANIZATION_ID'		=> $val['ORGANIZATION_ID'],
 				'REJECT_QTY'			=> $reject
 			);
 		}
