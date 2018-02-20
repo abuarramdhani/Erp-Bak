@@ -115,7 +115,7 @@ class C_ReplaceComp extends CI_Controller
 		$jobHeader 	= $this->M_replacecomp->getJobHeader($id);
 
 		// ------ GENERATE REJECT NUMBER ------
-			$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id);
+			$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id,$subinv);
 			if (empty($jobReplacementNumber)) {
 				$codeNumber = date('ym');
 				$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
@@ -139,6 +139,7 @@ class C_ReplaceComp extends CI_Controller
 					'assy_code'				=> $jobHeader[0]['SEGMENT1'],
 					'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
 					'section'				=> $jobHeader[0]['SEKSI'],
+					'subinventory_code'		=> $subinv,
 					'created_by'			=> $user_id,
 					'created_date'			=> date('Y-m-d')
 				);
@@ -252,41 +253,55 @@ class C_ReplaceComp extends CI_Controller
 		$user_id = $this->session->userid;
 		$this->load->library('Pdf');
 		$jobHeader				= $this->M_replacecomp->getJobHeader($id);
-		$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id);
+		$subinvReject 			= $this->M_ajax->getRejectSubInv($id);
+		$replacement_number_tmp	= array();
+		foreach ($subinvReject as $value) {
+			$jobReplacementNumber 	= $this->M_replacecomp->getJobReplacementNumber($id, $value['subinventory_code']);
 
-		if (empty($jobReplacementNumber)) {
-			$codeNumber = date('ym');
-			$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
+			if (empty($jobReplacementNumber)) {
+				$codeNumber = date('ym');
+				$lastNumber = $this->M_replacecomp->getLatestJobReplacementNumber($codeNumber);
 
-			if (!empty($lastNumber)) {
-				$nextNumber = strval(intval(substr($lastNumber[0]['max'], 4))+1);
-				$tambahanKarakter = '';
+				if (!empty($lastNumber)) {
+					$nextNumber = strval(intval(substr($lastNumber[0]['max'], 4))+1);
+					$tambahanKarakter = '';
 
-				for ($i=5; $i > strlen($nextNumber) ; $i--) { 
-					$tambahanKarakter .= '0';
+					for ($i=5; $i > strlen($nextNumber) ; $i--) { 
+						$tambahanKarakter .= '0';
+					}
+					$finalNumber = strval($tambahanKarakter.$nextNumber);
+
+				}else{
+					$nextNumber = '00001';
 				}
-				$finalNumber = strval($tambahanKarakter.$nextNumber);
+				$replacement_number = $codeNumber.$finalNumber;
+				$inputData = array(
+					'replacement_number'	=> $replacement_number,
+					'job_number'			=> $id,
+					'assy_code'				=> $jobHeader[0]['SEGMENT1'],
+					'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
+					'section'				=> $jobHeader[0]['SEKSI'],
+					'subinventory_code'		=> $value['subinventory_code'],
+					'created_by'			=> $user_id,
+					'created_date'			=> date('Y-m-d')
+				);
+				$jobReplacementNumber = $this->M_replacecomp->setJobReplacementNumber($inputData);
 
+				$replacement_number_tmp[]		= array(
+					'job_number'			=> $id,
+					'replacement_number'	=> $jobReplacementNumber[0]['replacement_number'],
+					'subinventory_code'		=> $value['subinventory_code'],
+				);
 			}else{
-				$nextNumber = '00001';
+				$replacement_number_tmp[]		= array(
+					'job_number'			=> $id,
+					'replacement_number'	=> $jobReplacementNumber[0]['replacement_number'],
+					'subinventory_code'		=> $value['subinventory_code'],
+				);
 			}
-			$replacement_number = $codeNumber.$finalNumber;
-			$inputData = array(
-				'replacement_number'	=> $replacement_number,
-				'job_number'			=> $id,
-				'assy_code'				=> $jobHeader[0]['SEGMENT1'],
-				'assy_description'		=> $jobHeader[0]['DESCRIPTION'],
-				'section'				=> $jobHeader[0]['SEKSI'],
-				'created_by'			=> $user_id,
-				'created_date'			=> date('Y-m-d')
-			);
-			$jobReplacementNumber = $this->M_replacecomp->setJobReplacementNumber($inputData);
-
-			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
-		}else{
-			$data['replacement_number']		= $jobReplacementNumber[0]['replacement_number'];
 		}
 
+		$data['replacement_number'] = $replacement_number_tmp;
 		$data['jobHeader']		= $jobHeader;
 		$data['jobLineReject']	= $this->M_replacecomp->getJobLineReject($id);
 		$pdf 					= $this->pdf->load();

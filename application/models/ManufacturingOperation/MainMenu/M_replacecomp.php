@@ -116,11 +116,12 @@ class M_replacecomp extends CI_Model
       return $query->result_array();
     }
 
-    public function getJobReplacementNumber($id)
+    public function getJobReplacementNumber($id,$subinv)
     {
       $this->db->select('*');
       $this->db->from('mo.mo_replacement_job');
       $this->db->where('job_number', $id);
+      $this->db->where('subinventory_code', $subinv);
 
       $query = $this->db->get();
       return $query->result_array();
