@@ -121,6 +121,8 @@
                                                 <tbody>
                                                     <?php $no=1; foreach ($jobLine as $val) { ?>
                                                     <tr row-id="<?php echo $no; ?>">
+                                                        <input name="inventory_item_id" type="hidden" value="<?php echo $val['INVENTORY_ITEM_ID']; ?>">
+                                                        <input name="organization_id" type="hidden" value="<?php echo $val['ORGANIZATION_ID']; ?>">
                                                         <input name="compCode" type="hidden" value="<?php echo $val['SEGMENT1']; ?>">
                                                         <input name="compDesc" type="hidden" value="<?php echo $val['DESCRIPTION']; ?>">
                                                         <input name="qty" type="hidden" value="<?php echo $val['COMPONENT_QUANTITY']; ?>">
@@ -261,6 +263,8 @@
                             <div class="col-md-12">
                                 <label>Job Number</label>
                                 <input name="jobNumber" type="text" class="form-control" readonly="">
+                                <input name="inventory_item_id" type="hidden" class="form-control" readonly="">
+                                <input name="organization_id" type="hidden" class="form-control" readonly="">
                             </div>
                             <div class="col-md-12">
                                 <label>Assy Code</label>
