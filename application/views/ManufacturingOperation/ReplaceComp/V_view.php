@@ -47,6 +47,7 @@
                                     <input name="jobNumber" type="hidden" value="<?php echo $value['WIP_ENTITY_NAME']; ?>">
                                     <input name="assyCode" type="hidden" value="<?php echo $value['SEGMENT1']; ?>">
                                     <input name="assyDesc" type="hidden" value="<?php echo $value['DESCRIPTION']; ?>">
+                                    <input name="wip_entity_id" type="hidden" value="<?php echo $value['WIP_ENTITY_ID']; ?>">
                                     <input name="section" type="hidden" value="<?php echo $section; ?>">
                                     <div class="col-md-12">
                                         <strong>
@@ -265,6 +266,7 @@
                                 <input name="jobNumber" type="text" class="form-control" readonly="">
                                 <input name="inventory_item_id" type="hidden" class="form-control" readonly="">
                                 <input name="organization_id" type="hidden" class="form-control" readonly="">
+                                <input name="wip_entity_id" type="hidden" class="form-control" readonly="">
                             </div>
                             <div class="col-md-12">
                                 <label>Assy Code</label>
