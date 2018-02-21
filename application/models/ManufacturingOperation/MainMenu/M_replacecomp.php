@@ -16,7 +16,8 @@ class M_replacecomp extends CI_Model
                      TO_CHAR(wdj.DATE_RELEASED,'DD/MM/YYYY hh:mi:ss') RELEASE ,
                      msib.SEGMENT1 ,
                      msib.DESCRIPTION,
-                     mil.segment1 seksi
+                     mil.segment1 seksi,
+                     we.WIP_ENTITY_ID
               FROM mtl_system_items_b msib ,
                    wip_entities we ,
                    wip_discrete_jobs wdj,
@@ -35,7 +36,8 @@ class M_replacecomp extends CI_Model
                        msib.SEGMENT1,
                        msib.DESCRIPTION,
                        mil.segment1,
-                       wdj.COMPLETION_SUBINVENTORY
+                       wdj.COMPLETION_SUBINVENTORY,
+                       we.WIP_ENTITY_ID
               ORDER BY wdj.DATE_RELEASED";
       $query = $this->oracle->query($sql);
       return $query->result_array();
