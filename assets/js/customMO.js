@@ -110,10 +110,12 @@ function modalReject(th,rowid) {
     var jobNumber = $('div#parentData input[name="jobNumber"').val();
     var assyCode = $('div#parentData input[name="assyCode"').val();
     var assyDesc = $('div#parentData input[name="assyDesc"').val();
+    var wip_entity_id = $('div#parentData input[name="wip_entity_id"').val();
     var section = $('div#parentData input[name="section"').val();
     $('form#rejectForm input[name="jobNumber"]').val(jobNumber);
     $('form#rejectForm input[name="assyCode"]').val(assyCode);
     $('form#rejectForm input[name="assyDesc"]').val(assyDesc);
+    $('form#rejectForm input[name="wip_entity_id"]').val(wip_entity_id);
     $('form#rejectForm input[name="section"]').val(section);
 
     var compCode    = $(th).closest('tr').find('input[name="compCode"]').val();
