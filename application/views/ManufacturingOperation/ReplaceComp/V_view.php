@@ -130,6 +130,7 @@
                                                         <input name="uom" type="hidden" value="<?php echo $val['PRIMARY_UOM_CODE']; ?>">
                                                         <input name="subinv" type="hidden" value="<?php echo $val['SUBINVENTORY_CODE']; ?>">
                                                         <input name="asal" type="hidden" value="<?php echo $val['ASAL']; ?>">
+                                                        <input name="operation_seq_num" type="hidden" value="<?php echo $val['OPERATION_SEQ_NUM']; ?>">
                                                         <td>
                                                             <?php echo $no; ?>
                                                         </td>
@@ -267,6 +268,7 @@
                                 <input name="inventory_item_id" type="hidden" class="form-control" readonly="">
                                 <input name="organization_id" type="hidden" class="form-control" readonly="">
                                 <input name="wip_entity_id" type="hidden" class="form-control" readonly="">
+                                <input name="operation_seq_num" type="hidden" class="form-control" readonly="">
                             </div>
                             <div class="col-md-12">
                                 <label>Assy Code</label>
