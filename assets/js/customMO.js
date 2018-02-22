@@ -126,6 +126,7 @@ function modalReject(th,rowid) {
     var asal        = $(th).closest('tr').find('input[name="asal"]').val();
     var inventory_item_id        = $(th).closest('tr').find('input[name="inventory_item_id"]').val();
     var organization_id        = $(th).closest('tr').find('input[name="organization_id"]').val();
+    var operation_seq_num        = $(th).closest('tr').find('input[name="operation_seq_num"]').val();
     $('form#rejectForm input[name="compCode"]').val(compCode);
     $('form#rejectForm input[name="compDesc"]').val(compDesc);
     $('form#rejectForm input[name="qty"]').val(qty);
@@ -134,6 +135,7 @@ function modalReject(th,rowid) {
     $('form#rejectForm input[name="asal"]').val(asal);
     $('form#rejectForm input[name="inventory_item_id"]').val(inventory_item_id);
     $('form#rejectForm input[name="organization_id"]').val(organization_id);
+    $('form#rejectForm input[name="operation_seq_num"]').val(operation_seq_num);
 
     var qtyReject = $(th).closest('tr').find('td.rejectArea').attr('data-reject');
     var maxReturn = Number(qty)-Number(qtyReject);
