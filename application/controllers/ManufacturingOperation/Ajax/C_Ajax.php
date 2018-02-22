@@ -106,6 +106,7 @@ class C_Ajax extends CI_Controller
 			'inventory_item_id'		=> $this->input->post('inventory_item_id'),
 			'organization_id'		=> $this->input->post('organization_id'),
 			'wip_entity_id'			=> $this->input->post('wip_entity_id'),
+			'operation_seq_num'		=> $this->input->post('operation_seq_num'),
 			'created_by'			=> $user_id,
 			'created_date'			=> date('Y-m-d H:i:s')
 		);
