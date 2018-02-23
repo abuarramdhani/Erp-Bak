@@ -77,6 +77,7 @@ class M_ajax extends CI_Model
                 AND bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
                 AND wdj.COMPLETION_LOCATOR_ID = mil.INVENTORY_LOCATION_ID
                 $wDate $wJobCode
+                AND wdj.STATUS_TYPE = 3
               GROUP BY we.WIP_ENTITY_NAME,
                        wdj.DATE_RELEASED,
                        msib.SEGMENT1,

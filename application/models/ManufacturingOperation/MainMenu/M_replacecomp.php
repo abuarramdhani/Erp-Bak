@@ -80,6 +80,7 @@ class M_replacecomp extends CI_Model
                 AND WRO.ORGANIZATION_ID = msib2.ORGANIZATION_ID
                 AND wro.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
                 -- AND we.ORGANIZATION_ID = 102
+                AND wro.WIP_SUPPLY_TYPE = 1
               GROUP BY we.WIP_ENTITY_NAME ,
                        msib.segment1 ,
                        msib.DESCRIPTION ,
