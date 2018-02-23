@@ -204,6 +204,10 @@ class C_MasterTrainer extends CI_Controller {
 
 		$nama=str_replace('  ', '', $nama_trainer);
 		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfo($nama);
+		// echo "<pre>";
+		// print_r($data['GetAllInfo']);
+		// echo "</pre>";
+		// exit();
 
 		$data['GetExperience'] = $this->M_mastertrainer->GetExperience($noind);
 		$data['GetCertificate'] = $this->M_mastertrainer->GetCertificate($noind);
@@ -327,7 +331,7 @@ class C_MasterTrainer extends CI_Controller {
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"NoInduk":"'.$data['employee_code'].'","Nama":"'.$data['employee_name'].'"}';
+			echo '{"NoInduk":"'.$data['noind'].'","Nama":"'.$data['nama'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}

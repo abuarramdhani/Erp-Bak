@@ -202,9 +202,9 @@
 											?>
 											<tr>
 												<td><?php echo $no ?></td>
-												<td><?php echo $tr['noind'] ?></td>
-												<td><?php echo $tr['trainer_name'] ?></td>
-												<td><?php echo $status ?></td>
+												<td><?php echo $tr['noind']?></td>
+												<td><?php echo $tr['trainer_name']?></td>
+												<td><?php echo $status?></td>
 											</tr>
 											<?php }}} ?>
 										</tbody>

@@ -69,7 +69,8 @@
 							</div>
 							<div class="col-sm-10">
 								<form method="post" action="<?php echo base_url('ADMPelatihan/MasterTrainer/Update')?>">
-								<?php foreach($detail as $dt){?>	
+								<?php foreach($detail as $dt){
+									?>	
 									<div class="row" style="margin: 30px 10px 10px">
 										<div class="form-group">
 											<label class="col-lg-2 control-label">Id Trainer</label>
@@ -90,7 +91,7 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label">Nama Trainer</label>
 											<div class="col-lg-6">
-												<input name="txtNamaTrainer" class="form-control" placeholder="Nama Trainer" value="<?php echo $dt['trainer_name'] ?>" readonly>
+												<input name="txtNamaTrainer" class="form-control" placeholder="Nama Trainer" value="<?php echo trim($dt['trainer_name'],"  ")?>">
 											</div>
 										</div>
 									</div>
@@ -210,7 +211,11 @@
 																			<input type="text" name="idPengalaman[]" value="<?php echo $ge['id_exp']; ?>" hidden>
 																		</td>
 																		<td>
-																			<input name="txtTanggalPengalaman[]" class="form-control singledateADM_Trainer" placeholder="Tanggal" id="txtTanggalPengalaman" value="<?php echo $ge['training_date'] ?>">
+																		<?php 
+																			$date=$ge['training_date']; 
+																			$newDate=date("d/m/Y", strtotime($date));
+																		?>
+																			<input name="txtTanggalPengalaman[]" class="form-control singledateADM" placeholder="Tanggal" id="txtTanggalPengalaman" value="<?php echo $newDate ?>">
 																		</td>
 																		<td>
 																			<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelPengalaman" title="Hapus Baris" onclick="delPengalaman(<?php echo $no.','.$ge['trainer_id'].','.$ge['id_exp']; ?>)"><i class="fa fa-remove"></i>Delete</a>
@@ -255,7 +260,11 @@
 																		<input type="text" name="idsertifikat[]" value="<?php echo $gs['id_cert']; ?>" hidden>
 																	</td>
 																	<td>
-																		<input name="txtTanggalSertifikat[]" class="form-control singledateADM_Trainer" placeholder="Tanggal" id="txtTanggalSertifikat" value="<?php echo $gs['training_date'] ?>">
+																	<?php 
+																		$date=$gs['training_date']; 
+																		$newDate=date("d/m/Y", strtotime($date));
+																	?>
+																		<input name="txtTanggalSertifikat[]" class="form-control singledateADM" placeholder="Tanggal" id="txtTanggalSertifikat" value="<?php echo $newDate ?>">
 																	</td>
 																	<td>
 																		<a href="javascript:void(0);" class="btn btn-danger btn-xs" id="DelSertifikat" title="Hapus Baris" onclick="delSertifikat(<?php echo $no.','.$gs['trainer_id'].','.$gs['id_cert']; ?>)"><i class="fa fa-remove"></i>Delete</a>
@@ -300,7 +309,11 @@
 																		<input type="text" name="idteam[]" value="<?php echo $gt['id_team']; ?>" hidden>
 																	</td>
 																	<td>
-																		<input name="txtTanggalkegiatan[]" class="form-control singledateADM_Trainer" placeholder="Tanggal" id="txtTanggalkegiatan" value="<?php echo $gt['date'] ?>">
+																	<?php 
+																		$date=$gt['date']; 
+																		$newDate=date("d/m/Y", strtotime($date));
+																	?>
+																		<input name="txtTanggalkegiatan[]" class="form-control singledateADM" placeholder="Tanggal" id="txtTanggalkegiatan" value="<?php echo $newDate ?>">
 																	</td>
 																	<td>
 																		<input id="segment" name="txtJabatan[]" class="form-control segment" value="<?php echo $gt['jabatan'] ?>" data-id="" data-placement="top" placeholder="Jabatan">

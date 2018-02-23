@@ -521,3 +521,25 @@ table.t_riwayat_mutasi td {
 .table-border-light>thead>tr>td, .table-border-light>tbody>tr>td {
     border: 1px solid #fff;
 }
+
+:focus{
+outline:none;
+}
+.radio2{
+    border: 1px solid #fff;
+    -webkit-appearance:button;
+    -moz-appearance:button;
+     appearance:button;
+     border-top-color:#bbb;
+    border-left-color:#bbb;
+    background:#fff;
+    width:100%;
+    height:30px;
+    margin: 0px;
+}
+
+.radio2:checked{
+  background: #F1948A;
+  background-size: 100px 100px;
+  border:0px solid;
+}

@@ -199,7 +199,13 @@
 													<tr>
 														<td><?php echo $no?></td>
 														<td><?php echo $ge['training_name'] ?></td>
-														<td><?php echo $ge['training_date'] ?></td>
+														<td>
+															<?php 
+																$date=$ge['training_date']; 
+																$newDate=date("d F Y", strtotime($date));	
+																echo $newDate 
+															?>
+														</td>
 													</tr>
 													<?php } ?>
 												</tbody>
@@ -225,7 +231,12 @@
 													<tr>
 														<td><?php echo $no?></td>
 														<td><?php echo $gs['training_name'] ?></td>
-														<td><?php echo $gs['training_date'] ?></td>
+														<td>
+															<?php 
+																$date=$gs['training_date']; 
+																$newDate=date("d F Y", strtotime($date));	
+																echo $newDate 
+															?></td>
 													</tr>
 													<?php } ?>
 												</tbody>
@@ -252,7 +263,13 @@
 													<tr>
 														<td><?php echo $no?></td>
 														<td><?php echo $gt['kegiatan'] ?></td>
-														<td><?php echo $gt['date'] ?></td>
+														<td>
+															<?php 
+																$date=$gt['date']; 
+																$newDate=date("d F Y", strtotime($date));	
+																echo $newDate 
+															?>
+														</td>
 														<td><?php echo $gt['jabatan'] ?></td>
 													</tr>
 													<?php } ?>
