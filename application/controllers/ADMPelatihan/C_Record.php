@@ -425,71 +425,75 @@ class C_Record extends CI_Controller {
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
 
-		// AMBIL NILAI UNTUK REAKSI
+		// // AMBIL NILAI UNTUK REAKSI
 		$schedule = $this->M_report->GetSchName_QuesName();
 		$data['GetSchName_QuesName'] = $schedule;
 		$segment = $this->M_report->GetSchName_QuesName_segmen();
 		$statement= $this->M_report->GetStatement();
 		$nilai = $this->M_report->GetSheetAll();
 
-		$t_nilai = array();
-		$x = 0;
-		foreach ($schedule as $sch) {
-			foreach ($segment as $key => $value) {
-				if ($sch['scheduling_id']==$value['scheduling_id'] && $sch['questionnaire_id']==$value['questionnaire_id']) {
+		// $t_nilai = array();
+		// $x = 0;
+		// foreach ($schedule as $sch) {
+		// 	foreach ($segment as $key => $value) {
+		// 		if ($sch['scheduling_id']==$value['scheduling_id'] && $sch['questionnaire_id']==$value['questionnaire_id']) {
 
-					$total_nilai=array();
-					$tid = 0;
-					$tot_p = 0;
-					$tot_s = 0;
-					$tot_p_checkpoint = 0;
+		// 			$total_nilai=array();
+		// 			$tid = 0;
+		// 			$tot_p = 0;
+		// 			$tot_s = 0;
+		// 			$tot_p_checkpoint = 0;
 
-					foreach ($statement as $st) {
+		// 			foreach ($statement as $st) {
 
-						if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
-							$a_tot = 0;
-							foreach ($nilai as $index => $score) {								
-								if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
-									$a=explode('||', $score['join_input']);
-									$b=explode('||', $score['join_statement_id']);
-									foreach ($b as $bi => $bb) {
-										if ($bb==$st['statement_id']) {
-											$a_tot+=$a[$bi];
-											if ($tot_p_checkpoint == 0) {
-												$tot_p++;
-											}
-										}
-									}
-								}
-							}
+		// 				if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+		// 					$a_tot = 0;
+		// 					foreach ($nilai as $index => $score) {								
+		// 						if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+		// 							$a=explode('||', $score['join_input']);
+		// 							$b=explode('||', $score['join_statement_id']);
+		// 							foreach ($b as $bi => $bb) {
+		// 								if ($bb==$st['statement_id']) {
+		// 									$a_tot+=$a[$bi];
+		// 									if ($tot_p_checkpoint == 0) {
+		// 										$tot_p++;
+		// 									}
+		// 								}
+		// 							}
+		// 						}
+		// 					}
+		// 					echo "<pre>";
+		// 					print_r($a_tot);
+		// 					echo "</pre>";
+		// 					exit();
 							
-							$total_nilai[$tid++] = array(
-								'segment_id' => $st['segment_id'], 
-								'statement_id' => $st['statement_id'], 
-								'total' => $a_tot, 
-							);
-							$tot_s++;
-							$tot_p_checkpoint = 1;
-						}
-					}
+		// 					$total_nilai[$tid++] = array(
+		// 						'segment_id' => $st['segment_id'], 
+		// 						'statement_id' => $st['statement_id'], 
+		// 						'total' => $a_tot, 
+		// 					);
+		// 					$tot_s++;
+		// 					$tot_p_checkpoint = 1;
+		// 				}
+		// 			}
 
-					$final_total=0;
-					foreach ($total_nilai as $n => $tn) {
-						$final_total+=$tn['total'];
-					}
-					$t_rerata=$final_total/($tot_s*$tot_p);
+		// 			$final_total=0;
+		// 			foreach ($total_nilai as $n => $tn) {
+		// 				$final_total+=$tn['total'];
+		// 			}
+		// 			$t_rerata=$final_total/($tot_s*$tot_p);
 
-					$t_nilai[$x++]= array(
-						'scheduling_id'		=> $value['scheduling_id'], 
-						'questionnaire_id'	=> $value['questionnaire_id'], 
-						'segment_id'		=> $value['segment_id'], 
-						'f_total'			=> $final_total, 
-						'f_rata'			=> $t_rerata 
-					);
-				}
-			}
+		// 			$t_nilai[$x++]= array(
+		// 				'scheduling_id'		=> $value['scheduling_id'], 
+		// 				'questionnaire_id'	=> $value['questionnaire_id'], 
+		// 				'segment_id'		=> $value['segment_id'], 
+		// 				'f_total'			=> $final_total, 
+		// 				'f_rata'			=> $t_rerata 
+		// 			);
+		// 		}
+		// 	}
 
-		}
+		// }
 
 		// AMBIL NILAI DARI REPORT BY QUESTIONNAIRE
 		$qe= $schedule[0]['questionnaire_id'];
