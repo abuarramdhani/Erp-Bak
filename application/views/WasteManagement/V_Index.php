@@ -106,7 +106,7 @@
                                                 <td align="center">
                                                 	<a href="<?php echo base_url('WasteManagement/LimbahKeluar/read/'.$encrypted_string.''); ?>" title="klik here"><h4><span class='label label-warning'>Waiting</span></h4></a></td>
                                                 <td align="center">
-                                                    <input type="checkbox" name="cekLimbahKeluar" class="cekLimbahKeluar" data-limbah-keluar="<?php echo $rows['id_limbah_keluar'];?>">
+                                                    <input type="checkbox" name="cekLimbahKeluar[]" class="cekLimbahKeluar" data-limbah-keluar="<?php echo $rows['id_limbah_keluar'];?>">
                                                 </td>
                                             </tr>
                                             <?php endforeach; ?>
