@@ -19,13 +19,6 @@ $(document).ready(function(){
 	$('.singledateADM_Que').datepicker({
     	format:'yyyy/mm/dd'
 	});
-	$('.singledateADM_Trainer').datepicker({
-    	dateFormat: 'dd/mm/yy',
-    	changeMonth : true,
-    	changeYear: true,
-    	yearRange: "-70:",
-    	maxDate: "-13Y"
-	});
 
 	//DATATABLE
 	$('#master-index').DataTable({
@@ -198,7 +191,7 @@ $(document).ready(function(){
 					})
 				};
 			}
-		}	
+		}
 	});
 
 	//SELECT UNTUK PESERTA TRAINING NONSTAFF
@@ -1458,5 +1451,240 @@ $(document).ready(function(){
 					$('#tblTim #tbodyTrainerTim tr[row-id="'+rowid+'"]').remove();
 				}
 			});
+		}
+	}
+
+	//ADD ROW UNTUK CREATE REPORT EVAL REAKSI
+	function AddEvalReaksi(){
+		var e = jQuery.Event( "click" );
+		var n = $('#tbodyEvalReaksi tr').length;
+		counter = n+1;
+		var delCoun = '"'+counter+'"';
+		var delEval = '0';
+		var del = '0';
+
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+								+"<td >"+counter+"</td>"
+								+"<td>"
+									+"<input id='txtKomEval[]' name='txtKomEval[]' class='form-control segment' data-placement='top' placeholder='Komponen Evaluasi' id='txtKomEval[]'>"
+									// +"<input type='hidden' name='txtKegiatan[]' value='0'>"
+									+'<input type="text" name="idEvalReaksi[]" id="idEvalReaksi[]" value="0" hidden>'
+								+"</td>"
+								+"<td>"
+									+"<input name='txtKomRata[]' class='form-control' placeholder='Rata-rata' id='txtKomRata[]'>"
+								+"</td>"
+								+"<td>"
+									+"<a href='javascript:void(0);'class='btn btn-danger btn-xs' id='DelEvalReaksi' title='Hapus Baris' onclick='DelEvalReaksi("+delCoun+","+del+","+delEval+")'><i class='fa fa-remove'></i>Delete</a>"
+								+"</td>"
+							+"</tr>");
+        jQuery("#tbodyEvalReaksi").append(newRow);	
+	}
+
+	// DELETE ROW UNTUK CREATE REPORT EVAL REAKSI
+	function DelEvalReaksi(rowid,report_id,ideval) {
+		if (ideval == '0') {
+			$('#tblEvalReaksi #tbodyEvalReaksi tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/Report/delete_reaksi/"+report_id+'/'+ideval,
+				success:function(result)
+				{
+					$('#tblEvalReaksi #tbodyEvalReaksi tr[row-id="'+rowid+'"]').remove();
+				}
+			});
+		}
+	}
+
+	//ADD ROW UNTUK CREATE REPORT EVAL PEMBELAJARAN
+	function AddEvalPembelajaran(){
+		var e = jQuery.Event( "click" );
+		var n = $('#tbodyEvalPembelajaran tr').length;
+		counter = n+1;
+		var delCoun = '"'+counter+'"';
+		var delEval = '0';
+		var del = '0';
+
+        var newRow = jQuery("<tr class='clone' row-id='"+counter+"'>"
+								+"<td >"+counter+"</td>"
+								+"<td>"
+									+"<input id='txtnamaPsrt[]' name='txtnamaPsrt[]' class='form-control segment' data-placement='top' placeholder='Nama' id='txtnamaPsrt[]'>"
+									// +"<input type='hidden' name='txtKegiatan[]' value='0'>"
+									+'<input type="text" name="idEvalPemb[]" id="idEvalPemb[]" value="0" hidden>'
+								+"</td>"
+								+"<td>"
+									+"<input name='txtnoindPsrt[]' class='form-control' placeholder='Nomor Induk' id='txtnoindPsrt[]'>"
+								+"</td>"
+								+"<td>"
+									+"<input name='txtpreTest[]' class='form-control' placeholder='nilai Pre-test' id='txtpreTest[]' type='number'>"
+								+"</td>"
+								+"<td>"
+									+"<input name='txtpostTest[]' class='form-control' placeholder='nilai Post-test' id='txtpostTest[]' type='number'>"
+								+"</td>"
+								+"<td>"
+									+"<a href='javascript:void(0);'class='btn btn-danger btn-xs' id='DelEvalPem' title='Hapus Baris' onclick='DelEvalPem("+delCoun+","+del+","+delEval+")'><i class='fa fa-remove'></i>Delete</a>"
+								+"</td>"
+							+"</tr>");
+        jQuery("#tbodyEvalPembelajaran").append(newRow);	
+	}
+
+	// DELETE ROW UNTUK CREATE REPORT EVAL REAKSI
+	function DelEvalPem(rowid,report_id,ideval) {
+		if (ideval == '0') {
+			$('#tblEvalPembelajaran #tbodyEvalPembelajaran tr[row-id="'+rowid+'"]').remove();
+		}else{
+			$.ajax({
+				type:'POST',
+				url:baseurl+"ADMPelatihan/Report/delete_pembelajaran/"+report_id+'/'+ideval,
+				success:function(result)
+				{
+					$('#tblEvalPembelajaran #tbodyEvalPembelajaran tr[row-id="'+rowid+'"]').remove();
+				}
+			});
+		}
+	}
+
+	//ONCHANGE BUAT CREATE REPORT
+	function funKatPelatihan() {
+		var x = document.getElementById('KatPelatihan').value;
+		if (x) {
+			$('select#nama').removeAttr('disabled');
+			$('input#tanggal').removeAttr('disabled');
+
+			if (x == 0) {
+				$('#IdNamaPelatihan').val('0');
+				$('#IdTanggal').val('0');
+				
+				$("select#nama").select2({
+					placeholder: "Judul Pelatihan",
+					minimumInputLength: 3,
+					tags: true,
+					ajax: {
+						url:baseurl+"ADMPelatihan/Report/GetPelatihanNama",
+						dataType: 'json',
+						type: "GET",
+						data: function (params) {
+							var queryParameters = {
+								term: params.term,
+								type: $('select#nama').val()
+							}
+							return queryParameters;
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function(obj) {
+									return { id:obj.scheduling_name, text:obj.scheduling_name};
+								})
+							};
+						}
+					}	
+				}); 
+			}
+			else{
+				$('#idNama').val('1');
+				$('#idTanggal').val('1');
+				
+				$("select#nama").select2({
+					placeholder: "Judul Pelatihan",
+					minimumInputLength: 3,
+					tags: true,
+					ajax: {
+						url:baseurl+"ADMPelatihan/Report/GetPelatihanPaketNama",
+						dataType: 'json',
+						type: "GET",
+						data: function (params) {
+							var queryParameters = {
+								term: params.term,
+								type: $('select#nama').val()
+							}
+							return queryParameters;
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function(obj) {
+									return { id:obj.package_scheduling_name, text:obj.package_scheduling_name};
+								})
+							};
+						}
+					}	
+				}); 
+			}
+		}
+	}
+	function funGetPelatihan() {
+		var nama =  document.getElementById('nama').value;
+		var tanggal = document.getElementById('tanggal').value;
+		var idNama = document.getElementById('idNama').value;
+		var idTanggal = document.getElementById('idTanggal').value;
+
+		if (nama && tanggal) {
+			$.ajax({
+				type:'POST',
+				data: 	{
+							nama:nama,
+							tanggal:tanggal,
+							idNama:idNama,
+							idTanggal:idTanggal
+						},
+				url:baseurl+"ADMPelatihan/Report/GetDataPelatihan",
+				success:function(result) 
+				{
+					var result = JSON.parse(result);
+					console.log(result);
+					$('input#txtPesertaPelatihan').val(result['GetDataPelatihan'][0]['participant_number']);
+					$('input#txtPesertaHadir').val(result['GetDataPelatihan'][0]['participant_number']);
+					// $('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);
+					
+					//NAMA TRAINER-------------------------------------------------------------------------
+					var nama=[];
+					var idt=[];
+					for (var i = 0; i < result['trainer'].length; i++) {
+						for (var j = 0; j < result['idTrainer'].length; j++) {
+							if (result['trainer'][i]['trainer_id'] == result['idTrainer'][j]) {
+								nama.push(result['trainer'][i]['trainer_name']);
+								idt.push(result['trainer'][i]['trainer_id']);
+							}
+						}
+					}
+					var namagabung = nama.join(' , ');
+					var idtgabung  = idt.join(' , ');
+					
+					$('input#txtPelaksana').val(namagabung);
+					$('input#idtrainerOnly').val(idt);
+				}
+			});
+			$.ajax({
+				type:'POST',
+				data: 	{
+							nama:nama,
+							tanggal:tanggal,
+							idNama:idNama,
+							idTanggal:idTanggal
+						},
+				url:baseurl+"ADMPelatihan/Report/GetTabelReaksi",
+				success:function(result) 
+				{
+					$('#tbevalReaksi').html(result);
+				}
+			});
+			$.ajax({
+				type:'POST',
+				data: 	{
+							nama:nama,
+							tanggal:tanggal,
+							idNama:idNama,
+							idTanggal:idTanggal
+						},
+				url:baseurl+"ADMPelatihan/Report/GetTabelPembelajaran",
+				success:function(result) 
+				{
+					$('#tbevalPembelajaran').html(result);
+				}
+			});
+		}else{
+			$('#txtPesertaPelatihan').val('');
+			$('#txtPesertaHadir').val('');
+			$('#txtPelaksana').val('');
+			$('#txtPelaksana').val('');
 		}
 	}

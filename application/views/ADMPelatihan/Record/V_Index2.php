@@ -53,9 +53,11 @@
 																	$sudahCetak=1;
 																	if ($pc['status']==NULL && $pc['score_eval2_pre']==NULL && $pc['score_eval2_post']==NULL ) { ?>
 																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
-																	<?php }elseif ($pc['status']==NULL && $pc['score_eval3_post']==NULL && $pc['comment']==NULL) {?>
+																	<?php }
+																	elseif ($pc['status']==NULL && $pc['score_eval3_post']==NULL && $pc['comment']==NULL) {?>
 																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
-																	<?php }else{?>
+																	<?php }
+																	else{?>
 																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
 																	<?php }
 																}
@@ -68,7 +70,8 @@
 																<a class="btn btn-flat btn-sm btn-warning" onclick="recordPackageFinish('<?php echo $rc['package_scheduling_id']; ?>')" title="View">
 																	<i class="fa fa-search" ></i>
 																</a>
-															<?php } else {?> 
+															<?php } 
+															else {?> 
 																<a class="btn btn-flat btn-sm btn-warning" onclick="recordPackage('<?php echo $rc['package_scheduling_id']; ?>')" title="View">
 																	<i class="fa fa-search" ></i>
 																</a>

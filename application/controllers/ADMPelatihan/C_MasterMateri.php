@@ -80,7 +80,7 @@ class C_MasterMateri extends CI_Controller {
 		$config = array();
 		$config['upload_path'] 	 = 'assets/upload/ADMPelatihan_Materi_File';
 		$config['allowed_types'] = 'pdf';
-		$config['max_size']      = '5000';
+		$config['max_size']      = '20000';
 		$config['file_name']     = $nama_materi;
 		$config['overwrite'] 	 = TRUE;			
 

@@ -116,6 +116,8 @@ class M_record extends CI_Model {
 	              pl.pl_scheduling_training a left join pl.pl_scheduling_package b on
 	              a.package_scheduling_id = b.package_scheduling_id
 	            where
+	            a.status isnull
+	            and
 	              (
 	                a.date >= now()::date
 	                or a.status = null
@@ -125,6 +127,7 @@ class M_record extends CI_Model {
 	              a.date asc";
 	    $query = $this->db->query($sql);
 	    return $query->result_array();
+	    // return $sql;
 	  }
 	//ambil untuk index------------------------------------------------------------------------
 
@@ -360,6 +363,24 @@ class M_record extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	public function GetParticipantPid($pid){
+		$sql = " select a.* 
+				from pl.pl_participant a
+				inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id 
+				where b.package_scheduling_id='$pid' order by participant_name";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	public function GetParticipantPidName($pid){
+		$sql = " select a.participant_name,  a.noind
+				from pl.pl_participant a
+				inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id 
+				where b.package_scheduling_id=$pid
+				group by a.participant_name,2
+				order by participant_name";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 
 	//Ambil data Peserta dari Record Tertentu
 	public function GetApplicantDataId($id){
@@ -470,6 +491,7 @@ class M_record extends CI_Model {
 					FROM	db_orientasi.result_exam rex
 					where rex.id_num='$noindPtc'
 					and rex.kategori='$schName'
+					and rex.status =''
 					and rex.time_record=STR_TO_DATE('$tgl', '%d/%m/%Y')
 					group by rex.id_num";
 		$query = $this->quickcom_orientasi->query($sql);

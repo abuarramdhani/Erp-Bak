@@ -41,7 +41,7 @@
 									<div class="col-lg-6">
 										<input name="txtFile" type="file" class="form-control toupper" placeholder="cari file" required >
 										<p style="margin-top:7px">Format <strong>*.pdf</strong></p>
-										<p style="margin-top:7px">Max. size <strong>5Mb</strong></p>
+										<p style="margin-top:7px">Max. size <strong>20Mb</strong></p>
 									</div>
 								</div>
 							</div>
