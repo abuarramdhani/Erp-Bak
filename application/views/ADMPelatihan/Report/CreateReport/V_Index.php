@@ -6,7 +6,7 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Master Ruangan</b></h1>
+						<h1><b>Create Report</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
@@ -25,7 +25,7 @@
 				<div class="col-lg-12">
 				<div class="box box-primary box-solid">
 					<div class="box-header with-border">
-						<a href="<?php echo site_url('ADMPelatihan/Report/CreateReport/createReport') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
+						<a href="<?php echo site_url('ADMPelatihan/Report/createReport_fill') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
 							<button type="button" class="btn btn-default btn-sm">
 							  <i class="icon-plus icon-2x"></i>
 							</button>
@@ -40,55 +40,66 @@
 										<th width="5%">NO</th>
 										<th width="8%" style="text-align: center;">Action</th>
 										<th width="10%">Tanggal Dibuat</th>
-										<th width="30%">Nama Training</th>
+										<th width="30%">Nama Training/ Paket Training</th>
 										<th width="10%">Tanggal Training</th>
 										<th width="10%">Jenis Training</th>
 										<th width="30%">Pelaksana</th>
 									</tr>
 								</thead>
 								<tbody>
+									<?php $no=1;
+										foreach ($report as $rpt) {
+									 ?>
 									<tr>
-										<td></td>
-										<td style="vertical-align: middle; padding-left: 15px">
-											<a style="margin-right:4px" href="" data-placement="bottom" title="Cetak Data" >
+										<td><?php echo $no++; ?></td>
+										<td style="padding-left: 15px">
+											<a style="margin-right:4px" href="<?php echo site_url('ADMPelatihan/Report/cetakPDF/'.$rpt['id_report']);?>" data-placement="bottom" title="Cetak Data" >
 												<span class="fa fa-print fa-2x"></span>
 											</a>
-                                        	<a style="margin-right:4px" href="" data-placement="bottom" title="Edit Data">
+                                        	<a style="margin-right:4px" href="<?php echo site_url('ADMPelatihan/Report/editReport/'.$rpt['id_report']);?>" data-placement="bottom" title="Edit Data">
                                         		<span class="fa fa-pencil-square-o fa-2x"></span>
                                         	</a>
-                                        	<a style="margin-right:4px" href="" href="" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');">
+                                        	<a style="margin-right:4px" href="<?php echo site_url('ADMPelatihan/Report/deleteReport/'.$rpt['id_report']);?>" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');">
                                         		<span class="fa fa-trash fa-2x"></span>
                                         	</a>
 										</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
+										<td>
+											<?php 
+												$date= $rpt['tgldoc']; 
+												$newDate=date("d F Y", strtotime($date));
+												echo $newDate;
+											?>
+										</td>
+										<td>
+											<?php 
+												echo $rpt['scheduling_or_package_name'];
+											?>
+										</td>
+										<td>
+											<?php 
+												echo $rpt['tanggal'];
+											?>
+										</td>
+										<td>
+											<?php 
+												if ($rpt['jenis']==0) {echo "Softskill";} 
+												if ($rpt['jenis']==1) {echo "Hardskill";} 
+												if ($rpt['jenis']==2) {echo "Softskill & Hardskill";} 
+											?>
+										</td>
+										<td>
+											<?php 
+												$strainer=explode(',', $rpt['pelaksana']);					
+												foreach ($strainer as $st) {
+													foreach ($trainer as $tr) {
+														if ($st==$tr['trainer_id']) {
+															echo $tr['trainer_name']."<br>";
+														} 
+													} 
+												}?>
+										</td>
 									</tr>
-											
-									<!-- MODAL  DELETE-->
-									<div class="modal fade modal-danger" id="showModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<div class="col-sm-2"></div>
-													<div class="col-sm-8" align="center"><h5><b>PERHATIAN !</b></h5></div>
-													<div class="col-sm-2"><h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></h5></div>
-													<br>
-												</div>
-												<div class="modal-body" align="center">
-													Apakah anda yakin ingin menghapus <b id="data-id">
-													</b> dari jadwal pelatihan ? <br>
-													<small>*) Data yang sudah dihapus tidak dapat dikembalikan lagi.</small>
-													<div class="row">
-														<br>
-														<a href="" class="btn btn-default"><i class="fa fa-remove"></i> DELETE</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+									<?php }?>
 								</tbody>
 							</table>
 						</div>

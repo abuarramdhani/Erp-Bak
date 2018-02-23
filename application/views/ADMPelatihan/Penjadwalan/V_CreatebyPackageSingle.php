@@ -30,7 +30,7 @@
 					<div class="box-body">
 					<?php foreach($details as $dt){?>
 						<div class="row" style="margin: 10px 10px">
-						<?php echo $alert; ?>
+						<!-- <?php echo $alert; ?> -->
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $dt['training_name']?></b></h3>
 							</label>

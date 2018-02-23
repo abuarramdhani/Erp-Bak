@@ -6,6 +6,7 @@ class M_mastertrainer extends CI_Model {
             parent::__construct();
             $this->load->database();
        		$this->quickcom_hrd_khs = $this->load->database('quickcom_hrd_khs', TRUE);
+       		$this->personalia = $this->load->database('personalia', TRUE);
         }
 		
         //Get data
@@ -14,7 +15,7 @@ class M_mastertrainer extends CI_Model {
         	$sql = "SELECT *
 					FROM	hrd_khs.tpribadi a
 					INNER JOIN	hrd_khs.tseksi b on a.Kodesie=b.kodesie
-					WHERE	nama like '$nama%'
+					WHERE	nama = '$nama'
 					order by a.Tglkeluar";
 			$query = $this->quickcom_hrd_khs->query($sql);
 			return $query->result_array();
@@ -72,19 +73,35 @@ class M_mastertrainer extends CI_Model {
 			return;
 		}
 
+		// public function GetNoInduk($term){
+		// 	if ($term === FALSE) {
+		// 		$sql = "
+		// 			SELECT TRIM(TRAILING ' ' from a.employee_name) as name, a.* FROM er.er_employee_all a WHERE resign = '0' ORDER BY a.employee_code ASC
+		// 		";
+		// 	}
+		// 	else{
+		// 		$sql = "
+		// 			SELECT TRIM(TRAILING ' ' from a.employee_name) as name, a.* FROM er.er_employee_all a WHERE resign = '0' AND (a.employee_code ILIKE '%$term%' OR a.employee_name ILIKE '%$term%') ORDER BY a.employee_code ASC
+		// 		";
+		// 	}
+		// 	$query = $this->db->query($sql);
+		// 	// return $query->result_array();
+		// 	return $sql;
+		// }
 		public function GetNoInduk($term){
 			if ($term === FALSE) {
 				$sql = "
-					SELECT * FROM er.er_employee_all WHERE resign = '0' ORDER BY employee_code ASC
+					SELECT TRIM(TRAILING ' ' from a.nama) as name, a.* FROM hrd_khs.tpribadi a WHERE a.keluar = '0' ORDER BY a.noind ASC
 				";
 			}
 			else{
 				$sql = "
-					SELECT * FROM er.er_employee_all WHERE resign = '0' AND (employee_code ILIKE '%$term%' OR employee_name ILIKE '%$term%') ORDER BY employee_code ASC
+					SELECT TRIM(TRAILING ' ' from a.nama) as name, a.* FROM hrd_khs.tpribadi a WHERE a.keluar = '0' AND (a.noind ILIKE '%$term%' OR a.nama ILIKE '%$term%') ORDER BY a.noind ASC
 				";
 			}
-			$query = $this->db->query($sql);
+			$query = $this->personalia->query($sql);
 			return $query->result_array();
+			// return $sql;
 		}
 
 		public function GetApplicant($term){
