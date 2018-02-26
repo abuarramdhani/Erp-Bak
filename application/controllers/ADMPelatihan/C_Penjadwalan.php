@@ -253,8 +253,8 @@ class C_Penjadwalan extends CI_Controller {
 			foreach($participant as $loop){
 				$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
 					foreach ($dataemployee as $de) {
-						$noind		= $de['employee_code'];
-						$name		= $de['employee_name'];
+						$noind		= $de['noind'];
+						$name		= $de['nama'];
 					}
 				$data_participant[$j] = array(
 					'scheduling_id' 	=> $pkgid,
@@ -390,8 +390,8 @@ class C_Penjadwalan extends CI_Controller {
 				foreach($participant as $loop){
 					$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
 					foreach ($dataemployee as $de) {
-						$noind		= $de['employee_code'];
-						$name		= $de['employee_name'];
+						$noind		= $de['noind'];
+						$name		= $de['nama'];
 					}
 					$data_participant[$j] = array(
 						'scheduling_id' 	=> $pkgid,
@@ -486,7 +486,7 @@ class C_Penjadwalan extends CI_Controller {
 
 		$date 					= $this->input->post('txtTanggalPelaksanaan');
 		$room					= $this->input->post('slcRuang');
-		$startdate 				= $this->input->post('slcRuang');
+		$startdate 				= $this->input->post('txtStartDate');
 		
 		$participant			= $this->input->post('slcEmployee');
 		$participant_type		= $this->input->post('txtPeserta');
@@ -506,6 +506,7 @@ class C_Penjadwalan extends CI_Controller {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 		
+
 		// isi start date paket		
 		if ($startdate==0) {
 			$this->M_penjadwalan->UpdateStartDate($date,$package_scheduling_id);
@@ -520,8 +521,8 @@ class C_Penjadwalan extends CI_Controller {
 				foreach($participant as $loop){
 					$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
 					foreach ($dataemployee as $de) {
-						$noind		= $de['employee_code'];
-						$name		= $de['employee_name'];
+						$noind		= $de['noind'];
+						$name		= $de['nama'];
 					}
 					$data_participant[$j] = array(
 						'scheduling_id' 	=> $pkgid,
