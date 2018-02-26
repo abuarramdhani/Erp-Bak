@@ -4,6 +4,8 @@ class M_penjadwalan extends CI_Model {
         public function __construct()
         {
             parent::__construct();
+            $this->load->database();
+			$this->personalia = $this->load->database('personalia', TRUE);
         }
 		
 		//AMBIL DATA TRAINING
@@ -168,11 +170,12 @@ class M_penjadwalan extends CI_Model {
 		//AMBIL DATA EMPLOYEE BERDASARKAN ID
 		public function GetEmployeeData($id){
 			$sql = "
-				select employee_code, employee_name
-				from er.er_employee_all
-				where employee_code='$id'";
-			$query = $this->db->query($sql);
+				select noind, nama
+				from hrd_khs.tpribadi
+				where noind='$id'";
+			$query = $this->personalia->query($sql);
 			return $query->result_array();
+			// return $sql;
 		}
 
 		//AMBIL DATA APPLICANT BERDASARKAN ID
