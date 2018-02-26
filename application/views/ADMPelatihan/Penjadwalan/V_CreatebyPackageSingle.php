@@ -45,6 +45,13 @@
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
 										<input name="txtPackageSchedulingId" value="<?php echo $pse?>" hidden>
 										<input name="txtPackageTrainingId" value="<?php echo $dt['package_training_id']?>" hidden>
+										<?php
+											foreach ($GetStartDate as $sd) {
+												if ($sd['training_id']==$dt['training_id']) { ?>
+													<input name="txtStartDate" value="<?php echo $sd['training_order']?>" hidden>
+												<?php } 
+											}
+										?>
 									</div>
 								</div>
 							</div>
