@@ -676,10 +676,11 @@ class C_Report extends CI_Controller {
 	}
 
 	//CETAK PDF UNTUK REPORT
-	 public function cetakPDF($id)
+	public function cetakPDF($id)
     {	
 		$data['id'] = $id;
 		$data['report']=$this->M_report->getFilledReportEdit($id);
+		$report=$data['report'];
 		$data['reg_paket']=$data['report'][0]['reg_paket'];
 		$sid=$data['report'][0]['scheduling_id'];
 		$pid=$data['report'][0]['package_scheduling_id'];
@@ -701,8 +702,9 @@ class C_Report extends CI_Controller {
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
 		$filename = 'Report-Pelatihan.pdf';
-		$head 	=	$this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data);
-		$pdf->SetHTMLHeader($head);
+		// $head 	=	$this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data);
+		// $pdf->SetHTMLHeader($this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data, true));
+					
 		// exit();
 		if ($data['reg_paket']==0) {
 			//hitung segmen untuk baris
