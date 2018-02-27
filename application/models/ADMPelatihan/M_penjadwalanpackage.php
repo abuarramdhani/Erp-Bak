@@ -16,7 +16,7 @@ class M_penjadwalanpackage extends CI_Model {
 		//AMBIL SEMUA PENJADWALAN PAKET
 		public function GetScheduledPackage(){
 			$sql = "
-				select *
+				select a.package_scheduling_id, a.package_id, a.package_scheduling_name, a.training_type, a.participant_type, a.participant_number, a.start_date::timestamp::date, a.end_date, b.*
 				from pl.pl_scheduling_package a
 				left join pl.pl_master_package b on a.package_id = b.package_id
 				";
