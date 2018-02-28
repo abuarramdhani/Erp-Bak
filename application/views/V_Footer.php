@@ -60,7 +60,7 @@
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
-	<!--<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>-->
+	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customKL.js');?>" type="text/javascript"></script>
