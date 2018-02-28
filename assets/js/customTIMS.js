@@ -215,3 +215,299 @@ function rekap_datatable_detail() {
 	rekap_datatable();
 	rekap_datatable_detail();
 //});
+
+// 	Rekap Absensi Pekerja dan Rekap Jam Kerja
+//	{
+		$(function()
+		{
+			// 	DataTables
+			//	{
+					// $('.RekapTIMS-DaftarPresensiHarian').DataTable({
+					// 	// lengthChange: false,
+					// 	searching: false,
+						// dom: 'Bfrtip',
+						// buttons: [
+						// 	'excel', 'print'
+						// ],
+						// scrollX: true,
+					// 	// scrollY: 400,
+					// 	lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+					// });
+					$('.RekapTIMS-StatistikPresensiHarian').DataTable({
+						searching: false,
+						lengthChange: false,
+					});
+
+					$('#RekapJamKerja-hasil').DataTable({
+						lengthChange: true,
+						scrollX: true,
+						dom: 'Bfrtip',
+						buttons: [
+							'excel'
+						],
+					});
+
+
+			//	}
+			//	DateRangePicker
+			//	{
+					$('.RekapAbsensi-daterangepicker').daterangepicker({
+					    "showDropdowns": true,
+					    "autoApply": true,
+					    "locale": {
+					        "format": "YYYY-MM-DD",
+					        "separator": " - ",
+					        "applyLabel": "OK",
+					        "cancelLabel": "Batal",
+					        "fromLabel": "Dari",
+					        "toLabel": "Hingga",
+					        "customRangeLabel": "Custom",
+					        "weekLabel": "W",
+					        "daysOfWeek": [
+					            "Mg",
+					            "Sn",
+					            "Sl",
+					            "Rb",
+					            "Km",
+					            "Jm",
+					            "Sa"
+					        ],
+					        "monthNames": [
+					            "Januari",
+					            "Februari",
+					            "Maret",
+					            "April",
+					            "Mei",
+					            "Juni",
+					            "Juli",
+					            "Agustus ",
+					            "September",
+					            "Oktober",
+					            "November",
+					            "Desember"
+					        ],
+					        "firstDay": 1
+					    }
+					}, function(start, end, label) {
+					  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+					});
+			//	}
+			//	Select2
+			//	{
+					$('.RekapAbsensi-cmbDepartemen').select2(
+					{
+						minimumResultsForSearch: -1,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarDepartemen',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_departemen, text: obj.nama_departemen};
+									})
+								}
+							}
+						}
+					});
+
+					$('.RekapJamKerja-cmbLokasiKerja').select2(
+					{
+						minimumResultsForSearch: -1,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RekapJamKerja/daftarLokasiKerja',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_lokasi_kerja, text: obj.kode_lokasi_kerja +' - '+obj.nama_lokasi_kerja};
+									})
+								}
+							}
+						}
+					});
+
+					$(document).on('change', '.RekapAbsensi-cmbDepartemen', function(){
+						var departemen =	$(this).val();
+						if(departemen=='0')
+						{
+							$('.RekapAbsensi-cmbBidang').select2('val','');
+							$('.RekapAbsensi-cmbUnit').select2('val','');
+							$('.RekapAbsensi-cmbSeksi').select2('val','');
+
+							$('.RekapAbsensi-cmbBidang').attr('disabled', 'true');
+							$('.RekapAbsensi-cmbUnit').attr('disabled','true');
+							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');							
+						}
+						else
+						{
+							$('.RekapAbsensi-cmbBidang').select2('val','');
+							$('.RekapAbsensi-cmbUnit').select2('val','');
+							$('.RekapAbsensi-cmbSeksi').select2('val','');
+
+							$('.RekapAbsensi-cmbBidang').removeAttr('disabled');
+							$('.RekapAbsensi-cmbUnit').removeAttr('disabled');
+							$('.RekapAbsensi-cmbSeksi').removeAttr('disabled');								
+
+							$('.RekapAbsensi-cmbBidang').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarBidang',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											departemen: departemen
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_bidang, text: obj.nama_bidang};
+											})
+										}
+									}
+								}
+							});							
+						}
+					});
+
+					$(document).on('change', '.RekapAbsensi-cmbBidang', function(){
+						var bidang =	$(this).val();
+
+						if(bidang.substr(bidang.length - 2) == '00')
+						{
+							$('.RekapAbsensi-cmbUnit').select2('val','');
+							$('.RekapAbsensi-cmbSeksi').select2('val','');
+
+							$('.RekapAbsensi-cmbUnit').attr('disabled','true');
+							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');
+						}
+						else
+						{
+							$('.RekapAbsensi-cmbUnit').select2('val','');
+							$('.RekapAbsensi-cmbSeksi').select2('val','');
+
+							$('.RekapAbsensi-cmbUnit').removeAttr('disabled');
+							$('.RekapAbsensi-cmbSeksi').removeAttr('disabled');
+
+							$('.RekapAbsensi-cmbUnit').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarUnit',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											bidang: bidang
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_unit, text: obj.nama_unit};
+											})
+										}
+									}
+								}
+							});												
+						}
+
+
+	
+					});
+
+					$(document).on('change', '.RekapAbsensi-cmbUnit', function(){
+						var unit =	$(this).val();
+
+						if(unit.substr(unit.length - 2) == '00')
+						{
+							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							
+							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');
+						}
+						else
+						{
+							$('.RekapAbsensi-cmbSeksi').select2('val','');
+
+							$('.RekapAbsensi-cmbSeksi').removeAttr('disabled');							
+
+							$('.RekapAbsensi-cmbSeksi').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarSeksi',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											unit: unit
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_seksi, text: obj.nama_seksi};
+											})
+										}
+									}
+								}
+							});
+						}
+					});
+
+			//	}
+		});
+
+		//	Individual Functions
+		//	{
+				$(document).ready(function() {
+					    // Setup - add a text input to each footer cell
+					    $('.RekapTIMS-DaftarPresensiHarian tfoot th').each( function () {
+					        var title = $(this).text();
+					        $(this).html( '<input type="text" placeholder="Cari '+title+'" />' );
+					    } );
+					 
+					    // DataTable
+					    var table = $('.RekapTIMS-DaftarPresensiHarian').DataTable({
+					    	ordering: true,
+					    	dom: 'Bfrtip',
+							buttons: [
+								'excel', 'print'
+							],
+							scrollX: true,
+					    });
+					 
+					    // Apply the search
+					    table.columns().every( function () {
+					        var that = this;
+					        console.log($( 'input', this.footer() ));
+					        $( 'input', this.footer() ).on( 'keyup change', function () {
+					            if ( that.search() !== this.value ) {
+					                that
+					                    .search( this.value )
+					                    .draw();
+					            }
+					        } );
+					    } );
+					} );
+		//	}
+//	}

@@ -176,6 +176,9 @@ $route['SystemAdministration/ReportGroup/(:any)/(:any)'] = 'SystemAdministration
 $route['SystemAdministration/Responsibility'] = 'SystemAdministration/MainMenu/C_Responsibility/index';
 $route['SystemAdministration/Responsibility/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1';
 $route['SystemAdministration/Responsibility/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Responsibility/$1/$2';
+$route['SystemAdministration/Module'] = 'SystemAdministration/MainMenu/C_Module/index';
+$route['SystemAdministration/Module/(:any)'] = 'SystemAdministration/MainMenu/C_Module/$1';
+$route['SystemAdministration/Module/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Module/$1/$2';
 
 //sales monitoring routes
 $route['SalesMonitoring'] = 'SalesMonitoring/C_SalesMonitoring/index';
@@ -406,6 +409,19 @@ $route['RekapTIMSPromosiPekerja/RekapTIMS/export-employee/(:any)/(:any)/(:any)']
 
 $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/GetNoInduk';
 
+
+	// 	Rekap Absensi Pekerja
+	//	{
+			$route['RekapTIMSPromosiPekerja/RekapAbsensiPekerja']			=	'er/RekapTIMS/C_RekapAbsensi';
+			$route['RekapTIMSPromosiPekerja/RekapAbsensiPekerja/(:any)']	=	'er/RekapTIMS/C_RekapAbsensi/$1';
+	//	}
+
+	// 	Rekap Jam Kerja
+	// 	{
+			$route['RekapTIMSPromosiPekerja/RekapJamKerja']			=	'er/RekapTIMS/C_RekapJamKerja';
+			$route['RekapTIMSPromosiPekerja/RekapJamKerja/(:any)']	=	'er/RekapTIMS/C_RekapJamKerja/$1';
+	//	}
+
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
 
@@ -478,6 +494,7 @@ $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Monitoring/index';
 $route['PresenceManagement/Monitoring/(:any)']		= 'PresenceManagement/MainMenu/C_Monitoring/$1';
 $route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
+$route['PresenceManagement/Monitoring/(:any)/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2/$3';
 
 //---------------------------------Payroll Management----------------------------------
 
@@ -865,10 +882,16 @@ $route['ADMPelatihan/InputQuestionnaire/(:any)/(:any)/(:any)/(:any)']	= 'ADMPela
 $route['ADMPelatihan/MasterTrainer'] 					= 'ADMPelatihan/C_MasterTrainer';
 $route['ADMPelatihan/MasterTrainer/(:any)'] 			= 'ADMPelatihan/C_MasterTrainer/$1';
 $route['ADMPelatihan/MasterTrainer/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2';
+$route['ADMPelatihan/MasterTrainer/(:any)/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2/$3';
+$route['ADMPelatihan/MasterTrainer/(:any)/(:any)/(:any)/(:any)'] 		= 'ADMPelatihan/C_MasterTrainer/$1/$2/$3/$4';
 
 $route['ADMPelatihan/MasterRoom'] 						= 'ADMPelatihan/C_MasterRoom';
 $route['ADMPelatihan/MasterRoom/(:any)'] 				= 'ADMPelatihan/C_MasterRoom/$1';
 $route['ADMPelatihan/MasterRoom/(:any)/(:any)']			= 'ADMPelatihan/C_MasterRoom/$1/$2';
+
+$route['ADMPelatihan/MasterTrainingMaterial'] 						= 'ADMPelatihan/C_MasterMateri';
+$route['ADMPelatihan/MasterTrainingMaterial/(:any)'] 				= 'ADMPelatihan/C_MasterMateri/$1';
+$route['ADMPelatihan/MasterTrainingMaterial/(:any)/(:any)']			= 'ADMPelatihan/C_MasterMateri/$1/$2';
 
 $route['ADMPelatihan/Penjadwalan'] 						= 'ADMPelatihan/C_Penjadwalan';
 $route['ADMPelatihan/Penjadwalan/(:any)'] 				= 'ADMPelatihan/C_Penjadwalan/$1';
@@ -889,6 +912,7 @@ $route['ADMPelatihan/Report/Rekap']						= 'ADMPelatihan/C_Report/Rekap';
 $route['ADMPelatihan/Report/Rekap/RekapTraining']		= 'ADMPelatihan/C_Report/RekapTraining';
 $route['ADMPelatihan/Report/Rekap/PresentaseKehadiran']	= 'ADMPelatihan/C_Report/PresentaseKehadiran';
 $route['ADMPelatihan/Report/Rekap/EfektivitasTraining']	= 'ADMPelatihan/C_Report/EfektivitasTraining';
+$route['ADMPelatihan/Report/Rekap/GetDetailParticipant/(:any)']	= 'ADMPelatihan/C_Report/GetDetailParticipant/$1';
 $route['ADMPelatihan/Report/(:any)']					= 'ADMPelatihan/C_Report/$1';
 $route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Report/$1/$2';
 $route['ADMPelatihan/Report/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Report/$1/$2/$3';
@@ -1362,15 +1386,6 @@ $route['DokumenPekerja/DokumenAll']				=	'DokumenPekerja/C_DokumenAll';
 //---end------------------------------ Document Controller Pekerja ------------------------------------
 
 
-
-//------------------------------------ LOG SERVER --------------------------------------------
-$route['LogServer']									= 'LogServer/C_LogServer/index';
-$route['MonitoringServer/Monitoring']				= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/index';
-$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'LogServer/MainMenu/MonitoringServer/C_MonitoringServer/detail/$1';
-$route['MonitoringServer/InputMonitoring']			= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/index';
-$route['MonitoringServer/InputMonitoring/save']		= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/save';
-$route['MonitoringServer/InputMonitoring/upload']	= 'LogServer/MainMenu/MonitoringServer/C_InputMonitoring/upload';
-
 //------------------------------------ Production Planning ----------------------------------------
 $route['ProductionPlanning']  									= 'ProductionPlanning/C_Index/index';
 $route['ProductionPlanning/Monitoring']  						= 'ProductionPlanning/MainMenu/C_Monitoring/index';
@@ -1393,26 +1408,79 @@ $route['ProductionPlanning/Setting/Section']					= 'ProductionPlanning/Settings/
 $route['ProductionPlanning/Setting/Section/(:any)']				= 'ProductionPlanning/Settings/C_Section/$1';
 $route['ProductionPlanning/Setting/Section/(:any)/(:any)']		= 'ProductionPlanning/Settings/C_Section/$1/$2';
 
-//------------------------------------ Manufacturing Operation ----------------------------------------
-$route['ManufacturingOperation']								= 'ManufacturingOperation/C_Index/index';
-$route['ManufacturingOperation/Core']							= 'ManufacturingOperation/MainMenu/C_Core';
-$route['ManufacturingOperation/Core/(:any)']					= 'ManufacturingOperation/MainMenu/C_Core/$1';
-$route['ManufacturingOperation/Core/(:any)/(:any)'] 			= 'ManufacturingOperation/MainMenu/C_Core/$1/$2';
-$route['ManufacturingOperation/Mixing']							= 'ManufacturingOperation/MainMenu/C_Mixing';
-$route['ManufacturingOperation/Mixing/(:any)']					= 'ManufacturingOperation/MainMenu/C_Mixing/$1';
-$route['ManufacturingOperation/Mixing/(:any)/(:any)']			= 'ManufacturingOperation/MainMenu/C_Mixing/$1/$2';
-$route['ManufacturingOperation/Moulding']						= 'ManufacturingOperation/MainMenu/C_Moulding';
-$route['ManufacturingOperation/Moulding/(:any)']				= 'ManufacturingOperation/MainMenu/C_Moulding/$1';
-$route['ManufacturingOperation/Moulding/(:any)/(:any)']			= 'ManufacturingOperation/MainMenu/C_Moulding/$1/$2';
-$route['ManufacturingOperation/QualityControl']					= 'ManufacturingOperation/MainMenu/C_QualityControl';
-$route['ManufacturingOperation/QualityControl/(:any)']			= 'ManufacturingOperation/MainMenu/C_QualityControl/$1';
-$route['ManufacturingOperation/QualityControl/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_QualityControl/$1/$2';
-$route['ManufacturingOperation/Selep']							= 'ManufacturingOperation/MainMenu/C_Selep';
-$route['ManufacturingOperation/Selep/(:any)']					= 'ManufacturingOperation/MainMenu/C_Selep/$1';
-$route['ManufacturingOperation/Selep/(:any)/(:any)']			= 'ManufacturingOperation/MainMenu/C_Selep/$1/$2';
-$route['ManufacturingOperation/Ajax/(:any)']					= 'ManufacturingOperation/Ajax/C_Ajax/$1';
-$route['ManufacturingOperation/Ajax/(:any)/(:any)']				= 'ManufacturingOperation/Ajax/C_Ajax/$1/$2';
-$route['ManufacturingOperation/Job/ReplaceComp']				= 'ManufacturingOperation/MainMenu/C_ReplaceComp';
-$route['ManufacturingOperation/Job/ReplaceComp/(:any)']			= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1';
-$route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1/$2';
-$route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1/$2/$3';
+
+//------------------------------------MONITORING ICT --------------------------------------------
+
+/*MONITORING LOG SERVER */
+$route['MonitoringICT']								= 'MonitoringICT/C_Index/index';
+$route['MonitoringServer/Monitoring']				= 'MonitoringICT/MainMenu/MonitoringLogServer/C_MonitoringServer/index';
+$route['MonitoringServer/Monitoring/Detail/(:any)']	= 'MonitoringICT/MainMenu/MonitoringLogServer/C_MonitoringServer/detail/$1';
+$route['MonitoringServer/InputMonitoring']			= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/index';
+$route['MonitoringServer/InputMonitoring/save']		= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/save';
+$route['MonitoringServer/InputMonitoring/upload']	= 'MonitoringICT/MainMenu/MonitoringLogServer/C_InputMonitoring/upload';
+
+/*MONITORING FILE SERVER */
+$route['MonitoringFileServer/Monitoring']			= 'MonitoringICT/MainMenu/MonitoringFileServer/C_MonitoringFIleServer/index';
+$route['MonitoringFileServer/InputMonitoring']		= 'MonitoringICT/MainMenu/MonitoringFileServer/C_InputFIleServer/index';
+$route['MonitoringFileServer/InputMonitoring/save']		= 'MonitoringICT/MainMenu/MonitoringFileServer/C_InputFIleServer/save';
+
+$route['MonitoringICT/JobListMonitoring'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/index';
+$route['MonitoringICT/JobListMonitoring/create'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/create';
+$route['MonitoringICT/JobListMonitoring/Detail/(:any)/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/detail/$1/$2';
+$route['MonitoringICT/JobListMonitoring/Detail/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/detail/$1/$2';
+$route['MonitoringICT/JobListMonitoring/Edit/(:any)'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/edit/$1';
+$route['MonitoringICT/JobListMonitoring/Delete'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/delete';
+$route['MonitoringICT/JobListMonitoring/saveEdit'] 		= 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/saveEdit';
+$route['MonitoringICT/JobListMonitoring/searchHasil'] = 'MonitoringICT/MainMenu/JobListMonitoring/C_JobListMonitoring/searchHasil';
+
+$route['MonitoringICT/PlotingJoblist']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/index';
+$route['MonitoringICT/PlotingJoblist/Edit/(:any)']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/indexEdit/$1';
+$route['MonitoringICT/PlotingJoblist/saveEdit']	= 'MonitoringICT/MainMenu/PlotingJobList/C_PlotingJobList/saveEdit';
+
+$route['MonitoringICT/MonitoringAll']	= 'MonitoringICT/MainMenu/MonitoringAll/C_MonitoringAll/index';
+
+
+// -------start--------------------------- Monitoring OJT ----------------------------
+
+$route['OnJobTraining']		=	'MonitoringOJT/C_Index';
+
+	//	Master Orientasi
+	//	{
+			$route['OnJobTraining/MasterOrientasi']		=	'MonitoringOJT/C_MasterOrientasi';
+
+			$route['OnJobTraining/MasterOrientasi/(:any)']	=	'MonitoringOJT/C_MasterOrientasi/$1';
+	//	}
+
+// -------end----------------------------- Monitoring OJT ----------------------------
+
+//------------------------- Work Relationship (Hubker) ------------------------------------------------//
+$route['WorkRelationship'] = 'WorkRelationship/C_WorkRelationship';
+/* Bon Pekerja */
+$route['WorkRelationship/RekapBon'] = 'WorkRelationship/MainMenu/C_RekapBon';
+$route['WorkRelationship/RekapBon/(:any)'] = 'WorkRelationship/MainMenu/C_RekapBon/$1';
+$route['WorkRelationship/RekapBon/(:any)/(:any)'] = 'WorkRelationship/MainMenu/C_RekapBon/$1/$2';
+
+
+//------------------------------------ Production Planning ----------------------------------------
+$route['ProductionEngineering'] = 'MonitoringPEIA/C_AccountReceivables';
+$route['ProductionEngineering/Seksi'] = 'MonitoringPEIA/C_AccountReceivables/seksi';
+$route['ProductionEngineering/Seksi/New'] = 'MonitoringPEIA/C_AccountReceivables/NewSeksi';
+$route['ProductionEngineering/Seksi/add'] = 'MonitoringPEIA/C_AccountReceivables/insertSeksi';
+$route['ProductionEngineering/Seksi/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateSeksi';
+$route['ProductionEngineering/Seksi/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditSeksi/$1';
+$route['ProductionEngineering/Seksi/Delete/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/deleteSeksi/$1';
+$route['ProductionEngineering/Order'] = 'MonitoringPEIA/C_AccountReceivables/order';
+$route['ProductionEngineering/Order/New'] = 'MonitoringPEIA/C_AccountReceivables/NewOrder';
+$route['ProductionEngineering/Order/add'] = 'MonitoringPEIA/C_AccountReceivables/insertOrder';
+$route['ProductionEngineering/Order/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateOrder';
+$route['ProductionEngineering/Order/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditOrder/$1';
+$route['ProductionEngineering/JenisOrder'] = 'MonitoringPEIA/C_AccountReceivables/JenisOrder';
+$route['ProductionEngineering/JenisOrder/New'] = 'MonitoringPEIA/C_AccountReceivables/NewJenisOrder';
+$route['ProductionEngineering/JenisOrder/add'] = 'MonitoringPEIA/C_AccountReceivables/InsertJenisOrder';
+$route['ProductionEngineering/JenisOrder/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateJenisOrder';
+$route['ProductionEngineering/JenisOrder/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditJenisOrder/$1';
+$route['ProductionEngineering/Laporan'] = 'MonitoringPEIA/C_AccountReceivables/Laporan';
+$route['ProductionEngineering/Input'] = 'MonitoringPEIA/C_AccountReceivables/NewLaporan';
+$route['ProductionEngineering/Laporan/add'] = 'MonitoringPEIA/C_AccountReceivables/insertSemua';
+$route['ProductionEngineering/Laporan/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditLaporan/$1';
+$route['ProductionEngineering/Laporan/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateLaporan';

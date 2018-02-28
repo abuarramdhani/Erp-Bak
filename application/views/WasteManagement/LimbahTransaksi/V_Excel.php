@@ -11,7 +11,19 @@
 		)
 	);
 
-	$border_all     = array('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('black'),)));
+	$border_all = array('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('black'),)));
+	$YellowColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'ffff00')));
+	$OranyeColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'ff8000')));
+	$GreenColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '206020')));
+	$BlueColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '000099')));
+	$PinkColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'ff0080')));
+	$BrownColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '805500')));
+	$GreyColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'b7b795')));
+	$BlackColor = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => '000000')));
+	$fontWhite = array('font' => array(
+							'bold' => true,
+							'color' => array('rgb' => 'ffffff')
+						));
 
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
 	$objPHPExcel->getActiveSheet()->getStyle('A:AZ')->applyFromArray($styleArray);
@@ -57,7 +69,6 @@
 		)				
 	);
 
-	// $kolomBulan = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
 	$kolomBulan = array('F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA');
 
 	$jumlahBulan = count($listBulan);
@@ -102,6 +113,17 @@
 		->setCellValue($kolomBulan[$jumlahBulan+7].'4', 'LIMBAH TIDAK DIKELOLA')
 		->setCellValue($kolomBulan[$jumlahBulan+8].'4', 'KETERANGAN')
 		->setCellValue($kolomBulan[$jumlahBulan+9].'4', 'KODE MANIFEST');
+
+	//pewarnaan
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+1].'4')->applyFromArray($YellowColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].'4')->applyFromArray($BlackColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].'4')->applyFromArray($fontWhite);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].'5')->applyFromArray($OranyeColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+3].'5')->applyFromArray($GreenColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+4].'5')->applyFromArray($BlueColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+5].'5')->applyFromArray($PinkColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+6].'5')->applyFromArray($BrownColor);
+		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+7].'4')->applyFromArray($GreyColor);
 	
 	$awal = 7;
 	$akhir = 13;
@@ -115,18 +137,19 @@
 	$objPHPExcel->getActiveSheet()->getStyle('A4:'.$kolomBulan[$jumlahBulan+9].'6')->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('A'.$awal.':'.'E'.($kolomTotal-1))->getAlignment()->setHorizontal('center');
 	
-		$objPHPExcel->setActiveSheetIndex(0)
-					->setCellValue('A'.$kolomTotal, 'JUMLAH LIMBAH B3')
-					->setCellValue('A'.($kolomTotal+1), 'PERSENTASE PENATAAN');
+	$objPHPExcel->setActiveSheetIndex(0)
+		->setCellValue('A'.$kolomTotal, 'JUMLAH LIMBAH B3')
+		->setCellValue('A'.($kolomTotal+1), 'PERSENTASE PENATAAN');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal)->applyFromArray($GreyColor);
 
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal);
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getAlignment()->setHorizontal('right');
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getFont()->setBold(true);
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2));
-		$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getAlignment()->setHorizontal('right');
-		$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getFont()->setBold(true);
-		$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2));
-		$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2))->getAlignment()->setHorizontal('center');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getAlignment()->setHorizontal('right');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$kolomTotal.':'.$kolomBulan[$jumlahBulan].$kolomTotal)->getFont()->setBold(true);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2));
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getAlignment()->setHorizontal('right');
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($kolomTotal+1).':'.$kolomBulan[$jumlahBulan+1].($kolomTotal+2))->getFont()->setBold(true);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].($kolomTotal+2).':'.$kolomBulan[$jumlahBulan+6].($kolomTotal+2))->getAlignment()->setHorizontal('center');
 
 	$totalJumlahDihasilkan = 0;
 	$totalJumlahDiSimpanTPS = 0;
@@ -135,7 +158,56 @@
 	$totalJumlahDitimbun = 0;
 	$totalJumlahDiserahkan = 0;
 	$totalJumlahTidakDikelola = 0;
+
 	foreach ($header as $key3 => $HE) {
+		$totalBulanSebelumnya = 0;
+		foreach ($SisaSebelum as $key5 => $sisa) {
+			if($HE['id_jenis_limbah'] == $sisa['id_jenis_limbah']) {
+				if($sisa['limbah_perlakuan'] == 'DIHASILKAN') {
+					$dihasilkan = (float)$sisa['total_limbah'];
+				} else {
+					$dihasilkan = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DISIMPAN DI TPS') {
+					$disimpan = (float)$sisa['total_limbah'];
+				} else {
+					$disimpan = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DIMANFAATKAN SENDIRI') {
+					$dimanfaatkan = (float)$sisa['total_limbah'];
+				} else {
+					$dimanfaatkan = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DIOLAH SENDIRI') {
+					$diolah = (float)$sisa['total_limbah'];
+				} else {
+					$diolah = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DITIMBUN SENDIRI') {
+					$ditimbun = (float)$sisa['total_limbah'];
+				} else {
+					$ditimbun = 0;
+				}
+
+				if($sisa['limbah_perlakuan'] == 'DISERAHKAN KEPIHAK KETIGA BERIZIN') {
+					$diserahkan = (float)$sisa['total_limbah'];
+				} else {
+					$diserahkan = 0;
+				}
+
+				$totalBulanSebelum = ($disimpan + $dihasilkan) - ($dimanfaatkan + $diolah + $ditimbun + $diserahkan);
+
+				$totalBulanSebelumnya += $totalBulanSebelum;
+			}
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0)
+			->setCellValueExplicit('F'.(($awal+($countperlakuan*$key3))+1), number_format($totalBulanSebelumnya,3,'.',''));
+
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.($awal+($countperlakuan*$key3).':A'.($akhir+($countperlakuan*$key3))));
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.($awal+($countperlakuan*$key3).':B'.($akhir+($countperlakuan*$key3))));
 		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('C'.($awal+($countperlakuan*$key3).':C'.($akhir+($countperlakuan*$key3))));
@@ -148,10 +220,10 @@
 		$kolomD = 'D'.($awal+($countperlakuan*$key3));
 
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomA, $key3+1, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $HE['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomC, $HE['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, 'TON', PHPExcel_Cell_DataType::TYPE_STRING);
+			->setCellValueExplicit($kolomA, $key3+1, PHPExcel_Cell_DataType::TYPE_STRING)
+			->setCellValueExplicit($kolomB, $HE['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
+			->setCellValueExplicit($kolomC, $HE['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
+			->setCellValueExplicit($kolomD, 'TON', PHPExcel_Cell_DataType::TYPE_STRING);
 
 
 		$totalPerHeaderDihasilkan = 0;
@@ -162,14 +234,6 @@
 		$totalPerHeaderTidakDikelola = 0;
 		foreach ($listBulan as $key2 => $bulan) {
 			foreach ($perlakuan as $key1 => $plkn) {
-
-				foreach ($SisaSebelum as $key5 => $sisa) {
-				if($HE['id_jenis_limbah'] == $sisa['id_jenis_limbah'] && $plkn['id_perlakuan']==$sisa['id_perlakuan']) {
-					$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValueExplicit('F'.(($awal+($countperlakuan*$key3))+$key1), $sisa['total_limbah']);
-					}
-				}
-
 				foreach ($jumlahlimbah as $key => $LT) {
 					if($LT['bulan'] == '1') {
 						$dataTanggal = 'Januari';
@@ -202,14 +266,38 @@
 
 					$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValueExplicit('E'.(($awal+($countperlakuan*$key3))+$key1), $plkn['limbah_perlakuan'], PHPExcel_Cell_DataType::TYPE_STRING);
+					//pewarnaan
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)))->applyFromArray($YellowColor);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)+1))->applyFromArray($OranyeColor);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)+2))->applyFromArray($GreenColor);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)+3))->applyFromArray($BlueColor);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)+4))->applyFromArray($PinkColor);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)+5))->applyFromArray($BrownColor);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.($awal+($countperlakuan*$key3)+6))->applyFromArray($GreyColor);
 
+					$objPHPExcel->getActiveSheet()->getStyle('F'.($awal+($countperlakuan*$key3)+1))->applyFromArray($OranyeColor);
+
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)).':'.($kolomBulan[$jumlahBulan+1]).''.($awal+($countperlakuan*$key3)))->applyFromArray($YellowColor);
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)+1).':'.($kolomBulan[$jumlahBulan+2]).''.($awal+($countperlakuan*$key3)+1))->applyFromArray($OranyeColor);
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)+2).':'.($kolomBulan[$jumlahBulan+3]).''.($awal+($countperlakuan*$key3)+2))->applyFromArray($GreenColor);
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)+3).':'.($kolomBulan[$jumlahBulan+4]).''.($awal+($countperlakuan*$key3)+3))->applyFromArray($BlueColor);
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)+4).':'.($kolomBulan[$jumlahBulan+5]).''.($awal+($countperlakuan*$key3)+4))->applyFromArray($PinkColor);
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)+5).':'.($kolomBulan[$jumlahBulan+6]).''.($awal+($countperlakuan*$key3)+5))->applyFromArray($BrownColor);
+					$objPHPExcel->getActiveSheet()->getStyle('G'.($awal+($countperlakuan*$key3)+6).':'.($kolomBulan[$jumlahBulan+7]).''.($awal+($countperlakuan*$key3)+6))->applyFromArray($GreyColor);
+
+					$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].($awal+($countperlakuan*$key3)))->applyFromArray($OranyeColor);
+					$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+3].($awal+($countperlakuan*$key3)).':'.$kolomBulan[$jumlahBulan+3].($awal+($countperlakuan*$key3)+1))->applyFromArray($GreenColor);
+					$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+4].($awal+($countperlakuan*$key3)).':'.$kolomBulan[$jumlahBulan+4].($awal+($countperlakuan*$key3)+2))->applyFromArray($BlueColor);
+					$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+5].($awal+($countperlakuan*$key3)).':'.$kolomBulan[$jumlahBulan+5].($awal+($countperlakuan*$key3)+3))->applyFromArray($PinkColor);
+					$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+6].($awal+($countperlakuan*$key3)).':'.$kolomBulan[$jumlahBulan+6].($awal+($countperlakuan*$key3)+4))->applyFromArray($BrownColor);
+					$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+7].($awal+($countperlakuan*$key3)).':'.$kolomBulan[$jumlahBulan+7].($awal+($countperlakuan*$key3)+5))->applyFromArray($GreyColor);
 					
 					$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValueExplicit($kolomBulan[$key2+1].'6', $bulan);
+						->setCellValueExplicit($kolomBulan[$key2+1]  .'6', $bulan);
 
 					if(($plkn['limbah_perlakuan'] == $dataPerlakuan) && ($bulan == $dataTanggal) && ($HE['id_jenis_limbah'] == $dataJenisLimbah)) {
 						$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+$key1), $LT['total_limbah']);
+							->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+$key1), number_format($LT['total_limbah'],3,'.',''));
 					}
 					else {
 						$cols = $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+$key1))->getValue();
@@ -258,7 +346,7 @@
 			$totalPerBulan = $hasilHitungPerBulan - $totalLimbahPerlakuan;
 
 			$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+1), $totalPerBulan);
+				->setCellValueExplicit($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))+1), number_format($totalPerBulan,3,'.',''));
 
 			$limbahDihasilkan = $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$key2+1].''.(($awal+($countperlakuan*$key3))))->getValue();
 			if($limbahDihasilkan == '' || $limbahDihasilkan == NULL) {
@@ -384,31 +472,31 @@
 
 		//Dihasilkan
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.(($awal+($countperlakuan*$key3))), $totalLimbahDihasilkan);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.(($awal+($countperlakuan*$key3))), number_format($totalLimbahDihasilkan,3,'.',''));
 
 		//Disimpan Di TPS
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.(($awal+($countperlakuan*$key3))+1), $nilaiSimpanTPS);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.(($awal+($countperlakuan*$key3))+1), number_format($nilaiSimpanTPS,3,'.',''));
 
 		//Dimanfaatkan Sendiri
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.(($awal+($countperlakuan*$key3))+2), $totalLimbahDimanfaatkan);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.(($awal+($countperlakuan*$key3))+2), number_format($totalLimbahDimanfaatkan,3,'.',''));
 
 		//Diolah Sendiri
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.(($awal+($countperlakuan*$key3))+3), $totalLimbahDiolah);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.(($awal+($countperlakuan*$key3))+3), number_format($totalLimbahDiolah,3,'.',''));
 
 		//Ditimbun Sendiri
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.(($awal+($countperlakuan*$key3))+4), $totalLimbahDitimbun);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.(($awal+($countperlakuan*$key3))+4), number_format($totalLimbahDitimbun,3,'.',''));
 
 		//Diserahkan Ke Pihak Ketiga
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.(($awal+($countperlakuan*$key3))+5), $totalLimbahDiserahkan);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.(($awal+($countperlakuan*$key3))+5), number_format($totalLimbahDiserahkan,3,'.',''));
 
 		//Tidak Dikelola
 		$objPHPExcel->setActiveSheetIndex(0)
-				->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.(($awal+($countperlakuan*$key3))+6), $totalLimbahTidakDikelola);
+				->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.(($awal+($countperlakuan*$key3))+6), number_format($totalLimbahTidakDikelola,3,'.',''));
 
 		//Jumlah Limbah Dihasilkan
 		$JumlahLimbahDihasilkan = $objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+1].(($awal+($countperlakuan*$key3))))->getValue();
@@ -484,31 +572,38 @@
 	
 	//Jumlah Limbah Dihasilkan
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.$kolomTotal, $totalJumlahDihasilkan);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+1].''.$kolomTotal, number_format($totalJumlahDihasilkan,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+1].''.$kolomTotal)->applyFromArray($YellowColor);
 
 	//Jumlah Limbah Disimpan TPS
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.$kolomTotal, $totalJumlahDiSimpanTPS);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+2].''.$kolomTotal, number_format($totalJumlahDiSimpanTPS,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+2].''.$kolomTotal)->applyFromArray($OranyeColor);
 
 	//Jumlah Limbah Dimanfaatkan
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.$kolomTotal, $totalJumlahDimanfaatkan);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+3].''.$kolomTotal, number_format($totalJumlahDimanfaatkan,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+3].''.$kolomTotal)->applyFromArray($GreenColor);
 
 	//Jumlah Limbah Diolah
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.$kolomTotal, $totalJumlahDiolah);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+4].''.$kolomTotal, number_format($totalJumlahDiolah,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+4].''.$kolomTotal)->applyFromArray($BlueColor);
 
 	//Jumlah Limbah Ditimbun
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.$kolomTotal, $totalJumlahDitimbun);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+5].''.$kolomTotal, number_format($totalJumlahDitimbun,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+5].''.$kolomTotal)->applyFromArray($PinkColor);
 
 	//Jumlah Limbah Diserahkan
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.$kolomTotal, $totalJumlahDiserahkan);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+6].''.$kolomTotal, number_format($totalJumlahDiserahkan,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+6].''.$kolomTotal)->applyFromArray($BrownColor);
 
 	//Jumlah Limbah Tidak Dikelola
 	$objPHPExcel->setActiveSheetIndex(0)
-		->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.$kolomTotal, $totalJumlahTidakDikelola);
+		->setCellValueExplicit($kolomBulan[$jumlahBulan+7].''.$kolomTotal, number_format($totalJumlahTidakDikelola,3,'.',''));
+	$objPHPExcel->getActiveSheet()->getStyle($kolomBulan[$jumlahBulan+7].''.$kolomTotal)->applyFromArray($GreyColor);
 
 //Persentase Penataan
 	$NilaiLimbahDihasilkan=$objPHPExcel->getActiveSheet()->getCell($kolomBulan[$jumlahBulan+1].''.$kolomTotal)->getValue();

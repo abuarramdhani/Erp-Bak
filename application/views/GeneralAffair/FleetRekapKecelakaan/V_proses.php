@@ -88,11 +88,8 @@
 </section>
 
 <script type="text/javascript">
-    
-    window.onload = function() {
-        setTimeout(function() {
-            var     tahun   = $('#TahunPeriodeKecelakaan').val();
-            rekapKecelakaan(tahun);
-        }, 1000);
-    }
+    $(window).load(function(){
+        var     tahun   = $('#TahunPeriodeKecelakaan').val();
+        rekapKecelakaan(tahun);
+    });
 </script>

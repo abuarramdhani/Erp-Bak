@@ -36,6 +36,22 @@ class M_limbahkeluar extends CI_Model
     	return $sql->result_array();
     }
 
+    function LimbahWaiting(){
+        $sql    = "SELECT limar.* ,
+                            limnis.jenis_limbah,
+                            limnis.id_jenis_limbah,
+                            liman.limbah_perlakuan
+                        from ga.ga_limbah_keluar as limar
+                            left join ga.ga_limbah_jenis as limnis
+                            on limar.jenis_limbah = limnis.id_jenis_limbah
+                            left join ga.ga_limbah_perlakuan as liman
+                            on limar.perlakuan = liman.id_perlakuan
+                        where konfirmasi_status='0'
+                        order by creation_date desc";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function setLimbahKeluar($data)
     {
         return $this->db->insert('ga.ga_limbah_keluar', $data);
@@ -62,7 +78,7 @@ class M_limbahkeluar extends CI_Model
 
     public function getPerlakuan()
     {
-        $sqlperlakuan = "SELECT * FROM ga.ga_limbah_perlakuan";
+        $sqlperlakuan = "SELECT * FROM ga.ga_limbah_perlakuan order by id_perlakuan";
         $query = $this->db->query($sqlperlakuan);
         return $query->result_array();
     }
@@ -78,7 +94,7 @@ class M_limbahkeluar extends CI_Model
     {
         $sqlApproval = "UPDATE ga.ga_limbah_keluar
                             SET konfirmasi_status=1
-                            WHERE id_limbah_keluar=$id";
+                            WHERE id_limbah_keluar='$id'";
         $query = $this->db->query($sqlApproval);
     }
 
@@ -86,7 +102,7 @@ class M_limbahkeluar extends CI_Model
     {
         $sqlReject = "UPDATE ga.ga_limbah_keluar
                             SET konfirmasi_status=2
-                            WHERE id_limbah_keluar=$id";
+                            WHERE id_limbah_keluar='$id'";
         $query = $this->db->query($sqlReject);
     }
 

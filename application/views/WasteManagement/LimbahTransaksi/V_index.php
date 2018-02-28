@@ -29,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-customer" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -68,7 +68,7 @@
 												<td><?php echo $row['jumlah'] ?></td>
 												<td><?php echo $row['limbah_perlakuan'] ?></td>
 												<td><?php echo date('d M Y', strtotime($row['maks_penyimpanan'])) ;?></td>
-                                                <td align="center"><?php if(empty($row['konfirmasi'])) {
+                                                <td align="center"><?php if($row['konfirmasi']==0) {
                                                                 echo "<h4><span class='label label-warning'>Waiting</span></h4>";
                                                             }elseif ($row['konfirmasi']==1) {
                                                                 echo "<h4><span class='label label-success'>Confirmed</span></h4>";

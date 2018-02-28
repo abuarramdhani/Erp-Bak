@@ -69,12 +69,3 @@
                                     </div>
                                 </div>
                                 <div id="table-full">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>

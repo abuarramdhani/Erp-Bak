@@ -109,12 +109,9 @@
     </div>
 </section>
 <script type="text/javascript">
-    
-    window.onload = function() {
-        setTimeout(function() {
+    $(window).load(function(){
             var     tahun   = $('#TahunPeriodeTotal').val();
             var     bulan   = $('#BulanPeriodeTotal').val();
             rekapTotal(tahun, bulan);
-        }, 1000);
-    }
+    });     
 </script>

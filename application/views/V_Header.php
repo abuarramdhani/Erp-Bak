@@ -6,7 +6,16 @@
  <!-- BEGIN HEAD -->
 <head>
     <meta charset="UTF-8" />
-    <title>Quick ERP</title>
+    <?php
+    	if(isset($Header))
+    	{
+    		echo '<title>'.$Header.'</title>';
+    	}
+    	else
+    	{
+    		echo '<title>Quick ERP</title>';
+    	}
+    ?>
 	<link rel="shortcut icon" href="<?php echo base_url('assets/img/logo.ico');?>" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
@@ -84,7 +93,7 @@
 </head>
      <!-- END HEAD -->
      <!-- BEGIN BODY -->
-<body  class="skin-blue-light sidebar-mini"  >
+<body  class="skin-blue-light sidebar-mini fixed"  >
 	<div id="loadingAjax"></div>
 
      <!-- MAIN WRAPPER -->

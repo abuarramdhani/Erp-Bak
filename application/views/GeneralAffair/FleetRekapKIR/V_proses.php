@@ -89,11 +89,8 @@
 </section>
 
 <script type="text/javascript">
-    
-    window.onload = function() {
-        setTimeout(function() {
+    $(window).load(function(){
             var     tahun   = $('#TahunPeriodeKIR').val();
             rekapKIR(tahun);
-        }, 1000);
-    }
+    });      
 </script>

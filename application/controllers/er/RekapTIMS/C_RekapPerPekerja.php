@@ -1316,13 +1316,14 @@ class C_RekapPerPekerja extends CI_Controller {
 		$objPHPExcel = new PHPExcel();
 		$worksheet = $objPHPExcel->getActiveSheet();
 
-		$info = $this->M_rekap_per_pekerja->rekapPersonInfo($nik);
-		$Terlambat = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TT');
-		$IjinPribadi = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TIK');
-		$Mangkir = $this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TM');
-		$IjinPerusahaan = $this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'PIP');
-		$CutiTahunan = $this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'CT');
-		$SuratPeringatan = $this->M_rekap_per_pekerja->rekapPersonSP($periode1,$periode2,$nik);
+		$info 				= 	$this->M_rekap_per_pekerja->rekapPersonInfo($nik);
+		$Terlambat 			= 	$this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TT');
+		$IjinPribadi 		= 	$this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TIK');
+		$Mangkir 			= 	$this->M_rekap_per_pekerja->rekapPersonTIM($periode1,$periode2,$nik,$keterangan = 'TM');
+		$IjinPerusahaan 	= 	$this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'PIP');
+		$CutiTahunan 		= 	$this->M_rekap_per_pekerja->rekapPersonSIP($periode1,$periode2,$nik,$keterangan = 'CT');
+		$SuratPeringatan 	= 	$this->M_rekap_per_pekerja->rekapPersonSP($periode1,$periode2,$nik);
+		$Sakit 				=	$this->M_rekap_per_pekerja->rekapPersonSakit($periode1,$periode2, $nik);
 		$objPHPExcel->setActiveSheetIndex(0);
 
 		$styleArray = array(
@@ -1497,8 +1498,13 @@ class C_RekapPerPekerja extends CI_Controller {
 
 		$highestRow = $worksheet->getHighestRow();
 
-		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->applyFromArray($styleArray);
+		$worksheet->getStyle('A'.($highestRow+3).':F'.($highestRow+3))->applyFromArray($styleArray);
 		$worksheet	->getStyle('A'.($highestRow+3))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('0099ff');
+		$worksheet	->getStyle('F'.($highestRow+3))
 					->getFill()
 					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 					->getStartColor()
@@ -1508,24 +1514,46 @@ class C_RekapPerPekerja extends CI_Controller {
 					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 					->getStartColor()
 					->setARGB('c0c0c0');
+		$worksheet	->getStyle('F'.($highestRow+4).':I'.($highestRow+4))
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('c0c0c0');
 
-		$worksheet->getStyle('A'.($highestRow+3).':A'.($highestRow+3))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$worksheet->getStyle('A'.($highestRow+3).':F'.($highestRow+3))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 		$worksheet->mergeCells('A'.($highestRow+3).':D'.($highestRow+3));
+		$worksheet->mergeCells('F'.($highestRow+3).':I'.($highestRow+3));
 
-		$worksheet->setCellValue('A'.($highestRow+3), 'IJIN PERUSAHAAN');
+		$worksheet->setCellValue('A'.($highestRow+3), 'Sakit');
 		$worksheet->setCellValue('A'.($highestRow+4), 'No');
-		$worksheet->setCellValue('B'.($highestRow+4), 'Tanggal');
-		$worksheet->setCellValue('C'.($highestRow+4), 'Masuk');
-		$worksheet->setCellValue('D'.($highestRow+4), 'Keluar');
+		$worksheet->setCellValue('B'.($highestRow+4), 'Nomor Induk');
+		$worksheet->setCellValue('C'.($highestRow+4), 'Tanggal');
+		$worksheet->setCellValue('D'.($highestRow+4), 'Keterangan');
+
+		$row = $highestRow+5;
+		$no = 1;
+		foreach ($Sakit as $sakit) {
+			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('B'.$row, $sakit['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('C'.$row, date('Y-m-d', strtotime($sakit['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('D'.$row, $sakit['keterangan'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$row++;
+		}
+
+		$worksheet->setCellValue('F'.($highestRow+3), 'CUTI TAHUNAN');
+		$worksheet->setCellValue('F'.($highestRow+4), 'No');
+		$worksheet->setCellValue('G'.($highestRow+4), 'Tanggal');
+		$worksheet->setCellValue('H'.($highestRow+4), 'Masuk');
+		$worksheet->setCellValue('I'.($highestRow+4), 'Keluar');
 
 		$row = $highestRow+5;
 		$no = 1;
 		foreach ($CutiTahunan as $cutah) {
-			$worksheet->setCellValue('A'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('B'.$row, date('Y-m-d', strtotime($cutah['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('C'.$row, $cutah['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('D'.$row, $cutah['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('F'.$row, $no++, PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('G'.$row, date('Y-m-d', strtotime($cutah['tanggal'])), PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('H'.$row, $cutah['masuk'], PHPExcel_Cell_DataType::TYPE_STRING);
+			$worksheet->setCellValue('I'.$row, $cutah['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$row++;
 		}
 

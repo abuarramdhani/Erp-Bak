@@ -21,6 +21,135 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	//ON CREATE////////////////////////////////////////////////////////////////////////////////////
+	public function GetPelatihan($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "where to_char(date, 'DD MM YYYY') ILIKE '%$term%'";}
+
+		$sql = "select * from pl.pl_scheduling_training $iftermtrue";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetPelatihanNama($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "where scheduling_name ILIKE '%$term%'";}
+
+		$sql = "select scheduling_name from pl.pl_scheduling_training $iftermtrue group by scheduling_name";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetPelatihanPaket($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "where to_char(b.start_date, 'DD MM YYYY') ILIKE '%$term%'";}
+
+		$sql="	select a.* , b.*, b.start_date as tanggal
+				from pl.pl_scheduling_training a
+				join pl.pl_scheduling_package b 
+					on a.package_scheduling_id=b.package_scheduling_id
+				$iftermtrue";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+	public function GetQueIdReportPaket($pid)
+	{
+		$sql="	select a.questionnaire_id, a.scheduling_id
+				from pl.pl_questionnaire_sheet a
+				inner join pl.pl_scheduling_training b
+				on a.scheduling_id=b.scheduling_id
+				where b.package_scheduling_id=$pid
+				group by questionnaire_id,2";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+	public function GetPelatihanPaketNama($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "where package_scheduling_name ILIKE '%$term%'";}
+
+		$sql="	select b.package_scheduling_name
+				from pl.pl_scheduling_training a
+				join pl.pl_scheduling_package b 
+					on a.package_scheduling_id=b.package_scheduling_id
+				$iftermtrue
+				group by b.package_scheduling_name";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+	public function GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal){
+		if ($idNama==1) {
+			$ifP="and b.package_scheduling_name='$nama' and b.start_date = TO_DATE('$tanggal','DD/MM/YYYY')";
+			$ifR="";
+		}elseif($idNama==0){
+			$ifR="and a.scheduling_name='$nama' and a.date = TO_DATE('$tanggal','DD/MM/YYYY')"; 
+			$ifP="";
+		}
+		$sql = "
+			select
+			a.scheduling_id,
+			a.package_scheduling_id,
+			a.scheduling_name,
+			a.date,
+			a.room,
+			a.participant_type,
+			a.trainer,
+			a.evaluation,
+			a.sifat,
+			a.participant_number,
+			a.status,
+			b.package_scheduling_name,
+			case when b.start_date
+				is NULL then null 	
+				else to_char(b.start_date,'DD MONTH YYYY')
+				end as start_date_format,
+			case when b.end_date
+				is NULL then null 	
+				else to_char(b.end_date,'DD MONTH YYYY')
+				end as end_date_format,
+			case when a.date
+				is NULL then null 	
+				else to_char(a.date,'DD MONTH YYYY')
+				end as date_format
+			from pl.pl_scheduling_training a
+			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
+			where a.status = 1
+			$ifP $ifR
+			order by a.status asc, a.date desc";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+		// return $sql;
+	}
+
+	public function GetParticipantPelatihan($id)
+	{
+		$sql="SELECT count(participant_name) as jumlah from pl.pl_participant where scheduling_id='$id' and status=1 order by jumlah";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetPrtHadir($pid)
+	{
+		$sql="	SELECT 
+				a.scheduling_id,
+				count(a.participant_name) as jumlah
+				from pl.pl_participant a
+				inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id 
+				where
+				a.status=1
+				and
+				b.package_scheduling_id='$pid'
+				group by a.scheduling_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	// public function GetpesertaPaket($package_scheduling_id)
+	// {
+	// 	$sql="select max(participant_number) from pl.pl_scheduling_training a where a.package_scheduling_id='$package_scheduling_id'";
+	// 	$query = $this->db->query($sql);
+	// 	return $query->result_array();
+	// }
+	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	public function GetTrainingFilter($term){
 		if ($term === FALSE) { $iftermtrue = "";
@@ -275,8 +404,9 @@ class M_report extends CI_Model {
 					where a.date between TO_DATE('$date1', 'DD/MM/YYYY') and TO_DATE('$date2', 'DD/MM/YYYY')
 					group by 1,2,3,4,5,6,7,8
 					order by 3,5 DESC";
-			$query=$this->db->query($sql);
+		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 
 	public function GetRkpTrainingAll($date1,$date2)
@@ -483,6 +613,43 @@ class M_report extends CI_Model {
 		$query=$this->db->query($sql);
 		return $query->result_array();
 	}
+	// public function GetPercentParticipantAll($date1,$date2)
+	// {	
+	// 	$sql="select	es.section_name, training.partisipan, training.noind, training.nama, training.tahun,training.scheduling_id, training.status, training.ket
+	// 			from	
+	// 			er.er_section es,
+	// 			(
+	// 				select 
+	// 						ees.section_name,
+	// 						pst.scheduling_name as nama,
+	// 						to_char(pst.date,'YYYY')as tahun,
+	// 						pst.scheduling_id,
+	// 						pp.participant_name as partisipan,
+	// 						pp.noind,
+	// 						pp.status,
+	// 						pp.keterangan_kehadiran as ket
+	// 						from	pl.pl_participant pp,
+	// 								er.er_employee_all pea,
+	// 								er.er_section ees,
+	// 								pl.pl_scheduling_training pst
+	// 						where
+	// 							pp.noind = pea.employee_code
+	// 							and ees.section_code = pea.section_code
+	// 							and pp.scheduling_id=pst.scheduling_id
+	// 						group by
+	// 							ees.section_name,
+	// 							pst.scheduling_name,
+	// 							3,4,5,6,7,8
+	// 						) as training
+	// 			where training.partisipan is not null
+	// 			and training.scheduling_id = ''
+	// 			and training.section_name = es.section_name
+	// 			and pst.date between TO_DATE('$date1', 'DD/MM/YYYY') and TO_DATE('$date2', 'DD/MM/YYYY'
+	// 			group by es.section_name,2,3,4,5,6,7,8
+	// 			)";
+	// 	$query=$this->db->query($sql);
+	// 	return $query->result_array();
+	// }
 
 	// EFEKTIFITAS TRAINING
 	public function GetEfektivitasTraining($date1,$date2)
@@ -629,6 +796,42 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetDetailParticipant($schid)
+	{
+		$sql = "select	es.section_name, training.partisipan, training.noind, training.nama, training.date,training.scheduling_id, training.status, training.ket
+				from	
+				er.er_section es,
+				(
+					select 
+							ees.section_name,
+							pst.scheduling_name as nama,
+							to_char(pst.date,'DD/MM/YYYY')as date,
+							pst.scheduling_id,
+							pp.participant_name as partisipan,
+							pp.noind,
+							pp.status,
+							pp.keterangan_kehadiran as ket
+							from	pl.pl_participant pp,
+									er.er_employee_all pea,
+									er.er_section ees,
+									pl.pl_scheduling_training pst
+							where
+								pp.noind = pea.employee_code
+								and ees.section_code = pea.section_code
+								and pp.scheduling_id=pst.scheduling_id
+							group by
+								ees.section_name,
+								pst.scheduling_name,
+								3,4,5,6,7,8
+							) as training
+				where training.partisipan is not null
+				and training.scheduling_id = '$schid'
+				and training.section_name = es.section_name
+				group by es.section_name,2,3,4,5,6,7,8";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
 	// AMBIL NAMA PELATIHAN
 	public function GetSchName($year,$month)
 	{
@@ -752,6 +955,49 @@ class M_report extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function GetSchName_QuesName_RPT($id)
+	{
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+				where a.scheduling_id='$id'
+				group by 1,2,3,4,5,6";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+		// return $sql;
+	}
+	public function GetSchName_QuesName_RPTPCK($pid)
+	{
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer, a.package_scheduling_id
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+				where a.package_scheduling_id='$pid'
+				group by 1,2,3,4,5,6,7";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+	public function justSegmentPck($pid)
+	{
+		$sql="SELECT	d.segment_description
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire c 
+						on b.questionnaire_id=c.questionnaire_id
+						inner join pl.pl_master_questionnaire_segment d
+						on c.questionnaire_id=d.questionnaire_id
+				where a.package_scheduling_id='$pid'
+				and d.segment_type = 1
+				group by d.segment_description";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
 	public function GetSchName_QuesName_detail($id,$qe)
 	{
 		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id
@@ -820,5 +1066,139 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+
+	public function GetAttendant(){
+		$sql = " SELECT
+					a.scheduling_id, 
+					count(participant_id) as attendant
+				from pl.pl_participant a
+				where status=1
+				group by 1";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	/////CREATE REPORT-------------------------------------------------------------------------------------------------------------------------------------- 
+	public function AddReport($nama,$tanggal,$package_scheduling_id, $scheduling_id, $jenis, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana, $reg_paket, $total_psrt, $hadir_psrt)
+	{
+		$sql = " insert into pl.pl_create_report (jenis,index_materi,description,kendala,catatan, doc_no, rev_no, rev_date, rev_note, tmptdoc, tgldoc, nama_acc, jabatan_acc, scheduling_id, package_scheduling_id,scheduling_or_package_name, pelaksana, tanggal, reg_paket, peserta_total, peserta_hadir)
+				values ($jenis,'$indexm','$descr','$kendala','$catatan', '$doc_no', '$rev_no', TO_DATE('$rev_date', 'DD/MM/YYYY'), '$rev_note', '$tmptdoc', TO_DATE('$tgldoc', 'DD/MM/YYYY'), '$nama_acc', '$jabatan_acc','$scheduling_id','$package_scheduling_id','$nama', '$pelaksana', TO_DATE('$tanggal', 'DD/MM/YYYY'),'$reg_paket', '$total_psrt', '$hadir_psrt')";
+		$query = $this->db->query($sql);
+		// $id=$this->db->insert_id();
+		// return $sql;
+	}
+
+	//UPDATE REPORT
+	public function UpdateReport($id, $jenis, $total_psrt, $hadir_psrt, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana)
+	{
+		$sql = " update pl.pl_create_report 
+				set jenis=$jenis,peserta_total=$total_psrt,peserta_hadir=$hadir_psrt, pelaksana='$pelaksana', index_materi='$indexm',description='$descr', kendala='$kendala',catatan='$catatan', doc_no='$doc_no', rev_no='$rev_no', rev_date=TO_DATE('$rev_date', 'DD/MM/YYYY'),rev_note='$rev_note',tmptdoc='$tmptdoc',tgldoc=TO_DATE('$tgldoc', 'DD/MM/YYYY'), nama_acc='$nama_acc', jabatan_acc='$jabatan_acc' where id_report='$id'";
+		$query = $this->db->query($sql);
+		// return $sql;
+	}
+	public function updatePublic($table, $kolom, $data, $id)
+	{
+		$this->db->where($kolom, $id);
+		$this->db->update($table, $data);
+	}
+
+	//GET FILLED REPORT
+	public function getFilledReport()
+	{
+		$sql="	SELECT *
+				from pl.pl_create_report";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+	public function getFilledReportEdit($id)
+	{
+		$sql="	SELECT *
+				from pl.pl_create_report
+				where id_report=$id";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+	public function Getpeserta($id)
+	{
+		$sql="SELECT * from pl.pl_scheduling_training a where a.scheduling_id='$id'";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetPsrtPaket($pid)
+	{
+		$sql="SELECT max(participant_number)as jumlah from pl.pl_scheduling_training a where a.package_scheduling_id='$pid'";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
+
+	//DELETE REPORT
+	public function deleteReport($id)
+	{
+		$sql1 = "delete from pl.pl_create_report where id_report='$id'";
+		$sql2 = "delete from pl.pl_eval_reaksi where id_report='$id'";
+		$sql3 = "delete from pl.pl_eval_pembelajaran where id_report='$id'";
+
+		$query = $this->db->query($sql1);
+		$query = $this->db->query($sql2);
+		$query = $this->db->query($sql3);
+		return;
+	}
+	public function countPelatihan($pid)
+	{
+		$sql="	SELECT	count (a.scheduling_name) as jml_pel 
+				from	pl.pl_scheduling_training a
+				where a.package_scheduling_id='$pid'
+				and a.status=1";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	public function countTrainer($id)
+	{
+		$sql="	SELECT max(array_length(regexp_split_to_array(a.pelaksana,','),1))
+				from pl.pl_create_report a
+				where id_report='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	public function countSegment($sid)
+	{
+		$sql="SELECT d.segment_description
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire_segment d 
+						on b.questionnaire_id=d.questionnaire_id
+				where 
+				a.scheduling_id='$sid'
+				and 
+				d.segment_type=1
+				group by 1";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	public function countSegmentPck($pid)
+	{
+		$sql="SELECT d.segment_description
+				from	pl.pl_scheduling_training a
+						inner join	pl.pl_questionnaire_sheet b 
+						on a.scheduling_id=b.scheduling_id
+						inner join pl.pl_master_questionnaire_segment d 
+						on b.questionnaire_id=d.questionnaire_id
+				where 
+				a.package_scheduling_id='$pid'
+				and 
+				d.segment_type=1
+				group by 1";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	// public function countTrainerPck($pid)
+	// 	$sql="	SELECT max(array_length(regexp_split_to_array(a.pelaksana,','),1))
+	// 			from pl.pl_create_report a
+	// 			where id_report='$id'";
+	// 	$query = $this->db->query($sql);
+	// 	return $query->result_array();
+	// }
 }
 ?>

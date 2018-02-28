@@ -69,13 +69,13 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="departemen_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="departemen" required>
-														<option value=""></option>
+													<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbDepartemen" style="width:100%" name="cmbDepartemen" required>
+														<!-- <option value=""></option>
 														<option value="All">ALL</option>
 														<?php foreach ($dept as $dept_item){
 														?>
 															<option value="<?php echo $dept_item['dept'];?>"><?php echo $dept_item['dept'];?></option>
-													<?php } ?>
+													<?php } ?> -->
 													</select>
 												</div>
 											</div>
@@ -91,10 +91,7 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="bidang_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="bidang" required disabled>
-														<option value=""></option>
-														
-
+													<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbBidang" style="width:100%" name="cmbBidang" required>
 													</select>
 												</div>
 											</div>
@@ -110,9 +107,7 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="unit_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="unit" required disabled>
-														<option value=""></option>
-														
+													<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbUnit" style="width:100%" name="cmbUnit" required>
 													</select>
 												</div>
 											</div>
@@ -128,10 +123,7 @@
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-user"></i>
 													</div>
-													<select id="section_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="section" required disabled>
-														<option value=""></option>
-														<option value="0" disabled>Pilih Unit terlebih dahulu</option>
-														
+													<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbSeksi" style="width:100%" name="cmbSeksi" required>
 													</select>
 												</div>
 											</div>

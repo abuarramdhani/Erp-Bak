@@ -103,8 +103,8 @@ class C_LimbahKeluar extends CI_Controller
 
 			$this->M_limbahkeluar->setLimbahKeluar($data);
 
-			redirect(site_url('WasteManagement/LimbahKeluar'));
-		} //t coba create dulu
+			redirect(base_url('WasteManagement/LimbahKeluar'));
+		} 
 	}
 
 	/* UPDATE DATA */
@@ -161,7 +161,7 @@ class C_LimbahKeluar extends CI_Controller
     			);
 			$this->M_limbahkeluar->updateLimbahKeluar($data, $plaintext_string);
 
-			redirect(site_url('WasteManagement/LimbahKeluar'));
+			redirect(base_url('WasteManagement/LimbahKeluar'));
 		}
 	}
 
@@ -204,7 +204,7 @@ class C_LimbahKeluar extends CI_Controller
 
 		$this->M_limbahkeluar->deleteLimbahKeluar($plaintext_string);
 
-		redirect(site_url('WasteManagement/LimbahKeluar'));
+		redirect(base_url('WasteManagement/LimbahKeluar'));
     }
 
     public function kirimApprove($id)
@@ -460,8 +460,33 @@ class C_LimbahKeluar extends CI_Controller
 		}
 		
 		echo json_encode($data);
-	} 
+	}
 
+	public function ApproveLimbahKeluar(){
+		$this->checkSession();
+
+		$id_lines = $this->input->post('idKeluar');
+		$idLimbah = explode(',', $id_lines);
+		for ($i=0; $i < (count($idLimbah)-1); $i++) { 
+			$id = $idLimbah[$i];
+			$this->M_limbahkeluar->approval($id);
+		}
+
+		echo json_encode(true);
+	}
+
+	public function RejectLimbahKeluar(){
+		$this->checkSession();
+
+		$id_lines = $this->input->post('idKeluar');
+		$idLimbah = explode(',', $id_lines);
+		for ($i=0; $i < (count($idLimbah)-1); $i++) { 
+			$id = $idLimbah[$i];
+			$this->M_limbahkeluar->reject($id);
+		}
+
+		echo json_encode(true);
+	} 
 
 }
 

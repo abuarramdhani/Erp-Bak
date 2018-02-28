@@ -63,6 +63,7 @@ class C_Section extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['locator'] = $this->M_section->getLocatorName();
 
 		$this->form_validation->set_rules('txtSectionNameHeader', 'SectionName', 'required');
 
@@ -72,9 +73,40 @@ class C_Section extends CI_Controller
 			$this->load->view('ProductionPlanning/Settings/Section/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$locator = $this->input->post('LocatorId');
+			$a = explode(' | ', $locator);
+			$locator_id = $a[0];
+			$locator_name = $a[1];
+			if (empty($locator_id)) {
+				$locator_id = NULL;
+			}
+			if (empty($locator_name)) {
+				$locator_name = NULL;
+			}
+
+			$org_id = $this->input->post('OrganizationId');
+			if ($org_id == '0') {
+				$org_id = NULL;
+			}
+
+			$department_class_code = $this->input->post('DepartementClass');
+			if (empty($department_class_code)) {
+				$department_class_code = NULL;
+			}
+
+			$routing_class = $this->input->post('RoutingClass');
+			if (empty($routing_class)) {
+				$routing_class = NULL;
+			}
 			$data = array(
-				'section_name' => $this->input->post('txtSectionNameHeader'),
+				'section_name'			=> $this->input->post('txtSectionNameHeader',TRUE),
+				'locator_id' 			=> $locator_id,
+				'locator_name' 			=> $locator_name,
+				'org_id' 				=> $org_id,
+				'department_class_code' => $department_class_code,
+				'routing_class' 		=> $routing_class
     		);
+
 			$this->M_section->setSection($data);
 			$header_id = $this->db->insert_id();
 
@@ -101,6 +133,7 @@ class C_Section extends CI_Controller
 		$data['id'] = $id;
 
 		$data['Section'] = $this->M_section->getSection($plaintext_string);
+		$data['locator'] = $this->M_section->getLocatorName();
 
 		$this->form_validation->set_rules('txtSectionNameHeader', 'SectionName', 'required');
 
@@ -110,8 +143,38 @@ class C_Section extends CI_Controller
 			$this->load->view('ProductionPlanning/Settings/Section/V_update', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$locator = $this->input->post('LocatorId');
+			$a = explode(' | ', $locator);
+			$locator_id = $a[0];
+			$locator_name = $a[1];
+			if (empty($locator_id)) {
+				$locator_id = NULL;
+			}
+			if (empty($locator_name)) {
+				$locator_name = NULL;
+			}
+
+			$org_id = $this->input->post('OrganizationId');
+			if ($org_id == '0') {
+				$org_id = NULL;
+			}
+
+			$department_class_code = $this->input->post('DepartementClass');
+			if (empty($department_class_code)) {
+				$department_class_code = NULL;
+			}
+
+			$routing_class = $this->input->post('RoutingClass');
+			if (empty($routing_class)) {
+				$routing_class = NULL;
+			}
 			$data = array(
-				'section_name' => $this->input->post('txtSectionNameHeader',TRUE),
+				'section_name'			=> $this->input->post('txtSectionNameHeader',TRUE),
+				'locator_id' 			=> $locator_id,
+				'locator_name' 			=> $locator_name,
+				'org_id' 				=> $org_id,
+				'department_class_code' => $department_class_code,
+				'routing_class' 		=> $routing_class
     			);
 			$this->M_section->updateSection($data, $plaintext_string);
 

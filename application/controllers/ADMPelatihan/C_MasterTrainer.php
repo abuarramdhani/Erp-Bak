@@ -108,9 +108,62 @@ class C_MasterTrainer extends CI_Controller {
 		
 		$noind 		= $myArray[0];
 		$tname 		= $myArray[1];
-		$status		= 1;	
+		$status		= 1;
 
-		$this->M_mastertrainer->AddTrainer($noind,$tname,$status);
+		$experience  		= $this->input->post('txtPengalaman');	
+		$experience_date 	= $this->input->post('txtTanggalPengalaman');	
+		$certificated 		= $this->input->post('txtSertifikat');	
+		$certificated_date 	= $this->input->post('txtTanggalSertifikat');	
+		$team 				= $this->input->post('txtKegiatan');	
+		$team_date			= $this->input->post('txtTanggalkegiatan');	
+		$jabatan			= $this->input->post('txtJabatan');	
+
+		//save+ambil id dari master trainer------------------------------------
+		$id=$this->M_mastertrainer->AddTrainer($noind,$tname,$status);
+		//---------------------------------------------------------------------
+		$i=0;
+		foreach ($experience as $loop) {
+			$data_experience[$i]= array(
+				'noind' 		=> $noind, 
+				'trainer_id'	=> $id, 
+				'training_name' => $experience[$i], 
+				'training_date' => $experience_date[$i]
+			);
+			if (!empty($experience[$i])) {
+				$this->M_mastertrainer->AddExperience($data_experience[$i]);
+			}
+			$i++;
+		}
+		
+		$j=0;
+		foreach ($certificated as $loop) {
+			$data_certificated[$j]= array(
+				'noind' 		=> $noind, 
+				'trainer_id'	=> $id,
+				'training_name' => $certificated[$j], 
+				'training_date' => $certificated_date[$j], 
+			);
+			if (!empty($certificated[$j])) {
+				$this->M_mastertrainer->AddCertificated($data_certificated[$j]);
+			}
+			$j++;
+		}
+
+		$k=0;
+		foreach ($team as $key => $value) {
+			$data_team[$k]=array(
+				'noind' 	=> $noind, 
+				'trainer_id'=> $id,
+				'kegiatan' 	=> $team[$k], 
+				'date' 		=> $team_date[$k], 
+				'jabatan'	=> $jabatan[$k], 
+			);
+			if (!empty($team[$k])) {
+				$this->M_mastertrainer->AddTrainerTeam($data_team[$k]);
+			}
+			$k++;
+		}
+
 		redirect('ADMPelatihan/MasterTrainer');
 	}
 
@@ -131,6 +184,41 @@ class C_MasterTrainer extends CI_Controller {
 		redirect('ADMPelatihan/MasterTrainer');
 	}
 
+	//HALAMAN View
+	public function view($id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Master';
+		$data['SubMenuOne'] = 'Master Trainer';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$trainer= $this->M_mastertrainer->GetTrainerId($id);
+		$noind=$trainer[0]['noind'];
+		$nama_trainer=$trainer[0]['trainer_name'];
+		$data['detail']=$trainer; 
+
+		$nama=str_replace('  ', '', $nama_trainer);
+		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfo($nama);
+		// echo "<pre>";
+		// print_r($data['GetAllInfo']);
+		// echo "</pre>";
+		// exit();
+
+		$data['GetExperience'] = $this->M_mastertrainer->GetExperience($noind);
+		$data['GetCertificate'] = $this->M_mastertrainer->GetCertificate($noind);
+		$data['GetTeam'] = $this->M_mastertrainer->GetTeam($noind);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/MasterTrainer/V_View',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 	//HALAMAN EDIT
 	public function edit($id){
 		$this->checkSession();
@@ -144,8 +232,18 @@ class C_MasterTrainer extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$data['detail'] = $this->M_mastertrainer->GetTrainerId($id);
-		
+		$trainer= $this->M_mastertrainer->GetTrainerId($id);
+		$noind=$trainer[0]['noind'];
+		$nama_trainer=$trainer[0]['trainer_name'];
+		$data['detail']=$trainer; 
+
+		$nama=str_replace('  ', '', $nama_trainer);
+		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfo($nama);
+
+		$data['GetExperience'] = $this->M_mastertrainer->GetExperience($noind);
+		$data['GetCertificate'] = $this->M_mastertrainer->GetCertificate($noind);
+		$data['GetTeam'] = $this->M_mastertrainer->GetTeam($noind);
+	
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/MasterTrainer/V_Edit',$data);
@@ -157,10 +255,71 @@ class C_MasterTrainer extends CI_Controller {
 		$id			= $this->input->post('txtIdTrainer');
 		$noind 		= $this->input->post('txtNoind');
 		$tname 		= $this->input->post('txtNamaTrainer');
-		$status		= $this->input->post('slcStatus');
+		// $status		= $this->input->post('slcStatus');
+		$experience  		= $this->input->post('txtPengalaman');	
+		$experience_date 	= $this->input->post('txtTanggalPengalaman');
+		$idex 				= $this->input->post('idPengalaman');
 
-		$this->M_mastertrainer->UpdateTrainer($id,$noind,$tname,$status);
+		$certificated 		= $this->input->post('txtSertifikat');	
+		$certificated_date 	= $this->input->post('txtTanggalSertifikat');	
+		$id_cert		 	= $this->input->post('idsertifikat');	
+
+		$team 				= $this->input->post('txtKegiatan');	
+		$team_date			= $this->input->post('txtTanggalkegiatan');
+		$jabatan			= $this->input->post('txtJabatan');
+		$id_team			= $this->input->post('idteam');
+
+		$this->M_mastertrainer->UpdateTrainer($id,$noind,$tname);
 		
+		$i=0;
+		foreach ($experience as $ex) {
+			$data_experience = array(
+				'training_name' => $experience[$i], 
+				'training_date' => $experience_date[$i]
+			);
+
+			if ($idex[$i]== '0') {
+				$b = $this->M_mastertrainer->InsertEx($id, $experience[$i], $experience_date[$i], $noind);
+			}else{
+				$this->M_mastertrainer->updatePublic('pl.pl_experience', 'id_exp', $data_experience, $idex[$i]);
+			}
+			$i++;
+		}
+
+		$j=0;
+		foreach ($certificated as $ex) {
+			$data_certificated = array(
+				'noind' 		=> $noind, 
+				'trainer_id'	=> $id,
+				'training_name' => $certificated[$j], 
+				'training_date' => $certificated_date[$j]
+			);
+
+			if ($id_cert[$j]== '0') {
+				$b = $this->M_mastertrainer->AddCertificated($data_certificated);
+			}else{
+				$this->M_mastertrainer->updatePublic('pl.pl_certificated_training', 'id_cert', $data_certificated, $id_cert[$j]);
+			}
+			$j++;
+		}
+
+		$k=0;
+		foreach ($team as $ex) {
+			$data_team = array(
+				'noind' 		=> $noind, 
+				'trainer_id'	=> $id,
+				'kegiatan' 		=> $team[$k], 
+				'date' 			=> $team_date[$k],
+				'jabatan'		=> $jabatan[$k],
+			);
+
+			if ($id_team[$k]== '0') {
+				$b = $this->M_mastertrainer->AddTrainerTeam($data_team);
+			}else{
+				$this->M_mastertrainer->updatePublic('pl.pl_trainer_team', 'id_team', $data_team, $id_team[$k]);
+			}
+			$k++;
+		}
 		redirect('ADMPelatihan/MasterTrainer');
 	}
 	
@@ -172,7 +331,7 @@ class C_MasterTrainer extends CI_Controller {
 		echo "[";
 		foreach ($data as $data) {
 			$count--;
-			echo '{"NoInduk":"'.$data['employee_code'].'","Nama":"'.$data['employee_name'].'"}';
+			echo '{"NoInduk":"'.$data['noind'].'","Nama":"'.$data['nama'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}
@@ -180,21 +339,21 @@ class C_MasterTrainer extends CI_Controller {
 		echo "]";
 	}
 
-	//MENGAMBIL DAFTAR PEKERJA BERHUBUNGAN DENGAN AJAX/JAVASCRIPT
-	// public function GetApplicant(){
-	// 	$term = $this->input->get("term");
-	// 	$data = $this->M_mastertrainer->GetApplicant($term);
-	// 	$count = count($data);
-	// 	echo "[";
-	// 	foreach ($data as $data) {
-	// 		$count--;
-	// 		echo '{"NoInduk":"'.$data['kodelamaran'].'","Nama":"'.$data['nama'].'"}';
-	// 		if ($count !== 0) {
-	// 			echo ",";
-	// 		}
-	// 	}
-	// 	echo "]";
-	// }
+	public function delete_exp($trainer_id,$idex)
+		{		
+			
+			$delete = $this->M_mastertrainer->delete_exp($trainer_id,$idex);
+		}
+	public function delete_sertifikat($trainer_id,$idser)
+		{		
+			
+			$delete = $this->M_mastertrainer->delete_sertifikat($trainer_id,$idser);
+		}
+	public function delete_team($trainer_id,$idteam)
+		{		
+			
+			$delete = $this->M_mastertrainer->delete_team($trainer_id,$idteam);
+		}
 
 	public function checkSession(){
 		if($this->session->is_logged){

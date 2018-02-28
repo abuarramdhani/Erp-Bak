@@ -77,8 +77,12 @@
 	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
 	<!--	<script src="<?php echo base_url('assets/js/customLKH.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customOJT.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customDS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPP.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customICT.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customWR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMP.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){
@@ -165,6 +169,7 @@
 	<!--
 	<script src="<?php echo base_url('assets/js/formValidation.js')?>" type="text/javascript"></script>
 	-->
+	<script src="<?php echo base_url('assets/plugins/jQuery/jquery.toaster.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });

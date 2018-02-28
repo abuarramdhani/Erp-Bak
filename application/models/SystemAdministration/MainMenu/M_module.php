@@ -22,17 +22,18 @@ class M_module extends CI_Model {
 				
 		}
 		 
-		public function setResponsibility($data)
+		public function createModule($data)
 		{
-			return $this->db->insert('sys.sys_module', $data);
+			$this->db->insert('sys.sys_module' ,$data);
 		}
-		
-		public function updateResponsibility($data, $menu_id)
+
+		public function updateModule($data, $module_id)
 		{		
-				$this->db->where('module_id',$menu_id);
+				$this->db->where('module_id',$module_id);
 				$this->db->update('sys.sys_module', $data); 
 
 		}
+
 		
 		
 }

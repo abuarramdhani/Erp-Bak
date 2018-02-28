@@ -55,18 +55,20 @@
 								</div>
 							</div>
 
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-3 control-label">Waktu</label>
-									<div class="col-lg-4 ">
-										<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
-									</div>
-									<label class="col-lg-1 control-label" align="center">-</label>
-									<div class="col-lg-4">
-										<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
+							<?php if ($rc['package_scheduling_id']==0 && $rc['package_training_id']==0) {?>
+								<div class="row" style="margin: 10px 10px">
+									<div class="form-group">
+										<label class="col-lg-3 control-label">Waktu</label>
+										<div class="col-lg-4 ">
+											<input class="form-control" value="<?php echo $rc['start_time']?>" readonly>
+										</div>
+										<label class="col-lg-1 control-label" align="center">-</label>
+										<div class="col-lg-4">
+											<input class="form-control" value="<?php echo $rc['end_time']?>" readonly>
+										</div>
 									</div>
 								</div>
-							</div>
+							<?php }?>
 
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
@@ -204,6 +206,7 @@
 													<?php } if($ev3=='Y'){ ?>
 														<th  colspan="2" class="header_table">Perubahan Perilaku (Evaluasi Lapangan)</th>
 													<?php } ?>
+												<th  rowspan="2" style="min-width: 200px" class="header_table">lain-lain</th>
 											</tr>
 											<tr>
 												<?php if($ev2=='Y'){ ?>
@@ -248,39 +251,41 @@
 											<tr row-id="<?php echo $no ?>">
 												<td><?php echo $no ?></td>
 												<td><?php echo $pt['noind'] ?></td>
-												<td><?php echo $pt['participant_name'] ?></td>
 												<td>
+													<?php echo $pt['participant_name'] ?>
 													<input type="text" name="txtId[]" value="<?php echo $pt['participant_id']?>" hidden>
-													<select class="form-control select4" name="slcStatus[]">
+												</td>
+												<td>
+													<select class="form-control select2" name="slcStatus[]" style="width: 100%; min-width: 100%;">
 														<option value="1" <?php echo $hadir;?> >Hadir</option>
 														<option value="2" <?php echo $tidakhadir;?> >Tidak Hadir</option>
 													</select>
 												</td>
-												<!-- <td col-id="reaksi">
-														<input type="text" class="form-control" name="txtReaksiPost[]" Placeholder="Reaksi" onchange="<?php echo $a; ?>(this,'reaksi','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval1_post'];?>">
-												</td>  -->
 													<?php if($ev2=='Y'){ ?>
-												<td col-id="pre">
-													<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onchange="<?php echo $a; ?>(this,'pre','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
-												</td>
-												<td col-id="post">
-													<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
-												</td>
+														<td col-id="pre">
+															<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onchange="<?php echo $a; ?>(this,'pre','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
+														</td>
+														<td col-id="post">
+															<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
+														</td>
 													<?php } if($ev3=='Y'){ ?>
-												<td>
-													<select class="form-control SlcRuang" name="txtPerilakuEvalLap[]" data-placeholder="Eval" required>
-														<option value="0" <?php if ($pt['score_eval3_post2'] == 0) {
-															echo "selected";
-														} ?> >Tidak Kompeten</option>
-														<option value="1" <?php if ($pt['score_eval3_post2'] == 1) {
-															echo "selected";
-														} ?> >Kompeten</option>
-													</select>
-												</td>
-												<td>
-													<input type="text" class="form-control" name="txtKeterangan[]" Placeholder="Keterangan" value="<?php echo $pt['comment'];?>">
-												</td>
+														<td>
+															<select class="form-control SlcRuang" name="txtPerilakuEvalLap[]" data-placeholder="Eval" required>
+																<option value="0" <?php if ($pt['score_eval3_post2'] == 0) {
+																	echo "selected";
+																} ?> >Tidak Kompeten</option>
+																<option value="1" <?php if ($pt['score_eval3_post2'] == 1) {
+																	echo "selected";
+																} ?> >Kompeten</option>
+															</select>
+														</td>
+														<td>
+															<input type="text" class="form-control" name="txtKeterangan[]" Placeholder="Keterangan" value="<?php echo $pt['comment'];?>">
+														</td>
 													<?php } ?>
+												<td>
+													<input type="text" class="form-control" name="txtOthers[]" placeholder="keterangan lain" value="<?php echo $pt['keterangan_kehadiran'] ?>">
+												</td>
 											</tr>
 											<?php } ?>
 										</tbody>

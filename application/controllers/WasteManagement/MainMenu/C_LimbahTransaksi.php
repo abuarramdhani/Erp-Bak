@@ -102,7 +102,7 @@ class C_LimbahTransaksi extends CI_Controller
 			$this->M_limbahtransaksi->setLimbahTransaksi($data);
 			$header_id = $this->db->insert_id();
 
-			redirect(site_url('WasteManagement/LimbahTransaksi'));
+			redirect(base_url('WasteManagement/LimbahTransaksi'));
 		}
 	}
 
@@ -161,7 +161,7 @@ class C_LimbahTransaksi extends CI_Controller
     			);
 			$this->M_limbahtransaksi->updateLimbahTransaksi($data, $plaintext_string);
 
-			redirect(site_url('WasteManagement/LimbahTransaksi'));
+			redirect(base_url('WasteManagement/LimbahTransaksi'));
 		}
 	}
 
@@ -449,6 +449,31 @@ class C_LimbahTransaksi extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function ApproveLimbahMasuk(){
+		$this->checkSession();
+
+		$id_lines = $this->input->post('idMasuk');
+		$idLimbah = explode(',', $id_lines);
+		for ($i=0; $i < (count($idLimbah)-1); $i++) { 
+			$id = $idLimbah[$i];
+			$this->M_limbahtransaksi->kirimApprove($id);
+		}
+
+		echo json_encode(true);
+	}
+
+	public function RejectLimbahMasuk(){
+		$this->checkSession();
+
+		$id_lines = $this->input->post('idMasuk');
+		$idLimbah = explode(',', $id_lines);
+		for ($i=0; $i < (count($idLimbah)-1); $i++) { 
+			$id = $idLimbah[$i];
+			$this->M_limbahtransaksi->kirimReject($id);
+		}
+
+		echo json_encode(true);
+	}
 }
 
 /* End of file C_LimbahTransaksi.php */

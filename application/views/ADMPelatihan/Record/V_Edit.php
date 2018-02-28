@@ -57,23 +57,25 @@
 								</div>
 							</div>
 						
-							<div class="row" style="margin: 10px 10px">
-								<div class="form-group">
-									<label class="col-lg-3 control-label">Waktu</label>
-									<div class="col-lg-4 ">
-										<div class="bootstrap-timepicker timepicker">
-											<input type="text" name="txtWaktuMulai" class="form-control" placeholder="Waktu" id="TrainingStartTime" onkeypress="return isNumberKey(event)" value="<?php echo $rc['start_time']?>" required >
-										</div>
+							<?php if ($rc['package_scheduling_id']==0 && $rc['package_training_id']==0) {?>
+								<div class="row" style="margin: 10px 10px">
+									<div class="form-group">
+										<label class="col-lg-3 control-label">Waktu</label>
+										<div class="col-lg-4 ">
+											<div class="bootstrap-timepicker timepicker">
+												<input type="text" name="txtWaktuMulai" class="form-control" placeholder="Waktu" id="TrainingStartTime" onkeypress="return isNumberKey(event)" value="<?php echo $rc['start_time']?>" required >
+											</div>
 
-									</div>
-									<label class="col-lg-1 control-label" align="center">-</label>
-									<div class="col-lg-4">
-										<div class="bootstrap-timepicker timepicker">
-											<input type="text" name="txtWaktuSelesai" class="form-control"  placeholder="Waktu" id="TrainingEndTime" onkeypress="return isNumberKey(event)"  value="<?php echo $rc['end_time']?>" required >
+										</div>
+										<label class="col-lg-1 control-label" align="center">-</label>
+										<div class="col-lg-4">
+											<div class="bootstrap-timepicker timepicker">
+												<input type="text" name="txtWaktuSelesai" class="form-control"  placeholder="Waktu" id="TrainingEndTime" onkeypress="return isNumberKey(event)"  value="<?php echo $rc['end_time']?>" required >
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							<?php } ?>
 
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
@@ -200,9 +202,9 @@
 											?>
 											<tr>
 												<td><?php echo $no ?></td>
-												<td><?php echo $tr['noind'] ?></td>
-												<td><?php echo $tr['trainer_name'] ?></td>
-												<td><?php echo $status ?></td>
+												<td><?php echo $tr['noind']?></td>
+												<td><?php echo $tr['trainer_name']?></td>
+												<td><?php echo $status?></td>
 											</tr>
 											<?php }}} ?>
 										</tbody>

@@ -43,6 +43,25 @@ class M_limbahtransaksi extends CI_Model
     	return $query->result_array();
     }
 
+    function LimbahWaiting(){
+        $sql    = "SELECT limsi.*,
+                            limnis.jenis_limbah,
+                            limnis.id_jenis_limbah,
+                            liman.limbah_perlakuan,
+                            dmsi.nama_seksi
+                    from ga.ga_limbah_transaksi as limsi
+                        left join ga.ga_limbah_jenis limnis
+                            on limsi.jenis_limbah = limnis.id_jenis_limbah
+                        left join ga.ga_limbah_perlakuan as liman
+                            on limsi.perlakuan = liman.id_perlakuan
+                        left join dm.dm_seksi as dmsi
+                            on limsi.sumber_limbah=dmsi.seksi_id
+                        where limsi.konfirmasi='0'
+                        order by creation_date desc";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function setLimbahTransaksi($data)
     {
         return $this->db->insert('ga.ga_limbah_transaksi', $data);
@@ -162,7 +181,7 @@ class M_limbahtransaksi extends CI_Model
     {
         $queryApprove   = " UPDATE  ga.ga_limbah_transaksi
                                 SET     konfirmasi = 1      
-                                WHERE   id_transaksi = $id";
+                                WHERE   id_transaksi = '$id'";
         $sqlApprove     =   $this->db->query($queryApprove);
     }
 
@@ -170,7 +189,7 @@ class M_limbahtransaksi extends CI_Model
     {
         $queryReject   = " UPDATE  ga.ga_limbah_transaksi
                                 SET     konfirmasi = 2      
-                                WHERE   id_transaksi = $id";
+                                WHERE   id_transaksi = '$id'";
         $sqlReject     =   $this->db->query($queryReject);
     }
 
@@ -335,7 +354,7 @@ class M_limbahtransaksi extends CI_Model
                         where       limver.id_jenis_limbah=x.id_jenis_limbah
                     )
                 )as total_limbah
-    from            (
+            from            (
                     select distinct     limsi.jenis_limbah as id_jenis_limbah,
                                         limsi.perlakuan as id_perlakuan,
                                         limsi.jenis_sumber as sumber,
@@ -356,7 +375,7 @@ class M_limbahtransaksi extends CI_Model
                     order by            id_jenis_limbah,
                                         id_perlakuan
                 ) as x
-where to_date(x.periode, 'MM-YYYY') = '$tanggalawal'::date-interval '1 month'";
+            where to_date(x.periode, 'MM-YYYY') = '$tanggalawal'::date-interval '1 month'";
         $query = $this->db->query($sqlPeriodeSebelum);
         return $query->result_array();
     }

@@ -434,7 +434,7 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
 {
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
     var   Kategori      =   $('#cmbKategori').val();
-    var   Periode       =   $('#daterangepicker').val();
+    var   Periode       =   $('#ManajemenKendaraan-daterangepicker').val();
 
     // $('.alert').alert('close');
     // $('body').addClass('noscroll');

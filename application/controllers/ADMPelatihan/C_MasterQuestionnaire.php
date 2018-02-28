@@ -197,44 +197,6 @@ class C_MasterQuestionnaire extends CI_Controller {
 		}
 		
 		redirect('ADMPelatihan/MasterQuestionnaire/');
-
-
-			// $i=0;
-			// foreach($Statement as $st){
-			// 	$i++;
-			// }
-				
-
-
-		//$i=0;
-		// foreach($Statement as $st){
-		// 	print_r($st);
-		// 	// exit();
-		// 	$data_statement[$i] = array(
-		// 		'questionnaire_id' 		=> $QuestionnaireId,
-		// 		'segment_id' 			=> $SegmentId[$i],
-		// 		'statement_description' => $st[$i],
-		// 		'statement_order' 		=> $i
-		// 	);
-		// 	if( !empty($data_statement[$i]) ){
-		// 		// $this->M_masterquestionnaire->AddQuestionnaireStatement($data_statement[$i]);
-		// 	}
-		// 	$i++;
-		// }
-
-		// $j=0;
-		// foreach($StatementEss as $esay){
-		// 	$data_statementsay[$j] = array(
-		// 		'questionnaire_id' 		=> $QuestionnaireId,
-		// 		'segment_id' 			=> $SegmentId[1],
-		// 		'statement_description' => $esay,
-		// 		'statement_order' 		=> $j
-		// 	);
-		// 	if( !empty($data_statementsay[$j]) ){
-		// 		// $this->M_masterquestionnaire->AddQuestionnaireStatement($data_statementsay[$j]);
-		// 	}
-		// 	$j++;
-		// }
 	}
 
 	public function EditStatement($Qs_id, $Sg_id)
