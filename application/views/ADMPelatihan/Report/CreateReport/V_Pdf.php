@@ -59,8 +59,8 @@
 <br>
 <table style="width:100%;" class="table table-bordered">
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px;"><b>Hari / Tanggal</b></td>
-		<td style="width: 330px; font-size: 13px;">
+		<td style="width: 50px; font-size: 13px;"><b>Hari / Tanggal</b></td>
+		<td style="width: 300px; font-size: 13px;">
 			<?php 
 				$date=$rp['tanggal']; 
 				// $newDate=date("l, d F Y", strtotime($date));
@@ -124,40 +124,48 @@
 				$Date 		=	date("d", strtotime($date));
 				$Year 		=	date("Y", strtotime($date));
 				$indonesianDate 	=	$nameofDay.', '.$Date.' '.$nameofMonth.' '.$Year;
-				echo $indonesianDate;
+				echo ':&emsp;'.$indonesianDate;
 			?>	
 		</td>
 	</tr>
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px;"><b>Judul Training / Nama Kegiatan</b></td>
-		<td style="width: 330px; font-size: 13px;"><?php echo $rp['scheduling_or_package_name'];?></td>
+		<td style="width: 70px; font-size: 13px;"><b>Judul Training / Nama Kegiatan</b></td>
+		<td style="width: 300px; font-size: 13px;"><?php echo ':&emsp;'.$rp['scheduling_or_package_name'];?></td>
 	</tr>
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px;"><b>Jenis Training</b></td>
-		<td style="width: 330px; font-size: 13px;">
+		<td style="width: 70px;  font-size: 13px;"><b>Jenis Training</b></td>
+		<td style="width: 300px; font-size: 13px;">
 			<?php 
-				if ($rp['jenis']==0) {echo "Softskill";} 
-				if ($rp['jenis']==1) {echo "Hardskill";} 
+				if ($rp['jenis']==0) {echo ':&emsp;'."Softskill";} 
+				if ($rp['jenis']==1) {echo ':&emsp;'."Hardskill";} 
+				if ($rp['jenis']==2) {echo ':&emsp;'."Softskill & Hardskill";} 
 			?>
 		</td>
 	</tr>
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px;"><b>Jumlah Peserta yang Terdaftar</b></td>
-		<td style="width: 330px; font-size: 13px;"><?php echo $rp['peserta_total']." Orang";?></td>
+		<td style="width: 70px;  font-size: 13px;"><b>Jumlah Peserta yang Terdaftar</b></td>
+		<td style="width: 300px; font-size: 13px;"><?php echo ':&emsp;'.$rp['peserta_total']." Orang";?></td>
 	</tr>
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px;"><b>Jumlah Peserta yang Datang</b></td>
-		<td style="width: 330px; font-size: 13px;"><?php echo $rp['peserta_hadir']." Orang";?></td>
+		<td style="width: 70px;  font-size: 13px;"><b>Jumlah Peserta yang Datang</b></td>
+		<td style="width: 300px; font-size: 13px;"><?php echo ':&emsp;'.$rp['peserta_hadir']." Orang";?></td>
 	</tr>
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px; vertical-align: top;"><b>Pelaksana</b></td>
-		<td style="width: 330px; font-size: 13px;vertical-align: top;">
+		<td style="width: 70px;  font-size: 13px; vertical-align: top;"><b style="text-align: right;">Pelaksana</b></td>
+		<td style="width: 300px; font-size: 13px; vertical-align: top;">
 			<?php 
-				$strainer=explode(',', $rp['pelaksana']);					
+				$checkpoint=0;
+				$strainer=explode(',', $rp['pelaksana']);
 				foreach ($strainer as $st) {
 					foreach ($trainer as $tr) {
 						if ($st==$tr['trainer_id']) {
-							echo $tr['trainer_name']."<br>";
+							if ($checkpoint==0) {
+								echo ':&emsp;'.ucwords(strtolower($tr['trainer_name'])," ")."<br>";
+								$checkpoint++;
+							}
+							else{
+								echo '&emsp;&nbsp;'.ucwords(strtolower($tr['trainer_name'])," ")."<br>";
+							}
 						} 
 					} 
 				}
@@ -165,8 +173,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td style="width: 70px; border-right: 1px solid black; font-size: 13px;"><b>Index Materi</b></td>
-		<td style="width: 330px; font-size: 13px;"><?php echo $rp['index_materi'];?></td>
+		<td style="width: 70px; font-size: 13px;"><b>Index Materi</b></td>
+		<td style="width: 300px; font-size: 13px;"><?php echo ':&emsp;'.$rp['index_materi'];?></td>
 	</tr>
 	<tr>
 		<td style="width: 70px; font-size: 13px;vertical-align: top;"><b>Deskripsi Kegiatan</b></td>
@@ -175,7 +183,7 @@
 		<td style="height: 10px"></td>
 	</tr>
 	<tr>
-		<td style="width: 330px; font-size: 13px;vertical-align: top;"><?php echo $rp['description'];?></td>
+		<td style="width: 300px; font-size: 13px;vertical-align: top;text-align: justify;" colspan="2"><?php echo $rp['description'];?></td>
 	</tr>
 </table>
 <br>
@@ -306,7 +314,7 @@
 		<td style="height: 10px"></td>
 	</tr>
 	<tr>
-		<td style="width: 330px; font-size: 13px;vertical-align: top;"><?php echo $rp['kendala'];?></td>
+		<td style="width: 300px; font-size: 13px;vertical-align: top;text-align: justify;"><?php echo $rp['kendala'];?></td>
 	</tr>
 	<tr>
 		<td style="height: 20px"></td>
@@ -318,7 +326,7 @@
 		<td style="height: 10px"></td>
 	</tr>
 	<tr>
-		<td style="width: 330px; font-size: 13px;vertical-align: top;"><?php echo $rp['catatan'];?></td>
+		<td style="width: 300px; font-size: 13px;vertical-align: top;text-align: justify;"><?php echo $rp['catatan'];?></td>
 	</tr>
 </table>
 <br>
@@ -331,7 +339,7 @@
             		<td style="border-bottom: 1px solid black">Paraf</td>
             	</tr>
             	<tr>
-            		<td style="height: 50px; width: 60px; border-right: 1px solid black">2017</td>
+            		<td style="height: 50px; width: 60px; border-right: 1px solid black"></td>
             		<td style="height: 50px;">apararar</td>
             	</tr>
             </table>
