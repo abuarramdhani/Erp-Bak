@@ -160,11 +160,11 @@
 					foreach ($trainer as $tr) {
 						if ($st==$tr['trainer_id']) {
 							if ($checkpoint==0) {
-								echo ':&emsp;'.ucwords(strtolower($tr['trainer_name'])," ")."<br>";
+								echo ':&emsp;'.ucwords(strtolower($tr['trainer_name']))."<br>";
 								$checkpoint++;
 							}
 							else{
-								echo '&emsp;&nbsp;'.ucwords(strtolower($tr['trainer_name'])," ")."<br>";
+								echo '&emsp;&nbsp;'.ucwords(strtolower($tr['trainer_name']))."<br>";
 							}
 						} 
 					} 
