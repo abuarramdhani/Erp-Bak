@@ -162,7 +162,7 @@ $(document).ready(function(){
 			processResults: function (data) {
 				return {
 					results: $.map(data, function(obj) {
-						return { id:obj.objective, text:obj.objective};
+						return { id:obj.purpose, text:obj.purpose};
 					})
 				};
 			}
@@ -722,7 +722,7 @@ $(document).ready(function(){
 				processResults: function (data) {
 					return {
 						results: $.map(data, function(obj) {
-							return { id:obj.objective, text:obj.objective};
+							return { id:obj.purpose, text:obj.purpose};
 						})
 					};
 				}
@@ -747,7 +747,7 @@ $(document).ready(function(){
 				processResults: function (data) {
 					return {
 						results: $.map(data, function(obj) {
-							return { id:obj.objective, text:obj.objective};
+							return { id:obj.purpose, text:obj.purpose};
 						})
 					};
 				}
@@ -1143,9 +1143,9 @@ $(document).ready(function(){
 
 	// DELETE ROW SAAT CREATE SEGMENT EDIT
 	function delSpesifikRow121(rowid,segmentid) {
-		if (segmentid == '0') {
-			$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
-		}else{
+		// if (segmentid == '0') {
+		// 	$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
+		// }else{
 			$.ajax({
 				type:'POST',
 				url:baseurl+"ADMPelatihan/MasterQuestionnaire/delSeg/"+segmentid,
@@ -1154,7 +1154,7 @@ $(document).ready(function(){
 					$('#tblQuestionnaireSegment #tbodyQuestionnaireSegment tr[row-id="'+rowid+'"]').remove();
 				}
 			});
-		}
+		// }
 		
 	}
 
@@ -1214,6 +1214,7 @@ $(document).ready(function(){
 				{
 					$(th).closest('tr').find('a[data-id="segment-button"]').removeAttr("disabled"); 
 					$(th).closest('tr').find('a[data-id="segment-button"]').attr("href", baseurl+"ADMPelatihan/MasterQuestionnaire/EditStatement/"+quID+'/'+result);
+					location.reload(true);
 				}
 			})
 		}

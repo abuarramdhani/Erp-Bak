@@ -3,12 +3,12 @@
 							print_r($participantName);
 							echo "</pre>";
 							?> -->
-							<table class="table table-bordered table-striped table-hover table-condensed" style="table-layout: fixed;" name="tbodyevalPembelajaran" id="tbodyevalPembelajaran">
+							<table class="table table-bordered table-striped table-hover table-condensed" style="overflow:scroll; max-height: 500px; max-width: 2000px" name="tbodyevalPembelajaran" id="tbodyevalPembelajaran">
 								<thead class="bg-blue">
 									<tr>
-										<th width="5%" style="text-align:center;vertical-align: middle" rowspan="2">No</th>
-										<th width="50%" style="text-align:center;vertical-align: middle" rowspan="2">Nama</th>
-										<th style="text-align:center;vertical-align: middle" rowspan="2">Noind</th>
+										<th style="text-align:center;vertical-align: middle; width: 50px" rowspan="2">No</th>
+										<th style="text-align:center;vertical-align: middle;width: 300px" rowspan="2">Nama</th>
+										<th style="text-align:center;vertical-align: middle; width: 100px" rowspan="2">Noind</th>
 										<th colspan="<?php echo $jmlrowPck; ?>" style="text-align:center;vertical-align: middle">Post-Test</th>
 									</tr>
 									<tr>
@@ -34,7 +34,7 @@
 										<td>
 											<?php echo $prt['participant_name'];?>
 										</td>
-										<td>
+										<td style="text-align:center;">
 											<?php echo $prt['noind']; ?>
 										</td>
 										

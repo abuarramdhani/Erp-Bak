@@ -180,16 +180,7 @@ class C_Penjadwalan extends CI_Controller {
 	public function GetObjective(){
 		$term = $this->input->get("term");
 		$data = $this->M_penjadwalan->GetObjective($term);
-		$count = count($data);
-		echo "[";
-		foreach ($data as $data) {
-			$count--;
-			echo '{"objective":"'.$data['purpose'].'"}';
-			if ($count !== 0) {
-				echo ",";
-			}
-		}
-		echo "]";
+		echo json_encode($data);
 	}
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE

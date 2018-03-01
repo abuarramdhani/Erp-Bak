@@ -98,7 +98,7 @@
 									<div class="col-lg-8 text-right">
 										<a href="<?php echo site_url('ADMPelatihan/MasterQuestionnaire/index');?>" class="btn btn-primary btn btn-flat" class="btn btn-primary btn btn-flat">Back</a>
 										&nbsp;&nbsp;
-										<button type="submit" class="btn btn-success btn-flat">Save Data</button>			
+										<!-- <button type="submit" class="btn btn-success btn-flat">Save Data</button>			 -->
 									</div>
 								</div>
 							</form>
