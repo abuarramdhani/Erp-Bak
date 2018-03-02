@@ -47,7 +47,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4">
-							<label>ORDER</label>
+							<label>TO DO</label>
 					</div>
 					<div class="col-md-8">
 						<div class="form-group">
@@ -81,7 +81,7 @@
 					</div>
 					<div class="col-md-8">
 						<div class="form-group">
-						<input type="text" name="textKeterangan" class="form-control" required>
+						<textarea name="textKeterangan" class="form-control" rows="10" cols="70" required></textarea> 
 						</div>
 					</div>
 				</div>

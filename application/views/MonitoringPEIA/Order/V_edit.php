@@ -2,7 +2,7 @@
 	<div class="inner"  style="padding-top: 50px">
 		<div class="box box-info">
 			<div class="box-header with-border">
-				<h3><b><center>EDIT ORDER</center></b></h3>
+				<h3><b><center>EDIT To Do</center></b></h3>
 				<p class="help-block" style="text-align:center;">
 				Hint! : Input with complete data on each form , except for the data marked with an asterisk * , can be not filled.
 				</p>
@@ -11,7 +11,7 @@
 				<div class="row">
 				<form method="post" action="<?php echo base_url('ProductionEngineering/Order/update')?>">
 					<div class="col-md-4">
-							<label>ORDER</label>
+							<label>To Do</label>
 					</div>
 					<div class="col-md-8">
 					<div class="form-group">

@@ -109,7 +109,7 @@ class C_AccountReceivables extends CI_Controller {
 		$data['seksi'] = $this->M_creditlimit->getAllSeksi();
 		$data['order'] = $this->M_creditlimit->getAllOrder();
 		$data['jenisOrder'] = $this->M_creditlimit->getAllJenisOrder();
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringPEIA/Laporan/V_edit', $data);
@@ -260,7 +260,6 @@ class C_AccountReceivables extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-
 	public function Order()
 	{
 		$this->checkSession();
@@ -387,6 +386,32 @@ class C_AccountReceivables extends CI_Controller {
 		redirect(base_url('ProductionEngineering/JenisOrder/'));
 	}
 
+	public function searchTanggal()
+	{
+		$tanggalan1=$this->input->post("tgl1");
+		$tanggalan2=$this->input->post("tgl2");
+
+
+		$data = $this->M_creditlimit->searchTanggal($tanggalan1,$tanggalan2);
+		$no = 1; 
+		foreach ($data as $cl) { 
+		 	echo '<tr row-id="'.$cl['id'].'">
+						<td style="text-align:center">'.$no.'</td>
+						<td style="text-align:center">'.$cl['tanggal'].'</td>
+						<td style="text-align:center">'.$cl['seksi'].'</td>
+						<td style="text-align:center">'.$cl['nama'].'</td>
+						<td style="text-align:center">'.$cl['order_'].'</td>
+						<td style="text-align:center">'.$cl['jenis_order'].'</td>
+						<td style="text-align:center">'.$cl['keterangan'].'</td>
+						<td style="text-align:center" class="col-md-2">
+							<div class="btn-group-justified" role="group">
+								<a class="btn btn-default" href="'.base_url().'ProductionEngineering/Laporan/edit/'.$cl['id'].'">EDIT</a>
+								<a class="btn btn-default hapus" onclick="DeleteLaporan('.$cl['id'].')">DELETE</a>
+							</div>
+						</td>
+					</tr>';
+				$no++;}
+	}
 
 	public function deleteSeksi($id){
 
@@ -411,5 +436,55 @@ class C_AccountReceivables extends CI_Controller {
 		redirect(base_url('ProductionEngineering/Laporan/'));
 	}
 
+	public function buatPDF($tanggalan1,$tanggalan2)
+	{
+		// $tanggalan1=$this->input->post("daterawal");
+		// $tanggalan2=$this->input->post("daterakhir");
+		$report = $this->M_creditlimit->searchTanggal($tanggalan1,$tanggalan2);
+
+		$y=15;
+		for ($x=0; $x < $y; $x++) {
+				if (!empty($report[$x])) {
+					$data_array_2[] = array(
+						'tanggal' => $report[$x]['tanggal'],
+						'seksi' => $report[$x]['seksi'],
+						'nama' => $report[$x]['nama'],
+						'order_' => $report[$x]['order_'],
+						'jenis_order' => $report[$x]['jenis_order'],
+						'keterangan' => $report[$x]['keterangan'],
+						'no' => $x+1
+					);
+				}
+				else{
+					$data_array_2[] = array(
+						'tanggal' => '',
+						'seksi' => '',
+						'nama' => '',
+						'order' => '',
+						'jenisOrder' => '',
+						'keterangan' => '',
+						'no' => ''
+					);
+				}
+			}
+		$data['report'] = $data_array_2;
+
+		$this->load->library('Pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8','A4-L', 0, '', 9, 9, 9, 9); 
+		$filename = 'Report_PIEA_.pdf';
+		
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$html = $this->load->view('MonitoringPEIA/V_PDF', $data, true);
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
+
+
+
+
+		$this->load->view('MonitoringPEIA/V_PDF',$data);
+
+	}
 
 }

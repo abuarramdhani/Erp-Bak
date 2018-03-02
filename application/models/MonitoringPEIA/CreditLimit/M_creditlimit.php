@@ -11,7 +11,7 @@ clASs M_creditlimit extends CI_Model {
 	public function showDataSemua()
 	{
 		$sql = "SELECT id,tanggal,seksi,nama,order_,jenis_order,keterangan
- 				FROM pe.pe_table_order";
+ 				FROM pe.pe_table_order ORDER BY tanggal DESC";
 		
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -198,6 +198,15 @@ clASs M_creditlimit extends CI_Model {
 		$sql = "DELETE FROM pe.pe_table_order WHERE id = $id";
 
 		$query = $this->db->query($sql);
+		
+	}
+
+	public function searchTanggal($tanggalan1,$tanggalan2)
+	{
+		$sql = "SELECT id,tanggal,seksi,nama,order_,jenis_order,keterangan FROM pe.pe_table_order WHERE tanggal between '$tanggalan1' AND '$tanggalan2'";
+
+		$query = $this->db->query($sql);
+		return $query->result_array();
 		
 	}
 }

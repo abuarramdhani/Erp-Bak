@@ -67,7 +67,7 @@ $db['default'] = array(
 	'hostname' => 'db.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
-	'database' => 'erp',
+	'database' => 'erpdev',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -222,8 +222,6 @@ $db['kaizen'] = array(
 	'port' => 3306
 );
 
-
-
 $db['ticket'] = array(
 	'dsn'	=> '',
 	'hostname' => 'ictsupport.quick.com',
@@ -248,10 +246,10 @@ $db['ticket'] = array(
 
 $db['oracle_dev'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.3:1522/DEV',
+	'hostname' => '192.168.7.1:1521/PROD',
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_DEV',
+	'database' => 'KHS_PROD',
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -268,12 +266,12 @@ $db['oracle_dev'] = array(
 	'save_queries' => TRUE
 );
 
-$db['quickerpdev'] = array(
+$db['erp'] = array(
 	'dsn'	=> '',
 	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
-	'database' => 'quickerpdev',
+	'database' => 'erp',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => TRUE,

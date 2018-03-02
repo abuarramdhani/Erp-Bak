@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-11">
 				<div class="text-right">
-					<h1><b>ORDER</b></h1>
+					<h1><b>To Do</b></h1>
 				</div>
 			</div>
 			<div class="col-md-1">
@@ -18,7 +18,7 @@
 			<table id="tableorder" class="table table-striped table-bordered table-responsive table-hover" >
 				<thead style="background:#22aadd; color:#FFFFFF;">
 					<th style="text-align:center">NO</th>
-					<th style="text-align:center">ORDER</th>
+					<th style="text-align:center">To Do</th>
 					<th style="text-align:center">DESKRIPSI</th>
 					<th style="text-align:center">ACTION</th>
 				</thead>

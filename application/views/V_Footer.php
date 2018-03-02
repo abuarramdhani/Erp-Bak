@@ -11,7 +11,9 @@
 		</footer>
 		<!--END FOOTER -->
      
-	
+	<script type="text/javascript">
+	var baseurl = "<?php echo base_url(); ?>";
+	</script>
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
 	<!-- FastClick -->
@@ -84,7 +86,7 @@
 	<script src="<?php echo base_url('assets/js/customWR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMP.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
-		var baseurl = "<?php echo base_url(); ?>";
+		
 		if(counter_row <= 0){
 			var counter_row = 0;
 		}
