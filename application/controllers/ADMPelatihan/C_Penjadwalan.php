@@ -32,6 +32,7 @@ class C_Penjadwalan extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('ADMPelatihan/M_penjadwalan');
 		$this->load->model('ADMPelatihan/M_record');
+		$this->load->model('ADMPelatihan/M_penjadwalanpackage');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -150,6 +151,9 @@ class C_Penjadwalan extends CI_Controller {
 		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
 		// $data['alert'] = $alert;
 
+		// Ambil status hari pertama sebagai start date 
+		$data['GetStartDate'] = $this->M_penjadwalan->GetStartDate($pse);
+	
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/Penjadwalan/V_CreatebyPackageSingle',$data);
@@ -176,16 +180,7 @@ class C_Penjadwalan extends CI_Controller {
 	public function GetObjective(){
 		$term = $this->input->get("term");
 		$data = $this->M_penjadwalan->GetObjective($term);
-		$count = count($data);
-		echo "[";
-		foreach ($data as $data) {
-			$count--;
-			echo '{"objective":"'.$data['purpose'].'"}';
-			if ($count !== 0) {
-				echo ",";
-			}
-		}
-		echo "]";
+		echo json_encode($data);
 	}
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
@@ -249,8 +244,8 @@ class C_Penjadwalan extends CI_Controller {
 			foreach($participant as $loop){
 				$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
 					foreach ($dataemployee as $de) {
-						$noind		= $de['employee_code'];
-						$name		= $de['employee_name'];
+						$noind		= $de['noind'];
+						$name		= $de['nama'];
 					}
 				$data_participant[$j] = array(
 					'scheduling_id' 	=> $pkgid,
@@ -386,8 +381,8 @@ class C_Penjadwalan extends CI_Controller {
 				foreach($participant as $loop){
 					$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
 					foreach ($dataemployee as $de) {
-						$noind		= $de['employee_code'];
-						$name		= $de['employee_name'];
+						$noind		= $de['noind'];
+						$name		= $de['nama'];
 					}
 					$data_participant[$j] = array(
 						'scheduling_id' 	=> $pkgid,
@@ -482,15 +477,15 @@ class C_Penjadwalan extends CI_Controller {
 
 		$date 					= $this->input->post('txtTanggalPelaksanaan');
 		$room					= $this->input->post('slcRuang');
-
+		$startdate 				= $this->input->post('txtStartDate');
 		
 		$participant			= $this->input->post('slcEmployee');
 		$participant_type		= $this->input->post('txtPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
-		$evaluasi		= $this->input->post('slcEvaluasi');
-		$evaluasi2 		= implode(',', $evaluasi);
-		$sifat			= $this->input->post('slcSifat');
-		$jenis			= $this->input->post('txtJenis');
+		$evaluasi				= $this->input->post('slcEvaluasi');
+		$evaluasi2 				= implode(',', $evaluasi);
+		$sifat					= $this->input->post('slcSifat');
+		$jenis					= $this->input->post('txtStartDate');
 
 		// $GetAlertPackage= $this->M_penjadwalan->GetAlertPackage($date,$room,$training_id);
 		// $GetTrainerAlert= $this->M_penjadwalan->GetTrainer();
@@ -502,6 +497,12 @@ class C_Penjadwalan extends CI_Controller {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 		
+
+		// isi start date paket		
+		if ($startdate==0) {
+			$this->M_penjadwalan->UpdateStartDate($date,$package_scheduling_id);
+		}
+		// Add penjadwalan
 		$this->M_penjadwalan->AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers,$sifat,$jenis);
 		
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
@@ -511,8 +512,8 @@ class C_Penjadwalan extends CI_Controller {
 				foreach($participant as $loop){
 					$dataemployee	= $this->M_penjadwalan->GetEmployeeData($loop);
 					foreach ($dataemployee as $de) {
-						$noind		= $de['employee_code'];
-						$name		= $de['employee_name'];
+						$noind		= $de['noind'];
+						$name		= $de['nama'];
 					}
 					$data_participant[$j] = array(
 						'scheduling_id' 	=> $pkgid,

@@ -6,14 +6,14 @@
 							// print_r($justSegmentPck);
 							echo "</pre>";
 							?> -->
-							<table class="table table-bordered table-striped table-hover table-condensed" id="tbodyevalReaksi">
+							<table class="table table-bordered table-striped table-hover table-condensed" style="overflow:scroll; max-height: 500px;max-width: 2000px" id="tbodyevalReaksi">
 								<thead class="bg-blue">
 									<tr>
-										<th width="5%" style="text-align:center;vertical-align: middle;" rowspan="2">No</th>
-										<th width="35%" style="vertical-align: middle;text-align:center;" rowspan="2">Komponen Evaluasi</th>
+										<th style="text-align:center;vertical-align: middle; width: 50px" rowspan="2">No</th>
+										<th style="vertical-align: middle;text-align:center; width: 250px" rowspan="2">Komponen Evaluasi</th>
 										<th style="vertical-align: middle;text-align:center;" rowspan="2" hidden="true">Id</th>
 										<th style="vertical-align: middle;text-align:center;" rowspan="2" hidden="true">Segmen</th>
-										<th width="35%%" colspan="<?php echo $jmlrowPck; ?>" style="text-align:center;">Rata-rata</th>
+										<th colspan="<?php echo $jmlrowPck; ?>" style="text-align:center;">Rata-rata</th>
 									</tr>
 									<tr>
 										<?php foreach ($countPel as $ct) {

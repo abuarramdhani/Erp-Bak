@@ -4,6 +4,8 @@ class M_penjadwalan extends CI_Model {
         public function __construct()
         {
             parent::__construct();
+            $this->load->database();
+			$this->personalia = $this->load->database('personalia', TRUE);
         }
 		
 		//AMBIL DATA TRAINING
@@ -168,11 +170,12 @@ class M_penjadwalan extends CI_Model {
 		//AMBIL DATA EMPLOYEE BERDASARKAN ID
 		public function GetEmployeeData($id){
 			$sql = "
-				select employee_code, employee_name
-				from er.er_employee_all
-				where employee_code='$id'";
-			$query = $this->db->query($sql);
+				select noind, nama
+				from hrd_khs.tpribadi
+				where noind='$id'";
+			$query = $this->personalia->query($sql);
 			return $query->result_array();
+			// return $sql;
 		}
 
 		//AMBIL DATA APPLICANT BERDASARKAN ID
@@ -191,7 +194,16 @@ class M_penjadwalan extends CI_Model {
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
-
+		// ambil start date untuk paket
+		public function GetStartDate($pse)
+		{
+			$sql="	select *
+					from pl.pl_scheduling_package a
+					inner join pl.pl_master_package_training b on a.package_id=b.package_id
+					where a.package_scheduling_id='$pse'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
 
 		//Create New Master
 		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis){
@@ -210,6 +222,16 @@ class M_penjadwalan extends CI_Model {
 			insert INTO pl.pl_scheduling_training
 			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,room,participant_type,participant_number,evaluation,trainer,sifat,training_type)values
 			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$room','$participant_type','$participant_number','$evaluasi2','$trainers',$sifat,$jenis)";
+			$query = $this->db->query($sql);
+			return;
+		}
+
+		public function UpdateStartDate($date,$package_scheduling_id)
+		{
+			$sql="
+				update pl.pl_scheduling_package 
+				set start_date=TO_DATE('$date','DD/MM/YYYY')
+				where package_scheduling_id='$package_scheduling_id'";
 			$query = $this->db->query($sql);
 			return;
 		}

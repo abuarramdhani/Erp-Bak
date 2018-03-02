@@ -112,7 +112,7 @@ class M_report extends CI_Model {
 				end as date_format
 			from pl.pl_scheduling_training a
 			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
-			where a.date < now()::date AND a.status = 1
+			where a.status = 1
 			$ifP $ifR
 			order by a.status asc, a.date desc";
 		$query = $this->db->query($sql);
