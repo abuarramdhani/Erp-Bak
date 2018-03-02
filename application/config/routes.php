@@ -1508,3 +1508,10 @@ $route['ManufacturingOperation/Job/ReplaceComp']				= 'ManufacturingOperation/Ma
 $route['ManufacturingOperation/Job/ReplaceComp/(:any)']			= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1';
 $route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1/$2';
 $route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'ManufacturingOperation/MainMenu/C_ReplaceComp/$1/$2/$3';
+
+//------------------------------------------------Master Pekerja-------------------------------------------------------//
+$route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
+
+$route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
+$route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
+$route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
