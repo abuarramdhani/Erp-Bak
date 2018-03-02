@@ -1484,3 +1484,10 @@ $route['ProductionEngineering/Input'] = 'MonitoringPEIA/C_AccountReceivables/New
 $route['ProductionEngineering/Laporan/add'] = 'MonitoringPEIA/C_AccountReceivables/insertSemua';
 $route['ProductionEngineering/Laporan/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditLaporan/$1';
 $route['ProductionEngineering/Laporan/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateLaporan';
+
+//--------------------------------------------------------Master Pekerja------------------------------------------------//
+$route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
+
+$route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
+$route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
+$route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
