@@ -97,7 +97,7 @@
 					</div>
 					<div class="col-md-8">
 						<div class="form-group">
-						<input type="text" name="textKeterangan" class="form-control"  value="<?php echo $laporan[0]['keterangan']?>"required>
+						<textarea name="textKeterangan" class="form-control" required><?php echo $laporan[0]['keterangan']?></textarea>
 						</div>
 					</div>
 				</div>

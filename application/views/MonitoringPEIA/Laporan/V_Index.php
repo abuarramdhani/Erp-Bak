@@ -14,8 +14,26 @@
 			</div>
 		</div>
 	<div class="box box-info">
+		<div class="box-header bg-info">
+			<!-- <form method="post" action="<?php echo base_url('/MonitoringPEIA/C_AccountReceivables/buatPDF/') ?>" target="_blank"> -->
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Tanggal awal :</label>
+						<input class="form-control" id="tanggalan1" type="date" name="daterawal"/>	
+					</div>
+					<div class="form-group">
+						<label>Tanggal Akhir :</label>
+						<input class="form-control" id="tanggalan2" type="date" name="daterakhir"/>	
+					</div>
+					<div class="form-group">
+						<a class="btn btn-success submit-date">Submit</a>
+					</div>
+				</div>
+		</div>
 		<div class="box-body">
-			<table id="credit" class="table table-striped table-bordered table-responsive table-hover" >
+					<div id="pdf-buttonArea"></div>
+			<!-- </form> -->
+			<table style="margin-top:10px" id="credit" class="table table-striped table-bordered table-responsive table-hover" >
 				<thead style="background:#22aadd; color:#FFFFFF;">
 					<th style="text-align:center">NO</th>
 					<th width="10%" style="text-align:center">TANGGAL ORDER</th>
@@ -26,27 +44,29 @@
 					<th style="text-align:center">KETERANGAN</th>
 					<th style="text-align:center">ACTION</th>
 				</thead>
-				<tbody>
-				<?php $no = 1; foreach ($laporan as $cl) { ?>
-					<tr row-id="<?php echo $cl['id'];?>">
-						<td style="text-align:center"><?php echo $no; ?></td>
-						<td style="text-align:center"><?php echo $cl['tanggal']; ?></td>
-						<td style="text-align:center"><?php echo $cl['seksi']; ?></td>
-						<td style="text-align:center"><?php echo $cl['nama']; ?></td>
-						<td style="text-align:center"><?php echo $cl['order_']; ?></td>
-						<td style="text-align:center"><?php echo $cl['jenis_order']; ?></td>
-						<td style="text-align:center"><?php echo $cl['keterangan']; ?></td>
+				<tbody class="table-filter">
+				<?php	$no=1 ;foreach ($laporan as $cl) { ?>
+		 			 <tr row-id="<?php echo $cl['id']?>">
+						<td style="text-align:center"><?php echo $no ?></td>
+						<td style="text-align:center"><?php echo $cl['tanggal']?></td>
+						<td style="text-align:center"><?php echo $cl['seksi']?></td>
+						<td style="text-align:center"><?php echo $cl['nama']?></td>
+						<td style="text-align:center"><?php echo $cl['order_']?></td>
+						<td style="text-align:center"><?php echo $cl['jenis_order']?></td>
+						<td style="text-align:left"><?php echo $cl['keterangan']?></td>
 						<td style="text-align:center" class="col-md-2">
 							<div class="btn-group-justified" role="group">
-								<a class="btn btn-default" href="<?php echo base_url(); ?>ProductionEngineering/Laporan/<?php echo 'edit/'.$cl['id'] ?>">EDIT</a>
-								<a class="btn btn-default hapus" onclick="DeleteLaporan('<?php echo $cl['id'];?>')">DELETE</a>
+								<a class="btn btn-default" href="<?php echo base_url(); ?>ProductionEngineering/Laporan/edit/<?php echo $cl['id']?>">EDIT</a>
+								<a class="btn btn-default hapus" onclick="DeleteLaporan(<?php echo $cl['id']?>)">DELETE</a>
 							</div>
 						</td>
 					</tr>
 				<?php $no++;} ?>
 				</tbody>
 			</table>
+			
 		</div>
+		</form>
 		<div class="box box-info"></div>
 	</div>
 	</div>
