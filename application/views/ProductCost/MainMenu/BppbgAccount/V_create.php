@@ -68,6 +68,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary pull-right">SUBMIT</button>
+                                            <a class="btn btn-default pull-right" href="<?php echo base_url('ProductCost/BppbgAccount') ?>">BACK</a>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
