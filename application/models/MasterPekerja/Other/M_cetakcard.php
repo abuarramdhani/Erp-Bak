@@ -20,14 +20,47 @@ class M_cetakcard extends CI_Model
     	return $sql->result_array();
     }
 
+    // public function getWorker($noind,$nick){
+    //     $sqlserver = $this->load->database('personalia',true);
+    //     $sql = $sqlserver->query("select tp.*, (ts.seksi) as seksi, (upper('$nick')) as nama_panggilan
+    //                                     from hrd_khs.tpribadi tp
+    //                                     left join hrd_khs.tseksi ts
+    //                                     on tp.kodesie=ts.kodesie
+    //                                     where tp.keluar='0' and noind='$noind'
+    //                                     order by tp.noind");
+    //     return $sql->result_array();
+    // }
+
     public function getWorker($noind,$nick){
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("select tp.*, (ts.seksi) as seksi, (upper('$nick')) as nama_panggilan
-                                        from hrd_khs.tpribadi tp
-                                        left join hrd_khs.tseksi ts
-                                        on tp.kodesie=ts.kodesie
-                                        where tp.keluar='0' and noind='$noind'
-                                        order by tp.noind");
+        $sql = $sqlserver->query("select tp.noind,tp.nama,(upper('$nick')) as nama_panggilan,
+                                    case
+                                        when
+                                            rtrim(ts.seksi)='-'
+                                        then
+                                            case
+                                                when
+                                                    rtrim(ts.unit)='-'
+                                                then
+                                                    case
+                                                        when
+                                                            rtrim(ts.bidang)='-'
+                                                        then
+                                                            ts.dept
+                                                        else
+                                                            ts.bidang
+                                                    end
+                                                else
+                                                    ts.unit
+                                            end
+                                        else
+                                            ts.seksi
+                                    end
+                                ,upper(tor.jabatan) as jabatan
+                                from hrd_khs.tpribadi tp 
+                                inner join hrd_khs.tseksi ts on tp.kodesie=ts.kodesie
+                                inner join hrd_khs.torganisasi tor on tp.kd_jabatan=tor.kd_jabatan 
+                                where tp.noind='$noind'");
         return $sql->result_array();
     }
 
