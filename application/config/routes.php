@@ -1515,3 +1515,10 @@ $route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
 $route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
 $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
+
+//------------------------------------------------Master Pekerja-------------------------------------------------------//
+$route['ProductCost']									= 'ProductCost/C_Index';
+$route['ProductCost/BppbgAccount']						= 'ProductCost/MainMenu/C_BppbgAccount';
+$route['ProductCost/BppbgAccount/(:any)']				= 'ProductCost/MainMenu/C_BppbgAccount/$1';
+$route['ProductCost/BppbgAccount/(:any)/(:any)']		= 'ProductCost/MainMenu/C_BppbgAccount/$1/$2';
+$route['ProductCost/BppbgAccount/(:any)/(:any)/(:any)'] = 'ProductCost/MainMenu/C_BppbgAccount/$1/$2/$3';
