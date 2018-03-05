@@ -54,7 +54,7 @@ class C_BppbgAccount extends CI_Controller {
 	{
 		$user_id = $this->session->userid;
 
-		$data['Title']	= 'Create Account';
+		$data['Title']	= 'Create Bppbg Account';
 		$data['Menu']	= 'Product Cost';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -63,7 +63,7 @@ class C_BppbgAccount extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$this->form_validation->set_rules('txtProductComponentCodeHeader', 'Product Component Code', 'required');
+		$this->form_validation->set_rules('using_category_code', 'using_category_code', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
@@ -71,12 +71,56 @@ class C_BppbgAccount extends CI_Controller {
 			$this->load->view('ProductCost/MainMenu/BppbgAccount/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$NEXTVAL = $this->M_bppbgaccount->getNextVal();
+
+			$a = $NEXTVAL[0]['NEXTVAL'];
+			$b = $this->input->post('using_category_code');
+			$c = $this->input->post('using_category');
+			$d = $this->input->post('cost_center');
+			$e = $this->input->post('cost_center_description');
+			$f = $this->input->post('account_number');
+			$g = $this->input->post('account_attribute');
+
+			$aa = $this->M_bppbgaccount->setAccount($a,$b,$c,$d,$e,$f,$g);
+			echo strlen($g);
+			echo '<br><br>'.strlen($aa);
+			echo '<br><br>'.$aa;
+			exit;
+
+			redirect(site_url('ProductCost/BppbgAccount/'));
+		}
+	}
+
+	public function edit($id)
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title']	= 'Edit Bppbg Account';
+		$data['Menu']	= 'Product Cost';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['account']		= $this->M_bppbgaccount->getAccount($id);
+		$data['id']				= $id;
+		
+		$this->form_validation->set_rules('using_category_code', 'using_category_code', 'required');
+
+		if ($this->form_validation->run() === FALSE) {
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('ProductCost/MainMenu/BppbgAccount/V_edit', $data);
+			$this->load->view('V_Footer',$data);	
+		} else {
 			$accountAttr = $this->input->post('account_attribute');
 			if (empty($accountAttr)) {
-				$accountAttr = 'NULL';
+				$accountAttr = NULL;
 			}
 
 			$dataInsert = array(
+				'ACCOUNT_ID'				=> KHS_BPPBG_ACCOUNT_SEQ_REV.NEXTVAL,
 				'USING_CATEGORY_CODE'		=> $this->input->post('using_category_code'),
 				'USING_CATEGORY'			=> $this->input->post('using_category'),
 				'COST_CENTER'				=> $this->input->post('cost_center'),
@@ -86,12 +130,7 @@ class C_BppbgAccount extends CI_Controller {
 				'CREATION_DATE'				=> SYSDATE
     		);
 
-    		echo "<pre>";
-    		print_r($dataInsert);
-    		echo "</pre>";
-    		exit;
-
-			// $this->M_bppbgaccount->setAccount($data);
+			$this->M_bppbgaccount->setAccount($dataInsert);
 
 			redirect(site_url('ProductCost/BppbgAccount/'));
 		}
