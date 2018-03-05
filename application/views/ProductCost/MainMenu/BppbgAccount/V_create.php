@@ -36,8 +36,9 @@
                                             <div class="form-group">
                                                 <label>Using Category Code</label>
                                                 <div class="input-group">
-                                                    <input type="text" name="using_category_code" class="form-control toupper" placeholder="Using Category Code" required="">
-                                                    <span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                                                    <input type="hidden" name="using_category_code_checkout" value="0">
+                                                    <input type="text" name="using_category_code" class="form-control toupper checking-database-account" placeholder="Using Category Code" required="">
+                                                    <span id="using_category_code" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -47,8 +48,9 @@
                                             <div class="form-group">
                                                 <label>Cost Center</label>
                                                 <div class="input-group">
-                                                    <input class="form-control toupper" type="text" name="cost_center" placeholder="Cost Center" required="">
-                                                    <span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                                                    <input type="hidden" name="cost_center_checkout" value="0">
+                                                    <input type="text" name="cost_center" class="form-control toupper checking-database-account" placeholder="Cost Center" required="">
+                                                    <span id="cost_center" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -58,8 +60,9 @@
                                             <div class="form-group">
                                                 <label>Account Number</label>
                                                 <div class="input-group">
-                                                    <input class="form-control toupper" type="text" name="account_number" placeholder="Account Number" required="">
-                                                    <span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                                                    <input type="hidden" name="account_number_checkout" value="0">
+                                                    <input type="text" name="account_number" class="form-control toupper checking-database-account" placeholder="Account Number" required="">
+                                                    <span id="account_number" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -70,7 +73,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary pull-right">SUBMIT</button>
+                                            <button id="bAccountSubmitBtn" type="submit" class="btn btn-primary pull-right" disabled>SUBMIT</button>
                                             <a class="btn btn-default pull-right" href="<?php echo base_url('ProductCost/BppbgAccount') ?>">BACK</a>
                                         </div>
                                     </div>
