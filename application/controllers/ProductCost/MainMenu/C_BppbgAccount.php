@@ -82,10 +82,6 @@ class C_BppbgAccount extends CI_Controller {
 			$g = $this->input->post('account_attribute');
 
 			$aa = $this->M_bppbgaccount->setAccount($a,$b,$c,$d,$e,$f,$g);
-			echo strlen($g);
-			echo '<br><br>'.strlen($aa);
-			echo '<br><br>'.$aa;
-			exit;
 
 			redirect(site_url('ProductCost/BppbgAccount/'));
 		}
