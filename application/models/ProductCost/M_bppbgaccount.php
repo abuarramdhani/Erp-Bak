@@ -66,7 +66,12 @@ class M_bppbgaccount extends CI_Model {
 
 	public function setAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $COST_CENTER_DESCRIPTION, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE)
 	{
-		if (empty($ACCOUNT_ATTRIBUTE) || $ACCOUNT_ATTRIBUTE == '') { $ACCOUNT_ATTRIBUTE = 'NULL'; }
+		if(empty($ACCOUNT_ATTRIBUTE) || $ACCOUNT_ATTRIBUTE == '')
+		{
+			$ACCOUNT_ATTRIBUTE 	=	'NULL';
+		}else{
+			$ACCOUNT_ATTRIBUTE	=	"'".$ACCOUNT_ATTRIBUTE."'";
+		}
 		$sql = "INSERT INTO KHS_BPPBG_ACCOUNT(ACCOUNT_ID, USING_CATEGORY_CODE, USING_CATEGORY, COST_CENTER, COST_CENTER_DESCRIPTION, ACCOUNT_NUMBER, ACCOUNT_ATTRIBUTE, CREATION_DATE)
 				VALUES ( '$ACCOUNT_ID',
 				         '$USING_CATEGORY_CODE',
@@ -74,8 +79,9 @@ class M_bppbgaccount extends CI_Model {
 				         '$COST_CENTER',
 				         '$COST_CENTER_DESCRIPTION',
 				         '$ACCOUNT_NUMBER',
-				         '$ACCOUNT_ATTRIBUTE',
-				         TO_DATE(".date('Y-m-d H:i:s').", 'YYYY-MM-DD HH24:MI:SS') )";
+				         ".$ACCOUNT_ATTRIBUTE.",
+				         sysdate
+				     )";
 		$this->oracle->query($sql);
 	}
 
