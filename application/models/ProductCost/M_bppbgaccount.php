@@ -115,4 +115,10 @@ class M_bppbgaccount extends CI_Model {
 				";
 		$this->oracle->query($sql);
 	}
+
+	public function deleteAccount($id)
+	{
+		$this->oracle->where('ACCOUNT_ID', $id);
+		$this->oracle->delete('KHS_BPPBG_ACCOUNT');
+	}
 }
