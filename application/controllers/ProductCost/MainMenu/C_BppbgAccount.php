@@ -123,4 +123,10 @@ class C_BppbgAccount extends CI_Controller {
 			redirect(site_url('ProductCost/BppbgAccount/'));
 		}
 	}
+
+	public function delete($id)
+	{
+		$this->M_bppbgaccount->deleteAccount($id);
+		redirect(site_url('ProductCost/BppbgAccount/'));
+	}
 }
