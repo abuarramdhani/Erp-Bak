@@ -65,7 +65,7 @@ $(document).ready(function(){
 				html += '<td>'+(i+1)+'</td>';
 				html += '<td>'+data['worker'][i][0]['noind']+'<input type="hidden" name="noind[]" value="'+data['worker'][i][0]['noind']+'"></td>';
 				html += '<td>'+data['worker'][i][0]['nama']+'</td>';
-				html += '<td>'+data['worker'][i][0]['jabatan']+'</td>';
+				html += '<td>'+data['worker'][i][0]['jabatan']+' '+data['worker'][i][0]['seksi']+'</td>';
 				html += '<td><a target="_blank" href="'+data['worker'][i][0]['photo']+'">PHOTO</td>';
 				html += '<td><input type="text" style="text-transform:uppercase" data-noind="'+data['worker'][i][0]['noind']+'" class="form-control" name="nick[]" id="nickname"></td>'
 				html += '</tr>';
