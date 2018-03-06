@@ -4,7 +4,6 @@ $('table#tblBppbgAccount').dataTable({
 });
 $('form#searchBppbgAccountArea').submit(function (event) {
 	event.preventDefault();
-	console.log('hallo pendekar');
 	$.ajax({
 		type: 'post',
 		url: baseurl+'ProductCost/Ajax/getBppbgAccount',
@@ -31,7 +30,6 @@ $('form#searchBppbgAccountArea').submit(function (event) {
 $('.checking-database-account').change(function (event) {
     var value = $(this).val();
     var id = $(this).attr('name');
-    console.log(value+' | '+id);
     $.ajax({
         type: 'post',
         url: baseurl+'ProductCost/Ajax/checkingAccount',
