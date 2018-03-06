@@ -11,6 +11,7 @@ class M_bppbgaccount extends CI_Model {
 		if ($id===FALSE && $USING_CATEGORY_CODE===FALSE && $ACCOUNT_NUMBER===FALSE && $COST_CENTER===FALSE && $limit===FALSE) {
 			$this->oracle->select('*');
 			$this->oracle->from('KHS_BPPBG_ACCOUNT');
+			$this->oracle->order_by('LAST_UPDATE_DATE DESC, CREATION_DATE DESC');
 			$this->oracle->limit(100);
 			$query = $this->oracle->get();
 		}elseif ($id!==FALSE) {
@@ -90,5 +91,28 @@ class M_bppbgaccount extends CI_Model {
 		$sql = "SELECT KHS_BPPBG_ACCOUNT_SEQ_REV.NEXTVAL FROM DUAL";
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
+	}
+
+	public function updateAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $COST_CENTER_DESCRIPTION, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE)
+	{
+		if(empty($ACCOUNT_ATTRIBUTE) || $ACCOUNT_ATTRIBUTE == '')
+		{
+			$ACCOUNT_ATTRIBUTE 	=	'NULL';
+		}else{
+			$ACCOUNT_ATTRIBUTE	=	"'".$ACCOUNT_ATTRIBUTE."'";
+		}
+		$sql = "UPDATE
+					KHS_BPPBG_ACCOUNT
+				SET
+					USING_CATEGORY_CODE = '$USING_CATEGORY_CODE',
+					USING_CATEGORY = '$USING_CATEGORY',
+					COST_CENTER = '$COST_CENTER',
+					COST_CENTER_DESCRIPTION = '$COST_CENTER_DESCRIPTION',
+					ACCOUNT_NUMBER = '$ACCOUNT_NUMBER',
+					ACCOUNT_ATTRIBUTE = $ACCOUNT_ATTRIBUTE
+				WHERE
+					ACCOUNT_ID = $ACCOUNT_ID
+				";
+		$this->oracle->query($sql);
 	}
 }
