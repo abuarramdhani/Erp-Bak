@@ -202,12 +202,22 @@ class C_MasterTrainer extends CI_Controller {
 		$nama_trainer=$trainer[0]['trainer_name'];
 		$data['detail']=$trainer; 
 
+		$data['tgllahirtrainer']=$this->M_mastertrainer->GetTanggalLahirTrainer($noind);
+		$tgllahirtrain=$data['tgllahirtrainer'][0]['tgllahir'];
+
 		$nama=str_replace('  ', '', $nama_trainer);
-		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfo($nama);
-		// echo "<pre>";
-		// print_r($data['GetAllInfo']);
-		// echo "</pre>";
-		// exit();
+		$data['GetInfonofilter'] = $this->M_mastertrainer->GetAllInfo($nama);
+		$infoall=$data['GetInfonofilter'];
+
+		$tanggal= array();
+		foreach ($infoall as $ia) {
+			if ($ia['tgllahir']==$tgllahirtrain) {
+				array_push($tanggal, $ia['noind']);
+				$data['tanggal']=$tanggal;
+			}
+		}
+		$cektanggal = implode("','", $data['tanggal']);
+		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfoFiltered($cektanggal);
 
 		$data['GetExperience'] = $this->M_mastertrainer->GetExperience($noind);
 		$data['GetCertificate'] = $this->M_mastertrainer->GetCertificate($noind);
@@ -237,8 +247,22 @@ class C_MasterTrainer extends CI_Controller {
 		$nama_trainer=$trainer[0]['trainer_name'];
 		$data['detail']=$trainer; 
 
+		$data['tgllahirtrainer']=$this->M_mastertrainer->GetTanggalLahirTrainer($noind);
+		$tgllahirtrain=$data['tgllahirtrainer'][0]['tgllahir'];
+
 		$nama=str_replace('  ', '', $nama_trainer);
-		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfo($nama);
+		$data['GetInfonofilter'] = $this->M_mastertrainer->GetAllInfo($nama);
+		$infoall=$data['GetInfonofilter'];
+
+		$tanggal= array();
+		foreach ($infoall as $ia) {
+			if ($ia['tgllahir']==$tgllahirtrain) {
+				array_push($tanggal, $ia['noind']);
+				$data['tanggal']=$tanggal;
+			}
+		}
+		$cektanggal = implode("','", $data['tanggal']);
+		$data['GetAllInfo'] = $this->M_mastertrainer->GetAllInfoFiltered($cektanggal);
 
 		$data['GetExperience'] = $this->M_mastertrainer->GetExperience($noind);
 		$data['GetCertificate'] = $this->M_mastertrainer->GetCertificate($noind);
