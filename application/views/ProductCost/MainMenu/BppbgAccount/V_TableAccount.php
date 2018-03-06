@@ -32,7 +32,7 @@
     		// $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
         ?>
         <tr>
-            <td>
+            <td class="col-numb" data-number="<?php echo $no; ?>">
                 <?php echo $no++; ?>
             </td>
             <td>
@@ -41,28 +41,28 @@
                         <i class="fa fa-edit">
                         </i>
                     </a>
-                    <a class="btn btn-danger" data-id="<?php echo $value['ACCOUNT_ID']; ?>" href="javascript:void(0)">
+                    <a class="btn btn-danger" data-id="<?php echo $value['ACCOUNT_ID']; ?>" href="javascript:void(0)" onclick="deleteBppbgAccount(this,'<?php echo $value['ACCOUNT_ID'] ?>')">
                         <i class="fa fa-trash">
                         </i>
                     </a>
                 </div>
             </td>
-            <td>
+            <td class="col-ucc" data-ucc="<?php echo $value['USING_CATEGORY_CODE']; ?>">
                 <?php echo $value['USING_CATEGORY_CODE']; ?>
             </td>
-            <td>
+            <td class="col-uc" data-uc="<?php echo $value['USING_CATEGORY']; ?>">
                 <?php echo $value['USING_CATEGORY']; ?>
             </td>
-            <td>
+            <td class="col-cc" data-cc="<?php echo $value['COST_CENTER']; ?>">
                 <?php echo $value['COST_CENTER']; ?>
             </td>
-            <td>
+            <td class="col-ccd" data-ccd="<?php echo $value['COST_CENTER_DESCRIPTION']; ?>">
                 <?php echo $value['COST_CENTER_DESCRIPTION']; ?>
             </td>
-            <td>
+            <td class="col-an" data-an="<?php echo $value['ACCOUNT_NUMBER']; ?>">
                 <?php echo $value['ACCOUNT_NUMBER']; ?>
             </td>
-            <td>
+            <td class="col-aa" data-aa="<?php echo $value['ACCOUNT_ATTRIBUTE']; ?>">
                 <?php echo $value['ACCOUNT_ATTRIBUTE']; ?>
             </td>
         </tr>
