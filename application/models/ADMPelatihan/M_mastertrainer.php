@@ -17,7 +17,28 @@ class M_mastertrainer extends CI_Model {
 					INNER JOIN	hrd_khs.tseksi b on a.Kodesie=b.kodesie
 					WHERE	nama = '$nama'
 					order by a.Tglkeluar";
-			$query = $this->quickcom_hrd_khs->query($sql);
+			$query = $this->personalia->query($sql);
+			return $query->result_array();
+			// return $sql;
+        }
+        public function GetAllInfoFiltered($cektanggal)
+        {
+        	$sql = "SELECT *
+					FROM	hrd_khs.tpribadi a
+					INNER JOIN	hrd_khs.tseksi b on a.Kodesie=b.kodesie
+					WHERE	a.noind in ('$cektanggal')
+					order by a.Tglkeluar";
+			$query = $this->personalia->query($sql);
+			return $query->result_array();
+			// return $sql;
+        }
+        public function GetTanggalLahirTrainer($noind)
+        {
+        	$sql = "SELECT tgllahir
+					FROM	hrd_khs.tpribadi a
+					INNER JOIN	hrd_khs.tseksi b on a.Kodesie=b.kodesie
+					WHERE	noind = '$noind'";
+			$query = $this->personalia->query($sql);
 			return $query->result_array();
 			// return $sql;
         }

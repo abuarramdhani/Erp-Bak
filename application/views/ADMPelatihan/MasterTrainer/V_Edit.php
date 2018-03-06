@@ -128,19 +128,20 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php $no=0; $checkPendidikan = array(); foreach ($GetAllInfo as $gi) {
-														if (!in_array($gi['Pendidikan'], $checkPendidikan)) {
-															array_push($checkPendidikan, $gi['Pendidikan']);
-														$no++; ?>
+													<?php $no=1; $checkPendidikan = array(); 
+														foreach ($GetAllInfo as $gi) {
+														if (!in_array($gi['pendidikan'], $checkPendidikan)) {
+															array_push($checkPendidikan, $gi['pendidikan']);
+														?>
 														<tr>
-															<td><?php echo $no ?></td>
+															<td><?php echo $no++ ?></td>
 															<td><?php
-																	echo $gi['Pendidikan'];
+																	echo $gi['pendidikan'];
 															?></td>
-															<td><?php echo $gi['Jurusan']; ?></td>
-															<td><?php echo $gi['Sekolah']; ?></td>
+															<td><?php echo $gi['jurusan']; ?></td>
+															<td><?php echo $gi['sekolah']; ?></td>
 														</tr>
-													<?php }
+														<?php }
 													}?>
 												</tbody>
 											</table>
@@ -169,12 +170,12 @@
 													$no++; ?>
 													<tr>
 														<td><?php echo $no; ?></td>
-														<td><?php echo $gai['Noind']; ?></td>
+														<td><?php echo $gai['noind']; ?></td>
 														<td><?php echo $gai['dept']; ?></td>
 														<td><?php echo $gai['bidang']; ?></td>
 														<td><?php echo $gai['unit']; ?></td>
 														<td><?php echo $gai['seksi']; ?></td>
-														<td><?php echo $gai['Jabatan']; ?></td>
+														<td><?php echo $gai['jabatan']; ?></td>
 													</tr>
 												<?php } ?>
 												</tbody>

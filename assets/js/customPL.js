@@ -1198,6 +1198,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		if (event.keyCode === 13) {
 			var quID = $('input[name="txtQuestionnaireId"]').val();
+			var quName = $('input[name="txtQuestionnaireName"]').val();
 			var quesId = $(th).attr('data-id');
 			var value = $(th).val();
 			$.ajax({
@@ -1205,6 +1206,7 @@ $(document).ready(function(){
 				type: 'POST',
 				data: {
 					accessType : 'ajax',
+					txtQuestionnaireName : quName,
 					txtSegment : value, 
 					txtQuestionnaireId : quID,
 					idSegment : quID,
@@ -1212,11 +1214,12 @@ $(document).ready(function(){
 				},
 				success:function(result)
 				{
+					// console.log(result);
 					$(th).closest('tr').find('a[data-id="segment-button"]').removeAttr("disabled"); 
 					$(th).closest('tr').find('a[data-id="segment-button"]').attr("href", baseurl+"ADMPelatihan/MasterQuestionnaire/EditStatement/"+quID+'/'+result);
-					location.reload(true);
 				}
 			})
+			window.location.href=window.location.href;
 		}
 	}
 
