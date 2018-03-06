@@ -23,7 +23,7 @@ class M_cetakcard extends CI_Model
     public function getWorker($noind,$nick){
         $sqlserver = $this->load->database('personalia',true);
         $sql = $sqlserver->query("select tp.noind,tp.nama, (upper('$nick')) as nama_panggilan,
-                                    (
+                                    left((
                                         case
                                             when
                                                 tss.seksi is null
@@ -57,8 +57,8 @@ class M_cetakcard extends CI_Model
                                             else
                                                 tss.seksi
                                         end
-                                    ) as seksi
-                                ,upper(tsj.nama_jabatan) as jabatan,
+                                    ),30) as seksi
+                                ,left(upper(tsj.nama_jabatan),30) as jabatan,
                                 tp.photo
                                 from hrd_khs.tpribadi tp 
                                 left join hrd_khs.tseksi_singkatan tss on left(tp.kodesie,7)=tss.kodesie
@@ -76,32 +76,45 @@ class M_cetakcard extends CI_Model
     public function DataPekerja($key){
         $pgPersonalia = $this->load->database('personalia', true);
         $sql = $pgPersonalia->query("select tp.noind,tp.nama,
-                                        case
-                                            when
-                                                rtrim(ts.seksi)='-'
-                                            then
-                                                case
-                                                    when
-                                                        rtrim(ts.unit)='-'
-                                                    then
-                                                        case
-                                                            when
-                                                                rtrim(ts.bidang)='-'
-                                                            then
-                                                                ts.dept
-                                                            else
-                                                                ts.bidang
-                                                        end
-                                                    else
-                                                        ts.unit
-                                                end
-                                            else
-                                                ts.seksi
-                                        end
-                                    ,upper(tsj.nama_jabatan) as jabatan,
+                                        left((
+                                            case
+                                                when
+                                                    tss.seksi is null
+                                                then
+                                                    (
+                                                        select 
+                                                            case
+                                                                when
+                                                                    rtrim(ts.seksi)='-'
+                                                                then
+                                                                    case
+                                                                        when
+                                                                            rtrim(ts.unit)='-'
+                                                                        then
+                                                                            case
+                                                                                when
+                                                                                    rtrim(ts.bidang)='-'
+                                                                                then
+                                                                                    ts.dept
+                                                                                else
+                                                                                    ts.bidang
+                                                                            end
+                                                                        else
+                                                                            ts.unit
+                                                                    end
+                                                                else
+                                                                    ts.seksi
+                                                            end 
+                                                        from hrd_khs.tseksi ts where tp.kodesie=ts.kodesie
+                                                    )
+                                                else
+                                                    tss.seksi
+                                            end
+                                        ),30) as seksi
+                                    ,left(upper(tsj.nama_jabatan),30) as jabatan,
                                     tp.photo
                                     from hrd_khs.tpribadi tp 
-                                    left join hrd_khs.tseksi ts on tp.kodesie=ts.kodesie
+                                    left join hrd_khs.tseksi_singkatan tss on left(tp.kodesie,7)=tss.kodesie
                                     left join hrd_khs.tb_status_jabatan tsj on tp.noind=tsj.noind and tgl_tberlaku='9999-12-31' 
                                     where tp.noind='$key'");
         return $sql->result_array();
