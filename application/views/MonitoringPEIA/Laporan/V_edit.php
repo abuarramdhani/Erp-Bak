@@ -15,7 +15,7 @@
 					</div>
 					<div class="col-md-8">
 						<div class="form-group">
-						<input type="date" name="textDate" class="form-control" value="<?php echo $laporan[0]['tanggal']?>"required>
+						<input type="text" name="textDate" class="form-control datepicker" value="<?php echo $laporan[0]['tanggal']?>"required>
 						</div>
 					</div>
 				</div>
