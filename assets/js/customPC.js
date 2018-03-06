@@ -75,3 +75,14 @@ $('.checking-database-account').change(function (event) {
         }
     });
 });
+function deleteBppbgAccount(th,id) {
+    $('#deleteBppbgAccountModal #ba_number').html($(th).closest('tr').find('td.col-numb').attr('data-number'));
+    $('#deleteBppbgAccountModal #ba_ucc').html($(th).closest('tr').find('td.col-ucc').attr('data-ucc'));
+    $('#deleteBppbgAccountModal #ba_uc').html($(th).closest('tr').find('td.col-uc').attr('data-uc'));
+    $('#deleteBppbgAccountModal #ba_cc').html($(th).closest('tr').find('td.col-cc').attr('data-cc'));
+    $('#deleteBppbgAccountModal #ba_ccd').html($(th).closest('tr').find('td.col-ccd').attr('data-ccd'));
+    $('#deleteBppbgAccountModal #ba_an').html($(th).closest('tr').find('td.col-an').attr('data-an'));
+    $('#deleteBppbgAccountModal #ba_a').html($(th).closest('tr').find('td.col-aa').attr('data-aa'));
+    $('#deleteBppbgAccountModal #btnDelAction').attr('href', baseurl+'ProductCost/BppbgAccount/delete/'+id);
+    $('#deleteBppbgAccountModal').modal('show');
+}
