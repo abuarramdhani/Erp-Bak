@@ -67,7 +67,7 @@ $(document).ready(function(){
 				html += '<td>'+data['worker'][i][0]['nama']+'</td>';
 				html += '<td>'+data['worker'][i][0]['jabatan']+' '+data['worker'][i][0]['seksi']+'</td>';
 				html += '<td><a target="_blank" href="'+data['worker'][i][0]['photo']+'">PHOTO</td>';
-				html += '<td><input type="text" style="text-transform:uppercase" data-noind="'+data['worker'][i][0]['noind']+'" class="form-control" name="nick[]" id="nickname"></td>'
+				html += '<td><input type="text" style="text-transform:uppercase" data-noind="'+data['worker'][i][0]['noind']+'" class="form-control" name="nick[]" id="nickname" maxlength="10"></td>'
 				html += '</tr>';
 			}
 			$('tbody#dataIDcard').append(html);
