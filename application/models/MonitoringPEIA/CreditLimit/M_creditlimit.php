@@ -179,7 +179,7 @@ clASs M_creditlimit extends CI_Model {
 	}
 	public function insertSemua($tanggal,$seksi,$nama,$order_,$jenis_order,$keterangan)
 	{
-		$sql = "INSERT INTO pe.pe_table_order(tanggal,seksi,nama,order_,jenis_order,keterangan) values('$tanggal','$seksi','$nama','$order_','$jenis_order','$keterangan')";
+		$sql = "INSERT INTO pe.pe_table_order(tanggal,seksi,nama,order_,jenis_order,keterangan) values ('$tanggal','$seksi','$nama','$order_','$jenis_order','$keterangan')";
 
 		$query = $this->db->query($sql);
 		
