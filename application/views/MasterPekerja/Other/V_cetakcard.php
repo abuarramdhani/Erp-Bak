@@ -17,7 +17,7 @@
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
 			<h3 style="font-size: 24px;font-family: Times New Roman;" width="245px" height="60px"><b><?php echo $worker[$i-1][0]['nama_panggilan'];?></b></h3>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[$i-1][0]['jabatan']." ".$worker[$i-1][0]['seksi'];?></b></p>
-			<img src="<?php echo base_url('assets/plugins/barcode.php?size=60&text=').$worker[$i-1][0][noind];?>" width="215px" height="45px">
+			<img src="<?php echo base_url('assets/plugins/barcode.php?size=60&text=').$worker[$i-1][0][noind];?>" width="200px" height="45px">
 			<p style="font-size: 11px;letter-spacing: 15px;" width="245px"><?php echo $worker[$i-1][0]['noind'];?></p>
 		</td>
 		<td style="min-width: 50px;"></td>
@@ -27,7 +27,7 @@
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
 			<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[$i][0]['nama_panggilan'];?></b></h3>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[$i][0]['jabatan']." ".$worker[$i][0]['seksi'];?></b></p>
-			<img src="<?php echo base_url('assets/plugins/barcode.php?size=60&text=').$worker[$i-1][0][noind];?>" width="215px" height="45px">
+			<img src="<?php echo base_url('assets/plugins/barcode.php?size=60&text=').$worker[$i-1][0][noind];?>" width="200px" height="45px">
 			<p style="font-size: 11px;letter-spacing: 15px;" width="245px"><?php echo $worker[$i][0]['noind'];?></p>
 		</td>
 	</tr>
@@ -50,7 +50,7 @@
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
 			<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[(count($worker)-1)][0]['nama_panggilan'];?></b></h3>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[(count($worker)-1)][0]['jabatan']." ".$worker[(count($worker)-1)][0]['seksi'];?></b></p>
-			<img src="<?php echo base_url('assets/plugins/barcode.php?size=60&text=').$worker[$i-1][0][noind];?>" width="215px" height="45px">
+			<img src="<?php echo base_url('assets/plugins/barcode.php?size=60&text=').$worker[$i-1][0][noind];?>" width="200px" height="45px">
 			<p style="font-size: 11px;letter-spacing: 15px;" width="325px"><?php echo $worker[(count($worker)-1)][0]['noind'];?></p>
 		</td>
 	</tr>
