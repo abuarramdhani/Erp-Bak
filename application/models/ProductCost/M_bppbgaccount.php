@@ -9,11 +9,21 @@ class M_bppbgaccount extends CI_Model {
 	public function getAccount($id=FALSE, $USING_CATEGORY_CODE=FALSE, $ACCOUNT_NUMBER=FALSE, $COST_CENTER=FALSE, $limit=FALSE)
 	{
 		if ($id===FALSE && $USING_CATEGORY_CODE===FALSE && $ACCOUNT_NUMBER===FALSE && $COST_CENTER===FALSE && $limit===FALSE) {
-			$this->oracle->select('*');
-			$this->oracle->from('KHS_BPPBG_ACCOUNT');
-			$this->oracle->order_by('LAST_UPDATE_DATE DESC, CREATION_DATE DESC');
-			$this->oracle->limit(100);
-			$query = $this->oracle->get();
+			$sql = "SELECT *
+					FROM
+					  ( SELECT ACCOUNT_ID,
+					           USING_CATEGORY_CODE,
+					           USING_CATEGORY,
+					           COST_CENTER,
+					           COST_CENTER_DESCRIPTION,
+					           ACCOUNT_NUMBER,
+					           ACCOUNT_ATTRIBUTE,
+					           DECODE(LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), LAST_UPDATE_DATE) LAST_UPDATE_DATE,
+					           DECODE(CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), CREATION_DATE) CREATION_DATE
+					   FROM KHS_BPPBG_ACCOUNT
+					   ORDER BY LAST_UPDATE_DATE DESC, CREATION_DATE DESC )
+					WHERE ROWNUM <= 100";
+			$query = $this->oracle->query($sql);
 		}elseif ($id!==FALSE) {
 			$query = $this->oracle->get_where('KHS_BPPBG_ACCOUNT', array('ACCOUNT_ID' => $id));
 		}else{
@@ -48,18 +58,23 @@ class M_bppbgaccount extends CI_Model {
 				}
 
 				if ($limit!==FALSE) {
-					$and = 'AND ';
-					if ($where == '') {
-						$where = 'WHERE';
-						$and='';
-					}
-					$wlimit = $and."ROWNUM <= $limit";
+					$wlimit = "WHERE ROWNUM <= $limit";
 				}
 			$sql = "SELECT *
-					FROM KHS_BPPBG_ACCOUNT
-					$where $wUSING_CATEGORY_CODE $wACCOUNT_NUMBER $wCOST_CENTER
-					$wlimit
-					ORDER BY CREATION_DATE, LAST_UPDATE_DATE ASC";
+					FROM
+					  ( SELECT ACCOUNT_ID,
+					           USING_CATEGORY_CODE,
+					           USING_CATEGORY,
+					           COST_CENTER,
+					           COST_CENTER_DESCRIPTION,
+					           ACCOUNT_NUMBER,
+					           ACCOUNT_ATTRIBUTE,
+					           DECODE(LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), LAST_UPDATE_DATE) LAST_UPDATE_DATE,
+					           DECODE(CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), CREATION_DATE) CREATION_DATE
+					   FROM KHS_BPPBG_ACCOUNT
+					   $where $wUSING_CATEGORY_CODE $wACCOUNT_NUMBER $wCOST_CENTER
+					   ORDER BY LAST_UPDATE_DATE DESC, CREATION_DATE DESC )
+					$wlimit";
 			$query = $this->oracle->query($sql);
 		}
 		return $query->result_array();
@@ -109,7 +124,8 @@ class M_bppbgaccount extends CI_Model {
 					COST_CENTER = '$COST_CENTER',
 					COST_CENTER_DESCRIPTION = '$COST_CENTER_DESCRIPTION',
 					ACCOUNT_NUMBER = '$ACCOUNT_NUMBER',
-					ACCOUNT_ATTRIBUTE = $ACCOUNT_ATTRIBUTE
+					ACCOUNT_ATTRIBUTE = $ACCOUNT_ATTRIBUTE,
+					LAST_UPDATE_DATE = SYSDATE
 				WHERE
 					ACCOUNT_ID = $ACCOUNT_ID
 				";
