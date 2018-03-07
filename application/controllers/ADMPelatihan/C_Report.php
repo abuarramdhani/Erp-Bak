@@ -398,13 +398,13 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		// $nama  		= 'ORIENTASI STAF D3/S1 (GELOMBANG II)';
-		// $tanggal  	= '01-01-2018';
+		// $nama  		= 'ALL TRAINING';
+		// $tanggal  	= '26-02-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
-		
+
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('V_Sidemenu',$data);		
 		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
 		// $this->load->view('ADMPelatihan/Report/CreateReport/V_table3',$data);
 		$this->load->view('V_Footer',$data);
@@ -492,7 +492,9 @@ class C_Report extends CI_Controller {
 						foreach ($total_nilai as $n => $tn) {
 							$final_total+=$tn['total'];
 						}
-						$t_rerata=$final_total/($tot_s*$tot_p);
+						if ($final_total>0) {
+							$t_rerata=$final_total/($tot_s*$tot_p);
+						}
 
 						$t_nilai[$x++]= array(
 							'scheduling_id'		=> $value['scheduling_id'], 
@@ -571,7 +573,9 @@ class C_Report extends CI_Controller {
 							foreach ($total_nilai as $n => $tn) {
 								$final_total+=$tn['total'];
 							}
-							$t_rerata=$final_total/($tot_s*$tot_p);
+							if ($final_total>0) {
+								$t_rerata=$final_total/($tot_s*$tot_p);
+							}
 
 							$t_nilai[$x++]= array(
 								'scheduling_id'		=> $value['scheduling_id'], 
@@ -704,7 +708,7 @@ class C_Report extends CI_Controller {
 		$filename = 'Report-Pelatihan.pdf';
 		// $head 	=	$this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data);
 		// $pdf->SetHTMLHeader($this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data, true));
-					
+		
 		// exit();
 		if ($data['reg_paket']==0) {
 			//hitung segmen untuk baris
@@ -763,7 +767,9 @@ class C_Report extends CI_Controller {
 						foreach ($total_nilai as $n => $tn) {
 							$final_total+=$tn['total'];
 						}
-						$t_rerata=$final_total/($tot_s*$tot_p);
+						if ($final_total>0) {
+							$t_rerata=$final_total/($tot_s*$tot_p);
+						}
 
 						$t_nilai[$x++]= array(
 							'scheduling_id'		=> $value['scheduling_id'], 
@@ -846,7 +852,9 @@ class C_Report extends CI_Controller {
 							foreach ($total_nilai as $n => $tn) {
 								$final_total+=$tn['total'];
 							}
-							$t_rerata=$final_total/($tot_s*$tot_p);
+							if ($final_total>0) {
+								$t_rerata=$final_total/($tot_s*$tot_p);
+							}
 
 							$t_nilai[$x++]= array(
 								'scheduling_id'		=> $value['scheduling_id'], 
@@ -861,11 +869,6 @@ class C_Report extends CI_Controller {
 				}
 			// }
 			$data['t_nilai']= $t_nilai;
-			// echo "<pre>";
-			// // print_r($data['countSegmentPck']);
-			// print_r($data['jmlrowPck']);
-			// echo "</pre>";
-			// exit();
 			$html = $this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Paket', $data, true);
 		}
 
@@ -914,36 +917,71 @@ class C_Report extends CI_Controller {
 		$data = $this->M_report->GetPelatihanPaketNama($term);
 		echo json_encode($data);
 	}
-	// CREATE REPORT===============================================================================
+	// CREATE REPORT======================================================================================================
 	public function GetDataPelatihan()
 	{
 		$nama  		= $this->input->POST('nama');
 		$tanggal  	= $this->input->POST('tanggal');
 		$idNama		= $this->input->POST('idNama');
 		$idTanggal	= $this->input->POST('idTanggal');
-		$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
-		$data['GetDataPelatihan']=$GetDataPelatihan;
-		$id=$GetDataPelatihan[0]['scheduling_id'];
-		$participant=  $this->M_report->GetParticipantPelatihan($id);
-		$data['participant'] = $participant;
-		$trainer = $this->M_record->GetTrainer();
-		$data['trainer'] = $trainer; 
-		
-		// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
-		foreach ($GetDataPelatihan as $dp) {
-			$data['participant_number']= $dp['participant_number'];
-			$idtrainer = explode(',', $dp['trainer']);
-			$data['idTrainer']=$idtrainer;
-			$data['pel']=array();
-			foreach($trainer as $tr){
-				if ($tr['trainer_id'] == $idtrainer) {
-					array_push($data['pel'], $tr['trainer_name']);
+
+		if ($idNama==0) {
+			$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
+			$data['GetDataPelatihan']=$GetDataPelatihan;
+			$id=$GetDataPelatihan[0]['scheduling_id'];
+			$participant=  $this->M_report->GetParticipantPelatihan($id);
+			$data['participant'] = $participant;
+			$trainer = $this->M_record->GetTrainer();
+			$data['trainer'] = $trainer; 
+			
+			// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
+			foreach ($GetDataPelatihan as $dp) {
+				$data['participant_number']= $dp['participant_number'];
+				$idtrainer = explode(',', $dp['trainer']);
+				$data['idTrainer']=$idtrainer;
+				$data['pel']=array();
+				foreach($trainer as $tr){
+					if ($tr['trainer_id'] == $idtrainer) {
+						array_push($data['pel'], $tr['trainer_name']);
+					}
 				}
 			}
-		}
-		// JUMLAH HADIR-----------------------------------------------------------------------------------------------------
-		foreach ($participant as $prtcp) {
-			$data['jumlah']= $prtcp['jumlah'];
+			// JUMLAH HADIR-----------------------------------------------------------------------------------------------------
+			foreach ($participant as $prtcp) {
+				$data['jumlah']= $prtcp['jumlah'];
+			}
+		}else {
+			$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
+			$data['GetDataPelatihan']=$GetDataPelatihan;
+			$pid=$GetDataPelatihan[0]['package_scheduling_id'];
+			$participant=  $this->M_report->GetPrtHadir($pid);
+			$data['participant'] = $participant;
+			$trainer = $this->M_record->GetTrainer();
+			$data['trainer'] = $trainer; 
+
+			// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
+			foreach ($GetDataPelatihan as $dpk) {
+				$data['participant_number']= $dpk['participant_number'];
+			}
+			
+			$tampung_trainer= array();
+			foreach ($GetDataPelatihan as $gpk) {
+				array_push($tampung_trainer, $gpk['trainer']);
+				$data['trainer_onpkg']=$tampung_trainer;
+			}
+			$trainer_akhir=$data['trainer_onpkg'];
+
+			$trainer_fix=array();
+			foreach ($trainer as $tr) {
+				if (in_array($tr['trainer_id'], $trainer_akhir)) {
+					array_push($trainer_fix, $tr['trainer_name']);
+					$data['trainer_fix']=$trainer_fix;
+				}
+			}
+			// JUMLAH HADIR-----------------------------------------------------------------------------------------------------
+			foreach ($participant as $prtcp) {
+				$data['jumlah']= $prtcp['jumlah'];
+			}
 		}
 		
 		echo json_encode($data);
@@ -1019,7 +1057,9 @@ class C_Report extends CI_Controller {
 						foreach ($total_nilai as $n => $tn) {
 							$final_total+=$tn['total'];
 						}
-						$t_rerata=$final_total/($tot_s*$tot_p);
+						if ($final_total>0) {
+							$t_rerata=$final_total/($tot_s*$tot_p);
+						}
 
 						$t_nilai[$x++]= array(
 							'scheduling_id'		=> $value['scheduling_id'], 
@@ -1085,7 +1125,9 @@ class C_Report extends CI_Controller {
 							foreach ($total_nilai as $n => $tn) {
 								$final_total+=$tn['total'];
 							}
-							$t_rerata=$final_total/($tot_s*$tot_p);
+							if ($final_total>0) {
+								$t_rerata=$final_total/($tot_s*$tot_p);
+							}
 
 							$t_nilai[$x++]= array(
 								'scheduling_id'		=> $value['scheduling_id'], 

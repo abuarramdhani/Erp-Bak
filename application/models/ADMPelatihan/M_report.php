@@ -54,14 +54,16 @@ class M_report extends CI_Model {
 	}
 	public function GetQueIdReportPaket($pid)
 	{
-		$sql="	select a.questionnaire_id, a.scheduling_id
+		$sql="	select a.questionnaire_id, a.scheduling_id, b.date, b.scheduling_name
 				from pl.pl_questionnaire_sheet a
 				inner join pl.pl_scheduling_training b
 				on a.scheduling_id=b.scheduling_id
 				where b.package_scheduling_id=$pid
-				group by questionnaire_id,2";
+				group by questionnaire_id,2,3,4
+				order by (b.date, a.scheduling_id) asc";
 		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 	public function GetPelatihanPaketNama($term){
 		if ($term === FALSE) { $iftermtrue = "";
@@ -114,7 +116,7 @@ class M_report extends CI_Model {
 			left join pl.pl_scheduling_package b on a.package_scheduling_id = b.package_scheduling_id
 			where a.status = 1
 			$ifP $ifR
-			order by a.status asc, a.date desc";
+			order by a.scheduling_id asc, a.date desc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 		// return $sql;
@@ -906,6 +908,7 @@ class M_report extends CI_Model {
 				order by sg.segment_id asc";
 		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 
 	public function GetSchName_QuesName($pelatihan = FALSE, $date = FALSE, $trainer = FALSE)
@@ -978,9 +981,11 @@ class M_report extends CI_Model {
 						inner join pl.pl_master_questionnaire c 
 						on b.questionnaire_id=c.questionnaire_id
 				where a.package_scheduling_id='$pid'
-				group by 1,2,3,4,5,6,7";
+				group by 1,2,3,4,5,6,7
+				order by (a.date, a.scheduling_id) asc";
 		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 	public function justSegmentPck($pid)
 	{

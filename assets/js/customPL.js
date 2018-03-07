@@ -1643,10 +1643,10 @@ $(document).ready(function(){
 					var nama=[];
 					var idt=[];
 					for (var i = 0; i < result['trainer'].length; i++) {
-						for (var j = 0; j < result['idTrainer'].length; j++) {
-							if (result['trainer'][i]['trainer_id'] == result['idTrainer'][j]) {
-								nama.push(result['trainer'][i]['trainer_name']);
-								idt.push(result['trainer'][i]['trainer_id']);
+						for (var j = 0; j < result['trainer_onpkg'].length; j++) {
+							if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j]) {
+								nama.push(result['trainer_fix'][i]);
+								idt.push(result['trainer_onpkg'][i]);
 							}
 						}
 					}
@@ -1655,6 +1655,7 @@ $(document).ready(function(){
 					
 					$('input#txtPelaksana').val(namagabung);
 					$('input#idtrainerOnly').val(idt);
+					// -----------------------------------------------------------------------------------
 				}
 			});
 			$.ajax({
