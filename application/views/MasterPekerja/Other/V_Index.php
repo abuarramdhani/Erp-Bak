@@ -49,7 +49,7 @@
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th>Noind</th>
                                                 <th>Nama</th>
-                                                <th>Jabatan</th>
+                                                <th>Jabatan/Seksi</th>
                                                 <th>Foto</th>
                                                 <th>Input Nickname</th>
 											</tr>
