@@ -429,9 +429,6 @@ function rekap_datatable_detail() {
 								}
 							});												
 						}
-
-
-	
 					});
 
 					$(document).on('change', '.RekapAbsensi-cmbUnit', function(){
@@ -509,5 +506,473 @@ function rekap_datatable_detail() {
 					        } );
 					    } );
 					} );
+		//	}
+//	}
+
+// 	Rekap Riwayat Mutasi Pekerja
+//	{
+		$(function()
+		{
+			//	Datatables
+			//	{
+					$('#RekapRiwayatMutasi-hasil').DataTable({
+						lengthChange: true,
+						scrollX: true,
+						dom: 'Bfrtip',
+						buttons: [
+							'excel'
+						],
+					});
+			//	}
+
+			//	Select2
+			//	{
+					$('#RekapRiwayatMutasi-daftarNomorInduk').select2(
+					{
+						minimumInputLength: 3,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarPekerja',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.noind, text: obj.noind + ' - ' + obj.nama};
+									})
+								}
+							}
+						}
+					});
+
+					$('.RekapRiwayatMutasi-daftarLokasiKerja').select2(
+					{
+						minimumInputLength: -1,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarLokasiKerja',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.id_, text: obj.id_ + ' - ' + obj.lokasi_kerja};
+									})
+								}
+							}
+						}
+					});
+
+					$('#RekapRiwayatMutasi-cmbDepartemenLama').select2(
+					{
+						minimumResultsForSearch: -1,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarDepartemen',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_departemen, text: obj.kode_departemen + ' | ' +obj.nama_departemen};
+									})
+								}
+							}
+						}
+					});
+
+					$(document).on('change', '#RekapRiwayatMutasi-cmbDepartemenLama', function(){
+						var departemen =	$(this).val();
+						if(departemen=='0')
+						{
+							$('#RekapRiwayatMutasi-cmbBidangLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbBidangLama').attr('disabled', 'true');
+							$('#RekapRiwayatMutasi-cmbUnitLama').attr('disabled','true');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').attr('disabled','true');							
+						}
+						else
+						{
+							$('#RekapRiwayatMutasi-cmbBidangLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbBidangLama').removeAttr('disabled');
+							$('#RekapRiwayatMutasi-cmbUnitLama').removeAttr('disabled');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').removeAttr('disabled');								
+
+							$('#RekapRiwayatMutasi-cmbBidangLama').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarBidang',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											departemen: departemen
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_bidang, text: obj.kode_bidang + ' | ' + obj.nama_bidang};
+											})
+										}
+									}
+								}
+							});							
+						}
+					});
+
+					$(document).on('change', '#RekapRiwayatMutasi-cmbBidangLama', function(){
+						var bidang =	$(this).val();
+
+						if(bidang.substr(bidang.length - 2) == '00')
+						{
+							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbUnitLama').attr('disabled','true');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').attr('disabled','true');
+						}
+						else
+						{
+							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbUnitLama').removeAttr('disabled');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').removeAttr('disabled');
+
+							$('#RekapRiwayatMutasi-cmbUnitLama').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarUnit',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											bidang: bidang
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_unit, text: obj.kode_unit + ' | ' + obj.nama_unit};
+											})
+										}
+									}
+								}
+							});												
+						}
+					});
+
+					$(document).on('change', '#RekapRiwayatMutasi-cmbUnitLama', function(){
+						var unit =	$(this).val();
+
+						if(unit.substr(unit.length - 2) == '00')
+						{
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							
+							$('#RekapRiwayatMutasi-cmbSeksiLama').attr('disabled','true');
+						}
+						else
+						{
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbSeksiLama').removeAttr('disabled');							
+
+							$('#RekapRiwayatMutasi-cmbSeksiLama').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarSeksi',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											unit: unit
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_seksi, text: obj.kode_seksi + ' | ' + obj.nama_seksi};
+											})
+										}
+									}
+								}
+							});
+						}
+					});
+
+					$('#RekapRiwayatMutasi-cmbDepartemenBaru').select2(
+					{
+						minimumResultsForSearch: -1,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarDepartemen',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kode_departemen, text: obj.kode_departemen + ' | ' +obj.nama_departemen};
+									})
+								}
+							}
+						}
+					});
+
+					$(document).on('change', '#RekapRiwayatMutasi-cmbDepartemenBaru', function(){
+						var departemen =	$(this).val();
+						if(departemen=='0')
+						{
+							$('#RekapRiwayatMutasi-cmbBidangBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbBidangBaru').attr('disabled', 'true');
+							$('#RekapRiwayatMutasi-cmbUnitBaru').attr('disabled','true');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').attr('disabled','true');							
+						}
+						else
+						{
+							$('#RekapRiwayatMutasi-cmbBidangBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbBidangBaru').removeAttr('disabled');
+							$('#RekapRiwayatMutasi-cmbUnitBaru').removeAttr('disabled');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').removeAttr('disabled');								
+
+							$('#RekapRiwayatMutasi-cmbBidangBaru').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarBidang',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											departemen: departemen
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_bidang, text: obj.kode_bidang + ' | ' + obj.nama_bidang};
+											})
+										}
+									}
+								}
+							});							
+						}
+					});
+
+					$(document).on('change', '#RekapRiwayatMutasi-cmbBidangBaru', function(){
+						var bidang =	$(this).val();
+
+						if(bidang.substr(bidang.length - 2) == '00')
+						{
+							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbUnitBaru').attr('disabled','true');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').attr('disabled','true');
+						}
+						else
+						{
+							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbUnitBaru').removeAttr('disabled');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').removeAttr('disabled');
+
+							$('#RekapRiwayatMutasi-cmbUnitBaru').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarUnit',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											bidang: bidang
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_unit, text: obj.kode_unit + ' | ' + obj.nama_unit};
+											})
+										}
+									}
+								}
+							});												
+						}
+					});
+
+					$(document).on('change', '#RekapRiwayatMutasi-cmbUnitBaru', function(){
+						var unit =	$(this).val();
+
+						if(unit.substr(unit.length - 2) == '00')
+						{
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').attr('disabled','true');
+						}
+						else
+						{
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').removeAttr('disabled');							
+
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2(
+							{
+								minimumResultsForSearch: -1,
+								ajax:
+								{
+									url: baseurl+'RekapTIMSPromosiPekerja/RiwayatMutasi/daftarSeksi',
+									dataType: 'json',
+									data: function(params){
+										return {
+											term: params.term,
+											unit: unit
+										}
+									},
+									processResults: function (data){
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_seksi, text: obj.kode_seksi + ' | ' + obj.nama_seksi};
+											})
+										}
+									}
+								}
+							});
+						}
+					});
+
+			//	}
+
+			//	Form Behaviour
+			//	{
+					$('#RekapRiwayatMutasi-radioJenisPencarian-noind').click(function()
+					{
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
+
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
+						/*$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('required', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('required', false);*/
+					});
+
+					$('#RekapRiwayatMutasi-radioJenisPencarian-seksi').click(function()
+					{
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('disabled', false);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
+
+						/*$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('required', true);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('required', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('required', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('required', false);*/
+					});
+
+					$('#RekapRiwayatMutasi-radioJenisPencarian-lokasikerja').click(function()
+					{
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', false);
+
+						/*$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('required', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('required', true);*/
+					});
+
+			//	}
+		});
+		//	Individual Functions
+		//	{
+				
+
 		//	}
 //	}
