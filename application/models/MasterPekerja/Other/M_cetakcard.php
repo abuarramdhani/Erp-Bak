@@ -22,7 +22,7 @@ class M_cetakcard extends CI_Model
 
     public function getWorker($noind,$nick){
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("select tp.noind,tp.nama, (upper('$nick')) as nama_panggilan,
+        $sql = $sqlserver->query("select tp.noind,(upper('$nick')) as nama_panggilan,
                                     left((
                                         case
                                             when
@@ -57,8 +57,19 @@ class M_cetakcard extends CI_Model
                                             else
                                                 tss.seksi
                                         end
-                                    ),30) as seksi
-                                ,left(upper(tsj.nama_jabatan),30) as jabatan,
+                                    ),30) as seksi,
+                                    (case 
+                                    when 
+                                        (left(tp.noind,1)in('C','H','K','P'))
+                                    then null
+                                    else left(upper(tsj.nama_jabatan),30)
+                                    end) as jabatan,
+                                    (case
+                                    when 
+                                        (right(tp.lokasi_kerja,1)>'4')
+                                    then tp.noind_baru
+                                    else tp.noind
+                                    end) as no_induk,
                                 tp.photo
                                 from hrd_khs.tpribadi tp 
                                 left join hrd_khs.tseksi_singkatan tss on left(tp.kodesie,7)=tss.kodesie
@@ -69,7 +80,7 @@ class M_cetakcard extends CI_Model
 
     public function getPekerja($employee){
         $pgPersonalia = $this->load->database('personalia', true);
-        $sql = $pgPersonalia->query("Select * from hrd_khs.tpribadi where upper(nama) like '%$employee%' and keluar=false");
+        $sql = $pgPersonalia->query("Select * from hrd_khs.tpribadi where (upper(nama) like '%$employee%' or noind like '%$employee%') and keluar=false");
         return $sql->result_array();
     }
 
@@ -110,8 +121,19 @@ class M_cetakcard extends CI_Model
                                                 else
                                                     tss.seksi
                                             end
-                                        ),30) as seksi
-                                    ,left(upper(tsj.nama_jabatan),30) as jabatan,
+                                        ),30) as seksi,
+                                        (case 
+                                        when 
+                                            (left(tp.noind,1)in('C','H','K','P'))
+                                        then null
+                                        else left(upper(tsj.nama_jabatan),30)
+                                        end) as jabatan,
+                                        (case
+                                        when 
+                                            (right(tp.lokasi_kerja,1)>'4')
+                                        then tp.noind_baru
+                                        else tp.noind
+                                        end) as no_induk,
                                     tp.photo
                                     from hrd_khs.tpribadi tp 
                                     left join hrd_khs.tseksi_singkatan tss on left(tp.kodesie,7)=tss.kodesie
