@@ -65,7 +65,7 @@ $(document).ready(function(){
 				html += '<td>'+(i+1)+'</td>';
 				html += '<td>'+data['worker'][i][0]['no_induk']+'<input type="hidden" name="noind[]" value="'+data['worker'][i][0]['noind']+'"></td>';
 				html += '<td>'+data['worker'][i][0]['nama']+'</td>';
-				if (data['worker'][i][0]['jabatan']) {
+				if (data['worker'][i][0]['jabatan']!=null) {
 				html += '<td>'+data['worker'][i][0]['jabatan']+' '+data['worker'][i][0]['seksi']+'</td>';
 				}else{
 				html += '<td>'+data['worker'][i][0]['seksi']+'</td>';
