@@ -8,7 +8,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Bppbg Control Account
+                                        Bppbg Account
                                     </b>
                                 </h1>
                             </div>
