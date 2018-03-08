@@ -1,4 +1,7 @@
 // ---- Custom JS Product Cost ----
+$('table.datatable-default').dataTable({
+    dom: 'frtip'
+});
 $('table#tblBppbgAccount').dataTable({
     dom: 'rtip'
 });
@@ -115,4 +118,22 @@ function deleteBppbgCategory(th,id) {
     $('#deleteBppbgCategoryModal #bc_gd').html($(th).closest('tr').find('td.c_gd').attr('data-gd'));
     $('#deleteBppbgCategoryModal #btnDelAction').attr('href', baseurl+'ProductCost/BppbgCategory/delete/'+id);
     $('#deleteBppbgCategoryModal').modal('show');
+}
+function slcCostCenter() {
+    $('#slcCostCenterModal').modal('show');
+}
+function slcBppbgCategory() {
+    $('#slcBppbgCategoryModal').modal('show');
+}
+function slcCostCenterProceed(cc, ccd) {
+    $('input[name="cost_center"]').attr('value', cc);
+    $('input[name="cost_center_description"]').val(ccd);
+    $('#slcCostCenterModal').modal('hide');
+    $('input[name="cost_center"].checking-database-account').trigger("change");
+}
+function slcBppbgCategoryProceed(cc, cd) {
+    $('input[name="using_category_code"]').attr('value', cc);
+    $('input[name="using_category"]').val(cd);
+    $('#slcBppbgCategoryModal').modal('hide');
+    $('input[name="using_category_code"].checking-database-account').trigger("change");
 }
