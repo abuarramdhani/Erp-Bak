@@ -1,6 +1,23 @@
 // ---- Custom JS Product Cost ----
 $('table#tblBppbgAccount').dataTable({
-	dom: 'rtip'
+    dom: 'rtip'
+});
+$('table#tblBppbgCategory').dataTable({
+	dom: 'Bfrtip',
+    buttons: [{
+        extend: 'excel',
+        exportOptions: {
+            columns: [0, 2, 3, 4]
+        },
+        title: 'Bppbg_Category_' + (new Date()).getFullYear()
+    }, {
+        extend: 'pdf',
+        exportOptions: {
+            columns: [0, 2, 3, 4]
+        },
+        title: 'Bppbg_Category_' + (new Date()).getFullYear(),
+        orientation: 'landscape'
+    }]
 });
 $('form#searchBppbgAccountArea').submit(function (event) {
 	event.preventDefault();
@@ -83,4 +100,19 @@ function deleteBppbgAccount(th,id) {
     $('#deleteBppbgAccountModal #ba_a').html($(th).closest('tr').find('td.col-aa').attr('data-aa'));
     $('#deleteBppbgAccountModal #btnDelAction').attr('href', baseurl+'ProductCost/BppbgAccount/delete/'+id);
     $('#deleteBppbgAccountModal').modal('show');
+}
+function editBppbgCategory(th,id) {
+    $('#editBppbgCategoryModal input[name="category_code"]').val($(th).closest('tr').find('td.c_ucc').attr('data-ucc'));
+    $('#editBppbgCategoryModal input[name="category_description"]').val($(th).closest('tr').find('td.c_ucd').attr('data-ucd'));
+    $('#editBppbgCategoryModal textarea[name="general_description"]').html($(th).closest('tr').find('td.c_gd').attr('data-gd'));
+    $('#editBppbgCategoryModal #editBppbgCategoryForm').attr('action', baseurl+'ProductCost/BppbgCategory/edit/'+id);
+    $('#editBppbgCategoryModal').modal('show');
+}
+function deleteBppbgCategory(th,id) {
+    $('#deleteBppbgCategoryModal #bc_number').html($(th).closest('tr').find('td.c_number').attr('data-number'));
+    $('#deleteBppbgCategoryModal #bc_ucc').html($(th).closest('tr').find('td.c_ucc').attr('data-ucc'));
+    $('#deleteBppbgCategoryModal #bc_uc').html($(th).closest('tr').find('td.c_ucd').attr('data-ucd'));
+    $('#deleteBppbgCategoryModal #bc_gd').html($(th).closest('tr').find('td.c_gd').attr('data-gd'));
+    $('#deleteBppbgCategoryModal #btnDelAction').attr('href', baseurl+'ProductCost/BppbgCategory/delete/'+id);
+    $('#deleteBppbgCategoryModal').modal('show');
 }
