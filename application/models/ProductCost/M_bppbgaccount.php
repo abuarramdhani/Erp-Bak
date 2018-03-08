@@ -137,4 +137,38 @@ class M_bppbgaccount extends CI_Model {
 		$this->oracle->where('ACCOUNT_ID', $id);
 		$this->oracle->delete('KHS_BPPBG_ACCOUNT');
 	}
+
+	public function getCostCenter()
+	{
+		$sql = "SELECT ffv.FLEX_VALUE cost_center,
+				       ffvt.DESCRIPTION cost_center_description
+				FROM fnd_flex_values ffv ,
+				     fnd_flex_values_tl ffvt
+				WHERE ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+				  AND ffv.FLEX_VALUE_SET_ID = 1013709
+				  AND ffv.ENABLED_FLAG = 'Y'
+				  AND ffv.END_DATE_ACTIVE IS NULL
+				  AND ffv.SUMMARY_FLAG = 'N'
+				ORDER BY ffv.FLEX_VALUE";
+
+		$query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function getAccountNumber()
+	{
+		$sql = "SELECT ffv.FLEX_VALUE account_number,
+				       ffvt.DESCRIPTION account_number_description
+				FROM fnd_flex_values ffv ,
+				     fnd_flex_values_tl ffvt
+				WHERE ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+				  AND ffv.FLEX_VALUE_SET_ID = 1013708
+				  AND ffv.ENABLED_FLAG = 'Y'
+				  AND ffv.END_DATE_ACTIVE IS NULL
+				  AND ffv.SUMMARY_FLAG = 'N'
+				ORDER BY ffv.FLEX_VALUE";
+
+		$query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
 }
