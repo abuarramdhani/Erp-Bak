@@ -1517,11 +1517,15 @@ $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
 
 //------------------------------------------------Master Pekerja-------------------------------------------------------//
-$route['ProductCost']									= 'ProductCost/C_Index';
-$route['ProductCost/BppbgAccount']						= 'ProductCost/MainMenu/C_BppbgAccount';
-$route['ProductCost/BppbgAccount/(:any)']				= 'ProductCost/MainMenu/C_BppbgAccount/$1';
-$route['ProductCost/BppbgAccount/(:any)/(:any)']		= 'ProductCost/MainMenu/C_BppbgAccount/$1/$2';
-$route['ProductCost/BppbgAccount/(:any)/(:any)/(:any)'] = 'ProductCost/MainMenu/C_BppbgAccount/$1/$2/$3';
+$route['ProductCost']										= 'ProductCost/C_Index';
+$route['ProductCost/BppbgAccount']							= 'ProductCost/MainMenu/C_BppbgAccount';
+$route['ProductCost/BppbgAccount/(:any)']					= 'ProductCost/MainMenu/C_BppbgAccount/$1';
+$route['ProductCost/BppbgAccount/(:any)/(:any)']			= 'ProductCost/MainMenu/C_BppbgAccount/$1/$2';
+$route['ProductCost/BppbgAccount/(:any)/(:any)/(:any)']		= 'ProductCost/MainMenu/C_BppbgAccount/$1/$2/$3';
+$route['ProductCost/BppbgCategory']							= 'ProductCost/MainMenu/C_BppbgCategory';
+$route['ProductCost/BppbgCategory/(:any)']					= 'ProductCost/MainMenu/C_BppbgCategory/$1';
+$route['ProductCost/BppbgCategory/(:any)/(:any)']			= 'ProductCost/MainMenu/C_BppbgCategory/$1/$2';
+$route['ProductCost/BppbgCategory/(:any)/(:any)/(:any)']	= 'ProductCost/MainMenu/C_BppbgCategory/$1/$2/$3';
 
 $route['ProductCost/Ajax/(:any)']						= 'ProductCost/Ajax/C_Ajax/$1';
 $route['ProductCost/Ajax/(:any)/(:any)']				= 'ProductCost/Ajax/C_Ajax/$1/$2';
