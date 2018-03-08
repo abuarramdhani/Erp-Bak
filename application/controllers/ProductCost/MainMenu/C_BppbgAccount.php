@@ -13,6 +13,7 @@ class C_BppbgAccount extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ProductCost/M_bppbgaccount');
+		$this->load->model('ProductCost/M_bppbgcategory');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -62,6 +63,9 @@ class C_BppbgAccount extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['costcenter']		= $this->M_bppbgaccount->getCostCenter();
+		$data['accountnumber']	= $this->M_bppbgaccount->getAccountNumber();
+		$data['category']		= $this->M_bppbgcategory->getBppbgCategory();
 		
 		$this->form_validation->set_rules('using_category_code', 'using_category_code', 'required');
 
