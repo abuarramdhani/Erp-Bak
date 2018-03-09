@@ -13,7 +13,7 @@
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/MasterTraining');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/Record');?>">
                                 <i class="icon-wrench icon-2x"></i>
                                 <span><br/></span>	
                             </a>
@@ -179,36 +179,27 @@
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="col-md-12">
-									<table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
-										<thead class="bg-primary">
-											<tr>
-												<th width="5%">No</th>
-												<th width="15%">No Induk</th>
-												<th width="60%">Nama Trainer</th>
-												<th width="20%">Status</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-												$no=0;
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="glyphicon glyphicon-user"></i>
+											</div>
+											<select class="form-control select4" name="slcTrainer[]" id="slcTrainer" multiple="multiple" required>
+												<option value=""></option>
+												<?php
 												$strainer = explode(',', $rc['trainer']);
-												foreach ($strainer as $st){ $no++;
-													foreach ($trainer as $tr){
-														if($st == $tr['trainer_id']){
-															$status='Internal';
-															if($tr['trainer_status']==0){
-																$status='Eksternal';
-															}
-											?>
-											<tr>
-												<td><?php echo $no ?></td>
-												<td><?php echo $tr['noind']?></td>
-												<td><?php echo $tr['trainer_name']?></td>
-												<td><?php echo $status?></td>
-											</tr>
-											<?php }}} ?>
-										</tbody>
-									</table>
+													foreach($trainer as $tr){
+														$selected_tr=''; 
+														if (in_array($tr['trainer_id'], $strainer)) {
+															$selected_tr='selected';
+														}
+												?>
+													<option <?php echo $selected_tr?> value="<?php echo $tr['trainer_id']?>"><?php echo $tr['trainer_name']?></option>
+												<?php }
+												?>
+											</select>
+										</div>
+									</div>
 								</div>
 							</div>
 							<hr>
@@ -236,7 +227,12 @@
 													?>
 												</td>
 											</tr> -->
-											
+										<div class="row" style="margin: 10px 10px">
+											<div class="form-group">
+												<label class="col-lg-12 control-label">Peserta : </label>
+											</div>
+										</div>
+										<div class="row" style="margin: 10px 10px">
 												<div class="panel panel-default">
 													<div class="panel-heading text-right">
 														<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddParticipantEdit" title="Tambah Baris" onclick="AddParticipantEdit('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
@@ -294,6 +290,7 @@
 														</div>
 													</div>
 												</div>
+											</div>
 											<?php } ?>
 										<!-- </tbody>
 									</table> -->
