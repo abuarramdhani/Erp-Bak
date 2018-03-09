@@ -1535,3 +1535,13 @@ $route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
 $route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
 $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
+
+//------------------------------------ Penerimaan PO ----------------------------------------
+$route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
+ 
+$route['PenerimaanPO/awal']					   = 'PenerimaanPO/C_PenerimaanAwal';
+$route['PenerimaanPO/awal/loadVendor/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadVendor/$1';
+$route['PenerimaanPO/awal/loadPoLine/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadPoLine/$1';
+
+$route['PenerimaanPO/cek'] 					   = 'PenerimaanPO/C_Pengecekan';
+$route['PenerimaanPO/cek/loadDataCek/(:any)']  = 'PenerimaanPO/C_Pengecekan/loadDataCek/$1';
