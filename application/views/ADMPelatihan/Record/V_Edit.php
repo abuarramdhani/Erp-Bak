@@ -13,7 +13,7 @@
 					</div>
 					<div class="col-lg-1">
 						<div class="text-right hidden-md hidden-sm hidden-xs">
-                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/MasterTraining');?>">
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/Record');?>">
                                 <i class="icon-wrench icon-2x"></i>
                                 <span><br/></span>	
                             </a>
@@ -209,6 +209,34 @@
 											<?php }}} ?>
 										</tbody>
 									</table>
+								</div>
+							</div>
+							<div class="row" style="margin: 10px 10px">
+								<div class="col-md-3">
+									<label class="control-label">Trainer</label>
+								</div>
+								<div class="col-md-9">
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="glyphicon glyphicon-user"></i>
+											</div>
+											<select class="form-control select4" name="slcTrainer[]" id="slcTrainer" multiple="multiple" required>
+												<option value=""></option>
+												<?php
+												$strainer = explode(',', $rc['trainer']);
+													foreach($trainer as $tr){
+														$selected_tr=''; 
+														if (in_array($tr['trainer_id'], $strainer)) {
+															$selected_tr='selected';
+														}
+												?>
+													<option <?php echo $selected_tr?> value="<?php echo $tr['trainer_id']?>"><?php echo $tr['trainer_name']?></option>
+												<?php }
+												?>
+											</select>
+										</div>
+									</div>
 								</div>
 							</div>
 							<hr>
