@@ -179,43 +179,6 @@
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="col-md-12">
-									<table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
-										<thead class="bg-primary">
-											<tr>
-												<th width="5%">No</th>
-												<th width="15%">No Induk</th>
-												<th width="60%">Nama Trainer</th>
-												<th width="20%">Status</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-												$no=0;
-												$strainer = explode(',', $rc['trainer']);
-												foreach ($strainer as $st){ $no++;
-													foreach ($trainer as $tr){
-														if($st == $tr['trainer_id']){
-															$status='Internal';
-															if($tr['trainer_status']==0){
-																$status='Eksternal';
-															}
-											?>
-											<tr>
-												<td><?php echo $no ?></td>
-												<td><?php echo $tr['noind']?></td>
-												<td><?php echo $tr['trainer_name']?></td>
-												<td><?php echo $status?></td>
-											</tr>
-											<?php }}} ?>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div class="row" style="margin: 10px 10px">
-								<div class="col-md-3">
-									<label class="control-label">Trainer</label>
-								</div>
-								<div class="col-md-9">
 									<div class="form-group">
 										<div class="input-group">
 											<div class="input-group-addon">
@@ -264,7 +227,12 @@
 													?>
 												</td>
 											</tr> -->
-											
+										<div class="row" style="margin: 10px 10px">
+											<div class="form-group">
+												<label class="col-lg-12 control-label">Peserta : </label>
+											</div>
+										</div>
+										<div class="row" style="margin: 10px 10px">
 												<div class="panel panel-default">
 													<div class="panel-heading text-right">
 														<a href="javascript:void(0);" class="btn btn-sm btn-primary" id="AddParticipantEdit" title="Tambah Baris" onclick="AddParticipantEdit('<?php echo base_url(); ?>')"><i class="fa fa-plus"></i></a>
@@ -322,6 +290,7 @@
 														</div>
 													</div>
 												</div>
+											</div>
 											<?php } ?>
 										<!-- </tbody>
 									</table> -->
