@@ -81,11 +81,10 @@ class C_BppbgAccount extends CI_Controller {
 			$b = $this->input->post('using_category_code');
 			$c = $this->input->post('using_category');
 			$d = $this->input->post('cost_center');
-			$e = $this->input->post('cost_center_description');
 			$f = $this->input->post('account_number');
 			$g = $this->input->post('account_attribute');
 
-			$this->M_bppbgaccount->setAccount($a,$b,$c,$d,$e,$f,$g);
+			$this->M_bppbgaccount->setAccount($a,$b,$c,$d,$f,$g);
 
 			redirect(site_url('ProductCost/BppbgAccount/'));
 		}
@@ -118,11 +117,10 @@ class C_BppbgAccount extends CI_Controller {
 			$b = $this->input->post('using_category_code');
 			$c = $this->input->post('using_category');
 			$d = $this->input->post('cost_center');
-			$e = $this->input->post('cost_center_description');
 			$f = $this->input->post('account_number');
 			$g = $this->input->post('account_attribute');
 
-			$this->M_bppbgaccount->updateAccount($id,$b,$c,$d,$e,$f,$g);
+			$this->M_bppbgaccount->updateAccount($id,$b,$c,$d,$f,$g);
 
 			redirect(site_url('ProductCost/BppbgAccount/'));
 		}
