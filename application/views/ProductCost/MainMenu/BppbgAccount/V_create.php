@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Category Description</label>
-                                                <input class="form-control toupper" type="text" name="using_category" placeholder="Using Category" readonly="">
+                                                <input class="form-control" type="text" name="using_category" placeholder="Category Description" readonly="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Cost Center</label>
@@ -55,7 +55,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Cost Center Description</label>
-                                                <input class="form-control toupper" type="text" name="cost_center_description" placeholder="Cost Center Description" readonly="">
+                                                <input class="form-control" type="text" name="cost_center_description" placeholder="Cost Center Description" readonly="">
                                             </div>
                                             <div class="form-group">
                                                 <label>Account Number</label>
