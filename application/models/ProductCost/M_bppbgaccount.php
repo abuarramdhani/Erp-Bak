@@ -11,50 +11,60 @@ class M_bppbgaccount extends CI_Model {
 		if ($id===FALSE && $USING_CATEGORY_CODE===FALSE && $ACCOUNT_NUMBER===FALSE && $COST_CENTER===FALSE && $limit===FALSE) {
 			$sql = "SELECT *
 					FROM
-					  ( SELECT ACCOUNT_ID,
-					           USING_CATEGORY_CODE,
-					           USING_CATEGORY,
-					           COST_CENTER,
-					           COST_CENTER_DESCRIPTION,
-					           ACCOUNT_NUMBER,
-					           ACCOUNT_ATTRIBUTE,
-					           DECODE(LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), LAST_UPDATE_DATE) LAST_UPDATE_DATE,
-					           DECODE(CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), CREATION_DATE) CREATION_DATE
-					   FROM KHS_BPPBG_ACCOUNT
-					   ORDER BY LAST_UPDATE_DATE DESC, CREATION_DATE DESC )
-					WHERE ROWNUM <= 100";
+					  ( SELECT kba.ACCOUNT_ID,
+					           kba.USING_CATEGORY_CODE,
+					           kba.USING_CATEGORY,
+					           kba.COST_CENTER,
+					           ffvt.DESCRIPTION COST_CENTER_DESCRIPTION,
+					           kba.ACCOUNT_NUMBER,
+					           kba.ACCOUNT_ATTRIBUTE,
+					           DECODE(kba.LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), kba.LAST_UPDATE_DATE) LAST_UPDATE_DATE,
+					           DECODE(kba.CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), kba.CREATION_DATE) CREATION_DATE
+					   FROM KHS_BPPBG_ACCOUNT kba
+					   		,fnd_flex_values ffv
+							,fnd_flex_values_tl ffvt
+					   WHERE kba.COST_CENTER = ffv.FLEX_VALUE
+					    AND ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+						AND ffv.FLEX_VALUE_SET_ID = 1013709
+					   ORDER BY kba.LAST_UPDATE_DATE DESC, kba.CREATION_DATE DESC )
+					WHERE ROWNUM <= 500";
 			$query = $this->oracle->query($sql);
 		}elseif ($id!==FALSE) {
-			$query = $this->oracle->get_where('KHS_BPPBG_ACCOUNT', array('ACCOUNT_ID' => $id));
+			$sql = "SELECT kba.ACCOUNT_ID,
+					       kba.USING_CATEGORY_CODE,
+					       kba.USING_CATEGORY,
+					       kba.COST_CENTER,
+					       ffvt.DESCRIPTION COST_CENTER_DESCRIPTION,
+					       kba.ACCOUNT_NUMBER,
+					       kba.ACCOUNT_ATTRIBUTE,
+					       DECODE(kba.LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), kba.LAST_UPDATE_DATE) LAST_UPDATE_DATE,
+					       DECODE(kba.CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), kba.CREATION_DATE) CREATION_DATE
+					FROM KHS_BPPBG_ACCOUNT kba ,
+					     fnd_flex_values ffv ,
+					     fnd_flex_values_tl ffvt
+					WHERE kba.COST_CENTER = ffv.FLEX_VALUE
+					  AND ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+					  AND ffv.FLEX_VALUE_SET_ID = 1013709
+					  AND kba.ACCOUNT_ID = $id
+					";
+			$query = $this->oracle->query($sql);
 		}else{
 			// ---- INISIALISASI DATA ----
-				$where 					= '';
 				$wUSING_CATEGORY_CODE	= '';
 				$wACCOUNT_NUMBER		= '';
 				$wCOST_CENTER			= '';
 				$wlimit					= '';
 			// ---- CHECKING DATA ONE BY ONE ----
 				if ($USING_CATEGORY_CODE!==FALSE) {
-					$where = 'WHERE';
-					$wUSING_CATEGORY_CODE = "USING_CATEGORY_CODE LIKE '%$USING_CATEGORY_CODE%'";
+					$wUSING_CATEGORY_CODE = "AND USING_CATEGORY_CODE LIKE '%$USING_CATEGORY_CODE%'";
 				}
 
 				if ($ACCOUNT_NUMBER!==FALSE) {
-					$and = 'AND ';
-					if ($where == '') {
-						$where = 'WHERE';
-						$and='';
-					}
-					$wACCOUNT_NUMBER = $and."ACCOUNT_NUMBER LIKE '%$ACCOUNT_NUMBER%'";
+					$wACCOUNT_NUMBER = "AND ACCOUNT_NUMBER LIKE '%$ACCOUNT_NUMBER%'";
 				}
 
 				if ($COST_CENTER!==FALSE) {
-					$and = 'AND ';
-					if ($where == '') {
-						$where = 'WHERE';
-						$and='';
-					}
-					$wCOST_CENTER = $and."COST_CENTER LIKE '%$COST_CENTER%'";
+					$wCOST_CENTER = "AND COST_CENTER LIKE '%$COST_CENTER%'";
 				}
 
 				if ($limit!==FALSE) {
@@ -62,25 +72,30 @@ class M_bppbgaccount extends CI_Model {
 				}
 			$sql = "SELECT *
 					FROM
-					  ( SELECT ACCOUNT_ID,
-					           USING_CATEGORY_CODE,
-					           USING_CATEGORY,
-					           COST_CENTER,
-					           COST_CENTER_DESCRIPTION,
-					           ACCOUNT_NUMBER,
-					           ACCOUNT_ATTRIBUTE,
-					           DECODE(LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), LAST_UPDATE_DATE) LAST_UPDATE_DATE,
-					           DECODE(CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), CREATION_DATE) CREATION_DATE
-					   FROM KHS_BPPBG_ACCOUNT
-					   $where $wUSING_CATEGORY_CODE $wACCOUNT_NUMBER $wCOST_CENTER
-					   ORDER BY LAST_UPDATE_DATE DESC, CREATION_DATE DESC )
+					  ( SELECT kba.ACCOUNT_ID,
+					           kba.USING_CATEGORY_CODE,
+					           kba.USING_CATEGORY,
+					           kba.COST_CENTER,
+					           ffvt.DESCRIPTION COST_CENTER_DESCRIPTION,
+					           kba.ACCOUNT_NUMBER,
+					           kba.ACCOUNT_ATTRIBUTE,
+					           DECODE(kba.LAST_UPDATE_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), kba.LAST_UPDATE_DATE) LAST_UPDATE_DATE,
+					           DECODE(kba.CREATION_DATE, NULL, TO_DATE('1970-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS'), kba.CREATION_DATE) CREATION_DATE
+					   FROM KHS_BPPBG_ACCOUNT kba
+					   		,fnd_flex_values ffv
+							,fnd_flex_values_tl ffvt
+					   WHERE kba.COST_CENTER = ffv.FLEX_VALUE
+					    AND ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+						AND ffv.FLEX_VALUE_SET_ID = 1013709
+						$wUSING_CATEGORY_CODE $wACCOUNT_NUMBER $wCOST_CENTER
+					   ORDER BY kba.LAST_UPDATE_DATE DESC, kba.CREATION_DATE DESC )
 					$wlimit";
 			$query = $this->oracle->query($sql);
 		}
 		return $query->result_array();
 	}
 
-	public function setAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $COST_CENTER_DESCRIPTION, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE)
+	public function setAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE)
 	{
 		if(empty($ACCOUNT_ATTRIBUTE) || $ACCOUNT_ATTRIBUTE == '')
 		{
@@ -88,12 +103,11 @@ class M_bppbgaccount extends CI_Model {
 		}else{
 			$ACCOUNT_ATTRIBUTE	=	"'".$ACCOUNT_ATTRIBUTE."'";
 		}
-		$sql = "INSERT INTO KHS_BPPBG_ACCOUNT(ACCOUNT_ID, USING_CATEGORY_CODE, USING_CATEGORY, COST_CENTER, COST_CENTER_DESCRIPTION, ACCOUNT_NUMBER, ACCOUNT_ATTRIBUTE, CREATION_DATE)
+		$sql = "INSERT INTO KHS_BPPBG_ACCOUNT(ACCOUNT_ID, USING_CATEGORY_CODE, USING_CATEGORY, COST_CENTER, ACCOUNT_NUMBER, ACCOUNT_ATTRIBUTE, CREATION_DATE)
 				VALUES ( '$ACCOUNT_ID',
 				         '$USING_CATEGORY_CODE',
 				         '$USING_CATEGORY',
 				         '$COST_CENTER',
-				         '$COST_CENTER_DESCRIPTION',
 				         '$ACCOUNT_NUMBER',
 				         ".$ACCOUNT_ATTRIBUTE.",
 				         sysdate
@@ -108,7 +122,7 @@ class M_bppbgaccount extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function updateAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $COST_CENTER_DESCRIPTION, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE)
+	public function updateAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE)
 	{
 		if(empty($ACCOUNT_ATTRIBUTE) || $ACCOUNT_ATTRIBUTE == '')
 		{
@@ -122,7 +136,6 @@ class M_bppbgaccount extends CI_Model {
 					USING_CATEGORY_CODE = '$USING_CATEGORY_CODE',
 					USING_CATEGORY = '$USING_CATEGORY',
 					COST_CENTER = '$COST_CENTER',
-					COST_CENTER_DESCRIPTION = '$COST_CENTER_DESCRIPTION',
 					ACCOUNT_NUMBER = '$ACCOUNT_NUMBER',
 					ACCOUNT_ATTRIBUTE = $ACCOUNT_ATTRIBUTE,
 					LAST_UPDATE_DATE = SYSDATE
