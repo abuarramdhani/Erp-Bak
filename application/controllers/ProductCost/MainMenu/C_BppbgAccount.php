@@ -103,6 +103,9 @@ class C_BppbgAccount extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['account']		= $this->M_bppbgaccount->getAccount($id);
+		$data['costcenter']		= $this->M_bppbgaccount->getCostCenter();
+		$data['accountnumber']	= $this->M_bppbgaccount->getAccountNumber();
+		$data['category']		= $this->M_bppbgcategory->getBppbgCategory();
 		$data['id']				= $id;
 		
 		$this->form_validation->set_rules('using_category_code', 'using_category_code', 'required');
