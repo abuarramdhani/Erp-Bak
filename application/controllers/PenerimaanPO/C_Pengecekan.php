@@ -12,7 +12,7 @@
 		$this->load->library('session');
 		  //$this->load->library('Database');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('PenerimaanPO/M_Pengecekan');
+		$this->load->model('PenerimaanPO/M_pengecekan');
 		$this->load->library('excel');
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');

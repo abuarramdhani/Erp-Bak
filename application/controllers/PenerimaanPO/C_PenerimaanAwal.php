@@ -12,7 +12,7 @@ class C_penerimaanAwal extends CI_Controller {
 		$this->load->library('session');
 		  //$this->load->library('Database');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('PenerimaanPO/M_PenerimaanAwal');
+		$this->load->model('PenerimaanPO/M_penerimaanawal');
 		$this->load->library('excel');
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
