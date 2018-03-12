@@ -75,4 +75,6 @@ class M_PenerimaanAwal extends CI_Model {
 		$query = $this->oracle->query($sql);
     }
 
+    //uppercase
+
 }
