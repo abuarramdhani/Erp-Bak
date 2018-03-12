@@ -108,20 +108,37 @@ class M_masterquestionnaire extends CI_Model {
 		// 	$sqlUpdateData3		=	$this->db->query($queryUpdateData3);
 		// }
 
-
-
 		public function insertDes($Q_id,$Des)
 		{
 			$sql="
 				INSERT into pl.pl_master_questionnaire_segment
-					(questionnaire_id,segment_description)
+					(questionnaire_id,segment_description, segment_type)
 				values
-					('$Q_id','$Des')
+					('$Q_id','$Des','1')
 			";
 			$this->db->query($sql);
 
 			$last_insert_id = $this->db->insert_id();
 			return $last_insert_id;
+		}
+
+		public function insertDesAjax($Q_id,$SgDes,$quesName)
+		{
+			$sql2="
+				UPDATE pl.pl_master_questionnaire
+				SET questionnaire_title='".$quesName."'
+				where questionnaire_id=".$Q_id."
+			";
+			$sql="
+				INSERT into pl.pl_master_questionnaire_segment
+					(questionnaire_id,segment_description, segment_type)
+				values
+					('$Q_id','$SgDes','1')
+			";
+			// return $sql;
+			// return $sql2;
+			$this->db->query($sql2);
+			$this->db->query($sql);
 		}
 		
 		public function insertStDes($Q_id,$SgID,$TDes)
@@ -144,12 +161,22 @@ class M_masterquestionnaire extends CI_Model {
 			// return $sql;
 		}
 
-		public function updateDes($Q_id,$Des, $SgID)
+		// public function updateDesAjax($Q_id,$Des, $SgID)
+		// {
+		// 	$sql 	= " UPDATE 	pl.pl_master_questionnaire_segment
+ 	 	//				SET 	segment_description='".$Des."'
+ 	 	//						segment_type='1'
+ 	 	//				WHERE 	questionnaire_id=".$Q_id."
+ 	 	//				AND 	segment_id=".$SgID."";
+		// 	$this->db->query($sql);
+		// }
+
+		public function updateDes($Q_id,$Des, $idSegment)
 		{
 			$sql 	= " UPDATE 	pl.pl_master_questionnaire_segment
  						SET 	segment_description='".$Des."'
  						WHERE 	questionnaire_id=".$Q_id."
- 						AND 	segment_id=".$SgID."";
+ 						AND 	segment_id=".$idSegment."";
 			$this->db->query($sql);
 		}
 

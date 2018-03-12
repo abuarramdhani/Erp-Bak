@@ -302,7 +302,7 @@ class C_AccountReceivables extends CI_Controller {
 
 	public function insertSemua()
 	{
-		$tanggal=$this->input->post("textDate");
+		$tanggal=date('Y-m-d H:i:s', strtotime($this->input->post("textDate")));
 		$seksi=$this->input->post("slcseksi");
 		$nama=$this->input->post("textNama");
 		$order_=$this->input->post("slcorder");
@@ -325,7 +325,7 @@ class C_AccountReceivables extends CI_Controller {
 
 	public function UpdateLaporan()
 	{
-		$tanggal=$this->input->post("textDate");
+		$tanggal=date('Y-m-d H:i:s', strtotime($this->input->post("textDate")));
 		$seksi=$this->input->post("slcseksi");
 		$nama=$this->input->post("textNama");
 		$order_=$this->input->post("slcorder");

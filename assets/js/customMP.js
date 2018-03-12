@@ -98,6 +98,10 @@ $(function() {
     $('input[name="daterange"]').daterangepicker();
 });
 
+$('.datepicker_mp').datepicker({
+    dateFormat: 'dd-mm-yy'
+});
+
 
 $(".submit-date").click(function(){
     tgl1 = $("#tanggalan1").val();

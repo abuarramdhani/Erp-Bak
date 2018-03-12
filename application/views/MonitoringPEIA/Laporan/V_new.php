@@ -15,7 +15,7 @@
 					</div>
 					<div class="col-md-8">
 						<div class="form-group">
-						<input type="date" name="textDate" class="form-control" required>
+						<input type="text" name="textDate" class="form-control datepicker_mp" required>
 						</div>
 					</div>
 				</div>
