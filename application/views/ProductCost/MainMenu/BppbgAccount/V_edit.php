@@ -134,7 +134,7 @@
                                     </thead>
                                     <tbody>
                                     <?php $x=1; foreach ($category as $c) { ?>
-                                        <tr onclick="slcBppbgCategoryProceed('<?php echo $c['USING_CATEGORY_CODE']; ?>','<?php echo $c['USING_CATEGORY_DESCRIPTION']; ?>')">
+                                        <tr style="cursor: pointer;" onclick="slcBppbgCategoryProceed('<?php echo $c['USING_CATEGORY_CODE']; ?>','<?php echo $c['USING_CATEGORY_DESCRIPTION']; ?>')">
                                             <td><?php echo $x++; ?></td>
                                             <td><?php echo $c['USING_CATEGORY_CODE']; ?></td>
                                             <td><?php echo $c['USING_CATEGORY_DESCRIPTION']; ?></td>
@@ -177,7 +177,7 @@
                                     </thead>
                                     <tbody>
                                     <?php $no=1; foreach ($costcenter as $cc) { ?>
-                                        <tr onclick="slcCostCenterProceed('<?php echo $cc['COST_CENTER']; ?>','<?php echo $cc['COST_CENTER_DESCRIPTION']; ?>')">
+                                        <tr style="cursor: pointer;" onclick="slcCostCenterProceed('<?php echo $cc['COST_CENTER']; ?>','<?php echo $cc['COST_CENTER_DESCRIPTION']; ?>')">
                                             <td><?php echo $no++; ?></td>
                                             <td><?php echo $cc['COST_CENTER']; ?></td>
                                             <td><?php echo $cc['COST_CENTER_DESCRIPTION']; ?></td>
