@@ -31,4 +31,5 @@ class M_Pengecekan extends CI_Model{
 		echo $sql;
 		$query = $this->oracle->query($sql);
     }
+    //uppercase
 }
