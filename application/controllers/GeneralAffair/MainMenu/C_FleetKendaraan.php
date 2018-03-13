@@ -12,10 +12,12 @@ class C_FleetKendaraan extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
+		$this->load->library('ciqrcode');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetkendaraan');
 
+    	$this->load->helper('download');
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
@@ -51,7 +53,16 @@ class C_FleetKendaraan extends CI_Controller
 
 		$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan();
 		$data['FleetKendaraanDeleted']	= $this->M_fleetkendaraan->getFleetKendaraanDeleted();
-
+		foreach ($data['FleetKendaraan'] as $row) {
+			if(!file_exists(FCPATH."assets/upload/qrcodeGA/".$row['nomor_polisi'].".png")){
+				$qr_image=$row['nomor_polisi'].'.png';
+				$params['data'] = $row['nomor_polisi'];
+				$params['level'] = 'H';
+				$params['size'] = 8;
+				$params['savename'] =FCPATH."assets/upload/qrcodeGA/".$qr_image;
+				$this->ciqrcode->generate($params);
+			}
+		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);	
 		$this->load->view('GeneralAffair/FleetKendaraan/V_index', $data);
@@ -452,6 +463,7 @@ class C_FleetKendaraan extends CI_Controller
 
 		redirect(site_url('GeneralAffair/FleetKendaraan'));
     }
+
 
 
  

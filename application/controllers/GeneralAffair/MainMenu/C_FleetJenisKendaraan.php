@@ -145,7 +145,6 @@ class C_FleetJenisKendaraan extends CI_Controller
 			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
 
 			$waktu_eksekusi = 	date('Y-m-d H:i:s');
-
 			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
 			{
 				$waktu_dihapus = $waktu_eksekusi;
@@ -154,8 +153,6 @@ class C_FleetJenisKendaraan extends CI_Controller
 			{
 				$waktu_dihapus = '9999-12-12 00:00:00';
 			}
-
-
 			$data = array(
 				'jenis_kendaraan' 	=> $jenisKendaraan,
 				'end_date' 			=> $waktu_dihapus,
