@@ -48,7 +48,7 @@
 	}
 
 	public function loadDataCek($SJ){
-		$data = $this->M_Pengecekan->loadDataCek($SJ);
+		$data = $this->M_pengecekan->loadDataCek($SJ);
 		echo json_encode($data);
 	}
 
@@ -57,7 +57,7 @@
 		$SJ		   = $this->input->post('SJ');
 		$itemName  = $this->input->post('itemName');
 		$itemDesc  = $this->input->post('itemDesc');
-		$data = $this->M_Pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
+		$data = $this->M_pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
 		echo json_encode($data);
 	}
  }
