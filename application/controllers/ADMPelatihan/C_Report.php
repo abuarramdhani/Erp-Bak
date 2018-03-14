@@ -402,7 +402,7 @@ class C_Report extends CI_Controller {
 		// $tanggal  	= '26-02-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);		
 		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
@@ -741,7 +741,7 @@ class C_Report extends CI_Controller {
 			            </h3>
 			        </td>
 			        <td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Document No.</td>
-			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">'.$no_doc.'</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">FRM-HRM-03-13</td>
 			    </tr>
 			    <tr>
 			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Rev No.</td>
@@ -758,7 +758,7 @@ class C_Report extends CI_Controller {
 			    </tr>
 			    <tr>
 			    	<td style="width: 100px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;">Rev Note.</td>
-			        <td style="width: 150px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">'.$rev_note.'</td>
+			        <td style="width: 150px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">-</td>
 			    </tr>
 			    <tr>
 			    	<td colspan="7" rowspan="2" style="border-top: 1px solid black;text-align: center; margin-bottom: 0; padding: 3;">
@@ -1020,21 +1020,25 @@ class C_Report extends CI_Controller {
 			$pid=$GetDataPelatihan[0]['package_scheduling_id'];
 			$participant=  $this->M_report->GetPrtHadir($pid);
 			$data['participant'] = $participant;
-			$trainer = $this->M_record->GetTrainer();
-			$data['trainer'] = $trainer; 
 
 			// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
 			foreach ($GetDataPelatihan as $dpk) {
 				$data['participant_number']= $dpk['participant_number'];
 			}
 			
+			// 1
 			$tampung_trainer= array();
 			foreach ($GetDataPelatihan as $gpk) {
 				array_push($tampung_trainer, $gpk['trainer']);
 				$data['trainer_onpkg']=$tampung_trainer;
 			}
 			$trainer_akhir=$data['trainer_onpkg'];
+			
+			// 2
+			$trainer = $this->M_report->GetTrainerPaket();
+			$data['trainer'] = $trainer; 
 
+			// 3
 			$trainer_fix=array();
 			foreach ($trainer as $tr) {
 				if (in_array($tr['trainer_id'], $trainer_akhir)) {
@@ -1047,9 +1051,9 @@ class C_Report extends CI_Controller {
 				$data['jumlah']= $prtcp['jumlah'];
 			}
 		}
-		
 		echo json_encode($data);
 	}
+
 	public function GetTabelReaksi()
 	{
 		$nama  		= $this->input->POST('nama');

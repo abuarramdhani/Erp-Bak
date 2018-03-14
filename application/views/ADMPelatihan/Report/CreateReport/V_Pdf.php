@@ -140,6 +140,8 @@
 	<tr>
 		<td style="width: 70px; font-size: 13px;"><b>Evaluasi Reaksi</b></td>
 	</tr>
+</table>
+<table>
 	<br>
 	<!-- NESTING TABLE -->
 	<tr>
@@ -195,6 +197,8 @@
 	<tr>
 		<td style="width: 70px; font-size: 13px;"><b>Evaluasi Pembelajaran</b></td>
 	</tr>
+</table>
+<table>
 	<br>
 	<!-- NESTING TABLE -->
 	<tr>
@@ -279,7 +283,7 @@
 	</tr>
 </table>
 <br>
-<table style="width: 100%;border:1px solid black">
+<table style="width: 100%;">
     <tr>
         <td rowspan="2" style="width: 65%; font-size: 14px">
             <table style="width:70px;height: 70px;border:1px solid black">
