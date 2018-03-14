@@ -859,6 +859,16 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	public function GetTrainerPaket(){
+		$sql = "select 		*
+				from 		pl.pl_master_trainer a
+							join 	pl.pl_scheduling_training as b
+									on 	b.trainer=a.trainer_id::varchar
+				where		 b.package_scheduling_id=36
+				order by 	b.scheduling_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 	//Ambil data Trainer untuk view kedua
 	public function GetTrainerQue($trainer=FALSE){
 		if ($trainer==FALSE) {
