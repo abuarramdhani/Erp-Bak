@@ -83,7 +83,7 @@
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
                                                         <td>
                                                             <img src="<?php echo base_url('assets/upload/qrcodeGA/'.$Kendaraan['nomor_polisi'].'.png') ?>" style="width:50px;height:50px;"/>
-                                                            <a href="<?php echo base_url('assets/upload/qrcodeGA/'.$Kendaraan['nomor_polisi'].'.png');?>" target="_blank">Download</a>
+                                                            <a href="<?php echo site_url('GeneralAffair/FleetKendaraan/export_qr/'.$encrypted_string.'');?>" target="_blank">Download</a>
                                                         </td>
                                                         <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_stnk']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
                                                         <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_bpkb']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>

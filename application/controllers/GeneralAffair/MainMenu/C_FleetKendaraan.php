@@ -465,7 +465,19 @@ class C_FleetKendaraan extends CI_Controller
     }
 
 
+    public function export_qr($id=FALSE){
+    	$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan($plaintext_string);
+		$this->load->library('pdf');
 
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 0, 0, 'P');
+		$filename = 'qr_code.pdf';
+		$html = $this->load->view('GeneralAffair/FleetKendaraan/V_export_qr',$data, true);
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename, 'I');
+    }
  
 }
 
