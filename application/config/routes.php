@@ -1559,3 +1559,11 @@ $route['ProductCost/BppbgCategory/(:any)/(:any)/(:any)']	= 'ProductCost/MainMenu
 
 $route['ProductCost/Ajax/(:any)']						= 'ProductCost/Ajax/C_Ajax/$1';
 $route['ProductCost/Ajax/(:any)/(:any)']				= 'ProductCost/Ajax/C_Ajax/$1/$2';
+
+//------------------------------------Master Presensi---------------------------------------------------
+$route['Presensi'] 						= 'Presensi/C_Index/index';
+
+$route['Presensi/PresensiDL'] 			= 'Presensi/MainMenu/C_PresensiDL/index';
+$route['Presensi/PresensiDL/(:any)']		= 'Presensi/MainMenu/C_PresensiDL/$1';
+$route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MainMenu/C_PresensiDL/$1/$2';
+$route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MainMenu/C_PresensiDL/$1/$2/$3';
