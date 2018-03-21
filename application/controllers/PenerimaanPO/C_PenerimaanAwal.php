@@ -12,7 +12,7 @@ class C_penerimaanAwal extends CI_Controller {
 		$this->load->library('session');
 		  //$this->load->library('Database');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('PenerimaanPO/M_PenerimaanAwal');
+		$this->load->model('PenerimaanPO/M_penerimaanawal');
 		$this->load->library('excel');
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -49,28 +49,28 @@ class C_penerimaanAwal extends CI_Controller {
 
 	public function getListVendor(){		
 		$key  = $this->input->post('term');	
-		$data = $this->M_PenerimaanAwal->getListVendor($key);		
+		$data = $this->M_penerimaanawal->getListVendor($key);		
 		echo json_encode($data); 
 	}
 
 	public function getListItem(){
 		$key  = $this->input->post('term');
-		$data = $this->M_PenerimaanAwal->getListItem($key); 
+		$data = $this->M_penerimaanawal->getListItem($key); 
 		echo json_encode($data);
 	}
 
 	public function loadVendor($PO){
-		$data = $this->M_PenerimaanAwal->loadVendor($PO);
+		$data = $this->M_penerimaanawal->loadVendor($PO);
 		echo json_encode($data);
 	}
 
 	public function loadPoLine($PO){
-		$data = $this->M_PenerimaanAwal->loadPoLine($PO);
+		$data = $this->M_penerimaanawal->loadPoLine($PO);
 		echo json_encode($data);
 	}
 
 	public function generateSJ(){
-		$data = $this->M_PenerimaanAwal->generateSJ();
+		$data = $this->M_penerimaanawal->generateSJ();
 		echo json_encode($data);
 	}
 
@@ -86,7 +86,7 @@ class C_penerimaanAwal extends CI_Controller {
 		$qtyActual = $this->input->post('qtyActual');	
 		$qtyPO	   = $this->input->post('qtyPO');
 
-		$data = $this->M_PenerimaanAwal->insertDataAwal($po,$sj,$vendor,$item,$desc,$qtySJ,$rcptDate,$spDate,$qtyActual,$qtyPO);
+		$data = $this->M_penerimaanawal->insertDataAwal($po,$sj,$vendor,$item,$desc,$qtySJ,$rcptDate,$spDate,$qtyActual,$qtyPO);
 		echo json_encode($data);
 	}
 

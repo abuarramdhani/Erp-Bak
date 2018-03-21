@@ -142,7 +142,7 @@
 				          	<div class="box-header with-border" style=" border-top: 1px solid #f4f4f4">
 						      <h3 class="box-title" style="margin-top: 20px"></i>   DESKRIPSI KEGIATAN</h3>
 						    </div>
-				            <textarea class="textarea" name="txtdeskripsi" id="txtdeskripsi" placeholder="Masukkan deskripsi kegiatan..." style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; table-layout: auto;"><?php echo $rpt['description']?></textarea>
+				            <textarea class="textarea" name="txtdeskripsi" id="txtdeskripsi" placeholder="Masukkan deskripsi kegiatan..." style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; table-layout: auto;"><?php echo $rpt['description']?></textarea>
 				          </div>
 				        </div>
 						<div class="col-lg-12">
