@@ -1561,9 +1561,9 @@ $route['ProductCost/Ajax/(:any)']						= 'ProductCost/Ajax/C_Ajax/$1';
 $route['ProductCost/Ajax/(:any)/(:any)']				= 'ProductCost/Ajax/C_Ajax/$1/$2';
 
 //------------------------------------Master Presensi---------------------------------------------------
-$route['Presensi'] 						= 'Presensi/C_Index/index';
+$route['Presensi'] 						= 'Presensi/C_Presensi';
 
-$route['Presensi/PresensiDL'] 			= 'Presensi/MainMenu/C_PresensiDL/index';
-$route['Presensi/PresensiDL/(:any)']		= 'Presensi/MainMenu/C_PresensiDL/$1';
-$route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MainMenu/C_PresensiDL/$1/$2';
-$route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MainMenu/C_PresensiDL/$1/$2/$3';
+$route['Presensi/PresensiDL'] 			= 'Presensi/MenuUtama/C_Presensi_DL/index';
+$route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
+$route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
+$route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
