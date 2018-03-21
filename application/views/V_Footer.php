@@ -65,6 +65,7 @@
 	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPRS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customKL.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
