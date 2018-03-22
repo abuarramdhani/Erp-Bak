@@ -90,7 +90,7 @@ class M_presensi_dl extends CI_Model
                                                     else
                                                        max(berangkat.waktu)
                                                 end
-                                            )<max(tsp.jam_plg)
+                                            )<max(tsp.jam_akhmsk)
                                                             then
                                                                 1
                                                             else
