@@ -703,9 +703,34 @@ class C_Report extends CI_Controller {
 		// ------------------------------------------------------------------------------------------------------------------------
 
 		//batasan deskripsi
-		$data['panjang_desc'] = substr($data['report'][0]['description'], 0, 3307);
-		$data['panjang_desc2'] = substr($data['report'][0]['description'], 3307, 7000);
-		$data['panjang_desc3'] = substr($data['report'][0]['description'], 6000);
+		$kata_array = explode(' ', $data['report'][0]['description']);
+		$jumlahkata = count($kata_array);
+		$table1= array();
+		$table2= array();
+		$table3= array();
+		for ($i=0; $i < $jumlahkata; $i++) { 	
+			if ($i<440) {
+				array_push($table1, $kata_array[$i]);
+			}elseif ($i>=440 && $i<900) {
+				array_push($table2, $kata_array[$i]);
+			}
+			elseif($i>=900){
+				array_push($table3, $kata_array[$i]);
+			}
+		}
+		
+		// satukan kata dalam array 
+		$t1 = implode(' ', $table1);
+		$t2 = implode(' ', $table2);
+		$t3 = implode(' ', $table3);
+
+		$data['panjang_desc'] = $t1;
+		$data['panjang_desc2'] = $t2;
+		$data['panjang_desc3'] = $t3;
+		
+		// $data['panjang_desc'] = substr($data['report'][0]['description'], 0, 3307);
+		// $data['panjang_desc2'] = substr($data['report'][0]['description'], 3307, 7000);
+		// $data['panjang_desc3'] = substr($data['report'][0]['description'], 6000);
 		// ------------------------------------------------------------------------------
 		$report=$data['report'];
 		$data['reg_paket']=$data['report'][0]['reg_paket'];
