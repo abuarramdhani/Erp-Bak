@@ -1,9 +1,18 @@
 $(document).ready(function() {
 
     var listItem = [];
-    var $datepicker = $('#in_dateRcv');
-    $datepicker.datepicker('setDate', new Date());
     var SJ;
+    
+    $('#in_dateRcv').datepicker({ format: 'dd/mm/yyyy' });
+    $('#in_dateRcv').datepicker('setDate', new Date());
+
+     $('.input-group.date').datepicker({
+       todayBtn: "linked",
+       language: "it",
+       autoclose: true,
+       todayHighlight: true,
+       format: 'dd/mm/yyyy'
+    });
 
     $(".selectVendor").select2({
         allowClear: true,
