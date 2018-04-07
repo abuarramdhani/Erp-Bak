@@ -592,7 +592,6 @@ class C_Report extends CI_Controller {
 			$data['t_nilai']= $t_nilai;
 			$this->load->view('ADMPelatihan/Report/CreateReport/V_Edit_Paket',$data);
 		}
-
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -603,8 +602,12 @@ class C_Report extends CI_Controller {
 		$nama 			= $this->input->post('nama');
 		$tanggal		= $this->input->post('tanggal');
 		$package_scheduling_id 	= $this->input->post('txtPckSchId');
-		$txtschid 		= $this->input->post('txtSchId[]');
-		$scheduling_id 	= implode(',', $txtschid);
+		if ($reg_paket == 0) {
+			$scheduling_id = $this->input->post('txtSchId'); 
+		}elseif ($reg_paket == 1) {
+			$txtschid 		= $this->input->post('txtSchId[]');
+			$scheduling_id 	= implode(',', $txtschid);
+		}
 
 		$jenis	 		= $this->input->post('slcJenisPelatihan');
 		$total_psrt		= $this->input->post('txtPesertaPelatihan');
@@ -1013,7 +1016,6 @@ class C_Report extends CI_Controller {
 		$tanggal  	= $this->input->POST('tanggal');
 		$idNama		= $this->input->POST('idNama');
 		$idTanggal	= $this->input->POST('idTanggal');
-
 		if ($idNama==0) {
 			$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
 			$data['GetDataPelatihan']=$GetDataPelatihan;
