@@ -154,8 +154,6 @@ class C_FleetJenisKendaraan extends CI_Controller
 			}else{
 				$waktu_dihapus = $waktu_eksekusi;
 			}
-
-
 			$data = array(
 				'jenis_kendaraan' 	=> $jenisKendaraan,
 				'end_date' 			=> $waktu_dihapus,

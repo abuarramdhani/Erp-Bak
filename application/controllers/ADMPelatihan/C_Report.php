@@ -402,7 +402,7 @@ class C_Report extends CI_Controller {
 		// $tanggal  	= '26-02-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);		
 		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
@@ -684,6 +684,54 @@ class C_Report extends CI_Controller {
     {	
 		$data['id'] = $id;
 		$data['report']=$this->M_report->getFilledReportEdit($id);
+		$rev_no=$data['report'][0]['rev_no'];
+		$no_doc=$data['report'][0]['doc_no'];
+		$rev_note=$data['report'][0]['rev_note'];
+		$rev_date=$data['report'][0]['rev_date'];
+
+		// newdate
+		$date=$rev_date; 
+			$newDate=date("d M Y", strtotime($date));
+			$nulldate=$rev_date;
+			$tanggal_revisi='';
+			if ($nulldate=='0001-01-01 BC' || $nulldate=='0001-01-01' || $nulldate=='1970-01-01' || $nulldate=='01 Jan 1970') {
+				$rev_date=$tanggal_revisi;
+				echo $tanggal_revisi;
+			}else{
+				echo $tanggal_revisi=$newDate;
+			}
+		// ------------------------------------------------------------------------------------------------------------------------
+
+		//batasan deskripsi
+		$kata_array = explode(' ', $data['report'][0]['description']);
+		$jumlahkata = count($kata_array);
+		$table1= array();
+		$table2= array();
+		$table3= array();
+		for ($i=0; $i < $jumlahkata; $i++) { 	
+			if ($i<440) {
+				array_push($table1, $kata_array[$i]);
+			}elseif ($i>=440 && $i<900) {
+				array_push($table2, $kata_array[$i]);
+			}
+			elseif($i>=900){
+				array_push($table3, $kata_array[$i]);
+			}
+		}
+		
+		// satukan kata dalam array 
+		$t1 = implode(' ', $table1);
+		$t2 = implode(' ', $table2);
+		$t3 = implode(' ', $table3);
+
+		$data['panjang_desc'] = $t1;
+		$data['panjang_desc2'] = $t2;
+		$data['panjang_desc3'] = $t3;
+		
+		// $data['panjang_desc'] = substr($data['report'][0]['description'], 0, 3307);
+		// $data['panjang_desc2'] = substr($data['report'][0]['description'], 3307, 7000);
+		// $data['panjang_desc3'] = substr($data['report'][0]['description'], 6000);
+		// ------------------------------------------------------------------------------
 		$report=$data['report'];
 		$data['reg_paket']=$data['report'][0]['reg_paket'];
 		$sid=$data['report'][0]['scheduling_id'];
@@ -704,12 +752,55 @@ class C_Report extends CI_Controller {
     	$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 50, 15, 10, 0, 'P');
 		$filename = 'Report-Pelatihan.pdf';
-		// $head 	=	$this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data);
-		// $pdf->SetHTMLHeader($this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Header',$data, true));
-		
-		// exit();
+		$pdf->SetHTMLHeader('
+			<table style="width:100%;border: 1px solid black; padding: 0px">
+			    <tr>
+			    	<td style="width: 110px;height: 100px;border-right: 1px solid black" rowspan="7">
+			    		<img style="height: 100px; width: 110px" src="'.base_url('/assets/img/logo.png').'" />
+			        </td>
+			        <td rowspan="5" style="text-align: center; width: 400px">
+			        	<h3 style="margin-bottom: 0; padding-bottom: 0;font-size: 21px;">
+			                FORM <br> LAPORAN HASIL TRAINING 
+			            </h3>
+			        </td>
+			        <td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Document No.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">FRM-HRM-03-13</td>
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Rev No.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">'.$rev_no.'</td>
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Rev Date.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">'.$tanggal_revisi.'</td>
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Page No.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2"></td>
+			       {PAGENO}/{nb}
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;">Rev Note.</td>
+			        <td style="width: 150px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">-</td>
+			    </tr>
+			    <tr>
+			    	<td colspan="7" rowspan="2" style="border-top: 1px solid black;text-align: center; margin-bottom: 0; padding: 3;">
+			    		<div style=" font-size: 15px;">
+			    			CV KARYA HIDUP SENTOSA
+			    		</div> 
+			    		<div style="font-size: 14px;">
+			    			Jl. Magelang No. 144 Yogyakarta
+			    		</div>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<td>
+			    	</td>
+			    </tr>
+			</table>
+		');
 		if ($data['reg_paket']==0) {
 			//hitung segmen untuk baris
 			$countSegment=$this->M_report->countSegment($sid);
@@ -783,7 +874,6 @@ class C_Report extends CI_Controller {
 				}
 			}
 			$data['t_nilai']= $t_nilai;
-
 			$html = $this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf', $data, true);
 
 		}elseif ($data['reg_paket']==1) {
@@ -871,7 +961,6 @@ class C_Report extends CI_Controller {
 			$data['t_nilai']= $t_nilai;
 			$html = $this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Paket', $data, true);
 		}
-
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
 	}
@@ -956,21 +1045,25 @@ class C_Report extends CI_Controller {
 			$pid=$GetDataPelatihan[0]['package_scheduling_id'];
 			$participant=  $this->M_report->GetPrtHadir($pid);
 			$data['participant'] = $participant;
-			$trainer = $this->M_record->GetTrainer();
-			$data['trainer'] = $trainer; 
 
 			// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
 			foreach ($GetDataPelatihan as $dpk) {
 				$data['participant_number']= $dpk['participant_number'];
 			}
 			
+			// 1
 			$tampung_trainer= array();
 			foreach ($GetDataPelatihan as $gpk) {
 				array_push($tampung_trainer, $gpk['trainer']);
 				$data['trainer_onpkg']=$tampung_trainer;
 			}
 			$trainer_akhir=$data['trainer_onpkg'];
+			
+			// 2
+			$trainer = $this->M_report->GetTrainerPaket();
+			$data['trainer'] = $trainer; 
 
+			// 3
 			$trainer_fix=array();
 			foreach ($trainer as $tr) {
 				if (in_array($tr['trainer_id'], $trainer_akhir)) {
@@ -983,9 +1076,9 @@ class C_Report extends CI_Controller {
 				$data['jumlah']= $prtcp['jumlah'];
 			}
 		}
-		
 		echo json_encode($data);
 	}
+
 	public function GetTabelReaksi()
 	{
 		$nama  		= $this->input->POST('nama');

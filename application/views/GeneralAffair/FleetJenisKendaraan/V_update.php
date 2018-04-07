@@ -58,7 +58,6 @@
                                                 <input type="checkbox" name="CheckAktifUser" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?> hidden="">
                                             <?php endif; ?>
                                         </div>
-
                                         <div class="col-lg-12">
                                             <br />
                                             <br />

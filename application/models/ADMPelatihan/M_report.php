@@ -859,6 +859,16 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+	public function GetTrainerPaket(){
+		$sql = "select 		*
+				from 		pl.pl_master_trainer a
+							join 	pl.pl_scheduling_training as b
+									on 	b.trainer=a.trainer_id::varchar
+				where		 b.package_scheduling_id=36
+				order by 	b.scheduling_id";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 	//Ambil data Trainer untuk view kedua
 	public function GetTrainerQue($trainer=FALSE){
 		if ($trainer==FALSE) {
@@ -1117,11 +1127,12 @@ class M_report extends CI_Model {
 	}
 	public function getFilledReportEdit($id)
 	{
-		$sql="	SELECT *
-				from pl.pl_create_report
+		$sql="	SELECT a.*, length(a.description)
+				from pl.pl_create_report a
 				where id_report=$id";
 		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 	public function Getpeserta($id)
 	{

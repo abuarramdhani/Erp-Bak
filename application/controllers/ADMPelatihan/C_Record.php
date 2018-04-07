@@ -329,6 +329,8 @@ class C_Record extends CI_Controller {
 		$evaluasi2 		= implode(',', $evaluasi);
 		$sifat			= $this->input->post('slcSifat');
 		$jmlpeserta		= $this->input->post('txtJumlahPeserta', TRUE);
+		$trainer		= $this->input->post('slcTrainer');
+		$trainers 		= implode(',', $trainer);
 
 		$kirim = array(
 			'scheduling_name' 	=> $namapelatihan,
@@ -338,7 +340,8 @@ class C_Record extends CI_Controller {
 			'room' 				=> $ruangan,
 			'evaluation'		=> $evaluasi2,
 			'sifat'				=> $sifat,
-			'participant_number'=> $jmlpeserta 
+			'participant_number'=> $jmlpeserta,
+			'trainer'			=> $trainers 
 			);
 
 		$participant	= $this->input->post('slcEmployee', TRUE);
