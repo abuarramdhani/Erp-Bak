@@ -22,7 +22,9 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         mtckategori.maintenance_kategori as kategori_maintenance,
                                                         mtckendaraan.alasan as alasan,
                                                         to_char(mtckendaraan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
-                                                        to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                                        to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
+                                                        mtckendaraan.id_bengkel as bengkel,
+                                                        mtckendaraan.no_surat as no_surat
                                                 from    ga.ga_fleet_maintenance_kendaraan as mtckendaraan
                                                         join    ga.ga_fleet_kendaraan as kdrn
                                                             on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
@@ -42,7 +44,9 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         mtckategori.maintenance_kategori as kategori_maintenance,
                                                         mtckendaraan.alasan as alasan,
                                                         to_char(mtckendaraan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
-                                                        to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus        
+                                                        to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
+                                                        mtckendaraan.id_bengkel as bengkel,
+                                                        mtckendaraan.no_surat as no_surat        
                                                 from    ga.ga_fleet_maintenance_kendaraan as mtckendaraan
                                                         join    ga.ga_fleet_kendaraan as kdrn
                                                             on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
@@ -151,6 +155,31 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                 set     end_date='$waktu_eksekusi'
                                                 where   maintenance_kendaraan_detail_id=$id";
         $query                              =   $this->db->query($deleteMaintenanceKendaraanDetail);
+    }
+
+    public function selectBengkel()
+    {
+        $query = $this->db->query('select * from ga.ga_fleet_bengkel');
+        return $query->result_array();
+    }
+
+    public function CetakDataMaintenanceKendaraan($id)
+    {
+        $query = $this->db->query("select
+                                        manker.*,
+                                        bl.nama_bengkel,
+                                        bl.alamat_bengkel,
+                                        keran.nomor_polisi,
+                                        meran.merk_kendaraan
+                                    from ga.ga_fleet_maintenance_kendaraan as manker
+                                         left join ga.ga_fleet_bengkel as bl
+                                            on manker.id_bengkel=bl.bengkel_id
+                                         join ga.ga_fleet_kendaraan as keran
+                                            on manker.kendaraan_id=keran.kendaraan_id
+                                         join ga.ga_fleet_merk_kendaraan as meran
+                                            on keran.kendaraan_id=meran.merk_kendaraan_id
+                                    where manker.maintenance_kendaraan_id=$id");
+        return $query->result_array();
     }
     
 }
