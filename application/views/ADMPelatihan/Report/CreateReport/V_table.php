@@ -14,7 +14,7 @@
 								<tbody>
 									<?php
 										$no=1; foreach($GetSchName_QuesName_RPT as $sq){ ?>
-											<input type="text" name="txtSchId[]" value="<?php echo $sq['scheduling_id']?>" hidden="true">
+											<input type="text" name="txtSchId" value="<?php echo $sq['scheduling_id']?>" hidden="true">
 											<input type="text" name="txtPckSchId" value="0" hidden="true">
 											<?php 
 											foreach ($GetSchName_QuesName_segmen as $segmen) {
