@@ -43,6 +43,7 @@
                     </div>
                     <div class="col-md-12" style="padding: 0px;margin-top: 30px">
                         <div class="col-md-6">
+                            <div>Tanggal Terima</div>
                             <div class="input-group">
                                 <input class="form-control" disabled="disabled" id="in_dateRcv" name="in_dateRcv" placeholder="Tanggal Terima">
                                     <div class="input-group-addon" style="padding-left: 10px;padding-right: 10px">
@@ -53,6 +54,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
+                            <div>Tanggal Shipment</div>
                             <div class="input-group date" data-provide="datepicker">
                                 <input class="form-control" id="in_dateShip" name="in_dateShip" placeholder="Tanggal Shipment">
                                     <div class="input-group-addon" style="padding-left: 10px;padding-right: 10px">

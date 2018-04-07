@@ -70,7 +70,7 @@ class M_PenerimaanAwal extends CI_Model {
     function insertDataAwal($po,$sj,$vendor,$item,$desc,$qtySJ,$rcptDate,$spDate,$qtyActual,$qtyPO){
     	$sql="INSERT INTO KHS_DATA_RECEIPT_PPB VALUES(
 			  '$po','$sj','$vendor','$item','$desc', 
-			  $qtySJ, $rcptDate, TO_DATE('$spDate', 'mm/dd/yyyy'),0,'$qtyPO')";
+			  $qtySJ, $rcptDate, TO_DATE('$spDate', 'dd/mm/yyyy'),0,'$qtyPO')";
 		echo $sql;
 		$query = $this->oracle->query($sql);
     }
