@@ -1280,6 +1280,10 @@ $route['GeneralAffair/FleetRekapKecelakaan/(:any)']			= 'GeneralAffair/MainMenu/
 $route['GeneralAffair/FleetRekapTotal'] 				= 'GeneralAffair/MainMenu/C_FleetRekapTotal';
 $route['GeneralAffair/FleetRekapTotal/(:any)']			= 'GeneralAffair/MainMenu/C_FleetRekapTotal/$1';
 
+$route['GeneralAffair/FleetBengkel']		= 'GeneralAffair/MainMenu/C_FleetBengkel';
+$route['GeneralAffair/FleetBengkel/(:any)']		= 'GeneralAffair/MainMenu/C_FleetBengkel/$1';
+$route['GeneralAffair/FleetBengkel/(:any)/(:any)']		= 'GeneralAffair/MainMenu/C_FleetBengkel/$1/$2';
+
 //------------------------------------ Aplikasi Toolroom ----------------------------
 $route['Toolroom'] = 'Toolroom/C_Index';
 $route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';

@@ -75,6 +75,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetKendaraan();
 		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKategori();
+		$data['FleetBengkel'] = $this->M_fleetmaintenancekendaraan->selectBengkel();
 
 		/* LINES DROPDOWN DATA */
 
@@ -93,6 +94,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 			$kilometer_maintenance	= 	$this->input->post('txtKilometerMaintenanceHeader');
 			$alasan 				= 	$this->input->post('txaAlasanHeader');
 			$kategori_maintenance 	= 	$this->input->post('cmbMaintenanceKategoriIdHeader');
+			$bengkel 				= 	$this->input->post('cmbBengkelHeader');
+			$no_surat 				= 	$this->input->post('txtNoSuratHeader');
 
 			$waktu_eksekusi 		= 	date('Y-m-d H:i:s');
 
@@ -106,6 +109,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'creation_date' 			=> $waktu_eksekusi,
 				'created_by' 				=> $this->session->userid,
 				'alasan' 					=> $alasan,
+				'id_bengkel'				=> $bengkel,
+				'no_surat'					=> $no_surat,
     		);
 			$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraan($data);
 			$header_id = $this->db->insert_id();
@@ -167,6 +172,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetKendaraan();
 		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKategori();
+		$data['FleetBengkel'] = $this->M_fleetmaintenancekendaraan->selectBengkel();
 
 		/* LINES DROPDOWN DATA */
 
@@ -201,6 +207,8 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'last_updated' 				=> $waktu_eksekusi,
 				'last_updated_by' 			=> $this->session->userid,
 				'alasan'		 			=> $this->input->post('txaAlasanHeader',TRUE),
+				'id_bengkel'				=> $this->input->post('cmbBengkelHeader', TRUE),
+				'no_surat'					=> $this->input->post('txtNoSuratHeader', TRUE),
     			);
 			$this->M_fleetmaintenancekendaraan->updateFleetMaintenanceKendaraan($data, $plaintext_string);
 
@@ -302,6 +310,32 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$this->M_fleetmaintenancekendaraan->deleteFleetMaintenanceKendaraanDetail($lineId);
 
 		echo json_encode('true');
+	}
+
+	public function cetakMaintenanceKendaraan($id)
+	{
+		$this->load->library('pdf');
+
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->CetakDataMaintenanceKendaraan($plaintext_string);
+		$data['FleetMaintenanceKendaraan'] = $data['FleetMaintenanceKendaraan'][0];
+		$tgl = $data['FleetMaintenanceKendaraan']['tanggal_maintenance'];
+		$tanggal = explode('-', $tgl);
+		$data['tanggal'] = $tanggal;
+		$data['FleetMaintenanceKendaraanDetail'] 	= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDetail($plaintext_string);
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
+		$filename = 'Cetak_Maintenance_Kendaraan.pdf';
+		
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$html = $this->load->view('GeneralAffair/FleetMaintenanceKendaraan/V_cetak', $data, true);
+
+		$pdf->WriteHTML($stylesheet, 1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'D');
 	}
 
 

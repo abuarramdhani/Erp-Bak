@@ -44,7 +44,6 @@
                                 <div class="tab-content">
                                     <div id="active" class="tab-pane fade in active">
                                         <br/>
-                                        <div class="table-responsive">
                                             <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetKendaraan" style="font-size:12px;">
                                                 <thead class="bg-primary">
                                                     <tr>
@@ -88,7 +87,7 @@
                                                     <?php endforeach; ?>
                                                 </tbody>                                      
                                             </table>
-                                        </div>
+                                        
                                 </div>
                                     <div id="disabled" class="tab-pane fade">
                                         <br/>
