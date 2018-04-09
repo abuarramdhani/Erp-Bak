@@ -21,9 +21,9 @@ class M_PenerimaanAwal extends CI_Model {
     function getListItem($key){
     	$sql = "SELECT segment1, description  
 				FROM mtl_system_items_b
-				WHERE segment1 LIKE '%$key%'
+				WHERE segment1 LIKE '$key%'
 				AND rownum < 11
-				OR description LIKE '%$key%'
+				OR description LIKE '$key%'
 				AND rownum < 11
 				GROUP BY segment1, description";		
 		$query = $this->oracle->query($sql);
