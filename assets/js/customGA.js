@@ -277,8 +277,11 @@ var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKate
 
 function TambahBarisMaintenanceKendaraan(base){  
       var e = jQuery.Event( "click" );
-
-          var newRow  = jQuery("<tr>"
+      var row = $('#DetailMaintenanceKendaraan tr').length;
+      if (row >= 10) {
+        alert('tidak boleh lebih dari 10');
+      }else{
+        var newRow  = jQuery("<tr>"
                                 +"<td style='text-align:center; width:'"+"30px"+"'></td>"
                                 +"<td align='center' width='60px'>"
                                 +"<a onclick='delSpesifikRow(this)' class='del-row btn btn-xs btn-danger' data-toggle='tooltip' data-placement='bottom' title='Delete Data'><span class='fa fa-times'></span></a>"
@@ -300,6 +303,8 @@ function TambahBarisMaintenanceKendaraan(base){
                                 +"</tr>");
         jQuery("#tblFleetMaintenanceKendaraanDetail").append(newRow);
         $('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
+      }
+          
     }
 
 function TambahBarisKecelakaanDetail(base){  

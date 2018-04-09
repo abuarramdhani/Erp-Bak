@@ -45,17 +45,17 @@
 	<table style="border:1px solid black;width: 100%;">
 		<thead>
 			<tr>
-				<th style="font-size: 14px;border: 1px solid black;padding: 7px">No</th>
-				<th style="font-size: 14px;border: 1px solid black;padding: 7px">Jenis Kendaraan</th>
-				<th style="font-size: 14px;border: 1px solid black;padding: 7px">Keterangan Service</th>
+				<th style="font-size: 14px;border: 1px solid black;padding: 4px">No</th>
+				<th style="font-size: 14px;border: 1px solid black;padding: 4px">Jenis Kendaraan</th>
+				<th style="font-size: 14px;border: 1px solid black;padding: 4px">Keterangan Service</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php $no=1; foreach ($FleetMaintenanceKendaraanDetail as $key):?>
 			<tr>
-				<td style="font-size: 14px;border: 1px solid black;padding: 7px"> <?php echo $no++; ?></td>
-				<td style="font-size: 14px;border: 1px solid black;padding: 7px"> <?php echo $key['jenis_kendaraan'] ?></td>
-				<td style="font-size: 14px;border: 1px solid black;padding: 7px"> <?php echo $key['jenis_maintenance'] ?></td>
+				<td style="font-size: 14px;border: 1px solid black;padding: 4px"> <?php echo $no++; ?></td>
+				<td style="font-size: 14px;border: 1px solid black;padding: 4px"> <?php echo $key['jenis_kendaraan'] ?></td>
+				<td style="font-size: 14px;border: 1px solid black;padding: 4px"> <?php echo $key['jenis_maintenance'] ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
