@@ -42,10 +42,11 @@
 	<p style="font-size: 14px">Dengan hormat,<br></br>
 		Sesuai dengan Perjanjian Kerjasama Service Kendaraan antara CV Karya Hidup Sentosa dengan <?php echo $FleetMaintenanceKendaraan['nama_bengkel']; ?> di Yogyakarta, maka mohon dilakukan service kendaraan sbb:
 	</p>
-	<table style="border:1px solid black;width: 90%;">
+	<table style="border:1px solid black;width: 100%;">
 		<thead>
 			<tr>
 				<th style="font-size: 14px;border: 1px solid black;padding: 7px">No</th>
+				<th style="font-size: 14px;border: 1px solid black;padding: 7px">Jenis Kendaraan</th>
 				<th style="font-size: 14px;border: 1px solid black;padding: 7px">Keterangan Service</th>
 			</tr>
 		</thead>
@@ -53,13 +54,14 @@
 			<?php $no=1; foreach ($FleetMaintenanceKendaraanDetail as $key):?>
 			<tr>
 				<td style="font-size: 14px;border: 1px solid black;padding: 7px"> <?php echo $no++; ?></td>
+				<td style="font-size: 14px;border: 1px solid black;padding: 7px"> <?php echo $key['jenis_kendaraan'] ?></td>
 				<td style="font-size: 14px;border: 1px solid black;padding: 7px"> <?php echo $key['jenis_maintenance'] ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
 	</table>
 	<br></br>
-	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email purchasing.sec7@quick.co.id UP Ibu Ayuta dan di cc operator1@quick.co.id UP Ibu Yolenta dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetMaintenanceKendaraan['merk_kendaraan']." Plat No ".$FleetMaintenanceKendaraan['nomor_polisi'];?></b> Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
+	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email purchasing.sec7@quick.co.id UP Ibu Ayuta dan di cc operator1@quick.co.id UP Ibu Yolenta dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetMaintenanceKendaraan['merk_kendaraan']." Plat No ".$FleetMaintenanceKendaraan['nomor_polisi'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
 		Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.
 	</p>
 	<div style="position: absolute;bottom: 100px;left: 100px">
