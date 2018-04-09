@@ -320,11 +320,12 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->CetakDataMaintenanceKendaraan($plaintext_string);
+		
 		$data['FleetMaintenanceKendaraan'] = $data['FleetMaintenanceKendaraan'][0];
 		$tgl = $data['FleetMaintenanceKendaraan']['tanggal_maintenance'];
 		$tanggal = explode('-', $tgl);
 		$data['tanggal'] = $tanggal;
-		$data['FleetMaintenanceKendaraanDetail'] 	= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDetail($plaintext_string);
+		$data['FleetMaintenanceKendaraanDetail'] 	= $this->M_fleetmaintenancekendaraan->CetakDataMaintenanceKendaraanDetail($plaintext_string);
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
