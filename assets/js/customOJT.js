@@ -6,10 +6,44 @@
 				$('#MonitoringOJT-tabelDaftarOrientasi').DataTable({
 					scrollX: true,
 				});
+
+				$('#MonitoringOJT-daftarFormatUndangan').DataTable({
+					scrollX: false,
+				});
+
+				$('#MonitoringOJT-monitoringPekerja').DataTable({
+					scrollX: false,
+				});
+
+				// $('#MonitoringOJT-monitoringPekerja').DataTable({
+				// 	scrollX: true,
+				// });
 		//	}
 
 		//	Select2
 		//	{
+				$('#MonitoringOJT-cmbFormatCetak').select2({
+					minimumResultsForSearch: -1,
+					allowClear: true,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/MasterOrientasi/daftarFormatCetak',
+						dataType: 'json',
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.id_memo, text: obj.judul};
+								})
+							}
+						}
+					}
+				});
+
 				$('.MonitoringOJT-cmbPemberitahuanPelaksanaan').select2({
 					placeholder: 'Pelaksanaan',
 				});
@@ -34,7 +68,83 @@
 					placeholder: 'Tahapan Orientasi',
 				});
 
+				$('#MonitoringOJT-cmbDaftarPekerjaOJT').select2({
+					placeholder: "Pilih pekerja OJT baru",
+					searching: true,
+					minimumInputLength: 3,
+					allowClear: false,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/Monitoring/tambahPekerjaOJT',
+						dataType: 'json',
+						delay: 500,
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.noind, text: obj.noind + ' - ' + obj.nama};
+								})
+							}
+						}
+					}
+				});
 
+				$('#MonitoringOJT-cmbDaftarAtasanPekerja').select2({
+					placeholder: "Pilih atasan pekerja",
+					searching: true,
+					minimumInputLength: 3,
+					allowClear: false,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/Monitoring/tambahAtasanPekerja',
+						dataType: 'json',
+						delay: 500,
+						data: function(params){
+							return {
+								term: params.term,
+								pekerja: $('#MonitoringOJT-cmbDaftarPekerjaOJT').val(),
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.noind, text: obj.noind + ' - ' + obj.nama + ' - ' + obj.jabatan + ' ' + obj.lingkup};
+								})
+							}
+						}
+					}
+				});
+		//	}
+
+		//	Form Behavior
+		// 	{
+				$('#MonitoringOJT-radioTanggalOtomatisFalse').click(function(){
+					$('#MonitoringOJT-PengaturanAlurOrientasiBaru').addClass('hidden');
+				});
+
+				$('#MonitoringOJT-radioPemberitahuanFalse').click(function(){
+					$('#MonitoringOJT-PengaturanPemberitahuanOrientasiBaru').addClass('hidden');
+				});
+
+				$('#MonitoringOJT-radioCetakFalse').click(function(){
+					$('#MonitoringOJT-PengaturanUndanganOrientasiBaru').addClass('hidden');
+				});
+
+				$('#MonitoringOJT-radioTanggalOtomatisTrue').click(function(){
+					$('#MonitoringOJT-PengaturanAlurOrientasiBaru').removeClass('hidden');
+				});
+
+				$('#MonitoringOJT-radioPemberitahuanTrue').click(function(){
+					$('#MonitoringOJT-PengaturanPemberitahuanOrientasiBaru').removeClass('hidden');
+				});
+
+				$('#MonitoringOJT-radioCetakTrue').click(function(){
+					$('#MonitoringOJT-PengaturanUndanganOrientasiBaru').removeClass('hidden');
+				});
 
 		//	}
 	});

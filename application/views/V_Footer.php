@@ -154,7 +154,22 @@
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
+	<?php
+		if(isset($complexTextAreaCKEditor))
+		{
+	?>
+	<script src="<?php echo base_url('assets/plugins/ckeditor-full/ckeditor/ckeditor.js');?>"></script>
+	<?php
+		}
+		else
+		{
+	?>
 	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
+	<?php
+		}
+	?>
+
+	<!-- <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/iCheck/icheck.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.toaster/jquery.toaster.js');?>"></script>
 

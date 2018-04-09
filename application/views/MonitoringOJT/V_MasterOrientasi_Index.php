@@ -53,16 +53,21 @@
 													$no 	=	1;
 													foreach ($DaftarOrientasiTabel as $daftarOrientasi) 
 													{
-														$idOrientasi 	=	$daftarOrientasi['id_orientasi'];
+														$idOrientasi 		=	$daftarOrientasi['id_orientasi'];
+														$idOrientasi_Encode	=	$this->encrypt->encode($daftarOrientasi['id_orientasi']);
+														$idOrientasi_Encode	=	str_replace(array('+', '/', '='), array('-', '_', '~'), $idOrientasi_Encode);
 												?>
 												<tr>
 													<td><?php echo $no;?></td>
-													<td></td>
+													<td style="white-space: nowrap;">
+														<a style="margin-right:4px" href="<?php echo base_url('OnJobTraining/MasterOrientasi/OrientasiBaru_Update/'.$idOrientasi_Encode.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                		<a href="<?php echo base_url('OnJobTraining/MasterOrientasi/OrientasiBaru_Delete/'.$idOrientasi_Encode.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus data ini?');"><span class="fa fa-trash fa-2x"></span></a>
+													</td>
 													<td><?php echo $daftarOrientasi['tahapan'];?></td>
 													<td>Bulan <?php echo $daftarOrientasi['periode'];?></td>
 													<td>
 														<?php
-															if($daftarOrientasi['ck_tgl']==TRUE)
+															if($daftarOrientasi['ck_tgl'] == 't')
 															{
 																echo 1;
 															}
@@ -75,14 +80,21 @@
 													<td><?php echo $daftarOrientasi['lama_hari'];?> hari</td>
 													<td>
 														<?php
-															foreach ($DaftarOrientasiTabelKolomJadwal as $orientasiJadwal) 
+															if($daftarOrientasi['ck_tgl'] == 't')
 															{
-																if($idOrientasi==$orientasiJadwal['id_orientasi'])
+																foreach ($DaftarOrientasiTabelKolomJadwal as $orientasiJadwal) 
 																{
+																	if($idOrientasi==$orientasiJadwal['id_orientasi'])
+																	{
 														?>
 														<?php echo '<b>'.$orientasiJadwal['waktu'].'</b><br/>'.$orientasiJadwal['penerima'];?>
 														<?php
+																	}
 																}
+															}
+															else
+															{
+																echo '-';
 															}
 														?>
 													</td>
@@ -103,7 +115,48 @@
 															?>
 														</ul>
 													</td>
-													<td></td>
+													<td>
+														<?php
+															if($daftarOrientasi['memo'] == 't')
+															{
+																echo '<ul>';
+																foreach ($DaftarUndanganOrientasi as $orientasiUndangan) 
+																{
+																	if($orientasiUndangan['id_memo'] == $daftarOrientasi['id_memo'])
+																	{
+																		echo '<b>'.$orientasiUndangan['judul'].'</b>';
+																		echo '<ul>';
+																		foreach($DaftarPenerimaUndanganOrientasi as $orientasiUndanganPenerima)
+																		{
+																			if($idOrientasi==$orientasiUndanganPenerima['id_orientasi'])
+																			{
+																				$penerima 	=	$orientasiUndanganPenerima['penerima'];
+																				if($penerima=='1')
+																				{
+																					$penerima 	=	'People Development';
+																				}
+																				elseif($penerima=='2')
+																				{
+																					$penerima 	=	'Pekerja';
+																				}
+																				elseif($penerima=='3')
+																				{
+																					$penerima 	=	'Atasan Pekerja';
+																				}
+																				echo '<li>'.$penerima.' - <b>'.$orientasiUndanganPenerima['waktu'].'</b></li>';
+																			}
+																		}
+																		echo '</ul>';
+																	}
+																}
+																echo '</ul>';
+															}
+															else
+															{
+																echo '<i>Tidak menggunakan undangan atau memo.</i>';
+															}
+														?>
+													</td>
 													<td><?php echo $daftarOrientasi['keterangan'];?></td>
 												</tr>
 												<?php
@@ -128,103 +181,78 @@
 									<div class="panel-body">
 										<div class="row">
 											<div class="col-lg-6">
-												<div class="row">
-													<div class="form-group">
-														<label for="numPeriodeBulan" class="control-label col-lg-4">Periode Bulan</label>
-														<div class="col-lg-6">
-															<input type="number" class="form-control" name="numPeriodeBulan" min="1" max="12" value="1" />
-														</div>
+												<div class="form-group">
+													<label for="numPeriodeBulan" class="control-label col-lg-4">Periode Bulan</label>
+													<div class="col-lg-6">
+														<input type="number" class="form-control" name="numPeriodeBulan" min="1" max="12" value="1" />
 													</div>
-
-													<div class="form-group">
-														<label for="numSequence" class="control-label col-lg-4">Sequence</label>
-														<div class="col-lg-6">
-															<input type="number" class="form-control" name="numSequence" min="1" max="99" value="1" />
-														</div>
+												</div>
+												<div class="form-group">
+													<label for="numSequence" class="control-label col-lg-4">Sequence</label>
+													<div class="col-lg-6">
+														<input type="number" class="form-control" name="numSequence" min="1" max="99" value="1" />
 													</div>
-
-													<div class="form-group">
-														<label for="txtTahapan" class="control-label col-lg-4">Tahapan</label>
-														<div class="col-lg-6">
-															<input type="text" class="form-control" style="text-transform: uppercase;" name="txtTahapan" />
-														</div>
+												</div>
+												<div class="form-group">
+													<label for="txtTahapan" class="control-label col-lg-4">Tahapan</label>
+													<div class="col-lg-6">
+														<input type="text" class="form-control" style="text-transform: uppercase;" name="txtTahapan" />
 													</div>
-
-													<div class="form-group">
-														<label for="radioTanggalOtomatis" class="control-label col-lg-4">Tanggal Otomatis</label>
-														<div class="col-lg-3">
-															<input type="radio" name="radioTanggalOtomatis" value="1">Ya</input>
-														</div>
-														<div class="col-lg-3">
-															<input type="radio" name="radioTanggalOtomatis" value="0">Tidak</input>
-														</div>
+												</div>
+												<div class="form-group">
+													<label for="numLamaPelaksanaan" class="control-label col-lg-4">Pelaksanaan (hari)</label>
+													<div class="col-lg-6">
+														<input type="number" class="form-control" name="numLamaPelaksanaan" min="1" max="99" value="1" />
 													</div>
-
-													<div class="form-group">
-														<label for="numLamaPelaksanaan" class="control-label col-lg-4">Pelaksanaan (hari)</label>
-														<div class="col-lg-6">
-															<input type="number" class="form-control" name="numLamaPelaksanaan" min="1" max="99" value="1" />
-														</div>
+												</div>
+												<div class="form-group">
+													<label for="radioCekEvaluasi" class="control-label col-lg-4">Cek Evaluasi</label>
+													<div class="col-lg-3">
+														<input type="radio" name="radioCekEvaluasi" value="1">Ya</input>
 													</div>
-
-													<div class="form-group">
-														<label for="radioCekEvaluasi" class="control-label col-lg-4">Cek Evaluasi</label>
-														<div class="col-lg-3">
-															<input type="radio" name="radioCekEvaluasi" value="1">Ya</input>
-														</div>
-														<div class="col-lg-3">
-															<input type="radio" name="radioCekEvaluasi" value="0">Tidak</input>
-														</div>
+													<div class="col-lg-3">
+														<input type="radio" name="radioCekEvaluasi" value="0">Tidak</input>
 													</div>
+												</div>
+												<div class="form-group">
+													<label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
+													<textarea name="txtKeterangan" class="col-lg-6"></textarea>
 												</div>
 											</div>
 											<div class="col-lg-6">
-												<div class="row">
-													<div class="form-group">
-														<label for="radioPemberitahuan" class="control-label col-lg-4">Pemberitahuan</label>
-														<div class="col-lg-3">
-															<input type="radio" name="radioPemberitahuan" value="1">Ya</input>
-														</div>
-														<div class="col-lg-3">
-															<input type="radio" name="radioPemberitahuan" value="0">Tidak</input>
-														</div>
+												<div class="form-group">
+													<label for="radioTanggalOtomatis" class="control-label col-lg-4">Tanggal Otomatis</label>
+													<div class="col-lg-2">
+														<input type="radio" name="radioTanggalOtomatis" value="1" id="MonitoringOJT-radioTanggalOtomatisTrue">Ya</input>
 													</div>
-
-													<div class="form-group">
-														<label for="radioCetak" class="control-label col-lg-4">Cetak</label>
-														<div class="col-lg-3">
-															<input type="radio" name="radioCetak" value="1">Ya</input>
-														</div>
-														<div class="col-lg-3">
-															<input type="radio" name="radioCetak" value="0">Tidak</input>
-														</div>
+													<div class="col-lg-2">
+														<input type="radio" name="radioTanggalOtomatis" value="0" id="MonitoringOJT-radioTanggalOtomatisFalse">Tidak</input>
 													</div>
-
-													<div class="form-group">
-														<label for="cmbFormatCetak" class="control-label col-lg-4">Format Cetak</label>
-														<select class="select2 col-lg-6" name="cmbFormatCetak">
-															<?php
-																foreach ($DaftarFormatCetak as $formatCetak) 
-																{
-															?>
-															<option value="<?php echo $formatCetak['id_memo'];?>"><?php echo $formatCetak['judul'];?></option>
-															<?php
-																}
-															?>
-														</select>
-													</div>
-
-													<div class="form-group">
-														<label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
-														<textarea name="txtKeterangan" class="col-lg-6"></textarea>
-													</div>					
 												</div>
-											</div>	
+												<div class="form-group">
+													<label for="radioPemberitahuan" class="control-label col-lg-4">Pemberitahuan</label>
+													<div class="col-lg-2">
+														<input type="radio" name="radioPemberitahuan" value="1" id="MonitoringOJT-radioPemberitahuanTrue">Ya</input>
+													</div>
+													<div class="col-lg-2">
+														<input type="radio" name="radioPemberitahuan" value="0" id="MonitoringOJT-radioPemberitahuanFalse">Tidak</input>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="radioCetak" class="control-label col-lg-4">Cetak</label>
+													<div class="col-lg-2">
+														<input type="radio" name="radioCetak" value="1" id="MonitoringOJT-radioCetakTrue">Ya</input>
+													</div>
+													<div class="col-lg-2">
+														<input type="radio" name="radioCetak" value="0" id="MonitoringOJT-radioCetakFalse">Tidak</input>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="box box-primary box-solid">
+							<div class="box box-primary box-solid" id="MonitoringOJT-PengaturanAlurOrientasiBaru">
 								<div class="box-header with-border">
 									<h3 class="box-title">Pengaturan Alur Orientasi</h3>
 									<div class="box-tools pull-right">
@@ -268,7 +296,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="box box-primary box-solid">
+							<div class="box box-primary box-solid" id="MonitoringOJT-PengaturanPemberitahuanOrientasiBaru">
 								<div class="box-header with-border">
 									<h3 class="box-title">Pengaturan Pemberitahuan</h3>
 									<div class="box-tools pull-right">
@@ -329,7 +357,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="box box-primary box-solid">
+							<div class="box box-primary box-solid" id="MonitoringOJT-PengaturanUndanganOrientasiBaru">
 								<div class="box-header with-border">
 									<h3 class="box-title">Pengaturan Pengiriman Undangan</h3>
 									<div class="box-tools pull-right">
@@ -340,6 +368,11 @@
 								<div class="box-body">
 									<div class="panel-body">
 										<div class="row">
+											<div class="form-group">
+												<label for="cmbFormatCetak" class="control-label col-lg-2">Format Cetak</label>
+												<select class="select2 col-lg-6" name="cmbFormatCetak" id="MonitoringOJT-cmbFormatCetak">
+												</select>
+											</div>
 											<table class="table" style="width: 100%" id="MonitoringOJT-pengaturanUndangan">
 												<tr>
 													<td class="text-right" colspan="6">
@@ -388,7 +421,7 @@
 								<div class="box-body">
 									<div class="row text-center">
 											<input class="hidden" type="text" name="actionType" value="CREATE" />
-											<button type="reset" class="btn btn-warning btn-lg btn-rect">Reset Data</button>
+											<!-- <button type="reset" class="btn btn-warning btn-lg btn-rect">Reset Data</button> -->
 											<button type="submit" class="btn btn-success btn-lg btn-rect">Simpan Data</button>
 										</div>
 								</div>
