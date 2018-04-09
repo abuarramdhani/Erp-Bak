@@ -155,10 +155,7 @@
                                                     <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $kendaraanEdit['waktu_dihapus'];?>">
                                                 </div>
                                             </div>
-                                            <?php
-                                                if(substr($kodesie, 0, 5)=='10103')
-                                                    {
-                                            ?>
+                                            <?php if(substr($kodesie, 0, 5)=='10103'):?>
                                             <div class="form-group">
                                                 <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
@@ -167,9 +164,9 @@
                                                 </div>
 
                                             </div>
-                                            <?php
-                                                }
-                                            ?>
+                                            <?php else: ?>
+                                                <input type="checkbox" name="CheckAktifUser" id="CheckAktif" <?php if($kendaraanEdit['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?> hidden="">
+                                            <?php endif; ?>
 
                                         </div>
 

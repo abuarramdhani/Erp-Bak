@@ -39,8 +39,9 @@
 								<thead class="bg-primary">
 									<tr>
 										<th width="5%">NO</th>
-										<th width="40%">Nama Penjadwalan Paket</th>
+										<th width="30%">Nama Penjadwalan Paket</th>
 										<th width="35%">Nama Paket</th>
+										<th width="10%">Tanggal</th>
 										<th width="20%">Action</th>
 									</tr>
 								</thead>
@@ -50,6 +51,7 @@
 										<td><?php echo $no ?></td>
 										<td><?php echo $gsp['package_scheduling_name'] ?></td>
 										<td><?php echo $gsp['package_name'] ?></td>
+										<td><?php echo $gsp['start_date'] ?></td>
 										<td>
 											<a href="<?php echo base_url('ADMPelatihan/PenjadwalanPackage/View/'.$gsp['package_scheduling_id'])?>" class="btn btn-xs btn-warning"><i class="fa fa-search"></i> View</a>
 											<a href="<?php echo base_url('ADMPelatihan/PenjadwalanPackage/Schedule/'.$gsp['package_scheduling_id'])?>" class="btn btn-xs btn-primary"><i class="fa fa-paper-plane"></i> Scheduling</a>

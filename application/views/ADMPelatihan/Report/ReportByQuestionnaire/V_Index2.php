@@ -70,7 +70,7 @@
 												<?php 
 													foreach ($t_nilai as $tot) {
 														if ($tot['scheduling_id'] == $segmen['scheduling_id'] && $tot['questionnaire_id'] == $segmen['questionnaire_id'] && $tot['segment_id'] == $segmen['segment_id']) {
-															echo $tot['f_rata'];
+															echo round($tot['f_rata'],2);
 														}
 													}
 												?>

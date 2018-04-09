@@ -205,6 +205,7 @@ class C_Monitoring extends CI_Controller {
 		
 		$tgt= $this->input->post('txtTarget');
 		$loc= $this->input->post('txtLocation');
+
 		$noind	= $this->input->post('txtID');
 		$date	= date('Y-m-d');
 		
@@ -846,6 +847,230 @@ class C_Monitoring extends CI_Controller {
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_SingleAccess',$data);
 			$this->load->view('V_Footer',$data);
+		}
+
+		public function DistribusiCatering(){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Catering List';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/Catering/V_Index',$data);
+			$this->load->view('V_Footer',$data);
+		}
+
+		public function ListPresensi($id){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Catering List';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			$data['data_finger'] = $this->M_monitoring->presensi_per_lokasi_kerja($id);
+			$data['id']=$id;
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/Catering/V_List',$data);
+			$this->load->view('V_Footer',$data);
+		}
+
+		public function LoadPresensiFinger(){
+			$id = $this->input->post('loc');
+			echo $id;
+		}
+
+		public function DaftarPekerja(){
+			$this->checkSession();
+			$user_id = $this->session->userid;
+			
+			$data['Menu'] = 'Single Access';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			
+			
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_DaftarPekerja',$data);
+			$this->load->view('V_Footer',$data);
+		}
+
+		public function SaveLokasiFinger(){
+			$this->checkSession();
+			
+			$noind = $this->input->post('noind');
+			$lokasi = $this->input->post('lokasi');
+
+			$getPribadi = $this->M_monitoring->getPribadi($noind);
+			$getFpPribadi = $this->M_monitoring->getFpPribadi($noind)->num_rows();
+			
+			if($getFpPribadi==0) {
+				$insertNewFPPribadi = $this->M_monitoring->insertNewFPPribadi($lokasi,$noind);
+			}else{
+				$insertFPPribadi = $this->M_monitoring->insertFPPribadi($lokasi,$noind);
+			}
+			
+			
+				$Noind = $getPribadi[0]['noind'];
+				$Nama = $getPribadi[0]['nama'];
+				$Jenkel = $getPribadi[0]['jenkel'];
+				$Alamat = $getPribadi[0]['alamat'];
+				$Telepon = $getPribadi[0]['telepon'];
+				$Nohp = $getPribadi[0]['nohp'];
+				$Diangkat = $getPribadi[0]['diangkat'];
+				$Masukkerja = $getPribadi[0]['masukkerja'];
+				$Kodesie = $getPribadi[0]['kodesie'];
+				$TglKeluar = $getPribadi[0]['tglkeluar'];
+				$Noindbaru = $getPribadi[0]['noind_baru'];
+				$Kodestatuskerja = $getPribadi[0]['kode_status_kerja'];
+				$Lokasikerja = $getPribadi[0]['lokasi_kerja'];
+				$Nik = $getPribadi[0]['nik'];
+				$Tmplahir = $getPribadi[0]['templahir'];
+				$Tgllahir = $getPribadi[0]['tgllahir'];
+				$Keluar = '';
+
+				if ($getPribadi[0]['keluar']===false || $getPribadi[0]['keluar']=='f') {
+					$Keluar = 0;
+				}else{
+					$Keluar = 1;
+				}
+	
+			$insertDataPribadi = $this->M_monitoring->insertDataPribadi($Noind,$Nama,$Jenkel,$Alamat,$Telepon,$Nohp,$Diangkat,$Masukkerja,$Kodesie,$Keluar,$TglKeluar,$Noindbaru,$Kodestatuskerja,$Lokasikerja,$Nik,$Tmplahir,$Tgllahir,$lokasi);
+
+			$getTmpPribadi = $this->M_monitoring->getTmpPribadi($noind);
+
+				$Noind = $getTmpPribadi[0]['noind'];
+				$Nama = $getTmpPribadi[0]['nama'];
+				$Kodesie = $getTmpPribadi[0]['kodesie'];
+				$Dept = $getTmpPribadi[0]['dept'];
+				$Seksi = $getTmpPribadi[0]['seksi'];
+				$Pekerjaan = $getTmpPribadi[0]['pekerjaan'];
+				$Jumlahttl = $getTmpPribadi[0]['jmlttl'];
+				$Pointttl = $getTmpPribadi[0]['pointttl'];
+				$Nonttl = $getTmpPribadi[0]['nonttl'];
+				$Photo = $getTmpPribadi[0]['photo'];
+				$Pathphoto = $getTmpPribadi[0]['path_photo'];
+				// $Noindbaru = $getTmpPribadi[0]['noind_baru'];
+				$Noindbaru = $getPribadi[0]['noind_baru'];
+			
+			$insertTmpPribadi = $this->M_monitoring->insertTmpPribadi($Noind,$Nama,$Kodesie,$Dept,$Seksi,$Pekerjaan,$Jumlahttl,$Pointttl,$Nonttl,$Photo,$Pathphoto,$Noindbaru,$lokasi);
+
+			$getShiftPekerja = $this->M_monitoring->getShiftPekerja($noind);
+			foreach ($getShiftPekerja as $key2) {
+				$Tgl = $key2['tanggal'];
+				$Noind = $key2['noind'];
+				$Kd_shift = $key2['kd_shift'];
+				$Kodesie = $key2['kodesie'];
+				$Tukar = $key2['tukar'];
+				$Jam_msk = $key2['jam_msk'];
+				$Jam_akhmsk = $key2['jam_akhmsk'];
+				$Jam_plg = $key2['jam_plg'];
+				$Break_mulai = $key2['break_mulai'];
+				$Break_selesai = $key2['break_selesai'];
+				$Ist_mulai = $key2['ist_mulai'];
+				$Ist_selesai = $key2['ist_selesai'];
+				$Jam_kerja = $key2['jam_kerja'];
+				$User = $key2['user_'];
+				$Noind_baru = $key2['noind_baru'];
+
+				$insertShiftPekerja = $this->M_monitoring->insertShiftPekerja($Tgl,$Noind,$Kd_shift,$Kodesie,$Tukar,$Jam_msk,$Jam_akhmsk,$Jam_plg,$Break_mulai,$Break_selesai,$Ist_mulai,$Ist_selesai,$Jam_kerja,$User,$Noind_baru,$lokasi);
+			}
+			
+
+			$getDataJari = $this->M_monitoring->getDataJari($noind);
+			foreach ($getDataJari as $key3) {
+				$Idfinger = $key3['id_finger'];
+				$Noind = $key3['noind'];
+				$Finger = $key3['finger'];
+				$Noindbaru = $key3['noind_baru'];
+
+				$insertDataJari = $this->M_monitoring->insertDataJari($Idfinger,$Noind,$Finger,$Noindbaru,$lokasi);
+			}
+			
+			echo json_encode(true);
+		}
+
+		public function LokasiKerja(){
+			$this->checkSession();
+
+			$lokasi = $_GET['p'];
+			$data = $this->M_monitoring->getLokasiKerja($lokasi);
+			echo json_encode($data);
+		}
+
+		public function deleteLokasiFinger($noind,$lokasi){
+			$this->checkSession();
+
+			// $host = $this->M_monitoring->getHost($lokasi);
+			// // $Path = $host->host."/Absensi/assets/files/Absensi/Photo/".$noind.".JPG";
+			// $Path2 = $host->host."/Absensi/assets/files/Absensi/Photo/".$noind.".jpg";
+			// print_r(file_exists($Path2));
+			// exit();
+
+			// unlink($Path);
+			// unlink($Path2);
+
+			$getFpPribadi = $this->M_monitoring->getFpPribadi($noind)->num_rows();
+			if ($getFpPribadi>1) {
+				$deleteFpPribadi = $this->M_monitoring->deleteFpPribadi($noind,$lokasi);
+				$deleteFinger = $this->M_monitoring->deleteFinger($noind,$lokasi);
+				$deleteTTMPribadi = $this->M_monitoring->deleteTTMPribadi($noind,$lokasi);
+				$deleteShiftPekerja = $this->M_monitoring->deleteShiftPekerja($noind,$lokasi);
+				$deleteTPribadi = $this->M_monitoring->deleteTPribadi($noind,$lokasi);
+				// unlink($Path);
+				// unlink($Path2);
+
+				redirect('PresenceManagement/Monitoring/DaftarPekerja');
+			}else{
+				echo "minimal 1 lokasi finger";
+			}
+			
+		}
+
+		public function pekerja()
+		{
+			$this->checkSession();
+
+			$employee = $_GET['p'];
+			$employee = strtoupper($employee);
+			$data = $this->M_monitoring->getPekerja($employee);
+			echo json_encode($data);
+		}
+
+		public function DataLokasiFinger(){
+			$this->checkSession();
+
+			$cariNama = $this->input->get('nama');
+			$data['cariLokasiFinger'] = $this->M_monitoring->getdatapekerjaallfinger($cariNama);
+
+			echo json_encode($data);
+		}
+
+		public function ExportPresensi(){
+			$this->checkSession();
+			$this->load->library('Excel');
+			$lokasi = $this->input->post('excelLokasi');
+			$NamaLokasi = $this->M_monitoring->ambilNamaLokasi($lokasi);
+			$data['lokasi'] = $NamaLokasi[0];
+			$data['cetakData'] = $this->M_monitoring->cetakDataPresensiPerLokasi($lokasi);
+
+			$this->load->view('PresenceManagement/MainMenu/Monitoring/V_ExportPresensi',$data);
 		}
 	
 	//=========================

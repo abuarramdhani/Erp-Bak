@@ -12,10 +12,12 @@ class C_FleetKendaraan extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
+		$this->load->library('ciqrcode');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetkendaraan');
 
+    	$this->load->helper('download');
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
@@ -51,7 +53,16 @@ class C_FleetKendaraan extends CI_Controller
 
 		$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan();
 		$data['FleetKendaraanDeleted']	= $this->M_fleetkendaraan->getFleetKendaraanDeleted();
-
+		foreach ($data['FleetKendaraan'] as $row) {
+			if(!file_exists(FCPATH."assets/upload/qrcodeGA/".$row['nomor_polisi'].".png")){
+				$qr_image=$row['nomor_polisi'].'.png';
+				$params['data'] = $row['nomor_polisi'];
+				$params['level'] = 'H';
+				$params['size'] = 8;
+				$params['savename'] =FCPATH."assets/upload/qrcodeGA/".$qr_image;
+				$this->ciqrcode->generate($params);
+			}
+		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);	
 		$this->load->view('GeneralAffair/FleetKendaraan/V_index', $data);
@@ -267,6 +278,7 @@ class C_FleetKendaraan extends CI_Controller
 			$fileBPKBawal			=	$this->input->post('FotoBPKBawal');
 			$fileKendaraanawal		=	$this->input->post('FotoKendaraanawal');
 			$statusdata				=	$this->input->post('CheckAktif');
+			$status_data_user 	=	$this->input->post('CheckAktifUser');
 			$WaktuDihapus 			=	$this->input->post('WaktuDihapus');
 
 
@@ -365,21 +377,21 @@ class C_FleetKendaraan extends CI_Controller
         		}
         	}
 
-        	if($statusdata=='on' && $WaktuDihapus!='12-12-9999 00:00:00')
-        	{
-        		$WaktuDihapus 	=	'9999-12-12 00:00:00';
-        	}
-        	elseif($statusdata=='' && $WaktuDihapus=='12-12-9999 00:00:00')
-        	{
-        		$WaktuDihapus 	=	date('Y-m-d H:i:s');
-        	}
+        	$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
+
+			if ($statusdata=='on' || $status_data_user=='on') {
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}else{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			
     		$data = array(
 				'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 				'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
 				'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
 				'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
 				'tahun_pembuatan' 		=> $tahun_pembuatan,
-				'end_date'				=> $WaktuDihapus,
+				'end_date'				=> $waktu_dihapus,
 				'last_updated'			=> date('Y-m-d H:i:s'),
 				'last_updated_by'		=> $this->session->userid,
 				'created_by' 			=> $this->session->userid
@@ -454,6 +466,19 @@ class C_FleetKendaraan extends CI_Controller
     }
 
 
+    public function export_qr($id=FALSE){
+    	$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan($plaintext_string);
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 0, 0, 'P');
+		$filename = 'qr_code.pdf';
+		$html = $this->load->view('GeneralAffair/FleetKendaraan/V_export_qr',$data, true);
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename, 'I');
+    }
  
 }
 

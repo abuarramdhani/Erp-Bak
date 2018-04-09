@@ -30,7 +30,7 @@
 					<div class="box-body">
 					<?php foreach($details as $dt){?>
 						<div class="row" style="margin: 10px 10px">
-						<?php echo $alert; ?>
+						<!-- <?php echo $alert; ?> -->
 							<label class="col-lg-offset-2 col-lg-8 control-label" align="center">
 								<h3><b><?php echo $dt['training_name']?></b></h3>
 							</label>
@@ -45,6 +45,13 @@
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
 										<input name="txtPackageSchedulingId" value="<?php echo $pse?>" hidden>
 										<input name="txtPackageTrainingId" value="<?php echo $dt['package_training_id']?>" hidden>
+										<?php
+											foreach ($GetStartDate as $sd) {
+												if ($sd['training_id']==$dt['training_id']) { ?>
+													<input name="txtStartDate" value="<?php echo $sd['training_order']?>" hidden>
+												<?php } 
+											}
+										?>
 									</div>
 								</div>
 							</div>

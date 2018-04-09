@@ -142,20 +142,18 @@ class C_FleetJenisKendaraan extends CI_Controller
 
 			$jenisKendaraan = 	$this->input->post('txtJenisKendaraanHeader', TRUE);
 			$status_data 	=	$this->input->post('CheckAktif');
-			$waktu_dihapus 	=	$this->input->post('WaktuDihapus');
+			$status_data_user 	=	$this->input->post('CheckAktifUser');
+			// $waktu_dihapus 	=	$this->input->post('WaktuDihapus');
+
 
 			$waktu_eksekusi = 	date('Y-m-d H:i:s');
+			
 
-			if($waktu_dihapus=='12-12-9999 00:00:00' && $status_data==NULL)
-			{
+			if ($status_data=='on' || $status_data_user=='on') {
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}else{
 				$waktu_dihapus = $waktu_eksekusi;
 			}
-			elseif($waktu_dihapus!='12-12-9999 00:00:00' && $status_data=='on')
-			{
-				$waktu_dihapus = '9999-12-12 00:00:00';
-			}
-
-
 			$data = array(
 				'jenis_kendaraan' 	=> $jenisKendaraan,
 				'end_date' 			=> $waktu_dihapus,

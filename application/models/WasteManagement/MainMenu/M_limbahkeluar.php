@@ -94,7 +94,7 @@ class M_limbahkeluar extends CI_Model
     {
         $sqlApproval = "UPDATE ga.ga_limbah_keluar
                             SET konfirmasi_status=1
-                            WHERE id_limbah_keluar=$id";
+                            WHERE id_limbah_keluar='$id'";
         $query = $this->db->query($sqlApproval);
     }
 
@@ -102,7 +102,7 @@ class M_limbahkeluar extends CI_Model
     {
         $sqlReject = "UPDATE ga.ga_limbah_keluar
                             SET konfirmasi_status=2
-                            WHERE id_limbah_keluar=$id";
+                            WHERE id_limbah_keluar='$id'";
         $query = $this->db->query($sqlReject);
     }
 

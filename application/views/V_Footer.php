@@ -11,7 +11,9 @@
 		</footer>
 		<!--END FOOTER -->
      
-	
+	<script type="text/javascript">
+	var baseurl = "<?php echo base_url(); ?>";
+	</script>
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
 	<!-- FastClick -->
@@ -60,9 +62,10 @@
 	<script src="<?php echo base_url('assets/js/customAP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
-	<!--<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>-->
+	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPRS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customKL.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customTIMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customDC.js');?>" type="text/javascript"></script>
@@ -81,8 +84,12 @@
 	<script src="<?php echo base_url('assets/js/customDS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPP.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customICT.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customWR.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMP.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMPK.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPPO.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPC.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
-		var baseurl = "<?php echo base_url(); ?>";
 		if(counter_row <= 0){
 			var counter_row = 0;
 		}
@@ -182,6 +189,7 @@
 	<!--
 	<script src="<?php echo base_url('assets/js/formValidation.js')?>" type="text/javascript"></script>
 	-->
+	<script src="<?php echo base_url('assets/plugins/jQuery/jquery.toaster.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });

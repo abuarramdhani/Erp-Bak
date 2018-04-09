@@ -198,6 +198,29 @@ $db['quickcom'] = array(
 	'port' => 3306
 );
 
+$db['quick'] = array(
+	'dsn'	=> '',
+	'hostname' => 'quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	'database' => '',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'port' => 3306
+);
+
 
 $db['kaizen'] = array(
 	'dsn'	=> '',
@@ -221,8 +244,6 @@ $db['kaizen'] = array(
 	'save_queries' => TRUE,
 	'port' => 3306
 );
-
-
 
 $db['ticket'] = array(
 	'dsn'	=> '',
@@ -248,10 +269,10 @@ $db['ticket'] = array(
 
 $db['oracle_dev'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.3:1522/DEV',
+	'hostname' => '192.168.7.1:1521/PROD',
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_DEV',
+	'database' => 'KHS_PROD',
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -268,12 +289,12 @@ $db['oracle_dev'] = array(
 	'save_queries' => TRUE
 );
 
-$db['quickerpdev'] = array(
+$db['erp'] = array(
 	'dsn'	=> '',
 	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
-	'database' => 'quickerpdev',
+	'database' => 'erp',
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
@@ -383,24 +404,46 @@ $efg="";
 		}
 		
 		$db['quickcom_orientasi'] = array(
-	'dsn'				=> '',
-	'hostname' 			=> 'quick.com',
-	'username' 			=> 'amri',
-	'password' 			=> 'amri',
-	'database' 			=> 'db_orientasi',
-	'dbdriver' 			=> 'mysqli',
-	'dbprefix' 			=> '',
-	'pconnect' 			=> FALSE,
-	'db_debug' 			=> TRUE,
-	'cache_on' 			=> FALSE,
-	'cachedir' 			=> '',
-	'char_set' 			=> 'utf8',
-	'dbcollat' 			=> 'utf8_general_ci',
-	'swap_pre' 			=> '',
-	'encrypt' 			=> FALSE,
-	'compress' 			=> FALSE,
-	'stricton' 			=> FALSE,
-	'failover' 			=> array(),
-	'save_queries'		=> TRUE,
-	'port' 				=> 3306
-);
+			'dsn'				=> '',
+			'hostname' 			=> 'quick.com',
+			'username' 			=> 'amri',
+			'password' 			=> 'amri',
+			'database' 			=> 'db_orientasi',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);
+		$db['quickcom_hrd_khs'] = array(
+			'dsn'				=> '',
+			'hostname' 			=> 'quick.com',
+			'username' 			=> 'amri',
+			'password' 			=> 'amri',
+			'database' 			=> 'hrd_khs',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);

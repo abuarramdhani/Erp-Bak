@@ -197,44 +197,6 @@ class C_MasterQuestionnaire extends CI_Controller {
 		}
 		
 		redirect('ADMPelatihan/MasterQuestionnaire/');
-
-
-			// $i=0;
-			// foreach($Statement as $st){
-			// 	$i++;
-			// }
-				
-
-
-		//$i=0;
-		// foreach($Statement as $st){
-		// 	print_r($st);
-		// 	// exit();
-		// 	$data_statement[$i] = array(
-		// 		'questionnaire_id' 		=> $QuestionnaireId,
-		// 		'segment_id' 			=> $SegmentId[$i],
-		// 		'statement_description' => $st[$i],
-		// 		'statement_order' 		=> $i
-		// 	);
-		// 	if( !empty($data_statement[$i]) ){
-		// 		// $this->M_masterquestionnaire->AddQuestionnaireStatement($data_statement[$i]);
-		// 	}
-		// 	$i++;
-		// }
-
-		// $j=0;
-		// foreach($StatementEss as $esay){
-		// 	$data_statementsay[$j] = array(
-		// 		'questionnaire_id' 		=> $QuestionnaireId,
-		// 		'segment_id' 			=> $SegmentId[1],
-		// 		'statement_description' => $esay,
-		// 		'statement_order' 		=> $j
-		// 	);
-		// 	if( !empty($data_statementsay[$j]) ){
-		// 		// $this->M_masterquestionnaire->AddQuestionnaireStatement($data_statementsay[$j]);
-		// 	}
-		// 	$j++;
-		// }
 	}
 
 	public function EditStatement($Qs_id, $Sg_id)
@@ -320,7 +282,6 @@ class C_MasterQuestionnaire extends CI_Controller {
 
 	public function editSave($id)
 	{
-		$accessType =	$this->input->post('accessType');
 		$Q_id 		=	$this->input->post('txtQuestionnaireId');
 		$Q_name		=	$this->input->post('txtQuestionnaireName');
 		$StDes 		=	$this->input->post('txtStatement');
@@ -329,7 +290,11 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$idStatement=	$this->input->post('idStatement');
 		$SgID 		= 	$this->input->post('segment_id');
 		$StID 		= 	$this->input->post('statement_id');
+		
+		// pakai ajax
+		$accessType =	$this->input->post('accessType');
 		$lineId		=   $this->input->post('lineId');
+		$quesName	=   $this->input->post('txtQuestionnaireName');
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaireId($id);
 		if ($data['questionnaire'] == TRUE) {
@@ -338,21 +303,22 @@ class C_MasterQuestionnaire extends CI_Controller {
 			}
 		}
 
+
 		if ($accessType == 'ajax') {
 			if($lineId == null) {
-				$save = $this->M_masterquestionnaire->insertDes($Q_id,$SgDes);	
-				echo $save;
-			} else {
-				$update = $this->M_masterquestionnaire->updateDes($Q_id,$SgDes, $lineId);
-			}
+				$save = $this->M_masterquestionnaire->insertDesAjax($Q_id,$SgDes,$quesName);
+			} 
+			// else {
+			// 	$update = $this->M_masterquestionnaire->updateDesAjax($Q_id,$SgDes, $lineId);
+			// }
 		}else{
 			$n = 0;
 			foreach ($SgDes as $Des) {
-				if ($idSegment[$n] == '0') {
-					$save = $this->M_masterquestionnaire->insertDes($Q_id,$Des,$SgID);
-				}else{
+				// if ($idSegment[$n] == '0') {
+				// 	$save = $this->M_masterquestionnaire->insertDes($Q_id,$Des,$SgID);
+				// }else{
 				    $update = $this->M_masterquestionnaire->updateDes($Q_id,$Des, $idSegment[$n]);
-				}
+				// }
 				$n++;
 			}
 			foreach ($StDes as $TDes) {
