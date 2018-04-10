@@ -86,7 +86,25 @@
                                                 </div>
                                            </div>
 
+                                           <div class="form-group">
+                                               <label for="cmbBengkelHeader" class="control-label col-lg-4">Bengkel</label>
+                                               <div class="col-lg-4">
+                                                   <select id="cmbBengkelHeader" name="cmbBengkelHeader" class="select2" data-placeholder="Choose an option" style="width:100%">
+                                                       <option value=""></option>
+                                                       <?php foreach($FleetBengkel as $bengkel){ ?>
+                                                       <option value="<?php echo $bengkel['bengkel_id'] ?>" <?php if ($headerRow['bengkel']==$bengkel['bengkel_id']) { echo "selected";} ?>><?php echo $bengkel['nama_bengkel'] ?></option>
+                                                       <?php } ?>
+                                                   </select>
+                                               </div>
+                                           </div>
 
+                                           <div class="form-group">
+                                               <label for="txtNoSuratHeader" class="control-label col-lg-4">No Surat</label>
+                                               <div class=" col-lg-4">
+                                                   <input type="text" id="txtNoSuratHeader" name="txtNoSuratHeader" class="form-control" placeholder="No Surat" value="<?php echo $headerRow['no_surat'];?>">
+                                               </div>
+                                           </div>
+                                           
 											<div class="form-group">
                                                 <label for="txaAlasanHeader" class="control-label col-lg-4">Alasan</label>
                                                 <div class="col-lg-4">
@@ -100,11 +118,7 @@
                                                     <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $headerRow['waktu_dihapus'];?>">
                                                 </div>
                                             </div>
-                                            <?php
-                                                if(substr($kodesie, 0, 5)=='10103')
-                                                    {
-                                            ?>
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
                                                     <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
@@ -112,11 +126,6 @@
                                                 </div>
 
                                             </div>
-                                            <?php
-                                                }
-                                            ?>                                             
-
-
                                         </div>
 
                                         <div class="col-lg-12">

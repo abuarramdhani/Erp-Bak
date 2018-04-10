@@ -98,7 +98,7 @@ $(function() {
     $('input[name="daterange"]').daterangepicker();
 });
 
-$('.datepicker').datepicker({
+$('.datepicker_mp').datepicker({
     dateFormat: 'dd-mm-yy'
 });
 

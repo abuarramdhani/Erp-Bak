@@ -85,9 +85,7 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Jumlah Peserta</label>
 									<div class="col-md-9">
-									<!-- <?php foreach ($peserta_paket as $pp) {?> -->
 										<input name="txtPesertaPelatihan" class="form-control toupper" placeholder="Seluruh Peserta" required type="number" value="<?php echo $rpt['peserta_total'];?>">
-									<!-- <?php } ?> -->
 									</div>
 								</div>
 							</div>
@@ -95,9 +93,7 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Peserta Hadir</label>
 									<div class="col-md-9">
-									<!-- <?php foreach ($peserta_paket as $pt) {?> -->
 										<input name="txtPesertaHadir" class="form-control toupper" placeholder="Peserta Hadir" required type="number" value="<?php echo $rpt['peserta_hadir'];?>">
-									<!-- <?php } ?> -->
 									</div>
 								</div>
 							</div>
@@ -142,7 +138,7 @@
 				          	<div class="box-header with-border" style=" border-top: 1px solid #f4f4f4">
 						      <h3 class="box-title" style="margin-top: 20px"></i>   DESKRIPSI KEGIATAN</h3>
 						    </div>
-				            <textarea class="textarea" name="txtdeskripsi" id="txtdeskripsi" placeholder="Masukkan deskripsi kegiatan..." style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; table-layout: auto;"><?php echo $rpt['description']?></textarea>
+				            <textarea class="textarea" name="txtdeskripsi" id="txtdeskripsi" placeholder="Masukkan deskripsi kegiatan..." style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px; table-layout: auto;"><?php echo $rpt['description']?></textarea>
 				          </div>
 				        </div>
 						<div class="col-lg-12">

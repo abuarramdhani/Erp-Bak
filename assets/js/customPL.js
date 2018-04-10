@@ -1556,8 +1556,8 @@ $(document).ready(function(){
 			$('input#tanggal').removeAttr('disabled');
 
 			if (x == 0) {
-				$('#IdNamaPelatihan').val('0');
-				$('#IdTanggal').val('0');
+				$('#idNama').val('0');
+				$('#idTanggal').val('0');
 				
 				$("select#nama").select2({
 					placeholder: "Judul Pelatihan",
@@ -1634,7 +1634,7 @@ $(document).ready(function(){
 				success:function(result) 
 				{
 					var result = JSON.parse(result);
-					console.log(result);
+					// console.log(result);
 					$('input#txtPesertaPelatihan').val(result['GetDataPelatihan'][0]['participant_number']);
 					$('input#txtPesertaHadir').val(result['GetDataPelatihan'][0]['participant_number']);
 					// $('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);
@@ -1642,11 +1642,22 @@ $(document).ready(function(){
 					//NAMA TRAINER-------------------------------------------------------------------------
 					var nama=[];
 					var idt=[];
-					for (var i = 0; i < result['trainer'].length; i++) {
-						for (var j = 0; j < result['trainer_onpkg'].length; j++) {
-							if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j]) {
-								nama.push(result['trainer_fix'][i]);
-								idt.push(result['trainer_onpkg'][i]);
+					if (idNama == 1) {
+						for (var i = 0; i < result['trainer'].length; i++) {
+							for (var j = 0; j < result['trainer_onpkg'].length; j++) {
+								if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j]) {
+									nama.push(result['trainer_fix'][i]);
+									idt.push(result['trainer_onpkg'][i]);
+								}
+							}
+						}					
+					}else{
+						for (var i = 0; i < result['trainer'].length; i++) {
+							for (var j = 0; j < result['idTrainer'].length; j++) {
+								if (result['trainer'][i]['trainer_id'] == result['idTrainer'][j]) {
+									nama.push(result['trainer'][i]['trainer_name']);
+									idt.push(result['trainer'][i]['trainer_id']);
+								}
 							}
 						}
 					}
@@ -1655,6 +1666,7 @@ $(document).ready(function(){
 					
 					$('input#txtPelaksana').val(namagabung);
 					$('input#idtrainerOnly').val(idt);
+					
 					// -----------------------------------------------------------------------------------
 				}
 			});

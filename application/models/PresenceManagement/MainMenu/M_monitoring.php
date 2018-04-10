@@ -728,7 +728,7 @@ class M_monitoring extends CI_Model {
 					  ) 
 					  b on a.noind=b.noind
 					  left join hrd_khs.tseksi c on a.kodesie=c.kodesie
-					  where a.keluar='0' and left(a.noind,1) not in ('M') and a.noind='$cariNama'
+					  where a.keluar='0' and a.noind='$cariNama'
 					  group by a.Noind, a.Nama,c.kodesie";
 			$query = $fpdistribusi->query($sql);
 			return $query->result_array();
