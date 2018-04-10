@@ -33,7 +33,7 @@ class C_Ajax extends CI_Controller
 		$type = $this->input->post('type');
 		$data = $this->M_ajax->UpdateInduk($id,$val);
 
-		// echo json_encode($data);
+		echo json_encode($data);
 	}
 
 	public function UpdateCabang()
