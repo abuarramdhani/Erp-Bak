@@ -1567,3 +1567,10 @@ $route['Presensi/PresensiDL'] 			= 'Presensi/MenuUtama/C_Presensi_DL/index';
 $route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
 $route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
 $route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
+
+
+//-------------------------------------Hambatan Produksi-------------------------------------------------
+$route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
+$route['ManufacturingOperation/ProductionObstacles/master/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master/$1';
+$route['ManufacturingOperation/ProductionObstacles/ajax'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax';
+$route['ManufacturingOperation/ProductionObstacles/ajax/(:any)'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax/$1';
