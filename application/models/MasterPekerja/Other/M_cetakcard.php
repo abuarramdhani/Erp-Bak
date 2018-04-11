@@ -66,7 +66,7 @@ class M_cetakcard extends CI_Model
                                     end) as jabatan,
                                     (case
                                     when 
-                                        (right(tp.lokasi_kerja,1)>'4')
+                                        tp.lokasi_kerja::int>4
                                     then tp.noind_baru
                                     else tp.noind
                                     end) as no_induk,
@@ -130,7 +130,7 @@ class M_cetakcard extends CI_Model
                                         end) as jabatan,
                                         (case
                                         when 
-                                            (right(tp.lokasi_kerja,1)>'4')
+                                            tp.lokasi_kerja::int>4
                                         then tp.noind_baru
                                         else tp.noind
                                         end) as no_induk,
