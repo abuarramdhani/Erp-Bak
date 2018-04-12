@@ -1284,6 +1284,10 @@ $route['GeneralAffair/FleetBengkel']		= 'GeneralAffair/MainMenu/C_FleetBengkel';
 $route['GeneralAffair/FleetBengkel/(:any)']		= 'GeneralAffair/MainMenu/C_FleetBengkel/$1';
 $route['GeneralAffair/FleetBengkel/(:any)/(:any)']		= 'GeneralAffair/MainMenu/C_FleetBengkel/$1/$2';
 
+$route['GeneralAffair/FleetCetakSpk'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk';
+$route['GeneralAffair/FleetCetakSpk/(:any)'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk/$1';
+$route['GeneralAffair/FleetCetakSpk/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk/$1/$2';
+
 //------------------------------------ Aplikasi Toolroom ----------------------------
 $route['Toolroom'] = 'Toolroom/C_Index';
 $route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';
