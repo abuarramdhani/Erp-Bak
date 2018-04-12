@@ -398,8 +398,8 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		// $nama  		= 'ALL TRAINING';
-		// $tanggal  	= '26-02-2018';
+		// $nama  		= 'LATIHAN HANDLING DAN WORK HABIT';
+		// $tanggal  	= '09-04-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
 		
@@ -1015,7 +1015,7 @@ class C_Report extends CI_Controller {
 		$nama  		= $this->input->POST('nama');
 		$tanggal  	= $this->input->POST('tanggal');
 		$idNama		= $this->input->POST('idNama');
-		$idTanggal	= $this->input->POST('idTanggal');
+		$idTanggal	= $this->input->POST('idTanggal');			
 		if ($idNama==0) {
 			$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
 			$data['GetDataPelatihan']=$GetDataPelatihan;
@@ -1049,10 +1049,11 @@ class C_Report extends CI_Controller {
 			$data['participant'] = $participant;
 
 			// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
-			foreach ($GetDataPelatihan as $dpk) {
-				$data['participant_number']= $dpk['participant_number'];
-			}
-			
+			// foreach ($GetDataPelatihan as $dpk) {
+			// 	$data['participant_number']= $dpk['participant_number'];
+			// }
+			$data['participantName'] = $this->M_record->GetParticipantPidName($pid);
+			$data['participant_number'] = count($data['participantName']);
 			// 1
 			$tampung_trainer= array();
 			foreach ($GetDataPelatihan as $gpk) {

@@ -1,11 +1,3 @@
-
-							<!-- <?php
-							echo "<pre>";
-							// print_r($t_nilai);
-							print_r($GetSchName_QuesName_RPTPCK);
-							// print_r($justSegmentPck);
-							echo "</pre>";
-							?> -->
 							<table class="table table-bordered table-striped table-hover table-condensed" style="overflow:scroll; max-height: 500px;max-width: 2000px" id="tbodyevalReaksi">
 								<thead class="bg-blue">
 									<tr>

@@ -1,8 +1,3 @@
-							<!-- <?php
-							echo "<pre>";
-							print_r($GetSchName_QuesName_RPT);
-							echo "</pre>";
-							?> -->
 							<table class="table table-bordered table-striped table-condensed" id="tbodyevalReaksi">
 								<thead class="bg-blue">
 									<tr>

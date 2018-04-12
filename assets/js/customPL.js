@@ -1634,23 +1634,57 @@ $(document).ready(function(){
 				success:function(result) 
 				{
 					var result = JSON.parse(result);
-					// console.log(result);
-					$('input#txtPesertaPelatihan').val(result['GetDataPelatihan'][0]['participant_number']);
-					$('input#txtPesertaHadir').val(result['GetDataPelatihan'][0]['participant_number']);
+					console.log(result);
+					$('input#txtPesertaPelatihan').val(result['participant_number']);
+					$('input#txtPesertaHadir').val(result['participant_number']);
 					// $('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);
 					
 					//NAMA TRAINER-------------------------------------------------------------------------
 					var nama=[];
 					var idt=[];
+					
 					if (idNama == 1) {
 						for (var i = 0; i < result['trainer'].length; i++) {
 							for (var j = 0; j < result['trainer_onpkg'].length; j++) {
-								if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j]) {
+								if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j] && result['trainer'].length == result['trainer_onpkg'].length) {
+									// console.log('beda');
 									nama.push(result['trainer_fix'][i]);
 									idt.push(result['trainer_onpkg'][i]);
+								}else{
+									// console.log('sama');
+									var array_with_duplicates_id = result['trainer_onpkg'];
+									var array_with_duplicates_name = result['trainer_fix'];
+
+									var unique_array_id = [];
+									function removeDuplicates_id(arr_id) {
+										for (var k = 0; k < arr_id.length; k++) {
+											if (unique_array_id.indexOf(arr_id[k]) == -1) {
+												unique_array_id.push(arr_id[k]);
+											}
+										}return unique_array_id;
+									}
+
+									var unique_array_name = [];
+									function removeDuplicates_name(arr_name) {
+										for (var l = 0; l < arr_name.length; l++) {
+											if (unique_array_name.indexOf(arr_name[l]) == -1) {
+												unique_array_name.push(arr_name[l]);
+											}
+										}return unique_array_name;
+									}
+
+									if (result['trainer'][i]['trainer_id'] == removeDuplicates_id(array_with_duplicates_id)) {
+										console.log('masuk array duplicate');
+										nama = removeDuplicates_name(array_with_duplicates_name);
+										idt = unique_array_id;
+									}
 								}
 							}
-						}					
+						}
+					// console.log(unique_array_id);
+					// console.log(unique_array_name);
+					// console.log(nama);					
+					// console.log(idt);					
 					}else{
 						for (var i = 0; i < result['trainer'].length; i++) {
 							for (var j = 0; j < result['idTrainer'].length; j++) {
@@ -1663,7 +1697,8 @@ $(document).ready(function(){
 					}
 					var namagabung = nama.join(' , ');
 					var idtgabung  = idt.join(' , ');
-					
+					// console.log(namagabung);
+					// console.log(idtgabung);
 					$('input#txtPelaksana').val(namagabung);
 					$('input#idtrainerOnly').val(idt);
 					
