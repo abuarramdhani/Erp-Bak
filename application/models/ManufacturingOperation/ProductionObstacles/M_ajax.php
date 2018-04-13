@@ -25,19 +25,62 @@ class M_ajax extends CI_Model
     {
         $sql = "update mo.mo_master_induk set induk = '$val' where id = $id";
         $query= $this->db->query($sql);
-        return;
+        return $query;
     }
 
     function UpdateCabang($id,$val)
     {
         $sql = "update mo.mo_master_cabang set cabang = '$val' where id = $id";
-        $query= $this->db->query($sql);
-        return;
+        // $query= $this->db->query($sql);
+        return $this->db->query($sql);
     }
 
-    function selectInduk($type)
+    function selectInduk($term)
     {
-        $query = $this->db->get_where('mo.mo_master_induk', array('cetak' => $type));
+        $sql = "select * from mo.mo_master_induk where  induk like '%$term%'";
+        $query= $this->db->query($sql);
         return $query->result_array();
+    }
+
+    function selectCabang($type, $term)
+    {
+        $sql = "select * from mo.mo_master_cabang where cetak = '$type' and cabang like '%$term%'";
+        $query= $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    function searchHambatan($tgl1,$tgl2,$type)
+    {
+        $sql = "select induk,
+                        cabang,
+                        sum(selesai-mulai) total,
+                        count(induk||' '||cabang) frekuensi
+                from mo.mo_hambatan_mesin
+                where mulai between '$tgl1' and '$tgl2'
+                    and cetak = '$type'
+                group by induk,cabang";
+        $query= $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    function reportHambatan($tgl1,$tgl2,$type)
+    {
+        $sql = "select induk||' - '||cabang hambatan,
+                        sum(selesai-mulai) total,
+                        count(induk||' '||cabang) frekuensi
+                from mo.mo_hambatan_mesin
+                where mulai between '$tgl1' and '$tgl2'
+                    and cetak = '$type'
+                group by induk||' - '||cabang
+                        ";
+        $query= $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    function updateindukCabang($induk,$id)
+    {
+        $sql = "update mo.mo_master_cabang set induk = '$induk' where id= $id";
+        $query= $this->db->query($sql);
+        return $query;
     }
 }

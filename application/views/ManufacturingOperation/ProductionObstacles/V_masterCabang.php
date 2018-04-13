@@ -37,7 +37,6 @@
                             <!-- <?php echo $message; ?> -->
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#1">Cetak Logam</a></li>
-                                <li><a href="#2">Cetak Inti</a></li>
                             </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="1" class="tab-pane fade in active">
@@ -46,6 +45,7 @@
                                             <thead>
                                                  <tr>
                                                     <th>No</th>
+                                                    <th>Induk</th>
                                                     <th>Cabang</th>
                                                     <th>Action</th>
                                                  </tr>
@@ -55,16 +55,16 @@
                                             <?php $x=1; foreach ($cabangLogam as $ind) {?>
                                                 <tr>
                                                    <td><?php echo $x;?></td> 
-                                                   <td><p class="cbg"><?php echo $ind['cabang']?></p>
-                                                        <div class="input-group updtCbg" style="display: none">    
-                                                            <input class="form-control" type="text" name="updt_Cbg" value="<?php echo $ind['cabang']?>" onkeypress="saveUpdateCabang(this,<?php echo $ind['id']?>,event)">
-                                                            <div class="input-group-btn">
-                                                                <a class="btn btn-default cancelUpdt"><i class="fa fa-close"></i></a>
-                                                            </div>
-                                                        </div></td> 
-                                                   <td><button class="btn btn-warning editCabang" onclick="editCabang(this)"><i class="fa fa-pencil"></i></button>
-                                                   <button class="btn btn-success saveUpdtCabang" onclick="saveUpdateCabang(this,<?php echo $ind['id']?>,'32')" style="display: none"><i class="fa fa-save"></i></button>
-                                                   <button class="btn btn-danger deleteCabang" onclick="deleteCabang(this,<?php echo $ind['id']?>,'<?php echo $ind['cabang']?>')"><i class="fa fa-trash"></i></button>
+                                                   <td><?php echo $ind['induk'];?>
+                                                   </td> 
+                                                   <td><?php echo $ind['cabang']?>
+                                                   <td>
+                                                        <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/updateCabang'); ?>">
+                                                            <input type="hidden" name="txt_idCbg" value="<?php echo $ind['id']?>">
+                                                            <button type="submit" class="btn btn-warning editCabang"><i class="fa fa-pencil"></i></button>
+                                                        </form>
+                                                        <button class="btn btn-danger deleteCabang" onclick="deleteCabang(this,<?php echo $ind['id']?>,'<?php echo $ind['cabang']?>')"><i class="fa fa-trash"></i>
+                                                        </button>
                                                    </td>
                                                 </tr>
                                             <?php $x++;} ?>
@@ -73,40 +73,6 @@
                                         </table>
                                     <a class="btn btn-success" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/addCabang')?>">Add Data <i class="fa fa-plus"></i></a>
                                     
-                                </div>
-                                <div id="2" class="tab-pane fade">
-                                    <h3>Table Master Cabang Inti</h3>
-                                    <table class="table table-bordered table-striped table-hover" id="masterCabangInti">
-                                        <thead>
-                                             <tr>
-                                                <th>No</th>
-                                                <th>Cabang</th>
-                                                <th>Action</th>
-                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $x=1; foreach ($cabangInti as $int) {?>
-                                                <tr>
-                                                   <td><?php echo $x;?></td> 
-                                                   <td><p class="cbg"><?php echo $int['cabang']?></p>
-                                                        <div class="input-group updtCbg" style="display: none">    
-                                                            <input class="form-control" type="text" name="updt_Cbg" value="<?php echo $int['cabang']?>" onkeypress="saveUpdateCabang(this,<?php echo $int['id']?>,event)">
-                                                            <div class="input-group-btn">
-                                                                <a class="btn btn-default cancelUpdt"><i class="fa fa-close"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </td> 
-                                                   <td><button class="btn btn-warning editCabang" onclick="editCabang(this)"><i class="fa fa-pencil"></i></button>
-                                                   <button class="btn btn-success saveUpdtCabang" onclick="saveUpdateCabang(this,<?php echo $ind['id']?>,'32')" style="display: none"><i class="fa fa-save"></i></button>
-                                                   <button class="btn btn-danger deleteCabang" onclick="deleteCabang(this,<?php echo $int['id']?>,'<?php echo $int['cabang']?>')"><i class="fa fa-trash"></i></button>
-                                                   </td>
-                                                </tr>
-                                            <?php $x++;} ?>
-                                          
-                                        </tbody>
-                                    </table>
-                                    <a class="btn btn-success" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/addCabang')?>">Add Data <i class="fa fa-plus"></i></a>
-
                                 </div>
                             </div>
                 

@@ -8,34 +8,84 @@ class M_master extends CI_Model
         $this->load->database();    
     }
 
-    public function induk($cetak)
+    public function induk()
     {
-    	$sql="select * from mo.mo_master_induk where cetak ='$cetak'";
+    	$sql="select * from mo.mo_master_induk";
     	$query = $this->db->query($sql);
     	return $query->result_array();
     }
 
-    public function saveInduk($induk,$type,$user_id)
+    public function saveInduk($induk,$type,$kategori,$hambatan,$user_id)
     {
-    	$sql="insert into mo.mo_master_induk (induk,cetak,creation_date,updated_by)
-    											values ('$induk','$type',current_timestamp,$user_id)";
+    	$sql="insert into mo.mo_master_induk (induk,cetak,kategori,hambatan,creation_date,updated_by)
+    											values ('$induk','$type','$kategori','$hambatan',current_timestamp,$user_id)";
     	$query = $this->db->query($sql);
     	return;
     }
 
-     public function cabang($cetak)
+     public function cabang()
     {
-    	$sql="select * from mo.mo_master_cabang where cetak ='$cetak'";
+    	$sql="select 
+                mc.id,
+                mc.cabang,
+                mi.induk
+         from mo.mo_master_cabang mc,
+            mo.mo_master_induk mi
+            where mc.induk_id = mi.id";
     	$query = $this->db->query($sql);
     	return $query->result_array();
     }
 
-    public function saveCabang($cabang,$type,$user_id)
+    public function saveCabang($cabang,$induk,$user_id)
     {
-    	$sql="insert into mo.mo_master_cabang (cabang,cetak,creation_date,updated_by)
-    											values ('$cabang','$type',current_timestamp,$user_id)";
+    	$sql="insert into mo.mo_master_cabang (cabang,induk_id,creation_date,updated_by)
+    											values ('$cabang','$induk',current_timestamp,$user_id)";
     	$query = $this->db->query($sql);
     	return;
     }
+
+    public function getDataCbgbyId($id)
+    {
+        $sql = "select mc.id,
+                mc.cabang,
+                mi.induk,
+                mc.induk_id
+         from mo.mo_master_cabang mc,
+            mo.mo_master_induk mi 
+         where mc.id = $id
+         and mc.induk_id = mi.id";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function saveUpdateCabang($induk, $cabang, $id)
+    {
+        $sql = "update mo.mo_master_cabang set cabang='$cabang', induk_id= $induk where id=$id";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+
+     public function getDataIndbyId($id)
+    {
+        $sql = "select mi.id,
+                mi.induk,
+                mi.cetak,
+                mi.hambatan,
+                mi.kategori
+         from 
+            mo.mo_master_induk mi 
+         where mi.id = $id";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function saveUpdateInduk($id,$hambatan,$cetakan,$kategori,$induk)
+    {
+        $sql = "update mo.mo_master_induk set hambatan='$hambatan', cetak='$cetakan', kategori='$kategori', induk='$induk' where id=$id";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
 }
 ?>

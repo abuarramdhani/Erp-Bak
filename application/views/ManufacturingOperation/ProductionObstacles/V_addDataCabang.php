@@ -43,7 +43,14 @@
                                 <div id="1" class="tab-pane fade in active">
                                     <form method="post" enctype="multipart/form-data" class="form-horizontal" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/submitCabang'); ?>">
                                         <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Induk:</label>
+                                                <select id="slcIndukCabang" class="form-control select2" name="slcInduk" data-placeholder="Pilih induk">
+                                                    <option></option>
+                                                </select>
+                                            </div>
                                             <div id="input-containerLogam" style="padding-bottom: 10px">
+                                                <label>Cabang:</label>
                                                 <div id="containerLogam" class="input-group">
                                                     <input type="text" name="txt_cabang[]" class="form-control" placeholder="Input Cabang" required>
                                                     <div class="input-group-btn">

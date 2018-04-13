@@ -8,7 +8,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Add master Induk
+                                        Update master Induk
                                     </b>
                                 </h1>
                             </div>
@@ -31,56 +31,70 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                Add Master Induk
+                                Update Master Induk
                             </div>
 
                             <div class="panel-body">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#1">Cetak Logam</a></li>
-                                <li><a href="#2">Cetak Inti</a></li>
-                            </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="1" class="tab-pane fade in active">
-                                    <form method="post" enctype="multipart/form-data" class="form-horizontal" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/submitInduk'); ?>">
+                                    <form method="post" enctype="multipart/form-data" class="form-horizontal" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/saveUpdateInduk'); ?>">
                                         <div class="col-md-6">
+                                        <?php foreach ($dataInd as $ind) {?>
                                             <div class="form-group">
                                                 <label>Hambatan:</label>
                                                 <select id="hambatan" class="form-control select2" name="slc_hambatan" data-placeholder="Pilih Cetakan">
                                                     <option></option>
-                                                    <option value="mesin">Mesin</option>
-                                                    <option value="non-mesin">Non Mesin</option>
+                                                    <?php if ($ind['hambatan']=='mesin') {
+                                                        $mesin='selected';
+                                                        $non='';
+                                                    }else{
+                                                        $non='selected';
+                                                        $mesin='';
+                                                        } ?>
+                                                    <option value="mesin" <?php echo $mesin?> >Mesin</option>
+                                                    <option value="non-mesin" <?php echo $non?> >Non Mesin</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Cetakan:</label>
                                                 <select class="form-control select2" name="slc_cetakan" data-placeholder="Pilih Cetakan">
                                                     <option></option>
-                                                    <option value="logam">Logam</option>
-                                                    <option value="inti">Inti</option>
+                                                    <?php if ($ind['cetak']=='logam') {
+                                                        $logam='selected';
+                                                        $inti='';
+                                                    }else{
+                                                        $logam='';
+                                                        $inti='selected';
+                                                        } ?>
+                                                    <option value="logam" <?php echo $logam; ?>>Logam</option>
+                                                    <option value="inti"<?php echo $inti; ?>>Inti</option>
                                                 </select>
                                             </div>
                                             <div id="slc_kategori" class="form-group">
                                                 <label>Kategori:</label>
                                                 <select class="form-control select2" name="slc_kategori" data-placeholder="Pilih Kategori">
                                                     <option></option>
-                                                    <option value="umum">Umum</option>
-                                                    <option value="permesin">Per Mesin</option>
+                                                    <?php if ($ind['kategori']=='umum') {
+                                                        $umum='selected';
+                                                        $per='';
+                                                    }elseif($ind['kategori']=='permesin'){
+                                                        $umum='';
+                                                        $per='selected';
+                                                    }else{
+                                                        $umum='';
+                                                        $per='';
+                                                            } ?>
+                                                    <option value="umum" <?php echo $umum; ?> >Umum</option>
+                                                    <option value="permesin" <?php echo $per; ?>>Per Mesin</option>
                                                 </select>
                                             </div>
-                                            <div id="input-containerLogam" style="padding-bottom: 10px">
-                                                <label>Kode Induk</label>
-                                                <div id="containerLogam" class="input-group">
-                                                    <input type="text" name="txt_induk[]" class="form-control" placeholder="Input Induk" required>
-                                                    <div class="input-group-btn">
-                                                        <a class="btn btn-default" id="addNewInduk">
-                                                            <i class="fa fa-plus"></i>
-                                                        </a>
-                                                        <a class="btn btn-default" id="removeNewInduk" style="display: none">
-                                                            <i class="fa fa-minus"></i>
-                                                        </a>
-                                                    </div>  
-                                                </div>
+                                            <div class="form-group">
+                                                <label>Induk:</label>
+                                                <input type="text" name="txt_induk" class="form-control" placeholder="Input Induk" value="<?php echo $ind['induk'] ?>" required>
+                                                <input type="hidden" name="txt_idInduk" value="<?php echo $ind['id'] ?>">
                                             </div>
+                                                    
+                                        <?php } ?>
                                             
                                             <button type="submit" class="btn btn-success">Submit</button>
                                             <a class="btn btn-warning" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/induk')?>">Back</a>

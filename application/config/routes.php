@@ -1574,3 +1574,5 @@ $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOper
 $route['ManufacturingOperation/ProductionObstacles/master/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master/$1';
 $route['ManufacturingOperation/ProductionObstacles/ajax'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax';
 $route['ManufacturingOperation/ProductionObstacles/ajax/(:any)'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax/$1';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin/$1';
