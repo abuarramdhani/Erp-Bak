@@ -23,8 +23,7 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         mtckendaraan.alasan as alasan,
                                                         to_char(mtckendaraan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                         to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
-                                                        mtckendaraan.id_bengkel as bengkel,
-                                                        mtckendaraan.no_surat as no_surat
+                                                        mtckendaraan.id_bengkel as bengkel
                                                 from    ga.ga_fleet_maintenance_kendaraan as mtckendaraan
                                                         join    ga.ga_fleet_kendaraan as kdrn
                                                             on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
@@ -45,8 +44,7 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         mtckendaraan.alasan as alasan,
                                                         to_char(mtckendaraan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                         to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
-                                                        mtckendaraan.id_bengkel as bengkel,
-                                                        mtckendaraan.no_surat as no_surat        
+                                                        mtckendaraan.id_bengkel as bengkel       
                                                 from    ga.ga_fleet_maintenance_kendaraan as mtckendaraan
                                                         join    ga.ga_fleet_kendaraan as kdrn
                                                             on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
