@@ -91,6 +91,7 @@ public function CariDataDinasLuar(){
 		$split_tanggal = explode(' - ',$v_tanggal);
 		$klausa_where = $this->klausa_where($v_noind,$split_tanggal[0],$split_tanggal[1],$v_dept,$v_bidang,$v_unit,$v_seksi);
 		$data['Presensi'] = $this->M_presensi_dl->pencarian_pekerja_dl($klausa_where);
+		$data['Monitoring'] = $this->M_presensi_dl->monitoring_pekerja_dl($klausa_where);
 		$data['ConvertPresensi'] = $this->M_presensi_dl->convert_pekerja_dl($klausa_where,$split_tanggal[1]);
 		$data['Menu'] = 'Presensi';
 		$data['SubMenuOne'] = 'Presensi DL';
