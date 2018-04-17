@@ -232,6 +232,7 @@ class C_FleetCetakSpk extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_fleetcetakspk->deleteFleetCetakSpk($plaintext_string);
+		$this->M_fleetcetakspk->deleteAllFleetSPKMaintenance($plaintext_string);
 
 		redirect(site_url('GeneralAffair/FleetCetakSpk'));
     }
