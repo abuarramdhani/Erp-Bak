@@ -1,9 +1,18 @@
 $(document).ready(function() {
 
     var listItem = [];
-    var $datepicker = $('#in_dateRcv');
-    $datepicker.datepicker('setDate', new Date());
     var SJ;
+    
+    $('#in_dateRcv').datepicker({ format: 'dd/mm/yyyy' });
+    $('#in_dateRcv').datepicker('setDate', new Date());
+
+     $('.input-group.date').datepicker({
+       todayBtn: "linked",
+       language: "it",
+       autoclose: true,
+       todayHighlight: true,
+       format: 'dd/mm/yyyy'
+    });
 
     $(".selectVendor").select2({
         allowClear: true,
@@ -179,8 +188,9 @@ $(document).ready(function() {
     $('#b_processSJ').click(function(){
          SJ = $('#in_sj').val();
          $.ajax({
-            url: baseurl + "PenerimaanPO/cek/loadDataCek/" + SJ,
             type:"POST",
+            data: {sj:SJ},
+            url: baseurl + "PenerimaanPO/cek/loadDataCek",
             success: function(results) {
                 listItem = [];
                 var arrayRow = $.parseJSON(results);

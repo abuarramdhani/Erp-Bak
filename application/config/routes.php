@@ -1552,7 +1552,7 @@ $route['PenerimaanPO/awal/loadVendor/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/
 $route['PenerimaanPO/awal/loadPoLine/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadPoLine/$1';
 
 $route['PenerimaanPO/cek'] 					   = 'PenerimaanPO/C_Pengecekan';
-$route['PenerimaanPO/cek/loadDataCek/(:any)']  = 'PenerimaanPO/C_Pengecekan/loadDataCek/$1';
+$route['PenerimaanPO/cek/loadDataCek']         = 'PenerimaanPO/C_Pengecekan/loadDataCek';
 
 //------------------------------------------------Product Cost-------------------------------------------------------//
 $route['ProductCost']										= 'ProductCost/C_Index';
