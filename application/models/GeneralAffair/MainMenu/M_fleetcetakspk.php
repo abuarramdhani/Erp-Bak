@@ -82,6 +82,12 @@ class M_fleetcetakspk extends CI_Model
         $this->db->delete('ga.ga_fleet_cetak_spk_detail');
     }
 
+    public function deleteAllFleetSPKMaintenance($id)
+    {
+        $this->db->where('surat_id', $id);
+        $this->db->delete('ga.ga_fleet_cetak_spk_detail');
+    }
+
 	public function getFleetKendaraan()
 	{
 		$query = $this->db->get('ga.ga_fleet_kendaraan');
