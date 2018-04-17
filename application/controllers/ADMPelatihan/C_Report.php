@@ -637,17 +637,42 @@ class C_Report extends CI_Controller {
 
 	public function UpdateReport()
 	{	
-		$id 			=$this->input->post('idReport');
-		//ADD REPORT
-		$reg_paket		= $this->input->post('txtKategoriPelatihan');
-		
+		// AMBIL DATA
+		$id 			= $this->input->post('idReport');
+		$data['report'] = $this->M_report->getFilledReportEdit($id);
+		$nama 			= $this->input->post('txtNamaPelatihan');
+		$tanggal		= $this->input->post('txtTanggalPelaksanaan');
+		$idNama			= $data['report'][0]['reg_paket'];
+		$idTanggal		= $data['report'][0]['reg_paket'];
+
+		//ADD REPORT	
 		$jenis	 		= $this->input->post('slcJenisPelatihan');
 		$total_psrt		= $this->input->post('txtPesertaPelatihan');
 		$hadir_psrt		= $this->input->post('txtPesertaHadir');
 
-		// $pelaksana		= $this->input->post('idtrainerOnly');
-		$trainer		= $this->input->post('txtPelaksana');
-		$pelaksana 		= implode(',', $trainer);
+		// TRAINER---------------------------------------------------------------------------------------------------------
+		$trainer			=$this->input->post('txtPelaksana[]');
+
+		// ambil trainer dari penjadwalan langsung(untuk mengetahui urutan trainer per jadwal)
+		$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
+		$train_array =array();
+			foreach ($GetDataPelatihan as $dp) {
+				for ($i=0; $i < count($GetDataPelatihan); $i++) { 
+					$idtrainer = explode(',', $dp['trainer']);
+				}
+				array_push($train_array, $idtrainer[0]);
+			}
+
+		// hapus duplicate id
+		$train_array_unique= array_unique($train_array);
+
+		//cek apakah ada penggantian nama trainer
+		if (isset($trainer) == $train_array_unique && count($trainer) == count($train_array_unique)) {
+			$pelaksana = implode(',', $train_array_unique);
+		}else{
+			$pelaksana = implode(',', $trainer);
+		}
+		// ----------------------------------------------------------------------------------------------------------
 
 		$indexm 		= $this->input->post('txtIndexMateri');
 		$descr 			= $this->input->post('txtdeskripsi');
@@ -663,7 +688,7 @@ class C_Report extends CI_Controller {
 		$nama_acc		= $this->input->post('txtNamaACC');
 		$jabatan_acc	= $this->input->post('txtJabatanACC');
 
-		$this->M_report->UpdateReport($id, $jenis, $total_psrt, $hadir_psrt, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana, $reg_paket);
+		$this->M_report->UpdateReport($id, $jenis, $total_psrt, $hadir_psrt, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana);
 
 		redirect('ADMPelatihan/Report/CreateReport');
 	}
