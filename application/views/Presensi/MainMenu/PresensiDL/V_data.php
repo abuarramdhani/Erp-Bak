@@ -67,7 +67,8 @@
                                     <th class="text-center">No</th>
                                     <th class="text-center">Noind</th>
                                     <th class="text-center">Kodesie</th>
-                                    <th class="text-center">Tanggal</th>
+                                    <th class="text-center">Tanggal Scan</th>
+                                    <th class="text-center">Tanggal Realisasi</th>
                                     <th class="text-center">Jml DL</th>
                                     <th class="text-center">Jml TIM*</th>
                                     <th class="text-center">File</th>
@@ -83,6 +84,7 @@
                                                 <td class='text-center'>".$item['noind']."</td>
                                                 <td class='text-center'>".$item['kodesie']."</td>
                                                 <td class='text-left'>".$item['tanggal']."</td>
+                                                <td class='text-left'>".$item['tanggal_realisasi']."</td>
                                                 <td class='text-center'>".$item['jml_dl']."</td>
                                                 <td class='text-center'>".$item['point_']."</td>
                                                 <td class='text-center'><a href='http://quick.com/aplikasi/dinas-luar-online/pekerja/C_PKJ/surat_tugas_pdf?spdlid=".$item['spdl_id']."' target='blank'>Surat Tugas</a></td>

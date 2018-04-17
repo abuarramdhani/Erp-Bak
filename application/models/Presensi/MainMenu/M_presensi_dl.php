@@ -86,6 +86,52 @@ class M_presensi_dl extends CI_Model
                 'belum pulang'
             )
     end) tanggal,
+    (case
+        when
+            count(td.spdl_id)=2
+        then
+            concat(
+                concat(
+                        to_char(min(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tgl_realisasi)=max(td.tgl_realisasi)
+                            then
+                                min(td.wkt_realisasi)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tgl_realisasi)
+                                )
+                        end
+                    ),
+                ' || ',
+                concat(
+                        to_char(max(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tgl_realisasi)=max(td.tgl_realisasi)
+                            then
+                                max(td.wkt_realisasi)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tgl_realisasi)
+                                )
+                        end
+                    )
+                )
+        else
+            concat(
+                concat(
+                    to_char(max(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                    ' ',
+                    max(td.wkt_realisasi)
+                ),
+                ' || ',
+                'belum pulang'
+            )
+    end) tanggal_realisasi,
     (
         select 
             (
