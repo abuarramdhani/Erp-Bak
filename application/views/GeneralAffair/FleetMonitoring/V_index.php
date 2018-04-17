@@ -115,7 +115,8 @@
                                                                 <tr>
                                                                     <th style="text-align: center; width: 30px">No</th>
                                                                     <th style="text-align: center;">Nomor Polisi</th>
-                                                                    <th style="text-align: center;">Tanggal</th>
+                                                                    <th style="text-align: center;">Tanggal Maintenace</th>
+                                                                    <th style="text-align: center;">Jenis Maintenance</th>
                                                                     <th style="text-align: center;">Biaya</th>
                                                                 </tr>
                                                             </thead>

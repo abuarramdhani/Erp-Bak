@@ -34,6 +34,7 @@
                                           <option value="">[ Pilih Tujuan Pencarian ]</option>
                                           <option value="data">Data Presensi</option>
                                           <option value="rekap">Rekap Presensi</option>
+                                          <option value="monitoring">Monitoring Presensi</option>
                                         </select>
                                       </div>
                                         <div class="col-sm-6">

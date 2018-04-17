@@ -93,6 +93,6 @@ class C_FleetMonitoring extends CI_Controller
 		}
 
 		echo json_encode($data);
-	}
+	} 
 
 }

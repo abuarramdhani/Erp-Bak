@@ -464,6 +464,7 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
             (i+1),
             data['monitoringKategori'][i]['nomor_polisi'],
             data['monitoringKategori'][i]['tanggal_asli'],
+            data['monitoringKategori'][i]['tanggal_asli'],
             'Rp'+parseFloat(data['monitoringKategori'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
           ]);        
         }

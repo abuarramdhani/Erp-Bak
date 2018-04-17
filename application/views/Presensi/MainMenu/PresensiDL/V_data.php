@@ -34,7 +34,7 @@
                                     </div> 
                                 </div>
                                 <br>
-                                <?php if($Pencarian == 'data'){ ?>
+                                <?php if($Pencarian == 'data'): ?>
                                 <table class="table table-bordered prs-table-presensi-dl">
                                   <thead>
                                     <th class="text-center">No</th>
@@ -61,7 +61,7 @@
                                     ?>
                                   </tbody>
                                 </table>
-                                <?php }else{ ?>
+                                <?php elseif($Pencarian == 'rekap'): ?>
                                  <table class="table table-bordered prs-table-presensi-dl">
                                   <thead>
                                     <th class="text-center">No</th>
@@ -97,7 +97,32 @@
                                 <div>
                                     <i style="font-size: 10px;color:red;">*jumlah tim pada periode tanggal tersebut</i>
                                 </div>
-                                <?php } ?>
+                                <?php else: ?>
+                                <table class="table table-bordered prs-table-presensi-dl">
+                                    <thead>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Nama</th>
+                                        <th class="text-center">No Induk</th>
+                                        <th class="text-center">Seksi</th>
+                                        <th class="text-center">Akhir Kontrak</th>
+                                        <th class="text-center">Keberangkatan</th>
+                                        <th class="text-center">Kepulangan</th>  
+                                    </thead>
+                                    <tbody>
+                                        <?php $no=1; foreach ($Monitoring as $item):?>
+                                        <tr>
+                                            <td class="text-center"><?php echo $no++;?></td>
+                                            <td class="text-center"><?php echo $item['nama'];?></td>
+                                            <td class="text-center"><?php echo $item['noind'];?></td>
+                                            <td class="text-center"><?php echo $item['seksi'];?></td>
+                                            <td class="text-center"><?php echo $item['akhir_kontrak'];?></td>
+                                            <td class="text-center"><?php echo $item['berangkat'];?></td>
+                                            <td class="text-center"><?php echo $item['pulang'];?></td>
+                                        </tr>
+                                        <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                                <?php endif; ?>
                             </div> 
                         </div>
                     </div>
