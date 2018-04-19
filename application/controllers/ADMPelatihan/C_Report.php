@@ -1088,7 +1088,7 @@ class C_Report extends CI_Controller {
 			$trainer_akhir=$data['trainer_onpkg'];
 			
 			// 2
-			$trainer = $this->M_report->GetTrainerPaket();
+			$trainer = $this->M_report->GetTrainer();
 			$data['trainer'] = $trainer; 
 
 			// 3
