@@ -22,6 +22,7 @@ $(document).ready(function(){
 		  },
 	  minimumInputLength: 2,
 	  allowClear: false,
+	  placeholder: '[ pilih Nomor Induk / Nama ]',
 	});
 
 	$('.select-kodesie-prs').select2({
@@ -49,25 +50,25 @@ $(document).ready(function(){
 	});
 
 	$('.select-pencarian-prs').select2({
-	  minimumInputLength: 0,
+	  placeholder: '[ Pilih Tujuan Pencarian ]',
 	  allowClear: false,
 	});
 
-	$(document).on("change", "#idNoind_prs", function () {
-		 var noind_length = $(this).val();
-		$.ajax({
-	        type: "POST",
-	        url: baseurl+"Presensi/PresensiDL/seksi_disabled",
-	        data: ({ noind : noind_length}),
-	        dataType: "json",
-	        success: function(data) {
-	           $('.select-kodesie-prs').select2('data', {kodesie: data});
-	        },
-	        error: function() {
-	            alert('Not Found');
-	        }
-	    });
-	});
+	// $(document).on("change", "#idNoind_prs", function () {
+	// 	 var noind_length = $(this).val();
+	// 	$.ajax({
+	//         type: "POST",
+	//         url: baseurl+"Presensi/PresensiDL/seksi_disabled",
+	//         data: ({ noind : noind_length}),
+	//         dataType: "json",
+	//         success: function(data) {
+	//            $('.select-kodesie-prs').select2('data', {kodesie: data});
+	//         },
+	//         error: function() {
+	//             alert('Not Found');
+	//         }
+	//     });
+	// });
 
 	$('.prs-table-presensi-dl').DataTable({
 		searching: true,
@@ -75,6 +76,5 @@ $(document).ready(function(){
 	});
 
 });
-
 
 

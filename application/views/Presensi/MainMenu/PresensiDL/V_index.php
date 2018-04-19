@@ -30,17 +30,16 @@
                             <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
                                       <div class="col-sm-6">
-                                        <select class="form-control select-pencarian-prs" id="idPencarian_prs" name="Pencarian" style="width: 100%" required="">
-                                          <option value="">[ Pilih Tujuan Pencarian ]</option>
+                                        <select class="form-control select-pencarian-prs" id="idPencarian_prs" name="Pencarian" style="width: 100%" required>
+                                          <option value=""></option>
                                           <option value="data">Data Presensi</option>
                                           <option value="rekap">Rekap Presensi</option>
                                           <option value="monitoring">Monitoring Pekerja Habis Masa Kontrak</option>
                                         </select>
                                       </div>
-                                        <div class="col-sm-6">
-                                         <select name="cmbDepartemen" class="select2 RekapAbsensi-cmbDepartemen" style="width: 100%">
-                                            <option value="">[ pilih Departement ]</option>
-                                         </select>
+                                      <div class="col-sm-6">
+                                        <select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbDepartemen" style="width:100%" name="cmbDepartemen">
+                                      </select>
                                       </div>
                                     </div> 
                                 </div>
@@ -48,26 +47,23 @@
                                     <div class="form-group">
                                       <div class="col-sm-6">
                                         <select class="form-control select-nama-prs" id="idNoind_prs" name="NamaPekerja" style="width: 100%">
-                                          <option value="">[ pilih Nomor Induk / Nama ]</option>
                                         </select>
                                       </div>
                                       <div class="col-sm-6">
-                                         <select name="cmbBidang" class="select2 RekapAbsensi-cmbBidang" style="width: 100%">
-                                            <option value="">[ pilih Bidang ]</option>
-                                         </select>
+                                         <select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbBidang" style="width:100%" name="cmbBidang">
+                                        </select>
                                       </div>
                                     </div> 
                                 </div>
                                  <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
                                       <div class="col-sm-3">
-                                        <input class="form-control RekapAbsensi-daterangepicker" id="idTglBerangkat_prs" name="txtTglBerangkat_prs" style="width: 100%"></input>
+                                        <input class="form-control RekapAbsensi-daterangepicker" id="idTglBerangkat_prs" name="txtTglBerangkat_prs" style="width: 100%" required></input>
                                       </div>
                                       <div class="col-sm-3">
                                        </div>
                                       <div class="col-sm-6">
-                                         <select name="cmbUnit" class="select2 RekapAbsensi-cmbUnit" style="width: 100%">
-                                              <option value="">[ pilih Unit ]</option>
+                                          <select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbUnit" style="width:100%" name="cmbUnit">
                                           </select>
                                       </div>
                                     </div> 
@@ -80,8 +76,7 @@
                                       <div class="col-sm-3">
                                        </div>
                                       <div class="col-sm-6">
-                                          <select name="cmbSeksi" class="select2 RekapAbsensi-cmbSeksi" style="width: 100%">
-                                              <option value="">[ pilih Seksi ]</option>
+                                          <select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbSeksi" style="width:100%" name="cmbSeksi">
                                           </select>
                                       </div>
                                     </div> 
@@ -108,4 +103,3 @@
         </div>
     </div>
 </section>
-
