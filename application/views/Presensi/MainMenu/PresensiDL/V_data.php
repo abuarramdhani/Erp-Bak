@@ -105,8 +105,6 @@
                                         <th class="text-center">No Induk</th>
                                         <th class="text-center">Seksi</th>
                                         <th class="text-center">Akhir Kontrak</th>
-                                        <th class="text-center">Keberangkatan</th>
-                                        <th class="text-center">Kepulangan</th>  
                                     </thead>
                                     <tbody>
                                         <?php $no=1; foreach ($Monitoring as $item):?>
@@ -116,8 +114,6 @@
                                             <td class="text-center"><?php echo $item['noind'];?></td>
                                             <td class="text-center"><?php echo $item['seksi'];?></td>
                                             <td class="text-center"><?php echo $item['akhir_kontrak'];?></td>
-                                            <td class="text-center"><?php echo $item['berangkat'];?></td>
-                                            <td class="text-center"><?php echo $item['pulang'];?></td>
                                         </tr>
                                         <?php endforeach;?>
                                     </tbody>

@@ -72,10 +72,10 @@ public function get_js_seksi()
 		echo json_encode($data);
 	}
 
-public function seksi_disabled(){
-		$noind = $this->input->post('noind');
-		$get_seksi = $this->M_presensi_dl->getSeksi_byID($noind);
-	}
+// public function seksi_disabled(){
+// 		$noind = $this->input->post('noind');
+// 		$get_seksi = $this->M_presensi_dl->getSeksi_byID($noind);
+// 	}
 
 public function CariDataDinasLuar(){
 		$this->checkSession();
@@ -131,7 +131,7 @@ private function klausa_where($noind,$tanggal1,$tanggal2,$dept,$bidang,$unit,$se
         if($seksi==null){
             if($unit==null){
                 if($bidang==null){
-                    if($dept==null){
+                    if($dept==null || $dept=='0'){
                         $dept = "";
                     }else{
                         if($dept!=null && ($tanggal1!=null || $noind!=null)){

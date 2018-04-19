@@ -11,7 +11,7 @@ class M_presensi_dl extends CI_Model
     public function getPekerja($val)
     {
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT noind,nama FROM hrd_khs.tpribadi where noind like '%$val%' or nama like '%$val%'");
+        $sql = $sqlserver->query("SELECT noind,nama FROM hrd_khs.tpribadi where noind like '%$val%' or nama like '%$val%' and keluar=false");
     	return $sql->result_array();
     }
 
@@ -246,20 +246,16 @@ group by td.spdl_id,td.noind,td.kodesie");
     public function monitoring_pekerja_dl($where)
     {
         $sqlserver = $this->load->database('personalia', true);
-        $sql = $sqlserver->query("select    td.*, 
+        $sql = $sqlserver->query("select    td.noind as noind, 
                                             tp.akhkontrak as akhir_kontrak,
                                             ts.seksi seksi,
-                                            tp.nama as nama,
-                                            substring(td.keterangan,1,10) as berangkat,
-                                            substring(td.keterangan,12,10) as pulang
-                                    from    \"Presensi\".tpresensi_dl as td
+                                            tp.nama as nama
+                                    from   (SELECT * FROM \"Presensi\".tpresensi_dl $where) as td
                                         join hrd_khs.tpribadi as tp
                                             on td.noind=tp.noind
                                         join hrd_khs.tseksi as ts
                                             on td.kodesie=ts.kodesie
-                                    $where 
-                                    and cast(tp.akhkontrak as date) <= cast(substring(td.keterangan,12,10) as date)
-                                    and tp.akhkontrak!='1900-01-01'");
+                                    group by td.noind,tp.akhkontrak,ts.seksi,tp.nama");
         return $sql->result_array();
     }
 
