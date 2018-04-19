@@ -513,7 +513,7 @@ class C_Record extends CI_Controller {
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;
 			}
-		print_r($data_participant);
+		// print_r($data_participant);
 		redirect('ADMPelatihan/Record');
 	}
 
