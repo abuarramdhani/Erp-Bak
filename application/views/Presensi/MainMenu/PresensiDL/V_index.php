@@ -34,7 +34,7 @@
                                           <option value=""></option>
                                           <option value="data">Data Presensi</option>
                                           <option value="rekap">Rekap Presensi</option>
-                                          <option value="monitoring">Monitoring Pekerja Habis Kontrak</option>
+                                          <option value="monitoring">Monitoring Pekerja Habis Masa Kontrak</option>
                                         </select>
                                       </div>
                                       <div class="col-sm-6">
@@ -58,7 +58,7 @@
                                  <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
                                       <div class="col-sm-3">
-                                        <input class="form-control RekapAbsensi-daterangepicker" id="idTglBerangkat_prs" name="txtTglBerangkat_prs" style="width: 100%" required></input>
+                                        <input class="form-control RekapAbsensi-daterangepicker" id="idTglBerangkat_prs" name="txtTglBerangkat_prs" style="width: 100%"></input>
                                       </div>
                                       <div class="col-sm-3">
                                        </div>

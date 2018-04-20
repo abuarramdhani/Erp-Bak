@@ -95,4 +95,43 @@ class C_FleetMonitoring extends CI_Controller
 		echo json_encode($data);
 	} 
 
+	public function monitoringKendaraanDetail()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Monitoring';
+		$data['Menu'] = 'Monitoring';
+		$data['SubMenuOne'] = 'Monitoring All';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$periodeDetail = $this->input->post('PeriodeMonitoringDetail');
+		$periodeDetail = explode(' - ', $periodeDetail);
+
+		$periode1 = date('Y-m-d', strtotime($periodeDetail[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeDetail[1]));
+
+		$data['detailMonitoring'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+		$data['tgl'] = date('d-m-Y', strtotime($periode1))." / ".date('d-m-Y', strtotime($periode2));
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('GeneralAffair/FleetMonitoring/V_detail_monitoring', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function cetakExcelMonitoringKendaraan()
+	{
+		$this->load->library("Excel");
+
+		$mainExcel = $this->input->post('MainMenuExport');
+		$kategoriExcel = $this->input->post('KategoriMonitoringExport');
+		$periodeExcel = $this->input->post('PeriodeMonitoringExport');
+	}
+
 }

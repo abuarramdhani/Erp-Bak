@@ -75,6 +75,16 @@ $(document).ready(function(){
 		lengthChange: false,
 	});
 
+	$('#idPencarian_prs').change(function(){
+		var CekMenu = $('#idPencarian_prs').val();
+
+		if(CekMenu=='monitoring') {
+			$('#idTglBerangkat_prs').attr('disabled','disabled');
+		}else{
+			$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+		}
+	});
+
 });
 
 
