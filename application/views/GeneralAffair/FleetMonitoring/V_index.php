@@ -113,8 +113,6 @@
                                                         <div class="box-body">
                                                             <div class="form-group">
                                                                 <form method="POST" action="<?php echo site_url('GeneralAffair/FleetMonitoring/cetakExcelMonitoringKendaraan');?>">
-                                                                    <input type="hidden" name="MainMenuExport" id="MainMenuExport">
-                                                                    <input type="hidden" name="KategoriMonitoringExport" id="KategoriMonitoringExport">
                                                                     <input type="hidden" name="PeriodeMonitoringExport" id="PeriodeMonitoringExport">
                                                                     <button type="submit" class="btn btn-success pull-right hidden" style="margin-top: -30px;margin-bottom: 5px;margin-left: 10px" id="buttonExport">Export</button>
                                                                 </form>
