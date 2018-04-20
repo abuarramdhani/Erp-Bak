@@ -129,9 +129,16 @@ class C_FleetMonitoring extends CI_Controller
 	{
 		$this->load->library("Excel");
 
-		$mainExcel = $this->input->post('MainMenuExport');
-		$kategoriExcel = $this->input->post('KategoriMonitoringExport');
 		$periodeExcel = $this->input->post('PeriodeMonitoringExport');
+		$periodeExcelExplode = explode(' - ', $periodeExcel);
+
+		$periode1 = date('Y-m-d', strtotime($periodeExcelExplode[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeExcelExplode[1]));
+
+		$data['PeriodeExcel'] = $periodeExcel;
+		$data['ExcelMonitoring'] = $this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periode1,$periode2);
+
+		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring', $data, true);
 	}
 
 }

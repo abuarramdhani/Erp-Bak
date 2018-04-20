@@ -884,3 +884,7 @@ $(document).ready(function(){
       })
     }
   });
+
+  $('#table-DetailMonitoringMK').DataTable({
+    dom: 'frtp',
+  });

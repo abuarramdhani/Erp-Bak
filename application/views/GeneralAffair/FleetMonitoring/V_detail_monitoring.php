@@ -27,7 +27,7 @@
                             <div class="box-body">
                                 periode : <?php echo $tgl;?>
                                 <div>
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblFleetCetakSpk" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="table-DetailMonitoringMK" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
