@@ -372,11 +372,11 @@ class M_record extends CI_Model {
 		return $query->result_array();
 	}
 	public function GetParticipantPidName($pid){
-		$sql = " select a.participant_name,  a.noind
+		$sql = " select a.participant_name,  a.noind, a.status
 				from pl.pl_participant a
 				inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id 
 				where b.package_scheduling_id=$pid
-				group by a.participant_name,2
+				group by a.participant_name,2,3
 				order by participant_name";
 		$query = $this->db->query($sql);
 		return $query->result_array();
