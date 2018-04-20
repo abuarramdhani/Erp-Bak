@@ -25,12 +25,12 @@
 	    	$this->db->select('*');
 	    	$this->db->from('ojt.tb_memo');
 	    	
-	    	if($id_memo === TRUE)
+	    	if($id_memo !== FALSE)
 	    	{
 	    		$this->db->where('id_memo=', $id_memo);
 	    	}
 
-	    	if($keyword_support === TRUE)
+	    	if($keyword_support !== FALSE)
 	    	{
 	    		$this->db->like('judul', $keyword_support, 'both');
 	    	}

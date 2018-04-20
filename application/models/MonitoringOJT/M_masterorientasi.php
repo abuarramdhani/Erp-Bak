@@ -63,16 +63,13 @@
 
 	    public function ambilDaftarOrientasiTabel($id_orientasi = FALSE)
 	    {
-	    	if($id_orientasi === FALSE)
-	    	{
-		    	$this->db->select('*');
-		    	$this->db->from('ojt.tb_orientasi');
-		    	$this->db->order_by('periode, sequence');
-	    	}
-	    	else
-	    	{
-
-	    	}
+	    	$this->db->select('*');
+		    $this->db->from('ojt.tb_orientasi');
+		    if($id_orientasi !== FALSE) 
+		    {
+		    	$this->db->where('id_orientasi=', $id_orientasi);
+		    }
+		    $this->db->order_by('periode, sequence');
 	    	return $this->db->get()->result_array();
 	    }
 
@@ -404,7 +401,10 @@
 	    	$this->db->select('*');
 	    	$this->db->from('ojt.tb_pemberitahuan');
 	    	$this->db->where('id_orientasi=', $id_orientasi_decode);
-	    	$this->db->where_not_in('id_pemberitahuan', $idPemberitahuanUsed);
+	    	if($idPemberitahuanUsed === NULL)
+	    	{
+	    		$this->db->where_not_in('id_pemberitahuan', $idPemberitahuanUsed);
+	    	}
 
 	    	return $this->db->get()->result_array();
 	    }

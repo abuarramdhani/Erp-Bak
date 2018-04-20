@@ -44,11 +44,12 @@
 											$no 	= 	1;
 											foreach ($daftarPekerjaOJT as $pekerja)
 											{
+												$pekerja_id 	=	$this->general->enkripsi($pekerja['pekerja_id']);
 										?>
 										<tr>
 											<td style="white-space: nowrap; text-align: center; vertical-align: center"><?php echo $no;?></td>
 											<td style="white-space: nowrap; text-align: center; vertical-align: center">
-												<a alt="Schedule" title="Schedule" href="<?php echo base_url('');?>">
+												<a alt="Schedule" title="Schedule" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
 							                    	<i class="fa fa-pencil-square-o fa-2x"></i>
 							                    </a>
 											</td>

@@ -6,13 +6,104 @@ class general
 	function __construct()
 	{
 		$this->CI = &get_instance();
+		$this->CI->load->library('encryption');
 		date_default_timezone_set('Asia/Jakarta');
+
+		$this->CI->load->model('SystemAdministration/MainMenu/M_user');
 		
 		// Model Document Controller -----start-----
 			$this->CI->load->model('DocumentStandarization/MainMenu/M_general');
 		// Model Document Controller -------end-----
 	}
 	// General Function ---------------------------start---
+
+	public function loadHeaderandSidemenu($header_name = FALSE, $title_name = FALSE, $menu_name = FALSE, $submenu_1_name = FALSE, $submenu_2_name = FALSE)
+	{
+		$kirim['Header']	=	'Quick ERP';
+		if($header_name !== FALSE)
+		{
+			$kirim['Header']	=	$header_name;
+		}
+
+		$kirim['Title']		=	'[title_name]';
+		if($title_name !== FALSE)
+		{
+			$kirim['Title']	=	$title_name;
+		}
+
+		$kirim['Menu']		=	'';
+		if($menu_name !== FALSE)
+		{
+			$kirim['Menu']	=	$menu_name;
+		}
+
+		$kirim['SubMenuOne']	=	'';
+		if($submenu_1_name !== FALSE)
+		{
+			$kirim['SubMenuOne']	=	$submenu_1_name;
+		}
+
+		$kirim['SubMenuTwo']	=	'';
+		if($submenu_2_name !== FALSE)
+		{
+			$kirim['SubMenuTwo']	=	$submenu_2_name;
+		}
+
+		$user_id 			=	$this->CI->session->userid;
+		$responsibility_id	=	$this->CI->session->responsibility_id;
+
+		$kirim['UserMenu'] 			= $this->CI->M_user->getUserMenu($user_id, $responsibility_id);
+		$kirim['UserSubMenuOne'] 	= $this->CI->M_user->getMenuLv2($user_id, $responsibility_id);
+		$kirim['UserSubMenuTwo'] 	= $this->CI->M_user->getMenuLv3($user_id, $responsibility_id);
+
+		return $kirim;
+	}
+
+	public function enkripsi($variabel)
+	{
+		$kirim 	=	str_replace
+					(
+						array
+						(
+							'+',
+							'/',
+							'='
+						), 
+						array
+						(
+							'-',
+							'_',
+							'~'
+						), 
+						$this->CI->encryption->encrypt($variabel)
+					);
+		return $kirim;
+	}
+
+	public function dekripsi($variabel)
+	{
+		$kirim 	=	$this->CI->encryption->decrypt
+					(
+						str_replace
+						(
+							array
+							(
+								'-',
+								'_',
+								'~'
+							), 
+							array
+							(
+								'+',
+								'/',
+								'='
+							),
+							$variabel
+						)
+					);
+		return $kirim;
+	}
+
 	public function ambilPekerja($list)
 	{
 		if($list=='all')

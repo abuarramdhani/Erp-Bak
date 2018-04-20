@@ -791,6 +791,10 @@ class C_MasterOrientasi extends CI_Controller
 										$idPemberitahuanUsed[$k] 	=	$this->encrypt->decode(str_replace(array('-', '_', '~'), array('+', '/', '='), $idPemberitahuan[$indeksIDPemberitahuan[$k]]));
 									}
 								}
+								if(empty($idPemberitahuanUsed))
+								{
+									$idPemberitahuanUsed 	=	NULL;
+								}
 
 								$pemberitahuanDeleted 		=	$this->M_masterorientasi->ambilPemberitahuanDeleted($id_orientasi_decode, $idPemberitahuanUsed);
 

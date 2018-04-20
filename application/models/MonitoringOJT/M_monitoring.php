@@ -259,4 +259,40 @@
 
  			return $this->db->get()->result_array();
  		}
+
+ 		public function ambilPenjadwalanManual($pekerja_id)
+ 		{
+ 			$ambilPenjadwalanManual 		= "	select 		jadwal.*
+												from 		ojt.tb_proses as jadwal
+															join 	ojt.tb_pekerja as pekerja
+																	on 	pekerja.noind=jadwal.noind
+															join 	ojt.tb_orientasi as orientasi
+																	on 	orientasi.id_orientasi=jadwal.id_orientasi
+												where 		pekerja.pekerja_id=$pekerja_id
+															and 	orientasi.ck_tgl=false;";
+			$queryAmbilPenjadwalanManual 	=	$this->db->query($ambilPenjadwalanManual);
+			return $queryAmbilPenjadwalanManual->result_array();
+ 		}
+
+ 		public function updateProses($updateProses, $id_proses)
+ 		{
+ 			$this->db->where('id_proses=', $id_proses);
+ 			$this->db->update('ojt.tb_proses', $updateProses);
+ 		}
+
+ 		public function ambilProses($id_proses)
+ 		{
+ 			$this->db->select('*');
+ 			$this->db->from('ojt.tb_proses');
+ 			$this->db->where('id_proses=', $id_proses);
+ 			return $this->db->get()->result_array();
+ 		}
+
+ 		public function cekProsesPemberitahuan($id_orientasi)
+ 		{
+ 			$this->db->select('*');
+ 			$this->db->from('ojt.tb_pemberitahuan');
+ 			$this->db->where('id_orientasi=', $id_orientasi);
+ 			return $this->db->get()->result_array();
+ 		}
  	}
