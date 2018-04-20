@@ -454,16 +454,28 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
+
+        if (Kategori=='C') {
+          $('#buttonDetail').removeClass('hidden');
+          $('#buttonExport').removeClass('hidden');
+        }else{
+          $('#buttonDetail').addClass('hidden');
+          $('#buttonExport').addClass('hidden');
+        }
         // $('body').removeClass('noscroll');
         // $('#loadingAjax').html('');
-        // $('#loadingAjax').removeClass('overlay_loading');        
+        // $('#loadingAjax').removeClass('overlay_loading'); 
+        $('#MainMenuExport').val(Berdasarkan);
+        $('#KategoriMonitoringExport').val(Kategori);
+        $('#PeriodeMonitoringExport').val(Periode);
+        $('#PeriodeMonitoringDetail').val(Periode);
+
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
         DataTableMonitoringKategori.fnAddData([
             (i+1),
             data['monitoringKategori'][i]['nomor_polisi'],
-            data['monitoringKategori'][i]['tanggal_asli'],
             data['monitoringKategori'][i]['tanggal_asli'],
             'Rp'+parseFloat(data['monitoringKategori'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
           ]);        

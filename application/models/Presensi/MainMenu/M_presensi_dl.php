@@ -243,19 +243,16 @@ group by td.spdl_id,td.noind,td.kodesie");
         return $sql->result_array();
     }
 
-    public function monitoring_pekerja_dl($where)
+    public function monitoring_pekerja_dl($where,$condition)
     {
         $sqlserver = $this->load->database('personalia', true);
-        $sql = $sqlserver->query("select    td.noind as noind, 
-                                            tp.akhkontrak as akhir_kontrak,
-                                            ts.seksi seksi,
-                                            tp.nama as nama
-                                    from   (SELECT * FROM \"Presensi\".tpresensi_dl $where) as td
-                                        join hrd_khs.tpribadi as tp
-                                            on td.noind=tp.noind
-                                        join hrd_khs.tseksi as ts
-                                            on td.kodesie=ts.kodesie
-                                    group by td.noind,tp.akhkontrak,ts.seksi,tp.nama");
+        $sql = $sqlserver->query("select    noind,
+                                            nama,
+                                            akhkontrak as akhir_kontrak,
+                                            (select seksi 
+                                            from hrd_khs.tseksi
+                                            where hrd_khs.tseksi.kodesie=hrd_khs.tpribadi.kodesie) as seksi
+                                    from    hrd_khs.tpribadi $where $condition");
         return $sql->result_array();
     }
 

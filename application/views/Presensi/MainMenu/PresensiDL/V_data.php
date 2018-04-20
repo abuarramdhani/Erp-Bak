@@ -113,7 +113,7 @@
                                             <td class="text-center"><?php echo $item['nama'];?></td>
                                             <td class="text-center"><?php echo $item['noind'];?></td>
                                             <td class="text-center"><?php echo $item['seksi'];?></td>
-                                            <td class="text-center"><?php echo $item['akhir_kontrak'];?></td>
+                                            <td class="text-center"><?php echo date("d-m-Y", strtotime($item['akhir_kontrak']));?></td>
                                         </tr>
                                         <?php endforeach;?>
                                     </tbody>
