@@ -11,7 +11,7 @@ class M_presensi_dl extends CI_Model
     public function getPekerja($val)
     {
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT noind,nama FROM hrd_khs.tpribadi where noind like '%$val%' or nama like '%$val%'");
+        $sql = $sqlserver->query("SELECT noind,nama FROM hrd_khs.tpribadi where noind like '%$val%' or nama like '%$val%' and keluar=false");
     	return $sql->result_array();
     }
 
@@ -86,6 +86,52 @@ class M_presensi_dl extends CI_Model
                 'belum pulang'
             )
     end) tanggal,
+    (case
+        when
+            count(td.spdl_id)=2
+        then
+            concat(
+                concat(
+                        to_char(min(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tgl_realisasi)=max(td.tgl_realisasi)
+                            then
+                                min(td.wkt_realisasi)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tgl_realisasi)
+                                )
+                        end
+                    ),
+                ' || ',
+                concat(
+                        to_char(max(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tgl_realisasi)=max(td.tgl_realisasi)
+                            then
+                                max(td.wkt_realisasi)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tgl_realisasi)
+                                )
+                        end
+                    )
+                )
+        else
+            concat(
+                concat(
+                    to_char(max(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                    ' ',
+                    max(td.wkt_realisasi)
+                ),
+                ' || ',
+                'belum pulang'
+            )
+    end) tanggal_realisasi,
     (
         select 
             (
@@ -194,6 +240,19 @@ class M_presensi_dl extends CI_Model
 FROM 
 (SELECT * FROM \"Presensi\".tpresensi_dl $where) as td
 group by td.spdl_id,td.noind,td.kodesie");
+        return $sql->result_array();
+    }
+
+    public function monitoring_pekerja_dl($where,$condition)
+    {
+        $sqlserver = $this->load->database('personalia', true);
+        $sql = $sqlserver->query("select    noind,
+                                            nama,
+                                            akhkontrak as akhir_kontrak,
+                                            (select seksi 
+                                            from hrd_khs.tseksi
+                                            where hrd_khs.tseksi.kodesie=hrd_khs.tpribadi.kodesie) as seksi
+                                    from    hrd_khs.tpribadi $where $condition");
         return $sql->result_array();
     }
 

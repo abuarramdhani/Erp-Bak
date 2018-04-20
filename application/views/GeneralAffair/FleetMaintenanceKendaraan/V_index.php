@@ -69,7 +69,6 @@
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                            <a href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus data ini?');"><span class="fa fa-trash fa-2x"></span></a>
-                                                           <a href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/cetakMaintenanceKendaraan/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data"><span class="fa fa-print fa-2x"></span></a>
                                                         </td>
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
                                                         <td><?php echo $row['tanggal_maintenance'] ?></td>
@@ -112,7 +111,6 @@
                                                         <td align='center'>
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                           <a href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/cetakMaintenanceKendaraan/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data"><span class="fa fa-print fa-2x" target="_blank"></span></a>
                                                         </td>
 												        <td><?php echo $row['nomor_polisi'] ?></td>
 												        <td><?php echo $row['tanggal_maintenance'] ?></td>

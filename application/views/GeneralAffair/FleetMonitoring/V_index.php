@@ -9,7 +9,7 @@
                             </div>
                             <div class="col-lg-1">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/FleetJenisKendaraan');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/FleetMonitoring');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <br/>
                                     </a>
@@ -109,13 +109,25 @@
                                                     <hr/>
                                                     <br/>
 
-                                                    <div class="table-responsive" id="tabelMonitoringKategori" hidden="">
+                                                    <div id="tabelMonitoringKategori" hidden="">
+                                                        <div class="box-body">
+                                                            <div class="form-group">
+                                                                <form method="POST" action="<?php echo site_url('GeneralAffair/FleetMonitoring/cetakExcelMonitoringKendaraan');?>">
+                                                                    <input type="hidden" name="PeriodeMonitoringExport" id="PeriodeMonitoringExport">
+                                                                    <button type="submit" class="btn btn-success pull-right hidden" style="margin-top: -30px;margin-bottom: 5px;margin-left: 10px" id="buttonExport">Export</button>
+                                                                </form>
+                                                                <form method="POST" action="<?php echo site_url('GeneralAffair/FleetMonitoring/monitoringKendaraanDetail');?>">
+                                                                    <input type="hidden" name="PeriodeMonitoringDetail" id="PeriodeMonitoringDetail">
+                                                                    <button type="submit" class="btn btn-info pull-right hidden" style="margin-top: -30px;margin-bottom: 5px" target="_blank" id="buttonDetail">Detail</button>
+                                                                </form> 
+                                                            </div>
+                                                        </div>
                                                         <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetMonitoringKategori" style="font-size:12px;">
                                                             <thead class="bg-primary">
                                                                 <tr>
                                                                     <th style="text-align: center; width: 30px">No</th>
                                                                     <th style="text-align: center;">Nomor Polisi</th>
-                                                                    <th style="text-align: center;">Tanggal</th>
+                                                                    <th style="text-align: center;">Tanggal Maintenace</th>
                                                                     <th style="text-align: center;">Biaya</th>
                                                                 </tr>
                                                             </thead>

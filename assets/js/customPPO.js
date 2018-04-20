@@ -188,8 +188,9 @@ $(document).ready(function() {
     $('#b_processSJ').click(function(){
          SJ = $('#in_sj').val();
          $.ajax({
-            url: baseurl + "PenerimaanPO/cek/loadDataCek/" + SJ,
             type:"POST",
+            data: {sj:SJ},
+            url: baseurl + "PenerimaanPO/cek/loadDataCek",
             success: function(results) {
                 listItem = [];
                 var arrayRow = $.parseJSON(results);

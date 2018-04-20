@@ -47,7 +47,8 @@
 		}
 	}
 
-	public function loadDataCek($SJ){
+	public function loadDataCek(){
+		$SJ = $this->input->post('sj');
 		$data = $this->M_pengecekan->loadDataCek($SJ);
 		echo json_encode($data);
 	}

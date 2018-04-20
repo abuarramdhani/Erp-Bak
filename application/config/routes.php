@@ -1284,6 +1284,10 @@ $route['GeneralAffair/FleetBengkel']		= 'GeneralAffair/MainMenu/C_FleetBengkel';
 $route['GeneralAffair/FleetBengkel/(:any)']		= 'GeneralAffair/MainMenu/C_FleetBengkel/$1';
 $route['GeneralAffair/FleetBengkel/(:any)/(:any)']		= 'GeneralAffair/MainMenu/C_FleetBengkel/$1/$2';
 
+$route['GeneralAffair/FleetCetakSpk'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk';
+$route['GeneralAffair/FleetCetakSpk/(:any)'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk/$1';
+$route['GeneralAffair/FleetCetakSpk/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk/$1/$2';
+
 //------------------------------------ Aplikasi Toolroom ----------------------------
 $route['Toolroom'] = 'Toolroom/C_Index';
 $route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';
@@ -1548,7 +1552,7 @@ $route['PenerimaanPO/awal/loadVendor/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/
 $route['PenerimaanPO/awal/loadPoLine/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadPoLine/$1';
 
 $route['PenerimaanPO/cek'] 					   = 'PenerimaanPO/C_Pengecekan';
-$route['PenerimaanPO/cek/loadDataCek/(:any)']  = 'PenerimaanPO/C_Pengecekan/loadDataCek/$1';
+$route['PenerimaanPO/cek/loadDataCek']         = 'PenerimaanPO/C_Pengecekan/loadDataCek';
 
 //------------------------------------------------Product Cost-------------------------------------------------------//
 $route['ProductCost']										= 'ProductCost/C_Index';

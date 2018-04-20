@@ -22,7 +22,7 @@
 				<p style="font-size: 14px">Lampiran</p>
 			</td>
 			<td>
-				<p style="font-size: 14px">: <?php echo $FleetMaintenanceKendaraan['no_surat']." / GA / KE-A / ".$tanggal[1]." / ".$tanggal[0];?></p>
+				<p style="font-size: 14px">: <?php echo $FleetHeaderCetakSpk['no_surat']." / GA / KE-A / ".$tanggal[1]." / ".$tanggal[0];?></p>
 				<p style="font-size: 14px">: <b>Permintaan Service Kendaraan CV Karya Hidup Sentosa</b></p>
 				<p style="font-size: 14px">: -</p>
 			</td>
@@ -32,15 +32,15 @@
 				<br></br>
 				<p style="font-size: 14px">Kepada Yth.</p>
 				<p style="font-size: 14px"><b>Bagian Service Kendaraan</b></p>
-				<p style="font-size: 14px"><b><?php echo $FleetMaintenanceKendaraan['nama_bengkel'];?></b></p>
-				<p style="font-size: 14px"><b><?php echo $FleetMaintenanceKendaraan['alamat_bengkel'];?></b></p>
+				<p style="font-size: 14px"><b><?php echo $FleetHeaderCetakSpk['nama_bengkel'];?></b></p>
+				<p style="font-size: 14px"><b><?php echo $FleetHeaderCetakSpk['alamat_bengkel'];?></b></p>
 			</td>
 			
 		</tr>
 	</table>
 	<br></br>
 	<p style="font-size: 14px">Dengan hormat,<br></br>
-		Sesuai dengan Perjanjian Kerjasama Service Kendaraan antara CV Karya Hidup Sentosa dengan <?php echo $FleetMaintenanceKendaraan['nama_bengkel']; ?> di Yogyakarta, maka mohon dilakukan service kendaraan sbb:
+		Sesuai dengan Perjanjian Kerjasama Service Kendaraan antara CV Karya Hidup Sentosa dengan <?php echo $FleetHeaderCetakSpk['nama_bengkel']; ?> di Yogyakarta, maka mohon dilakukan service kendaraan sbb:
 	</p>
 	<table style="border:1px solid black;width: 100%;">
 		<thead>
@@ -51,7 +51,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php $no=1; foreach ($FleetMaintenanceKendaraanDetail as $key):?>
+			<?php $no=1; foreach ($FleetLineSpkDetail as $key):?>
 			<tr>
 				<td style="font-size: 14px;border: 1px solid black;padding: 4px"> <?php echo $no++; ?></td>
 				<td style="font-size: 14px;border: 1px solid black;padding: 4px"> <?php echo $key['jenis_kendaraan'] ?></td>
@@ -61,7 +61,7 @@
 		</tbody>
 	</table>
 	<br></br>
-	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email purchasing.sec7@quick.co.id UP Bapak Agit Novian dan di cc operator1@quick.co.id UP Ibu Yolenta dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetMaintenanceKendaraan['merk_kendaraan']." Plat No ".$FleetMaintenanceKendaraan['nomor_polisi'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
+	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email purchasing.sec7@quick.co.id UP Bapak Agit Novian dan di cc operator1@quick.co.id UP Ibu Yolenta dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetHeaderCetakSpk['merk_kendaraan']." Plat No ".$FleetHeaderCetakSpk['no_pol'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
 		Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.
 	</p>
 	<div style="position: absolute;bottom: 100px;left: 100px">

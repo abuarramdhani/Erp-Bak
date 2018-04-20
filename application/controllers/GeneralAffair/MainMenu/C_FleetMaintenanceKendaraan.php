@@ -95,7 +95,6 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 			$alasan 				= 	$this->input->post('txaAlasanHeader');
 			$kategori_maintenance 	= 	$this->input->post('cmbMaintenanceKategoriIdHeader');
 			$bengkel 				= 	$this->input->post('cmbBengkelHeader');
-			$no_surat 				= 	$this->input->post('txtNoSuratHeader');
 
 			$waktu_eksekusi 		= 	date('Y-m-d H:i:s');
 
@@ -110,17 +109,12 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'created_by' 				=> $this->session->userid,
 				'alasan' 					=> $alasan,
 				'id_bengkel'				=> $bengkel,
-				'no_surat'					=> $no_surat,
     		);
 			$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraan($data);
 			$header_id = $this->db->insert_id();
 
 			$line1_jenis_maintenance = $this->input->post('txtJenisMaintenanceLine1');
 			$line1_biaya = $this->input->post('txtBiayaLine1');
-
-			// print_r($line1_jenis_maintenance);
-			// print_r($line1_biaya);
-			// exit();
 
 			foreach ($line1_jenis_maintenance as $i => $loop) {
 				if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '') {
@@ -208,7 +202,6 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'last_updated_by' 			=> $this->session->userid,
 				'alasan'		 			=> $this->input->post('txaAlasanHeader',TRUE),
 				'id_bengkel'				=> $this->input->post('cmbBengkelHeader', TRUE),
-				'no_surat'					=> $this->input->post('txtNoSuratHeader', TRUE),
     			);
 			$this->M_fleetmaintenancekendaraan->updateFleetMaintenanceKendaraan($data, $plaintext_string);
 
@@ -311,34 +304,6 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 		echo json_encode('true');
 	}
-
-	public function cetakMaintenanceKendaraan($id)
-	{
-		$this->load->library('pdf');
-
-		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
-		$plaintext_string = $this->encrypt->decode($plaintext_string);
-
-		$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->CetakDataMaintenanceKendaraan($plaintext_string);
-		$data['FleetMaintenanceKendaraan'] = $data['FleetMaintenanceKendaraan'][0];
-		$tgl = $data['FleetMaintenanceKendaraan']['tanggal_maintenance'];
-		$tanggal = explode('-', $tgl);
-		$data['tanggal'] = $tanggal;
-		$data['FleetMaintenanceKendaraanDetail'] 	= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDetail($plaintext_string);
-
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
-		$filename = 'Cetak_Maintenance_Kendaraan.pdf';
-		
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$html = $this->load->view('GeneralAffair/FleetMaintenanceKendaraan/V_cetak', $data, true);
-
-		$pdf->WriteHTML($stylesheet, 1);
-		$pdf->WriteHTML($html, 2);
-		$pdf->Output($filename, 'D');
-	}
-
-
 
 }
 

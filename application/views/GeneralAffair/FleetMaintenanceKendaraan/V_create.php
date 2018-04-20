@@ -81,13 +81,6 @@
                                                </div>
                                            </div>
 
-                                           <div class="form-group">
-                                               <label for="txtNoSuratHeader" class="control-label col-lg-4">No Surat</label>
-                                               <div class=" col-lg-4">
-                                                   <input type="text" id="txtNoSuratHeader" name="txtNoSuratHeader" class="form-control" placeholder="No Surat">
-                                               </div>
-                                           </div>
-
 											<div class="form-group">
                                                 <label for="txaAlasanHeader" class="control-label col-lg-4">Alasan</label>
                                                 <div class="col-lg-4">

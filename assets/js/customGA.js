@@ -278,7 +278,7 @@ var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKate
 function TambahBarisMaintenanceKendaraan(base){  
       var e = jQuery.Event( "click" );
 
-          var newRow  = jQuery("<tr>"
+        var newRow  = jQuery("<tr>"
                                 +"<td style='text-align:center; width:'"+"30px"+"'></td>"
                                 +"<td align='center' width='60px'>"
                                 +"<a onclick='delSpesifikRow(this)' class='del-row btn btn-xs btn-danger' data-toggle='tooltip' data-placement='bottom' title='Delete Data'><span class='fa fa-times'></span></a>"
@@ -300,6 +300,7 @@ function TambahBarisMaintenanceKendaraan(base){
                                 +"</tr>");
         jQuery("#tblFleetMaintenanceKendaraanDetail").append(newRow);
         $('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
+          
     }
 
 function TambahBarisKecelakaanDetail(base){  
@@ -453,9 +454,22 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
       {
         console.log(data);
         var   data  = JSON.parse(data);
+
+        if (Kategori=='C') {
+          $('#buttonDetail').removeClass('hidden');
+          $('#buttonExport').removeClass('hidden');
+        }else{
+          $('#buttonDetail').addClass('hidden');
+          $('#buttonExport').addClass('hidden');
+        }
         // $('body').removeClass('noscroll');
         // $('#loadingAjax').html('');
-        // $('#loadingAjax').removeClass('overlay_loading');        
+        // $('#loadingAjax').removeClass('overlay_loading'); 
+        $('#MainMenuExport').val(Berdasarkan);
+        $('#KategoriMonitoringExport').val(Kategori);
+        $('#PeriodeMonitoringExport').val(Periode);
+        $('#PeriodeMonitoringDetail').val(Periode);
+
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
@@ -830,3 +844,47 @@ $(document).ready(function(){
        }
     });
 });
+
+//fleet cetak spk
+  $('#dataTables-fleetCetakSpk').DataTable({"lengthChange": false});
+
+  function TambahBarisCetakSPK(base){  
+      var e = jQuery.Event( "click" );
+
+        var newRow  = jQuery("<tr>"
+                                +"<td style='text-align:center; width:'"+"30px"+"'></td>"
+                                +"<td align='center' width='60px'>"
+                                +"<a onclick='delSpesifikRow(this)' class='del-row btn btn-xs btn-danger' data-toggle='tooltip' data-placement='bottom' title='Delete Data'><span class='fa fa-times'></span></a>"
+                                +"</td>"
+                                +"<td>"
+                                +"<div class='form-group'>"
+                                +"<div class='col-lg-12'>"
+                                +"<input type='text' placeholder='Jenis Maintenance' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceSPK' class='form-control'/>"
+                                +"</div>"
+                                +"</div>"
+                                +"</td>"
+                                +"</tr>");
+        jQuery("#tblFleetMaintenanceKendaraanDetail").append(newRow);
+        $('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
+  }
+
+  $(document).on('click', '.deleteSPKDetail', function(){
+    var   id  =   $(this).attr('data-id');
+    var ini = $(this);
+    if(id!=null || id!='')
+    {
+      $.ajax(
+      {
+        type: 'POST',
+        url: baseurl+'GeneralAffair/FleetCetakSpk/deleteSPKDetail/'+id,
+        success: function()
+        {
+          ini.closest('tr').remove();
+        }
+      })
+    }
+  });
+
+  $('#table-DetailMonitoringMK').DataTable({
+    dom: 'frtp',
+  });
