@@ -48,7 +48,7 @@
 														and 	rtrim(tseksi.unit)!='-'
 														and 	substring(tseksi.kodesie,1,3)='$bidang'
 									union
-									select 				concat('$bidang', '00') as kode_bidang,
+									select 				concat('$bidang', '00') as kode_unit,
 														'SEMUA UNIT' as nama_bidang					
 									order by 			kode_unit;";
 			$queryAmbilUnit 	=	$this->personalia->query($ambilUnit);
@@ -64,7 +64,7 @@
 														and 	rtrim(tseksi.seksi)!='-'
 														and 	substring(tseksi.kodesie,1,5)='$unit'
 									union
-									select 				concat('$unit', '00') as kode_bidang,
+									select 				concat('$unit', '00') as kode_seksi,
 														'SEMUA SEKSI' as nama_bidang					
 									order by 			kode_seksi;";
 			$queryAmbilSeksi	=	$this->personalia->query($ambilSeksi);

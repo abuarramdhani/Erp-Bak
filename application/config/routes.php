@@ -1575,3 +1575,6 @@ $route['Presensi/PresensiDL'] 			= 'Presensi/MenuUtama/C_Presensi_DL/index';
 $route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
 $route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
 $route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
+
+$route['Presensi/PresensiCatering']				=	'Presensi/MenuUtama/C_Presensi_Catering';
+$route['Presensi/PresensiCatering/(:any)']		=	'Presensi/MenuUtama/C_Presensi_Catering/$1';

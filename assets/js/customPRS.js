@@ -87,4 +87,14 @@ $(document).ready(function(){
 
 });
 
+		// 	Datatables
+		//	{
+				$('#PresensiCatering-tabelRekapTransaksiCatering').DataTable({
+					scrollX: false,
+					lengthChange: false,
+					paging: false,
+				});
+		//	}
+	});
 
+// 	-------Presensi Catering----------------------------------------------end
