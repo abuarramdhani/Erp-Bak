@@ -1642,7 +1642,7 @@ $(document).ready(function(){
 					//NAMA TRAINER-------------------------------------------------------------------------
 					var nama=[];
 					var idt=[];
-					
+					console.log(result['trainer']);
 					if (idNama == 1) {
 						for (var i = 0; i < result['trainer'].length; i++) {
 							for (var j = 0; j < result['trainer_onpkg'].length; j++) {
@@ -1685,6 +1685,7 @@ $(document).ready(function(){
 									// ADA YANG DUPLICATE ADA YANG BEDA
 									else{
 										if (removeDuplicates_id(array_with_duplicates_id).includes(result['trainer'][i]['trainer_id'])) {
+											// console.log('masuk array duplicate tapi ada yang tidak duplicate juga');
 											nama = removeDuplicates_name(array_with_duplicates_name);
 											idt = unique_array_id;
 										}
@@ -1694,8 +1695,8 @@ $(document).ready(function(){
 						}
 					// console.log(unique_array_id);
 					// console.log(unique_array_name);
-					// console.log(nama);					
-					// console.log(idt);					
+					console.log(nama);					
+					console.log(idt);					
 					}else{
 						for (var i = 0; i < result['trainer'].length; i++) {
 							for (var j = 0; j < result['idTrainer'].length; j++) {
