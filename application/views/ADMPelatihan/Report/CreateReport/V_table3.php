@@ -1,8 +1,3 @@
-							<!-- <?php
-							echo "<pre>";
-							print_r($participantName);
-							echo "</pre>";
-							?> -->
 							<table class="table table-bordered table-striped table-hover table-condensed" style="overflow:scroll; max-height: 500px; max-width: 2000px" name="tbodyevalPembelajaran" id="tbodyevalPembelajaran">
 								<thead class="bg-blue">
 									<tr>
@@ -26,36 +21,39 @@
 									</tr>
 								</thead>
 								<tbody id="tbodyEvalPembelajaran">
-										<?php 
-											$no=1; foreach ($participantName as $prt) {		
-										?>
-									<tr class="clone" row-id="<?php echo $no; ?>">
-										<td style="text-align:center;"><?php echo $no++; ?></td>
-										<td>
-											<?php echo $prt['participant_name'];?>
-										</td>
-										<td style="text-align:center;">
-											<?php echo $prt['noind']; ?>
-										</td>
-										
-											<?php 
-											foreach ($GetSchName_QuesName_RPTPCK as $spk) {
-												$checkpoint=0;
-												foreach ($participant as $p) {
-													if ($spk['scheduling_id'] == $p['scheduling_id'] && $prt['participant_name'] == $p['participant_name']) {
-														echo "<td>".$p['score_eval2_post']."</td>";
-														$checkpoint++;
-													}
-												}
-
-												if ($checkpoint==0) {
-													echo "<td>-</td>";
-													$checkpoint++;
-												}
-											}
-											?>  										
-										</td>
-									</tr>
-									<?php } ?>
+									<?php 
+										$no=1; foreach ($participantName as $prt) {	
+											if ($prt['status'] == 1) {
+													
+									?>
+												<tr class="clone" row-id="<?php echo $no; ?>">
+													<td style="text-align:center;"><?php echo $no++; ?></td>
+													<td>
+														<?php echo $prt['participant_name'];?>
+													</td>
+													<td style="text-align:center;">
+														<?php echo $prt['noind']; ?>
+													</td>
+														<?php 
+														foreach ($GetSchName_QuesName_RPTPCK as $spk) {
+															$checkpoint=0;
+															foreach ($participant as $p) {
+																if ($spk['scheduling_id'] == $p['scheduling_id'] && $prt['participant_name'] == $p['participant_name']) {
+																	echo "<td>".$p['score_eval2_post']."</td>";
+																	$checkpoint++;
+																}
+															}
+															if ($checkpoint==0) {
+																echo "<td>-</td>";
+																$checkpoint++;
+															}
+														}
+														?>  										
+													</td>
+												</tr>
+									<?php 
+											}	
+										} 
+									?>
 								</tbody>
 							</table>

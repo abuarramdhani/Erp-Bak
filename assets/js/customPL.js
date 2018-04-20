@@ -1635,8 +1635,14 @@ $(document).ready(function(){
 				{
 					var result = JSON.parse(result);
 					// console.log(result);
+
+					// PESERTA PELATIHAN-------------------------------------------------------------------
 					$('input#txtPesertaPelatihan').val(result['participant_number']);
-					$('input#txtPesertaHadir').val(result['participant_number']);
+					if (idNama == 1) {
+						$('input#txtPesertaHadir').val(result['participant_number']);	
+					}else{
+						$('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);	
+					}
 					// $('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);
 					
 					//NAMA TRAINER-------------------------------------------------------------------------

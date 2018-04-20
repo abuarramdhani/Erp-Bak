@@ -8,9 +8,10 @@
 									</tr>
 								</thead>
 								<tbody id="tbodyEvalPembelajaran">
-										<?php 
-											$no=1; foreach ($participant as $prt) {		
-										?>
+									<?php 
+										$no=1; foreach ($participant as $prt) {	
+											if ($prt['status']==1) {	
+									?>
 									<tr class="clone" row-id="<?php echo $no; ?>">
 										<td style="text-align:center;"><?php echo $no++; ?></td>
 										<td>
@@ -28,6 +29,9 @@
 											?>
 										</td>
 									</tr>
-									<?php } ?>
+									<?php 
+											} 
+										}
+									?>
 								</tbody>
 							</table>

@@ -402,7 +402,7 @@ class C_Report extends CI_Controller {
 		// $tanggal  	= '09-04-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);		
 		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
