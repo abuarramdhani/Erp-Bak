@@ -14,15 +14,16 @@
 	    public function ambilRiwayatTarikCatering($tanggal_pencarian)
 	    {
 	    	$ambilRiwayatTarikCatering			= "	SELECT 		log_cron.noind,
-																sftpkj.kodesie,
-																sftpkj.kd_shift,
+																/*sftpkj.kodesie,
+																sftpkj.kd_shift,*/
 																(SUBSTRING_INDEX(SUBSTRING_INDEX(log_cron.ket, '; ', 1), ': ', -1)) AS waktu_masuk,
 																log_cron.waktu AS waktu_proses
 													FROM 		fp_distribusi.tb_log_transaksi AS log_cron
-																JOIN 	presensi.tshiftpekerja AS sftpkj
+																/*JOIN 	presensi.tshiftpekerja AS sftpkj
 																		ON 	sftpkj.noind=log_cron.noind
-																			AND	sftpkj.tanggal=CAST(log_cron.waktu AS DATE)
-													WHERE 		CAST(log_cron.waktu AS DATE)='$tanggal_pencarian'
+																			AND	sftpkj.tanggal=DATE(log_cron.waktu)*/
+													WHERE 		DATE(log_cron.waktu)='$tanggal_pencarian'
+																AND 	log_cron.cronjob='cronjob.catering.tpresensigo'
 													ORDER BY 	log_cron.waktu";
 			$queryAmbilRiwayatTarikCatering 	=	$this->quickcom->query($ambilRiwayatTarikCatering);
 			return $queryAmbilRiwayatTarikCatering->result_array();
