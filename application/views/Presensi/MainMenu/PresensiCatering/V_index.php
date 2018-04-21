@@ -103,7 +103,22 @@
 															if(strtotime($RiwayatProses[$indeks_proses]['waktu_proses'])>strtotime($tarik['waktu_proses']) && strtotime($RiwayatProses[$indeks_proses]['waktu_proses'])<strtotime($RiwayatPenarikan[$indeks_tarik+1]['waktu_proses']))
 															{
 												?>
-												<tr>
+												<tr class="bg-warning">
+													<td><?php echo $indeks_tabel;?></td>
+													<td><?php echo $RiwayatProses[$indeks_proses]['waktu_proses'];?></td>
+													<!-- <td colspan="4" style="text-align: center;"><strong>Hitung Catering</strong></td> -->
+													<td colspan="2" style="text-align: center;"><strong>Hitung Catering</strong></td>
+												</tr>
+												<?php
+																$indeks_proses++;
+															}
+														}
+														elseif(isset($RiwayatProses[$indeks_proses]['waktu_proses']) && $indeks_tarik=(count($RiwayatPenarikan)-1))
+														{
+															if(strtotime($RiwayatProses[$indeks_proses]['waktu_proses'])>strtotime($tarik['waktu_proses']))
+															{
+												?>
+												<tr class="bg-warning">
 													<td><?php echo $indeks_tabel;?></td>
 													<td><?php echo $RiwayatProses[$indeks_proses]['waktu_proses'];?></td>
 													<!-- <td colspan="4" style="text-align: center;"><strong>Hitung Catering</strong></td> -->

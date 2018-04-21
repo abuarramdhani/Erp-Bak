@@ -143,6 +143,7 @@ $(document).ready(function(){
 					scrollY: 250,
 					lengthChange: false,
 					paging: false,
+					sorting: false,
 				});
 		//	}
 	});
