@@ -17,14 +17,14 @@ $styleArray = array(
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
-	$objPHPExcel->getActiveSheet()->getStyle('A:D')->applyFromArray($styleArray);
+	$objPHPExcel->getActiveSheet()->getStyle('A:E')->applyFromArray($styleArray);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);
 	// Redirect output to a client?s web browser (Excel5)
 	//tambahkan paling atas
 	header("Content-type: application/vnd-ms-excel");
-	header("Content-Disposition: attachment; filename='Export_Maintenance_Kendaraan.xls'");
+	header("Content-Disposition: attachment; filename='Export_Maintenance_Kendaraan_Detail.xls'");
 	header('Cache-Control: max-age=0');
 	// If you're serving to IE 9, then the following may be needed
 	header('Cache-Control: max-age=1');
@@ -43,18 +43,19 @@ $styleArray = array(
 								 ->setKeywords("Sistem")
 								 ->setCategory("Sistem");
 
-	$hitungdata = count($ExcelMonitoring);
-	$objPHPExcel->getActiveSheet()->getStyle('A5:D'.($hitungdata+5))->applyFromArray($border_all);
-	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:D1');
-	$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getAlignment()->setHorizontal('center');
-	$objPHPExcel->getActiveSheet()->getStyle('A5:D5')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A5:D5')->applyFromArray($GreyColor);
+	$hitungdata = count($ExcelMonitoringDetail);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:E'.($hitungdata+5))->applyFromArray($border_all);
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A1:E1');
+	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getAlignment()->setHorizontal('center');
+	$objPHPExcel->getActiveSheet()->getStyle('A5:E5')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A5:E5')->applyFromArray($GreyColor);
 
 	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
 	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
 
 	// Add some data
 	$objPHPExcel->setActiveSheetIndex(0)
@@ -63,12 +64,13 @@ $styleArray = array(
 				->setCellValue('B3', $PeriodeExcel)
 				->setCellValue('A5', 'No')
 				->setCellValue('B5', 'Nomor Polisi')
-				->setCellValue('C5', 'Tanggal Maintenance')
-				->setCellValue('D5', 'Biaya Maintenance');
+				->setCellValue('C5', 'Jenis Maintenance')
+				->setCellValue('D5', 'Tanggal Maintenance')
+				->setCellValue('E5', 'Biaya Maintenance');
 
 	$i=5;
 	$no=1;
-	foreach($ExcelMonitoring as $em){
+	foreach($ExcelMonitoringDetail as $emd){
 	$i++;
 
 	//load ke excel
@@ -76,12 +78,14 @@ $styleArray = array(
 	$kolomB='B'.$i;
 	$kolomC='C'.$i;
 	$kolomD='D'.$i;
+	$kolomE='E'.$i;
 
 	$objPHPExcel->setActiveSheetIndex(0)
 				->setCellValueExplicit($kolomA, $no++, PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomB, $em['nomor_polisi'], PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomC, date("d-m-Y H:i:s", strtotime($em['tanggal_asli'])), PHPExcel_Cell_DataType::TYPE_STRING)
-				->setCellValueExplicit($kolomD, 'Rp '.number_format($em['biaya'],0,",","."), PHPExcel_Cell_DataType::TYPE_STRING);			
+				->setCellValueExplicit($kolomB, $emd['nomor_polisi'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomC, $emd['jenis_maintenance'], PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomD, date("d-m-Y H:i:s", strtotime($emd['tanggal_asli'])), PHPExcel_Cell_DataType::TYPE_STRING)
+				->setCellValueExplicit($kolomE, 'Rp '.number_format($emd['biaya'],0,",","."), PHPExcel_Cell_DataType::TYPE_STRING);			
 	}
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
