@@ -23,7 +23,14 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<!-- Tabel Orientasi -->
-							<div class="box box-primary box-solid">
+							<?php
+								$minimize_box 	=	'';
+								if(isset($RiwayatPenarikan) && isset($RiwayatProses))
+								{
+									$minimize_box	=	'collapsed-box';
+								}
+							?>
+							<div class="box box-primary box-solid <?php echo $minimize_box;?>">
 								<div class="box-header with-border">
 									<h3 class="box-title">Parameter Pencarian</h3>
 									<div class="box-tools pull-right">
@@ -68,8 +75,8 @@
 													<th>No.</th>
 													<th>Waktu Proses</th>
 													<th>Nomor Induk</th>
-													<th>Kodesie</th>
-													<th>Kode Shift</th>
+													<!-- <th>Kodesie</th>
+													<th>Kode Shift</th> -->
 													<th>Waktu Presensi</th>
 												</tr>
 											</thead>
@@ -85,26 +92,28 @@
 													<td><?php echo $indeks_tabel;?></td>
 													<td><?php echo $tarik['waktu_proses'];?></td>
 													<td><?php echo $tarik['noind'];?></td>
-													<td><?php echo $tarik['kodesie'];?></td>
-													<td><?php echo $tarik['kd_shift'];?></td>
+													<!-- <td><?php echo $tarik['kodesie'];?></td>
+													<td><?php echo $tarik['kd_shift'];?></td> -->
 													<td><?php echo $tarik['waktu_masuk'];?></td>
 												</tr>
 												<?php
 														$indeks_tabel++;
-														if(isset($RiwayatProses[$indeks_proses]['waktu_proses']))
+														if(isset($RiwayatProses[$indeks_proses]['waktu_proses']) && $indeks_tarik<(count($RiwayatPenarikan)-1))
 														{
-															if($RiwayatProses[$indeks_proses]['waktu_proses']>$tarik['waktu_proses'])
+															if(strtotime($RiwayatProses[$indeks_proses]['waktu_proses'])>strtotime($tarik['waktu_proses']) && strtotime($RiwayatProses[$indeks_proses]['waktu_proses'])<strtotime($RiwayatPenarikan[$indeks_tarik+1]['waktu_proses']))
 															{
 												?>
 												<tr>
 													<td><?php echo $indeks_tabel;?></td>
 													<td><?php echo $RiwayatProses[$indeks_proses]['waktu_proses'];?></td>
-													<td colspan="4" style="text-align: center;"><strong>Hitung Catering</strong></td>
+													<!-- <td colspan="4" style="text-align: center;"><strong>Hitung Catering</strong></td> -->
+													<td colspan="2" style="text-align: center;"><strong>Hitung Catering</strong></td>
 												</tr>
 												<?php
 																$indeks_proses++;
 															}
 														}
+														$indeks_tarik++;
 													}
 												?>
 											</tbody>
