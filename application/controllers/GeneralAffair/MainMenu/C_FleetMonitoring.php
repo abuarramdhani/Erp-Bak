@@ -141,4 +141,20 @@ class C_FleetMonitoring extends CI_Controller
 		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring', $data, true);
 	}
 
+	public function cetakExcelMonitoringKendaraanDetail()
+	{
+		$this->load->library("Excel");
+
+		$periodeExcel = $this->input->post('PeriodeMonitoringDetail');
+		$periodeExcelDetail = explode(' / ', $periodeExcel);
+
+		$periode1 = date('Y-m-d', strtotime($periodeExcelDetail[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeExcelDetail[1]));
+
+		$data['PeriodeExcel'] = $periodeExcel;
+		$data['ExcelMonitoringDetail'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+
+		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring_detail', $data, true);
+	}
+
 }
