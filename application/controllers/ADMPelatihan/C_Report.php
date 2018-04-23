@@ -398,11 +398,11 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		// $nama  		= 'ALL TRAINING';
-		// $tanggal  	= '26-02-2018';
+		// $nama  		= 'LATIHAN HANDLING DAN WORK HABIT';
+		// $tanggal  	= '09-04-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);		
 		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
@@ -592,7 +592,6 @@ class C_Report extends CI_Controller {
 			$data['t_nilai']= $t_nilai;
 			$this->load->view('ADMPelatihan/Report/CreateReport/V_Edit_Paket',$data);
 		}
-
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -603,8 +602,12 @@ class C_Report extends CI_Controller {
 		$nama 			= $this->input->post('nama');
 		$tanggal		= $this->input->post('tanggal');
 		$package_scheduling_id 	= $this->input->post('txtPckSchId');
-		$txtschid 		= $this->input->post('txtSchId[]');
-		$scheduling_id 	= implode(',', $txtschid);
+		if ($reg_paket == 0) {
+			$scheduling_id = $this->input->post('txtSchId'); 
+		}elseif ($reg_paket == 1) {
+			$txtschid 		= $this->input->post('txtSchId[]');
+			$scheduling_id 	= implode(',', $txtschid);
+		}
 
 		$jenis	 		= $this->input->post('slcJenisPelatihan');
 		$total_psrt		= $this->input->post('txtPesertaPelatihan');
@@ -634,17 +637,42 @@ class C_Report extends CI_Controller {
 
 	public function UpdateReport()
 	{	
-		$id 			=$this->input->post('idReport');
-		//ADD REPORT
-		$reg_paket		= $this->input->post('txtKategoriPelatihan');
-		
+		// AMBIL DATA
+		$id 			= $this->input->post('idReport');
+		$data['report'] = $this->M_report->getFilledReportEdit($id);
+		$nama 			= $this->input->post('txtNamaPelatihan');
+		$tanggal		= $this->input->post('txtTanggalPelaksanaan');
+		$idNama			= $data['report'][0]['reg_paket'];
+		$idTanggal		= $data['report'][0]['reg_paket'];
+
+		//ADD REPORT	
 		$jenis	 		= $this->input->post('slcJenisPelatihan');
 		$total_psrt		= $this->input->post('txtPesertaPelatihan');
 		$hadir_psrt		= $this->input->post('txtPesertaHadir');
 
-		// $pelaksana		= $this->input->post('idtrainerOnly');
-		$trainer		= $this->input->post('txtPelaksana');
-		$pelaksana 		= implode(',', $trainer);
+		// TRAINER---------------------------------------------------------------------------------------------------------
+		$trainer			=$this->input->post('txtPelaksana[]');
+
+		// ambil trainer dari penjadwalan langsung(untuk mengetahui urutan trainer per jadwal)
+		$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
+		$train_array =array();
+			foreach ($GetDataPelatihan as $dp) {
+				for ($i=0; $i < count($GetDataPelatihan); $i++) { 
+					$idtrainer = explode(',', $dp['trainer']);
+				}
+				array_push($train_array, $idtrainer[0]);
+			}
+
+		// hapus duplicate id
+		$train_array_unique= array_unique($train_array);
+
+		//cek apakah ada penggantian nama trainer
+		if (isset($trainer) == $train_array_unique && count($trainer) == count($train_array_unique)) {
+			$pelaksana = implode(',', $train_array_unique);
+		}else{
+			$pelaksana = implode(',', $trainer);
+		}
+		// ----------------------------------------------------------------------------------------------------------
 
 		$indexm 		= $this->input->post('txtIndexMateri');
 		$descr 			= $this->input->post('txtdeskripsi');
@@ -660,7 +688,7 @@ class C_Report extends CI_Controller {
 		$nama_acc		= $this->input->post('txtNamaACC');
 		$jabatan_acc	= $this->input->post('txtJabatanACC');
 
-		$this->M_report->UpdateReport($id, $jenis, $total_psrt, $hadir_psrt, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana, $reg_paket);
+		$this->M_report->UpdateReport($id, $jenis, $total_psrt, $hadir_psrt, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana);
 
 		redirect('ADMPelatihan/Report/CreateReport');
 	}
@@ -1012,8 +1040,7 @@ class C_Report extends CI_Controller {
 		$nama  		= $this->input->POST('nama');
 		$tanggal  	= $this->input->POST('tanggal');
 		$idNama		= $this->input->POST('idNama');
-		$idTanggal	= $this->input->POST('idTanggal');
-
+		$idTanggal	= $this->input->POST('idTanggal');			
 		if ($idNama==0) {
 			$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
 			$data['GetDataPelatihan']=$GetDataPelatihan;
@@ -1047,10 +1074,11 @@ class C_Report extends CI_Controller {
 			$data['participant'] = $participant;
 
 			// AMBIL JUMLAH PARTISIPAN DAN TRAINER -----------------------------------------------------------------------------
-			foreach ($GetDataPelatihan as $dpk) {
-				$data['participant_number']= $dpk['participant_number'];
-			}
-			
+			// foreach ($GetDataPelatihan as $dpk) {
+			// 	$data['participant_number']= $dpk['participant_number'];
+			// }
+			$data['participantName'] = $this->M_record->GetParticipantPidName($pid);
+			$data['participant_number'] = count($data['participantName']);
 			// 1
 			$tampung_trainer= array();
 			foreach ($GetDataPelatihan as $gpk) {
@@ -1060,7 +1088,7 @@ class C_Report extends CI_Controller {
 			$trainer_akhir=$data['trainer_onpkg'];
 			
 			// 2
-			$trainer = $this->M_report->GetTrainerPaket();
+			$trainer = $this->M_report->GetTrainer();
 			$data['trainer'] = $trainer; 
 
 			// 3

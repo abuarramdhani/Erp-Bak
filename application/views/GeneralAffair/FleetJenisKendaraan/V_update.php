@@ -42,9 +42,11 @@
                                                 <div class="col-lg-4">
                                                     <input type="text" maxlength="10" placeholder="<?php echo $headerRow['waktu_dibuat'];?>" name="txtStartDateHeader" value="<?php echo $headerRow['waktu_dibuat'] ?>" class="date form-control" data-date-format="dd-mm-yyyy H:i:s" id="txtStartDateHeader" disabled=""/>
                                                     <input type="text" name="WaktuDihapus" id="WaktuDihapus" hidden="" value="<?php echo $headerRow['waktu_dihapus'];?>">
+                                                    
                                                 </div>
                                             </div>
-                                            <div class="form-group hidden">
+                                            <?php if(substr($kodesie, 0, 5)=='10103'): ?>
+                                            <div class="form-group">
                                                 <label for="txtTanggalNonaktif" class="control-label col-lg-4">Aktif</label>
                                                 <div class="col-lg-4">
                                                     <input type="checkbox" name="CheckAktif" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?>>
@@ -52,6 +54,9 @@
                                                 </div>
 
                                             </div>
+                                            <?php else:?>
+                                                <input type="checkbox" name="CheckAktifUser" id="CheckAktif" <?php if($headerRow['waktu_dihapus']=='12-12-9999 00:00:00'){echo 'checked';};?> hidden="">
+                                            <?php endif; ?>
                                         </div>
                                         <div class="col-lg-12">
                                             <br />

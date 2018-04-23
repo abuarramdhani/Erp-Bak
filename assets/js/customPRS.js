@@ -22,6 +22,7 @@ $(document).ready(function(){
 		  },
 	  minimumInputLength: 2,
 	  allowClear: false,
+	  placeholder: '[ pilih Nomor Induk / Nama ]',
 	});
 
 	$('.select-kodesie-prs').select2({
@@ -49,32 +50,102 @@ $(document).ready(function(){
 	});
 
 	$('.select-pencarian-prs').select2({
-	  minimumInputLength: 0,
+	  placeholder: '[ Pilih Tujuan Pencarian ]',
 	  allowClear: false,
 	});
 
-	$(document).on("change", "#idNoind_prs", function () {
-		 var noind_length = $(this).val();
-		$.ajax({
-	        type: "POST",
-	        url: baseurl+"Presensi/PresensiDL/seksi_disabled",
-	        data: ({ noind : noind_length}),
-	        dataType: "json",
-	        success: function(data) {
-	           $('.select-kodesie-prs').select2('data', {kodesie: data});
-	        },
-	        error: function() {
-	            alert('Not Found');
-	        }
-	    });
-	});
+	// $(document).on("change", "#idNoind_prs", function () {
+	// 	 var noind_length = $(this).val();
+	// 	$.ajax({
+	//         type: "POST",
+	//         url: baseurl+"Presensi/PresensiDL/seksi_disabled",
+	//         data: ({ noind : noind_length}),
+	//         dataType: "json",
+	//         success: function(data) {
+	//            $('.select-kodesie-prs').select2('data', {kodesie: data});
+	//         },
+	//         error: function() {
+	//             alert('Not Found');
+	//         }
+	//     });
+	// });
 
 	$('.prs-table-presensi-dl').DataTable({
 		searching: true,
 		lengthChange: false,
 	});
 
+	$('#idPencarian_prs').change(function(){
+		var CekMenu = $('#idPencarian_prs').val();
+
+		if(CekMenu=='monitoring') {
+			$('#idTglBerangkat_prs').attr('disabled','disabled');
+		}else{
+			$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+		}
+	});
+
 });
 
+// 	-------Presensi Catering--------------------------------------------start
+	$(function()
+	{
+		// 	Daterangepicker
+		// 	{
+				$('.PresensiCatering-daterangepickersingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "mask": true,
+				    "locale": {
+				        "format": "YYYY-MM-DD",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});
+		//	}
 
+		// 	Datatables
+		//	{
+				$('#PresensiCatering-tabelRekapTransaksiCatering').DataTable({
+					scrollX: false,
+					scrollY: 250,
+					lengthChange: false,
+					paging: false,
+					sorting: false,
+				});
+		//	}
+	});
 
+// 	-------Presensi Catering----------------------------------------------end

@@ -75,6 +75,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetKendaraan();
 		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKategori();
+		$data['FleetBengkel'] = $this->M_fleetmaintenancekendaraan->selectBengkel();
 
 		/* LINES DROPDOWN DATA */
 
@@ -93,6 +94,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 			$kilometer_maintenance	= 	$this->input->post('txtKilometerMaintenanceHeader');
 			$alasan 				= 	$this->input->post('txaAlasanHeader');
 			$kategori_maintenance 	= 	$this->input->post('cmbMaintenanceKategoriIdHeader');
+			$bengkel 				= 	$this->input->post('cmbBengkelHeader');
 
 			$waktu_eksekusi 		= 	date('Y-m-d H:i:s');
 
@@ -106,16 +108,13 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'creation_date' 			=> $waktu_eksekusi,
 				'created_by' 				=> $this->session->userid,
 				'alasan' 					=> $alasan,
+				'id_bengkel'				=> $bengkel,
     		);
 			$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraan($data);
 			$header_id = $this->db->insert_id();
 
 			$line1_jenis_maintenance = $this->input->post('txtJenisMaintenanceLine1');
 			$line1_biaya = $this->input->post('txtBiayaLine1');
-
-			// print_r($line1_jenis_maintenance);
-			// print_r($line1_biaya);
-			// exit();
 
 			foreach ($line1_jenis_maintenance as $i => $loop) {
 				if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '') {
@@ -167,6 +166,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		/* HEADER DROPDOWN DATA */
 		$data['FleetKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetKendaraan();
 		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKategori();
+		$data['FleetBengkel'] = $this->M_fleetmaintenancekendaraan->selectBengkel();
 
 		/* LINES DROPDOWN DATA */
 
@@ -201,6 +201,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'last_updated' 				=> $waktu_eksekusi,
 				'last_updated_by' 			=> $this->session->userid,
 				'alasan'		 			=> $this->input->post('txaAlasanHeader',TRUE),
+				'id_bengkel'				=> $this->input->post('cmbBengkelHeader', TRUE),
     			);
 			$this->M_fleetmaintenancekendaraan->updateFleetMaintenanceKendaraan($data, $plaintext_string);
 
@@ -303,8 +304,6 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 		echo json_encode('true');
 	}
-
-
 
 }
 

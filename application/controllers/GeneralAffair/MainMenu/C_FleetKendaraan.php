@@ -278,6 +278,7 @@ class C_FleetKendaraan extends CI_Controller
 			$fileBPKBawal			=	$this->input->post('FotoBPKBawal');
 			$fileKendaraanawal		=	$this->input->post('FotoKendaraanawal');
 			$statusdata				=	$this->input->post('CheckAktif');
+			$status_data_user 	=	$this->input->post('CheckAktifUser');
 			$WaktuDihapus 			=	$this->input->post('WaktuDihapus');
 
 
@@ -376,21 +377,21 @@ class C_FleetKendaraan extends CI_Controller
         		}
         	}
 
-        	if($statusdata=='on' && $WaktuDihapus!='12-12-9999 00:00:00')
-        	{
-        		$WaktuDihapus 	=	'9999-12-12 00:00:00';
-        	}
-        	elseif($statusdata=='' && $WaktuDihapus=='12-12-9999 00:00:00')
-        	{
-        		$WaktuDihapus 	=	date('Y-m-d H:i:s');
-        	}
+        	$waktu_eksekusi 	= 	date('Y-m-d H:i:s');
+
+			if ($statusdata=='on' || $status_data_user=='on') {
+				$waktu_dihapus = '9999-12-12 00:00:00';
+			}else{
+				$waktu_dihapus = $waktu_eksekusi;
+			}
+			
     		$data = array(
 				'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 				'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
 				'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
 				'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
 				'tahun_pembuatan' 		=> $tahun_pembuatan,
-				'end_date'				=> $WaktuDihapus,
+				'end_date'				=> $waktu_dihapus,
 				'last_updated'			=> date('Y-m-d H:i:s'),
 				'last_updated_by'		=> $this->session->userid,
 				'created_by' 			=> $this->session->userid

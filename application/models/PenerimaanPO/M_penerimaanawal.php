@@ -21,9 +21,9 @@ class M_PenerimaanAwal extends CI_Model {
     function getListItem($key){
     	$sql = "SELECT segment1, description  
 				FROM mtl_system_items_b
-				WHERE segment1 LIKE '%$key%'
+				WHERE segment1 LIKE '$key%'
 				AND rownum < 11
-				OR description LIKE '%$key%'
+				OR description LIKE '$key%'
 				AND rownum < 11
 				GROUP BY segment1, description";		
 		$query = $this->oracle->query($sql);
@@ -70,7 +70,7 @@ class M_PenerimaanAwal extends CI_Model {
     function insertDataAwal($po,$sj,$vendor,$item,$desc,$qtySJ,$rcptDate,$spDate,$qtyActual,$qtyPO){
     	$sql="INSERT INTO KHS_DATA_RECEIPT_PPB VALUES(
 			  '$po','$sj','$vendor','$item','$desc', 
-			  $qtySJ, $rcptDate, TO_DATE('$spDate', 'mm/dd/yyyy'),0,'$qtyPO')";
+			  $qtySJ, $rcptDate, TO_DATE('$spDate', 'dd/mm/yyyy'),0,'$qtyPO')";
 		echo $sql;
 		$query = $this->oracle->query($sql);
     }

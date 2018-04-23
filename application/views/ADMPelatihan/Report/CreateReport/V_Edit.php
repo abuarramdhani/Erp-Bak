@@ -85,9 +85,7 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Jumlah Peserta</label>
 									<div class="col-md-9">
-									<!-- <?php foreach ($peserta_regular as $pr) {?> -->
 										<input name="txtPesertaPelatihan" class="form-control toupper" placeholder="Seluruh Peserta" required type="number" value="<?php echo $rpt['peserta_total'];?>">
-									<!-- <?php } ?> -->
 									</div>
 								</div>
 							</div>
@@ -95,9 +93,7 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Peserta Hadir</label>
 									<div class="col-md-9">
-									<!-- <?php foreach ($participant as $pt) {?> -->
 										<input name="txtPesertaHadir" class="form-control toupper" placeholder="Peserta Hadir" required type="number" value="<?php echo $rpt['peserta_hadir'];?>">
-									<!-- <?php } ?> -->
 									</div>
 								</div>
 							</div>

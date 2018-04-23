@@ -30,7 +30,7 @@
 											<div class="form-group">
                                                 <label for="cmbKendaraanIdHeader" class="control-label col-lg-4">Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="" >
+                                                    <select id="cmbKendaraanIdHeader" name="cmbKendaraanIdHeader" class="select2" data-placeholder="Choose an option" style="width: 100%" required="" >
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetKendaraan as $row) {
@@ -58,7 +58,7 @@
 											<div class="form-group">
                                                 <label for="cmbMaintenanceKategoriIdHeader" class="control-label col-lg-4">Kategori Maintenance</label>
                                                 <div class="col-lg-4">
-                                                    <select id="cmbMaintenanceKategoriIdHeader" name="cmbMaintenanceKategoriIdHeader" class="select2" data-placeholder="Choose an option" style="width: 75%" required="">
+                                                    <select id="cmbMaintenanceKategoriIdHeader" name="cmbMaintenanceKategoriIdHeader" class="select2" data-placeholder="Choose an option" style="width: 100%" required="">
                                                         <option value=""></option>
                                                         <?php
                                                             foreach ($FleetMaintenanceKategori as $row) {
@@ -67,6 +67,18 @@
                                                         ?>
                                                     </select>
                                                 </div>
+                                           </div>
+
+                                           <div class="form-group">
+                                               <label for="cmbBengkelHeader" class="control-label col-lg-4">Bengkel</label>
+                                               <div class="col-lg-4">
+                                                   <select id="cmbBengkelHeader" name="cmbBengkelHeader" class="select2" data-placeholder="Choose an option" style="width:100%">
+                                                       <option value=""></option>
+                                                       <?php foreach($FleetBengkel as $bengkel) { ?>
+                                                       <option value="<?php echo $bengkel['bengkel_id'] ?>"><?php echo $bengkel['nama_bengkel'] ?></option>
+                                                       <?php } ?>
+                                                   </select>
+                                               </div>
                                            </div>
 
 											<div class="form-group">

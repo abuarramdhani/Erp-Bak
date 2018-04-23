@@ -1556,8 +1556,8 @@ $(document).ready(function(){
 			$('input#tanggal').removeAttr('disabled');
 
 			if (x == 0) {
-				$('#IdNamaPelatihan').val('0');
-				$('#IdTanggal').val('0');
+				$('#idNama').val('0');
+				$('#idTanggal').val('0');
 				
 				$("select#nama").select2({
 					placeholder: "Judul Pelatihan",
@@ -1634,27 +1634,90 @@ $(document).ready(function(){
 				success:function(result) 
 				{
 					var result = JSON.parse(result);
-					console.log(result);
-					$('input#txtPesertaPelatihan').val(result['GetDataPelatihan'][0]['participant_number']);
-					$('input#txtPesertaHadir').val(result['GetDataPelatihan'][0]['participant_number']);
+					// console.log(result);
+
+					// PESERTA PELATIHAN-------------------------------------------------------------------
+					$('input#txtPesertaPelatihan').val(result['participant_number']);
+					if (idNama == 1) {
+						$('input#txtPesertaHadir').val(result['participant_number']);	
+					}else{
+						$('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);	
+					}
 					// $('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);
 					
 					//NAMA TRAINER-------------------------------------------------------------------------
 					var nama=[];
 					var idt=[];
-					for (var i = 0; i < result['trainer'].length; i++) {
-						for (var j = 0; j < result['trainer_onpkg'].length; j++) {
-							if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j]) {
-								nama.push(result['trainer_fix'][i]);
-								idt.push(result['trainer_onpkg'][i]);
+					console.log(result['trainer']);
+					if (idNama == 1) {
+						for (var i = 0; i < result['trainer'].length; i++) {
+							for (var j = 0; j < result['trainer_onpkg'].length; j++) {
+								// JIKA SEMUA PELATIHAN TRAINERNYA BEDA
+								if (result['trainer'][i]['trainer_id'] == result['trainer_onpkg'][j] && result['trainer'].length == result['trainer_onpkg'].length) {
+									// console.log('beda');
+									nama.push(result['trainer_fix'][i]);
+									idt.push(result['trainer_onpkg'][i]);
+								}
+								// JIKA SEMUA PELATIHAN TRAINERNYA SAMA
+								else{
+									// console.log('sama');
+									var array_with_duplicates_id = result['trainer_onpkg'];
+									var array_with_duplicates_name = result['trainer_fix'];
+
+									// HAPUS ID YANG DUPLICATE
+									var unique_array_id = [];
+									function removeDuplicates_id(arr_id) {
+										for (var k = 0; k < arr_id.length; k++) {
+											if (unique_array_id.indexOf(arr_id[k]) == -1) {
+												unique_array_id.push(arr_id[k]);
+											}
+										}return unique_array_id;
+									}
+									// HAPUS NAMA YANG DUPLICATE
+									var unique_array_name = [];
+									function removeDuplicates_name(arr_name) {
+										for (var l = 0; l < arr_name.length; l++) {
+											if (unique_array_name.indexOf(arr_name[l]) == -1) {
+												unique_array_name.push(arr_name[l]);
+											}
+										}return unique_array_name;
+									}
+
+									if (result['trainer'][i]['trainer_id'] == removeDuplicates_id(array_with_duplicates_id)) {
+										// console.log('masuk array duplicate');
+										nama = removeDuplicates_name(array_with_duplicates_name);
+										idt = unique_array_id;
+									}
+									// ADA YANG DUPLICATE ADA YANG BEDA
+									else{
+										if (removeDuplicates_id(array_with_duplicates_id).includes(result['trainer'][i]['trainer_id'])) {
+											// console.log('masuk array duplicate tapi ada yang tidak duplicate juga');
+											nama = removeDuplicates_name(array_with_duplicates_name);
+											idt = unique_array_id;
+										}
+									}
+								}
+							}
+						}
+					// console.log(unique_array_id);
+					// console.log(unique_array_name);
+					console.log(nama);					
+					console.log(idt);					
+					}else{
+						for (var i = 0; i < result['trainer'].length; i++) {
+							for (var j = 0; j < result['idTrainer'].length; j++) {
+								if (result['trainer'][i]['trainer_id'] == result['idTrainer'][j]) {
+									nama.push(result['trainer'][i]['trainer_name']);
+									idt.push(result['trainer'][i]['trainer_id']);
+								}
 							}
 						}
 					}
 					var namagabung = nama.join(' , ');
 					var idtgabung  = idt.join(' , ');
-					
 					$('input#txtPelaksana').val(namagabung);
 					$('input#idtrainerOnly').val(idt);
+					
 					// -----------------------------------------------------------------------------------
 				}
 			});

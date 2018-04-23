@@ -93,6 +93,68 @@ class C_FleetMonitoring extends CI_Controller
 		}
 
 		echo json_encode($data);
+	} 
+
+	public function monitoringKendaraanDetail()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Monitoring';
+		$data['Menu'] = 'Monitoring';
+		$data['SubMenuOne'] = 'Monitoring All';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$periodeDetail = $this->input->post('PeriodeMonitoringDetail');
+		$periodeDetail = explode(' - ', $periodeDetail);
+
+		$periode1 = date('Y-m-d', strtotime($periodeDetail[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeDetail[1]));
+
+		$data['detailMonitoring'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+		$data['tgl'] = date('d-m-Y', strtotime($periode1))." / ".date('d-m-Y', strtotime($periode2));
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('GeneralAffair/FleetMonitoring/V_detail_monitoring', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function cetakExcelMonitoringKendaraan()
+	{
+		$this->load->library("Excel");
+
+		$periodeExcel = $this->input->post('PeriodeMonitoringExport');
+		$periodeExcelExplode = explode(' - ', $periodeExcel);
+
+		$periode1 = date('Y-m-d', strtotime($periodeExcelExplode[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeExcelExplode[1]));
+
+		$data['PeriodeExcel'] = $periodeExcel;
+		$data['ExcelMonitoring'] = $this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periode1,$periode2);
+
+		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring', $data, true);
+	}
+
+	public function cetakExcelMonitoringKendaraanDetail()
+	{
+		$this->load->library("Excel");
+
+		$periodeExcel = $this->input->post('PeriodeMonitoringDetail');
+		$periodeExcelDetail = explode(' / ', $periodeExcel);
+
+		$periode1 = date('Y-m-d', strtotime($periodeExcelDetail[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeExcelDetail[1]));
+
+		$data['PeriodeExcel'] = $periodeExcel;
+		$data['ExcelMonitoringDetail'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+
+		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring_detail', $data, true);
 	}
 
 }

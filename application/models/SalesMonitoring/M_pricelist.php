@@ -10,7 +10,7 @@ class M_pricelist extends CI_Model {
 		//read (compatible)
 		public function viewPricelist()
 		{
-			$sql = "select * from sf.pricelist_index sfp, im.im_master_items imm where sfp.pricelist_index_id = imm.item_id order by pricelist_index_id";
+			$sql = "select * from sf.pricelist_index sfp, im.im_master_items imm where sfp.item_code = imm.segment1 order by pricelist_index_id";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

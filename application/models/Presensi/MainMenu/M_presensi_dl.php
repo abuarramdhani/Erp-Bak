@@ -11,7 +11,7 @@ class M_presensi_dl extends CI_Model
     public function getPekerja($val)
     {
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT noind,nama FROM hrd_khs.tpribadi where noind like '%$val%' or nama like '%$val%'");
+        $sql = $sqlserver->query("SELECT noind,nama FROM hrd_khs.tpribadi where noind like '%$val%' or nama like '%$val%' and keluar=false");
     	return $sql->result_array();
     }
 
@@ -39,92 +39,220 @@ class M_presensi_dl extends CI_Model
             $tanggal=date('Y-m-d');
         }
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT spdl_id,noind,kodesie,
-                                    ( 
-                                     SELECT 
-                                        CONCAT(
-                                                concat(to_char(min(td2.tanggal)::date,'YYYY-MM-DD'),' ',
-                                                (SELECT td3.waktu from \"Presensi\".tpresensi_dl td3 where td3.spdl_id=td1.spdl_id and td3.tanggal=min(td2.tanggal))),' - ',
-                                                case
-                                                    when
-                                                        count(td1.tanggal)=1
-                                                    then
-                                                        'belum pulang'
-                                                    else
-                                                        (concat(to_char(max(td2.tanggal)::date,'YYYY-MM-DD'),' ',
-                                                        (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td1.spdl_id and td4.tanggal=max(td2.tanggal))))
-                                                end
-                                            ) FROM \"Presensi\".tpresensi_dl td2 where td2.spdl_id=td1.spdl_id
-                                     ) as tanggal,
+        $sql = $sqlserver->query("SELECT td.spdl_id,td.noind,td.kodesie,
+    (case
+        when
+            count(td.spdl_id)=2
+        then
+            concat(
+                concat(
+                        to_char(min(td.tanggal)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tanggal)=max(td.tanggal)
+                            then
+                                min(td.waktu)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tanggal)
+                                )
+                        end
+                    ),
+                ' || ',
+                concat(
+                        to_char(max(td.tanggal)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tanggal)=max(td.tanggal)
+                            then
+                                max(td.waktu)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tanggal)
+                                )
+                        end
+                    )
+                )
+        else
+            concat(
+                concat(
+                    to_char(max(td.tanggal)::date,'YYYY-MM-DD'),
+                    ' ',
+                    max(td.waktu)
+                ),
+                ' || ',
+                'belum pulang'
+            )
+    end) tanggal,
+    (case
+        when
+            count(td.spdl_id)=2
+        then
+            concat(
+                concat(
+                        to_char(min(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tgl_realisasi)=max(td.tgl_realisasi)
+                            then
+                                min(td.wkt_realisasi)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tgl_realisasi)
+                                )
+                        end
+                    ),
+                ' || ',
+                concat(
+                        to_char(max(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                        ' ',
+                        case
+                            when
+                                min(td.tgl_realisasi)=max(td.tgl_realisasi)
+                            then
+                                max(td.wkt_realisasi)
+                            else
+                                (
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tgl_realisasi)
+                                )
+                        end
+                    )
+                )
+        else
+            concat(
+                concat(
+                    to_char(max(td.tgl_realisasi)::date,'YYYY-MM-DD'),
+                    ' ',
+                    max(td.wkt_realisasi)
+                ),
+                ' || ',
+                'belum pulang'
+            )
+    end) tanggal_realisasi,
+    (
+        select 
+            (
+                count(tsp.tanggal)
+                -
+                (case
+                    when
+                        min(td.tanggal)=max(td.tanggal)
+                    then
+                        case
+                            when
+                                min(td.waktu)<max(tsp.jam_plg)
+                            then
+                                case
+                                    when
+                                        max(td.waktu)<max(tsp.jam_plg)
+                                    then
+                                        1
+                                    else
+                                        0
+                                end
+                            else
+                                1
+                        end
+                    else
+                        (
+                            select
+                                (
+                                    case
+                                        when
+                                            berangkat.waktu<max(tsp.jam_plg)
+                                        then
+                                            0
+                                        else
+                                            1
+                                    end
+                                ) from
+                            (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td.spdl_id and td4.tanggal=min(td.tanggal)) as berangkat 
+                        )
+                end)
+                -
+                (
+                    select
+                        (
+                            case
+                                when
                                     (
-                                        (
-                                            select
-                                            count(tsp.tanggal)
-                                            -
-                                            (
-                                                select
-                                                    (
-                                                        case
-                                                            when
-                                                                berangkat.waktu<max(tsp.jam_plg)
-                                                            then
-                                                                0
-                                                            else
-                                                                1
-                                                        end
-                                                    ) from
-                                                (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td1.spdl_id and td4.tanggal=min(td1.tanggal)) as berangkat 
-                                            )
-                                            -
-                                            (
-                                                select
-                                                    (
-                                                        case
-                                                            when
-                                                                (
-                                                case
-                                                    when
-                                                        count(td1.tanggal)=1
-                                                    then
-                                                        max(tsp.jam_plg)
-                                                    else
-                                                       max(berangkat.waktu)
-                                                end
-                                            )<max(tsp.jam_akhmsk)
-                                                            then
-                                                                1
-                                                            else
-                                                                0
-                                                        end
-                                                    ) from
-                                                (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td1.spdl_id and td4.tanggal=(
-                                                case
-                                                    when
-                                                        count(td1.tanggal)=1
-                                                    then
-                                                        current_date
-                                                    else
-                                                       max(td1.tanggal)
-                                                end
-                                            )) as berangkat 
-                                            )
-                                            from 
-                                            \"Presensi\".tshiftpekerja tsp where tsp.noind=td1.noind and tsp.tanggal between min(td1.tanggal) and 
-                                                (
-                                                    case
-                                                        when
-                                                            count(td1.tanggal)=1
-                                                        then
-                                                            current_date
-                                                        else
-                                                            max(td1.tanggal)
-                                                    end
-                                                )
-                                        )
-                                    ) as jml_dl
-                                    FROM 
-                                    (SELECT * FROM \"Presensi\".tpresensi_dl $where) as td1
-                                    group by spdl_id,noind,kodesie");
+                    case
+                        when
+                            count(td.tanggal)=1
+                        then
+                            max(tsp.jam_plg)
+                        else
+                           max(berangkat.waktu)
+                    end
+                )<max(tsp.jam_akhmsk)
+                                then
+                                    1
+                                else
+                                    0
+                            end
+                        ) from
+                    (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td.spdl_id and td4.tanggal=(
+                    case
+                        when
+                            count(td.tanggal)=1
+                        then
+                            current_date
+                        else
+                           max(td.tanggal)
+                    end
+                )) as berangkat 
+            )
+        )
+        from \"Presensi\".tshiftpekerja tsp 
+        where tsp.noind=td.noind and tsp.tanggal 
+            between min(td.tanggal) and 
+            (
+                case
+                    when
+                        count(td.tanggal)=1
+                    then
+                        current_date
+                    else
+                        max(td.tanggal)
+                end
+            )
+    ) as jml_dl,
+    (
+        select
+        coalesce(sum(tdt.point),0)
+        from \"Presensi\".tdatatim tdt
+        where tdt.noind=td.noind and tdt.tanggal 
+            between min(td.tanggal) and 
+            (
+                case
+                    when
+                        count(td.tanggal)=1
+                    then
+                        current_date
+                    else
+                        max(td.tanggal)
+                end
+            )
+    ) as point_
+FROM 
+(SELECT * FROM \"Presensi\".tpresensi_dl $where) as td
+group by td.spdl_id,td.noind,td.kodesie");
+        return $sql->result_array();
+    }
+
+    public function monitoring_pekerja_dl($where,$condition)
+    {
+        $sqlserver = $this->load->database('personalia', true);
+        $sql = $sqlserver->query("select    noind,
+                                            nama,
+                                            akhkontrak as akhir_kontrak,
+                                            (select seksi 
+                                            from hrd_khs.tseksi
+                                            where hrd_khs.tseksi.kodesie=hrd_khs.tpribadi.kodesie) as seksi
+                                    from    hrd_khs.tpribadi $where $condition");
         return $sql->result_array();
     }
 

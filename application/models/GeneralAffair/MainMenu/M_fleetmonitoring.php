@@ -146,4 +146,23 @@ class M_fleetmonitoring extends CI_Model
         return $query->result_array();
     }
 
+    public function getMonitoringKendaraanDetail($periode1,$periode2)
+    {
+        $query = $this->db->query("select   mtckdrn.maintenance_kendaraan_id as kode_maintenance,
+                                            kdrn.nomor_polisi as nomor_polisi,
+                                            to_char(mtckdrn.tanggal_maintenance, 'DD-MM-YYYY') as tanggal,
+                                            mtckdrn.tanggal_maintenance as tanggal_asli,
+                                            mtckdrndtl.jenis_maintenance as jenis_maintenance,
+                                            mtckdrndtl.biaya as biaya
+                                from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
+                                            join    ga.ga_fleet_kendaraan as kdrn
+                                                on  kdrn.kendaraan_id=mtckdrn.kendaraan_id
+                                            join    ga.ga_fleet_maintenance_kendaraan_detail as mtckdrndtl
+                                                on  mtckdrn.maintenance_kendaraan_id=mtckdrndtl.maintenance_kendaraan_id
+                                where       mtckdrn.tanggal_maintenance between '$periode1' and '$periode2'
+                                            and     mtckdrn.end_date='9999-12-12 00:00:00'
+                                order by    tanggal_asli desc");
+        return $query->result_array();
+    }
+
 }

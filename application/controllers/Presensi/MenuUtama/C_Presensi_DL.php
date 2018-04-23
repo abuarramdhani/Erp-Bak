@@ -72,10 +72,10 @@ public function get_js_seksi()
 		echo json_encode($data);
 	}
 
-public function seksi_disabled(){
-		$noind = $this->input->post('noind');
-		$get_seksi = $this->M_presensi_dl->getSeksi_byID($noind);
-	}
+// public function seksi_disabled(){
+// 		$noind = $this->input->post('noind');
+// 		$get_seksi = $this->M_presensi_dl->getSeksi_byID($noind);
+// 	}
 
 public function CariDataDinasLuar(){
 		$this->checkSession();
@@ -88,16 +88,33 @@ public function CariDataDinasLuar(){
 		$v_unit		= $this->input->post('cmbUnit');
 		$v_seksi		= $this->input->post('cmbSeksi');
 
-		$split_tanggal = explode(' - ',$v_tanggal);
+		if ($v_tanggal!=null) {
+			$split_tanggal = explode(' - ',$v_tanggal);
+		}else{
+			$split_tanggal = null;
+		}
+
 		$klausa_where = $this->klausa_where($v_noind,$split_tanggal[0],$split_tanggal[1],$v_dept,$v_bidang,$v_unit,$v_seksi);
-		$data['Presensi'] = $this->M_presensi_dl->pencarian_pekerja_dl($klausa_where);
-		$data['ConvertPresensi'] = $this->M_presensi_dl->convert_pekerja_dl($klausa_where,$split_tanggal[1]);
+		if ($v_noind==null && $v_tanggal==null && $v_dept==null && $v_bidang==null && $v_unit==null && $v_seksi==null || $v_dept=='0') {
+			$condition = "where keluar=false";
+		}else{
+			$condition = "and keluar=false";
+		}
+
+		$data['Pencarian'] = $v_pencarian;
+		if ($data['Pencarian']=='data') {
+			$data['Presensi'] = $this->M_presensi_dl->pencarian_pekerja_dl($klausa_where);
+		}elseif ($data['Pencarian']=='rekap') {
+			$data['ConvertPresensi'] = $this->M_presensi_dl->convert_pekerja_dl($klausa_where,$split_tanggal[1]);
+		}else{
+			$data['Monitoring'] = $this->M_presensi_dl->monitoring_pekerja_dl($klausa_where,$condition);
+		}
+
 		$data['Menu'] = 'Presensi';
 		$data['SubMenuOne'] = 'Presensi DL';
 		$data['SubMenuTwo'] = 'Presensi DL';
 		$data['SubMenuOne'] = 'Presensi DL';
 		$data['Title'] = 'Monitoring Presensi Dinas Luar';
-		$data['Pencarian'] = $v_pencarian;
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -122,15 +139,16 @@ public function fileDinasLuar($spdl){
 }
 
 private function klausa_where($noind,$tanggal1,$tanggal2,$dept,$bidang,$unit,$seksi){
-	if($noind!=null || $tanggal1!=null || $dept!=null){
+	if($noind!=null || $tanggal1!=null || $dept!=null && $dept!='0'){
             $where = "where";
         }else{
             $where = "";
         }
+
         if($seksi==null){
             if($unit==null){
                 if($bidang==null){
-                    if($dept==null){
+                    if($dept==null || $dept=='0'){
                         $dept = "";
                     }else{
                         if($dept!=null && ($tanggal1!=null || $noind!=null)){
@@ -160,6 +178,8 @@ private function klausa_where($noind,$tanggal1,$tanggal2,$dept,$bidang,$unit,$se
             }else{
                 $tanggal = "tanggal between '$tanggal1' and '$tanggal2'";
             }
+        }else{
+        	$tanggal = "";
         }
         if($noind!=null){
             $noind = "noind='$noind'";
