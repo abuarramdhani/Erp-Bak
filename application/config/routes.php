@@ -1589,5 +1589,4 @@ $route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/(:any)'] =
 
 
 $route['Presensi/PresensiCatering']				=	'Presensi/MenuUtama/C_Presensi_Catering';
-1580
 $route['Presensi/PresensiCatering/(:any)']		=	'Presensi/MenuUtama/C_Presensi_Catering/$1';
