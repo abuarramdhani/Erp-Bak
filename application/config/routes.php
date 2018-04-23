@@ -1576,3 +1576,5 @@ $route['ManufacturingOperation/ProductionObstacles/ajax'] = 'ManufacturingOperat
 $route['ManufacturingOperation/ProductionObstacles/ajax/(:any)'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax/$1';
 $route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin';
 $route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin/$1';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanNonMesin/index';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanNonMesin/$1';

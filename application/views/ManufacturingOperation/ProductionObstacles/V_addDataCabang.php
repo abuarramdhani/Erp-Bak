@@ -37,7 +37,6 @@
                             <div class="panel-body">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#1">Cetak Logam</a></li>
-                                <li><a href="#2">Cetak Inti</a></li>
                             </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="1" class="tab-pane fade in active">
@@ -69,27 +68,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div id="2" class="tab-pane fade in">
-                                    <form method="post" enctype="multipart/form-data" class="form-horizontal" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/submitCabang'); ?>">
-                                        <div class="col-md-6">
-                                            <div id="input-containerInti" style="padding-bottom: 10px">
-                                                <div id="containerInti" class="input-group">
-                                                    <input type="text" name="txt_cabang[]" class="form-control" placeholder="Input Cabang" required>
-                                                    <div class="input-group-btn">
-                                                        <a class="btn btn-default" id="addNewCabang1">
-                                                            <i class="fa fa-plus"></i>
-                                                        </a>
-                                                        <a class="btn btn-default" id="removeNewCabang1" style="display: none">
-                                                            <i class="fa fa-minus"></i>
-                                                        </a>
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="txt_typeCabang" value="inti">
-                                            <button type="submit" class="btn btn-success">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                
                             </div>
                             </div>
                             </div>

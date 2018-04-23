@@ -10,7 +10,13 @@ class M_master extends CI_Model
 
     public function induk()
     {
-    	$sql="select * from mo.mo_master_induk";
+    	$sql="SELECT mi.induk,
+                    mi.cetak,
+                    mi.kategori,
+                    mi.hambatan,
+                    mi.id,
+                    (SELECT '<ul><li>'||string_agg(mc.cabang,'</li><li>')||'</li></ul>' FROM MO.MO_MASTER_CABANG mc WHERE mc.induk_id = mi.id) cabang
+                    FROM MO.MO_MASTER_INDUK mi";
     	$query = $this->db->query($sql);
     	return $query->result_array();
     }
@@ -60,7 +66,7 @@ class M_master extends CI_Model
 
     public function saveUpdateCabang($induk, $cabang, $id)
     {
-        $sql = "update mo.mo_master_cabang set cabang='$cabang', induk_id= $induk where id=$id";
+        $sql = "update mo.mo_master_cabang set cabang='$cabang', induk_id= $induk,  where id=$id";
         $query = $this->db->query($sql);
         return $query;
     }

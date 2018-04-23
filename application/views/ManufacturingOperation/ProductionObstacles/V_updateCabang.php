@@ -58,7 +58,7 @@
                                             <?php } ?>
                                             <input type="hidden" name="txt_typeCabang" value="logam">
                                             <button type="submit" class="btn btn-success">Submit</button>
-                                            <a class="btn btn-warning" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/induk')?>">Back</a>
+                                            <a class="btn btn-warning" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/cabang')?>">Back</a>
                                         </div>
                                     </form>
                                 </div>

@@ -36,8 +36,6 @@
 
                             <div class="panel-body">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#1">Cetak Logam</a></li>
-                                <li><a href="#2">Cetak Inti</a></li>
                             </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="1" class="tab-pane fade in active">

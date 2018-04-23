@@ -39,7 +39,7 @@
                             </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="1" class="tab-pane fade in active">
-                                   <h3>Table Master Induk Logam</h3>
+                                   <h3>Table Master Induk</h3>
                                         <table class="table table-bordered table-striped table-hover" id="masterIndukLogam">
                                             <thead>
                                                 <tr>
@@ -48,6 +48,7 @@
                                                     <th>Induk</th>
                                                     <th>cetakan</th>
                                                     <th>Kategori</th>
+                                                    <th>Cabang</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -60,12 +61,16 @@
                                                    <td><?php echo $ind['induk']?></td>
                                                    <td><?php echo $ind['cetak']?> </td>
                                                     <td><?php echo $ind['kategori']?></td>  
+                                                 <td><?php echo $ind['cabang'] ?></td> 
                                                    <td>
                                                    <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/updateinduk')?>">
                                                        <input type="hidden" name="txt_idInduk" value="<?php echo $ind['id'] ?>">
-                                                        <button class="btn btn-warning editInduk" ><i class="fa fa-pencil"></i></button>
+                                                       <div class="btn-group">
+                                                        <button type="submit" class="btn btn-warning editInduk" ><i class="fa fa-pencil"></i></button>
+                                                        <button class="btn btn-danger deleteInduk" onclick="deleteInduk(this,<?php echo $ind['id']?>,'<?php echo $ind['induk']?>')"><i class="fa fa-trash"></i></button>
+                                                           
+                                                       </div>
                                                    </form>
-                                                    <button class="btn btn-danger deleteInduk" onclick="deleteInduk(this,<?php echo $ind['id']?>,'<?php echo $ind['induk']?>')"><i class="fa fa-trash"></i></button>
                                                    </td>
                                                 </tr>
                                             <?php $x++;} ?>

@@ -36,11 +36,10 @@
                             <div class="panel-body">
                             <!-- <?php echo $message; ?> -->
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#1">Cetak Logam</a></li>
                             </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="1" class="tab-pane fade in active">
-                                   <h3>Table Master Cabang Logam</h3>
+                                   <h3>Table Master Cabang</h3>
                                         <table class="table table-bordered table-striped table-hover" id="masterCabangLogam">
                                             <thead>
                                                  <tr>
@@ -59,12 +58,15 @@
                                                    </td> 
                                                    <td><?php echo $ind['cabang']?>
                                                    <td>
-                                                        <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/updateCabang'); ?>">
-                                                            <input type="hidden" name="txt_idCbg" value="<?php echo $ind['id']?>">
-                                                            <button type="submit" class="btn btn-warning editCabang"><i class="fa fa-pencil"></i></button>
-                                                        </form>
-                                                        <button class="btn btn-danger deleteCabang" onclick="deleteCabang(this,<?php echo $ind['id']?>,'<?php echo $ind['cabang']?>')"><i class="fa fa-trash"></i>
-                                                        </button>
+
+                                                     <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/master/updateCabang'); ?>">
+                                                         <input type="hidden" name="txt_idCbg" value="<?php echo $ind['id']?>">
+                                                            <div class="btn-group">
+                                                                <button type="submit" class="btn btn-warning editCabang"><i class="fa fa-pencil"></i></button>
+                                                                <button class="btn btn-danger deleteCabang" onclick="deleteCabang(this,<?php echo $ind['id']?>,'<?php echo $ind['cabang']?>')"><i class="fa fa-trash"></i>
+                                                                </button>  
+                                                            </div>
+                                                       </form>
                                                    </td>
                                                 </tr>
                                             <?php $x++;} ?>

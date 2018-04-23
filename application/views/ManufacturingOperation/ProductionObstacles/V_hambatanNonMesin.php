@@ -8,7 +8,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        Hambatan Umum
+                                        Hambatan Non Mesin
                                     </b>
                                 </h1>
                             </div>
@@ -31,25 +31,24 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                               Hambatan Umum
+                               Hambatan Non Mesin
                             </div>
                             <div class="panel-body">
-     
+                            <!-- <?php echo $message; ?> -->
                             <ul class="nav nav-tabs">
                             </ul>
                             <div class="col-md-12 tab-content" style="padding-top:2em">
-                                
-                                <h3>Data Hambatan Mesin (Umum)</h3>
-                                <button class="btn btn-warning" data-toggle="collapse" data-target="#container-collapse">Report</button>
+                            
+                            <h3>Data Hambatan Non Mesin</h3>
+                            <button class="btn btn-warning" data-toggle="collapse" data-target="#container-collapse">Report</button>
                                 <div id="container-collapse" class="collapse">
-                                <div id="1" class="tab-pane fade in active">
-                                    <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/ajax/exportHamMesin') ?>">
+                                    <div id="1" class="tab-pane fade in active">
+                                    <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/ajax/exportHamNonMesin') ?>">
                                         <div class="col-md-6" style="padding-bottom: 20px;padding-left: 0px">
                                              <div class="form-group">
                                                   <label>Periode Hambatan</label>
                                                   <input id="tgl_hambatan1" class="form-control date-picker" type="text" name="tgl_hambatan1"> 
-                                                  <input id="kategoriHambatan" value="umum" type="hidden" name="kategoriHambatan">   
-
+                                                  <input id="kategoriHambatan" value="permesin" type="hidden" name="kategoriHambatan">   
                                              </div>
                                              <div class="form-group">
                                                   <label>Sampai Tanggal</label>
@@ -58,7 +57,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Cetak :</label> <br>
+                                                <label>Cetak :</label><br>
                                                 <select id="type" class="form-control select2" data-placeholder="Pilih Cetak" name="typeCetak" required>
                                                     <option></option>
                                                     <option value="logam">Logam</option>
@@ -66,17 +65,16 @@
                                                 </select>
                                             </div>
                                             <div class="form-group" style="padding-top: 25px">
-                                                <a id="btn-searchHam" class="btn btn-warning">Search&nbsp;&nbsp;&nbsp;<i class="fa fa-search"></i></a>
+                                                <a id="btn-searchHamNon" class="btn btn-warning">Search&nbsp;&nbsp;&nbsp;<i class="fa fa-search"></i></a>
                                                 <button type="submit" id="exportHamb" class="btn btn-default" style="display: none">Export &nbsp;&nbsp;&nbsp;<i class="fa fa-download"></i></button>
                                             </div>
                                         </div> 
                                     </form>
-                                </div>
-                                    
+                                    </div>
                                 </div>
 
                                 <div id="tableHam" class="col-md-12" style="padding-top: 30px;border-top: 1px solid #eee">
-                                        <table class="table table-bordered table-striped table-hover" id="HamMesinUmum">
+                                        <table class="table table-bordered table-striped table-hover" id="HamNonMesin">
                                             <thead>
                                                  <tr>
                                                     <th>No</th>
@@ -89,7 +87,7 @@
                                                  </tr>
                                             </thead>
                                             <tbody>
-                                            <?php $x=1; foreach ($HambatanUmum as $hu) { ?>
+                                            <?php $x=1; foreach ($HambatanNonMesin as $hu) { ?>
                                                     <tr>
                                                         <td><?php echo $x ?></td>
                                                         <td><?php echo $hu['induk'] ?></td>
@@ -98,23 +96,24 @@
                                                         <td><?php echo $hu['selesai'] ?></td>
                                                         <td><?php echo $hu['cetak']?></td>
                                                         <td>
-                                                        <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/Hambatan/mesin/updateHambatanUmum')?>">
+                                                        <form method="post" action="<?php echo base_url('ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/updateHambatanNonMesin')?>">
                                                             <input type="hidden" name="id_hambatanUmum" value="<?php echo $hu['id'] ?>">
+                                                            <!-- <input type="hidden" name="type_cetakan" value="<?php echo $hu['cetak'] ?>"> -->
                                                             <button type="submit" class="btn btn-warning">
                                                                 <i class="fa fa-pencil"></i>
                                                             </button>
                                                         </form>
-                                                            <button class="btn btn-danger delHam" onclick="deleteHambatan(this,<?php echo $hu['id'] ?>)"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-danger delHam" onclick="deleteHambatanNon(this, <?php echo $hu['id'] ?>)"><i class="fa fa-trash"></i></button>
                                                         </td>
                                                     </tr>
                                             <?php $x++; } ?>
                                         
                                             </tbody>
                                         </table>
-                                    <a class="btn btn-success" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/Hambatan/mesin/addHambatanUmum')?>">Add Data&nbsp;&nbsp;&nbsp;<i class="fa fa-plus"></i></a>
+                                    <a class="btn btn-success" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/addHambatanNonMesin')?>">Add Data&nbsp;&nbsp;&nbsp;<i class="fa fa-plus"></i></a>
                                    </div>
                                     <div id="tableSearchHam" class="col-md-12" style="padding-top: 30px;border-top: 1px solid #eee;display: none">
-                                    <h3 style="padding-bottom: 20px">Review Data Hambatan Mesin (umum) Cetakan <span id="headCetakan"></span></h3>
+                                    <h3 style="padding-bottom: 20px">Review Data Hambatan Non Mesin Cetakan <span id="headCetakan"></span></h3>
                                         <table class="table table-bordered table-striped table-hover text-center" id="HamMesinUmum">
                                             <thead>
                                                  <tr>
@@ -129,7 +128,7 @@
                                                  </tr>
                                             </thead>
                                             <tbody>
-                                            <?php $x=1; foreach ($HambatanUmum as $hu) { ?>
+                                            <?php $x=1; foreach ($HambatanNonMesin as $hu) { ?>
                                                     <tr>
                                                         <td><?php echo $x ?></td>
                                                         <td><?php echo $hu['induk'] ?></td>
@@ -141,7 +140,7 @@
                                         
                                             </tbody>
                                         </table>
-                                    <a class="btn btn-success" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/Hambatan/mesin/addHambatanUmum')?>">Add Data&nbsp;&nbsp;&nbsp;<i class="fa fa-plus"></i></a>
+                                    <a class="btn btn-success" href="<?php echo base_url('ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/addHambatanNonMesin')?>">Add Data&nbsp;&nbsp;&nbsp;<i class="fa fa-plus"></i></a>
                                    
                                     
                                 </div>
