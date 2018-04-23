@@ -1576,5 +1576,18 @@ $route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
 $route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
 $route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
 
+
+//-------------------------------------Hambatan Produksi-------------------------------------------------
+$route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
+$route['ManufacturingOperation/ProductionObstacles/master/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master/$1';
+$route['ManufacturingOperation/ProductionObstacles/ajax'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax';
+$route['ManufacturingOperation/ProductionObstacles/ajax/(:any)'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax/$1';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin/$1';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanNonMesin/index';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanNonMesin/$1';
+
+
 $route['Presensi/PresensiCatering']				=	'Presensi/MenuUtama/C_Presensi_Catering';
+1580
 $route['Presensi/PresensiCatering/(:any)']		=	'Presensi/MenuUtama/C_Presensi_Catering/$1';
