@@ -188,7 +188,7 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td><input name="txtDocNo" class="form-control" placeholder="Nomor Dokumen"></td>
+											<td><input name="txtDocNo" value="FRM-HRM-03-13" class="form-control" placeholder="Nomor Dokumen" readonly></td>
 											<td><input name="txtRevNo" class="form-control" placeholder="Nomor Revisi"></td>
 											<td><input name="txtRevDate" class="form-control singledateADM" placeholder="Tanggal Revisi"></td>
 											<td><input name="txtRevNote" class="form-control" placeholder="Catatan Revisi"></td>
