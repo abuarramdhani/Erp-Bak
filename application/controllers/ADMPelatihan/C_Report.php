@@ -794,7 +794,7 @@ class C_Report extends CI_Controller {
 			            </h3>
 			        </td>
 			        <td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Document No.</td>
-			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">FRM-HRM-03-13</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">'.$no_doc.'</td>
 			    </tr>
 			    <tr>
 			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Rev No.</td>
@@ -1095,7 +1095,7 @@ class C_Report extends CI_Controller {
 			$trainer_fix=array();
 			foreach ($trainer as $tr) {
 				if (in_array($tr['trainer_id'], $trainer_akhir)) {
-					array_push($trainer_fix, $tr['trainer_name']);
+					array_push($trainer_fix, trim($tr['trainer_name'],"  "));
 					$data['trainer_fix']=$trainer_fix;
 				}
 			}
