@@ -152,13 +152,15 @@ class C_Index extends CI_Controller {
 				$password_default 	= $user_item->password_default;
 				$kodesie			= $user_item->section_code;
 				$employee_name 		= $user_item->employee_name; 
+				$kode_lokasi_kerja 	= $user_item->location_code;
 			}
 			$ses = array(
-							'is_logged' => 1,
-							'userid' 	=> $iduser,
-							'user' 		=> $username,
-							'employee'  => $employee_name,
-							'kodesie' 	=> $kodesie
+							'is_logged' 		=> 1,
+							'userid' 			=> $iduser,
+							'user' 				=> $username,
+							'employee'  		=> $employee_name,
+							'kodesie' 			=> $kodesie,
+							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
 						);
 			$this->session->set_userdata($ses);
 			

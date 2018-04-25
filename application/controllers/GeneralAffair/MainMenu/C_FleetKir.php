@@ -37,6 +37,7 @@ class C_FleetKir extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'KIR';
 		$data['Menu'] = 'Proses';
@@ -49,7 +50,12 @@ class C_FleetKir extends CI_Controller
 
 		$data['kodesie'] = $this->session->kodesie;
 
-		$data['FleetKir'] 			= $this->M_fleetkir->getFleetKir();
+		if ($lokasi == '01') {
+			$data['FleetKir'] 			= $this->M_fleetkir->getFleetKir();
+		}else{
+			$data['FleetKir'] 			= $this->M_fleetkir->getFleetKirCabang($lokasi);
+		}
+		
 		$data['FleetKirDeleted'] 	= $this->M_fleetkir->getFleetKirDeleted();
 
 		$this->load->view('V_Header',$data);
@@ -62,6 +68,7 @@ class C_FleetKir extends CI_Controller
 	public function create()
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'KIR';
 		$data['Menu'] = 'Proses';
@@ -111,6 +118,7 @@ class C_FleetKir extends CI_Controller
 				'end_date' 			=> '9999-12-12 00:00:00',
 				'creation_date' 	=> $waktu_eksekusi,
 				'created_by' 		=> $this->session->userid,
+				'kode_lokasi_kerja' => $lokasi,
     		);
 			$this->M_fleetkir->setFleetKir($data);
 			$header_id = $this->db->insert_id();

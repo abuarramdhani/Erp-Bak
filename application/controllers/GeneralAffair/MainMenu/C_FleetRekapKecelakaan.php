@@ -96,10 +96,16 @@ class C_FleetRekapKecelakaan extends CI_Controller
 
 	public function ambilData()
 	{
+		$lokasi = $this->session->kode_lokasi_kerja;
 		$tahun 	= $this->input->post('tahun');
 
-		$data['totalKecelakaan'] 		= $this->M_fleetrekapkecelakaan->rekapTotalKecelakaan($tahun);
-		$data['frekuensiKecelakaan'] 	= $this->M_fleetrekapkecelakaan->rekapFrekuensiKecelakaan($tahun);
+		if ($lokasi == '01') {
+			$data['totalKecelakaan'] 		= $this->M_fleetrekapkecelakaan->rekapTotalKecelakaan($tahun);
+			$data['frekuensiKecelakaan'] 	= $this->M_fleetrekapkecelakaan->rekapFrekuensiKecelakaan($tahun);
+		}else{
+			$data['totalKecelakaan'] 		= $this->M_fleetrekapkecelakaan->rekapTotalKecelakaanCabang($tahun,$lokasi);
+			$data['frekuensiKecelakaan'] 	= $this->M_fleetrekapkecelakaan->rekapFrekuensiKecelakaanCabang($tahun,$lokasi);
+		}
 
 		echo json_encode($data);
 	}

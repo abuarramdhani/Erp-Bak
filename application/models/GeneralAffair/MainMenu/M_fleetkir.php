@@ -48,6 +48,23 @@ class M_fleetkir extends CI_Model
     	return $query->result_array();
     }
 
+    public function getFleetKirCabang($lokasi)
+    {
+        $query = $this->db->query("select  kir.kir_id as kode_kir,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        kir.kendaraan_id as kode_kendaraan,
+                                        to_char(kir.tanggal_kir, 'DD-MM-YYYY') as tanggal_kir,
+                                        concat_ws(' - ', to_char(kir.periode_awal_kir, 'DD-MM-YYYY'), to_char(kir.periode_akhir_kir, 'DD-MM-YYYY')) as periode_kir,
+                                        kir.biaya as biaya,
+                                        to_char(kir.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(kir.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_kir as kir
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=kir.kendaraan_id
+                                where   kir.kode_lokasi_kerja=$lokasi");
+        return $query->result_array();
+    }
+
     public function getFleetKirDeleted()
     {
         $ambilKIRDeleted    = " select  kir.kir_id as kode_kir,

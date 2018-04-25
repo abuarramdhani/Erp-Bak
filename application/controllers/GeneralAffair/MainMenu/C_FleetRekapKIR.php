@@ -88,10 +88,16 @@ class C_FleetRekapKIR extends CI_Controller
 
 	public function ambilData()
 	{
+		$lokasi = $this->session->kode_lokasi_kerja;
 		$tahun 	= $this->input->post('tahun');
 
-		$data['totalKIR'] 		= $this->M_fleetrekapkir->rekapTotalKIR($tahun);
-		$data['frekuensiKIR'] 	= $this->M_fleetrekapkir->rekapFrekuensiKIR($tahun);
+		if ($lokasi == '01') {
+			$data['totalKIR'] 		= $this->M_fleetrekapkir->rekapTotalKIR($tahun);
+			$data['frekuensiKIR'] 	= $this->M_fleetrekapkir->rekapFrekuensiKIR($tahun);
+		}else{
+			$data['totalKIR'] 		= $this->M_fleetrekapkir->rekapTotalKIRCabang($tahun,$lokasi);
+			$data['frekuensiKIR'] 	= $this->M_fleetrekapkir->rekapFrekuensiKIRCabang($tahun,$lokasi);
+		}
 
 		echo json_encode($data);
 	}

@@ -29,7 +29,29 @@ class M_fleetrekappajak extends CI_Model
                             order by    angka;";
         $query=$this->db->query($rekapPajak);
         return $query->result_array();
-      }  
+      } 
+
+    public function rekapTotalPajakCabang($tahun,$lokasi)
+    {
+        $query = $this->db->query("select      tblbulan.angka,
+                                        tblbulan.nama_bulan as bulan,
+                                        (
+                                            select  coalesce(sum(pjk.biaya),0)
+                                            from    ga.ga_fleet_pajak as pjk
+                                            where   extract(month from pjk.tanggal_pajak)=tblbulan.angka
+                                                    and     extract(year from pjk.tanggal_pajak)='$tahun'
+                                                    and     pjk.end_date='9999-12-12 00:00:00'
+                                                    and     pjk.kode_lokasi_kerja=$lokasi
+                                        ) as total_biaya
+                            from        (
+                                            select  angka.* as bulan_angka,
+                                                    to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                            from    generate_series(1,12) as angka  
+                                        ) as tblbulan
+                            group by    angka, bulan
+                            order by    angka");
+        return $query->result_array();
+    } 
 
     public function rekapFrekuensiPajak($tahun)
       {
@@ -51,7 +73,29 @@ class M_fleetrekappajak extends CI_Model
                             order by    angka;";
         $query=$this->db->query($rekapPajak);
         return $query->result_array();
-      }  
+      } 
+
+    public function rekapFrekuensiPajakCabang($tahun,$lokasi)
+    {
+        $query = $this->db->query("select      tblbulan.angka,
+                                        tblbulan.nama_bulan as bulan,
+                                        (
+                                            select  coalesce(count(pjk.*),0)
+                                            from    ga.ga_fleet_pajak as pjk
+                                            where   extract(month from pjk.tanggal_pajak)=tblbulan.angka
+                                                    and     extract(year from pjk.tanggal_pajak)='$tahun'
+                                                    and     pjk.end_date='9999-12-12 00:00:00'
+                                                    and     pjk.kode_lokasi_kerja=$lokasi
+                                        ) as total_frekuensi
+                            from        (
+                                            select  angka.* as bulan_angka,
+                                                    to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                            from    generate_series(1,12) as angka  
+                                        ) as tblbulan
+                            group by    angka, bulan
+                            order by    angka");
+        return $query->result_array();
+    } 
 
     public function dropdownTahun()
     {

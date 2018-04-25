@@ -70,6 +70,36 @@ class M_fleetkendaraan extends CI_Model
     	return $query->result_array();
     }
 
+    public function getFleetKendaraanCabang($lokasi)
+    {
+        $query = $this->db->query("select      kdrn.kendaraan_id as kode_kendaraan,
+                                                kdrn.nomor_polisi as nomor_polisi,
+                                                jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
+                                                jeniskdrn.jenis_kendaraan as jenis_kendaraan,
+                                                merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
+                                                merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
+                                                warnakdrn.warna_kendaraan as warna_kendaraan,
+                                                kdrn.tahun_pembuatan as tahun_pembuatan,
+                                                kdrn.foto_stnk as foto_stnk,
+                                                kdrn.foto_bpkb as foto_bpkb,
+                                                kdrn.foto_kendaraan as foto_kendaraan,
+                                                to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
+                                                concat_ws('<br/>sampai dengan<br/>', to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS'), to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS')) as masa
+                                    from        ga.ga_fleet_kendaraan as kdrn
+                                                join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
+                                                    on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
+                                                join    ga.ga_fleet_merk_kendaraan as merkkdrn
+                                                    on  merkkdrn.merk_kendaraan_id=kdrn.merk_kendaraan_id
+                                                join    ga.ga_fleet_warna_kendaraan as warnakdrn
+                                                    on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
+                                    where       kdrn.kode_lokasi_kerja=$lokasi
+                                    order by    kdrn.kendaraan_id");
+        
+        return $query->result_array();
+    }
+
     public function getFleetKendaraanDeleted($id = FALSE)
     {
         if ($id === FALSE) {

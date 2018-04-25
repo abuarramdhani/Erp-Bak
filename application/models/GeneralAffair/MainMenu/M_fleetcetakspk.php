@@ -48,6 +48,27 @@ class M_fleetcetakspk extends CI_Model
     	return $query->result_array();
     }
 
+    public function getFleetCetakSpkCabang($lokasi)
+    {
+        $query = $this->db->query("select fcspk.*,
+                                                fkn.nomor_polisi as no_pol,
+                                                fmk.maintenance_kategori as maintenance_kategori,
+                                                fbl.nama_bengkel as nama_bengkel,
+                                                fbl.alamat_bengkel as alamat_bengkel,
+                                                fmkn.merk_kendaraan as merk_kendaraan
+                                        from    ga.ga_fleet_cetak_spk as fcspk
+                                            left join ga.ga_fleet_kendaraan as fkn
+                                            on  fcspk.kendaraan_id=fkn.kendaraan_id
+                                            left join ga.ga_fleet_maintenance_kategori as fmk
+                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id 
+                                            left join ga.ga_fleet_bengkel as fbl
+                                            on  fcspk.id_bengkel=fbl.bengkel_id
+                                            join ga.ga_fleet_merk_kendaraan as fmkn
+                                            on fkn.merk_kendaraan_id=fmkn.merk_kendaraan_id
+                                        where fcspk.kode_lokasi_kerja=$lokasi");
+        return $query->result_array();
+    }
+
     public function setFleetCetakSpk($data)
     {
         return $this->db->insert('ga.ga_fleet_cetak_spk', $data);

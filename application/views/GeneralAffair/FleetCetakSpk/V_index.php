@@ -28,7 +28,7 @@
                                 </a>
                             </div>
                             <div class="box-body">
-                                <div class="table-responsive">
+                                <div>
                                     <table class="datatable table table-striped table-bordered table-hover text-left" id="tblFleetCetakSpk" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
