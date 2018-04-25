@@ -38,6 +38,8 @@ class C_FleetPicKendaraan extends CI_Controller
 
 		$user_id = $this->session->userid;
 
+		$lokasi = $this->session->kode_lokasi_kerja;
+
 		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'Master';
 		$data['SubMenuOne'] = 'PIC Kendaraan';
@@ -49,7 +51,12 @@ class C_FleetPicKendaraan extends CI_Controller
 
 		$data['kodesie'] = $this->session->kodesie;
 		
-		$data['PICKendaraan'] 	= $this->M_fleetpickendaraan->getFleetPicKendaraan();
+		if ($lokasi == '01') {
+			$data['PICKendaraan'] 	= $this->M_fleetpickendaraan->getFleetPicKendaraan();
+		}else{
+			$data['PICKendaraan'] 	= $this->M_fleetpickendaraan->getFleetPicKendaraanCabang($lokasi);
+		}
+		
 		$data['PICKendaraanDel']= $this->M_fleetpickendaraan->getFleetPicKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
@@ -63,6 +70,8 @@ class C_FleetPicKendaraan extends CI_Controller
 	{
 		date_default_timezone_set('Asia/Jakarta');
 		$user_id = $this->session->userid;
+
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'Master';
@@ -125,7 +134,8 @@ class C_FleetPicKendaraan extends CI_Controller
 				'creation_date' 	=> date('Y-m-d H:i:s'),
 				'created_by' 		=> $this->session->userid,
 				'employee_id'		=> $kode_pekerja,
-				'pic_kodesie'		=> $kode_seksi
+				'pic_kodesie'		=> $kode_seksi,
+				'kode_lokasi_kerja' => $lokasi,
     		);
 			$this->M_fleetpickendaraan->setFleetPicKendaraan($data);
 			$header_id = $this->db->insert_id();

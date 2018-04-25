@@ -42,7 +42,7 @@
                                 <div class="tab-content">
                                     <div id="active" class="tab-pane fade in active">
                                         <br/>
-                                        <div class="table-responsive">
+                                        <div>
                                             <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetPajak" style="font-size:12px;">
                                                 <thead class="bg-primary">
                                                     <tr>
@@ -82,7 +82,7 @@
                                     </div>
                                     <div id="removed" class="tab-pane fade">
                                         <br/>
-                                        <div class="table-responsive">
+                                        <div>
                                             <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetPajakDeleted" style="font-size:12px;">
                                                 <thead class="bg-primary">
                                                     <tr>

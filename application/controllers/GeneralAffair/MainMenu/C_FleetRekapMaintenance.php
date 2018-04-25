@@ -88,10 +88,17 @@ class C_FleetRekapMaintenance extends CI_Controller
 
 	public function ambilData()
 	{
+		$lokasi = $this->session->kode_lokasi_kerja;
 		$tahun 	= $this->input->post('tahun');
 
-		$data['totalMaintenance'] 		= $this->M_fleetrekapmaintenance->rekapTotalMaintenance($tahun);
-		$data['frekuensiMaintenance'] 	= $this->M_fleetrekapmaintenance->rekapFrekuensiMaintenance($tahun);
+		if ($lokasi == '01') {
+			$data['totalMaintenance'] 		= $this->M_fleetrekapmaintenance->rekapTotalMaintenance($tahun);
+			$data['frekuensiMaintenance'] 	= $this->M_fleetrekapmaintenance->rekapFrekuensiMaintenance($tahun);
+		}else{
+			$data['totalMaintenance'] 		= $this->M_fleetrekapmaintenance->rekapTotalMaintenanceCabang($tahun,$lokasi);
+			$data['frekuensiMaintenance'] 	= $this->M_fleetrekapmaintenance->rekapFrekuensiMaintenanceCabang($tahun,$lokasi);
+		}
+		
 
 		echo json_encode($data);
 	}

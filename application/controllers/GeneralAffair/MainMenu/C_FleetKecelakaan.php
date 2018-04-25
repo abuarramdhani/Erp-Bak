@@ -37,6 +37,7 @@ class C_FleetKecelakaan extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Kecelakaan';
 		$data['Menu'] = 'Proses';
@@ -49,7 +50,12 @@ class C_FleetKecelakaan extends CI_Controller
 
 		$data['kodesie'] = $this->session->kodesie;
 
-		$data['FleetKecelakaan'] 		= $this->M_fleetkecelakaan->getFleetKecelakaan();
+		if ($lokasi == '01') {
+			$data['FleetKecelakaan'] 		= $this->M_fleetkecelakaan->getFleetKecelakaan();
+		}else{
+			$data['FleetKecelakaan'] 		= $this->M_fleetkecelakaan->getFleetKecelakaanCabang($lokasi);
+		}
+		
 		$data['FleetKecelakaanDeleted'] = $this->M_fleetkecelakaan->getFleetKecelakaanDeleted();		
 
 		$this->load->view('V_Header',$data);
@@ -62,6 +68,7 @@ class C_FleetKecelakaan extends CI_Controller
 	public function create()
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Kecelakaan';
 		$data['Menu'] = 'Proses';
@@ -183,7 +190,8 @@ class C_FleetKecelakaan extends CI_Controller
 				'tanggal_keluar_bengkel'=> $waktu_keluar_bengkel,
 				'foto_masuk_bengkel'	=> $foto_masuk_bengkel,
 				'foto_keluar_bengkel' 	=> $foto_keluar_bengkel,
-				'status_asuransi' 		=> $status_asuransi
+				'status_asuransi' 		=> $status_asuransi,
+				'kode_lokasi_kerja'		=> $lokasi
     		);
 			$this->M_fleetkecelakaan->setFleetKecelakaan($data);
 			$header_id = $this->db->insert_id();

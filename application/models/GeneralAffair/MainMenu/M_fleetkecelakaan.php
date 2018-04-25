@@ -71,6 +71,34 @@ class M_fleetkecelakaan extends CI_Model
     	return $query->result_array();
     }
 
+    public function getFleetKecelakaanCabang($lokasi)
+    {
+        $query = $this->db->query("select  kecelakaan.kecelakaan_id as kode_kecelakaan,
+                                            kecelakaan.kendaraan_id as kode_kendaraan,
+                                            kdrn.nomor_polisi as nomor_polisi,
+                                            to_char(kecelakaan.tanggal_kecelakaan, 'DD-MM-YYYY HH24:MI:SS') as tanggal_kecelakaan,
+                                            kecelakaan.sebab as sebab,
+                                            kecelakaan.biaya_perusahaan as biaya_perusahaan,
+                                            kecelakaan.biaya_pekerja as biaya_pekerja,
+                                            kecelakaan.pekerja as id_pekerja,
+                                            concat_ws(' - ', pkj.employee_code, pkj.employee_name) as pekerja,
+                                            kecelakaan.status_asuransi as status_asuransi,
+                                            to_char(kecelakaan.tanggal_cek_asuransi, 'DD-MM-YYYY') as tanggal_cek_asuransi,
+                                            to_char(kecelakaan.tanggal_masuk_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_masuk_bengkel,
+                                            to_char(kecelakaan.tanggal_keluar_bengkel, 'DD-MM-YYYY HH24:MI:SS') as tanggal_keluar_bengkel,
+                                            kecelakaan.foto_masuk_bengkel as foto_masuk_bengkel,
+                                            kecelakaan.foto_keluar_bengkel as foto_keluar_bengkel,
+                                            to_char(kecelakaan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                            to_char(kecelakaan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                    from    ga.ga_fleet_kecelakaan as kecelakaan
+                                            join    ga.ga_fleet_kendaraan as kdrn
+                                                on  kdrn.kendaraan_id=kecelakaan.kendaraan_id
+                                            join    er.er_employee_all as pkj
+                                                on  pkj.employee_id=kecelakaan.pekerja
+                                    where   kecelakaan.kode_lokasi_kerja=$lokasi");
+        return $query->result_array();
+    }
+
     public function getFleetKecelakaanDeleted()
     {
         $ambilKecelakaanDeleted     = " select  kecelakaan.kecelakaan_id as kode_kecelakaan,

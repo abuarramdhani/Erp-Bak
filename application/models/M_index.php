@@ -23,7 +23,8 @@ class M_index extends CI_Model {
 		{
           $sql = "	select 	su.*,
           					er.section_code,
-          					er.employee_name
+          					er.employee_name,
+          					er.location_code
           	 		from 	sys.sys_user as su
 							join 	er.er_employee_all as er
 									on 	er.employee_id=su.employee_id

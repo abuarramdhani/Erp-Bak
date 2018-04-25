@@ -37,6 +37,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Maintenance Kendaraan';
 		$data['Menu'] = 'Proses';
@@ -49,7 +50,12 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 		$data['kodesie'] = $this->session->kodesie;
 
-		$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraan();
+		if ($lokasi == '01') {
+			$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraan();
+		}else{
+			$data['FleetMaintenanceKendaraan'] 			= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanCabang($lokasi);
+		}
+		
 		$data['FleetMaintenanceKendaraanDeleted'] 	= $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKendaraanDeleted();
 
 		$this->load->view('V_Header',$data);
@@ -62,6 +68,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 	public function create()
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Maintenance Kendaraan';
 		$data['Menu'] = 'Proses';
@@ -109,6 +116,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 				'created_by' 				=> $this->session->userid,
 				'alasan' 					=> $alasan,
 				'id_bengkel'				=> $bengkel,
+				'kode_lokasi_kerja'			=> $lokasi,
     		);
 			$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraan($data);
 			$header_id = $this->db->insert_id();

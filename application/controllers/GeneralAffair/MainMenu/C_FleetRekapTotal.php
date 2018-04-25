@@ -92,11 +92,17 @@ class C_FleetRekapTotal extends CI_Controller
 
 	public function ambilData()
 	{
+		$lokasi = $this->session->kode_lokasi_kerja;
 		$tahun 	= $this->input->post('tahun');
 		$bulan 	= $this->input->post('bulan');
 
-		$data['biayaTotal'] 		= $this->M_fleetrekaptotal->rekapBiayaTotal($tahun, $bulan);
-		$data['frekuensiTotal'] 	= $this->M_fleetrekaptotal->rekapFrekuensiTotal($tahun, $bulan);
+		if ($lokasi == '01') {
+			$data['biayaTotal'] 		= $this->M_fleetrekaptotal->rekapBiayaTotal($tahun, $bulan);
+			$data['frekuensiTotal'] 	= $this->M_fleetrekaptotal->rekapFrekuensiTotal($tahun, $bulan);
+		}else{
+			$data['biayaTotal'] 		= $this->M_fleetrekaptotal->rekapBiayaTotalCabang($tahun, $bulan, $lokasi);
+			$data['frekuensiTotal'] 	= $this->M_fleetrekaptotal->rekapFrekuensiTotalCabang($tahun, $bulan, $lokasi);
+		}
 
 		echo json_encode($data);
 	}

@@ -888,3 +888,7 @@ $(document).ready(function(){
   $('#table-DetailMonitoringMK').DataTable({
     dom: 'frtp',
   });
+
+  $('#tblFleetCetakSpk').DataTable( {
+      dom: 'frtp',
+    });

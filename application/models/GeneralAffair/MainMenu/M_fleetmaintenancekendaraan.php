@@ -58,6 +58,28 @@ class M_fleetmaintenancekendaraan extends CI_Model
     	return $query->result_array();
     }
 
+    public function getFleetMaintenanceKendaraanCabang($lokasi)
+    {
+        $query = $this->db->query("select  mtckendaraan.maintenance_kendaraan_id as kode_maintenance_kendaraan,
+                                                        mtckendaraan.maintenance_kategori_id as kode_kategori_kendaraan,
+                                                        mtckendaraan.kendaraan_id as kode_kendaraan,
+                                                        kdrn.nomor_polisi as nomor_polisi,
+                                                        to_char(mtckendaraan.tanggal_maintenance, 'DD-MM-YYYY HH24:MI:SS') as tanggal_maintenance,
+                                                        mtckendaraan.kilometer_maintenance as kilometer_maintenance,
+                                                        mtckategori.maintenance_kategori as kategori_maintenance,
+                                                        mtckendaraan.alasan as alasan,
+                                                        to_char(mtckendaraan.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                        to_char(mtckendaraan.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
+                                                        mtckendaraan.id_bengkel as bengkel       
+                                                from    ga.ga_fleet_maintenance_kendaraan as mtckendaraan
+                                                        join    ga.ga_fleet_kendaraan as kdrn
+                                                            on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
+                                                        join    ga.ga_fleet_maintenance_kategori as mtckategori
+                                                            on  mtckategori.maintenance_kategori_id=mtckendaraan.maintenance_kategori_id
+                                                where   mtckendaraan.kode_lokasi_kerja=$lokasi");
+        return $query->result_array();
+    }
+
     public function getFleetMaintenanceKendaraanDeleted()
     {
         $ambilMaintenanceKendaraanDeleted   =   "   select  mtckendaraan.maintenance_kendaraan_id as kode_maintenance_kendaraan,
