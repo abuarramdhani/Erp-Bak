@@ -135,6 +135,12 @@ class C_FleetMonitoring extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
+		if ($lokasi=='01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = "and mtckdrn.kode_lokasi_kerja='$lokasi'";
+		}
 
 		$data['Title'] = 'Monitoring';
 		$data['Menu'] = 'Monitoring';
@@ -151,7 +157,7 @@ class C_FleetMonitoring extends CI_Controller
 		$periode1 = date('Y-m-d', strtotime($periodeDetail[0]));
 		$periode2 = date('Y-m-d', strtotime($periodeDetail[1]));
 
-		$data['detailMonitoring'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+		$data['detailMonitoring'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2,$query_lokasi);
 		$data['tgl'] = date('d-m-Y', strtotime($periode1))." / ".date('d-m-Y', strtotime($periode2));
 
 		$this->load->view('V_Header',$data);
@@ -164,6 +170,8 @@ class C_FleetMonitoring extends CI_Controller
 	{
 		$this->load->library("Excel");
 
+		$lokasi = $this->session->kode_lokasi_kerja;
+
 		$periodeExcel = $this->input->post('PeriodeMonitoringExport');
 		$periodeExcelExplode = explode(' - ', $periodeExcel);
 
@@ -171,7 +179,11 @@ class C_FleetMonitoring extends CI_Controller
 		$periode2 = date('Y-m-d', strtotime($periodeExcelExplode[1]));
 
 		$data['PeriodeExcel'] = $periodeExcel;
-		$data['ExcelMonitoring'] = $this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periode1,$periode2);
+		if ($lokasi == '01') {
+				$data['ExcelMonitoring'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periode1, $periode2);
+			}else{
+				$data['ExcelMonitoring'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraanCabang($lokasi,$periode1, $periode2);
+			}
 
 		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring', $data, true);
 	}
@@ -180,6 +192,13 @@ class C_FleetMonitoring extends CI_Controller
 	{
 		$this->load->library("Excel");
 
+		$lokasi = $this->session->kode_lokasi_kerja;
+		if ($lokasi=='01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = "and mtckdrn.kode_lokasi_kerja='$lokasi'";
+		}
+
 		$periodeExcel = $this->input->post('PeriodeMonitoringDetail');
 		$periodeExcelDetail = explode(' / ', $periodeExcel);
 
@@ -187,7 +206,7 @@ class C_FleetMonitoring extends CI_Controller
 		$periode2 = date('Y-m-d', strtotime($periodeExcelDetail[1]));
 
 		$data['PeriodeExcel'] = $periodeExcel;
-		$data['ExcelMonitoringDetail'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+		$data['ExcelMonitoringDetail'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2,$query_lokasi);
 
 		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring_detail', $data, true);
 	}
