@@ -91,7 +91,7 @@ class M_fleetpickendaraan extends CI_Model
                                                     on  er.employee_id=pic.employee_id
                                             left join   er.er_section as seksi
                                                     on      seksi.section_code=pic.pic_kodesie::varchar                              
-                                    where   pic.kode_lokasi_kerja=$lokasi");
+                                    where   pic.kode_lokasi_kerja='$lokasi'");
         return $query->result_array();
     }
 

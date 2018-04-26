@@ -41,7 +41,7 @@ class M_fleetrekapkir extends CI_Model
                                             where   extract(month from kir.tanggal_kir)=tblbulan.angka
                                                     and     extract(year from kir.tanggal_kir)='$tahun'
                                                     and     kir.end_date='9999-12-12 00:00:00'
-                                                    and     kir.kode_lokasi_kerja=$lokasi
+                                                    and     kir.kode_lokasi_kerja='$lokasi'
                                         ) as total_biaya
                             from        (
                                             select  angka.* as bulan_angka,
@@ -85,7 +85,7 @@ class M_fleetrekapkir extends CI_Model
                                             where   extract(month from kir.tanggal_kir)=tblbulan.angka
                                                     and     extract(year from kir.tanggal_kir)='$tahun'
                                                     and     kir.end_date='9999-12-12 00:00:00'
-                                                    and     kir.kode_lokasi_kerja=$lokasi
+                                                    and     kir.kode_lokasi_kerja='$lokasi'
                                         ) as total_frekuensi
                             from        (
                                             select  angka.* as bulan_angka,

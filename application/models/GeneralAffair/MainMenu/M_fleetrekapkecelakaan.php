@@ -41,7 +41,7 @@ class M_fleetrekapkecelakaan extends CI_Model
                                                         where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
                                                                 and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
                                                                 and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                                                and     kecelakaan.kode_lokasi_kerja=$lokasi
+                                                                and     kecelakaan.kode_lokasi_kerja='$lokasi'
                                                     ) as total_biaya
                                         from        (
                                                         select  angka.* as bulan_angka,
@@ -85,7 +85,7 @@ class M_fleetrekapkecelakaan extends CI_Model
                                                     where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
                                                             and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
                                                             and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                                            and     kecelakaan.kode_lokasi_kerja=$lokasi
+                                                            and     kecelakaan.kode_lokasi_kerja='$lokasi'
                                                 ) as total_frekuensi
                                     from        (
                                                     select  angka.* as bulan_angka,

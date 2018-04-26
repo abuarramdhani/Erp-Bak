@@ -65,7 +65,7 @@ class M_fleetcetakspk extends CI_Model
                                             on  fcspk.id_bengkel=fbl.bengkel_id
                                             join ga.ga_fleet_merk_kendaraan as fmkn
                                             on fkn.merk_kendaraan_id=fmkn.merk_kendaraan_id
-                                        where fcspk.kode_lokasi_kerja=$lokasi");
+                                        where fcspk.kode_lokasi_kerja='$lokasi'");
         return $query->result_array();
     }
 

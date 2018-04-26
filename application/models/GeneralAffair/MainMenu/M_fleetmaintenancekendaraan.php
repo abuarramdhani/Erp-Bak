@@ -76,7 +76,7 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                             on  kdrn.kendaraan_id=mtckendaraan.kendaraan_id
                                                         join    ga.ga_fleet_maintenance_kategori as mtckategori
                                                             on  mtckategori.maintenance_kategori_id=mtckendaraan.maintenance_kategori_id
-                                                where   mtckendaraan.kode_lokasi_kerja=$lokasi");
+                                                where   mtckendaraan.kode_lokasi_kerja='$lokasi'");
         return $query->result_array();
     }
 
