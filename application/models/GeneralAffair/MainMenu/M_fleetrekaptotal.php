@@ -58,7 +58,7 @@ class M_fleetrekaptotal extends CI_Model
                                             where       extract(year from pjk.tanggal_pajak)='$tahun'
                                                         and     extract(month from pjk.tanggal_pajak)='$bulan'
                                                         and     pjk.end_date='9999-12-12 00:00:00'
-                                                        and     pjk.kode_lokasi_kerja=$lokasi
+                                                        and     pjk.kode_lokasi_kerja='$lokasi'
                                         ) as total_biaya_pajak,
                                         (
                                             select      coalesce(sum(kir.biaya),0) as total_biaya
@@ -66,7 +66,7 @@ class M_fleetrekaptotal extends CI_Model
                                             where       extract(year from kir.tanggal_kir)='$tahun'
                                                         and     extract(month from kir.tanggal_kir)='$bulan'
                                                         and     kir.end_date='9999-12-12 00:00:00'
-                                                        and     kir.kode_lokasi_kerja=$lokasi
+                                                        and     kir.kode_lokasi_kerja='$lokasi'
                                         ) as total_biaya_kir,
                                         (
                                             select      coalesce(sum(mtckdrndtl.biaya),0) as total_biaya
@@ -77,7 +77,7 @@ class M_fleetrekaptotal extends CI_Model
                                                         and     extract(month from mtckdrn.tanggal_maintenance)='$bulan'
                                                         and     mtckdrn.end_date='9999-12-12 00:00:00'
                                                         and     mtckdrndtl.end_date='9999-12-12 00:00:00'
-                                                        and     mtckdrn.kode_lokasi_kerja=$lokasi
+                                                        and     mtckdrn.kode_lokasi_kerja='$lokasi'
                                         ) as total_biaya_maintenance_kendaraan,
                                         (
                                             select      coalesce(
@@ -89,7 +89,7 @@ class M_fleetrekaptotal extends CI_Model
                                             where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
                                                         and     extract(month from kecelakaan.tanggal_kecelakaan)='$bulan'
                                                         and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                                        and     kecelakaan.kode_lokasi_kerja=$lokasi
+                                                        and     kecelakaan.kode_lokasi_kerja='$lokasi'
                                         ) as total_biaya_kecelakaan");
         return $query->result_array();
     }
@@ -139,7 +139,7 @@ class M_fleetrekaptotal extends CI_Model
                                             where       extract(year from pjk.tanggal_pajak)='$tahun'
                                                         and     extract(month from pjk.tanggal_pajak)='$bulan'
                                                         and     pjk.end_date='9999-12-12 00:00:00'
-                                                        and     pjk.kode_lokasi_kerja=$lokasi
+                                                        and     pjk.kode_lokasi_kerja='$lokasi'
                                         ) as total_frekuensi_pajak,
                                         (
                                             select      coalesce(count(kir.biaya),0) as total_frekuensi
@@ -147,7 +147,7 @@ class M_fleetrekaptotal extends CI_Model
                                             where       extract(year from kir.tanggal_kir)='$tahun'
                                                         and     extract(month from kir.tanggal_kir)='$bulan'
                                                         and     kir.end_date='9999-12-12 00:00:00'
-                                                        and     kir.kode_lokasi_kerja=$lokasi
+                                                        and     kir.kode_lokasi_kerja='$lokasi'
                                         ) as total_frekuensi_kir,
                                         (
                                             select      coalesce(count(mtckdrn.maintenance_kendaraan_id),0) as total_frekuensi
@@ -158,7 +158,7 @@ class M_fleetrekaptotal extends CI_Model
                                                         and     extract(month from mtckdrn.tanggal_maintenance)='$bulan'
                                                         and     mtckdrn.end_date='9999-12-12 00:00:00'
                                                         and     mtckdrndtl.end_date='9999-12-12 00:00:00'
-                                                        and     mtckdrn.kode_lokasi_kerja=$lokasi
+                                                        and     mtckdrn.kode_lokasi_kerja='$lokasi'
                                         ) as total_frekuensi_maintenance_kendaraan,
                                         (
                                             select      coalesce(count(kecelakaan.kecelakaan_id),0) as total_frekuensi
@@ -166,7 +166,7 @@ class M_fleetrekaptotal extends CI_Model
                                             where       extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
                                                         and     extract(month from kecelakaan.tanggal_kecelakaan)='$bulan'
                                                         and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                                        and     kecelakaan.kode_lokasi_kerja=$lokasi
+                                                        and     kecelakaan.kode_lokasi_kerja='$lokasi'
                                         ) as total_frekuensi_kecelakaan");
         return $query->result_array();
     }

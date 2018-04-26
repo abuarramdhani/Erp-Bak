@@ -61,7 +61,7 @@ class M_fleetpajak extends CI_Model
                                 from    ga.ga_fleet_pajak as pjk
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=pjk.kendaraan_id
-                                where   pjk.kode_lokasi_kerja=$lokasi");
+                                where   pjk.kode_lokasi_kerja='$lokasi'");
         return $query->result_array();
     }
 

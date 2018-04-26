@@ -112,7 +112,7 @@ class M_fleetmonitoringlast extends CI_Model
                                     pjk.creation_date as waktu_dibuat
                         from        ga.ga_fleet_pajak as pjk
                         where       pjk.kendaraan_id=$nomorPolisi
-                                    and     pjk.kode_lokasi_kerja=$lokasi
+                                    and     pjk.kode_lokasi_kerja='$lokasi'
                                     and     pjk.end_date='9999-12-12 00:00:00'
                                     and     pjk.tanggal_pajak=(
                                             select  max(pjk.tanggal_pajak)
@@ -129,7 +129,7 @@ class M_fleetmonitoringlast extends CI_Model
                                     kir.creation_date as waktu_dibuat
                         from        ga.ga_fleet_kir as kir
                         where       kir.kendaraan_id=$nomorPolisi
-                                    and     kir.kode_lokasi_kerja=$lokasi
+                                    and     kir.kode_lokasi_kerja='$lokasi'
                                     and     kir.end_date='9999-12-12 00:00:00'
                                     and     kir.tanggal_kir=(
                                             select  max(kir.tanggal_kir)
@@ -153,7 +153,7 @@ class M_fleetmonitoringlast extends CI_Model
                                     mtckdrn.creation_date as waktu_dibuat
                         from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
                         where       mtckdrn.end_date='9999-12-12 00:00:00'
-                                    and     mtckdrn.kode_lokasi_kerja=$lokasi
+                                    and     mtckdrn.kode_lokasi_kerja='$lokasi'
                                     and     mtckdrn.kendaraan_id=$nomorPolisi
                                     and     mtckdrn.tanggal_maintenance=(
                                             select  max(mtckdrn.tanggal_maintenance)
@@ -174,7 +174,7 @@ class M_fleetmonitoringlast extends CI_Model
                                     kecelakaan.creation_date as waktu_dibuat
                         from        ga.ga_fleet_kecelakaan as kecelakaan
                         where       kecelakaan.end_date='9999-12-12 00:00:00'
-                                    and     kecelakaan.kode_lokasi_kerja=$lokasi
+                                    and     kecelakaan.kode_lokasi_kerja='$lokasi'
                                     and     kecelakaan.kendaraan_id=$nomorPolisi
                                     and     kecelakaan.tanggal_kecelakaan=(
                                             select  max(kecelakaan.tanggal_kecelakaan)
@@ -276,7 +276,7 @@ class M_fleetmonitoringlast extends CI_Model
                                             ) as biaya                                            
                                 from        ga.ga_fleet_pajak as pjk
                                 where       pjk.end_date='9999-12-12 00:00:00'
-                                        and pjk.kode_lokasi_kerja=$lokasi
+                                        and pjk.kode_lokasi_kerja='$lokasi'
                                 group by    kode_kendaraan
                                 order by    tanggal_asli desc, kode_kendaraan asc");
         return $query->result_array();
@@ -372,7 +372,7 @@ class M_fleetmonitoringlast extends CI_Model
                                             ) as biaya       
                                 from        ga.ga_fleet_kir as kir
                                 where       kir.end_date='9999-12-12 00:00:00'
-                                        and kir.kode_lokasi_kerja=$lokasi
+                                        and kir.kode_lokasi_kerja='$lokasi'
                                 group by    kode_kendaraan
                                 order by    tanggal_asli desc, kode_kendaraan asc");
         return $query->result_array();
@@ -468,7 +468,7 @@ class M_fleetmonitoringlast extends CI_Model
                                                                 ) as biaya              
                                                     from        ga.ga_fleet_maintenance_kendaraan as mtckdrn
                                                     where       mtckdrn.end_date='9999-12-12 00:00:00'
-                                                            and mtckdrn.kode_lokasi_kerja=$lokasi
+                                                            and mtckdrn.kode_lokasi_kerja='$lokasi'
                                                     group by    kode_kendaraan
                                                     order by    tanggal_asli desc, kode_kendaraan asc");
         return $query->result_array();
@@ -572,7 +572,7 @@ class M_fleetmonitoringlast extends CI_Model
                                                     ) as biaya              
                                         from        ga.ga_fleet_kecelakaan as kecelakaan
                                         where       kecelakaan.end_date='9999-12-12 00:00:00'
-                                                and kecelakaan.kode_lokasi_kerja=$lokasi
+                                                and kecelakaan.kode_lokasi_kerja='$lokasi'
                                         group by    kode_kendaraan
                                         order by    tanggal_asli desc, kode_kendaraan asc");
         return $query->result_array();

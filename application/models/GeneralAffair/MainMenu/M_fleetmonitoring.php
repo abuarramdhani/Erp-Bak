@@ -82,7 +82,7 @@ class M_fleetmonitoring extends CI_Model
                         from    ga.ga_fleet_pajak as pjk
                         where   pjk.end_date='9999-12-12 00:00:00'
                                 and pjk.kendaraan_id='$nomorPolisi'
-                                and pjk.kode_lokasi_kerja=$lokasi
+                                and pjk.kode_lokasi_kerja='$lokasi'
                         union
                         -- Ambil Monitoring KIR
                         select  'KIR' as kategori,
@@ -93,7 +93,7 @@ class M_fleetmonitoring extends CI_Model
                         from    ga.ga_fleet_kir as kir
                         where   kir.end_date='9999-12-12 00:00:00'
                                 and kir.kendaraan_id='$nomorPolisi'
-                                and kir.kode_lokasi_kerja=$lokasi
+                                and kir.kode_lokasi_kerja='$lokasi'
                         union
                         -- Ambil Monitoring Maintenance Kendaraan
                         select  'Maintenance Kendaraan' as kategori,
@@ -108,7 +108,7 @@ class M_fleetmonitoring extends CI_Model
                         from    ga.ga_fleet_maintenance_kendaraan as mtckdrn
                         where   mtckdrn.end_date='9999-12-12 00:00:00'
                                 and mtckdrn.kendaraan_id='$nomorPolisi'
-                                and mtckdrn.kode_lokasi_kerja=$lokasi
+                                and mtckdrn.kode_lokasi_kerja='$lokasi'
                         union
                         -- Ambil Monitoring Kecelakaan
                         select  'Kecelakaan' as kategori,
@@ -119,7 +119,7 @@ class M_fleetmonitoring extends CI_Model
                         from    ga.ga_fleet_kecelakaan as kecelakaan
                         where   kecelakaan.end_date='9999-12-12 00:00:00'
                                 and kecelakaan.kendaraan_id='$nomorPolisi'
-                                and kecelakaan.kode_lokasi_kerja=$lokasi
+                                and kecelakaan.kode_lokasi_kerja='$lokasi'
                         order by tanggal_asli desc");
         
         return $query->result_array();
@@ -152,7 +152,7 @@ class M_fleetmonitoring extends CI_Model
                                                 on  kdrn.kendaraan_id=pjk.kendaraan_id
                                 where       pjk.tanggal_pajak between '$periodeawal' and '$periodeakhir'
                                             and     pjk.end_date='9999-12-12 00:00:00'
-                                            and pjk.kode_lokasi_kerja=$lokasi
+                                            and pjk.kode_lokasi_kerja='$lokasi'
                                 order by    tanggal_asli desc");
         return $query->result_array();
     }
@@ -184,7 +184,7 @@ class M_fleetmonitoring extends CI_Model
                                                 on  kdrn.kendaraan_id=kir.kendaraan_id
                                 where       kir.tanggal_kir between '$periodeawal' and '$periodeakhir'
                                             and     kir.end_date='9999-12-12 00:00:00'
-                                            and kir.kode_lokasi_kerja=$lokasi
+                                            and kir.kode_lokasi_kerja='$lokasi'
                                 order by    tanggal_asli");
         return $query->result_array();
     }
@@ -228,7 +228,7 @@ class M_fleetmonitoring extends CI_Model
                                                                     on  kdrn.kendaraan_id=mtckdrn.kendaraan_id
                                                     where       mtckdrn.tanggal_maintenance between '$periodeawal' and '$periodeakhir'
                                                                 and     mtckdrn.end_date='9999-12-12 00:00:00'
-                                                                and mtckdrn.kode_lokasi_kerja=$lokasi
+                                                                and mtckdrn.kode_lokasi_kerja='$lokasi'
                                                     order by    tanggal_asli desc");
         return $query->result_array();
     }
@@ -270,7 +270,7 @@ class M_fleetmonitoring extends CI_Model
                                                         on  kdrn.kendaraan_id=kecelakaan.kendaraan_id
                                         where       kecelakaan.tanggal_kecelakaan between '$periodeawal' and '$periodeakhir'
                                                     and     kecelakaan.end_date='9999-12-12 00:00:00'
-                                                    and kecelakaan.kode_lokasi_kerja=$lokasi
+                                                    and kecelakaan.kode_lokasi_kerja='$lokasi'
                                         order by    tanggal_asli desc");
         return $query->result_array();
     }

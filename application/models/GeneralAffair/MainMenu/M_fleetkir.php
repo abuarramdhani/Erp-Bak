@@ -61,7 +61,7 @@ class M_fleetkir extends CI_Model
                                 from    ga.ga_fleet_kir as kir
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=kir.kendaraan_id
-                                where   kir.kode_lokasi_kerja=$lokasi");
+                                where   kir.kode_lokasi_kerja='$lokasi'");
         return $query->result_array();
     }
 

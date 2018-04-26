@@ -41,7 +41,7 @@ class M_fleetrekappajak extends CI_Model
                                             where   extract(month from pjk.tanggal_pajak)=tblbulan.angka
                                                     and     extract(year from pjk.tanggal_pajak)='$tahun'
                                                     and     pjk.end_date='9999-12-12 00:00:00'
-                                                    and     pjk.kode_lokasi_kerja=$lokasi
+                                                    and     pjk.kode_lokasi_kerja='$lokasi'
                                         ) as total_biaya
                             from        (
                                             select  angka.* as bulan_angka,
@@ -85,7 +85,7 @@ class M_fleetrekappajak extends CI_Model
                                             where   extract(month from pjk.tanggal_pajak)=tblbulan.angka
                                                     and     extract(year from pjk.tanggal_pajak)='$tahun'
                                                     and     pjk.end_date='9999-12-12 00:00:00'
-                                                    and     pjk.kode_lokasi_kerja=$lokasi
+                                                    and     pjk.kode_lokasi_kerja='$lokasi'
                                         ) as total_frekuensi
                             from        (
                                             select  angka.* as bulan_angka,
