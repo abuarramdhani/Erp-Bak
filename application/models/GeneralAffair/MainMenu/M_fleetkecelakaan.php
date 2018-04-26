@@ -95,7 +95,8 @@ class M_fleetkecelakaan extends CI_Model
                                                 on  kdrn.kendaraan_id=kecelakaan.kendaraan_id
                                             join    er.er_employee_all as pkj
                                                 on  pkj.employee_id=kecelakaan.pekerja
-                                    where   kecelakaan.kode_lokasi_kerja='$lokasi'");
+                                    where   kecelakaan.kode_lokasi_kerja='$lokasi'
+                                            and kecelakaan.end_date='9999-12-12 00:00:00'");
         return $query->result_array();
     }
 

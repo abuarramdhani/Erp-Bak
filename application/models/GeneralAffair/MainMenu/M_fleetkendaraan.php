@@ -94,7 +94,7 @@ class M_fleetkendaraan extends CI_Model
                                                     on  merkkdrn.merk_kendaraan_id=kdrn.merk_kendaraan_id
                                                 join    ga.ga_fleet_warna_kendaraan as warnakdrn
                                                     on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
-                                    where       kdrn.kode_lokasi_kerja='$lokasi'
+                                    where       kdrn.end_date = '9999-12-12 00:00:00' and kdrn.kode_lokasi_kerja='$lokasi'
                                     order by    kdrn.kendaraan_id");
         
         return $query->result_array();
