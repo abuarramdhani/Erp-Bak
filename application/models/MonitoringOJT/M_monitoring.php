@@ -15,7 +15,7 @@
  															pri.nama
 												from 		hrd_khs.v_hrd_khs_tpribadi as pri
 												where 		pri.keluar=false
-															and 	pri.kode_status_kerja='D'
+															and 	pri.kode_status_kerja in ('D', 'J')
 															and 	(
 																		pri.nama like '%$keyword%'
 																		or 	pri.noind like '%$keyword%'
@@ -184,14 +184,9 @@
 																		end
 																	),
 																	(
-																		case 	when 	minggu is not null
-																						then 	minggu || 'W'
-																				else 	'0W'
-																		end
-																	),
-																	(
 																		case 	when 	hari is not null
-																						then 	hari || 'D'
+																						or 	minggu is not null
+																						then 	((coalesce(minggu, 0)*7)+coalesce(hari, 0)) || 'D'
 																				else 	'0D'
 																		end
 																	)
@@ -252,10 +247,19 @@
  			$this->db->insert('ojt.tb_proses_pemberitahuan_history', $inputProsesPemberitahuanHistory);
  		}
 
- 		public function ambilTabelDaftarPekerjaOJT()
+ 		public function ambilTabelDaftarPekerjaOJT($pekerja_id = FALSE)
  		{
- 			$this->db->select('*');
+ 			$this->db->select('
+ 								ojt.tb_pekerja.*,
+ 								er.er_employee_all.employee_name
+ 							');
  			$this->db->from('ojt.tb_pekerja');
+ 			$this->db->join('er.er_employee_all', 'er.er_employee_all.employee_code = ojt.tb_pekerja.noind');
+
+ 			if($pekerja_id !== FALSE)
+ 			{
+ 				$this->db->where('ojt.tb_pekerja.pekerja_id=', $pekerja_id);
+ 			}
 
  			return $this->db->get()->result_array();
  		}
@@ -269,7 +273,13 @@
 															join 	ojt.tb_orientasi as orientasi
 																	on 	orientasi.id_orientasi=jadwal.id_orientasi
 												where 		pekerja.pekerja_id=$pekerja_id
-															and 	orientasi.ck_tgl=false;";
+															/*and 	orientasi.ck_tgl=false*/
+															/*and 	(
+																		orientasi.periode!=1
+																		and 	orientasi.sequence!=1
+																	)*/
+												order by 	jadwal.periode,
+															jadwal.sequence;";
 			$queryAmbilPenjadwalanManual 	=	$this->db->query($ambilPenjadwalanManual);
 			return $queryAmbilPenjadwalanManual->result_array();
  		}
@@ -288,11 +298,11 @@
  			return $this->db->get()->result_array();
  		}
 
- 		public function cekProsesPemberitahuan($id_orientasi)
+ 		public function cekProsesPemberitahuan($id_proses)
  		{
  			$this->db->select('*');
- 			$this->db->from('ojt.tb_pemberitahuan');
- 			$this->db->where('id_orientasi=', $id_orientasi);
+ 			$this->db->from('ojt.tb_proses_pemberitahuan');
+ 			$this->db->where('id_proses=', $id_proses);
  			return $this->db->get()->result_array();
  		}
  	}

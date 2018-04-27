@@ -61,7 +61,7 @@
 	    	$this->db->insert('ojt.tb_berkas_history', $inputUndanganHistory);
 	    }
 
-	    public function ambilDaftarOrientasiTabel($id_orientasi = FALSE)
+	    public function ambilDaftarOrientasiTabel($id_orientasi = FALSE, $input_order = FALSE)
 	    {
 	    	$this->db->select('*');
 		    $this->db->from('ojt.tb_orientasi');
@@ -69,7 +69,15 @@
 		    {
 		    	$this->db->where('id_orientasi=', $id_orientasi);
 		    }
-		    $this->db->order_by('periode, sequence');
+
+		    if($input_order !== FALSE)
+		    {
+		    	$this->db->order_by('id_orientasi');
+		    }
+		    else
+		    {
+		    	$this->db->order_by('periode, sequence');
+		    }
 	    	return $this->db->get()->result_array();
 	    }
 

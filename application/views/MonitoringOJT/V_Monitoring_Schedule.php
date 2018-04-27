@@ -29,17 +29,38 @@
 								<div class="box-body">
 									<div class="panel-body">
 										<?php
+											foreach ($getTraineeInfo as $pekerjaOJT)
+											{
+										?>
+										<div class="form-group">
+											<label class="control-label col-lg-4">
+												Pekerja
+											</label>
+											<div class="col-lg-4">
+												<input type="text" class="form-control" disabled="" style="width: 100%" value="<?php echo $pekerjaOJT['noind'].' - '.$pekerjaOJT['employee_name'];?>">
+											</div>
+										</div>
+										<?php
+											}
 											$indeks 	=	0;
 										 	foreach ($getSchedule as $manualSchedule)
 										 	{
 										 		$id_proses 		=	$this->general->enkripsi($manualSchedule['id_proses']);
 										 		$id_orientasi	=	$this->general->enkripsi($manualSchedule['id_orientasi']);
 										 		$jadwal 		=	$manualSchedule['tahapan'];
+
+										 		$disabled 		=	'';
+										 		if($manualSchedule['periode']==1 && $manualSchedule['sequence']==1)
+										 		{
+										 			$disabled	=	'disabled';
+										 		}
 										?>
 										<div class="form-group">
-											<label for="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]" class="control-label col-lg-4"><?php echo $jadwal;?></label>
+											<label for="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]" class="control-label col-lg-4">
+												<?php echo $jadwal;?>
+											</label>
 											<div class="col-lg-4">
-												<input type="text" class="form-control MonitoringOJT-daterangepicker-noautoupdateinput" style="text-transform: uppercase; width: 100%" name="txtPenjadwalanManual[<?php echo $indeks;?>]" id="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]">
+												<input type="text" class="form-control MonitoringOJT-daterangepicker" <?php echo $disabled;?> style="text-transform: uppercase; width: 100%" name="txtPenjadwalanManual[<?php echo $indeks;?>]" id="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]" value="<?php echo $manualSchedule['tgl_awal'].' - '.$manualSchedule['tgl_akhir'];?>">
 												<input type="text" class="form-control hidden" name="txtIDProsesPenjadwalan[<?php echo $indeks;?>]" value="<?php echo $id_proses;?>"/>
 												<input type="text" class="form-control hidden" name="txtIDOrientasi[<?php echo $indeks;?>]" value="<?php echo $id_orientasi;?>"/>
 											</div>

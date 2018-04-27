@@ -53,7 +53,10 @@
 							                    	<i class="fa fa-pencil-square-o fa-2x"></i>
 							                    </a>
 											</td>
-											<td style="white-space: nowrap; text-align: center; vertical-align: center"><?php echo $pekerja['noind'];?></td>
+											<td style="white-space: nowrap; text-align: center; vertical-align: center">
+												<b><?php echo $pekerja['noind'];?></b><br/>
+												<?php echo trim($pekerja['employee_name']);?>
+											</td>
 											<td style="white-space: nowrap; text-align: center; vertical-align: center"><?php echo $pekerja['tgl_masuk'];?></td>
 										</tr>
 										<?php

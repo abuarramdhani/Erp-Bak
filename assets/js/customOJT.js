@@ -7,7 +7,7 @@
 				    "showDropdowns": true,
 				    "autoApply": true,
 				    "locale": {
-				        "format": "DD-MM-YYYY",
+				        "format": "YYYY-MM-DD",
 				        "separator": " - ",
 				        "applyLabel": "OK",
 				        "cancelLabel": "Batal",
@@ -49,7 +49,7 @@
 				    "autoApply": true,
 				    "autoUpdateInput" : false,
 				    "locale": {
-				        "format": "DD-MM-YYYY",
+				        "format": "YYYY-MM-DD",
 				        "separator": " - ",
 				        "applyLabel": "OK",
 				        "cancelLabel": "Batal",
