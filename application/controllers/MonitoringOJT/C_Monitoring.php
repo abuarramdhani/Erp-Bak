@@ -100,15 +100,18 @@ class C_Monitoring extends CI_Controller
 
 		$this->M_monitoring->inputPekerjaHistory($inputPekerjaHistory);
 
-		$daftarOrientasi 		= 	$this->M_masterorientasi->ambilDaftarOrientasiTabel();
+		$daftarOrientasi 		= 	$this->M_masterorientasi->ambilDaftarOrientasiTabel(FALSE, 'input_order');
 		$jumlahOrientasi 		=	count($daftarOrientasi);
 		$indeksOrientasi 		= 	1;
 		foreach ($daftarOrientasi as $orientasi)
 		{
+			echo 'Kegiatan <b>'.$orientasi['tahapan'].'</b><br/>';
 			if($indeksOrientasi==1)
 			{
 				$tanggal_awal_proses 	=	$tanggal_masuk_pekerja;
 				$tanggal_akhir_proses	=	$tanggal_masuk_pekerja;
+
+				echo $tanggal_awal_proses.' - '.$tanggal_akhir_proses;
 				$inputProsesJadwal 		=	array
 											(
 												'noind'				=>	$nomor_induk_pekerja,
@@ -149,9 +152,14 @@ class C_Monitoring extends CI_Controller
 					$rujukanOrientasi 		=	$cekAlurOrientasi[0]['tujuan'];
 					$ambilTanggalOrientasiSebelum	=	$this->M_monitoring->ambilTanggalOrientasiSebelum($nomor_induk_pekerja, $rujukanOrientasi);
 					$tanggal_proses_sebelum =	$ambilTanggalOrientasiSebelum[0]['tgl_akhir'];
+
+					echo 'Tanggal Kegiatan Sebelum - '.$tanggal_proses_sebelum.'<br/>';
+
 					$intervalOrientasi 		=	$this->M_monitoring->ambilIntervalOrientasi($orientasi['id_orientasi']);
 					$intervalTanggalAwal 	=	$intervalOrientasi[0]['interval'];
 					$inversKalkulasiTanggal	=	$intervalOrientasi[0]['invert'];
+
+					echo $intervalTanggalAwal.'<br/>';
 
 					$tanggal_proses_sebelum	=	new DateTime($tanggal_proses_sebelum);
 					$intervalTanggalAwal 	=	new DateInterval($intervalTanggalAwal);
@@ -159,6 +167,10 @@ class C_Monitoring extends CI_Controller
 					{
 						$intervalTanggalAwal->invert 	=	1;
 					}
+
+
+					print_r($intervalTanggalAwal).'<br/>';
+
 					$tanggal_proses_sebelum->add($intervalTanggalAwal);
 
 					$tanggal_awal_proses 	=	$tanggal_proses_sebelum->format('Y-m-d');
@@ -171,6 +183,8 @@ class C_Monitoring extends CI_Controller
 
 					$tanggal_awal_orientasi->add($intervalTanggalAkhir);
 					$tanggal_akhir_proses	=	$tanggal_awal_orientasi->format('Y-m-d');
+
+					echo 'Pelaksanaan - '.$tanggal_awal_proses.' - '.$tanggal_akhir_proses;
 
 					$inputProsesJadwal 		=	array
 												(
@@ -280,6 +294,8 @@ class C_Monitoring extends CI_Controller
 																			);
 									$this->M_monitoring->inputProsesPemberitahuanHistory($inputProsesPemberitahuanHistory);
 								}
+
+								
 							}
 							else
 							{
@@ -353,6 +369,7 @@ class C_Monitoring extends CI_Controller
 	{
 		$data 	=	$this->general->loadHeaderandSidemenu('Monitoring OJT - Quick ERP', 'Penjadwalan Manual', 'Monitoring');
 
+		$data['getTraineeInfo']	=	$this->M_monitoring->ambilTabelDaftarPekerjaOJT($this->general->dekripsi($pekerja_id));
 		$data['getSchedule'] 	=	$this->M_monitoring->ambilPenjadwalanManual($this->general->dekripsi($pekerja_id));
 
 		$this->load->view('V_Header',$data);
@@ -405,9 +422,126 @@ class C_Monitoring extends CI_Controller
 				$this->M_monitoring->inputProsesJadwalHistory($inputProsesJadwalHistory);
 			}
 
-			$cekProsesPemberitahuan 	=	$this->M_monitoring->cekProsesPemberitahuan($id_orientasi[$i]);
+			$cekProsesPemberitahuan 	=	$this->M_monitoring->cekProsesPemberitahuan($id_proses[$i]);
 			$cekPemberitahuan 			=	$this->M_monitoring->ambilPemberitahuanOrientasi($id_orientasi[$i]);
-			if((empty($cekProsesPemberitahuan)))
+
+			if(!(empty($cekPemberitahuan)))
+			{
+				if(empty($cekProsesPemberitahuan))
+				{
+					
+				}
+				else
+				{
+					foreach ($cekPemberitahuan as $orientasi_pemberitahuan)
+					{
+						foreach ($cekProsesPemberitahuan as $proses_pemberitahuan)
+						{
+							$id_proses_pemberitahuan 	=	$proses_pemberitahuan['id_proses_pemberitahuan'];
+							if($proses_pemberitahuan['penerima']==$orientasi_pemberitahuan['tujuan'])
+							{
+								$intervalPemberitahuan 	=	'P';
+								if(!(empty($orientasi_pemberitahuan['bulan'])))
+								{
+									$intervalPemberitahuan 	.=	$orientasi_pemberitahuan['bulan'].'M';
+								}
+								else
+								{
+									$intervalPemberitahuan 	.=	'0M';
+								}
+								if(!(empty($orientasi_pemberitahuan['minggu'])))
+								{
+									$intervalPemberitahuan 	.=	$orientasi_pemberitahuan['minggu'].'W';
+								}
+								else
+								{
+									$intervalPemberitahuan 	.=	'0W';
+								}
+								if(!(empty($orientasi_pemberitahuan['hari'])))
+								{
+									$intervalPemberitahuan 	.=	$orientasi_pemberitahuan['hari'].'D';
+								}
+								else
+								{
+									$intervalPemberitahuan 	.=	'0D';
+								}
+
+								$tanggal_akhir_pemberitahuan	=	$tanggal_awal_proses;
+								$tanggal_awal_proses 			=	new DateTime($tanggal_awal_proses);
+								$interval_pemberitahuan 		=	new DateInterval($intervalPemberitahuan);
+
+								if($pemberitahuan['urutan']=='f')
+								{
+									$interval_pemberitahuan->invert 	=	1;
+								}
+
+								$tanggal_awal_proses->add($interval_pemberitahuan);
+								$tanggal_awal_pemberitahuan	=	$tanggal_awal_proses->format('Y-m-d');
+
+								/*if($pemberitahuan['pengulang']=='t')
+								{
+									$rentangTanggalPemberitahuan	=	new DatePeriod
+																		(
+																			new DateTime($tanggal_awal_pemberitahuan),
+																			new DateInterval('P1D'),
+																			new DateTime(date('Y-m-d', strtotime($tanggal_akhir_pemberitahuan.'+1 day')))
+																		);
+									foreach ($rentangTanggalPemberitahuan as $tanggalPemberitahuan)
+									{
+										$tanggal_pemberitahuan 	=	$tanggalPemberitahuan->format('Y-m-d');
+										$inputProsesPemberitahuan	=	array
+																		(
+																			'id_proses'			=>	$id_proses,
+																			'tujuan'			=>	$tujuan,
+																			'tanggal'			=>	$tanggal_pemberitahuan,
+																			'create_timestamp'	=>	$waktuEksekusi,
+																			'create_user'		=>	$user,
+																		);
+										$id_proses_pemberitahuan	=	$this->M_monitoring->inputProsesPemberitahuan($inputProsesPemberitahuan);
+
+										$inputProsesPemberitahuanHistory	=	array
+																				(
+																					'id_proses_pemberitahuan'	=>	$id_proses_pemberitahuan,
+																					'id_proses'					=>	$id_proses,
+																					'tujuan'					=>	$tujuan,
+																					'tanggal'					=>	$tanggal_pemberitahuan,
+																					'type'						=>	'CREATE',
+																					'create_timestamp'			=>	$waktuEksekusi,
+																					'create_user'				=>	$user,
+																				);
+										$this->M_monitoring->inputProsesPemberitahuanHistory($inputProsesPemberitahuanHistory);
+									}
+								}
+								else
+								{
+									$inputProsesPemberitahuan	=	array
+																	(
+																		'id_proses'			=>	$id_proses,
+																		'tujuan'			=>	$tujuan,
+																		'tanggal'			=>	$tanggal_awal_pemberitahuan,
+																		'create_timestamp'	=>	$waktuEksekusi,
+																		'create_user'		=>	$user,
+																	);
+									$id_proses_pemberitahuan	=	$this->M_monitoring->inputProsesPemberitahuan($inputProsesPemberitahuan);
+
+									$inputProsesPemberitahuanHistory	=	array
+																			(
+																				'id_proses_pemberitahuan'	=>	$id_proses_pemberitahuan,
+																				'id_proses'					=>	$id_proses,
+																				'tujuan'					=>	$tujuan,
+																				'tanggal'					=>	$tanggal_awal_pemberitahuan,
+																				'type'						=>	'CREATE',
+																				'create_timestamp'			=>	$waktuEksekusi,
+																				'create_user'				=>	$user,
+																			);
+									$this->M_monitoring->inputProsesPemberitahuanHistory($inputProsesPemberitahuanHistory);
+								}*/
+							}
+						}
+					}
+				}
+			}
+			/*if((empty($cekProsesPemberitahuan)))
 			{
 				foreach ($cekPemberitahuan as $pemberitahuan)
 				{
@@ -510,7 +644,7 @@ class C_Monitoring extends CI_Controller
 						$this->M_monitoring->inputProsesPemberitahuanHistory($inputProsesPemberitahuanHistory);
 					}
 				}
-			}
+			}*/
 		}
 	}
 
