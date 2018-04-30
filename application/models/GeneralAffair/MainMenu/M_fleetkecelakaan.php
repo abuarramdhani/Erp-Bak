@@ -152,12 +152,12 @@ class M_fleetkecelakaan extends CI_Model
         $this->db->query($deleteKecelakaan);
     }
 
-	public function getFleetKendaraan()
+	public function getFleetKendaraan($query_lokasi)
 	{
         $ambilKendaraan     = " select  kdrn.kendaraan_id as kode_kendaraan,
                                         kdrn.nomor_polisi as nomor_polisi
                                 from    ga.ga_fleet_kendaraan as kdrn
-                                where   kdrn.end_date='9999-12-12 00:00:00';";
+                                where   kdrn.end_date='9999-12-12 00:00:00' $query_lokasi;";
         $query = $this->db->query($ambilKendaraan);
 
         return $query->result_array();

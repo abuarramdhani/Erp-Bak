@@ -109,11 +109,15 @@ class M_fleetcetakspk extends CI_Model
         $this->db->delete('ga.ga_fleet_cetak_spk_detail');
     }
 
-	public function getFleetKendaraan()
+	public function getFleetKendaraan($query_lokasi)
 	{
-		$query = $this->db->get('ga.ga_fleet_kendaraan');
+		$ambilKendaraan     = " select  kdrn.kendaraan_id as kendaraan_id,
+                                        kdrn.nomor_polisi as nomor_polisi
+                                from    ga.ga_fleet_kendaraan as kdrn
+                                where   kdrn.end_date='9999-12-12 00:00:00' $query_lokasi;";
+        $query = $this->db->query($ambilKendaraan);
 
-		return $query->result_array();
+        return $query->result_array();
 	}
 
 
