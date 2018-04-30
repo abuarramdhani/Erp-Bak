@@ -83,7 +83,13 @@ class C_FleetPicKendaraan extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		/* HEADER DROPDOWN DATA */
-		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan();
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+
+		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan($query_lokasi);
 		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
 		$data['DaftarSeksi'] 	= $this->M_fleetpickendaraan->getDaftarSeksi();
 
@@ -148,6 +154,7 @@ class C_FleetPicKendaraan extends CI_Controller
 	public function update($id)
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'PIC Kendaraan';
 		$data['Menu'] = 'Master';
@@ -171,9 +178,14 @@ class C_FleetPicKendaraan extends CI_Controller
 		/* LINES DATA */
 
 		/* HEADER DROPDOWN DATA */
-		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan();
-		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
 
+		$data['FleetKendaraan'] = $this->M_fleetpickendaraan->getFleetKendaraan($query_lokasi);
+		$data['DaftarNama']		= $this->M_fleetpickendaraan->getDaftarNama();
 		$data['DaftarSeksi'] 	= $this->M_fleetpickendaraan->getDaftarSeksi();
 
 

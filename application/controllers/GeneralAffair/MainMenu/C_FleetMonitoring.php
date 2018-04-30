@@ -37,6 +37,7 @@ class C_FleetMonitoring extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Monitoring';
 		$data['Menu'] = 'Monitoring';
@@ -47,7 +48,12 @@ class C_FleetMonitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetKendaraan'] = $this->M_fleetmonitoring->getFleetKendaraan();		
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+		$data['FleetKendaraan'] = $this->M_fleetmonitoring->getFleetKendaraan($query_lokasi);		
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

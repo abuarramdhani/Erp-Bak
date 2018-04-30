@@ -80,7 +80,12 @@ class C_FleetKecelakaan extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		/* HEADER DROPDOWN DATA */
-		$data['FleetKendaraan'] = $this->M_fleetkecelakaan->getFleetKendaraan();
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+		$data['FleetKendaraan'] = $this->M_fleetkecelakaan->getFleetKendaraan($query_lokasi);
 		$data['EmployeeAll'] = $this->M_fleetkecelakaan->getEmployeeAll();
 
 		/* LINES DROPDOWN DATA */
@@ -224,6 +229,7 @@ class C_FleetKecelakaan extends CI_Controller
 	public function update($id)
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->userid;
 
 		$data['Title'] = 'Kecelakaan';
 		$data['Menu'] = 'Proses';
@@ -248,7 +254,12 @@ class C_FleetKecelakaan extends CI_Controller
 		$data['FleetKecelakaanDetail'] = $this->M_fleetkecelakaan->getFleetKecelakaanDetail($plaintext_string);
 
 		/* HEADER DROPDOWN DATA */
-		$data['FleetKendaraan'] = $this->M_fleetkecelakaan->getFleetKendaraan();
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+		$data['FleetKendaraan'] = $this->M_fleetkecelakaan->getFleetKendaraan($query_lokasi);
 		$data['EmployeeAll'] = $this->M_fleetkecelakaan->getEmployeeAll();
 
 		/* LINES DROPDOWN DATA */
