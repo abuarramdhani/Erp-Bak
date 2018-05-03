@@ -201,26 +201,26 @@ function buatPDF() {
     window.open(baseurl+'MonitoringCBO/C_MonitoringCBO/buatPDF/'+tgl+'/'+shift+'/'+line+'/'+komp, '_blank');
 }
 
-$('#komp_cbo').select2({
-    ajax:{
-    type:'POST',
-    dataType:'json',
-    data:function(params){
-    var queryParameters={   
-    term:params.term
-    }
-    return queryParameters;
-    },
-    url:baseurl+'ManufacturingOperation/ProductionObstacles/ajax/select2Induk',
-    processResults:function(data){
-    return {    
-    results: $.map(data, function(obj) {
-    return { id:obj.id, text:obj.induk};
-    })
-    }
-    }
-    }
-    });
+// $('#komp_cbo').select2({
+//     ajax:{
+//     type:'POST',
+//     dataType:'json',
+//     data:function(params){
+//     var queryParameters={   
+//     term:params.term
+//     }
+//     return queryParameters;
+//     },
+//     url:baseurl+'ManufacturingOperation/ProductionObstacles/ajax/select2Induk',
+//     processResults:function(data){
+//     return {    
+//     results: $.map(data, function(obj) {
+//     return { id:obj.id, text:obj.induk};
+//     })
+//     }
+//     }
+//     }
+//     });
 
 function getCBOGrafik() {
     var tanggal1 = $('#tanggal_awal').val();
