@@ -77,14 +77,24 @@ $(document).ready(function(){
 
 	$('#idPencarian_prs').change(function(){
 		var CekMenu = $('#idPencarian_prs').val();
-
 		if(CekMenu=='monitoring') {
 			$('#idTglBerangkat_prs').attr('disabled','disabled');
 		}else{
-			$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+			if($('input#actDate').is(':checked')){
+				$('#idTglBerangkat_prs').attr('disabled','disabled');
+			}else{
+				$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+			}
 		}
 	});
 
+	$("#actDate").on('change', function(){
+        if(this.checked){
+        	$('#idTglBerangkat_prs').attr('disabled','disabled');
+        }else{
+        	$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+        }
+    });
 });
 
 // 	-------Presensi Catering--------------------------------------------start

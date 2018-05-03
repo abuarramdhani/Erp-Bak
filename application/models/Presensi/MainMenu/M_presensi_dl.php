@@ -101,7 +101,7 @@ class M_presensi_dl extends CI_Model
                                 min(td.wkt_realisasi)
                             else
                                 (
-                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tgl_realisasi)
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=min(td.tgl_realisasi)
                                 )
                         end
                     ),
@@ -116,7 +116,7 @@ class M_presensi_dl extends CI_Model
                                 max(td.wkt_realisasi)
                             else
                                 (
-                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tgl_realisasi)
+                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=max(td.tgl_realisasi)
                                 )
                         end
                     )
@@ -254,6 +254,23 @@ group by td.spdl_id,td.noind,td.kodesie");
                                             where hrd_khs.tseksi.kodesie=hrd_khs.tpribadi.kodesie) as seksi
                                     from    hrd_khs.tpribadi $where $condition");
         return $sql->result_array();
+    }
+
+    public function editSDPL($spdl){
+        $sqlserver = $this->load->database('personalia',true);
+        $sql = $sqlserver->query("select * from \"Presensi\".tpresensi_dl where spdl_id='$spdl' order by stat asc");
+        return $sql->result_array();
+    }
+
+    public function dataPekerja($id){
+        $sqlserver = $this->load->database('personalia', true);
+        $sql = $sqlserver->query("select * from hrd_khs.tpribadi where noind='$id'");
+        return $sql->row();
+    }
+
+    public function updateRealisasi($spdl,$tanggal,$waktu,$stat){
+        $sqlserver = $this->load->database('personalia', true);
+        $sql = $sqlserver->query("update \"Presensi\".tpresensi_dl set tgl_realisasi='$tanggal',wkt_realisasi='$waktu' where spdl_id='$spdl' and stat='$stat'");
     }
 
 }

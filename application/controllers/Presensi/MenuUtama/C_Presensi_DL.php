@@ -189,4 +189,47 @@ private function klausa_where($noind,$tanggal1,$tanggal2,$dept,$bidang,$unit,$se
         return $klausa_where;
 }
 
+public function editTanggalRealisasi($spdl){
+	$this->checkSession();
+	$user_id = $this->session->userid;
+	
+	$id = $this->input->get('id');
+
+	$data['Menu'] = 'Presensi';
+	$data['SubMenuOne'] = 'Presensi DL';
+	$data['SubMenuTwo'] = 'Presensi DL';
+	$data['SubMenuOne'] = 'Presensi DL';
+	$data['Title'] = 'Monitoring Presensi Dinas Luar';
+	
+	$data['item_spdl'] = $this->M_presensi_dl->editSDPL($spdl);
+	$data['item_pekerja'] = $this->M_presensi_dl->dataPekerja($id);
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+	$data['spdl'] = $spdl;
+	$data['id'] = $id;
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('Presensi/MainMenu/PresensiDL/V_EditRealisasi', $data);
+	$this->load->view('V_Footer',$data);
+}
+
+public function actEditTanggalRealisasi($spdl){
+	$tanggal = $this->input->post('tglRealisasi');
+	$waktu = $this->input->post('wktRealisasi');
+	$id = $this->input->get('id');
+	$length = count($tanggal);
+	for($i=0;$i<$length;$i++){
+		if(($i % 2) == 0){
+          $stat = 0;
+        }else{
+          $stat = 1;
+        }
+		$update = $this->M_presensi_dl->updateRealisasi($spdl,$tanggal[$i],$waktu[$i],$stat);
+	}
+	redirect(site_url('Presensi/PresensiDL/editTanggalRealisasi/'.$spdl."?id=".$id));
+    exit;
+}
+
 }
