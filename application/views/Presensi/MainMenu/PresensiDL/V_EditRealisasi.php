@@ -29,7 +29,7 @@
                             <div class="row" style="margin: 10px 10px">
                                 <div class="form-group">
                                   <div class="col-sm-3">
-                                      <?php echo "<b style='font-size:16px;'>".$item_pekerja->nama." (".$item_pekerja->noind.")</b>"; ?>
+                                      <?php echo "<b style='font-size:16px;'>".$item_pekerja->nama." <br>(".$item_pekerja->noind.")</b>"; ?>
                                   </div>
                                 </div>
                             </div>
@@ -67,8 +67,13 @@
                                 </div>
                                  <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
-                                      <div class="col-sm-3">
+                                      <div class="col-sm-2">
+                                      </div>
+                                      <div class="col-sm-2">
                                         <input type="submit" class="btn btn-primary" id="idSubmit_prs" value="Update" style="width: 100%"></input>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <a class="btn btn-warning" target="blank_" href="http://personalia.quick.com/cronjob/postgres/dinas-luar-online/cronjob.dinas.luar.online.realisasi_manual.php?spdl=<?php echo $spdl; ?>&id=<?php echo $item_pekerja->noind; ?>" style="width: 100%">Transfer</a>
                                       </div>
                                     </div> 
                                 </div>

@@ -81,18 +81,18 @@ $(document).ready(function(){
 			$('#idTglBerangkat_prs').attr('disabled','disabled');
 		}else{
 			if($('input#actDate').is(':checked')){
-				$('#idTglBerangkat_prs').attr('disabled','disabled');
-			}else{
 				$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+			}else{
+				$('#idTglBerangkat_prs').attr('disabled','disabled');
 			}
 		}
 	});
 
 	$("#actDate").on('change', function(){
         if(this.checked){
-        	$('#idTglBerangkat_prs').attr('disabled','disabled');
-        }else{
         	$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
+        }else{
+        	$('#idTglBerangkat_prs').attr('disabled','disabled');
         }
     });
 });
