@@ -8,11 +8,6 @@ $('#tabletipe').DataTable({
     buttons: ['excel', 'pdf']
 });
 
-
-$('#credit').DataTable({
-    dom: 'frtip'
-});
-
 $('#table_report').DataTable({
     dom: ''
 });
