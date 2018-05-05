@@ -101,7 +101,7 @@ class M_presensi_dl extends CI_Model
                                 min(td.wkt_realisasi)
                             else
                                 (
-                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=min(td.tgl_realisasi)
+                                    select wkt_realisasi from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=min(td.tgl_realisasi)
                                 )
                         end
                     ),
@@ -116,7 +116,7 @@ class M_presensi_dl extends CI_Model
                                 max(td.wkt_realisasi)
                             else
                                 (
-                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=max(td.tgl_realisasi)
+                                    select wkt_realisasi from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=max(td.tgl_realisasi)
                                 )
                         end
                     )
