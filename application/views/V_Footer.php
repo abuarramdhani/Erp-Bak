@@ -89,6 +89,8 @@
 	<script src="<?php echo base_url('assets/js/customMPK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPPO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPC.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customPOB.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMC.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
@@ -161,22 +163,7 @@
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
-	<?php
-		if(isset($complexTextAreaCKEditor))
-		{
-	?>
-	<script src="<?php echo base_url('assets/plugins/ckeditor-full/ckeditor/ckeditor.js');?>"></script>
-	<?php
-		}
-		else
-		{
-	?>
 	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
-	<?php
-		}
-	?>
-
-	<!-- <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/iCheck/icheck.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.toaster/jquery.toaster.js');?>"></script>
 

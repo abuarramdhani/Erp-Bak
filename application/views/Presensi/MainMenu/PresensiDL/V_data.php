@@ -67,11 +67,12 @@
                                     <th class="text-center">No</th>
                                     <th class="text-center">Noind</th>
                                     <th class="text-center">Kodesie</th>
+                                    <th class="text-center">SPDL</th>
                                     <th class="text-center">Tanggal Scan</th>
                                     <th class="text-center">Tanggal Realisasi</th>
                                     <th class="text-center">Jml DL</th>
                                     <th class="text-center">Jml TIM*</th>
-                                    <th class="text-center">File</th>
+                                    <th class="text-center">Support</th>
                                   </thead>
                                   <tbody>
                                     <?php 
@@ -83,11 +84,15 @@
                                                 <td class='text-center'>".$no."</td>
                                                 <td class='text-center'>".$item['noind']."</td>
                                                 <td class='text-center'>".$item['kodesie']."</td>
+                                                <td class='text-center'>".$item['spdl_id']."</td>
                                                 <td class='text-left'>".$item['tanggal']."</td>
                                                 <td class='text-left'>".$item['tanggal_realisasi']."</td>
                                                 <td class='text-center'>".$item['jml_dl']."</td>
                                                 <td class='text-center'>".$item['point_']."</td>
-                                                <td class='text-center'><a href='http://quick.com/aplikasi/dinas-luar-online/pekerja/C_PKJ/surat_tugas_pdf?spdlid=".$item['spdl_id']."' target='blank'>Surat Tugas</a></td>
+                                                <td class='text-center'>
+                                                    <a class='btn bg-maroon btn-xs' href='http://quick.com/aplikasi/dinas-luar-online/pekerja/C_PKJ/surat_tugas_pdf?spdlid=".$item['spdl_id']."' target='blank'><span class='fa fa-file-pdf-o'></span></a>
+                                                    <a class='btn bg-navy btn-xs' href='".site_url('Presensi/PresensiDL/editTanggalRealisasi/'.rtrim($item['spdl_id'])."?id=".$item['noind'])."' target='blank'><span class='fa fa-edit'></span></a>
+                                                </td>
                                             </tr>
                                           ";
                                         }

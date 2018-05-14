@@ -93,10 +93,16 @@ class C_FleetRekapPajak extends CI_Controller
 
 	public function ambilData()
 	{
+		$lokasi = 	$this->session->kode_lokasi_kerja;
 		$tahun 	= 	$this->input->post('tahun');
 
-		$data['totalPajak'] 		= $this->M_fleetrekappajak->rekapTotalPajak($tahun); 		
-		$data['frekuensiPajak'] 	= $this->M_fleetrekappajak->rekapFrekuensiPajak($tahun);
+		if ($lokasi == '01') {
+			$data['totalPajak'] 		= $this->M_fleetrekappajak->rekapTotalPajak($tahun); 		
+			$data['frekuensiPajak'] 	= $this->M_fleetrekappajak->rekapFrekuensiPajak($tahun);
+		}else{
+			$data['totalPajak'] 		= $this->M_fleetrekappajak->rekapTotalPajakCabang($tahun,$lokasi); 		
+			$data['frekuensiPajak'] 	= $this->M_fleetrekappajak->rekapFrekuensiPajakCabang($tahun,$lokasi);
+		}
 
 		echo json_encode($data);
 	}

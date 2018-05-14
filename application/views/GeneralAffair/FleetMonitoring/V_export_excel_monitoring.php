@@ -17,7 +17,7 @@ $styleArray = array(
 //UNTUK CETAK KE XLS--------------------------------------------------------------------------------------------
 	// Rename worksheet
 	$objPHPExcel->getActiveSheet()->setTitle('Sheet1');
-	$objPHPExcel->getActiveSheet()->getStyle('A:E')->applyFromArray($styleArray);
+	$objPHPExcel->getActiveSheet()->getStyle('A:D')->applyFromArray($styleArray);
 
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);

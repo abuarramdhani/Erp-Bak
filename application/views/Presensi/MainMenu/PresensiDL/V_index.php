@@ -58,9 +58,12 @@
                                  <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
                                       <div class="col-sm-3">
-                                        <input class="form-control RekapAbsensi-daterangepicker" id="idTglBerangkat_prs" name="txtTglBerangkat_prs" style="width: 100%"></input>
+                                        <input class="form-control RekapAbsensi-daterangepicker" disabled="disabled" id="idTglBerangkat_prs" name="txtTglBerangkat_prs" style="width: 100%"></input>
                                       </div>
-                                      <div class="col-sm-3">
+                                      <div class="col-sm-2">
+                                          <input style="width: 20px;height: 20px;" type="checkbox" id="actDate"><b>Date</b></input>
+                                       </div>
+                                       <div class="col-sm-1">
                                        </div>
                                       <div class="col-sm-6">
                                           <select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbUnit" style="width:100%" name="cmbUnit">

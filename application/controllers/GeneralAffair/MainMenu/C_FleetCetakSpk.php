@@ -35,6 +35,7 @@ class C_FleetCetakSpk extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Fleet Cetak Spk';
 		$data['Menu'] = 'Proses';
@@ -45,8 +46,12 @@ class C_FleetCetakSpk extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetCetakSpk'] = $this->M_fleetcetakspk->getFleetCetakSpk();
-
+		if ($lokasi == '01') {
+			$data['FleetCetakSpk'] = $this->M_fleetcetakspk->getFleetCetakSpk();
+		}else{
+			$data['FleetCetakSpk'] = $this->M_fleetcetakspk->getFleetCetakSpkCabang($lokasi);
+		}
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('GeneralAffair/FleetCetakSpk/V_index', $data);
@@ -57,6 +62,7 @@ class C_FleetCetakSpk extends CI_Controller
 	public function create()
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Fleet Cetak Spk';
 		$data['Menu'] = 'Proses';
@@ -68,7 +74,12 @@ class C_FleetCetakSpk extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		/* HEADER DROPDOWN DATA */
-		$data['FleetKendaraan'] = $this->M_fleetcetakspk->getFleetKendaraan();
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+		$data['FleetKendaraan'] = $this->M_fleetcetakspk->getFleetKendaraan($query_lokasi);
 		$data['FleetMaintenanceKategori'] = $this->M_fleetcetakspk->getFleetMaintenanceKategori();
 		$data['FleetBengkel'] = $this->M_fleetcetakspk->getFleetBengkel();
 
@@ -91,6 +102,7 @@ class C_FleetCetakSpk extends CI_Controller
 				'creation_by' => $this->session->userid,
 				'id_bengkel' => $this->input->post('cmbIdBengkelHeader'),
 				'no_surat' => $this->input->post('txtNoSuratHeader'),
+				'kode_lokasi_kerja' => $lokasi
     		);
 			$this->M_fleetcetakspk->setFleetCetakSpk($data);
 			$header_id = $this->db->insert_id();
@@ -118,6 +130,7 @@ class C_FleetCetakSpk extends CI_Controller
 	public function update($id)
 	{
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Fleet Cetak Spk';
 		$data['Menu'] = 'Proses';
@@ -140,6 +153,11 @@ class C_FleetCetakSpk extends CI_Controller
 		/* LINES DATA */
 
 		/* HEADER DROPDOWN DATA */
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
 		$data['FleetKendaraan'] = $this->M_fleetcetakspk->getFleetKendaraan();
 		$data['FleetMaintenanceKategori'] = $this->M_fleetcetakspk->getFleetMaintenanceKategori();
 		$data['FleetBengkel'] = $this->M_fleetcetakspk->getFleetBengkel();

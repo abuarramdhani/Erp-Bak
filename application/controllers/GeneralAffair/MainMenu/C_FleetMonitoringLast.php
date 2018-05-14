@@ -37,6 +37,7 @@ class C_FleetMonitoringLast extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Monitoring Proses Terakhir';
 		$data['Menu'] = 'Monitoring';
@@ -47,7 +48,12 @@ class C_FleetMonitoringLast extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetKendaraan'] = $this->M_fleetmonitoringlast->getFleetKendaraan();		
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+		$data['FleetKendaraan'] = $this->M_fleetmonitoringlast->getFleetKendaraan($query_lokasi);		
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -57,36 +63,59 @@ class C_FleetMonitoringLast extends CI_Controller
 
 	public function prosesNomorPolisi()
 	{
+		$lokasi			=	$this->session->kode_lokasi_kerja;
 		$filter 		= 	$this->input->post('berdasarkan');
 		$nomorPolisi	= 	$this->input->post('nomorpolisi');
 
-		$data['monitoringNomorPolisi'] 	= 	$this->M_fleetmonitoringlast->monitoringNomorPolisi($nomorPolisi);
+		if ($lokasi == '01') {
+			$data['monitoringNomorPolisi'] 	= 	$this->M_fleetmonitoringlast->monitoringNomorPolisi($nomorPolisi);
+		}else{
+			$data['monitoringNomorPolisi'] 	= 	$this->M_fleetmonitoringlast->monitoringNomorPolisi($nomorPolisi,$lokasi);
+		}
+		
 		// $data['monitoring'] 
 		echo json_encode($data);
 	}
 
 	public function prosesKategori()
 	{
+		$lokasi 		=	$this->session->kode_lokasi_kerja;
 		$filter 		= 	$this->input->post('berdasarkan');
 		$kategori 		= 	$this->input->post('kategori');
 
         $data['monitoringKategori']         =   null;
 
 		if($kategori == 'A')
-		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriPajak();
+		{	
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriPajak();
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriPajakCabang($lokasi);
+			}
 		}
 		elseif($kategori == 'B')
-		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriKIR();
+		{	
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriKIR();
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriKIRCabang($lokasi);
+			}
 		}
 		elseif($kategori == 'C')
-		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriMaintenanceKendaraan();
+		{	
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriMaintenanceKendaraan();
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriMaintenanceKendaraanCabang($lokasi);
+			}
 		}
 		elseif($kategori == 'D')
-		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriKecelakaan();
+		{	
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriKecelakaan();
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoringlast->monitoringKategoriKecelakaanCabang($lokasi);
+			}
 		}
 
 		echo json_encode($data);

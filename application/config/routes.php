@@ -1576,5 +1576,47 @@ $route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
 $route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
 $route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
 
+
+//-------------------------------------Hambatan Produksi-------------------------------------------------
+$route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
+$route['ManufacturingOperation/ProductionObstacles/master/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master/$1';
+$route['ManufacturingOperation/ProductionObstacles/ajax'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax';
+$route['ManufacturingOperation/ProductionObstacles/ajax/(:any)'] = 'ManufacturingOperation/ProductionObstacles/Ajax/C_Ajax/$1';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanMesin/$1';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanNonMesin/index';
+$route['ManufacturingOperation/ProductionObstacles/Hambatan/non-mesin/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_HambatanNonMesin/$1';
+
+
 $route['Presensi/PresensiCatering']				=	'Presensi/MenuUtama/C_Presensi_Catering';
 $route['Presensi/PresensiCatering/(:any)']		=	'Presensi/MenuUtama/C_Presensi_Catering/$1';
+
+//------------------------------------ Monitoring CBO ----------------------------------------
+$route['PaintingCbo'] = 'MonitoringCBO/C_MonitoringCBO';
+
+$route['CBOPainting/Setup/Komponen'] = 'MonitoringCBO/C_MonitoringCBO/Komponen';
+$route['CBOPainting/Setup/Komponen/New'] = 'MonitoringCBO/C_MonitoringCBO/NewKomponen';
+$route['CBOPainting/Setup/Komponen/Add'] = 'MonitoringCBO/C_MonitoringCBO/insertKomponen';
+$route['CBOPainting/Setup/Komponen/Edit/(:any)'] = 'MonitoringCBO/C_MonitoringCBO/EditKomponen/$1';
+$route['CBOPainting/Setup/Komponen/update'] = 'MonitoringCBO/C_MonitoringCBO/UpdateKomponen';
+$route['CBOPainting/Setup/Komponen/Delete/(:any)'] = 'MonitoringCBO/C_MonitoringCBO/deleteKomponen/$1';
+
+$route['CBOPainting/Setup/Tipe'] = 'MonitoringCBO/C_MonitoringCBO/Tipe';
+$route['CBOPainting/Setup/Tipe/New'] = 'MonitoringCBO/C_MonitoringCBO/NewTipe';
+$route['CBOPainting/Setup/Tipe/Add'] = 'MonitoringCBO/C_MonitoringCBO/insertTipe';
+$route['CBOPainting/Setup/Tipe/Edit/(:any)'] = 'MonitoringCBO/C_MonitoringCBO/EditTipe/$1';
+$route['CBOPainting/Setup/Tipe/update'] = 'MonitoringCBO/C_MonitoringCBO/UpdateTipe';
+$route['CBOPainting/Setup/Tipe/Delete/(:any)'] = 'MonitoringCBO/C_MonitoringCBO/deleteTipe/$1';
+
+$route['CBOPainting/CBO/Input'] = 'MonitoringCBO/C_MonitoringCBO/CBO_Input';
+$route['CBOPainting/CBO/Regen'] = 'MonitoringCBO/C_MonitoringCBO/regen';
+
+$route['CBOPainting/CBO/Grafik'] = 'MonitoringCBO/C_MonitoringCBO/CBO_Grafik';
+$route['CBOPainting/CBO/Report'] = 'MonitoringCBO/C_MonitoringCBO/CBO_Report';
+$route['CBOPainting/CBO/cek_cbo'] = 'MonitoringCBO/C_MonitoringCBO/cek_cbo';
+$route['CBOPainting/CBO/Edit'] = 'MonitoringCBO/C_MonitoringCBO/cbo_edit';
+
+$route['CBOPainting/CBO/SearchReport'] = 'MonitoringCBO/C_MonitoringCBO/searchReport';
+$route['CBOPainting/CBO/ReportExcel'] = 'MonitoringCBO/C_MonitoringCBO/exportReport';
+$route['CBOPainting/CBO/getGrafik'] = 'MonitoringCBO/C_MonitoringCBO/grafik';
+

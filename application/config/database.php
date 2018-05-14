@@ -109,7 +109,7 @@ $db['oracle'] = array(
 
 $db['mssql'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.168.33:1433',
+	'hostname' => '192.168.6.20:1433',
 	'username' => 'sa',
 	'password' => 'sa',
 	'database' => '',

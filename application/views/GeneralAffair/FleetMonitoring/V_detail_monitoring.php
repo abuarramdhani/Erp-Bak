@@ -9,7 +9,7 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/FleetJenisKendaraan');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('GeneralAffair/FleetMonitoring');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -23,6 +23,10 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
+                                <form method="POST" action="<?php echo site_url('GeneralAffair/FleetMonitoring/cetakExcelMonitoringKendaraanDetail');?>">
+                                    <input type="hidden" name="PeriodeMonitoringDetail" id="PeriodeMonitoringDetail" value="<?php echo $tgl;?>">
+                                    <button type="submit" class="btn btn-default btn-sm" style="float:right;margin-right:1%;margin-top:0%;"><i class="icon-print icon-2x"></i></button>
+                                </form>  
                             </div>
                             <div class="box-body">
                                 periode : <?php echo $tgl;?>

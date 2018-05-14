@@ -31,6 +31,28 @@ class M_fleetrekapkecelakaan extends CI_Model
         return $query->result_array();
       }  
 
+    public function rekapTotalKecelakaanCabang($tahun,$lokasi)
+    {
+        $query = $this->db->query("select      tblbulan.angka,
+                                                    tblbulan.nama_bulan as bulan,
+                                                    (
+                                                        select  coalesce((sum(kecelakaan.biaya_pekerja)+sum(kecelakaan.biaya_perusahaan)),0)
+                                                        from    ga.ga_fleet_kecelakaan as kecelakaan
+                                                        where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
+                                                                and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
+                                                                and     kecelakaan.end_date='9999-12-12 00:00:00'
+                                                                and     kecelakaan.kode_lokasi_kerja='$lokasi'
+                                                    ) as total_biaya
+                                        from        (
+                                                        select  angka.* as bulan_angka,
+                                                                to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                                        from    generate_series(1,12) as angka  
+                                                    ) as tblbulan
+                                        group by    angka, bulan
+                                        order by    angka");
+        return $query->result_array();
+    }
+
     public function rekapFrekuensiKecelakaan($tahun)
       {
         $frekuensiKecelakaan = "    select      tblbulan.angka,
@@ -52,6 +74,28 @@ class M_fleetrekapkecelakaan extends CI_Model
         $query=$this->db->query($frekuensiKecelakaan);
         return $query->result_array();
       }  
+
+    public function rekapFrekuensiKecelakaanCabang($tahun,$lokasi)
+    {
+        $query = $this->db->query("select      tblbulan.angka,
+                                                tblbulan.nama_bulan as bulan,
+                                                (
+                                                    select  coalesce(count(kecelakaan.*),0)
+                                                    from    ga.ga_fleet_kecelakaan as kecelakaan
+                                                    where   extract(month from kecelakaan.tanggal_kecelakaan)=tblbulan.angka
+                                                            and     extract(year from kecelakaan.tanggal_kecelakaan)='$tahun'
+                                                            and     kecelakaan.end_date='9999-12-12 00:00:00'
+                                                            and     kecelakaan.kode_lokasi_kerja='$lokasi'
+                                                ) as total_frekuensi
+                                    from        (
+                                                    select  angka.* as bulan_angka,
+                                                            to_char(to_timestamp(angka::text, 'MM'), 'Month') as nama_bulan
+                                                    from    generate_series(1,12) as angka  
+                                                ) as tblbulan
+                                    group by    angka, bulan
+                                    order by    angka");
+        return $query->result_array();
+    }
 
     public function dropdownTahun()
     {

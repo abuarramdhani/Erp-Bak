@@ -1233,8 +1233,8 @@ $(document).ready(function(){
 			url:baseurl+"ADMPelatihan/Report/GetTrainingPrtcp/"+schid,
 			success:function(result)
 			{
-				$('#showModPar table tbody').html(result);
 				$('div#showModPar').modal('show');
+				$('#showModPar table tbody').html(result);
 			}
 		});
 	}

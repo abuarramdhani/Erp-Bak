@@ -31,25 +31,19 @@
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-1 control-label">Seksi</label>
-								<div class="col-lg-6">
+								<div class="col-lg-4">
 									<select name="slcReportSection" class="form-control js-slcReportSection" id="slcReportSection">
 									</select>
 								</div>
 								<label class="col-lg-1 control-label">Tahun</label>
 								<div class="col-lg-2">
 									<div class="form-group">
-							            <div class='input-group date'>
-							                <select class="form-control SlcRuang" name="slcTahun" data-placeholder="Tahun" required>
-												<option></option>
-												<?php foreach($tahunTrain as $tt){?>
-												<option value="<?php echo $tt['tahun']; ?>"><?php echo $tt['tahun']; ?></option>
-												<?php }?>
-											</select>
-							                <span class="input-group-addon">
-							                    <span class="glyphicon glyphicon-calendar">
-							                    </span>
-							                </span>
-							            </div>
+						                <select class="form-control SlcRuang" name="slcTahun" data-placeholder="Tahun" required>
+											<option></option>
+											<?php foreach($tahunTrain as $tt){?>
+											<option value="<?php echo $tt['tahun']; ?>"><?php echo $tt['tahun']; ?></option>
+											<?php }?>
+										</select>
 							        </div>
 								</div>
 								<div class="col-lg-2">

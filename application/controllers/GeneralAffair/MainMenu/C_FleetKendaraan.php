@@ -39,6 +39,7 @@ class C_FleetKendaraan extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Kendaraan';
 		$data['Menu'] = 'Master';
@@ -51,7 +52,12 @@ class C_FleetKendaraan extends CI_Controller
 
 		$data['kodesie'] = $this->session->kodesie;		
 
-		$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan();
+		if ($lokasi == '01') {
+			$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraan();
+		}else{
+			$data['FleetKendaraan'] 		= $this->M_fleetkendaraan->getFleetKendaraanCabang($lokasi);
+		}
+		
 		$data['FleetKendaraanDeleted']	= $this->M_fleetkendaraan->getFleetKendaraanDeleted();
 		foreach ($data['FleetKendaraan'] as $row) {
 			if(!file_exists(FCPATH."assets/upload/qrcodeGA/".$row['nomor_polisi'].".png")){
@@ -74,6 +80,7 @@ class C_FleetKendaraan extends CI_Controller
 	{
 		date_default_timezone_set('Asia/Jakarta');
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Kendaraan';
 		$data['Menu'] = 'Master';
@@ -210,7 +217,8 @@ class C_FleetKendaraan extends CI_Controller
 				'start_date' 			=> date('Y-m-d H:i:s'),
 				'end_date'				=> '9999-12-12 00:00:00',
 				'creation_date' 		=> date('Y-m-d H:i:s'),
-				'created_by' 			=> $this->session->userid
+				'created_by' 			=> $this->session->userid,
+				'kode_lokasi_kerja'		=> $lokasi
     		);
 
 

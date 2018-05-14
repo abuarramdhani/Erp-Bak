@@ -48,6 +48,24 @@ class M_fleetpajak extends CI_Model
     	return $query->result_array();
     }
 
+    public function getFleetPajakCabang($lokasi)
+    {
+        $query = $this->db->query("select  pjk.pajak_id as kode_pajak,
+                                        kdrn.nomor_polisi as nomor_polisi,
+                                        pjk.kendaraan_id as kode_kendaraan,
+                                        to_char(pjk.tanggal_pajak, 'DD-MM-YYYY') as tanggal_pajak,
+                                        concat_ws(' - ', to_char(pjk.periode_awal_pajak, 'DD-MM-YYYY'), to_char(periode_akhir_pajak, 'DD-MM-YYYY')) as periode_pajak,
+                                        pjk.biaya as biaya,
+                                        to_char(pjk.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                        to_char(pjk.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                from    ga.ga_fleet_pajak as pjk
+                                        join    ga.ga_fleet_kendaraan as kdrn
+                                            on  kdrn.kendaraan_id=pjk.kendaraan_id
+                                where   pjk.kode_lokasi_kerja='$lokasi'
+                                        and pjk.end_date='9999-12-12 00:00:00'");
+        return $query->result_array();
+    }
+
     public function getFleetPajakDeleted()
     {
         $ambilPajakDeleted  = " select  pjk.pajak_id as kode_pajak,
@@ -87,12 +105,12 @@ class M_fleetpajak extends CI_Model
         $this->db->query($deletePajak);
     }
 
-	public function getFleetKendaraan()
+	public function getFleetKendaraan($query_lokasi)
 	{
         $ambilKendaraan = "     select  kdrn.kendaraan_id as kode_kendaraan,
                                         kdrn.nomor_polisi as nomor_polisi
                                 from    ga.ga_fleet_kendaraan as kdrn
-                                where   kdrn.end_date='9999-12-12 00:00:00';";
+                                where   kdrn.end_date='9999-12-12 00:00:00' $query_lokasi;";
 
 		$query = $this->db->query($ambilKendaraan);
 

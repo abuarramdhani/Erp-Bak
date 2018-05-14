@@ -37,6 +37,7 @@ class C_FleetMonitoring extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Monitoring';
 		$data['Menu'] = 'Monitoring';
@@ -47,7 +48,12 @@ class C_FleetMonitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['FleetKendaraan'] = $this->M_fleetmonitoring->getFleetKendaraan();		
+		if ($lokasi == '01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = " and kdrn.kode_lokasi_kerja='$lokasi'";
+		}
+		$data['FleetKendaraan'] = $this->M_fleetmonitoring->getFleetKendaraan($query_lokasi);		
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -57,16 +63,31 @@ class C_FleetMonitoring extends CI_Controller
 
 	public function prosesNomorPolisi()
 	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
+
 		$filter 		= 	$this->input->post('berdasarkan');
 		$nomorPolisi	= 	$this->input->post('nomorpolisi');
 
-		$data['monitoringNomorPolisi'] 	= 	$this->M_fleetmonitoring->monitoringNomorPolisi($nomorPolisi);
+		if ($lokasi == '01') {
+			$data['monitoringNomorPolisi'] 	= 	$this->M_fleetmonitoring->monitoringNomorPolisi($nomorPolisi);
+		}else{
+			$data['monitoringNomorPolisi'] 	= 	$this->M_fleetmonitoring->monitoringNomorPolisiCabang($lokasi,$nomorPolisi);
+		}
+		
 		// $data['monitoring'] 
 		echo json_encode($data);
 	}
 
 	public function prosesKategori()
 	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
+
 		$filter 		= 	$this->input->post('berdasarkan');
 		$kategori 		= 	$this->input->post('kategori');
 		$periode 		= 	$this->input->post('periode');
@@ -77,19 +98,39 @@ class C_FleetMonitoring extends CI_Controller
 
 		if($kategori == 'A')
 		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriPajak($periodeawal, $periodeakhir);
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriPajak($periodeawal, $periodeakhir);
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriPajakCabang($lokasi,$periodeawal, $periodeakhir);
+			}
+			
 		}
 		elseif($kategori == 'B')
 		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriKIR($periodeawal, $periodeakhir);
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriKIR($periodeawal, $periodeakhir);
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriKIRCabang($lokasi,$periodeawal, $periodeakhir);
+			}
+			
 		}
 		elseif($kategori == 'C')
 		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periodeawal, $periodeakhir);
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periodeawal, $periodeakhir);
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraanCabang($lokasi,$periodeawal, $periodeakhir);
+			}
+			
 		}
 		elseif($kategori == 'D')
 		{
-			$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriKecelakaan($periodeawal, $periodeakhir);
+			if ($lokasi == '01') {
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriKecelakaan($periodeawal, $periodeakhir);
+			}else{
+				$data['monitoringKategori'] 	= 	$this->M_fleetmonitoring->monitoringKategoriKecelakaanCabang($lokasi,$periodeawal, $periodeakhir);
+			}
+			
 		}
 
 		echo json_encode($data);
@@ -100,6 +141,12 @@ class C_FleetMonitoring extends CI_Controller
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
+		$lokasi = $this->session->kode_lokasi_kerja;
+		if ($lokasi=='01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = "and mtckdrn.kode_lokasi_kerja='$lokasi'";
+		}
 
 		$data['Title'] = 'Monitoring';
 		$data['Menu'] = 'Monitoring';
@@ -116,7 +163,7 @@ class C_FleetMonitoring extends CI_Controller
 		$periode1 = date('Y-m-d', strtotime($periodeDetail[0]));
 		$periode2 = date('Y-m-d', strtotime($periodeDetail[1]));
 
-		$data['detailMonitoring'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2);
+		$data['detailMonitoring'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2,$query_lokasi);
 		$data['tgl'] = date('d-m-Y', strtotime($periode1))." / ".date('d-m-Y', strtotime($periode2));
 
 		$this->load->view('V_Header',$data);
@@ -129,6 +176,8 @@ class C_FleetMonitoring extends CI_Controller
 	{
 		$this->load->library("Excel");
 
+		$lokasi = $this->session->kode_lokasi_kerja;
+
 		$periodeExcel = $this->input->post('PeriodeMonitoringExport');
 		$periodeExcelExplode = explode(' - ', $periodeExcel);
 
@@ -136,9 +185,36 @@ class C_FleetMonitoring extends CI_Controller
 		$periode2 = date('Y-m-d', strtotime($periodeExcelExplode[1]));
 
 		$data['PeriodeExcel'] = $periodeExcel;
-		$data['ExcelMonitoring'] = $this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periode1,$periode2);
+		if ($lokasi == '01') {
+				$data['ExcelMonitoring'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraan($periode1, $periode2);
+			}else{
+				$data['ExcelMonitoring'] 	= 	$this->M_fleetmonitoring->monitoringKategoriMaintenanceKendaraanCabang($lokasi,$periode1, $periode2);
+			}
 
 		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring', $data, true);
+	}
+
+	public function cetakExcelMonitoringKendaraanDetail()
+	{
+		$this->load->library("Excel");
+
+		$lokasi = $this->session->kode_lokasi_kerja;
+		if ($lokasi=='01') {
+			$query_lokasi = "";
+		}else{
+			$query_lokasi = "and mtckdrn.kode_lokasi_kerja='$lokasi'";
+		}
+
+		$periodeExcel = $this->input->post('PeriodeMonitoringDetail');
+		$periodeExcelDetail = explode(' / ', $periodeExcel);
+
+		$periode1 = date('Y-m-d', strtotime($periodeExcelDetail[0]));
+		$periode2 = date('Y-m-d', strtotime($periodeExcelDetail[1]));
+
+		$data['PeriodeExcel'] = $periodeExcel;
+		$data['ExcelMonitoringDetail'] = $this->M_fleetmonitoring->getMonitoringKendaraanDetail($periode1,$periode2,$query_lokasi);
+
+		$this->load->view('GeneralAffair/FleetMonitoring/V_export_excel_monitoring_detail', $data, true);
 	}
 
 }
