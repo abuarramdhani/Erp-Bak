@@ -316,9 +316,9 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=database.quick.com';
-		$user = 'erp';
-		$password = 'qu1ck1953';
+		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
+		$user = 'amri';
+		$password = 'amri';
 
 		try {
 			$dbh = new PDO($dsn, $user, $password);
@@ -362,9 +362,9 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=database.quick.com';
-		$user = 'erp';
-		$password = 'qu1ck1953';
+		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
+		$user = 'amri';
+		$password = 'amri';
 
 		try {
 			$dbh = new PDO($dsn, $user, $password);
