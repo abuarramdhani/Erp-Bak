@@ -177,9 +177,9 @@ $db['personalia'] = array(
 
 $db['quickcom'] = array(
 	'dsn'	=> '',
-	'hostname' => 'quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
 	'database' => 'fp_distribusi',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -200,9 +200,9 @@ $db['quickcom'] = array(
 
 $db['quick'] = array(
 	'dsn'	=> '',
-	'hostname' => 'quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
 	'database' => '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -224,9 +224,9 @@ $db['quick'] = array(
 
 $db['kaizen'] = array(
 	'dsn'	=> '',
-	'hostname' => 'quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
 	'database' => 'kaizen',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -316,9 +316,9 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
-		$user = 'amri';
-		$password = 'amri';
+		$dsn = 'mysql:dbname=fp_distribusi;host=database.quick.com';
+		$user = 'erp';
+		$password = 'qu1ck1953';
 
 		try {
 			$dbh = new PDO($dsn, $user, $password);
@@ -362,9 +362,9 @@ $efg="";
 		if (!empty($data[0])) {
 			$efg = $data[0];
 		}
-		$dsn = 'mysql:dbname=fp_distribusi;host=quick.com';
-		$user = 'amri';
-		$password = 'amri';
+		$dsn = 'mysql:dbname=fp_distribusi;host=database.quick.com';
+		$user = 'erp';
+		$password = 'qu1ck1953';
 
 		try {
 			$dbh = new PDO($dsn, $user, $password);
@@ -405,9 +405,9 @@ $efg="";
 		
 		$db['quickcom_orientasi'] = array(
 			'dsn'				=> '',
-			'hostname' 			=> 'quick.com',
-			'username' 			=> 'amri',
-			'password' 			=> 'amri',
+			'hostname' 			=> 'database.quick.com',
+			'username' 			=> 'erp',
+			'password' 			=> 'qu1ck1953',
 			'database' 			=> 'db_orientasi',
 			'dbdriver' 			=> 'mysqli',
 			'dbprefix' 			=> '',
