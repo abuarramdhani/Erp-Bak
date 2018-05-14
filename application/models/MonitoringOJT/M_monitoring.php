@@ -49,15 +49,19 @@
 											from 		hrd_khs.v_hrd_khs_tpribadi as pri
 														join 	hrd_khs.torganisasi as torg
 																on 	torg.kd_jabatan=pri.kd_jabatan
+														join 	hrd_khs.trefjabatan as trefjabatan
+																on 	trefjabatan.noind=pri.noind
 														join 	hrd_khs.tseksi as tseksi
-																on 	tseksi.kodesie=pri.kodesie
+																on 	tseksi.kodesie=trefjabatan.kodesie
 											where 		pri.keluar=false
 														and 	pri.noind not in ('Z0000', 'Z1111')
 														and 	(
 																	pri.noind like '%$keyword%'
 																	or 	pri.nama like '%$keyword%'
 																)
-														and 	(
+														and 	trim(trefjabatan.kd_jabatan) not in ('', '-')
+														and 	trefjabatan.kd_jabatan::int < 14
+														/*and 	(
 																	(
 																		pri.kodesie
 																		=	
@@ -122,7 +126,7 @@
 																						where 	 	pri.noind='$pekerjaOJT'
 																					)
 																		)
-																)
+																)*/
 											order by 	pri.kd_jabatan asc,
 														pri.noind;";
 			$queryAmbilAtasanPekerja 	=	$this->personalia->query($ambilAtasanPekerja);
@@ -304,5 +308,11 @@
  			$this->db->from('ojt.tb_proses_pemberitahuan');
  			$this->db->where('id_proses=', $id_proses);
  			return $this->db->get()->result_array();
+ 		}
+
+ 		public function deleteProsesPemberitahuan($id_proses_pemberitahuan)
+ 		{
+ 			$this->db->where('id_proses_pemberitahuan=', $id_proses_pemberitahuan);
+ 			$this->db->delete('ojt.tb_proses_pemberitahuan');
  		}
  	}

@@ -34,7 +34,8 @@
 										<tr>
 											<th style="white-space: nowrap; text-align: center;">No.</th>
 											<th style="white-space: nowrap; text-align: center;">Action</th>
-											<th style="white-space: nowrap; text-align: center;">Pekerja</th>
+											<th style="white-space: nowrap; text-align: center;">Nomor Induk Pekerja</th>
+											<th style="white-space: nowrap; text-align: center;">Nomor Induk Pekerja</th>
 											<!-- <th style="white-space: nowrap; text-align: center;">Seksi</th> -->
 											<th style="white-space: nowrap; text-align: center;">Tanggal Masuk</th>
 										</tr>
@@ -55,6 +56,8 @@
 											</td>
 											<td style="white-space: nowrap; text-align: center; vertical-align: center">
 												<b><?php echo $pekerja['noind'];?></b><br/>
+											</td>
+											<td style="white-space: nowrap; text-align: justify; vertical-align: center">
 												<?php echo trim($pekerja['employee_name']);?>
 											</td>
 											<td style="white-space: nowrap; text-align: center; vertical-align: center"><?php echo $pekerja['tgl_masuk'];?></td>

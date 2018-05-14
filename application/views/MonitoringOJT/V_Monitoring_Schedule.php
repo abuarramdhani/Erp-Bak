@@ -42,6 +42,26 @@
 										</div>
 										<?php
 											}
+											foreach ($getSchedule as $manualSchedule)
+											{
+												$id_proses 		=	$this->general->enkripsi($manualSchedule['id_proses']);
+										 		$id_orientasi	=	$this->general->enkripsi($manualSchedule['id_orientasi']);
+										 		$jadwal 		=	$manualSchedule['tahapan'];
+
+										 		if($manualSchedule['periode']==1 && $manualSchedule['sequence']==1)
+										 		{
+										?>
+										<div class="form-group">
+											<label for="txtPenjadwalanManual-TanggalMasuk" class="control-label col-lg-4">
+												<?php echo $jadwal;?>
+											</label>
+											<div class="col-lg-4">
+												<input type="text" class="form-control" disabled="" style="text-transform: uppercase; width: 100%" name="txtPenjadwalanManual-TanggalMasuk" id="txtPenjadwalanManual-TanggalMasuk" value="<?php echo $manualSchedule['tgl_awal'].' - '.$manualSchedule['tgl_akhir'];?>">
+											</div>
+										</div>
+										<?php
+												}
+											}
 											$indeks 	=	0;
 										 	foreach ($getSchedule as $manualSchedule)
 										 	{
@@ -49,24 +69,33 @@
 										 		$id_orientasi	=	$this->general->enkripsi($manualSchedule['id_orientasi']);
 										 		$jadwal 		=	$manualSchedule['tahapan'];
 
-										 		$disabled 		=	'';
-										 		if($manualSchedule['periode']==1 && $manualSchedule['sequence']==1)
+										 		if(!($manualSchedule['periode']==1 && $manualSchedule['sequence']==1))
 										 		{
-										 			$disabled	=	'disabled';
-										 		}
 										?>
 										<div class="form-group">
 											<label for="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]" class="control-label col-lg-4">
 												<?php echo $jadwal;?>
 											</label>
 											<div class="col-lg-4">
-												<input type="text" class="form-control MonitoringOJT-daterangepicker" <?php echo $disabled;?> style="text-transform: uppercase; width: 100%" name="txtPenjadwalanManual[<?php echo $indeks;?>]" id="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]" value="<?php echo $manualSchedule['tgl_awal'].' - '.$manualSchedule['tgl_akhir'];?>">
+												<input type="text" class="form-control MonitoringOJT-daterangepicker-noautoupdateinput" style="text-transform: uppercase; width: 100%" name="txtPenjadwalanManual[<?php echo $indeks;?>]" id="MonitoringOJT-txtPenjadwalanManual[<?php echo $indeks;?>]" value="<?php echo $manualSchedule['tgl_awal'].' - '.$manualSchedule['tgl_akhir'];?>">
 												<input type="text" class="form-control hidden" name="txtIDProsesPenjadwalan[<?php echo $indeks;?>]" value="<?php echo $id_proses;?>"/>
 												<input type="text" class="form-control hidden" name="txtIDOrientasi[<?php echo $indeks;?>]" value="<?php echo $id_orientasi;?>"/>
 											</div>
+											<label for="MonitoringOJT-prosesSelesai[<?php echo $indeks;?>]" class="col-lg-4">
+												<?php
+													$checkboxSelesai 	=	"";
+													if($manualSchedule['selesai']=='t')
+													{
+														$checkboxSelesai 	=	"checked";
+													}
+												?>
+												<input type="checkbox" id="MonitoringOJT-prosesSelesai[<?php echo $indeks;?>]" name="chkProsesSelesai[<?php echo $indeks;?>]" <?php echo $checkboxSelesai;?>/>
+												Selesai
+											</label>
 										</div>
 										<?php
-												$indeks++;
+													$indeks++;
+												}
 										 	}
 										?>
 									</div>

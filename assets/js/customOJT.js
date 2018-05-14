@@ -46,7 +46,7 @@
 
 				$('.MonitoringOJT-daterangepicker-noautoupdateinput').daterangepicker({
 				    "showDropdowns": true,
-				    "autoApply": true,
+				    /*"autoApply": true,*/
 				    "autoUpdateInput" : false,
 				    "locale": {
 				        "format": "YYYY-MM-DD",
@@ -83,7 +83,15 @@
 				        "firstDay": 1
 				    }
 				}, function(start, end, label) {
-				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+				});
+
+				$('.MonitoringOJT-daterangepicker-noautoupdateinput').on('apply.daterangepicker', function(ev, picker) {
+				    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+				});
+
+				$('.MonitoringOJT-daterangepicker-noautoupdateinput').on('cancel.daterangepicker', function(ev, picker) {
+				    $(this).val('');
 				});
 		//	}
 
