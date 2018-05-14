@@ -80,10 +80,10 @@
 																		'join_statement_id' => $stj_id[$i],
 																		'join_input'		=> $stj[$i]
 																	);
-																if($stj[$i] == 1) echo "<td>1</td>";
-																else if($stj[$i] == 2) echo "<td>2</td>";
-																else if($stj[$i] == 3) echo "<td>3</td>";
-																else if($stj[$i] == 4) echo "<td>4</td>";
+																if($stj[$i] == 1) echo '<td>1<input type="text" name="txtID_STATEMENT" value="'.$stj_id[$i].'" hidden></td>';
+																else if($stj[$i] == 2) echo '<td>2<input type="text" name="txtID_STATEMENT" value="'.$stj_id[$i].'" hidden></td>';
+																else if($stj[$i] == 3) echo '<td>3<input type="text" name="txtID_STATEMENT" value="'.$stj_id[$i].'" hidden></td>';
+																else if($stj[$i] == 4) echo '<td>4<input type="text" name="txtID_STATEMENT" value="'.$stj_id[$i].'" hidden></td>';
 																else if(empty($stj[$i]))echo "<td>-</td>";
 																else echo '<td style="min-width:150px">'.$stj[$i].'</td>';}
 															?>

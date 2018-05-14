@@ -158,6 +158,17 @@ class C_Report extends CI_Controller {
 											}
 										}
 									}
+											// echo "<pre>";
+											// // print_r($a_tot);
+											// print_r($a[$bi]);
+											// print_r($b);
+											// // echo "----------------- segmen id : -----";
+											// // print_r($value['segment_id']);
+											// echo "----------------- segmen name : -----";
+											// print_r($value['segment_description']);
+											// // echo "----------------- scheduling id : -----";
+											// // print_r($value['scheduling_id']);
+											// echo "</pre>";
 								}
 							}
 							
@@ -171,6 +182,7 @@ class C_Report extends CI_Controller {
 						}
 					}
 
+					
 					$final_total=0;
 					foreach ($total_nilai as $n => $tn) {
 						$final_total+=$tn['total'];
@@ -188,6 +200,7 @@ class C_Report extends CI_Controller {
 			}
 		}
 		$data['t_nilai']= $t_nilai;
+					// exit();
 
 		// HITUNG ROWSPAN---------------------------------------------------------------------------
 		$data['sheet_all'] = '';
@@ -238,6 +251,11 @@ class C_Report extends CI_Controller {
 		$data['segment'] 		= $this->M_report->GetQuestionnaireSegmentId($id,$qe);
 		$data['segmentessay'] 	= $this->M_inputquestionnaire->GetQuestionnaireSegmentEssayId($qe);
 		$data['statement'] 		= $this->M_inputquestionnaire->GetQuestionnaireStatementId($qe);
+
+		// echo "<pre>";
+		// print_r($data['sheet']);
+		// echo "</pre>";
+		// exit();
 
 		// HITUNG ROWSPAN---------------------------------------------------------------------------
 		$data['stj_temp'] 		= array();
@@ -1414,6 +1432,10 @@ class C_Report extends CI_Controller {
 		$segment = $this->M_report->GetSchName_QuesName_segmen();
 		$statement= $this->M_report->GetStatement();
 		$nilai = $this->M_report->GetSheetAll();
+
+		// ATTENDANT
+		$data['attendant'] 	= $this->M_report->GetAttendant();
+
 		// HITUNG TOTAL NILAI---------------------------------------------------------------------------
 		$t_nilai = array();
 		$x = 0;

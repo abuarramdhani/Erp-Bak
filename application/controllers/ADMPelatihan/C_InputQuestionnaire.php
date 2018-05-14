@@ -227,13 +227,14 @@ class C_InputQuestionnaire extends CI_Controller {
 				
 		foreach($IdStatement as $loop){
 			$statement[] = $loop;
-			$input[] = $this->input->post('txtInput'.$loop);
+			$input[] 	= $this->input->post('txtInput'.$loop);
+			$input_id[] = $this->input->post('txtID_st'.$loop);
 		}
 		$join_statement = join('||', $statement);
 		$join_input		= join('||', $input);
+		$join_input_id	= join('||', $input_id);
 		
-
-		$this->M_inputquestionnaire->UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input);
+		$this->M_inputquestionnaire->UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input,$join_input_id);
 		
 		redirect('ADMPelatihan/InputQuestionnaire/ToCreate/'.$IdPenjadwalan.'/'.$IdKuesioner);
 	}
