@@ -19,7 +19,7 @@ class C_Index extends CI_Controller
 				$this->session->set_userdata('last_page', current_url());
 				$this->session->set_userdata('Responsbility', 'some_value');
 			}
-		} 
+		}
 
 	public function checkSession(){
 		if($this->session->is_logged){
