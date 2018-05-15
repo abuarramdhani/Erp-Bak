@@ -169,9 +169,9 @@ class M_inputquestionnaire extends CI_Model {
 			return $query->result_array();
 		}
 
-	public function UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input){
+	public function UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input,$join_input_id){
 		$sql = "UPDATE 	pl.pl_questionnaire_sheet
-			 	SET 	join_input='$join_input'
+			 	SET 	join_input='$join_input' , join_statement_id= '$join_input_id'
 			 	WHERE 	questionnaire_id='$IdKuesioner'
 			 	AND 	scheduling_id='$IdPenjadwalan'
 			 	AND 	questionnaire_sheet_id='$IdQSheet'";

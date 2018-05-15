@@ -136,10 +136,22 @@
 											<tr>
 												<td><?php echo $no?></td>
 												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4" <?php echo $check4; ?>></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3" <?php echo $check3; ?>></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2" <?php echo $check2; ?>></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" <?php echo $check1; ?>></td>
+												<td style="padding: 0px;vertical-align: middle;">
+													<input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4" <?php echo $check4; ?>>
+													<input type="text" class="radio2" name="<?php echo 'txtID_st'.$st['statement_id']?>" value="<?php echo $st['statement_id']?>" hidden>
+												</td>
+												<td style="padding: 0px;vertical-align: middle;">
+													<input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3" <?php echo $check3; ?>>
+													<input type="text" class="radio2" name="<?php echo 'txtID_st'.$st['statement_id']?>" value="<?php echo $st['statement_id']?>" hidden>
+												</td>
+												<td style="padding: 0px;vertical-align: middle;">
+													<input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2" <?php echo $check2; ?>>
+													<input type="text" class="radio2" name="<?php echo 'txtID_st'.$st['statement_id']?>" value="<?php echo $st['statement_id']?>" hidden>
+												</td>
+												<td style="padding: 0px;vertical-align: middle;">
+													<input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" <?php echo $check1; ?>>
+													<input type="text" class="radio2" name="<?php echo 'txtID_st'.$st['statement_id']?>" value="<?php echo $st['statement_id']?>" hidden>
+												</td>
 											</tr>
 											<?php 	}
 												}
