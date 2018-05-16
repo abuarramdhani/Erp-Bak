@@ -723,7 +723,7 @@ class M_monitoring extends CI_Model {
 		public function getdatapekerjaallfinger($cariNama){
 			$fpdistribusi = $this->load->database('quickcom',true);
 			$sql = "set SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))";
-			$query = $quickcom->query($sql);
+			$query = $fpdistribusi->query($sql);
 			$sql = "select a.noind,a.nama,c.seksi,GROUP_concat(b.lokasi) lokasi, GROUP_concat(b.id_lokasi) as id_lokasi from hrd_khs.tpribadi a
 					  left join 
 					  (
