@@ -138,7 +138,8 @@ class C_FleetKendaraan extends CI_Controller
     			// $nama_STNK 							= filter_var($_FILES['FotoSTNK']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
-				$config['allowed_types']        = 'jpg|png|gif|';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
 	        	$config['file_name']		 	= $nama_STNK;
 	        	$config['overwrite'] 			= TRUE;
 
@@ -162,7 +163,8 @@ class C_FleetKendaraan extends CI_Controller
     			// $nama_BPKB							= filter_var($_FILES['FotoBPKB']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
-				$config['allowed_types']        = 'jpg|png|gif|';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
 	        	$config['file_name']		 	= $nama_BPKB;
 	        	$config['overwrite'] 			= TRUE;
 	        	
@@ -187,7 +189,8 @@ class C_FleetKendaraan extends CI_Controller
     			// $nama_Kendaraan 					= filter_var($_FILES['fileFoto']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
-				$config['allowed_types']        = 'jpg|png|gif|';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
 	        	$config['file_name']		 	= $nama_Kendaraan;
 	        	$config['overwrite'] 			= TRUE;
 
@@ -312,7 +315,8 @@ class C_FleetKendaraan extends CI_Controller
     			// $nama_STNK 							= filter_var($_FILES['FotoSTNK']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
-				$config['allowed_types']        = 'jpg|png|gif|';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
 	        	$config['file_name']		 	= $nama_STNK;
 	        	$config['overwrite'] 			= TRUE;
 
@@ -338,7 +342,8 @@ class C_FleetKendaraan extends CI_Controller
     			// $nama_BPKB							= filter_var($_FILES['FotoBPKB']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
-				$config['allowed_types']        = 'jpg|png|gif|';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
 	        	$config['file_name']		 	= $nama_BPKB;
 	        	$config['overwrite'] 			= TRUE;
 	        	
@@ -365,7 +370,8 @@ class C_FleetKendaraan extends CI_Controller
     			// $nama_Kendaraan 					= filter_var($_FILES['fileFoto']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
-				$config['allowed_types']        = 'jpg|png|gif|';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
 	        	$config['file_name']		 	= $nama_Kendaraan;
 	        	$config['overwrite'] 			= TRUE;
 
