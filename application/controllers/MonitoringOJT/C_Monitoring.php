@@ -48,7 +48,7 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['daftarPekerjaOJT']	=	$this->M_monitoring->ambilTabelDaftarPekerjaOJT();
+		$data['daftarPekerjaOJT']		=	$this->M_monitoring->ambilTabelDaftarPekerjaOJT();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -65,17 +65,27 @@ class C_Monitoring extends CI_Controller
 		$nomor_induk_atasan			=	$this->input->post('cmbDaftarAtasanPekerja');
 
 		$ambilInfoPekerja 			=	$this->M_monitoring->ambilInfoPekerja($nomor_induk_pekerja);
-		$nomor_induk_baru_pekerja	=	$ambilInfoPekerja[0]['noind_baru'];
-		$tanggal_masuk_pekerja 		=	$ambilInfoPekerja[0]['masukkerja'];
+		
+		$nomor_induk_baru_pekerja		=	$ambilInfoPekerja[0]['noind_baru'];
+		$tanggal_masuk_pekerja 			=	$ambilInfoPekerja[0]['masukkerja'];
+		$tanggal_lahir_pekerja 			=	$ambilInfoPekerja[0]['tgllahir'];
+		$kodesie_pekerja 				=	$ambilInfoPekerja[0]['kodesie'];
+		$jenjang_pendidikan_terakhir	=	$ambilInfoPekerja[0]['pendidikan'];
+		$jurusan 						=	$ambilInfoPekerja[0]['jurusan'];
+		$institusi_pendidikan 			=	$ambilInfoPekerja[0]['sekolah'];
 
 		$inputPekerjaOJT 			=	array
 										(
-											'noind_baru'		=>	$nomor_induk_baru_pekerja,
-											'noind'				=>	$nomor_induk_pekerja,
-											'tgl_masuk'			=>	$tanggal_masuk_pekerja,
-											'atasan'			=>	$nomor_induk_atasan,
-											'create_timestamp'	=>	$waktuEksekusi,
-											'create_user'		=>	$user,
+											'noind_baru'					=>	$nomor_induk_baru_pekerja,
+											'noind'							=>	$nomor_induk_pekerja,
+											'tgl_masuk'						=>	$tanggal_masuk_pekerja,
+											'atasan'						=>	$nomor_induk_atasan,
+											'jenjang_pendidikan_terakhir'	=>	$jenjang_pendidikan_terakhir,
+											'jurusan'						=>	$jurusan,
+											'institusi_pendidikan'			=>	$institusi_pendidikan,
+											'tanggal_lahir'					=>	$tanggal_lahir_pekerja,
+											'create_timestamp'				=>	$waktuEksekusi,
+											'create_user'					=>	$user,
 										);
 		echo '<pre>';
 		print_r($inputPekerjaOJT);
@@ -85,14 +95,18 @@ class C_Monitoring extends CI_Controller
 
 		$inputPekerjaHistory 		=	array
 										(
-											'pekerja_id'		=>	$pekerja_id,
-											'noind_baru'		=>	$nomor_induk_baru_pekerja,
-											'noind'				=>	$nomor_induk_pekerja,
-											'tgl_masuk'			=>	$tanggal_masuk_pekerja,
-											'atasan'			=>	$nomor_induk_atasan,
-											'type'				=>	'CREATE',
-											'create_timestamp'	=>	$waktuEksekusi,
-											'create_user'		=>	$user,
+											'pekerja_id'					=>	$pekerja_id,
+											'noind_baru'					=>	$nomor_induk_baru_pekerja,
+											'noind'							=>	$nomor_induk_pekerja,
+											'tgl_masuk'						=>	$tanggal_masuk_pekerja,
+											'atasan'						=>	$nomor_induk_atasan,
+											'jenjang_pendidikan_terakhir'	=>	$jenjang_pendidikan_terakhir,
+											'jurusan'						=>	$jurusan,
+											'institusi_pendidikan'			=>	$institusi_pendidikan,
+											'tanggal_lahir'					=>	$tanggal_lahir_pekerja,
+											'type'							=>	'CREATE',
+											'create_timestamp'				=>	$waktuEksekusi,
+											'create_user'					=>	$user,
 										);
 		echo '<pre>';
 		print_r($inputPekerjaHistory);
@@ -158,29 +172,20 @@ class C_Monitoring extends CI_Controller
 
 					$intervalOrientasi 		=	$this->M_monitoring->ambilIntervalOrientasi($orientasi['id_orientasi']);
 					$intervalTanggalAwal 	=	$intervalOrientasi[0]['interval'];
-					$inversKalkulasiTanggal	=	$intervalOrientasi[0]['invert'];
+					$operatorHitungTanggalAwal	=	$intervalOrientasi[0]['operator'];
 
 					echo $intervalTanggalAwal.'<br/>';
 
-					$tanggal_proses_sebelum	=	new DateTime($tanggal_proses_sebelum);
-					$intervalTanggalAwal 	=	new DateInterval($intervalTanggalAwal);
-					if($inversKalkulasiTanggal == 1)
-					{
-						$intervalTanggalAwal->invert 	=	1;
-					}
-
-					$tanggal_proses_sebelum->add($intervalTanggalAwal);
-
-					$tanggal_awal_proses 	=	$tanggal_proses_sebelum->format('Y-m-d');
+					$hitungTanggalAwal 		=	$this->M_monitoring->hitungTanggalPostgre($tanggal_proses_sebelum, $intervalTanggalAwal, $operatorHitungTanggalAwal);
+					$tanggal_awal_proses 	=	$hitungTanggalAwal[0]['result'];
 
 					$intervalAkhirOrientasi	=	$this->M_monitoring->ambilIntervalAkhirOrientasi($orientasi['id_orientasi']);
 					$intervalTanggalAkhir	=	$intervalAkhirOrientasi[0]['interval'];
+					$operatorHitungTanggalAkhir	=	'+';
 
-					$tanggal_awal_orientasi	=	new DateTime($tanggal_awal_proses);
-					$intervalTanggalAkhir	=	new DateInterval($intervalTanggalAkhir);
+					$hitungTanggalAkhir 	=	$this->M_monitoring->hitungTanggalPostgre($tanggal_awal_proses, $intervalTanggalAkhir, $operatorHitungTanggalAkhir);
 
-					$tanggal_awal_orientasi->add($intervalTanggalAkhir);
-					$tanggal_akhir_proses	=	$tanggal_awal_orientasi->format('Y-m-d');
+					$tanggal_akhir_proses	=	$hitungTanggalAkhir[0]['result'];
 
 					echo 'Pelaksanaan - '.$tanggal_awal_proses.' - '.$tanggal_akhir_proses;
 
@@ -222,10 +227,10 @@ class C_Monitoring extends CI_Controller
 							$id_pemberitahuan 	=	$pemberitahuan['id_pemberitahuan'];
 							$tujuan 			=	$pemberitahuan['penerima'];
 
-							$intervalPemberitahuan 	=	'P';
-
 							$intervalPemberitahuanBulan 	=	0;
 							$intervalPemberitahuanHari		=	0;
+
+							$operatorHitungPemberitahuan	=	'';
 
 							if(!(empty($pemberitahuan['bulan'])))
 							{
@@ -242,19 +247,21 @@ class C_Monitoring extends CI_Controller
 								$intervalPemberitahuanHari	+=	($pemberitahuan['hari']);
 							}
 
-							$intervalPemberitahuan 			.=	$intervalPemberitahuanBulan.'M'.$intervalPemberitahuanHari.'D';
+							$intervalPemberitahuan 			=	$intervalPemberitahuanBulan.' month '.$intervalPemberitahuanHari.' day ';
 
 							$tanggal_akhir_pemberitahuan	=	$tanggal_awal_proses;
-							$tanggal_awal_proses 			=	new DateTime($tanggal_proses_sebelum->format('Y-m-d'));
-							$interval_pemberitahuan 		=	new DateInterval($intervalPemberitahuan);
 
 							if($pemberitahuan['urutan']=='f')
 							{
-								$interval_pemberitahuan->invert 	=	1;
+								$operatorHitungPemberitahuan 	=	'-';
+							}
+							else
+							{
+								$operatorHitungPemberitahuan 	=	'+';
 							}
 
-							$tanggal_awal_proses->add($interval_pemberitahuan);
-							$tanggal_awal_pemberitahuan	=	$tanggal_awal_proses->format('Y-m-d');
+							$hitung_awal_pemberitahuan		=	$this->M_monitoring->hitungTanggalPostgre($tanggal_awal_proses, $intervalPemberitahuan, $operatorHitungPemberitahuan);
+							$tanggal_awal_pemberitahuan 	=	$hitung_awal_pemberitahuan[0]['result'];
 
 							if($pemberitahuan['pengulang']=='t')
 							{
@@ -571,10 +578,25 @@ class C_Monitoring extends CI_Controller
 	// 	{
 			public function tambahPekerjaOJT()
 			{
+				$listPekerjaAktifOJT	=	$this->M_monitoring->ambilPekerjaAktifOJT();
+
+				$pekerjaOJTAktif 		=	'';
+
+				$indeks 				=	0;
+				foreach ($listPekerjaAktifOJT as $listOJTAktif)
+				{
+					$pekerjaOJTAktif	.=	"'".$listOJTAktif['noind']."'";
+					if($indeks<(count($listPekerjaAktifOJT)-1))
+					{
+						$pekerjaOJTAktif.=	", ";
+					}
+					$indeks++;
+				}
+
 				$keyword 			=	strtoupper($this->input->get('term'));
 
-				$daftarPekerjaOJT 	=	$this->M_monitoring->ambilDaftarPekerjaOJT($keyword);
-				echo json_encode($daftarPekerjaOJT);
+				$daftarPekerja 		=	$this->M_monitoring->ambilDaftarPekerjaOJT($keyword, $pekerjaOJTAktif);
+				echo json_encode($daftarPekerja);
 			}
 
 			public function tambahAtasanPekerja()

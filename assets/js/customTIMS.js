@@ -216,7 +216,7 @@ function rekap_datatable_detail() {
 	rekap_datatable_detail();
 //});
 
-// 	Rekap Absensi Pekerja dan Rekap Jam Kerja
+// 	Rekap Absensi Pekerja, Jam Kerja, Absensi Manual
 //	{
 		$(function()
 		{
@@ -233,6 +233,15 @@ function rekap_datatable_detail() {
 					// 	// scrollY: 400,
 					// 	lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
 					// });
+					$('.RekapAbsensiManual-Daftar').DataTable({
+						dom: 'Bfrtip',
+						buttons: [
+							'excel', 'print', 'pdf'
+						],
+						scrollX: true,
+						// scrollY: 400,
+						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+					});
 					$('.RekapTIMS-StatistikPresensiHarian').DataTable({
 						searching: false,
 						lengthChange: false,
