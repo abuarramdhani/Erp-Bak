@@ -9,8 +9,13 @@
 	        $this->personalia 	=	$this->load->database('personalia', TRUE);
 	    }
 
- 		public function ambilDaftarPekerjaOJT($keyword)
+ 		public function ambilDaftarPekerjaOJT($keyword, $pekerjaOJTAktif)
  		{
+ 			$klausaOJTAktif 	=	'';
+ 			if(!(empty($pekerjaOJTAktif)))
+ 			{
+ 				$klausaOJTAktif 	=	'and 	pri.noind not in ('.$pekerjaOJTAktif.')';
+ 			}
  			$ambilDaftarPekerjaOJT 			= "	select 		pri.noind,
  															pri.nama
 												from 		hrd_khs.v_hrd_khs_tpribadi as pri
@@ -20,6 +25,7 @@
 																		pri.nama like '%$keyword%'
 																		or 	pri.noind like '%$keyword%'
 																	)
+															$klausaOJTAktif
 												order by 	pri.noind";
 			$queryAmbilDaftarPekerjaOJT 	=	$this->personalia->query($ambilDaftarPekerjaOJT);
 			return $queryAmbilDaftarPekerjaOJT->result_array();
@@ -49,91 +55,33 @@
 											from 		hrd_khs.v_hrd_khs_tpribadi as pri
 														join 	hrd_khs.torganisasi as torg
 																on 	torg.kd_jabatan=pri.kd_jabatan
+														join 	hrd_khs.trefjabatan as trefjabatan
+																on 	trefjabatan.noind=pri.noind
 														join 	hrd_khs.tseksi as tseksi
-																on 	tseksi.kodesie=pri.kodesie
+																on 	tseksi.kodesie=trefjabatan.kodesie
 											where 		pri.keluar=false
 														and 	pri.noind not in ('Z0000', 'Z1111')
 														and 	(
 																	pri.noind like '%$keyword%'
 																	or 	pri.nama like '%$keyword%'
 																)
-														and 	(
-																	(
-																		pri.kodesie
-																		=	
-																		(
-																			select 		concat(substring(pri.kodesie, 1, 1), '00000000')
-																			from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																			where 	 	pri.noind='$pekerjaOJT'
-																		)
-																		and 	pri.kd_jabatan
-																				<	
-																				(
-																					select 		pri.kd_jabatan
-																					from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																					where 	 	pri.noind='$pekerjaOJT'
-																				)
-																	)
-																	or 	(
-																			pri.kodesie
-																			=
-																			(
-																				select 		concat(substring(pri.kodesie, 1, 3), '000000')
-																				from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																				where 	 	pri.noind='$pekerjaOJT'
-																			)
-																			and 	pri.kd_jabatan
-																					<
-																					(
-																						select 		pri.kd_jabatan
-																						from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																						where 	 	pri.noind='$pekerjaOJT'
-																					)
-																		)
-																	or 	(
-																			pri.kodesie
-																			=
-																			(
-																				select 		concat(substring(pri.kodesie, 1, 5), '0000')
-																				from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																				where 	 	pri.noind='$pekerjaOJT'
-																			)
-																			and 	pri.kd_jabatan
-																					<
-																					(
-																						select 		pri.kd_jabatan
-																						from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																						where 	 	pri.noind='$pekerjaOJT'
-																					)
-																		)
-																	or 	(
-																			pri.kodesie
-																			=
-																			(
-																				select 		concat(substring(pri.kodesie, 1, 7), '00')
-																				from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																				where 	 	pri.noind='$pekerjaOJT'
-																			)
-																			and 	pri.kd_jabatan
-																					<
-																					(
-																						select 		pri.kd_jabatan
-																						from 		hrd_khs.v_hrd_khs_tpribadi as pri
-																						where 	 	pri.noind='$pekerjaOJT'
-																					)
-																		)
-																)
+														and 	trim(trefjabatan.kd_jabatan) not in ('', '-')
+														and 	trefjabatan.kd_jabatan::int < 14
 											order by 	pri.kd_jabatan asc,
 														pri.noind;";
 			$queryAmbilAtasanPekerja 	=	$this->personalia->query($ambilAtasanPekerja);
 			return $queryAmbilAtasanPekerja->result_array();
  		}
 
- 		public function ambilInfoPekerja($nomor_induk_pekerja)
+ 		public function ambilInfoPekerja($nomor_induk_pekerja = FALSE)
  		{
  			$this->personalia->select('*');
  			$this->personalia->from('hrd_khs.v_hrd_khs_tpribadi');
- 			$this->personalia->where('noind=', $nomor_induk_pekerja);
+
+ 			if($nomor_induk_pekerja !== FALSE)
+ 			{
+ 				$this->personalia->where('noind=', $nomor_induk_pekerja);
+ 			}
 
  			return $this->personalia->get()->result_array();
  		}
@@ -176,28 +124,27 @@
  			$ambilIntervalOrientasi			= "	select 		(
 																concat
 																(
-																	'P',
 																	(
 																		case 	when 	bulan is not null
-																						then 	bulan || 'M'
-																				else 	'0M'
+																						then 	bulan || ' month '
+																				else 	'0 month '
 																		end
 																	),
 																	(
 																		case 	when 	hari is not null
 																						or 	minggu is not null
-																						then 	((coalesce(minggu, 0)*7)+coalesce(hari, 0)) || 'D'
-																				else 	'0D'
+																						then 	((coalesce(minggu, 0)*7)+coalesce(hari, 0)) || ' day '
+																				else 	'0 day'
 																		end
 																	)
 																)
 															) as interval,
 															(
 																case 	when 	urutan=true
-																				then 0
-																		else 	1
+																				then '+'
+																		else 	'-'
 																end
-															) as invert
+															) as operator
 												from 		ojt.tb_jadwal as jadwal
 												where 		jadwal.id_orientasi=$id_orientasi";
 			$queryAmbilIntervalOrientasi	=	$this->db->query($ambilIntervalOrientasi);
@@ -206,7 +153,7 @@
 
  		public function ambilIntervalAkhirOrientasi($id_orientasi)
  		{
- 			$ambilIntervalAkhirOrientasi		= "	select 		concat('P', (orientasi.lama_hari - 1), 'D') as interval
+ 			$ambilIntervalAkhirOrientasi		= "	select 		concat((orientasi.lama_hari - 1), ' day ') as interval
 													from 		ojt.tb_orientasi as orientasi
 													where 		orientasi.id_orientasi=$id_orientasi";
 			$queryIntervalAkhirOrientasi 		=	$this->db->query($ambilIntervalAkhirOrientasi);
@@ -251,15 +198,21 @@
  		{
  			$this->db->select('
  								ojt.tb_pekerja.*,
- 								er.er_employee_all.employee_name
+ 								er.er_employee_all.employee_name,
+ 								er.er_employee_all.section_code,
+ 								er.er_section.section_name
  							');
  			$this->db->from('ojt.tb_pekerja');
  			$this->db->join('er.er_employee_all', 'er.er_employee_all.employee_code = ojt.tb_pekerja.noind');
+ 			$this->db->join('er.er_section', 'er.er_employee_all.section_code = er.er_section.section_code');
 
  			if($pekerja_id !== FALSE)
  			{
  				$this->db->where('ojt.tb_pekerja.pekerja_id=', $pekerja_id);
  			}
+
+ 			$this->db->order_by('ojt.tb_pekerja.tgl_masuk', 'DESC');
+ 			$this->db->order_by('ojt.tb_pekerja.noind', 'DESC');		
 
  			return $this->db->get()->result_array();
  		}
@@ -304,5 +257,24 @@
  			$this->db->from('ojt.tb_proses_pemberitahuan');
  			$this->db->where('id_proses=', $id_proses);
  			return $this->db->get()->result_array();
+ 		}
+
+ 		public function deleteProsesPemberitahuan($id_proses_pemberitahuan)
+ 		{
+ 			$this->db->where('id_proses_pemberitahuan=', $id_proses_pemberitahuan);
+ 			$this->db->delete('ojt.tb_proses_pemberitahuan');
+ 		}
+
+ 		public function ambilPekerjaAktifOJT()
+ 		{
+ 			$this->db->distinct('noind');
+ 			return $this->db->get('ojt.tb_pekerja')->result_array();
+ 		}
+
+ 		public function hitungTanggalPostgre($tanggal, $interval, $operator)
+ 		{
+ 			$hitungTanggalPostgre 		= "	select 	'$tanggal'::date $operator interval '$interval' as result";
+ 			$queryHitungTanggalPostgre	=	$this->db->query($hitungTanggalPostgre);
+ 			return $queryHitungTanggalPostgre->result_array();
  		}
  	}
