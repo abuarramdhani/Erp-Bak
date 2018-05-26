@@ -158,17 +158,6 @@ class C_Report extends CI_Controller {
 											}
 										}
 									}
-											// echo "<pre>";
-											// // print_r($a_tot);
-											// print_r($a[$bi]);
-											// print_r($b);
-											// // echo "----------------- segmen id : -----";
-											// // print_r($value['segment_id']);
-											// echo "----------------- segmen name : -----";
-											// print_r($value['segment_description']);
-											// // echo "----------------- scheduling id : -----";
-											// // print_r($value['scheduling_id']);
-											// echo "</pre>";
 								}
 							}
 							
@@ -181,7 +170,9 @@ class C_Report extends CI_Controller {
 							$tot_p_checkpoint = 1;
 						}
 					}
-
+					//CEK PERHITUNGAN
+					// echo "<pre>";
+					// print_r($total_nilai);
 					
 					$final_total=0;
 					foreach ($total_nilai as $n => $tn) {
@@ -196,11 +187,14 @@ class C_Report extends CI_Controller {
 						'f_total'			=> $final_total, 
 						'f_rata'			=> $t_rerata 
 					);
+					// print_r($t_rerata);
+					// echo "</pre>";
+					// print_r($t_nilai);
+					// exit();
 				}
 			}
 		}
 		$data['t_nilai']= $t_nilai;
-					// exit();
 
 		// HITUNG ROWSPAN---------------------------------------------------------------------------
 		$data['sheet_all'] = '';

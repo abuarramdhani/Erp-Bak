@@ -198,6 +198,7 @@
 																}
 													?>
 													<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="<?php echo $jawabVal; ?>" >
+													<input type="text" class="radio2" name="<?php echo 'txtID_st'.$st['statement_id']?>" value="<?php echo $st['statement_id']?>" hidden>
 												<?php }?>
 												</td>
 											</tr>

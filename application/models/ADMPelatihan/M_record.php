@@ -493,7 +493,7 @@ class M_record extends CI_Model {
 					and rex.kategori='$schName'
 					and rex.status =''
 					and rex.time_record=STR_TO_DATE('$tgl', '%d/%m/%Y')
-					group by rex.id_num";
+					";
 		$query = $this->quickcom_orientasi->query($sql);
 		return $query->result_array();
 	}
