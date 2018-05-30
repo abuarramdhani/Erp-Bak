@@ -24,7 +24,7 @@
 		</td>
 		<td style="min-width: 50px;"></td>
 		<td style="width: 75px;height: 100px;padding: 10px; border-left: 3px solid black; border-bottom: 3px solid black;">
-			<img src="http://quick.com/aplikasi/photo/<?php echo $worker[$i][0]['noind'];?>.JPG" width="75px" height="100px" style="border: 1px solid black;;border-radius: 35px"/>
+			<img src="http://quick.com/aplikasi/photo/<?php echo $worker[$i][0]['noind'];?>.JPG" width="75px" height="100px" style="border: 1px solid black;border-radius: 35px"/>
 		</td>
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
 			<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[$i][0]['nama_panggilan'];?></b></h3>
