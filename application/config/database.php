@@ -427,9 +427,9 @@ $efg="";
 		);
 		$db['quickcom_hrd_khs'] = array(
 			'dsn'				=> '',
-			'hostname' 			=> 'quick.com',
-			'username' 			=> 'amri',
-			'password' 			=> 'amri',
+			'hostname' 			=> 'database.quick.com',
+			'username' 			=> 'erp',
+			'password' 			=> 'qu1ck1953',
 			'database' 			=> 'hrd_khs',
 			'dbdriver' 			=> 'mysqli',
 			'dbprefix' 			=> '',

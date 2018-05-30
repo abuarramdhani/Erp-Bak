@@ -428,6 +428,12 @@ $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/G
 			$route['RekapTIMSPromosiPekerja/RiwayatMutasi/(:any)']	=	'er/RekapTIMS/C_RekapRiwayatMutasi/$1';
 	//	}
 
+	// 	Rekap Absensi Manual
+	//	{
+			$route['RekapTIMSPromosiPekerja/RekapAbsensiManual']		=	'er/RekapTIMS/C_RekapAbsensiManual';
+			$route['RekapTIMSPromosiPekerja/RekapAbsensiManual/(:any)']	=	'er/RekapTIMS/C_RekapAbsensiManual/$1';
+
+	//	}
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
 

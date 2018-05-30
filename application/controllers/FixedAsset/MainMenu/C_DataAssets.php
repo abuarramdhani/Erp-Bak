@@ -367,7 +367,7 @@ class C_DataAssets extends CI_Controller {
 			'user' => 'postgres',
 			'pass' => 'password',
 			'db'   => 'erp',
-			'host' => 'db.quick.com'
+			'host' => 'database.quick.com'
 		);
 		 
 		 
