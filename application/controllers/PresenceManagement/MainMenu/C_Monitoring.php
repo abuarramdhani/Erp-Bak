@@ -114,7 +114,7 @@ class C_Monitoring extends CI_Controller {
 		
 		$plain_loc=str_replace(array('-', '_', '~'), array('+', '/', '='), $enc_loc);
 		$loc = $this->encrypt->decode($plain_loc);
-		
+
 		$data['Menu'] = 'Catering List';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -128,7 +128,7 @@ class C_Monitoring extends CI_Controller {
 		
 		$data['person']	= $this->M_monitoring->checkPerson($id,$loc);
 		$finger	= $this->M_monitoring->checkFinger($id,$loc);
-		$data['finger']	= $this->M_monitoring->checkFinger($id,$loc);
+		$data['finger']	= $finger;
 		
 		$prefix = $fingerlist = '';
 		foreach ($finger as $data_finger)

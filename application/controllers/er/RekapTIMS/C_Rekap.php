@@ -17,6 +17,7 @@ class C_Rekap extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('er/RekapTIMS/M_rekapmssql');
+		$this->load->model('er/RekapTIMS/M_rekaptims');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -161,7 +162,7 @@ class C_Rekap extends CI_Controller {
 			$departemen 			=	$data['departemen'];
 			$bidang 				=	$data['bidang'];
 			$unit 					=	$data['unit'];
-			$section 					=	$data['section'];
+			$section 				=	$data['section'];
 		}
 
 		//$this->load->view('V_Header',$data);
@@ -169,8 +170,9 @@ class C_Rekap extends CI_Controller {
 		if ($detail==NULL) {
 			$data['periode1']	= $periode1;
 			$data['periode2']	= $periode2;
-			$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$section);
-			$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);
+			/*$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$section);*/
+			/*$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);*/
+			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $seksi);
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
 		else {
@@ -198,14 +200,16 @@ class C_Rekap extends CI_Controller {
 				} else {
 					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
-				$data['rekap_'.$monthName] = $this->M_rekapmssql->dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);
+				/*$data['rekap_'.$monthName] = $this->M_rekapmssql->dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);*/
+				$data['rekap_'.$monthName] = $this->M_rekaptims->rekapTIMS($periode1, $periode2, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section);
 			}
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 			$data['periode1']	= $period1;
 			$data['periode2']	= $period2;
-			$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
-			$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,$departemen,$bidang,$unit,$section);
+			/*$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);*/
+			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
+			/*$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,$departemen,$bidang,$unit,$section);*/
 			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);
 		}
 		//$this->load->view('V_Footer',$data);
@@ -246,8 +250,10 @@ class C_Rekap extends CI_Controller {
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
-		$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,NULL,NULL,NULL,$section);
-		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);
+		/*$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,NULL,NULL,NULL,$section);
+		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);*/
+
+		$rekap_all = $this->M_rekaptims->rekapTIMS($periode1, $periode2 , FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
 
 		if ($detail == 1) {
 
@@ -278,7 +284,9 @@ class C_Rekap extends CI_Controller {
 				} else {
 					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
-				${'rekap_'.$monthName} = $this->M_rekapmssql->ExportDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);
+				/*${'rekap_'.$monthName} = $this->M_rekapmssql->ExportDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);*/
+
+				${'rekap_'.$monthName} = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section);
 			}
 		}
 
@@ -439,37 +447,11 @@ class C_Rekap extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-			$masukkerja_s = '';
-			${'masa_kerja'.$rekap_data['nama']} = array();
-			$index_masakerja = 0;
-			foreach ($rekap_masakerja as $row) {
-				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-					
-					if ($row['masukkerja'] != $masukkerja_s) {
-						$masukkerja = new DateTime($row['masukkerja']);
-						$tglkeluar = new DateTime($row['tglkeluar']);
-						$masa_kerja = $masukkerja->diff($tglkeluar);
-						${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
-						$index_masakerja++;
-					}
-
-					$masukkerja_s = $row['masukkerja'];
-				}
-			}
-
-			$e = new DateTime();
-			$f = clone $e;
-			if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
-				$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
-			}
-			if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
-				$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
-			}
 			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
-			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
+			$worksheet->setCellValue('D'.$highestRow, $rekap_data['masa_kerja']);
 			$worksheet->setCellValue('E'.$highestRow, $rekap_data['dept']);
 			$worksheet->setCellValue('F'.$highestRow, $rekap_data['bidang']);
 			$worksheet->setCellValue('G'.$highestRow, $rekap_data['unit']);
@@ -711,7 +693,7 @@ class C_Rekap extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportRekapMonthly(){
+	/*public function ExportRekapMonthly(){
 		$periode = $this->input->post("txtPeriode_bulanan_export");
 		$status = $this->input->post("txtStatus_bulanan_export");
 		$section = $this->input->post("txtSeksi_bulanan_export");
@@ -996,6 +978,6 @@ class C_Rekap extends CI_Controller {
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xlsx"');
 		$objWriter->save("php://output");
-	}
+	}*/
 
 }

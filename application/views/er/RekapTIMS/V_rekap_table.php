@@ -74,49 +74,7 @@ foreach ($rekap as $rekap_data) {}
 												</a>
 											</td>
 											<td style="text-align:center;">
-												<?php
-													$masukkerja_s = '';
-													${'masa_kerja'.$rekap_data['nama']} = array();
-													$index_masakerja = 0;
-													$aktif=0;
-													foreach ($rekap_masakerja as $row) {
-														if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-															if ($row['masukkerja'] != $masukkerja_s) {
-																$masukkerja = new DateTime($row['masukkerja']);
-																$tglkeluar = new DateTime($row['tglkeluar']);
-																$masa_kerja = $masukkerja->diff($tglkeluar);
-																${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
-																$index_masakerja++;
-															}
-															
-															if ('f' == $row['keluar'])
-																{
-																	$aktif=1;
-																	$amasukkerja=$row['masukkerja'];
-																	$aperiode2=$ex_period2[0].' '.$ex_period2[1];
-																}
-															if(1==$index_masakerja && 1==$aktif)
-															{
-																$bmasukkerja = new DateTime($amasukkerja);
-																$bperiode2 = new DateTime($aperiode2);
-																$masa_kerja = $bmasukkerja->diff($bperiode2);		
-																${'masa_kerja'.$rekap_data['nama']}[0] = $masa_kerja;		
-															}
-
-															$masukkerja_s = $row['masukkerja'];
-														}
-													}
-													
-													$e = new DateTime();
-													$f = clone $e;
-													if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
-														$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
-													}
-													if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
-														$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
-													}
-													echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
-												?>
+												<?php echo $rekap_data['masa_kerja'];?>
 											</td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekt']+$rekap_data['frekts']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['freki']+$rekap_data['frekis']; ?></td>

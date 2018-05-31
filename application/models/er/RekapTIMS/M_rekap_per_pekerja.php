@@ -96,15 +96,49 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 					AND kd_ket = 'CT') AS FrekCTs,
 
-					(SELECT count(*) FROM
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
-					) AS FrekSP,
+					) AS FrekSP,*/
 
-					(SELECT count(*) FROM
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP,
+
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -113,7 +147,60 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-					) AS FrekSPs,
+					) AS FrekSPs,*/
+
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind
+									in 		(
+												select 		noind
+												from 		hrd_khs.v_hrd_khs_tpribadi as pri
+												where 		pri.nik
+															=
+															(
+																select 		nik
+																from 		hrd_khs.v_hrd_khs_tpribadi
+																where 		noind=a.noind
+															)
+															and 	pri.tgllahir
+																	=
+																	(
+																		select 		tgllahir
+																		from 		hrd_khs.v_hrd_khs_tpribadi
+																		where 		noind=a.noind
+																	)
+															and 	pri.keluar=true
+											)
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSPs,
 
 					(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2') AS TotalHK,
 					(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
@@ -180,12 +267,46 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 					'0' AS FrekCTs,
 
-					(SELECT count(*) FROM
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
+					) AS FrekSP,*/
+
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
 					) AS FrekSP,
 
 					'0' AS FrekSPs,
@@ -301,23 +422,91 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 					AND kd_ket = 'CT') AS FrekCTs".$monthName.",
 
-					(SELECT max(sp_ke) FROM
-						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-						UNION ALL
-						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-						) AS SP
-						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate')
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$lastdate'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$lastdate'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
+									and 	tabelsp.lanjutan='STOP'
 					) AS FrekSP".$monthName.",
 
-					(SELECT max(sp_ke) FROM
-						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-						UNION ALL
-						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-						) AS SP
-					WHERE noind IN
-						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
-							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate'))
-						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$lastdate'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$lastdate'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind
+									in 		(
+												select 		noind
+												from 		hrd_khs.v_hrd_khs_tpribadi as pri
+												where 		pri.nik
+															=
+															(
+																select 		nik
+																from 		hrd_khs.v_hrd_khs_tpribadi
+																where 		noind=a.noind
+															)
+															and 	pri.tgllahir
+																	=
+																	(
+																		select 		tgllahir
+																		from 		hrd_khs.v_hrd_khs_tpribadi
+																		where 		noind=a.noind
+																	)
+															and 	pri.keluar=true
+											)
+									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
+									and 	tabelsp.lanjutan='STOP'
 					) AS FrekSPs".$monthName."
 
 					FROM hrd_khs.tpribadi a
@@ -374,12 +563,38 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 					'0' AS FrekCTs".$monthName.",
 
-					(SELECT max(sp_ke) FROM
-						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
-						UNION ALL
-						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
-						) AS SP
-						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate')
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$lastdate'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$lastdate'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
+									and 	tabelsp.lanjutan='STOP'
 					) AS FrekSP".$monthName.",
 
 					'0' AS FrekSPs".$monthName."
@@ -490,15 +705,49 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 					AND kd_ket = 'CT') AS FrekCTs,
 
-					(SELECT count(*) FROM
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
-					) AS FrekSP,
+					) AS FrekSP,*/
 
-					(SELECT count(*) FROM
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP,
+
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -507,7 +756,61 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-					) AS FrekSPs,
+					) AS FrekSPs,*/
+
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind
+									in 		(
+												select 		noind
+												from 		hrd_khs.v_hrd_khs_tpribadi as pri
+												where 		pri.nik
+															=
+															(
+																select 		nik
+																from 		hrd_khs.v_hrd_khs_tpribadi
+																where 		noind=a.noind
+															)
+															and 	pri.tgllahir
+																	=
+																	(
+																		select 		tgllahir
+																		from 		hrd_khs.v_hrd_khs_tpribadi
+																		where 		noind=a.noind
+																	)
+															and 	pri.keluar=true
+											)
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSPs,
+
 					(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2')
 					AS TotalHK, 
 							(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind IN
@@ -574,13 +877,47 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 					'0' AS FrekCTs,
 
-					(SELECT count(*) FROM
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 						WHERE noind = a.noind AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2')
-					) AS FrekSP,
+					) AS FrekSP,*/
+
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP,
 
 					'0' AS FrekSPs,
 					(SELECT count(*) FROM \"Presensi\".tshiftpekerja WHERE noind = a.noind AND tanggal BETWEEN '$periode1' AND '$periode2') AS TotalHK,
@@ -693,15 +1030,49 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 					AND kd_ket = 'CT') AS FrekCTs".$monthName.",
 
-					(SELECT count(*) FROM
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate')
-					) AS FrekSP".$monthName.",
+					) AS FrekSP".$monthName.",*/
 
-					(SELECT count(*) FROM
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$lastdate'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$lastdate'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP".$monthName.",
+
+					/*(SELECT count(*) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -710,7 +1081,60 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 							(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak + interval '5 month') >= '$firstdate' OR(tgl_cetak + interval '5 month') >= '$lastdate'))
 						AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-					) AS FrekSPs".$monthName."
+					) AS FrekSPs".$monthName."*/
+
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$lastdate'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$lastdate'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind
+									in 		(
+												select 		noind
+												from 		hrd_khs.v_hrd_khs_tpribadi as pri
+												where 		pri.nik
+															=
+															(
+																select 		nik
+																from 		hrd_khs.v_hrd_khs_tpribadi
+																where 		noind=a.noind
+															)
+															and 	pri.tgllahir
+																	=
+																	(
+																		select 		tgllahir
+																		from 		hrd_khs.v_hrd_khs_tpribadi
+																		where 		noind=a.noind
+																	)
+															and 	pri.keluar=true
+											)
+									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
+									and 	tabelsp.lanjutan='STOP'
+					) as AS FrekSPs".$monthName."
 
 				FROM hrd_khs.tpribadi a
 
@@ -766,13 +1190,47 @@ clASs M_rekap_per_pekerja extends CI_Model {
 
 					'0' AS FrekCTs".$monthName.",
 
-					(SELECT max(sp_ke) FROM
+					/*(SELECT max(sp_ke) FROM
 						(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 						UNION ALL
 						SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
 						) AS SP
 						WHERE noind = a.noind AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate')
-					) AS FrekSP".$monthName.",
+					) AS FrekSP".$monthName.",*/
+
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$lastdate'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$lastdate'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP".$monthName.",
 
 					'0' AS FrekSPs".$monthName."
 
@@ -873,7 +1331,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'CT') AS FrekCTs,
 
-				(SELECT count(*) FROM
+				/*(SELECT count(*) FROM
 					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -890,7 +1348,93 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$periode1' OR tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR(tgl_cetak + interval '5 month') >= '$periode2'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs
+				) AS FrekSPs*/
+
+				(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP,
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind
+									in 		(
+												select 		noind
+												from 		hrd_khs.v_hrd_khs_tpribadi as pri
+												where 		pri.nik
+															=
+															(
+																select 		nik
+																from 		hrd_khs.v_hrd_khs_tpribadi
+																where 		noind=a.noind
+															)
+															and 	pri.tgllahir
+																	=
+																	(
+																		select 		tgllahir
+																		from 		hrd_khs.v_hrd_khs_tpribadi
+																		where 		noind=a.noind
+																	)
+															and 	pri.keluar=true
+											)
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSPs
 
 			FROM hrd_khs.tpribadi a
 
@@ -988,7 +1532,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
 				AND kd_ket = 'CT') AS FrekCTs".$date.",
 
-				(SELECT max(sp_ke) FROM
+				/*(SELECT max(sp_ke) FROM
 					(SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, nT, nIK, nM, bobot, 'Absensi' as Status FROM \"Surat\".tsp 
 					UNION ALL
 					SELECT noind, no_surat, bulan, tgl_cetak,(tgl_cetak + interval '5 month') as tgl_kadaluarsa, berlaku, sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen
@@ -1005,7 +1549,93 @@ clASs M_rekap_per_pekerja extends CI_Model {
 					(SELECT noind FROM hrd_khs.tpribadi WHERE noind IN
 						(SELECT noind FROM hrd_khs.tpribadi WHERE keluar = '1' AND (tgl_cetak <= '$firstdate' OR tgl_cetak <= '$lastdate') AND ((tgl_cetak) >= '$firstdate' OR (tgl_cetak) >= '$lastdate'))
 					AND nama = a.nama AND tgllahir = a.tgllahir AND nik = a.nik)
-				) AS FrekSPs".$date."
+				) AS FrekSPs".$date."*/
+
+								(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind=a.noind
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSP".$date.",
+					(
+						select		coalesce(sum(tabelsp.sp_ke::int), 0) as jumlah_sp
+						--select 		tabelsp.*
+						from		(
+										select		tabelmaster.*,
+													(
+														case 	when 	(
+																			select 		count(*)
+																			from 		\"Surat\".v_surat_tsp_rekap as sp
+																			where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
+																						and 	sp.tanggal_awal_berlaku<'$periode2'
+																		)>0	
+																		then 	(
+																					case	when 	(
+																										select 		count(*)
+																										from 		\"Surat\".v_surat_tsp_rekap as sp2
+																										where 		sp2.tanggal_awal_berlaku>=tabelmaster.tanggal_awal_berlaku
+																													and 	sp2.tanggal_awal_berlaku<'$periode2'
+																													and 	sp2.sp_ke>tabelmaster.sp_ke
+																									)>0
+																									then 	'NEXT'
+																							else 	'STOP'
+																					end
+																				)
+																else 	'STOP'
+														end
+													) as lanjutan
+										from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
+									) as tabelsp
+						where 		tabelsp.noind
+									in 		(
+												select 		noind
+												from 		hrd_khs.v_hrd_khs_tpribadi as pri
+												where 		pri.nik
+															=
+															(
+																select 		nik
+																from 		hrd_khs.v_hrd_khs_tpribadi
+																where 		noind=a.noind
+															)
+															and 	pri.tgllahir
+																	=
+																	(
+																		select 		tgllahir
+																		from 		hrd_khs.v_hrd_khs_tpribadi
+																		where 		noind=a.noind
+																	)
+															and 	pri.keluar=true
+											)
+									and 	tabelsp.tanggal_awal_berlaku between '$periode1' and '$periode2'
+									and 	tabelsp.lanjutan='STOP'
+					) as FrekSPs".$date."
 
 			FROM hrd_khs.tpribadi a
 
@@ -1159,14 +1789,13 @@ clASs M_rekap_per_pekerja extends CI_Model {
 			where b.nik = '$nik'
 			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2')
 			order by tgl_cetak DESC
-			
 		";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
 	public function data_rekap_masakerja($periode2, $noinduk, $status){
-		if ($status == '0') {
+		/*if ($status == '0') {
 			$sql = "
 				(
 				SELECT noind, nik, nama, masukkerja, '$periode2' tglkeluar, keluar
@@ -1213,7 +1842,111 @@ clASs M_rekap_per_pekerja extends CI_Model {
 						noind IN ($noinduk)
 				ORDER BY nik, nama, masukkerja DESC, tglkeluar DESC";
 
-		}
+		}*/
+		$sql 	= "	select 		masa_kerja.nik,
+								masa_kerja.tgllahir,
+								(
+									masa_kerja.total_tahun
+									+
+									(
+										case 	when 	masa_kerja.total_bulan>11
+														then 	floor(masa_kerja.total_bulan/12)
+												else 	0
+										end
+									)
+									+
+									(
+										case 	when 	masa_kerja.total_hari>364
+														then 	floor(masa_kerja.total_hari/365)
+												else 	0
+										end
+									)
+								) as tahun,
+								(
+									(
+										case 	when 	masa_kerja.total_bulan>11
+														then 	masa_kerja.total_bulan-11
+												else 	masa_kerja.total_bulan
+										end
+									)
+									+
+									(
+										case 	when 	masa_kerja.total_hari>29
+														then 	floor(masa_kerja.total_hari/30)
+												else 	0
+										end
+									)
+								) as bulan,
+								(
+									(
+										case 	when 	masa_kerja.total_hari>29
+														then 	masa_kerja.total_hari-29
+												else 	masa_kerja.total_hari
+										end
+									)
+								) as hari
+					from 		(
+									select		master_masa_kerja.nik,
+												master_masa_kerja.tgllahir,
+									 			sum(extract(year from master_masa_kerja.masa_kerja)) as total_tahun,
+												sum(extract(month from master_masa_kerja.masa_kerja)) as total_bulan,
+												sum(extract(day from master_masa_kerja.masa_kerja)) as total_hari
+									from 		(
+													select 		pri.*,
+																(
+																	case 	when 	pri.keluar=false
+																					then 	(
+																								case 	when 	pri.kode_status_kerja in ('A', 'B')
+																												then 	(
+																															age(current_date, pri.diangkat)
+																														)
+																										else  	(
+																													age(current_date, pri.masukkerja)
+																												)
+																								end
+																							)
+																			else 	(
+																						case 	when 	pri.kode_status_kerja in ('A', 'B')
+																										then 	(
+																													age(pri.tglkeluar, pri.diangkat)
+																												)
+																								else  	(
+																											age(pri.tglkeluar, pri.masukkerja)
+																										)
+																						end
+																					)
+																	end
+																) as masa_kerja
+													from 		(
+																	select 		pri.noind,
+																				pri.nik,
+																				pri.tgllahir,
+																				pri.kode_status_kerja,
+																				pri.keluar,
+																				pri.masukkerja,
+																				pri.diangkat,
+																				pri.tglkeluar,
+																				pri.akhkontrak
+																	from 		hrd_khs.v_hrd_khs_tpribadi as pri
+																	where 		pri.nik
+																				=
+																				(
+																					select 		nik
+																					from 		hrd_khs.v_hrd_khs_tpribadi
+																					where 		noind in($noinduk)
+																				)
+																				and 	pri.tgllahir
+																						=
+																						(
+																							select 		tgllahir
+																							from 		hrd_khs.v_hrd_khs_tpribadi
+																							where 		noind in($noinduk)
+																						)
+																) as pri
+												) master_masa_kerja
+									group by 	master_masa_kerja.nik,
+												master_masa_kerja.tgllahir
+								) as masa_kerja";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}

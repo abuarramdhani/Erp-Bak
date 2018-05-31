@@ -57,7 +57,7 @@
 									<tr>
 										<th style="text-align:center;" width="10%">NO</th>
 										<th style="text-align:center;" width="10%">ID FINGER</th>
-										<th style="text-align:center; width="70%">FINGER</th>
+										<th style="text-align:center; width=70%">FINGER</th>
 										<th style="text-align:center;" width="10%">ACTION</th>
 									</tr>
 								</thead>

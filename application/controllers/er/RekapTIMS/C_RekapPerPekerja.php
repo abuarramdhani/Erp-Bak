@@ -18,6 +18,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		
 		$this->load->model('er/RekapTIMS/M_rekap_per_pekerja');
+		$this->load->model('er/RekapTIMS/M_rekaptims');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -113,8 +114,10 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['periode1']	= $periode1;
 			$data['periode2']	= $periode2;
 			$data['status']	= $status;
-			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
-			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);
+			/*$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
+			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);*/
+
+			$data['rekap'] = $this->M_rekaptims->rekapTIMS($periode1, $periode2 , FALSE, $nomer_induk);
 			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
@@ -144,7 +147,8 @@ class C_RekapPerPekerja extends CI_Controller {
 					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
 
-				$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName, $status);
+				/*$data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($firstdate,$lastdate,$nomer_induk,$monthName, $status);*/
+				$data['rekap_'.$monthName] = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, $nomer_induk);
 				// $data['rekap_'.$monthName] = $this->M_rekap_per_pekerja->data_per_pekerja_detail($periode1,$periode2,$nomer_induk,$monthName, $status);
 
 			}
@@ -155,8 +159,10 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['periode2']	= $period2;
 
 			$data['status']	= $status;
-			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
-			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);
+			/*$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
+			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);*/
+
+			$data['rekap'] = $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, $nomer_induk);
 			$this->load->view('er/RekapTIMS/V_detail_rekap_per_pekerja',$data);
 		}
 	}
@@ -193,8 +199,10 @@ class C_RekapPerPekerja extends CI_Controller {
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
 		}
-		$rekap_masakerja = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$NoInduk,$status);
-		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk,$status);
+		/*$rekap_masakerja = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$NoInduk,$status);
+		$rekap_all = $this->M_rekap_per_pekerja->ExportRekap($period1,$period2,$NoInduk,$status);*/
+
+		$rekap_all = $this->M_rekaptims->rekapTIMS($periode1, $periode2 , FALSE, $NoInduk);
 
 		if ($detail == 1) {
 			$begin = new DateTime(date('Y-m-01 00:00:00', strtotime($periode1)));
@@ -225,7 +233,8 @@ class C_RekapPerPekerja extends CI_Controller {
 					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
 
-				${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName, $status);
+				/*${'rekap_'.$monthName} = $this->M_rekap_per_pekerja->ExportDetail($firstdate,$lastdate,$NoInduk,$monthName, $status);*/
+				${'rekap_'.$monthName} = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, $NoInduk);
 			}
 		}
 
@@ -380,38 +389,11 @@ class C_RekapPerPekerja extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-			$masukkerja_s = '';
-			${'masa_kerja'.$rekap_data['nama']} = array();
-			$index_masakerja = 0;
-			foreach ($rekap_masakerja as $row) {
-				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-					
-					if ($row['masukkerja'] != $masukkerja_s) {
-						$masukkerja = new DateTime($row['masukkerja']);
-						$tglkeluar = new DateTime($row['tglkeluar']);
-						$masa_kerja = $masukkerja->diff($tglkeluar);
-						${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
-						$index_masakerja++;
-					}
-
-					$masukkerja_s = $row['masukkerja'];
-				}
-			}
-
-			$e = new DateTime();
-			$f = clone $e;
-			if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
-				$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
-			}
-			if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
-				$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
-			}
-			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
-			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
+			$worksheet->setCellValue('D'.$highestRow, $rekap_data['masa_kerja']);
 			$worksheet->setCellValue('E'.$highestRow, $rekap_data['dept']);
 			$worksheet->setCellValue('F'.$highestRow, $rekap_data['bidang']);
 			$worksheet->setCellValue('G'.$highestRow, $rekap_data['unit']);
@@ -1003,7 +985,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function ExportRekapMonthly(){
+	/*public function ExportRekapMonthly(){
 		$periode = $this->input->post("txtPeriode_bulanan_export");
 		$NoInduk = $this->input->post("txtNoInduk_bulanan_export");
 
@@ -1279,7 +1261,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$fileName.'-'.time().'.xlsx"');
 		$objWriter->save("php://output");
-	}
+	}*/
 
 	public function searchEmployee($periode1,$periode2,$nik)
 	{

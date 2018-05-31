@@ -181,11 +181,15 @@ function rekap_datatable() {
 		responsive: false,
 		scrollCollapse: true,
 		"lengthChange": false,
-		"dom": '<"pull-left"f>tp',
+		/*"dom": '<"pull-left"f>tp',*/
 		"info": false,
 		language: {
 			search: "_INPUT_",
 		},
+		dom: 'Bfrtip',
+		buttons: [
+			'excel'
+		],
 	});
 	$('.dataTables_filter input[type="search"]').css(
 		{'width':'400px','display':'inline-block'}
@@ -200,11 +204,15 @@ function rekap_datatable_detail() {
 		scrollY: "400px",
 		scrollCollapse: true,
 		"lengthChange": true,
-		"dom": '<"pull-left"f>tp',
+		/*"dom": '<"pull-left"f>tp',*/
 		"info": false,
 		language: {
 			search: "_INPUT_",
 		},
+		dom: 'Bfrtip',
+		buttons: [
+			'excel'
+		],
 	});
 	$('.dataTables_filter input[type="search"]').css(
 		{'width':'400px','display':'inline-block'}
