@@ -201,7 +201,7 @@ class C_Rekap extends CI_Controller {
 					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
 				/*$data['rekap_'.$monthName] = $this->M_rekapmssql->dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);*/
-				$data['rekap_'.$monthName] = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
+				$data['rekap_'.$monthName] = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section);
 			}
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
