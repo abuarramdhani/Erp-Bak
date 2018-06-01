@@ -447,7 +447,6 @@ class C_Rekap extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-			$total_masa_kerja = $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 			$worksheet->setCellValue('A'.$highestRow, $no++);
 			$worksheet->setCellValue('B'.$highestRow, $rekap_data['noind'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C'.$highestRow, str_replace('  ', '', $rekap_data['nama']));
