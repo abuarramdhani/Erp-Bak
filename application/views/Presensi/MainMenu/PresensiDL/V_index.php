@@ -18,7 +18,65 @@
                     </div>
                 </div>
                 <br/>
-                
+                 <div class="row">
+                    <div class="col-lg-12">
+                        <div class="box box-primary box-solid">
+                            <div class="box-header with-border">    
+                                <span style="font-size: 20px;">Input Presensi Dinas Luar</span>
+                            </div>
+                            <div class="box-body">
+                            <form action="<?php echo site_url('Presensi/PresensiDL/InsertPresensiManual') ?>" method="post">
+                                <div class="row" style="margin: 10px 10px">
+                                    <div class="form-group">
+                                      <div class="col-sm-4">
+                                        <select class="form-control select-nama-prs" id="idNoind_prs" name="NamaPekerja" style="width: 100%" >
+                                        </select>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <input type="text" name="txtSPDL" placeholder="[SPDL]" class="form-control" >
+                                      </div>
+                                      <div class="col-sm-6">
+                                      </div>
+                                    </div> 
+                                </div>
+                                <div class="row" style="margin: 10px 10px">
+                                    <div class="form-group">
+                                      <div class="col-sm-2">
+                                        <b>Realisasi Berangkat</b>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <input type="text" name="txtTglBerangkat" placeholder="[tanggal berangkat]" class="form-control datepicker" data-date="" data-date-format="yyyy-mm-dd">
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <input type="time" name="txtTimeBerangkat" class="form-control">
+                                      </div>
+                                    </div> 
+                                </div>
+                                <div class="row" style="margin: 10px 10px">
+                                    <div class="form-group">
+                                      <div class="col-sm-2">
+                                        <b>Realisasi Pulang</b>
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <input type="text" name="txtTglPulang" placeholder="[tanggal pulang]" class="form-control datepicker" data-date="" data-date-format="yyyy-mm-dd">
+                                      </div>
+                                      <div class="col-sm-2">
+                                        <input type="time" name="txtTimePulang" class="form-control">
+                                      </div>
+                                    </div> 
+                                </div>
+                                <div class="row" style="margin: 10px 10px">
+                                    <div class="form-group">
+                                      <div class="col-sm-2">
+                                        <input type="submit" class="btn btn-primary" style="width: 100%;" value="Simpan">
+                                      </div>
+                                    </div> 
+                                </div>
+                            </div> 
+                            </form>
+                        </div>
+                    </div>
+                </div>  
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">

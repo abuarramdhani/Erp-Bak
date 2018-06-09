@@ -273,4 +273,14 @@ group by td.spdl_id,td.noind,td.kodesie");
         $sql = $sqlserver->query("update \"Presensi\".tpresensi_dl set tgl_realisasi='$tanggal',wkt_realisasi='$waktu' where spdl_id='$spdl' and stat='$stat'");
     }
 
+    public function deletePresensi($spdl,$stat){
+        $sqlserver = $this->load->database('personalia', true);
+        $sql = $sqlserver->query("delete from \"Presensi\".tpresensi_dl where spdl_id='$spdl' $stat");
+    }
+
+    public function insertPresensi($date_now,$id,$kodesie,$time_now,$userid,$noind_baru,$trans,$spdl,$stat,$tglPulang,$timePulang){
+        $sqlserver = $this->load->database('personalia', true);
+        $sql = $sqlserver->query("insert into \"Presensi\".tpresensi_dl values ('$date_now','$id','$kodesie','$time_now','$userid','$noind_baru','$trans','$spdl','$stat','$tglPulang','$timePulang','')");
+    }
+
 }
