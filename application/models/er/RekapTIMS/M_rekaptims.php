@@ -96,16 +96,24 @@
 											param.tgl2 as tanggal_akhir_rekap,
 											/*Terlambat - Status Pekerja Aktif*/
 											(
-												select 		count(tim.tanggal) as total_frekuensi
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatatim as tim
 												where 		tim.tanggal between param.tgl1 and param.tgl2
 															and 	trim(tim.kd_ket)='TT'
 															and 	tim.point>0
 															and 	trim(tim.noind)=pri.noind
 											) as frekt".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TT'
+															and 	tim.point>0
+															and 	trim(tim.noind)=pri.noind
+											) as bobott".$year_month.",
 											/*Terlambat - Status Pekerja Nonaktif*/
 											(
-												select 		count(tim.tanggal) as total_frekuensi
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatatim as tim
 												where 		tim.tanggal between param.tgl1 and param.tgl2
 															and 	trim(tim.kd_ket)='TT'
@@ -121,18 +129,43 @@
 																					and 	pri2.noind!=pri.noind
 																	)
 											) as frekts".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TT'
+															and 	tim.point>0
+															and 	trim(tim.noind)
+																	in
+																	(
+																		select 		pri2.noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.keluar=true
+																					and 	pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																	)
+											) as bobotts".$year_month.",
 											/*Ijin Keluar Pribadi - Status Pekerja Aktif*/
 											(
-												select 		count(tim.tanggal) as total_frekuensi
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatatim as tim
 												where 		tim.tanggal between param.tgl1 and param.tgl2
 															and 	trim(tim.kd_ket)='TIK'
 															and 	tim.point>0
 															and 	trim(tim.noind)=pri.noind
 											) as freki".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TIK'
+															and 	tim.point>0
+															and 	trim(tim.noind)=pri.noind
+											) as boboti".$year_month.",
 											/*Ijin Keluar Pribadi - Status Pekerja Nonaktif*/
 											(
-												select 		count(tim.tanggal) as total_frekuensi
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatatim as tim
 												where 		tim.tanggal between param.tgl1 and param.tgl2
 															and 	trim(tim.kd_ket)='TIK'
@@ -148,18 +181,43 @@
 																					and 	pri2.noind!=pri.noind
 																	)
 											) as frekis".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TIK'
+															and 	tim.point>0
+															and 	trim(tim.noind)
+																	in
+																	(
+																		select 		pri2.noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.keluar=true
+																					and 	pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																	)
+											) as bobotis".$year_month.",
 											/*Mangkir - Status Pekerja Aktif*/
 											(
-												select 		count(tim.tanggal) as total_frekuensi
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatatim as tim
 												where 		tim.tanggal between param.tgl1 and param.tgl2
 															and 	trim(tim.kd_ket)='TM'
 															and 	tim.point>0
 															and 	trim(tim.noind)=pri.noind
 											) as frekm".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point>0
+															and 	trim(tim.noind)=pri.noind
+											) as bobotm".$year_month.",
 											/*Mangkir - Status Pekerja Nonaktif*/
 											(
-												select 		count(tim.tanggal) as total_frekuensi
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatatim as tim
 												where 		tim.tanggal between param.tgl1 and param.tgl2
 															and 	trim(tim.kd_ket)='TM'
@@ -175,9 +233,26 @@
 																					and 	pri2.noind!=pri.noind
 																	)
 											) as frekms".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point>0
+															and 	trim(tim.noind)
+																	in
+																	(
+																		select 		pri2.noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.keluar=true
+																					and 	pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																	)
+											) as bobotms".$year_month.",
 											/*Sakit Keterangan Dokter - Status Pekerja Aktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='PSK'
@@ -185,7 +260,7 @@
 											) as freksk".$year_month.",
 											/*Sakit Keterangan Dokter - Status Pekerja Nonaktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='PSK'
@@ -202,7 +277,7 @@
 											) as freksks".$year_month.",
 											/*Sakit Perusahaan - Status Pekerja Aktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='PSP'
@@ -210,7 +285,7 @@
 											) as frekpsp".$year_month.",
 											/*Sakit Perusahaan - Status Pekerja Nonaktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='PSP'
@@ -227,7 +302,7 @@
 											) as frekpsps".$year_month.",
 											/*Ijin Perusahaan - Status Pekerja Aktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='PIP'
@@ -235,7 +310,7 @@
 											) as frekip".$year_month.",
 											/*Ijin Perusahaan - Status Pekerja Nonaktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='PIP'
@@ -252,7 +327,7 @@
 											) as frekips".$year_month.",
 											/*Cuti Tahunan - Status Pekerja Aktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='CT'
@@ -260,7 +335,7 @@
 											) as frekct".$year_month.",
 											/*Cuti Tahunan - Status Pekerja Nonaktif*/
 											(
-												select 		count(datapres.tanggal) as total_frekuensi
+												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
 												from 		\"Presensi\".tdatapresensi as datapres
 												where 		datapres.tanggal between param.tgl1 and param.tgl2
 															and 	datapres.kd_ket='CT'

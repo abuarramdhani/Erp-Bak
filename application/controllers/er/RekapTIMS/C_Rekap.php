@@ -172,7 +172,7 @@ class C_Rekap extends CI_Controller {
 			$data['periode2']	= $periode2;
 			/*$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$section);*/
 			/*$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);*/
-			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $seksi);
+			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
 		else {

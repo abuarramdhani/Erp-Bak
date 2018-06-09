@@ -127,109 +127,140 @@ public function CariDataDinasLuar(){
 
 	}
 
-public function fileDinasLuar($spdl){
-		$data['SuratTugas'] 		= $this->M_presensi_dl->getSuratTugas($spdl);
-		$this->load->library('pdf');
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 0, 0, 'P');
-		$filename = 'SuratTugas.pdf';
-		$html = $this->load->view('Presensi/MainMenu/PresensiDL/V_export',$data, true);
-		$pdf->WriteHTML($html);
-		$pdf->Output($filename, 'I');
-}
-
-private function klausa_where($noind,$tanggal1,$tanggal2,$dept,$bidang,$unit,$seksi){
-	if($noind!=null || $tanggal1!=null || $dept!=null && $dept!='0'){
-            $where = "where";
-        }else{
-            $where = "";
-        }
-
-        if($seksi==null){
-            if($unit==null){
-                if($bidang==null){
-                    if($dept==null || $dept=='0'){
-                        $dept = "";
-                    }else{
-                        if($dept!=null && ($tanggal1!=null || $noind!=null)){
-                            $dept = "and left(kodesie,1)='$dept'";
-                        }else{
-                            $dept = "left(kodesie,1)='$dept'";
-                        }
-                    }
-                }else{
-                    $dept = "";
-                    $bidang = "and left(kodesie,3)='$bidang'";
-                }
-            }else{
-                $dept = "";
-                $bidang = "";
-                $unit = "and left(kodesie,5)='$unit'";
-            }
-        }else{
-            $dept = "";
-            $bidang = "";
-            $unit = "";
-            $seksi = "and left(kodesie,7)='$seksi'";
-        }
-        if($tanggal1!=null){
-            if($noind!=null){
-                $tanggal = "and tanggal between '$tanggal1' and '$tanggal2'";
-            }else{
-                $tanggal = "tanggal between '$tanggal1' and '$tanggal2'";
-            }
-        }else{
-        	$tanggal = "";
-        }
-        if($noind!=null){
-            $noind = "noind='$noind'";
-        }
-
-        $klausa_where = $where." ".$noind." ".$tanggal." ".$dept." ".$bidang." ".$unit." ".$seksi;
-        return $klausa_where;
-}
-
-public function editTanggalRealisasi($spdl){
-	$this->checkSession();
-	$user_id = $this->session->userid;
-	
-	$id = $this->input->get('id');
-
-	$data['Menu'] = 'Presensi';
-	$data['SubMenuOne'] = 'Presensi DL';
-	$data['SubMenuTwo'] = 'Presensi DL';
-	$data['SubMenuOne'] = 'Presensi DL';
-	$data['Title'] = 'Monitoring Presensi Dinas Luar';
-	
-	$data['item_spdl'] = $this->M_presensi_dl->editSDPL($spdl);
-	$data['item_pekerja'] = $this->M_presensi_dl->dataPekerja($id);
-	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-	$data['spdl'] = $spdl;
-	$data['id'] = $id;
-
-	$this->load->view('V_Header',$data);
-	$this->load->view('V_Sidemenu',$data);
-	$this->load->view('Presensi/MainMenu/PresensiDL/V_EditRealisasi', $data);
-	$this->load->view('V_Footer',$data);
-}
-
-public function actEditTanggalRealisasi($spdl){
-	$tanggal = $this->input->post('tglRealisasi');
-	$waktu = $this->input->post('wktRealisasi');
-	$id = $this->input->get('id');
-	$length = count($tanggal);
-	for($i=0;$i<$length;$i++){
-		if(($i % 2) == 0){
-          $stat = 0;
-        }else{
-          $stat = 1;
-        }
-		$update = $this->M_presensi_dl->updateRealisasi($spdl,$tanggal[$i],$waktu[$i],$stat);
+	public function fileDinasLuar($spdl){
+			$data['SuratTugas'] 		= $this->M_presensi_dl->getSuratTugas($spdl);
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 0, 0, 'P');
+			$filename = 'SuratTugas.pdf';
+			$html = $this->load->view('Presensi/MainMenu/PresensiDL/V_export',$data, true);
+			$pdf->WriteHTML($html);
+			$pdf->Output($filename, 'I');
 	}
-	redirect(site_url('Presensi/PresensiDL/editTanggalRealisasi/'.$spdl."?id=".$id));
-    exit;
-}
 
+	private function klausa_where($noind,$tanggal1,$tanggal2,$dept,$bidang,$unit,$seksi){
+		if($noind!=null || $tanggal1!=null || $dept!=null && $dept!='0'){
+	            $where = "where";
+	        }else{
+	            $where = "";
+	        }
+
+	        if($seksi==null){
+	            if($unit==null){
+	                if($bidang==null){
+	                    if($dept==null || $dept=='0'){
+	                        $dept = "";
+	                    }else{
+	                        if($dept!=null && ($tanggal1!=null || $noind!=null)){
+	                            $dept = "and left(kodesie,1)='$dept'";
+	                        }else{
+	                            $dept = "left(kodesie,1)='$dept'";
+	                        }
+	                    }
+	                }else{
+	                    $dept = "";
+	                    $bidang = "and left(kodesie,3)='$bidang'";
+	                }
+	            }else{
+	                $dept = "";
+	                $bidang = "";
+	                $unit = "and left(kodesie,5)='$unit'";
+	            }
+	        }else{
+	            $dept = "";
+	            $bidang = "";
+	            $unit = "";
+	            $seksi = "and left(kodesie,7)='$seksi'";
+	        }
+	        if($tanggal1!=null){
+	            if($noind!=null){
+	                $tanggal = "and tanggal between '$tanggal1' and '$tanggal2'";
+	            }else{
+	                $tanggal = "tanggal between '$tanggal1' and '$tanggal2'";
+	            }
+	        }else{
+	        	$tanggal = "";
+	        }
+	        if($noind!=null){
+	            $noind = "noind='$noind'";
+	        }
+
+	        $klausa_where = $where." ".$noind." ".$tanggal." ".$dept." ".$bidang." ".$unit." ".$seksi;
+	        return $klausa_where;
+	}
+
+	public function editTanggalRealisasi($spdl){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$id = $this->input->get('id');
+
+		$data['Menu'] = 'Presensi';
+		$data['SubMenuOne'] = 'Presensi DL';
+		$data['SubMenuTwo'] = 'Presensi DL';
+		$data['SubMenuOne'] = 'Presensi DL';
+		$data['Title'] = 'Monitoring Presensi Dinas Luar';
+		
+		$data['item_spdl'] = $this->M_presensi_dl->editSDPL($spdl);
+		$data['item_pekerja'] = $this->M_presensi_dl->dataPekerja($id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['spdl'] = $spdl;
+		$data['id'] = $id;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Presensi/MainMenu/PresensiDL/V_EditRealisasi', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function actEditTanggalRealisasi($spdl){
+		$tanggal = $this->input->post('tglRealisasi');
+		$waktu = $this->input->post('wktRealisasi');
+		$id = $this->input->get('id');
+		$length = count($tanggal);
+		for($i=0;$i<$length;$i++){
+			if(($i % 2) == 0){
+	          $stat = 0;
+	        }else{
+	          $stat = 1;
+	        }
+			$update = $this->M_presensi_dl->updateRealisasi($spdl,$tanggal[$i],$waktu[$i],$stat);
+		}
+		redirect(site_url('Presensi/PresensiDL/editTanggalRealisasi/'.$spdl."?id=".$id));
+	    exit;
+	}
+
+	public function InsertPresensiManual(){
+		date_default_timezone_set("Asia/Bangkok");
+		$id = $this->input->post('NamaPekerja');
+		$spdl = $this->input->post('txtSPDL');
+		$tglBerangkat = $this->input->post('txtTglBerangkat');
+		$timeBerangkat = date('H:i:s',strtotime($this->input->post('txtTimeBerangkat')));
+		$tglPulang = $this->input->post('txtTglPulang');
+		$timePulang = date('H:i:s',strtotime($this->input->post('txtTimePulang')));
+		$date_now = date('Y-m-d');
+		$time_now = date('H:i:s');
+		$user_id = $this->session->userid;
+		$getKodesie = $this->M_presensi_dl->dataPekerja($id);
+		$kodesie = $getKodesie->kodesie;
+			if($tglBerangkat != null and $tglPulang != null){
+				$stat = "and stat in ('0','1')";
+				$this->M_presensi_dl->deletePresensi($spdl,$stat);
+				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,0,$tglBerangkat,$timeBerangkat);
+				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,1,$tglPulang,$timePulang);
+			}elseif($tglBerangkat != null and $tglPulang == null){
+				$stat = "and stat in ('0')";	
+				$this->M_presensi_dl->deletePresensi($spdl,$stat);
+				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,0,$tglBerangkat,$timeBerangkat);
+			}elseif($tglPulang != null and $tglBerangkat == null){
+				$stat = "and stat in ('1')";
+				$this->M_presensi_dl->deletePresensi($spdl,$stat);
+				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,1,$tglPulang,$timePulang);
+			}else{
+				//no action
+			}
+		redirect(site_url('Presensi/PresensiDL/'));
+	}
 }
