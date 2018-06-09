@@ -3,7 +3,6 @@
 # request to index.php
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /erp
 RewriteCond %{REQUEST_URI} ^system.*
 RewriteRule ^(.*)$ /index.php/$1 [L]
 RewriteCond %{REQUEST_FILENAME} !-f
