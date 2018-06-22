@@ -23,6 +23,7 @@
                         </div>
                     </div>
                 </div>
+                <?php echo $errmessage; ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -30,61 +31,31 @@
                                 Create New Bppbg Account
                             </div>
                             <div class="box-body">
-                                <form class="form-horizontal" action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post">
-                                    <div class="row">
-                                        <div class="col-md-8 col-md-offset-2">
-                                            <div class="form-group">
-                                                <label>Category Code</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="using_category_code_checkout" value="0">
-                                                    <input type="text" name="using_category_code" class="form-control toupper checking-database-account" placeholder="Using Category Code" required="" onfocus="slcBppbgCategory()">
-                                                    <span id="using_category_code" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
+                                    <form action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post" enctype="multipart/form-data">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label>UPLOAD FILE EXCEL</label>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Category Description</label>
-                                                <input class="form-control" type="text" name="using_category" placeholder="Category Description" readonly="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Cost Center</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="cost_center_checkout" value="0">
-                                                    <input type="text" name="cost_center" class="form-control checking-database-account" placeholder="Cost Center" required="" onfocus="slcCostCenter()">
-                                                    <span id="cost_center" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
+                                                <div class="col-md-7">
+                                                    <input type="hidden" name="check" value="1">
+                                                    <input type="file" name="fileAccount" class="form-control" placeholder="Choose File Excel" required="">
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Cost Center Description</label>
-                                                <input class="form-control" type="text" name="cost_center_description" placeholder="Cost Center Description" readonly="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Account Number</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="account_number_checkout" value="0">
-                                                    <select name="account_number" class="form-control select2 checking-database-account" data-placeholder="Account Number">
-                                                        <option></option>
-                                                        <?php foreach ($accountnumber as $an) { ?>
-                                                            <option value="<?php echo $an['ACCOUNT_NUMBER'] ?>">
-                                                                <?php echo $an['ACCOUNT_NUMBER'].' | '.$an['ACCOUNT_NUMBER_DESCRIPTION']; ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </select>
-                                                    <span id="account_number" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
+                                                <div class="col-md-3">
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate') ?>" class="btn btn-block btn-primary" target="_blank"><i class="fa fa-cloud-download"></i> DOWNLOAD TEMPLATE</a>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Account Attribute</label>
-                                                <input class="form-control toupper" type="text" name="account_attribute" placeholder="Account Attribute">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button id="bAccountSubmitBtn" type="submit" class="btn btn-primary pull-right" disabled>SUBMIT</button>
-                                            <a class="btn btn-default pull-right" href="<?php echo base_url('ProductCost/BppbgAccount') ?>">BACK</a>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button id="bAccountSubmitBtn" type="submit" class="btn btn-primary pull-right">SUBMIT</button>
+                                                    <a class="btn btn-default pull-right" href="<?php echo base_url('ProductCost/BppbgAccount') ?>">BACK</a>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
