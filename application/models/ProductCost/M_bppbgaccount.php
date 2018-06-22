@@ -184,4 +184,17 @@ class M_bppbgaccount extends CI_Model {
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
 	}
+
+	public function getAccountTemplate($cc=FALSE)
+	{
+		$sql = "SELECT kba.USING_CATEGORY_CODE,
+				       kba.USING_CATEGORY,
+				       kba.ACCOUNT_NUMBER,
+				       kba.ACCOUNT_ATTRIBUTE
+				FROM khs_bppbg_account kba
+				WHERE kba.COST_CENTER = '$cc'";
+
+		$query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
 }
