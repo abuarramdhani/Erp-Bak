@@ -34,15 +34,24 @@
                                     <form action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post" enctype="multipart/form-data">
                                         <div class="panel-body">
                                             <div class="row">
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-md-offset-1">
                                                     <label>UPLOAD FILE EXCEL</label>
                                                 </div>
-                                                <div class="col-md-7">
+                                                <div class="col-md-6">
                                                     <input type="hidden" name="check" value="1">
                                                     <input type="file" name="fileAccount" class="form-control" placeholder="Choose File Excel" required="">
                                                 </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-2 col-md-offset-1">
+                                                    <label>DOWNLOAD TEMPLATE</label>
+                                                </div>
                                                 <div class="col-md-3">
-                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate') ?>" class="btn btn-block btn-primary" target="_blank"><i class="fa fa-cloud-download"></i> DOWNLOAD TEMPLATE</a>
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/4A01') ?>" class="btn btn-block btn-danger" target="_blank"><i class="fa fa-cloud-download"></i> PRODUCTION</a>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/1E01') ?>" class="btn btn-block btn-success" target="_blank"><i class="fa fa-cloud-download"></i> NON PRODUCTION</a>
                                                 </div>
                                             </div>
                                         </div>
