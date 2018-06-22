@@ -245,7 +245,7 @@ class C_BppbgAccount extends CI_Controller {
 		redirect(site_url('ProductCost/BppbgAccount/'));
 	}
 
-	public function DownloadTemplate()
+	public function DownloadTemplate($id)
 	{
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -332,6 +332,19 @@ class C_BppbgAccount extends CI_Controller {
 	        $worksheet->getStyle('A1:G3')->applyFromArray($aligncenter);
 	        $worksheet->getStyle('A3:G3')->applyFromArray($styleNotice);
 	        $worksheet->getStyle('I1:I3')->applyFromArray($styleNotice);
+	        $dataTemplate = $this->M_bppbgaccount->getAccountTemplate($id);
+	        $no = 1;
+			$highestRow = $worksheet->getHighestRow()+1;
+	        foreach ($dataTemplate as $tmplt) {
+					$worksheet->getStyle('A'.$highestRow.':G'.$highestRow)->applyFromArray($styleBorder);
+					$worksheet->setCellValue('A'.$highestRow, $no++);
+					$worksheet->setCellValue('B'.$highestRow, $tmplt['USING_CATEGORY_CODE']);
+					$worksheet->setCellValue('C'.$highestRow, $tmplt['USING_CATEGORY']);
+					$worksheet->setCellValue('F'.$highestRow, $tmplt['ACCOUNT_NUMBER']);
+					$worksheet->setCellValue('G'.$highestRow, $tmplt['ACCOUNT_ATTRIBUTE']);
+					$worksheet->getStyle('A'.$highestRow.':G'.$highestRow)->applyFromArray($leftCenter);
+					$highestRow++;
+	        }
 		// ----------------- DYNAMIC DATA -----------------
 			// ----------------- CATEGORY -----------------
 				$category		= $this->M_bppbgcategory->getBppbgCategory();
