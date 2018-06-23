@@ -48,10 +48,10 @@
                                                     <label>DOWNLOAD TEMPLATE</label>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/4A01') ?>" class="btn btn-block btn-danger" target="_blank"><i class="fa fa-cloud-download"></i> PRODUCTION</a>
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/4A02') ?>" class="btn btn-block btn-danger" target="_blank"><i class="fa fa-cloud-download"></i> PRODUCTION</a>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/1E01') ?>" class="btn btn-block btn-success" target="_blank"><i class="fa fa-cloud-download"></i> NON PRODUCTION</a>
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/1A01') ?>" class="btn btn-block btn-success" target="_blank"><i class="fa fa-cloud-download"></i> NON PRODUCTION</a>
                                                 </div>
                                             </div>
                                         </div>
