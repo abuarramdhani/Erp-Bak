@@ -31,7 +31,7 @@
                                 Create New Bppbg Account
                             </div>
                             <div class="box-body">
-                                    <form action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post" enctype="multipart/form-data">
+                                    <form id="frm-BppbgAccount" action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post" enctype="multipart/form-data">
                                         <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-md-2 col-md-offset-1">
@@ -75,85 +75,11 @@
 </section>
 <div class="row">
     <div class="col-md-12">
-        <div class="modal fade" id="slcBppbgCategoryModal" role="dialog" tabindex="-1">
+        <div class="modal fade" id="loader-BppbgAccount" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document">
-                <div class="modal-content modal-lg">
-                    <div class="modal-header">
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">
-                                ×
-                            </span>
-                        </button>
-                        <h4 class="modal-title">
-                            Select Bppbg Category!
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped table-hover datatable-default" width="100%">
-                                    <thead class="bg-primary">
-                                        <td>No</td>
-                                        <td>Category Code</td>
-                                        <td>Category Description</td>
-                                        <td>General Description</td>
-                                    </thead>
-                                    <tbody>
-                                    <?php $x=1; foreach ($category as $c) { ?>
-                                        <tr style="cursor: pointer;" onclick="slcBppbgCategoryProceed('<?php echo $c['USING_CATEGORY_CODE']; ?>','<?php echo $c['USING_CATEGORY_DESCRIPTION']; ?>')">
-                                            <td><?php echo $x++; ?></td>
-                                            <td><?php echo $c['USING_CATEGORY_CODE']; ?></td>
-                                            <td><?php echo $c['USING_CATEGORY_DESCRIPTION']; ?></td>
-                                            <td><?php echo $c['GENERAL_DESCRIPTION']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="modal fade" id="slcCostCenterModal" role="dialog" tabindex="-1">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content modal-lg">
-                    <div class="modal-header">
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">
-                                ×
-                            </span>
-                        </button>
-                        <h4 class="modal-title">
-                            Select Cost Center!
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped table-hover datatable-default" width="100%">
-                                    <thead class="bg-primary">
-                                        <td>No</td>
-                                        <td>Cost Center</td>
-                                        <td>Cost Center Description</td>
-                                    </thead>
-                                    <tbody>
-                                    <?php $no=1; foreach ($costcenter as $cc) { ?>
-                                        <tr style="cursor: pointer;" onclick="slcCostCenterProceed('<?php echo $cc['COST_CENTER']; ?>','<?php echo $cc['COST_CENTER_DESCRIPTION']; ?>')">
-                                            <td><?php echo $no++; ?></td>
-                                            <td><?php echo $cc['COST_CENTER']; ?></td>
-                                            <td><?php echo $cc['COST_CENTER_DESCRIPTION']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="text-center" style="font-size: 2em; color: white;">
+                    <i class="fa fa-spinner fa-pulse fa-5x"></i><br><br>
+                    <p>Processing Data, Please Wait ....</p>
                 </div>
             </div>
         </div>
