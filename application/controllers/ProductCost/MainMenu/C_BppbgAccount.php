@@ -179,17 +179,16 @@ class C_BppbgAccount extends CI_Controller {
 						$ACCOUNT_NUMBER 		= $rowData[0][5];
 						$ACCOUNT_ATTRIBUTE 		= $rowData[0][6];
 						
-				    	$check_USING_CATEGORY_CODE 	= $this->M_ajax->checkBppbgAccount('USING_CATEGORY_CODE', $USING_CATEGORY_CODE);
-				    	$check_COST_CENTER 			= $this->M_ajax->checkBppbgAccount('COST_CENTER', $COST_CENTER);
-				    	$check_ACCOUNT_NUMBER 		= $this->M_ajax->checkBppbgAccount('ACCOUNT_NUMBER', $ACCOUNT_NUMBER);
-				    	if ($check_USING_CATEGORY_CODE != 0 && $check_COST_CENTER != 0 && $check_ACCOUNT_NUMBER != 0) {
+				    	$checkAccount 	= $this->M_ajax->checkBppbgAccount('USING_CATEGORY_CODE', $USING_CATEGORY_CODE, 'COST_CENTER', $COST_CENTER, 'ACCOUNT_NUMBER', $ACCOUNT_NUMBER);
+				    	if ($checkAccount == 0) {
+				    		$dataSuccess++;
+				    	}else{
 				    		$checkConflict++;
 				    		$dataConflict++;
 				    	}
 	                }
 
 	                if ($checkConflict == 0) {
-	                	$dataSuccess++;
                 		$this->M_bppbgaccount->setAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE);
 	                }
 	            }
