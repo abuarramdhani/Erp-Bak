@@ -3,7 +3,14 @@ $('table.datatable-default').dataTable({
     dom: 'frtip'
 });
 $('table#tblBppbgAccount').dataTable({
-    dom: 'rtip'
+    dom: 'rtBp',
+    buttons: [{
+        extend: 'excel',
+        exportOptions: {
+            columns: [0, 2, 3, 4, 5, 6, 7]
+        },
+        title: 'KHS_Bppbg_Account_' + (new Date()).getFullYear()
+    }]
 });
 $('table#tblBppbgCategory').dataTable({
 	dom: 'Bfrtip',
@@ -37,7 +44,14 @@ $('form#searchBppbgAccountArea').submit(function (event) {
             $('div#loadingArea').empty();
             $('div#tblBppbgAccountArea').html(result);
             $('#tblBppbgAccount').DataTable({
-                dom: 'rtip'
+                dom: 'rtBp',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: [0, 2, 3, 4, 5, 6, 7]
+                    },
+                    title: 'KHS_Bppbg_Account_' + (new Date()).getFullYear()
+                }]
             });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -137,3 +151,6 @@ function slcBppbgCategoryProceed(cc, cd) {
     $('#slcBppbgCategoryModal').modal('hide');
     $('input[name="using_category_code"].checking-database-account').trigger("change");
 }
+$('form#frm-BppbgAccount').on('submit', function() {
+    $('#loader-BppbgAccount').modal('show');
+})
