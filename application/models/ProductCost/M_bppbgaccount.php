@@ -27,7 +27,7 @@ class M_bppbgaccount extends CI_Model {
 					    AND ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
 						AND ffv.FLEX_VALUE_SET_ID = 1013709
 					   ORDER BY kba.LAST_UPDATE_DATE DESC, kba.CREATION_DATE DESC )
-					WHERE ROWNUM <= 500";
+					WHERE ROWNUM <= 1000";
 			$query = $this->oracle->query($sql);
 		}elseif ($id!==FALSE) {
 			$sql = "SELECT kba.ACCOUNT_ID,

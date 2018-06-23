@@ -45,7 +45,6 @@ class C_BppbgAccount extends CI_Controller {
 		$data['UserMenu']		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['account']		= $this->M_bppbgaccount->getAccount();
 		$data['no']				= 1;
 
 		if ($conflict!=NULL && $success!=NULL) {
@@ -82,7 +81,7 @@ class C_BppbgAccount extends CI_Controller {
                         });
                     </script>';
 		}else{
-			$message = 'firman';
+			$message = '';
 		}
 
 		$data['message'] = $message;
@@ -192,8 +191,8 @@ class C_BppbgAccount extends CI_Controller {
                 		$this->M_bppbgaccount->setAccount($ACCOUNT_ID, $USING_CATEGORY_CODE, $USING_CATEGORY, $COST_CENTER, $ACCOUNT_NUMBER, $ACCOUNT_ATTRIBUTE);
 	                }
 	            }
+	            
 	            unlink($inputFileName);
-
 				redirect(site_url('ProductCost/BppbgAccount/index/'.$dataConflict.'/'.$dataSuccess));
 			}
 		}
