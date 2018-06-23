@@ -23,6 +23,7 @@
                         </div>
                     </div>
                 </div>
+                <?php echo $errmessage; ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -30,61 +31,40 @@
                                 Create New Bppbg Account
                             </div>
                             <div class="box-body">
-                                <form class="form-horizontal" action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post">
-                                    <div class="row">
-                                        <div class="col-md-8 col-md-offset-2">
-                                            <div class="form-group">
-                                                <label>Category Code</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="using_category_code_checkout" value="0">
-                                                    <input type="text" name="using_category_code" class="form-control toupper checking-database-account" placeholder="Using Category Code" required="" onfocus="slcBppbgCategory()">
-                                                    <span id="using_category_code" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
+                                    <form id="frm-BppbgAccount" action="<?php echo base_url('ProductCost/BppbgAccount/create') ?>" method="post" enctype="multipart/form-data">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-2 col-md-offset-1">
+                                                    <label>UPLOAD FILE EXCEL</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input type="hidden" name="check" value="1">
+                                                    <input type="file" name="fileAccount" class="form-control" placeholder="Choose File Excel" required="">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label>Category Description</label>
-                                                <input class="form-control" type="text" name="using_category" placeholder="Category Description" readonly="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Cost Center</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="cost_center_checkout" value="0">
-                                                    <input type="text" name="cost_center" class="form-control checking-database-account" placeholder="Cost Center" required="" onfocus="slcCostCenter()">
-                                                    <span id="cost_center" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-2 col-md-offset-1">
+                                                    <label>DOWNLOAD TEMPLATE</label>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Cost Center Description</label>
-                                                <input class="form-control" type="text" name="cost_center_description" placeholder="Cost Center Description" readonly="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Account Number</label>
-                                                <div class="input-group">
-                                                    <input type="hidden" name="account_number_checkout" value="0">
-                                                    <select name="account_number" class="form-control select2 checking-database-account" data-placeholder="Account Number">
-                                                        <option></option>
-                                                        <?php foreach ($accountnumber as $an) { ?>
-                                                            <option value="<?php echo $an['ACCOUNT_NUMBER'] ?>">
-                                                                <?php echo $an['ACCOUNT_NUMBER'].' | '.$an['ACCOUNT_NUMBER_DESCRIPTION']; ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </select>
-                                                    <span id="account_number" class="input-group-addon" data-toggle="tooltip" data-placement="top" title="Checking data in database"><i class="fa fa-info"></i></span>
+                                                <div class="col-md-3">
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/4A02') ?>" class="btn btn-block btn-danger" target="_blank"><i class="fa fa-cloud-download"></i> PRODUCTION</a>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Account Attribute</label>
-                                                <input class="form-control toupper" type="text" name="account_attribute" placeholder="Account Attribute">
+                                                <div class="col-md-3">
+                                                    <a href="<?php echo base_url('ProductCost/BppbgAccount/DownloadTemplate/1A01') ?>" class="btn btn-block btn-success" target="_blank"><i class="fa fa-cloud-download"></i> NON PRODUCTION</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button id="bAccountSubmitBtn" type="submit" class="btn btn-primary pull-right" disabled>SUBMIT</button>
-                                            <a class="btn btn-default pull-right" href="<?php echo base_url('ProductCost/BppbgAccount') ?>">BACK</a>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button id="bAccountSubmitBtn" type="submit" class="btn btn-primary pull-right">SUBMIT</button>
+                                                    <a class="btn btn-default pull-right" href="<?php echo base_url('ProductCost/BppbgAccount') ?>">BACK</a>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -95,85 +75,11 @@
 </section>
 <div class="row">
     <div class="col-md-12">
-        <div class="modal fade" id="slcBppbgCategoryModal" role="dialog" tabindex="-1">
+        <div class="modal fade" id="loader-BppbgAccount" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document">
-                <div class="modal-content modal-lg">
-                    <div class="modal-header">
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">
-                                ×
-                            </span>
-                        </button>
-                        <h4 class="modal-title">
-                            Select Bppbg Category!
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped table-hover datatable-default" width="100%">
-                                    <thead class="bg-primary">
-                                        <td>No</td>
-                                        <td>Category Code</td>
-                                        <td>Category Description</td>
-                                        <td>General Description</td>
-                                    </thead>
-                                    <tbody>
-                                    <?php $x=1; foreach ($category as $c) { ?>
-                                        <tr style="cursor: pointer;" onclick="slcBppbgCategoryProceed('<?php echo $c['USING_CATEGORY_CODE']; ?>','<?php echo $c['USING_CATEGORY_DESCRIPTION']; ?>')">
-                                            <td><?php echo $x++; ?></td>
-                                            <td><?php echo $c['USING_CATEGORY_CODE']; ?></td>
-                                            <td><?php echo $c['USING_CATEGORY_DESCRIPTION']; ?></td>
-                                            <td><?php echo $c['GENERAL_DESCRIPTION']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="modal fade" id="slcCostCenterModal" role="dialog" tabindex="-1">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content modal-lg">
-                    <div class="modal-header">
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">
-                                ×
-                            </span>
-                        </button>
-                        <h4 class="modal-title">
-                            Select Cost Center!
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped table-hover datatable-default" width="100%">
-                                    <thead class="bg-primary">
-                                        <td>No</td>
-                                        <td>Cost Center</td>
-                                        <td>Cost Center Description</td>
-                                    </thead>
-                                    <tbody>
-                                    <?php $no=1; foreach ($costcenter as $cc) { ?>
-                                        <tr style="cursor: pointer;" onclick="slcCostCenterProceed('<?php echo $cc['COST_CENTER']; ?>','<?php echo $cc['COST_CENTER_DESCRIPTION']; ?>')">
-                                            <td><?php echo $no++; ?></td>
-                                            <td><?php echo $cc['COST_CENTER']; ?></td>
-                                            <td><?php echo $cc['COST_CENTER_DESCRIPTION']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                <div class="text-center" style="font-size: 2em; color: white;">
+                    <i class="fa fa-spinner fa-pulse fa-5x"></i><br><br>
+                    <p>Processing Data, Please Wait ....</p>
                 </div>
             </div>
         </div>
