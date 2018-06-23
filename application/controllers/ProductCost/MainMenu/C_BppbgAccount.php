@@ -45,6 +45,7 @@ class C_BppbgAccount extends CI_Controller {
 		$data['UserMenu']		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['account']		= $this->M_bppbgaccount->getAccount();
 		$data['no']				= 1;
 
 		if ($conflict!=NULL && $success!=NULL) {
@@ -104,9 +105,6 @@ class C_BppbgAccount extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['costcenter']		= $this->M_bppbgaccount->getCostCenter();
-		$data['accountnumber']	= $this->M_bppbgaccount->getAccountNumber();
-		$data['category']		= $this->M_bppbgcategory->getBppbgCategory();
 		
 		$this->form_validation->set_rules('check', 'check', 'required');
 		if (empty($_FILES['fileAccount']['name']))
