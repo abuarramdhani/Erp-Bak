@@ -424,7 +424,7 @@
 																		where 		pri2.nik=pri.nik
 																					and 	pri2.tgllahir=pri.tgllahir
 																					and 	pri2.noind!=pri.noind
-																					and 	pri.keluar=true
+																					and 	pri2.keluar=true
 																	)
 											) as freksps".$year_month.",
 											/*Hari Kerja - Aktif*/
