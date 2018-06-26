@@ -21,6 +21,11 @@
 	<!-- AdminLTE App -->
     <script src="<?php echo base_url('assets/theme/js/app.min.js');?>" type="text/javascript"></script>
     <!-- PAGE LEVEL SCRIPTS FOR DATATABLES-->
+    <?php
+     	if(!(isset($newDataTable)))
+     	{
+    ?>
+    
 	<script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js');?>"></script>
@@ -30,6 +35,15 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/jszip.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/pdfmake.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/extensions/vfs_fonts.js');?>"></script>
+	<?php
+	 	}
+	 	else
+	 	{
+	?>
+	<script src="<?php echo base_url('assets/plugins/dataTables-punyamilton/datatables.min.js');?>"></script>
+	<?php
+	 	}
+    ?>
 
 	<script src="<?php echo base_url('assets/plugins/canvasjs/canvasjs.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.js');?>"></script>
@@ -54,6 +68,9 @@
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/jquery.fine-uploader.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/chartjs/Chart.bundle.min.js');?>"></script>
+
+	<!-- Redactor -->
+	<script src="<?php echo base_url('assets/plugins/redactor/js/redactor.min.js');?>"></script>
 
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
@@ -163,7 +180,7 @@
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/validator/bootstrapValidator.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.mask.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
+	<!-- <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/iCheck/icheck.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/jquery.toaster/jquery.toaster.js');?>"></script>
 

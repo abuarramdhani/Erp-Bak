@@ -21,7 +21,7 @@
                                             <div class="form-group">
                                                 <label for="txtTanggalRekap" class="control-label col-lg-4">Tanggal Shift</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" name="txtTanggalRekap" class="RekapAbsensi-daterangepicker form-control" />
+                                                    <input type="text" name="txtTanggalRekap" class="RekapAbsensi-daterangepicker form-control" value="<?php if ( isset($tanggalRekap) ) {echo $tanggalRekap;}?>" />
                                                 </div>
                                                 <div class="col-lg-2"></div>
                                             </div>
@@ -49,7 +49,7 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">No.</th>
-                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Tanggal</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Tanggal Shift</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Nomor Induk</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Nama</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Departemen</th>
@@ -59,6 +59,10 @@
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Masuk</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Keluar</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Alasan</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Input</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">User Input</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Approve</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">User Approve</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,6 +104,18 @@
                                             </td>
                                             <td style="white-space: nowrap; vertical-align: middle;">
                                                 <?php echo $rekap['alasan'];?>
+                                            </td>
+                                            <td style="white-space: nowrap; vertical-align: middle;">
+                                                <?php echo $rekap['waktu_input'];?>
+                                            </td>
+                                            <td style="white-space: nowrap; vertical-align: middle;">
+                                                <?php echo $rekap['user_input'];?>
+                                            </td>
+                                            <td style="white-space: nowrap; vertical-align: middle;">
+                                                <?php echo $rekap['waktu_approve'];?>
+                                            </td>
+                                            <td style="white-space: nowrap; vertical-align: middle;">
+                                                <?php echo $rekap['user_approve'];?>
                                             </td>
                                         </tr>
                                         <?php

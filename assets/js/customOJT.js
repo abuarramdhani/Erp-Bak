@@ -44,6 +44,49 @@
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 				});
 
+				$('.MonitoringOJT-daterangepickersingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "mask": true,
+				    "locale": {
+				        "format": "YYYY-MM-DD",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});
+
 				$('.MonitoringOJT-daterangepicker-noautoupdateinput').daterangepicker({
 				    "showDropdowns": true,
 				    /*"autoApply": true,*/
@@ -105,9 +148,24 @@
 					scrollX: false,
 				});
 
-				$('#MonitoringOJT-monitoringPekerja').DataTable({
-					scrollX: false,
+				$('#MonitoringOJT-monitoringPekerjaAktif').DataTable({
+					scrollX: true,
 				});
+
+				$('#MonitoringOJT-monitoringPekerjaTunda').DataTable({
+				});
+
+				$('#MonitoringOJT-monitoringPekerjaSelesai').DataTable({
+				});
+
+				$('#MonitoringOJT-monitoringPekerjaKeluar').DataTable({
+				});
+
+				/*$('#MonitoringOJT-rekapKegiatanHarian').DataTable({
+					scrollX: false,
+					searching: false,
+					sorting: false
+				});*/
 
 				// $('#MonitoringOJT-monitoringPekerja').DataTable({
 				// 	scrollX: true,
@@ -172,6 +230,7 @@
 						url: baseurl+'OnJobTraining/Monitoring/tambahPekerjaOJT',
 						dataType: 'json',
 						delay: 500,
+						type: 'GET',
 						data: function(params){
 							return {
 								term: params.term
@@ -240,6 +299,18 @@
 					$('#MonitoringOJT-PengaturanUndanganOrientasiBaru').removeClass('hidden');
 				});
 
+				$('#MonitoringOJT-chkOrientasi-checkAll').click(function(){
+					$('.MonitoringOJT-chkOrientasi').prop('checked',true);
+				});
+
+				$('#MonitoringOJT-chkOrientasi-uncheckAll').click(function(){
+					$('.MonitoringOJT-chkOrientasi').prop('checked', false);
+				});
+		//	}
+
+		//	Redactor
+		//	{
+				$('#MonitoringOJT-Undangan-txaFormatUndangan').redactor();
 		//	}
 	});
 	// 	General Function
@@ -366,6 +437,37 @@
 				{
 					$(th).closest('tr').remove(); 				
 				}   		
+			}
+
+			function MonitoringOJT_ubahStatusPekerjaKeluar(pekerja_id, noind, nama)
+			{
+				$('#MonitoringOJT-monitoring-pekerjaKeluar-txtPekerjaID').val(pekerja_id);
+				$('#MonitoringOJT-monitoring-pekerjaKeluar-txtPekerjaInfo').val(noind + ' - ' + nama);
+				$('#MonitoringOJT-ubahStatusPekerjaKeluar').modal("show");
+			}
+
+			function MonitoringOJT_ubahStatusPekerjaTunda(pekerja_id, noind, nama)
+			{
+				$('#MonitoringOJT-monitoring-pekerjaTunda-txtPekerjaID').val(pekerja_id);
+				$('#MonitoringOJT-monitoring-pekerjaTunda-txtPekerjaInfo').val(noind + ' - ' + nama);
+				$('#MonitoringOJT-ubahStatusPekerjaTunda').modal("show");
+			}
+
+			function MonitoringOJT_ubahStatusPekerjaSelesai(pekerja_id, noind, nama)
+			{
+				$('#MonitoringOJT-scheduling-pekerjaSelesai-txtPekerjaID').val(pekerja_id);
+				$('#MonitoringOJT-scheduling-pekerjaSelesai-txtNoind').html(noind);
+				$('#MonitoringOJT-scheduling-pekerjaSelesai-txtNama').html(nama);
+				$('#MonitoringOJT-ubahStatusPekerjaSelesai').modal("show");
+			}
+
+			function MonitoringOJT_ubahEmail(pekerja_id, email_pekerja, email_atasan)
+			{
+				
+				$('#MonitoringOJT-monitoring-ubahEmail-txtPekerjaID').val(pekerja_id);
+				$('#MonitoringOJT-monitoring-ubahEmail-txtEmailPekerja').val(email_pekerja);
+				$('#MonitoringOJT-monitoring-ubahEmail-txtEmailAtasan').val(email_atasan);
+				$('#MonitoringOJT-ubahEmail').modal("show");
 			}
 
 	// 	}	

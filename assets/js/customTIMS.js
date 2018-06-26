@@ -244,7 +244,12 @@ function rekap_datatable_detail() {
 					$('.RekapAbsensiManual-Daftar').DataTable({
 						dom: 'Bfrtip',
 						buttons: [
-							'excel', 'print', 'pdf'
+							'excel',
+							{
+								extend: 'pdfHtml5',
+								orientation: 'landscape',
+								pageSize: 'A2',
+							}
 						],
 						scrollX: true,
 						// scrollY: 400,
