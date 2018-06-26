@@ -54,7 +54,8 @@
 			}
 			else
 			{
-				$tanggalRekap 	=	$this->input->post('txtTanggalRekap');
+				$tanggalRekap 			=	$this->input->post('txtTanggalRekap');
+				$data['tanggalRekap'] 	=	$tanggalRekap;
 
 				$tanggalRekap 	=	explode(' - ', $tanggalRekap);
 
@@ -62,6 +63,7 @@
 				$tanggalAkhirRekap 	=	$tanggalRekap[1];
 				
 				$data['rekapAbsensiManual'] 	=	$this->M_rekapabsensimanual->rekapAbsensiManual($tanggalAwalRekap, $tanggalAkhirRekap);
+
 
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);

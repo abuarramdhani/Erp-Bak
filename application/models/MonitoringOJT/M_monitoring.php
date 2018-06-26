@@ -277,4 +277,131 @@
  			$queryHitungTanggalPostgre	=	$this->db->query($hitungTanggalPostgre);
  			return $queryHitungTanggalPostgre->result_array();
  		}
+
+ 		public function ubahPekerjaKeluar($pekerjaKeluar, $pekerja_id)
+ 		{
+ 			$this->db->where('pekerja_id=', $pekerja_id);
+ 			$this->db->update('ojt.tb_pekerja', $pekerjaKeluar);
+ 		}
+
+ 		public function updateEmail($updateEmail, $pekerja_id)
+ 		{
+ 			$this->db->where('pekerja_id=', $pekerja_id);
+ 			$this->db->update('ojt.tb_pekerja', $updateEmail);
+ 		}
+
+ 		public function proses_delete($id_proses)
+ 		{
+ 			$this->db->where('id_proses =', $id_proses);
+ 			$this->db->delete('ojt.tb_proses');
+ 		}
+
+ 		public function notifikasi_harian()
+ 		{
+ 			$this->db->select('	proses_pemberitahuan.id_proses_pemberitahuan,
+ 								proses_pemberitahuan.tanggal tanggal_pemberitahuan,
+ 								proses.id_proses,
+ 								pekerja.noind,
+ 								pekerja_psn.employee_name,
+ 								proses.tahapan,
+ 								proses.tgl_awal tanggal_proses_awal,
+ 								proses.tgl_akhir tanggal_proses_akhir
+ 								');
+
+ 			$this->db->from('ojt.tb_proses_pemberitahuan proses_pemberitahuan');
+ 			$this->db->join('ojt.tb_proses proses', 'proses.id_proses = proses_pemberitahuan.id_proses', 'left');
+ 			$this->db->join('ojt.tb_pekerja pekerja', 'pekerja.noind = proses.noind', 'left');
+ 			$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja.noind', 'left');
+
+ 			$this->db->where('proses_pemberitahuan.tujuan =', 1);
+ 			$this->db->where('proses_pemberitahuan.selesai =', FALSE);
+ 			$this->db->where('proses_pemberitahuan.tanggal =', date('Y-m-d'));
+
+ 			$this->db->order_by('proses_pemberitahuan.tanggal', 'desc');
+ 			$this->db->order_by('proses.tgl_akhir', 'desc');
+ 			$this->db->order_by('proses.tgl_awal', 'desc'); 			
+
+ 			return $this->db->get()->result_array();
+ 		}
+
+ 		public function rekap_kegiatan_harian($tanggal_rekap)
+ 		{
+ 			if ( empty($tanggal_rekap) )
+ 			{
+ 				$tanggal_rekap 	=	"current_date";
+ 			}
+ 			else
+ 			{
+ 				$tanggal_rekap 	=	"'".$tanggal_rekap."'";
+ 			}
+
+ 			$rekap_kegiatan_harian		= "	select 		proses.id_orientasi,
+														orientasi.tahapan,
+														count(proses.id_proses) as jumlah
+											from 		ojt.tb_proses as proses
+														join 	ojt.tb_orientasi as orientasi
+																on 	orientasi.id_orientasi=proses.id_orientasi
+											where 		$tanggal_rekap between proses.tgl_awal and proses.tgl_akhir
+											group by 	proses.id_orientasi,
+														orientasi.tahapan;";
+			$query 						=	$this->db->query($rekap_kegiatan_harian);
+			return $query->result_array();
+ 		}
+
+ 		public function proses_selesai($proses_selesai, $id_proses)
+ 		{
+ 			$this->db->where('id_proses=', $id_proses);
+ 			$this->db->update('ojt.tb_proses', $proses_selesai);
+ 		}
+
+ 		public function pekerja_selesai($pekerja_selesai, $pekerja_id)
+ 		{
+ 			$this->db->where('pekerja_id=', $pekerja_id);
+ 			$this->db->update('ojt.tb_pekerja', $pekerja_selesai);
+ 		}
+
+ 		public function pemberitahuan_selesai($pemberitahuan_selesai, $id_proses)
+ 		{
+ 			$this->db->where('id_proses=', $id_proses);
+ 			$this->db->update('ojt.tb_proses_pemberitahuan', $pemberitahuan_selesai);
+ 		}
+
+ 		public function proses_berjalan()
+ 		{
+ 			$proses_berjalan		= "	select 		pekerja.pekerja_id,
+													pekerja.noind,
+													proses.id_proses,
+													proses.tahapan,
+													proses.tgl_awal,
+													proses.tgl_akhir,
+													(
+														case 	when 	proses.selesai=true
+																		then 	1
+																else 	0
+														end
+													) as selesai,
+													(
+														case 	when 	current_date>proses.tgl_akhir
+																		and 	proses.selesai=false
+																		then 	1
+																else 	0
+														end
+													) as overdue
+										from 		ojt.tb_proses as proses
+													join 	ojt.tb_pekerja as pekerja
+															on 	pekerja.noind=proses.noind
+										where 		pekerja.selesai=false
+													and 	pekerja.keluar=false
+													and 	(
+																current_date between proses.tgl_awal and proses.tgl_akhir
+																or 	(
+																		proses.selesai=false
+																		and 	current_date>=proses.tgl_awal
+																	)
+															)
+										order by 	pekerja.noind,
+													proses.tgl_awal;";
+			$query_proses_berjalan	=	$this->db->query($proses_berjalan);
+			return $query_proses_berjalan->result_array();
+ 		}
  	}

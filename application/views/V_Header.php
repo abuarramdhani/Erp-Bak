@@ -47,9 +47,23 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/skins/_all-skins.min.css');?>" type="text/css" />
   
   	<!-- PAGE LEVEL STYLES FOR DATATABLES-->
-	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+  	<?php
+  		if(!(isset($newDataTable)))
+  		{
+  	?>
+  	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
+  	<?php
+  		}
+  		else
+  		{
+  	?>
+  	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables-punyamilton/datatables.min.css');?>" />
+  	<?php
+  		}
+  	?>
+	
 	<!-- PAGE LEVEL STYLES FOR FORM -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />	
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
@@ -73,6 +87,10 @@
 	<!-- PAGE LEVEL STYLES FOR TEXTAREA -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css');?>" />
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');?>" />
+
+	<!-- Redactor -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/redactor/css/redactor.css');?>">
+
 	<!-- Fine Uploader New/Modern CSS file -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader-new.min.css');?>" />
 
