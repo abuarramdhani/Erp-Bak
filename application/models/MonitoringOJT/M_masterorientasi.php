@@ -61,13 +61,17 @@
 	    	$this->db->insert('ojt.tb_berkas_history', $inputUndanganHistory);
 	    }
 
-	    public function ambilDaftarOrientasiTabel($id_orientasi = FALSE, $input_order = FALSE)
+	    public function ambilDaftarOrientasiTabel($id_orientasi = FALSE, $input_order = FALSE, $id_orientasi_in_array = FALSE)
 	    {
 	    	$this->db->select('*');
 		    $this->db->from('ojt.tb_orientasi');
 		    if($id_orientasi !== FALSE) 
 		    {
 		    	$this->db->where('id_orientasi=', $id_orientasi);
+		    }
+		    elseif($id_orientasi_in_array !== FALSE)
+		    {
+		    	$this->db->where_in('id_orientasi', $id_orientasi_in_array);
 		    }
 
 		    if($input_order !== FALSE)
@@ -451,5 +455,35 @@
 	    {
 	    	$this->db->where('id_berkas=', $idUndangan);
 	    	$this->db->update('ojt.tb_berkas', $updateUndangan);
+	    }
+
+	    public function ambil_proses_delete($nomor_induk_pekerja, $pilih_orientasi)
+	    {
+	    	$this->db->select('*');
+	    	$this->db->from('ojt.tb_proses');
+	    	$this->db->where('noind =', $nomor_induk_pekerja);
+	    	$this->db->where_not_in('id_orientasi', $pilih_orientasi);
+
+	    	return $this->db->get()->result_array();
+	    }
+
+	    public function ambil_proses_pemberitahuan_delete($id_proses)
+	    {
+	    	$this->db->select('*');
+	    	$this->db->from('ojt.tb_proses_pemberitahuan');
+	    	$this->db->where('id_proses =', $id_proses);
+
+	    	return $this->db->get()->result_array();
+	    }
+
+	    public function proses_pemberitahuan_history($history)
+	    {
+	    	$this->db->insert('ojt.tb_proses_pemberitahuan_history', $history);
+	    }
+
+	    public function proses_pemberitahuan_delete($id_proses_pemberitahuan)
+	    {
+	    	$this->db->where('id_proses_pemberitahuan =', $id_proses_pemberitahuan);
+	    	$this->db->delete('ojt.tb_proses_pemberitahuan');
 	    }
  	}

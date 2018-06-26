@@ -17,6 +17,8 @@ class C_Monitoring extends CI_Controller
 		$this->load->library('upload');
 		$this->load->library('General');
 
+		$this->load->library('MonitoringOJT');
+
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringOJT/M_masterorientasi');
 		$this->load->model('MonitoringOJT/M_monitoring');
@@ -49,6 +51,14 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['daftarPekerjaOJT']		=	$this->M_monitoring->ambilTabelDaftarPekerjaOJT();
+		$data['proses_berjalan']		=	$this->M_monitoring->proses_berjalan();
+		$data['daftarOrientasi'] 		=	$this->M_masterorientasi->ambilDaftarOrientasiTabel();
+
+		$tanggal_rekap 					=	$this->input->post('txtTanggalRekapHarian', TRUE);
+
+		$data['notifikasi_harian'] 		=	$this->M_monitoring->notifikasi_harian();
+		$data['rekap_kegiatan_harian']	=	$this->M_monitoring->rekap_kegiatan_harian($tanggal_rekap);
+		$data['tanggal_rekap']			=	$tanggal_rekap;
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -63,6 +73,24 @@ class C_Monitoring extends CI_Controller
 
 		$nomor_induk_pekerja 		= 	$this->input->post('cmbDaftarPekerjaOJT');
 		$nomor_induk_atasan			=	$this->input->post('cmbDaftarAtasanPekerja');
+		$email_pekerja 				=	$this->input->post('txtEmailPekerja', TRUE);
+		$email_atasan_pekerja 		=	$this->input->post('txtEmailAtasanPekerja', TRUE);
+
+		if ( empty($email_pekerja) )
+		{
+			$email_pekerja 			=	NULL;
+		}
+	
+		if ( empty($email_atasan_pekerja) )
+		{
+			$email_atasan_pekerja 			=	NULL;
+		}		
+
+		$pilih_orientasi 			=	$this->input->post('chkOrientasi', TRUE);
+		for ($i=0; $i < count($pilih_orientasi); $i++)
+		{ 
+			$pilih_orientasi[$i] 	=	$this->general->dekripsi($pilih_orientasi[$i]); 
+		}
 
 		$ambilInfoPekerja 			=	$this->M_monitoring->ambilInfoPekerja($nomor_induk_pekerja);
 		
@@ -84,6 +112,8 @@ class C_Monitoring extends CI_Controller
 											'jurusan'						=>	$jurusan,
 											'institusi_pendidikan'			=>	$institusi_pendidikan,
 											'tanggal_lahir'					=>	$tanggal_lahir_pekerja,
+											'email_pekerja' 				=>	$email_pekerja,
+											'email_atasan' 					=>	$email_atasan_pekerja,
 											'create_timestamp'				=>	$waktuEksekusi,
 											'create_user'					=>	$user,
 										);
@@ -104,6 +134,8 @@ class C_Monitoring extends CI_Controller
 											'jurusan'						=>	$jurusan,
 											'institusi_pendidikan'			=>	$institusi_pendidikan,
 											'tanggal_lahir'					=>	$tanggal_lahir_pekerja,
+											'email_pekerja' 				=>	$email_pekerja,
+											'email_atasan' 					=>	$email_atasan_pekerja,
 											'type'							=>	'CREATE',
 											'create_timestamp'				=>	$waktuEksekusi,
 											'create_user'					=>	$user,
@@ -152,6 +184,7 @@ class C_Monitoring extends CI_Controller
 													'sequence'			=>	$orientasi['sequence'],
 													'tgl_awal'			=>	$tanggal_awal_proses,
 													'tgl_akhir'			=>	$tanggal_akhir_proses,
+													'selesai'			=>	TRUE,
 													'type'				=>	'CREATE',
 													'create_timestamp'	=>	$waktuEksekusi,
 													'create_user'		=>	$user,
@@ -366,6 +399,66 @@ class C_Monitoring extends CI_Controller
 			echo '<br/><br/>';
 			$indeksOrientasi++;
 		}
+
+		$ambil_proses_delete	=	$this->M_masterorientasi->ambil_proses_delete($nomor_induk_pekerja, $pilih_orientasi);
+		foreach ($ambil_proses_delete as $proses_delete)
+		{
+			$ambil_proses_pemberitahuan_delete 	=	$this->M_masterorientasi->ambil_proses_pemberitahuan_delete($proses_delete['id_proses']);
+			foreach ($ambil_proses_pemberitahuan_delete as $proses_pemberitahuan_delete)
+			{
+				if( $proses_pemberitahuan_delete['selesai']=='t' )
+				{
+					$proses_pemberitahuan_delete['selesai']	=	TRUE;
+				}
+				else
+				{
+					$proses_pemberitahuan_delete['selesai']	=	FALSE;
+				}
+
+				$proses_pemberitahuan_history 	= 	array
+													(
+														'id_proses_pemberitahuan'	=>	$proses_pemberitahuan_delete['id_proses_pemberitahuan'],
+														'id_proses'					=>	$proses_pemberitahuan_delete['id_proses'],
+														'tujuan'					=>	$proses_pemberitahuan_delete['tujuan'],
+														'tanggal'					=>	$proses_pemberitahuan_delete['tanggal'],
+														'id_pemberitahuan'			=>	$proses_pemberitahuan_delete['id_pemberitahuan'],
+														'selesai'						=>	$proses_pemberitahuan_delete['selesai'],
+														'type'						=>	'DELETE',
+														'delete_timestamp'			=>	$waktuEksekusi,
+														'delete_user'				=>	$user,
+													);
+				$this->M_masterorientasi->proses_pemberitahuan_history($proses_pemberitahuan_history);
+
+				$this->M_masterorientasi->proses_pemberitahuan_delete($proses_pemberitahuan_delete['id_proses_pemberitahuan']);
+			}
+
+			if ( $proses_delete['selesai']=='t' )
+			{
+				$proses_delete['selesai'] 	=	TRUE;
+			}
+			else
+			{
+				$proses_delete['selesai']	=	FALSE;
+			}
+
+			$proses_history 	=	array
+									(
+										'id_proses'			=>	$proses_delete['id_proses'],
+										'noind'				=>	$proses_delete['noind'],
+										'id_orientasi'		=>	$proses_delete['id_orientasi'],
+										'tahapan'			=>	$proses_delete['tahapan'],
+										'periode'			=>	$proses_delete['periode'],
+										'sequence'			=>	$proses_delete['sequence'],
+										'tgl_awal'			=>	$proses_delete['tgl_awal'],
+										'tgl_akhir'			=>	$proses_delete['tgl_akhir'],
+										'type'				=>	'DELETE',
+										'delete_timestamp'	=>	$waktuEksekusi,
+										'delete_user'		=>	$user,
+									);
+			$this->M_monitoring->inputProsesJadwalHistory($proses_history);
+
+			$this->M_monitoring->proses_delete($proses_delete['id_proses']);
+		}
 		redirect('OnJobTraining/Monitoring');
 	}
 
@@ -389,6 +482,7 @@ class C_Monitoring extends CI_Controller
 		$id_proses 		=	$this->input->post('txtIDProsesPenjadwalan');
 		$id_orientasi	=	$this->input->post('txtIDOrientasi');
 		$jadwal_manual 	=	$this->input->post('txtPenjadwalanManual');
+		$selesai 		=	$this->input->post('chkProsesSelesai');
 
 		for ($p = 0; $p < count($id_proses); $p++)
 		{ 
@@ -415,7 +509,7 @@ class C_Monitoring extends CI_Controller
 											'tgl_awal' 				=>	$tanggal_awal_proses,
 											'tgl_akhir'				=>	$tanggal_akhir_proses,
 											'last_update_timestamp'	=>	$executionTimestamp,
-											'last_update_user' 		=>	$this->session->userid,
+											'last_update_user' 		=>	$this->session->user,
 										);
 			$this->M_monitoring->updateProses($updateProses, $id_proses[$i]);
 
@@ -435,7 +529,7 @@ class C_Monitoring extends CI_Controller
 														'tgl_akhir'			=>	$orientasi['tgl_akhir'],
 														'type'				=>	'UPDATE',
 														'create_timestamp'	=>	$executionTimestamp,
-														'create_user'		=>	$this->session->userid,
+														'create_user'		=>	$this->session->user,
 													);
 				$this->M_monitoring->inputProsesJadwalHistory($inputProsesJadwalHistory);
 			}
@@ -522,7 +616,7 @@ class C_Monitoring extends CI_Controller
 																	'tujuan'			=>	$tujuan,
 																	'tanggal'			=>	$tanggal_pemberitahuan,
 																	'create_timestamp'	=>	$executionTimestamp,
-																	'create_user'		=>	$this->session->userid,
+																	'create_user'		=>	$this->session->user,
 																);
 								$id_proses_pemberitahuan	=	$this->M_monitoring->inputProsesPemberitahuan($inputProsesPemberitahuan);
 
@@ -535,7 +629,7 @@ class C_Monitoring extends CI_Controller
 																			'tanggal'					=>	$tanggal_pemberitahuan,
 																			'type'						=>	'CREATE',
 																			'create_timestamp'			=>	$executionTimestamp,
-																			'create_user'				=>	$this->session->userid,
+																			'create_user'				=>	$this->session->user,
 																		);
 								$this->M_monitoring->inputProsesPemberitahuanHistory($inputProsesPemberitahuanHistory);
 							}
@@ -549,7 +643,7 @@ class C_Monitoring extends CI_Controller
 																'tujuan'			=>	$tujuan,
 																'tanggal'			=>	$tanggal_awal_pemberitahuan,
 																'create_timestamp'	=>	$executionTimestamp,
-																'create_user'		=>	$this->session->userid,
+																'create_user'		=>	$this->session->user,
 															);
 							$id_proses_pemberitahuan	=	$this->M_monitoring->inputProsesPemberitahuan($inputProsesPemberitahuan);
 
@@ -562,15 +656,137 @@ class C_Monitoring extends CI_Controller
 																		'tanggal'					=>	$tanggal_awal_pemberitahuan,
 																		'type'						=>	'CREATE',
 																		'create_timestamp'			=>	$executionTimestamp,
-																		'create_user'				=>	$this->session->userid,
+																		'create_user'				=>	$this->session->user,
 																	);
 							$this->M_monitoring->inputProsesPemberitahuanHistory($inputProsesPemberitahuanHistory);
 						}
 					}
 				}
 			}
+
+			if ( ! isset($selesai[$i]) )
+			{
+				$selesai[$i]	=	0;
+			}
+
+			if( $selesai[$i] == 1 )
+			{
+				$proses_selesai 	= 	array
+										(
+											'selesai'	=>	TRUE,
+										);
+				$this->M_monitoring->proses_selesai($proses_selesai, $id_proses[$i]);
+
+				$pemberitahuan_selesai 	=	array
+											(
+												'selesai' 	=>	TRUE,
+											);
+				$this->M_monitoring->pemberitahuan_selesai($pemberitahuan_selesai, $id_proses[$i]);
+			}
+			else
+			{
+				$proses_selesai 	= 	array
+										(
+											'selesai'	=>	FALSE,
+										);
+				$this->M_monitoring->proses_selesai($proses_selesai, $id_proses[$i]);
+
+				$pemberitahuan_selesai 	=	array
+											(
+												'selesai' 	=>	FALSE,
+											);
+				$this->M_monitoring->pemberitahuan_selesai($pemberitahuan_selesai, $id_proses[$i]);
+			}
 		}
 
+		redirect('OnJobTraining/Monitoring');
+	}
+
+	public function pekerja_tunda()
+	{
+		$waktuEksekusi 			=	$this->general->ambilWaktuEksekusi();
+		$user 					=	$this->session->user;
+
+		$pekerja_id 		=	$this->general->dekripsi($this->input->post('txtPekerjaID', TRUE));
+		$status_pdca 		=	$this->input->post('chkSelesaiPDCA', TRUE);
+
+		$pekerjaKeluar 		=	array
+								(
+									'tunda' 				=>	TRUE,
+									'tunda_selesai_pdca' 	=>	$status_pdca,
+									'last_update_timestamp'	=>	$waktuEksekusi,
+									'last_update_user'		=>	$user,
+								);
+
+		$this->M_monitoring->ubahPekerjaKeluar($pekerjaKeluar, $pekerja_id);
+		redirect('OnJobTraining/Monitoring');
+	}
+
+	public function pekerja_keluar()
+	{
+		$waktuEksekusi 			=	$this->general->ambilWaktuEksekusi();
+		$user 					=	$this->session->user;
+
+		$pekerja_id 		=	$this->general->dekripsi($this->input->post('txtPekerjaID', TRUE));
+		$keluar_tanggal		=	$this->input->post('txtTanggalKeluarPekerja', TRUE);
+		$keluar_alasan 		=	strtoupper($this->input->post('txtAlasanKeluar', TRUE));
+
+		$pekerjaKeluar 		=	array
+								(
+									'keluar' 				=>	TRUE,
+									'keluar_tanggal' 		=>	$keluar_tanggal,
+									'keluar_alasan' 		=>	$keluar_alasan,
+									'last_update_timestamp'	=>	$waktuEksekusi,
+									'last_update_user'		=>	$user,
+								);
+
+		$this->M_monitoring->ubahPekerjaKeluar($pekerjaKeluar, $pekerja_id);
+		redirect('OnJobTraining/Monitoring');
+	}
+
+	public function pekerja_selesai()
+	{
+		$waktuEksekusi 			=	$this->general->ambilWaktuEksekusi();
+		$user 					=	$this->session->user;
+
+		$pekerja_id 		=	$this->general->dekripsi($this->input->post('txtPekerjaID', TRUE));
+
+		$pekerja_selesai 		=	array
+									(
+										'selesai' 				=>	TRUE,
+										'last_update_timestamp'	=>	$waktuEksekusi,
+										'last_update_user'		=>	$user,
+									);
+
+		$this->M_monitoring->pekerja_selesai($pekerja_selesai, $pekerja_id);
+		redirect('OnJobTraining/Monitoring');
+	}
+
+	public function ubah_email()
+	{
+		$waktuEksekusi 			=	$this->general->ambilWaktuEksekusi();
+		$user 					=	$this->session->user;
+
+		$pekerja_id 			=	$this->general->dekripsi($this->input->post('txtPekerjaID', TRUE));
+		$email_pekerja 			=	$this->input->post('txtEmailPekerja', TRUE);
+		$email_atasan	=	$this->input->post('txtEmailAtasan', TRUE);
+
+		if ( empty($email_pekerja) )
+		{
+			$email_pekerja 		=	NULL;
+		}
+
+		if ( empty($email_atasan) )
+		{
+			$email_atasan 		=	NULL;
+		}
+
+		$updateEmail 	=	array
+							(
+								'email_pekerja' 	=>	$email_pekerja,
+								'email_atasan'		=>	$email_atasan,
+							);
+		$this->M_monitoring->updateEmail($updateEmail, $pekerja_id);
 		redirect('OnJobTraining/Monitoring');
 	}
 

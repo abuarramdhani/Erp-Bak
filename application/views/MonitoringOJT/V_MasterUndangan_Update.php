@@ -41,7 +41,7 @@
 										<div class="form-group">
 											<label for="txaFormatUndangan" class="control-label col-lg-2">Format Undangan</label>
 											<div class="col-lg-8">
-												<textarea name="txaFormatUndangan" style="width: 100%" class="ckeditor form-control"><?php echo $formatUndangan['memo'];?></textarea>
+												<textarea name="txaFormatUndangan" style="width: 100%" id="MonitoringOJT-Undangan-txaFormatUndangan" class="form-control"><?php echo $formatUndangan['memo'];?></textarea>
 											</div>
 										</div>
 									</div>

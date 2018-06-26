@@ -1485,6 +1485,13 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 			$route['OnJobTraining/Monitoring/(:any)/(:any)']	=	'MonitoringOJT/C_Monitoring/$1/$2';
 	//	}
 
+	//	E-mail
+	//	{
+
+			$route['OnJobTraining/Email']						=	'MonitoringOJT/C_Email';
+			$route['OnJobTraining/Email/(:any)']				=	'MonitoringOJT/C_Email/$1';
+	//	}
+
 // -------end----------------------------- Monitoring OJT ----------------------------
 
 //------------------------- Work Relationship (Hubker) ------------------------------------------------//
