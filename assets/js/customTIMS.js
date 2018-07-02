@@ -224,7 +224,7 @@ function rekap_datatable_detail() {
 	rekap_datatable_detail();
 //});
 
-// 	Rekap Absensi Pekerja, Jam Kerja, Absensi Manual
+// 	Rekap Absensi Pekerja, Jam Kerja, Absensi Manual, Data Presensi-TIM
 //	{
 		$(function()
 		{
@@ -255,6 +255,21 @@ function rekap_datatable_detail() {
 						// scrollY: 400,
 						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
 					});
+
+					$('.RekapDataPresensiTIM-Daftar').DataTable({
+						dom: 'Bfrtip',
+						buttons: [
+							'excel',
+							{
+								extend: 'pdfHtml5',
+								orientation: 'landscape',
+								pageSize: 'A4',
+							}
+						],
+						// scrollY: 400,
+						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+					});
+
 					$('.RekapTIMS-StatistikPresensiHarian').DataTable({
 						searching: false,
 						lengthChange: false,
@@ -271,6 +286,7 @@ function rekap_datatable_detail() {
 
 
 			//	}
+
 			//	DateRangePicker
 			//	{
 					$('.RekapAbsensi-daterangepicker').daterangepicker({
@@ -313,7 +329,49 @@ function rekap_datatable_detail() {
 					}, function(start, end, label) {
 					  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 					});
+
+					$('.RekapDataPresensiTIM-daterangepicker').daterangepicker({
+					    "showDropdowns": true,
+					    "autoApply": true,
+					    "locale": {
+					        "format": "YYYY-MM-DD",
+					        "separator": " - ",
+					        "applyLabel": "OK",
+					        "cancelLabel": "Batal",
+					        "fromLabel": "Dari",
+					        "toLabel": "Hingga",
+					        "customRangeLabel": "Custom",
+					        "weekLabel": "W",
+					        "daysOfWeek": [
+					            "Mg",
+					            "Sn",
+					            "Sl",
+					            "Rb",
+					            "Km",
+					            "Jm",
+					            "Sa"
+					        ],
+					        "monthNames": [
+					            "Januari",
+					            "Februari",
+					            "Maret",
+					            "April",
+					            "Mei",
+					            "Juni",
+					            "Juli",
+					            "Agustus ",
+					            "September",
+					            "Oktober",
+					            "November",
+					            "Desember"
+					        ],
+					        "firstDay": 1
+					    }
+					}, function(start, end, label) {
+					  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+					});
 			//	}
+
 			//	Select2
 			//	{
 					$('.RekapAbsensi-cmbDepartemen').select2(
@@ -493,6 +551,53 @@ function rekap_datatable_detail() {
 						}
 					});
 
+					$('#RekapDataPresensiTIM-cmbKeteranganPresensi').select2(
+					{
+						minimumInputLength: 1,
+						delay: 500,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RekapDataPresensiTim/daftar_keterangan_presensi',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kd_ket, text: obj.keterangan};
+									})
+								}
+							}
+						}
+					});
+
+					$('#RekapDataPresensiTIM-cmbPekerja').select2(
+					{
+						minimumInputLength: 3,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RekapDataPresensiTim/pekerja',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.noind, text: obj.noind + ' - ' + obj.nama};
+									})
+								}
+							}
+						}
+					});
 			//	}
 		});
 

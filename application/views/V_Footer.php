@@ -71,6 +71,11 @@
 
 	<!-- Redactor -->
 	<script src="<?php echo base_url('assets/plugins/redactor/js/redactor.min.js');?>"></script>
+	<!-- <script src="<?php echo base_url('assets/plugins/redactor/plugins/fontcolor.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontfamily.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontsize.min.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/redactor/plugins/imagemanager.min.js');?>"></script> -->
+
 
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
