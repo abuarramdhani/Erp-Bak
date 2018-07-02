@@ -34,6 +34,7 @@
 										<tr>
 											<th class="text-center">No.</th>
 											<th class="text-center">Jenis Undangan</th>
+											<th class="text-center">Pekerja OJT</th>
 											<th class="text-center">Action</th>
 										</tr>
 									</thead>

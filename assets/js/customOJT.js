@@ -144,6 +144,10 @@
 					scrollX: true,
 				});
 
+				$('#MonitoringOJT-daftarFormatMemo').DataTable({
+					scrollX: false,
+				});
+
 				$('#MonitoringOJT-daftarFormatUndangan').DataTable({
 					scrollX: false,
 				});
@@ -311,6 +315,7 @@
 		//	Redactor
 		//	{
 				$('#MonitoringOJT-Undangan-txaFormatUndangan').redactor();
+				$('#MonitoringOJT-Memo-txaFormatMemo').redactor();
 		//	}
 	});
 	// 	General Function

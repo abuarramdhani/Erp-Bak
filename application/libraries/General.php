@@ -10,6 +10,7 @@ class general
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->CI->load->model('SystemAdministration/MainMenu/M_user');
+		$this->CI->load->model('M_Index');
 		
 		// Model Document Controller -----start-----
 			$this->CI->load->model('DocumentStandarization/MainMenu/M_general');
@@ -102,6 +103,53 @@ class general
 						)
 					);
 		return $kirim;
+	}
+
+	public function load_all_column_pgsql($schema_name, $table_name)
+	{
+		$columns 	=	$this->CI->M_Index->table_columns($schema_name, $table_name);
+		$columns_result	=	array();
+
+		$index 			=	0;
+		$index_total 	=	count($columns);
+
+		foreach ($columns as $result)
+		{
+			$columns_result[$index] 	=	$result['column_name'];
+			$index++;
+		}
+
+		return $columns_result;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_data_type_pgsql($schema_name, $table_name)
+	{
+		$data_type 	=	$this->CI->M_Index->table_columns($schema_name, $table_name);
+		$data_type_result	=	array();
+
+		$index 			=	0;
+		$index_total 	=	count($data_type);
+
+		foreach ($data_type as $result)
+		{
+			$data_type_result[$index] 	=	$result['data_type'];
+			$index++;
+		}
+
+		return $data_type_result;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_value_table_pgsql($schema_name, $table_name, $where_clause)
+	{
+		$table_value 			=	$this->CI->M_Index->table_value($schema_name, $table_name, $where_clause);
+
+		return $table_value;
+
+		// F2225 - 20180629
 	}
 
 	public function ambilPekerja($list)
