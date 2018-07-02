@@ -434,6 +434,12 @@ $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/G
 			$route['RekapTIMSPromosiPekerja/RekapAbsensiManual/(:any)']	=	'er/RekapTIMS/C_RekapAbsensiManual/$1';
 
 	//	}
+
+	// 	Rekap Data Presensi - TIM
+	// 	{
+			$route['RekapTIMSPromosiPekerja/RekapDataPresensiTim'] 			=	'er/RekapTIMS/C_RekapDataPresensiTIM';
+			$route['RekapTIMSPromosiPekerja/RekapDataPresensiTim/(:any)'] 	=	'er/RekapTIMS/C_RekapDataPresensiTIM/$1';
+	//	}
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
 
@@ -1471,11 +1477,25 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 			$route['OnJobTraining/MasterOrientasi/(:any)/(:any)']	=	'MonitoringOJT/C_MasterOrientasi/$1/$2';
 	//	}
 
+	//	Master Memo
+	//	{
+			$route['OnJobTraining/MasterMemo']						=	'MonitoringOJT/C_MasterMemo';
+			$route['OnJobTraining/MasterMemo/(:any)']				=	'MonitoringOJT/C_MasterMemo/$1';
+			$route['OnJobTraining/MasterMemo/(:any)/(:any)']		=	'MonitoringOJT/C_MasterMemo/$1/$2';
+	//	}
+
 	// 	Master Undangan
 	// 	{
 			$route['OnJobTraining/MasterUndangan']				=	'MonitoringOJT/C_MasterUndangan';
 			$route['OnJobTraining/MasterUndangan/(:any)']		=	'MonitoringOJT/C_MasterUndangan/$1';
 			$route['OnJobTraining/MasterUndangan/(:any)/(:any)']=	'MonitoringOJT/C_MasterUndangan/$1/$2';
+	//	}
+
+	//	Cetak Undangan
+	//	{
+			$route['OnJobTraining/CetakUndangan']						=	'MonitoringOJT/C_CetakUndangan';
+			$route['OnJobTraining/CetakUndangan/(:any)']				=	'MonitoringOJT/C_CetakUndangan/$1';
+			$route['OnJobTraining/CetakUndangan/(:any)/(:any)']			=	'MonitoringOJT/C_CetakUndangan/$1/$2';
 	//	}
 
 	//	Monitoring

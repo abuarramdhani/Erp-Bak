@@ -404,4 +404,9 @@
 			$query_proses_berjalan	=	$this->db->query($proses_berjalan);
 			return $query_proses_berjalan->result_array();
  		}
+
+ 		public function history($schema_name, $table_name, $history)
+ 		{
+ 			$this->db->insert($schema_name.".".$table_name."_history", $history);
+ 		}
  	}

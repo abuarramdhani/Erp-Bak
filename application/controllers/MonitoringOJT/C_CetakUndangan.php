@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_MasterUndangan extends CI_Controller 
+class C_CetakUndangan extends CI_Controller 
 {
 
 	function __construct()
@@ -11,7 +11,7 @@ class C_MasterUndangan extends CI_Controller
 		$this->load->library('MonitoringOJT');		
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MonitoringOJT/M_masterundangan');
+		$this->load->model('MonitoringOJT/M_cetakundangan');
 
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -29,13 +29,13 @@ class C_MasterUndangan extends CI_Controller
 	public function index()
 	{
 
-		$data 	=	$this->general->loadHeaderandSidemenu('Monitoring OJT - Quick ERP', 'Master Undangan', 'Setup', 'Undangan');
+		$data 	=	$this->general->loadHeaderandSidemenu('Monitoring OJT - Quick ERP', 'Cetak Undangan', 'Cetak', 'Undangan');
 
-		$data['daftar_format_undangan']		=	$this->M_masterundangan->undangan();
+		$data['daftar_cetak_undangan']		=	$this->M_cetakundangan->undangan_cetak();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringOJT/V_MasterUndangan_Index',$data);
+		$this->load->view('MonitoringOJT/V_CetakUndangan_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -69,7 +69,7 @@ class C_MasterUndangan extends CI_Controller
 											'create_timestamp'	=>	$execution_timestamp,
 											'create_user'		=>	$user,
 										);
-			$id_undangan 		=	$this->M_masterundangan->create($create_undangan);
+			$id_undangan 		=	$this->M_cetakundangan->create($create_undangan);
 
 			$this->monitoringojt->ojt_history('ojt', 'tb_master_undangan', array('id_undangan =' => $id_undangan), 'CREATE');
 			redirect('OnJobTraining/MasterUndangan');
@@ -82,7 +82,7 @@ class C_MasterUndangan extends CI_Controller
 
 		$data 	=	$this->general->loadHeaderandSidemenu('Monitoring OJT - Quick ERP', 'Master Undangan', 'Setup', 'Undangan');
 
-		$data['daftar_format_undangan']		=	$this->M_masterundangan->undangan($id_undangan_decode);
+		$data['daftar_format_undangan']		=	$this->M_cetakundangan->undangan($id_undangan_decode);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -101,7 +101,7 @@ class C_MasterUndangan extends CI_Controller
 		{
 			$data 	=	$this->general->loadHeaderandSidemenu('Monitoring OJT - Quick ERP', 'Master Undangan', 'Setup', 'Undangan');
 
-			$data['daftar_format_undangan']		=	$this->M_masterundangan->undangan($id_undangan_decode);
+			$data['daftar_format_undangan']		=	$this->M_cetakundangan->undangan($id_undangan_decode);
 			$data['id']							=	$id_undangan;
 
 			$this->load->view('V_Header',$data);
@@ -125,7 +125,7 @@ class C_MasterUndangan extends CI_Controller
 											'last_update_user'		=>	$user,
 										);
 
-			$this->M_masterundangan->update($update_undangan, $id_undangan_decode);
+			$this->M_cetakundangan->update($update_undangan, $id_undangan_decode);
 
 			$this->monitoringojt->ojt_history('ojt', 'tb_master_undangan', array('id_undangan =' => $id_undangan_decode), 'UPDATE');
 			redirect('OnJobTraining/MasterUndangan');
@@ -139,7 +139,7 @@ class C_MasterUndangan extends CI_Controller
 		$user 						=	$this->session->user;
 		$execution_timestamp 		=	$this->general->ambilWaktuEksekusi();
 
-		$this->M_masterundangan->delete($id_undangan_decode);
+		$this->M_cetakundangan->delete($id_undangan_decode);
 
 		$this->monitoringojt->ojt_history('ojt', 'tb_master_undangan', array('id_undangan =' => $id_undangan_decode), 'DELETE');
 		redirect('OnJobTraining/MasterUndangan');
