@@ -23,7 +23,7 @@ function MPdelete(id) {
     if(confirmDel){
         $('.hapus').prop('disabled',true);
         $.ajax({
-            url: baseurl+'/MonitoringPEIA/C_AccountReceivables/deleteSeksi/'+id,
+            url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteSeksi/'+id,
             success:function(results){
                
                 $('table#tableseksi tbody tr[row-id="'+id+'"]').remove();
@@ -42,7 +42,7 @@ function DeleteOrder(id) {
     if(confirmDel){
         $('.hapus').prop('disabled',true);
         $.ajax({
-            url: baseurl+'/MonitoringPEIA/C_AccountReceivables/deleteOrder/'+id,
+            url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteOrder/'+id,
             success:function(results){
                
                 $('table#tableorder tbody tr[row-id="'+id+'"]').remove();
@@ -61,7 +61,7 @@ function DeleteJenisOrder(id) {
     if(confirmDel){
         $('.hapus').prop('disabled',true);
         $.ajax({
-            url: baseurl+'/MonitoringPEIA/C_AccountReceivables/deleteJenisOrder/'+id,
+            url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteJenisOrder/'+id,
             success:function(results){
                
                 $('table#tablejenisorder tbody tr[row-id="'+id+'"]').remove();
@@ -80,7 +80,7 @@ function DeleteLaporan(id) {
     if(confirmDel){
         $('.hapus').prop('disabled',true);
         $.ajax({
-            url: baseurl+'/MonitoringPEIA/C_AccountReceivables/deleteLaporan/'+id,
+            url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteLaporan/'+id,
             success:function(results){
                
                 $('table#credit tbody tr[row-id="'+id+'"]').remove();
@@ -108,7 +108,7 @@ $(".submit-date").click(function(){
     tgl2 = $("#tanggalan2").val();
      $.ajax({
             type: 'POST',
-            url: baseurl+'/MonitoringPEIA/C_AccountReceivables/searchTanggal/',
+            url: baseurl+'MonitoringPEIA/C_AccountReceivables/searchTanggal/',
             data: {
                 tgl1:tgl1,
                 tgl2:tgl2
