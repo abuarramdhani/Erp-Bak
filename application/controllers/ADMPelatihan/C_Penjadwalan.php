@@ -184,8 +184,7 @@ class C_Penjadwalan extends CI_Controller {
 	}
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
-	public function add(){
-		
+	public function add(){		
 		$package_scheduling_id	= 0;
 		$package_training_id	= 0;
 		$training_id			= $this->input->post('txtTrainingId');
@@ -199,6 +198,7 @@ class C_Penjadwalan extends CI_Controller {
 		
 		$participant_type		= $this->input->post('slcPeserta');
 		$participant_number		= $this->input->post('txtJumlahPeserta');
+		$standar_nilai			= $this->input->post('txtStandarNilai');
 
 		$evaluasi		= $this->input->post('slcEvaluasi');
 		$evaluasi2 		= implode(',', $evaluasi);
@@ -215,8 +215,7 @@ class C_Penjadwalan extends CI_Controller {
 		$trainer		= $this->input->post('slcTrainer');
 		$trainers 		= implode(',', $trainer);
 
-
-		$insertId 		= $this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis);
+		$insertId 		= $this->M_penjadwalan->AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis,$standar_nilai);
 
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;
@@ -258,7 +257,6 @@ class C_Penjadwalan extends CI_Controller {
 				}
 				$j++;
 			}
-			
 		redirect('ADMPelatihan/Record');
 		}else{
 			$alert = '<div class="row">
@@ -296,13 +294,15 @@ class C_Penjadwalan extends CI_Controller {
 	}
 
 	//MENAMBAHKAN DATA PENJADWALAN YANG SUDAH DIBUAT KE DATABASE
-	public function addbypackage(){
+	public function addbypackage()
+	{
 
 		$package_scheduling_id	= $this->input->post('txtPackageSchedulingId');
 		$package_training_id	= $this->input->post('txtPackageTrainingId');
 		$training_id			= $this->input->post('txtTrainingId');
 
 		$scheduling_name		= $this->input->post('txtNamaPelatihan');
+		$standar_kelulusan		= $this->input->post('txtStandarNilai');
 		$date 					= $this->input->post('txtTanggalPelaksanaan');
 		$room					= $this->input->post('slcRuang');
 		$sifat					= $this->input->post('slcSifat');
@@ -358,6 +358,7 @@ class C_Penjadwalan extends CI_Controller {
 				'package_training_id'	=> $package_training_id[$i],
 				'training_id'			=> $training_id[$i],
 				'scheduling_name'		=> $scheduling_name[$i],
+				'standar_kelulusan'		=> $standar_kelulusan[$i],
 				'date'					=> $date[$i],
 				'room'					=> $room[$i],
 				'participant_type'		=> $participant_type,
@@ -474,6 +475,7 @@ class C_Penjadwalan extends CI_Controller {
 		$training_id			= $this->input->post('txtTrainingId');
 		
 		$scheduling_name		= $this->input->post('txtNamaPelatihan');
+		$standar_kelulusan		= $this->input->post('txtStandarNilai');
 
 		$date 					= $this->input->post('txtTanggalPelaksanaan');
 		$room					= $this->input->post('slcRuang');
@@ -503,7 +505,7 @@ class C_Penjadwalan extends CI_Controller {
 			$this->M_penjadwalan->UpdateStartDate($date,$package_scheduling_id);
 		}
 		// Add penjadwalan
-		$this->M_penjadwalan->AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers,$sifat,$jenis);
+		$this->M_penjadwalan->AddSingleSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$room,$participant_type,$participant_number,$evaluasi2,$trainers,$sifat,$jenis,$standar_kelulusan);
 		
 		$maxid			= $this->M_penjadwalan->GetMaxIdScheduling();
 		$pkgid 			= $maxid[0]->scheduling_id;

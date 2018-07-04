@@ -89,12 +89,12 @@
 											$eval='';
 											// if($rc['evaluation']=='1'){$eval='Reaksi';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';}
-											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';}
+											if($rc['evaluation']=='3'){$eval='Perilaku';}
 											// if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';}
-											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Evaluasi Lapangan';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Perilaku';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2' ){$eval='Pembelajaran, Perilaku';}
 											// if($rc['evaluation']=='1,2,3'|| $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-											// 	{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';}
+											// 	{$eval='Reaksi, Pembelajaran, Perilaku';}
 										?>
 										<input class="form-control" value="<?php echo $eval?>" readonly >
 									</div>
@@ -220,7 +220,7 @@
 									<a href="<?php echo site_url('ADMPelatihan/Record/Edit/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-warning">Edit</a>	
 									<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-success">Confirm</a>
 									<a data-toggle="modal" data-target="<?php echo '#deletealert'.$rc['scheduling_id'] ?>" class="btn btn-flat btn-danger">Delete</a>
-									<a href="javascript:window.history.go(-1);" class="btn btn-primary btn btn-flat">Back</a>
+									<a href="<?php echo site_url('ADMPelatihan/Record/');?>" class="btn btn-primary btn btn-flat">Back</a>
 									&nbsp;&nbsp;
 								</div>
 							</div>

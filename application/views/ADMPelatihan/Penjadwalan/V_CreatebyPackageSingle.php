@@ -45,6 +45,7 @@
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
 										<input name="txtPackageSchedulingId" value="<?php echo $pse?>" hidden>
 										<input name="txtPackageTrainingId" value="<?php echo $dt['package_training_id']?>" hidden>
+										<input type="hidden" name="txtStandarNilai" value="<?php echo $dt['limit_1'].','.$dt['limit_2']?>"> 
 										<?php
 											foreach ($GetStartDate as $sd) {
 												if ($sd['training_id']==$dt['training_id']) { ?>

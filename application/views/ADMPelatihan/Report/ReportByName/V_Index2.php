@@ -21,7 +21,11 @@
 										<td><?php echo $rc['section_name'] ?></td>
 										<td><?php echo $rc['scheduling_name'] ?></td>
 										<td><?php echo $rc['date_format'] ?></td>
-										<td><?php echo $rc['score_eval2_post'] ?></td>
+										<td>
+											<?php
+												echo max($rc['score_eval2_post'],$rc['score_eval2_r1'],$rc['score_eval2_r2'],$rc['score_eval2_r3']); 
+											?>
+										</td>
 										<td>
 											<?php
 												if ($rc['lulus']==1) {

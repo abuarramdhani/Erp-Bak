@@ -146,7 +146,7 @@
 				            <div class="box-header with-border">
 						      <h3 class="box-title" style="margin-top: 20px"></i>   EVALUASI REAKSI</h3>
 						    </div>
-							<div class="table-responsive" style="overflow:scroll; max-height: 500px" id="tbevalReaksi">
+							<div class="table-responsive" id="tbevalReaksi">
 								<table class="table table-bordered table-striped table-condensed" id="tbodyevalReaksi">
 									<thead class="bg-blue">
 										<tr>
@@ -162,7 +162,7 @@
 												<input type="text" name="txtPckSchId" value="0" hidden="true">
 												<?php 
 												foreach ($GetSchName_QuesName_segmen as $segmen) {
-													if ($sq['scheduling_id'] == $segmen['scheduling_id'] && $sq['questionnaire_id'] == $segmen['questionnaire_id']) {
+													if ($sq['scheduling_id'] == $segmen['scheduling_id'] && $sq['questionnaire_id'] == $segmen['questionnaire_id'] && $segmen['segment_type']!='0') {
 														$n=0;
 														$i=0;
 												?>
@@ -189,6 +189,21 @@
 							</div>
 				          </div>
 				        </div>
+				        <div class="form-group">
+							<div class="box-header with-border">
+						      <h3 class="box-title" style="margin-top: 20px"></i>   KOMENTAR</h3>
+						    </div>
+						    <?php ?>
+							    <ul style="list-style: disc;">
+							    	<?php
+							    		echo '<li>'.implode('</li><li>', $komen);
+							    		for ($i=0; $i < count($komen) ; $i++) { 
+							    			echo ''; //agar bullet hanya sesuai jumlah row
+							    		}
+							    	?>
+							    </ul>
+						    <?php ?>
+						</div>
 				        <div class="col-lg-12">
 				          <div class="form-group">
 				            <div class="box-header with-border">
@@ -201,7 +216,7 @@
 											<th width="5%" style="text-align:center;">No</th>
 											<th width="50%">Nama</th>
 											<th >Noind</th>
-											<th >Post-Test</th>
+											<th >Nilai Test</th>
 										</tr>
 									</thead>
 									<tbody id="tbodyEvalPembelajaran">

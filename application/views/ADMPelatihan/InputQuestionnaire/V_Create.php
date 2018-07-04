@@ -108,15 +108,17 @@
 												foreach($statement as $st){
 													if($sg['segment_id']==$st['segment_id']){
 														 $no++ ?>
-											<tr>
-												<td><?php echo $no?></td>
-												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
-												<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
-											</tr>
-											<?php 	}
+														<tr>
+															<td><?php echo $no?></td>
+															<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
+															<!-- hidden segmen type --><input type="text" name="txtSegmentType[]" value="<?php echo $sg['segment_type']?>" hidden><!-- hidden segmen type -->
+															<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4"></td>
+															<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="3"></td>
+															<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="2"></td>
+															<td style="padding: 0px;vertical-align: middle;"><input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="1" required></td>
+														</tr>
+													<?php 	
+													}
 												}
 												?>
 										</tbody>
@@ -148,6 +150,9 @@
 											<tr>
 												<td><?php echo $no?></td>
 												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
+												<!-- hidden segmen type -->
+												<input type="text" name="txtSegmentType[]" value="<?php echo $sg['segment_type']?>" hidden>
+												<!-- hidden segmen type -->
 												<td>
 													<input class="form-control" type="text" placeholder="komentar" name="<?php echo 'txtInput'.$st['statement_id'] ?>" >
 												</td>
