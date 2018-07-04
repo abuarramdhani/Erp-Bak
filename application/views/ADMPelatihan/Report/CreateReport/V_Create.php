@@ -143,7 +143,7 @@
 				            <div class="box-header with-border">
 						      <h3 class="box-title" style="margin-top: 20px"></i>   EVALUASI REAKSI</h3>
 						    </div>
-							<div class="table-responsive" style="overflow:scroll; max-height: 500px" id="tbevalReaksi">
+							<div class="table-responsive" id="tbevalReaksi">
 							</div>
 				          </div>
 				        </div>
@@ -189,9 +189,9 @@
 									<tbody>
 										<tr>
 											<td><input name="txtDocNo" value="FRM-HRM-03-13" class="form-control" placeholder="Nomor Dokumen" readonly></td>
-											<td><input name="txtRevNo" class="form-control" placeholder="Nomor Revisi"></td>
-											<td><input name="txtRevDate" class="form-control singledateADM" placeholder="Tanggal Revisi"></td>
-											<td><input name="txtRevNote" class="form-control" placeholder="Catatan Revisi"></td>
+											<td><input name="txtRevNo" class="form-control" placeholder="Nomor Revisi" value="01" readonly></td>
+											<td><input name="txtRevDate" class="form-control" value="20/11/2017" placeholder="Tanggal Revisi" readonly></td>
+											<td><input name="txtRevNote" value="-" class="form-control" placeholder="Catatan Revisi" readonly></td>
 										</tr>
 									</tbody>
 								</table>

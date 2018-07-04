@@ -136,6 +136,7 @@
 											<tr>
 												<td><?php echo $no?></td>
 												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
+												<!-- hidden segmen type --><input type="text" name="txtSegmentType[]" value="<?php echo $sg['segment_type']?>" hidden><!-- hidden segmen type -->
 												<td style="padding: 0px;vertical-align: middle;">
 													<input type="radio" class="radio2" name="<?php echo 'txtInput'.$st['statement_id'] ?>" value="4" <?php echo $check4; ?>>
 													<input type="text" class="radio2" name="<?php echo 'txtID_st'.$st['statement_id']?>" value="<?php echo $st['statement_id']?>" hidden>
@@ -185,6 +186,7 @@
 											<tr>
 												<td><?php echo $no?></td>
 												<td style="text-align:left;"><?php echo $st['statement_description']?><input type="text" name="txtStatementId[]" value="<?php echo $st['statement_id']?>" hidden></td>
+												<!-- hidden segmen type --><input type="text" name="txtSegmentType[]" value="<?php echo $sg['segment_type']?>" hidden><!-- hidden segmen type -->
 												<td>
 												<?php
 													$jawabVal = '';

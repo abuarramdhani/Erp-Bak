@@ -376,6 +376,7 @@ class M_record extends CI_Model {
 				from pl.pl_participant a
 				inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id 
 				where b.package_scheduling_id=$pid
+				and a.status = 1
 				group by a.participant_name,2,3
 				order by participant_name";
 		$query = $this->db->query($sql);

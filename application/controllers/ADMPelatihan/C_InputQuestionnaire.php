@@ -173,16 +173,18 @@ class C_InputQuestionnaire extends CI_Controller {
 		$IdKuesioner	= $this->input->post('txtQuestionnaireId');
 		$IdPenjadwalan	= $this->input->post('txtSchedulingId');
 		$IdStatement	= $this->input->post('txtStatementId');
-		$QSheetId 		= $qsi;
+		$Stype			= $this->input->post('txtSegmentType');
+		// $QSheetId 		= $qsi;
 
 		foreach($IdStatement as $loop){
 			$statement[] = $loop;
 			$input[] = $this->input->post('txtInput'.$loop);
 		}
-		$join_statement = join('||', $statement);
-		$join_input		= join('||', $input);
+		$join_statement 	= join('||', $statement);
+		$join_input			= join('||', $input);
+		$join_segment_type	= join('||', $Stype);
 		
-		$this->M_inputquestionnaire->AddQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$join_statement,$join_input);
+		$this->M_inputquestionnaire->AddQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$join_statement,$join_input,$join_segment_type);
 		
 		redirect('ADMPelatihan/InputQuestionnaire/Create/'.$IdPenjadwalan.'/'.$IdKuesioner);
 	}
@@ -220,20 +222,26 @@ class C_InputQuestionnaire extends CI_Controller {
 	}
 
 	public function update(){
+		// echo "<pre>";
+		// var_dump($_POST);
+		// echo "</pre>";
 		$IdKuesioner	= $this->input->post('txtQuestionnaireId');
 		$IdPenjadwalan	= $this->input->post('txtSchedulingId');
 		$IdStatement	= $this->input->post('txtStatementId');
 		$IdQSheet		= $this->input->post('txtQuestionnaireSheetId');
+		$Stype			= $this->input->post('txtSegmentType');
 				
 		foreach($IdStatement as $loop){
-			$statement[] = $loop;
-			$input[] 	= $this->input->post('txtInput'.$loop);
-			$input_id[] = $this->input->post('txtID_st'.$loop);
+			$statement[] 	= $loop;
+			$input[] 		= $this->input->post('txtInput'.$loop);
+			$input_id[] 	= $this->input->post('txtID_st'.$loop);
 		}
-		$join_statement = join('||', $statement);
-		$join_input		= join('||', $input);
-		$join_input_id	= join('||', $input_id);
-		$this->M_inputquestionnaire->UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input,$join_input_id);
+		$join_statement 	= join('||', $statement);
+		$join_input			= join('||', $input);
+		$join_input_id		= join('||', $input_id);
+		$join_segment_type	= join('||', $Stype);
+
+		$this->M_inputquestionnaire->UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input,$join_input_id, $join_segment_type);
 		
 		redirect('ADMPelatihan/InputQuestionnaire/ToCreate/'.$IdPenjadwalan.'/'.$IdKuesioner);
 	}

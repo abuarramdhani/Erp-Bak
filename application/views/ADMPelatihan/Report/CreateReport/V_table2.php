@@ -4,7 +4,7 @@
 										<th width="5%" style="text-align:center;">No</th>
 										<th width="50%">Nama</th>
 										<th >Noind</th>
-										<th >Post-Test</th>
+										<th >Nilai Test</th>
 									</tr>
 								</thead>
 								<tbody id="tbodyEvalPembelajaran">
@@ -21,11 +21,27 @@
 											<?php echo $prt['noind']; ?>
 										</td>
 										<td>
-											<?php if ($prt['score_eval2_post']==NULL) {
-												echo "-";
-											}else{
-												echo $prt['score_eval2_post']; 
-											}
+											<?php 
+												if ($prt['score_eval2_post']>=$standar_kelulusan) 
+												{
+													echo $prt['score_eval2_post'];
+												}
+												elseif ($prt['score_eval2_r1']>=$standar_kelulusan) 
+												{
+													echo '<font color="red">'.$prt['score_eval2_post'].'</font> /'.$prt['score_eval2_r1'];
+												}
+												elseif ($prt['score_eval2_r2']>=$standar_kelulusan) 
+												{
+													echo '<font color="red">'.$prt['score_eval2_post'].'/'.$prt['score_eval2_r1'].'</font> /'.$prt['score_eval2_r2'];
+												}
+												elseif ($prt['score_eval2_r3']>=$standar_kelulusan) 
+												{
+													echo '<font color="red">'.$prt['score_eval2_post'].'/'.$prt['score_eval2_r1'].'/'.$prt['score_eval2_r2'].'</font> /'.$prt['score_eval2_r3'];
+												}
+												else
+												{
+													echo "-";
+												}
 											?>
 										</td>
 									</tr>

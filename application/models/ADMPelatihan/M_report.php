@@ -99,6 +99,7 @@ class M_report extends CI_Model {
 			a.sifat,
 			a.participant_number,
 			a.status,
+			a.standar_kelulusan,
 			b.package_scheduling_name,
 			case when b.start_date
 				is NULL then null 	
@@ -215,58 +216,137 @@ class M_report extends CI_Model {
 
 	public function GetReport1($name){
 		$sql = "
-			with seksi as(
-				select e.employee_code, e.employee_name, d.section_name
-				from er.er_employee_all e
-				left join er.er_section d
-				on e.section_code = d. section_code
-				)
-			select case when a.score_eval2_post>=
-						(case when 
-							substring(noind,0, 2) like 'B' or 
-							substring(noind,0, 2) like 'D' or 
-							substring(noind,0, 2) like 'J' or 
-							substring(noind,0, 2) like 'G' or 
-							substring(noind,0, 2) like 'L' or 
-							substring(noind,0, 2) like 'Q' or 
-							substring(noind,0, 2) like 'Z' 
-							then 
-								cast(
-									(case when substring(b.standar_kelulusan,0,3) is null or
-								 	substring(b.standar_kelulusan,0,3) = '' then '0' else substring(b.standar_kelulusan,0,3) end)	
-								as int)
-								else cast(
-									(case when substring(b.standar_kelulusan,4,3) is null or 
-									substring(b.standar_kelulusan,4,3) = '' then '0' else substring(b.standar_kelulusan,4,3) end)
-								as int)end) 
-							then 1
-							else 0 
+			with 	seksi 	as	(
+						select		e.employee_code,
+									e.employee_name, 
+									d.section_name
+						from 		er.er_employee_all e
+									left join	er.er_section d
+												on e.section_code = d. section_code
+					)
+			select 		case 	when 	a.score_eval2_post
+										>=
+										(
+											case 	when 	substring(noind,0, 2) in ('B', 'D', 'J', 'G', 'L', 'Q', 'Z')
+															then 	(
+																		(
+																			case 	when 	substring(b.standar_kelulusan,0,3) is null 
+																							or 	split_part(b.standar_kelulusan,',',1) = '' 
+																							then '0' 
+																					else 	split_part(b.standar_kelulusan,',',1) 
+																			end
+																		)::int	
+																	)
+													else 	(
+																(
+																	case 	when 	substring(b.standar_kelulusan,4,3) is null 
+																					or 	split_part(b.standar_kelulusan,',',2) = ''
+																					then '0' 
+																			else 	split_part(b.standar_kelulusan,',',2) 
+																	end
+																)::int
+															)
+											end
+										)
+										then 	1
+								when 	a.score_eval2_r1
+										>=
+										(
+											case 	when 	substring(noind,0, 2) in ('B', 'D', 'J', 'G', 'L', 'Q', 'Z')
+															then 	(
+																		(
+																			case 	when 	substring(b.standar_kelulusan,0,3) is null 
+																							or 	split_part(b.standar_kelulusan,',',1) = '' 
+																							then '0' 
+																					else 	split_part(b.standar_kelulusan,',',1) 
+																			end
+																		)::int	
+																	)
+													else 	(
+																(
+																	case 	when 	substring(b.standar_kelulusan,4,3) is null 
+																					or 	split_part(b.standar_kelulusan,',',2) = ''
+																					then '0' 
+																			else 	split_part(b.standar_kelulusan,',',2) 
+																	end
+																)::int
+															)
+											end
+										)
+										then 	1
+								when 	a.score_eval2_r2
+										>=
+										(
+											case 	when 	substring(noind,0, 2) in ('B', 'D', 'J', 'G', 'L', 'Q', 'Z')
+															then 	(
+																		(
+																			case 	when 	substring(b.standar_kelulusan,0,3) is null 
+																							or 	split_part(b.standar_kelulusan,',',1) = '' 
+																							then '0' 
+																					else 	split_part(b.standar_kelulusan,',',1) 
+																			end
+																		)::int	
+																	)
+													else 	(
+																(
+																	case 	when 	substring(b.standar_kelulusan,4,3) is null 
+																					or 	split_part(b.standar_kelulusan,',',2) = ''
+																					then '0' 
+																			else 	split_part(b.standar_kelulusan,',',2) 
+																	end
+																)::int
+															)
+											end
+										)
+										then 	1
+								when 	a.score_eval2_r3
+										>=
+										(
+											case 	when 	substring(noind,0, 2) in ('B', 'D', 'J', 'G', 'L', 'Q', 'Z')
+															then 	(
+																		(
+																			case 	when 	substring(b.standar_kelulusan,0,3) is null 
+																							or 	split_part(b.standar_kelulusan,',',1) = '' 
+																							then '0' 
+																					else 	split_part(b.standar_kelulusan,',',1) 
+																			end
+																		)::int	
+																	)
+													else 	(
+																(
+																	case 	when 	substring(b.standar_kelulusan,4,3) is null 
+																					or 	split_part(b.standar_kelulusan,',',2) = ''
+																					then '0' 
+																			else 	split_part(b.standar_kelulusan,',',2) 
+																	end
+																)::int
+															)
+											end
+										)
+										then 	1
+								else 	0 
 						end as lulus,
-				case when b.date
-					is NULL then null 	
-					else to_char(b.date,'DD MONTH YYYY')
-					end as date_format
-				, a.score_eval2_post
-				, (case when 
-					substring(a.noind,1,1) like 'B' or 
-					substring(a.noind,1,1) like 'D' or 
-					substring(a.noind,1,1) like 'J' or 
-					substring(a.noind,1,1) like 'G' or 
-					substring(a.noind,1,1) like 'L' or 
-					substring(a.noind,1,1) like 'Q' or 
-					substring(a.noind,1,1) like 'Z'
-				then substring(b.standar_kelulusan,0,3)
-				else substring(b.standar_kelulusan,4,3)
-				end) standar_kelulusan,
-				a.*
-				,seksi.section_name
-				,b.scheduling_name
-			from pl.pl_participant a
-				left join pl.pl_scheduling_training b on a.scheduling_id = b.scheduling_id
-				join seksi on a.noind = seksi.employee_code
-			where a.participant_name like '%$name%'
-			order by b.date desc";
-
+						to_char(b.date,'DD MONTH YYYY') as date_format, 
+						a.score_eval2_post,
+						a.score_eval2_r1,
+						a.score_eval2_r2,
+						a.score_eval2_r3,
+						(
+							case 	when 	substring(noind,0, 2) in ('B', 'D', 'J', 'G', 'L', 'Q', 'Z')
+											then 	split_part(b.standar_kelulusan,',',1)
+									else 	split_part(b.standar_kelulusan,',',2)
+							end
+						) standar_kelulusan,
+						a.*,
+						seksi.section_name,
+						b.scheduling_name
+			from 		pl.pl_participant a
+						left join 	pl.pl_scheduling_training b 
+									on a.scheduling_id = b.scheduling_id
+						join 		seksi 
+									on a.noind = seksi.employee_code
+			where 		a.participant_name like '%$name%'
+			order by 	b.date desc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -902,7 +982,7 @@ class M_report extends CI_Model {
 
 	public function GetSchName_QuesName_segmen()
 	{
-		$sql="	SELECT	a.scheduling_id,sg.questionnaire_id, sg.segment_id,a.scheduling_name , sg.segment_description
+		$sql="	SELECT	a.scheduling_id,sg.questionnaire_id, sg.segment_id,a.scheduling_name , sg.segment_description, sg.segment_type
 				from	pl.pl_scheduling_training a
 						inner join	pl.pl_questionnaire_sheet b 
 						on a.scheduling_id=b.scheduling_id
@@ -913,8 +993,7 @@ class M_report extends CI_Model {
 							from	pl.pl_master_questionnaire_segment sg
 						)sg
 				where sg.questionnaire_id=b.questionnaire_id
-				and sg.segment_type=1
-				group by 1,2,3,4,5
+				group by 1,2,3,4,5,6
 				order by sg.segment_id asc";
 		$query=$this->db->query($sql);
 		return $query->result_array();
@@ -984,14 +1063,14 @@ class M_report extends CI_Model {
 	}
 	public function GetSchName_QuesName_RPTPCK($pid)
 	{
-		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer, a.package_scheduling_id
+		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer, a.package_scheduling_id, a.standar_kelulusan
 				from	pl.pl_scheduling_training a
 						inner join	pl.pl_questionnaire_sheet b 
 						on a.scheduling_id=b.scheduling_id
 						inner join pl.pl_master_questionnaire c 
 						on b.questionnaire_id=c.questionnaire_id
 				where a.package_scheduling_id='$pid'
-				group by 1,2,3,4,5,6,7
+				group by 1,2,3,4,5,6,7,8
 				order by (a.date, a.scheduling_id) asc";
 		$query=$this->db->query($sql);
 		return $query->result_array();
