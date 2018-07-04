@@ -147,11 +147,11 @@ class M_inputquestionnaire extends CI_Model {
 	}
 
 	//ADD QUESTIONNAIRE SHEET
-	public function AddQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$join_statement,$join_input){
+	public function AddQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$join_statement,$join_input,$join_segment_type){
 		$sql = "
 			insert into pl.pl_questionnaire_sheet
-			(questionnaire_id,scheduling_id,join_statement_id,join_input)values
-			('$IdKuesioner','$IdPenjadwalan','$join_statement','$join_input')";
+			(questionnaire_id,scheduling_id,join_statement_id,join_input,join_segment_type)values
+			('$IdKuesioner','$IdPenjadwalan','$join_statement','$join_input','$join_segment_type')";
 		$query = $this->db->query($sql);
 		return;
 	}
@@ -169,9 +169,9 @@ class M_inputquestionnaire extends CI_Model {
 			return $query->result_array();
 		}
 
-	public function UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input,$join_input_id){
+	public function UpdateQuestionnaireSheet($IdKuesioner,$IdPenjadwalan,$IdQSheet,$join_input,$join_input_id,$join_segment_type){
 		$sql = "UPDATE 	pl.pl_questionnaire_sheet
-			 	SET 	join_input='$join_input' , join_statement_id= '$join_input_id'
+			 	SET 	join_input='$join_input' , join_statement_id= '$join_input_id', join_segment_type='$join_segment_type'
 			 	WHERE 	questionnaire_id='$IdKuesioner'
 			 	AND 	scheduling_id='$IdPenjadwalan'
 			 	AND 	questionnaire_sheet_id='$IdQSheet'";

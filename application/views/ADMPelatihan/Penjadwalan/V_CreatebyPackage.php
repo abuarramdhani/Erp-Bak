@@ -36,13 +36,15 @@
 						</div>
 					<?php } ?>
 					<!-- <form method="post" action="<?php echo base_url('ADMPelatihan/Penjadwalan/addbypackage')?>"> -->
-					<?php 
-    echo form_open(base_url('ADMPelatihan/Penjadwalan/addbypackage'));
-   ?>
+					<?php echo form_open(base_url('ADMPelatihan/Penjadwalan/addbypackage'));?>
 						<input name="txtPackageSchedulingId" value="<?php echo $pse?>" hidden>
-						<?php foreach($daynumber as $day){ ?>
-						<input id="dayrange" value="<?php echo $day['day']?>" hidden>
-						<?php } ?>
+						<?php foreach($daynumber as $day)
+								{ 
+									?>
+										<input id="dayrange" value="<?php echo $day['day']?>" hidden>
+									<?php 
+								} 
+						?>
 						<div class="col-lg-offset-2 col-lg-8">
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
@@ -90,6 +92,7 @@
 															<input name="txtNamaPelatihan[]" class="form-control" style="width:100%" placeholder="Scheduling Name" value="<?php echo $tl['training_name'] ?>">
 															<input name="txtTrainingId[]" value="<?php echo $tl['training_id']?>" hidden>
 															<input name="txtPackageTrainingId[]" value="<?php echo $tl['package_training_id']?>" hidden>
+															<input type="hidden" name="txtStandarNilai[]" value="<?php echo $tl['limit_1'].','.$tl['limit_2']?>"> 
 														</td>
 														<td>
 															<input class="dday-tgl form-control checkdateSch" id="checkdateSch" name ="txtTanggalPelaksanaan[]" value="" placeholder="Tanggal" style="width:95%">
@@ -115,7 +118,7 @@
 																<!-- <?php $checkreaksi='checked'; ?> -->
 																<!-- <input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="1" <?php echo $checkreaksi; ?>> Reaksi -->
 							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="2" > Pembelajaran<br>
-							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3" > Evaluasi Lapangan
+							  									<input type="checkbox" name="<?php echo 'chk'.$no.'[]' ?>" value="3" > Perilaku
 															</div>
 														</td>
 													</tr>

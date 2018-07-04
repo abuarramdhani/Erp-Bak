@@ -87,12 +87,12 @@
 											$eval='';$ev1='';$ev2='';$ev3='';
 											// if($rc['evaluation']=='1'){$eval='Reaksi';$ev1='Y';}
 											if($rc['evaluation']=='2'){$eval='Pembelajaran';$ev2='Y';}
-											if($rc['evaluation']=='3'){$eval='Evaluasi Lapangan';$ev3='Y';}
+											if($rc['evaluation']=='3'){$eval='Perilaku';$ev3='Y';}
 											// if($rc['evaluation']=='1,2' || $rc['evaluation']=='2,1'){$eval='Reaksi, Pembelajaran';$ev1='Y';$ev2='Y';}
-											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Evaluasi Lapangan';$ev1='Y';$ev3='Y';}
-											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Evaluasi Lapangan';$ev2='Y';$ev3='Y';}
+											// if($rc['evaluation']=='1,3' || $rc['evaluation']=='3,1'){$eval='Reaksi, Perilaku';$ev1='Y';$ev3='Y';}
+											if($rc['evaluation']=='2,3' || $rc['evaluation']=='3,2'){$eval='Pembelajaran, Perilaku';$ev2='Y';$ev3='Y';}
 											// if($rc['evaluation']=='1,2,3' || $rc['evaluation']=='3,1,2' || $rc['evaluation']=='3,2,1' || $rc['evaluation']=='2,1,3' || $rc['evaluation']=='2,3,1')
-											// 	{$eval='Reaksi, Pembelajaran, Evaluasi Lapangan';$ev1='Y';$ev2='Y';$ev3='Y';}
+											// 	{$eval='Reaksi, Pembelajaran, Perilaku';$ev1='Y';$ev2='Y';$ev3='Y';}
 										?>
 										<input class="form-control" value="<?php echo $eval ?>" readonly >
 									</div>
@@ -202,9 +202,9 @@
 														<th  rowspan="2"  class="header_table">Reaksi (Post)</th>
 													<?php } ?> -->
 													<?php if($ev2=='Y'){ ?>
-														<th colspan="2" class="header_table">Pembelajaran</th>
+														<th colspan="5" class="header_table">Pembelajaran</th>
 													<?php } if($ev3=='Y'){ ?>
-														<th  colspan="2" class="header_table">Perubahan Perilaku (Evaluasi Lapangan)</th>
+														<th  colspan="2" class="header_table">Perilaku</th>
 													<?php } ?>
 												<th  rowspan="2" style="min-width: 200px" class="header_table">lain-lain</th>
 											</tr>
@@ -212,6 +212,9 @@
 												<?php if($ev2=='Y'){ ?>
 													<th   class="header_table">(Pre)</th>
 													<th   class="header_table">(Post)</th>
+													<th   class="header_table">R1</th>
+													<th   class="header_table">R2</th>
+													<th   class="header_table">R3</th>
 												<?php } if($ev3=='Y'){ ?>
 													<th   class="header_table">Kompetensi</th>
 													<th   class="header_table" style="min-width: 300px">Keterangan</th>
@@ -268,6 +271,15 @@
 														<td col-id="post">
 															<input type="text" class="form-control" name="txtPengetahuanPost[]" Placeholder="Pengetahuan (post)" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_post'];?>">
 														</td>
+														<td col-id="post">
+															<input type="text" class="form-control" name="txtPengetahuanR1[]" Placeholder="R1" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_r1'];?>">
+														</td>
+														<td col-id="post">
+															<input type="text" class="form-control" name="txtPengetahuanR2[]" Placeholder="R2" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_r2'];?>">
+														</td>
+														<td col-id="post">
+															<input type="text" class="form-control" name="txtPengetahuanR3[]" Placeholder="R3" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_r3'];?>">
+														</td>
 													<?php } if($ev3=='Y'){ ?>
 														<td>
 															<select class="form-control SlcRuang" name="txtPerilakuEvalLap[]" data-placeholder="Eval" required>
@@ -298,18 +310,21 @@
 									<div class="form-group">
 										<label class="col-lg-12 control-label">*) Standar kelulusan :
 										<?php
-										echo '<input type="hidden" id="kkmStaff" value="'.$rc['limit_1'].'">';
-										echo '<input type="hidden" id="kkmNonStaff" value="'.$rc['limit_2'].'">';
 
-										if ($stafdata!=null && $nonstafdata!=null) {
+										if ($stafdata!=null && $nonstafdata!=null) 
+										{
 											echo '<br><br> <b>Staf:</b> <br> '.implode($stafdata, ', ').' = '.$rc['limit_1'];
 											echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
-										} elseif ($stafdata!=null && $nonstafdata==null) {
+										} 
+										elseif ($stafdata!=null && $nonstafdata==null) 
+										{
 											echo '<br><br> <b>Staf:</b> <br>'.implode($stafdata, ', ').' = '.$rc['limit_1'];
-										} else {
+										} else 
+										{
 											echo '<br><br> <b>Non Staf:</b> <br>'.implode($nonstafdata, ', ').' = '.$rc['limit_2'];
 										}
-										?></label>
+										?>
+										</label>
 									</div>
 								</div>
 							</div>

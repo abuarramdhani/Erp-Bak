@@ -159,7 +159,7 @@
 						$no=1; foreach($GetSchName_QuesName_RPT as $sq){ ?>
 							<?php 
 							foreach ($GetSchName_QuesName_segmen as $segmen) {
-								if ($sq['scheduling_id'] == $segmen['scheduling_id'] && $sq['questionnaire_id'] == $segmen['questionnaire_id']) {
+								if ($sq['scheduling_id'] == $segmen['scheduling_id'] && $sq['questionnaire_id'] == $segmen['questionnaire_id'] && $segmen['segment_type']==1) {
 									$n=0;
 									$i=0;
 							?>
@@ -193,6 +193,28 @@
 	</tr>
 </table>
 <br>
+<table style="width:100%; " class="table table-bordered">
+	<tr>
+		<td style="width: 70px; font-size: 13px;"><b>Komentar</b></td>
+	</tr>
+</table>
+<table>
+	<br>
+	<!-- NESTING TABLE -->
+	<tr>
+		<td>
+			<ul style="list-style: disc; font-size: 13px;">
+		    	<?php
+		    		echo '<li>'.implode('</li><li>', $komen);
+		    		for ($i=0; $i < count($komen) ; $i++) { 
+		    			echo ''; //agar bullet hanya sesuai jumlah row
+		    		}
+		    	?>
+		    </ul>
+		</td>
+	</tr>
+</table>
+<br>
 <table style="width:100%; padding: 0px" class="table table-bordered">
 	<tr>
 		<td style="width: 70px; font-size: 13px;"><b>Evaluasi Pembelajaran</b></td>
@@ -209,7 +231,7 @@
 						<th style="width: 50px; border-right: 1px solid black; border-bottom: 1px solid black;font-size: 13px; text-align: center;">No</th>
 						<th style="width: 300px; border-right: 1px solid black; border-bottom: 1px solid black;font-size: 13px; text-align: center;">Nama</th>
 						<th style="width: 100px; border-right: 1px solid black; border-bottom: 1px solid black;font-size: 13px; text-align: center;">Noind</th>
-						<th style="width: 50px; border-bottom: 1px solid black; font-size: 13px; text-align: center;">Post-Test</th>
+						<th style="width: 50px; border-bottom: 1px solid black; font-size: 13px; text-align: center;">Nilai Test</th>
 					</tr>
 				</thead>
 				<tbody id="tbodyEvalPembelajaran">

@@ -1643,7 +1643,6 @@ $(document).ready(function(){
 					}else{
 						$('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);	
 					}
-					// $('input#txtPesertaHadir').val(result['participant'][0]['jumlah']);
 					
 					//NAMA TRAINER-------------------------------------------------------------------------
 					var nama=[];

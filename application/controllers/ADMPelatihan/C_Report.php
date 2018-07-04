@@ -410,15 +410,15 @@ class C_Report extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		// $nama  		= 'LATIHAN HANDLING DAN WORK HABIT';
-		// $tanggal  	= '09-04-2018';
+		// $nama  		= 'ICT_TRIAL';
+		// $tanggal  	= '04-07-2018';
 		// $idNama		= '1';
 		// $idTanggal	= '1';
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);		
 		$this->load->view('ADMPelatihan/Report/CreateReport/V_Create',$data);
-		// $this->load->view('ADMPelatihan/Report/CreateReport/V_table3',$data);
+		// $this->load->view('ADMPelatihan/Report/CreateReport/V_table1',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	//HALAMAN EDIT CREATE REPORT
@@ -458,7 +458,7 @@ class C_Report extends CI_Controller {
 
 			$schedule = $this->M_report->GetSchName_QuesName_RPT($id);
 			$data['GetSchName_QuesName_RPT']= $schedule;
-
+			
 			$t_nilai = array();
 			$x = 0;
 			foreach ($schedule as $sch) {
@@ -473,23 +473,44 @@ class C_Report extends CI_Controller {
 
 						foreach ($statement as $st) {
 
-							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) 
+							{
 								$a_tot = 0;
-								foreach ($nilai as $index => $score) {								
-									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+								$temp_tkomen_parent = array();
+								foreach ($nilai as $index => $score) 
+								{								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) 
+									{
 										$a=explode('||', $score['join_input']);
 										$b=explode('||', $score['join_statement_id']);
-										foreach ($b as $bi => $bb) {
-											if ($bb==$st['statement_id']) {
-												$a_tot+=$a[$bi];
-												if ($tot_p_checkpoint == 0) {
-													$tot_p++;
+										$c=explode('||', $score['join_segment_type']);
+										$ty=0;
+										foreach ($b as $bi => $bb) 
+										{
+											if ($c[$ty++]==1) 
+											{
+												if ($bb==$st['statement_id']) 
+												{
+													$a_tot+=$a[$bi];
+													if ($tot_p_checkpoint == 0) 
+													{
+														$tot_p++;
+													}
 												}
+											}
+										}
+										foreach ($c as $ci => $cc) 
+										{
+											if ($a[$ci]!='1' && $a[$ci]!='2' && $a[$ci]!='3' && $a[$ci]!='4' && $a[$ci]!=NULL) 
+											{
+												$nol=$a[$ci];
+												array_push($temp_tkomen_parent, $nol);
 											}
 										}
 									}
 								}
-								
+								$data['komen']= $temp_tkomen_parent;
+
 								$total_nilai[$nid++] = array(
 									'segment_id' => $st['segment_id'], 
 									'statement_id' => $st['statement_id'], 
@@ -504,8 +525,13 @@ class C_Report extends CI_Controller {
 						foreach ($total_nilai as $n => $tn) {
 							$final_total+=$tn['total'];
 						}
-						if ($final_total>0) {
+
+						if ($final_total!='0') 
+						{
 							$t_rerata=$final_total/($tot_s*$tot_p);
+						}else
+						{
+							$t_rerata="-";
 						}
 
 						$t_nilai[$x++]= array(
@@ -519,10 +545,11 @@ class C_Report extends CI_Controller {
 					}
 				}
 			}
-			$data['t_nilai']= $t_nilai;
+			$data['t_nilai']= $t_nilai;	
 			$this->load->view('ADMPelatihan/Report/CreateReport/V_Edit',$data);
 
-		}elseif ($data['reg_paket']==1) {
+		}
+		elseif ($data['reg_paket']==1) {
 			$data['peserta_paket']=$this->M_report->GetPsrtPaket($pid);
 			$data['participant_pck']=  $this->M_report->GetPrtHadir($pid);
 
@@ -541,67 +568,93 @@ class C_Report extends CI_Controller {
 			$data['countPel']= $this->M_report->countPelatihan($pid);
 			$jmlrowPck= $data['countPel'][0]['jml_pel'];
 			$data['jmlrowPck']=$jmlrowPck;
+
 			$t_nilai = array();
+			$temp_kom =array();
 			$x = 0;
 			foreach ($schedulepck as $scpck) {
-					foreach ($segment as $key => $value) {
-						if ($scpck['scheduling_id']==$value['scheduling_id'] && $scpck['questionnaire_id']==$value['questionnaire_id']) {
-							$total_nilai=array();
-							$nid = 0;
-							$tot_p = 0;
-							$tot_s = 0;
-							$tot_p_checkpoint = 0;
+				$cek_komen_parent = 0;
+				foreach ($segment as $key => $value) {
+					if ($scpck['scheduling_id']==$value['scheduling_id'] && $scpck['questionnaire_id']==$value['questionnaire_id']) {
+						$total_nilai=array();
+						$nid = 0;
+						$tot_p = 0;
+						$tot_s = 0;
+						$tot_p_checkpoint = 0;
+						$cek_komen=0;
+						$chk_komen=0;
 
-							foreach ($statement as $st) {
+						foreach ($statement as $st) {
 
-								if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
-									$a_tot = 0;
-									foreach ($nilai as $index => $score) {								
-										if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
-											$a=explode('||', $score['join_input']);
-											$b=explode('||', $score['join_statement_id']);
-											foreach ($b as $bi => $bb) {
-												if ($bb==$st['statement_id']) {
-													$a_tot+=$a[$bi];
-													if ($tot_p_checkpoint == 0) {
-														$tot_p++;
-													}
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+								$a_tot = 0;
+								$komentar= 0;
+								foreach ($nilai as $index => $score) {								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+										$a=explode('||', $score['join_input']);
+										$b=explode('||', $score['join_statement_id']);
+										$c=explode('||', $score['join_segment_type']);
+										foreach ($b as $bi => $bb) 
+										{
+											if ($bb==$st['statement_id']) 
+											{
+												$a_tot+=$a[$bi];
+												if ($tot_p_checkpoint == 0) 
+												{
+													$tot_p++;
 												}
 											}
 										}
+										foreach ($c as $ci => $cc) 
+										{
+											if ($cc=='0' && $cek_komen==0 && $a[$ci]!=NULL  && $cek_komen_parent==0) 
+											{
+												$nol=$a[$ci];
+												$temp_kom[]	=	$nol;
+											}
+										}
 									}
-									
-									$total_nilai[$nid++] = array(
-										'segment_id' => $st['segment_id'], 
-										'statement_id' => $st['statement_id'], 
-										'total' => $a_tot, 
-									);
-									$tot_s++;
-									$tot_p_checkpoint = 1;
 								}
-							}
 
-							$final_total=0;
-							foreach ($total_nilai as $n => $tn) {
-								$final_total+=$tn['total'];
-							}
-							if ($final_total>0) {
-								$t_rerata=$final_total/($tot_s*$tot_p);
-							}
+								if ( count($temp_kom)>0 && $chk_komen==0)
+								{
+									$chk_komen++;
+								}
 
-							$t_nilai[$x++]= array(
-								'scheduling_id'		=> $value['scheduling_id'], 
-								'questionnaire_id'	=> $value['questionnaire_id'], 
-								'segment_id'		=> $value['segment_id'], 
-								'f_total'			=> $final_total, 
-								'f_rata'			=> $t_rerata,
-								'segment_description'=> $value['segment_description'] 
-							);
+								$total_nilai[$nid++] = array(
+									'segment_id' => $st['segment_id'], 
+									'statement_id' => $st['statement_id'], 
+									'total' => $a_tot							
+								);
+								$tot_s++;
+								$tot_p_checkpoint = 1;
+								$cek_komen = 1;
+							}
 						}
+						$final_total=0;
+						foreach ($total_nilai as $n => $tn) {
+							$final_total+=$tn['total'];
+						}
+						if ($final_total>0) {
+							$t_rerata=$final_total/($tot_s*$tot_p);
+						}
+
+						$t_nilai[$x++]= array(
+							'scheduling_id'		=> $value['scheduling_id'], 
+							'questionnaire_id'	=> $value['questionnaire_id'], 
+							'segment_id'		=> $value['segment_id'], 
+							'f_total'			=> $final_total, 
+							'f_rata'			=> $t_rerata,
+							'segment_description'=> $value['segment_description'],
+						);
+						
+						$cek_komen_parent = 1;
+						
 					}
 				}
-			// }
+			}
 			$data['t_nilai']= $t_nilai;
+			$data['komen']= $temp_kom;
 			$this->load->view('ADMPelatihan/Report/CreateReport/V_Edit_Paket',$data);
 		}
 		$this->load->view('V_Footer',$data);
@@ -620,7 +673,6 @@ class C_Report extends CI_Controller {
 			$txtschid 		= $this->input->post('txtSchId[]');
 			$scheduling_id 	= implode(',', $txtschid);
 		}
-
 		$jenis	 		= $this->input->post('slcJenisPelatihan');
 		$total_psrt		= $this->input->post('txtPesertaPelatihan');
 		$hadir_psrt		= $this->input->post('txtPesertaHadir');
@@ -639,9 +691,9 @@ class C_Report extends CI_Controller {
 		$tgldoc			= $this->input->post('txtTglDibuat');
 		$nama_acc		= $this->input->post('txtNamaACC');
 		$jabatan_acc	= $this->input->post('txtJabatanACC');
-		if ($rev_date==NULL) {
-			$rev_date='';
-		}
+		// if ($rev_date==NULL) {
+		// 	$rev_date='';
+		// }
 		$this->M_report->AddReport($nama,$tanggal,$package_scheduling_id, $scheduling_id, $jenis, $indexm, $descr, $kendala, $catatan, $doc_no, $rev_no, $rev_date, $rev_note, $tmptdoc, $tgldoc, $nama_acc, $jabatan_acc, $pelaksana, $reg_paket, $total_psrt, $hadir_psrt);
 
 		redirect('ADMPelatihan/Report/CreateReport');
@@ -710,14 +762,14 @@ class C_Report extends CI_Controller {
 		$this->M_report->deleteReport($id);
 		redirect('ADMPelatihan/Report/CreateReport');
 	}
-	public function delete_reaksi($report_id,$ideval)
-	{		
-		$delete = $this->M_report->delete_reaksi($report_id,$ideval);
-	}
-	public function delete_pembelajaran($report_id,$ideval)
-	{		
-		$delete = $this->M_report->delete_pembelajaran($report_id,$ideval);
-	}
+	// public function delete_reaksi($report_id,$ideval)
+	// {		
+	// 	$delete = $this->M_report->delete_reaksi($report_id,$ideval);
+	// }
+	// public function delete_pembelajaran($report_id,$ideval)
+	// {		
+	// 	$delete = $this->M_report->delete_pembelajaran($report_id,$ideval);
+	// }
 
 	//CETAK PDF UNTUK REPORT
 	public function cetakPDF($id)
@@ -867,23 +919,44 @@ class C_Report extends CI_Controller {
 
 						foreach ($statement as $st) {
 
-							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) 
+							{
 								$a_tot = 0;
-								foreach ($nilai as $index => $score) {								
-									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+								$temp_tkomen_parent = array();
+								foreach ($nilai as $index => $score) 
+								{								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) 
+									{
 										$a=explode('||', $score['join_input']);
 										$b=explode('||', $score['join_statement_id']);
-										foreach ($b as $bi => $bb) {
-											if ($bb==$st['statement_id']) {
-												$a_tot+=$a[$bi];
-												if ($tot_p_checkpoint == 0) {
-													$tot_p++;
+										$c=explode('||', $score['join_segment_type']);
+										$ty=0;
+										foreach ($b as $bi => $bb) 
+										{
+											if ($c[$ty++]==1) 
+											{
+												if ($bb==$st['statement_id']) 
+												{
+													$a_tot+=$a[$bi];
+													if ($tot_p_checkpoint == 0) 
+													{
+														$tot_p++;
+													}
 												}
+											}
+										}
+										foreach ($c as $ci => $cc) 
+										{
+											if ($a[$ci]!='1' && $a[$ci]!='2' && $a[$ci]!='3' && $a[$ci]!='4' && $a[$ci]!=NULL) 
+											{
+												$nol=$a[$ci];
+												array_push($temp_tkomen_parent, $nol);
 											}
 										}
 									}
 								}
-								
+								$data['komen']= $temp_tkomen_parent;
+
 								$total_nilai[$nid++] = array(
 									'segment_id' => $st['segment_id'], 
 									'statement_id' => $st['statement_id'], 
@@ -898,8 +971,13 @@ class C_Report extends CI_Controller {
 						foreach ($total_nilai as $n => $tn) {
 							$final_total+=$tn['total'];
 						}
-						if ($final_total>0) {
+
+						if ($final_total!='0') 
+						{
 							$t_rerata=$final_total/($tot_s*$tot_p);
+						}else
+						{
+							$t_rerata="-";
 						}
 
 						$t_nilai[$x++]= array(
@@ -913,7 +991,7 @@ class C_Report extends CI_Controller {
 					}
 				}
 			}
-			$data['t_nilai']= $t_nilai;
+			$data['t_nilai']= $t_nilai;		
 			$html = $this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf', $data, true);
 
 		}elseif ($data['reg_paket']==1) {
@@ -938,67 +1016,93 @@ class C_Report extends CI_Controller {
 			$data['countPel']= $this->M_report->countPelatihan($pid);
 			$jmlrowPck= $data['countPel'][0]['jml_pel'];
 			$data['jmlrowPck']=$jmlrowPck;
+			
 			$t_nilai = array();
+			$temp_kom =array();
 			$x = 0;
 			foreach ($schedulepck as $scpck) {
-					foreach ($segment as $key => $value) {
-						if ($scpck['scheduling_id']==$value['scheduling_id'] && $scpck['questionnaire_id']==$value['questionnaire_id']) {
-							$total_nilai=array();
-							$nid = 0;
-							$tot_p = 0;
-							$tot_s = 0;
-							$tot_p_checkpoint = 0;
+				$cek_komen_parent = 0;
+				foreach ($segment as $key => $value) {
+					if ($scpck['scheduling_id']==$value['scheduling_id'] && $scpck['questionnaire_id']==$value['questionnaire_id']) {
+						$total_nilai=array();
+						$nid = 0;
+						$tot_p = 0;
+						$tot_s = 0;
+						$tot_p_checkpoint = 0;
+						$cek_komen=0;
+						$chk_komen=0;
 
-							foreach ($statement as $st) {
+						foreach ($statement as $st) {
 
-								if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
-									$a_tot = 0;
-									foreach ($nilai as $index => $score) {								
-										if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
-											$a=explode('||', $score['join_input']);
-											$b=explode('||', $score['join_statement_id']);
-											foreach ($b as $bi => $bb) {
-												if ($bb==$st['statement_id']) {
-													$a_tot+=$a[$bi];
-													if ($tot_p_checkpoint == 0) {
-														$tot_p++;
-													}
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+								$a_tot = 0;
+								$komentar= 0;
+								foreach ($nilai as $index => $score) {								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+										$a=explode('||', $score['join_input']);
+										$b=explode('||', $score['join_statement_id']);
+										$c=explode('||', $score['join_segment_type']);
+										foreach ($b as $bi => $bb) 
+										{
+											if ($bb==$st['statement_id']) 
+											{
+												$a_tot+=$a[$bi];
+												if ($tot_p_checkpoint == 0) 
+												{
+													$tot_p++;
 												}
 											}
 										}
+										foreach ($c as $ci => $cc) 
+										{
+											if ($cc=='0' && $cek_komen==0 && $a[$ci]!=NULL  && $cek_komen_parent==0) 
+											{
+												$nol=$a[$ci];
+												$temp_kom[]	=	$nol;
+											}
+										}
 									}
-									
-									$total_nilai[$nid++] = array(
-										'segment_id' => $st['segment_id'], 
-										'statement_id' => $st['statement_id'], 
-										'total' => $a_tot, 
-									);
-									$tot_s++;
-									$tot_p_checkpoint = 1;
 								}
-							}
 
-							$final_total=0;
-							foreach ($total_nilai as $n => $tn) {
-								$final_total+=$tn['total'];
-							}
-							if ($final_total>0) {
-								$t_rerata=$final_total/($tot_s*$tot_p);
-							}
+								if ( count($temp_kom)>0 && $chk_komen==0)
+								{
+									$chk_komen++;
+								}
 
-							$t_nilai[$x++]= array(
-								'scheduling_id'		=> $value['scheduling_id'], 
-								'questionnaire_id'	=> $value['questionnaire_id'], 
-								'segment_id'		=> $value['segment_id'], 
-								'f_total'			=> $final_total, 
-								'f_rata'			=> $t_rerata,
-								'segment_description'=> $value['segment_description'] 
-							);
+								$total_nilai[$nid++] = array(
+									'segment_id' => $st['segment_id'], 
+									'statement_id' => $st['statement_id'], 
+									'total' => $a_tot							
+								);
+								$tot_s++;
+								$tot_p_checkpoint = 1;
+								$cek_komen = 1;
+							}
 						}
+						$final_total=0;
+						foreach ($total_nilai as $n => $tn) {
+							$final_total+=$tn['total'];
+						}
+						if ($final_total>0) {
+							$t_rerata=$final_total/($tot_s*$tot_p);
+						}
+
+						$t_nilai[$x++]= array(
+							'scheduling_id'		=> $value['scheduling_id'], 
+							'questionnaire_id'	=> $value['questionnaire_id'], 
+							'segment_id'		=> $value['segment_id'], 
+							'f_total'			=> $final_total, 
+							'f_rata'			=> $t_rerata,
+							'segment_description'=> $value['segment_description'],
+						);
+						
+						$cek_komen_parent = 1;
+						
 					}
 				}
-			// }
+			}
 			$data['t_nilai']= $t_nilai;
+			$data['komen']= $temp_kom;
 			$html = $this->load->view('ADMPelatihan/Report/CreateReport/V_Pdf_Paket', $data, true);
 		}
 		$pdf->WriteHTML($html, 2);
@@ -1125,7 +1229,7 @@ class C_Report extends CI_Controller {
 		$tanggal  	= $this->input->POST('tanggal');
 		$idNama		= $this->input->POST('idNama');
 		$idTanggal	= $this->input->POST('idTanggal');
-
+		// -----------------------------------------------------------------------------------------------------------------ambil id pelatihan
 		$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
 		$data['GetDataPelatihan']=$GetDataPelatihan;
 		$id=$GetDataPelatihan[0]['scheduling_id'];
@@ -1159,23 +1263,44 @@ class C_Report extends CI_Controller {
 
 						foreach ($statement as $st) {
 
-							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) 
+							{
 								$a_tot = 0;
-								foreach ($nilai as $index => $score) {								
-									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+								$temp_tkomen_parent = array();
+								foreach ($nilai as $index => $score) 
+								{								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) 
+									{
 										$a=explode('||', $score['join_input']);
 										$b=explode('||', $score['join_statement_id']);
-										foreach ($b as $bi => $bb) {
-											if ($bb==$st['statement_id']) {
-												$a_tot+=$a[$bi];
-												if ($tot_p_checkpoint == 0) {
-													$tot_p++;
+										$c=explode('||', $score['join_segment_type']);
+										$ty=0;
+										foreach ($b as $bi => $bb) 
+										{
+											if ($c[$ty++]==1) 
+											{
+												if ($bb==$st['statement_id']) 
+												{
+													$a_tot+=$a[$bi];
+													if ($tot_p_checkpoint == 0) 
+													{
+														$tot_p++;
+													}
 												}
+											}
+										}
+										foreach ($c as $ci => $cc) 
+										{
+											if ($a[$ci]!='1' && $a[$ci]!='2' && $a[$ci]!='3' && $a[$ci]!='4' && $a[$ci]!=NULL) 
+											{
+												$nol=$a[$ci];
+												array_push($temp_tkomen_parent, $nol);
 											}
 										}
 									}
 								}
-								
+								$data['komen']= $temp_tkomen_parent;
+
 								$total_nilai[$nid++] = array(
 									'segment_id' => $st['segment_id'], 
 									'statement_id' => $st['statement_id'], 
@@ -1190,8 +1315,13 @@ class C_Report extends CI_Controller {
 						foreach ($total_nilai as $n => $tn) {
 							$final_total+=$tn['total'];
 						}
-						if ($final_total>0) {
+
+						if ($final_total!='0') 
+						{
 							$t_rerata=$final_total/($tot_s*$tot_p);
+						}else
+						{
+							$t_rerata="-";
 						}
 
 						$t_nilai[$x++]= array(
@@ -1205,7 +1335,7 @@ class C_Report extends CI_Controller {
 					}
 				}
 			}
-			$data['t_nilai']= $t_nilai;
+			$data['t_nilai']= $t_nilai;		
 		}
 		// ----------------------------------------------------------------------------------------------------------------------
 		if ($idNama==1) {
@@ -1214,80 +1344,109 @@ class C_Report extends CI_Controller {
 			$data['countPel']= $this->M_report->countPelatihan($pid);
 			$jmlrowPck= $data['countPel'][0]['jml_pel'];
 			$data['jmlrowPck']=$jmlrowPck;
+
 			$t_nilai = array();
+			$temp_kom =array();
 			$x = 0;
 			foreach ($schedulepck as $scpck) {
-					foreach ($segment as $key => $value) {
-						if ($scpck['scheduling_id']==$value['scheduling_id'] && $scpck['questionnaire_id']==$value['questionnaire_id']) {
-							$total_nilai=array();
-							$nid = 0;
-							$tot_p = 0;
-							$tot_s = 0;
-							$tot_p_checkpoint = 0;
+				$cek_komen_parent = 0;
+				foreach ($segment as $key => $value) {
+					if ($scpck['scheduling_id']==$value['scheduling_id'] && $scpck['questionnaire_id']==$value['questionnaire_id']) {
+						$total_nilai=array();
+						$nid = 0;
+						$tot_p = 0;
+						$tot_s = 0;
+						$tot_p_checkpoint = 0;
+						$cek_komen=0;
+						$chk_komen=0;
 
-							foreach ($statement as $st) {
+						foreach ($statement as $st) {
 
-								if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
-									$a_tot = 0;
-									foreach ($nilai as $index => $score) {								
-										if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
-											$a=explode('||', $score['join_input']);
-											$b=explode('||', $score['join_statement_id']);
-											foreach ($b as $bi => $bb) {
-												if ($bb==$st['statement_id']) {
-													$a_tot+=$a[$bi];
-													if ($tot_p_checkpoint == 0) {
-														$tot_p++;
-													}
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+								$a_tot = 0;
+								$komentar= 0;
+								foreach ($nilai as $index => $score) {								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+										$a=explode('||', $score['join_input']);
+										$b=explode('||', $score['join_statement_id']);
+										$c=explode('||', $score['join_segment_type']);
+										foreach ($b as $bi => $bb) 
+										{
+											if ($bb==$st['statement_id']) 
+											{
+												$a_tot+=$a[$bi];
+												if ($tot_p_checkpoint == 0) 
+												{
+													$tot_p++;
 												}
 											}
 										}
+										foreach ($c as $ci => $cc) 
+										{
+											if ($cc=='0' && $cek_komen==0 && $a[$ci]!=NULL  && $cek_komen_parent==0) 
+											{
+												$nol=$a[$ci];
+												$temp_kom[]	=	$nol;
+											}
+										}
 									}
-									
-									$total_nilai[$nid++] = array(
-										'segment_id' => $st['segment_id'], 
-										'statement_id' => $st['statement_id'], 
-										'total' => $a_tot, 
-									);
-									$tot_s++;
-									$tot_p_checkpoint = 1;
 								}
-							}
 
-							$final_total=0;
-							foreach ($total_nilai as $n => $tn) {
-								$final_total+=$tn['total'];
-							}
-							if ($final_total>0) {
-								$t_rerata=$final_total/($tot_s*$tot_p);
-							}
+								if ( count($temp_kom)>0 && $chk_komen==0)
+								{
+									$chk_komen++;
+								}
 
-							$t_nilai[$x++]= array(
-								'scheduling_id'		=> $value['scheduling_id'], 
-								'questionnaire_id'	=> $value['questionnaire_id'], 
-								'segment_id'		=> $value['segment_id'], 
-								'f_total'			=> $final_total, 
-								'f_rata'			=> $t_rerata,
-								'segment_description'=> $value['segment_description'] 
-							);
+								$total_nilai[$nid++] = array(
+									'segment_id' => $st['segment_id'], 
+									'statement_id' => $st['statement_id'], 
+									'total' => $a_tot							
+								);
+								$tot_s++;
+								$tot_p_checkpoint = 1;
+								$cek_komen = 1;
+							}
 						}
+						$final_total=0;
+						foreach ($total_nilai as $n => $tn) {
+							$final_total+=$tn['total'];
+						}
+						if ($final_total>0) {
+							$t_rerata=$final_total/($tot_s*$tot_p);
+						}
+
+						$t_nilai[$x++]= array(
+							'scheduling_id'		=> $value['scheduling_id'], 
+							'questionnaire_id'	=> $value['questionnaire_id'], 
+							'segment_id'		=> $value['segment_id'], 
+							'f_total'			=> $final_total, 
+							'f_rata'			=> $t_rerata,
+							'segment_description'=> $value['segment_description'],
+						);
+						
+						$cek_komen_parent = 1;
+						
 					}
 				}
-			// }
+			}
 			$data['t_nilai']= $t_nilai;
+			$data['komen']= $temp_kom;
 		}
-		// -----------------------------------------------------------------------------------------------------------------S
-		
+		// -----------------------------------------------------------------------------------------------------------------
 		$data['sheet_all'] = '';
 		$data['GetSchName_QuesName_segmen'] = $segment;
 
-		if ($idNama==0) {
-			$table = $this->load->view('ADMPelatihan/Report/CreateReport/V_table',$data);
-		}elseif ($idNama==1) {
-			$table = $this->load->view('ADMPelatihan/Report/CreateReport/V_table1',$data);
+		// MENAMPILKAN TABEL REAKSI + KOMENTAR
+		if ($idNama==0) 
+		{
+			$this->load->view('ADMPelatihan/Report/CreateReport/V_table',$data);
 		}
-		return $table;
+		elseif ($idNama==1) 
+		{
+			$this->load->view('ADMPelatihan/Report/CreateReport/V_table1',$data);
+		}
 	}
+
 	public function GetTabelPembelajaran()
 	{
 		$nama  		= $this->input->POST('nama');
@@ -1295,24 +1454,29 @@ class C_Report extends CI_Controller {
 		$idNama		= $this->input->POST('idNama');
 		$idTanggal	= $this->input->POST('idTanggal');
 		$GetDataPelatihan	= $this->M_report->GetDataPelatihan($nama,$tanggal,$idNama,$idTanggal);
-		$data['GetDataPelatihan']=$GetDataPelatihan;
-		$id=$GetDataPelatihan[0]['scheduling_id'];
-		$pid=$GetDataPelatihan[0]['package_scheduling_id'];
+			$data['GetDataPelatihan']=$GetDataPelatihan;
+				$id=$GetDataPelatihan[0]['scheduling_id'];
+				$pid=$GetDataPelatihan[0]['package_scheduling_id'];
 
-		if ($idNama==1) {
+		if ($idNama==1) 
+		{
 			$data['countPel']= $this->M_report->countPelatihan($pid);
-			$jmlrowPck= $data['countPel'][0]['jml_pel'];
-			$data['jmlrowPck']=$jmlrowPck;
+				$jmlrowPck= $data['countPel'][0]['jml_pel'];
+					$data['jmlrowPck']=$jmlrowPck;
 
 			$schedulepck =$this->M_report->GetSchName_QuesName_RPTPCK($pid);
-			$data['GetSchName_QuesName_RPTPCK']= $schedulepck;
+				$data['GetSchName_QuesName_RPTPCK']= $schedulepck;
+			
 
 			$data['participantName'] = $this->M_record->GetParticipantPidName($pid);
 			$data['participant'] = $this->M_record->GetParticipantPid($pid);
 			$table = $this->load->view('ADMPelatihan/Report/CreateReport/V_table3',$data);
-			
-		}elseif ($idNama==0) {
-			$data['participant'] = $this->M_record->GetParticipantId($id);
+		}
+		elseif ($idNama==0) 
+		{
+			$data['participant'] 		= $this->M_record->GetParticipantId($id);
+			$ambil_standar_kelulusan 	= explode(',', $GetDataPelatihan[0]['standar_kelulusan']);
+				$data['standar_kelulusan']	= $ambil_standar_kelulusan[1];
 			$table = $this->load->view('ADMPelatihan/Report/CreateReport/V_table2',$data);
 		}
 	

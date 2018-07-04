@@ -43,6 +43,8 @@
 									<div class="col-lg-9">
 										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>" readonly>
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
+										<!-- isi standar nilai -->
+										<input type="hidden" name="txtStandarNilai" value="<?php echo $dt['limit_1'].','.$dt['limit_2']?>"> 
 									</div>
 								</div>
 							</div>
