@@ -14,10 +14,12 @@ $(document).ready(function(){
 
 	// DATEPICKER ADM_PELATIHAN
 	$('.singledateADM').datepicker({
-    	format:'dd/mm/yyyy'
+    	format:'dd/mm/yyyy',
+    	autoclose: true
 	});
 	$('.singledateADM_Que').datepicker({
-    	format:'yyyy/mm/dd'
+    	format:'yyyy/mm/dd',
+    	autoclose: true
 	});
 
 	//DATATABLE
@@ -69,15 +71,18 @@ $(document).ready(function(){
 	});
 
 	$(".startdate").datepicker({
-    	//format:'dd/mm/yyyy'
+    	//format:'dd/mm/yyyy',
+    	autoclose: true
     });
 
     $(".enddate").datepicker({
-    	//format:'dd/mm/yyyy'
+    	//format:'dd/mm/yyyy',
+    	autoclose: true
     });
 
     $(".dday-tgl").datepicker({
-    	//format:'dd/mm/yyyy'
+    	//format:'dd/mm/yyyy',
+    	autoclose: true
     });
 	
 	$('.startdate').change(function() {
@@ -1349,7 +1354,8 @@ $(document).ready(function(){
 							+"</tr>");
 		jQuery("#tbodyTrainerPengalaman").append(newRow);
 		$('.singledateADM').datepicker({
-    		format:'dd/mm/yyyy'
+    		format:'dd/mm/yyyy',
+    		autoclose: true
 		});	
 	}
 	// DELETE ROW SAAT TRAINER EXPERIENCE
@@ -1393,7 +1399,8 @@ $(document).ready(function(){
 							+"</tr>");
 		jQuery("#tbodyTrainerSertifikat").append(newRow);	
         $('.singledateADM').datepicker({
-	    	format:'dd/mm/yyyy'
+	    	format:'dd/mm/yyyy',
+	    	autoclose: true
 		});
 	}
 	// DELETE ROW SAAT SERTIFIKAT TRAINER
@@ -1439,7 +1446,8 @@ $(document).ready(function(){
 							+"</tr>");
 		jQuery("#tbodyTrainerTim").append(newRow);	
         $('.singledateADM').datepicker({
-	    	format:'dd/mm/yyyy'
+	    	format:'dd/mm/yyyy',
+	    	autoclose: true
 		});
 	}
 	// DELETE ROW SAAT TIM TRAINER
