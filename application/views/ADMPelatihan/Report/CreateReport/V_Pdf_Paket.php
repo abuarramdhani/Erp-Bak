@@ -229,7 +229,7 @@
 <br>
 <table style="width:100%; " class="table table-bordered">
 	<tr>
-		<td style="width: 70px; font-size: 13px;"><b>Komentar</b></td>
+		<td style="width: 70px; font-size: 13px;"><b>Komentar dan Saran Pelatihan</b></td>
 	</tr>
 </table>
 <table>
