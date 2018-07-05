@@ -221,20 +221,22 @@
 							</div>
 				          </div>
 				        </div>
-				         <div class="form-group">
-							<div class="box-header with-border">
-						      <h3 class="box-title" style="margin-top: 20px"></i>   KOMENTAR</h3>
-						    </div>
-						    <?php ?>
-							    <ul style="list-style: disc;">
-							    	<?php
-							    		echo '<li>'.implode('</li><li>', $komen);
-							    		for ($i=0; $i < count($komen) ; $i++) { 
-							    			echo ''; //agar bullet hanya sesuai jumlah row
-							    		}
-							    	?>
-							    </ul>
-						    <?php ?>
+				        <div class="col-lg-12">
+					        <div class="form-group">
+								<div class="box-header with-border">
+							      <h3 class="box-title" style="margin-top: 20px"></i>   KOMENTAR</h3>
+							    </div>
+							    <?php ?>
+								    <ul style="list-style: disc;">
+								    	<?php
+								    		echo '<li>'.implode('</li><li>', $komen);
+								    		for ($i=0; $i < count($komen) ; $i++) { 
+								    			echo ''; //agar bullet hanya sesuai jumlah row
+								    		}
+								    	?>
+								    </ul>
+							    <?php ?>
+							</div>
 						</div>
 				        <div class="col-lg-12">
 				          <div class="form-group">
@@ -374,7 +376,7 @@
 							</div>
 				          </div>
 				        </div>
-						<div class="col-lg-12">
+				        <div class="col-lg-12">
 				          <div class="form-group">
 				            <div class="box-header with-border">
 						      <h3 class="box-title" style="margin-top: 20px"></i>   KENDALA YANG DIALAMI</h3>
