@@ -1178,7 +1178,7 @@ class M_report extends CI_Model {
 		$sql = " insert into pl.pl_create_report (jenis,index_materi,description,kendala,catatan, doc_no, rev_no, rev_date, rev_note, tmptdoc, tgldoc, nama_acc, jabatan_acc, scheduling_id, package_scheduling_id,scheduling_or_package_name, pelaksana, tanggal, reg_paket, peserta_total, peserta_hadir)
 				values ($jenis,'$indexm','$descr','$kendala','$catatan', '$doc_no', '$rev_no', TO_DATE('$rev_date', 'DD/MM/YYYY'), '$rev_note', '$tmptdoc', TO_DATE('$tgldoc', 'DD/MM/YYYY'), '$nama_acc', '$jabatan_acc','$scheduling_id','$package_scheduling_id','$nama', '$pelaksana', TO_DATE('$tanggal', 'DD/MM/YYYY'),'$reg_paket', '$total_psrt', '$hadir_psrt')";
 		$query = $this->db->query($sql);
-		$id=$this->db->insert_id();
+		// $id=$this->db->insert_id();
 		// return $sql;
 	}
 

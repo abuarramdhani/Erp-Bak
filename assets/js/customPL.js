@@ -1642,7 +1642,7 @@ $(document).ready(function(){
 				success:function(result) 
 				{
 					var result = JSON.parse(result);
-					// console.log(result);
+					console.log(result);
 
 					// PESERTA PELATIHAN-------------------------------------------------------------------
 					$('input#txtPesertaPelatihan').val(result['participant_number']);
