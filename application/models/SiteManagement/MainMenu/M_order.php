@@ -27,7 +27,6 @@ class M_order extends CI_Model
                                             from er.er_section as seksi
                                             where seksi.section_code=so.seksi_order) as nama_seksi
                                     from sm.sm_order as so
-                                    where ((tgl_order + interval '7 day') > now())
                                     order by so.tgl_order desc");
         return $query->result_array();
     }
