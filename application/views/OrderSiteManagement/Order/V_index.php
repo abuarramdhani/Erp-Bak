@@ -50,7 +50,11 @@
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                    <a target="blank_" style="margin-right:4px" href="<?php echo base_url('OrderSiteManagement/Order/CetakData/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data"><span class="fa fa-file-pdf-o fa-2x"></span></a>
+                                                    <?php if($row['status']==0):?>
+                                                    <a target="blank_" style="margin-right:4px" href="<?php echo base_url('OrderSiteManagement/Order/CetakData/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data" ><span class="fa fa-file-pdf-o fa-2x"></span></a>
+                                                    <?php else: ?>
+                                                        <span class="fa fa-file-pdf-o fa-2x" style="color: red;" title="Order Sudah Diproses Oleh GA"></span>
+                                                    <?php endif; ?>
                                                 </td>
                                                 <td><?php echo $row['no_order'] ?></td>
                                                 <td><?php echo date('Y-m-d', strtotime($row['tgl_order'])); ?></td>
