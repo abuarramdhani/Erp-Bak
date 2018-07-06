@@ -53,7 +53,7 @@
 									<tr>
 										<td><?php echo $no++; ?></td>
 										<td style="padding-left: 15px">
-											<a style="margin-right:4px" href="<?php echo site_url('ADMPelatihan/Report/cetakPDF/'.$rpt['id_report']);?>" data-placement="bottom" title="Cetak Data" >
+											<a style="margin-right:4px" href="<?php echo site_url('ADMPelatihan/Report/cetakPDF/'.$rpt['id_report']);?>" target="_blank" data-placement="bottom" title="Cetak Data" >
 												<span class="fa fa-print fa-2x"></span>
 											</a>
                                         	<a style="margin-right:4px" href="<?php echo site_url('ADMPelatihan/Report/editReport/'.$rpt['id_report']);?>" data-placement="bottom" title="Edit Data">
