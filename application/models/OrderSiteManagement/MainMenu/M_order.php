@@ -8,17 +8,6 @@ class M_order extends CI_Model
         $this->load->database();    
     }
 
-    public function getOrder($id = FALSE)
-    {
-    	if ($id === FALSE) {
-    		$query = $this->db->get('sm.sm_order');
-    	} else {
-    		$query = $this->db->get_where('sm.sm_order', array('id_order' => $id));
-    	}
-
-    	return $query->result_array();
-    }
-
     public function setOrder($data)
     {
         return $this->db->insert('sm.sm_order', $data);
@@ -29,16 +18,51 @@ class M_order extends CI_Model
         return $this->db->insert('sm.sm_order_detail',$lines);
     }
 
-    public function updateOrder($data, $id)
+    public function listOrder($user)
     {
-        $this->db->where('id_order', $id);
-        $this->db->update('sm.sm_order', $data);
+        $query = $this->db->query("select so.*,
+                                            (select seksi.section_name
+                                            from er.er_section as seksi
+                                            where seksi.section_code=so.seksi_order) as nama_seksi
+                                    from sm.sm_order as so
+                                    where so.created_by='$user' 
+                                        and so.status!=3
+                                    order by so.no_order");
+        return $query->result_array();
     }
 
-    public function deleteOrder($id)
+    public function cekNoOrder()
     {
-        $this->db->where('id_order', $id);
-        $this->db->delete('sm.sm_order');
+        $query = $this->db->query("select max(no_order) as no_order
+                                    from sm.sm_order
+                                    where to_char(tgl_order, 'YYYY-MM')=to_char(now(),'YYYY-MM')");
+        return $query->result_array();
+    }
+
+    public function Header($id)
+    {
+        $query = $this->db->query("select so.*,
+                                            es.section_name as nama_seksi,
+                                            es.department_name as nama_dept
+                                    from sm.sm_order as so
+                                    left join er.er_section as es
+                                    on so.seksi_order=es.section_code
+                                    where so.id_order=$id");
+        return $query->result_array();
+    }
+
+    public function Lines($id)
+    {
+        $query = $this->db->query("select * from sm.sm_order_detail where id_order=$id order by id_order_detail");
+        return $query->result_array();
+    }
+
+    public function RejectbySystem()
+    {
+        $query = $this->db->query("update sm.sm_order 
+                                    set status=2
+                                    where ((tgl_order + interval '7 day') < now()) and status=0");
+        return $query;
     }
 }
 

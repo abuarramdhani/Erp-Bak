@@ -3,7 +3,38 @@ $(document).ready(function(){
 		"todayHiglight": true,
 	});
 
-	$('.sm_datepicker').datepicker({});
+	$('.sm_datepicker').datepicker({
+		autoclose: true
+	});
+
+	var todayDate = new Date().getDate();
+
+	$(document).on('change', '#osm-jenisorder', function() {
+		var osm_option = $(this).val();
+
+		if (osm_option == 'Perbaikan Kursi') {
+			var n = 7;
+		}else{
+			var n = 1;
+		}
+
+		$('#osm-duedate').daterangepicker({
+			singleDatePicker: true,
+			minDate: new Date(new Date().setDate(todayDate + n)),
+			locale: {
+	            format: 'YYYY-MM-DD'
+	        }
+		});
+
+	});
+
+	$('#osm-duedate').daterangepicker({
+		singleDatePicker: true,
+		minDate: new Date(new Date().setDate(todayDate)),
+		locale: {
+            format: 'YYYY-MM-DD'
+        }
+	});
 
 	$('.sm_select2').select2({
 		placeholder: "Select Option",
@@ -126,103 +157,154 @@ $(document).ready(function(){
 		placeholder: 'Select Seksi',
 		allowClear: true,
 	});
+
+	$(document).on('change', '#sm_tglorder', function(){
+		enableButton();
+	});
+
+	function enableButton(){
+		var tgl = $('#sm_tglorder').val();
+
+		if (tgl) {
+			$('#btn-smfilter').removeAttr('disabled','disabled');
+		}else{
+			$('#btn-smfilter').attr('disabled','disabled');
+		}
+	}
+
+	$('#sm_remarksorder').click(function() {
+		var id_order = $(this).attr('data-id');
+		var cek = $(this).is(":checked");
+
+		if (cek) {
+			$(this).attr('value','1');
+		}else{
+			$(this).attr('value','0');
+		}
+		var status = $(this).val();
+
+		$.ajax({
+			url: baseurl+"SiteManagement/Order/RemarkSOrder",
+		    type: "POST",
+		    data: {id_order: id_order, status: status}
+		}).done(function(data){
+			alert('data telah dicek');
+		});
+
+	});
+
+	$(document).on('click', '#sm_reject', function(e){
+		e.preventDefault();
+
+		var id = $(this).attr("data-id");
+		$.ajax({
+			url: baseurl+"SiteManagement/Order/RejectFromAdmin",
+		    type: "POST",
+		    data: {id: id}
+		}).done(function(data){
+			alert('data telah di Reject');
+		});
+
+		$(this).attr('disabled','disabled');
+	})
+
 });
 
 //Order Site Management
 	function AddRowOrderSM(base){  
 	      var e = jQuery.Event( "click" );
-	      var n = $('#osm-orderlinesdetail tr').length;
-	      count = n+1;
+	      // var n = $('#osm-orderlinesdetail tr').length;
+	      // var count = n+1;
 
-	        var newRow  = jQuery("<tr row-id='"+count+"'>"
-	                                +"<td style='text-align:center; width:'"+"30px"+"'>"+count+"</td>"
+	        var newRow  = jQuery("<tr>"
+	                                +"<td style='text-align:center; width:'"+"30px"+"'></td>"
 	                                +"<td align='center' width='60px'>"
 	                                +"<a onclick='delSpesifikRow(this)' class='del-row btn btn-xs btn-danger' data-toggle='tooltip' data-placement='bottom' title='Delete Data'><span class='fa fa-times'></span></a>"
 	                                +"</td>"
 	                                +"<td>"
 	                                +"<div class='form-group'>"
 	                                +"<div class='col-lg-12'>"
-	                                +"<input type='number' placeholder='Jumlah' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceSPK' class='form-control'/>"
+	                                +"<input type='number' placeholder='Jumlah' name='osm-jumlahorder[]' id='osm-jumlahorder' class='form-control'/>"
 	                                +"</div>"
 	                                +"</div>"
 	                                +"</td>"
 	                                +"<td>"
 	                                +"<div class='form-group'>"
 	                                +"<div class='col-lg-12'>"
-	                                +"<input type='text' placeholder='Satuan' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceSPK' class='form-control'/>"
+	                                +"<input type='text' placeholder='Satuan' name='osm-satuanorder[]' id='osm-satuanorder' class='form-control'/>"
 	                                +"</div>"
 	                                +"</div>"
 	                                +"</td>"
 	                                +"<td>"
 	                                +"<div class='form-group'>"
 	                                +"<div class='col-lg-12'>"
-	                                +"<input type='text' placeholder='Masukkan Keterangan' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceSPK' class='form-control'/>"
+	                                +"<input type='text' placeholder='Masukkan Keterangan' name='osm-ketorder[]' id='osm-ketorder' class='form-control'/>"
 	                                +"</div>"
 	                                +"</div>"
 	                                +"</td>"
 	                                +"<td>"
 	                                +"<div class='form-group'>"
 	                                +"<div class='col-lg-12'>"
-	                                +"<input type='text' placeholder='Masukkan Lampiran' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceSPK' class='form-control'/>"
+	                                +"<input type='text' placeholder='Masukkan Lampiran' name='osm-lampiran[]' id='osm-lampiran' class='form-control'/>"
 	                                +"</div>"
 	                                +"</div>"
 	                                +"</td>"
 	                                +"</tr>");
 	        jQuery("#table_smorderdetail").append(newRow);
 	  }
-	  
+
 $(function() {
-	$(document).on('click', '#osm-saveorder', function(e) {
-		e.preventDefault();
-		var tgl_order = $('#osm-tglorder').val();
-		var jenis_order = $('#osm-jenisorder').val();
-		var seksi_order = $('#osm-seksiorder').val();
-		var duedate = $('#osm-duedate').val();
-		var tgl_terima = $('#osm-tglterima').val(); 
-		var remarks = $('#osm-remarks').is(':checked');
-		var jumlah = $('#osm-jumlahorder').val();
-		var satuan = $('#osm-satuanorder').val();
-		var keterangan = $('#osm-ketorder').val();
-		var lampiran = $('#osm-lampiran').val();
+	// $(document).on('click', '#osm-saveorder', function(e) {
+	// 	e.preventDefault();
+	// 	var tgl_order = $('#osm-tglorder').val();
+	// 	var jenis_order = $('#osm-jenisorder').val();
+	// 	var seksi_order = $('#osm-seksiorder').val();
+	// 	var duedate = $('#osm-duedate').val();
+	// 	var tgl_terima = $('#osm-tglterima').val(); 
+	// 	var remarks = $('#osm-remarks').is(':checked');
+	// 	var jumlah = $('#osm-jumlahorder').val();
+	// 	var satuan = $('#osm-satuanorder').val();
+	// 	var keterangan = $('#osm-ketorder').val();
+	// 	var lampiran = $('#osm-lampiran').val();
 
-		if (remarks) {
-			$('#osm-remarks').val('1');
-		}else{
-			$('#osm-remarks').val('0');
-		}
+	// 	if (remarks) {
+	// 		$('#osm-remarks').val('1');
+	// 	}else{
+	// 		$('#osm-remarks').val('0');
+	// 	}
 
-		$.ajax({
-			url: baseurl+"OrderSiteManagement/Order/SaveDataOrderSM",
-			type: "POST",
-			data: {tgl_order: tgl_order,jenis_order: jenis_order,seksi_order: seksi_order,duedate: duedate,tgl_terima: tgl_terima,remarks: remarks, jumlah: jumlah, satuan: satuan, keterangan: keterangan, lampiran: lampiran}
-		}).done(function(data) {
-			alert('data berhasil disimpan');
-		});
-		$('#osm-cetakorder').removeClass('hidden');
-	});
+	// 	$.ajax({
+	// 		url: baseurl+"OrderSiteManagement/Order/SaveDataOrderSM",
+	// 		type: "POST",
+	// 		data: {tgl_order: tgl_order,jenis_order: jenis_order,seksi_order: seksi_order,duedate: duedate,tgl_terima: tgl_terima,remarks: remarks, jumlah: jumlah, satuan: satuan, keterangan: keterangan, lampiran: lampiran}
+	// 	}).done(function(data) {
+	// 		alert('data berhasil disimpan');
+	// 	});
+	// 	$('#osm-cetakorder').removeClass('hidden');
+	// });
 
 	// $(document).on('click', '#osm-saveorder', function(){
 	// 	$('#osm-cetakorder').removeClass('hidden');
 	// });
 
 	function cekDataOSM() {
-		var tgl_order = $('#osm-tglorder').val();
+		var kebutuhan = $('#osm-duedate').val();
 		var jenis_order = $('#osm-jenisorder').val();
 		var seksi_order = $('#osm-seksiorder').val();
 
-		if (tgl_order && jenis_order && seksi_order) {
+		if (kebutuhan && jenis_order && seksi_order) {
 			$('#osm-saveorder').removeAttr('disabled','disabled');
 		}else{
 			$('#osm-saveorder').attr('disabled','disabled');
 		}
 	}
 
-	$(document).on('change', '#osm-tglorder,#osm-jenisorder,#osm-seksiorder', function() {
+	$(document).on('change', '#osm-duedate,#osm-jenisorder,#osm-seksiorder', function() {
 		cekDataOSM();
 	});
 
 	// $(document).on('click', '.osm-deleteorder', function(e) {
-	// 	var id = $(this).attr('');
+	// 	var id = $('tr').attr('row-id')
 	// 	var ini = $(this);
 
 	// 	if (id!=null || id!='') 
@@ -239,4 +321,5 @@ $(function() {
 	// 		ini.closest('tr').remove();
 	// 	}
 	// });
+
 });

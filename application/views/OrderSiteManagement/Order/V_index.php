@@ -23,9 +23,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a href="<?php echo site_url('OrderSiteManagement/Order/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
-                                    <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
-                                </a>
+                                <br></br>
                             </div>
                             <div class="box-body">
                                 <div>
@@ -35,36 +33,39 @@
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
 												<th>No Order</th>
-												<th>Tgl Order</th>
+												<th>Tanggal Order</th>
 												<th>Jenis Order</th>
 												<th>Seksi Order</th>
-												<th>Due Date</th>
-												<th>Tgl Terima</th>
-												<th>Remarks</th>
+												<th>Tanggal Kebutuhan</th>
+                                                <th>Status</th>
 											</tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                            	$no = 1; 
-                                            	foreach($Order as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['id_order']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-											?>
+                                                $no = 1; 
+                                                foreach($list_order as $row):
+                                                $encrypted_string = $this->encrypt->encode($row['id_order']);
+                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                            ?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('OrderSiteManagement/Order/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('OrderSiteManagement/Order/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('OrderSiteManagement/Order/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                    <a target="blank_" style="margin-right:4px" href="<?php echo base_url('OrderSiteManagement/Order/CetakData/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data"><span class="fa fa-file-pdf-o fa-2x"></span></a>
                                                 </td>
-												<td><?php echo $row['no_order'] ?></td>
-												<td><?php echo $row['tgl_order'] ?></td>
-												<td><?php echo $row['jenis_order'] ?></td>
-												<td><?php echo $row['seksi_order'] ?></td>
-												<td><?php echo $row['due_date'] ?></td>
-												<td><?php echo $row['tgl_terima'] ?></td>
-												<td><?php echo $row['remarks'] ?></td>
-											</tr>
+                                                <td><?php echo $row['no_order'] ?></td>
+                                                <td><?php echo date('Y-m-d', strtotime($row['tgl_order'])); ?></td>
+                                                <td><?php echo $row['jenis_order'] ?></td>
+                                                <td><?php echo $row['nama_seksi'] ?></td>
+                                                <td><?php echo date('Y-m-d', strtotime($row['due_date']));?></td>
+                                                <td align="center">
+                                                    <?php 
+                                                        if($row['status']==0){echo "<b style='color:orange;'>New</b>";}
+                                                        elseif ($row['status']==1) {echo "<b style='color:blue;'>Approve</b>";}
+                                                        elseif ($row['status']==2) {echo "<b style='color:red;'>Reject</b>";}
+                                                        elseif ($row['status']==3) {echo "<b style='color:green;'>Done</b>";}
+                                                    ?>
+                                                </td>
+                                            </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
                                     </table>
