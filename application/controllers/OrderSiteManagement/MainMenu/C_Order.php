@@ -108,7 +108,21 @@ class C_Order extends CI_Controller
 				$this->ciqrcode->generate($params);
 			}
 
-		redirect(site_url('OrderSiteManagement/Order/ListOrder'));
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', 'A5-L',8,15, 15, 16, 16, 9, 9);
+		$filename = 'Form-Order.pdf';
+
+		$data['header'] = $this->M_order->Header($header_id);
+		$data['lines'] = $this->M_order->Lines($header_id);
+		
+		$html = $this->load->view('OrderSiteManagement/Order/V_cetakdata', $data, true);
+
+		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$pdf->WriteHTML($stylesheet1,1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'I');
 	}
 
     public function CetakData($id)

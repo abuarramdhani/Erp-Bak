@@ -61,8 +61,9 @@
                                                     <?php 
                                                         if($row['status']==0){echo "<b style='color:orange;'>New</b>";}
                                                         elseif ($row['status']==1) {echo "<b style='color:blue;'>Approve</b>";}
-                                                        elseif ($row['status']==2) {echo "<b style='color:red;'>Reject</b>";}
+                                                        elseif ($row['status']==2) {echo "<b style='color:red;'>Reject by admin</b>";}
                                                         elseif ($row['status']==3) {echo "<b style='color:green;'>Done</b>";}
+                                                        elseif ($row['status']==4) {echo "<b style='color:pink;'>Reject by system</b>";}
                                                     ?>
                                                 </td>
                                             </tr>
