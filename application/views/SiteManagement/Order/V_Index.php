@@ -102,7 +102,7 @@
                                                         elseif ($row['status']==1) {echo "<b style='color:blue;'>Approve</b>";}
                                                         elseif ($row['status']==2) {echo "<b style='color:red;'>Reject by admin</b>";}
                                                         elseif ($row['status']==3) {echo "<b style='color:green;'>Done</b>";}
-                                                        elseif ($row['status']==4) {echo "<b style='color:pink;'>Reject by system</b>";}
+                                                        elseif ($row['status']==4) {echo "<b style='color:navy;'>Reject by system</b>";}
                                                     ?>
                                                 </td>
                                                 <td><button class="btn btn-danger" id="sm_reject" data-id="<?php echo $row['id_order'];?>" <?php if($row['status']!=0) {echo "disabled";}?>>Reject</button>
