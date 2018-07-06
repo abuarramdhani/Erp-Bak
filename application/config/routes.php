@@ -1653,3 +1653,20 @@ $route['CBOPainting/CBO/SearchReport'] = 'MonitoringCBO/C_MonitoringCBO/searchRe
 $route['CBOPainting/CBO/ReportExcel'] = 'MonitoringCBO/C_MonitoringCBO/exportReport';
 $route['CBOPainting/CBO/getGrafik'] = 'MonitoringCBO/C_MonitoringCBO/grafik';
 
+//--------------------------------------------------- Site Management ---------------------------------------------------------//
+$route['SiteManagement'] = 'SiteManagement/C_SiteManagement';
+$route['SiteManagement/Monitoring'] = 'SiteManagement/MainMenu/C_Monitoring';
+$route['SiteManagement/Monitoring/(:any)'] = 'SiteManagement/MainMenu/C_Monitoring/$1';
+
+$route['SiteManagement/RecordData/(:any)'] = 'SiteManagement/MainMenu/C_RecordData/$1';
+$route['SiteManagement/RecordData/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_RecordData/$1/$2';
+
+$route['SiteManagement/Order'] = 'SiteManagement/MainMenu/C_Order';
+$route['SiteManagement/Order/(:any)'] = 'SiteManagement/MainMenu/C_Order/$1';
+$route['SiteManagement/Order/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Order/$1/$2';
+
+//--------------------------------------------------- Order Site Management --------------------------------------------------//
+$route['OrderSiteManagement'] = 'OrderSiteManagement/C_OrderSiteManagement';
+$route['OrderSiteManagement/Order'] = 'OrderSiteManagement/MainMenu/C_Order';
+$route['OrderSiteManagement/Order/(:any)'] = 'OrderSiteManagement/MainMenu/C_Order/$1';
+$route['OrderSiteManagement/Order/(:any)/(:any)'] = 'OrderSiteManagement/MainMenu/C_Order/$1/$2';
