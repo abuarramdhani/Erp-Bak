@@ -41,7 +41,7 @@
         <tr>
             <td style="width: 13%"><p style="font-size: 12px">Tgl. Selesai </p></td>
             <td style="width: 2%"> : </td>
-            <td style="width: 35%"><p style="font-size: 12px"><?php echo date('Y-m-d', strtotime($header[0]['tgl_order']));?></p></td>
+            <td style="width: 35%"><p style="font-size: 12px"><?php echo date('Y-m-d', strtotime($header[0]['due_date']));?></p></td>
             <td style="width: 13%;border-left: 1px solid black;"><p style="font-size: 12px">Seksi </p></td>
             <td style="width: 2%"> : </td>
             <td style="width: 35%"><p style="font-size: 12px"><?php echo $header[0]['nama_seksi'];?></p></td>

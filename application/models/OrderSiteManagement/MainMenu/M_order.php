@@ -60,7 +60,7 @@ class M_order extends CI_Model
     public function RejectbySystem()
     {
         $query = $this->db->query("update sm.sm_order 
-                                    set status=2
+                                    set status=4
                                     where ((tgl_order + interval '7 day') < now()) and status=0");
         return $query;
     }

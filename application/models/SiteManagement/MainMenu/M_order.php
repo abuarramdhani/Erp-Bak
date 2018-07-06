@@ -10,7 +10,7 @@ class M_order extends CI_Model
 
     public function getSeksi($seksi){
     	$query = $this->db->query("select      seksi.section_code as kode_seksi,
-                                            concat_ws(' - ', seksi.unit_name, seksi.section_name) as nama_seksi
+                                            seksi.section_name as nama_seksi
                                 from        er.er_section as seksi
                                 where       seksi.job_name='-'
                                             and     seksi.section_name!='-'
@@ -77,7 +77,7 @@ class M_order extends CI_Model
     public function RejectbySystem()
     {
         $query = $this->db->query("update sm.sm_order 
-                                    set status=2
+                                    set status=4
                                     where ((tgl_order + interval '7 day') < now()) and status=0");
         return $query;
     }

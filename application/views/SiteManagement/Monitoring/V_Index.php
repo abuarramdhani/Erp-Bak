@@ -110,9 +110,9 @@
                             <td><?php echo date('d F Y', strtotime($key['tanggal_jadwal']));?></td>
                             <td><?php echo $key['pic'];?></td>
                             <td><?php echo $key['kategori'];?></td>
-                            <td align="center"><?php if ($key['overdue']=='1') {
+                            <td align="center"><a href="<?php echo base_url('SiteManagement/RecordData/CeilingFan');?>"><?php if ($key['overdue']=='1') {
                                     echo "<span class='label label-danger'>Overdue</span>";
-                                }else{echo "<span class='label label-warning'>Pending</span>";};?>
+                                }else{echo "<span class='label label-warning'>Pending</span>";};?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -148,9 +148,9 @@
                             <td><?php echo date('d F Y', strtotime($key['tanggal_jadwal']));?></td>
                             <td><?php echo $key['pic'];?></td>
                             <td><?php echo $key['kategori'];?></td>
-                            <td align="center"><?php if ($key['overdue']=='1') {
+                            <td align="center"><a href="<?php echo base_url('SiteManagement/RecordData/LPMaintenance');?>"><?php if ($key['overdue']=='1') {
                                     echo "<span class='label label-danger'>Overdue</span>";
-                                }else{echo "<span class='label label-warning'>Pending</span>";};?>
+                                }else{echo "<span class='label label-warning'>Pending</span>";};?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -189,9 +189,9 @@
                             <td><?php echo date('d F Y', strtotime($key['tanggal_jadwal']));?></td>
                             <td><?php echo $key['pic'];?></td>
                             <td><?php echo $key['kategori'];?></td>
-                            <td align="center"><?php if ($key['overdue']=='1') {
+                            <td align="center"><a href="<?php echo base_url('SiteManagement/RecordData/TongSampah');?>"><?php if ($key['overdue']=='1') {
                                     echo "<span class='label label-danger'>Overdue</span>";
-                                }else{echo "<span class='label label-warning'>Pending</span>";};?>
+                                }else{echo "<span class='label label-warning'>Pending</span>";};?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -228,9 +228,9 @@
                             <td><?php echo date('d F Y', strtotime($key['tanggal_jadwal']));?></td>
                             <td><?php echo $key['pic'];?></td>
                             <td><?php echo $key['kategori'];?></td>
-                            <td align="center"><?php if ($key['overdue']=='1') {
+                            <td align="center"><a href="<?php echo base_url('SiteManagement/RecordData/LahanKarangwaru');?>"><?php if ($key['overdue']=='1') {
                                     echo "<span class='label label-danger'>Overdue</span>";
-                                }else{echo "<span class='label label-warning'>Pending</span>";};?>
+                                }else{echo "<span class='label label-warning'>Pending</span>";};?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
