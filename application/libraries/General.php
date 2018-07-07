@@ -152,6 +152,100 @@ class general
 		// F2225 - 20180629
 	}
 
+	public function load_all_column_personalia($schema_name, $table_name)
+	{
+		$columns 	=	$this->CI->M_Index->table_columns_personalia($schema_name, $table_name);
+		$columns_result	=	array();
+
+		$index 			=	0;
+		$index_total 	=	count($columns);
+
+		foreach ($columns as $result)
+		{
+			$columns_result[$index] 	=	$result['column_name'];
+			$index++;
+		}
+
+		return $columns_result;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_data_type_personalia($schema_name, $table_name)
+	{
+		$data_type 	=	$this->CI->M_Index->table_columns_personalia($schema_name, $table_name);
+		$data_type_result	=	array();
+
+		$index 			=	0;
+		$index_total 	=	count($data_type);
+
+		foreach ($data_type as $result)
+		{
+			$data_type_result[$index] 	=	$result['data_type'];
+			$index++;
+		}
+
+		return $data_type_result;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_value_table_personalia($schema_name, $table_name, $where_clause)
+	{
+		$table_value 			=	$this->CI->M_Index->table_value_personalia($schema_name, $table_name, $where_clause);
+
+		return $table_value;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_column_mysql($schema_name, $table_name)
+	{
+		$columns 	=	$this->CI->M_Index->table_columns_mysql($schema_name, $table_name);
+		$columns_result	=	array();
+
+		$index 			=	0;
+		$index_total 	=	count($columns);
+
+		foreach ($columns as $result)
+		{
+			$columns_result[$index] 	=	$result['COLUMN_NAME'];
+			$index++;
+		}
+
+		return $columns_result;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_data_type_mysql($schema_name, $table_name)
+	{
+		$data_type 	=	$this->CI->M_Index->table_columns_mysql($schema_name, $table_name);
+		$data_type_result	=	array();
+
+		$index 			=	0;
+		$index_total 	=	count($data_type);
+
+		foreach ($data_type as $result)
+		{
+			$data_type_result[$index] 	=	$result['DATA_TYPE'];
+			$index++;
+		}
+
+		return $data_type_result;
+
+		// F2225 - 20180629
+	}
+
+	public function load_all_value_table_mysql($schema_name, $table_name, $where_clause)
+	{
+		$table_value 			=	$this->CI->M_Index->table_value_mysql($schema_name, $table_name, $where_clause);
+
+		return $table_value;
+
+		// F2225 - 20180629
+	}
+
 	public function ambilPekerja($list)
 	{
 		if($list=='all')
