@@ -409,6 +409,13 @@ $route['RekapTIMSPromosiPekerja/RekapTIMS/export-employee/(:any)/(:any)/(:any)']
 
 $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/GetNoInduk';
 
+	//	Sinkronisasi Konversi Presensi
+	//	{
+			$route['RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi']					=	'er/RekapTIMS/C_SinkronisasiKonversiPresensi';
+			$route['RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/(:any)']			=	'er/RekapTIMS/C_SinkronisasiKonversiPresensi/$1';
+			$route['RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/(:any)/(:any)']	=	'er/RekapTIMS/C_SinkronisasiKonversiPresensi/$1/$2';
+
+	//	}
 
 	// 	Rekap Absensi Pekerja
 	//	{
@@ -513,6 +520,18 @@ $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Moni
 $route['PresenceManagement/Monitoring/(:any)']		= 'PresenceManagement/MainMenu/C_Monitoring/$1';
 $route['PresenceManagement/Monitoring/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2';
 $route['PresenceManagement/Monitoring/(:any)/(:any)/(:any)']	= 'PresenceManagement/MainMenu/C_Monitoring/$1/$2/$3';
+
+// 	Monitoring Presensi (fingerprint scanner baru)
+//	{
+		$route['PresenceManagement/MonitoringPresensi'] 				=	'PresenceManagement/C_MonitoringPresensi';
+		$route['PresenceManagement/MonitoringPresensi/(:any)'] 			=	'PresenceManagement/C_MonitoringPresensi/$1';
+		$route['PresenceManagement/MonitoringPresensi/(:any)/(:any)'] 	=	'PresenceManagement/C_MonitoringPresensi/$1/$2';
+
+		$route['PresenceManagement/MonitoringPresensiPengaturan'] 				=	'PresenceManagement/C_MonitoringPresensiPengaturan';
+		$route['PresenceManagement/MonitoringPresensiPengaturan/(:any)'] 		=	'PresenceManagement/C_MonitoringPresensiPengaturan/$1';
+		$route['PresenceManagement/MonitoringPresensiPengaturan/(:any)/(:any)'] =	'PresenceManagement/C_MonitoringPresensiPengaturan/$1/$2';
+
+//	}
 
 //---------------------------------Payroll Management----------------------------------
 
@@ -1496,6 +1515,13 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 			$route['OnJobTraining/CetakUndangan']						=	'MonitoringOJT/C_CetakUndangan';
 			$route['OnJobTraining/CetakUndangan/(:any)']				=	'MonitoringOJT/C_CetakUndangan/$1';
 			$route['OnJobTraining/CetakUndangan/(:any)/(:any)']			=	'MonitoringOJT/C_CetakUndangan/$1/$2';
+	//	}
+
+	//	Cetak Memo Jadwal Training
+	//	{
+			$route['OnJobTraining/CetakMemoJadwalTraining']					=	'MonitoringOJT/C_CetakMemoJadwalTraining';
+			$route['OnJobTraining/CetakMemoJadwalTraining/(:any)']			=	'MonitoringOJT/C_CetakMemoJadwalTraining/$1';
+			$route['OnJobTraining/CetakMemoJadwalTraining/(:any)/(:any)']	=	'MonitoringOJT/C_CetakMemoJadwalTraining/$1/$2';
 	//	}
 
 	//	Monitoring
