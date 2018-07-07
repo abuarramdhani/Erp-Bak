@@ -288,11 +288,8 @@
 						$update['last_update_timestamp']	=	date('Y-m-d H:i:s');
 						$update['last_update_user']			=	$this->session->user;
 
-						if( $this->M_sinkronisasikonversipresensi->update($update, $id_konversi_presensi) )
-						{
-							$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
-						}
-
+						$this->M_sinkronisasikonversipresensi->update($update, $id_konversi_presensi);
+						$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
 					}
 					$id_konversi_presensi_array[$indeks_id_konversi_presensi]	=	$id_konversi_presensi;
 					$indeks_id_konversi_presensi++;
@@ -437,10 +434,8 @@
 					$update['last_update_timestamp']	=	date('Y-m-d H:i:s');
 					$update['last_update_user']			=	'CRON';
 
-					if( $this->M_sinkronisasikonversipresensi->update($update, $id_konversi_presensi) )
-					{
-						$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
-					}
+					$this->M_sinkronisasikonversipresensi->update($update, $id_konversi_presensi);
+					$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
 
 				}
 				$id_konversi_presensi_array[$indeks_id_konversi_presensi]	=	$id_konversi_presensi;
