@@ -224,7 +224,7 @@ function rekap_datatable_detail() {
 	rekap_datatable_detail();
 //});
 
-// 	Rekap Absensi Pekerja, Jam Kerja, Absensi Manual, Data Presensi-TIM
+// 	Rekap Absensi Pekerja, Jam Kerja, Absensi Manual, Data Presensi-TIM, Sinkronisasi Konversi Presensi
 //	{
 		$(function()
 		{
@@ -284,6 +284,14 @@ function rekap_datatable_detail() {
 						],
 					});
 
+					$('.SinkronisasiKonversiPresensi-data').DataTable({
+						lengthChange: true,
+						scrollX: true,
+						dom: 'Bfrtip',
+						buttons: [
+							'excel'
+						],
+					});
 
 			//	}
 
@@ -370,10 +378,190 @@ function rekap_datatable_detail() {
 					}, function(start, end, label) {
 					  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 					});
+
+					$('.SinkronisasiKonversiPresensi-daterangepicker').daterangepicker({
+					    "showDropdowns": true,
+					    "autoApply": true,
+					    "locale": {
+					        "format": "YYYY-MM-DD",
+					        "separator": " - ",
+					        "applyLabel": "OK",
+					        "cancelLabel": "Batal",
+					        "fromLabel": "Dari",
+					        "toLabel": "Hingga",
+					        "customRangeLabel": "Custom",
+					        "weekLabel": "W",
+					        "daysOfWeek": [
+					            "Mg",
+					            "Sn",
+					            "Sl",
+					            "Rb",
+					            "Km",
+					            "Jm",
+					            "Sa"
+					        ],
+					        "monthNames": [
+					            "Januari",
+					            "Februari",
+					            "Maret",
+					            "April",
+					            "Mei",
+					            "Juni",
+					            "Juli",
+					            "Agustus ",
+					            "September",
+					            "Oktober",
+					            "November",
+					            "Desember"
+					        ],
+					        "firstDay": 1
+					    }
+					}, function(start, end, label) {
+					  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+					});
 			//	}
 
 			//	Select2
 			//	{
+					$('#SinkronisasiKonversiPresensi-cmbKodeStatusKerja').select2(
+					{
+						allowClear: true,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/kode_status_kerja',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.fs_noind, text: obj.fs_noind +' - '+obj.fs_ket};
+									})
+								}
+							}
+						}
+					});
+
+					$('#SinkronisasiKonversiPresensi-cmbNoind').select2(
+					{
+						minimumInputLength: 3,
+						allowClear: true,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/pekerja',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.noind, text: obj.noind +' - '+obj.nama};
+									})
+								}
+							}
+						}
+					});
+
+					$('#SinkronisasiKonversiPresensi-cmbKodeShift').select2(
+					{
+						allowClear: true,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/kode_shift',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kd_shift, text: obj.kd_shift +' - '+obj.shift};
+									})
+								}
+							}
+						}
+					});
+
+					$('#SinkronisasiKonversiPresensi-cmbKodesie').select2(
+					{
+						allowClear: true,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/kodesie',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kodesie, text: obj.kodesie +' - '+obj.nama_kodesie};
+									})
+								}
+							}
+						}
+					});
+
+					$('#SinkronisasiKonversiPresensi-cmbLokasiKerja').select2(
+					{
+						allowClear: true,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/lokasi_kerja',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.id_, text: obj.id_ +' - '+obj.lokasi_kerja};
+									})
+								}
+							}
+						}
+					});
+
+					$('#SinkronisasiKonversiPresensi-cmbJabatan').select2(
+					{
+						allowClear: true,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/SinkronisasiKonversiPresensi/jabatan',
+							dataType: 'json',
+							delay: 500,
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.kd_jabatan, text: obj.kd_jabatan +' - '+obj.jabatan};
+									})
+								}
+							}
+						}
+					});
+
 					$('.RekapAbsensi-cmbDepartemen').select2(
 					{
 						minimumResultsForSearch: -1,
