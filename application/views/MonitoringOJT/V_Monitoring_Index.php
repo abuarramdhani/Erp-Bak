@@ -125,7 +125,7 @@
 									              			{
 									              				$tanggal_tampil 	=	'';
 									              				$tahapan 			=	$notifikasi['tahapan'];
-									              				$pekerja 			=	$notifikasi['noind'].' - '.$notifikasi['employee_name'];
+									              				$pekerja 			=	$notifikasi['noind'].' - '.$notifikasi['nama_pekerja_ojt'];
 
 									              				if ( strtotime($notifikasi['tanggal_proses_akhir']) > strtotime($notifikasi['tanggal_proses_awal']) )
 									              				{
@@ -202,19 +202,19 @@
 									                    <a alt="Ubah Alamat E-mail" title="Ubah Alamat E-mail" onclick="MonitoringOJT_ubahEmail(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['email_pekerja']."'";?>, <?php echo "'".$pekerja['email_atasan']."'";?>)">
 									                    	<i class="fa fa-envelope fa-2x"></i>
 									                    </a>
-									                    <a alt="Ubah Status Pekerja Menjadi Tertunda" title="Ubah Status Pekerja Menjadi Tertunda" onclick="MonitoringOJT_ubahStatusPekerjaTunda(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['employee_name'])."'";?>)">
+									                    <a alt="Ubah Status Pekerja Menjadi Tertunda" title="Ubah Status Pekerja Menjadi Tertunda" onclick="MonitoringOJT_ubahStatusPekerjaTunda(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['nama_pekerja_ojt'])."'";?>)">
 									                    	<i class="fa fa-clock-o fa-2x"></i>
 									                    </a>
-									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['employee_name'])."'";?>)">
+									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['nama_pekerja_ojt'])."'";?>)">
 									                    	<i class="fa fa-sign-out fa-2x"></i>
 									                    </a>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle;">
 														<b><?php echo $pekerja['noind'];?></b><br/>
-														<?php echo trim(rtrim($pekerja['employee_name']));?>
+														<?php echo trim(rtrim($pekerja['nama_pekerja_ojt']));?>
 													</td>
 													<td style="text-align: justify; vertical-align: middle">
-														<?php echo trim($pekerja['section_name']);?>
+														<?php echo trim($pekerja['seksi_pekerja_ojt']);?>
 													</td>
 													<td style="white-space: nowrap; text-align: justify; vertical-align: middle">
 														<ul>
@@ -307,16 +307,16 @@
 									                    <a alt="Ubah Alamat E-mail" title="Ubah Alamat E-mail" onclick="MonitoringOJT_ubahEmail(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['email_pekerja']."'";?>, <?php echo "'".$pekerja['email_atasan']."'";?>)">
 									                    	<i class="fa fa-envelope fa-2x"></i>
 									                    </a>
-									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['employee_name'])."'";?>)">
+									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['nama_pekerja_ojt'])."'";?>)">
 									                    	<i class="fa fa-sign-out fa-2x"></i>
 									                    </a>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle;">
 														<b><?php echo $pekerja['noind'];?></b><br/>
-														<?php echo trim(rtrim($pekerja['employee_name']));?>
+														<?php echo trim(rtrim($pekerja['nama_pekerja_ojt']));?>
 													</td>
 													<td style="text-align: justify; vertical-align: middle">
-														<?php echo trim($pekerja['section_name']);?>
+														<?php echo trim($pekerja['seksi_pekerja_ojt']);?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle;">
 														<?php
@@ -420,16 +420,16 @@
 														<a alt="Jadwal" title="Jadwal" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
 									                    	<i class="fa fa-pencil-square-o fa-2x"></i>
 									                    </a>
-									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['employee_name'])."'";?>)">
+									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['nama_pekerja_ojt'])."'";?>)">
 									                    	<i class="fa fa-sign-out fa-2x"></i>
 									                    </a>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<b><?php echo $pekerja['noind'];?></b><br/>
-														<?php echo trim(rtrim($pekerja['employee_name']));?>
+														<?php echo trim(rtrim($pekerja['nama_pekerja_ojt']));?>
 													</td>
 													<td style="white-space: nowrap; text-align: justify; vertical-align: middle">
-														<?php echo trim($pekerja['section_name']);?>
+														<?php echo trim($pekerja['seksi_pekerja_ojt']);?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tgl_masuk'];?>
@@ -481,16 +481,16 @@
 														<a alt="Jadwal" title="Jadwal" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
 									                    	<i class="fa fa-pencil-square-o fa-2x"></i>
 									                    </a>
-									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['employee_name'])."'";?>)">
+									                    <a alt="Ubah Status Pekerja Menjadi Keluar" title="Ubah Status Pekerja Menjadi Keluar" onclick="MonitoringOJT_ubahStatusPekerjaKeluar(<?php echo "'".$pekerja_id."'";?>, <?php echo "'".$pekerja['noind']."'";?>, <?php echo "'".rtrim($pekerja['nama_pekerja_ojt'])."'";?>)">
 									                    	<i class="fa fa-sign-out fa-2x"></i>
 									                    </a>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<b><?php echo $pekerja['noind'];?></b><br/>
-														<?php echo trim(rtrim($pekerja['employee_name']));?>
+														<?php echo trim(rtrim($pekerja['nama_pekerja_ojt']));?>
 													</td>
 													<td style="white-space: nowrap; text-align: justify; vertical-align: middle">
-														<?php echo trim($pekerja['section_name']);?>
+														<?php echo trim($pekerja['seksi_pekerja_ojt']);?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tgl_masuk'];?>

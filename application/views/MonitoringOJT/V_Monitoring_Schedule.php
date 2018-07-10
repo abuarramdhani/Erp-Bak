@@ -37,7 +37,7 @@
 											{
 												$pekerja_id 	=	$this->general->enkripsi($pekerjaOJT['pekerja_id']);
 												$ojt_noind 		=	$pekerjaOJT['noind'];
-												$ojt_nama 		=	$pekerjaOJT['employee_name'];
+												$ojt_nama 		=	$pekerjaOJT['nama_pekerja_ojt'];
 												$ojt_selesai 	=	$pekerjaOJT['selesai'];
 										?>
 										<div class="form-group">
@@ -45,7 +45,7 @@
 												Pekerja
 											</label>
 											<div class="col-lg-4">
-												<input type="text" class="form-control" disabled="" style="width: 100%" value="<?php echo $pekerjaOJT['noind'].' - '.$pekerjaOJT['employee_name'];?>">
+												<input type="text" class="form-control" disabled="" style="width: 100%" value="<?php echo $pekerjaOJT['noind'].' - '.$pekerjaOJT['nama_pekerja_ojt'];?>">
 											</div>
 										</div>
 										<?php

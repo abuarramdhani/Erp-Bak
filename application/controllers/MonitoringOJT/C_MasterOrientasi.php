@@ -52,8 +52,6 @@ class C_MasterOrientasi extends CI_Controller
 		$data['DaftarOrientasiTabel']					=	$this->M_masterorientasi->ambilDaftarOrientasiTabel();
 		$data['DaftarOrientasiTabelKolomPemberitahuan']	=	$this->M_masterorientasi->ambilDaftarPemberitahuanTabelOrientasi();
 		$data['DaftarOrientasiTabelKolomJadwal']		=	$this->M_masterorientasi->ambilDaftarPemberitahuanTabelJadwal();
-		$data['DaftarUndanganOrientasi']				=	$this->M_masterundangan->ambilDaftarFormatUndangan();
-		$data['DaftarPenerimaUndanganOrientasi']		=	$this->M_masterundangan->ambilDaftarPenerimaUndangan();
 
 		$data['DaftarOrientasi'] 						=	$this->M_masterorientasi->ambilDaftarOrientasi();
 
@@ -83,7 +81,7 @@ class C_MasterOrientasi extends CI_Controller
 						$lamaPelaksanaan 	=	filter_var($this->input->post('numLamaPelaksanaan', TRUE), FILTER_SANITIZE_NUMBER_INT);
 						$cekEvaluasi 		=	$this->input->post('radioCekEvaluasi', TRUE);
 						$pemberitahuan 		=	$this->input->post('radioPemberitahuan', TRUE);
-						$cetak 				=	$this->input->post('radioCetak', TRUE);
+						/*$cetak 				=	$this->input->post('radioCetak', TRUE);*/
 						$formatCetak  		=	$this->input->post('cmbFormatCetak', TRUE);
 						$keterangan  		=	$this->input->post('txtKeterangan', TRUE);
 
@@ -112,10 +110,10 @@ class C_MasterOrientasi extends CI_Controller
 							$pemberitahuan 	=	FALSE;
 						}
 
-						if(empty($cetak))
+						/*if(empty($cetak))
 						{
 							$cetak 			=	FALSE;
-						}
+						}*/
 
 						$inputOrientasi 	=	array(
 													'periode'			=>	$periodeBulan,
@@ -125,8 +123,8 @@ class C_MasterOrientasi extends CI_Controller
 													'lama_hari'			=>	$lamaPelaksanaan,
 													'evaluasi'			=> 	$cekEvaluasi,
 													'pemberitahuan'		=>	$pemberitahuan,
-													'memo'				=>	$cetak,
-													'id_memo'			=>	$formatCetak,
+													/*'memo'				=>	$cetak,
+													'id_memo'			=>	$formatCetak,*/
 													'keterangan'		=>	$keterangan,
 													'create_timestamp'	=>	$waktuEksekusi,
 													'create_user' 		=>	$user,
@@ -146,8 +144,8 @@ class C_MasterOrientasi extends CI_Controller
 														'lama_hari'			=>	$lamaPelaksanaan,
 														'evaluasi'			=> 	$cekEvaluasi,
 														'pemberitahuan'		=>	$pemberitahuan,
-														'memo'				=>	$cetak,
-														'id_memo'			=>	$formatCetak,
+														/*'memo'				=>	$cetak,
+														'id_memo'			=>	$formatCetak,*/
 														'keterangan'		=>	$keterangan,
 														'type'				=>	'CREATE',
 														'create_timestamp'	=>	$waktuEksekusi,
@@ -415,7 +413,7 @@ class C_MasterOrientasi extends CI_Controller
 
 				//	}
 
-				// 	Undangan
+				/*// 	Undangan
 				//	{
 						$idUndangan 					=	$this->input->post('idUndangan', TRUE);
 						$undanganIntervalHari 			=	$this->input->post('numUndanganIntervalHari', TRUE);
@@ -513,7 +511,7 @@ class C_MasterOrientasi extends CI_Controller
 							}
 						}
 
-				//	}
+				//	}*/
 				redirect('OnJobTraining/MasterOrientasi');
 			}
 
@@ -549,7 +547,7 @@ class C_MasterOrientasi extends CI_Controller
 					$data['DaftarOrientasi'] 				=	$this->M_masterorientasi->ambilDaftarOrientasi();
 					$data['editOrientasi']					=	$this->M_masterorientasi->editOrientasi($id_orientasi_decode);
 					$data['editPemberitahuanOrientasi']		=	$this->M_masterorientasi->editPemberitahuanOrientasi($id_orientasi_decode);
-					$data['editUndanganOrientasi']			=	$this->M_masterorientasi->editUndanganOrientasi($id_orientasi_decode);
+					/*$data['editUndanganOrientasi']			=	$this->M_masterorientasi->editUndanganOrientasi($id_orientasi_decode);*/
 
 					// echo '<pre>';
 					// print_r($data['editUndanganOrientasi']);
@@ -577,7 +575,7 @@ class C_MasterOrientasi extends CI_Controller
 							$lamaPelaksanaan 	=	filter_var($this->input->post('numLamaPelaksanaan', TRUE), FILTER_SANITIZE_NUMBER_INT);
 							$cekEvaluasi 		=	$this->input->post('radioCekEvaluasi', TRUE);
 							$pemberitahuan 		=	$this->input->post('radioPemberitahuan', TRUE);
-							$cetak 				=	$this->input->post('radioCetak', TRUE);
+							/*$cetak 				=	$this->input->post('radioCetak', TRUE);*/
 							$formatCetak  		=	$this->input->post('cmbFormatCetak', TRUE);
 							$keterangan  		=	$this->input->post('txtKeterangan', TRUE);
 
@@ -606,10 +604,10 @@ class C_MasterOrientasi extends CI_Controller
 								$pemberitahuan 	=	FALSE;
 							}
 
-							if(empty($cetak))
+							/*if(empty($cetak))
 							{
 								$cetak 			=	FALSE;
-							}
+							}*/
 
 							$updateOrientasi 	=	array
 													(
@@ -620,8 +618,8 @@ class C_MasterOrientasi extends CI_Controller
 														'lama_hari'				=>	$lamaPelaksanaan,
 														'evaluasi'				=> 	$cekEvaluasi,
 														'pemberitahuan'			=>	$pemberitahuan,
-														'memo'					=>	$cetak,
-														'id_memo'				=>	$formatCetak,
+														/*'memo'					=>	$cetak,
+														'id_memo'				=>	$formatCetak,*/
 														'keterangan'			=>	$keterangan,
 														'last_update_timestamp'	=>	$waktuEksekusi,
 														'last_update_user' 		=>	$user,
@@ -642,8 +640,8 @@ class C_MasterOrientasi extends CI_Controller
 															'lama_hari'			=>	$lamaPelaksanaan,
 															'evaluasi'			=> 	$cekEvaluasi,
 															'pemberitahuan'		=>	$pemberitahuan,
-															'memo'				=>	$cetak,
-															'id_memo'			=>	$formatCetak,
+															/*'memo'				=>	$cetak,
+															'id_memo'			=>	$formatCetak,*/
 															'keterangan'		=>	$keterangan,
 															'type'				=>	'UPDATE',
 															'update_timestamp'	=>	$waktuEksekusi,
@@ -1035,7 +1033,7 @@ class C_MasterOrientasi extends CI_Controller
 							}
 					//	}
 
-					// 	Undangan
+					/*// 	Undangan
 					//	{
 							$idUndangan 					=	$this->input->post('idUndangan', TRUE);
 							$undanganIntervalHari 			=	$this->input->post('numUndanganIntervalHari', TRUE);
@@ -1240,7 +1238,7 @@ class C_MasterOrientasi extends CI_Controller
 									}
 								}
 							}
-					//	}
+					//	}*/
 
 					redirect('OnJobTraining/MasterOrientasi/');
 				}
