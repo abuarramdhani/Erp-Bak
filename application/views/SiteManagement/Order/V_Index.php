@@ -95,7 +95,7 @@
                                                 <td><?php echo $row['nama_seksi'] ?></td>
                                                 <td><?php echo date('Y-m-d', strtotime($row['due_date']));?></td>
                                                 <td><?php if($row['tgl_terima']==null || $row['tgl_terima']==''){echo "";}else{ echo date('Y-m-d', strtotime($row['tgl_terima']));}?></td>
-                                                <td align="center"><input type="checkbox" name="re_order" id="sm_remarksorder" data-id="<?php echo $row['id_order'];?>" <?php if($row['remarks']==='t') {echo "checked";}?> <?php if($row['status']!=1) {echo "disabled";}?>></td>
+                                                <td align="center"><input type="checkbox" name="re_order" class="sm_remarksorder" data-id="<?php echo $row['id_order'];?>" <?php if($row['remarks']==='t') {echo "checked";}?> <?php if($row['status']!=1) {echo "disabled";}?>></td>
                                                 <td align="center">
                                                     <?php 
                                                         if($row['status']==0){echo "<b style='color:orange;'>New</b>";}
