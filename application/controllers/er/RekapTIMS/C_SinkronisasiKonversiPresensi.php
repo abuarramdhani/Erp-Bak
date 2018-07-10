@@ -79,7 +79,7 @@
 						}
 						$indeks_kode_status_kerja++;
 					}
-					$parameter_kode_status_kerja 	=	"and tshiftpekerja.kode_status_kerja in (".$value_kode_status_kerja.")";
+					$parameter_kode_status_kerja 	=	"and substring(tshiftpekerja.noind, 1, 1) in (".$value_kode_status_kerja.")";
 				}
 
 				$indeks_noind 	=	0;
