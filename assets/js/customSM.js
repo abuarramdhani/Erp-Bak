@@ -172,25 +172,26 @@ $(document).ready(function(){
 		}
 	}
 
-	$('#sm_remarksorder').click(function() {
+	$('.sm_remarksorder').click(function() {
 		var id_order = $(this).attr('data-id');
-		var cek = $(this).is(":checked");
 
-		if (cek) {
-			$(this).attr('value','1');
+		var check = confirm("Apakah anda yakin telah menyelesaikan order tersebut?");
+		if (check) {
+			$(this).attr('disabled','disabled');
+			$(this).closest('tr').find('b').each(function(){
+				$(this).text('Done');
+			});
+			$.ajax({
+				url: baseurl+"SiteManagement/Order/RemarkSOrder",
+			    type: "POST",
+			    data: {id_order: id_order}
+			}).done(function(data){
+				alert('data berhasil diupdate');
+			});
 		}else{
-			$(this).attr('value','0');
+			$(this).removeAttr('checked');
+			alert('data batal diupdate');
 		}
-		var status = $(this).val();
-
-		$.ajax({
-			url: baseurl+"SiteManagement/Order/RemarkSOrder",
-		    type: "POST",
-		    data: {id_order: id_order, status: status}
-		}).done(function(data){
-			alert('data telah dicek');
-		});
-
 	});
 
 	$(document).on('click', '#sm_reject', function(e){
@@ -206,6 +207,9 @@ $(document).ready(function(){
 		});
 
 		$(this).attr('disabled','disabled');
+		$(this).closest('tr').find('b').each(function(){
+			$(this).text('Reject by admin');
+		});
 	})
 
 });

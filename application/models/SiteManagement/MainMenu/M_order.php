@@ -61,23 +61,62 @@ class M_order extends CI_Model
         return $query->result_array();
     }
 
-    public function CekStatusOrder($status,$id)
+    public function CekStatusOrder($id)
     {
-        $query = $this->db->query("update sm.sm_order set remarks='$status', status=3 where id_order='$id' and status=1 and tgl_terima!=null");
+        $query = $this->db->query("update sm.sm_order set remarks='1', status=3, status_date=now() where id_order='$id'");
         return $query;
     }
 
     public function RejectFromAdmin($id)
     {
-        $query = $this->db->query("update sm.sm_order set status=2 where id_order='$id'");
+        $query = $this->db->query("update sm.sm_order set status=2, status_date=now() where id_order='$id'");
         return $query;
     }
 
     public function RejectbySystem()
     {
         $query = $this->db->query("update sm.sm_order 
-                                    set status=4
+                                    set status=4, status_date=now()
                                     where ((tgl_order + interval '7 day') < now()) and status=0");
         return $query;
+    }
+
+    public function SimpanKeteranganOM($ket,$id)
+    {
+        $query = $this->db->query("update sm.sm_order
+                                    set keterangan='$ket'
+                                    where id_order=$id");
+        return $query;
+    }
+
+    //Order Keluar
+
+    public function getOrderKeluar($id)
+    {
+        $query = $this->db->query("select * from sm.sm_order_keluar where seksi_order=$id");
+        return $query->result_array();
+    }
+
+    public function OrderKeluar($id)
+    {
+        $query = $this->db->query("select * from sm.sm_order_keluar where id_order=$id");
+        return $query->result_array();
+    }
+
+    public function setOrderKeluar($data)
+    {
+        return $this->db->insert('sm.sm_order_keluar', $data);
+    }
+
+    public function updateOrderKeluar($data, $id)
+    {
+        $this->db->where('id_order', $id);
+        $this->db->update('sm.sm_order_keluar', $data);
+    }
+
+    public function deleteOrderKeluar($id)
+    {
+        $this->db->where('id_order', $id);
+        $this->db->delete('sm.sm_order_keluar');
     }
 }
