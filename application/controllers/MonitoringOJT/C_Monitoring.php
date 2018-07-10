@@ -823,5 +823,22 @@ class C_Monitoring extends CI_Controller
 				$daftarAtasan 		=	$this->M_monitoring->ambilAtasanPekerja($keyword, $pekerjaOJT);
 				echo json_encode($daftarAtasan);
 			}
+
+			public function daftar_pekerja_ojt()
+			{
+				$keyword 					=	strtoupper($this->input->get('term'));
+
+				$daftar_pekerja_ojt 		=	$this->M_monitoring->daftar_pekerja_ojt($keyword);
+				echo json_encode($daftar_pekerja_ojt);
+			}
+
+			public function tahapan_pekerja_ojt()
+			{
+				$keyword 		=	strtoupper($this->input->get('term'));
+				$id_pekerja 	=	$this->input->get('id_pekerja');
+
+				$tahapan_pekerja_ojt 	=	$this->M_monitoring->tahapan_pekerja_ojt($keyword, $id_pekerja);
+				echo json_encode($tahapan_pekerja_ojt);
+			}
 	//	}
 }

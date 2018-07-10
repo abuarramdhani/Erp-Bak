@@ -44,7 +44,6 @@
 													<th>Jumlah Hari</th>
 													<th>Alur Orientasi</th>
 													<th>Pemberitahuan</th>
-													<th>Cetak Undangan</th>
 													<th>Keterangan</th>
 												</tr>
 											</thead>
@@ -114,48 +113,6 @@
 																}
 															?>
 														</ul>
-													</td>
-													<td>
-														<?php
-															if($daftarOrientasi['memo'] == 't')
-															{
-																echo '<ul>';
-																foreach ($DaftarUndanganOrientasi as $orientasiUndangan) 
-																{
-																	if($orientasiUndangan['id_memo'] == $daftarOrientasi['id_memo'])
-																	{
-																		echo '<b>'.$orientasiUndangan['judul'].'</b>';
-																		echo '<ul>';
-																		foreach($DaftarPenerimaUndanganOrientasi as $orientasiUndanganPenerima)
-																		{
-																			if($idOrientasi==$orientasiUndanganPenerima['id_orientasi'])
-																			{
-																				$penerima 	=	$orientasiUndanganPenerima['penerima'];
-																				if($penerima=='1')
-																				{
-																					$penerima 	=	'People Development';
-																				}
-																				elseif($penerima=='2')
-																				{
-																					$penerima 	=	'Pekerja';
-																				}
-																				elseif($penerima=='3')
-																				{
-																					$penerima 	=	'Atasan Pekerja';
-																				}
-																				echo '<li>'.$penerima.' - <b>'.$orientasiUndanganPenerima['waktu'].'</b></li>';
-																			}
-																		}
-																		echo '</ul>';
-																	}
-																}
-																echo '</ul>';
-															}
-															else
-															{
-																echo '<i>Tidak menggunakan undangan atau memo.</i>';
-															}
-														?>
 													</td>
 													<td><?php echo $daftarOrientasi['keterangan'];?></td>
 												</tr>
@@ -345,66 +302,6 @@
 													</td>
 													<td>
 														<select class="select2 form-control MonitoringOJT-cmbPemberitahuanTujuan" style="width: 100%" name="cmbPemberitahuanTujuan[0]" placeholder="Tujuan">
-															<option></option>
-															<option value="1">People Development</option>
-															<option value="2">Pekerja</option>
-															<option value="3">Atasan Pekerja</option>
-														</select>
-													</td>
-												</tr>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="box box-primary box-solid" id="MonitoringOJT-PengaturanUndanganOrientasiBaru">
-								<div class="box-header with-border">
-									<h3 class="box-title">Pengaturan Pengiriman Undangan</h3>
-									<div class="box-tools pull-right">
-										<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-										</button>
-									</div>
-								</div>
-								<div class="box-body">
-									<div class="panel-body">
-										<div class="row">
-											<div class="form-group">
-												<label for="cmbFormatCetak" class="control-label col-lg-2">Format Cetak</label>
-												<select class="select2 col-lg-6" name="cmbFormatCetak" id="MonitoringOJT-cmbFormatCetak">
-												</select>
-											</div>
-											<table class="table" style="width: 100%" id="MonitoringOJT-pengaturanUndangan">
-												<tr>
-													<td class="text-right" colspan="6">
-														<button type="button" class="btn btn-sm btn-success" onclick="MonitoringOJT_tambahUndangan()">
-															<i class="fa fa-plus"></i>
-														</button>
-													</td>
-												</tr>
-												<!-- Jangan lupa cek di JS -->
-												<tr>
-													<td>
-														<a class="btn btn-sm btn-danger" onclick="MonitoringOJT_hapusUndangan(this)" ><i class="fa fa-times"></i></a>
-														<input class="hidden" type="text" name="idUndangan[0]" value="" />
-													</td>
-													<td>
-														<input type="number" name="numUndanganIntervalHari[0]" class="form-control" min="0" max="99" step="1" placeholder="Hari" />
-													</td>
-													<td>
-														<input type="number" name="numUndanganIntervalMinggu[0]" class="form-control" min="0" max="10" step="1" placeholder="Minggu" />
-													</td>
-													<td>
-														<input type="number" name="numUndanganIntervalBulan[0]" class="form-control" min="0" max="10" step="1" placeholder="Bulan" />
-													</td>
-													<td>
-														<select class="select2 form-control MonitoringOJT-cmbUndanganPelaksanaan" style="width: 100%" name="cmbUndanganPelaksanaan[0]" placeholder="Pelaksanaan">
-															<option></option>
-															<option value="0">Sebelum</option>
-															<option value="1">Sesudah</option>
-														</select>
-													</td>
-													<td>
-														<select class="select2 form-control MonitoringOJT-cmbUndanganTujuan" style="width: 100%" name="cmbUndanganTujuan[0]" placeholder="Tujuan">
 															<option></option>
 															<option value="1">People Development</option>
 															<option value="2">Pekerja</option>

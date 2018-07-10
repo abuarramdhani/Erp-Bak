@@ -197,22 +197,27 @@
  		public function ambilTabelDaftarPekerjaOJT($pekerja_id = FALSE)
  		{
  			$this->db->select('
- 								ojt.tb_pekerja.*,
- 								er.er_employee_all.employee_name,
- 								er.er_employee_all.section_code,
- 								er.er_section.section_name
+ 								pekerja_ojt.*,
+ 								pekerja_ojt.noind nomor_induk_pekerja_ojt,
+ 								pekerja_psn.employee_name nama_pekerja_ojt,
+ 								pekerja_psn.section_code,
+ 								seksi_psn.section_name seksi_pekerja_ojt,
+ 								pekerja_ojt.atasan nomor_induk_atasan_pekerja,
+ 								pekerja_psn_2.employee_name nama_atasan_pekerja,
  							');
- 			$this->db->from('ojt.tb_pekerja');
- 			$this->db->join('er.er_employee_all', 'er.er_employee_all.employee_code = ojt.tb_pekerja.noind');
- 			$this->db->join('er.er_section', 'er.er_employee_all.section_code = er.er_section.section_code');
+ 			$this->db->from('ojt.tb_pekerja pekerja_ojt');
+ 			$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja_ojt.noind');
+ 			$this->db->join('er.er_section seksi_psn', 'seksi_psn.section_code = pekerja_psn.section_code');
+ 			$this->db->join('er.er_employee_all pekerja_psn_2', 'pekerja_psn_2.employee_code = pekerja_ojt.atasan');
+			$this->db->join('er.er_section seksi_psn_2', 'seksi_psn_2.section_code = pekerja_psn_2.section_code');
 
  			if($pekerja_id !== FALSE)
  			{
- 				$this->db->where('ojt.tb_pekerja.pekerja_id=', $pekerja_id);
+ 				$this->db->where('pekerja_ojt.pekerja_id=', $pekerja_id);
  			}
 
- 			$this->db->order_by('ojt.tb_pekerja.tgl_masuk', 'DESC');
- 			$this->db->order_by('ojt.tb_pekerja.noind', 'DESC');		
+ 			$this->db->order_by('pekerja_ojt.tgl_masuk', 'DESC');
+ 			$this->db->order_by('pekerja_ojt.noind', 'DESC');		
 
  			return $this->db->get()->result_array();
  		}
@@ -313,6 +318,7 @@
  			$this->db->join('ojt.tb_pekerja pekerja', 'pekerja.noind = proses.noind', 'left');
  			$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja.noind', 'left');
 
+
  			$this->db->where('proses_pemberitahuan.tujuan =', 1);
  			$this->db->where('proses_pemberitahuan.selesai =', FALSE);
  			$this->db->where('proses_pemberitahuan.tanggal =', date('Y-m-d'));
@@ -408,5 +414,55 @@
  		public function history($schema_name, $table_name, $history)
  		{
  			$this->db->insert($schema_name.".".$table_name."_history", $history);
+ 		}
+
+ 		public function daftar_pekerja_ojt($keyword, $periode_awal = FALSE, $periode_akhir = FALSE)
+ 		{
+ 			$this->db->select('
+ 								pekerja_ojt.*,
+ 								rtrim(pekerja_psn.employee_name) nama,
+
+ 							');
+ 			$this->db->from('ojt.tb_pekerja pekerja_ojt');
+ 			$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja_ojt.noind');
+ 			$this->db->join('er.er_section seksi_psn', 'seksi_psn.section_code = pekerja_psn.section_code');
+
+ 			$this->db->like('pekerja_ojt.noind', $keyword);
+	 		$this->db->or_like('pekerja_psn.employee_name', $keyword);
+
+	 		if ( $periode_awal !== FALSE AND $periode_akhir !== FALSE )
+	 		{
+	 			$this->db->group_start();
+		 			$this->db->where('pekerja_ojt.tgl_masuk >=', $periode_awal);
+		 			$this->db->where('pekerja_ojt.tgl_masuk <=', $periode_akhir);
+	 			$this->db->group_end();
+	 		}
+
+ 			return $this->db->get()->result_array();
+ 		}
+
+ 		public function tahapan_pekerja_ojt($keyword = FALSE, $id_pekerja = FALSE, $id_proses = FALSE)
+ 		{
+ 			$this->db->select('proses_ojt.*');
+ 			$this->db->from('ojt.tb_proses proses_ojt');
+ 			$this->db->join('ojt.tb_pekerja pekerja_ojt', 'pekerja_ojt.noind = proses_ojt.noind');
+
+ 			if ( $keyword !== FALSE )
+ 			{
+	 			$this->db->like('proses_ojt.tahapan', $keyword);
+ 			}
+
+ 			if ( $id_pekerja !== FALSE )
+ 			{
+ 				
+ 				$this->db->where('pekerja_ojt.pekerja_id =', $id_pekerja);
+ 			}
+
+ 			if ( $id_proses !== FALSE )
+ 			{
+ 				$this->db->where('proses_ojt.id_proses =', $id_proses);
+ 			}
+
+ 			return $this->db->get()->result_array();
  		}
  	}

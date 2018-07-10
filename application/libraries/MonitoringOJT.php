@@ -52,10 +52,10 @@ class monitoringojt
 
 		$history 		=	array();
 
-		$col_index 		=	0;
 
 		foreach ($value as $val)
 		{
+			$col_index 		=	0;
 			foreach ($column as $col)
 			{
 				$history[$col] 	=	$val[$col];

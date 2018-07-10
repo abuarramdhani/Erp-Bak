@@ -347,6 +347,7 @@
 													$query_tb_konversi_presensi
 												);
 			$hasil_konversi_presensi		=	$this->M_sinkronisasikonversipresensi->tb_konversi_presensi($query_tb_konversi_presensi);
+			$table_columns					=	$this->M_sinkronisasikonversipresensi->tb_konversi_presensi_columns();
 
 			foreach ($hasil_konversi_presensi as $hasil)
 			{
@@ -438,8 +439,6 @@
 					$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
 
 				}
-				$id_konversi_presensi_array[$indeks_id_konversi_presensi]	=	$id_konversi_presensi;
-				$indeks_id_konversi_presensi++;
 			}
 		}
 

@@ -13,11 +13,18 @@
 	    {
 	    	$this->db->select('
 	    						prosesundangan.*,
-	    						masterundangan.judul
+	    						masterundangan.judul,
+	    						pekerja.noind,
+	    						rtrim(pekerja_psn.employee_name) nama,
+	    						proses.id_proses,
+	    						proses.tahapan
 	    					');
 	    	$this->db->from('ojt.tb_proses_undangan prosesundangan');
-	    	$this->db->join('ojt.tb_master_undangan masterundangan', 'masterundangan.id_undangan = prosesundangan.id_undangan');
-	    	$this->db->join('ojt.tb_pekerja pekerja', 'pekerja.')
+	    	$this->db->join('ojt.tb_proses proses', 'proses.id_proses = prosesundangan.id_proses');
+	    	$this->db->join('ojt.tb_master_undangan masterundangan', 'masterundangan.id_undangan = prosesundangan.id_undangan
+	    		');
+	    	$this->db->join('ojt.tb_pekerja pekerja', 'pekerja.pekerja_id = prosesundangan.id_pekerja');
+	    	$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja.noind');
 
 	    	if ( $id_proses_undangan !== FALSE )
 	    	{
@@ -43,5 +50,34 @@
 	    {
 	    	$this->db->where('id_proses_undangan =', $id_proses_undangan);
 	    	$this->db->delete('ojt.tb_proses_undangan');
+	    }
+
+	    public function daftar_format_undangan($keyword)
+	    {
+	    	$this->db->select('*');
+	    	$this->db->from('ojt.tb_master_undangan');
+	    	$this->db->like('judul', $keyword);
+
+	    	return $this->db->get()->result_array();
+	    }
+
+	    public function export_pdf($id_proses_undangan)
+	    {
+	    	$this->db->select('
+	    						prosesundangan.*,
+	    						masterundangan.judul,
+	    						proses_ojt.tgl_awal,
+	    						proses_ojt.tgl_akhir,
+	    						pekerja_ojt.noind,
+	    						rtrim(pekerja_psn.employee_name) nama_pekerja_ojt
+	    					');
+	    	$this->db->from('ojt.tb_proses_undangan prosesundangan');
+	    	$this->db->join('ojt.tb_master_undangan masterundangan', 'prosesundangan.id_undangan = masterundangan.id_undangan');
+	    	$this->db->join('ojt.tb_pekerja pekerja_ojt', 'pekerja_ojt.pekerja_id = prosesundangan.id_pekerja');
+	    	$this->db->join('ojt.tb_proses proses_ojt', 'proses_ojt.id_proses = prosesundangan.id_proses');
+	    	$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja_ojt.noind');
+	    	$this->db->where('id_proses_undangan =', $id_proses_undangan);
+
+	    	return $this->db->get()->result_array();
 	    }
  	}
