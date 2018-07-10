@@ -1,7 +1,8 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form class="form-horizontal">
+            <?php foreach ($header as $headerRow): ?>
+            <form class="form-horizontal" method="post" action="<?php echo site_url('SiteManagement/Order/SimpanKeteranganOM/'.$headerRow['id_order']);?>">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -10,7 +11,7 @@
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('SafetyManagement/Order/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('SiteManagement');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <br />
                                     </a>                             
@@ -19,7 +20,7 @@
                         </div>
                     </div>
                     <br />
-                    
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -30,7 +31,6 @@
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
-                                                    <?php foreach ($header as $headerRow): ?>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>No Order</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['no_order']; ?></td>
@@ -57,7 +57,24 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Status</strong></td>
-                                                            <td style="border: 0">: <?php if($headerRow['remarks']==='f'){echo "<b>Pending</b>";}else{echo "<b>Confirm</b>";}?></td>
+                                                            <td style="border: 0">: 
+                                                                <?php 
+                                                                    if($headerRow['status']==0){echo "<b style='color:orange;'>New</b>";}
+                                                                    elseif ($headerRow['status']==1) {echo "<b style='color:blue;'>Approve</b>";}
+                                                                    elseif ($headerRow['status']==2) {echo "<b style='color:red;'>Reject by admin</b>";}
+                                                                    elseif ($headerRow['status']==3) {echo "<b style='color:green;'>Done</b>";}
+                                                                    elseif ($headerRow['status']==4) {echo "<b style='color:navy;'>Reject by system</b>";}
+                                                                ?>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border:0"><strong>Status Date</strong></td>
+                                                            <td style="border:0">: <?php if($headerRow['status_date']==null || $headerRow['status_date']==''){echo "";}else{ echo date('Y-m-d', strtotime($headerRow['status_date']));}?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Keterangan</strong></td>
+                                                            <td style="border:0"> <textarea class="form-control" style="width: 50%" name="OM_keterangan"><?php echo $headerRow['keterangan']?></textarea>
+                                                            </td>
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>
@@ -90,7 +107,7 @@
                                                                                 <td>
                                                                                     <div class="form-group">
                                                                                         <div class="col-lg-12">
-                                                                                        <input type="number" value="<?php echo($key['jumlah']) ?>" class="form-control" readonly/>
+                                                                                        <input type="text" value="<?php echo($key['jumlah']) ?>" class="form-control" readonly/>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
@@ -130,6 +147,8 @@
                                     <div class="panel-footer">
                                         <div align="right">
                                             <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+                                            &nbsp;&nbsp;
+                                            <button type="submit" class="btn btn-success btn-lg btn-rect">Update</button>
                                         </div>
                                     </div>
                                 </div>
