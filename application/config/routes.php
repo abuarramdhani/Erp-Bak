@@ -1524,6 +1524,13 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 			$route['OnJobTraining/CetakMemoJadwalTraining/(:any)/(:any)']	=	'MonitoringOJT/C_CetakMemoJadwalTraining/$1/$2';
 	//	}
 
+	//	Cetak Memo Pelaksanaan PDCA
+	//	{
+			$route['OnJobTraining/CetakMemoPDCA']					=	'MonitoringOJT/C_CetakMemoPDCA';
+			$route['OnJobTraining/CetakMemoPDCA/(:any)']			=	'MonitoringOJT/C_CetakMemoPDCA/$1';
+			$route['OnJobTraining/CetakMemoPDCA/(:any)/(:any)']		=	'MonitoringOJT/C_CetakMemoPDCA/$1/$2';
+	//	}
+
 	//	Monitoring
 	//	{
 			$route['OnJobTraining/Monitoring']					=	'MonitoringOJT/C_Monitoring';

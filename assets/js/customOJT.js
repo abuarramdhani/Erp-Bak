@@ -152,6 +152,10 @@
 					scrollX: false,
 				});
 
+				$('#MonitoringOJT-daftarCetakUndangan').DataTable({
+					scrollX: false,
+				});
+
 				$('#MonitoringOJT-monitoringPekerjaAktif').DataTable({
 					scrollX: true,
 				});
@@ -275,6 +279,128 @@
 						}
 					}
 				});
+
+				$('#MonitoringOJT-cmbFormatUndangan').select2({
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/CetakUndangan/daftar_format_undangan',
+						dataType: 'json',
+						delay: 500,
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.id_undangan, text: obj.judul};
+								})
+							}
+						}
+					}
+				});
+
+				$('#MonitoringOJT-cmbPekerjaOJT').select2({
+					searching: true,
+					minimumInputLength: 3,
+					allowClear: false,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/Monitoring/daftar_pekerja_ojt',
+						dataType: 'json',
+						delay: 500,
+						type: 'GET',
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.pekerja_id, text: obj.noind + ' - ' + obj.nama};
+								})
+							}
+						}
+					}
+				});
+
+				$('#MonitoringOJT-cmbPekerjaOJTMemoJadwalTraining').select2({
+					searching: true,
+					minimumInputLength: 3,
+					allowClear: false,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/CetakMemoJadwalTraining/daftar_pekerja_ojt',
+						dataType: 'json',
+						delay: 500,
+						type: 'GET',
+						data: function(params){
+							return {
+								term: params.term,
+								periode: $('#MonitoringOJT-txtPeriode').val().replace(' - ', '|')
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.pekerja_id, text: obj.noind + ' - ' + obj.nama};
+								})
+							}
+						}
+					}
+				});
+
+				$('#MonitoringOJT-cmbTahapanOJT').select2({
+					searching: true,
+					allowClear: false,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/Monitoring/tahapan_pekerja_ojt',
+						dataType: 'json',
+						delay: 500,
+						type: 'GET',
+						data: function(params){
+							return {
+								term: params.term,
+								id_pekerja: $('#MonitoringOJT-cmbPekerjaOJT').val()
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.id_proses, text: obj.tahapan};
+								})
+							}
+						}
+					}
+				});
+
+				$('.MonitoringOJT-txtTanggalPDCA').select2({
+					searching: true,
+					allowClear: false,
+					ajax:
+					{
+						url: baseurl+'OnJobTraining/CetakMemoPDCA/proses_ojt_pekerja',
+						dataType: 'json',
+						delay: 500,
+						type: 'GET',
+						data: function(params){
+							return {
+								term: params.term,
+								id_pekerja: $('#MonitoringOJT-cmbPekerjaOJT').val()
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.id_proses, text: obj.tahapan + ' (' + obj.tgl_awal + ' - ' + obj.tgl_akhir +')'};
+								})
+							}
+						}
+					}
+				});
 		//	}
 
 		//	Form Behavior
@@ -310,12 +436,57 @@
 				$('#MonitoringOJT-chkOrientasi-uncheckAll').click(function(){
 					$('.MonitoringOJT-chkOrientasi').prop('checked', false);
 				});
+
+				$('#MonitoringOJT-btnPratinjauUndangan').click(function(){
+					$.ajax({
+						type: 'POST',
+						data: $('#MonitoringOJT-frmCetakUndangan').serialize(),
+						url: baseurl+'OnJobTraining/CetakUndangan/isi_undangan',
+						success: function(result)
+						{
+							var result = JSON.parse(result);
+							$('#MonitoringOJT-txaIsiUndangan').redactor('set', result['isi_undangan']);
+						}
+					});
+				});
+				
+				$('#MonitoringOJT-btnPratinjauMemoJadwalTraining').click(function(){
+					$.ajax({
+						type: 'POST',
+						data: $('#MonitoringOJT-frmCetakMemoJadwalTraining').serialize(),
+						url: baseurl+'OnJobTraining/CetakMemoJadwalTraining/isi_memo_jadwal_training',
+						success: function(result)
+						{
+							var result = JSON.parse(result);
+							$('#MonitoringOJT-txaIsiMemoJadwalTraining').redactor('set', result['isi_memo_jadwal_training']);
+							$('#MonitoringOJT-txaIsiLampiranJadwalTraining').redactor('set', result['isi_lampiran_jadwal_training']);
+						}
+					});
+				});
+				
+				$('#MonitoringOJT-btnPratinjauMemoPDCA').click(function(){
+					$.ajax({
+						type: 'POST',
+						data: $('#MonitoringOJT-frmCetakMemoPDCA').serialize(),
+						url: baseurl+'OnJobTraining/CetakMemoPDCA/isi_memo_pdca',
+						success: function(result)
+						{
+							var result = JSON.parse(result);
+							$('#MonitoringOJT-txaIsiMemoPDCA').redactor('set', result['isi_memo_pdca']);
+						}
+					});
+				});
+
 		//	}
 
 		//	Redactor
 		//	{
 				$('#MonitoringOJT-Undangan-txaFormatUndangan').redactor();
 				$('#MonitoringOJT-Memo-txaFormatMemo').redactor();
+				$('#MonitoringOJT-txaIsiUndangan').redactor();
+				$('#MonitoringOJT-txaIsiMemoJadwalTraining').redactor();
+				$('#MonitoringOJT-txaIsiLampiranJadwalTraining').redactor();
+				$('#MonitoringOJT-txaIsiMemoPDCA').redactor();
 		//	}
 	});
 	// 	General Function
