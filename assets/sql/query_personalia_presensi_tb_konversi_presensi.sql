@@ -122,7 +122,7 @@ from 		(
 																							case 	when 	datapres.masuk=''
 																											or 	datapres.masuk='0'
 																											or 	datapres.masuk='__:__:__'
-																											then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																											then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																									else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																							end
 																						)
@@ -132,7 +132,7 @@ from 		(
 																							case	when 	datapres.keluar=''
 																											or 	datapres.keluar='0'
 																											or 	datapres.keluar='__:__:__'
-																											then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																											then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, tshiftpekerja.jam_plg::time), 'YYYY-MM-DD HH24:MI:SS')
 																									else 	(
 																												case 	when 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																																<
@@ -140,7 +140,7 @@ from 		(
 																																	case 	when 	datapres.masuk=''
 																																					or 	datapres.masuk='0'
 																																					or 	datapres.masuk='__:__:__'
-																																					then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																					then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																			else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																	end
 																																)
@@ -499,7 +499,7 @@ from 		(
 																			case 	when 	tim.kd_ket='TIK'
 																							then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																					when 	tim.kd_ket='TM'
-																							then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																							then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																					when 	tim.kd_ket='TT'
 																							then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																			end
@@ -1049,7 +1049,7 @@ from 		(
 																											case 	when 	tim.kd_ket='TIK'
 																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																													when 	tim.kd_ket='TM'
-																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																													when 	tim.kd_ket='TT'
 																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																											end
@@ -1063,7 +1063,7 @@ from 		(
 																																		end
 																																	)
 																													when 	tim.kd_ket='TM'
-																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																													when 	tim.kd_ket='TT'
 																															then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																											end
@@ -1690,7 +1690,7 @@ from 		(
 																										case 	when 	tim.kd_ket='TIK'
 																														then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																												when 	tim.kd_ket='TM'
-																														then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																														then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																												when 	tim.kd_ket='TT'
 																														then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																										end
@@ -1724,7 +1724,7 @@ from 		(
 																																		case 	when 	tim.kd_ket='TIK'
 																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																																				when 	tim.kd_ket='TM'
-																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																				when 	tim.kd_ket='TT'
 																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
 																																		end
@@ -1738,7 +1738,7 @@ from 		(
 																																									end
 																																								)
 																																				when 	tim.kd_ket='TM'
-																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tshiftpekerja.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																				when 	tim.kd_ket='TT'
 																																						then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																		end
