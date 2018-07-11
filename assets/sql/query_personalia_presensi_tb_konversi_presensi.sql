@@ -117,7 +117,7 @@ from 		(
 																	from 		"Presensi".tdatapresensi as datapres
 																	where 		datapres.noind=tshiftpekerja.noind
 																				and 	datapres.tanggal=tshiftpekerja.tanggal
-																				and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																				and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																				and 	(
 																							case 	when 	datapres.masuk=''
 																											or 	datapres.masuk='0'
@@ -158,7 +158,7 @@ from 		(
 																	from 		"Presensi".tdatapresensi as datapres
 																	where 		datapres.noind=tshiftpekerja.noind
 																				and 	datapres.tanggal=tshiftpekerja.tanggal
-																				and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																				and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																)
 															)
 														)
@@ -188,7 +188,7 @@ from 		(
 																				from 		"Presensi".tdatapresensi as datapres
 																				where 		datapres.noind=tshiftpekerja.noind
 																							and 	datapres.tanggal=tshiftpekerja.tanggal
-																							and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																							and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																							and 	(
 																										case 	when 	datapres.masuk=''
 																														or 	datapres.masuk='0'
@@ -238,7 +238,7 @@ from 		(
 																						from 		"Presensi".tdatapresensi as datapres
 																						where 		datapres.noind=tshiftpekerja.noind
 																									and 	datapres.tanggal=tshiftpekerja.tanggal
-																									and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																									and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																									and 	(
 																												case 	when 	datapres.masuk=''
 																																or 	datapres.masuk='0'
@@ -296,7 +296,7 @@ from 		(
 																											from 		"Presensi".tdatapresensi as datapres
 																											where 		datapres.tanggal=tshiftpekerja.tanggal
 																														and		datapres.noind=tshiftpekerja.noind
-																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																										)
 																										>
 																										0
@@ -312,7 +312,7 @@ from 		(
 																											from 		"Presensi".tdatapresensi as datapres
 																											where 		datapres.noind=tshiftpekerja.noind
 																														and 	datapres.tanggal=tshiftpekerja.tanggal
-																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																										)
 																				end
 																			)
@@ -328,7 +328,7 @@ from 		(
 																				from 		"Presensi".tdatapresensi as datapres
 																				where 		datapres.noind=tshiftpekerja.noind
 																							and 	datapres.tanggal=tshiftpekerja.tanggal
-																							and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																							and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																							and 	(
 																										case 	when 	datapres.masuk=''
 																														or 	datapres.masuk='0'
@@ -392,7 +392,7 @@ from 		(
 																						from 		"Presensi".tdatapresensi as datapres
 																						where 		datapres.noind=tshiftpekerja.noind
 																									and 	datapres.tanggal=tshiftpekerja.tanggal
-																									and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																									and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																									and 	(
 																												case 	when 	datapres.masuk=''
 																																or 	datapres.masuk='0'
@@ -450,7 +450,7 @@ from 		(
 																											from 		"Presensi".tdatapresensi as datapres
 																											where 		datapres.tanggal=tshiftpekerja.tanggal
 																														and		datapres.noind=tshiftpekerja.noind
-																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																										)
 																										>
 																										0
@@ -480,7 +480,7 @@ from 		(
 																											from 		"Presensi".tdatapresensi as datapres
 																											where 		datapres.noind=tshiftpekerja.noind
 																														and 	datapres.tanggal=tshiftpekerja.tanggal
-																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																														and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																										)
 																				end
 																			)
@@ -1810,7 +1810,7 @@ from 		(
 																	from 		"Presensi".tdatapresensi as datapres
 																	where 		datapres.noind=tshiftpekerja.noind
 																				and 	datapres.tanggal=tshiftpekerja.tanggal
-																				and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																				and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																				and 	(
 																							case 	when 	datapres.masuk=''
 																											or 	datapres.masuk='0'
@@ -1871,7 +1871,7 @@ from 		(
 																								from 		"Presensi".tdatapresensi as datapres
 																								where 		datapres.tanggal=tshiftpekerja.tanggal
 																											and		datapres.noind=tshiftpekerja.noind
-																											and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID')
+																											and 	(datapres.kd_ket) in ('PKJ', 'PLB', 'PDB', 'PDL', 'PID', 'HL')
 																							)
 																							>
 																							0
@@ -2145,12 +2145,215 @@ from 		(
 																from 		"Presensi".tshiftpekerja as sftpkj
 																			join 	hrd_khs.v_hrd_khs_tpribadi as pri
 																					on 	pri.noind=sftpkj.noind
+																union
+																select 		datapres.tanggal::date as tanggal,
+																			datapres.noind as noind,
+																			datapres.noind_baru as noind_baru,
+																			(
+																				select 		sftpkj.kd_shift
+																				from 		"Presensi".tshiftpekerja as sftpkj
+																				where 		sftpkj.noind=datapres.noind
+																							and 	sftpkj.tanggal between (datapres.tanggal::date - interval '2 week') and (datapres.tanggal::date)
+																				order by 	sftpkj.tanggal desc
+																				limit 		1
+																			) as kd_shift,
+																			(
+																				case 	when 	(
+																									select 		count(*)
+																									from 		hrd_khs.tmutasi as tmutasi
+																									where 		tmutasi.noind=pri.noind
+																								)
+																								>
+																								0
+																								then 	(
+																											case 	when 	datapres.tanggal
+																															<
+																															(
+																																select 		tglberlaku 
+																											           			from 		hrd_khs.tmutasi 
+																											           			where  		noind=pri.noind
+																											           			order by 	tglberlaku asc 
+																											           			limit 		1
+																															)
+																															then	(
+																																		select 		kodesielm 
+																											             				from 		hrd_khs.tmutasi 
+																											             				where  		noind=pri.noind 
+																											             				order by 	tglberlaku asc 
+																											             				limit 		1
+																																	)
+																													when 	datapres.tanggal
+																															<
+																															(
+																																select 		tglberlaku 
+																											             		from 		hrd_khs.tmutasi 
+																											             		where  		noind=pri.noind
+																											             		order by 	tglberlaku desc 
+																											             		limit 		1
+																															)
+																															then	(
+																																		select 		kodesielm
+																											             				from 		hrd_khs.tmutasi 
+																											             				where  		noind=pri.noind 
+																											             				order by 	tglberlaku desc 
+																											             				limit 		1
+																																	)
+																													else 	datapres.kodesie
+																											end
+																										)
+																						else 	datapres.kodesie
+																				end
+																			) as kodesie,
+																			(
+																				case 	when 	(
+																									select 		count(*)
+																									from 		hrd_khs.tmutasi as tmutasi
+																									where 		tmutasi.noind=pri.noind
+																								)
+																								>
+																								0
+																								then 	(
+																											case 	when 	datapres.tanggal
+																															<
+																															(
+																																select 		tglberlaku 
+																											           			from 		hrd_khs.tmutasi 
+																											           			where  		noind=pri.noind
+																											           						and 	(
+																											           									lokasilm is not null
+																											           									and 	lokasibr is not null
+																											           								)
+																											           			order by 	tglberlaku asc 
+																											           			limit 		1
+																															)
+																															then	(
+																																		select 		lokasilm 
+																											             				from 		hrd_khs.tmutasi 
+																											             				where  		noind=pri.noind 
+																											             				order by 	tglberlaku asc 
+																											             				limit 		1
+																																	)
+																													when 	datapres.tanggal
+																															<
+																															(
+																																select 		tglberlaku 
+																											             		from 		hrd_khs.tmutasi 
+																											             		where  		noind=pri.noind
+																											             					and 	(
+																											           									lokasilm is not null
+																											           									and 	lokasibr is not null
+																											           								)
+																											             		order by 	tglberlaku desc 
+																											             		limit 		1
+																															)
+																															then	(
+																																		select 		lokasilm
+																											             				from 		hrd_khs.tmutasi 
+																											             				where  		noind=pri.noind 
+																											             				order by 	tglberlaku desc 
+																											             				limit 		1
+																																	)
+																													else 	(
+																																select 		lokasi_kerja
+																																from 		hrd_khs.tpribadi
+																																where 		noind=pri.noind
+																															)
+																											end
+																										)
+																						else 	(
+																									select 		lokasi_kerja
+																									from 		hrd_khs.tpribadi
+																									where 		noind=pri.noind
+																								)
+																				end					
+																			) as lokasi_kerja,
+																			(
+																				case 	when 	(
+																									select 		count(*)
+																									from 		hrd_khs.tmutasi as tmutasi
+																									where 		tmutasi.noind=pri.noind
+																								)
+																								>
+																								0
+																								then 	(
+																											case 	when 	datapres.tanggal
+																															<
+																															(
+																																select 		tglberlaku 
+																											           			from 		hrd_khs.tmutasi 
+																											           			where  		noind=pri.noind
+																											           			order by 	tglberlaku asc 
+																											           			limit 		1
+																															)
+																															then	(
+																																		select 		kd_jabatanlm 
+																											             				from 		hrd_khs.tmutasi 
+																											             				where  		noind=pri.noind 
+																											             				order by 	tglberlaku asc 
+																											             				limit 		1
+																																	)
+																													when 	datapres.tanggal
+																															<
+																															(
+																																select 		tglberlaku 
+																											             		from 		hrd_khs.tmutasi 
+																											             		where  		noind=pri.noind
+																											             		order by 	tglberlaku desc 
+																											             		limit 		1
+																															)
+																															then	(
+																																		select 		kd_jabatanlm
+																											             				from 		hrd_khs.tmutasi 
+																											             				where  		noind=pri.noind 
+																											             				order by 	tglberlaku desc 
+																											             				limit 		1
+																																	)
+																													else 	(pri.kd_jabatan)
+																											end
+																										)
+																						else 	(pri.kd_jabatan)
+																				end
+																			) as kd_jabatan,
+																			'0'::numeric as tukar,
+																			(
+																				to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																			) as jam_msk,
+																			(
+																				to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																			) as jam_akhmsk,
+																			(
+																				(
+																					case 	when 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																									<
+																									to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																									then	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																							else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																					end
+																				)
+																			) as jam_plg,
+																			(
+																				to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																			) as break_mulai,
+																			(
+																				to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																			) as break_selesai,
+																			(
+																				to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																			) as ist_mulai,
+																			(
+																				to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																			) as ist_selesai
+																from 		"Presensi".tdatapresensi as datapres
+																			join 	hrd_khs.v_hrd_khs_tpribadi as pri
+																					on 	pri.noind=datapres.noind
+																where 		datapres.kd_ket='HL'
 																order by 	tanggal,
 																			lokasi_kerja,
 																			kodesie,
 																			kd_jabatan,
 																			noind,
 																			kd_shift
+
 															) as tshiftpekerja
 												where 		tshiftpekerja.tanggal between :tgl1 and :tgl2
 															:kode_status_kerja
