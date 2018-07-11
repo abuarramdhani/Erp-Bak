@@ -1763,7 +1763,7 @@ from 		(
 															from 	"Presensi".tdatapresensi as datapres
 															where 	datapres.noind=tshiftpekerja.noind
 																	and 	datapres.tanggal=tshiftpekerja.tanggal
-																	and 	(datapres.kd_ket)='PLB'
+																	and 	(datapres.kd_ket) in ('PLB', 'HL')
 																	and 	(
 																				case 	when 	datapres.masuk=''
 																								or 	datapres.masuk='0'
