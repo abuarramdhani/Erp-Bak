@@ -49,9 +49,9 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="txtKetOrderDetail" class="control-label col-lg-4">Ket Order Detail</label>
+                                                <label for="txtKetOrderDetail" class="control-label col-lg-4">Detail Order</label>
                                                 <div class="col-lg-4">
-                                                    <textarea placeholder="Ket Order Detail" name="txtKetOrderDetail" class="form-control"></textarea>
+                                                    <textarea placeholder="Detail Order" name="txtKetOrderDetail" class="form-control"></textarea>
                                                 </div>
                                             </div>
 

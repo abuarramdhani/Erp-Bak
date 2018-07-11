@@ -33,24 +33,24 @@
     </table>
     <table style="border-right: 1px solid black;border-left: 1px solid black;width: 100%;margin-top: 0px">
         <tr>
-            <td style="width: 13%"><p style="font-size: 12px">Tgl. Order </p></td>
+            <td style="width: 13%;padding-left: 5px;"><p style="font-size: 12px">Tgl. Order </p></td>
             <td style="width: 2%"> : </td>
             <td style="width: 35%"><p style="font-size: 12px"><?php echo date('Y-m-d', strtotime($header[0]['tgl_order']));?></p></td>
             <td style="text-align: center;width: 50%;border-left: 1px solid black;border-bottom: 1px solid black;" colspan="3"><b style="font-size: 14px">Pemberi Order</b></td>
         </tr>
         <tr>
-            <td style="width: 13%"><p style="font-size: 12px">Tgl. Selesai </p></td>
+            <td style="width: 13%;padding-left: 5px;"><p style="font-size: 12px">Tgl. Selesai </p></td>
             <td style="width: 2%"> : </td>
             <td style="width: 35%"><p style="font-size: 12px"><?php echo date('Y-m-d', strtotime($header[0]['due_date']));?></p></td>
-            <td style="width: 13%;border-left: 1px solid black;"><p style="font-size: 12px">Seksi </p></td>
+            <td style="width: 13%;padding-left: 5px;border-left: 1px solid black;"><p style="font-size: 12px">Seksi </p></td>
             <td style="width: 2%"> : </td>
             <td style="width: 35%"><p style="font-size: 12px"><?php echo $header[0]['nama_seksi'];?></p></td>
         </tr>
         <tr>
-            <td style="width: 13%"><p style="font-size: 12px">Jenis Order </p></td>
+            <td style="width: 13%;padding-left: 5px;"><p style="font-size: 12px">Jenis Order </p></td>
             <td style="width: 2%"> : </td>
             <td style="width: 35%"><p style="font-size: 12px"><?php echo $header[0]['jenis_order']?></p></td>
-            <td style="width: 13%;border-left: 1px solid black;"><p style="font-size: 12px">Departemen </p></td>
+            <td style="width: 13%;border-left: 1px solid black;padding-left: 5px;"><p style="font-size: 12px">Departemen </p></td>
             <td style="width: 2%"> : </td>
             <td style="width: 35%"><p style="font-size: 12px"><?php echo $header[0]['nama_dept']?></p></td>
         </tr>
