@@ -1703,3 +1703,7 @@ $route['OrderSiteManagement'] = 'OrderSiteManagement/C_OrderSiteManagement';
 $route['OrderSiteManagement/Order'] = 'OrderSiteManagement/MainMenu/C_Order';
 $route['OrderSiteManagement/Order/(:any)'] = 'OrderSiteManagement/MainMenu/C_Order/$1';
 $route['OrderSiteManagement/Order/(:any)/(:any)'] = 'OrderSiteManagement/MainMenu/C_Order/$1/$2';
+
+$route['SiteManagement/MobileOrder/login'] = 'SiteManagement/C_index/login';
+$route['SiteManagement/MobileOrder/getlist'] = 'SiteManagement/C_index/getlist';
+$route['SiteManagement/MobileOrder/scan'] = 'SiteManagement/C_index/scan';
