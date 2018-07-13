@@ -46,7 +46,7 @@
 														foreach ($daftar_cetak_memo_jadwal_training_ref as $pekerja_ref)
 														{
 													?>
-													<option value="<?php echo $pekerja_ref['id_pekerja'];?>"><?php echo $pekerja_ref['noind'].' - 
+													<option value="<?php echo $pekerja_ref['id_pekerja'];?>" selected><?php echo $pekerja_ref['noind'].' - 
 													'.$pekerja_ref['nama_pekerja_ojt'];?></option>
 													<?php
 														}

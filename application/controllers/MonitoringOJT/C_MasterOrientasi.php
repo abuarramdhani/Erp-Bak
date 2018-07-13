@@ -7,15 +7,8 @@ class C_MasterOrientasi extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper('form');
-		$this->load->helper('url');
-		$this->load->helper('html');
-
-		$this->load->library('form_validation');
-		$this->load->library('session');
-		$this->load->library('encrypt');
-		$this->load->library('upload');
 		$this->load->library('General');
+		$this->load->library('MonitoringOJT');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringOJT/M_masterorientasi');
@@ -79,7 +72,6 @@ class C_MasterOrientasi extends CI_Controller
 						$tahapan 			=	filter_var(strtoupper($this->input->post('txtTahapan', TRUE)), FILTER_SANITIZE_STRING);
 						$tanggalOtomatis 	=	$this->input->post('radioTanggalOtomatis', TRUE);
 						$lamaPelaksanaan 	=	filter_var($this->input->post('numLamaPelaksanaan', TRUE), FILTER_SANITIZE_NUMBER_INT);
-						$cekEvaluasi 		=	$this->input->post('radioCekEvaluasi', TRUE);
 						$pemberitahuan 		=	$this->input->post('radioPemberitahuan', TRUE);
 						/*$cetak 				=	$this->input->post('radioCetak', TRUE);*/
 						$formatCetak  		=	$this->input->post('cmbFormatCetak', TRUE);
@@ -121,7 +113,6 @@ class C_MasterOrientasi extends CI_Controller
 													'tahapan'			=>	$tahapan,
 													'ck_tgl'			=>	$tanggalOtomatis,
 													'lama_hari'			=>	$lamaPelaksanaan,
-													'evaluasi'			=> 	$cekEvaluasi,
 													'pemberitahuan'		=>	$pemberitahuan,
 													/*'memo'				=>	$cetak,
 													'id_memo'			=>	$formatCetak,*/
@@ -142,7 +133,6 @@ class C_MasterOrientasi extends CI_Controller
 														'tahapan'			=>	$tahapan,
 														'ck_tgl'			=>	$tanggalOtomatis,
 														'lama_hari'			=>	$lamaPelaksanaan,
-														'evaluasi'			=> 	$cekEvaluasi,
 														'pemberitahuan'		=>	$pemberitahuan,
 														/*'memo'				=>	$cetak,
 														'id_memo'			=>	$formatCetak,*/
@@ -517,7 +507,17 @@ class C_MasterOrientasi extends CI_Controller
 
 			public function OrientasiBaru_Delete($id_orientasi)
 			{
-				
+				$id_orientasi_decode 	=	$this->general->dekripsi($id_orientasi);
+
+				$this->monitoringojt->ojt_history('ojt', 'tb_orientasi', array('id_orientasi' => $id_orientasi_decode), 'DELETE');
+				$this->monitoringojt->ojt_history('ojt', 'tb_jadwal', array('id_orientasi' => $id_orientasi_decode), 'DELETE');
+				$this->monitoringojt->ojt_history('ojt', 'tb_pemberitahuan', array('id_orientasi' => $id_orientasi_decode), 'DELETE');
+
+				$this->M_masterorientasi->tb_orientasi_delete(array('id_orientasi' => $id_orientasi_decode));
+				$this->M_masterorientasi->tb_jadwal_delete(array('id_orientasi' => $id_orientasi_decode));
+				$this->M_masterorientasi->tb_pemberitahuan_delete(array('id_orientasi' => $id_orientasi_decode));
+
+				redirect('OnJobTraining/MasterOrientasi/');
 			}
 
 			public function OrientasiBaru_Update($id_orientasi)
@@ -573,7 +573,6 @@ class C_MasterOrientasi extends CI_Controller
 							$tahapan 			=	filter_var(strtoupper($this->input->post('txtTahapan', TRUE)), FILTER_SANITIZE_STRING);
 							$tanggalOtomatis 	=	$this->input->post('radioTanggalOtomatis', TRUE);
 							$lamaPelaksanaan 	=	filter_var($this->input->post('numLamaPelaksanaan', TRUE), FILTER_SANITIZE_NUMBER_INT);
-							$cekEvaluasi 		=	$this->input->post('radioCekEvaluasi', TRUE);
 							$pemberitahuan 		=	$this->input->post('radioPemberitahuan', TRUE);
 							/*$cetak 				=	$this->input->post('radioCetak', TRUE);*/
 							$formatCetak  		=	$this->input->post('cmbFormatCetak', TRUE);
@@ -616,7 +615,6 @@ class C_MasterOrientasi extends CI_Controller
 														'tahapan'				=>	$tahapan,
 														'ck_tgl'				=>	$tanggalOtomatis,
 														'lama_hari'				=>	$lamaPelaksanaan,
-														'evaluasi'				=> 	$cekEvaluasi,
 														'pemberitahuan'			=>	$pemberitahuan,
 														/*'memo'					=>	$cetak,
 														'id_memo'				=>	$formatCetak,*/
@@ -638,7 +636,6 @@ class C_MasterOrientasi extends CI_Controller
 															'tahapan'			=>	$tahapan,
 															'ck_tgl'			=>	$tanggalOtomatis,
 															'lama_hari'			=>	$lamaPelaksanaan,
-															'evaluasi'			=> 	$cekEvaluasi,
 															'pemberitahuan'		=>	$pemberitahuan,
 															/*'memo'				=>	$cetak,
 															'id_memo'			=>	$formatCetak,*/
@@ -1032,213 +1029,6 @@ class C_MasterOrientasi extends CI_Controller
 								}
 							}
 					//	}
-
-					/*// 	Undangan
-					//	{
-							$idUndangan 					=	$this->input->post('idUndangan', TRUE);
-							$undanganIntervalHari 			=	$this->input->post('numUndanganIntervalHari', TRUE);
-							$undanganIntervalMinggu 		=	$this->input->post('numUndanganIntervalMinggu', TRUE);
-							$undanganIntervalBulan 			=	$this->input->post('numUndanganIntervalBulan', TRUE);
-							$undanganPelaksanaan 			=	$this->input->post('cmbUndanganPelaksanaan', TRUE);
-							$undanganTujuan 				=	$this->input->post('cmbUndanganTujuan', TRUE);
-
-							echo '<pre>';
-							print_r($idUndangan);
-							echo '</pre>';
-
-							$indeksIDUndangan 				=	array();
-							if(!(empty($idUndangan)))
-							{
-								$indeksIDUndangan 				=	array_keys($idUndangan);
-							}
-
-							if(count($indeksIDUndangan)>0)
-							{
-								$idUndanganUsed 		=	array();
-								for ($k = 0; $k < count($indeksIDUndangan); $k++)
-								{
-									if($idUndangan[$indeksIDUndangan[$k]]!='')
-									{
-										$idUndanganUsed[$k] 	=	$this->encrypt->decode(str_replace(array('-', '_', '~'), array('+', '/', '='), $idUndangan[$indeksIDUndangan[$k]]));
-									}
-								}
-
-								$undanganDeleted 		=	$this->M_masterorientasi->ambilUndanganDeleted($id_orientasi_decode, $idUndanganUsed);
-
-								foreach ($undanganDeleted as $deleted) 
-								{
-									$penerima 	=	FALSE;
-
-									if($deleted['hari']=='')
-									{
-										$deleted['hari'] 	=	NULL;
-									}
-
-									if($deleted['minggu']=='')
-									{
-										$deleted['minggu'] 	=	NULL;
-									}
-
-									if($deleted['bulan']=='')
-									{
-										$deleted['bulan'] 	=	NULL;
-									}
-
-									$inputDeletedUndanganHistory 		=	array
-																				(
-																					'id_berkas' 		=>	$deleted['id_berkas'],
-																					'id_orientasi'		=>	$deleted['id_orientasi'],
-																					'hari'				=>	$deleted['hari'],
-																					'minggu'			=>	$deleted['minggu'],
-																					'bulan'				=>	$deleted['bulan'],
-																					'urutan' 			=>	$deleted['urutan'],
-																					'penerima' 			=>	$deleted['penerima'],
-																					'type'				=>	'DELETE',
-																					'delete_timestamp'	=>	$waktuEksekusi,
-																					'delete_user' 		=>	$user
-																				);
-
-									echo '<pre>';
-									print_r($inputDeletedUndanganHistory);
-									echo '</pre>';
-
-									$this->M_masterorientasi->inputUndanganHistory($inputDeletedUndanganHistory);
-									$this->M_masterorientasi->deleteUnusedUndangan($id_orientasi_decode, $idUndanganUsed);
-								}
-
-								for ($k = 0; $k < count($indeksIDUndangan); $k++)
-								{
-									if($idUndangan[$indeksIDUndangan[$k]]!='')
-									{
-										$idUndangan[$k] 	=	$this->encrypt->decode(str_replace(array('-', '_', '~'), array('+', '/', '='), $idUndangan[$indeksIDUndangan[$k]]));
-									}
-								}
-
-								for ($k = 0; $k < count($indeksIDUndangan); $k++)
-								{
-
-									if(strlen($undanganIntervalHari[$indeksIDUndangan[$k]])>0)
-									{
-										if($undanganIntervalHari[$indeksIDUndangan[$k]]==0)
-										{
-											$undanganIntervalHari[$indeksIDUndangan[$k]] 		=	0;
-										}
-										else
-										{
-											$undanganIntervalHari[$indeksIDUndangan[$k]] 			=	filter_var($undanganIntervalHari[$indeksIDUndangan[$k]], FILTER_SANITIZE_NUMBER_INT);
-										}
-									}
-									else
-									{
-										$undanganIntervalHari[$indeksIDUndangan[$k]] 			=	NULL;
-									}
-
-									if(strlen($undanganIntervalMinggu[$indeksIDUndangan[$k]])>0)
-									{
-										if($undanganIntervalMinggu[$indeksIDUndangan[$k]]==0)
-										{
-											$undanganIntervalMinggu[$indeksIDUndangan[$k]] 		=	0;
-										}
-										else
-										{
-											$undanganIntervalMinggu[$indeksIDUndangan[$k]] 			=	filter_var($undanganIntervalMinggu[$indeksIDUndangan[$k]], FILTER_SANITIZE_NUMBER_INT);
-										}
-									}
-									else
-									{
-										$undanganIntervalMinggu[$indeksIDUndangan[$k]] 			=	NULL;
-									}
-
-									if(strlen($undanganIntervalBulan[$indeksIDUndangan[$k]])>0)
-									{
-										if($undanganIntervalBulan[$indeksIDUndangan[$k]]==0)
-										{
-											$undanganIntervalBulan[$indeksIDUndangan[$k]] 		=	0;
-										}
-										else
-										{
-											$undanganIntervalBulan[$indeksIDUndangan[$k]] 			=	filter_var($undanganIntervalBulan[$indeksIDUndangan[$k]], FILTER_SANITIZE_NUMBER_INT);
-										}
-									}
-									else
-									{
-										$undanganIntervalBulan[$indeksIDUndangan[$k]] 			=	NULL;
-									}
-
-									if
-									(
-										($undanganIntervalHari[$indeksIDUndangan[$k]]>=0 OR $undanganIntervalMinggu[$indeksIDUndangan[$k]]>=0 OR $undanganIntervalBulan[$indeksIDUndangan[$k]]>=0)
-										AND $undanganPelaksanaan[$indeksIDUndangan[$k]]>=0
-										AND !(empty($undanganTujuan[$indeksIDUndangan[$k]])))
-									{
-										if(!(empty($idUndangan[$indeksIDUndangan[$k]])))
-										{
-											$updateUndangan 					= 	array(
-																					'id_orientasi'			=>	$id_orientasi_decode,
-																					'hari'					=>	$undanganIntervalHari[$indeksIDUndangan[$k]],
-																					'minggu'				=>	$undanganIntervalMinggu[$indeksIDUndangan[$k]],
-																					'bulan'					=>	$undanganIntervalBulan[$indeksIDUndangan[$k]],
-																					'urutan'				=>	$undanganPelaksanaan[$indeksIDUndangan[$k]],
-																					'penerima'				=>	$undanganTujuan[$indeksIDUndangan[$k]],
-																					'last_update_timestamp'	=>	$waktuEksekusi,
-																					'last_update_user' 		=>	$user,
-																				);
-											echo '<pre>';
-											print_r($updateUndangan);
-											echo '</pre>';
-
-											$this->M_masterorientasi->updateUndangan($updateUndangan, $idUndanganUsed[$indeksIDUndangan[$k]]);
-
-											$inputUndanganHistory 					= 	array(
-																							'id_berkas'			=>	$idUndangan[$indeksIDUndangan[$k]],
-																							'id_orientasi'		=>	$id_orientasi_decode,
-																							'hari'				=>	$undanganIntervalHari[$indeksIDUndangan[$k]],
-																							'minggu'			=>	$undanganIntervalMinggu[$indeksIDUndangan[$k]],
-																							'bulan'				=>	$undanganIntervalBulan[$indeksIDUndangan[$k]],
-																							'urutan'			=>	$undanganPelaksanaan[$indeksIDUndangan[$k]],
-																							'penerima'			=>	$undanganTujuan[$indeksIDUndangan[$k]],
-																							'type'				=>	'UPDATE',
-																							'create_timestamp'	=>	$waktuEksekusi,
-																							'create_user' 		=>	$user,
-																						);
-											$this->M_masterorientasi->inputUndanganHistory($inputUndanganHistory);
-										}
-										else
-										{
-											$inputUndangan 					= 	array(
-																					'id_orientasi'		=>	$id_orientasi_decode,
-																					'hari'				=>	$undanganIntervalHari[$indeksIDUndangan[$k]],
-																					'minggu'			=>	$undanganIntervalMinggu[$indeksIDUndangan[$k]],
-																					'bulan'				=>	$undanganIntervalBulan[$indeksIDUndangan[$k]],
-																					'urutan'			=>	$undanganPelaksanaan[$indeksIDUndangan[$k]],
-																					'penerima'			=>	$undanganTujuan[$indeksIDUndangan[$k]],
-																					'create_timestamp'	=>	$waktuEksekusi,
-																					'create_user' 		=>	$user,
-																				);
-											echo '<pre>';
-											print_r($inputUndangan);
-											echo '</pre>';
-
-											$idUndangan 		=	$this->M_masterorientasi->inputUndangan($inputUndangan);
-
-											$inputUndanganHistory 					= 	array(
-																						'id_berkas'			=>	$idUndangan,
-																						'id_orientasi'		=>	$id_orientasi_decode,
-																						'hari'				=>	$undanganIntervalHari[$indeksIDUndangan[$k]],
-																						'minggu'			=>	$undanganIntervalMinggu[$indeksIDUndangan[$k]],
-																						'bulan'				=>	$undanganIntervalBulan[$indeksIDUndangan[$k]],
-																						'urutan'			=>	$undanganPelaksanaan[$indeksIDUndangan[$k]],
-																						'penerima'			=>	$undanganTujuan[$indeksIDUndangan[$k]],
-																						'type'				=>	'CREATE',
-																						'create_timestamp'	=>	$waktuEksekusi,
-																						'create_user' 		=>	$user,
-																					);
-											$this->M_masterorientasi->inputUndanganHistory($inputUndanganHistory);
-										}
-									}
-								}
-							}
-					//	}*/
 
 					redirect('OnJobTraining/MasterOrientasi/');
 				}
