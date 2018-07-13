@@ -52,7 +52,7 @@ class M_monitoring extends CI_Model
         $query = $this->db->query("select x.*,
                                         (
                                             case    when    (
-                                                                current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal
+                                                                current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal
                                                             )
                                                             then    0
                                                     else    1
@@ -65,7 +65,7 @@ class M_monitoring extends CI_Model
                                                                         where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori 
                                                                     from sm.sm_jadwal as x
                                                                     where x.status=false 
-                                                                        and (current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal) 
+                                                                        and (current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal) 
                                                                         and x.id_kategori=1
                                 union
                                 select x.*,
@@ -90,7 +90,7 @@ class M_monitoring extends CI_Model
         $query = $this->db->query("select x.*,
                                         (
                                             case    when    (
-                                                                current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal
+                                                                current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal
                                                             )
                                                             then    0
                                                     else    1
@@ -103,7 +103,7 @@ class M_monitoring extends CI_Model
                                                                         where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori 
                                                                     from sm.sm_jadwal as x
                                                                     where x.status=false 
-                                                                        and (current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal)
+                                                                        and (current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal)
                                                                         and x.id_kategori=2
                                 union
                                 select x.*,
@@ -128,7 +128,7 @@ class M_monitoring extends CI_Model
         $query = $this->db->query("select x.*,
                                         (
                                             case    when    (
-                                                                current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal
+                                                                current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal
                                                             )
                                                             then    0
                                                     else    1
@@ -141,7 +141,7 @@ class M_monitoring extends CI_Model
                                                                         where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori 
                                                                     from sm.sm_jadwal as x
                                                                     where x.status=false 
-                                                                        and (current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal)
+                                                                        and (current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal)
                                                                         and x.id_kategori=3
                                 union
                                 select x.*,
@@ -166,7 +166,7 @@ class M_monitoring extends CI_Model
         $query = $this->db->query("select x.*,
                                         (
                                             case    when    (
-                                                                current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal
+                                                                current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal
                                                             )
                                                             then    0
                                                     else    1
@@ -179,7 +179,7 @@ class M_monitoring extends CI_Model
                                                                         where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori 
                                                                     from sm.sm_jadwal as x
                                                                     where x.status=false 
-                                                                        and (current_date between (x.tanggal_jadwal - interval '2 day') and x.tanggal_jadwal)
+                                                                        and (current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal)
                                                                         and x.id_kategori=4
                                 union
                                 select x.*,
