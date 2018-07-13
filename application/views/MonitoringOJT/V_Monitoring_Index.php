@@ -177,6 +177,8 @@
 													<th style="white-space: nowrap; text-align: center;">Seksi</th>
 													<th style="white-space: nowrap; text-align: center;">Proses Berjalan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Masuk</th>
+													<th style="white-space: nowrap; text-align: center;">Tanggal Selesai</th>
+													<th style="white-space: nowrap; text-align: center;">Atasan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Lahir</th>
 													<th style="white-space: nowrap; text-align: center;">Latar Belakang Pendidikan</th>
 												</tr>
@@ -260,6 +262,12 @@
 														<?php echo $pekerja['tgl_masuk'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['tgl_selesai'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['nama_atasan_pekerja'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tanggal_lahir'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
@@ -285,6 +293,8 @@
 													<th style="white-space: nowrap; text-align: center;">Selesai PDCA</th>
 													<th style="white-space: nowrap; text-align: center;">Proses Berjalan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Masuk</th>
+													<th style="white-space: nowrap; text-align: center;">Tanggal Selesai</th>
+													<th style="white-space: nowrap; text-align: center;">Atasan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Lahir</th>
 													<th style="white-space: nowrap; text-align: center;">Latar Belakang Pendidikan</th>
 												</tr>
@@ -401,6 +411,8 @@
 													<th style="white-space: nowrap; text-align: center;">Pekerja</th>
 													<th style="white-space: nowrap; text-align: center;">Seksi</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Masuk</th>
+													<th style="white-space: nowrap; text-align: center;">Tanggal Selesai</th>
+													<th style="white-space: nowrap; text-align: center;">Atasan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Lahir</th>
 													<th style="white-space: nowrap; text-align: center;">Latar Belakang Pendidikan</th>
 												</tr>
@@ -435,6 +447,12 @@
 														<?php echo $pekerja['tgl_masuk'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['tgl_selesai'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['nama_atasan_pekerja'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tanggal_lahir'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
@@ -459,6 +477,7 @@
 													<th style="white-space: nowrap; text-align: center;">Pekerja</th>
 													<th style="white-space: nowrap; text-align: center;">Seksi</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Masuk</th>
+													<th style="white-space: nowrap; text-align: center;">Atasan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Lahir</th>
 													<th style="white-space: nowrap; text-align: center;">Latar Belakang Pendidikan</th>
 													<th style="white-space: nowrap; text-align: center;">Tanggal Keluar</th>
@@ -494,6 +513,9 @@
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tgl_masuk'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['tgl_selesai'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tanggal_lahir'];?>

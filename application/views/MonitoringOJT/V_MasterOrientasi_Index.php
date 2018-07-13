@@ -162,7 +162,7 @@
 														<input type="number" class="form-control" name="numLamaPelaksanaan" min="1" max="99" value="1" />
 													</div>
 												</div>
-												<div class="form-group">
+												<!-- <div class="form-group">
 													<label for="radioCekEvaluasi" class="control-label col-lg-4">Cek Evaluasi</label>
 													<div class="col-lg-3">
 														<input type="radio" name="radioCekEvaluasi" value="1">Ya</input>
@@ -170,7 +170,7 @@
 													<div class="col-lg-3">
 														<input type="radio" name="radioCekEvaluasi" value="0">Tidak</input>
 													</div>
-												</div>
+												</div> -->
 												<div class="form-group">
 													<label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
 													<textarea name="txtKeterangan" class="col-lg-6"></textarea>
@@ -195,7 +195,7 @@
 														<input type="radio" name="radioPemberitahuan" value="0" id="MonitoringOJT-radioPemberitahuanFalse">Tidak</input>
 													</div>
 												</div>
-												<div class="form-group">
+												<!-- <div class="form-group">
 													<label for="radioCetak" class="control-label col-lg-4">Cetak</label>
 													<div class="col-lg-2">
 														<input type="radio" name="radioCetak" value="1" id="MonitoringOJT-radioCetakTrue">Ya</input>
@@ -203,7 +203,7 @@
 													<div class="col-lg-2">
 														<input type="radio" name="radioCetak" value="0" id="MonitoringOJT-radioCetakFalse">Tidak</input>
 													</div>
-												</div>
+												</div> -->
 											</div>
 										</div>
 									</div>
