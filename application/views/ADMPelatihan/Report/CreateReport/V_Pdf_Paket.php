@@ -458,7 +458,7 @@
             	</tr>
             	<tr>
             		<td style="height: 50px; width: 60px; border-right: 1px solid black"></td>
-            		<td style="height: 50px;">apararar</td>
+            		<td style="height: 50px;"></td>
             	</tr>
             </table>
         </td>

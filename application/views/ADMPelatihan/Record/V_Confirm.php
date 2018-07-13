@@ -191,7 +191,7 @@
 								<div class="col-md-12" >
 									<input type="text" name="txtSchnum" value="<?php echo $rc['scheduling_id']?>" hidden></input>
 									<div style="overflow: scroll;">
-									<table class="datatable table table-striped table-bordered table-hover" style="min-width: 1500px">
+									<table class="datatable table table-striped table-bordered table-hover" style="min-width: 1800px">
 										<thead class="bg-primary">
 											<tr>
 												<th  rowspan="2"  class="header_table">No</th>
@@ -204,7 +204,7 @@
 													<?php if($ev2=='Y'){ ?>
 														<th colspan="5" class="header_table">Pembelajaran</th>
 													<?php } if($ev3=='Y'){ ?>
-														<th  colspan="2" class="header_table">Perilaku</th>
+														<th  colspan="5" class="header_table">Perilaku</th>
 													<?php } ?>
 												<th  rowspan="2" style="min-width: 200px" class="header_table">lain-lain</th>
 											</tr>
@@ -216,8 +216,11 @@
 													<th   class="header_table">R2</th>
 													<th   class="header_table">R3</th>
 												<?php } if($ev3=='Y'){ ?>
-													<th   class="header_table">Kompetensi</th>
-													<th   class="header_table" style="min-width: 300px">Keterangan</th>
+													<th   class="header_table">Hardskill</th>
+													<th   class="header_table">Keterangan</th>
+													<th   class="header_table">Softskill</th>
+													<th   class="header_table">Keterangan</th>
+													<th   class="header_table" style="min-width: 300px">Catatan</th>
 												<?php } ?>
 											</tr>
 										</thead>
@@ -264,7 +267,9 @@
 														<option value="2" <?php echo $tidakhadir;?> >Tidak Hadir</option>
 													</select>
 												</td>
-													<?php if($ev2=='Y'){ ?>
+													<?php 
+													if($ev2=='Y')
+														{ ?>
 														<td col-id="pre">
 															<input type="text" class="form-control" name="txtPengetahuanPre[]" Placeholder="Pengetahuan (pre)" onchange="<?php echo $a; ?>(this,'pre','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_pre'];?>">
 														</td>
@@ -280,16 +285,20 @@
 														<td col-id="post">
 															<input type="text" class="form-control" name="txtPengetahuanR3[]" Placeholder="R3" onchange="<?php echo $a; ?>(this,'post','<?php echo $no; ?>')" onkeypress="return isNumberKey(event)" value="<?php echo $pt['score_eval2_r3'];?>">
 														</td>
-													<?php } if($ev3=='Y'){ ?>
+													<?php } 
+													if($ev3=='Y')
+													{ ?>
 														<td>
-															<select class="form-control SlcRuang" name="txtPerilakuEvalLap[]" data-placeholder="Eval" required>
-																<option value="0" <?php if ($pt['score_eval3_post2'] == 0) {
-																	echo "selected";
-																} ?> >Tidak Kompeten</option>
-																<option value="1" <?php if ($pt['score_eval3_post2'] == 1) {
-																	echo "selected";
-																} ?> >Kompeten</option>
-															</select>
+															<input type="number" class="form-control" name="txtPerilakuHardskill[]" Placeholder="nilai" value="<?php echo $pt['score_eval3_hardskill'];?>">
+														</td>
+														<td>
+															<input type="text" class="form-control" name="txtPerilaku_ket_1[]" Placeholder="hardskill" value="<?php echo $pt['keterangan_hardskill'];?>">
+														<td>
+															<input type="number" class="form-control" name="txtPerilakuSoftskill[]" Placeholder="nilai" value="<?php echo $pt['score_eval3_softskill'];?>">
+														</td>
+														<td>
+															<input type="text" class="form-control" name="txtPerilaku_ket_2[]" Placeholder="softskill" value="<?php echo $pt['keterangan_softskill'];?>">
+														</td>
 														</td>
 														<td>
 															<input type="text" class="form-control" name="txtKeterangan[]" Placeholder="Keterangan" value="<?php echo $pt['comment'];?>">
