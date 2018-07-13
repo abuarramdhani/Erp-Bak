@@ -196,30 +196,37 @@
 
  		public function ambilTabelDaftarPekerjaOJT($pekerja_id = FALSE)
  		{
- 			$this->db->select('
- 								pekerja_ojt.*,
- 								pekerja_ojt.noind nomor_induk_pekerja_ojt,
- 								pekerja_psn.employee_name nama_pekerja_ojt,
- 								pekerja_psn.section_code,
- 								seksi_psn.section_name seksi_pekerja_ojt,
- 								pekerja_ojt.atasan nomor_induk_atasan_pekerja,
- 								pekerja_psn_2.employee_name nama_atasan_pekerja,
- 							');
- 			$this->db->from('ojt.tb_pekerja pekerja_ojt');
- 			$this->db->join('er.er_employee_all pekerja_psn', 'pekerja_psn.employee_code = pekerja_ojt.noind');
- 			$this->db->join('er.er_section seksi_psn', 'seksi_psn.section_code = pekerja_psn.section_code');
- 			$this->db->join('er.er_employee_all pekerja_psn_2', 'pekerja_psn_2.employee_code = pekerja_ojt.atasan');
-			$this->db->join('er.er_section seksi_psn_2', 'seksi_psn_2.section_code = pekerja_psn_2.section_code');
+ 			$ambilTabelDaftarPekerjaOJT 		= "	select 		pekerja_ojt.*,
+ 																pekerja_ojt.noind nomor_induk_pekerja_ojt,
+ 																pekerja_psn.employee_name nama_pekerja_ojt,
+ 																pekerja_psn.section_code,
+ 																seksi_psn.section_name seksi_pekerja_ojt,
+ 																pekerja_ojt.atasan nomor_induk_atasan_pekerja,
+ 																pekerja_psn_2.employee_name nama_atasan_pekerja,
+ 																(
+ 																	select 		max(proses_ojt.tgl_akhir)
+ 																	from 		ojt.tb_proses proses_ojt
+ 																	where 		proses_ojt.noind = pekerja_ojt.noind
+ 																) as tgl_selesai
+ 													from 		ojt.tb_pekerja pekerja_ojt
+ 																join 	er.er_employee_all pekerja_psn
+ 																		on 	pekerja_psn.employee_code = pekerja_ojt.noind
+ 																join 	er.er_section seksi_psn
+ 																		on 	seksi_psn.section_code = pekerja_psn.section_code
+ 																join 	er.er_employee_all pekerja_psn_2
+ 																		on 	pekerja_psn_2.employee_code = pekerja_ojt.atasan
+ 																join 	er.er_section seksi_psn_2
+ 																		on 	seksi_psn_2.section_code = pekerja_psn_2.section_code";
 
  			if($pekerja_id !== FALSE)
  			{
- 				$this->db->where('pekerja_ojt.pekerja_id=', $pekerja_id);
+ 				$ambilTabelDaftarPekerjaOJT 	.= "	where 	pekerja_ojt.pekerja_id = '".$pekerja_id."'";
  			}
 
- 			$this->db->order_by('pekerja_ojt.tgl_masuk', 'DESC');
- 			$this->db->order_by('pekerja_ojt.noind', 'DESC');		
+ 			$ambilTabelDaftarPekerjaOJT 	.= "	order by  	pekerja_ojt.tgl_masuk desc,
+ 																pekerja_ojt.noind desc";
 
- 			return $this->db->get()->result_array();
+ 			return $this->db->query($ambilTabelDaftarPekerjaOJT)->result_array();
  		}
 
  		public function ambilPenjadwalanManual($pekerja_id)

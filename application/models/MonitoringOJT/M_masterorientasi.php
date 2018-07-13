@@ -270,18 +270,6 @@
 																else 	0
 														end
 													) as pemberitahuan,
-													(
-														case 	when 	orientasi.memo=true
-																		then 	1
-																else 	0
-														end
-													) as memo,
-													orientasi.id_memo,
-													(
-														case 	when 	orientasi.memo=true
-																		then 	memo.judul
-														end
-													) as memo_judul,
 													jadwal.hari,
 													jadwal.minggu,
 													jadwal.bulan,
@@ -304,8 +292,6 @@
 														where 		orientasi.id_orientasi=jadwal.tujuan
 													) as nama_tujuan
 										from 		ojt.tb_orientasi as orientasi
-													left join 	ojt.tb_memo as memo
-																on 	memo.id_memo=orientasi.id_memo
 													left join 	ojt.tb_jadwal as jadwal
 																on 	jadwal.id_orientasi=orientasi.id_orientasi
 										where 		orientasi.id_orientasi=$id_orientasi_decode";
@@ -486,4 +472,23 @@
 	    	$this->db->where('id_proses_pemberitahuan =', $id_proses_pemberitahuan);
 	    	$this->db->delete('ojt.tb_proses_pemberitahuan');
 	    }
+
+	    public function tb_orientasi_delete($where_clause)
+	    {
+	    	$this->db->where($where_clause);
+	    	$this->db->delete('ojt.tb_orientasi');
+	    }
+
+	    public function tb_jadwal_delete($where_clause)
+	    {
+	    	$this->db->where($where_clause);
+	    	$this->db->delete('ojt.tb_jadwal');
+	    }
+
+	    public function tb_pemberitahuan_delete($where_clause)
+	    {
+	    	$this->db->where($where_clause);
+	    	$this->db->delete('ojt.tb_pemberitahuan');
+	    }
+
  	}
