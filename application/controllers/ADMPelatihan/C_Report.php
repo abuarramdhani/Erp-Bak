@@ -120,10 +120,13 @@ class C_Report extends CI_Controller {
 		$pelatihan 	= $this->input->POST('pelatihan');
 		$date 		= $this->input->POST('date');
 		$trainer	= $this->input->POST('trainer');
+		$tgl1		= '';
+		$tgl2		= '';
+		$tgl_now 	= '';
 
 		$data['attendant'] 				= $this->M_report->GetAttendant();
 		$data['trainer']				= $this->M_report->GetTrainerQue($trainer = FALSE);
-		$schedule 						= $this->M_report->GetSchName_QuesName($pelatihan = FALSE, $date = FALSE);
+		$schedule 						= $this->M_report->GetSchName_QuesName($pelatihan = FALSE, $date = FALSE, $tgl1 = FALSE, $tgl2=FALSE, $tgl_now=FALSE);
 		$data['GetSchName_QuesName'] 	= $schedule;
 		$segment						= $this->M_report->GetSchName_QuesName_segmen();
 		$statement						= $this->M_report->GetStatement();
@@ -275,7 +278,6 @@ class C_Report extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-
 	//HALAMAN REKAP 
 	public function rekap(){
 		$this->checkSession();
@@ -294,6 +296,7 @@ class C_Report extends CI_Controller {
 		$this->load->view('ADMPelatihan/Report/Rekap/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
+
 
 	//HALAMAN REKAP TRAINING
 	public function rekaptraining(){
@@ -373,6 +376,238 @@ class C_Report extends CI_Controller {
 		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index2',$data);
 		$this->load->view('ADMPelatihan/Report/Rekap/EfektivitasTraining/V_index3',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	//HALAMAN CUSTOM REPORT
+	public function reportbycustom(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = 'Custom Report';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Report/ReportByCustom/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+// HALAMAN PROSES CUSTOM REPORT
+	public function prosesCustomReport()
+	{
+		// PARAMETER---------------------------------------------------------------------------------------------------------
+		$judul			= $this->input->post('nama');
+		$tgl_now		= date("m/d/Y");
+		$tgl 			= $this->input->post('tanggal_custom_report');
+			$ambil_tgl	= explode('-', $tgl);
+				$tgl1 	= trim($ambil_tgl[0]);
+				$tgl2 	= trim($ambil_tgl[1]);
+							if ($tgl1==$tgl_now && $tgl2==$tgl_now) {
+								$tgl1='';
+								$tgl2='';
+							}
+		$seksi 			= $this->input->post('slcReportSection');
+		$no_namapkj		= $this->input->post('slcReportEmployee');
+			$namapkj	= trim($no_namapkj);
+
+		// DATA YANG DIPILIH (CHECKBOX)------------------------------------------------------------------------------------
+		$data['chk_nama_pekerja']	= $this->input->post('chk_nama_pekerja');
+		$data['chk_nomor_induk']	= $this->input->post('chk_nomor_induk');
+		$data['chk_seksi']		= $this->input->post('chk_seksi');
+		$data['chk_unit'] 			= $this->input->post('chk_unit');
+		$data['chk_departemen'] 	= $this->input->post('chk_departemen');
+		$data['chk_nama_pelatihan'] = $this->input->post('chk_nama_pelatihan');
+		$data['chk_tanggal'] 		= $this->input->post('chk_tanggal');
+
+		$data['chk_trainer'] 		= $this->input->post('chk_trainer');
+		$data['chk_eval_pembelajaran'] 	= $this->input->post('chk_eval_pembelajaran');
+		$data['chk_eval_perilaku'] = $this->input->post('chk_eval_perilaku');
+		
+		$data['chk_eval_reaksi1']	= $this->input->post('chk_eval_reaksi1');
+		$data['chk_eval_reaksi2']	= $this->input->post('chk_eval_reaksi2');
+		$data['chk_eval_reaksi3']	= $this->input->post('chk_eval_reaksi3');
+		$data['chk_eval_reaksi4']	= $this->input->post('chk_eval_reaksi4');
+
+		$data['Nama_Pe_report'] = $this->input->post('txt_Nama_Pe_report');
+		$data['Jabatan_Pe_report'] = $this->input->post('txt_Jabatan_Pe_report');
+
+		// SEARCH DATA DAN TRAINER---------------------------------------------------------------------------------------
+		$search = $this->M_report->GetReportCustom($judul,$tgl1,$tgl2,$seksi,$namapkj);
+		$data['search'] = $search;
+		// echo "<pre>";
+		// print_r($data['search']);
+		// echo "</pre>";
+		// exit();
+
+		$data['trainer'] = $this->M_mastertrainer->GetTrainer();
+
+		// KHUSUS PELATIHAN-----------------------------------------------------------------------------------------------
+			// menyamakan variabel:
+			$pelatihan 	= $judul;
+			$date 		= '';
+			$trainer 	= '';
+			// ---------------------------------------
+
+			$schedule = $this->M_report->GetSchName_QuesName($pelatihan, $date = FALSE, $trainer = FALSE, $tgl1 , $tgl2, $tgl_now);
+			$data['GetSchName_QuesName'] = $schedule;
+
+			$segment = $this->M_report->GetSchName_QuesName_segmen();
+			$statement= $this->M_report->GetStatement();
+			$nilai = $this->M_report->GetSheetAll();
+
+			// ATTENDANT
+			$data['attendant'] 	= $this->M_report->GetAttendant();
+
+			// HITUNG TOTAL NILAI---------------------------------------------------------------------------
+			$t_nilai = array();
+			$x = 0;
+			foreach ($schedule as $sch) {
+				foreach ($segment as $key => $value) {
+					if ($sch['scheduling_id']==$value['scheduling_id'] && $sch['questionnaire_id']==$value['questionnaire_id']) {
+
+						$total_nilai=array();
+						$id = 0;
+						$tot_p = 0;
+						$tot_s = 0;
+						$tot_p_checkpoint = 0;
+
+						foreach ($statement as $st) {
+
+							if ($value['segment_id']==$st['segment_id'] && $value['questionnaire_id']==$st['questionnaire_id']) {
+								$a_tot = 0;
+								foreach ($nilai as $index => $score) {								
+									if ($value['scheduling_id']==$score['scheduling_id'] && $st['questionnaire_id']==$score['questionnaire_id'] && $st['segment_id']==$score['segment_id']) {
+										$a=explode('||', $score['join_input']);
+										$b=explode('||', $score['join_statement_id']);
+										foreach ($b as $bi => $bb) {
+											if ($bb==$st['statement_id']) {
+												$a_tot+=$a[$bi];
+												if ($tot_p_checkpoint == 0) {
+													$tot_p++;
+												}
+											}
+										}
+									}
+								}
+								
+								$total_nilai[$id++] = array(
+									'segment_id' => $st['segment_id'], 
+									'statement_id' => $st['statement_id'], 
+									'total' => $a_tot, 
+								);
+								$tot_s++;
+								$tot_p_checkpoint = 1;
+							}
+						}
+
+						$final_total=0;
+						foreach ($total_nilai as $n => $tn) {
+							$final_total+=$tn['total'];
+						}
+						$t_rerata=$final_total/($tot_s*$tot_p);
+
+						$t_nilai[$x++]= array(
+							'scheduling_id'		=> $value['scheduling_id'], 
+							'questionnaire_id'	=> $value['questionnaire_id'], 
+							'segment_id'		=> $value['segment_id'], 
+							'f_total'			=> $final_total, 
+							'f_rata'			=> $t_rerata 
+						);
+					}
+				}
+			}
+			$data['t_nilai']= $t_nilai;
+
+			// HITUNG ROWSPAN---------------------------------------------------------------------------
+			$data['sheet_all'] = '';
+			$data['GetSchName_QuesName_segmen'] = $segment;
+			$data['index_temp'] 		= array();
+			$sgCount	= array();
+
+			foreach ($data['GetSchName_QuesName'] as $i => $val) {
+				$rowspan	= 0;
+				foreach ($data['GetSchName_QuesName_segmen'] as $key => $sg) {
+					if ($sg['scheduling_id'] == $val['scheduling_id'] && $sg['questionnaire_id'] == $val['questionnaire_id']) {
+						$rowspan++;
+					}
+				}
+				$sgCount[$i] = array(
+					'scheduling_id' => $val['scheduling_id'],
+					'questionnaire_id' => $val['questionnaire_id'],
+					'rowspan' => $rowspan
+					);
+			}
+			$data['sgCount'] 		= $sgCount;
+
+		
+		// CETAK KE PDF------------------------------------------------------------------------------------------------------
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'F4-L', 8, '', 5, 5, 55, 15, 10, 20);
+		$filename = 'Rekapan_Report.pdf';
+
+		if ($data['chk_eval_reaksi1']==TRUE) {
+			$html = $this->load->view('ADMPelatihan/Report/ReportByCustom/V_Custom_Report_Khusus_pdf', $data, true);
+		}
+		else{
+			$html = $this->load->view('ADMPelatihan/Report/ReportByCustom/V_Custom_Report_pdf', $data, true);
+		}
+
+		$pdf->SetHTMLHeader('
+			<table style="width:100%;border: 1px solid black; padding: 0px">
+			    <tr>
+			    	<td style="width: 110px;height: 100px;border-right: 1px solid black" rowspan="7">
+			    		<img style="height: 100px; width: 110px" src="'.base_url('/assets/img/logo.png').'" />
+			        </td>
+			        <td rowspan="5" style="text-align: center; width: 700px">
+			        	<h3 style="margin-bottom: 0; padding-bottom: 0;font-size: 21px;">
+			                FORM <br> LAPORAN HASIL TRAINING 
+			            </h3>
+			        </td>
+			        <td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Document No.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2"></td>
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Rev No.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2"></td>
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Rev Date.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2"></td>
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;">Page No.</td>
+			        <td style="width: 150px;border-left: 1px solid black;border-bottom: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2"></td>
+			       {PAGENO}/{nb}
+			    </tr>
+			    <tr>
+			    	<td style="width: 100px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;">Rev Note.</td>
+			        <td style="width: 150px;border-left: 1px solid black;padding-left: 5px; font-size: 13px;" colspan="2">-</td>
+			    </tr>
+			    <tr>
+			    	<td colspan="7" rowspan="2" style="border-top: 1px solid black;text-align: center; margin-bottom: 0; padding: 3;">
+			    		<div style=" font-size: 15px;">
+			    			CV KARYA HIDUP SENTOSA
+			    		</div> 
+			    		<div style="font-size: 14px;">
+			    			Jl. Magelang No. 144 Yogyakarta
+			    		</div>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<td>
+			    	</td>
+			    </tr>
+			</table>
+		');
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'I');
 	}
 
 	//HALAMAN INDEX CREATE REPORT

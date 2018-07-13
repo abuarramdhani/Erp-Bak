@@ -476,48 +476,48 @@ class C_Record extends CI_Controller {
 		
 		$this->M_record->DoConfirmSchedule($schedule_number,$data_status);
 
-		$ParticipantId 		= $this->input->post('txtId');
-		$ParticipantStatus 	= $this->input->post('slcStatus');
-		// $ScoreEval1Post		= $this->input->post('txtReaksiPost');
-		$ScoreEval2Pre 		= $this->input->post('txtPengetahuanPre');
-		$ScoreEval2Post		= $this->input->post('txtPengetahuanPost');
-		$ScoreEval2R1		= $this->input->post('txtPengetahuanR1');
-		$ScoreEval2R2		= $this->input->post('txtPengetahuanR2');
-		$ScoreEval2R3		= $this->input->post('txtPengetahuanR3');
-		$ScoreEval3Pre 		= $this->input->post('txtPerilakuPre');
-		// $ScoreEval3Post 	= $this->input->post('txtPerilakuPost');
-		$ScoreEval3Eval 	= $this->input->post('txtPerilakuEvalLap');
-		$Comment		 	= $this->input->post('txtKeterangan');
-		$Others			 	= $this->input->post('txtOthers');
+		$ParticipantId 			= $this->input->post('txtId');
+		$ParticipantStatus 		= $this->input->post('slcStatus');
+		$ScoreEval2Pre 			= $this->input->post('txtPengetahuanPre');
+		$ScoreEval2Post			= $this->input->post('txtPengetahuanPost');
+		$ScoreEval2R1			= $this->input->post('txtPengetahuanR1');
+		$ScoreEval2R2			= $this->input->post('txtPengetahuanR2');
+		$ScoreEval2R3			= $this->input->post('txtPengetahuanR3');
+		$ScoreEval3_hardskill	= $this->input->post('txtPerilakuHardskill');
+		$ScoreEval3_softskill	= $this->input->post('txtPerilakuSoftskill');
+		$Keterangan_hardskill	= $this->input->post('txtPerilaku_ket_1');
+		$Keterangan_softskill	= $this->input->post('txtPerilaku_ket_2');
+		$Comment		 		= $this->input->post('txtKeterangan');
+		$Others			 		= $this->input->post('txtOthers');
 		
 			$i=0;
 			foreach($ParticipantId as $loop){
 				$id = $ParticipantId[$i];
-				// if(empty($ScoreEval1Post[$i])){$ScoreEval1Post[$i] = NULL;}
 				if(empty($ScoreEval2Pre[$i])){$ScoreEval2Pre[$i] = NULL;}
 				if(empty($ScoreEval2Post[$i])){$ScoreEval2Post[$i] = NULL;}
 				if(empty($ScoreEval2R1[$i])){$ScoreEval2R1[$i] = NULL;}
 				if(empty($ScoreEval2R2[$i])){$ScoreEval2R2[$i] = NULL;}
 				if(empty($ScoreEval2R3[$i])){$ScoreEval2R3[$i] = NULL;}
-				if(empty($ScoreEval3Pre[$i])){$ScoreEval3Pre[$i] = NULL;}
-				// if(empty($ScoreEval3Post[$i])){$ScoreEval3Post[$i] = NULL;}
-				if(empty($ScoreEval3Eval[$i])){$ScoreEval3Eval[$i] = NULL;}
+				if(empty($ScoreEval3_hardskill[$i])){$ScoreEval3_hardskill[$i] = NULL;}
+				if(empty($ScoreEval3_softskill[$i])){$ScoreEval3_softskill[$i] = NULL;}
+				if(empty($Keterangan_hardskill[$i])){$Keterangan_hardskill[$i] = NULL;}
+				if(empty($Keterangan_softskill[$i])){$Keterangan_softskill[$i] = NULL;}
 				if(empty($Comment[$i])){$Comment[$i] = NULL;}
 				if(empty($Others[$i])){$Others[$i] = NULL;}
 				
 				$data_participant[$i] = array(
-					'status' 			=> $ParticipantStatus[$i],
-					// 'score_eval1_post' 	=> $ScoreEval1Post[$i],
-					'score_eval2_pre' 	=> $ScoreEval2Pre[$i],
-					'score_eval2_post' 	=> $ScoreEval2Post[$i],
-					'score_eval2_r1' 	=> $ScoreEval2R1[$i],
-					'score_eval2_r2' 	=> $ScoreEval2R2[$i],
-					'score_eval2_r3' 	=> $ScoreEval2R3[$i],
-					'score_eval3_pre' 	=> $ScoreEval3Pre[$i],
-					// 'score_eval3_post1' => $ScoreEval3Post[$i],
-					'score_eval3_post2' => $ScoreEval3Eval[$i],
-					'comment' 			=> $Comment[$i],
-					'keterangan_kehadiran'=> $Others[$i],
+					'status' 					=> $ParticipantStatus[$i],
+					'score_eval2_pre' 			=> $ScoreEval2Pre[$i],
+					'score_eval2_post' 			=> $ScoreEval2Post[$i],
+					'score_eval2_r1' 			=> $ScoreEval2R1[$i],
+					'score_eval2_r2' 			=> $ScoreEval2R2[$i],
+					'score_eval2_r3' 			=> $ScoreEval2R3[$i],
+					'score_eval3_hardskill' 	=> $ScoreEval3_hardskill[$i],
+					'score_eval3_softskill' 	=> $ScoreEval3_softskill[$i],
+					'keterangan_hardskill' 		=> $Keterangan_hardskill[$i],
+					'keterangan_softskill' 		=> $Keterangan_softskill[$i],
+					'comment' 					=> $Comment[$i],
+					'keterangan_kehadiran'		=> $Others[$i],
 				);
 				$this->M_record->DoConfirmParticipant($id,$data_participant[$i]);				
 				$i++;

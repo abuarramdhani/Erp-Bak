@@ -458,6 +458,86 @@ class M_report extends CI_Model {
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+
+	// AMBIL DATA CUSTOM REPORT
+	public function GetReportCustom($judul=FALSE , $tgl1=FALSE , $tgl2 ,$seksi=FALSE ,$namapkj=FALSE )
+	{	
+		// KONDISI-------------------------------------------------------------------------------------------
+		if ($judul==FALSE) {
+			$j='';
+		}else{
+			$j="and jumlah.nama_pelatihan like '$judul%'";
+		}
+		// --------------------------------------------------
+		if ($tgl1==TRUE) {
+			$t="and jumlah.tanggal between TO_DATE('$tgl1','MM/DD/YYYY') and TO_DATE('$tgl2','MM/DD/YYYY')";
+		}else{
+			$t='';
+		}
+		// ---------------------------------------------------
+		if ($seksi==FALSE) {
+			$s='';
+		}else{
+			$s="and es.section_name like '%$seksi%'";
+		}
+		// ---------------------------------------------------
+		if ($namapkj==FALSE) {
+			$n='';
+		}else{
+			$n="and jumlah.participant_name like '$namapkj%'";
+		}
+		// --------------------------------------------------------------------------------------------------
+		$sql=
+		"
+			SELECT	es.section_name, es.unit_name, es.department_name, jumlah.nama_pelatihan, jumlah.tanggal,jumlah.scheduling_id, 
+					jumlah.trainer , jumlah.standar_kelulusan ,jumlah.participant_name, jumlah.noind, jumlah.score_eval2_pre, jumlah.score_eval2_post, jumlah.score_eval2_r1,
+					jumlah.score_eval2_r2, jumlah.score_eval2_r3, jumlah.score_eval3_hardskill, jumlah.keterangan_hardskill, jumlah.score_eval3_softskill ,
+					jumlah.keterangan_softskill
+			from	
+			er.er_section es,
+			(
+				select 
+						ees.section_name,
+						pst.scheduling_name as nama_pelatihan,
+						pst.date as tanggal,
+						pst.scheduling_id,
+						pst.trainer,
+						pp.participant_name,
+						pp.noind,
+						pp.score_eval2_pre,
+						pp.score_eval2_post,
+						pp.score_eval2_r1,
+						pp.score_eval2_r2,
+						pp.score_eval2_r3,
+						pp.score_eval3_hardskill,
+						pp.score_eval3_softskill,
+						pp.keterangan_hardskill,
+						pp.keterangan_softskill,
+						pst.standar_kelulusan,
+						count(pp.participant_name)as jml
+						from	pl.pl_participant pp,
+								er.er_employee_all pea,
+								er.er_section ees,
+								pl.pl_scheduling_training pst
+						where
+							pp.noind = pea.employee_code
+							and ees.section_code = pea.section_code
+							and pp.scheduling_id=pst.scheduling_id
+						group by
+							ees.section_name,
+							pst.scheduling_name,
+							3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+			) as jumlah
+			where 
+			jumlah.jml is not null
+			and jumlah.section_name = es.section_name
+			$j $t $s $n
+			group by es.section_name,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+			order by jumlah.tanggal asc;
+		";
+		$query=$this->db->query($sql);
+		return $query->result_array();
+	}
 	
 	// REKAP TRAINING
 	public function GetRkpTraining($date1,$date2)
@@ -1000,40 +1080,58 @@ class M_report extends CI_Model {
 		// return $sql;
 	}
 
-	public function GetSchName_QuesName($pelatihan = FALSE, $date = FALSE, $trainer = FALSE)
+	// REPORT KUESIONER DAN CUSTOM REPORT
+	public function GetSchName_QuesName($pelatihan = FALSE, $date = FALSE, $trainer = FALSE, $tgl1 = FALSE, $tgl2=FALSE, $tgl_now=FALSE)
 	{
-		if ($pelatihan == FALSE && $date == FALSE && $trainer == FALSE) {
+		if ($pelatihan == FALSE && $date == FALSE && $trainer == FALSE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p='';
 			$s='';
 			$t='';
-		}elseif ($pelatihan == FALSE && $date == TRUE && $trainer == FALSE) {
+		}elseif ($pelatihan == FALSE && $date == TRUE && $trainer == FALSE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p='';
 			$s=" WHERE a.date=TO_DATE('$date', 'YYYY/MM/DD')";
 			$t='';
-		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == FALSE) {
+		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == FALSE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p=" WHERE a.scheduling_name='$pelatihan'";
 			$s='';
 			$t='';
-		}elseif ($pelatihan == TRUE && $date == TRUE && $trainer == FALSE) {
+		}elseif ($pelatihan == TRUE && $date == TRUE && $trainer == FALSE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p=" WHERE a.scheduling_name='$pelatihan'";
 			$s=" AND a.date=TO_DATE('$date', 'YYYY/MM/DD')";
 			$t='';
-		}elseif ($pelatihan == TRUE && $date == TRUE && $trainer == TRUE) {
+		}elseif ($pelatihan == TRUE && $date == TRUE && $trainer == TRUE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p=" WHERE a.scheduling_name='$pelatihan'";
 			$s=" AND a.date=TO_DATE('$date', 'YYYY/MM/DD')";
 			$t=" AND a.trainer like '%$trainer%'";
-		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == TRUE) {
+		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == TRUE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p=" WHERE a.scheduling_name='$pelatihan'";
 			$s='';
 			$t=" AND a.trainer like '%$trainer%'";
-		}elseif ($pelatihan == FALSE && $date == FALSE && $trainer == TRUE) {
+		}elseif ($pelatihan == FALSE && $date == FALSE && $trainer == TRUE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p='';
 			$s='';
 			$t=" WHERE a.trainer like '%$trainer%'";
-		}elseif ($pelatihan == FALSE && $date == TRUE && $trainer == TRUE) {
+		}elseif ($pelatihan == FALSE && $date == TRUE && $trainer == TRUE && $tgl1==FALSE && $tgl2==FALSE) {
 			$p='';
 			$s=" WHERE a.date=TO_DATE('$date', 'YYYY/MM/DD')";
 			$t= "AND a.trainer like '%$trainer%'";
+		}elseif ($pelatihan == TRUE && $date == FALSE && $trainer == FALSE && $tgl1==TRUE && $tgl2==TRUE && $tgl1!=$tgl2) {
+			$p="WHERE a.scheduling_name='$pelatihan'";
+			$s="and a.date between TO_DATE('$tgl1', 'MM/DD/YYYY') and TO_DATE('$tgl2', 'MM/DD/YYYY')";
+			$t='';
+		}
+		elseif ($pelatihan == TRUE && $tgl1==$tgl2 && $tgl1==$tgl_now && $tgl2==$tgl_now) {
+			$p="WHERE a.scheduling_name='$pelatihan'";
+			$s='';
+			$t='';
+		}elseif ($pelatihan==FALSE && $tgl1==TRUE && $tgl2==TRUE && $tgl1!=$tgl2 && $tgl1!=$tgl_now && $tgl2!=$tgl_now) {
+			$p="";
+			$s="and a.date between TO_DATE('$tgl1', 'MM/DD/YYYY') and TO_DATE('$tgl2', 'MM/DD/YYYY')";
+			$t='';
+		}elseif ($tgl1==$tgl_now && $tgl2==$tgl_now && $tgl1==$tgl2) {
+			$p="";
+			$s="and a.date between TO_DATE('$tgl1', 'MM/DD/YYYY') and TO_DATE('$tgl2', 'MM/DD/YYYY')";
+			$t='';
 		}
 		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer
 				from	pl.pl_scheduling_training a
@@ -1045,6 +1143,7 @@ class M_report extends CI_Model {
 				group by 1,2,3,4,5,6";
 		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 
 	public function GetSchName_QuesName_RPT($id)
