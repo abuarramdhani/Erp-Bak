@@ -53,9 +53,9 @@
 										<input name="idNama" id="idNama" type="hidden" placeholder="Nama Pelatihan">
 										<select class="form-control select4" onchange="funGetPelatihan()" name="nama" id="nama" data-placeholder="Nama Pelatihan" required disabled="true">
 											<option></option>
-											<?php foreach($pelatihan as $pl){?>
+											<!-- <?php foreach($pelatihan as $pl){?>
 											<option value="<?php echo $pl['scheduling_name']?>"><?php echo $pl['scheduling_name'] ?></option>
-											<?php }?>
+											<?php }?> -->
 										</select>
 									</div>
 								</div>

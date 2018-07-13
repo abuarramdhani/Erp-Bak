@@ -2,6 +2,7 @@ function goBack() {
     window.history.back();
 }
 
+
 $(document).ready(function(){
 	// SETTIMEOUT Z-INDEX
 	$(document).on('show.bs.modal', '.modal', function () {
@@ -20,6 +21,9 @@ $(document).ready(function(){
 	$('.singledateADM_Que').datepicker({
     	format:'yyyy/mm/dd',
     	autoclose: true
+	});
+	$('.singledateADM_Range').daterangepicker({
+		"todayHighlight" : true
 	});
 
 	//DATATABLE
@@ -359,7 +363,7 @@ $(document).ready(function(){
 		}
 	});
 
-	//SELECT PELATIHAN UNTUK REPORT
+	//SELECT PELATIHAN UNTUK REPORT1
 	$(".js-slcReportTraining").select2({
 		placeholder: "Nama Training",
 		minimumInputLength: 3,
@@ -381,6 +385,31 @@ $(document).ready(function(){
 							id:obj.Nama_Training, 
 							text:obj.Nama_Training
 						};
+					})
+				};
+			}
+		}
+	});
+
+	//SELECT NAMA PELATIHAN YANG SUDAH SELESAI UNTUK CUSTOM REPORT
+	$(".js-slcNamaTraining").select2({
+		placeholder: "Nama Pelatihan",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetPelatihanNama",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#nama').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { id:obj.scheduling_name, text:obj.scheduling_name};
 					})
 				};
 			}
@@ -1623,7 +1652,8 @@ $(document).ready(function(){
 			}
 		}
 	}
-	function funGetPelatihan() {
+	function funGetPelatihan() 
+	{
 		var nama =  document.getElementById('nama').value;
 		var tanggal = document.getElementById('tanggal').value;
 		var idNama = document.getElementById('idNama').value;
