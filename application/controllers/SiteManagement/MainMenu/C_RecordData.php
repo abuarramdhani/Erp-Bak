@@ -177,6 +177,29 @@ class C_RecordData extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function PembersihanSajadah()
+	{	$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Pembersihan Karpet Sajadah';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['Sajadah'] = $this->M_recorddata->dataKarpetSajadah();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/V_Sajadah', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
 	public function deleteDataSiteManagement()
 	{	$menu = $this->input->get('menu');
 		$id = $this->input->get('id');
@@ -197,6 +220,8 @@ class C_RecordData extends CI_Controller {
 			redirect(site_url('SiteManagement/RecordData/Lantai'));
 		}elseif ($menu=='CeilingFan') {
 			redirect(site_url('SiteManagement/RecordData/CeilingFan'));
+		}elseif ($menu=='Sajadah') {
+			redirect(site_url('SiteManagement/RecordData/PembersihanSajadah'));
 		}
 	}
 }

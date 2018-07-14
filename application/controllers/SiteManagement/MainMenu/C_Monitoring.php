@@ -51,6 +51,7 @@ class C_Monitoring extends CI_Controller {
 		$data['floorparking'] = $this->M_monitoring->alertFloorParking();
 		$data['trashcan'] = $this->M_monitoring->alertTrashCan();
 		$data['land'] = $this->M_monitoring->alertLand();
+		$data['sajadah'] = $this->M_monitoring->alertSajadah();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
