@@ -38,6 +38,11 @@ class M_recorddata extends CI_Model
     	return $query->result_array();
     }
 
+    public function dataKarpetSajadah() {
+        $query = $this->db->query("select * from sm.sm_jadwal where id_kategori='5' and id_kategori_detail='7' order by tanggal_jadwal");
+        return $query->result_array();
+    }
+
     public function deleteDataSiteManagement($id) {
         $this->db->where('id_jadwal', $id);
         $this->db->delete('sm.sm_jadwal');

@@ -243,6 +243,47 @@
       <!-- /.box -->
     </div>
     <!-- /.col -->
+    <div class="col-md-6">
+    <?php if(!empty($sajadah)):?>
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Penjadwalan Pembersihan Karpet Sajadah Mushola</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div>
+              <table class="table table-striped table-bordered table-hover text-left sm_table2" style="font-size:12px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:center; width:30px">No</th>
+                        <th>Date</th>
+                        <th>Nama PU</th>
+                        <th>Kategori</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead> 
+                <tbody>
+                    <?php $no=1;foreach ($sajadah as $key):?>
+                        <tr>
+                            <td><?php echo $no++;?></td>
+                            <td><?php echo date('d F Y', strtotime($key['tanggal_jadwal']));?></td>
+                            <td><?php echo $key['pic'];?></td>
+                            <td><?php echo $key['kategori'];?></td>
+                            <td align="center"><a href="<?php echo base_url('SiteManagement/RecordData/TongSampah');?>"><?php if ($key['overdue']=='1') {
+                                    echo "<span class='label label-danger'>Overdue</span>";
+                                }else{echo "<span class='label label-warning'>Pending</span>";};?></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>                            
+              </table>
+            </div>
+        </div>
+      </div>
+    <?php endif;?>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
   </div>
 </section>
 <!-- /.content -->  
