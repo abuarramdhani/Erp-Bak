@@ -4,6 +4,8 @@ class M_report extends CI_Model {
     public function __construct()
     {
         parent::__construct();
+        $this->load->database();
+        $this->personalia = $this->load->database('personalia', TRUE);
     }
 		
 	
@@ -173,6 +175,35 @@ class M_report extends CI_Model {
 				SELECT * from pl.pl_master_trainer $iftermtrue order by trainer_status DESC
 			";
 		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function GetUnitFilter($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "and 	tseksi.unit like '%$term%'";}
+		
+		$sql = "
+				SELECT 		tseksi.unit
+				from 		hrd_khs.v_hrd_khs_tseksi as tseksi
+				where 		substring(tseksi.kodesie, 6, 3) = '000'
+						 				and 	tseksi.unit !='-'
+						 				$iftermtrue
+			";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+	public function GetDeptFilter($term){
+		if ($term === FALSE) { $iftermtrue = "";
+		}else{$iftermtrue = "and 	tseksi.dept like '%$term%'";}
+		
+		$sql = "
+				SELECT 		tseksi.dept
+				from 		hrd_khs.v_hrd_khs_tseksi as tseksi
+				where 		substring(tseksi.kodesie, 2, 7) = '0000000'
+						 				and 	tseksi.dept !='-'
+						 				$iftermtrue
+			";
+		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
@@ -460,7 +491,7 @@ class M_report extends CI_Model {
 	}
 
 	// AMBIL DATA CUSTOM REPORT
-	public function GetReportCustom($judul=FALSE , $tgl1=FALSE , $tgl2 ,$seksi=FALSE ,$namapkj=FALSE )
+	public function GetReportCustom($judul=FALSE , $tgl1=FALSE , $tgl2 ,$seksi=FALSE ,$unit=FALSE,$dept=FALSE,$trainer_get=FALSE,$namapkj=FALSE )
 	{	
 		// KONDISI-------------------------------------------------------------------------------------------
 		if ($judul==FALSE) {
@@ -479,6 +510,24 @@ class M_report extends CI_Model {
 			$s='';
 		}else{
 			$s="and es.section_name like '%$seksi%'";
+		}
+		// ---------------------------------------------------
+		if ($unit==FALSE) {
+			$u='';
+		}else{
+			$u="and es.unit_name like '%$unit%'";
+		}
+		// ---------------------------------------------------
+		if ($dept==FALSE) {
+			$d='';
+		}else{
+			$d="and es.department_name like '%$dept%'";
+		}
+		// ---------------------------------------------------
+		if ($trainer_get==FALSE) {
+			$tg='';
+		}else{
+			$tg="and pst.trainer like '%$trainer_get%'";
 		}
 		// ---------------------------------------------------
 		if ($namapkj==FALSE) {
@@ -523,6 +572,7 @@ class M_report extends CI_Model {
 							pp.noind = pea.employee_code
 							and ees.section_code = pea.section_code
 							and pp.scheduling_id=pst.scheduling_id
+							$tg
 						group by
 							ees.section_name,
 							pst.scheduling_name,
@@ -531,12 +581,13 @@ class M_report extends CI_Model {
 			where 
 			jumlah.jml is not null
 			and jumlah.section_name = es.section_name
-			$j $t $s $n
+			$j $t $s $n $u $d
 			group by es.section_name,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
 			order by jumlah.tanggal asc;
 		";
 		$query=$this->db->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 	
 	// REKAP TRAINING
@@ -1132,6 +1183,18 @@ class M_report extends CI_Model {
 			$p="";
 			$s="and a.date between TO_DATE('$tgl1', 'MM/DD/YYYY') and TO_DATE('$tgl2', 'MM/DD/YYYY')";
 			$t='';
+		}elseif ($trainer == TRUE) {
+			$p="";
+			$s="";
+			$t="AND a.trainer like '%$trainer%'";
+		}elseif ($trainer == TRUE && $tgl1==TRUE && $tgl2==TRUE && $tgl1!=$tgl2) {
+			$p="";
+			$s="and a.date between TO_DATE('$tgl1', 'MM/DD/YYYY') and TO_DATE('$tgl2', 'MM/DD/YYYY')";
+			$t="AND a.trainer like '%$trainer%'";
+		}elseif ($pelatihan == TRUE && $trainer == TRUE && $tgl1==TRUE && $tgl2==TRUE && $tgl1!=$tgl2) {
+			$p="WHERE a.scheduling_name='$pelatihan'";
+			$s="and a.date between TO_DATE('$tgl1', 'MM/DD/YYYY') and TO_DATE('$tgl2', 'MM/DD/YYYY')";
+			$t="AND a.trainer like '%$trainer%'";
 		}
 		$sql="	SELECT	a.scheduling_id, a.scheduling_name , c.questionnaire_title,c.questionnaire_id, a.date, a.trainer
 				from	pl.pl_scheduling_training a

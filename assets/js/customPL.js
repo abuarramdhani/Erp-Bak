@@ -284,7 +284,7 @@ $(document).ready(function(){
 	
 	//SELECT EMPLOYEE UNTUK REPORT
 	$(".js-slcReportEmployee").select2({
-		placeholder: "Nama",
+		placeholder: "No Induk / Nama Pekerja",
 		minimumInputLength: 3,
 		ajax: {		
 			url:baseurl+"ADMPelatihan/Report/GetNoInduk",
@@ -356,6 +356,61 @@ $(document).ready(function(){
 						return { 
 							id:obj.trainer_id, 
 							text:obj.trainer_name
+						};
+					})
+				};
+			}
+		}
+	});
+
+	//SELECT UNIT UNTUK REPORT
+	$(".js-slcReportUnit").select2({
+		placeholder: "Nama Unit",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetUnitFilter",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportUnit').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { 
+							id:obj.unit, 
+							text:obj.unit
+						};
+					})
+				};
+			}
+		}
+	});
+	//SELECT DEPARTEMEN UNTUK REPORT
+	$(".js-slcReportDepartemen").select2({
+		placeholder: "Nama Departemen",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/Report/GetDeptFilter",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					type: $('select#slcReportDepartemen').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { 
+							id:obj.dept, 
+							text:obj.dept
 						};
 					})
 				};

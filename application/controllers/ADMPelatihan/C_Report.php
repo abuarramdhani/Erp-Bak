@@ -412,19 +412,23 @@ class C_Report extends CI_Controller {
 								$tgl2='';
 							}
 		$seksi 			= $this->input->post('slcReportSection');
+		$unit 			= $this->input->post('slcReportUnit');
+		$dept 			= $this->input->post('slcReportDepartemen');
+		$trainer_get	= $this->input->post('slcReportTrainer');
 		$no_namapkj		= $this->input->post('slcReportEmployee');
 			$namapkj	= trim($no_namapkj);
 
-		// DATA YANG DIPILIH (CHECKBOX)------------------------------------------------------------------------------------
-		$data['chk_nama_pekerja']	= $this->input->post('chk_nama_pekerja');
-		$data['chk_nomor_induk']	= $this->input->post('chk_nomor_induk');
-		$data['chk_seksi']		= $this->input->post('chk_seksi');
-		$data['chk_unit'] 			= $this->input->post('chk_unit');
-		$data['chk_departemen'] 	= $this->input->post('chk_departemen');
-		$data['chk_nama_pelatihan'] = $this->input->post('chk_nama_pelatihan');
-		$data['chk_tanggal'] 		= $this->input->post('chk_tanggal');
 
-		$data['chk_trainer'] 		= $this->input->post('chk_trainer');
+		// DATA YANG DIPILIH (CHECKBOX)------------------------------------------------------------------------------------
+		// $data['chk_nama_pekerja']	= $this->input->post('chk_nama_pekerja');
+		// $data['chk_nomor_induk']	= $this->input->post('chk_nomor_induk');
+		// $data['chk_seksi']		= $this->input->post('chk_seksi');
+		// $data['chk_unit'] 			= $this->input->post('chk_unit');
+		// $data['chk_departemen'] 	= $this->input->post('chk_departemen');
+		// $data['chk_nama_pelatihan'] = $this->input->post('chk_nama_pelatihan');
+		// $data['chk_tanggal'] 		= $this->input->post('chk_tanggal');
+
+		// $data['chk_trainer'] 		= $this->input->post('chk_trainer');
 		$data['chk_eval_pembelajaran'] 	= $this->input->post('chk_eval_pembelajaran');
 		$data['chk_eval_perilaku'] = $this->input->post('chk_eval_perilaku');
 		
@@ -437,23 +441,18 @@ class C_Report extends CI_Controller {
 		$data['Jabatan_Pe_report'] = $this->input->post('txt_Jabatan_Pe_report');
 
 		// SEARCH DATA DAN TRAINER---------------------------------------------------------------------------------------
-		$search = $this->M_report->GetReportCustom($judul,$tgl1,$tgl2,$seksi,$namapkj);
+		$search = $this->M_report->GetReportCustom($judul,$tgl1,$tgl2,$seksi,$unit,$dept,$trainer_get,$namapkj);
 		$data['search'] = $search;
-		// echo "<pre>";
-		// print_r($data['search']);
-		// echo "</pre>";
-		// exit();
-
 		$data['trainer'] = $this->M_mastertrainer->GetTrainer();
 
 		// KHUSUS PELATIHAN-----------------------------------------------------------------------------------------------
 			// menyamakan variabel:
 			$pelatihan 	= $judul;
 			$date 		= '';
-			$trainer 	= '';
+			$trainer 	= $trainer_get;
 			// ---------------------------------------
 
-			$schedule = $this->M_report->GetSchName_QuesName($pelatihan, $date = FALSE, $trainer = FALSE, $tgl1 , $tgl2, $tgl_now);
+			$schedule = $this->M_report->GetSchName_QuesName($pelatihan, $date = FALSE, $trainer, $tgl1 , $tgl2, $tgl_now);
 			$data['GetSchName_QuesName'] = $schedule;
 
 			$segment = $this->M_report->GetSchName_QuesName_segmen();
@@ -1744,6 +1743,18 @@ class C_Report extends CI_Controller {
 	public function GetTrainerFilter(){
 		$term = $this->input->get("term");
 		$data = $this->M_report->GetTrainerFilter($term);
+
+		echo json_encode($data);
+	}
+	public function GetUnitFilter(){
+		$term = $this->input->get("term");
+		$data = $this->M_report->GetUnitFilter($term);
+
+		echo json_encode($data);
+	}
+	public function GetDeptFilter(){
+		$term = $this->input->get("term");
+		$data = $this->M_report->GetDeptFilter($term);
 
 		echo json_encode($data);
 	}
