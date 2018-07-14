@@ -83,7 +83,15 @@ if ($chk_eval_pembelajaran==1 || $chk_eval_perilaku==1) {
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['tanggal']?></td>
 			<?php
 			if ($chk_eval_pembelajaran=='1') {?>
-				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['score_eval2_pre']?></td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;">
+					<?php 
+						if ($src['score_eval2_pre']!=NULL || $src['score_eval2_pre']!='') {
+							echo $src['score_eval2_pre'];	
+						}else{
+							echo "-";
+						}
+					?>
+				</td>
 			<?php
 
 				// MASUK PENILAIAN
