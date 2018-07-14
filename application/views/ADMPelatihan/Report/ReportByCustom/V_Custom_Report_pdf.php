@@ -3,50 +3,10 @@ $number=1;
 $stafdata = array();
 $nonstafdata = array();
 
+if ($chk_eval_pembelajaran==1 || $chk_eval_perilaku==1) {
+	$rowspan_='rowspan="2"';
+}
 
-$centang=array(
-	'a' => $chk_nama_pekerja, 
-	'b' => $chk_nomor_induk,
-	'c' => $chk_seksi,
-	'd' => $chk_unit,
-	'e' => $chk_departemen,
-	'f' => $chk_nama_pelatihan,
-	'g' => $chk_tanggal,
-	'h' => $chk_trainer,
-	'i' => $chk_eval_pembelajaran,
-	'j' => $chk_eval_perilaku,
-);
-
-// hitung jumlah yang dicentang--------------------------
-$total=14;
-$total_centang=0;
-foreach ($centang as $cen) {
-	$total_centang+=$cen;
-}
-$jumlah_colspan_akhir= $total-$total_centang;
-// Jika seksi, departemen, dan unit dipilih
-if ($chk_seksi=='1' && $chk_departemen!='1' && $chk_unit!='1') {
-	$col_a='colspan="<?php echo $jumlah_colspan_akhir-6 ?>"';
-}elseif ($chk_seksi=='1' && $chk_departemen=='1' && $chk_unit!='1') {
-	$col_a='colspan="<?php echo $jumlah_colspan_akhir-4 ?>"';
-} elseif ($chk_seksi=='1' && $chk_departemen=='1' && $chk_unit=='1') {
-	$col_a='colspan="<?php echo $jumlah_colspan_akhir-2 ?>"';
-}else{
-	$col_a='colspan="<?php echo $jumlah_colspan_akhir?>"';
-}
-// ------------------------------------------------------
-
-// jika tidak memilih nilai pembelajaran/perilaku--------
-if ($chk_eval_pembelajaran=='1' && $chk_eval_perilaku!='1') {
-	$ep='rowspan="2"';
-}
-elseif ($chk_eval_perilaku=='1' && $chk_eval_pembelajaran!='1') {
-	$ep='rowspan="2"';
-}elseif ($chk_eval_pembelajaran=='1' && $chk_eval_perilaku=='1') {
-	$ep='rowspan="2"';
-}else{
-	$ep='';
-}
 // ------------------------------------------------------
 ?>
 <table style="width: 100%">
@@ -60,32 +20,16 @@ elseif ($chk_eval_perilaku=='1' && $chk_eval_pembelajaran!='1') {
 <table style="width:100%; border: 1px solid black; font-size: 10px;">
 	<thead style="text-align: center;vertical-align: middle;">
 		<tr>
-			<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 2%">No</th>
-			<?php if ($chk_nama_pekerja=='1') {
-				?>
-				<th <?php echo $ep?> <?php echo $col_a?>  style="border-right: 1px solid black; border-bottom: 1px solid black; width: 15%">Nama</th>
-			<?php } 
-			if ($chk_nomor_induk=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 5%">Nomor Induk</th>
-			<?php } 
-			if ($chk_seksi=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10%">Seksi</th>
-			<?php } 
-			if ($chk_unit=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10%">Unit</th>
-			<?php } 
-			if ($chk_departemen=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 7%">Departemen</th>
-			<?php } 
-			if ($chk_nama_pelatihan=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10%">Pelatihan</th>
-			<?php } 
-			if ($chk_trainer=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 7%">Trainer</th>
-			<?php }
-			if ($chk_tanggal=='1') {?>
-				<th <?php echo $ep?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 5%">Tanggal</th>
-			<?php }
+			<th <?php echo $rowspan_ ?>  style="border-right: 1px solid black; border-bottom: 1px solid black; width: 2%">No</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 15%">Nama</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 5%">Nomor Induk</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10%">Seksi</th>
+			<th <?php echo $rowspan_ ?>  style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10%">Unit</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 7%">Departemen</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10%">Pelatihan</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 7%">Trainer</th>
+			<th <?php echo $rowspan_ ?> style="border-right: 1px solid black; border-bottom: 1px solid black; width: 5%">Tanggal</th>
+			<?php
 			if ($chk_eval_pembelajaran=='1') {?>
 				<th colspan="2" style="border-right: 1px solid black; border-bottom: 1px solid black; width: 10px">Pembelajaran</th>
 			<?php }
@@ -110,26 +54,17 @@ elseif ($chk_eval_perilaku=='1' && $chk_eval_pembelajaran!='1') {
 	<?php foreach ($search as $src) {?>
 		<tr>
 			<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;vertical-align: middle;"><?php echo $number++?></td>
-			<?php if ($chk_nama_pekerja=='1') {?>
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;" <?php echo $col_a?> ><?php echo $src['participant_name']?></td>
-			<?php } 
-			if ($chk_nomor_induk=='1') {?>
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['noind']?></td>
-			<?php } 
-			if ($chk_seksi=='1') {?>
+			
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['section_name']?></td>
-			<?php } 
-			if ($chk_unit=='1') {?>
+			
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['unit_name']?></td>
-			<?php } 
-			if ($chk_departemen=='1') {?>
+			
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['department_name']?></td>
-			<?php } 
-			if ($chk_nama_pelatihan=='1') {?>
-			<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['nama_pelatihan']?></td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['nama_pelatihan']?></td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;">
 			<?php 
-			}
-			if ($chk_trainer=='1') {
 				$no=0;
 				$strainer = explode(',', $src['trainer']);
 				foreach ($strainer as $st){ $no++;
@@ -139,18 +74,24 @@ elseif ($chk_eval_perilaku=='1' && $chk_eval_pembelajaran!='1') {
 							if($tr['trainer_status']==0){
 								$status='Eksternal';
 							}
-			?>
-			<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $tr['trainer_name'] ?></td>
-							<?php 
+			
+						 echo $tr['trainer_name'];
 						}
 					}
-				} 
-			}
-			if ($chk_tanggal=='1') {?>
+				} ?>
+				</td>
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['tanggal']?></td>
-			<?php }
+			<?php
 			if ($chk_eval_pembelajaran=='1') {?>
-				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['score_eval2_pre']?></td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;">
+					<?php 
+						if ($src['score_eval2_pre']!=NULL || $src['score_eval2_pre']!='') {
+							echo $src['score_eval2_pre'];	
+						}else{
+							echo "-";
+						}
+					?>
+				</td>
 			<?php
 
 				// MASUK PENILAIAN
@@ -237,7 +178,7 @@ elseif ($chk_eval_perilaku=='1' && $chk_eval_pembelajaran!='1') {
 				<td style="border-right: 1px solid black;border-bottom: 1px solid black;"><?php echo $src['keterangan_softskill']?></td>
 			<?php } ?>
 		</tr>
-		<?php } ?>
+	<?php } ?>
 	</tbody>
 </table>
 <br>
