@@ -200,4 +200,42 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
 
+    public function alertSajadah(){
+        $query = $this->db->query("select x.*,
+                                        (
+                                            case    when    (
+                                                                current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal
+                                                            )
+                                                            then    0
+                                                    else    1
+                                            end
+                                        ) as overdue,
+                                                                        (select concat(kg.kategori,'-',kd.kategori_detail) 
+                                                                        from sm.sm_kategori as kg
+                                                                        join sm.sm_kategori_detail as kd
+                                                                        on kg.id_kategori=kd.id_kategori
+                                                                        where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori 
+                                                                    from sm.sm_jadwal as x
+                                                                    where x.status=false 
+                                                                        and (current_date between (x.tanggal_jadwal - interval '7 day') and x.tanggal_jadwal)
+                                                                        and x.id_kategori=5
+                                union
+                                select x.*,
+                                        (
+                                            case    when    current_date>x.tanggal_jadwal
+                                                            then    1
+                                                    else    0
+                                            end
+                                        ) as overdue,
+                                            (select concat(kg.kategori,'-',kd.kategori_detail) 
+                                            from sm.sm_kategori as kg
+                                            join sm.sm_kategori_detail as kd
+                                            on kg.id_kategori=kd.id_kategori
+                                            where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori
+                                        from sm.sm_jadwal as x
+                                        where x.status=false and (x.tanggal_jadwal::date<now()::date) and x.id_kategori=5
+                                order by tanggal_jadwal");
+        return $query->result_array();
+    }
+
 }
