@@ -792,7 +792,7 @@ class C_Monitoring extends CI_Controller
 
 	// 	Untuk server-side Select2
 	// 	{
-			public function tambahPekerjaOJT()
+			public function tambahPekerjaOJT() 
 			{
 				$listPekerjaAktifOJT	=	$this->M_monitoring->ambilPekerjaAktifOJT();
 

@@ -158,6 +158,7 @@
 
 				$('#MonitoringOJT-monitoringPekerjaAktif').DataTable({
 					scrollX: true,
+					// scrollY: '275px',
 				});
 
 				$('#MonitoringOJT-monitoringPekerjaTunda').DataTable({
@@ -228,7 +229,7 @@
 					placeholder: 'Tahapan Orientasi',
 				});
 
-				$('#MonitoringOJT-cmbDaftarPekerjaOJT').select2({
+				$('select#MonitoringOJT-cmbDaftarPekerjaOJT').select2({
 					placeholder: "Pilih pekerja OJT baru",
 					searching: true,
 					minimumInputLength: 3,
