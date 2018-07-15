@@ -388,6 +388,12 @@
 														<?php echo $pekerja['tgl_masuk'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['tgl_selesai'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
+														<?php echo $pekerja['nama_atasan_pekerja'];?>
+													</td>
+													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 														<?php echo $pekerja['tanggal_lahir'];?>
 													</td>
 													<td style="white-space: nowrap; text-align: center; vertical-align: middle">
