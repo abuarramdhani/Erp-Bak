@@ -95,6 +95,23 @@ $(document).ready(function(){
         	$('#idTglBerangkat_prs').attr('disabled','disabled');
         }
     });
+
+    $('.prs-datatable').DataTable({
+    });
+
+    $('.prs-daterangepicker').daterangepicker({
+		"todayHiglight": true,
+	});
+
+	$('#prs_tglfilterdl').on('change', function() {
+		var tgl = $('#prs_tglfilterdl').val();
+
+		if (tgl) {
+			$('#btn-DLfilter').removeAttr('disabled','disabled');
+		}else{
+			$('#btn-DLfilter').attr('disabled','disabled');
+		}
+	});
 });
 
 // 	-------Presensi Catering--------------------------------------------start
