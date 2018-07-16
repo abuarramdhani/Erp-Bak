@@ -44,6 +44,20 @@ public function Index()
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$tspdl = $this->M_presensi_dl->ambilPekerjaDL();
+		foreach ($tspdl as $key) {
+			$presensidl = $this->M_presensi_dl->cekPresensiDL($key['spdl_id']);	
+
+			if ($presensidl==null) {
+				$data['listMonitoring'] = $this->M_presensi_dl->ListMonitoringDL($key['noind']);
+			}
+			
+			// echo "<pre>";
+			// print_r($data['listMonitoring']);
+			// echo "</pre>";	
+		}
+		// exit();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
