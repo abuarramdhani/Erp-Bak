@@ -18,6 +18,63 @@
                     </div>
                 </div>
                 <br/>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="box box-primary box-solid">
+                            <div class="box-header with-border">
+                                <form action="" enctype="multipart/formdata" method="post">
+                                  <div class="col-md-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            <input class="form-control prs-daterangepicker"  data-date-format="d M Y" autocomplete="off" type="text" name="prs_tglfilterdl" id="prs_tglfilterdl" style="width: 200px" placeholder="Masukkan Periode" value=""/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <select class="form-control select-nama-prs" name="prs_pekerjaDL" id="prs_pekerjaDL" style="width:240px">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="input-group">
+                                            <button type="submit" class="btn btn-success pull-right" id="btn-DLfilter" disabled>Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="box-body">
+                                <div>
+                                    <table class="table table-striped table-bordered table-hover text-left prs-datatable" style="font-size:12px;">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th style="text-align:center; width:30px">No</th>
+                                                <th>Noind</th>
+                                                <th>Nama</th>
+                                                <th>Seksi</th>
+                                                <th>SPDL</th>
+                                                <th>Jam Keberangkatan</th>
+                                                <th>Scan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          <?php $no=1;foreach ($listMonitoring as $key):?>
+                                           <tr>
+                                             <td><?php echo $no++?></td>
+                                             <td><?php echo $key['noind'];?></td>
+                                             <td><?php echo $key['nama'];?></td>
+                                             <td><?php echo $key['seksi'];?></td>
+                                             <td><?php echo $key['spdl_id'];?></td>
+                                             <td>-</td>
+                                             <td>-</td>
+                                           </tr>
+                                          <?php endforeach; ?>
+                                        </tbody>                                      
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">

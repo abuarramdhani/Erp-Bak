@@ -283,4 +283,38 @@ group by td.spdl_id,td.noind,td.kodesie");
         $sql = $sqlserver->query("insert into \"Presensi\".tpresensi_dl values ('$date_now','$id','$kodesie','$time_now','$userid','$noind_baru','$trans','$spdl','$stat','$tglPulang','$timePulang','')");
     }
 
+    public function ambilPekerjaDL(){
+        $sqlserver = $this->load->database('dinas_luar', true);
+        $sql = $sqlserver->query("select tab.spdl_id as spdl_id,
+                                            tspdl.noind as noind
+                                    from (select spdl_id,min(aktual_dari) as aktual from t_surat_perintah_dl_realisasi GROUP by spdl_id) as tab
+                                    join t_surat_perintah_dl as tspdl
+                                        on tab.spdl_id=tspdl.spdl_id
+                                    where tab.aktual='2017-10-21 08:00:00'");
+        return $sql->result_array();
+    }
+
+    public function cekPresensiDL($id = false){
+        $sqlserver = $this->load->database('personalia', true);
+        if ($id !== false) {
+            $sql = $sqlserver->query("select * from \"Presensi\".tpresensi_dl where spdl_id='$id' and stat='0'");
+        }else{
+            $sql = $sqlserver->query("select * from \"Presensi\".tpresensi_dl");
+        }
+
+        return $sql->result_array();
+    }
+
+    public function ListMonitoringDL($noind){
+        $sqlserver = $this->load->database('dinas_luar', true);
+        $sql = $sqlserver->query("SELECT tp.noind,tp.nama,ts.seksi,tspdl.spdl_id
+                                    FROM t_pekerja as tp 
+                                    JOIN t_seksi as ts
+                                    on tp.kodesie=ts.kodesie
+                                    JOIN t_surat_perintah_dl as tspdl
+                                    ON tp.noind=tspdl.noind
+                                    where tp.noind='$noind'");
+        return $sql->result_array();
+    }
+
 }
