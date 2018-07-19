@@ -27,7 +27,9 @@
             <div class="pull-left info">
             	<p><?php echo $this->session->user;?></p>
             	<p><h6><strong><?php echo $this->session->employee;?></strong></h6></p>
-            	<a href="<?php echo base_url('ChangePassword');?>">Change Password</a>
+            	<?php if($this->session->user != "KHSERP"){ ?> 
+            		<a href="<?php echo base_url('ChangePassword');?>">Change Password</a>
+            	<?php  } ?>
             	<br />
             	<small>Online &nbsp;&nbsp;<i class="fa fa-circle text-success"></i> </small>
 			</div>
