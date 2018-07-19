@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
-
- <!-- BEGIN HEAD -->
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <?php
@@ -20,6 +16,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	<meta name="theme-color" content="#3c8dbc">
 	
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -47,23 +44,9 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/theme/css/skins/_all-skins.min.css');?>" type="text/css" />
   
   	<!-- PAGE LEVEL STYLES FOR DATATABLES-->
-  	<?php
-  		if(!(isset($newDataTable)))
-  		{
-  	?>
-  	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
-  	<?php
-  		}
-  		else
-  		{
-  	?>
-  	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables-punyamilton/datatables.min.css');?>" />
-  	<?php
-  		}
-  	?>
-	
 	<!-- PAGE LEVEL STYLES FOR FORM -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />	
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/pace/center-atom-pace.css');?>" rel="stylesheet" />
@@ -95,7 +78,6 @@
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/fine-uploader/fine-uploader-new.min.css');?>" />
 
 	<!-- END PAGE LEVEL  STYLES -->
-	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
 
 	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/multiselect/css/bootstrap-multiselect.css');?>" />
 
@@ -107,6 +89,7 @@
     <script src="<?php echo base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
     <!-- END GLOBAL SCRIPTS -->
+	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
 	
 </head>
      <!-- END HEAD -->
@@ -126,16 +109,20 @@
 		?>
 		
 		
-		<header class="main-header">
+		<header class="main-header" style="box-shadow: 0 4px 9px -3px #367da6;">
 		<input type="hidden" value="<?=$org_id ?>" name="txtOrgId" id="txtOrgId"/>
 			<!-- Logo -->
-			<a href="<?php echo site_url();?>" class="logo">
+			<a href="<?php echo site_url();?>" class="logo hidden-xs hidden-sm">
                     <!--<img src="<?php echo base_url('assets/img/header3.png');?>"   class="imgheader" alt="" />-->
 					 <span class="logo-lg" ><i class="fa fa-building-o" aria-hidden="true"></i> <b>QUICK ERP</b></span>
 			</a>
 			<!-- Header Navbar: style can be found in header.less -->
 			  <!-- Sidebar toggle button-->
 			<nav class="navbar navbar-static-top" role="navigation">
+				<!-- Sidebar toggle button-->
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+					<span class="sr-only">Toggle navigation</span>
+				</a>
 			  
 			  
 			  <div class="navbar-custom-menu">
@@ -151,10 +138,15 @@
 					<?php	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 							if($actual_link!=base_url()){
 					?>
-					<li>
+					<li class="hidden-xs hidden-sm">
                         <a href="<?php echo site_url($this->session->module_link);?>">
                             <i class="icon-home"></i> <?= $this->session->responsibility ?>	
                         </a>
+					</li>
+					<li class="hidden-md hidden-lg">
+						<a href="<?php echo site_url();?>">
+							<i class="icon-home"></i>
+						</a>
 					</li>
 					<?php 	if(isset($UserResponsibility)){
 								$responsibility_id = (empty($UserResponsibility[0]['user_group_menu_id']))?0:$UserResponsibility[0]['user_group_menu_id'];
@@ -162,15 +154,25 @@
 								$responsibility_id = $UserMenu[0]['user_group_menu_id'];
 							}
 					?>
-					<li>
+					<li class="hidden-xs hidden-sm">
                         <a href="#" onclick="callModal('<?php echo site_url('ajax/ModalReport/'.$responsibility_id)?>')">
                             <i class="icon-table"></i> Report
                         </a>
 					</li>
+					<li class="hidden-md hidden-lg">
+                        <a href="#" onclick="callModal('<?php echo site_url('ajax/ModalReport/'.$responsibility_id)?>')">
+                            <i class="icon-table"></i>
+                        </a>
+					</li>
 						<?php } ?>
-					<li>
+					<li class="hidden-xs hidden-sm">
                         <a href="<?php echo site_url('logout');?>">
                             <i class="icon-signout"></i> Logout
+                        </a>
+					</li>
+					<li class="hidden-md hidden-lg">
+                        <a href="<?php echo site_url('logout');?>">
+                            <i class="icon-signout"></i>
                         </a>
 					</li>
                     <!--END ADMIN SETTINGS -->
@@ -179,17 +181,16 @@
 			</nav>
 		 </header>
 
-			<!-- Modal Start -->
-		<div class="col-lg-12">
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-					
+			<!-- Modal Start 
+		<div class="container">
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- Modal End -->
-	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper">
+		</div>Modal End -->
 	

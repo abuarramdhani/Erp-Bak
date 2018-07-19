@@ -346,6 +346,7 @@ function addRowResponsibility(base){
 	$("select#slcUserResponsbility:last").val("").change();
 	$("select#slcActive:last").val("").change();
 	$("input#hdnUserApplicationId:last").val("0");
+	$("button.btnDeleteUserResponsibility:last").attr("id-user-responsibility","0");
 }
 
 function addRowMenu(base){

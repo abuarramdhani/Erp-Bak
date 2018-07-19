@@ -73,15 +73,16 @@
 													<div class="panel-heading text-right">
 														<a href="javascript:void(0);" id="addResponsbility" title="Tambah Baris" onclick="addRowResponsibility('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
 														&nbsp;&nbsp;&nbsp;
-														<a href="javascript:void(0);" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a>
+														<!-- <a href="javascript:void(0);" id="delResponsbility" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a> -->
 													</div>
 													<div class="panel-body">
 														<div class="table-responsive" >
 															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
 																<thead>
 																	<tr class="bg-primary">
-																		<th width="80%">Responsibility</th>
+																		<th width="70%">Responsibility</th>
 																		<th width="20%">Active</th>
+																		<th width="10%">Delete</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyUserResponsibility">
@@ -101,6 +102,9 @@
 																				<option value="Y">Yes</option>
 																				<option value="N">No</option>
 																			</select>
+																		</td>
+																		<td>
+																			<button type="button" class="btn btn-md btn-danger btnRemoveUserResponsibility"><i class="fa fa-close"></i></button>
 																		</td>
 																	</tr>
 
