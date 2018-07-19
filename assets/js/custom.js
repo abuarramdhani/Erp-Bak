@@ -953,3 +953,31 @@ $(document).ready(function(){
 });
 
 
+//user
+$(document).ready(function(){
+	$(document).on('click','.btnRemoveUserResponsibility',function() {
+		$(this).parents('td').parents('tr').remove();
+	});
+	$(document).on('click','.btnDeleteUserResponsibility',function() {
+		var ths = $(this);
+		var userResponsibilityId = ths.attr("id-user-responsibility")
+		if (userResponsibilityId==0) {
+			ths.parents('td').parents('tr').remove();
+		}else{
+			var confirmDeleteResponsibility = confirm('Delete menu ini?');
+			if (confirmDeleteResponsibility) {
+				ths.siblings('.loadingDeleteMenu').css('display','block');
+				$.ajax({
+					type: "POST",
+					url: baseurl+"SystemAdministration/User/DeleteUserResponsibility/"+userResponsibilityId,
+					success: function (response) {
+						ths.siblings('.loadingDeleteMenu').css('display','none');
+						ths.parents('td').parents('tr').remove();
+						alert('menu deleted');
+					}
+				});
+			}
+		}
+		
+	});
+});

@@ -79,15 +79,16 @@
 													<div class="panel-heading text-right">
 														<a href="javascript:void(0);" id="addSpLine"  title="Tambah Baris" onclick="addRowResponsibility('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
 														&nbsp;&nbsp;&nbsp;
-														<a href="javascript:void(0);" id="delSpLine" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a>
+														<!-- <a href="javascript:void(0);" id="delSpLine" title="Hapus Baris" onclick="deleteRow('tblUserResponsbility')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a> -->
 													</div>
 													<div class="panel-body">
 														<div class="table-responsive" >
 															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
 																<thead>
 																	<tr class="bg-primary">
-																		<th width="80%">Responsibility</th>
+																		<th width="70%">Responsibility</th>
 																		<th width="20%">Active</th>
+																		<th width="10%">Delete</th>
 																	</tr>
 																</thead>
 																<tbody id="tbodyUserResponsibility">
@@ -110,6 +111,10 @@
 																				<option value="Y" <?php if($UserResponsibility_item['active']=="Y"){echo "selected";} ?>>Yes</option>
 																				<option value="N" <?php if($UserResponsibility_item['active']=="N"){echo "selected";} ?>>No</option>
 																			</select>
+																		</td>
+																		<td>
+																			<img class="loadingDeleteMenu" src="<?= base_url('assets/img/gif/loading5.gif')?>" alt="loading" style="display:none;">
+																			<button type="button" id-user-responsibility="<?= $UserResponsibility_item['user_application_id'] ?>" class="btn btn-md btn-danger btnDeleteUserResponsibility"><i class="fa fa-close"></i></button>
 																		</td>
 																	</tr>
 																	<?php } ?>

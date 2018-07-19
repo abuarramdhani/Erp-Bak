@@ -1,56 +1,46 @@
-<!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
-	<!-- sidebar: style can be found in sidebar.less -->
 	<section class="sidebar">
 		<div class="user-panel" style="height:100px;">
             <div class="pull-left image">
-<!--               <img src="<?php echo base_url('assets/theme/img/user.png');?>" class="img-circle" alt="User Image" /> -->
-              <?php
+              	<?php
 				$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'jpg';
 				$file_headers 	= 	@get_headers($file);
-				if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
-				{
+				if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 					$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
 					$file_headers 	= 	@get_headers($file);
-					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
-					{
+					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 						$ekstensi 	= 	'Not Found';
-					}
-					else
-					{
+					}else{
 						$ekstensi 	= 	'JPG';
 					}
-				}
-				else
-				{
+				}else{
 					$ekstensi 	= 	"jpg";
 				}
 
-				if($ekstensi=='jpg' || $ekstensi=='JPG')
-				{
+				if($ekstensi=='jpg' || $ekstensi=='JPG'){
 					echo '<img src="http://quick.com/aplikasi/photo/'.$this->session->user.'.'.$ekstensi.'" class="img-circle" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
-				}
-				else
-				{
+				}else{
 					echo '<img src="'.base_url('assets/theme/img/user.png').'" class="img-circle" alt="User Image" />';
 				}
-              ?>
+              	?>
             </div>
             <div class="pull-left info">
-              <p><?php echo $this->session->user;?></p>
-              <p><h6><strong><?php echo $this->session->employee;?></strong></h6></p>
-              <a href="<?php echo base_url('ChangePassword');?>">Change Password</a>
-			  <br />
-			  <small>Online &nbsp;&nbsp;<i class="fa fa-circle text-success"></i> </small>
-			  <!--
-			  <i class="fa fa-circle text-success"></i>
-			  -->
+            	<p><?php echo $this->session->user;?></p>
+            	<p><h6><strong><?php echo $this->session->employee;?></strong></h6></p>
+            	<a href="<?php echo base_url('ChangePassword');?>">Change Password</a>
+            	<br />
+            	<small>Online &nbsp;&nbsp;<i class="fa fa-circle text-success"></i> </small>
 			</div>
 		</div>
-		<div>	 
-			<?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-				//echo $actual_link."<br />".base_url('index')."<br />".current_url();
-				if($actual_link==base_url()){
+		<div>
+			<ul class="sidebar-menu hidden-md hidden-lg">
+				<li class="treeview" style="color: grey;">
+					<a href="<?php echo site_url($this->session->module_link);?>"><i class="fa fa-dashboard"> Dashboard</i></a>
+				</li>
+			</ul>
+			<?php
+			$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			if($actual_link==base_url()){
 			?>
 				<ul class="sidebar-menu" >
 					<li class="header">RESPONSIBILITY</li>
@@ -59,20 +49,20 @@
 					<?php
 						foreach($UserResponsibility as $UserResponsibility_item){
 					?>
-					<li class="treeview"><a href="<?= site_url('Responsibility/'.$UserResponsibility_item['user_group_menu_id'])?>"><?= $UserResponsibility_item['user_group_menu_name']?>
-					</a></li>
-			<?php
+						<li class="treeview">
+							<a href="<?= site_url('Responsibility/'.$UserResponsibility_item['user_group_menu_id'])?>"><?= $UserResponsibility_item['user_group_menu_name']?></a>
+						</li>
+					<?php
 						}
-			?>
+					?>
 				</ul>
 			<?php
-				}else{
+			}else{
 			?>
-
 				<ul class="sidebar-menu" >
 					<li class="header">MENU</li>
 				</ul>
-				<!-----------------------Menu Level 1------------------->
+				<!-- -------------------- Menu Level 1 -------------------- -->
 				<ul class="sidebar-menu">
 					<?php
 						foreach($UserMenu as $UserMenu_item){
@@ -100,7 +90,7 @@
 								}
 							?>
 							</a>
-								<!-----------------------Menu Level 2------------------->
+								<!-- -------------------- Menu Level 2 -------------------- -->
 								<?php	
 									if($UserMenu_item['menu_link']==""){
 								?>
@@ -130,7 +120,7 @@
 												echo $UserSubMenuOne_item['menu_title'];
 											}
 										?>
-										<!-----------------------Menu Level 3------------------->
+										<!-- -------------------- Menu Level 3 -------------------- -->
 										<?php	
 											if($UserSubMenuOne_item['menu_link']==""){
 										?>
@@ -160,7 +150,7 @@
 										<?php
 											}
 										?>
-										<!-----------------------Menu Level 3------------------->
+										<!-- ---------------------- Menu Level 3 ---------------------- -->
 										</a></li>
 									<?php
 											}
@@ -171,17 +161,27 @@
 								<?php
 									}
 								?>
-								<!-----------------------Menu Level 2------------------->
+								<!-- -------------------- Menu Level 2 -------------------- -->
 						</li>
 					<?php
 						}
 					?>
 					
 				</ul>
-				<!-----------------------Menu Level 1------------------->
+				<!-- -------------------- Menu Level 1 -------------------- -->
 						<?php } ?>
 		</div>
 	</section>
-	<!-- /.sidebar -->
 </aside>
+	<div class="content-wrapper">
 <div id="data_content">
+	
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						
+						</div>
+					</div>
+				</div>
+			</div>
