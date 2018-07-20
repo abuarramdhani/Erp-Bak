@@ -44,7 +44,7 @@
 				if($invbefore == $row->INVOICE_ID){
 			?>
 				<!-- <tr>
-					<td><?php echo $row->DESCRIPTION?></td>
+					<td><?php //echo $row->DESCRIPTION?></td>
 				</tr> -->
 			<?php
 				}else{
@@ -54,7 +54,7 @@
 				<td><?php echo $row->INVOICE_NUM?></td>
 				<td><?php echo $row->VENDOR_NAME?></td>
 				<td><?php echo $row->INVOICE_DATE?></td>
-				<!-- <td><?php echo $row->DESCRIPTION?></td> -->
+				<!-- <td><?php //echo $row->DESCRIPTION?></td> -->
 				<td><?php echo number_format($row->DPP, 0 , ',' , '.' )?></td>
 				<td><?php echo number_format($row->PPN, 0 , ',' , '.' )?></td>
 				<td align="center">
