@@ -35,6 +35,30 @@ public function Index()
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
+		$noind = $this->input->get('noind');
+		$awl = $this->input->get('awl');
+		$akh = $this->input->get('akh');
+
+		if(empty($noind) && !empty($awl)){
+			$where_dl = "where DATE_FORMAT(tab.aktual,'%Y-%m-%d') between '".$awl."' and '".$akh."'";
+		}elseif(!empty($noind) && empty($awl)){
+			$where_dl = "where tp.noind='".$noind."'";
+		}elseif(!empty($noind) && !empty($awl)){
+			$where_dl = "where tp.noind='".$noind."' and DATE_FORMAT(tab.aktual,'%Y-%m-%d') between '".$awl."' and '".$akh."'";
+		}else{
+			$where_dl = "where DATE_FORMAT(tab.aktual,'%Y-%m-%d')='".date('Y-m-d')."'";
+		}
+
+		if(empty($noind) && !empty($awl)){
+			$where_prs = "where tgl_realisasi between '".$awl."' and '".$akh."'";
+		}elseif(!empty($noind) && empty($awl)){
+			$where_prs = "where noind='".$noind."'";
+		}elseif(!empty($noind) && !empty($awl)){
+			$where_prs = "where noind='".$noind."' and tgl_realisasi between '".$awl."' and '".$akh."'";
+		}else{
+			$where_prs = "where tgl_realisasi='".date('Y-m-d')."'";
+		}
+
 		$data['Menu'] = 'Presensi';
 		$data['SubMenuOne'] = 'Presensi DL';
 		$data['SubMenuTwo'] = 'Presensi DL';
@@ -45,19 +69,8 @@ public function Index()
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$tspdl = $this->M_presensi_dl->ambilPekerjaDL();
-		foreach ($tspdl as $key) {
-			$presensidl = $this->M_presensi_dl->cekPresensiDL($key['spdl_id']);	
-
-			if ($presensidl==null) {
-				$data['listMonitoring'] = $this->M_presensi_dl->ListMonitoringDL($key['noind']);
-			}
-			
-			// echo "<pre>";
-			// print_r($data['listMonitoring']);
-			// echo "</pre>";	
-		}
-		// exit();
+		$data['tspdl'] 		= $this->M_presensi_dl->ambilPekerjaDL($where_dl);
+		$data['presensidl'] = $this->M_presensi_dl->cekPresensiDL($where_prs);	
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -276,5 +289,13 @@ public function CariDataDinasLuar(){
 				//no action
 			}
 		redirect(site_url('Presensi/PresensiDL/'));
+	}
+
+	public function search_scan(){
+		$tgl = $this->input->post('prs_tglfilterdl');
+		$nama = $this->input->post('prs_pekerjaDL');
+		$split_tanggal = explode("-", $tgl);
+		
+		redirect('Presensi/PresensiDL?noind='.$nama.'&awl='.date("Y-m-d",strtotime($split_tanggal[0])).'&akh='.date("Y-m-d",strtotime($split_tanggal[1])));
 	}
 }
