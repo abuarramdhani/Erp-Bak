@@ -6,7 +6,7 @@
 				<th width="10%"><center>Invoice Number</center></th>
 				<th width="10%"><center>Supplier</center></th>
 				<th width="10%"><center>Invoice Date</center></th>
-				<th width="10%"><center>Product</center></th>
+				<!-- <th width="10%"><center>Product</center></th> -->
 				<th width="10%"><center>DPP</center></th>
 				<th width="10%"><center>PPN</center></th>
 				<th width="15%"><center>QR Code Invoice</center></th>
@@ -43,25 +43,25 @@
 		
 				if($invbefore == $row->INVOICE_ID){
 			?>
-				<tr>
-					<td><?php echo $row->DESCRIPTION?></td>
-				</tr>
+				<!-- <tr>
+					<td><?php //echo $row->DESCRIPTION?></td>
+				</tr> -->
 			<?php
 				}else{
 			?>
 			<tr class="data-row">
-				<td rowspan="<?php echo $row->JML?>"><?php echo $i;?></td>
-				<td rowspan="<?php echo $row->JML?>"><?php echo $row->INVOICE_NUM?></td>
-				<td rowspan="<?php echo $row->JML?>"><?php echo $row->VENDOR_NAME?></td>
-				<td rowspan="<?php echo $row->JML?>"><?php echo $row->INVOICE_DATE?></td>
-				<td><?php echo $row->DESCRIPTION?></td>
-				<td rowspan="<?php echo $row->JML?>"><?php echo number_format($row->DPP, 0 , ',' , '.' )?></td>
-				<td rowspan="<?php echo $row->JML?>"><?php echo number_format($row->PPN, 0 , ',' , '.' )?></td>
-				<td rowspan="<?php echo $row->JML?>" align="center">
+				<td><?php echo $i;?></td>
+				<td><?php echo $row->INVOICE_NUM?></td>
+				<td><?php echo $row->VENDOR_NAME?></td>
+				<td><?php echo $row->INVOICE_DATE?></td>
+				<!-- <td><?php //echo $row->DESCRIPTION?></td> -->
+				<td><?php echo number_format($row->DPP, 0 , ',' , '.' )?></td>
+				<td><?php echo number_format($row->PPN, 0 , ',' , '.' )?></td>
+				<td align="center">
 					<a class="btn btn-success inspectqr" data-toggle="modal" data-target="#qrcode" ><i class="fa fa-qrcode"></i> Generate</a>
 					<input type="hidden" class="uniqpartcode" value="<?php echo $uniqpartcode?>">
 				</td>
-				<td rowspan="<?php echo $row->JML?>"><?php
+				<td><?php
 					echo  $TaxInvNum
 					// if ($fakCheck) {
 					// 	echo  $TaxInvNum."<span style='color: green; font-weight: bold; font-size:13px'>&check;</span>";
@@ -69,8 +69,8 @@
 					// 	echo  $TaxInvNum."<span style='color: red; font-weight: bold; font-size:13px'>&cross;</span>";
 					// } 
 				?></td>
-				<td rowspan="<?php echo $row->JML?>"><?php echo $row->VOUCHER_NUMBER;?></td>
-				<td rowspan="<?php echo $row->JML?>">
+				<td><?php echo $row->VOUCHER_NUMBER;?></td>
+				<td>
 					<button type="button" class="btn btn-info btn-sm InputFakQr" inv_id="<?php echo $row->INVOICE_ID ?>"><i class="glyphicon glyphicon-qrcode"></i></button>
 					<button type="button" class="btn btn-warning btn-sm InputFakMn" inv_id="<?php echo $row->INVOICE_ID ?>"><i class="glyphicon glyphicon-edit"></i></button>
 					<?php $fkp = str_replace(str_split('.-'), '', $TaxInvNum); ?>
