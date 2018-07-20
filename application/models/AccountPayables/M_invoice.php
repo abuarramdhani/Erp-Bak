@@ -27,7 +27,7 @@ class M_invoice extends CI_Model{
 
 		$oracle = $this->load->database("oracle",true);
 		$query = $oracle->query("select
-								aia.invoice_id, ass.vendor_name,aia.invoice_num,aia.invoice_date,aila.description,aia.invoice_amount-nvl(aia.total_tax_amount,0) DPP,
+								aia.invoice_id, ass.vendor_name,aia.invoice_num,aia.invoice_date,aia.invoice_amount-nvl(aia.total_tax_amount,0) DPP,
 								nvl(aia.total_tax_amount,0) PPN,aia.attribute5 tax_number_depan, aia.attribute3 tax_number_belakang, aia.attribute15 voucher_number,
 								COUNT(*) 
 								OVER (PARTITION BY aia.invoice_id) JML
