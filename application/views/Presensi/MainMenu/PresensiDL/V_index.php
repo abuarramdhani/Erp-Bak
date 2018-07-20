@@ -22,7 +22,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <form action="" enctype="multipart/formdata" method="post">
+                                <form action="<?php echo site_url('Presensi/PresensiDL/search_scan') ?>" enctype="multipart/formdata" method="post">
                                   <div class="col-md-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -52,20 +52,34 @@
                                                 <th>Nama</th>
                                                 <th>Seksi</th>
                                                 <th>SPDL</th>
-                                                <th>Jam Keberangkatan</th>
+                                                <th>Tgl Scan</th>
                                                 <th>Scan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          <?php $no=1;foreach ($listMonitoring as $key):?>
+                                          <?php 
+                                            $no=1;
+                                            foreach ($tspdl as $key):
+                                            $stat = "";
+                                            foreach ($presensidl as $key_pres) {
+                                                if(rtrim($key['spdl_id']) == rtrim($key_pres['spdl_id'])){
+                                                  $stat = "<span style='color:green;'>scan</span>";
+                                                  $tgl_scan = date('d F Y',strtotime(($key_pres['tgl_realisasi'])))." (".$key_pres['wkt_realisasi'].") ";
+                                                  break;
+                                                }else{
+                                                  $stat = "<span style='color:red;'>-</span>";
+                                                  $tgl_scan = "-";
+                                                }
+                                            }
+                                          ?>
                                            <tr>
                                              <td><?php echo $no++?></td>
                                              <td><?php echo $key['noind'];?></td>
                                              <td><?php echo $key['nama'];?></td>
                                              <td><?php echo $key['seksi'];?></td>
                                              <td><?php echo $key['spdl_id'];?></td>
-                                             <td>-</td>
-                                             <td>-</td>
+                                             <td><?php echo $tgl_scan;?></td>
+                                             <td><?php echo $stat;?></td>
                                            </tr>
                                           <?php endforeach; ?>
                                         </tbody>                                      
