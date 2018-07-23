@@ -673,11 +673,11 @@ function InsertLokasiFinger(th) {
 							if ( result['kode_cek'] == 1 )
 							{
 								alert('Already registered!');
-								$('#PresenceManagement-MonitoringPresensi-Pengaturan-btnProceed').prop('disabled', 'true');
+								$('#PresenceManagement-MonitoringPresensi-Pengaturan-btnProceed').prop('disabled', true);
 							}
 							else if ( result['kode_cek'] == 0 )
 							{
-								$('#PresenceManagement-MonitoringPresensi-Pengaturan-btnProceed').prop('disabled', 'false');
+								$('#PresenceManagement-MonitoringPresensi-Pengaturan-btnProceed').prop('disabled', false);
 							}
 						}
 					});
