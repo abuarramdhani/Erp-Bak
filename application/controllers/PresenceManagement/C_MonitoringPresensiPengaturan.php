@@ -121,7 +121,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 
 				foreach ($info_pekerja as $info)
 				{
-					if ( $this->M_monitoringpresensi->user_cek((int) $info['noind_baru']) = 0 )
+					if ( $this->M_monitoringpresensi->user_cek((int) $info['noind_baru']) == 0 )
 					{
 						$user_create	=	array
 											(
