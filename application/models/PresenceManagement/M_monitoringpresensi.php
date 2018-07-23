@@ -284,7 +284,7 @@
 			    {
 			    	$this->quick->from('db_datapresensi.tb_user');
 
-			    	$this->quick->where('user.noind_baru =', $noind_baru);
+			    	$this->quick->where('noind_baru =', $noind_baru);
 
 			    	return $this->quick->count_all_results();
 			    }
