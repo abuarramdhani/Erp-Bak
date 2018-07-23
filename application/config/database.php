@@ -313,7 +313,7 @@ $db['erp'] = array(
 
 $db['dinas_luar'] = array(
 	'dsn'	=> '',
-	'hostname' => 'quick.co.id',
+	'hostname' => 'dl.quick.com',
 	'username' => 'quickc01_dlo',
 	'password' => '{#QE.k.WxaZG',
 	'database' => 'quickc01_dinas_luar_online',
