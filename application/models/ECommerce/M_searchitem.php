@@ -61,6 +61,8 @@ class M_searchitem extends CI_Model {
 				msib.DESCRIPTION,
 				msib.PRIMARY_UOM_CODE,
 				sum(moq.TRANSACTION_QUANTITY) qty,
+				khs_inv_qty_atr(msib.ORGANIZATION_ID ,msib.INVENTORY_ITEM_ID ,moq.SUBINVENTORY_CODE ,'','') atr,
+				khs_inv_qty_att(msib.ORGANIZATION_ID ,msib.INVENTORY_ITEM_ID ,moq.SUBINVENTORY_CODE ,'','') att,				
 				moq.SUBINVENTORY_CODE
 			FROM
 				MTL_ONHAND_QUANTITIES moq,
