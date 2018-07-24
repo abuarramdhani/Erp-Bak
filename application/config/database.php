@@ -334,6 +334,30 @@ $db['dinas_luar'] = array(
 	'port' => 3306
 );
 
+$db['tokoquick'] = array(
+	'dsn'	=> '',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	'database' => 'tokoquick',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'port' => 3306
+);
+
+
 $efg="";
 		$data = explode('.',$_SERVER['SERVER_NAME']);
 		if (!empty($data[0])) {
