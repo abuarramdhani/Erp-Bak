@@ -27,7 +27,7 @@
 											<option></option>
 											<?php foreach ($organization as $org) {?>
 											<option value="<?= $org['ORGANIZATION_ID'] ?>">
-												<?= $org['NAME'] ?>
+												<?= $org['ORGANIZATION_CODE'].' - '.$org['ORGANIZATION_NAME'] ?>
 											</option>
 											<?php } ?>
 										</select>
