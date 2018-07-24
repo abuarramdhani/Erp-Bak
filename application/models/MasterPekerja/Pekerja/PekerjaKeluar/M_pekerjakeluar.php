@@ -42,4 +42,31 @@ class M_pekerjakeluar extends CI_Model {
 		$this->personalia->insert('hrd_khs.tpribadi_log', $history);
 		return;
 	}
+	public function getProvinsi($provinsi)
+	{
+		$this->daerah->like('nama', $provinsi);
+		$query = $this->daerah->get('provinsi');
+		return $query->result_array();
+	}
+	public function getKabupaten($kabupaten,$id_prov)
+	{
+		$this->daerah->where('id_prov', $id_prov);
+		$this->daerah->like('nama', $kabupaten);
+		$query = $this->daerah->get('kabupaten');
+		return $query->result_array();
+	}
+	public function getKecamatan($kecamatan,$id_kab)
+	{
+		$this->daerah->where('id_kab', $id_kab);
+		$this->daerah->like('nama', $kecamatan);
+		$query = $this->daerah->get('kecamatan');
+		return $query->result_array();
+	}
+	public function getDesa($desa,$id_kec)
+	{
+		$this->daerah->where('id_kec', $id_kec);
+		$this->daerah->like('nama', $desa);
+		$query = $this->daerah->get('kelurahan');
+		return $query->result_array();
+	}
 };

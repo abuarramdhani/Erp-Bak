@@ -185,4 +185,38 @@ class C_Index extends CI_Controller {
 		};
 		
 	}
+	public function provinsiPekerja(){
+
+		$provinsi 	= $this->input->get('term');
+		$data 		= $this->M_pekerjakeluar->getProvinsi($provinsi);
+
+		echo json_encode($data);
+	}
+
+	public function kabupatenPekerja(){
+
+		$id_prov 	= $this->input->get('prov');
+		$kabupaten 	= strtoupper($this->input->get('term'));
+		$data 		= $this->M_pekerjakeluar->getKabupaten($kabupaten,$id_prov);
+
+		echo json_encode($data);
+	}
+
+	public function kecamatanPekerja(){
+
+		$id_kab 	= $this->input->get('kab');
+		$kecamatan 	= strtoupper($this->input->get('term'));
+		$data 		= $this->M_pekerjakeluar->getKecamatan($kecamatan,$id_kab);
+
+		echo json_encode($data);
+	}
+
+	public function desaPekerja(){
+
+		$id_kec 	= $this->input->get('kec');
+		$desa 		= strtoupper($this->input->get('term'));
+		$data 		= $this->M_pekerjakeluar->getDesa($desa,$id_kec);
+
+		echo json_encode($data);
+	}
 };
