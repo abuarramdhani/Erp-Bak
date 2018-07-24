@@ -43,7 +43,7 @@
 							</div>
 						</div>
 						<div class="row" style="margin-top: 10px;">
-							<div class="col-lg-4">
+							<div class="col-lg-4"> 
 								<label for="PK_txt_namaPekerja">Nama </label>
 							</div>
 							<div class="col-lg-8">
@@ -89,18 +89,11 @@
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
-								<label for="PK_txt_desaPekerja">Desa </label>
+								<label for="PK_txt_provinsiPekerja">Provinsi </label>
 							</div>
-							<div class="col-lg-5">
-								<input type="text" name="txt_desaPekerja" id="PK_txt_desaPekerja" class="form-control" value="<?php echo $data['desa'] ?>">
-							</div>
-						</div>
-						<div class="row" style="margin-top: 10px;">
-							<div class="col-lg-2">
-								<label for="PK_txt_kecamatanPekerja">Kecamatan </label>
-							</div>
-							<div class="col-lg-5">
-								<input type="text" name="txt_kecamatanPekerja" id="PK_txt_kecamatanPekerja" class="form-control" value="<?php echo $data['kec'] ?>">
+							<div class="col-lg-4">
+								<select name="slc_provinsi_pekerja" id="PK-slc_provinsi_pekerja" class="form-control"></select>
+								<!-- <input type="text" name="txt_provinsiPekerja" id="PK_txt_provinsiPekerja" class="form-control" value="<?php echo $data['prop'] ?>"> -->
 							</div>
 						</div>
 						<div class="row" style="margin-top: 10px;">
@@ -108,15 +101,26 @@
 								<label for="PK_txt_kabupatenPekerja">Kabupaten </label>
 							</div>
 							<div class="col-lg-4">
-								<input type="text" name="txt_kabupatenPekerja" id="PK_txt_kabupatenPekerja" class="form-control" value="<?php echo $data['kab'] ?>">
+								<select name="slc_kabupaten_pekerja" id="PK-slc_kabupaten_pekerja" class="form-control"></select>
+								<!-- <input type="text" name="txt_kabupatenPekerja" id="PK_txt_kabupatenPekerja" class="form-control" value="<?php echo $data['kab'] ?>"> -->
 							</div>
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
-								<label for="PK_txt_provinsiPekerja">Provinsi </label>
+								<label for="PK_txt_kecamatanPekerja">Kecamatan </label>
 							</div>
-							<div class="col-lg-4">
-								<input type="text" name="txt_provinsiPekerja" id="PK_txt_provinsiPekerja" class="form-control" value="<?php echo $data['prop'] ?>">
+							<div class="col-lg-5">
+								<select name="slc_kecamatan_pekerja" id="PK-slc_kecamatan_pekerja" class="form-control"></select>
+								<!-- <input type="text" name="txt_kecamatanPekerja" id="PK_txt_kecamatanPekerja" class="form-control" value="<?php echo $data['kec'] ?>"> -->
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_desaPekerja">Desa </label>
+							</div>
+							<div class="col-lg-5">
+								<select name="slc_desa_pekerja" id="PK-slc_desa_pekerja" class="form-control"></select>
+								<!-- <input type="text" name="txt_desaPekerja" id="PK_txt_desaPekerja" class="form-control" value="<?php echo $data['desa'] ?>"> -->
 							</div>
 						</div>
 						<div class="row" style="margin-top: 10px;">
