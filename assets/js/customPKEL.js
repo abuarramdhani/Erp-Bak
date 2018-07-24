@@ -33,6 +33,112 @@ $(function () {
 		},
 	});
 
+	$('#PK-slc_provinsi_pekerja').select2({ 
+    	minimumInputLength: 2,
+		allowClear: true, 
+		placeholder: 'Provinsi',
+		ajax: {
+			url: baseurl+"MasterPekerja/DataPekerjaKeluar/provinsiPekerja",
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (obj) {
+						return {
+							id: obj.id_prov,
+							text: obj.nama,
+						};
+					})
+					
+				};
+			},
+		},
+	});
+
+	$('#PK-slc_kabupaten_pekerja').select2({ 
+    	minimumInputLength: 0,
+		allowClear: true, 
+		placeholder: 'Kabupaten',
+		ajax: {
+			url: baseurl+"MasterPekerja/DataPekerjaKeluar/kabupatenPekerja",
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term,
+						prov : $("#PK-slc_provinsi_pekerja").val(),
+					};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (ok) {
+						return {
+							id: ok.id_kab,
+							text: ok.nama,
+						};
+					})
+					
+				};
+			},
+		},
+	});
+
+	$('#PK-slc_kecamatan_pekerja').select2({ 
+    	minimumInputLength: 0,
+		allowClear: true, 
+		placeholder: 'Kecamatan',
+		ajax: {
+			url: baseurl+"MasterPekerja/DataPekerjaKeluar/kecamatanPekerja",
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term,
+						kab : $("#PK-slc_kabupaten_pekerja").val(),
+					};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (ok) {
+						return {
+							id: ok.id_kec,
+							text: ok.nama,
+						};
+					})
+					
+				};
+			},
+		},
+	});
+
+	$('#PK-slc_desa_pekerja').select2({ 
+    	minimumInputLength: 0,
+		allowClear: true, 
+		placeholder: 'Kelurahan',
+		ajax: {
+			url: baseurl+"MasterPekerja/DataPekerjaKeluar/desaPekerja",
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term,
+						kec : $("#PK-slc_kecamatan_pekerja").val(),
+					};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (ok) {
+						return {
+							id: ok.id_kel,
+							text: ok.nama,
+						};
+					})
+					
+				};
+			},
+		},
+	});
+
 	$('.PK-daterangepicker').daterangepicker({
 		"showDropdowns": true,
 		"autoApply": true,
