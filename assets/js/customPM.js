@@ -520,3 +520,202 @@ function InsertLokasiFinger(th) {
 	}
 }
 
+// 	-------Presence Management--------------------------------------------start
+	$(function()
+	{
+		// 	Daterangepicker
+		// 	{
+
+		//	}
+
+		// 	Input Mask
+		//	{
+				// $('#PresenceManagement-MonitoringPresensi-Pengaturan-txtIPServerSDK').inputmask('ip');
+		//	}
+
+		//	Select2
+		//	{
+				$('#PresenceManagement-MonitoringPresensi-Pengaturan-cmbLokasiKerja').select2({
+					ajax:
+					{
+						url: baseurl+'PresenceManagement/MonitoringPresensiPengaturan/lokasi_kerja',
+						dataType: 'json',
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.id_, text: obj.id_ + ' - ' + obj.lokasi_kerja};
+								})
+							}
+						}
+					}
+				});
+
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja').select2({
+					ajax:
+					{
+						url: baseurl+'PresenceManagement/MonitoringPresensiPengaturan/lokasi_kerja',
+						dataType: 'json',
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.id_, text: obj.id_ + ' - ' + obj.lokasi_kerja};
+								})
+							}
+						}
+					}
+				});
+
+				$('#PresenceManagement-MonitoringPresensi-Pengaturan-cmbPekerja').select2({
+					minimumInputLength: 3,
+					ajax:
+					{
+						url: baseurl+'PresenceManagement/MonitoringPresensiPengaturan/pekerja',
+						dataType: 'json',
+						delay: 500,
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.noind_baru, text: obj.noind_baru + ' - ' + obj.noind + ' - ' + obj.nama};
+								})
+							}
+						}
+					}
+				});
+
+				$('#PresenceManagement-MonitoringPresensi-DeviceUserList-cmbUserRegistered').select2({
+					minimumInputLength: 3,
+					ajax:
+					{
+						url: baseurl+'PresenceManagement/MonitoringPresensi/registered_user',
+						dataType: 'json',
+						delay: 500,
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.noind_baru, text: obj.noind_baru + ' - ' + obj.noind + ' - ' + obj.nama};
+								})
+							}
+						}
+					}
+				});
+				
+				$('#PresenceManagement-MonitoringPresensi-DeviceUserList-cmbJariRef').select2({
+					ajax:
+					{
+						url: baseurl+'PresenceManagement/MonitoringPresensi/finger_reference',
+						dataType: 'json',
+						delay: 500,
+						data: function(params){
+							return {
+								term: params.term
+							}
+						},
+						processResults: function (data){
+							return {
+								results: $.map(data, function(obj){
+									return {id: obj.kode_finger, text: obj.kode_finger + ' - ' + obj.nama_jari};
+								})
+							}
+						}
+					}
+				});
+		//	}
+
+		//	DataTables
+		//	{
+				$('#PresenceManagement-daftarPerangkat').DataTable({
+				});
+
+				$('#PresenceManagement-daftarUser').DataTable({
+				});
+
+				$('#PresenceManagement-daftarAksesUser').DataTable({
+					scrollY: '250px',
+				});
+		//	}
+
+		//	Form Behavior
+		//	{
+				$('#PresenceManagement-MonitoringPresensi-Pengaturan-cmbPekerja').change(function()
+				{
+					var noind_baru 	=	$('#PresenceManagement-MonitoringPresensi-Pengaturan-cmbPekerja').val();
+					$.ajax
+					({
+						type: 'POST',
+						delay: 500,
+						data: 
+						{
+							noind_baru: noind_baru
+						},
+						url: baseurl+'PresenceManagement/MonitoringPresensiPengaturan/user_cek',
+						success:function(result)
+						{
+							if ( result['kode_cek'] == 1 )
+							{
+								alert('Already registered!');
+								$('#PresenceManagement-MonitoringPresensi-Pengaturan-labelStatusUser').html('Already registered!');
+								$('#PresenceManagement-MonitoringPresensi-Pengaturan-btnProceed').prop('disabled', true);
+							}
+							else if ( result['kode_cek'] == 0 )
+							{
+								$('#PresenceManagement-MonitoringPresensi-Pengaturan-btnProceed').prop('disabled', false);
+							}
+						}
+					});
+				});
+		//	}
+	});
+
+	//	Individual Functions
+	//	{
+			function PresenceManagement_device_update
+			(
+					server_ip,
+					server_port,
+					device_sn,
+					device_ip,
+					device_port,
+					inisial_lokasi,
+					id_lokasi,
+					kode_lokasi_kerja,
+					nama_lokasi_kerja
+			) 
+			{
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtIDLokasi').val(id_lokasi);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtIPServerSDK').val(server_ip);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortServerSDK').val(server_port);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtDeviceSN').val(device_sn);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtIPDevice').val(device_ip);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortDevice').val(device_port);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtInisialLokasi').val(inisial_lokasi);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja').select2('data', {id: kode_lokasi_kerja, a_key: kode_lokasi_kerja + ' - ' + nama_lokasi_kerja});
+				$('#deviceUpdate').modal("show");
+			}
+
+			function PresenceManagement_user_register(id_lokasi)
+			{
+				$('#PresenceManagement-MonitoringPresensi-DeviceUserList-txtIDLokasi').val(id_lokasi);
+				$('#userRegister').modal("show");
+			}
+	//	}
+// 	-------Presence Management----------------------------------------------end

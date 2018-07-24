@@ -113,7 +113,7 @@ class M_index extends CI_Model {
 
 		public function table_columns_mysql($table_schema, $table_name)
 		{
-			$this->mysql_dev 	=	$this->load->database('mysql_dev', TRUE);
+			$this->quick 	=	$this->load->database('quick', TRUE);
 			$columns_not_included 	=	array
 										(
 											'create_timestamp',
@@ -127,27 +127,27 @@ class M_index extends CI_Model {
 											'history_type'
 										);
 
-			$this->mysql_dev->select('	COLUMN_NAME,
+			$this->quick->select('	COLUMN_NAME,
 								DATA_TYPE
 							');
-			$this->mysql_dev->from('information_schema.columns');
-			$this->mysql_dev->where('TABLE_SCHEMA =', $table_schema);
-			$this->mysql_dev->where('TABLE_NAME =', $table_name);
-			$this->mysql_dev->where_not_in('COLUMN_NAME', $columns_not_included);
+			$this->quick->from('information_schema.columns');
+			$this->quick->where('TABLE_SCHEMA =', $table_schema);
+			$this->quick->where('TABLE_NAME =', $table_name);
+			$this->quick->where_not_in('COLUMN_NAME', $columns_not_included);
 
-			$this->mysql_dev->order_by('ordinal_position');
+			$this->quick->order_by('ordinal_position');
 
-			return $this->mysql_dev->get()->result_array();
+			return $this->quick->get()->result_array();
 		}
 
 		public function table_value_mysql($schema_name, $table_name, $where_clause)
 		{
-			$this->mysql_dev 	=	$this->load->database('mysql_dev', TRUE);
+			$this->quick 	=	$this->load->database('quick', TRUE);
 
-			$this->mysql_dev->select('*');
-			$this->mysql_dev->from($schema_name.".".$table_name);
-			$this->mysql_dev->where($where_clause);
+			$this->quick->select('*');
+			$this->quick->from($schema_name.".".$table_name);
+			$this->quick->where($where_clause);
 
-			return $this->mysql_dev->get()->result_array();
+			return $this->quick->get()->result_array();
 		}
 }
