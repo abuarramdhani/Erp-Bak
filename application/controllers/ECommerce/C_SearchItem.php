@@ -96,12 +96,12 @@ class C_SearchItem extends CI_Controller {
 		$numExist=0;
 		foreach ($item as $itm) {
 			// $ItemToko = $this->M_searchitem->getItemFromToko($itm['SEGMENT1']);
-			$qty_available=ceil(($itm['QTY'])/5);
+			$qty_available=ceil(($itm['ATT'])/5);
 
 			$itemCombine[$numNone] = array(
 				'item' 				=> $itm['SEGMENT1'], 
 				'description' 		=> $itm['DESCRIPTION'],
-				'qty' 				=> $itm['QTY'], 
+				'qty' 				=> $itm['ATT'], 
 				'qty_available' 	=> $qty_available
 			);
 			$numNone++;
