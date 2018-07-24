@@ -1711,3 +1711,9 @@ $route['SiteManagement/MobileOrder/scan'] = 'SiteManagement/C_index/scan';
 $route['MasterPekerja/DataPekerjaKeluar'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index';
 $route['MasterPekerja/DataPekerjaKeluar/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1';
 $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1/$2';
+
+//--------------------------------------------------- E-COMMERCE --------------------------------------------------//
+$route['ECommerce'] 							= 'ECommerce/C_index';
+$route['ECommerce/SearchItem'] 					= 'ECommerce/C_SearchItem';
+$route['ECommerce/SearchItem/(:any)'] 			= 'ECommerce/C_SearchItem/$1';
+$route['ECommerce/SearchItem/(:any)/(:any)'] 	= 'ECommerce/C_SearchItem/$1/$2';
