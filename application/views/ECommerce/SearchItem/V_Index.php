@@ -42,9 +42,13 @@
 									</div>
 								</div>
 							 	<div class="col-lg-12">
-									<button class="btn btn-md btn-success" type="button" id="btnSearchEcommerceItem" disabled>Search</button>
+									<div class="col-lg-6"><button class="btn btn-md btn-success pull-right" type="button" id="btnSearchEcommerceItem" disabled>Search</button></div>
+									
 									<button class="btn btn-md btn-info pull-right" type="submit" id="submitExportExcelItemEcatalog" disabled>EXPORT</button>
-								</div><br><br><br>
+									<br>
+										<span style="font-size:15px;">Formula: Round Up(Qty Available to Transact / 5)</span>
+									<br><br>
+								</div>
 								<div id="searchResultTableItemBySubInventory" class="col-lg-12"></div>
 							</div>
 						</div>
