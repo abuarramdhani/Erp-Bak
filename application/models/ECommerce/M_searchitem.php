@@ -11,12 +11,19 @@ class M_searchitem extends CI_Model {
 	{
 		$oracle = $this->load->database('oracle', TRUE);
 		$sql="SELECT
-				hou.ORGANIZATION_ID,hou.NAME,hou.ATTRIBUTE30
+				ood.ORGANIZATION_ID,
+				ood.ORGANIZATION_CODE,
+				ood.ORGANIZATION_NAME
 			FROM
-				HR_ORGANIZATION_UNITS hou
-			WHERE 
-				hou.NAME LIKE '%jual%'
-			order by 1";
+				ORG_ORGANIZATION_DEFINITIONS ood
+			WHERE
+				ood.ORGANIZATION_NAME LIKE '%jual%' 
+				OR 
+				ood.ORGANIZATION_CODE = 'YTH' 
+				OR 
+				ood.ORGANIZATION_CODE = 'ODM'
+			ORDER BY
+				1";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
