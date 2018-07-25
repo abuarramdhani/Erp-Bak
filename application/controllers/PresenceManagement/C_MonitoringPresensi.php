@@ -200,6 +200,114 @@
 			}
 		}
 
+		public function get_scanlog_all($id_lokasi = FALSE)
+		{
+			if ( $id_lokasi !== FALSE )
+			{
+				$id_lokasi_decode	=	$this->general->dekripsi($id_lokasi);
+				$tb_device 			=	$this->M_monitoringpresensi->device_fingerprint($id_lokasi_decode);
+			}
+			else
+			{
+				$tb_device 			=	$this->M_monitoringpresensi->device_fingerprint();
+			}
+
+			if ( $this->session->is_logged )
+			{
+				$user 	=	$this->session->user;
+			}
+			else
+			{
+				$user 	=	'CRON';
+			}
+
+			echo '<h2>TARIK DATA PRESENSI</h2><br/>';
+			foreach ($tb_device as $device)
+			{
+				$device_sn 			=	"";
+				$device_server_ip 	=	"";
+				$device_server_port	=	"";
+				$parameter 			=	"";
+				$device_sn 			=	$device['device_sn'];
+				$device_server_ip	=	$device['server_ip'];
+				$device_server_port =	$device['server_port'];
+				$parameter 			.=	"sn=".$device_sn;
+				$url 			=	$device_server_ip."/scanlog/all";
+				$server_output	=	$this->lib_monitoringpresensi->send_to_sdk_server($device_server_port, $url, $parameter);
+
+				if ( strpos($server_output, "Error") !== FALSE )
+				{
+					echo 'Tarik data presensi '.$device['device_name'].' - '.$device_server_ip.' GAGAL<br/>';
+					echo $server_output;
+					exit();
+				}
+				else
+				{
+					echo 'Tarik data presensi '.$device['device_name'].' - '.$device_server_ip.' BERHASIL<br/>';
+					$content = json_decode($server_output);
+			
+					foreach ($content as $key => $value)
+					{
+						if ( ( ! (is_array($value)) ) AND ( $value == 1 ) )
+						{
+							foreach ($content->Data as $entry)
+							{
+								$Jsn 			= 	$entry->SN;
+								$Jsd 			= 	$entry->ScanDate;
+								$Jnoind_baru 	=	$entry->PIN;
+								$Jvm 			=	$entry->VerifyMode;
+								$Jim 			=	$entry->IOMode;
+								$Jwc 			=	$entry->WorkCode;
+
+								$data_exist 	=	$this->M_monitoringpresensi->scanlog_exist_check($Jsn, $Jsd, $Jnoind_baru);
+								if( $data_exist != 0 )
+								{
+									$scanlog_update 	=	array
+															(
+																'sn'					=>	$Jsn,
+																'scan_date'				=>	$Jsd,
+																'noind_baru'			=>	$Jnoind_baru,
+																'verifymode' 			=>	$Jvm,
+																'iomode'				=>	$Jim,
+																'workcode'				=>	$Jwc,
+																'last_update_timestamp'	=>	date('Y-m-d H:i:s'),
+																'last_update_user'		=>	$user,
+															);
+									$this->M_monitoringpresensi->scanlog_update($scanlog_update, $Jsn, $Jsd, $Jnoind_baru);
+									$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_scanlog', array('sn' => $Jsn, 'scan_date' => $Jsd, 'noind_baru' => $Jnoind_baru), 'UPDATE');
+									echo '-------Update scanlog '.$Jnoind_baru.' - '.$Jsd.' BERHASIL<br/>';
+								}
+								else
+								{
+									$scanlog_insert 	=	array
+															(
+																'sn'				=>	$Jsn,
+																'scan_date'			=>	$Jsd,
+																'noind_baru'		=>	$Jnoind_baru,
+																'verifymode' 		=>	$Jvm,
+																'iomode'			=>	$Jim,
+																'workcode'			=>	$Jwc,
+																'create_timestamp'	=>	date('Y-m-d H:i:s'),
+																'create_user'		=>	$user,
+															);
+									$this->M_monitoringpresensi->scanlog_insert($scanlog_insert);
+									$this->M_monitoringpresensi->scanlog_insert_backup($scanlog_insert);
+
+									$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_scanlog', array('sn' => $Jsn, 'scan_date' => $Jsd, 'noind_baru' => $Jnoind_baru), 'INSERT');
+									echo '-------Insert scanlog '.$Jnoind_baru.' - '.$Jsd.' BERHASIL<br/>';
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if ( $this->session->is_logged )
+			{
+				redirect('PresenceManagement/MonitoringPresensi');
+			}
+		}
+
 		public function delete_device_scanlog($id_lokasi = FALSE)
 		{
 			if ( $id_lokasi !== FALSE )
