@@ -60,26 +60,33 @@ class M_searchitem extends CI_Model {
 				msib.SEGMENT1,
 				msib.DESCRIPTION,
 				msib.PRIMARY_UOM_CODE,
-				sum(moq.TRANSACTION_QUANTITY) qty,
-				khs_inv_qty_atr(msib.ORGANIZATION_ID ,msib.INVENTORY_ITEM_ID ,moq.SUBINVENTORY_CODE ,'','') atr,
-				khs_inv_qty_att(msib.ORGANIZATION_ID ,msib.INVENTORY_ITEM_ID ,moq.SUBINVENTORY_CODE ,'','') att,				
+				SUM( moq.TRANSACTION_QUANTITY ) qty,
+				khs_inv_qty_atr( msib.ORGANIZATION_ID ,
+				msib.INVENTORY_ITEM_ID ,
+				moq.SUBINVENTORY_CODE ,
+				'',
+				'' ) atr,
+				khs_inv_qty_att( msib.ORGANIZATION_ID ,
+				msib.INVENTORY_ITEM_ID ,
+				moq.SUBINVENTORY_CODE ,
+				'',
+				'' ) att,
 				moq.SUBINVENTORY_CODE
 			FROM
 				MTL_ONHAND_QUANTITIES moq,
 				MTL_SYSTEM_ITEMS_B msib
 			WHERE
 				msib.INVENTORY_ITEM_ID = moq.INVENTORY_ITEM_ID
-				AND 
-				msib.ORGANIZATION_ID = moq.ORGANIZATION_ID
-				AND 
-				moq.SUBINVENTORY_CODE LIKE '$sub_code'
-				AND 
-				moq.ORGANIZATION_ID = $org_id
+				AND msib.ORGANIZATION_ID = moq.ORGANIZATION_ID
+				AND moq.SUBINVENTORY_CODE LIKE '$sub_code'
+				AND moq.ORGANIZATION_ID = $org_id
 			GROUP BY
-				msib.SEGMENT1
-				,msib.PRIMARY_UOM_CODE
-				,moq.SUBINVENTORY_CODE
-				,msib.DESCRIPTION";
+				msib.SEGMENT1 ,
+				msib.PRIMARY_UOM_CODE ,
+				moq.SUBINVENTORY_CODE ,
+				msib.DESCRIPTION,
+				msib.ORGANIZATION_ID,
+				msib.INVENTORY_ITEM_ID";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
