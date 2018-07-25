@@ -178,7 +178,7 @@ class C_Index extends CI_Controller {
 							'noind' 		=> $this->input->post('txt_noindukLama'),
 							'aktifitas' 	=> 'UPDATE',
 							'date_time' 	=> date('Y-m-d H:i:s'),
-							'last_update_by'=> $this->session->user,
+							'last_updated_by'=> $this->session->user,
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
