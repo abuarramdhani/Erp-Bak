@@ -225,6 +225,7 @@ class C_Index extends CI_Controller {
 							'noind' 		=> $this->input->post('txt_noindukLama'),
 							'aktifitas' 	=> 'UPDATE',
 							'date_time' 	=> date('Y-m-d H:i:s'),
+							// 'last_updated_by'=> $this->session->user,
 							'last_updated_by'=> $this->session->user,
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
