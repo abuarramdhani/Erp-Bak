@@ -137,18 +137,28 @@ class C_Index extends CI_Controller {
 	{
 		$user_id 	= $this->session->userid;
 		$noind		= $this->input->post('txt_noindukLama');
+		$prop 		= $this->input->post('slc_provinsi_pekerja');
+		$kab 		= $this->input->post('slc_kabupaten_pekerja');
+		$kec 		= $this->input->post('slc_kecamatan_pekerja');
+		$desa 		= $this->input->post('slc_desa_pekerja');
+		$ambil_prov = $this->M_pekerjakeluar->ambilProv($prop);
+		$ambil_kab 	= $this->M_pekerjakeluar->ambilKab($kab);
+		$ambil_kec 	= $this->M_pekerjakeluar->ambilKec($kec);
+		$ambil_desa = $this->M_pekerjakeluar->ambilDesa($desa);
 
-		$data 	 	= array(
+		if ( $ambil_prov != null ) 
+		{
+			$data 	 	= array(
 								'noind' 	=> $this->input->post('txt_noinduk'),
 								'nama' 		=> $this->input->post('txt_namaPekerja'),
 								'templahir' => $this->input->post('txt_kotaLahir'),
 								'tgllahir' 	=> $this->input->post('txt_tanggalLahir'),
 								'nik' 		=> $this->input->post('txt_nikPekerja'),
 								'alamat' 	=> $this->input->post('txt_alamatPekerja'),
-								'desa' 		=> $this->input->post('txt_desaPekerja'),
-								'kec' 		=> $this->input->post('txt_kecamatanPekerja'),
-								'kab' 		=> $this->input->post('txt_kabupatenPekerja'),
-								'prop' 		=> $this->input->post('txt_provinsiPekerja'),
+								'desa' 		=> $ambil_desa[0]['nama'],
+								'kec' 		=> $ambil_kec[0]['nama'],
+								'kab' 		=> $ambil_kab[0]['nama'],
+								'prop' 		=> $ambil_prov[0]['nama'],
 								'kodepos' 	=> $this->input->post('txt_kodePosPekerja'),
 								'telepon' 	=> $this->input->post('txt_teleponPekerja'),
 								'nohp' 		=> $this->input->post('txt_nohpPekerja'),
@@ -160,6 +170,9 @@ class C_Index extends CI_Controller {
 								'tglkeluar' => $this->input->post('txt_tglkeluar'),
 								'sebabklr' 	=> $this->input->post('txt_sebabkeluar'),
 							);
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
 		$history 	= array(
 							'noind' 		=> $this->input->post('txt_noindukLama'),
@@ -169,7 +182,8 @@ class C_Index extends CI_Controller {
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
-		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) {
+		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
+			{
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
@@ -182,9 +196,60 @@ class C_Index extends CI_Controller {
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Index',$data);
 			$this->load->view('V_Footer',$data);
-		};
+			};
+	
+		}else {
+			$data 	 	= array(
+								'noind' 	=> $this->input->post('txt_noinduk'),
+								'nama' 		=> $this->input->post('txt_namaPekerja'),
+								'templahir' => $this->input->post('txt_kotaLahir'),
+								'tgllahir' 	=> $this->input->post('txt_tanggalLahir'),
+								'nik' 		=> $this->input->post('txt_nikPekerja'),
+								'alamat' 	=> $this->input->post('txt_alamatPekerja'),
+								'kodepos' 	=> $this->input->post('txt_kodePosPekerja'),
+								'telepon' 	=> $this->input->post('txt_teleponPekerja'),
+								'nohp' 		=> $this->input->post('txt_nohpPekerja'),
+								'diangkat' 	=> $this->input->post('txt_tglDiangkat'),
+								'masukkerja'=> $this->input->post('txt_tglMasukKerja'),
+								'lmkontrak' => $this->input->post('txt_lamaKontrak'),
+								'akhkontrak'=> $this->input->post('txt_akhirKontrak'),
+								'jabatan' 	=> $this->input->post('txt_jabatanPekerja'),
+								'tglkeluar' => $this->input->post('txt_tglkeluar'),
+								'sebabklr' 	=> $this->input->post('txt_sebabkeluar'),
+							);
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
+		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
+		$history 	= array(
+							'noind' 		=> $this->input->post('txt_noindukLama'),
+							'aktifitas' 	=> 'UPDATE',
+							'date_time' 	=> date('Y-m-d H:i:s'),
+							'last_update_by'=> $this->session->user,
+						);
+		$this->M_pekerjakeluar->historyUpdatePekerja($history);
+		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
+		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
+			{
+			$data['Menu'] = 'Dashboard';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+			
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+			$this->load->view('V_Header',$data); 
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Index',$data);
+			$this->load->view('V_Footer',$data);
+			};
+		}
 		
+
+			
 	}
+
 	public function provinsiPekerja(){
 
 		$provinsi 	= $this->input->get('term');

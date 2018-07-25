@@ -71,4 +71,28 @@ class M_pekerjakeluar extends CI_Model {
 		$query = $this->daerah->get('kelurahan');
 		return $query->result_array();
 	}
+	public function ambilProv($prop)
+	{
+		$this->daerah->where('id_prov', $prop);
+		$query = $this->daerah->get('provinsi');
+		return $query->result_array();
+	}
+	public function ambilKab($kab)
+	{
+		$this->daerah->where('id_kab', $kab);
+		$query = $this->daerah->get('kabupaten');
+		return $query->result_array();
+	}
+	public function ambilKec($kec)
+	{
+		$this->daerah->where('id_kec', $kec);
+		$query = $this->daerah->get('kecamatan');
+		return $query->result_array();
+	}
+	public function ambilDesa($desa)
+	{
+		$this->daerah->where('id_kel', $desa);
+		$query = $this->daerah->get('kelurahan');
+		return $query->result_array();
+	}
 };
