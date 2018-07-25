@@ -3,7 +3,7 @@
     <div class="panel-group">
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h3 >Edit Data Pekerja</h3>
+          <h3 >Edit Data Pekerja</h3> 
         </div>        
         <div class="panel-body">
         	<form method="POST" action="<?php echo base_url('MasterPekerja/DataPekerjaKeluar/viewEdit'); ?>">
@@ -92,7 +92,9 @@
 								<label for="PK_txt_provinsiPekerja">Provinsi </label>
 							</div>
 							<div class="col-lg-4">
-								<select name="slc_provinsi_pekerja" id="PK-slc_provinsi_pekerja" class="form-control"></select>
+								<select name="slc_provinsi_pekerja" id="PK-slc_provinsi_pekerja" class="form-control">
+									<option selected="selected"><?php echo $data['prop']; ?></option>
+								</select>
 								<!-- <input type="text" name="txt_provinsiPekerja" id="PK_txt_provinsiPekerja" class="form-control" value="<?php echo $data['prop'] ?>"> -->
 							</div>
 						</div>
@@ -101,7 +103,9 @@
 								<label for="PK_txt_kabupatenPekerja">Kabupaten </label>
 							</div>
 							<div class="col-lg-4">
-								<select name="slc_kabupaten_pekerja" id="PK-slc_kabupaten_pekerja" class="form-control"></select>
+								<select name="slc_kabupaten_pekerja" id="PK-slc_kabupaten_pekerja" class="form-control">
+									<option selected="selected"><?php echo $data['kab']; ?></option>
+								</select>
 								<!-- <input type="text" name="txt_kabupatenPekerja" id="PK_txt_kabupatenPekerja" class="form-control" value="<?php echo $data['kab'] ?>"> -->
 							</div>
 						</div>
@@ -110,7 +114,9 @@
 								<label for="PK_txt_kecamatanPekerja">Kecamatan </label>
 							</div>
 							<div class="col-lg-5">
-								<select name="slc_kecamatan_pekerja" id="PK-slc_kecamatan_pekerja" class="form-control"></select>
+								<select name="slc_kecamatan_pekerja" id="PK-slc_kecamatan_pekerja" class="form-control">
+									<option selected="selected"><?php echo $data['kec']; ?></option>
+								</select>
 								<!-- <input type="text" name="txt_kecamatanPekerja" id="PK_txt_kecamatanPekerja" class="form-control" value="<?php echo $data['kec'] ?>"> -->
 							</div>
 						</div>
@@ -119,7 +125,9 @@
 								<label for="PK_txt_desaPekerja">Desa </label>
 							</div>
 							<div class="col-lg-5">
-								<select name="slc_desa_pekerja" id="PK-slc_desa_pekerja" class="form-control"></select>
+								<select name="slc_desa_pekerja" id="PK-slc_desa_pekerja" class="form-control">
+									<option selected="selected"><?php echo $data['desa']; ?></option>
+								</select>
 								<!-- <input type="text" name="txt_desaPekerja" id="PK_txt_desaPekerja" class="form-control" value="<?php echo $data['desa'] ?>"> -->
 							</div>
 						</div>
@@ -159,13 +167,13 @@
 								<label for="PK_txt_tglDiangkat">Tgl diangkat </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_tglDiangkat" id="PK_txt_tglDiangkat" class="form-control PK-daterangepickersingledate" value="<?php echo $data['diangkat'] ?>" disabled="disabled">
+								<input type="text" name="txt_tglDiangkat" id="PK_txt_tglDiangkat" class="form-control" value="<?php echo $data['diangkat'] ?>" readonly="">
 							</div>
 							<div class="col-lg-3" >
 								<label for="PK_txt_tglMasukKerja">Tgl Masuk Kerja </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_tglMasukKerja" id="PK_txt_tglMasukKerja" class="form-control PK-daterangepickersingledate" value="<?php echo $data['masukkerja'] ?>" disabled="disabled">
+								<input type="text" name="txt_tglMasukKerja" id="PK_txt_tglMasukKerja" class="form-control" value="<?php echo $data['masukkerja'] ?>" readonly="">
 							</div>
 						</div>
 						<div class="row" style="margin-top: 10px;">
@@ -179,7 +187,7 @@
 								<label for="PK_txt_akhirKontrak">Berakhirnya Kontrak </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_akhirKontrak" id="PK_txt_akhirKontrak" class="form-control PK-daterangepickersingledate" value="<?php echo $data['akhkontrak'] ?>" disabled="disabled">
+								<input type="text" name="txt_akhirKontrak" id="PK_txt_akhirKontrak" class="form-control" value="<?php echo $data['akhkontrak'] ?>" readonly="">
 							</div>							
 						</div>
 						<div class="row" style="margin-top: 10px;">
@@ -227,7 +235,7 @@
 								<label for="PK_txt_tglkeluar">Tanggal Keluar </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_tglkeluar" id="PK_txt_tglkeluar" class="form-control PK-daterangepickersingledate" value="<?php echo $data['tglkeluar'] ?>" disabled="disabled">
+								<input type="text" name="txt_tglkeluar" id="PK_txt_tglkeluar" class="form-control" value="<?php echo $data['tglkeluar'] ?>" readonly="">
 							</div>													
 						</div>
 						<div class="row" style="margin-top: 10px;">
