@@ -185,7 +185,7 @@
 									$this->M_monitoringpresensi->scanlog_insert($scanlog_insert);
 									$this->M_monitoringpresensi->scanlog_insert_backup($scanlog_insert);
 
-									$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_scanlog', array('sn' => $Jsn, 'scan_date' => $Jsd, 'noind_baru' => $Jnoind_baru), 'INSERT');
+									$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_scanlog', array('sn' => $Jsn, 'scan_date' => $Jsd, 'noind_baru' => $Jnoind_baru), 'CREATE');
 									echo '-------Insert scanlog '.$Jnoind_baru.' - '.$Jsd.' BERHASIL<br/>';
 								}
 							}
@@ -294,7 +294,7 @@
 									$this->M_monitoringpresensi->scanlog_insert($scanlog_insert);
 									$this->M_monitoringpresensi->scanlog_insert_backup($scanlog_insert);
 
-									$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_scanlog', array('sn' => $Jsn, 'scan_date' => $Jsd, 'noind_baru' => $Jnoind_baru), 'INSERT');
+									$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_scanlog', array('sn' => $Jsn, 'scan_date' => $Jsd, 'noind_baru' => $Jnoind_baru), 'CREATE');
 									echo '-------Insert scanlog '.$Jnoind_baru.' - '.$Jsd.' BERHASIL<br/>';
 								}
 							}
