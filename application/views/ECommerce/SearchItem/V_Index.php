@@ -17,7 +17,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								Parameter Pencarian
+								Searching Parameter
 							</div>
 							<div class="box-body">
 								<div class="form-group col-lg-12" id="divOrganization">
@@ -45,7 +45,7 @@
 									<div class="col-lg-6"><button class="btn btn-md btn-info pull-right" type="button" id="btnTambahKriteriaPencarian" disabled>Tambah</button></div><br><br><br>
 								</div>
 								<div class="form-group col-lg-12" id="divSubInventory">
-									<label for="slcSubInventory" class="control-label col-lg-2">KRITERIA PENCARIAN :</label>
+									<label for="slcSubInventory" class="control-label col-lg-2">SEARCHING CRITERIA :</label>
 									<div class="col-lg-4">
 										<select name="slcKriteriaCarian" id="slcEcommerceKriteriaCari" style="width:100%;" multiple>
 											<option></option>
