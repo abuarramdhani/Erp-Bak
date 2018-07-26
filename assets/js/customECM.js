@@ -1,12 +1,13 @@
 $(document).ready(function () {
 	$('#slcEcommerceOrganization').select2({placeholder: "ORGANIZATION"});
 	$('#slcEcommerceSubInventory').select2({placeholder: "SUBINVENTORY"});
+	$('#slcEcommerceKriteriaCari').select2({placeholder: "KRITERIA"});
 
 	$('#slcEcommerceOrganization').change(function(){
 		var org_id = $('#slcEcommerceOrganization').val();
 		$('#slcEcommerceSubInventory').attr('disabled','disabled');
 		$('#slcEcommerceOrganization').attr('disabled','disabled');
-		$('#btnSearchEcommerceItem').attr('disabled','disabled');
+		$('#btnTambahKriteriaPencarian').attr('disabled','disabled');
 		$.ajax({
 			type: "POST",
 			url: baseurl+"ECommerce/SearchItem/getSubInventoryByOrganization/"+org_id,
@@ -21,6 +22,19 @@ $(document).ready(function () {
 	});
 
 	$('#slcEcommerceSubInventory').change(function(){
+		$('#btnTambahKriteriaPencarian').removeAttr('disabled');
+	});
+
+	$('#btnTambahKriteriaPencarian').click(function(){
+		var org_id = $('#slcEcommerceOrganization').val();
+		var org_op = $('#slcEcommerceOrganization option[value="'+org_id+'"]').html().replace(/\s/g, '');
+		var sub_in = $('#slcEcommerceSubInventory').val();
+
+		var org_ar = org_op.split("-");
+
+		// alert(org_id+'/'+org_ar[0]+'-'+sub_in);
+
+		$('#slcEcommerceKriteriaCari').append('<option value="'+org_id+'/'+sub_in+'" selected>'+org_ar[0]+' - '+sub_in+'</option>').trigger('change');
 		$('#btnSearchEcommerceItem').removeAttr('disabled');
 	});
 
@@ -28,23 +42,20 @@ $(document).ready(function () {
 		$('#searchResultTableItemBySubInventory').html('<img src="'+baseurl+'/assets/img/gif/loading12.gif">');
 		$('#slcEcommerceSubInventory').attr('disabled','disabled');
 		$('#slcEcommerceOrganization').attr('disabled','disabled');
-		$('#btnSearchEcommerceItem').attr('disabled','disabled');
 		$('#submitExportExcelItemEcatalog').attr('disabled','disabled');
 
-		var org_id = $('#slcEcommerceOrganization').val();
-		var sub_code = $('#slcEcommerceSubInventory').val();
+		var kriteria = $('#slcEcommerceKriteriaCari').val();
 
 		$.ajax({
 			type: "POST",
 			url: baseurl+"ECommerce/SearchItem/getItemBySubInventory",
 			data: {
-				org_id:org_id,
-				sub_code:sub_code,
+				kriteria:kriteria,
 			},
 			success: function (response) {
 				$('#slcEcommerceSubInventory').removeAttr('disabled');
 				$('#slcEcommerceOrganization').removeAttr('disabled');
-				$('#btnSearchEcommerceItem').removeAttr('disabled');
+				$('#btnTambahKriteriaPencarian').removeAttr('disabled');
 				$('#submitExportExcelItemEcatalog').removeAttr('disabled');
 				$('#searchResultTableItemBySubInventory').html(response);
 				$('#tbItemTokoquick').DataTable();
