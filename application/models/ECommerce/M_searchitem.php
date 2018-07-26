@@ -53,8 +53,21 @@ class M_searchitem extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function getItemBySubInventory($org_id,$sub_code)
+	public function getItemBySubInventory($kriteria)
 	{
+		$kondisi = "AND(";
+		foreach ($kriteria as $key => $krt) {
+			$krtArray = explode('/',$krt);
+			if ($key < (count($kriteria)-1)) {
+				$konBaru = "(moq.SUBINVENTORY_CODE LIKE '$krtArray[1]' AND moq.ORGANIZATION_ID = $krtArray[0]) OR";
+			}else{
+				$konBaru = "(moq.SUBINVENTORY_CODE LIKE '$krtArray[1]' AND moq.ORGANIZATION_ID = $krtArray[0]))";
+			}
+			$kondisi .= $konBaru;
+		}
+
+
+
 		$oracle = $this->load->database('oracle', TRUE);
 		$sql="SELECT
 				msib.SEGMENT1,
@@ -78,8 +91,7 @@ class M_searchitem extends CI_Model {
 			WHERE
 				msib.INVENTORY_ITEM_ID = moq.INVENTORY_ITEM_ID
 				AND msib.ORGANIZATION_ID = moq.ORGANIZATION_ID
-				AND moq.SUBINVENTORY_CODE LIKE '$sub_code'
-				AND moq.ORGANIZATION_ID = $org_id
+				$kondisi 
 			GROUP BY
 				msib.SEGMENT1 ,
 				msib.PRIMARY_UOM_CODE ,
