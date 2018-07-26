@@ -84,28 +84,48 @@ class C_SearchItem extends CI_Controller {
 
 	public function getItemBySubInventory()
 	{
-		$org_id 	= $this->input->post('org_id');
-		$sub_code 	= $this->input->post('sub_code');
+		$kriteriarray 	= $this->input->post('kriteria');
 
 		$itemCombine = array();
 
-		$item 		= $this->M_searchitem->getItemBySubInventory($org_id,$sub_code);
+		$item 		= $this->M_searchitem->getItemBySubInventory($kriteriarray);
 
 		$itemCombine=NULL;
+		$itemCodeArray=NULL;
+		$key=NULL;
 		$numNone=0;
 		$numExist=0;
 		foreach ($item as $itm) {
+			if ($itemCombine) {
+				$key = array_search($itm['SEGMENT1'], $itemCodeArray);
+			}
+			
 			// $ItemToko = $this->M_searchitem->getItemFromToko($itm['SEGMENT1']);
-			$qty_available=ceil(($itm['ATT'])/5);
 
-			$itemCombine[$numNone] = array(
-				'item' 				=> $itm['SEGMENT1'], 
-				'description' 		=> $itm['DESCRIPTION'],
-				'qty' 				=> $itm['ATT'], 
-				'qty_available' 	=> $qty_available
-			);
-			$numNone++;
-			$numExist++;
+			if ($key) {
+				$itmOriginalQty = ($itemCombine[$key]['qty'])+$itm['ATT'];
+				$qty_available = ceil($itmOriginalQty/5);
+
+				$itemCombine[$key] = array(
+					'item' 				=> $itm['SEGMENT1'], 
+					'description' 		=> $itm['DESCRIPTION'],
+					'qty' 				=> $itmOriginalQty, 
+					'qty_available' 	=> $qty_available
+				);
+			}else{
+				$qty_available = ceil(($itm['ATT'])/5);
+
+				$itemCodeArray[$numNone] = $itm['SEGMENT1'];
+
+				$itemCombine[$numNone] = array(
+					'item' 				=> $itm['SEGMENT1'], 
+					'description' 		=> $itm['DESCRIPTION'],
+					'qty' 				=> $itm['ATT'], 
+					'qty_available' 	=> $qty_available
+				);
+				$numNone++;
+				$numExist++;
+			}
 		}
 		if ($itemCombine) {
 			$data['itemCombine']=$itemCombine;
