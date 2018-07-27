@@ -24,7 +24,7 @@
                                 <h4>Monitoring Site Management</h4>   
                             </div>
                             <div class="box-body">
-                                <form method="post" action="<?php echo base_url('SiteManagement/Monitoring/prosesdata');?>" enctype="multipart/form-data">
+                                <form method="post" action="<?php echo base_url('SiteManagement/Monitoring/prosesdata');?>" enctype="multipart/form-data" id="sm-updatemonitoring">
                                     <div class="col-md-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="input-group">
-                                            <select class="form-control sm_select2" name="sm_selectkategori" id="sm_selectkategori">
+                                            <select id="sm-selectkategori" class="form-control sm_select2" name="sm_selectkategori" id="sm_selectkategori">
                                                 <option value=""></option>
                                                 <?php foreach($listkategori as $lk){;?>
                                                 <option value="<?php echo $lk['id_kategori'];?>"><?php echo $lk['kategori']; ?></option>
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="input-group">
-                                            <select class="form-control sm_select2" name="sm_periode" id="sm_periode" style="width: 100%">
+                                            <select id="sm-selectminggu" class="form-control sm_select2" name="sm_periode" id="sm_periode" style="width: 100%">
                                                 <option value=""></option>
                                                 <option value="1">1 Minggu</option>
                                                 <option value="2">2 Minggu</option>
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="input-group">
-                                            <select class="form-control sm_select2" name="sm_hari" id="sm_hari" style="width: 100%">
+                                            <select id="sm-selecthari" class="form-control sm_select2" name="sm_hari" id="sm_hari" style="width: 100%">
                                                 <option value=""></option>
                                                 <option value="1">Senin</option>
                                                 <option value="2">Selasa</option>
@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="input-group">
-                                            <button type="submit" class="btn btn-success pull-right">Proses</button>
+                                            <button type="submit" class="btn btn-success pull-right" id="sm-prosesmonitoring" disabled>Proses</button>
                                         </div>
                                     </div>
                                 </form>
@@ -81,10 +81,43 @@
         </div>
     </div>
 </section>
+
 <!-- Main content -->
 <section class="content">
   <div class="row">
     <div class="col-md-6">
+        <?php if(!empty($duedatelist)):?>
+        <div id="duedatelist" class="box">
+            <div class="box-header">
+                <h3 class="box-title">Order Masuk Due Date dalam 7 Hari</h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <table class="table table-striped table-bordered table-hover text-left sm_table2" style="font-size:12px;">
+                        <thead>
+                            <th>No</th>
+                            <th>Nomer Order</th>
+                            <th>Tanggal Order</th>
+                            <th>Jenis Order</th>
+                            <th>Seksi Order</th>
+                            <th>Tanggal Kebutuhan</th>
+                        </thead>
+                        <tbody>
+                            <?php $no=1; foreach($duedatelist as $key):?>
+                            <td><?php echo $no++;?></td>
+                            <td><?php echo $key['no_order']; ?></td>
+                            <td><?php echo date('d F Y', strtotime($key['created_date']));?></td>
+                            <td><?php echo $key['jenis_order'];?></td>
+                            <td><?php echo $key['section_name'];?></td>
+                            <td><?php echo date('d F Y', strtotime($key['due_date']));?></td>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
     <?php if(!empty($bathroom)):?>
       <div class="box">
         <div class="box-header">

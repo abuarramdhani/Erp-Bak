@@ -90,6 +90,7 @@
                                                 <td><?php echo date('Y-m-d', strtotime($row['tgl_order'])); ?></td>
                                                 <td align='center'>
                                                     <a style="margin-right:4px" href="<?php echo base_url('SiteManagement/Order/readData/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-file-text-o fa-2x"></span></a>
+                                                    <a style="margin-right:4px" href="<?php echo base_url('SiteManagement/Order/DeleteOrderMasuk/'.$encrypted_string.''); ?>" data-toggle="tooltip" onclick="return confirm('Are you sure you want to delete this item?');" data-placement="bottom" title="Hapus Data"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $row['jenis_order'] ?></td>
                                                 <td><?php echo $row['nama_seksi'] ?></td>

@@ -57,6 +57,7 @@ class C_Order extends CI_Controller
 	/* NEW DATA */
 	public function SaveDataOrderSM()
 	{
+		
 		$user_id = $this->session->userid;
 
 		$date = date('Ym');
@@ -66,8 +67,8 @@ class C_Order extends CI_Controller
 		}else{
 			$noder = ((int) $no_order[0]['no_order'])+1; 
 		}
-
-
+		
+		
 		$data = array(
 				'no_order' => (int)$noder,
 				'tgl_order' => date('Y-m-d'),
@@ -108,6 +109,9 @@ class C_Order extends CI_Controller
 				$this->ciqrcode->generate($params);
 			}
 
+		
+
+
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
@@ -117,12 +121,15 @@ class C_Order extends CI_Controller
 		$data['header'] = $this->M_order->Header($header_id);
 		$data['lines'] = $this->M_order->Lines($header_id);
 		
+
 		$html = $this->load->view('OrderSiteManagement/Order/V_cetakdata', $data, true);
 
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
+
+		
 	}
 
     public function CetakData($id)
@@ -170,6 +177,7 @@ class C_Order extends CI_Controller
 		$this->load->view('OrderSiteManagement/Order/V_index', $data);
 		$this->load->view('V_Footer',$data);
     }
+
 
 }
 

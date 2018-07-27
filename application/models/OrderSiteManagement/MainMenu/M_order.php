@@ -64,6 +64,13 @@ class M_order extends CI_Model
                                     where ((tgl_order + interval '7 day') < now()) and status=0");
         return $query;
     }
+
+    public function CekOrderSM($id){
+        $query = $this->db->query("
+                                    select id_order from sm.sm_order where id_order= $id
+                                ");
+        return $query;
+    }
 }
 
 /* End of file M_order.php */

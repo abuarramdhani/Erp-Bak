@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('OrderSiteManagement/Order/SaveDataOrderSM');?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('OrderSiteManagement/Order/SaveDataOrderSM');?>" class="form-horizontal" id="osm-ordermasuk" target="_blank">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -125,6 +125,7 @@
                                                                 </div>
                                                             </div>
                                                             <i style="color: red;">*) Cek Data Kembali Sebelum Disimpan</i>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>

@@ -160,6 +160,15 @@ class C_Order extends CI_Controller {
 		redirect(site_url('SiteManagement/Order/OrderMasuk'));
 	}
 
+	public function DeleteOrderMasuk($id)
+	{
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$this->M_order->deleteOrderMasuk($plaintext_string);
+
+		redirect(site_url('SiteManagement/Order/OrderMasuk'));
+	}
 	//Order Keluar 
 
 	//Civil Maintenanance

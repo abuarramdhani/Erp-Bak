@@ -46,6 +46,7 @@ class C_Monitoring extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['duedatelist'] = $this->M_monitoring->duedatelist();
 		$data['listkategori'] = $this->M_monitoring->getKategori();
 		$data['bathroom'] = $this->M_monitoring->alertBathroom();
 		$data['floorparking'] = $this->M_monitoring->alertFloorParking();
