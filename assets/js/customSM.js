@@ -213,6 +213,21 @@ $(document).ready(function(){
 	})
 
 });
+	function sm_cekproses(){
+		var minggu = $('#sm-selectminggu').val();
+		var hari = $('#sm-selecthari').val();
+		var kategori = $('#sm-selectkategori').val();
+		
+		if(minggu && hari && kategori){
+			$('#sm-prosesmonitoring').removeAttr('disabled', 'disabled');
+		}else{
+			$('#sm-prosesmonitoring').attr('disabled', 'disabled');
+		}
+	}
+
+	$(document).on('change','#sm-selectminggu, #sm-selecthari, #sm-selectkategori',function(){
+		sm_cekproses();
+	});
 
 //Order Site Management
 	function AddRowOrderSM(base){  
@@ -326,4 +341,24 @@ $(function() {
 	// 	}
 	// });
 
+	
 });
+
+	
+	
+	$('#osm-ordermasuk').submit(function(e){
+		e.preventDefault();
+		// var curtab = window.open(window.location, '_self');
+		
+		// curtab.delay(10000);
+		// window.open(baseurl+'OrderSiteManagement/Order');
+		// window.location.href(baseurl+'OrderSiteManagement/Order');
+		// $(this).unbind('submit').submit();
+		this.submit()
+		setTimeout(function(){
+			window.open(window.location, '_self');
+		}), 100 ;
+
+		
+
+	});

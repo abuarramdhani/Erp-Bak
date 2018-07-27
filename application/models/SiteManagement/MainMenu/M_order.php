@@ -119,4 +119,13 @@ class M_order extends CI_Model
         $this->db->where('id_order', $id);
         $this->db->delete('sm.sm_order_keluar');
     }
+
+    public function DeleteOrderMasuk($id)
+    {
+        $this->db->where('id_order', $id);
+        $this->db->delete('sm.sm_order');
+
+        $this->db->where('id_order', $id);
+        $this->db->delete('sm.sm_order_detail');
+    }
 }
