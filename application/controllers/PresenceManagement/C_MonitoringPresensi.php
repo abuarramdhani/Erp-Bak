@@ -372,7 +372,7 @@
 				$presensi_waktu 		=	$datapresensi['waktu'];
 				$presensi_noind_baru	=	$datapresensi['noind_baru'];
 				$presensi_noind 		=	$datapresensi['noind'];
-				$presensi_transfer 		=	false;
+				/*$presensi_transfer 		=	false;*/
 				$presensi_user 			=	$datapresensi['inisial_lokasi'];
 
 				$data_presensi 			=	array
@@ -382,24 +382,29 @@
 												'noind_baru'	=>	$presensi_noind_baru,
 												'noind' 		=>	$presensi_noind,
 												'kodesie' 		=>	$presensi_kodesie,
-												'transfer' 		=>	$presensi_transfer,
 												'user_' 		=>	$presensi_user,
 											);
 
+
 				//	Kirim ke FrontPresensi.tpresensi
 				//	{
+						$data_presensi['transfer']	=	TRUE;
 	 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-				//	}
-
-				//	Kirim ke Presensi.tprs_shift
-				//	{
-	 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
 				//	}
 
 				//	Kirim ke Catering.tpresensi
 				//	{
+	 					$data_presensi['transfer']	=	FALSE;
 	 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
 				//	}
+
+				//	Kirim ke Presensi.tprs_shift
+				//	{
+	 					$data_presensi['transfer']	=	FALSE;
+	 					$data_presensi['user_']		=	'SINKR';
+	 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+				//	}
+
 
 	 			//	Update transfer
 	 			//	{
