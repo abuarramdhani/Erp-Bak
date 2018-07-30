@@ -372,7 +372,7 @@
 				$presensi_waktu 		=	$datapresensi['waktu'];
 				$presensi_noind_baru	=	$datapresensi['noind_baru'];
 				$presensi_noind 		=	$datapresensi['noind'];
-				$presensi_transfer 		=	0;
+				$presensi_transfer 		=	false;
 				$presensi_user 			=	$datapresensi['inisial_lokasi'];
 
 				$data_presensi 			=	array
