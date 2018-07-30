@@ -172,7 +172,29 @@ $(document).ready(function(){
 		}
 	}
 
-	$('.sm_remarksorder').click(function() {
+	// $('.sm_remarksorder').click(function() {
+	// 	var id_order = $(this).attr('data-id');
+
+	// 	var check = confirm("Apakah anda yakin telah menyelesaikan order tersebut?");
+	// 	if (check) {
+	// 		$(this).attr('disabled','disabled');
+	// 		$(this).closest('tr').find('b').each(function(){
+	// 			$(this).text('Done');
+	// 		});
+	// 		$.ajax({
+	// 			url: baseurl+"SiteManagement/Order/RemarkSOrder",
+	// 		    type: "POST",
+	// 		    data: {id_order: id_order}
+	// 		}).done(function(data){
+	// 			alert('data berhasil diupdate');
+	// 		});
+	// 	}else{
+	// 		$(this).removeAttr('checked');
+	// 		alert('data batal diupdate');
+	// 	}
+	// });
+
+	$('.sm_remarksorder').on('ifChecked',function(e){
 		var id_order = $(this).attr('data-id');
 
 		var check = confirm("Apakah anda yakin telah menyelesaikan order tersebut?");
