@@ -401,7 +401,7 @@
 				//	Kirim ke Presensi.tprs_shift
 				//	{
 	 					$data_presensi['transfer']	=	FALSE;
-	 					$data_presensi['user_']		=	'SINKR';
+	 					$data_presensi['user_']		=	'CRON';
 	 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
 				//	}
 
