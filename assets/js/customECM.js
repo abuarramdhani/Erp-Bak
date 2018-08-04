@@ -62,4 +62,21 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+    $('#dataWaktuOrder').DataTable( {
+        "pagingType": "full_numbers"
+    } );
+
+    $('#btn-search').click(function(){
+		$('#searchResultTableItemByDate').html('<img src="'+baseurl+'/assets/img/gif/loading12.gif">');
+	});
+
+    // $('#dataWaktuOrder').DataTable({
+    //     "searching"		: true,
+    //     "lengthChange"	: false,
+    //     "scrollX"		: false,
+    //     "paging"		: false
+
+    // });
+
 });
