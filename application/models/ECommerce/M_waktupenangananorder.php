@@ -9,10 +9,10 @@ class M_waktupenangananorder extends CI_Model {
 
 	public function getAllOrders($dateFrom,$dateTo){
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql1="SELECT DISTINCT so_inv.org_id, so_inv.nomor_invoice, tgl_invoice, so_inv.no_receipt,
-						        so_inv.tgl_receipt, so_inv.nomor_so, so_inv.tgl_so,
-						        do_transact.nomor_mo nomor_do, do_transact.creation_date tgl_do,
-						        hmm.transaction_date gudang_transact,
+		$sql1="SELECT DISTINCT so_inv.org_id, so_inv.nomor_invoice, TO_CHAR(tgl_invoice, 'DD-MM-YYYY HH24:Mi:SS') tgl_invoice, so_inv.no_receipt,
+						        TO_CHAR(so_inv.tgl_receipt, 'DD-MM-YYYY HH24:Mi:SS') tgl_receipt, so_inv.nomor_so,TO_CHAR(so_inv.tgl_so, 'DD-MM-YYYY HH24:Mi:SS') tgl_so,
+						        do_transact.nomor_mo nomor_do, TO_CHAR(do_transact.creation_date, 'DD-MM-YYYY HH24:Mi:SS') tgl_do,
+						        TO_CHAR(hmm.transaction_date , 'DD-MM-YYYY HH24:Mi:SS') gudang_transact,
 						         so_inv.shipping_instructions
 						    FROM (SELECT ooha.org_id, ooha.order_number nomor_so, ooha.ordered_date tgl_so, oola.line_id oola_line_id,
 						                 wnd.delivery_id,

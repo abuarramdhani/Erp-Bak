@@ -80,13 +80,13 @@
 											<tr>
 												<td><?php echo $i?></td>
 												<td><?php echo $row['NO_RECEIPT']?></td>
-												<td><?php echo date("d/m/Y", strtotime($row['TGL_RECEIPT']))?></td>
+												<td><?php echo $row['TGL_RECEIPT']?></td>
 												<td><?php echo $row['NOMOR_SO']?></td>
 												<td><?php echo $row['NOMOR_DO']?></td>
-												<td><?php echo date("d/m/Y", strtotime($row['TGL_DO']))?></td>
+												<td><?php echo $row['TGL_DO']?></td>
 												<td><?php echo $row['NOMOR_INVOICE']?></td>
-												<td><?php echo date("d/m/Y", strtotime($row['TGL_RECEIPT']))?></td>
-												<td><?php echo date("d/m/Y", strtotime($row['GUDANG_TRANSACT']))?></td>
+												<td><?php echo $row['TGL_RECEIPT']?></td>
+												<td><?php echo $row['GUDANG_TRANSACT']?></td>
 												<td style="text-align: left"><?php echo $row['SHIPPING_INSTRUCTIONS']?></td>
 											</tr>
 										<?php $i++;}?>
