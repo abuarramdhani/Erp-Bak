@@ -156,13 +156,13 @@ class C_WaktuPenangananOrder extends CI_Controller
         foreach($search_date as $data){
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data['NO_RECEIPT']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $date = date("d/m/Y", strtotime($data['TGL_RECEIPT'])));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data['TGL_RECEIPT']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['NOMOR_SO']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['NOMOR_DO']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $date = date("d/m/Y", strtotime($data['TGL_DO'])));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['TGL_DO']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['NOMOR_INVOICE']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $date = date("d/m/Y", strtotime($data['TGL_RECEIPT'])));
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $date = date("d/m/Y", strtotime($data['GUDANG_TRANSACT'])));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['TGL_RECEIPT']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['GUDANG_TRANSACT']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['SHIPPING_INSTRUCTIONS']);
          
             $objPHPExcel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
