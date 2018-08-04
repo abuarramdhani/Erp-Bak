@@ -1717,3 +1717,6 @@ $route['ECommerce'] 							= 'ECommerce/C_index';
 $route['ECommerce/SearchItem'] 					= 'ECommerce/C_SearchItem';
 $route['ECommerce/SearchItem/(:any)'] 			= 'ECommerce/C_SearchItem/$1';
 $route['ECommerce/SearchItem/(:any)/(:any)'] 	= 'ECommerce/C_SearchItem/$1/$2';
+
+$route['ECommerce/WaktuPenangananOrder']		= 'ECommerce/C_WaktuPenangananOrder';
+$route['ECommerce/WaktuPenangananOrder/(:any)']		= 'ECommerce/C_WaktuPenangananOrder/$1';
