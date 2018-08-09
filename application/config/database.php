@@ -378,7 +378,27 @@ $db['tokoquick'] = array(
 	'save_queries' => TRUE,
 	'port' => 3306
 );
-
+$db['erp_db'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'postgres',
+	'password' => 'password',
+	'database' => 'erp',
+	'dbdriver' => 'postgre',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
 
 $efg="";
 		$data = explode('.',$_SERVER['SERVER_NAME']);
