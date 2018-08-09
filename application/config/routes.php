@@ -1720,3 +1720,15 @@ $route['ECommerce/SearchItem/(:any)/(:any)'] 	= 'ECommerce/C_SearchItem/$1/$2';
 
 $route['ECommerce/WaktuPenangananOrder']		= 'ECommerce/C_WaktuPenangananOrder';
 $route['ECommerce/WaktuPenangananOrder/(:any)']		= 'ECommerce/C_WaktuPenangananOrder/$1';
+
+//-------------------------------------------------- Kecelakaan Kerja -----------------------------------------------//
+$route['MasterPekerja/KecelakaanKerja']	= 'MasterPekerja/Laporan/C_Index';
+$route['MasterPekerja/KecelakaanKerja/(:any)']			=	'MasterPekerja/Laporan/C_Index/$1';
+$route['MasterPekerja/KecelakaanKerja/(:any)/(:any)']	=	'MasterPekerja/Laporan/C_Index/$1/$2';
+$route['MasterPekerja/SettingKecelakaanKerja'] = 'MasterPekerja/Laporan/C_Index/dataPerusahaan';
+$route['MasterPekerja/SettingKecelakaanKerja/(:any)'] = 'MasterPekerja/Laporan/C_Index/$1';
+$route['MasterPekerja/SettingKecelakaanKerja/(:any)/(:any)'] = 'MasterPekerja/Laporan/C_Index/$1/$2';
+
+$route['MasterPekerja/DataPekerjaKeluar'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index';
+$route['MasterPekerja/DataPekerjaKeluar/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1';
+$route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1/$2';
