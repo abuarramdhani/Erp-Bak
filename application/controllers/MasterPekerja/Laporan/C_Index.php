@@ -748,7 +748,7 @@ class C_Index extends CI_Controller {
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
-		$filename = 'kecelakaan-kerja.pdf';
+		$filename = 'kecelakaan-kerja-tahap-1/'.str_replace('/','-', $noind).'.pdf';
 		
 		$html = $this->load->view('MasterPekerja/Laporan/V_Pdf', $data, true);
 		// $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
@@ -1325,7 +1325,7 @@ class C_Index extends CI_Controller {
 
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'Legal', 8, '', 5, 5, 10, 15, 0, 0, 'P');
-			$filename = 'kecelakaan-kerja-tahap-2.pdf';
+			$filename = 'kecelakaan-kerja-tahap-2/'.str_replace('/','-', $noind).'.pdf';
 			
 			$html = $this->load->view('MasterPekerja/Laporan/V_Pdf_thp2', $data, true);
 			$pdf->WriteHTML($stylesheet1,1);
