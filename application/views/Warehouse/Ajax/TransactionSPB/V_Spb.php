@@ -8,8 +8,14 @@
 		<td>ONHAND</td>
 	</thead>
 	<tbody>
-		<?php $no=1; foreach ($spb as $value) { ?>
-			<tr>
+		<?php $no=1; foreach ($spb as $value) {
+			if ($value['QUANTITY'] > $value['QTY_ONHAND']) {
+				$bgclr = 'bg-danger';
+			}else{
+				$bgclr = '';
+			}
+		?>
+			<tr class="<?php echo $bgclr; ?>">
 				<td><?php echo $no++; ?></td>
 				<td><?php echo $value['NO_SPB']; ?></td>
 				<td><?php echo $value['ITEM_CODE']; ?></td>
