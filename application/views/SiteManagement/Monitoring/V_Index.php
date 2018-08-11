@@ -104,12 +104,14 @@
                         </thead>
                         <tbody>
                             <?php $no=1; foreach($duedatelist as $key):?>
-                            <td><?php echo $no++;?></td>
-                            <td><?php echo $key['no_order']; ?></td>
-                            <td><?php echo date('d F Y', strtotime($key['created_date']));?></td>
-                            <td><?php echo $key['jenis_order'];?></td>
-                            <td><?php echo $key['section_name'];?></td>
-                            <td><?php echo date('d F Y', strtotime($key['due_date']));?></td>
+                            <tr>
+                                <td><?php echo $no++;?></td>
+                                <td><?php echo $key['no_order']; ?></td>
+                                <td><?php echo date('d F Y', strtotime($key['created_date']));?></td>
+                                <td><?php echo $key['jenis_order'];?></td>
+                                <td><?php echo $key['section_name'];?></td>
+                                <td><?php echo date('d F Y', strtotime($key['due_date']));?></td>
+                            </tr>
                             <?php endforeach;?>
                         </tbody>
                     </table>
