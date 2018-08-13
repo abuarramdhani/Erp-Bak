@@ -2,7 +2,7 @@
 	<div class="col-md-3">
 		<h4>SPB Number : <?php echo $nomerspb; ?></h4>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-2">
 		<select class="form-control select2-custom" name="kemasan" data-placeholder="Packing Type">
 			<option></option>
 			<option value="Kardus Kecil">Kardus Kecil</option>
@@ -12,13 +12,24 @@
 			<option value="Peti">Peti</option>
 		</select>
 	</div>
-	<div class="col-md-6">
-		<input type="text" name="Item Code" class="form-control" placeholder="Packing item" onkeyup="updatePackingQty(event,this)">
+	<div class="col-md-2">
+		<select class="form-control select2-custom" name="ekspedisi" data-placeholder="Ekspedisi">
+			<option></option>
+			<option value="KGP">PT. KERTA GAYA PUSAKA</option>
+			<option value="SADANA">PT SADANA Combinatama Express</option>
+			<option value="ADEX">ADIKA EXPRESS</option>
+			<option value="KHS">KHS</option>
+			<option value="CUSTOMER">CUSTOMER</option>
+			<option value="LAIN">LAIN LAIN</option>
+		</select>
+	</div>
+	<div class="col-md-5">
+		<input type="text" name="ItemCode" class="form-control" placeholder="Packing item" onkeyup="updatePackingQty(event,this)">
 	</div>
 </div>
 <div class="row" style="padding-top:10px;">
 	<div class="col-md-12">
-		<table class="table table-hover table-bordered table-striped" id="tblSPB">
+		<table class="table table-hover table-bordered" id="tblSPB">
 			<thead class="bg-primary">
 				<td>#</td>
 				<td>ITEM CODE</td>
@@ -37,6 +48,7 @@
 				?>
 					<tr class="<?php echo $bgclr; ?>" data-row="<?php echo $value['ITEM_CODE']; ?>">
 						<input type="hidden" name="maxPack" value="<?php echo $value['QUANTITY'] ?>">
+						<input type="hidden" name="maxOnhand" value="<?php echo $value['QTY_ONHAND'] ?>">
 						<td><?php echo $no++; ?></td>
 						<td><?php echo $value['ITEM_CODE']; ?></td>
 						<td><?php echo $value['ITEM_DESC']; ?></td>
@@ -54,6 +66,11 @@
 				<?php } ?>
 			</tbody>
 		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<button type="button" class="btn btn-danger pull-right" onclick="packing()">PACKING <i class="fa fa-arrow-right"></i></button>
 	</div>
 </div>
 <div class="modal fade" id="packingqtyMdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
