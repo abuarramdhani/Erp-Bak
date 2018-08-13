@@ -65,13 +65,17 @@ function updatePackingQty(e, th) {
         var value = $(th).val();
         var qty = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty"]').val());
         var maxPack = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack"]').val());
+        var maxOnhand = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxOnhand"]').val());
         var qtyNow = qty+1;
 
         if (qtyNow>maxPack) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
+        }else if (qtyNow>maxOnhand) {
+            $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
         }else{
             $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty"]').val(qtyNow);
         }
+
         $(th).val('')
     }
 }
@@ -87,4 +91,9 @@ function getSum(th) {
     var items = Number($(th).val());
     var sum = qty*items;
     $(th).closest('tr').find('input[name="sum"]').val(sum);
+}
+
+function packing() {
+    var kemasan = $('select[name="kemasan"]').val();
+    var ekspedisi = $('select[name="ekspedisi"]').val();
 }
