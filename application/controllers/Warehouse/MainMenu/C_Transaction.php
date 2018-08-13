@@ -23,7 +23,7 @@ class C_Transaction extends CI_Controller {
 		}
 	}
 	
-	public function index()
+	public function Spb()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -39,6 +39,26 @@ class C_Transaction extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Warehouse/MainMenu/TransactionSPB/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+		
+	}
+	
+	public function PackingList()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Transaction Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Warehouse/MainMenu/TransactionPackingList/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 		
 	}

@@ -16,10 +16,14 @@ class C_Ajax extends CI_Controller {
 	{
 		$id = $this->input->post('nomerSPB');
 		$data['spb'] = $this->M_ajax->getSPB($id);
-		// echo "<pre>";
-		// print_r($data);
-		// echo "</pre>";
-		// exit();
 		$this->load->view('Warehouse/Ajax/TransactionSPB/V_Spb',$data);
+	}
+	
+	public function PackingList()
+	{
+		$id = $this->input->post('nomerSPB');
+		$data['nomerspb'] = $id;
+		$data['spb'] = $this->M_ajax->getSPB($id);
+		$this->load->view('Warehouse/Ajax/TransactionPackingList/V_PackingList',$data);
 	}
 }
