@@ -12,7 +12,8 @@ class M_ajax extends CI_Model {
 		                mtrl.quantity,
 		                khs_inv_qty_att (mtrl.organization_id,
 		                                 mtrl.inventory_item_id,
-		                                 'SP-YSP',
+		                                 -- 'SP-YSP',
+		                                 'SP-DM',
 		                                 '',
 		                                 ''
 		                                ) qty_onhand
@@ -22,7 +23,7 @@ class M_ajax extends CI_Model {
 		          WHERE mtrh.header_id = mtrl.header_id
 		            AND msib.inventory_item_id = mtrl.inventory_item_id
 		            AND mtrh.request_number = '$id'
-		            AND mtrl.organization_id = 225
+		            -- AND mtrl.organization_id = 225
 		       ORDER BY no_spb, line_number";
 
 		$query = $this->oracle->query($sql);
