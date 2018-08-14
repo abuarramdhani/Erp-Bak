@@ -57,8 +57,8 @@
 						<td>
 							<input type="number" name="packingqty" class="form-control" readonly="" placeholder="Total Item" max="<?php echo $value['QUANTITY'] ?>" min="0">
 						</td>
-						<td>
-							<button type="button" class="btn btn-default" onclick="mdlPackingQtyCustom(this)">
+						<td width="25px">
+							<button type="button" class="btn btn-default" onclick="mdlPackingQtyCustom(this,'<?php echo $value['ITEM_CODE']; ?>')">
 								<i class="fa fa-edit"></i>
 							</button>
 						</td>
@@ -80,7 +80,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Alter Packing Quantity</h4>
       </div>
-      <form class="form-horizontal" onsubmit="packingqtyCustom()">
+      <form class="form-horizontal" onsubmit="packingqtyCustom(this)">
 	      <div class="modal-body">
 	      	<table class="table">
 	      		<tr>
@@ -92,6 +92,9 @@
 	      		</tr>
 	      		<tr>
 	      			<td class="text-center quantity">
+	      				<input type="hidden" name="onhand">
+	      				<input type="hidden" name="required">
+	      				<input type="hidden" name="itemcode">
 	      				<input type="number" name="qty" readonly="" class="form-control">
 	      			</td>
 	      			<td class="text-center">X</td>
