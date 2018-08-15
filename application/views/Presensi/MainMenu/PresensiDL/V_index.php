@@ -61,6 +61,7 @@
                                             $no=1;
                                             foreach ($tspdl as $key):
                                             $stat = "";
+                                            $tgl_scan = "-";
                                             foreach ($presensidl as $key_pres) {
                                                 if(rtrim($key['spdl_id']) == rtrim($key_pres['spdl_id'])){
                                                   $stat = "<span style='color:green;'>scan</span>";
