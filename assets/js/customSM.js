@@ -13,7 +13,7 @@ $(document).ready(function(){
 		var osm_option = $(this).val();
 
 		if (osm_option == 'Perbaikan Kursi') {
-			var n = 7;
+			var n = 7; 
 		}else{
 			var n = 1;
 		}
@@ -40,8 +40,8 @@ $(document).ready(function(){
 		placeholder: "Select Option",
 	});
 
-	$('.sm_datatable').DataTable({
-    });
+	// $('.sm_datatable').dataTable({
+ //    });
 
     $('.sm_table2').DataTable({
       'paging'      : true,
@@ -193,10 +193,40 @@ $(document).ready(function(){
 	// 		alert('data batal diupdate');
 	// 	}
 	// });
+	
+	// $('.sm_remarksorder').on('checked',function(e){
+	// 	if($(this).prop("checked") == true){
+	// 		alert("check");
+	// 		// var id_order = $(this).attr('data-id');
+	// 		// var check = confirm("Apakah anda yakin telah menyelesaikan order tersebut?");
+	// 		// if (check) {
+	// 		// 	$(this).attr('disabled','disabled');
+	// 		// 	$(this).closest('tr').find('b').each(function(){
+	// 		// 		$(this).text('Done');
+	// 		// 	});
+	// 		// 	$.ajax({
+	// 		// 		url: baseurl+"SiteManagement/Order/RemarkSOrder",
+	// 		// 	    type: "POST",
+	// 		// 	    data: {id_order: id_order}
+	// 		// 	}).done(function(data){
+	// 		// 		alert('data berhasil diupdate');
+	// 		// 	});
+	// 		// }else{
+	// 		// 	$(this).removeAttr('checked');
+	// 		// 	alert('data batal diupdate');
+	// 		// }	
+	// 	}else{
+	// 		alert("uncheck");
+	// 	}
+	// });
+	$(document).ready(function() {
+    var table = $('#sm_datatable').DataTable();
+     
+   
+	} );
 
-	$('.sm_remarksorder').on('ifChecked',function(e){
+	$('.sm_remarksorder').on('click',function(e){
 		var id_order = $(this).attr('data-id');
-
 		var check = confirm("Apakah anda yakin telah menyelesaikan order tersebut?");
 		if (check) {
 			$(this).attr('disabled','disabled');
@@ -211,10 +241,28 @@ $(document).ready(function(){
 				alert('data berhasil diupdate');
 			});
 		}else{
-			$(this).removeAttr('checked');
+			$(this).removeAttr('style');
 			alert('data batal diupdate');
 		}
 	});
+	
+    
+    // $('.sm_remarksorder').change(function() {
+    //     if(this.checked) {
+    //         var returnVal = confirm("Are you sure?");
+    //         $(this).prop("checked", returnVal);
+    //     }
+        
+    // });
+
+ //    $('#sm_remarksorder').click(function(){
+ //    if($(this).prop("checked") == true){ //can also use $(this).prop("checked") which will return a boolean.
+ //        alert("checked");
+ //    }
+ //    else if($(this).prop("checked") == false){
+ //        alert("Checkbox is unchecked.");
+ //    }
+	// });
 
 	$(document).on('click', '#sm_reject', function(e){
 		e.preventDefault();
@@ -235,6 +283,8 @@ $(document).ready(function(){
 	})
 
 });
+
+
 	function sm_cekproses(){
 		var minggu = $('#sm-selectminggu').val();
 		var hari = $('#sm-selecthari').val();

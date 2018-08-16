@@ -1,4 +1,4 @@
-<section class="content">
+<section class="content"> 
     <div class="inner" >
         <div class="row">
             <div class="col-lg-12">
@@ -101,6 +101,7 @@
                             <th>Jenis Order</th>
                             <th>Seksi Order</th>
                             <th>Tanggal Kebutuhan</th>
+                            <th>Keterangan</th>
                         </thead>
                         <tbody>
                             <?php $no=1; foreach($duedatelist as $key):?>
@@ -111,6 +112,19 @@
                                 <td><?php echo $key['jenis_order'];?></td>
                                 <td><?php echo $key['section_name'];?></td>
                                 <td><?php echo date('d F Y', strtotime($key['due_date']));?></td>
+                                <td>
+                                    <?php 
+                                    if ($key['overdue']==1) {
+                                        ?>
+                                        <span class="label label-danger">Overdue</span>
+                                        <?php
+                                    }else {
+                                        ?>
+                                        <span class="label label-warning">Pending</span>
+                                        <?php
+                                    };
+                                    ?>
+                                </td>
                             </tr>
                             <?php endforeach;?>
                         </tbody>
@@ -158,6 +172,11 @@
       </div>
     <?php endif; ?>
       <!-- /.box -->
+    
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-6">
     <?php if(!empty($floorparking)):?>
       <div class="box">
         <div class="box-header">
@@ -195,10 +214,7 @@
         </div>
       </div>
     <?php endif;?>
-      <!-- /.box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-6">
+    
     <?php if(!empty($trashcan)):?>
       <div class="box">
         <div class="box-header">

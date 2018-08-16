@@ -6,7 +6,7 @@ class C_Monitoring extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper('form');
+		$this->load->helper('form'); 
 		$this->load->helper('url');
 		$this->load->helper('html');
 		$this->load->helper('file');
