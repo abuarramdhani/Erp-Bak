@@ -16,7 +16,8 @@ class C_Ajax extends CI_Controller {
 	public function getSPB()
 	{
 		$id = $this->input->post('nomerSPB');
-		$data['spb'] = $this->M_ajax->getSPB($id);
+		$SubInv = $this->M_ajax->getSubInv($id);
+		$data['spb'] = $this->M_ajax->getSPB($id, $SubInv[0]['FROM_SUBINVENTORY_CODE']);
 		$this->load->view('Warehouse/Ajax/TransactionSPB/V_Spb',$data);
 	}
 	
@@ -24,7 +25,9 @@ class C_Ajax extends CI_Controller {
 	{
 		$id = $this->input->post('nomerSPB');
 		$data['nomerspb'] = $id;
-		$data['spb'] = $this->M_ajax->getSPB($id);
+		$SubInv = $this->M_ajax->getSubInv($id);
+		$data['spb'] = $this->M_ajax->getSPB($id, $SubInv[0]['FROM_SUBINVENTORY_CODE']);
+		$data['ekpedisi'] = $this->M_ajax->getEkpedisi($id);
 		$this->load->view('Warehouse/Ajax/TransactionPackingList/V_PackingList',$data);
 	}
 
@@ -36,6 +39,9 @@ class C_Ajax extends CI_Controller {
 		$packingqty 	= $this->input->post('packingqty');
 		$kemasan		= $this->input->post('kemasan');
 		$ekspedisi		= $this->input->post('ekspedisi');
+		if (empty($ekspedisi)) {
+			$ekspedisi = NULL;
+		}
 		$weight 		= $this->input->post('weight');
 
 		$temp = array();
