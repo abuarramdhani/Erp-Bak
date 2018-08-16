@@ -5,11 +5,13 @@
 		<td>ITEM CODE</td>
 		<td>ITEM DESCRIPTION</td>
 		<td>QUANTITY</td>
-		<td>ONHAND</td>
+		<td>QTY ATT</td>
+		<td>QTY ATR</td>
+		<td>QTY TOTAL</td>
 	</thead>
 	<tbody>
 		<?php $no=1; foreach ($spb as $value) {
-			if ($value['QUANTITY'] > $value['QTY_ONHAND']) {
+			if ($value['QUANTITY'] > $value['QTY_ATT']) {
 				$bgclr = 'bg-danger';
 			}else{
 				$bgclr = '';
@@ -21,7 +23,9 @@
 				<td><?php echo $value['ITEM_CODE']; ?></td>
 				<td><?php echo $value['ITEM_DESC']; ?></td>
 				<td><?php echo $value['QUANTITY_NORMAL']; ?></td>
-				<td><?php echo $value['QTY_ONHAND']; ?></td>
+				<td><?php echo $value['QTY_ATT']; ?></td>
+				<td><?php echo $value['QTY_ATR']; ?></td>
+				<td><?php echo $value['QTY_TOTAL']; ?></td>
 			</tr>
 		<?php } ?>
 	</tbody>
