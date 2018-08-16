@@ -13,6 +13,7 @@ class C_Transaction extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+        $this->load->model('Warehouse/MainMenu/M_transaction');
     }
 	
 	public function checkSession(){
@@ -61,5 +62,11 @@ class C_Transaction extends CI_Controller {
 		$this->load->view('Warehouse/MainMenu/TransactionPackingList/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 		
+	}
+	
+	public function PackingListReset($id)
+	{
+		$this->M_transaction->deletePackingList($id);
+		redirect(base_url('Warehouse/Transaction/PackingList'));
 	}
 }
