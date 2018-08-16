@@ -1,5 +1,5 @@
 <section class="content">
-    <div class="inner" >
+    <div class="inner" > 
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
@@ -55,7 +55,7 @@
                             </div>
                             <div class="box-body">
                                 <div>
-                                    <table class="table table-striped table-bordered table-hover text-left sm_datatable" style="font-size:12px;">
+                                    <table class="table table-striped table-bordered table-hover text-left" id="sm_datatable" style="font-size:12px;">
                                        <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -96,7 +96,28 @@
                                                 <td><?php echo $row['nama_seksi'] ?></td>
                                                 <td><?php echo date('Y-m-d', strtotime($row['due_date']));?></td>
                                                 <td><?php if($row['tgl_terima']==null || $row['tgl_terima']==''){echo "";}else{ echo date('Y-m-d', strtotime($row['tgl_terima']));}?></td>
-                                                <td align="center"><input type="checkbox" name="re_order" class="sm_remarksorder" data-id="<?php echo $row['id_order'];?>" <?php if($row['remarks']==='t') {echo "checked";}?> <?php if($row['status']!=1) {echo "disabled";}?>></td>
+                                                <td align="center">
+                                                    <?php
+                                                    if($row['status']!=1) 
+                                                    {
+                                                        ?>
+                                                        <input type="checkbox" disabled="disabled" class="sm_remarksorder" name="re_order" data-id="<?php echo $row['id_order'];?>"
+                                                        <?php
+                                                        if($row['remarks']==='t') {echo "checked";}
+                                                        ?>>
+                                                        <?php
+                                                    }else if ($row['status']==1) {
+                                                        ?>
+                                                        <input type="button" class="btn btn-sm btn-default sm_remarksorder" name="re_order" data-id="<?php echo $row['id_order'];?>">
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                    
+                                                    <!-- <input type="checkbox" name="re_order" class="sm_remarksorder" 
+                                                    data-id="<?php echo $row['id_order'];?>" 
+                                                    <?php if($row['remarks']==='t') {echo "checked";}?> 
+                                                    <?php if($row['status']!=1) {echo "disabled";}?>> -->
+                                                </td>
                                                 <td align="center">
                                                     <?php 
                                                         if($row['status']==0){echo "<b style='color:orange;'>New</b>";}
@@ -109,7 +130,9 @@
                                                 <td><button class="btn btn-danger" id="sm_reject" data-id="<?php echo $row['id_order'];?>" <?php if($row['status']!=0) {echo "disabled";}?>>Reject</button>
                                                 </td>
                                             </tr>
-                                            <?php endforeach; ?>
+                                            <?php 
+                                            endforeach; 
+                                            ?>
                                         </tbody>                                 
                                     </table>
                                 </div>

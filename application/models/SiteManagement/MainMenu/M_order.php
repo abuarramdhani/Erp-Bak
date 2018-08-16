@@ -7,7 +7,7 @@ class M_order extends CI_Model
         parent::__construct();
         $this->load->database();    
     }
-
+ 
     public function getSeksi($seksi){
     	$query = $this->db->query("select      seksi.section_code as kode_seksi,
                                             seksi.section_name as nama_seksi
