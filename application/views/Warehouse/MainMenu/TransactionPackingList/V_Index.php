@@ -57,3 +57,12 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="loadingMdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="col-md-12 text-center" style="color: white; font-size: 5em">
+            <i class="fa fa-spinner fa-pulse"></i>
+        </div>
+    </div>
+  </div>
+</div>

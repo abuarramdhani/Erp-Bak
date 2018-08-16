@@ -20,7 +20,7 @@
 				<td><?php echo $value['NO_SPB']; ?></td>
 				<td><?php echo $value['ITEM_CODE']; ?></td>
 				<td><?php echo $value['ITEM_DESC']; ?></td>
-				<td><?php echo $value['QUANTITY']; ?></td>
+				<td><?php echo $value['QUANTITY_NORMAL']; ?></td>
 				<td><?php echo $value['QTY_ONHAND']; ?></td>
 			</tr>
 		<?php } ?>
