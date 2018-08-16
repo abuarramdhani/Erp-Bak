@@ -23,7 +23,7 @@ class C_Order extends CI_Controller {
 
 	/* CHECK SESSION */
 	public function checkSession()
-	{
+	{ 
 		if($this->session->is_logged){
 
 		} else {

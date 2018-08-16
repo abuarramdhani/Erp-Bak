@@ -24,13 +24,21 @@ class M_monitoring extends CI_Model
     }
 
     public function duedatelist(){
-        $query = $this->db->query("select a.no_order, a.created_date, a.due_date,a.seksi_order, b.section_name, a.jenis_order
+        $query = $this->db->query("select a.no_order, a.created_date, a.due_date,a.seksi_order, b.section_name, a.jenis_order,
+                                    (
+                                            case    when    current_date>a.due_date
+                                                            then    1
+                                                    else    0
+                                            end
+                                        ) as overdue
                                     from sm.sm_order a
                                     left join er.er_section b on a.seksi_order = b.section_code
                                     where  status = '1'
-                                    and due_date between current_timestamp and (current_timestamp + interval '7 day');");
+                                    and (due_date between current_timestamp and (current_timestamp + interval '7 day')) 
+                                    or (due_date<=current_date and status='1')
+                                    order by due_date DESC;");
         return $query->result_array();
-    }
+    } 
 
     public function rekapData($start,$end,$kat,$kat_detail,$hari,$periode){
     	$query = $this->db->query("select jd.*,
