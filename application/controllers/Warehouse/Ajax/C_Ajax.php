@@ -37,8 +37,8 @@ class C_Ajax extends CI_Controller {
 		$packingNumber	= $this->input->post('packingNumber');
 		$item_id 		= $this->input->post('item_id');
 		$packingqty 	= $this->input->post('packingqty');
-		$kemasan		= $this->input->post('kemasan');
-		$ekspedisi		= $this->input->post('ekspedisi');
+		$kemasan		= $this->input->post('kemasanValue');
+		$ekspedisi		= $this->input->post('EkspedisiValue');
 		if (empty($ekspedisi)) {
 			$ekspedisi = NULL;
 		}

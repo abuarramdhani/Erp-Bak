@@ -90,11 +90,12 @@ function updatePackingQty(e, th) {
         if (kasih>0 && $('#btnSubmitPacking').attr('disabled')) {
             $('#btnSubmitPacking').removeAttr('disabled');
         }
-        var minta = Number($('input[name="totalQtyMinta"]').val());
-        if (minta == kasih) {
-            $('#cetakPackingList').attr('disabled', false);
-            $('#cetakPackingList').removeAttr('onclick');
-        }
+        // var minta = Number($('input[name="totalQtyMinta"]').val());
+        // var packAct = Number($('input[name="inputPackingAct"]').val());
+        // if (minta == kasih && packAct > 1) {
+        //     $('#cetakPackingList').attr('disabled', false);
+        //     $('#cetakPackingList').removeAttr('onclick');
+        // }
     }
 }
 
@@ -163,6 +164,16 @@ function setPacking() {
             var b = a+1;
             $('#formSetPacking input[name="packingNumber"]').val(b);
             $('#loadingMdl').modal('hide');
+            var a = Number($('#inputPackingAct').val());
+            a += 1;
+            $('#inputPackingAct').val(a);
+
+            var kasih = Number($('input[name="totalQtyKasih"]').val());
+            var minta = Number($('input[name="totalQtyMinta"]').val());
+            if (minta == kasih && a > 1) {
+                $('#cetakPackingList').attr('disabled', false);
+                $('#cetakPackingList').removeAttr('onclick');
+            }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $('#loadingMdl').modal('hide');
@@ -173,11 +184,11 @@ function setPacking() {
 
 function enaDisItemScan() {
     var kemasan     = $('select[name="kemasan"]').val();
-    // var ekspedisi   = $('#ekspedisi').val();
-
-    // if (kemasan && ekspedisi) {
+    var ekspedisi   = $('#ekspedisi').val();
+    $('input[name="EkspedisiValue"]').val(ekspedisi);
     if (kemasan) {
         $('input[name="ItemCode"]').removeAttr('disabled');
+        $('input[name="kemasanValue"]').val(kemasan);
     }else{
         $('input[name="ItemCode"]').attr('disabled', 'disabled');
     }

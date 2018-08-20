@@ -76,6 +76,9 @@
 	</div>
 	<input type="hidden" name="totalQtyMinta" value="<?php echo $totalQtyMinta; ?>">
 	<input type="hidden" name="totalQtyKasih" value="0">
+	<input type="hidden" name="inputPackingAct" id="inputPackingAct" value="0">
+	<input type="hidden" name="kemasanValue">
+	<input type="hidden" name="EkspedisiValue" value="<?php echo $ekpedisi[0]['ATTRIBUTE15'] ?>">
 	<div class="row">
 		<div class="col-md-12">
 			<button type="button" class="btn btn-warning pull-right" disabled="" id="btnSubmitPacking" data-toggle="modal" data-target="#submitPacking">PACKING <i class="fa fa-arrow-right"></i></button>
