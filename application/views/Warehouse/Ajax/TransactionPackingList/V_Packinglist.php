@@ -5,7 +5,7 @@
 </div>
 <div class="row">
 	<div class="col-md-3">
-		<select class="form-control select2-custom" name="kemasan" data-placeholder="Packing Type">
+		<select class="form-control select2-custom" name="kemasan" data-placeholder="Packing Type" onchange="enaDisItemScan()">
 			<option></option>
 			<option value="KK">Kardus Kecil</option>
 			<option value="KS">Kardus Sedang</option>
@@ -16,19 +16,22 @@
 		</select>
 	</div>
 	<div class="col-md-3">
-		<input type="text" name="ekspedisi" placeholder="Ekspedisi" class="form-control" readonly="" value="<?php echo $ekpedisi[0]['ATTRIBUTE15'] ?>">
-		<!-- <select class="form-control select2-custom" name="ekspedisi" data-placeholder="Ekspedisi">
-			<option></option>
-			<option value="KGP">PT. KERTA GAYA PUSAKA</option>
-			<option value="SADANA">PT SADANA Combinatama Express</option>
-			<option value="ADEX">ADIKA EXPRESS</option>
-			<option value="KHS">KHS</option>
-			<option value="CUSTOMER">CUSTOMER</option>
-			<option value="LAIN">LAIN LAIN</option>
-		</select> -->
+		<?php if ($ekpedisi[0]['ATTRIBUTE15']) { ?>
+			<input type="text" name="ekspedisi" id="ekspedisi" placeholder="Ekspedisi" class="form-control toupper" readonly="" value="<?php echo $ekpedisi[0]['ATTRIBUTE15'] ?>">
+		<?php }else{ ?>
+			<select class="form-control" name="ekspedisi" id="ekspedisi" data-placeholder="Ekspedisi" onchange="enaDisItemScan()">
+				<option></option>
+				<option value="KGP">PT. KERTA GAYA PUSAKA</option>
+				<option value="SADANA">PT SADANA Combinatama Express</option>
+				<option value="ADEX">ADIKA EXPRESS</option>
+				<option value="KHS">KHS</option>
+				<option value="CUSTOMER">CUSTOMER</option>
+				<option value="LAIN">LAIN LAIN</option>
+			</select>
+		<?php } ?>
 	</div>
 	<div class="col-md-6">
-		<input type="text" name="ItemCode" class="form-control" placeholder="Packing item" onkeyup="updatePackingQty(event,this)">
+		<input type="text" name="ItemCode" class="form-control" placeholder="Packing item" disabled onkeyup="updatePackingQty(event,this)">
 	</div>
 </div>
 <form onsubmit="setPacking()" id="formSetPacking">
@@ -46,7 +49,7 @@
 					<td colspan="2" class="text-center">PACKING</td>
 				</thead>
 				<tbody>
-					<?php $no=1; foreach ($spb as $value) { ?>
+					<?php $totalQtyMinta=0; $no=1; foreach ($spb as $value) { ?>
 						<tr data-row="<?php echo $value['ITEM_CODE']; ?>" data-id="<?php echo $value['INVENTORY_ITEM_ID']; ?>">
 							<input type="hidden" name="item_id[]" value="<?php echo $value['INVENTORY_ITEM_ID'] ?>">
 							<input type="hidden" name="maxPack[]" value="<?php echo $value['QUANTITY'] ?>">
@@ -54,8 +57,8 @@
 							<td><?php echo $no++; ?></td>
 							<td><?php echo $value['ITEM_CODE']; ?></td>
 							<td><?php echo $value['ITEM_DESC']; ?></td>
-							<!-- <td><?php echo $value['QTY_ONHAND']; ?></td> -->
-							<!-- <td class="quantityArea"><?php echo $value['QUANTITY']; ?></td> -->
+							<!-- <td><?php //echo $value['QTY_ONHAND']; ?></td> -->
+							<!-- <td class="quantityArea"><?php //echo $value['QUANTITY']; ?></td> -->
 							<td>
 								<input type="number" name="packingqty[]" class="form-control" readonly="" placeholder="Total Item" max="<?php echo $value['QUANTITY'] ?>" min="0">
 							</td>
@@ -65,15 +68,18 @@
 								</button>
 							</td>
 						</tr>
+						<?php $totalQtyMinta+=$value['QUANTITY']; ?>
 					<?php } ?>
 				</tbody>
 			</table>
 		</div>
 	</div>
+	<input type="hidden" name="totalQtyMinta" value="<?php echo $totalQtyMinta; ?>">
+	<input type="hidden" name="totalQtyKasih" value="0">
 	<div class="row">
 		<div class="col-md-12">
 			<button type="button" class="btn btn-warning pull-right" disabled="" id="btnSubmitPacking" data-toggle="modal" data-target="#submitPacking">PACKING <i class="fa fa-arrow-right"></i></button>
-			<a class="btn btn-success pull-right" id="cetakPackingList" target="_blank" disabled href="http://produksi.quick.com/PACKINGLIST/packinglist.php?spb=<?php echo $nomerspb; ?>">CETAK <i class="fa fa-file-pdf-o"></i></a>
+			<a class="btn btn-success pull-right" id="cetakPackingList" target="_blank" onclick="return false" disabled href="http://produksi.quick.com/PACKINGLIST/packinglist.php?spb=<?php echo $nomerspb; ?>">CETAK <i class="fa fa-file-pdf-o"></i></a>
 			<a class="btn btn-danger pull-right" id="reset" href="<?php echo base_url('Warehouse/Transaction/PackingListReset/'.$nomerspb) ?>">RESET <i class="fa fa-trash"></i></a>
 		</div>
 	</div>

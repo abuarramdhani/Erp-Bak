@@ -51,6 +51,13 @@ function getDataPackingList() {
                     }
                 }
             });
+            $('#ekspedisi').select2({
+                placeholder: "Choose Option",
+                allowClear: true,
+            });
+            $('.toupper').keyup(function(){
+                this.value = this.value.toUpperCase();
+            });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
@@ -60,24 +67,33 @@ function getDataPackingList() {
 
 function updatePackingQty(e, th) {
     if (e.keyCode === 13) {
-        var value = $(th).val();
-        var qty = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val());
-        var maxPack = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack[]"]').val());
-        var maxOnhand = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxOnhand[]"]').val());
-        var qtyNow = qty+1;
+        var value       = $(th).val();
+        var qty         = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val());
+        var maxPack     = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack[]"]').val());
+        var maxOnhand   = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxOnhand[]"]').val());
+        var qtyNow      = qty+1;
+        var kasih       = Number($('input[name="totalQtyKasih"]').val());
 
         if (qtyNow>maxPack) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
         }else if (qtyNow>maxOnhand) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
-        }else{
+        }else if ($('#tblSPB tbody tr[data-row="'+value+'"]').length) {
             $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val(qtyNow);
+            kasih+=1;
+            $('input[name="totalQtyKasih"]').val(kasih);
+            console.log(value);
+            console.log(kasih);
         }
 
         $(th).val('');
-        $('#btnSubmitPacking').attr('disabled', false);
-        if (true) {
+        if (kasih>0 && $('#btnSubmitPacking').attr('disabled')) {
+            $('#btnSubmitPacking').removeAttr('disabled');
+        }
+        var minta = Number($('input[name="totalQtyMinta"]').val());
+        if (minta == kasih) {
             $('#cetakPackingList').attr('disabled', false);
+            $('#cetakPackingList').removeAttr('onclick');
         }
     }
 }
@@ -153,4 +169,16 @@ function setPacking() {
             $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
         }
     });
+}
+
+function enaDisItemScan() {
+    var kemasan     = $('select[name="kemasan"]').val();
+    // var ekspedisi   = $('#ekspedisi').val();
+
+    // if (kemasan && ekspedisi) {
+    if (kemasan) {
+        $('input[name="ItemCode"]').removeAttr('disabled');
+    }else{
+        $('input[name="ItemCode"]').attr('disabled', 'disabled');
+    }
 }
