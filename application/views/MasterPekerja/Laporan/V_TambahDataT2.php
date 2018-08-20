@@ -301,7 +301,7 @@
                       <div class="form-group">
                         <label>Besarnya pembiayaan dan santunan yang telah diberikan kepada peserta atau ahli waris pasca kecelakaan kerja :</label>
                         <div class="col-lg-6">
-                          <input type="text" name="txt_santunan" class="form-control" placeholder="Rp .....">
+                          <input type="text" name="txt_santunan" class="form-control" placeholder="Rp ....." required="">
                         </div>                      
                       </div>                      
                     </div>
