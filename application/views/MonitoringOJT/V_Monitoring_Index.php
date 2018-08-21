@@ -594,12 +594,12 @@
 									</div>
 									<div class="form-group">
 										<div class="col-lg-12">
-											<input required type="email" class="form-control" name="txtEmailPekerja" placeholder="E-mail Pekerja (e-mail internal domain quick.com)" />
+											<input type="email" class="form-control" name="txtEmailPekerja" placeholder="E-mail Pekerja (e-mail internal domain quick.com)" />
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="col-lg-12">
-											<input required type="email" class="form-control" name="txtEmailAtasanPekerja" placeholder="E-mail Atasan Pekerja (e-mail internal domain quick.com)" />
+											<input type="email" class="form-control" name="txtEmailAtasanPekerja" placeholder="E-mail Atasan Pekerja (e-mail internal domain quick.com)" />
 										</select>
 									</div>
 								</div>
