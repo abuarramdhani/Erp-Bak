@@ -82,7 +82,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<button type="button" class="btn btn-warning pull-right" disabled="" id="btnSubmitPacking" data-toggle="modal" data-target="#submitPacking">PACKING <i class="fa fa-arrow-right"></i></button>
-			<a class="btn btn-success pull-right" id="cetakPackingList" target="_blank" onclick="return false" disabled href="http://produksi.quick.com/PACKINGLIST/packinglist.php?spb=<?php echo $nomerspb; ?>">CETAK <i class="fa fa-file-pdf-o"></i></a>
+			<a class="btn btn-success pull-right" id="cetakPackingList" target="_blank" <?php if ($totalQtyMinta > 0) {echo 'onclick="return false" disabled';} ?> href="http://produksi.quick.com/PACKINGLIST/packinglist.php?spb=<?php echo $nomerspb; ?>">CETAK <i class="fa fa-file-pdf-o"></i></a>
 			<a class="btn btn-danger pull-right" id="reset" data-toggle="modal" data-target="#resetPacking">RESET <i class="fa fa-trash"></i></a>
 		</div>
 	</div>

@@ -51,7 +51,7 @@ function getDataPackingList() {
                     }
                 }
             });
-            $('#ekspedisi').select2({
+            $('select#ekspedisi').select2({
                 placeholder: "Choose Option",
                 allowClear: true,
             });
@@ -82,20 +82,12 @@ function updatePackingQty(e, th) {
             $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val(qtyNow);
             kasih+=1;
             $('input[name="totalQtyKasih"]').val(kasih);
-            console.log(value);
-            console.log(kasih);
         }
 
         $(th).val('');
         if (kasih>0 && $('#btnSubmitPacking').attr('disabled')) {
             $('#btnSubmitPacking').removeAttr('disabled');
         }
-        // var minta = Number($('input[name="totalQtyMinta"]').val());
-        // var packAct = Number($('input[name="inputPackingAct"]').val());
-        // if (minta == kasih && packAct > 1) {
-        //     $('#cetakPackingList').attr('disabled', false);
-        //     $('#cetakPackingList').removeAttr('onclick');
-        // }
     }
 }
 
@@ -130,8 +122,13 @@ function getSum(th) {
 
 function packingqtyCustom(th) {
     event.preventDefault();
-    var sum = $(th).closest('form').find('input[name="sum"]').val();
-    var itemcode = $(th).closest('form').find('input[name="itemcode"]').val();
+    var qty         = Number($(th).closest('form').find('input[name="qty"]').val());
+    var sum         = Number($(th).closest('form').find('input[name="sum"]').val());
+    var itemcode    = $(th).closest('form').find('input[name="itemcode"]').val();
+    var kasih       = Number($('input[name="totalQtyKasih"]').val());
+    var a = sum-qty;
+    kasih += a;
+    $('input[name="totalQtyKasih"]').val(kasih);
     $('#tblSPB tbody tr[data-row="'+itemcode+'"] input[name="packingqty[]"]').val(sum);
     $('#packingqtyMdl').modal('hide');
 }
@@ -170,10 +167,11 @@ function setPacking() {
 
             var kasih = Number($('input[name="totalQtyKasih"]').val());
             var minta = Number($('input[name="totalQtyMinta"]').val());
-            if (minta == kasih && a > 1) {
+            if (minta == kasih || minta < kasih && a > 1) {
                 $('#cetakPackingList').attr('disabled', false);
                 $('#cetakPackingList').removeAttr('onclick');
             }
+            $('#formSetPacking input[name="weight"]').val('');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $('#loadingMdl').modal('hide');

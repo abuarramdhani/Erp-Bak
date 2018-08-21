@@ -28,7 +28,11 @@ class C_Ajax extends CI_Controller {
 		$SubInv = $this->M_ajax->getSubInv($id);
 		$data['spb'] = $this->M_ajax->getSPB($id, $SubInv[0]['FROM_SUBINVENTORY_CODE']);
 		$data['ekpedisi'] = $this->M_ajax->getEkpedisi($id);
-		$this->load->view('Warehouse/Ajax/TransactionPackingList/V_PackingList',$data);
+		if ($SubInv || $data['spb'] ) {
+			$this->load->view('Warehouse/Ajax/TransactionPackingList/V_PackingList',$data);
+		}else{
+			echo "Data is empty";
+		}
 	}
 
 	public function setPacking()
