@@ -162,12 +162,15 @@
 				});
 
 				$('#MonitoringOJT-monitoringPekerjaTunda').DataTable({
+					scrollX: true,
 				});
 
 				$('#MonitoringOJT-monitoringPekerjaSelesai').DataTable({
+					scrollX: true,
 				});
 
 				$('#MonitoringOJT-monitoringPekerjaKeluar').DataTable({
+					scrollX: true,
 				});
 
 				/*$('#MonitoringOJT-rekapKegiatanHarian').DataTable({
@@ -430,13 +433,13 @@
 					$('#MonitoringOJT-PengaturanUndanganOrientasiBaru').removeClass('hidden');
 				});
 
-				$('#MonitoringOJT-chkOrientasi-checkAll').click(function(){
-					$('.MonitoringOJT-chkOrientasi').prop('checked',true);
-				});
+				// $('#MonitoringOJT-chkOrientasi-checkAll').click(function(){
+				// 	$('.MonitoringOJT-chkOrientasi').prop('checked',true);
+				// });
 
-				$('#MonitoringOJT-chkOrientasi-uncheckAll').click(function(){
-					$('.MonitoringOJT-chkOrientasi').prop('checked', false);
-				});
+				// $('#MonitoringOJT-chkOrientasi-uncheckAll').click(function(){
+				// 	$('.MonitoringOJT-chkOrientasi').prop('checked', false);
+				// });
 
 				$('#MonitoringOJT-btnPratinjauUndangan').click(function(){
 					$.ajax({
@@ -646,6 +649,8 @@
 				$('#MonitoringOJT-monitoring-ubahEmail-txtEmailAtasan').val(email_atasan);
 				$('#MonitoringOJT-ubahEmail').modal("show");
 			}
+
+		      
 
 	// 	}	
 // 	-------Monitoring OJT----------------------------------------------end
