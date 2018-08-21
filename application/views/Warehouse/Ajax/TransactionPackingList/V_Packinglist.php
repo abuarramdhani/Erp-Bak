@@ -83,7 +83,7 @@
 		<div class="col-md-12">
 			<button type="button" class="btn btn-warning pull-right" disabled="" id="btnSubmitPacking" data-toggle="modal" data-target="#submitPacking">PACKING <i class="fa fa-arrow-right"></i></button>
 			<a class="btn btn-success pull-right" id="cetakPackingList" target="_blank" onclick="return false" disabled href="http://produksi.quick.com/PACKINGLIST/packinglist.php?spb=<?php echo $nomerspb; ?>">CETAK <i class="fa fa-file-pdf-o"></i></a>
-			<a class="btn btn-danger pull-right" id="reset" href="<?php echo base_url('Warehouse/Transaction/PackingListReset/'.$nomerspb) ?>">RESET <i class="fa fa-trash"></i></a>
+			<a class="btn btn-danger pull-right" id="reset" data-toggle="modal" data-target="#resetPacking">RESET <i class="fa fa-trash"></i></a>
 		</div>
 	</div>
 	<div class="modal fade" id="submitPacking" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -104,6 +104,21 @@
 	  </div>
 	</div>
 </form>
+<div class="modal fade" id="resetPacking" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Are you sure you want to reset?</h4>
+        <small>All packing data in this SPB will be remove</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+        <a class="btn btn-primary" href="<?php echo base_url('Warehouse/Transaction/PackingListReset/'.$nomerspb) ?>">RESET</a>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="packingqtyMdl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
