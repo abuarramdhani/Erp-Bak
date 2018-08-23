@@ -845,14 +845,4 @@
 			$(".form-check-input").iCheck('uncheck');
 	});
 	}
-
-	// function checkAll(th) { alert('a');
-	// 	$('.tabledelERC tr').find("td").each(function( i ) {
-
-	//     var checks = document.getElementsByName("chkOrientasi[]");
-	//     for (var i=0; i < checks.length; i++) {
-	//         checks[i].checked = true;
-	//     	}
-	//     });
-	// }
 </script>
