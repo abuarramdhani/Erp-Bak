@@ -18,7 +18,13 @@
 						</div>
 					</div>
 				</div>
-
+<style type="text/css">
+	input[type="text"], textarea {
+	outline: none;
+	box-shadow:none !important;
+	border:1px solid #ccc !important;
+	}
+</style>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
@@ -625,9 +631,9 @@
 														$id_orientasi_encode 	=	$this->general->enkripsi($orientasi['id_orientasi']);
 														?>
 
-														<td style="vertical-align: top;">
+														<td class="input-group-text" style="vertical-align: top;">
 															<label for="MonitoringOJT-chkOrientasi[<?php echo $indeks;?>]">
-																<input type="checkbox" name="chkOrientasi[]" class="MonitoringOJT-chkOrientasi" id="MonitoringOJT-chkOrientasi[<?php echo $indeks;?>]" value="<?php echo $id_orientasi_encode;?>"></input>
+																<input type="checkbox" name="chkOrientasi[]" class="MonitoringOJT-chkOrientasi form-check-input" id="MonitoringOJT-chkOrientasi[<?php echo $indeks;?>]" value="<?php echo $id_orientasi_encode;?>"></input>
 																<?php echo $nomor_orientasi." - ".$orientasi['tahapan'];?>
 															</label>
 														</td>
@@ -820,11 +826,13 @@
 			         });
 			     });
 
-	function slcAllERC(th) {
+	function slcAllERC(th) { 
 	$('.tabledelERC tr').find("td").each(function( i ) {
 
-			$(this).find('input[name="chkOrientasi[]"]').attr('checked', 'checked');
-			$(this).find('div').addClass('checked');
+			// $(this).find('input[name="chkOrientasi[]"]').attr('checked', 'checked');
+			// $(this).find('div').addClass('checked');
+			// $(this).val(e.target.checked == true);
+			$(".form-check-input").iCheck('check');
 
 	});
 	}
@@ -832,8 +840,9 @@
 	function delAllERC(th) {
 	$('.tabledelERC tr').find("td").each(function( i ) {
 	// alert('a');	
-			$(this).find('input[name="chkOrientasi[]"]').removeAttr('checked');
-			$(this).find('div').removeClass('checked');
+			// $(this).find('input[name="chkOrientasi[]"]').removeAttr('checked', 'checked');
+			// $(this).find('div').removeClass('checked');
+			$(".form-check-input").iCheck('uncheck');
 	});
 	}
 </script>
