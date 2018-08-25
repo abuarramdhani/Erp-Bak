@@ -17,8 +17,12 @@ class C_Ajax extends CI_Controller {
 	{
 		$id = $this->input->post('nomerSPB');
 		$SubInv = $this->M_ajax->getSubInv($id);
-		$data['spb'] = $this->M_ajax->getSPB($id, $SubInv[0]['FROM_SUBINVENTORY_CODE']);
-		$this->load->view('Warehouse/Ajax/TransactionSPB/V_Spb',$data);
+		if (empty($SubInv)) {
+			echo "Data is Empty";
+		} else {
+			$data['spb'] = $this->M_ajax->getSPB($id, $SubInv[0]['FROM_SUBINVENTORY_CODE']);
+			$this->load->view('Warehouse/Ajax/TransactionSPB/V_Spb',$data);
+		}
 	}
 	
 	public function PackingList()
@@ -39,6 +43,9 @@ class C_Ajax extends CI_Controller {
 	{
 		$spbNumber		= $this->input->post('spbNumber');
 		$packingNumber	= $this->input->post('packingNumber');
+		if (strlen($packingNumber) == 1) {
+			$packingNumber = '0'.$packingNumber;
+		}
 		$item_id 		= $this->input->post('item_id');
 		$packingqty 	= $this->input->post('packingqty');
 		$kemasan		= $this->input->post('kemasanValue');
@@ -55,7 +62,7 @@ class C_Ajax extends CI_Controller {
 					'MO_NUMBER'			=> $spbNumber,
 					'INVENTORY_ITEM_ID' => $value,
 					'PACKING_QTY'		=> $packingqty[$key],
-					'PACKING_CODE'		=> $kemasan.'-'.$packingNumber,
+					'PACKING_CODE'		=> $packingNumber,
 					'EXPEDITION_CODE'	=> $ekspedisi,
 					'WEIGHT' 			=> $weight,
 					'LOAD_DATE' 		=> NULL,

@@ -69,4 +69,45 @@ class C_Transaction extends CI_Controller {
 		$this->M_transaction->deletePackingList($id);
 		redirect(base_url('Warehouse/Transaction/PackingList'));
 	}
+
+	public function cetakPackingListPDF($spbNumber)
+	{
+
+		// ------ GENERATE QRCODE ------
+			$this->load->library('ciqrcode');
+			// ------ create directory temporary qrcode ------
+				if(!is_dir('./assets/upload/ManufacturingOperation'))
+				{
+					mkdir('./assets/upload/ManufacturingOperation', 0777, true);
+					chmod('./assets/upload/ManufacturingOperation', 0777);
+				}
+				if(!is_dir('./assets/upload/ManufacturingOperation/temp'))
+				{
+					mkdir('./assets/upload/ManufacturingOperation/temp', 0777, true);
+					chmod('./assets/upload/ManufacturingOperation/temp', 0777);
+				}
+				if(!is_dir('./assets/upload/ManufacturingOperation/temp/qrcode'))
+				{
+					mkdir('./assets/upload/ManufacturingOperation/temp/qrcode', 0777, true);
+					chmod('./assets/upload/ManufacturingOperation/temp/qrcode', 0777);
+				}
+			$params['data']		= $data['replacement_number'];
+			$params['level']	= 'H';
+			$params['size']		= 10;
+			$params['black']	= array(255,255,255);
+			$params['white']	= array(0,0,0);
+			$params['savename'] = './assets/upload/ManufacturingOperation/temp/qrcode/'.$data['replacement_number'].'.png';
+			$this->ciqrcode->generate($params);
+		// ------ GENERATE PDF ------
+			$this->load->library('Pdf');
+			$pdf 		= $this->pdf->load();
+			$mpdf 		= new mPDF('utf-8','A5-L', 0, '', 5, 5, 5, 5);
+			$filename 	= 'PACKINGLIST_'.date('d-M-Y').'.pdf';
+			$html 		= $this->load->view('Warehouse/MainMenu/TransactionPackingList/V_Report', $data, true);
+			$pdf->WriteHTML($html, 0);
+			$pdf->Output($filename, 'I');
+		if(is_file($params['savename'])){
+			unlink($params['savename']);
+		}
+	}
 }
