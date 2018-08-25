@@ -26,9 +26,10 @@ class M_ajax extends CI_Model {
 						msib.segment1 item_code,
 						msib.description item_desc,
 						mtrl.quantity quantity_normal,
+						mtrl.quantity_detailed quantity_allocate,
 						(
-							mtrl.quantity - NVL(( SELECT SUM( NVL( kpt.packing_qty, 0 )) FROM khs_packinglist_transactions kpt WHERE kpt.mo_number = mtrh.request_number AND kpt.inventory_item_id = mtrl.inventory_item_id ), 0 )
-						) quantity,
+							mtrl.quantity_delivered - NVL(( SELECT SUM( NVL( kpt.packing_qty, 0 )) FROM khs_packinglist_transactions kpt WHERE kpt.mo_number = mtrh.request_number AND kpt.inventory_item_id = mtrl.inventory_item_id ), 0 )
+						) quantity_transact,
 						khs_inv_qty_att(
 							mtrl.organization_id,
 							mtrl.inventory_item_id,
