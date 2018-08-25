@@ -10,7 +10,7 @@
 			<option value="KK">Kardus Kecil</option>
 			<option value="KS">Kardus Sedang</option>
 			<option value="KP">Kardus Panjang</option>
-			<option value="PP">Poly Propelyne</option>
+			<option value="PP">Karung</option>
 			<option value="PT">Peti</option>
 			<option value="LL">Lain - Lain</option>
 		</select>
@@ -49,18 +49,24 @@
 					<td colspan="2" class="text-center">PACKING</td>
 				</thead>
 				<tbody>
-					<?php $totalQtyMinta=0; $no=1; foreach ($spb as $value) { ?>
-						<tr data-row="<?php echo $value['ITEM_CODE']; ?>" data-id="<?php echo $value['INVENTORY_ITEM_ID']; ?>">
+					<?php $totalQtyMinta=0; $no=1; foreach ($spb as $value) {
+						if ($value['QUANTITY_TRANSACT']==NULL) {
+							$a = 'class="bg-danger" title="Data belum transact!"';
+						}else{
+							$a = '';
+						}
+					?>
+						<tr data-row="<?php echo $value['ITEM_CODE']; ?>" data-id="<?php echo $value['INVENTORY_ITEM_ID']; ?>" <?php echo $a; ?>>
 							<input type="hidden" name="item_id[]" value="<?php echo $value['INVENTORY_ITEM_ID'] ?>">
-							<input type="hidden" name="maxPack[]" value="<?php echo $value['QUANTITY'] ?>">
+							<input type="hidden" name="maxPack[]" value="<?php echo $value['QUANTITY_TRANSACT'] ?>">
 							<input type="hidden" name="maxOnhand[]" value="<?php echo $value['QTY_ATT'] ?>">
 							<td><?php echo $no++; ?></td>
 							<td><?php echo $value['ITEM_CODE']; ?></td>
 							<td><?php echo $value['ITEM_DESC']; ?></td>
 							<!-- <td><?php //echo $value['QTY_ONHAND']; ?></td> -->
-							<!-- <td class="quantityArea"><?php //echo $value['QUANTITY']; ?></td> -->
+							<!-- <td class="quantityArea"><?php // echo $value['QUANTITY_NORMAL']; ?></td> -->
 							<td>
-								<input type="number" name="packingqty[]" class="form-control" readonly="" placeholder="Total Item" max="<?php echo $value['QUANTITY'] ?>" min="0">
+								<input type="number" name="packingqty[]" class="form-control" readonly="" placeholder="Total Item" max="<?php echo $value['QUANTITY_TRANSACT'] ?>" min="0">
 							</td>
 							<td width="25px">
 								<button type="button" class="btn btn-default" onclick="mdlPackingQtyCustom(this,'<?php echo $value['ITEM_CODE']; ?>')">
@@ -68,7 +74,7 @@
 								</button>
 							</td>
 						</tr>
-						<?php $totalQtyMinta+=$value['QUANTITY']; ?>
+						<?php $totalQtyMinta+=$value['QUANTITY_TRANSACT']; ?>
 					<?php } ?>
 				</tbody>
 			</table>

@@ -4,7 +4,7 @@
 		<td>NO SPB</td>
 		<td>ITEM CODE</td>
 		<td>ITEM DESCRIPTION</td>
-		<td>QUANTITY</td>
+		<td>QTY DELIVERY</td>
 		<td>QTY ATT</td>
 		<td>QTY ATR</td>
 		<td>QTY TOTAL</td>
