@@ -1735,7 +1735,6 @@ $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja
 
 //--------------------------------------------------- Warehouse --------------------------------------------------//
 $route['Warehouse'] 								= 'Warehouse/C_Index';
-$route['Warehouse/Transaction/Spb'] 				= 'Warehouse/MainMenu/C_Transaction/Spb';
-$route['Warehouse/Transaction/PackingList']			= 'Warehouse/MainMenu/C_Transaction/PackingList';
-$route['Warehouse/Transaction/PackingListReset/(:any)']	= 'Warehouse/MainMenu/C_Transaction/PackingListReset/$1';
+$route['Warehouse/Transaction/(:any)'] 				= 'Warehouse/MainMenu/C_Transaction/$1';
+$route['Warehouse/Transaction/(:any)/(:any)']		= 'Warehouse/MainMenu/C_Transaction/$1/$2';
 $route['Warehouse/Ajax/(:any)']		 				= 'Warehouse/Ajax/C_Ajax/$1';
