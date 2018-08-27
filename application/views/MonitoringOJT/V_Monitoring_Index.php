@@ -127,7 +127,7 @@
 													<?php echo $jumlah_notifikasi;?>
 												</span>
 											</a>
-											<ul class="dropdown-menu" style="max-height: 380px; overflow: auto;">
+											<ul class="dropdown-menu" style="height: 380px; overflow: auto; resize: vertical;">
 												<?php
 												if( $jumlah_notifikasi>0 )
 												{
@@ -163,7 +163,7 @@
 															?>
 															<ul class="menu">
 																<li>
-																	<a href="#">
+																	<a>
 																		<i class="fa fa-calendar text-red"></i> <?php echo $tanggal_tampil;?><br/>
 																		<i class="fa fa-sticky-note-o text-orange"></i> <?php echo $tahapan;?><br/>
 																		<i class="fa fa-user text-green"></i> <?php echo $pekerja;?>
@@ -578,7 +578,7 @@
 				</div>
 
 				<div id="tambahPekerjaOJT" class="modal fade" role="dialog">
-					<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/tambahPekerja');?>" enctype="multipart/form-data">
+					<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/tambahPekerja'); ?>" enctype="multipart/form-data">
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -632,8 +632,8 @@
 														?>
 
 														<td class="input-group-text" style="vertical-align: top;">
-															<label for="MonitoringOJT-chkOrientasi[<?php echo $indeks;?>]">
-																<input type="checkbox" name="chkOrientasi[]" class="MonitoringOJT-chkOrientasi form-check-input" id="MonitoringOJT-chkOrientasi[<?php echo $indeks;?>]" value="<?php echo $id_orientasi_encode;?>"></input>
+															<label for="MonitoringOJT-chkOrientasi[<?php echo $indeks; ?>]">
+																<input type="checkbox" name="chkOrientasi[]" class="MonitoringOJT-chkOrientasi form-check-input" id="MonitoringOJT-chkOrientasi[<?php echo $indeks; ?>]" value="<?php echo $id_orientasi_encode; ?>"></input>
 																<?php echo $nomor_orientasi." - ".$orientasi['tahapan'];?>
 															</label>
 														</td>
@@ -672,7 +672,7 @@
 	</div>
 </div>
 
-<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/pekerja_keluar');?>" enctype="multipart/form-data">
+<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/pekerja_keluar'); ?>" enctype="multipart/form-data">
 	<div id="MonitoringOJT-ubahStatusPekerjaKeluar" class="modal fade" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -715,7 +715,7 @@
 	</div>
 </form>
 
-<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/ubah_email');?>" enctype="multipart/form-data">
+<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/ubah_email'); ?>" enctype="multipart/form-data">
 	<div id="MonitoringOJT-ubahEmail" class="modal fade" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -752,7 +752,7 @@
 	</div>
 </form>
 
-<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/pekerja_tunda');?>" enctype="multipart/form-data">
+<form class="form-horizontal" method="post" action="<?php echo base_url('OnJobTraining/Monitoring/pekerja_tunda'); ?>" enctype="multipart/form-data">
 	<div id="MonitoringOJT-ubahStatusPekerjaTunda" class="modal fade" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">

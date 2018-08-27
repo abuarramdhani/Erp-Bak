@@ -51,7 +51,9 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['daftarPekerjaOJT']		=	$this->M_monitoring->ambilTabelDaftarPekerjaOJT();
+		// echo "<pre>"; print_r($data['daftarPekerjaOJT']);exit();
 		$data['proses_berjalan']		=	$this->M_monitoring->proses_berjalan();
+		// echo "<pre>"; print_r($data['proses_berjalan']);exit();
 		$data['daftarOrientasi'] 		=	$this->M_masterorientasi->ambilDaftarOrientasiTabel();
 		// echo "<pre>"; print_r($data['daftarOrientasi']); exit();
 		$tanggal_rekap 					=	$this->input->post('txtTanggalRekapHarian', TRUE);
@@ -96,6 +98,9 @@ class C_Monitoring extends CI_Controller
 		}
 
 		$ambilInfoPekerja 			=	$this->M_monitoring->ambilInfoPekerja($nomor_induk_pekerja);
+		// echo "<pre>";
+		// print_r($_POST);
+		// exit();
 		
 		$nomor_induk_baru_pekerja		=	$ambilInfoPekerja[0]['noind_baru'];
 		$tanggal_masuk_pekerja 			=	$ambilInfoPekerja[0]['masukkerja'];

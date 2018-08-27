@@ -420,6 +420,8 @@
 
  		public function history($schema_name, $table_name, $history)
  		{
+ 			// print_r ($history); exit();
+ 			// echo $table_name; exit();
  			$this->db->insert($schema_name.".".$table_name."_history", $history);
  		}
 
