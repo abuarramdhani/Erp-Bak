@@ -79,25 +79,25 @@ class monitoringojt
 			{
 				$history['create_timestamp'] 	=	$val['create_timestamp'];
 				$history['create_user']			=	$val['create_user'];
-				$history['history_type']		=	'CREATE';
+				$history['type']		=	'CREATE';
 			}
 			elseif ( strtoupper($type) == 'UPDATE' )
 			{
 				$history['update_timestamp'] 	=	$val['last_update_timestamp'];
 				$history['update_user']			=	$val['last_update_user'];
-				$history['history_type']		=	'UPDATE';
+				$history['type']		=	'UPDATE';
 			}
 			elseif ( strtoupper($type) == 'DELETE' )
 			{
 				$history['delete_timestamp'] 	=	date('Y-m-d H:i:s');
 				$history['delete_user']			=	$this->CI->session->user;
-				$history['history_type']		=	'DELETE';
+				$history['type']		=	'DELETE';
 			}
 			else
 			{
 				$history['update_timestamp'] 	=	$val['last_update_timestamp'];
 				$history['update_user']			=	$val['last_update_user'];
-				$history['history_type']		=	strtoupper($type);
+				$history['type']		=	strtoupper($type);
 			}
 
 			$this->CI->M_monitoring->history($schema_name, $table_name, $history);
