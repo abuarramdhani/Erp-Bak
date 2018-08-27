@@ -57,7 +57,7 @@
 	                    No SPB/DOSP : <strong><?php echo $spbNumber; ?></strong>
 	                </td>
 	                <td width="50%">
-	                    No Peti/Coly : <strong><?php echo $ls['PACKING_CODE']; ?></strong>
+	                    No Peti/Coly : <strong><?php echo substr($ls['PACKING_CODE'], 3).' ('.$ls['DESC'].')'; ?></strong>
 	                </td>
 	                <td style="width:25%">
 	                    Total Peti/Coly :
@@ -78,7 +78,7 @@
 	        		<td width="45%">NAMA BARANG</td>
 	        		<td width="15%">TIPE/NOMOR BARANG</td>
 	        	</tr>
-	        	<?php $i = 1; foreach($ls['list'] as $line) { ?>
+	        	<?php $i = 1; foreach($ls['LIST'] as $line) { ?>
 	        		<tr>
 	        			<td><?php echo $i++; ?></td>
 	        			<td><?php echo $line['PACKING_QTY'];?></td>
