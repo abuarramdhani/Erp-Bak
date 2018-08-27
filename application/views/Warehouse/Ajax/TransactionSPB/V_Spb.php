@@ -11,7 +11,7 @@
 	</thead>
 	<tbody>
 		<?php $no=1; foreach ($spb as $value) {
-			if ($value['QUANTITY'] > $value['QTY_ATT']) {
+			if ($value['QUANTITY_NORMAL'] > $value['QTY_ATT']) {
 				$bgclr = 'bg-danger';
 			}else{
 				$bgclr = '';
