@@ -83,4 +83,19 @@ class M_ajax extends CI_Model {
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
 	}
+
+	public function getLastPackCode($id)
+	{
+		$sql = "
+			SELECT
+				MAX( SUBSTR( KPT.PACKING_CODE, 4 )) lastpacknumber
+			FROM
+				KHS_PACKINGLIST_TRANSACTIONS KPT
+			WHERE
+				KPT.MO_NUMBER = '2933134'
+		";
+
+		$query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
 }
