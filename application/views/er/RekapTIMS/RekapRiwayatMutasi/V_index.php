@@ -9,6 +9,14 @@
                     <div class="col-lg-1">
                     </div>
                 </div>
+<style>
+    button {
+        display: block;
+    }
+    input {
+        display: block;
+    }
+</style>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -24,14 +32,17 @@
                                     <div class="panel-body">
                                         <div class="form-group">
                                             <label for="radioJenisPencarian" class="control-label col-lg-2">Jenis Pencarian</label>
-                                            <div class="col-lg-2">
-                                                <input type="radio" name="radioJenisPencarian" value="noind" id="RekapRiwayatMutasi-radioJenisPencarian-noind">Nomor Induk</input>
+                                            <div class="col-md-2">
+                                                <input style="display: none" type="radio" class="form-check-input" name="radioJenisPencarian" value="noind" ></input>
+                                                <input type="button" class="btn btn-default mencoba" name="radioJenisPencarian" value="noind" id="RekapRiwayatMutasi-radioJenisPencarian-noind"></input>
                                             </div>
-                                            <div class="col-lg-2">
-                                                <input type="radio" name="radioJenisPencarian" value="seksi" id="RekapRiwayatMutasi-radioJenisPencarian-seksi">Seksi</input>
+                                            <div class="col-md-2">
+                                                <input style="display: none" type="radio" class="form-check-input2" name="radioJenisPencarian" value="seksi" ></input>
+                                                <input type="button" class="btn btn-default mencoba2" name="radioJenisPencarian" value="seksi" id="RekapRiwayatMutasi-radioJenisPencarian-seksi"></input>
                                             </div>
-                                            <div class="col-lg-2">
-                                                <input type="radio" name="radioJenisPencarian" value="lokasikerja" id="RekapRiwayatMutasi-radioJenisPencarian-lokasikerja">Lokasi Kerja</input>
+                                            <div class="col-md-2">
+                                                <input style="display: none" type="radio" class="form-check-input3" name="radioJenisPencarian" value="lokasikerja"></input>
+                                                <input type="button" class="btn btn-default mencoba3" name="radioJenisPencarian" value="lokasikerja" id="RekapRiwayatMutasi-radioJenisPencarian-lokasikerja"></input>
                                             </div>
                                         </div>
                                         <div id="RekapRiwayatMutasi-parameterNoind">
@@ -116,6 +127,7 @@
                         </div>
                         <?php
                             if(isset($rekapRiwayatMutasi))
+                                // print_r($rekapRiwayatMutasi);
                             {
                         ?>
                         <div class="box box-primary box-solid">
@@ -167,7 +179,7 @@
                             </div>
                         </div>
                         <?php
-                            }
+                            } //else {echo "kosong";}
                         ?>
                     </div>
                 </div>
@@ -175,3 +187,35 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $(document).ready(function () {
+            $('.form-check-input2').prop('disabled', true);
+            $('.form-check-input').prop('disabled', true); 
+            $('.form-check-input3').prop('disabled', true); 
+    $('.mencoba').click(function () {
+            $('.form-check-input').prop('disabled', false);
+            $('.form-check-input').iCheck('check');
+            $('.form-check-input2').iCheck('uncheck');
+            $('.form-check-input3').iCheck('uncheck');
+            $('.form-check-input3').prop('disabled', true);
+            $('.form-check-input2').prop('disabled', true);
+    });
+    $('.mencoba2').click(function () { 
+            $('.form-check-input2').prop('disabled', false);
+            $('.form-check-input2').iCheck('check');
+            $('.form-check-input').iCheck('uncheck');
+            $('.form-check-input3').iCheck('uncheck');
+            $('.form-check-input3').prop('disabled', true);
+            $('.form-check-input').prop('disabled', true); 
+    });
+        $('.mencoba3').click(function () {   
+            $('.form-check-input3').prop('disabled', false);  
+            $('.form-check-input3').iCheck('check');
+            $('.form-check-input').iCheck('uncheck');
+            $('.form-check-input2').iCheck('uncheck');
+            $('.form-check-input2').prop('disabled', true);
+            $('.form-check-input').prop('disabled', true); 
+    });
+
+});
+</script>
