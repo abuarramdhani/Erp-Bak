@@ -1202,6 +1202,7 @@ function rekap_datatable_detail() {
 
 			//	Form Behaviour
 			//	{
+
 					$('#RekapRiwayatMutasi-radioJenisPencarian-noind').click(function()
 					{
 						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('disabled', false);
@@ -1217,6 +1218,12 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
 
 						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
+          				$('input[name="radioJenisPencarian"]').removeClass("btn-default");
+			            $('input[name="radioJenisPencarian"]').removeClass("btn-primary");
+			            $('input[name="radioJenisPencarian"]').addClass("btn-default");
+						$(this).removeClass("btn-default");
+          				$(this).addClass("btn-primary");
+          				// $('input[class="form-check-input"]').iCheck('check');
 						/*$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', false);
 						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', false);
 						$('#RekapRiwayatMutasi-cmbBidangLama').prop('required', false);
@@ -1243,6 +1250,12 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', true);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
 
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
+          				$('input[name="radioJenisPencarian"]').removeClass("btn-default");
+			            $('input[name="radioJenisPencarian"]').removeClass("btn-primary");
+			            $('input[name="radioJenisPencarian"]').addClass("btn-default");
+						$(this).removeClass("btn-default");
+          				$(this).addClass("btn-primary");
 						/*$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', false);
 						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', true);
 						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', true);
@@ -1270,6 +1283,12 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', false);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', false);
 
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
+          				$('input[name="radioJenisPencarian"]').removeClass("btn-default");
+			            $('input[name="radioJenisPencarian"]').removeClass("btn-primary");
+			            $('input[name="radioJenisPencarian"]').addClass("btn-default");
+						$(this).removeClass("btn-default");
+          				$(this).addClass("btn-primary");
 						/*$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', false);
 						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', false);
 						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', false);
