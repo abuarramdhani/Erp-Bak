@@ -51,7 +51,8 @@ class C_RekapRiwayatMutasi extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->form_validation->set_rules('radioJenisPencarian', 'Jenis Pencarian', 'required');	
+		$this->form_validation->set_rules('radioJenisPencarian', 'Jenis Pencarian', 'required');
+		// echo "string";
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -73,6 +74,7 @@ class C_RekapRiwayatMutasi extends CI_Controller
 			*/
 			if($jenisPencarian=='noind')
 			{
+
 				$nomorInduk			=	$this->input->post('cmbNoind', TRUE);
 
 				$riwayatNomorInduk	=	$this->M_rekapriwayatmutasi->ambilRiwayatPekerja($nomorInduk);
@@ -182,6 +184,7 @@ class C_RekapRiwayatMutasi extends CI_Controller
 			}
 
 			$rekapRiwayatMutasi 			=	$this->M_rekapriwayatmutasi->ambilRiwayatMutasi($parameterCari);
+			// print_r($rekapRiwayatMutasi); exit();
 
 			$data['Header']					=	"Rekap Riwayat Mutasi Pekerja - Quick ERP";
 			$data['rekapRiwayatMutasi']		=	$rekapRiwayatMutasi;
