@@ -15,7 +15,7 @@ class C_FleetBengkel extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetbengkel');
-		$this->load->model('GeneralAffair/mainmenu/M_location');
+		$this->load->model('GeneralAffair/MainMenu/M_location');
 		
 		$this->checkSession();
 	}

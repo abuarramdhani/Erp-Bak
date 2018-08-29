@@ -15,7 +15,7 @@ class C_FleetMonitoringLast extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetmonitoringlast');
-		$this->load->model('GeneralAffair/mainmenu/M_location');
+		$this->load->model('GeneralAffair/MainMenu/M_location');
 		
 		date_default_timezone_set('Asia/Jakarta');
 
