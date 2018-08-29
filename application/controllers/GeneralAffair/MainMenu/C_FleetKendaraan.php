@@ -16,7 +16,7 @@ class C_FleetKendaraan extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetkendaraan');
-		$this->load->model('GeneralAffair/mainmenu/M_location');
+		$this->load->model('GeneralAffair/MainMenu/M_location');
 		
     	$this->load->helper('download');
 		date_default_timezone_set('Asia/Jakarta');
