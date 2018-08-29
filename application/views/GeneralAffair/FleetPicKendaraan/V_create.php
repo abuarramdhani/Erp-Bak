@@ -44,8 +44,8 @@
                                             <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
                                                     <div class="col-lg-2">
-                                                            <input type="radio" name="OpsiPIC" value="Seksi" required="" />
-                                                            <label for="OpsiSeksi" class="control-label" >Seksi</label>
+                                                            <input type="button" class="btn btn-default col-lg-6" name="BtnPIC" value="Seksi" required="" />
+                                                            <!-- <label for="OpsiSeksi" class="control-label" id="petunjuk" >Seksi</label> -->
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" disabled="true">
@@ -61,8 +61,8 @@
 											<div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4"><span class="hidden">PIC</span></label>
                                                     <div class="col-lg-2">
-                                                        <input type="radio" name="OpsiPIC" value="Pekerja" required="" />
-                                                        <label for="OpsiSeksi" class="control-label">Pekerja</label>
+                                                        <input type="button" class="btn btn-default col-lg-6" name="BtnPIC" value="Pekerja" required="" />
+                                                        <!-- <label for="OpsiSeksi" class="control-label">Pekerja</label> -->
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <select id="cmbPekerja" name="cmbPekerja" class="select2" data-placeholder="Pilih Pekerja" style="width: 75%" required="" disabled="true">
@@ -82,6 +82,7 @@
                                                 <label for="txtMasaAktifPICHeader" class="control-label col-lg-4">Masa Penggunaan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" name="masaAktifPIC" class="date form-control" id="ManajemenKendaraan-daterangepicker" />
+                                                    <input type="text" name="OpsiPIC" class="from-control">
                                                 </div>
                                             </div>
 
