@@ -36,15 +36,19 @@
                                                             <td style="border: 0">: <?php echo $headerRow['id_jenis_limbah']; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kode Limbah</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['limbah_kode']; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['limbah_jenis']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Satuan Limbah</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['satuan']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Jenis Limbah</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Sumber Limbah</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['sumber_limbah']; ?></td>
                                                         </tr>
                                                         <tr>
