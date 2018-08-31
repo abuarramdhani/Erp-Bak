@@ -78,15 +78,18 @@ class C_LimbahMaster extends CI_Controller
 			$this->load->view('WasteManagement/MasterData/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
+			$id = $this->M_limbahmaster->getLimbahJenisID();
 			$data = array(
+				'id_jenis_limbah' => $id['0']['id'],
 				'jenis_limbah' => $this->input->post('txtJenisLimbahHeader'),
+				'kode_limbah' => $this->input->post('txtKodeLimbahHeader'),
 				'start_date' => date('Y-m-d h:i:s'),
 				'end_date' => date('Y-m-d h:i:s'),
 				'creation_date' => date('Y-m-d h:i:s'),
 				'created_by' => $this->session->userid,
     		);
 			$this->M_limbahmaster->setLimbahJenis($data);
-			$header_id = $this->db->insert_id();
+			$header_id = $id['0']['id'];
 
 				$satuan = array(
 					'id_jenis_limbah' => $header_id,
@@ -147,12 +150,12 @@ class C_LimbahMaster extends CI_Controller
 		} else {
 			$data = array(
 				'jenis_limbah' => $this->input->post('txtJenisLimbahHeader',TRUE),
+				'kode_limbah' => $this->input->post('txtKodeLimbahHeader'),
 				'start_date' => date('Y-m-d h:i:s'),
 				'end_date' => date('Y-m-d h:i:s'),
 				'last_updated' => date('Y-m-d h:i:s'),
 				'last_update_by' => $this->session->userid,
     			);
-
 			$this->M_limbahmaster->updateLimbahJenis($data, $plaintext_string);
 
 					$satuan = array(
