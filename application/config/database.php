@@ -87,10 +87,10 @@ $db['default'] = array(
 
 $db['oracle'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.3:1522/DEV',
+	'hostname' => '192.168.7.1:1521/PROD',
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_DEV',
+	'database' => 'KHS_PROD',
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
