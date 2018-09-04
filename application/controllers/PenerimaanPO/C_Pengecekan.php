@@ -54,11 +54,91 @@
 	}
 
 	public function updateData(){
+		
 		$qtyActual = $this->input->post('qtyActual');
 		$SJ		   = $this->input->post('SJ');
 		$itemName  = $this->input->post('itemName');
 		$itemDesc  = $this->input->post('itemDesc');
-		$data = $this->M_pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
-		echo json_encode($data);
+		
+		// $data = $this->M_pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
+		$PO_HEADER_ID = $this->M_pengecekan->getPoHeaderId($SJ);
+		$value['PO_HEADER_ID'] = $PO_HEADER_ID[0]['PO_HEADER_ID'];
+
+		$PO_INVENTORY_ITEM_ID = $this->M_pengecekan->getInventoryItemId($itemName);
+		$value['PO_INVENTORY_ITEM_ID'] = $PO_INVENTORY_ITEM_ID[0]['INVENTORY_ITEM_ID'];
+
+		$PO_LINE_ID = $this->M_pengecekan->getPoLineId($SJ,$value['PO_INVENTORY_ITEM_ID']);
+		$value['PO_LINE_ID'] = $PO_LINE_ID[0]['PO_LINE_ID'];
+
+		$value['QTY'] = $qtyActual;
+		$value['IP_ADDRESS'] = $this->get_client_ip();
+
+
+		$this->M_pengecekan->insertTemp($value);
+		echo json_encode($value);
+	}
+
+
+	public function runAPIone(){
+		
+		$SJ = $this->input->post('SJ');
+		// $data = $this->M_pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
+		
+		$PO_HEADER_ID = $this->M_pengecekan->getPoHeaderId($SJ);
+		$value['PO_HEADER_ID'] = $PO_HEADER_ID[0]['PO_HEADER_ID'];
+
+		$NO_PO = $this->M_pengecekan->getNoPo($SJ);
+		
+		$value['IP_ADDRESS'] = $this->get_client_ip();
+		$value['NO_PO'] = $NO_PO[0]['SEGMENT1'];
+		$value['GROUP_ID'] = '';
+		if($this->M_pengecekan->runAPIone($value)){
+	
+			$GROUP_ID = $this->M_pengecekan->getGroupId($value['PO_HEADER_ID']);
+			$value['GROUP_ID'] = $GROUP_ID[0]['GROUP_ID'];
+	
+		}
+
+		echo json_encode($value['GROUP_ID']);
+
+	}
+
+	public  function runAPItwo(){
+		$SJ = $this->input->post('SJ');
+		$PO_HEADER_ID = $this->M_pengecekan->getPoHeaderId($SJ);
+		$data['PO_HEADER_ID'] = $PO_HEADER_ID[0]['PO_HEADER_ID'];
+
+		$GROUP_ID = $this->input->post('GROUP_ID');
+		$value = '';
+		if($this->M_pengecekan->runAPItwo($GROUP_ID)){
+			$hasil = $this->M_pengecekan->getReceiptNumber($data['PO_HEADER_ID']);
+			$value = $hasil[0]['RECEIPT_NUM'];
+		}
+		echo json_encode($value);
+	}
+
+	public function deleteAll(){
+		$ip = $this->get_client_ip();
+		$this->M_pengecekan->deleteAll($ip);
+		echo json_encode($ip);
+	}
+
+	function get_client_ip() {
+		$ipaddress = '';
+		if (isset($_SERVER['HTTP_CLIENT_IP']))
+			$ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+		else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+			$ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		else if(isset($_SERVER['HTTP_X_FORWARDED']))
+			$ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+		else if(isset($_SERVER['HTTP_FORWARDEDED_FOR']))
+			$ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+		else if(isset($_SERVER['HTTP_FORWARDED']))
+			$ipaddress = $_SERVER['HTTP_FORWARDED'];
+		else if(isset($_SERVER['REMOTE_ADDR']))
+			$ipaddress = $_SERVER['REMOTE_ADDR'];
+		else
+			$ipaddress = 'UNKNOWN';
+		return $ipaddress;
 	}
  }
