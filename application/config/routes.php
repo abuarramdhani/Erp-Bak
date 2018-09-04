@@ -1614,8 +1614,11 @@ $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
  
 $route['PenerimaanPO/awal']					   = 'PenerimaanPO/C_PenerimaanAwal';
+$route['PenerimaanPO/awal/(:any)']   		   = 'PenerimaanPO/C_PenerimaanAwal/$1';
 $route['PenerimaanPO/awal/loadVendor/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadVendor/$1';
 $route['PenerimaanPO/awal/loadPoLine/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadPoLine/$1';
+$route['PenerimaanPO/awal/loadSubinv/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/loadSubinv/$1';
+
 
 $route['PenerimaanPO/cek'] 					   = 'PenerimaanPO/C_Pengecekan';
 $route['PenerimaanPO/cek/loadDataCek']         = 'PenerimaanPO/C_Pengecekan/loadDataCek';
