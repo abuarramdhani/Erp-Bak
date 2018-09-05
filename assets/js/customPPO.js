@@ -8,8 +8,8 @@ $(document).ready(function() {
     var listItem = [];
     var SJ;
     
-    $('#in_dateRcv').datepicker({ format: 'dd/mm/yyyy' });
-    $('#in_dateRcv').datepicker('setDate', new Date());
+    // $('#in_dateRcv').datepicker({ format: 'dd/mm/yyyy hh:ii:ss' });
+    // $('#in_dateRcv').datepicker('setDate', new Date());
 
      $('.input-group.date').datepicker({
        todayBtn: "linked",
@@ -168,7 +168,7 @@ $(document).ready(function() {
                 }else{
                     
                     var qc = 'NON-QC';
-                    if(objItem.ROUTING == "Inspection Required"){
+                    if(objItem.ROUTING == 2){
                         qc = 'QC';
                     }
 
