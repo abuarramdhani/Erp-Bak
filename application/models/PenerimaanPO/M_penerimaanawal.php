@@ -110,7 +110,7 @@ class M_PenerimaanAwal extends CI_Model {
                 and pl.po_line_id = rt.po_line_id(+)
                 AND  rrh.routing_header_id(+) = rt.routing_header_id
                 AND pll.closed_CODE = 'OPEN'
-                AND pha.segment1 = $PO
+                AND pha.segment1 = 18016395
 --                group by msib.segment1, pl.item_description,
 --                pll.quantity, rt.QUANTITY,rrh.routing_name
                 ORDER BY pl.item_description
