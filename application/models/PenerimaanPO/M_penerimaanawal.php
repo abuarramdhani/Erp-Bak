@@ -114,9 +114,9 @@ class M_PenerimaanAwal extends CI_Model {
 --                group by msib.segment1, pl.item_description,
 --                pll.quantity, rt.QUANTITY,rrh.routing_name
                 ORDER BY pl.item_description
-
-
 ";
+
+        //kudune iso
 		$query = $this->oracle->query($sql);
 		return $query->result();
     }
