@@ -55,8 +55,8 @@
                     <div class="col-md-12" style="padding: 0px;margin-top: 30px">
                         <div class="col-md-6">
                             <div>Tanggal Terima</div>
-                            <div class="input-group">
-                                <input class="form-control" disabled="disabled" id="in_dateRcv" name="in_dateRcv" placeholder="Tanggal Terima">
+                            <div class="input-group" >
+                                <input class="datetime form-control time-form" data-date-format="yyyy-mm-dd hh:ii:ss" id="in_dateRcv" name="in_dateRcv" placeholder="Tanggal Terima">
                                     <div class="input-group-addon" style="padding-left: 10px;padding-right: 10px">
                                         <span class="glyphicon glyphicon-th">
                                         </span>
