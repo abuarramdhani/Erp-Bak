@@ -89,7 +89,7 @@ class M_PenerimaanAwal extends CI_Model {
 				// group by msib.segment1, pl.item_description,
 				// pll.quantity, rt.QUANTITY
 				// ORDER BY pl.item_description";
-		$sql = "SELECT distinct msib.segment1, PL.LINE_NUM, pl.item_description,rrh.routing_name routing,
+		$sql = "SELECT distinct msib.segment1, PL.LINE_NUM, pl.item_description,msib.RECEIVING_ROUTING_ID routing,
                 pll.quantity, 0 ISI
                 ,NVL(sum(rt.QUANTITY) over (partition by msib.SEGMENT1) , 0)  qty_receipt
                 ,NVL ((pll.QUANTITY - (sum(rt.QUANTITY) over (partition by msib.SEGMENT1))),0) belum_deliver, PLL.SHIP_TO_ORGANIZATION_ID
@@ -110,12 +110,13 @@ class M_PenerimaanAwal extends CI_Model {
                 and pl.po_line_id = rt.po_line_id(+)
                 AND  rrh.routing_header_id(+) = rt.routing_header_id
                 AND pll.closed_CODE = 'OPEN'
-                AND pha.segment1 = $PO
+                AND pha.segment1 = 18016395
 --                group by msib.segment1, pl.item_description,
 --                pll.quantity, rt.QUANTITY,rrh.routing_name
                 ORDER BY pl.item_description
-
 ";
+
+        //kudune iso
 		$query = $this->oracle->query($sql);
 		return $query->result();
     }
