@@ -89,31 +89,37 @@ class M_PenerimaanAwal extends CI_Model {
 				// group by msib.segment1, pl.item_description,
 				// pll.quantity, rt.QUANTITY
 				// ORDER BY pl.item_description";
-		$sql = "SELECT distinct msib.segment1, PL.LINE_NUM, pl.item_description,msib.RECEIVING_ROUTING_ID routing,
-                pll.quantity, 0 ISI
-                ,NVL(sum(rt.QUANTITY) over (partition by msib.SEGMENT1) , 0)  qty_receipt
-                ,NVL ((pll.QUANTITY - (sum(rt.QUANTITY) over (partition by msib.SEGMENT1))),0) belum_deliver, PLL.SHIP_TO_ORGANIZATION_ID
-                FROM po_lines_all pl,
+		$sql = "SELECT DISTINCT msib.segment1, pla.line_num, pla.item_description,
+                msib.receiving_routing_id routing, pll.quantity,
+                NVL
+                   (SUM (rt.quantity) OVER (PARTITION BY msib.segment1),
+                    0
+                   ) qty_receipt,
+--                   rt.QUANTITY qty_receipt,
+                NVL
+                   ((  pll.quantity
+                     - (SUM (rt.quantity) OVER (PARTITION BY msib.segment1))
+                    ),
+                    0
+                   ) belum_deliver,
+--pll.quantity - rt.QUANTITY belum_deliver,
+                pll.ship_to_organization_id, pll.closed_code close_code_line,
+                pha.closed_code close_code_po
+           FROM po_headers_all pha,
+                po_lines_all pla,
                 po_line_locations_all pll,
-                mtl_parameters mp,
-                po_headers_all pha,
-                mtl_system_items_b msib,
                 rcv_transactions rt,
-                rcv_routing_headers rrh
-                WHERE pl.po_line_id = pll.po_line_id
-                AND pl.po_header_id = pha.po_header_id
-                AND pll.ship_to_organization_id = mp.organization_id
-                AND msib.inventory_item_id = pl.item_id
-                AND msib.ORGANIZATION_ID = pll.ship_to_organization_id
-                AND pll.quantity - pll.quantity_received > 0
-                and pl.po_header_id = rt.po_header_id(+)
-                and pl.po_line_id = rt.po_line_id(+)
-                AND  rrh.routing_header_id(+) = rt.routing_header_id
-                AND pll.closed_CODE = 'OPEN'
-                AND pha.segment1 = 18016395
---                group by msib.segment1, pl.item_description,
---                pll.quantity, rt.QUANTITY,rrh.routing_name
-                ORDER BY pl.item_description
+                mtl_system_items_b msib
+          WHERE pha.po_header_id = pla.po_header_id
+            AND pla.po_line_id = pll.po_line_id
+            AND pla.item_id = msib.inventory_item_id
+            AND rt.po_header_id = pha.po_header_id
+            and rt.PO_LINE_ID = pla.PO_LINE_ID
+            AND pha.closed_code = 'OPEN'
+            AND pha.segment1 = $PO
+            AND msib.ORGANIZATION_ID = 81
+       ORDER BY pla.line_num
+
 ";
 
         //kudune iso
@@ -149,6 +155,6 @@ class M_PenerimaanAwal extends CI_Model {
     	}
 
 
-    }
+   }
     //uppercase
 }
