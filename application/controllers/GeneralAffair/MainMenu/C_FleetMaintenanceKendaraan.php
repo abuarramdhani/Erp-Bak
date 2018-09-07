@@ -194,19 +194,36 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 			$waktu_eksekusi 		= 	date('Y-m-d H:i:s');
 
-			$data = array(
-				'kendaraan_id' 				=> $kendaraan,
-				'tanggal_maintenance' 		=> $tanggal_maintenance,
-				'kilometer_maintenance' 	=> $kilometer_maintenance,
-				'maintenance_kategori_id' 	=> $kategori_maintenance,
-				'start_date' 				=> $waktu_eksekusi,
-				'end_date' 					=> '9999-12-12 00:00:00',
-				'creation_date' 			=> $waktu_eksekusi,
-				'created_by' 				=> $this->session->userid,
-				'alasan' 					=> $alasan,
-				'id_bengkel'				=> $bengkel,
-				'kode_lokasi_kerja'			=> $lokasi,
-    		);
+			if (empty($bengkel)) {
+				$data = array(
+					'kendaraan_id' 				=> $kendaraan,
+					'tanggal_maintenance' 		=> $tanggal_maintenance,
+					'kilometer_maintenance' 	=> $kilometer_maintenance,
+					'maintenance_kategori_id' 	=> $kategori_maintenance,
+					'start_date' 				=> $waktu_eksekusi,
+					'end_date' 					=> '9999-12-12 00:00:00',
+					'creation_date' 			=> $waktu_eksekusi,
+					'created_by' 				=> $this->session->userid,
+					'alasan' 					=> $alasan,
+					'kode_lokasi_kerja'			=> $lokasi,
+	    		);
+			}else{
+					$data = array(
+					'kendaraan_id' 				=> $kendaraan,
+					'tanggal_maintenance' 		=> $tanggal_maintenance,
+					'kilometer_maintenance' 	=> $kilometer_maintenance,
+					'maintenance_kategori_id' 	=> $kategori_maintenance,
+					'start_date' 				=> $waktu_eksekusi,
+					'end_date' 					=> '9999-12-12 00:00:00',
+					'creation_date' 			=> $waktu_eksekusi,
+					'created_by' 				=> $this->session->userid,
+					'alasan' 					=> $alasan,
+					'id_bengkel'				=> $bengkel,
+					'kode_lokasi_kerja'			=> $lokasi,
+	    		);
+			}
+
+			
 			$this->M_fleetmaintenancekendaraan->setFleetMaintenanceKendaraan($data);
 			$header_id = $this->db->insert_id();
 
