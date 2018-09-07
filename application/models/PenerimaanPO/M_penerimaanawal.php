@@ -95,12 +95,14 @@ class M_PenerimaanAwal extends CI_Model {
                    (SUM (rt.quantity) OVER (PARTITION BY msib.segment1),
                     0
                    ) qty_receipt,
+--                   rt.QUANTITY qty_receipt,
                 NVL
                    ((  pll.quantity
                      - (SUM (rt.quantity) OVER (PARTITION BY msib.segment1))
                     ),
                     0
                    ) belum_deliver,
+--pll.quantity - rt.QUANTITY belum_deliver,
                 pll.ship_to_organization_id, pll.closed_code close_code_line,
                 pha.closed_code close_code_po
            FROM po_headers_all pha,
@@ -112,9 +114,12 @@ class M_PenerimaanAwal extends CI_Model {
             AND pla.po_line_id = pll.po_line_id
             AND pla.item_id = msib.inventory_item_id
             AND rt.po_header_id = pha.po_header_id
+            and rt.PO_LINE_ID = pla.PO_LINE_ID
             AND pha.closed_code = 'OPEN'
             AND pha.segment1 = $PO
+            AND msib.ORGANIZATION_ID = 81
        ORDER BY pla.line_num
+
 ";
 
         //kudune iso
