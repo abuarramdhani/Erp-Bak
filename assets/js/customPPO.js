@@ -317,7 +317,7 @@ $(document).ready(function() {
                     console.log(res);   
                     res = res.replace('"','');
                     res = res.replace('"','');
-                    window.open("http://192.168.168.102/print_pdf_prod/print_letter_ai.php?id="+res,'_blank');
+                    window.open("http://produksi.quick.com/print_pdf_prod/print_letter_ai.php?id="+res,'_blank');
                     console.log(adexe);
                 }
         });
