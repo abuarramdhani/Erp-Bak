@@ -60,7 +60,7 @@
 		$itemName  = $this->input->post('itemName');
 		$itemDesc  = $this->input->post('itemDesc');
 		
-		// $data = $this->M_pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
+		$data = $this->M_pengecekan->updateData($qtyActual,$SJ,$itemName,$itemDesc);
 		$PO_HEADER_ID = $this->M_pengecekan->getPoHeaderId($SJ);
 		$value['PO_HEADER_ID'] = $PO_HEADER_ID[0]['PO_HEADER_ID'];
 
@@ -77,7 +77,6 @@
 		$this->M_pengecekan->insertTemp($value);
 		echo json_encode($value);
 	}
-
 
 	public function runAPIone(){
 		
