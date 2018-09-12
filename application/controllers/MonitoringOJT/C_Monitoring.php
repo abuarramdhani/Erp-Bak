@@ -125,9 +125,9 @@ class C_Monitoring extends CI_Controller
 			'create_timestamp'				=>	$waktuEksekusi,
 			'create_user'					=>	$user,
 			);
-		echo '<pre>';
-		print_r($inputPekerjaOJT);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($inputPekerjaOJT);
+		// echo '</pre>';
 
 		$pekerja_id 				=	$this->M_monitoring->inputPekerjaOJT($inputPekerjaOJT);
 
@@ -148,9 +148,9 @@ class C_Monitoring extends CI_Controller
 			'create_timestamp'				=>	$waktuEksekusi,
 			'create_user'					=>	$user,
 			);
-		echo '<pre>';
-		print_r($inputPekerjaHistory);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($inputPekerjaHistory);
+		// echo '</pre>';
 
 		$this->M_monitoring->inputPekerjaHistory($inputPekerjaHistory);
 
@@ -468,6 +468,7 @@ class C_Monitoring extends CI_Controller
 			$this->M_monitoring->proses_delete($proses_delete['id_proses']);
 		}
 		redirect('OnJobTraining/Monitoring');
+		// $this->index();
 	}
 
 	public function scheduling($pekerja_id)
@@ -502,9 +503,9 @@ class C_Monitoring extends CI_Controller
 			$id_orientasi[$q] 	=	$this->general->dekripsi($id_orientasi[$q]);
 		}
 
-		echo '<pre>';
-		print_r($jadwal_manual);
-		echo '</pre>';
+		// echo '<pre>';
+		// print_r($jadwal_manual);
+		// echo '</pre>';
 
 		for ($i = 0; $i < count($id_proses); $i++)
 		{ 
