@@ -36,7 +36,7 @@
 									<div class="row">
 										<div class="col-lg-2">
 											<div class="form-group">
-												<input type="text" name="txtTanggalRekapHarian" class="form-control MonitoringOJT-daterangepickersingledate" placeholder="Tanggal Rekap Harian" value="<?php if( ! empty($tanggal_rekap) ){echo $tanggal_rekap;}?>" />
+												<input type="text" name="txtTanggalRekapHarian" class="form-control MonitoringOJT-daterangepickersingledate" placeholder="Tanggal Rekap Harian" value="<?php if( !empty($tanggal_rekap) ){echo $tanggal_rekap;}?>" />
 											</div>
 										</div>
 										<div class="col-lg-2">
@@ -167,7 +167,6 @@
 																		<i class="fa fa-calendar text-red"></i> <?php echo $tanggal_tampil;?><br/>
 																		<i class="fa fa-sticky-note-o text-orange"></i> <?php echo $tahapan;?><br/>
 																		<i class="fa fa-user text-green"></i> <?php echo $pekerja;?>
-
 																	</a>
 																</li>
 															</ul>
@@ -643,7 +642,7 @@
 															?>
 														</tr>
 														<tr>
-															<?php
+														<?php
 														}
 														elseif($nomor_orientasi==$total_orientasi)
 														{
