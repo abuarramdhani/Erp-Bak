@@ -69,7 +69,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 			}
 		}else{
 			foreach ($datamenu1 as $key) {
-				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296') {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
 						'user_id' => $key['user_id'], 
 						'user_group_menu_name' => $key['user_group_menu_name'], 
@@ -136,7 +136,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 			}
 		}else{
 			foreach ($datamenu1 as $key) {
-				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296') {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
 						'user_id' => $key['user_id'], 
 						'user_group_menu_name' => $key['user_group_menu_name'], 
@@ -221,7 +221,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 			}
 		}else{
 			foreach ($datamenu1 as $key) {
-				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296') {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
 						'user_id' => $key['user_id'], 
 						'user_group_menu_name' => $key['user_group_menu_name'], 
@@ -328,7 +328,7 @@ class C_FleetMaintenanceKategori extends CI_Controller
 			}
 		}else{
 			foreach ($datamenu1 as $key) {
-				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296') {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
 						'user_id' => $key['user_id'], 
 						'user_group_menu_name' => $key['user_group_menu_name'], 
