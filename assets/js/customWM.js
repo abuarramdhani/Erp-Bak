@@ -107,6 +107,7 @@ $('#cmbJenisLimbahKeluarHeader').change(function(){
     }
 });
 
+
 //date interval for maks penyimpanan
 $(document).on('change', '#txtTanggalTransaksiHeader', function(){
   var tgl = $(this).val();
