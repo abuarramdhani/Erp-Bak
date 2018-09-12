@@ -1249,6 +1249,15 @@ $route['WasteManagement/LimbahSatuan'] 				 = 'WasteManagement/MainMenu/C_Limbah
 $route['WasteManagement/LimbahSatuan/(:any)'] 		 = 'WasteManagement/MainMenu/C_LimbahSatuan/$1';
 $route['WasteManagement/LimbahSatuan/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahSatuan/$1/$2';
 
+//--------------------------------------Waste Management - Kelola limbah-------------------------------------//
+$route['WasteManagement/KirimanMasuk'] = 'WasteManagement/MainMenu/C_LimbahKelola';
+$route['WasteManagement/KirimanMasuk/(:any)'] = 'WasteManagement/MainMenu/C_LimbahKelola/$1';
+$route['WasteManagement/KirimanMasuk/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahKelola/$1/$2';
+$route['WasteManagement/Simple'] = 'WasteManagement/MainMenu/C_Simple';
+$route['WasteManagement/Simple/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1';
+$route['WasteManagement/Simple/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2';
+$route['WasteManagement/Simple/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2/$3';
+
 //------------------------------------ Calibration Report ----------------------------
 $route['CalibrationReport'] = 'CalibrationReport/C_Index';
 $route['CalibrationReport/Calibration'] = 'CalibrationReport/MainMenu/C_Component';
@@ -1741,3 +1750,14 @@ $route['Warehouse'] 								= 'Warehouse/C_Index';
 $route['Warehouse/Transaction/(:any)'] 				= 'Warehouse/MainMenu/C_Transaction/$1';
 $route['Warehouse/Transaction/(:any)/(:any)']		= 'Warehouse/MainMenu/C_Transaction/$1/$2';
 $route['Warehouse/Ajax/(:any)']		 				= 'Warehouse/Ajax/C_Ajax/$1';
+
+//------------------------------------------------Waste Management Seksi------------------------------------------------//
+$route['WasteManagementSeksi'] 	= 'WasteManagementSeksi/C_WasteManagementSeksi';
+$route['WasteManagementSeksi/InputKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_inputkirim';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1/$2';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1/$2/$3';
+
+$route['WasteManagementSeksi/InfoKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_infokirim';
+$route['WasteManagementSeksi/InfoKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1';
+$route['WasteManagementSeksi/InfoKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1/$2';

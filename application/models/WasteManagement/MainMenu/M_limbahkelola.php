@@ -1,0 +1,71 @@
+<?php
+Defined('BASEPATH') or exit('No direct script access allowed');
+
+/**
+ * 
+ */
+class M_limbahkelola extends CI_Model
+{
+	
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->database();
+	}
+
+	public function getLimbahKirim(){
+		$query = 	"select limkir.id_kirim,
+                        cast(limkir.tanggal_kirim as date) tanggal,
+                        cast(limkir.tanggal_kirim as time) waktu,
+                        limjen.jenis_limbah,
+                        (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
+                        concat(limkir.jumlah_kirim, ' ',(select limbah_satuan 
+                        from ga.ga_limbah_satuan limsat 
+                        where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
+                        limkir.berat_kirim,
+                        limkir.status_kirim
+                    from ga.ga_limbah_kirim limkir
+                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+                    order by limkir.tanggal_kirim desc";
+        $result = $this->db->query($query);
+        return $result->result_array();
+	}
+
+	public function getLimbahKirimById($id){
+		$query = 	"select limkir.id_kirim,
+                        cast(limkir.tanggal_kirim as date) tanggal,
+                        cast(limkir.tanggal_kirim as time) waktu,
+                        limjen.jenis_limbah,
+                        (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
+                        concat(limkir.jumlah_kirim, ' ',(select limbah_satuan 
+                        from ga.ga_limbah_satuan limsat 
+                        where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
+                        limkir.berat_kirim,
+                        limkir.bocor,
+                        limkir.ket_kirim,
+                        limkir.status_kirim
+                    from ga.ga_limbah_kirim limkir
+                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+                    where id_kirim = '$id'
+                    order by limkir.tanggal_kirim desc";
+        $result = $this->db->query($query);
+        return $result->result_array();
+	}
+
+	public function DeleteLimbahKirim($id){
+		$query = "delete from ga.ga_limbah_kirim where id_kirim = '$id'";
+		$this->db->query($query);
+	}
+
+	public function updateLimbahStatus($status,$id){
+		$query = "update ga.ga_limbah_kirim set status_kirim = '$status' where id_kirim = '$id'";
+		$this->db->query($query);
+	}
+
+	public function updateLimbahberat($berat,$id){
+		$query = "update ga.ga_limbah_kirim set berat_kirim = '$berat' where id_kirim = '$id'";
+		$this->db->query($query);
+	}
+}
+
+?>

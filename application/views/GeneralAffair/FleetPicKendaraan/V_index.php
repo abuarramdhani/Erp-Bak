@@ -57,6 +57,7 @@
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
                                                         <th>Nomor Polisi</th>
+                                                        <th>Jenis Kendaraan</th>
                                                         <th>PIC</th>
                                                         <th class="hidden">Periode</th>
                                                         <th>Waktu Dibuat</th>
@@ -77,6 +78,7 @@
                                                            <a href="<?php echo base_url('GeneralAffair/FleetPicKendaraan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus PIC ini?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
+                                                        <td><?php echo $row['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $row['pic'] ?></td>
                                                         <td class="hidden"><?php echo $row['periode'] ?></td>
                                                         <td><?php echo $row['waktu_dibuat'] ?></td>
@@ -95,6 +97,7 @@
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
 												        <th>Nomor Polisi</th>
+                                                        <th>Jenis Kendaraan</th>
 												        <th>PIC</th>
 												        <th class="hidden">Periode</th>
 												        <th>Waktu Dibuat</th>
@@ -115,6 +118,7 @@
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetPicKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                         </td>
 												        <td><?php echo $row['nomor_polisi'] ?></td>
+                                                        <td><?php echo $row['jenis_kendaraan'] ?></td>
 												        <td><?php echo $row['pic'] ?></td>
 												        <td class="hidden"><?php echo $row['periode'] ?></td>
 												        <td><?php echo $row['waktu_dibuat'] ?></td>
