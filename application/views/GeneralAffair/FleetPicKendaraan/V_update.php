@@ -26,8 +26,6 @@
                                 <div class="box-header with-border">Update PIC Kendaraan</div>
                                 <?php
                                     foreach ($FleetPicKendaraan as $headerRow):
-                                        $status_dropdown_seksi      = 'disabled';
-                                        $status_dropdown_pekerja    = 'disabled' ;
                                 ?>
                                 <div class="box-body">
                                     <div class="panel-body">
@@ -55,11 +53,11 @@
                                             <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4">PIC</label>
                                                     <div class="col-lg-2">
-                                                        <input type="radio" name="OpsiPIC" value="Seksi" required="" <?php if($headerRow['pilihan']=='seksi'){echo 'checked';$status_dropdown_seksi = '';};?>/>
-                                                        <label for="OpsiSeksi" class="control-label">Seksi</label>
+                                                         <input type="button" class="btn <?php if($headerRow['pilihan']=='seksi'){echo 'btn-primary';}else{ echo 'btn-default';};?> col-lg-6" name="BtnPIC" value="Seksi" required="" />
+                                                        <!-- <label for="OpsiSeksi" class="control-label">Seksi</label> -->
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" <?php echo $status_dropdown_seksi;?> >
+                                                        <select id="cmbSeksi" name="cmbSeksi" class="select2" data-placeholder="Pilih Seksi" style="width: 75%" required="" <?php if($headerRow['pilihan']!=='seksi'){echo 'disabled';} ?> >
                                                             <option value="" selected></option>
                                                             <?php
                                                              foreach ($DaftarSeksi as $row) 
@@ -79,11 +77,11 @@
                                             <div class="form-group">
                                                 <label for="cmbPekerjaHeader" class="control-label col-lg-4"><span class="hidden">PIC</span></label>
                                                     <div class="col-lg-2">
-                                                        <input type="radio" name="OpsiPIC" value="Pekerja" required="" <?php if($headerRow['pilihan']=='pekerja'){echo 'checked';$status_dropdown_pekerja='';};?>/>
-                                                        <label for="OpsiSeksi" class="control-label" >Pekerja</label>
+                                                         <input type="button" class="btn <?php if($headerRow['pilihan']=='pekerja'){echo 'btn-primary';}else{ echo 'btn-default';};?> col-lg-6" name="BtnPIC" value="Pekerja" required="" />
+                                                        <!-- <label for="OpsiSeksi" class="control-label" >Pekerja</label> -->
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPekerja" name="cmbPekerja" class="select2" data-placeholder="Pilih Pekerja" style="width: 75%" required="" <?php echo $status_dropdown_pekerja;?> >
+                                                        <select id="cmbPekerja" name="cmbPekerja" class="select2" data-placeholder="Pilih Pekerja" style="width: 75%" required="" <?php if($headerRow['pilihan']!=='pekerja'){echo 'disabled';} ?> >
                                                             <option value=""></option>
                                                             <?php
                                                              foreach ($DaftarNama as $row) {
@@ -104,6 +102,7 @@
                                                 <label for="txtMasaAktifPICHeader" class="control-label col-lg-4">Masa Penggunaan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" name="masaAktifPIC" class="date form-control" id="ManajemenKendaraan-daterangepicker" value="<?php echo $headerRow['periode'];?>" required="" />
+                                                    <input type="text" name="OpsiPIC" class="from-control" value="<?php if($headerRow['pilihan']=='seksi'){echo 'Seksi';}else{echo 'Pekerja';} ?>">
                                                 </div>
                                             </div>
 
