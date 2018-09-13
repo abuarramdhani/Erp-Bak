@@ -756,6 +756,7 @@ class C_Monitoring extends CI_Controller
 
 	public function pekerja_selesai()
 	{
+		// echo "<pre>";print_r($_POST);exit();
 		$waktuEksekusi 			=	$this->general->ambilWaktuEksekusi();
 		$user 					=	$this->session->user;
 
@@ -764,6 +765,7 @@ class C_Monitoring extends CI_Controller
 		$pekerja_selesai 		=	array
 		(
 			'selesai' 				=>	TRUE,
+			'tunda'					=>	'false',
 			'last_update_timestamp'	=>	$waktuEksekusi,
 			'last_update_user'		=>	$user,
 			);
