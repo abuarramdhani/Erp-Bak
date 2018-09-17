@@ -58,6 +58,7 @@ function pieChart(canvas, data, color, color2, label) {
                     }
 
                     var persen = (tooltipData/total)*100;
+                    persen = persen.toFixed(2);
                     return tooltipLabel + " : " + tooltipData + " Kg atau " + persen +" %"; 
                 }
             }
