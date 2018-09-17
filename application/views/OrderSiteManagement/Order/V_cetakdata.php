@@ -76,17 +76,7 @@
                 <td style="font-size: 12px;padding-left: 5px;"> <?php echo $key['lampiran'];?></td>
             </tr>
         <?php endforeach; ?>
-        <?php if ($count<=12):?>
-            <?php for ($i=$count; $i<(12-$count); $i++):?>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <?php endfor;?>
-        <?php endif;?>
+        
         </tbody>
     </table>
     <table style="width: 100%; text-align: center;" border="1">
