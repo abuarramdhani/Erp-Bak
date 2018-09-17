@@ -18,14 +18,14 @@ class M_order extends CI_Model
         return $this->db->insert('sm.sm_order_detail',$lines);
     }
 
-    public function listOrder($user)
+    public function listOrder($userid,$user)
     {
         $query = $this->db->query("select so.*,
                                             (select seksi.section_name
                                             from er.er_section as seksi
                                             where seksi.section_code=so.seksi_order) as nama_seksi
                                     from sm.sm_order as so
-                                    where so.created_by='$user' 
+                                    where (so.created_by='$userid' or '$user'='J1236')
                                         and so.status!=3
                                     order by so.no_order");
         return $query->result_array();

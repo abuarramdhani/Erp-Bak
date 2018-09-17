@@ -169,8 +169,8 @@ class C_Order extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$this->M_order->RejectbySystem();
-
-		$data['list_order'] = $this->M_order->listOrder($user_id);
+		$user = $this->session->user;
+		$data['list_order'] = $this->M_order->listOrder($user_id,$user);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
