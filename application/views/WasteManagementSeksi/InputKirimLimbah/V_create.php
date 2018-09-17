@@ -60,14 +60,7 @@
 												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
-														<select class="select select2" name="txtSeksi" id="txtSeksi" data-placeholder="Seksi Pengirim" style="width:100%;" required>
-															<option value=""></option>
-															<?php 
-																foreach ($Seksi as $key) {
-																	echo "<option value='".$key['section_code']."'>".$key['section_code']."-".$key['section_name']."</option>";
-																}
-															?>
-														</select>
+														<input type="text" name="txtSeksi" class="form-control" value="<?php echo $Seksi['0']['section_name']; ?>" disabled>
 													</div>
 												</div>
 											</div>
