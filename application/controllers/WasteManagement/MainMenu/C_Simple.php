@@ -239,7 +239,7 @@ class C_Simple extends Ci_Controller
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('WasteManagement/Simple/V_Edit_detail', $data);
+			$this->load->view('WasteManagement/Simple/V_edit_detail', $data);
 			$this->load->view('V_Footer',$data);
 		}else{
 			$data = array(
