@@ -61,6 +61,7 @@ class C_inputkirim extends CI_Controller
 		$this->getSession();
 
 		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
 
 		$data['Title'] = 'Create Kirim Limbah';
 		$data['Menu'] = 'Kirim Limbah';
@@ -70,8 +71,9 @@ class C_inputkirim extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
-		$data['Seksi'] = $this->M_kirim->getSekNama();
+		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
@@ -88,7 +90,6 @@ class C_inputkirim extends CI_Controller
 				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
 				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
 				'jenis_limbah' => $this->input->post('txtJenisLimbah'), 
-				'seksi' => $this->input->post('txtSeksi'), 
 				'kondisi' => $this->input->post('txtKondisi'), 
 				'jumlah' => $this->input->post('txtJumlah'), 
 				'keterangan' => $this->input->post('txtKeterangan'), 
@@ -109,6 +110,7 @@ class C_inputkirim extends CI_Controller
 		$this->getSession();
 
 		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -123,7 +125,7 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
-		$data['Seksi'] = $this->M_kirim->getSekNama();
+		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['KirimLimbah'] = $this->M_kirim->getLimKirim($plaintext_string);
 
 		if (empty($_POST)) {
@@ -137,7 +139,6 @@ class C_inputkirim extends CI_Controller
 				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
 				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
 				'jenis_limbah' => $this->input->post('txtJenisLimbah'), 
-				'seksi' => $this->input->post('txtSeksi'), 
 				'kondisi' => $this->input->post('txtKondisi'), 
 				'jumlah' => $this->input->post('txtJumlah'), 
 				'keterangan' => $this->input->post('txtKeterangan'), 

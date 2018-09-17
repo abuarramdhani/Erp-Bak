@@ -11,6 +11,7 @@ class M_kirim extends Ci_Model
 	}
 
 	public function getLimbahKirim(){
+        $seksi = $this->session->kodesie;
         $query = "select limkir.id_kirim,
                         cast(limkir.tanggal_kirim as date) tanggal,
                         cast(limkir.tanggal_kirim as time) waktu,
@@ -24,7 +25,8 @@ class M_kirim extends Ci_Model
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah) satuan,
                         limkir.status_kirim 
                     from ga.ga_limbah_kirim limkir
-                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah 
+                    where limkir.kodesie_kirim = left('$seksi',7) 
                     order by limkir.tanggal_kirim desc;";
         $result = $this->db->query($query);
         return $result->result_array();
@@ -37,6 +39,14 @@ class M_kirim extends Ci_Model
                     where sect.section_code like '%00' 
                     and sect.section_name != '-' 
                     order by sect.section_name; ";       
+        $result = $this->db->query($query1);
+        return $result->result_array();
+    }
+
+    public function getSekNamaByKodesie($kodesie){
+        $query1 = "select sect.section_name 
+                    from er.er_section sect 
+                    where sect.section_code = '$kodesie'";       
         $result = $this->db->query($query1);
         return $result->result_array();
     }
@@ -65,13 +75,13 @@ class M_kirim extends Ci_Model
         $tanggal = $data['tanggal']; 
         $waktu =$data['waktu']; 
         $jenis = $data['jenis_limbah']; 
-        $seksi = $data['seksi']; 
+        $seksi = $this->session->kodesie;
         $kondisi = $data['kondisi']; 
         $jumlah = $data['jumlah']; 
         $ket = $data['keterangan'];
         $tangwak = $tanggal." ".$waktu;
 
-        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,bocor,jumlah_kirim,ket_kirim,status_kirim) values('$id','$jenis','$tangwak','$seksi','$kondisi','$jumlah','$ket','3');";
+        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,bocor,jumlah_kirim,ket_kirim,status_kirim) values('$id','$jenis','$tangwak',left('$seksi',7),'$kondisi','$jumlah','$ket','3');";
 
         $this->db->query($query);
     }
@@ -100,14 +110,13 @@ class M_kirim extends Ci_Model
         $id = $data['id_kirim'];
         $tanggal = $data['tanggal']; 
         $waktu =$data['waktu']; 
-        $jenis = $data['jenis_limbah']; 
-        $seksi = $data['seksi']; 
+        $jenis = $data['jenis_limbah'];
         $kondisi = $data['kondisi']; 
         $jumlah = $data['jumlah']; 
         $ket = $data['keterangan'];
         $tangwak = $tanggal." ".$waktu;
 
-        $query = "update ga.ga_limbah_kirim set tanggal_kirim = '$tangwak', id_jenis_limbah = '$jenis', kodesie_kirim = '$seksi', bocor = '$kondisi', jumlah_kirim = '$jumlah', ket_kirim = '$ket' where id_kirim = '$id'";
+        $query = "update ga.ga_limbah_kirim set tanggal_kirim = '$tangwak', id_jenis_limbah = '$jenis', bocor = '$kondisi', jumlah_kirim = '$jumlah', ket_kirim = '$ket' where id_kirim = '$id'";
         $this->db->query($query);
     }
 
