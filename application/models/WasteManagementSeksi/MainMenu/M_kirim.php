@@ -80,8 +80,9 @@ class M_kirim extends Ci_Model
         $jumlah = $data['jumlah']; 
         $ket = $data['keterangan'];
         $tangwak = $tanggal." ".$waktu;
+        $user = $this->session->user;
 
-        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,bocor,jumlah_kirim,ket_kirim,status_kirim) values('$id','$jenis','$tangwak',left('$seksi',7),'$kondisi','$jumlah','$ket','3');";
+        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,bocor,jumlah_kirim,ket_kirim,status_kirim,created_by) values('$id','$jenis','$tangwak',left('$seksi',7),'$kondisi','$jumlah','$ket','3','$user');";
 
         $this->db->query($query);
     }
