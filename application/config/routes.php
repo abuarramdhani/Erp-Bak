@@ -1762,3 +1762,46 @@ $route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)/(:any)'] = 'WasteMan
 $route['WasteManagementSeksi/InfoKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_infokirim';
 $route['WasteManagementSeksi/InfoKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1';
 $route['WasteManagementSeksi/InfoKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1/$2';
+
+//------------------------------------ System Integration ----------------------------------------//
+$route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
+$route['SystemIntegrationKaizenGenerator/Submit/getItem'] = 'SystemIntegration/MainMenu/Submit/C_Submit/getItem';
+
+
+//Submit
+$route['SystemIntegration/KaizenGenerator/Submit/index'] = 'SystemIntegration/MainMenu/Submit/C_Submit/index';
+$route['SystemIntegration/KaizenGenerator/Submit/upload'] = 'SystemIntegration/MainMenu/Submit/C_Submit/upload';
+$route['SystemIntegration/KaizenGenerator/Submit/create'] = 'SystemIntegration/MainMenu/Submit/C_Submit/create';
+// $route['SystemIntegration/KaizenGenerator/Submit/saveUpdate/(:any)'] = 'SystemIntegration/MainMenu/Submit/C_Submit/saveUpdate/$1';
+
+//View
+$route['SystemIntegration/KaizenGenerator/View/(:any)'] = 'SystemIntegration/MainMenu/Submit/C_Submit/view/$1';
+$route['SystemIntegration/KaizenGenerator/Edit/(:any)'] = 'SystemIntegration/MainMenu/Submit/C_Submit/edit/$1';
+$route['SystemIntegration/KaizenGenerator/Delete/(:any)'] = 'SystemIntegration/MainMenu/Submit/C_Submit/delete/$1';
+$route['SystemIntegration/KaizenGenerator/Pdf/(:any)'] = 'SystemIntegration/MainMenu/Submit/C_Submit/pdf/$1';
+$route['SystemIntegration/KaizenGenerator/SubmitRealisasi/(:any)'] = 'SystemIntegration/MainMenu/Submit/C_Submit/realisasi/$1';
+
+//My Kaizen
+$route['SystemIntegration/KaizenGenerator/MyKaizen/index'] = 'SystemIntegration/MainMenu/MyKaizen/C_MyKaizen/index';
+$route['SystemIntegration/KaizenGenerator/MyKaizen/view/(:any)'] = 'SystemIntegration/MainMenu/MyKaizen/C_MyKaizen/view/$1';
+$route['SystemIntegration/KaizenGenerator/MyKaizen/SaveApprover'] = 'SystemIntegration/MainMenu/MyKaizen/C_MyKaizen/SaveApprover';
+$route['SystemIntegration/KaizenGenerator/MyKaizen/report'] = 'SystemIntegration/MainMenu/MyKaizen/C_MyKaizen/report';
+
+//My Team Kaizen
+$route['SystemIntegration/KaizenGenerator/MyTeamKaizen/index'] = 'SystemIntegration/MainMenu/MyTeamKaizen/C_MyTeamKaizen/index';
+
+//Report
+$route['SystemIntegration/KaizenGenerator/Report/index'] = 'SystemIntegration/MainMenu/Report/C_Report/index';
+$route['SystemIntegration/KaizenGenerator/Report/findexport'] = 'SystemIntegration/MainMenu/Report/C_Report/findexport';
+$route['SystemIntegration/KaizenGenerator/Report/export'] = 'SystemIntegration/MainMenu/Report/C_Report/export';
+$route['SystemIntegration/KaizenGenerator/Report/exportKaizen'] = 'SystemIntegration/MainMenu/Report/C_Report/exportKaizen';
+
+//Approval Kaizen
+$route['SystemIntegration/KaizenGenerator/ApprovalKaizen/index'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/index';
+$route['SystemIntegration/KaizenGenerator/ApprovalKaizen/result/(:any)'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/result/$1';
+$route['SystemIntegration/KaizenGenerator/ApprovalKaizen/View/(:any)'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/view/$1';
+
+//All Kaizen
+$route['SystemIntegration/KaizenGenerator/AllKaizen/index'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/index';
+$route['SystemIntegration/KaizenGenerator/Validate/Index'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/Validate';
+$route['SystemIntegration/KaizenGenerator/Validate/findKaizen'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/findKaizen';
