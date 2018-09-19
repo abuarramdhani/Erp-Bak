@@ -29,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div>
-                                    <table class="datatable table table-striped table-bordered table-hover text-left sm_datatable" id="tblOrderKeluar" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left sm_datatable" id="sm_datatable" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -58,7 +58,7 @@
 												<td><?php echo date('Y-m-d', strtotime($row['tgl_order'])); ?></td>
 												<td><?php echo $row['ket_order'] ?></td>
 												<td><?php echo date('Y-m-d', strtotime($row['due_date'])); ?></td>
-												<td align="center"><?php if($row['remarks']==='t'){echo "<b>Confirm</b>";}else{echo "<b>Pending</b>";} ?></td>
+												<td align="center" style="<?php if($row['remarks']==='t'){echo "color: green";}else{echo "color: orange";} ?>"><?php if($row['remarks']==='t'){echo "<b>Confirm</b>";}else{echo "<b>Pending</b>";} ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
