@@ -70,13 +70,19 @@ $('#dataTables-fleetKendaraanDeleted').DataTable( {
 // Tabel Pajak ----------------------------------------------------------------------------------_
 
 $('#dataTables-fleetPajak').DataTable({
-  // "lengthChange": false,
+  "lengthChange": false,
   dom: 'Bfrtip',
       buttons: [
         'excel'
       ]
-    });
-$('#dataTables-fleetPajakDeleted').DataTable({"lengthChange": false});
+  });
+$('#dataTables-fleetPajakDeleted').DataTable({
+  "lengthChange": false,
+  dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+  });
 
 $('#dataTables-fleetKir').DataTable( {
       dom: 'Bfrtip',
