@@ -129,6 +129,7 @@ class M_kirim extends Ci_Model
     public function getLimKirimMin($id){
         $query = "select limjen.jenis_limbah,
                     cast(limkir.tanggal_kirim as date) tanggal,
+                    cast(limkir.tanggal_kirim as time) waktu,
                     (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
                     concat(limkir.jumlah_kirim,' ',limsat.limbah_satuan) jumlah
                     from ga.ga_limbah_kirim limkir

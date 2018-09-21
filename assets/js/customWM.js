@@ -255,14 +255,18 @@ $(document).on('click', '#RejectLimbahKeluar', function(e){
 $(document).on('click','#btnSubmitSimple',function(e){
   var limjenis = $('#txtSimpleLimbahJenis').val();
   var limperiode = $('#txtSimplePeriode').val();
-  $.ajax({
-      type : 'POST',
-      url  : baseurl+"WasteManagement/Simple/Create",
-      data : {jenis : limjenis, periode : limperiode},
-      success : function(e){
-        window.location = baseurl+"WasteManagement/Simple";
-      }
-  });
+  if (limjenis == '' || limperiode == '') {
+    alert("data masih kosong !!");
+  }else{
+    $.ajax({
+        type : 'POST',
+        url  : baseurl+"WasteManagement/Simple/Create",
+        data : {jenis : limjenis, periode : limperiode},
+        success : function(e){
+          window.location = baseurl+"WasteManagement/Simple";
+        }
+    });
+  }
 });
 
 $(document).on('click','#btnCloseSimple',function(e){

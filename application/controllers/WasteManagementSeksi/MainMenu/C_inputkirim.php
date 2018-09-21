@@ -194,6 +194,7 @@ class C_inputkirim extends CI_Controller
 		$seksi = $limbah['0']['seksi'];
 		$jumlah = $limbah['0']['jumlah'];
 		$tanggal = $limbah['0']['tanggal'];
+		$waktu = $limbah['0']['waktu'];
 
 		
 
@@ -234,6 +235,12 @@ class C_inputkirim extends CI_Controller
 					<td>Tanggal Kirim</td>
 					<td> : </td>
 					<td>'.$tanggal.'</td>
+					</tr>
+					<tr>
+					<tr>
+					<td>Waktu Kirim</td>
+					<td> : </td>
+					<td>'.$waktu.'</td>
 					</tr>
 					<tr>
 					<td>Seksi</td>
