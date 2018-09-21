@@ -182,6 +182,8 @@ function showChart(){
 				$('#chartInfoLimbahBar').hide();
 				// $('#colorInfo').text(warna);
 				pieChart('#chartInfoLimbahPie',berat,warna,warna2, jenis);
+				
+				
 			}
 
 		});

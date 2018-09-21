@@ -103,6 +103,34 @@
 												</div>
 												<div id="colorInfo"></div>
 											</div>
+											<div class="form-group">
+												<div class="panel-body">
+													<div class="table-responsive">
+														<table class="datatable table table-bordered table-hover table-striped text-left dataTable-limbah">
+															<thead class="bg-primary">
+																<th>No</th>
+																<th><?php if($kategori == 'limbah'){echo "Nama Seksi";}else{echo "Jenis Limbah";} ?></th>
+																<th>Berat</th>
+															</thead>
+															<tbody>
+																<?php 
+																	$a = 1;
+																	foreach ($tabel as $value) {
+																		echo "<tr><td>".$a."</td>";
+																		if ($kategori == 'limbah') {
+																			echo "<td>".$value['section_name']."</td>";
+																		}else{
+																			echo "<td>".$value['jenis_limbah']."</td>";
+																		}
+																		echo "<td>".$value['berat']." Kg</td></tr>";
+																		$a++;
+																	}
+																?>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</form>
