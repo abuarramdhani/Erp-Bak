@@ -96,11 +96,11 @@ class C_Monitoring extends CI_Controller {
 	 	}
 
  		$CekData = $this->M_monitoring->rekapData($start,$end,$kat,$kat_detail,$hari,$periode)->num_rows();
- 		// echo "<pre>";
- 		// print_r($CekData);
+ 		// echo $periode;
+ 		// // print_r($CekData);
  		// exit();
 		
-		if ($CekData!=0) {
+		if ($CekData==0) {
 			$period 	=	new DatePeriod($tgl1, $interval, $tgl2);
 			foreach($period as $p)
 			{
