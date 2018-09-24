@@ -57,6 +57,14 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label for="txtPengirimLimbah" class="control-label col-lg-4">Pengirim Limbah</label>
+												<div class="col-lg-4">
+													<div class="col-lg-12">
+														<input type="text" name="txtPengirimLimbah" value="<?php echo $KirimLimbah['0']['noind_pengirim'] ?>" class="form-control" disabled>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
 												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
