@@ -57,7 +57,7 @@
                </div>
                <div class="modal-body">
                <form method="POST" action="<?php echo base_url('MasterPekerja/TanTerBPJS/insert');?>">
-                 <select name="tt_noind" id="cetaktanterbpjs-pekerja_bpjs" class="form-control" style="width: 100%">
+                 <select name="tt_noind" id="cetaktanterbpjs-pekerja_bpjs" class="form-control" style="width: 100%" required="required">
                    
                  </select>
                  <br><br>
