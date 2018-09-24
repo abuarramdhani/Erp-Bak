@@ -1737,3 +1737,8 @@ $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja
 $route['Warehouse'] 						= 'Warehouse/C_Index';
 $route['Warehouse/Transaction/Spb'] 		= 'Warehouse/MainMenu/C_Transaction';
 $route['Warehouse/Ajax/Spb']		 		= 'Warehouse/Ajax/C_Ajax/getSPB';
+
+//--------------------------------------------------- Ceatak Tanda Terima BPJS -----------------------------------//
+$route['MasterPekerja/TanTerBPJS'] 		= 'MasterPekerja/CetakBPJS/C_Index';
+$route['MasterPekerja/TanTerBPJS/(:any)'] = 'MasterPekerja/CetakBPJS/C_Index/$1';
+$route['MasterPekerja/TanTerBPJS/(:any)/(:any)'] = 'MasterPekerja/CetakBPJS/C_Index/$1/$2';
