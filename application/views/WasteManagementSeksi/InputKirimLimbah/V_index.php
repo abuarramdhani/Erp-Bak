@@ -32,6 +32,7 @@
 												<td>Limbah</td>
 												<td>Tanggal Kirim</td>
 												<td>Waktu Kirim</td>
+												<td>Pengirim</td>
 												<td>Seksi</td>
 												<td>Bocor</td>
 												<td>Jumlah</td>
@@ -59,6 +60,7 @@
 															<td><?php echo $key['jenis_limbah']; ?></td>
 															<td><?php echo $key['tanggal']; ?></td>
 															<td><?php echo $key['waktu']; ?></td>
+															<td><?php echo $key['noind_pengirim']; ?></td>
 															<td><?php echo $key['section_name']; ?></td>
 															<td><?php echo $bocor; ?></td>
 															<td><?php echo $key['jumlah_kirim']." ".$key['satuan']; ?></td>

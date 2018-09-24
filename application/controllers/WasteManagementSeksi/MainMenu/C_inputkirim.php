@@ -74,6 +74,7 @@ class C_inputkirim extends CI_Controller
 
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
+		$data['Pekerja'] = $this->M_kirim->getEmployeeByKodesie($kodesie);
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
@@ -89,7 +90,8 @@ class C_inputkirim extends CI_Controller
 				'id_kirim' => $id['0']['id'],
 				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
 				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
-				'jenis_limbah' => $this->input->post('txtJenisLimbah'), 
+				'jenis_limbah' => $this->input->post('txtJenisLimbah'),
+				'pengirim' => $this->input->post('txtPengirimLimbah'), 
 				'kondisi' => $this->input->post('txtKondisi'), 
 				'jumlah' => $this->input->post('txtJumlah'), 
 				'keterangan' => $this->input->post('txtKeterangan'), 

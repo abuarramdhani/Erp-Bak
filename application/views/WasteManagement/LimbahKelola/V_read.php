@@ -69,6 +69,12 @@
 											</div>
 											<div class="col-lg-4">
 												<div class="form-group">
+													<label for="txtKon" class="form-label col-lg-12">Pekerja Pengirim</label>
+													<div class="col-lg-12">
+														<input type="text" name="txtpeng" value="<?php echo $LimbahKirim['0']['pekerja']; ?>" class="form-control" disabled>
+													</div>
+												</div>
+												<div class="form-group">
 													<label for="txtKet" class="form-label col-lg-12">Keterangan</label>
 													<div class="col-lg-12">
 														<textarea name="txtKet" class="form-control" disabled><?php echo $LimbahKirim['0']['ket_kirim']; ?></textarea>

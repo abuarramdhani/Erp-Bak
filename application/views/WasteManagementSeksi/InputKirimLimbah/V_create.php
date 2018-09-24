@@ -57,6 +57,21 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label for="txtPengirimLimbah" class="control-label col-lg-4">Pengirim Limbah</label>
+												<div class="col-lg-4">
+													<div class="col-lg-12">
+														<select class="select select2" name="txtPengirimLimbah" id="txtJenisLimbah" data-placeholder="Pengirim Limbah" style="width:100%;" required>
+															<option value=""></option>
+															<?php 
+																foreach ($Pekerja as $key) {
+																	echo "<option value='".$key['employee_code']."' >".$key['employee_code']." - ".$key['employee_name']."</option>";
+																}
+															?>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
 												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">

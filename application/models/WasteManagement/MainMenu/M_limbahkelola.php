@@ -23,7 +23,9 @@ class M_limbahkelola extends CI_Model
                         from ga.ga_limbah_satuan limsat 
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
                         limkir.berat_kirim,
-                        limkir.status_kirim
+                        limkir.status_kirim,
+                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
+                        pekerja 
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                     order by limkir.tanggal_kirim desc";
@@ -43,7 +45,9 @@ class M_limbahkelola extends CI_Model
                         limkir.berat_kirim,
                         limkir.bocor,
                         limkir.ket_kirim,
-                        limkir.status_kirim
+                        limkir.status_kirim,
+                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
+                        pekerja 
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                     where id_kirim = '$id'
