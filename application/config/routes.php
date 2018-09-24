@@ -1747,9 +1747,26 @@ $route['MasterPekerja/DataPekerjaKeluar/(:any)'] = 'MasterPekerja/Pekerja/Pekerj
 $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1/$2';
 
 //--------------------------------------------------- Warehouse --------------------------------------------------//
+
 $route['Warehouse'] 						= 'Warehouse/C_Index';
 $route['Warehouse/Transaction/Spb'] 		= 'Warehouse/MainMenu/C_Transaction';
 $route['Warehouse/Ajax/Spb']		 		= 'Warehouse/Ajax/C_Ajax/getSPB';
+
+//------------------------------------------------Waste Management Seksi------------------------------------------------//
+$route['WasteManagementSeksi'] 	= 'WasteManagementSeksi/C_WasteManagementSeksi';
+$route['WasteManagementSeksi/InputKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_inputkirim';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1/$2';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1/$2/$3';
+
+$route['WasteManagementSeksi/InfoKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_infokirim';
+$route['WasteManagementSeksi/InfoKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1';
+$route['WasteManagementSeksi/InfoKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1/$2';
+
+//------------------------------------ System Integration ----------------------------------------//
+$route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
+$route['SystemIntegrationKaizenGenerator/Submit/getItem'] = 'SystemIntegration/MainMenu/Submit/C_Submit/getItem';
+
 
 //--------------------------------------------------- Ceatak Tanda Terima BPJS -----------------------------------//
 $route['MasterPekerja/TanTerBPJS'] 		= 'MasterPekerja/CetakBPJS/C_Index';
