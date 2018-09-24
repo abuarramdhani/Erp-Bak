@@ -18,14 +18,14 @@
                       <div class="col-lg-3">
                         <div class="form-group has-feedback">
                           <label class="control-label" for="cmbNoindukPekerja">Pilih Pekerja</label>
-                          <select class="form-control " name="cmbNoindukPekerja" id="KecelakaanKerja-cmbNoindukPekerja">
+                          <select class="form-control " name="cmbNoindukPekerja" id="KecelakaanKerja-cmbNoindukPekerja" required="">
                           </select>
                        </div> 
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group has-feedback">
                           <label class="control-label" for="cmbCabangPerusahaan">Pilih Cabang</label>
-                          <select class="form-control " name="cmbCabangPerusahaan" id="KecelakaanKerja-cmbCabangPerusahaan">
+                          <select class="form-control " name="cmbCabangPerusahaan" id="KecelakaanKerja-cmbCabangPerusahaan" required="">
                           </select>
                        </div> 
                       </div>
@@ -34,7 +34,7 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label class="control-label">Upah tenaga kerja yang diterima :</label>
-                        <select class="form-control" name="slc_upahDiterima">
+                        <select class="form-control" name="slc_upahDiterima" required="">
                           <option value="1">Perhari</option>
                           <option value="2">Perbulan</option>
                           <option value="3">Pertahun</option>
@@ -44,13 +44,13 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label class="control-label">Jumlah upah yang diterima :</label>
-                        <input class="form-control" type="text" name="it_jumlahUpah">
+                        <input class="form-control" type="text" name="it_jumlahUpah" required="">
                       </div>                            
                     </div>
                     <div class="col-lg-3">
                       <div class="form-group"> 
                         <label class="control-label">Tempat kejadian kecelakaan :</label>
-                        <select class="form-control" name="it_tempatKecelakaan" id="kk_it_tempatKecelakaan" onchange="getalamat(this)">
+                        <select class="form-control" name="it_tempatKecelakaan" id="kk_it_tempatKecelakaan" onchange="getalamat(this)" required="">
                           <option selected="selected" disabled="disabled"></option>
                           <option value="1">Di dalam lokasi kerja</option>
                           <option value="2">Di luar lokasi kerja</option>
@@ -61,7 +61,7 @@
                       <div class="col-lg-2">
                         <div class="form-group">
                           <label class="control-label">Tanggal Kecelakaan :</label>
-                          <input type="text" name="KecelakaanKerja-daterangepickersingledatewithtime" class=" form-control KecelakaanKerja-daterangepickersingledatewithtime">
+                          <input type="text" name="KecelakaanKerja-daterangepickersingledatewithtime" class=" form-control KecelakaanKerja-daterangepickersingledatewithtime" required="">
                         </div>
                       </div>
                   </div>
@@ -69,25 +69,25 @@
                     <div class="col-lg-6">
                       <div class="form-group"> 
                         <label class="control-label">Alamat lokasi kejadian kecelakaan :</label>
-                        <input class="form-control" type="text" name="it_alamatKecelakaan" id="kk_it_alamatKecelakaan">
+                        <input class="form-control" type="text" name="it_alamatKecelakaan" id="kk_it_alamatKecelakaan" required="">
                       </div>                
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group">
                           <label class="control-label" for="it_alamatDesaKecelakaan">Desa :</label>
-                          <input class="form-control" type="text" name="it_alamatDesaKecelakaan" id="it_alamatDesaKecelakaan">
+                          <input class="form-control" type="text" name="it_alamatDesaKecelakaan" id="it_alamatDesaKecelakaan" required="">
                         </div>               
                       </div> 
                       <div class="col-lg-2">
                         <div class="form-group">
                           <label class="control-label" for="it_alamatKecamatanKecelakaan">Kecamatan :</label>
-                          <input class="form-control" type="text" name="it_alamatKecamatanKecelakaan" id="it_alamatKecamatanKecelakaan">
+                          <input class="form-control" type="text" name="it_alamatKecamatanKecelakaan" id="it_alamatKecamatanKecelakaan" required="">
                         </div>               
                       </div>
                       <div class="col-lg-2">
                         <div class="form-group">
                           <label class="control-label" for="it_alamatKotaKecelakaan">Kota :</label>
-                          <input class="form-control" type="text" name="it_alamatKotaKecelakaan" id="it_alamatKotaKecelakaan">
+                          <input class="form-control" type="text" name="it_alamatKotaKecelakaan" id="it_alamatKotaKecelakaan" required="">
                         </div>               
                       </div>                    
                   </div>
@@ -151,7 +151,7 @@
                             <label class="control-label">Uraian Kejadian Kecelakaan :</label>
                             <br>
                             <label for="bagaimanaTerjadiKecelakaan" class="control-label">- Bagaimana terjadinya kecelakaan</label>
-                            <textarea style="size: fixed; width: 1026px; height: 144px;" class="form-control" id="bagaimanaTerjadiKecelakaan" rows="5" name="bagaimanaTerjadiKecelakaan"></textarea>
+                            <textarea style="size: fixed; width: 1026px; height: 144px;" class="form-control" id="bagaimanaTerjadiKecelakaan" rows="5" name="bagaimanaTerjadiKecelakaan" required=""></textarea>
                           </div>
                         </div>
                       </div>
@@ -159,7 +159,7 @@
                         <div class="col-lg-12">
                           <div class="form-group">
                             <label for="sebutkanBagianMesin" class="control-label">- Sebutkan bagian mesin, instalasi bahan atau lingkungan yang menyebabkan cidera <h6><small>*)tidak perlu diisi bagi peserta bukan penerima upah</small></h6></label>
-                            <textarea style="size: fixed; width: 1026px; height: 144px;" class="form-control" id="sebutkanBagianMesin" rows="5" name="sebutkanBagianMesin"></textarea>
+                            <textarea style="size: fixed; width: 1026px; height: 144px;" class="form-control" id="sebutkanBagianMesin" rows="5" name="sebutkanBagianMesin" required=""></textarea>
                           </div>
                         </div>
                       </div>
@@ -170,7 +170,7 @@
                               <label class="radio-inline"><input type="radio" name="rd_akibat" value="Meninggal">Meninggal</label>
                               <label class="radio-inline"><input type="radio" name="rd_akibat" value="Cedera/Luka">Cedera/Luka</label><br>
                             <label for="it_bagianTubuhLuka" class="control-label">- Sebutkan bagian tubuh yang luka :</label>
-                            <input class="form-control" type="text" name="it_bagianTubuhLuka" id="it_bagianTubuhLuka">
+                            <input class="form-control" type="text" name="it_bagianTubuhLuka" id="it_bagianTubuhLuka" required="">
                           </div>
                         </div>
                       </div>
@@ -179,7 +179,7 @@
                           <div class="form-group">
                             <label class="control-label">Fasilitas Kesehatan(faskes) yang memberikan pertolongan pertama :</label><br>
                             <label for="it_namafaskes" class="control-label">- Nama Faskes :</label>
-                            <input class="form-control" type="text" name="it_namafaskes" id="it_namafaskes">
+                            <input class="form-control" type="text" name="it_namafaskes" id="it_namafaskes" required="">
                             <label class="control-label">- Jenis Faskes :</label><br>
                             <label class="radio-inline"><input type="radio" name="rd_jenisFaskes" value="Rumah Sakit Trauma Center">Rumah Sakit Trauma Center</label>
                             <label class="radio-inline"><input type="radio" name="rd_jenisFaskes" value="Klinik Trauma Center">Klinik Trauma Center</label>
@@ -191,7 +191,7 @@
                         <div class="col-lg-12">
                           <div class="form-group">
                             <label for="it_alamatFaskes" class="control-label">- Alamat Faskes :</label>
-                            <input class="form-control" type="text" name="it_alamatFaskes" id="it_alamatFaskes">
+                            <input class="form-control" type="text" name="it_alamatFaskes" id="it_alamatFaskes" required="">
                           </div>
                         </div>
                       </div>

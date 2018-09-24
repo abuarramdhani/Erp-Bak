@@ -28,6 +28,13 @@
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="form-group">
+                                                <label for="txtKodeLimbahHeader" class="control-label col-lg-4">Kode Limbah</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Jenis Limbah" name="txtKodeLimbahHeader" id="txtKodeLimbahHeader" class="form-control" required/>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label for="txtJenisLimbahHeader" class="control-label col-lg-4">Jenis Limbah</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Jenis Limbah" name="txtJenisLimbahHeader" id="txtJenisLimbahHeader" class="form-control" required/>

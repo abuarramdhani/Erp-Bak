@@ -26,6 +26,17 @@
                 </div>
                 <div class="box-body">
                     <div>
+                        <div class="col-md-12">
+                            <div class="col-md-9" style="padding: 0px">
+                                <label>Subinventory : </label>
+                                <span name="subinv" id="subinv"></span>
+                            </div>
+                            <div class="col-md-2" style="padding: 0px">
+                                
+                            </div>
+                        </div>
+                    </div>
+                     <div>
                         <div class="col-md-6">
                             <div class="col-md-9" style="padding: 0px">
                                 <input class="form-control" id="in_sj" placeholder="Surat Jalan" required="" type="text"/>
@@ -44,8 +55,8 @@
                     <div class="col-md-12" style="padding: 0px;margin-top: 30px">
                         <div class="col-md-6">
                             <div>Tanggal Terima</div>
-                            <div class="input-group">
-                                <input class="form-control" disabled="disabled" id="in_dateRcv" name="in_dateRcv" placeholder="Tanggal Terima">
+                            <div class="input-group" >
+                                <input class="datetime form-control time-form" data-date-format="yyyy-mm-dd hh:ii:ss" id="in_dateRcv" name="in_dateRcv" placeholder="Tanggal Terima">
                                     <div class="input-group-addon" style="padding-left: 10px;padding-right: 10px">
                                         <span class="glyphicon glyphicon-th">
                                         </span>
@@ -92,32 +103,71 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="col-md-12" style="padding: 5px">
-                        <div class="col-md-8">
+                    <div id="loading" style="display: none;text-align: center;width:100%;margin-top: 0px;margin-bottom: 20px">
+                        <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading11.gif' ?>"/>
+                    </div>
+                    <div class="col-md-12" style="padding: 2px">
+                        <div class="col-md-3">
                             <center>
-                                <h4 style="margin: 0px">
+                                <h5 style="margin: 0px">
                                     <b>
                                         ITEM
                                     </b>
-                                </h4>
+                                </h5>
                             </center>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <center>
-                                <h4 style="margin: 0px">
+                                <h5 style="margin: 0px">
                                     <b>
                                         PO
                                     </b>
-                                </h4>
+                                </h3>
+                            </center>
+                        </div>
+                         <div class="col-md-1">
+                            <center>
+                                <h5 style="margin: 0px">
+                                    <b>
+                                        RECEIPT
+                                    </b>
+                                </h3>
+                            </center>
+                        </div>
+                         <div class="col-md-2">
+                            <center>
+                                <h5 style="margin: 0px">
+                                    <b>
+                                        NOT DELIVERED 
+                                    </b>
+                                </h3>
                             </center>
                         </div>
                         <div class="col-md-2">
                             <center>
-                                <h4 style="margin: 0px">
+                                <h5 style="margin: 0px">
+                                    <b>
+                                        KETERANGAN
+                                    </b>
+                                </h5>
+                            </center>
+                        </div>
+                        <div class="col-md-1">
+                            <center>
+                                <h5 style="margin: 0px">
+                                    <b>
+                                        CHECK
+                                    </b>
+                                </h5>
+                            </center>
+                        </div>
+                        <div class="col-md-2">
+                            <center>
+                                <h5 style="margin: 0px">
                                     <b>
                                         INPUT
                                     </b>
-                                </h4>
+                                </h5>
                             </center>
                         </div>
                     </div>

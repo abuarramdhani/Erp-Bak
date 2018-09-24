@@ -15,7 +15,8 @@ class C_FleetKecelakaanDetail extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetkecelakaandetail');
-
+		$this->load->model('GeneralAffair/MainMenu/M_location');
+		
 		$this->checkSession();
 	}
 
@@ -42,7 +43,49 @@ class C_FleetKecelakaanDetail extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$datamenu1 = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+
+		$location = $this->M_location->getlocation($user_id);
+		$lokasi = $location['0']['location_code'];
+		$i = 0;
+		if ($lokasi == '01') {
+			foreach ($datamenu1 as $key) {
+				$data['UserSubMenuOne'][$i] = array(
+					'user_id' => $key['user_id'], 
+					'user_group_menu_name' => $key['user_group_menu_name'], 
+					'user_group_menu_id' => $key['user_group_menu_id'], 
+					'group_menu_list_id' => $key['group_menu_list_id'], 
+					'menu_sequence' => $key['menu_sequence'], 
+					'menu_id' => $key['menu_id'], 
+					'root_id' => $key['root_id'], 
+					'menu_title' => $key['menu_title'], 
+					'menu' => $key['menu'], 
+					'menu_link' => $key['menu_link'], 
+					'org_id' => $key['org_id'], 
+				);
+				$i++;
+			}
+		}else{
+			foreach ($datamenu1 as $key) {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
+					$data['UserSubMenuOne'][$i] = array(
+						'user_id' => $key['user_id'], 
+						'user_group_menu_name' => $key['user_group_menu_name'], 
+						'user_group_menu_id' => $key['user_group_menu_id'], 
+						'group_menu_list_id' => $key['group_menu_list_id'], 
+						'menu_sequence' => $key['menu_sequence'], 
+						'menu_id' => $key['menu_id'], 
+						'root_id' => $key['root_id'], 
+						'menu_title' => $key['menu_title'], 
+						'menu' => $key['menu'], 
+						'menu_link' => $key['menu_link'], 
+						'org_id' => $key['org_id'], 
+					);
+					$i++;
+				}
+			}	
+		}
+		
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['FleetKecelakaanDetail'] = $this->M_fleetkecelakaandetail->getFleetKecelakaanDetail();
@@ -64,7 +107,48 @@ class C_FleetKecelakaanDetail extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$datamenu1 = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+
+		$location = $this->M_location->getlocation($user_id);
+		$lokasi = $location['0']['location_code'];
+		$i = 0;
+		if ($lokasi == '01') {
+			foreach ($datamenu1 as $key) {
+				$data['UserSubMenuOne'][$i] = array(
+					'user_id' => $key['user_id'], 
+					'user_group_menu_name' => $key['user_group_menu_name'], 
+					'user_group_menu_id' => $key['user_group_menu_id'], 
+					'group_menu_list_id' => $key['group_menu_list_id'], 
+					'menu_sequence' => $key['menu_sequence'], 
+					'menu_id' => $key['menu_id'], 
+					'root_id' => $key['root_id'], 
+					'menu_title' => $key['menu_title'], 
+					'menu' => $key['menu'], 
+					'menu_link' => $key['menu_link'], 
+					'org_id' => $key['org_id'], 
+				);
+				$i++;
+			}
+		}else{
+			foreach ($datamenu1 as $key) {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
+					$data['UserSubMenuOne'][$i] = array(
+						'user_id' => $key['user_id'], 
+						'user_group_menu_name' => $key['user_group_menu_name'], 
+						'user_group_menu_id' => $key['user_group_menu_id'], 
+						'group_menu_list_id' => $key['group_menu_list_id'], 
+						'menu_sequence' => $key['menu_sequence'], 
+						'menu_id' => $key['menu_id'], 
+						'root_id' => $key['root_id'], 
+						'menu_title' => $key['menu_title'], 
+						'menu' => $key['menu'], 
+						'menu_link' => $key['menu_link'], 
+						'org_id' => $key['org_id'], 
+					);
+					$i++;
+				}
+			}	
+		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		/* HEADER DROPDOWN DATA */
@@ -105,7 +189,48 @@ class C_FleetKecelakaanDetail extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$datamenu1 = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+
+		$location = $this->M_location->getlocation($user_id);
+		$lokasi = $location['0']['location_code'];
+		$i = 0;
+		if ($lokasi == '01') {
+			foreach ($datamenu1 as $key) {
+				$data['UserSubMenuOne'][$i] = array(
+					'user_id' => $key['user_id'], 
+					'user_group_menu_name' => $key['user_group_menu_name'], 
+					'user_group_menu_id' => $key['user_group_menu_id'], 
+					'group_menu_list_id' => $key['group_menu_list_id'], 
+					'menu_sequence' => $key['menu_sequence'], 
+					'menu_id' => $key['menu_id'], 
+					'root_id' => $key['root_id'], 
+					'menu_title' => $key['menu_title'], 
+					'menu' => $key['menu'], 
+					'menu_link' => $key['menu_link'], 
+					'org_id' => $key['org_id'], 
+				);
+				$i++;
+			}
+		}else{
+			foreach ($datamenu1 as $key) {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
+					$data['UserSubMenuOne'][$i] = array(
+						'user_id' => $key['user_id'], 
+						'user_group_menu_name' => $key['user_group_menu_name'], 
+						'user_group_menu_id' => $key['user_group_menu_id'], 
+						'group_menu_list_id' => $key['group_menu_list_id'], 
+						'menu_sequence' => $key['menu_sequence'], 
+						'menu_id' => $key['menu_id'], 
+						'root_id' => $key['root_id'], 
+						'menu_title' => $key['menu_title'], 
+						'menu' => $key['menu'], 
+						'menu_link' => $key['menu_link'], 
+						'org_id' => $key['org_id'], 
+					);
+					$i++;
+				}
+			}	
+		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
@@ -155,7 +280,48 @@ class C_FleetKecelakaanDetail extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$datamenu1 = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+
+		$location = $this->M_location->getlocation($user_id);
+		$lokasi = $location['0']['location_code'];
+		$i = 0;
+		if ($lokasi == '01') {
+			foreach ($datamenu1 as $key) {
+				$data['UserSubMenuOne'][$i] = array(
+					'user_id' => $key['user_id'], 
+					'user_group_menu_name' => $key['user_group_menu_name'], 
+					'user_group_menu_id' => $key['user_group_menu_id'], 
+					'group_menu_list_id' => $key['group_menu_list_id'], 
+					'menu_sequence' => $key['menu_sequence'], 
+					'menu_id' => $key['menu_id'], 
+					'root_id' => $key['root_id'], 
+					'menu_title' => $key['menu_title'], 
+					'menu' => $key['menu'], 
+					'menu_link' => $key['menu_link'], 
+					'org_id' => $key['org_id'], 
+				);
+				$i++;
+			}
+		}else{
+			foreach ($datamenu1 as $key) {
+				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
+					$data['UserSubMenuOne'][$i] = array(
+						'user_id' => $key['user_id'], 
+						'user_group_menu_name' => $key['user_group_menu_name'], 
+						'user_group_menu_id' => $key['user_group_menu_id'], 
+						'group_menu_list_id' => $key['group_menu_list_id'], 
+						'menu_sequence' => $key['menu_sequence'], 
+						'menu_id' => $key['menu_id'], 
+						'root_id' => $key['root_id'], 
+						'menu_title' => $key['menu_title'], 
+						'menu' => $key['menu'], 
+						'menu_link' => $key['menu_link'], 
+						'org_id' => $key['org_id'], 
+					);
+					$i++;
+				}
+			}	
+		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);

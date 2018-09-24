@@ -5,6 +5,10 @@ $(function() {
       dom: 'frtp',
     });
 
+  $('.dataTable-Simple').DataTable( {
+      dom: 'frtp',
+    });
+
     $('#txtTanggalKirimHeader').datepicker({
 		"autoclose": true,
 		"todayHiglight": true,
@@ -22,6 +26,20 @@ $(function() {
 		"todayHiglight": true,
 		"format": 'dd M yyyy'
   	});
+
+    $('#txtSimplePeriode').datepicker({
+      "autoclose": true,
+      "todayHiglight": true,
+      "format":'MM yyyy',
+      "viewMode":'months',
+      "minViewMode":'months'
+    });
+
+    $('#txtTanggalDihasilkan').datepicker({
+      "autoclose": true,
+      "todayHiglight": true,
+      "format":'dd MM yyyy'
+    });
 
   	$("#periode").daterangepicker({  
       		"autoclose": true,
@@ -88,6 +106,7 @@ $('#cmbJenisLimbahKeluarHeader').change(function(){
       $('#SumberLimbahKeluar').val('');
     }
 });
+
 
 //date interval for maks penyimpanan
 $(document).on('change', '#txtTanggalTransaksiHeader', function(){
@@ -231,4 +250,25 @@ $(document).on('click', '#RejectLimbahKeluar', function(e){
     alert("batal melakukan reject");
   }
 
+});
+
+$(document).on('click','#btnSubmitSimple',function(e){
+  var limjenis = $('#txtSimpleLimbahJenis').val();
+  var limperiode = $('#txtSimplePeriode').val();
+  if (limjenis == '' || limperiode == '') {
+    alert("data masih kosong !!");
+  }else{
+    $.ajax({
+        type : 'POST',
+        url  : baseurl+"WasteManagement/Simple/Create",
+        data : {jenis : limjenis, periode : limperiode},
+        success : function(e){
+          window.location = baseurl+"WasteManagement/Simple";
+        }
+    });
+  }
+});
+
+$(document).on('click','#btnCloseSimple',function(e){
+  $('#Simple-Create').modal("hide");
 });

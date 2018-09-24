@@ -232,7 +232,7 @@
 				$device_server_ip	=	$device['server_ip'];
 				$device_server_port =	$device['server_port'];
 				$parameter 			.=	"sn=".$device_sn;
-				$parameter 			.=	"&limit=200";
+				$parameter 			.=	"&limit=800";
 				$url 			=	$device_server_ip."/scanlog/all/paging";
 				$server_output	=	$this->lib_monitoringpresensi->send_to_sdk_server($device_server_port, $url, $parameter);
 
@@ -365,6 +365,8 @@
 
 			foreach ($scanlog as $datapresensi)
 			{
+				$id_scanlog 			=	$datapresensi['id_scanlog'];
+
 				$presensi_sn 			=	$datapresensi['sn'];
 				$presensi_kodesie 		=	$datapresensi['kodesie'];
 
@@ -412,7 +414,11 @@
 	 											(
 	 												'transfer'	=>	TRUE,
 	 											);
-	 					$this->M_monitoringpresensi->scanlog_update($scanlog_update, $presensi_sn, date('Y-m-d H:i:s', strtotime($presensi_tanggal." ".$presensi_waktu)), $presensi_noind_baru);
+	 					$where_clause 		= 	array
+	 											(
+	 												'id_scanlog ='	=>	$id_scanlog
+	 											);
+	 					$this->M_monitoringpresensi->scanlog_update($scanlog_update, $where_clause);
 	 			//	}
 			}
 		}

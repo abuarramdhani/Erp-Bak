@@ -69,8 +69,20 @@ $('#dataTables-fleetKendaraanDeleted').DataTable( {
 
 // Tabel Pajak ----------------------------------------------------------------------------------_
 
-$('#dataTables-fleetPajak').DataTable({"lengthChange": false});
-$('#dataTables-fleetPajakDeleted').DataTable({"lengthChange": false});
+$('#dataTables-fleetPajak').DataTable({
+  "lengthChange": false,
+  dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+  });
+$('#dataTables-fleetPajakDeleted').DataTable({
+  "lengthChange": false,
+  dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+  });
 
 $('#dataTables-fleetKir').DataTable( {
       dom: 'Bfrtip',
@@ -803,17 +815,39 @@ function rekapTotal(tahun, bulan)
 }
 
 $(document).ready(function(){
-    $('input[name="OpsiPIC"]').click(function() {
-       if($('input[name="OpsiPIC"]').is(':checked')) { 
-           var radioValue = $("input[name='OpsiPIC']:checked").val();
-            if(radioValue == "Seksi"){
-               $( "#cmbSeksi" ).prop( "disabled", false );
-               $( "#cmbPekerja" ).prop( "disabled", true );
-            } else if (radioValue == "Pekerja"){
-                $( "#cmbSeksi" ).prop( "disabled", true );
-               $( "#cmbPekerja" ).prop( "disabled", false );
-            }
-       }
+    // $('input[name="OpsiPIC"]').click(function() {
+    //    if($('input[name="OpsiPIC"]').is(':checked')) { 
+    //        var radioValue = $("input[name='OpsiPIC']:checked").val();
+    //         if(radioValue == "Seksi"){
+    //            $( "#cmbSeksi" ).prop( "disabled", false );
+    //            $( "#cmbPekerja" ).prop( "disabled", true );
+    //         } else if (radioValue == "Pekerja"){
+    //             $( "#cmbSeksi" ).prop( "disabled", true );
+    //            $( "#cmbPekerja" ).prop( "disabled", false );
+    //         }
+    //    }
+    // });
+    $('input[name="BtnPIC"]').click(function(){
+        var values = $(this).val();
+        if(values == "Seksi"){
+          $( "#cmbSeksi" ).prop( "disabled", false );
+          $( "#cmbPekerja" ).prop( "disabled", true );
+          $('input[name="BtnPIC"]').removeClass("btn-default");
+          $('input[name="BtnPIC"]').removeClass("btn-primary");
+          $('input[name="BtnPIC"]').addClass("btn-default");
+          $(this).removeClass("btn-default");
+          $(this).addClass("btn-primary");
+          $('input[name="OpsiPIC"]').val(values);
+        } else if (values == "Pekerja"){
+          $( "#cmbSeksi" ).prop( "disabled", true );
+          $( "#cmbPekerja" ).prop( "disabled", false );
+          $('input[name="BtnPIC"]').removeClass("btn-default");
+          $('input[name="BtnPIC"]').removeClass("btn-primary");
+          $('input[name="BtnPIC"]').addClass("btn-default");
+          $(this).removeClass("btn-default");
+          $(this).addClass("btn-primary");
+          $('input[name="OpsiPIC"]').val(values);
+        }
     });
 });
 

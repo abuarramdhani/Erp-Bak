@@ -12,6 +12,7 @@ class M_limbahmaster extends CI_Model
     {
         if ($id === FALSE) {
             $sql = "select limnis.id_jenis_limbah,
+                            limnis.kode_limbah,
                             limnis.jenis_limbah as limbah_jenis,
                             liman.limbah_satuan as satuan,
                             liman.id_satuan as satuan_id,
@@ -28,6 +29,7 @@ class M_limbahmaster extends CI_Model
                         on limnis.id_jenis_limbah=limver.id_jenis_limbah";
         } else {
             $sql = "select limnis.id_jenis_limbah,
+                            limnis.kode_limbah as limbah_kode,
                             limnis.jenis_limbah as limbah_jenis,
                             liman.limbah_satuan as satuan,
                             liman.id_satuan as satuan_id,
@@ -47,6 +49,12 @@ class M_limbahmaster extends CI_Model
 
         $query = $this->db->query($sql);
         return $query->result_array();
+    }
+
+    public function getLimbahJenisID(){
+        $query = "select max(cast(id_jenis_limbah as integer))+1 id from ga.ga_limbah_jenis;";
+        $result = $this->db->query($query);
+        return $result->result_array();
     }
 
     public function setLimbahJenis($data)

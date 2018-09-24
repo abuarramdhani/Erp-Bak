@@ -180,11 +180,9 @@
  					return $this->quick->count_all_results();
  				}
 
- 				public function scanlog_update($scanlog, $device_sn, $scan_date, $noind_baru)
+ 				public function scanlog_update($scanlog, $where_clause)
  				{
- 					$this->quick->where('sn =', $device_sn);
- 					$this->quick->where('scan_date =', $scan_date);
- 					$this->quick->where('noind_baru =', $noind_baru);
+ 					$this->quick->where($where_clause);
 
  					$this->quick->update('db_datapresensi.tb_scanlog', $scanlog);
  				}

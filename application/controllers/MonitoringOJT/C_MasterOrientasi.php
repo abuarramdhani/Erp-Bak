@@ -43,6 +43,7 @@ class C_MasterOrientasi extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['DaftarOrientasiTabel']					=	$this->M_masterorientasi->ambilDaftarOrientasiTabel();
+		// echo "<pre>"; print_r($data['DaftarOrientasiTabel']); exit();
 		$data['DaftarOrientasiTabelKolomPemberitahuan']	=	$this->M_masterorientasi->ambilDaftarPemberitahuanTabelOrientasi();
 		$data['DaftarOrientasiTabelKolomJadwal']		=	$this->M_masterorientasi->ambilDaftarPemberitahuanTabelJadwal();
 
@@ -507,7 +508,10 @@ class C_MasterOrientasi extends CI_Controller
 
 			public function OrientasiBaru_Delete($id_orientasi)
 			{
-				$id_orientasi_decode 	=	$this->general->dekripsi($id_orientasi);
+				// $id_orientasi_decode 	=	$this->general->dekripsi($id_orientasi);
+				$id_orientasi_decode = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_orientasi);
+				$id_orientasi_decode = $this->encrypt->decode($id_orientasi_decode);
+				// echo $id_orientasi_decode; exit();
 
 				$this->monitoringojt->ojt_history('ojt', 'tb_orientasi', array('id_orientasi' => $id_orientasi_decode), 'DELETE');
 				$this->monitoringojt->ojt_history('ojt', 'tb_jadwal', array('id_orientasi' => $id_orientasi_decode), 'DELETE');
@@ -524,6 +528,7 @@ class C_MasterOrientasi extends CI_Controller
 			{
 				$id_orientasi_decode = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_orientasi);
 				$id_orientasi_decode = $this->encrypt->decode($id_orientasi_decode);
+				echo $id_orientasi_decode; exit();
 
 				$this->form_validation->set_rules('numPeriodeBulan', 'Periode Bulan Orientasi', 'required');
 				$this->form_validation->set_rules('numSequence', 'Sequence Orientasi', 'required');

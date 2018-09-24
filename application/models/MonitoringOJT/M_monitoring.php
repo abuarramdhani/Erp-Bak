@@ -420,6 +420,8 @@
 
  		public function history($schema_name, $table_name, $history)
  		{
+ 			// print_r ($history); exit();
+ 			// echo $table_name; exit();
  			$this->db->insert($schema_name.".".$table_name."_history", $history);
  		}
 
@@ -471,5 +473,31 @@
  			}
 
  			return $this->db->get()->result_array();
+ 		}
+
+ 		public function join($id_orientasi,$tanggal_rekap)
+ 		{
+ 			// $tahapan = "'".$tahapan."'";
+ 			// $id_orientasi = "'".$id_orientasi."'";
+ 			// echo $tahapan.'-'.$id_orientasi; exit();
+ 			$tanggal_rekap = "'".$tanggal_rekap."'";
+ 			$query = $this->db->query('select pro.noind, pro.id_orientasi, ori.tahapan, er.employee_name from ojt.tb_proses pro
+									left join ojt.tb_orientasi ori on ori.id_orientasi = pro.id_orientasi
+									left join er.er_employee_all er on er.employee_code = pro.noind
+									where pro.id_orientasi = '.$id_orientasi.' and '.$tanggal_rekap.'
+									between pro.tgl_awal and pro.tgl_akhir');
+ 			// return $query->result_array();
+
+			return $query->result_array();
+ 		}
+ 		public function testing($id_orientasi)
+ 		{
+ 			echo $id_orientasi;
+ 			$query = $this->db->query('select pro.noind, pro.id_orientasi, ori.tahapan, er.employee_name from ojt.tb_proses pro
+									left join ojt.tb_orientasi ori on ori.id_orientasi = pro.id_orientasi
+									left join er.er_employee_all er on er.employee_code = pro.noind
+									where pro.id_orientasi = '.$id_orientasi.' and current_date 
+									between pro.tgl_awal and pro.tgl_akhir');
+ 			return $query->result_array();
  		}
  	}
