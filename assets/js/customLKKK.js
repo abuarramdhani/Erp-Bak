@@ -30,6 +30,30 @@ $(function () {
 			},
 		},
 	});
+	$('#cetaktanterbpjs-pekerja_bpjs').select2({
+    	minimumInputLength: 3,
+		allowClear: true,
+		placeholder: 'Pilih Pekerja',
+		ajax: {
+			url: baseurl+"MasterPekerja/TanTerBPJS/data_pekerja",
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind+' - '+item.nama+' - '+item.seksi
+						};
+					})
+					
+				};
+			},
+		},
+	});
 	
 	$('#KecelakaanKerja-cmbCabangPerusahaan').select2({
     	minimumInputLength: 0,
@@ -79,6 +103,16 @@ $(function () {
         document.getElementById('modal-printTahap2').href = baseurl+"MasterPekerja/KecelakaanKerja/printTahap2/"+NextId;
         document.getElementById('modal-insertTahap2').href = baseurl+"MasterPekerja/KecelakaanKerja/nextKecelakaan/"+NextId;
 
+      });
+
+    $('#modalCetakBPJS').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
       });
 
 	$('.KecelakaanKerja-daterangepicker').daterangepicker({
