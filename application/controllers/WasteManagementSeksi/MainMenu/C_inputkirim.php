@@ -74,7 +74,7 @@ class C_inputkirim extends CI_Controller
 
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
-		$data['Pekerja'] = $this->M_kirim->getEmployeeByKodesie($kodesie);
+		$data['Pekerja'] = $this->M_kirim->getEmployeeCodeName();
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);

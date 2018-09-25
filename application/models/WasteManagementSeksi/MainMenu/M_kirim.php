@@ -53,11 +53,10 @@ class M_kirim extends Ci_Model
         return $result->result_array();
     }
 
-    public function getEmployeeByKodesie($kodesie){
-        $query = "select employee_code,employee_name 
-                    from er.er_employee_all 
-                    where left(section_code,7) = left('$kodesie',7) and resign = '0'
-                    order by employee_code";
+    public function getEmployeeCodeName(){
+        $query = "select employee_code,employee_name
+                    from er.er_employee_all
+                    where location_code in ('01','02') and resign = '0' order by employee_code";
         $result = $this->db->query($query);
         return $result->result_array();
     }

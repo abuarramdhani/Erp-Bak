@@ -33,7 +33,7 @@
 												<td>Tanggal Kirim</td>
 												<td>Waktu Kirim</td>
 												<td>Pengirim</td>
-												<td>Seksi</td>
+												<td>Seksi Asal Limbah</td>
 												<td>Bocor</td>
 												<td>Jumlah</td>
 												<td>Berat (Kg)</td>
