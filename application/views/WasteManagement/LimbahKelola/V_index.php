@@ -25,7 +25,7 @@
 											<tr>
 												<th>No</th>
 												<th>Action</th>
-												<th>Seksi Pengirim</th>
+												<th>Seksi Asal Limbah</th>
 												<th>Pekerja Pengirim</th>
 												<th>Tanggal Kirim</th>
 												<th>Waktu Kirim</th>
