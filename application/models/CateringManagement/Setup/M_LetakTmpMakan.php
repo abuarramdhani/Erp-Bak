@@ -3,7 +3,7 @@ Defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * 
  */
-class M_LetakTmpMakan extends CI_Model
+class M_letaktmpmakan extends CI_Model
 {
 	
 	public function __construct()

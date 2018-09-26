@@ -3,7 +3,7 @@ Defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * 
  */
-class M_TmpMakan extends CI_Model
+class M_tmpmakan extends CI_Model
 {
 	
 	public function __construct()

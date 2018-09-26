@@ -18,7 +18,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		$this->load->library('form_validation');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('CateringManagement/Setup/M_DetailUrutanJdwl');
+		$this->load->model('CateringManagement/Setup/M_detailurutanjdwl');
 
 		$this->checkSession();
 	}
@@ -43,7 +43,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['DetailUrutanJdwl'] = $this->M_DetailUrutanJdwl->getDetailUrutanJdwl();
+		$data['DetailUrutanJdwl'] = $this->M_detailurutanjdwl->getDetailUrutanJdwl();
 		
 
 		// echo "<pre>";print_r($data['DetailUrutanJdwl']);exit();
@@ -65,7 +65,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['urutan'] = $this->M_DetailUrutanJdwl->getCountkatering();
+		$data['urutan'] = $this->M_detailurutanjdwl->getCountkatering();
 
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() === FALSE){
@@ -102,10 +102,10 @@ class C_DetailUrutanJdwl extends CI_Controller
 				'fs_tujuan_shift3' => $s3, 
 			);
 
-			$cek = $this->M_DetailUrutanJdwl->getDetailUrutanJdwlByHariUrutan($arrData['fs_hari'],$arrData['fn_urutan_jadwal']);
+			$cek = $this->M_detailurutanjdwl->getDetailUrutanJdwlByHariUrutan($arrData['fs_hari'],$arrData['fn_urutan_jadwal']);
 
 			if (empty($cek)) {
-				$this->M_DetailUrutanJdwl->insertDetailUrutanJdwl($arrData);
+				$this->M_detailurutanjdwl->insertDetailUrutanJdwl($arrData);
 				redirect(site_url('CateringManagement/DetailUrutanJdwl'));
 			}else{
 				$data['isi'] = $cek;
@@ -134,7 +134,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['DetailUrutanJdwl'] = $this->M_DetailUrutanJdwl->getDetailUrutanJdwlByHariUrutan($hari,$urutan);
+		$data['DetailUrutanJdwl'] = $this->M_detailurutanjdwl->getDetailUrutanJdwlByHariUrutan($hari,$urutan);
 		$data['linkdata'] = $hr."/".$urt;
 
 		$this->form_validation->set_rules('required');
@@ -177,7 +177,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 				'fn_urutan_jadwal' => $urutan
 			);
 
-			$this->M_DetailUrutanJdwl->updateDetailUrutanjdwl($arrData,$arrWhere);
+			$this->M_detailurutanjdwl->updateDetailUrutanjdwl($arrData,$arrWhere);
 			redirect(site_url('CateringManagement/DetailUrutanJdwl'));
 			
 		}
@@ -194,7 +194,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 			'fn_urutan_jadwal' => $urutan
 		);
 
-		$this->M_DetailUrutanJdwl->deleteDetailUrutanjdwl($arrWhere);
+		$this->M_detailurutanjdwl->deleteDetailUrutanjdwl($arrWhere);
 		redirect(site_url('CateringManagement/DetailUrutanJdwl'));
 	}
 }

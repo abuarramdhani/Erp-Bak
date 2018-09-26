@@ -3,7 +3,7 @@ Defined('BASEPATH') or exit('No direct script Access Allowed');
 /**
  * 
  */
-class M_JamDatangShift extends CI_Model
+class M_jamdatangshift extends CI_Model
 {
 	
 	public function __construct()

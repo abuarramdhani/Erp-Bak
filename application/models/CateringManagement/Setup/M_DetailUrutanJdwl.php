@@ -3,7 +3,7 @@ Defined('BASEPATH') or exit('No direct script access allowed');
 /**
  * 
  */
-class M_DetailUrutanJdwl extends CI_Model
+class M_detailurutanjdwl extends CI_Model
 {
 	
 	public function __construct()

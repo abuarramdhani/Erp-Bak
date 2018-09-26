@@ -3,7 +3,7 @@ Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
  * 
  */
-class M_Catering extends CI_Model
+class M_catering extends CI_Model
 {
 	
 	public function __construct()

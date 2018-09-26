@@ -18,7 +18,7 @@ class C_LetakTmpMakan extends CI_Controller
 		$this->load->library('form_validation');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('CateringManagement/Setup/M_LetakTmpMakan');
+		$this->load->model('CateringManagement/Setup/M_letaktmpmakan');
 
 		$this->checkSession();
 	}
@@ -44,7 +44,7 @@ class C_LetakTmpMakan extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['LetakTmpMakan'] = $this->M_LetakTmpMakan->getLetakTmpMakan();
+		$data['LetakTmpMakan'] = $this->M_letaktmpmakan->getLetakTmpMakan();
 
 		// print_r($data['Catering']);exit();
 
@@ -65,7 +65,7 @@ class C_LetakTmpMakan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['kode'] = $this->M_LetakTmpMakan->getMaxKodeLetak();
+		$data['kode'] = $this->M_letaktmpmakan->getMaxKodeLetak();
 
 		$this->form_validation->set_rules('required');
 
@@ -80,7 +80,7 @@ class C_LetakTmpMakan extends CI_Controller
 				'fs_letak' 	=> $this->input->post('txtLetakTmpMakan')
 			);
 
-			$this->M_LetakTmpMakan->insertLetakTmpMakan($arrdata);
+			$this->M_letaktmpmakan->insertLetakTmpMakan($arrdata);
 			redirect(site_url('CateringManagement/LetakTmpMakan'));
 		}
 	}
@@ -99,7 +99,7 @@ class C_LetakTmpMakan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['LetakTmpMakan'] = $this->M_LetakTmpMakan->getLetakTmpMakanByKd($plain_text);
+		$data['LetakTmpMakan'] = $this->M_letaktmpmakan->getLetakTmpMakanByKd($plain_text);
 		$data['kode'] = $kd;
 
 		$this->form_validation->set_rules('required');
@@ -122,7 +122,7 @@ class C_LetakTmpMakan extends CI_Controller
 
 			// print_r($arr);print_r($arrdata);exit();
 
-			$this->M_LetakTmpMakan->updateLetakTmpMakan($arrdata,$arr);
+			$this->M_letaktmpmakan->updateLetakTmpMakan($arrdata,$arr);
 			redirect(site_url('CateringManagement/LetakTmpMakan'));
 		}
 	}
@@ -131,10 +131,10 @@ class C_LetakTmpMakan extends CI_Controller
 		$plain_text = str_replace(array('-','_','~'), array('+','/','='), $kd);
 		$plain_text = $this->encrypt->decode($plain_text);
 
-		$data = $this->M_LetakTmpMakan->getLetakTmpMakanByKd($plain_text);
+		$data = $this->M_letaktmpmakan->getLetakTmpMakanByKd($plain_text);
 		$arr = $data[0];
 		
-		$this->M_LetakTmpMakan->deleteLetakTmpMakan($arr);
+		$this->M_letaktmpmakan->deleteLetakTmpMakan($arr);
 		redirect(site_url('CateringManagement/LetakTmpMakan'));
 	}
 }
