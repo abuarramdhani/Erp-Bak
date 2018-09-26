@@ -54,7 +54,7 @@ class C_JamPesananDatang extends CI_Controller
 		}
 		// echo "<pre>";print_r($data['JamPesananDatang']);exit();
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_SideMenu',$data);
+		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Setup/JamPesananDatang/V_index.php',$data);
 		$this->load->view('V_Footer',$data);
 	}
@@ -75,7 +75,7 @@ class C_JamPesananDatang extends CI_Controller
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() === FALSE){
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/JamPesananDatang/V_create.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
@@ -96,7 +96,7 @@ class C_JamPesananDatang extends CI_Controller
 			}else{
 				$data['alert'] = $cek;
 				$this->load->view('V_Header',$data);
-				$this->load->view('V_SideMenu',$data);
+				$this->load->view('V_Sidemenu',$data);
 				$this->load->view('CateringManagement/Setup/JamPesananDatang/V_create.php',$data);
 				$this->load->view('V_Footer',$data);
 			}
@@ -127,7 +127,7 @@ class C_JamPesananDatang extends CI_Controller
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() === FALSE){
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/JamPesananDatang/V_edit.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{

@@ -49,7 +49,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		// echo "<pre>";print_r($data['DetailUrutanJdwl']);exit();
 
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_SideMenu',$data);
+		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Setup/DetailUrutanJdwl/V_index.php',$data);
 		$this->load->view('V_Footer',$data);
 	}
@@ -70,7 +70,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() === FALSE){
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/DetailUrutanJdwl/V_create.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
@@ -110,7 +110,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 			}else{
 				$data['isi'] = $cek;
 				$this->load->view('V_Header',$data);
-				$this->load->view('V_SideMenu',$data);
+				$this->load->view('V_Sidemenu',$data);
 				$this->load->view('CateringManagement/Setup/DetailUrutanJdwl/V_create.php',$data);
 				$this->load->view('V_Footer',$data);
 			}
@@ -140,7 +140,7 @@ class C_DetailUrutanJdwl extends CI_Controller
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() === FALSE){
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/DetailUrutanJdwl/V_edit.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{

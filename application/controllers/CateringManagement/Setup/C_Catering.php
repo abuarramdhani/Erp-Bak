@@ -49,7 +49,7 @@ class C_Catering extends CI_Controller
 		// print_r($data['Catering']);exit();
 
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_SideMenu',$data);
+		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Setup/Catering/V_index.php',$data);
 		$this->load->view('V_Footer',$data);
 	}
@@ -70,7 +70,7 @@ class C_Catering extends CI_Controller
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/Catering/V_create.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
@@ -110,7 +110,7 @@ class C_Catering extends CI_Controller
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/Catering/V_edit.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{

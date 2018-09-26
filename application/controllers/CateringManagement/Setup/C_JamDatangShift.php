@@ -50,7 +50,7 @@ class C_JamDatangShift extends CI_COntroller
 		// print_r($data['Catering']);exit();
 
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_SideMenu',$data);
+		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Setup/JamDatangShift/V_index.php',$data);
 		$this->load->view('V_Footer',$data);
 	}
@@ -71,7 +71,7 @@ class C_JamDatangShift extends CI_COntroller
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/JamDatangShift/V_create.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
@@ -101,7 +101,7 @@ class C_JamDatangShift extends CI_COntroller
 			}else{
 				$data['alert'] = $cek;
 				$this->load->view('V_Header',$data);
-				$this->load->view('V_SideMenu',$data);
+				$this->load->view('V_Sidemenu',$data);
 				$this->load->view('CateringManagement/Setup/JamDatangShift/V_create.php',$data);
 				$this->load->view('V_Footer',$data);
 			}
@@ -130,7 +130,7 @@ class C_JamDatangShift extends CI_COntroller
 
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
-			$this->load->view('V_SideMenu',$data);
+			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('CateringManagement/Setup/JamDatangShift/V_edit.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
