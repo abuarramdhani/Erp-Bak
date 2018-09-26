@@ -513,6 +513,37 @@ $route['CateringManagement/PrintPP'] 				= 'CateringManagement/C_Printpp';
 $route['CateringManagement/PrintPP/(:any)'] 		= 'CateringManagement/C_Printpp/$1';
 $route['CateringManagement/PrintPP/(:any)/(:any)'] 	= 'CateringManagement/C_Printpp/$1/$2';
 
+//-----------------------------------Catering Management -Setup-----------------------------------------------//
+$route['CateringManagement/catering'] 			= 'CateringManagement/Setup/C_Catering/index';
+$route['CateringManagement/catering/Create'] 			= 'CateringManagement/Setup/C_Catering/Create';
+$route['CateringManagement/catering/Edit/(:any)'] 			= 'CateringManagement/Setup/C_Catering/Edit/$1';
+$route['CateringManagement/catering/Delete/(:any)'] 			= 'CateringManagement/Setup/C_Catering/Delete/$1';
+
+$route['CateringManagement/JamDatangShift'] 	= 'CateringManagement/Setup/C_JamDatangShift';
+$route['CateringManagement/JamDatangShift/Create'] 	= 'CateringManagement/Setup/C_JamDatangShift/Create';
+$route['CateringManagement/JamDatangShift/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_JamDatangShift/Edit/$1/$2';
+$route['CateringManagement/JamDatangShift/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_JamDatangShift/Delete/$1/$2';
+
+$route['CateringManagement/JamPesananDatang'] 	= 'CateringManagement/Setup/C_JamPesananDatang';
+$route['CateringManagement/JamPesananDatang/Create'] 	= 'CateringManagement/Setup/C_JamPesananDatang/Create';
+$route['CateringManagement/JamPesananDatang/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_JamPesananDatang/Edit/$1/$2';
+$route['CateringManagement/JamPesananDatang/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_JamPesananDatang/Delete/$1/$2';
+
+$route['CateringManagement/TmpMakan'] 			= 'CateringManagement/Setup/C_TmpMakan';
+$route['CateringManagement/TmpMakan/Create'] 			= 'CateringManagement/Setup/C_TmpMakan/Create';
+$route['CateringManagement/TmpMakan/Edit/(:any)/(:any)/(:any)'] 			= 'CateringManagement/Setup/C_TmpMakan/Edit/$1/$2/$3';
+$route['CateringManagement/TmpMakan/Delete/(:any)/(:any)'] 			= 'CateringManagement/Setup/C_TmpMakan/Delete/$1/$2';
+
+$route['CateringManagement/LetakTmpMakan'] 		= 'CateringManagement/Setup/C_LetakTmpMakan';
+$route['CateringManagement/LetakTmpMakan/Create'] 		= 'CateringManagement/Setup/C_LetakTmpMakan/Create';
+$route['CateringManagement/LetakTmpMakan/Edit/(:any)'] 		= 'CateringManagement/Setup/C_LetakTmpMakan/Edit/$1';
+$route['CateringManagement/LetakTmpMakan/Delete/(:any)'] 		= 'CateringManagement/Setup/C_LetakTmpMakan/Delete/$1';
+
+$route['CateringManagement/DetailUrutanJdwl'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl';
+$route['CateringManagement/DetailUrutanJdwl/Create'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Create';
+$route['CateringManagement/DetailUrutanJdwl/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Edit/$1/$2';
+$route['CateringManagement/DetailUrutanJdwl/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Delete/$1/$2';
+
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 
