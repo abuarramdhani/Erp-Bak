@@ -18,7 +18,7 @@ class C_Catering extends CI_Controller
 		$this->load->library('form_validation');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('CateringManagement/Setup/M_Catering');
+		$this->load->model('CateringManagement/Setup/M_catering');
 
 		$this->checkSession();
 	}
@@ -44,7 +44,7 @@ class C_Catering extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['Catering'] = $this->M_Catering->getCatering();
+		$data['Catering'] = $this->M_catering->getCatering();
 
 		// print_r($data['Catering']);exit();
 
@@ -82,7 +82,7 @@ class C_Catering extends CI_Controller
 				'fb_status' 		=> $this->input->post('txtStatusCatering')
 			);
 
-			$this->M_Catering->insertCatering($arrdata);
+			$this->M_catering->insertCatering($arrdata);
 			redirect(site_url('CateringManagement/catering'));
 		}
 	}
@@ -101,7 +101,7 @@ class C_Catering extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['Catering'] = $this->M_Catering->getCateringByKd($plain_text);
+		$data['Catering'] = $this->M_catering->getCateringByKd($plain_text);
 		$data['kode'] = $kd;
 
 		// print_r($data['Catering']);exit();
@@ -121,7 +121,7 @@ class C_Catering extends CI_Controller
 				'fb_status' 		=> $this->input->post('txtStatusCatering')
 			);
 
-			$this->M_Catering->UpdateCateringByKd($arrdata,$plain_text);
+			$this->M_catering->UpdateCateringByKd($arrdata,$plain_text);
 			redirect(site_url('CateringManagement/catering'));
 		}
 	}
@@ -130,7 +130,7 @@ class C_Catering extends CI_Controller
 		$plain_text = str_replace(array('-','_','~'), array('+','/','='), $kd);
 		$plain_text = $this->encrypt->decode($plain_text);
 
-		$this->M_Catering->deleteCateringByKd($plain_text);
+		$this->M_catering->deleteCateringByKd($plain_text);
 
 		redirect(site_url('CateringManagement/catering'));
 	}

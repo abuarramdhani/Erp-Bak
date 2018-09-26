@@ -18,7 +18,7 @@ class C_TmpMakan extends CI_Controller
 		$this->load->library('form_validation');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('CateringManagement/Setup/M_TmpMakan');
+		$this->load->model('CateringManagement/Setup/M_tmpmakan');
 
 		$this->checkSession();
 	}
@@ -43,7 +43,7 @@ class C_TmpMakan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['TmpMakan'] = $this->M_TmpMakan->getTmpMakan();
+		$data['TmpMakan'] = $this->M_tmpmakan->getTmpMakan();
 		
 
 		// print_r($data['Catering']);exit();
@@ -65,7 +65,7 @@ class C_TmpMakan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['letak'] = $this->M_TmpMakan->getLetakTmpMakan();
+		$data['letak'] = $this->M_tmpmakan->getLetakTmpMakan();
 
 		// print_r($data['letak']);exit();
 
@@ -82,7 +82,7 @@ class C_TmpMakan extends CI_Controller
 				'fs_tempat' => $this->input->post('txtLetakTmpMakan')
 			);
 
-			$this->M_TmpMakan->insertTmpmakan($arrData);
+			$this->M_tmpmakan->insertTmpmakan($arrData);
 			redirect(site_url('CateringManagement/TmpMakan'));
 
 		}
@@ -106,7 +106,7 @@ class C_TmpMakan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['letak'] = $this->M_TmpMakan->getLetakTmpMakan();
+		$data['letak'] = $this->M_tmpmakan->getLetakTmpMakan();
 
 		$data['fs_tempat_makan'] = $tempatMkn;
 		$data['fs_tempat'] = $tempat;
@@ -133,7 +133,7 @@ class C_TmpMakan extends CI_Controller
 				'fs_tempat' => $tempat
 			);
 			// echo "<pre>";print_r($arrData);print_r($arrwhere);exit();
-			$this->M_TmpMakan->updateTmpmakan($arrData,$arrwhere);
+			$this->M_tmpmakan->updateTmpmakan($arrData,$arrwhere);
 			redirect(site_url('CateringManagement/TmpMakan'));
 		}
 	}
@@ -149,7 +149,7 @@ class C_TmpMakan extends CI_Controller
 			'fs_tempat' => $tempat
 		);
 
-		$this->M_TmpMakan->deleteTmpMakan($arrwhere);
+		$this->M_tmpmakan->deleteTmpMakan($arrwhere);
 		redirect(site_url('CateringManagement/TmpMakan'));
 	}
 }

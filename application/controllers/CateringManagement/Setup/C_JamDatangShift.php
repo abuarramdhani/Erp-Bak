@@ -18,7 +18,7 @@ class C_JamDatangShift extends CI_COntroller
 		$this->load->library('form_validation');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('CateringManagement/Setup/M_JamDatangShift');
+		$this->load->model('CateringManagement/Setup/M_jamdatangshift');
 
 		$this->checkSession();
 	}
@@ -44,8 +44,8 @@ class C_JamDatangShift extends CI_COntroller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['JamDatangShift1'] = $this->M_JamDatangShift->getJamDatangShift1();
-		$data['JamDatangShift2'] = $this->M_JamDatangShift->getJamDatangShift2();
+		$data['JamDatangShift1'] = $this->M_jamdatangshift->getJamDatangShift1();
+		$data['JamDatangShift2'] = $this->M_jamdatangshift->getJamDatangShift2();
 
 		// print_r($data['Catering']);exit();
 
@@ -80,7 +80,7 @@ class C_JamDatangShift extends CI_COntroller
 			$hari = $this->input->post('txtHariJamDatang');
 			$awal = $this->input->post('txtAwalJamDatang');
 			$akhir = $this->input->post('txtAkhirJamDatang');
-			$cek = $this->M_JamDatangShift->getCheckJamDatangShift($kd,$hari);
+			$cek = $this->M_jamdatangshift->getCheckJamDatangShift($kd,$hari);
 			
 			if (empty($cek)) {
 				if ($kd == '1') {
@@ -96,7 +96,7 @@ class C_JamDatangShift extends CI_COntroller
 					'fs_jam_akhir' => $akhir, 
 				);
 				// print_r($arrJam);exit();
-				$this->M_JamDatangShift->insertJamDatangShift($arrJam);
+				$this->M_jamdatangshift->insertJamDatangShift($arrJam);
 				redirect(site_url('CateringManagement/JamDatangShift'));
 			}else{
 				$data['alert'] = $cek;
@@ -122,7 +122,7 @@ class C_JamDatangShift extends CI_COntroller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['JamDatangShift'] = $this->M_JamDatangShift->getCheckJamDatangShift($kd,$hari);
+		$data['JamDatangShift'] = $this->M_jamdatangshift->getCheckJamDatangShift($kd,$hari);
 		$data['kd'] = $kd;
 		$data['hari'] = $hr;
 
@@ -142,7 +142,7 @@ class C_JamDatangShift extends CI_COntroller
 				'fs_jam_akhir' => $this->input->post('txtAkhirJamDatang')
 			);
 			// print_r($arrJam);exit();
-			$this->M_JamDatangShift->updateJamDatangShift($arrJam,$kd,$hari);
+			$this->M_jamdatangshift->updateJamDatangShift($arrJam,$kd,$hari);
 			redirect(site_url('CateringManagement/JamDatangShift'));
 			
 		}
@@ -152,7 +152,7 @@ class C_JamDatangShift extends CI_COntroller
 		$hari = str_replace(array('-','_','~'), array('+','/','='), $hr);
 		$hari = $this->encrypt->decode($hari);
 
-		$this->M_JamDatangShift->deleteJamDatangShift($kd,$hari);
+		$this->M_jamdatangshift->deleteJamDatangShift($kd,$hari);
 		redirect(site_url('CateringManagement/JamDatangShift'));
 	}
 }

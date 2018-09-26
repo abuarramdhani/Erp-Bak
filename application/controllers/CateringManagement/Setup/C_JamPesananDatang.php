@@ -18,7 +18,7 @@ class C_JamPesananDatang extends CI_Controller
 		$this->load->library('form_validation');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('CateringManagement/Setup/M_JamPesananDatang');
+		$this->load->model('CateringManagement/Setup/M_jampesanandatang');
 
 		$this->checkSession();
 	}
@@ -44,13 +44,13 @@ class C_JamPesananDatang extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$data['Shift'] = $this->M_JamPesananDatang->getShift();
+		$data['Shift'] = $this->M_jampesanandatang->getShift();
 		
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() !== FALSE){
 			$shift = $this->input->post('txtShiftPesan');
-			$data['ShiftNow'] = $this->M_JamPesananDatang->getShiftByKd($shift);
-			$data['JamPesananDatang'] = $this->M_JamPesananDatang->getJamPesananDatang($shift);
+			$data['ShiftNow'] = $this->M_jampesanandatang->getShiftByKd($shift);
+			$data['JamPesananDatang'] = $this->M_jampesanandatang->getJamPesananDatang($shift);
 		}
 		// echo "<pre>";print_r($data['JamPesananDatang']);exit();
 		$this->load->view('V_Header',$data);
@@ -70,7 +70,7 @@ class C_JamPesananDatang extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['Shift'] = $this->M_JamPesananDatang->getShift();
+		$data['Shift'] = $this->M_jampesanandatang->getShift();
 
 		$this->form_validation->set_rules('required');
 		if ($this->form_validation->run() === FALSE){
@@ -88,10 +88,10 @@ class C_JamPesananDatang extends CI_Controller
 				'fs_jam_datang' => $this->input->post('txtJamDatang')
 			);
 
-			$cek = $this->M_JamPesananDatang->getJamPesananDatangByShiftHari($arrData['fs_kd_shift'],$arrData['fs_hari']);
+			$cek = $this->M_jampesanandatang->getJamPesananDatangByShiftHari($arrData['fs_kd_shift'],$arrData['fs_hari']);
 
 			if (empty($cek)) {
-				$this->M_JamPesananDatang->insertJamPesananDatang($arrData);
+				$this->M_jampesanandatang->insertJamPesananDatang($arrData);
 				redirect(site_url('CateringManagement/JamPesananDatang'));
 			}else{
 				$data['alert'] = $cek;
@@ -120,8 +120,8 @@ class C_JamPesananDatang extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['Shift'] = $this->M_JamPesananDatang->getShift();
-		$data['JamPesananDatang'] = $this->M_JamPesananDatang->getJamPesananDatangByShiftHari($shift,$hari);
+		$data['Shift'] = $this->M_jampesanandatang->getShift();
+		$data['JamPesananDatang'] = $this->M_jampesanandatang->getJamPesananDatangByShiftHari($shift,$hari);
 		$data['linkdata'] = $hr."/".$sft;
 
 		$this->form_validation->set_rules('required');
@@ -144,7 +144,7 @@ class C_JamPesananDatang extends CI_Controller
 			);
 			// echo "<pre>";print_r($arrData);print_r($arrWhere);print_r($_POST);exit();
 
-			$this->M_JamPesananDatang->updateJamPesananDatang($arrData,$arrWhere);
+			$this->M_jampesanandatang->updateJamPesananDatang($arrData,$arrWhere);
 			redirect(site_url('CateringManagement/JamPesananDatang'));
 			
 		}
@@ -161,7 +161,7 @@ class C_JamPesananDatang extends CI_Controller
 			'fs_kd_shift' => $shift
 		);
 
-		$this->M_JamPesananDatang->deleteJamPesananDatang($arrWhere);
+		$this->M_jampesanandatang->deleteJamPesananDatang($arrWhere);
 		redirect(site_url('CateringManagement/JamPesananDatang'));
 	}
 }
