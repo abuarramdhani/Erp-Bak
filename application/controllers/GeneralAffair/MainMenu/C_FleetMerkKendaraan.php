@@ -174,6 +174,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 		} else {
 			$produsenKendaraan 	= 	strtoupper($this->input->post('cmbProdusenKendaraan'));
 			$merkKendaraan 		= 	$this->input->post('txtMerkKendaraanHeader');
+			$bahanbakar			= 	$this->input->post('cmbBahanBakar');
 			$merkKendaraan 		=	$produsenKendaraan.' - '.$merkKendaraan;
 			$tanggal_eksekusi 	= 	date('Y-m-d H:i:s');
 
@@ -183,7 +184,9 @@ class C_FleetMerkKendaraan extends CI_Controller
 				'end_date' 			=> '9999-12-12 00:00:00',
 				'creation_date' 	=> $tanggal_eksekusi,
 				'created_by' 		=> $this->session->userid,
+				'jenis_bahanbakar' 	=> $bahanbakar
     		);
+
 			$this->M_fleetmerkkendaraan->setFleetMerkKendaraan($data);
 			$header_id = $this->db->insert_id();
 
@@ -275,6 +278,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 			$produsenKendaraan 	= 	strtoupper($this->input->post('cmbProdusenKendaraan', TRUE));
 			$merkKendaraan 		= 	$this->input->post('txtMerkKendaraanHeader',TRUE);
 			$merkKendaraan 		=	$produsenKendaraan.' - '.$merkKendaraan;
+			$bahanbakar 		= 	$this->input->post('cmbBahanBakar');
 
 			$status_data_user 	=	$this->input->post('CheckAktifUser');
 			$status_data 		=	$this->input->post('CheckAktif');
@@ -291,7 +295,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 				'merk_kendaraan' 	=> $merkKendaraan,
 				'end_date' 			=> $waktu_dihapus,
 				'last_updated' 		=> $waktu_eksekusi,
-				'last_updated_by' 	=> $this->session->userid
+				'last_updated_by' 	=> $this->session->userid,
+				'jenis_bahanbakar'	=> $bahanbakar
     			);
 			$this->M_fleetmerkkendaraan->updateFleetMerkKendaraan($data, $plaintext_string);
 
