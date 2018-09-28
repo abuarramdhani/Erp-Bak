@@ -49,6 +49,7 @@
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
                                                         <th>Model Kendaraan</th>
+                                                        <th>Jenis Bahan Bakar</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -66,6 +67,7 @@
                                                            <a href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
                                                         <td><?php echo $row['merk_kendaraan'] ?></td>
+                                                        <td><?php echo $row['jenis_bahanbakar'] ?></td>
                                                         <td><?php echo $row['waktu_dibuat'] ?></td>
                                                  </tr>
                                                     <?php endforeach; ?>
@@ -82,6 +84,7 @@
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
 												        <th>Model Kendaraan</th>
+                                                        <th>Jenis Bahan Bakar</th>
 												        <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>
@@ -99,6 +102,7 @@
                                                 	       <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMerkKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                         </td>
 												        <td><?php echo $row['merk_kendaraan'] ?></td>
+                                                        <td><?php echo $row['jenis_bahanbakar'] ?></td>
 												        <td><?php echo $row['waktu_dibuat'] ?></td>
                                                         <td><?php echo $row['waktu_dihapus'];?></td>
 											     </tr>

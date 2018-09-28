@@ -43,13 +43,23 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="cmbBahanBakar" class="control-label col-lg-4">Jenis Bahan Bakar</label>
+                                                <div class="col-lg-4">
+                                                    <select class="select select2" data-placeholder="Jenis Bahan Bakar" name="cmbBahanBakar" id="cmbBahanBakar" class="form-control" required style="width: 75%">
+                                                        <option></option>
+                                                        <option value="Solar">Solar</option>
+                                                        <option value="Non Solar">Non Solar</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 											<div class="form-group">
                                                 <label for="txtMerkKendaraanHeader" class="control-label col-lg-4">Merk Kendaraan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Merk Kendaraan" name="txtMerkKendaraanHeader" id="txtMerkKendaraanHeader" class="form-control" required="" />
                                                 </div>
                                             </div>
-
+                                            
                                         </div>
 
                                         <div class="col-lg-12">
