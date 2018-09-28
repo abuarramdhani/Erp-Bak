@@ -28,6 +28,7 @@
                                     foreach ($FleetMerkKendaraan as $headerRow):
                                         $merkKendaraan      =   $headerRow['merk_kendaraan'];
                                         $merkKendaraan      =   explode(' - ', $merkKendaraan);
+                                        $jenis_bahanbakar   =   $headerRow['jenis_bahanbakar'];
                                         $produsenKendaraan  =   $merkKendaraan[0];
                                         if (isset($merkKendaraan[1])) 
                                         {
@@ -63,6 +64,29 @@
                                                 <label for="txtMerkKendaraanHeader" class="control-label col-lg-4">Merk Kendaraan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Merk Kendaraan" name="txtMerkKendaraanHeader" id="txtMerkKendaraanHeader" class="form-control" value="<?php if(isset($modelKendaraan)){echo $modelKendaraan;} ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cmbBahanBakar" class="control-label col-lg-4">Jenis Bahan Bakar</label>
+                                                <div class="col-lg-4">
+                                                    <select class="select select2" data-placeholder="Jenis Bahan Bakar" name="cmbBahanBakar" id="cmbBahanBakar" class="form-control" required style="width: 75%">
+                                                        <option></option>
+                                                        <?php
+                                                            $bbm = array("Solar","Non Solar");
+                                                            foreach ($bbm as $bahanbakar) 
+                                                            {
+                                                                $status = '';
+                                                                if (strtolower($bahanbakar)==strtolower($jenis_bahanbakar))
+                                                                {
+                                                                    echo $status = 'selected';
+                                                                }
+                                                                echo '  <option value="'.$bahanbakar.'" '.$status.'>
+                                                                        '.$bahanbakar.'
+                                                                        </option>';
+                                                            }
+                                                        ?>
+                                                        
+                                                    </select>
                                                 </div>
                                             </div>
 
