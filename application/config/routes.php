@@ -544,6 +544,12 @@ $route['CateringManagement/DetailUrutanJdwl/Create'] 	= 'CateringManagement/Setu
 $route['CateringManagement/DetailUrutanJdwl/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Edit/$1/$2';
 $route['CateringManagement/DetailUrutanJdwl/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Delete/$1/$2';
 
+//-----------------------------------Catering Management -Penjadwalan-----------------------------------------------//
+$route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering';
+$route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
+
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 
@@ -1783,13 +1789,26 @@ $route['Warehouse'] 						= 'Warehouse/C_Index';
 $route['Warehouse/Transaction/Spb'] 		= 'Warehouse/MainMenu/C_Transaction';
 $route['Warehouse/Ajax/Spb']		 		= 'Warehouse/Ajax/C_Ajax/getSPB';
 
-//---------------------------------------------------------- P2K3 -----------------------------------------------------------//
-$route['P2K3'] = 'P2K3/C_P2K3';
-$route['P2K3/Order'] = 'P2K3/MainMenu/C_Order';
-$route['P2K3/Order/(:any)'] = 'P2K3/MainMenu/C_Order/$1';
-$route['P2K3/Order/(:any)/(:any)'] = 'P2K3/MainMenu/C_Order/$1/$2';
-$route['P2K3/Order/(:any)/(:any)/(:any)'] = 'P2K3/MainMenu/C_Order/$1/$2/$3';
-// $route['P2K3/Order/list_all'] = 'P2K3/MainMenu/C_Order/listAll';
+//------------------------------------------------Waste Management Seksi------------------------------------------------//
+$route['WasteManagementSeksi'] 	= 'WasteManagementSeksi/C_WasteManagementSeksi';
+$route['WasteManagementSeksi/InputKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_inputkirim';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1/$2';
+$route['WasteManagementSeksi/InputKirimLimbah/(:any)/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_inputkirim/$1/$2/$3';
+
+$route['WasteManagementSeksi/InfoKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_infokirim';
+$route['WasteManagementSeksi/InfoKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1';
+$route['WasteManagementSeksi/InfoKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1/$2';
+
+//------------------------------------ System Integration ----------------------------------------//
+$route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
+$route['SystemIntegrationKaizenGenerator/Submit/getItem'] = 'SystemIntegration/MainMenu/Submit/C_Submit/getItem';
+
+
+//--------------------------------------------------- Ceatak Tanda Terima BPJS -----------------------------------//
+$route['MasterPekerja/TanTerBPJS'] 		= 'MasterPekerja/CetakBPJS/C_Index';
+$route['MasterPekerja/TanTerBPJS/(:any)'] = 'MasterPekerja/CetakBPJS/C_Index/$1';
+$route['MasterPekerja/TanTerBPJS/(:any)/(:any)'] = 'MasterPekerja/CetakBPJS/C_Index/$1/$2';
 
 //---------------------------------------------------------- P2K3adm -----------------------------------------------------------//
 $route['p2k3adm'] = 'P2K3/P2K3Admin/C_P2K3Admin';
