@@ -1789,6 +1789,14 @@ $route['Warehouse'] 						= 'Warehouse/C_Index';
 $route['Warehouse/Transaction/Spb'] 		= 'Warehouse/MainMenu/C_Transaction';
 $route['Warehouse/Ajax/Spb']		 		= 'Warehouse/Ajax/C_Ajax/getSPB';
 
+ //---------------------------------------------------------- P2K3 -----------------------------------------------------------//
+ $route['P2K3'] = 'P2K3/C_P2K3';
+ $route['P2K3/Order'] = 'P2K3/MainMenu/C_Order';
+ $route['P2K3/Order/(:any)'] = 'P2K3/MainMenu/C_Order/$1';
+ $route['P2K3/Order/(:any)/(:any)'] = 'P2K3/MainMenu/C_Order/$1/$2';
+ $route['P2K3/Order/(:any)/(:any)/(:any)'] = 'P2K3/MainMenu/C_Order/$1/$2/$3';
+ // $route['P2K3/Order/list_all'] = 'P2K3/MainMenu/C_Order/listAll';
+
 //------------------------------------------------Waste Management Seksi------------------------------------------------//
 $route['WasteManagementSeksi'] 	= 'WasteManagementSeksi/C_WasteManagementSeksi';
 $route['WasteManagementSeksi/InputKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_inputkirim';
