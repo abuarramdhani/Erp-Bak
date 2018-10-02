@@ -25,6 +25,31 @@ $(document).ready(function(){
 	$('#tblweekly').dataTable();
 	$('#tblHasilMnt').dataTable();
 
+	$('.ict-lokasi').select2({
+	allowClear: false,
+	searching: true,
+	placeholder: "Pilih Lokasi",
+	ajax: 
+	{
+		url: baseurl+'MonitoringICT/DataServer/cek_lokasi',
+		dataType: 'json',
+		type: 'GET',
+		delay: 500,
+		data: function (params){
+			return {
+				term: params.term,
+			}
+		},
+		processResults: function(data) {
+			return {
+				results: $.map(data, function(obj){
+					return {id: obj.sc_ruang_server_id, text: obj.sc_ruang_server_id+" - "+obj.ruang_server_name};
+				})
+			};
+		}
+	}
+});
+
 });
 
 function btnInpMont(){
@@ -53,3 +78,8 @@ function ajaxGetHasil(th, base){
     });
 }
 
+$(document).ready(function() {
+  $('#tb_ictserver').DataTable( {
+    "pagingType": "full_numbers"
+  } );
+} );
