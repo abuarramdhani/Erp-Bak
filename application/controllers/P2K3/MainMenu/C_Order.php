@@ -334,7 +334,13 @@ class C_Order extends CI_Controller
 					for ($a=0; $a < $ttl_kolom ; $a++) { 
 						$ttl_req	+= $this->input->post("numJumlah[$a][$i]") * $this->input->post("pkjJumlah[$a][$i]");
 						$jumlah = $this->input->post("numJumlah[$a][$i]");
+						// if (empty($jumlah)) {
+						// 	$jumlah = 0;
+						// }
 						$jumlah2x = $this->input->post("pkjJumlah[$a][$i]");
+						// if (empty($jumlah2x)) {
+						// 	$jumlah2x = 0;
+						// }
 						$jumlah1[] = $jumlah;
 						$jumlah2[] = $jumlah2x;
 						// $d = $this->input->post("pkjJumlah[$a][$i]");
@@ -362,6 +368,9 @@ class C_Order extends CI_Controller
 									'jml_umum'		=>	$kebutuhan,
 									'desc'			=> 	$keterangan,
 									);
+								if ($total < 1) {
+									echo "<script type='text/javascript'>alert('Jumlah order tidak boleh 0');</script>";
+								}else{
 							$this->M_order->update_kebutuhan_detail($lines,$id_kebutuhan_detail);
 	//=============================================k3.k3_kebutuhan_pekerja=======================================
 							$jml_apd 						= implode(',',$jumlah1) ;
@@ -381,6 +390,7 @@ class C_Order extends CI_Controller
 								);
 								
 						$this->M_order->update_kebutuhan_pekerja($tbl_pekerja,$id_kebutuhan_detail);
+						}
 					}
 
 	//===============================================k3.k3_log===================================================
@@ -395,7 +405,8 @@ class C_Order extends CI_Controller
 							$this->M_order->history($history);
 							// header("location:javascript://history.go(-1)");
 							if ($data['approveString']  == 'f'){
-								$this->list_order();
+								// $this->list_order();
+								redirect('P2K3/Order/list_order/');
 							}else{
 							redirect('P2K3/Order/listPerSie/'.$sie);
 							}

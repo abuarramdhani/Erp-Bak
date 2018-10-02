@@ -81,7 +81,7 @@
                                                                                     <td>
                                                                                         <div class="form-group" style="width: 155px;">
                                                                                             <div class="col-lg-12">
-                                                                                                <select class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
+                                                                                                <select required class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
                                                                                                     <option></option>
                                                                                                 </select>
                                                                                             </div>
@@ -102,14 +102,14 @@
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="1" step="1" />
+                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="0"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="1" step="1" />
+                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="0"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -121,7 +121,7 @@
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
                                                                                             <input type="hidden" name="jmlpekerjaan[]" value="<?php echo $i;?>">
-                                                                                            <input type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="1" step="1" />
+                                                                                            <input required type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="0" step="0" value="0"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row text-right" style="margin-right: 12px">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+                                            <a href="<?php echo base_url('P2K3/Order/list_order'); ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
                                             &nbsp;&nbsp;
                                             <button type="submit" class="btn btn-primary btn-lg btn-rect" onclick="test()">Tambah Data</button>
                                         </div>

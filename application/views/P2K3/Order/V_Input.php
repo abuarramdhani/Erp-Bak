@@ -55,9 +55,9 @@
                                                         <div class="tab-pane active">
                                                             <div class="panel panel-default">
                                                                 <div class="panel-heading" style="height: 55px;">Lines of Input Order
-                                                                        <button type="button" class="btn btn-warning pull-right" id="btn-smfilter" data-toggle="modal" data-target="#exampleModal">Reset</button>
+                                                                        <button type="button" class="btn btn-warning pull-right" id="btn-smfilter" data-toggle="modal" data-target="#exampleModalapd">Reset</button>
                                                                          <!-- Modal -->
-                                                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                            <div class="modal fade" id="exampleModalapd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                               <div class="modal-dialog" role="document">
                                                                                 <div class="modal-content">
                                                                                   <div class="modal-header">
@@ -112,7 +112,7 @@
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                                <select class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
+                                                                                                <select required class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
                                                                                                     <option><?php echo $key['item']?></option>
                                                                                                 </select>
                                                                                             </div>
@@ -133,14 +133,14 @@
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="1" step="1" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" />
+                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="1" step="1" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" />
+                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -152,7 +152,7 @@
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
                                                                                             <input type="hidden" name="jmlpekerjaan[]" value="<?php echo $i;?>">
-                                                                                            <input type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="1" step="1" value="<?php echo $key['jml_umum'];?>" />
+                                                                                            <input required type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="0" step="0" value="<?php echo $key['jml_umum'];?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
