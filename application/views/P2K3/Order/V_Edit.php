@@ -38,7 +38,12 @@
                                                             <div class="panel panel-default">
                                                                 <div class="panel-heading" style="height: 50px;">Lines of Edit Order</div>
                                                                 <div class="panel-body" style="overflow-x: auto">
-                                                                    <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover" style="font-size:12px; position: center; overflow-x: auto; table-layout: auto; width: 2000px; max-width: 3000px">
+                                                                    <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover" style="font-size:12px; position: center; overflow-x: auto; table-layout: auto; width: <?php if (count($daftar_pekerjaan) > 5) {
+                                                                        echo "3000px";
+                                                                    }else{
+                                                                        echo "2000px";
+                                                                    }
+                                                                     ?>">
                                                                             <thead>
                                                                                 <tr class="bg-primary">
                                                                                     <th style="text-align:center; width:30px; vertical-align: middle;">No</th>
@@ -68,7 +73,7 @@
                                                                                     <td>
                                                                                         <div class="form-group" style="width: 155px;">
                                                                                             <div class="col-lg-12">
-                                                                                                <select class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
+                                                                                                <select required class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
                                                                                                     <option><?php echo $key['item']?></option>
                                                                                                 </select>
                                                                                             </div>
@@ -89,14 +94,14 @@
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="1" step="1" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" />
+                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="1" step="1" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" />
+                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -108,7 +113,7 @@
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
                                                                                             <input type="hidden" name="jmlpekerjaan[]" value="<?php echo $i;?>">
-                                                                                            <input type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="1" step="1" value="<?php echo $key['jml_umum'];?>" />
+                                                                                            <input required type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="0" step="0" value="<?php echo $key['jml_umum'];?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
