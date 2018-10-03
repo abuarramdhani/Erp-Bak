@@ -129,10 +129,10 @@ class M_Order extends CI_Model
 
     public function ambil_data()
     {
-        $query = $this->db->query('select *
-                                from k3.k3_kebutuhan
-                                where extract(month from create_timestamp) = extract(month from current_timestamp)
-                                and extract(year from create_timestamp) = extract(year from current_timestamp)');
+        $query = $this->db->query('select * from k3.k3_kebutuhan kb
+                                    join k3.k3_kebutuhan_detail kd on kb.id_kebutuhan = kd.id_kebutuhan 
+                                    where extract(month from kb.create_timestamp) = extract(month from current_timestamp)
+                                    and extract(year from kb.create_timestamp) = extract(year from current_timestamp)');
         // $this->erp->select('*');
         // $this->erp->from('k3.k3_kebutuhan');
         // $this->erp->where('extract(month from create_timestamp) = extract(month from current_timestamp)');
