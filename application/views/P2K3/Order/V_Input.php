@@ -43,7 +43,7 @@
                                         
                                             <div class="col-md-3">
                                                 <div class="input-group">
-                                                    <input class="form-control p2k3-daterangepickersingledate"  autocomplete="off" type="text" name="k3_periode" id="k3_periode" style="width: 200px" placeholder="Masukkan Periode" value=""/>
+                                                    <input readonly class="form-control"  autocomplete="off" type="text" name="k3_periode" id="" style="width: 200px" placeholder="Masukkan Periode" value="<?php echo date('Y-m-d'); ?>"/>
                                                 </div>
                                             </div>
                                         </div>

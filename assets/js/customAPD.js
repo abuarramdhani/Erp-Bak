@@ -2,11 +2,16 @@ $("#group_add").click(function(e){
   e.preventDefault();
   $('.apd-select2').last().select2("destroy");
   $('.multiinput').last().clone().appendTo('#tb_InputKebutuhanAPD tbody');
-  $("tr:last .form-control").val("");
-  var idsekarang = Number($('tr:last input#txtKodeItem').attr('data-id'));
-  idsekarang+=1;
-  $('tr:last td#nomor').html(idsekarang);
-  $('tr:last input#txtKodeItem').attr('data-id', idsekarang);
+  $("tr:last .form-control").val("").end();
+  // var idsekarang = Number($('tr:last input#txtKodeItem').attr('data-id'));
+  var nomorr = Number($('#tb_InputKebutuhanAPD tr:last').find('input#txtKodeItem').attr('data-id'));
+  // var tez = $('tr:last input#txtKodeItem').attr('data-id');
+
+  nomorr = nomorr+1;
+  // alert(nomorr);
+  // alert(tez);
+  $('#tb_InputKebutuhanAPD tr:last td#nomor').html(nomorr);
+  $('#tb_InputKebutuhanAPD tr:last input#txtKodeItem').attr('data-id', nomorr);
   $('.apd-select2').select2({
     ajax:
     {
