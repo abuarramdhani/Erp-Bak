@@ -102,7 +102,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function getInvoiceById($id)
     {
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT * FROM ap.ap_invoice_purchase_order aipo, ap.ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id and ami.invoice_id = $id ";
         // print_r($query);exit();
         $runQuery = $oracle->query($query);
@@ -111,14 +111,14 @@ class M_monitoringinvoice extends CI_Model {
 
      public function getInvoiceByPoId($id)
     {
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT * FROM ap.ap_invoice_purchase_order aipo, ap.ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id AND aipo.invoice_id = $id";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
 
     public function savePoNumber($po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$inv_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "INSERT INTO ap.ap_invoice_purchase_order
                     (po_number, lppb_number, shipment_number,
                     received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
@@ -128,7 +128,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "INSERT INTO ap.ap_monitoring_invoice
                     (invoice_number, invoice_date, invoice_amount,
                     tax_invoice_number, vendor_number, vendor_name)
@@ -162,7 +162,7 @@ class M_monitoringinvoice extends CI_Model {
 
 
     public function showInvoice(){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
@@ -181,7 +181,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function getUnitPrice($invoice_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT unit_price , qty_invoice 
                   FROM ap.ap_invoice_purchase_order
                     WHERE invoice_id = $invoice_id";
@@ -190,7 +190,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function deleteInvoice($invoice_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query1 = "DELETE 
                     FROM ap.ap_invoice_purchase_order
                     WHERE invoice_id = '$invoice_id' ";
@@ -203,7 +203,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showEditList1($invoice_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT invoice_id invoice_id, 
                     po_number po_number,
                     lppb_number lppb_number,
@@ -222,7 +222,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showEditList2($invoice_id){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -235,7 +235,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function saveEditInvoice1($invoice_id,$po_number,$lppb_number,$shipment_number,$received_date,$item_description,$qty_receipt,$qty_reject,$currency,$unit_price,$qty_invoice){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "UPDATE ap.ap_invoice_purchase_order 
         SET po_number = '$po_number',
             lppb_number = '$lppb_number',
@@ -255,7 +255,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$vendor_number)
     {
-       $oracle = $this->load->database('erp',true);
+       $oracle = $this->load->database('erp_db',true);
        $query2 = "UPDATE ap.ap_monitoring_invoice 
                   SET invoice_number = '$invoice_number', 
                     invoice_date = '$invoice_date',
@@ -268,7 +268,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function saveBatchNumberById($id, $num, $date){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "UPDATE ap.ap_monitoring_invoice
                     SET purchasing_batch_number = '$num',
                     last_status_purchasing_date = '$date'
@@ -278,7 +278,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function checkNumBatchExist()
     {
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT max(purchasing_batch_number) batch_num
                   FROM ap.ap_monitoring_invoice LIMIT 1";
         $query = $oracle->query($sql);
@@ -286,7 +286,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showListSubmitted(){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date
                 FROM ap.ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
@@ -297,14 +297,14 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function getJmlInvPerBatch($batch){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT purchasing_batch_number FROM ap.ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $query = $oracle->query($sql);
         return $query->num_rows();
     }
 
     public function showDetailPerBatch($batch){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -318,7 +318,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showInvoiceInDetail($invoice_id){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT invoice_id invoice_id,
                          vendor_name vendor_name,
                          invoice_number invoice_number, 
@@ -334,7 +334,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showInvoiceInDetail2($invoice_id){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT invoice_id invoice_id,
                         po_number po_number,
                         lppb_number lppb_number,
@@ -362,7 +362,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function checkInvoiceDate($uw){
-        $erp = $this->load->database('erp',true);
+        $erp = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_date
                 FROM ap.ap_monitoring_invoice
                 WHERE invoice_date = '$uw' limit 1";
@@ -371,7 +371,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function checkInvoiceDatecount($uw){
-        $erp = $this->load->database('erp',true);
+        $erp = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_date
                 FROM ap.ap_monitoring_invoice
                 WHERE invoice_date = '$uw'";
@@ -495,7 +495,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function exportExcelMonitoringInvoice($dateFrom,$dateTo){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
