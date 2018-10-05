@@ -16,6 +16,8 @@ class M_Dtmasuk extends CI_Model
 					where extract(month from kb.create_timestamp) = '$tgl' 
 					and extract (year from kb.create_timestamp) = '$tahun'
 					order by es.section_name asc";
+		// echo $query;
+		// exit();
     	$result = $this->db->query($query);
     	return $result->result_array();
     }
