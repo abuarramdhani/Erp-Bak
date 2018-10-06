@@ -1,83 +1,10 @@
 			</div>
 		</div>
-		<?php 
-			// $this->config->load('database',true);
-
-			$arrayserver = array(
-				'default' => 'database.quick.com',
-				'oracle' => '192.168.7.1:1521/PROD'
-							);
-		?>
-		  <div class="modal fade" id="modal-server" role="dialog" aria-labelledby="modal-server" aria-hidden="true">
-                          <div class="modal-dialog" style="min-width:800px;">
-                            <div class="modal-content">
-                              <div class="modal-header bg-info">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title text-center" id="myModalLabel"><b> Server ERP Status </b></h4>
-                              </div>
-                              <div class="modal-body" >
-                                <center>
-                                  <table class="table table-bordered table-striped table-hovered">
-                                  		<thead>
-                                  			<tr>
-	                                  			<th>No.</th>
-	                                  			<th>Connection Name</th>
-	                                  			<th>Standart</th>
-	                                  			<th>Actual</th>
-	                                  			<th>Status</th>
-                                  			</tr>
-                                  		</thead>
-                                  		<tbody>
-                                  			<?php $no =1; $err=0; foreach ($arrayserver as $key => $value) { ?>
-                                  			<tr>
-                                  				<td><?= $no++ ?></td>
-                                  				<td><?= $key ?></td>
-                                  				<td><?= $value ?></td>
-                                  				<td><?php
-                                  						if( !($a  = $this->load->database($key,true))):
-                                  							echo "error load";
-                                  						else:
-												        echo $hasil = $a->hostname;
-												    endif;
-                                  				// $a = $this->config->item($key);
-                                  				// echo $a;
-                                  					?>
-                                  				</td>
-                                  				<td>
-                                  					<center>
-                                  					<?php 
-                                  						if ($value != $hasil) {
-                                  							$err=1;
-                                  						}
-                                  					?>
-                                  					<?= $value == $hasil ? '<b class="fa fa-check-circle text-success"></b>' 
-                                  										 : '<b class="fa fa-times-circle text-danger"></b>' ?>
-                                  					</center>
-                                  				</td>
-                                  			</tr>
-                                  			<?php } ?>
-                                  		</tbody>
-                                  </table>
-                                </center>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
 		
+	   <!-- FOOTER -->
 		<footer class="main-footer" style="margin:0;">
         <div class="pull-right hidden-xs">
-        	<label>Koneksi Server:</label>
-        	<a href="#modal-server" data-toggle="modal">
-        		
-        	<strong> 
-        			<?= $err != 1 ? '<b class="fa fa-check-circle text-success" ></b>'
-        										 : '<b class="fa fa-times-circle text-danger" ></b>' ?>
-        	</strong>
-        	</a>
-        	&nbsp; | &nbsp; Page rendered in <strong>{elapsed_time}</strong> seconds.
+        	Page rendered in <strong>{elapsed_time}</strong> seconds.
 			<strong>Copyright &copy; Quick 2015<?php if(date('Y')>2015){echo '-'.date('Y');};?>.</strong> All rights reserved.
         </div>
 		<b>Version</b> 1.0.0
