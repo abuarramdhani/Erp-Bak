@@ -484,13 +484,13 @@ $route['CateringManagement/DetailUrutanJdwl/Create'] 	= 'CateringManagement/Setu
 $route['CateringManagement/DetailUrutanJdwl/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Edit/$1/$2';
 $route['CateringManagement/DetailUrutanJdwl/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Delete/$1/$2';
 //-----------------------------------Catering Management -Penjadwalan-----------------------------------------------//
-$route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering';
-$route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
-$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2/$3';
-$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2/$3';
-$route['CateringManagement/PenjadwalanCatering/Read/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Read/$1/$2';
-$route['CateringManagement/PenjadwalanCatering/Distribusi/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Distribusi/$1';
-$route['CateringManagement/PenjadwalanCatering/Distribusi/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Distribusi/$1/$2';
+$route['CateringManagement/PenjadwalanCatering'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering';
+$route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2/$3';
+$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2/$3';
+$route['CateringManagement/PenjadwalanCatering/Read/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Read/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Distribusi/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Distribusi/$1';
+$route['CateringManagement/PenjadwalanCatering/Distribusi/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Distribusi/$1/$2';
 
 $route['CateringManagement/PenjadwalanOtomatis'] = 'CateringManagement/Penjadwalan/C_PenjadwalanOtomatis';
 $route['CateringManagement/PenjadwalanOtomatis/Proses'] = 'CateringManagement/Penjadwalan/C_PenjadwalanOtomatis/Proses';
