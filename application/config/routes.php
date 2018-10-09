@@ -486,8 +486,23 @@ $route['CateringManagement/DetailUrutanJdwl/Delete/(:any)/(:any)'] 	= 'CateringM
 //-----------------------------------Catering Management -Penjadwalan-----------------------------------------------//
 $route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering';
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
-$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
-$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2/$3';
+$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2/$3';
+$route['CateringManagement/PenjadwalanCatering/Read/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Read/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Distribusi/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Distribusi/$1';
+$route['CateringManagement/PenjadwalanCatering/Distribusi/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Distribusi/$1/$2';
+
+$route['CateringManagement/PenjadwalanOtomatis'] = 'CateringManagement/Penjadwalan/C_PenjadwalanOtomatis';
+$route['CateringManagement/PenjadwalanOtomatis/Proses'] = 'CateringManagement/Penjadwalan/C_PenjadwalanOtomatis/Proses';
+$route['CateringManagement/PenjadwalanOtomatis/Finish/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanOtomatis/Finish/$1';
+
+$route['CateringManagement/PengajuanLibur'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur';
+$route['CateringManagement/PengajuanLibur/Create/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Create/$1';
+$route['CateringManagement/PengajuanLibur/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Create/$1/$2';
+$route['CateringManagement/PengajuanLibur/Read/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Read/$1';
+$route['CateringManagement/PengajuanLibur/Edit/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Edit/$1/$2';
+$route['CateringManagement/PengajuanLibur/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Delete/$1/$2';
+
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 $route['PresenceManagement/Monitoring'] 			= 'PresenceManagement/MainMenu/C_Monitoring/index';
@@ -502,6 +517,8 @@ $route['PresenceManagement/Monitoring/(:any)/(:any)/(:any)']	= 'PresenceManageme
 		$route['PresenceManagement/MonitoringPresensiPengaturan'] 				=	'PresenceManagement/C_MonitoringPresensiPengaturan';
 		$route['PresenceManagement/MonitoringPresensiPengaturan/(:any)'] 		=	'PresenceManagement/C_MonitoringPresensiPengaturan/$1';
 		$route['PresenceManagement/MonitoringPresensiPengaturan/(:any)/(:any)'] =	'PresenceManagement/C_MonitoringPresensiPengaturan/$1/$2';
+		$route['PresenceManagement/CekData'] 					= 'PresenceManagement/MainMenu/C_CekData';
+		$route['PresenceManagement/CekData/Detail/(:any)'] 			= 'PresenceManagement/MainMenu/C_CekData/Detail/$1';
 //	}
 //---------------------------------Payroll Management----------------------------------
 $route['PayrollManagement/RiwayatPotDanaPensiun'] = 'PayrollManagement/IuranPensiun/C_RiwayatPotDanaPensiun';
