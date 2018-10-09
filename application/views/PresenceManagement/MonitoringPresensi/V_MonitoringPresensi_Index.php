@@ -52,7 +52,7 @@
 											<td><?php echo $device['device_sn'];?></td>
 											<td><?php echo $device['device_name'];?></td>
 											<td><?php echo $device['lokasi_kerja'];?></td>
-											<td><?php $output= array();exec("ping -n 1 ".$device['device_ip']." && exit",$output,$returnval);if($returnval != 0){echo "<label class='label label-danger'>Tidak Terhubung</label>";}else{ if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){echo "<label class='label label-success'>Terhubung</label>";}else{ echo "<label class='label label-danger'>Tidak Terhubung</label>";}}
+											<td><?php $output= array();exec("ping -c 1 ".$device['device_ip']." && exit",$output,$returnval);if($returnval != 0){echo "<label class='label label-danger'>Tidak Terhubung</label>";}else{ if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){echo "<label class='label label-success'>Terhubung</label>";}else{ echo "<label class='label label-danger'>Tidak Terhubung</label>";}}
 											?></td>
 											<td class="text-center">
 												<a type="button" class="btn btn-info btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List">
