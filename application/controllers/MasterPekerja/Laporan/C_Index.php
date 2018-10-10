@@ -754,7 +754,7 @@ class C_Index extends CI_Controller {
 		// $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 0);
-		$pdf->Output($filename, 'I');
+		$pdf->Output($filename, 'D');
 
 		// $this->load->view('MasterPekerja/Laporan/V_Pdf', $dataLKK1_all);
 	}
