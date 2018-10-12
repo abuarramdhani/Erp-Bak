@@ -57,6 +57,7 @@ class M_kasiepembelian extends CI_Model {
                 reason = '$reason'
     			WHERE invoice_id = '$id' ";
     	$run = $erp->query($sql);
+        return $sql;
     }
 
     public function inputActionAndReason2($status,$action_date){
@@ -64,6 +65,7 @@ class M_kasiepembelian extends CI_Model {
     	$sql = "INSERT INTO ap.ap_invoice_action_detail (purchasing_status,action_date)
     			VALUES ('$status','$action_date') ";
     	$run = $erp->query($sql);
+        return $sql;
     }
 
     public function btnSubmitToPurchasing($id,$finance_status,$finance_date){
