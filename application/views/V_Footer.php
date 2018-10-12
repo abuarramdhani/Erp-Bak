@@ -119,6 +119,7 @@
 	<script src="<?php echo base_url('assets/js/customLKKK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWH.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWMS.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customIMO.js');?>" type="text/javascript"></script>
     <script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
