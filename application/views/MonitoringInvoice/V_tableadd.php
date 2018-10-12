@@ -9,7 +9,8 @@
 		<input type="hidden" value="<?= $po_num['TRANSACTION'] ?>" name="received_date">
 		<input type="hidden" value="<?= $po_num['DESCRIPTION'] ?>" name="item_description">
 		<input type="hidden" value="<?= $po_num['ITEM_ID'] ?>" name="item_id">
-		<input type="hidden" value="<?= $po_num['RECEIVED'] ?>" name="qty_receipt">
+		<input type="hidden" value="<?= $po_num['QTY_RECEIPT'] ?>" name="qty_receipt">
+		<input type="hidden" value="<?= $po_num['QUANTITY_BILLED'] ?>" name="quantity_billed">
 		<input type="hidden" value="<?= $po_num['REJECTED'] ?>" name="qty_reject">
 		<input type="hidden" value="<?= $po_num['CURRENCY'] ?>" name="currency">
 		<input type="hidden" value="<?= $po_num['UNIT_PRICE'] ?>" name="unit_price">
@@ -28,10 +29,11 @@
 					<th class="text-center">Receive Date</th>
 					<th class="text-center">Item Desc</th>
 					<th class="text-center">Item Code</th>
-					<th class="text-center">Qty Receipt</th>
+					<th class="text-center">Qty Amount</th>
+					<th class="text-center">Qty Billed</th>
 					<th class="text-center">Qty Reject</th>
 					<th class="text-center">Currency</th>
-					<th class="text-center">Unit Price</th>
+					<th class="text-center" style="display: none">Unit Price</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,10 +51,11 @@
 					<td class="text-center"> <?php echo $po_num['TRANSACTION']?> </td>
 					<td class="text-center"> <?php echo $po_num['DESCRIPTION']?> </td>
 					<td class="text-center"> <?php echo $po_num['ITEM_ID']?> </td>
-					<td class="text-center"> <?php echo $po_num['RECEIVED']?> </td>
+					<td class="text-center"> <?php echo $po_num['QTY_RECEIPT']?> </td>
+					<td class="text-center"> <?php echo $po_num['QUANTITY_BILLED']?> </td>
 					<td class="text-center"> <?php echo $po_num['REJECTED']?> </td>
 					<td class="text-center"> <?php echo $po_num['CURRENCY']?> </td>
-					<td class="text-center" id="unit_price"> <?php echo $po_num['UNIT_PRICE']?> </td> 
+					<td class="text-center" id="unit_price" style="display: none"> <?php echo $po_num['UNIT_PRICE']?> </td> 
 				</tr>
 				<?php $no++;} ?>
 			</tbody>
@@ -65,7 +68,7 @@
 		<?php if ($hasil != '' || $hasil2 != '') { 
 			$message = '';
 			if ($hasil != '') {
-				$message .= " TRANSACTION DATE NYA $hasil  ";
+				$message .= " STATUS DATE NYA $hasil  ";
 			}
 			if ($hasil2 != '') {
 				$message .= " QUANTITY_BILLED NYA $hasil2  ";

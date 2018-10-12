@@ -43,7 +43,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<?php echo $invoice_detail[0]['invoice_amount']?>
+											<?php echo round($invoice_detail[0]['invoice_amount'])?>
 										</td>
 									</tr>
 									<tr>
@@ -96,7 +96,7 @@
 						</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span><?php echo $po_amount ?></span>
+							<label>Po Amount : </label><span><?php echo round($po_amount) ?></span>
 						</div>
 						<div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$batch_number)?>">

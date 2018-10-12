@@ -6,7 +6,7 @@
 	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
 </style>
 
-<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/addPoNumber') ?>">
+<form method="post" action="<?php echo base_url("AccountPayables/MonitoringInvoice/Invoice/addPoNumber2/".$invoice[0]['invoice_id']) ?>">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -14,7 +14,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Add Invoice</b></span>
+							<span><b>Add Po Number</b></span>
 						</div>
 					</div>
 				</div>
@@ -26,35 +26,18 @@
 								<table id="tbInvoice" >
 									<tr>
 										<td>
-											<span><label>Vendor</label></span>
+											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-		                     				<select id="slcVendor" name="vendor_number" class="form-control select2 select2-hidden-accessible" style="width:320px;">
-												<option value="" > Nama Vendor </option>
-												<?php foreach ($allVendor as $av) { ?>
-												<option value="<?php echo $av['VENDOR_ID'] ?>"><?php echo $av['VENDOR_NAME'] ?></option>
-												<?php } ?>
-
-											</select>
-		                     			</td>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['invoice_number']?>" readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control idDateInvoice" id="invoice_dateid" size="40" name="invoice_date"  placeholder="Invoice Date">
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<span><label>Invoice Number</label></span>
-										</td>
-										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" placeholder="No. Invoice" id="invoice_numbergenerate">
-										</td>
-										<td>
-											<button type="button" class="btn btn-primary" id="btnGenerate">Generate</button>
+						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['invoice_date']))?>"  name="invoice_date" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -62,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control invoice_amount" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amount" >
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['invoice_amount'])?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -70,45 +53,53 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" placeholder="Tax Invoice Number" >
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['tax_invoice_number']?>" readonly>
 										</td>
 									</tr>
+									<tr>
+										<td>
+											<span><label>Vendor Name</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['vendor_name']?>" readonly>
+		                     			</td>
+									</tr>
 								</table>
-						<div class="box box-primary box-solid">
-							<div class="box-body">
-								<div class="box-header with-border">
-								PO Data
-								</div>
-								<div class="col-md-12">
-									<div class="col-md-12">
-										<div class="col-md-6">
-											<table id="filter" class="col-md-12" style="margin-bottom: 20px">
-												<tr>
-													<td>
-														<span class="text-center"><label>Po Number</label></span>
-													</td>
-												<td>
-														<div class="col-md-12" id="divPoNumber">
-															<div class="col-md-12">
-																<input name="slcPoNumberInv" id="slcPoNumberMonitoring" class="form-control" style="width:100%;">
-																</input>
-															</div>
-														</div>
-													</td>
-													<td>
-														<div><button class="btn btn-md btn-success pull-left" type="button" id="btnSearchPoNumber">Search</button>
-														</div>
-													</td>
-												</tr>
-											</table>
+								<div class="box box-primary box-solid">
+									<div class="box-body">
+										<div class="box-header with-border">
+										PO Data
+										</div>
+										<div class="col-md-12">
+											<div class="col-md-12">
+												<div class="col-md-6">
+													<table id="filter" class="col-md-12" style="margin-bottom: 20px">
+														<tr>
+															<td>
+																<span class="text-center"><label>Po Number</label></span>
+															</td>
+														<td>
+																<div class="col-md-12" id="divPoNumber">
+																	<div class="col-md-12">
+																		<input name="slcPoNumberInv" id="slcPoNumberMonitoring" class="form-control" style="width:100%;">
+																		</input>
+																	</div>
+																</div>
+															</td>
+															<td>
+																<div><button class="btn btn-md btn-success pull-left" type="button" id="btnSearchPoNumber">Search</button>
+																</div>
+															</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+											<div id="tablePoLines">
+												
+											</div>
 										</div>
 									</div>
-									<div id="tablePoLines">
-										
-									</div>
 								</div>
-							</div>
-						</div>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow:auto;">
 							<table class="table table-bordered table-hover table-striped text-center" style="min-width:200%;">
@@ -142,10 +133,12 @@
 							<label>Po Amount : </label><span id="AmountOtomatis"></span>
 						</div>
 						<div class="col-md-2 pull-right">
-							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>">
+							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$invoice[0]['invoice_id'])?>">
 							<button type="button" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Cancel</button>
 							</a>
+							<a href="">
 							<button id="btnMISave" class="btn btn-success pull-right" style="margin-top: 10px" >Save</button>
+							</a>
 						</div>
 					</div>
 				</div>

@@ -45,8 +45,8 @@
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($f['invoice_date']))?></td>
 											<td><?php echo $f['tax_invoice_number']?></td>
-											<td class="inv_amount"><?php echo $f['invoice_amount']?></td>
-											<td class="po_amount"><?php echo $f['po_amount']?></td>
+											<td class="inv_amount"><?php echo round($f['invoice_amount'])?></td>
+											<td class="po_amount"><?php echo round($f['po_amount'])?></td>
 											<td><?php echo $f['last_status_purchasing_date']?></td>
 											<td><?php echo $f['last_status_finance_date']?></td>
 										</tr>

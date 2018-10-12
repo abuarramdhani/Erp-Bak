@@ -68,42 +68,42 @@ $(document).ready(function(){
 					alert(message);
 				}
 
-				$('#btnAddPoNumber').click(function(){
+				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
-				    'received_date','item_description','item_id','qty_receipt','qty_reject','currency','unit_price']
-					$('.addMonitoringInvoice').each(function () {
-							var html ='';
-				           if (this.checked) {
-				           		var id_num = $(this).val();
+				    'received_date','item_description','item_id','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
+						$('.addMonitoringInvoice').each(function () {
+								var html ='';
+					           if (this.checked) {
+					           		var id_num = $(this).val();
 
-								html += '<tr id="row-1">';
-				           		$('tr#'+id_num).each(function(){
-				           			num++;
-				           			var col=0;
-				           			$(this).find('td').each(function(){
-				           				col++;
-				           				if (col==1) {
-				           					html+='<td>'+num+'</td>'
-				           				}else{
-				           					html+='<td><input name="'+inputName[(col-2)]+'[]" type="text" class="form-control '+inputName[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>'
-				           				}
-				           			});
-				           		})
-				               html+='<td><input required type="text" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
-				               html+='<td><button type="button"class="del_row btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
-				               html+='</tr>'; 
-				               $('#tbodyPoDetailAll').append(html);
-				           }
-					});
-					$('.del_row').click(function(){
-					    var cnf = confirm('Yakin untuk menghapusnya ?');
-					    var ths = $(this);
-					    if (cnf) {
-					        ths.parent('td').parent('tr').remove();
-					    }else{
-					        alert('Hapus dibatalkan');
-					    }
-					});
+									html += '<tr id="row-1">';
+					           		$('tr#'+id_num).each(function(){
+					           			num++;
+					           			var col=0;
+					           			$(this).find('td').each(function(){
+					           				col++;
+					           				if (col==1) {
+					           					html+='<td>'+num+'</td>'
+					           				}else{
+					           					html+='<td><input name="'+inputName[(col-2)]+'[]" type="text" class="form-control '+inputName[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>'
+					           				}
+					           			});
+					           		})
+					               html+='<td><input required type="text" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
+					               html+='<td><button type="button"class="del_row btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
+					               html+='</tr>'; 
+					               $('#tbodyPoDetailAll').append(html);
+					           }
+						});
+						$('.del_row').click(function(){
+						    var cnf = confirm('Yakin untuk menghapusnya ?');
+						    var ths = $(this);
+						    if (cnf) {
+						        ths.parent('td').parent('tr').remove();
+						    }else{
+						        alert('Hapus dibatalkan');
+						    }
+						});
 				});
 			}
 		});
@@ -121,6 +121,7 @@ $(document).on('input click', '.qty_invoice, .del_row', function(){
 	var total=0;
 	var invAmount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
 	invAmount = invAmount.substring(0, invAmount.length-2);
+	Math.round(invAmount);
 
 	$('.qty_invoice').each(function() {
 		var qty = $(this).val();
@@ -129,7 +130,7 @@ $(document).on('input click', '.qty_invoice, .del_row', function(){
 		var rowtotal = qty*price;
 		total+=Number(rowtotal);
 	});
-	$('#AmountOtomatis').html(total);
+	$('#AmountOtomatis').html(Math.round(total));
 
 	if (total == invAmount) {
 			$('#invoice_amount, #AmountOtomatis').css("background-color","white");
@@ -144,15 +145,18 @@ $('#btnHapus').click(function(){
 	alert('Yakin untuk menghapusnya ?');
 });
 
-$('table#tbListInvoice,#tbListBatchPembelian,#poLinesTable,#detailUnprocessed,#finishInvoice,#processedinvoice tbody tr').each(function(){
-		var po_amount = $(this).find('#po_amount').text();
-		var inv_amount = $(this).find('#inv_amount').text();
-		if (Number(po_amount) == Number(inv_amount)) {
-			$(this).find('#po_amount').css("background-color","white");
-			$(this).find('#inv_amount').css("background-color","white");
+
+$('table#tbListInvoice tbody tr,#tbListBatchPembelian tbody tr,#poLinesTable tbody tr,#detailUnprocessed tbody tr,#finishInvoice tbody tr,#processedinvoice tbody tr').each(function(){
+		var po_amount = $(this).find('.po_amount').text();
+		var inv_amount = $(this).find('.inv_amount').text();
+
+
+		if (po_amount == inv_amount) {
+			$(this).find('.po_amount').css("background-color","white");
+			$(this).find('.inv_amount').css("background-color","white");
 		}else{
-			$(this).find('#po_amount').css("background-color","red").css("color","white");
-			$(this).find('#inv_amount').css("background-color","red").css("color","white");
+			$(this).find('.po_amount').css("background-color","red").css("color","white");
+			$(this).find('.inv_amount').css("background-color","red").css("color","white");
 		}
 	});
 
@@ -196,5 +200,10 @@ function clickExcel(){
 		$('#tarik_data').slideUp();
 	});
 }
+
+
+$('.RejectByKasiePurc').click(function(){
+	alert('NOT OK = ALASAN HARUS DI ISI');
+});
 
 

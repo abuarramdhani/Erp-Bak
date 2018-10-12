@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['invoice_amount']?>" id="invoice_amount" required="required">
+											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['invoice_amount'])?>" id="invoice_amount" required="required">
 										</td>
 									</tr>
 									<tr>
@@ -69,6 +69,13 @@
 
 											</select>
 		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/addListPo/'.$invoice[0]['invoice_id']);?>">
+											<button type="button" class="btn btn-sm btn-primary">Tambah PO  <i class="glyphicon glyphicon-plus" style="width: 12px; height: 12px;"></i></button>
+											</a>
+										</td>
 									</tr>
 								</table>
 						<div class="box box-primary box-solid">
@@ -131,7 +138,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span id="AmountOtomatis"><?php echo $po_amount ?></span>
+										<label>Po Amount : </label><span id="AmountOtomatis"><?php echo round($po_amount) ?></span>
 									</div>
 								</div>
 							</div>

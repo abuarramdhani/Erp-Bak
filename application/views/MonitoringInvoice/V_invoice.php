@@ -34,16 +34,17 @@
 								<table id="tbListInvoice" class="table text-center dataTable">
 									<thead>
 										<tr class="bg-primary">
-											<th class="text-center">No</th>
-											<th class="text-center">Submit Checking</th>
-											<th class="text-center">Action</th>
+											<th width="5%" class="text-center">No</th>
+											<th width="5%" class="text-center">Submit Checking</th>
+											<th width="10%" class="text-center">Action</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Po Detail</th>
-											<th class="text-center">Status</th>
+											<th width="5%"class="text-center">PPN</th>
+											<th width="5%"class="text-center">Status</th>
 											<th class="text-center">Reason</th>
 										</tr>
 									</thead>
@@ -59,18 +60,19 @@
 										</td>
 										<td>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['invoice_id'])?>">
-											<button type="button" class="btn btn-success">Edit</button>
+											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
 											</a>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['invoice_id'])?>">
-											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger">Delete</button>
+											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
 											</a>
 										</td>
 										<td><?php echo  $inv['invoice_number'] ?></td>
 										<td> <?php echo date('d-M-Y',strtotime($inv['invoice_date'])) ?></td>
 										<td><?php echo  $inv['tax_invoice_number']?></td>
-										<td id="inv_amount" class="inv_amount"><?php echo $inv['invoice_amount'] ?></td>
-										<td id="po_amount" class="po_amount"><?php echo  $inv['po_amount']?></td>
+										<td id="inv_amount" class="inv_amount"><?php echo round($inv['invoice_amount']) ?></td>
+										<td id="po_amount" class="po_amount"><?php echo round($inv['po_amount'])?></td>
 										<td><?php echo  $inv['status_lppb']?></td>
+										<td><?php echo  $inv['ppn']?></td>
 										<td><?php echo  $inv['status']?></td>
 										<td><?php echo  $inv['reason']?></td>
 									</tr>
