@@ -38,7 +38,7 @@
 						<td style="text-align:center"><?php echo $cl['jenis_order']?></td>
 						<td style="text-align:left"><?php echo $cl['keterangan']?></td>
 				</tr>
-			<? $no++;}; ?>
+			<?php $no++;}; ?>
 		</table>
 	</div>
 	<div style="bottom:0;width:100%">

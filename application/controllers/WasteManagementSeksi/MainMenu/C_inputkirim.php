@@ -74,6 +74,7 @@ class C_inputkirim extends CI_Controller
 
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
+		$data['Pekerja'] = $this->M_kirim->getEmployeeCodeName();
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
@@ -89,7 +90,8 @@ class C_inputkirim extends CI_Controller
 				'id_kirim' => $id['0']['id'],
 				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
 				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
-				'jenis_limbah' => $this->input->post('txtJenisLimbah'), 
+				'jenis_limbah' => $this->input->post('txtJenisLimbah'),
+				'pengirim' => $this->input->post('txtPengirimLimbah'), 
 				'kondisi' => $this->input->post('txtKondisi'), 
 				'jumlah' => $this->input->post('txtJumlah'), 
 				'keterangan' => $this->input->post('txtKeterangan'), 
@@ -194,6 +196,7 @@ class C_inputkirim extends CI_Controller
 		$seksi = $limbah['0']['seksi'];
 		$jumlah = $limbah['0']['jumlah'];
 		$tanggal = $limbah['0']['tanggal'];
+		$waktu = $limbah['0']['waktu'];
 
 		
 
@@ -234,6 +237,12 @@ class C_inputkirim extends CI_Controller
 					<td>Tanggal Kirim</td>
 					<td> : </td>
 					<td>'.$tanggal.'</td>
+					</tr>
+					<tr>
+					<tr>
+					<td>Waktu Kirim</td>
+					<td> : </td>
+					<td>'.$waktu.'</td>
 					</tr>
 					<tr>
 					<td>Seksi</td>

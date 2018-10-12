@@ -23,7 +23,9 @@ class M_kirim extends Ci_Model
                         (select limbah_satuan 
                         from ga.ga_limbah_satuan limsat 
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah) satuan,
-                        limkir.status_kirim 
+                        limkir.status_kirim,
+                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
+                        noind_pengirim 
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah 
                     where limkir.kodesie_kirim = left('$seksi',7) 
@@ -51,6 +53,14 @@ class M_kirim extends Ci_Model
         return $result->result_array();
     }
 
+    public function getEmployeeCodeName(){
+        $query = "select employee_code,employee_name
+                    from er.er_employee_all
+                    where location_code in ('01','02') and resign = '0' order by employee_code";
+        $result = $this->db->query($query);
+        return $result->result_array();
+    }
+
     public function getLimJenis(){
         $query2 = "select limjen.id_jenis_limbah, 
                     limjen.jenis_limbah,
@@ -75,13 +85,15 @@ class M_kirim extends Ci_Model
         $tanggal = $data['tanggal']; 
         $waktu =$data['waktu']; 
         $jenis = $data['jenis_limbah']; 
+        $pengirim = $data['pengirim'];
         $seksi = $this->session->kodesie;
         $kondisi = $data['kondisi']; 
         $jumlah = $data['jumlah']; 
         $ket = $data['keterangan'];
         $tangwak = $tanggal." ".$waktu;
+        $user = $this->session->user;
 
-        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,bocor,jumlah_kirim,ket_kirim,status_kirim) values('$id','$jenis','$tangwak',left('$seksi',7),'$kondisi','$jumlah','$ket','3');";
+        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,bocor,jumlah_kirim,ket_kirim,status_kirim,created_by,noind_pengirim) values('$id','$jenis','$tangwak',left('$seksi',7),'$kondisi','$jumlah','$ket','3','$user','$pengirim');";
 
         $this->db->query($query);
     }
@@ -97,7 +109,9 @@ class M_kirim extends Ci_Model
                         limkir.bocor,
                         limkir.jumlah_kirim,
                         limkir.ket_kirim,
-                        limsat.limbah_satuan
+                        limsat.limbah_satuan,
+                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
+                        noind_pengirim 
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah 
                     inner join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
@@ -128,6 +142,7 @@ class M_kirim extends Ci_Model
     public function getLimKirimMin($id){
         $query = "select limjen.jenis_limbah,
                     cast(limkir.tanggal_kirim as date) tanggal,
+                    cast(limkir.tanggal_kirim as time) waktu,
                     (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
                     concat(limkir.jumlah_kirim,' ',limsat.limbah_satuan) jumlah
                     from ga.ga_limbah_kirim limkir

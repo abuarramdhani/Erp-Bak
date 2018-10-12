@@ -57,7 +57,25 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
+												<label for="txtPengirimLimbah" class="control-label col-lg-4">Pengirim Limbah</label>
+												<div class="col-lg-4">
+													<div class="col-lg-5">
+														<select class="select select2" name="txtPengirimLimbah" id="txtPengirimLimbah" data-placeholder="Noind" style="width:100%;" required>
+															<option value=""></option>
+															<?php 
+																foreach ($Pekerja as $key) {
+																	echo "<option value='".$key['employee_code']."' data-name='".$key['employee_name']."' >".$key['employee_code']."</option>";
+																}
+															?>
+														</select>
+													</div>
+													<div class="col-lg-7">
+														<input type="text" name="txtNamaPengirim" id="txtNamaPengirim" class="form-control" disabled="" placeholder="Nama">
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="txtSeksi" class="control-label col-lg-4">Seksi Asal Limbah</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
 														<input type="text" name="txtSeksi" class="form-control" value="<?php echo $Seksi['0']['section_name']; ?>" disabled>

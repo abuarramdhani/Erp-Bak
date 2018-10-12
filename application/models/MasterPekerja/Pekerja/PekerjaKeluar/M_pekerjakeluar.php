@@ -6,7 +6,7 @@ class M_pekerjakeluar extends CI_Model {
 	{
 		parent:: __construct();
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
-		$this->erp 			=	$this->load->database('erp', TRUE);
+		$this->erp 			=	$this->load->database('erp_db', TRUE);
 		$this->daerah 		=	$this->load->database('daerah', TRUE);
 		
 	}

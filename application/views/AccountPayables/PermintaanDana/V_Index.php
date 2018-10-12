@@ -102,7 +102,7 @@
 																<div class="col-lg-6">
 																	<div class="input-group">
 																		<span class="input-group-addon" id="basic-addon1">Rp</span>
-																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtCashLimit" id="txtCashLimit" value="100000000">
+																		<input type="text" class="form-control input-sm permintaanDanaMoneyFormat" placeholder="amount" aria-describedby="basic-addon1" name="txtCashLimit" id="txtCashLimit" value="100000000">
 																	</div>
 																</div>
 															</td>
@@ -113,7 +113,7 @@
 																<div class="col-lg-6">
 																	<div class="input-group">
 																		<span class="input-group-addon" id="basic-addon1">Rp</span>
-																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtCashBalance" id="txtCashBalance" value="0">
+																		<input type="text" class="form-control input-sm permintaanDanaMoneyFormat" placeholder="amount" aria-describedby="basic-addon1" name="txtCashBalance" id="txtCashBalance" value="0">
 																	</div>
 																</div>
 															</td>
@@ -124,7 +124,7 @@
 																<div class="col-lg-6">
 																	<div class="input-group">
 																		<span class="input-group-addon" id="basic-addon1">Rp</span>
-																		<input type="text" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtLackAmount" id="txtLackAmount" value="0">
+																		<input type="text" class="form-control input-sm permintaanDanaMoneyFormat" placeholder="amount" aria-describedby="basic-addon1" name="txtLackAmount" id="txtLackAmount" value="0">
 																		<input type="hidden" class="form-control input-sm" placeholder="amount" aria-describedby="basic-addon1" name="txtLackAmountHidden" id="txtLackAmountHidden" value="0">
 																	</div>
 																</div>
@@ -153,7 +153,7 @@
 																	<div class="col-lg-6">
 																		<div class="input-group">
 			  																<span class="input-group-addon" id="basic-addon1">Rp</span>
-			  																<input type="text" class="form-control input-sm expAmount" data-id="1" placeholder="amount" aria-describedby="basic-addon1" name="txtExpenseAmount[]" id="txtExpenseAmount" value="0">
+			  																<input type="text" class="form-control input-sm expAmount permintaanDanaMoneyFormat" data-id="1" placeholder="amount" aria-describedby="basic-addon1" name="txtExpenseAmount[]" id="txtExpenseAmount" value="0">
 																		</div>
 																	</div>
 																	<div class="col-lg-6">
@@ -168,7 +168,7 @@
 														<div class="col-lg-6">
 															<div class="input-group">
 																<span class="input-group-addon" id="basic-addon1">Rp</span>
-																<input type="text" class="form-control input-sm" data-id="1" placeholder="amount" aria-describedby="basic-addon1" name="txtExpenseTotal" id="txtExpenseTotal" value="0">
+																<input type="text" class="form-control input-sm permintaanDanaMoneyFormat" data-id="1" placeholder="amount" aria-describedby="basic-addon1" name="txtExpenseTotal" id="txtExpenseTotal" value="0">
 															</div>
 														</div>
 													</div>
@@ -181,7 +181,7 @@
 													<div class="col-lg-6">
 														<div class="input-group">
 															<span class="input-group-addon" id="basic-addon1">Rp</span>
-															<input type="text" class="form-control input-sm" data-id="1" placeholder="amount" aria-describedby="basic-addon1" name="txtTotalDemand" id="txtTotalDemand" value="0">
+															<input type="text" class="form-control input-sm permintaanDanaMoneyFormat" data-id="1" placeholder="amount" aria-describedby="basic-addon1" name="txtTotalDemand" id="txtTotalDemand" value="0">
 														</div>
 													</div>
 												</div>
@@ -190,7 +190,7 @@
 										</div>
 									</fieldset>
 									<div class="box-footer">
-										<button type="submit" class="btn btn-success btn-sm" id="btnBalanceReport">Create Report</button>
+										<button type="button" class="btn btn-success btn-sm" id="btnBalanceReport">Create Report</button>
 					            	</div>
 					            </form>
 							</div>
@@ -204,7 +204,14 @@
 
 <script type="text/javascript">
 
+formatPermintaanDanaMoneyFormat();
+
+$(document).on('input','.permintaanDanaMoneyFormat',function(){
+	formatPermintaanDanaMoneyFormat();
+});
+
 $(document).on('click', '.add-fund-row', function(){
+	deformatPermintaanDanaMoneyFormat()
 	var id = $(this).attr('data-id');
   	var countLines = $('#tblDemandForFunds tbody tr').length;
   	var clone = $('#tblDemandForFunds tbody tr.clone:last').clone().find('input, select, textarea').val('').end();
@@ -218,10 +225,12 @@ $(document).on('click', '.add-fund-row', function(){
       		});
     	}
   	});
-  	$('#tblDemandForFunds tbody').append(clone);
+	$('#tblDemandForFunds tbody').append(clone);
+	formatPermintaanDanaMoneyFormat();
 });
 
 $(document).on('click', '.del-fund-row', function () {
+	deformatPermintaanDanaMoneyFormat();
   	var id = $(this).attr('data-id');
   	var amount = $('.expAmount[data-id="'+id+'"]').val();
   	var subtotal = $('#txtExpenseTotal').val();
@@ -247,11 +256,12 @@ $(document).on('click', '.del-fund-row', function () {
 			$('#txtTotalDemand').val(Math.abs(total - amount));
 	  	}
   	}
-
+	formatPermintaanDanaMoneyFormat();
   	return false;
 });
 
 $(document).on('keyup', '#txtExpenseAmount', function (){
+	deformatPermintaanDanaMoneyFormat();
     var total = 0;
     var lack = parseInt($('#txtLackAmountHidden').val());
 
@@ -268,16 +278,17 @@ $(document).on('keyup', '#txtExpenseAmount', function (){
 	} else {
 		$('#txtTotalDemand').val(Math.abs(total + lack));
 	}
+	formatPermintaanDanaMoneyFormat();
 });
 
 $(document).on('click', '#btnBalanceDate', function(){
+	deformatPermintaanDanaMoneyFormat();
 	var date = $('#tanggal_awal').val();
 	var plafon = $('#txtCashLimit').val();
 
 	var mydate = new Date(date);
 	var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][mydate.getMonth()];
 	var str = mydate.getDate() + ' ' + month + ' ' + mydate.getFullYear();
-
 	$('#hdnBalanceDate').val(date);
 	$('#BalanceDate').text(str);
 
@@ -296,9 +307,31 @@ $(document).on('click', '#btnBalanceDate', function(){
 	    	} else {
 	    		$('#txtTotalDemand').val(Math.abs(plafon-data));
 	    		$('#saldoType').text('KEKURANGAN');
-	    	}
+			}
+			formatPermintaanDanaMoneyFormat();
 	    },
   	});
-})
+});
 
+$(document).on('click','#btnBalanceReport',function(){
+	deformatPermintaanDanaMoneyFormat();
+	$('#formDemand').submit();
+	formatPermintaanDanaMoneyFormat();
+});
+
+function formatPermintaanDanaMoneyFormat() {
+	$('.permintaanDanaMoneyFormat').each(function(){
+		var erpMoneyFormatval = $(this).val();
+		var fixerpMoneyFormatval = erpMoneyFormatval.replace(/[\D]/g, '').toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+		$(this).val(fixerpMoneyFormatval);
+	});
+};
+
+function deformatPermintaanDanaMoneyFormat() {
+	$('.permintaanDanaMoneyFormat').each(function(){
+		var resetval = $(this).val();
+		var erpResetFormatval = resetval.replace(/[\D]/g, '');
+		$(this).val(erpResetFormatval);
+	});
+};
 </script>

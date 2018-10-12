@@ -350,3 +350,52 @@ $(document).ready(function(){
 		  $('#ReCalculate').click();
 		},15);
 	});
+
+
+	//Setup
+
+	$(function(){
+		$('#txtAkhirJamDatang').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+		$('#txtAwalJamDatang').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+	  	$('#txtJamDatang').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+	  	$('#txtJamPesan').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+	  	$('.dataTable-TmpMakan').DataTable( {
+	      	dom: 'frtp',
+	    });
+	});
+
+	//Penjadwalan
+
+	$(function(){
+		$('#txtperiodePenjadwalanCatering').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+		$('#txtperiodePengajuanLibur').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+
+		
+		
+	});
+
+	

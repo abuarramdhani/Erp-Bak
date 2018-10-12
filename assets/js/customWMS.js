@@ -6,6 +6,11 @@ $(document).ready(function(){
 		$('#txtSatuan').val(satuan);
 	});
 
+	$('#txtPengirimLimbah').on('change', function(){
+		var nama = $(this).find(':selected').attr('data-name');
+		$('#txtNamaPengirim').val(nama);
+	});
+
 	$('#txtValueLim').on('change', function(){
 		var nilai = $(this).find(':selected').text();
 		$('#txtHiddenValue').val(nilai);
@@ -182,6 +187,8 @@ function showChart(){
 				$('#chartInfoLimbahBar').hide();
 				// $('#colorInfo').text(warna);
 				pieChart('#chartInfoLimbahPie',berat,warna,warna2, jenis);
+				
+				
 			}
 
 		});
