@@ -375,3 +375,27 @@ $(document).ready(function(){
 	      	dom: 'frtp',
 	    });
 	});
+
+	//Penjadwalan
+
+	$(function(){
+		$('#txtperiodePenjadwalanCatering').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+		$('#txtperiodePengajuanLibur').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+
+		
+		
+	});
+
+	

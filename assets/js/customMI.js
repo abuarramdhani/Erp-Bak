@@ -1,0 +1,200 @@
+$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
+        "pagingType": "full_numbers"
+} );
+
+$('#btnSubmitChecking').click(function(){
+	var jml = 0;
+	var arrId = [];
+	$('input[name="mi-check-list[]"]').each(function(){
+		if ($(this).parent().hasClass('checked')) {
+			jml = jml +1;
+			valueId = $(this).val();
+			arrId.push(valueId);
+			var hasil = arrId.join();
+			$('input[name="idYangDiPilih"]').val(hasil);
+		}
+	});
+	$('#jmlChecked').text(jml);
+	$('#content1').slideDown();
+	$('#content2').slideUp();
+});
+
+
+function chkAllAddMonitoringInvoice() {
+	if ($('.chkAllAddMonitoringInvoice').is(':checked')) {
+		$('.addMonitoringInvoice').each(function () {
+			$(this).prop('checked',true);
+		});
+	}else{
+		$('.addMonitoringInvoice').each(function () {
+			$(this).prop('checked',false);
+		});
+	};
+}
+
+
+
+$(document).ready(function(){
+	var num=0;
+
+	$('.inv_amount').moneyFormat();
+	$('.po_amount').moneyFormat();
+
+	$("input[name='tax_invoice_number']").attr({ maxLength : 19 }).keyup(function() {
+    	$(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{2})(\d)+$/, "$1.$2-$3.$4"));
+	});
+
+	$('#slcVendor').val($('#slcVendor').attr('value')).trigger('change');
+	
+	$('#invoice_amount').change(function(){$('#invoice_amount').moneyFormat();});
+
+	$('#btnSearchPoNumber').click(function(){
+		$('#tablePoLines').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /><p style='color:#575555;'>Searching Data</p></center><br />");
+     	
+		var po_no = $('#slcPoNumberMonitoring').val();
+
+		$.ajax({
+			type: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/getPoNumber/"+po_no,
+			// dataType: "json",
+			success: function (response) {
+				// console.log(response);
+				
+				$('#tablePoLines').html(response);
+				$('#poLinesTable').DataTable();
+
+				var message = $('#messageGbs').val();
+				if (message != '') {
+					alert(message);
+				}
+
+				$('#btnAddPoNumber').click(function(){
+				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
+				    'received_date','item_description','item_id','qty_receipt','qty_reject','currency','unit_price']
+					$('.addMonitoringInvoice').each(function () {
+							var html ='';
+				           if (this.checked) {
+				           		var id_num = $(this).val();
+
+								html += '<tr id="row-1">';
+				           		$('tr#'+id_num).each(function(){
+				           			num++;
+				           			var col=0;
+				           			$(this).find('td').each(function(){
+				           				col++;
+				           				if (col==1) {
+				           					html+='<td>'+num+'</td>'
+				           				}else{
+				           					html+='<td><input name="'+inputName[(col-2)]+'[]" type="text" class="form-control '+inputName[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>'
+				           				}
+				           			});
+				           		})
+				               html+='<td><input required type="text" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
+				               html+='<td><button type="button"class="del_row btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
+				               html+='</tr>'; 
+				               $('#tbodyPoDetailAll').append(html);
+				           }
+					});
+					$('.del_row').click(function(){
+					    var cnf = confirm('Yakin untuk menghapusnya ?');
+					    var ths = $(this);
+					    if (cnf) {
+					        ths.parent('td').parent('tr').remove();
+					    }else{
+					        alert('Hapus dibatalkan');
+					    }
+					});
+				});
+			}
+		});
+	});
+
+	$('.idDateInvoice').datepicker({
+		format: 'dd-M-yyyy',
+		autoclose: true,
+	});
+
+});
+
+
+$(document).on('input click', '.qty_invoice, .del_row', function(){
+	var total=0;
+	var invAmount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
+	invAmount = invAmount.substring(0, invAmount.length-2);
+
+	$('.qty_invoice').each(function() {
+		var qty = $(this).val();
+		var rownum = $(this).attr('row-num')
+		var price = $('.unit_price[row-num="'+rownum+'"]').val();
+		var rowtotal = qty*price;
+		total+=Number(rowtotal);
+	});
+	$('#AmountOtomatis').html(total);
+
+	if (total == invAmount) {
+			$('#invoice_amount, #AmountOtomatis').css("background-color","white");
+		}else{
+		 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
+		}
+	
+});
+
+
+$('#btnHapus').click(function(){
+	alert('Yakin untuk menghapusnya ?');
+});
+
+$('table#tbListInvoice,#tbListBatchPembelian,#poLinesTable,#detailUnprocessed,#finishInvoice,#processedinvoice tbody tr').each(function(){
+		var po_amount = $(this).find('#po_amount').text();
+		var inv_amount = $(this).find('#inv_amount').text();
+		if (Number(po_amount) == Number(inv_amount)) {
+			$(this).find('#po_amount').css("background-color","white");
+			$(this).find('#inv_amount').css("background-color","white");
+		}else{
+			$(this).find('#po_amount').css("background-color","red").css("color","white");
+			$(this).find('#inv_amount').css("background-color","red").css("color","white");
+		}
+	});
+
+function prosesInvMI(th){
+var invoice_id = $(th).attr('data-id');
+var proses = $(th).attr('value');
+
+var request = $.ajax ({
+		url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/prosesAkuntansi/'+invoice_id,
+		data: {
+				proses : proses
+				},
+		type: 'POST',
+		dataType: 'html', 
+	});
+	$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
+	
+	request.done(function(output){
+		$("#gambarloading").parent().html('<button class="btn btn-success">Success</button>');
+	});
+}
+
+$('#btnGenerate').click(function(){
+	var invoice_date = $('#invoice_dateid').val();
+
+	$.ajax({
+		type: 'POST',
+		url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/GenerateInvoice/",
+		data: {
+			invoice_date : invoice_date,
+		},
+		success: function(response){
+			$('#invoice_numbergenerate').val('');
+			$('#invoice_numbergenerate').val(response);
+		}
+	});
+});
+
+function clickExcel(){
+	$('#clickExcel').click(function(){
+		$('#tarik_data').slideUp();
+	});
+}
+
+

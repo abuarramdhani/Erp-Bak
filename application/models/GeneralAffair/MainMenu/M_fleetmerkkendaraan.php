@@ -13,6 +13,7 @@ class M_fleetmerkkendaraan extends CI_Model
     	if ($id === FALSE) {
             $ambilMerkKendaraan     = " select  merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
                                                 merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                merkkdrn.jenis_bahanbakar,
                                                 to_char(merkkdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat
                                         from    ga.ga_fleet_merk_kendaraan as merkkdrn
                                         where   merkkdrn.end_date = '9999-12-12 00:00:00';";
@@ -20,6 +21,7 @@ class M_fleetmerkkendaraan extends CI_Model
     	} else {
             $ambilMerkKendaraan     = " select  merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
                                                 merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                merkkdrn.jenis_bahanbakar,
                                                 to_char(merkkdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                 to_char(merkkdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                         from    ga.ga_fleet_merk_kendaraan as merkkdrn
@@ -34,6 +36,7 @@ class M_fleetmerkkendaraan extends CI_Model
     {
         $ambilMerkKendaraanDeleted  = " select  merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
                                                 merkkdrn.merk_kendaraan as merk_kendaraan,
+                                                merkkdrn.jenis_bahanbakar,
                                                 to_char(merkkdrn.creation_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                 to_char(merkkdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                         from    ga.ga_fleet_merk_kendaraan as merkkdrn
