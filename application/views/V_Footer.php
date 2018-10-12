@@ -123,6 +123,7 @@
 	<script src="<?php echo base_url('assets/js/customHLCM.js');?>" type="text/javascript"></script>
     	<script src="<?php echo base_url('assets/js/customMI.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customSI.js');?>" type="text/javascript"></script>
+	 <script src="<?php echo base_url('assets/js/customIMO.js');?>" type="text/javascript"></script>
 <script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
