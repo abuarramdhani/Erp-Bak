@@ -10,7 +10,8 @@
             <button class="btn btn-success pull-left"><a style="color: white" href="<?php echo base_url('MasterPekerja/TanTerBPJS/export_excel')?>">Export Excel</a></button>
             <button class="btn btn-default pull-right text-muted" ><a class="text-muted" data-toggle="modal" data-target="#modalCetakBPJS">Tambah Nama</a></button>
           </div>
-          <div class="form-group">
+          <br>
+          <div>
             <table id="tbl_datacetak" class="table table-hover table-bordered table-responsive">
               <thead>
                 <tr>
