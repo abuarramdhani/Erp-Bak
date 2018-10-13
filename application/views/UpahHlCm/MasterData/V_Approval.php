@@ -38,7 +38,7 @@
 								</td>
 								<td><a href="<?php echo base_url('HitungHlcm/Approval/editData'.'/'.$id);?>"><span class="glyphicon glyphicon-edit"></span></a></td>
 							</tr>
-							<?
+							<?php
 							$no++;
 						}
 
