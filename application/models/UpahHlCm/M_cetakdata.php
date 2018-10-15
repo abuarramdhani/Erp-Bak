@@ -28,6 +28,11 @@ class M_cetakdata extends CI_Model {
 		$data = $this->erp->query($query);
 		return $data->result_array();
 	}
+	public function ambilPenanggungjawab()
+	{
+		$data = $this->erp->get('hlcm.hlcm_approval');
+		return $data->result_array();
+	}
 
 	
 	
