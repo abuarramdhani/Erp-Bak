@@ -59,8 +59,9 @@
 								<label class="control-label">No Induk</label>
 							</div>
 							<div class="col-lg-5">
-								<select name="noindukpekerja" id="noinduk_pekerja" class="form-control"
-								value="<?php echo $data[0]['noind']?>"></select>
+								<select name="noindukpekerja" id="noinduk_pekerja" class="form-control">
+									<option selected="selected"><?php echo $data[0]['noind']?></option>
+								</select>
 							</div>
 						</div>
 					</div>

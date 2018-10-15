@@ -100,9 +100,8 @@ class C_Approval extends CI_Controller {
 	}
 	public function ambilpekerja()
 	{
-		$lokasi_kerja = $this->input->get('lokasi_kerja');
 		$pekerja = strtoupper($this->input->get('term'));
-		$data = $this->M_upahphl->pekerjaApproval($pekerja,$lokasi_kerja);
+		$data = $this->M_upahphl->pekerjaApproval($pekerja);
 
 		echo json_encode($data);
 	}

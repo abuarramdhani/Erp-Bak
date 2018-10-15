@@ -109,7 +109,6 @@ $(function () {
 			type: "GET",
 			data: function (params) {
 				return {term: params.term,
-				lokasi_kerja: $("#lokasikerja_select").val(),
 				};
 			},
 			processResults: function (data) {
@@ -362,4 +361,4 @@ $(function () {
 });
 
 
-
+ 
