@@ -83,7 +83,11 @@ class C_TandaTerima extends CI_Controller {
 		$tgl = date('F-Y',strtotime($tanggalawal));
 
 		$data['pekerja'] = $this->M_cetakdata->ambilKepalaTukang();
+		$data['pj']  = $this->M_cetakdata->ambilPenanggungjawab();
 
+		// echo "<pre>";
+		// print_r($data['pj']);
+		// exit();
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'F4', 8, '', 5, 5, 5, 15, 10, 20);
 		$filename = 'Tanda_Terima-'.$tgl.'.pdf';
