@@ -64,9 +64,9 @@ class M_upahphl extends CI_Model {
 		$data = $this->personalia->query($query);
 		return $data->result_array();
 	}
-	public function pekerjaApproval($pekerja,$lokasi_kerja)
+	public function pekerjaApproval($pekerja)
 	{
-		$query = "select tp.noind,tp.nama, (select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) from hrd_khs.tpribadi tp where (tp.noind like '%$pekerja%' or tp.nama like '%$pekerja%') and tp.lokasi_kerja='$lokasi_kerja' order by tp.noind";
+		$query = "select tp.noind,tp.nama, (select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) from hrd_khs.tpribadi tp where (tp.noind like '%$pekerja%' or tp.nama like '%$pekerja%') order by tp.noind";
 		$data = $this->personalia->query($query);
 		return $data->result_array();
 	}
