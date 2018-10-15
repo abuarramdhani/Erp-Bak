@@ -49,6 +49,7 @@
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
                                                         <th>Kendaraan</th>
+                                                        <th>Lokasi Kerja</th>
                                                         <th>Tanggal KIR</th>
                                                         <th>Periode KIR</th>
                                                         <th>Biaya</th>
@@ -70,6 +71,7 @@
                                                            <a href="<?php echo base_url('GeneralAffair/FleetKir/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus data ini?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
+                                                        <td><?php echo $row['lokasi'] ?></td>
                                                         <td><?php echo $row['tanggal_kir'] ?></td>
                                                         <td><?php echo $row['periode_kir'] ?></td>
                                                         <td>Rp<?php echo number_format($row['biaya'],0,",",".") ?></td>

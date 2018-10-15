@@ -35,6 +35,7 @@
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
 												<th>No Kendaraan</th>
+                                                <th>Lokasi Kerja</th>
 												<th>Tanggal Maintenance</th>
 												<th>Maintenance Kategori</th>
 												<th>Nama Bengkel</th>
@@ -56,7 +57,8 @@
                                                 	<a href="<?php echo base_url('GeneralAffair/FleetCetakSpk/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                     <a href="<?php echo base_url('GeneralAffair/FleetCetakSpk/cetakFleetSPK/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data"><span class="fa fa-print fa-2x" target="_blank"></span></a>
                                                 </td>
-												<td><?php echo $row['no_pol'] ?></td>
+                                                <td><?php echo $row['no_pol'] ?></td>
+												<td><?php echo $row['lokasi'] ?></td>
 												<td><?php echo date('d-m-Y H:i:s', strtotime($row['tanggal_maintenance'])) ?></td>
 												<td><?php echo $row['maintenance_kategori'] ?></td>
 												<td><?php echo $row['nama_bengkel'] ?></td>

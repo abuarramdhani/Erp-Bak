@@ -17,6 +17,7 @@ class M_fleetkecelakaan extends CI_Model
             $ambilKecelakaan    = " select  kecelakaan.kecelakaan_id as kode_kecelakaan,
                                             kecelakaan.kendaraan_id as kode_kendaraan,
                                             kdrn.nomor_polisi as nomor_polisi,
+                                            (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                             to_char(kecelakaan.tanggal_kecelakaan, 'DD-MM-YYYY HH24:MI:SS') as tanggal_kecelakaan,
                                             kecelakaan.sebab as sebab,
                                             kecelakaan.biaya_perusahaan as biaya_perusahaan,

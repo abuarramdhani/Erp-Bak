@@ -16,6 +16,7 @@ class M_fleetkir extends CI_Model
             $ambilKIR       = " select  kir.kir_id as kode_kir,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         kir.kendaraan_id as kode_kendaraan,
+                                        (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                         to_char(kir.tanggal_kir, 'DD-MM-YYYY') as tanggal_kir,
                                         concat_ws('<br/>sampai dengan<br/>', to_char(kir.periode_awal_kir, 'DD-MM-YYYY'), to_char(kir.periode_akhir_kir, 'DD-MM-YYYY')) as periode_kir,
                                         kir.biaya as biaya,

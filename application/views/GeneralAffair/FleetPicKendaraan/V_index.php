@@ -59,6 +59,7 @@
                                                         <th>Nomor Polisi</th>
                                                         <th>Jenis Kendaraan</th>
                                                         <th>PIC</th>
+                                                        <th>Lokasi Kerja</th>
                                                         <th class="hidden">Periode</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
@@ -80,6 +81,7 @@
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
                                                         <td><?php echo $row['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $row['pic'] ?></td>
+                                                        <td><?php echo $row['lokasi'] ?></td>
                                                         <td class="hidden"><?php echo $row['periode'] ?></td>
                                                         <td><?php echo $row['waktu_dibuat'] ?></td>
                                                      </tr>
