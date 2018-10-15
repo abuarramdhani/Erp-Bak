@@ -52,6 +52,7 @@
                                                         <th>Nomor Polisi</th>
                                                         <th>Jenis Kendaraan</th>
                                                         <th>Merk Kendaraan</th>
+                                                        <th>Lokasi Kerja</th>
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
                                                         <th>QR CODE</th>
@@ -78,15 +79,35 @@
                                                         <td><?php echo $Kendaraan['nomor_polisi'] ?></td>
                                                         <td><?php echo $Kendaraan['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['merk_kendaraan'] ?></td>
+                                                        <td><?php echo $Kendaraan['lokasi'] ?></td>
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
                                                         <td>
                                                             <img src="<?php echo base_url('assets/upload/qrcodeGA/'.$Kendaraan['nomor_polisi'].'.png') ?>" style="width:50px;height:50px;"/>
                                                             <a href="<?php echo site_url('GeneralAffair/FleetKendaraan/export_qr/'.$encrypted_string.'');?>" target="_blank">Download</a>
                                                         </td>
-                                                        <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_stnk']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
-                                                        <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_bpkb']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
-                                                        <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_kendaraan']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
+                                                        <td>
+                                                            <?php if (empty($Kendaraan['foto_stnk'])) { ?>
+                                                                <label >Belum Ada Foto, Silahkan Upload</label>
+                                                            <?php }else{ ?>
+                                                                <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_stnk']);?>" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                                            <?php } ?>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <?php if (empty($Kendaraan['foto_bpkb'])) { ?>
+                                                                <label>Belum Ada Foto, Silahkan Upload</label>
+                                                            <?php }else{ ?>
+                                                                <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_bpkb']);?>" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                                            <?php } ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if (empty($Kendaraan['foto_kendaraan'])) { ?>
+                                                                <label>Belum Ada Foto, Silahkan Upload</label>
+                                                            <?php }else{ ?>
+                                                                <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$Kendaraan['foto_kendaraan']);?>" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                                            <?php } ?>
+                                                        </td>
                                                         <td><?php echo $Kendaraan['waktu_dibuat'];?></td>
                                                     </tr>
                                                     <?php endforeach; ?>
@@ -133,9 +154,27 @@
 												        <td><?php echo $KendaraanDeleted['merk_kendaraan'] ?></td>
 												        <td><?php echo $KendaraanDeleted['warna_kendaraan'] ?></td>
 												        <td><?php echo $KendaraanDeleted['tahun_pembuatan'] ?></td>
-												        <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$KendaraanDeleted['foto_stnk']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
-												        <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$KendaraanDeleted['foto_bpkb']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
-												        <td><a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$KendaraanDeleted['foto_kendaraan']);?>" target="_blank" class="btn btn-info">Lihat Foto</a></td>
+												        <td>
+                                                            <?php if (empty($Kendaraan['foto_kendaraan'])) { ?>
+                                                                <label>Belum Ada Foto, Silahkan Upload</label>
+                                                            <?php }else{ ?>
+                                                                <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$KendaraanDeleted['foto_stnk']);?>" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                                            <?php } ?>
+                                                        </td>
+												        <td>
+                                                            <?php if (empty($Kendaraan['foto_kendaraan'])) { ?>
+                                                                <label>Belum Ada Foto, Silahkan Upload</label>
+                                                            <?php }else{ ?>
+                                                                <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$KendaraanDeleted['foto_bpkb']);?>" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                                            <?php } ?>
+                                                        </td>
+												        <td>
+                                                            <?php if (empty($Kendaraan['foto_kendaraan'])) { ?>
+                                                                <label>Belum Ada Foto, Silahkan Upload</label>
+                                                            <?php }else{ ?>
+                                                            <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$KendaraanDeleted['foto_kendaraan']);?>" target="_blank" class="btn btn-info">Lihat Foto</a>
+                                                            <?php } ?>
+                                                        </td>
                                                         <td><?php echo $KendaraanDeleted['waktu_dibuat'];?></td>
                                                         <td><?php echo $KendaraanDeleted['waktu_dihapus'];?></td>
 											         </tr>

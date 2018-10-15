@@ -15,6 +15,7 @@ class M_fleetpajak extends CI_Model
     	if ($id === FALSE) {
             $ambilPajak     = " select  pjk.pajak_id as kode_pajak,
                                         kdrn.nomor_polisi as nomor_polisi,
+                                        (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                         pjk.kendaraan_id as kode_kendaraan,
                                         to_char(pjk.tanggal_pajak, 'DD-MM-YYYY') as tanggal_pajak,
                                         concat_ws('<br/>sampai dengan<br/>', to_char(pjk.periode_awal_pajak, 'DD-MM-YYYY'), to_char(periode_akhir_pajak,'DD-MM-YYYY')) as periode_pajak,

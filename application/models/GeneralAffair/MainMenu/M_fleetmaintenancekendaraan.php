@@ -17,6 +17,7 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         mtckendaraan.maintenance_kategori_id as kode_kategori_kendaraan,
                                                         mtckendaraan.kendaraan_id as kode_kendaraan,
                                                         kdrn.nomor_polisi as nomor_polisi,
+                                                        (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                                         to_char(mtckendaraan.tanggal_maintenance, 'DD-MM-YYYY HH24:MI:SS') as tanggal_maintenance,
                                                         mtckendaraan.kilometer_maintenance as kilometer_maintenance,
                                                         mtckategori.maintenance_kategori as kategori_maintenance,

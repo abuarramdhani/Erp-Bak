@@ -23,6 +23,7 @@ class M_fleetpickendaraan extends CI_Model
                                                     when    pic.employee_id is not null and pic.pic_kodesie is null 
                                                         then    concat_ws('<br/>', er.employee_code, er.employee_name)
                                             end as pic,
+                                            (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                             (select jenis_kendaraan from ga.ga_fleet_jenis_kendaraan jenis where jenis.jenis_kendaraan_id = kdrn.jenis_kendaraan_id) jenis_kendaraan,
                                             concat_ws('<br/>sampai dengan<br/>', to_char(pic.dari_periode, 'DD-MM-YYYY'), to_char(pic.sampai_periode,'DD-MM-YYYY')) as periode,
                                             to_char(pic.creation_date,'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,

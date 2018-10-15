@@ -13,6 +13,7 @@ class M_fleetcetakspk extends CI_Model
     	if ($id === FALSE) {
     		$query = $this->db->query("select fcspk.*,
                                                 fkn.nomor_polisi as no_pol,
+                                                (select location_name from er.er_location where location_code = fkn.kode_lokasi_kerja) lokasi,
                                                 fmk.maintenance_kategori as maintenance_kategori,
                                                 fbl.nama_bengkel as nama_bengkel,
                                                 fbl.alamat_bengkel as alamat_bengkel,
