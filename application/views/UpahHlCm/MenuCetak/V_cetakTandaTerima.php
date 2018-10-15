@@ -43,7 +43,7 @@ for ($i=0; $i < 2; $i++) {
 			?>
 		</table>
 		<div style="margin-top: 120px;margin-left: 350px;font-size: 17px; width: 100%;">
-			<label>Yogyakarta, <?php echo date('d-F-Y');?></label>
+			<label>Yogyakarta, <?php echo date('d F Y');?></label>
 		</div>
 		<table style="width: 100%;font-size: 17px;">
 			<tr>
@@ -52,11 +52,59 @@ for ($i=0; $i < 2; $i++) {
 				<td style="text-align: center;">Penanggung Jawab</td>
 			</tr>
 		</table>
-		<table style="margin-top: 50px;font-size: 17px; text-align: center; width: 100%">
+		<table style="margin-top: 50px;font-size: 17px; text-align: center; width: 100%; text-transform: lowercase;">
 			<tr>
-				<td style="width: 30%;text-align: center;">Bambang Yudhosuseno</td>
-				<td style="width: 35%;text-align: center;">Eko Prasetyo Adhi</td>
-				<td><?php if ($i == '0'){echo "Mugiyana";}else{echo "Tukimin PHP";}?></td>
+				<td style="width: 30%;text-align: center;">
+					<?php
+					foreach ($pj as $key) {
+						if ($i == '0') {
+							if ($key['id_status'] == '3' and $key['lokasi_kerja'] == '01') {
+								$nama = strtolower($key['nama']);
+								echo ucwords($nama);
+							}
+						}else {
+							if ($key['id_status'] == '3' and $key['lokasi_kerja'] == '02') {
+								$nama = strtolower($key['nama']);
+								echo ucwords($nama);
+							}
+						} 
+					}
+					?>
+				</td>
+				<td style="width: 35%;text-align: center;">
+					<?php
+					foreach ($pj as $key) {
+						if ($i == '0') {
+							if ($key['id_status'] == '2' and $key['lokasi_kerja'] == '01') {
+								$nama = strtolower($key['nama']);
+								echo ucwords($nama);
+							}
+						}else {
+							if ($key['id_status'] == '2' and $key['lokasi_kerja'] == '02') {
+								$nama = strtolower($key['nama']);
+								echo ucwords($nama);
+							}
+						} 
+					}
+					?>
+				</td>
+				<td>
+					<?php
+					foreach ($pj as $key) {
+						if ($i == '0') {
+							if ($key['id_status'] == '1' and $key['lokasi_kerja'] == '01') {
+								$nama = strtolower($key['nama']);
+								echo ucwords($nama);
+							}
+						}else {
+							if ($key['id_status'] == '1' and $key['lokasi_kerja'] == '02') {
+								$nama = strtolower($key['nama']);
+								echo ucwords($nama);
+							}
+						} 
+					}
+					?>
+				</td>
 			</tr>
 		</table>
 		<table style="font-size: 17px; text-align: center; width: 100%;border-bottom: 1px solid black;">

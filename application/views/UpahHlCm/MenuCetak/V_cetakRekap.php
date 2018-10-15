@@ -66,7 +66,7 @@
 						?>
 					</td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'];?></td>
-					<td style="border: 1px solid black;padding-left: 3px;"><?php echo $total;?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $total;?></td>
 					<td style="border: 1px solid black;padding-left: 2px;">
 						<?php 
 							foreach ($rekap as $ker) {
@@ -102,7 +102,7 @@
 				$jml_tuk = $jml_tuk+1;
 			}
 		}
-		$nom = $jml_tuk+1;
+		$nomor = $jml_tuk+1;
 		foreach ($kom as $key) {
 			$gpokok  = $key['gpokok'];
 			$um		 = $key['um'];
@@ -122,7 +122,7 @@
 			if ($key['lokasi_kerja'] == '01') {
 				?>
 				<tr>
-					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $nom;?></td>
+					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $nomor;?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php ?></td>
 					<td style="border: 1px solid black; text-align: center;">
 						<?php 
@@ -134,7 +134,7 @@
 						?>
 					</td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'];?></td>
-					<td style="border: 1px solid black;padding-left: 3px;"><?php echo $total;?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $total;?></td>
 					<td style="border: 1px solid black;padding-left: 2px;">
 						<?php 
 							foreach ($rekap as $ker) {
@@ -156,7 +156,7 @@
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
 				</tr>
 				<?php
-			$nom++;
+			$nomor++;
 			}
 		}
 		?>
@@ -166,7 +166,7 @@
 		<tr>
 			<td colspan="3"></td>
 			<td style="border: 1px solid black;"><b>TOTAL</b></td>
-			<td style="border: 1px solid black;"><?php echo $total_semua;?></td>
+			<td style="border: 1px solid black;text-align: center;"><?php echo $total_semua;?></td>
 			<td></td>
 			<td colspan="2">Yogyakarta, <?php echo date('d F Y');?></td>
 		</tr>
