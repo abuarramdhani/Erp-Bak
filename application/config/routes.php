@@ -1939,3 +1939,45 @@ $route['InventoryManagement/CreateKIB/search/(:any)'] = 'InventoryKIB/MainMenu/C
 $route['InventoryManagement/CreateKIB/getSubInv'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/getSubInv';
 $route['InventoryManagement/CreateKIB/submitpdf'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/submitpdf';
 $route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf/$1/$2';
+
+
+
+//------------------------------------ Manufacturing Operation ----------------------------------------
+$route['ManufacturingOperationUP2L']								= 'ManufacturingOperationUP2L/C_Index/index';
+$route['ManufacturingOperationUP2L/Core']							= 'ManufacturingOperationUP2L/MainMenu/C_Core';
+$route['ManufacturingOperationUP2L/Core/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Core/$1';
+$route['ManufacturingOperationUP2L/Core/(:any)/(:any)'] 			= 'ManufacturingOperationUP2L/MainMenu/C_Core/$1/$2';
+
+$route['ManufacturingOperationUP2L/Mixing']							= 'ManufacturingOperationUP2L/MainMenu/C_Mixing';
+$route['ManufacturingOperationUP2L/Mixing/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Mixing/$1';
+$route['ManufacturingOperationUP2L/Mixing/(:any)/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_Mixing/$1/$2';
+$route['ManufacturingOperationUP2L/Moulding']						= 'ManufacturingOperationUP2L/MainMenu/C_Moulding';
+$route['ManufacturingOperationUP2L/Moulding/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_Moulding/$1';
+$route['ManufacturingOperationUP2L/Moulding/(:any)/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_Moulding/$1/$2';
+$route['ManufacturingOperationUP2L/MasterItem']						= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem';
+$route['ManufacturingOperationUP2L/MasterItem/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem/$1';
+$route['ManufacturingOperationUP2L/MasterItem/(:any)/(:any)'] 		= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem/$1/$2';
+$route['ManufacturingOperationUP2L/MasterScrap']					= 'ManufacturingOperationUP2L/MainMenu/C_MasterScrap';
+$route['ManufacturingOperationUP2L/MasterScrap/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_MasterScrap/$1';
+$route['ManufacturingOperationUP2L/MasterScrap/(:any)/(:any)'] 		= 'ManufacturingOperationUP2L/MainMenu/C_MasterScrap/$1/$2';
+$route['ManufacturingOperationUP2L/MasterPersonal']					= 'ManufacturingOperationUP2L/MainMenu/C_MasterPersonal';
+$route['ManufacturingOperationUP2L/MasterPersonal/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_MasterPersonal/$1';
+$route['ManufacturingOperationUP2L/MasterPersonal/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_MasterPersonal/$1/$2';
+$route['ManufacturingOperationUP2L/QualityControl']					= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl';
+$route['ManufacturingOperationUP2L/QualityControl/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1';
+$route['ManufacturingOperationUP2L/QualityControl/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1/$2';
+
+$route['ManufacturingOperationUP2L/Report']							= 'ManufacturingOperationUP2L/MainMenu/C_Report';
+$route['ManufacturingOperationUP2L/Report/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Report/$1';
+$route['ManufacturingOperationUP2L/Report/(:any)/(:any)']	        = 'ManufacturingOperationUP2L/MainMenu/C_Report/$1/$2';
+
+$route['ManufacturingOperationUP2L/Selep']							= 'ManufacturingOperationUP2L/MainMenu/C_Selep';
+$route['ManufacturingOperationUP2L/Selep/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Selep/$1';
+$route['ManufacturingOperationUP2L/Selep/(:any)/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_Selep/$1/$2';
+
+$route['ManufacturingOperationUP2L/Ajax/(:any)']					= 'ManufacturingOperationUP2L/Ajax/C_Ajax/$1';
+$route['ManufacturingOperationUP2L/Ajax/(:any)/(:any)']				= 'ManufacturingOperationUP2L/Ajax/C_Ajax/$1/$2';
+$route['ManufacturingOperationUP2L/Job/ReplaceComp']				= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp';
+$route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1';
+$route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1/$2';
+$route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1/$2/$3';
