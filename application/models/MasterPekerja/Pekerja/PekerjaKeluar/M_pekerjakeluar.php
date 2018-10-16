@@ -13,11 +13,13 @@ class M_pekerjakeluar extends CI_Model {
 	
 	public function getPekerja($pekerja,$keluar)
 	{
-		$this->personalia->like('noind', $pekerja);
-		$this->personalia->or_like('nama', $pekerja);
-		$this->personalia->where('keluar', $keluar);
-		$this->personalia->select('nama,noind');
-		$query = $this->personalia->get('hrd_khs.tpribadi');
+		// $this->personalia->like('noind', $pekerja);
+		// $this->personalia->or_like('nama', $pekerja);
+		// $this->personalia->where('keluar', $keluar);
+		// $this->personalia->select('nama,noind');
+		$data = "select * from hrd_khs.tpribadi where (noind like '%$pekerja%' or nama like '%$pekerja%') and keluar='$keluar'";
+		// $query = $this->personalia->get('hrd_khs.tpribadi');
+		$query = $this->personalia->query($data);
 		return $query->result_array();
 	}
 	public function dataPekerja($noind,$keluar)
