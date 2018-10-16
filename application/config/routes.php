@@ -1829,6 +1829,12 @@ $route['SystemIntegrationKaizenGenerator/Submit/getItem'] = 'SystemIntegration/M
 $route['MasterPekerja/TanTerBPJS'] 		= 'MasterPekerja/CetakBPJS/C_Index';
 $route['MasterPekerja/TanTerBPJS/(:any)'] = 'MasterPekerja/CetakBPJS/C_Index/$1';
 $route['MasterPekerja/TanTerBPJS/(:any)/(:any)'] = 'MasterPekerja/CetakBPJS/C_Index/$1/$2';
+
+
+//--------------------------------------------------- Ceatak Tanda Terima BPJS -----------------------------------//
+$route['MasterPekerja/TanTerBPJSKes'] 		= 'MasterPekerja/CetakBPJSKes/C_Index';
+$route['MasterPekerja/TanTerBPJSKes/(:any)'] = 'MasterPekerja/CetakBPJSKes/C_Index/$1';
+$route['MasterPekerja/TanTerBPJSKes/(:any)/(:any)'] = 'MasterPekerja/CetakBPJSKes/C_Index/$1/$2';
 //---------------------------------------------------------- P2K3adm -----------------------------------------------------------//
 $route['p2k3adm'] = 'P2K3/P2K3Admin/C_P2K3Admin';
 $route['p2k3adm/datamasuk'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk';
