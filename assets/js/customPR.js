@@ -338,6 +338,13 @@ $('#dataTables-masterParamBpjs').DataTable( {
         'excel'
       ]
     });
+$('#dataTables-masterParamBpjsKes').DataTable( {
+    "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
 $('#dataTables-masterParamPtkp').DataTable( {
 	  "destroy": true,
       dom: 'Bfrtip',
