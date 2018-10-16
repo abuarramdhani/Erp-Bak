@@ -122,7 +122,15 @@
 																					<td>
 																						<div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="text" placeholder="Jenis Maintenance" name="txtJenisMaintenanceLine1[]" id="txtJenisMaintenanceLine1" class="form-control"/>
+                                                                                            <!-- <input type="text" placeholder="Jenis Maintenance" name="txtJenisMaintenanceLine1[]" id="txtJenisMaintenanceLine1" class="form-control"/> -->
+                                                                                            
+                                                                                            <select class="form-control" name="txtJenisMaintenanceLine1[]" id="txtJenisMaintenanceLine1" style="width: 100%">
+                                                                                                <option></option>
+                                                                                                <?php 
+                                                                                                foreach ($jenisMaintenance as $key) { ?>
+                                                                                                    <option><?php echo $key['jenis_maintenance'] ?></option>
+                                                                                                <?php }?>
+                                                                                            </select>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
@@ -139,6 +147,7 @@
                                                                         </table>
                                                                     </div>
                                                                     <a class="add-row btn btn-sm btn-success" onclick="TambahBarisMaintenanceKendaraan()"><i class="fa fa-plus"></i> Add New</a>
+                                                                    <i style="color:red;">Jika pilihan jenis maintenance tidak ada, tekan enter setelah mengetik jenis maintenance</i>
                                                                 </div>
                                                             </div>
                                                         </div>

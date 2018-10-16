@@ -188,6 +188,12 @@ class M_fleetmaintenancekendaraan extends CI_Model
         return $query->result_array();
     }
 
+    public function selectJenisMaintenance()
+    {
+        $query = $this->db->query("select distinct jenis_maintenance from ga.ga_fleet_maintenance_kendaraan_detail");
+        return $query->result_array();
+    }
+
     public function CetakDataMaintenanceKendaraan($id)
     {
         $query = $this->db->query("select

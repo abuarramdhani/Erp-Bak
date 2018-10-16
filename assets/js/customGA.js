@@ -289,6 +289,7 @@ var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKate
 
 function TambahBarisMaintenanceKendaraan(base){  
       var e = jQuery.Event( "click" );
+      var opt = $('#txtJenisMaintenanceLine1').html();
 
         var newRow  = jQuery("<tr>"
                                 +"<td style='text-align:center; width:'"+"30px"+"'></td>"
@@ -298,7 +299,10 @@ function TambahBarisMaintenanceKendaraan(base){
                                 +"<td>"
                                 +"<div class='form-group'>"
                                 +"<div class='col-lg-12'>"
-                                +"<input type='text' placeholder='Jenis Maintenance' name='txtJenisMaintenanceLine1[]' id='txtJenisMaintenanceLine1' class='form-control'/>"
+                                +"<select class='form-control select-jenis' name='txtJenisMaintenanceLine1[]'' id='txtJenisMaintenanceLine1' style='width: 100%;'>"
+                                +"<option></option>" 
+                                +opt                                                               
+                                +"</select>"
                                 +"</div>"
                                 +"</div>"
                                 +"</td>"
@@ -312,7 +316,9 @@ function TambahBarisMaintenanceKendaraan(base){
                                 +"</tr>");
         jQuery("#tblFleetMaintenanceKendaraanDetail").append(newRow);
         $('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
-          
+        $('.select-jenis').select2({
+          tags: true
+        });
     }
 
 function TambahBarisKecelakaanDetail(base){  
@@ -849,6 +855,11 @@ $(document).ready(function(){
           $('input[name="OpsiPIC"]').val(values);
         }
     });
+
+    $('#txtJenisMaintenanceLine1').select2({
+        tags: true
+    });
+
 });
 
 $(document).ready(function(){
