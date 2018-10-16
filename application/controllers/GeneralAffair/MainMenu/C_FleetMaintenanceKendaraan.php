@@ -172,6 +172,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$data['FleetKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetKendaraan($query_lokasi);
 		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKategori();
 		$data['FleetBengkel'] = $this->M_fleetmaintenancekendaraan->selectBengkel();
+		$data['jenisMaintenance'] = $this->M_fleetmaintenancekendaraan->selectJenisMaintenance();
 
 		/* LINES DROPDOWN DATA */
 
