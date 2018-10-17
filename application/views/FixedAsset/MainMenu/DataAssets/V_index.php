@@ -53,7 +53,11 @@
 								<div style="margin-bottom:10px">
 								<button data-toggle="collapse" data-target="#demo" class="btn btn-warning">Dangerous Function</button>
 								</div>
+								<div style="margin-bottom:10px">
 								<?php endif; ?>
+								<a href="http://produksi.quick.com/adexe-print-qr-assets/" class="btn btn-success">Generate QR Code</a>
+								</div>
+							</div>
 							<form method="post" id="frmUploadAsset" action="<?php echo site_url('FixedAsset/DataAssets/ExportImport') ?>"  enctype="multipart/form-data"> </form>
 							<form method="post" id="frmDeleteAsset" action="<?php echo site_url('FixedAsset/DataAssets/DeleteShown') ?>" > </form>
 							<form method="post" id="frmUpdateAsset" action="<?php echo site_url('FixedAsset/DataAssets/UpdateShown') ?>" > </form>
