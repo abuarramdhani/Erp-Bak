@@ -1,4 +1,4 @@
-var baseurl = document.location.origin;
+//var baseurl = document.location.origin;
 
 
 
