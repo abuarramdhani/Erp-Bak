@@ -8,7 +8,10 @@
         <div class="panel-body">
           <div class="form-group" >
             <button class="btn btn-success pull-left"><a style="color: white" href="<?php echo base_url('MasterPekerja/TanTerBPJS/export_excel')?>">Export Excel</a></button>
+            
             <button class="btn btn-default pull-right text-muted" ><a class="text-muted" data-toggle="modal" data-target="#modalCetakBPJS">Tambah Nama</a></button>
+
+            <a href="<?php echo base_url('MasterPekerja/TanTerBPJS/delete/All') ?>" class="btn btn-danger pull-right" style="margin-right: 20px;" onclick="return confirm('Apakah anda yakin ingin mengosongkan tabel ini ?')">Kosongkan Tabel</a>
           </div>
           <br>
           <div>
