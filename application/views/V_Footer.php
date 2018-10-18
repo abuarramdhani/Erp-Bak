@@ -12,7 +12,7 @@
 		<!--END FOOTER -->
      
 	<script type="text/javascript">
-	var baseurl = "<?php echo base_url(); ?>";
+	const baseurl = "<?php echo base_url(); ?>";
 	</script>
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
