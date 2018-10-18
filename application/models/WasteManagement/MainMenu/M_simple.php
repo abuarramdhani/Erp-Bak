@@ -110,8 +110,8 @@ class M_simple extends CI_Model
 			$id_detail 	= $arr['0']['max'];
 
 			$query = 	"insert into ga.ga_limbah_simple_detail
-						(id_simple_detail, id_simple, id_jenis_limbah, tanggal_dihasilkan)
-					 	select '$id_detail','$id_simple', id_jenis_limbah, cast(tanggal_kirim as date)
+						(id_simple_detail, id_simple, id_jenis_limbah, tanggal_dihasilkan,jumlah)
+					 	select '$id_detail','$id_simple', id_jenis_limbah, cast(tanggal_kirim as date), cast(cast(berat_kirim as float)/1000 as float)
 						from ga.ga_limbah_kirim where id_kirim = '".$key."'";
 			 $this->db->query($query);
 			 $query = 	"update ga.ga_limbah_kirim set status_simple = '1'
