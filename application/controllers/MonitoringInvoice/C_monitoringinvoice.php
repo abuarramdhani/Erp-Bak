@@ -45,10 +45,51 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$invoice = $this->M_monitoringinvoice->showInvoice();
+		// echo "<pre>";
+		// print_r($invoice);
+		// exit();
+
 		$no = 0;
+		$keputusan = array();
 		foreach ($invoice as $inv ) {
 			//get po amount
+
 			$invoice_id = $inv['invoice_id'] ;
+			$po_detail = $inv['po_detail'];
+			$po_number = $inv['po_number'];
+			$batch_number = $inv['purchasing_batch_number'];
+
+			$keputusan[$inv['invoice_id']] = "";
+			$hasil_komitmen = '';
+
+			if ($po_detail) {
+				$expPoDetail = explode('<br>', $po_detail);
+				$n=0;
+				$podetail = array();
+				foreach ($expPoDetail as $ep => $value) {
+					$exp_lagi = explode(' - ', $value);
+
+							$po_number_explode = $exp_lagi[0];
+							$lppb_number_explode = $exp_lagi[1];
+							$line_number_explode = $exp_lagi[2];
+
+							$perbandingan = $this->M_monitoringinvoice->podetails($po_number_explode,$lppb_number_explode,$line_number_explode);
+
+
+							if (!$perbandingan) {
+								$status = "No Status";
+							}else{
+								$status = $perbandingan[$n]['STATUS'];
+							}
+
+							$podetail[$ep] = $value.' - '.$status;
+				}
+
+				$keputusan[$inv['invoice_id']] = $podetail;
+
+				$n++;
+			}
+			
 			$po_amount = 0;
 			$unit = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
@@ -57,20 +98,16 @@ class C_monitoringinvoice extends CI_Controller{
 				$po_amount = $po_amount + $total;
 			}
 
-			//get status
-			$po_number = $inv['po_number'];
-			$nomor_lppb = $inv['lppb_number'];
-			$podetail = $this->M_monitoringinvoice->podetails($po_number,$nomor_lppb);
 
-			//cekPPN
+			// //cekPPN
 			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number);
 
 			$invoice[$no]['ppn'] = $cekPPN[0]['PPN'];
-			$invoice[$no]['status_lppb'] = $podetail[0]['PO_DETAIL'];
 			$invoice[$no]['po_amount'] = $po_amount;
 			$no++;
 		}
-		
+
+		$data['keputusan'] = $keputusan;
 		$data['invoice'] =$invoice;
 
 		$this->load->view('V_Header',$data);
@@ -208,12 +245,15 @@ class C_monitoringinvoice extends CI_Controller{
 		$currency = $this->input->post('currency[]');
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
-		
+		$line_number = $this->input->post('line_num[]');
+        
 		
 		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0]);
+
+
 		
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['lastval']);
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['lastval']);
 		
 		}
 
@@ -240,6 +280,9 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['allVendor'] = $this->M_monitoringinvoice->getVendorName();
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
+		// echo "<pre>";
+		// print_r($invoice);
+		// exit();
 
 		$no = 0;
 		foreach ($invoice as $inv ) {
@@ -313,16 +356,15 @@ class C_monitoringinvoice extends CI_Controller{
 			foreach ($checkList as $dt => $value2) {
 				$inv = $value2['invoice_id'];
 				$no_po = $value2['po_number'];
-				$no_lppb = $value2['lppb_number'];
-				$item_id = str_replace(' ','', $value2['item_code']);
-				$qty_reject = $value2['qty_reject'];
-				$qty_receipt = $value2['qty_receipt'];
-				$unit_price = $value2['unit_price'];
-				$checkListSubmitted = $this->M_monitoringinvoice->checkStatus($no_po,$no_lppb,$item_id,$qty_reject,$qty_receipt,$unit_price);
+				// $no_lppb = $value2['lppb_number'];
+				$line_number = $value2['line_number'];
+				$checkListSubmitted = $this->M_monitoringinvoice->checkStatus($no_po,$line_number);
 
 				if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
 					$cekstatus = $checkListSubmitted[0]['STATUS'];
 
+					$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
+				}elseif ($checkListSubmitted[0]['STATUS'] == 'DELIVER' AND $checkListSubmitted[0]['STATUS'] == '') {
 					$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
 				}
 
@@ -330,7 +372,7 @@ class C_monitoringinvoice extends CI_Controller{
 			
 		}
 		
-		redirect('AccountPayables/MonitoringInvoice/Invoice');
+		redirect('AccountPayables/MonitoringInvoice/Invoice/listSubmited');
 	}
 
 	public function showInvoiceInDetail($invoice_id,$batch){
@@ -583,16 +625,27 @@ class C_monitoringinvoice extends CI_Controller{
 		$currency = $this->input->post('currency[]');
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
+		$line_number = $this->input->post('line_num[]');
 		
 
 		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_amount,$id);
 		
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
 		
 		}
 
 		redirect('AccountPayables/MonitoringInvoice/Invoice');
+	}
+
+	public function tax_invoice_number(){
+		$tax = $this->input->post('tax_input');
+		$id = $this->input->post('id');
+		// $a = $this->M_monitoringinvoice->showInvoice();
+		// $id = $a[0]['invoice_id'];
+
+		$tax_inv = $this->M_monitoringinvoice->tax_invoice_number($id,$tax);
+		echo $id;
 	}
 
 }

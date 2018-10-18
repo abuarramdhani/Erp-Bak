@@ -62,7 +62,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control invoice_amount" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amount" >
+											<input class="form-control" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amount" >
 										</td>
 									</tr>
 									<tr>
@@ -96,7 +96,7 @@
 														</div>
 													</td>
 													<td>
-														<div><button class="btn btn-md btn-success pull-left" type="button" id="btnSearchPoNumber">Search</button>
+														<div><button class="btn btn-md btn-success pull-left btn_search" type="button" id="btnSearchPoNumber">Search</button>
 														</div>
 													</td>
 												</tr>

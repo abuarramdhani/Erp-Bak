@@ -54,7 +54,16 @@
 											<td><?php echo $inv['tax_invoice_number'] ?></td>
 											<td class="inv_amount" ><?php echo round($inv['invoice_amount']) ?></td>
 											<td class="po_amount"><?php echo round($inv['po_amount']) ?></td>
-											<td><?php echo $inv['status'] ?></td>
+											<?php if ( $inv['status'] == 0) {
+												$stat = 'New/Draft';
+												}elseif ($inv['status'] == 1) {
+													$stat = 'Submited by Kasie Purc';
+												}elseif ($inv['status'] == 2) {
+													$stat = 'Approved By Kasie Purc';
+												}elseif ($inv['status'] == 3) {
+													$stat = 'Rejected by Kasie Purc';
+												} ?>
+											<td><?php echo  $stat ?></td>
 											<td><?php echo $inv['reason'] ?></td>
 										</tr>
 										<?php $no++; } ?>

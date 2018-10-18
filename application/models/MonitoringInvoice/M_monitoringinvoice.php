@@ -196,7 +196,7 @@ class M_monitoringinvoice extends CI_Model {
     public function getInvoiceById($id)
     {
         $oracle = $this->load->database('erp_db',true);
-        $query = "SELECT * FROM ap.ap_invoice_purchase_order aipo, ap.ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id and ami.invoice_id = $id ";
+        $query = "SELECT * FROM ap.ap_invoice_purchase_order aipo, ap.ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id and aipo.invoice_id = $id ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -209,13 +209,25 @@ class M_monitoringinvoice extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function savePoNumber($po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$inv_id){
+    public function savePoNumber($line_number,$po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$inv_id){
+            if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
+                $received_date = 'NULL';
+            }else{
+                $received_date = "'".$received_date."'";
+            }
+
+            if ($qty_receipt == '' || $qty_receipt == '  ' || $qty_receipt == NULL || !$qty_receipt) {
+                $qty_receipt = 0;
+            } else {
+                $qty_receipt = $qty_receipt;
+            }
+            
         $oracle = $this->load->database('erp_db',true);
         $query = "INSERT INTO ap.ap_invoice_purchase_order
-                    (po_number, lppb_number, shipment_number,
+                    (line_number,po_number, lppb_number, shipment_number,
                     received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
                     VALUES 
-                    ('$po_number','$lppb_number', '$shipment_number', '$received_date', '$item_description', '$item_code','$qty_receipt', '$qty_reject', '$currency', '$unit_price', '$qty_invoice', $inv_id)";
+                    ('$line_number','$po_number','$lppb_number', '$shipment_number', $received_date, '$item_description', '$item_code',$qty_receipt, $qty_reject, '$currency', '$unit_price', '$qty_invoice', $inv_id)";
         $oracle->query($query);
     }
 
@@ -254,19 +266,20 @@ class M_monitoringinvoice extends CI_Model {
 
     public function showInvoice(){
         $oracle = $this->load->database('erp_db', true);
-        $query = "SELECT ami.invoice_number invoice_number, 
+        $query = "SELECT distinct ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, 
                          ami.last_purchasing_invoice_status status, 
                          ami.reason reason,
-                         aipo.po_number po_number, 
                          ami.invoice_id invoice_id,
-                         aipo.lppb_number lppb_number,
-                         aipo.invoice_po_id invoice_po_id
-                FROM ap.ap_monitoring_invoice ami
-                JOIN ap.ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
-                WHERE purchasing_batch_number is NULL";
+                         aaipo.po_number po_number,
+                         ami.purchasing_batch_number purchasing_batch_number,
+                         (SELECT string_agg(concat(aipo.po_number,'-',aipo.lppb_number,'- ',aipo.line_number),'<br>') FROM ap.ap_invoice_purchase_order aipo where ami.invoice_id = aipo.invoice_id) AS po_detail
+                            FROM ap.ap_monitoring_invoice ami,
+                        (select aipo.* from ap.ap_invoice_purchase_order aipo) aaipo
+                        where aaipo.invoice_id = ami.invoice_id
+                order by ami.invoice_id";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -326,6 +339,18 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function saveEditInvoice1($invoice_id,$po_number,$lppb_number,$shipment_number,$received_date,$item_description,$qty_receipt,$qty_reject,$currency,$unit_price,$qty_invoice){
+        if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
+                $received_date = 'NULL';
+            }else{
+                $received_date = "".$received_date."";
+            }
+
+            if ($qty_receipt == '' || $qty_receipt == '  ' || $qty_receipt == NULL || !$qty_receipt) {
+                $qty_receipt = 0;
+            } else {
+                $qty_receipt = $qty_receipt;
+            }
+
         $oracle = $this->load->database('erp_db',true);
         $query = "UPDATE ap.ap_invoice_purchase_order 
         SET po_number = '$po_number',
@@ -453,20 +478,20 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function checkInvoiceDate($uw){
-        $erp = $this->load->database('erp_db',true);
+        $erp_db = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_date
                 FROM ap.ap_monitoring_invoice
                 WHERE invoice_date = '$uw' limit 1";
-        $runQuery = $erp->query($sql);
+        $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
 
     public function checkInvoiceDatecount($uw){
-        $erp = $this->load->database('erp_db',true);
+        $erp_db = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_date
                 FROM ap.ap_monitoring_invoice
                 WHERE invoice_date = '$uw'";
-        $runQuery = $erp->query($sql);
+        $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
 
@@ -576,7 +601,7 @@ class M_monitoringinvoice extends CI_Model {
         return $query->result_array();
     }
 
-     public function checkStatus($po_number,$lppb,$item_id,$qty_reject,$qty_receipt,$unit_price)
+     public function checkStatus($po_number,$line_num)
     {
         $oracle = $this->load->database('oracle',TRUE);
         $query = "SELECT *
@@ -678,11 +703,7 @@ class M_monitoringinvoice extends CI_Model {
                                         )
                         )
             WHERE no_po = $po_number
-            and no_lppb = $lppb
-            and item_id = '$item_id'
-            and rejected = '$qty_reject'
-            and  qty_receipt = '$qty_receipt'
-            and unit_price = '$unit_price'";
+            and line_num = $line_num";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -711,9 +732,16 @@ class M_monitoringinvoice extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function podetails($po_number,$lppb_number){
+    public function podetails($po_number,$lppb_number,$line_number){
+        //echo '--'.$lppb_number.'--';exit;
+        if ($lppb_number=='' || $lppb_number==' ') {
+            $lppb_number = "'%'";
+        }
+        if ($line_number=='' || $line_number==' ') {
+            $line_number = 0;
+        }
        $oracle = $this->load->database('oracle',TRUE);
-        $query = "SELECT no_po||'-'||line_num||'-'||no_lppb||'-'||status as po_detail
+        $query = "SELECT status
                     FROM (SELECT distinct
                                     pol.po_line_id line_id,
                                     pol.line_num line_num,
@@ -812,24 +840,25 @@ class M_monitoringinvoice extends CI_Model {
                                         )
                         )
                     WHERE no_po = $po_number
-                    and no_lppb = $lppb_number";
+                    and no_lppb like $lppb_number
+                    and line_num = $line_number";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
 
-    public function savePoNumberNew($po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$id){
-        $oracle = $this->load->database('erp',true);
+    public function savePoNumberNew($line_number,$po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$id){
+        $oracle = $this->load->database('erp_db',true);
         $query = "INSERT INTO ap.ap_invoice_purchase_order
-                    (po_number, lppb_number, shipment_number,
+                    (line_number,po_number, lppb_number, shipment_number,
                     received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
                     VALUES 
-                    ('$po_number','$lppb_number', '$shipment_number', '$received_date', '$item_description', '$item_code','$qty_receipt', '$qty_reject', '$currency', '$unit_price', '$qty_invoice',$id)";
+                    ('$line_number','$po_number','$lppb_number', '$shipment_number', '$received_date', '$item_description', '$item_code','$qty_receipt', '$qty_reject', '$currency', '$unit_price', '$qty_invoice',$id)";
         $oracle->query($query);
     }
 
     public function saveInvoiveAmount($invoice_amount,$invoice_id)
     {
-       $oracle = $this->load->database('erp',true);
+       $oracle = $this->load->database('erp_db',true);
        $query2 = "UPDATE ap.ap_monitoring_invoice 
                   SET invoice_amount = '$invoice_amount'
                  WHERE invoice_id = '$invoice_id' ";
@@ -941,5 +970,14 @@ class M_monitoringinvoice extends CI_Model {
                     WHERE no_po = $po_numberInv";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
+    }
+
+    public function tax_invoice_number($invoice_id,$tax_invoice_number)
+    {
+       $oracle = $this->load->database('erp_db',true);
+       $query2 = "UPDATE ap.ap_monitoring_invoice 
+                  SET tax_invoice_number = '$tax_invoice_number'
+                 WHERE invoice_id = '$invoice_id' ";
+        $runQuery2 = $oracle->query($query2);
     }
 }
