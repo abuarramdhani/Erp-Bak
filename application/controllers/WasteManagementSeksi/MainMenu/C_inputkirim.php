@@ -74,7 +74,7 @@ class C_inputkirim extends CI_Controller
 
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
-		$data['Pekerja'] = $this->M_kirim->getEmployeeCodeName();
+		$data['Seksi2'] = $this->M_kirim->getSekNama();
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
@@ -297,6 +297,17 @@ class C_inputkirim extends CI_Controller
 		} else {
 			redirect(base_url('WasteManagementSeksi/InputKirimLimbah'));
 		}
+	}
+
+	public function Cari(){
+		$kode = $this->input->post('kodesie');
+		$data = $this->M_kirim->getEmployeeCodeName($kode);
+		$opsi = "<option></option>";
+		foreach ($data as $key) {
+			$opsi = $opsi."<option value='".$key['employee_code']."' data-name='".$key['employee_name']."' >".$key['employee_code']."</option>";
+		}
+
+		echo $opsi;
 	}
 }
 ?>

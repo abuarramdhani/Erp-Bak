@@ -30,7 +30,7 @@
 											</div>
 											<div class="form-group">
 												<div class="col-lg-4">
-													<input type="text" name="txtPeriodeInfo" id="txtPeriodeInfo" class="date form-control" value="<?php echo $periode; ?>" data-date-format="yyyy-mm-dd" required>
+													<input type="text" name="txtPeriodeInfo" id="txtPeriodeInfo" class="date form-control" value="<?php echo $periode ?>" required>
 												</div>
 											</div>
 											<div class="form-group">
@@ -58,13 +58,13 @@
 													<select class="select select2 col-lg-8" name="txtValueSek" id="txtValueSek" data-placeholder="Nama Seksi" style="width:100%;" <?php if($kategori !== 'seksi'){echo "disabled";} ?> >
 														<?php if($kategori == 'seksi'){ 
 															echo "<option value='$value'>$text</option>"; 
-															}else{ ?>
-															<option></option>
-														<?php } ?>
+															} ?>
 														<?php foreach ($seksi as $key) {
 															$a = $key['section_code'];
 															$b = $key['section_name'];
-															echo "<option value='$a'>$a - $b</option>";
+															if ($kodesie == $a) {
+																echo "<option value='$a'>$a - $b</option>";
+															}
 														} 
 														?>
 													</select>

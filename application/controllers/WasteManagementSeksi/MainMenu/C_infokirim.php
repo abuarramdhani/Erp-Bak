@@ -34,6 +34,7 @@ class C_infokirim extends CI_Controller
 	}
 
 	public function index(){
+		$kodesie = substr($this->session->kodesie, 0,7);
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Info Kirim Limbah';
@@ -47,6 +48,7 @@ class C_infokirim extends CI_Controller
 
 		$data['seksi'] = $this->M_info->getSeksi();
 		$data['limbah'] = $this->M_info->getLimbah();
+		$data['kodesie'] = $kodesie;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -55,6 +57,7 @@ class C_infokirim extends CI_Controller
 	}
 
 	public function Grafik(){
+		$kodesie = substr($this->session->kodesie, 0,7);
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Info Kirim Limbah';
@@ -68,12 +71,12 @@ class C_infokirim extends CI_Controller
 
 		$data['seksi'] = $this->M_info->getSeksi();
 		$data['limbah'] = $this->M_info->getLimbah();
+		$data['kodesie'] = $kodesie;
 
 		$data['periode'] = $this->input->post('txtPeriodeInfo');
 		$data['kategori'] = $this->input->post('txtPilihKat');
 		$data['text'] = $this->input->post('txtHiddenValue');
 		$periode = $this->input->post('txtPeriodeInfo');
-		$periode = explode(" - ", $periode);
 		if (isset($_POST['txtValueSek'])) {
 			$data['value'] = $this->input->post('txtValueSek');
 			$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
@@ -95,7 +98,6 @@ class C_infokirim extends CI_Controller
 	public function Chart(){
 
 		$periode = $this->input->post('txtPeriodeInfo');
-		$periode = explode(" - ", $periode);
 
 		if (isset($_POST['txtValueSek'])) {
 			$seksi = $this->input->post('txtValueSek');
