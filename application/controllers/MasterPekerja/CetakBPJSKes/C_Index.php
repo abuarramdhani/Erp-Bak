@@ -37,8 +37,8 @@ class C_Index extends CI_Controller {
     	$this->checkSession();
     	$user_id = $this->session->userid;
     	
-    	$data['Menu'] = 'Dashboard';
-    	$data['SubMenuOne'] = '';
+    	$data['Menu'] = 'Lain-lain';
+    	$data['SubMenuOne'] = 'Tanda Terima BPJS Kesehatan';
     	$data['SubMenuTwo'] = '';
     	
     	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -83,7 +83,11 @@ class C_Index extends CI_Controller {
 
 	public function delete($id)
 	{
-		$this->M_cetakttbpjskes->deleteData($id);
+		if ($id == "All") {
+			$this->M_cetakttbpjskes->deleteDataAll();
+		}else{
+			$this->M_cetakttbpjskes->deleteData($id);
+		}
 		redirect('MasterPekerja/TanTerBPJSKes');
 	}
 
