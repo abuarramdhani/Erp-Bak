@@ -21,6 +21,18 @@ $(document).ready(function(){
 		$('#txtHiddenValue').val(nilai);
 	});
 
+	$('#txtSeksiPengirim').on('change', function(){
+		var nilai = $(this).find(':selected').val();
+		$.ajax({
+			type :'POST',
+			url : baseurl+'WasteManagementSeksi/InputKirimLimbah/Cari',
+			data : {kodesie: nilai},
+			success: function(data){
+				$('#txtPengirimLimbah').html(data);
+			}
+		})
+	});
+
 	$('#txtPilihKat').on('change', function(){
 		var nilai = $('#txtPilihKat').val();
 		if(nilai == 'limbah'){
@@ -203,21 +215,15 @@ $(function(){
 
   	});
 
-  	$('#txtPeriodeInfo').daterangepicker({
+  	$('#txtPeriodeInfo').datepicker({
   		"autoclose": true,
-		"todayHiglight": true,
-		"format": 'yyyy M dd',
-		locale: {
-    			cancelLabel: 'Clear'
-    		}
+      	"todayHiglight": true,
+      	"autoApply": true,
+      	"format":'MM yyyy',
+      	"viewMode":'months',
+      	"minViewMode":'months'
   	});
 
-  	$('input[id="periode"]').on('apply.daterangepicker', function(ev, picker) {
-		$(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
-	});
-  	$('input[id="txtPeriodeInfo"]').on('cancel.daterangepicker', function(ev, picker) {
-		$(this).val('');
-	});
 
   	$('#txtWaktuKirimLimbah').timepicker({
   		maxHours:24,

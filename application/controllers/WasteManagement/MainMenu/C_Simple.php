@@ -197,20 +197,25 @@ class C_Simple extends Ci_Controller
 		$data['SimpleId'] = $id;
 
 		if (empty($_POST)) {
+			$data['limbahMasuk'] = $this->M_simple->getLimbahKirimBySimple($plain_text);
+			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('WasteManagement/Simple/V_add_detail', $data);
 			$this->load->view('V_Footer',$data);
 		}else{
-			$data = array(
-						'Jenis' => $this->input->post('txtJenisId'), 
-						'Tanggal' => $this->input->post('txtTanggalDihasilkan'), 
-						'Manifest' => $this->input->post('txtManifest'), 
-						'Jumlah' => $this->input->post('txtJumlah'), 
-						'Catatan' => $this->input->post('txtCatatan'), 
-					);
+			// $data = array(
+			// 			'Jenis' => $this->input->post('txtJenisId'), 
+			// 			'Tanggal' => $this->input->post('txtTanggalDihasilkan'), 
+			// 			'Manifest' => $this->input->post('txtManifest'), 
+			// 			'Jumlah' => $this->input->post('txtJumlah'), 
+			// 			'Catatan' => $this->input->post('txtCatatan'), 
+			// 		);
 
-			$this->M_simple->insertSimpleDetail($plain_text,$data);
+			// $this->M_simple->insertSimpleDetail($plain_text,$data);
+			
+			$kirim = $this->input->post('txtInsert');
+			$this->M_simple->insertSimpleDetail($plain_text,$kirim);
 			redirect(site_url('WasteManagement/Simple/Read/'.$id));
 		}
 	}
