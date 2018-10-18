@@ -34,6 +34,7 @@ class C_infokirim extends CI_Controller
 	}
 
 	public function index(){
+		redirect(site_url('WasteManagementSeksi/InfoKirimLimbah/Grafik'));
 		$kodesie = substr($this->session->kodesie, 0,7);
 		$user_id = $this->session->userid;
 
@@ -72,11 +73,21 @@ class C_infokirim extends CI_Controller
 		$data['seksi'] = $this->M_info->getSeksi();
 		$data['limbah'] = $this->M_info->getLimbah();
 		$data['kodesie'] = $kodesie;
-
-		$data['periode'] = $this->input->post('txtPeriodeInfo');
-		$data['kategori'] = $this->input->post('txtPilihKat');
-		$data['text'] = $this->input->post('txtHiddenValue');
-		$periode = $this->input->post('txtPeriodeInfo');
+		if (!empty($_POST)) {
+			$data['periode'] = $this->input->post('txtPeriodeInfo');
+			$data['kategori'] = $this->input->post('txtPilihKat');
+			$data['text'] = $this->input->post('txtHiddenValue');
+			$periode = $this->input->post('txtPeriodeInfo');
+		}else{
+			$data['periode'] = date('F Y');
+			$data['kategori'] = "seksi";
+			foreach ($data['seksi'] as $key) {
+				if ($kodesie == $key['section_code']) {
+					$data['text'] = $key['section_name'];
+				}
+			}
+			$periode = date('F Y');
+		}
 		if (isset($_POST['txtValueSek'])) {
 			$data['value'] = $this->input->post('txtValueSek');
 			$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
