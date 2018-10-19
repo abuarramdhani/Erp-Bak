@@ -31,7 +31,7 @@
 							</div>
 							<div class="box-body">
 								<form method="post" action="<?php echo base_url('EmployeeRecruitment/Delete/delete') ?>">  
-									<button onclick="delERC(this)" type="submit" class="btn btn-md btn-danger pull-right"><b class="fa fa-trash"></b> DELETE</button>
+									<button onclick="confirm('Apakah anda yakin?')" type="submit" class="btn btn-md btn-danger pull-right"><b class="fa fa-trash"></b> DELETE</button>
 									<button onclick="slcAllERC(this)" type="button" class="btn btn-md btn-primary pull-right"><b class="fa fa-check"></b> SELECT ALL</button>
 									<table class="table table-striped table-bordered table-hover text-left tabledelERC" id="" style="font-size:12px;" width="100%">
 										<thead>
@@ -44,7 +44,7 @@
 											</tr>
 										</thead>
 										<tbody>
-										<?php $no=1; foreach ($result as $res) { ?>
+										<?php $no=1; if ($result): foreach ($result as $res) { ?>
 										<tr>
 											
 											<td><center><?php echo $no++;?></center></td>
@@ -56,7 +56,7 @@
 												</center>
 											</td>
 										</tr>
-										<?php } ?>
+										<?php } endif; ?>
 										</tbody>
 									</table>
 								</form>
