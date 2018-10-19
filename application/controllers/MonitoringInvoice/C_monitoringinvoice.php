@@ -280,10 +280,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['allVendor'] = $this->M_monitoringinvoice->getVendorName();
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
-		// echo "<pre>";
-		// print_r($invoice);
-		// exit();
-
 		$no = 0;
 		foreach ($invoice as $inv ) {
 			$invoice_id = $inv['invoice_id'] ;
@@ -627,8 +623,28 @@ class C_monitoringinvoice extends CI_Controller{
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
 		
+		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
+		$no = 0;
+		foreach ($invoice as $inv ) {
+			$invoice_id = $inv['invoice_id'] ;
+			$nol = 0;
+			$modal = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
+
+			foreach ($modal as $price) {
+				$total = $price['unit_price'] * $price['qty_invoice'];
+				$po_amount = $nol + $total;
+			}
+
+			$invoice[$no]['po_amount'] = $po_amount;
+			$no++;
+		}
+		
+
+		$data['invoice'] =$invoice;
+		
 
 		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_amount,$id);
+
 		
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
@@ -641,8 +657,6 @@ class C_monitoringinvoice extends CI_Controller{
 	public function tax_invoice_number(){
 		$tax = $this->input->post('tax_input');
 		$id = $this->input->post('id');
-		// $a = $this->M_monitoringinvoice->showInvoice();
-		// $id = $a[0]['invoice_id'];
 
 		$tax_inv = $this->M_monitoringinvoice->tax_invoice_number($id,$tax);
 		echo $id;
