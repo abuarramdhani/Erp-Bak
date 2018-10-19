@@ -20,7 +20,7 @@ class C_UploadData extends CI_Controller
 			  //$this->load->library('Database');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('EmployeeRecruitment/M_TestCorrection');
+			$this->load->model('EmployeeRecruitment/m_testcorrection');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -48,7 +48,7 @@ class C_UploadData extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['jenis_soal'] = $this->M_TestCorrection->getJenisSoal();
+			$data['jenis_soal'] = $this->m_testcorrection->getJenisSoal();
 			$data['resultload'] = $resultload;
 			$data['result'] = $result;
 			$this->load->view('V_Header',$data);
@@ -64,7 +64,7 @@ class C_UploadData extends CI_Controller
 			$result = array();
 
 
-			$getKunci = $this->M_TestCorrection->getRule($jenis);
+			$getKunci = $this->m_testcorrection->getRule($jenis);
 			$i=0;
 			foreach ($getKunci as $kunci) {
 					  $datakunci[$i]=$kunci['kunci'];
@@ -76,7 +76,7 @@ class C_UploadData extends CI_Controller
 					}
 			$sub_test = array_map("unserialize", array_unique(array_map("serialize", $subTest)));
 
-			$getBatch = $this->M_TestCorrection->getBatch();
+			$getBatch = $this->m_testcorrection->getBatch();
 			$batch = str_pad($getBatch[0]['batch']+1, 4,0, STR_PAD_LEFT);
 
 			for ($i=0; $i < count($jawaban); $i++) { 
@@ -178,12 +178,12 @@ class C_UploadData extends CI_Controller
 						foreach ($sub_test as $sub) {
 							$result[$i]['sub_test'][$sub]	= $nilaisub[$sub];
 						}
-					$saveAndget = $this->M_TestCorrection->saveKoreksi($datasave);
+					$saveAndget = $this->m_testcorrection->saveKoreksi($datasave);
 					$dataRest = array('jawaban_id' => $saveAndget ,
 										'jumlah_benar' =>$betul,
 										'jumlah_salah' =>$salah,
 										'total_score' =>$score );
-					$this->M_TestCorrection->saveResult($dataRest);
+					$this->m_testcorrection->saveResult($dataRest);
 			}
 			$this->index(null,$result);
 		}
@@ -201,7 +201,7 @@ class C_UploadData extends CI_Controller
 					 {
 					 	if ($file_extension == 'xml') {				 		
 						 $data = @simplexml_load_file($_FILES['file_a']['tmp_name']);
-						 $getRule = $this->M_TestCorrection->getRule($jenis);
+						 $getRule = $this->m_testcorrection->getRule($jenis);
 						$i=0;
 
 						// echo "<pre>";
@@ -287,7 +287,7 @@ class C_UploadData extends CI_Controller
 						  $this->index($resultload,null);
 					 	}
 					 	else{
-					 		$getRule = $this->M_TestCorrection->getRule($jenis);
+					 		$getRule = $this->m_testcorrection->getRule($jenis);
 								$i=0;
 								foreach ($getRule as $rule) {
 								  $datarule[$i]=$rule['type'];
@@ -393,8 +393,8 @@ class C_UploadData extends CI_Controller
 		$idbatch = $this->input->post('batchnum');
 		$jenis = $this->input->post('jenis');
 
-		$getJawaban = $this->M_TestCorrection->getJawaban($idbatch);
-		$getRule = $this->M_TestCorrection->getRule($jenis);
+		$getJawaban = $this->m_testcorrection->getJawaban($idbatch);
+		$getRule = $this->m_testcorrection->getRule($jenis);
         $colJwb = count($getRule)*3;
 			$i=0;
 			foreach ($getRule as $rule) {
