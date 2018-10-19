@@ -53,7 +53,7 @@ class C_UploadData extends CI_Controller
 			$data['result'] = $result;
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('EmployeeRecruitment/upload/V_Index',$data);
+			$this->load->view('EmployeeRecruitment/Upload/V_Index',$data);
 			$this->load->view('V_Footer',$data);
 		}
 
