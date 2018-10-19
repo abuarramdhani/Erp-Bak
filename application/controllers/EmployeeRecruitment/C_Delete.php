@@ -57,6 +57,7 @@ class C_Delete extends CI_Controller
 	public function delete()
 		{
 			$id = $this->input->post('id');
+			if ($id) :
 			foreach ($id as $key) {
 				$getIdJwb = $this->m_testcorrection->getIdJwb($key);
 				foreach ($getIdJwb as $idj) {
@@ -64,6 +65,7 @@ class C_Delete extends CI_Controller
 				}
 			$this->m_testcorrection->delByBatch($key);
 			}
+			endif;
 			$this->index();
 		}
 

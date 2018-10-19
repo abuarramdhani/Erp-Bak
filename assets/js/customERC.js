@@ -205,11 +205,17 @@ if(rowCount > 2){
 }
 function slcAllERC(th) {
 	$('.tabledelERC tr').find("td").each(function( i ) {
-     if( $(this).find('input[name="id[]"]').is(':checked')){
-     	$(this).find('input[name="id[]"]').prop('checked', '');
-     }else{
-     	$(this).find('input[name="id[]"]').prop('checked', 'checked');
-     }
+		var attr = $(this).find('input[name="id[]"]').attr('checked');
+
+		if (typeof attr !== typeof undefined && attr !== false) {
+	     	$('input[name="id[]"]').iCheck('uncheck'); 
+	     	$(this).find('input[name="id[]"]').removeAttr('checked');
+		    
+		}else{
+	     	$('input[name="id[]"]').iCheck('check'); 
+	     	$(this).find('input[name="id[]"]').attr('checked', 'checked');
+
+		}
   });
 }
 
