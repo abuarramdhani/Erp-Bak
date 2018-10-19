@@ -1987,3 +1987,27 @@ $route['ManufacturingOperationUP2L/Job/ReplaceComp']				= 'ManufacturingOperatio
 $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1';
 $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1/$2';
 $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1/$2/$3';
+
+
+//------------------------------------Employee Recruitment---------------------------------------------//
+
+$route['EmployeeRecruitment']		= 'EmployeeRecruitment/C_TestCorrection/index';
+$route['EmployeeRecruitment/Upload/index']		= 'EmployeeRecruitment/C_UploadData/index';
+$route['EmployeeRecruitment/Upload/inputfile']		= 'EmployeeRecruitment/C_UploadData/inputfile';
+$route['EmployeeRecruitment/Upload/process']		= 'EmployeeRecruitment/C_UploadData/process';
+$route['EmployeeRecruitment/Upload/export']		= 'EmployeeRecruitment/C_UploadData/export';
+
+//result 
+$route['EmployeeRecruitment/Result/index']		= 'EmployeeRecruitment/C_Result/index';
+
+//setting
+$route['EmployeeRecruitment/Setting/index']		= 'EmployeeRecruitment/C_Setting/index';
+$route['EmployeeRecruitment/Setting/edit/(:any)']	= 'EmployeeRecruitment/C_Setting/edit/$1';
+$route['EmployeeRecruitment/Setting/saveedit']		= 'EmployeeRecruitment/C_Setting/saveedit';
+$route['EmployeeRecruitment/Setting/addnew']		= 'EmployeeRecruitment/C_Setting/addnew';
+$route['EmployeeRecruitment/Setting/saveadd']		= 'EmployeeRecruitment/C_Setting/saveadd';
+$route['EmployeeRecruitment/Setting/delete']		= 'EmployeeRecruitment/C_Setting/delete';
+
+//delete
+$route['EmployeeRecruitment/Delete/index']		= 'EmployeeRecruitment/C_Delete/index';
+$route['EmployeeRecruitment/Delete/delete']		= 'EmployeeRecruitment/C_Delete/delete';
