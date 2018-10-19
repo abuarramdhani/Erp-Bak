@@ -19,7 +19,7 @@ class C_Setting extends CI_Controller
 			  //$this->load->library('Database');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('EmployeeRecruitment/M_TestCorrection');
+			$this->load->model('EmployeeRecruitment/m_testcorrection');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -47,12 +47,12 @@ class C_Setting extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			// $data['jenis_soal'] = $this->M_TestCorrection->getJenisSoal();
-			$getJenis = $this->M_TestCorrection->getJenisSoal();
+			// $data['jenis_soal'] = $this->m_testcorrection->getJenisSoal();
+			$getJenis = $this->m_testcorrection->getJenisSoal();
 			$jenis =  array();
 			$i = 0; foreach ($getJenis as $jns) {
 				// echo $jenis['jenis_soal'];
-				$getJumlahSoal = $this->M_TestCorrection->getJumlahSoal($jns['jenis_soal']);
+				$getJumlahSoal = $this->m_testcorrection->getJumlahSoal($jns['jenis_soal']);
 				$jenis[$i]['jenis_soal'] = $jns['jenis_soal'];
 				$jenis[$i]['jumlah'] = $getJumlahSoal;
 				$i++;
@@ -74,9 +74,9 @@ class C_Setting extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			// $data['jenis_soal'] = $this->M_TestCorrection->getJenisSoal();
+			// $data['jenis_soal'] = $this->m_testcorrection->getJenisSoal();
 			// $data['jenis_soal'] = $jenis;
-			$data['rule'] = $this->M_TestCorrection->getRule($id);
+			$data['rule'] = $this->m_testcorrection->getRule($id);
 			$data['id'] = $id;
 			// if ($msg) {
 				$data['msg'] = $msg;
@@ -109,7 +109,7 @@ class C_Setting extends CI_Controller
 								'kunci' => $key[$a],
 								'score_betul' => $scrBtl[$a],
 								'score_salah' => $scrSlh[$a] );
-					$this->M_TestCorrection->updateRule($id_rule,$data);
+					$this->m_testcorrection->updateRule($id_rule,$data);
 					array_push($idKeep, $id_rule);
 				}else{
 					$nomer[$a] = $a+1;
@@ -121,14 +121,14 @@ class C_Setting extends CI_Controller
 								'kunci' => $key[$a],
 								'score_betul' => $scrBtl[$a],
 								'score_salah' => $scrSlh[$a] );
-					$saveandget = $this->M_TestCorrection->insertRule($data2);
+					$saveandget = $this->m_testcorrection->insertRule($data2);
 					array_push($idKeep, $saveandget);
 
 				}
 					$a++;
 			}
 			$idNoDel = implode("','", $idKeep);
-			$this->M_TestCorrection->deleteRule($idNoDel,$jenis_soal);
+			$this->m_testcorrection->deleteRule($idNoDel,$jenis_soal);
 			$msg= "Update Success!";
 			$this->edit($jenis_soal,$msg);
 		}
@@ -178,7 +178,7 @@ class C_Setting extends CI_Controller
 							'score_betul' => $scrBtl[$a],
 							'score_salah' => $scrSlh[$a]
 					);
-					$this->M_TestCorrection->insertRule($data);
+					$this->m_testcorrection->insertRule($data);
 					$a++; }
 
 					$msg= "Insert Success!";
@@ -191,7 +191,7 @@ class C_Setting extends CI_Controller
 	function delete()
 		{
 			$jenis_soal = $this->input->post('jenis_soal');
-			$this->M_TestCorrection->delete($jenis_soal);
+			$this->m_testcorrection->delete($jenis_soal);
 			$this->index();
 
 		}

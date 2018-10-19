@@ -19,7 +19,7 @@ class C_Delete extends CI_Controller
 			  //$this->load->library('Database');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('EmployeeRecruitment/M_TestCorrection');
+			$this->load->model('EmployeeRecruitment/m_testcorrection');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -47,7 +47,7 @@ class C_Delete extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['result'] = $this->M_TestCorrection->getResult();
+			$data['result'] = $this->m_testcorrection->getResult();
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('EmployeeRecruitment/Delete/V_Index',$data);
@@ -58,11 +58,11 @@ class C_Delete extends CI_Controller
 		{
 			$id = $this->input->post('id');
 			foreach ($id as $key) {
-				$getIdJwb = $this->M_TestCorrection->getIdJwb($key);
+				$getIdJwb = $this->m_testcorrection->getIdJwb($key);
 				foreach ($getIdJwb as $idj) {
-					$this->M_TestCorrection->delResult($idj['jawaban_id']);
+					$this->m_testcorrection->delResult($idj['jawaban_id']);
 				}
-			$this->M_TestCorrection->delByBatch($key);
+			$this->m_testcorrection->delByBatch($key);
 			}
 			$this->index();
 		}
