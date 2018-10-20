@@ -9,6 +9,40 @@
 	        $this->personalia 	=	$this->load->database('personalia', TRUE);
 	    }
 
+	    public function ambilDataMasa($noind)
+	    {
+	    	$query = "select tp.masukkerja from hrd_khs.tpribadi tp where tp.noind='$noind'";
+	    	$data = $this->personalia->query($query);
+	    	return $data->result_array();
+	    }
+
+	    public function rekapBobotTIM($period1,$period2,$noind,$keluar)
+	    {
+	    	$query = "select tp.noind,tp.nama, ts.dept,ts.bidang,ts.unit,ts.seksi,
+	    					(select sum(case 
+	    									when tdtim.kd_ket='TT'
+	    									then tdtim.point
+	    									else 0
+	    								end)
+	    					from \"Presensi\".tdatatim as tdtim inner join hrd_khs.tpribadi tp on tp.noind=tdtim.noind where tdtim.noind='$noind' and tdtim.tanggal between '$period1' and '$period2') as pointtt,
+	    					(select sum(case
+	    									when tdtim.kd_ket='TIK'
+	    									then tdtim.point
+	    									else 0
+	    								end)
+	    					from \"Presensi\".tdatatim as tdtim inner join hrd_khs.tpribadi tp on tp.noind=tdtim.noind where tdtim.noind='$noind' and tdtim.tanggal between '$period1' and '$period2') as pointtik,
+	    					(select sum(case
+	    									when tdtim.kd_ket='TM'
+	    									then tdtim.point
+	    									else 0
+	    								end)
+	    					from \"Presensi\".tdatatim as tdtim inner join hrd_khs.tpribadi tp on tp.noind=tdtim.noind where tdtim.noind='$noind' and tdtim.tanggal between '$period1' and '$period2') as pointtm
+	    				from hrd_khs.tpribadi tp inner join hrd_khs.tseksi ts on tp.kodesie=ts.kodesie where tp.noind='$noind' and  tp.keluar='$keluar'
+	    	";
+	    	$data = $this->personalia->query($query);
+	    	return $data->result_array();
+	    }
+
 	    public function rekapTIMS($tgl1, $tgl2, $year_month = FALSE, $noind = FALSE, $kode_status_kerja = FALSE, $dept = FALSE, $bidang = FALSE, $unit = FALSE, $seksi = FALSE)
 	    {
 	    	// print_r($kode_status_kerja);exit();
