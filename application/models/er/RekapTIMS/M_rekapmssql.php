@@ -993,6 +993,7 @@ clASs M_rekapmssql extends CI_Model {
 												) as seksi
 									from 		hrd_khs.tseksi as tseksi
 									where 		trim(tseksi.kodesie) like '$kodesie%';";
+									// echo $ambilInfoSeksi;exit();
 		$queryAmbilInfoSeksi 	=	$this->personalia->query($ambilInfoSeksi);
 		return $queryAmbilInfoSeksi->result_array();
 	}

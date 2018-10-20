@@ -111,6 +111,7 @@ class C_Rekap extends CI_Controller {
 	//------------------------show the data REKAP TIMS-----------------------------
 	public function showData()
 	{
+		// print_r($_POST);exit();
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -124,7 +125,38 @@ class C_Rekap extends CI_Controller {
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
 		$status 	= $this->input->post('statushubker');
-		$data['statusExport'] = $status;
+		$statusAll 	= $this->input->post('statusAll');
+		if (strlen($statusAll) < 1) {
+			$statusAll = 0;
+		}else{
+			$status = 'All';
+		}
+		// echo $status;
+		// print_r($status);
+		//  exit();
+		// echo gettype($status);
+		if (gettype($status) == 'string') {
+			$data['statusExport'] = $status;
+		}else{
+			$count = count($status);
+					// echo $count;exit();
+			$stat = '';
+					foreach ($status as $noind) {
+						$count--;
+						if ($count !== 0) {
+							$stat .= $noind.',';
+						}
+						else{
+							$stat .= $noind;
+						}
+					}
+					$data['statusExport']=$stat;
+					// print_r($stat);exit();
+		}
+		// echo $data['statusExport'];
+		// echo gettype($data['statusExport']);
+		// exit();
+		// $data['statusExport'] = $status;
 		$detail 	= $this->input->post('detail');
 
 		$departemen 	=	$this->input->post('cmbDepartemen', TRUE);
@@ -137,6 +169,8 @@ class C_Rekap extends CI_Controller {
 		$section 			=	substr($section, -2);
 
 		$kodesie 		=	$departemen.$bidang.$unit.$section;
+		// echo substr($kodesie, 0,1);
+		// echo $kodesie;exit();
 
 		if(substr($kodesie, 0, 1)=='0')
 		{
@@ -149,6 +183,7 @@ class C_Rekap extends CI_Controller {
 			$bidang 				=	$data['bidang'];
 			$unit 					=	$data['unit'];
 			$section 					=	$data['section'];
+			// exit();
 		}
 		else
 		{
@@ -163,6 +198,7 @@ class C_Rekap extends CI_Controller {
 			$bidang 				=	$data['bidang'];
 			$unit 					=	$data['unit'];
 			$section 				=	$data['section'];
+			// echo $section;exit();
 		}
 
 		//$this->load->view('V_Header',$data);
@@ -219,6 +255,12 @@ class C_Rekap extends CI_Controller {
 		$periode1	= $this->input->post('txtPeriode1_export');
 		$periode2	= $this->input->post('txtPeriode2_export');
 		$status 	= $this->input->post('txtStatus_export');
+		if (strpos($status, ',') !== false) {
+			$status = explode(',', $status);
+			print_r($status); exit();
+		}elseif (strlen($status) < 2) {
+			$status = str_split($status);
+		}
 		$departemen	= $this->input->post('txtDepartemen_export');
 		$bidang		= $this->input->post('txtBidang_export');
 		$unit		= $this->input->post('txtUnit_export');

@@ -169,7 +169,7 @@
 					$('#loadingAjax').html('');
 					$('body').removeClass('noscroll');
 					$('#loadingAjax').removeClass('overlay_loading');
-					document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
+					document.getElementById("errordiv").html('<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>');
 				}
 			});
 		});
@@ -578,6 +578,9 @@ function rekap_datatable_detail() {
 							processResults: function(data) {
 								return {
 									results: $.map(data, function(obj){
+										// if (obj.kode_departemen == '2') {
+										// 	return {id: obj.kode_departemen, text: obj.nama_departemen, disabled: true};
+										// }
 										return {id: obj.kode_departemen, text: obj.nama_departemen};
 									})
 								}
@@ -610,11 +613,18 @@ function rekap_datatable_detail() {
 
 					$(document).on('change', '.RekapAbsensi-cmbDepartemen', function(){
 						var departemen =	$(this).val();
+						// alert(departemen);
 						if(departemen=='0')
 						{
-							$('.RekapAbsensi-cmbBidang').select2('val','');
-							$('.RekapAbsensi-cmbUnit').select2('val','');
-							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							$('.RekapAbsensi-cmbBidang').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('.RekapAbsensi-cmbUnit').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('.RekapAbsensi-cmbBidang').attr('disabled', 'true');
 							$('.RekapAbsensi-cmbUnit').attr('disabled','true');
@@ -622,9 +632,15 @@ function rekap_datatable_detail() {
 						}
 						else
 						{
-							$('.RekapAbsensi-cmbBidang').select2('val','');
-							$('.RekapAbsensi-cmbUnit').select2('val','');
-							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							$('.RekapAbsensi-cmbBidang').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('.RekapAbsensi-cmbUnit').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('.RekapAbsensi-cmbBidang').removeAttr('disabled');
 							$('.RekapAbsensi-cmbUnit').removeAttr('disabled');
@@ -660,16 +676,24 @@ function rekap_datatable_detail() {
 
 						if(bidang.substr(bidang.length - 2) == '00')
 						{
-							$('.RekapAbsensi-cmbUnit').select2('val','');
-							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							$('.RekapAbsensi-cmbUnit').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('.RekapAbsensi-cmbUnit').attr('disabled','true');
 							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');
 						}
 						else
 						{
-							$('.RekapAbsensi-cmbUnit').select2('val','');
-							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							$('.RekapAbsensi-cmbUnit').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('.RekapAbsensi-cmbUnit').removeAttr('disabled');
 							$('.RekapAbsensi-cmbSeksi').removeAttr('disabled');
@@ -704,13 +728,17 @@ function rekap_datatable_detail() {
 
 						if(unit.substr(unit.length - 2) == '00')
 						{
-							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 							
 							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');
 						}
 						else
 						{
-							$('.RekapAbsensi-cmbSeksi').select2('val','');
+							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('.RekapAbsensi-cmbSeksi').removeAttr('disabled');							
 
@@ -917,9 +945,15 @@ function rekap_datatable_detail() {
 						var departemen =	$(this).val();
 						if(departemen=='0')
 						{
-							$('#RekapRiwayatMutasi-cmbBidangLama').select2('val','');
-							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbBidangLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbUnitLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbBidangLama').attr('disabled', 'true');
 							$('#RekapRiwayatMutasi-cmbUnitLama').attr('disabled','true');
@@ -927,9 +961,15 @@ function rekap_datatable_detail() {
 						}
 						else
 						{
-							$('#RekapRiwayatMutasi-cmbBidangLama').select2('val','');
-							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbBidangLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbUnitLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbBidangLama').removeAttr('disabled');
 							$('#RekapRiwayatMutasi-cmbUnitLama').removeAttr('disabled');
@@ -965,16 +1005,24 @@ function rekap_datatable_detail() {
 
 						if(bidang.substr(bidang.length - 2) == '00')
 						{
-							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbUnitLama').attr('disabled','true');
 							$('#RekapRiwayatMutasi-cmbSeksiLama').attr('disabled','true');
 						}
 						else
 						{
-							$('#RekapRiwayatMutasi-cmbUnitLama').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbUnitLama').removeAttr('disabled');
 							$('#RekapRiwayatMutasi-cmbSeksiLama').removeAttr('disabled');
@@ -1009,13 +1057,17 @@ function rekap_datatable_detail() {
 
 						if(unit.substr(unit.length - 2) == '00')
 						{
-							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 							
 							$('#RekapRiwayatMutasi-cmbSeksiLama').attr('disabled','true');
 						}
 						else
 						{
-							$('#RekapRiwayatMutasi-cmbSeksiLama').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiLama').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbSeksiLama').removeAttr('disabled');							
 
@@ -1071,9 +1123,15 @@ function rekap_datatable_detail() {
 						var departemen =	$(this).val();
 						if(departemen=='0')
 						{
-							$('#RekapRiwayatMutasi-cmbBidangBaru').select2('val','');
-							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbBidangBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbUnitBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbBidangBaru').attr('disabled', 'true');
 							$('#RekapRiwayatMutasi-cmbUnitBaru').attr('disabled','true');
@@ -1081,9 +1139,15 @@ function rekap_datatable_detail() {
 						}
 						else
 						{
-							$('#RekapRiwayatMutasi-cmbBidangBaru').select2('val','');
-							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbBidangBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbUnitBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbBidangBaru').removeAttr('disabled');
 							$('#RekapRiwayatMutasi-cmbUnitBaru').removeAttr('disabled');
@@ -1119,16 +1183,24 @@ function rekap_datatable_detail() {
 
 						if(bidang.substr(bidang.length - 2) == '00')
 						{
-							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbUnitBaru').attr('disabled','true');
 							$('#RekapRiwayatMutasi-cmbSeksiBaru').attr('disabled','true');
 						}
 						else
 						{
-							$('#RekapRiwayatMutasi-cmbUnitBaru').select2('val','');
-							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbUnitBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbUnitBaru').removeAttr('disabled');
 							$('#RekapRiwayatMutasi-cmbSeksiBaru').removeAttr('disabled');
@@ -1163,13 +1235,17 @@ function rekap_datatable_detail() {
 
 						if(unit.substr(unit.length - 2) == '00')
 						{
-							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 							
 							$('#RekapRiwayatMutasi-cmbSeksiBaru').attr('disabled','true');
 						}
 						else
 						{
-							$('#RekapRiwayatMutasi-cmbSeksiBaru').select2('val','');
+							$('#RekapRiwayatMutasi-cmbSeksiBaru').each(function () { //added a each loop here
+						        $(this).select2('destroy').val("").select2();
+						    });
 
 							$('#RekapRiwayatMutasi-cmbSeksiBaru').removeAttr('disabled');							
 
@@ -1202,6 +1278,36 @@ function rekap_datatable_detail() {
 
 			//	Form Behaviour
 			//	{
+				    $(document).ready(function () {
+				            $('.form-check-input2').prop('disabled', true);
+				            $('.form-check-input1').prop('disabled', true); 
+				            $('.form-check-input3').prop('disabled', true); 
+				    $('.mencoba').click(function () {
+				    	// alert('a');
+				            $('.form-check-input1').prop('disabled', false);
+				            $('.form-check-input1').iCheck('check');
+				            $('.form-check-input2').iCheck('uncheck');
+				            $('.form-check-input3').iCheck('uncheck');
+				            $('.form-check-input3').prop('disabled', true);
+				            $('.form-check-input2').prop('disabled', true);
+				    });
+				    $('.mencoba2').click(function () { 
+				            $('.form-check-input2').prop('disabled', false);
+				            $('.form-check-input2').iCheck('check');
+				            $('.form-check-input1').iCheck('uncheck');
+				            $('.form-check-input3').iCheck('uncheck');
+				            $('.form-check-input3').prop('disabled', true);
+				            $('.form-check-input1').prop('disabled', true); 
+				    });
+				        $('.mencoba3').click(function () {   
+				            $('.form-check-input3').prop('disabled', false);  
+				            $('.form-check-input3').iCheck('check');
+				            $('.form-check-input1').iCheck('uncheck');
+				            $('.form-check-input2').iCheck('uncheck');
+				            $('.form-check-input2').prop('disabled', true);
+				            $('.form-check-input1').prop('disabled', true); 
+				    });
+				});
 
 					$('#RekapRiwayatMutasi-radioJenisPencarian-noind').click(function()
 					{
@@ -1301,12 +1407,30 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('required', true);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('required', true);*/
 					});
-
+					
 			//	}
 		});
 		//	Individual Functions
 		//	{
-				
+		
+			$(function () {
+				$('#er-status').select2();
+				$(document).on('ifChecked', '#er_all', function(event) {
+				 // alert('done'); 
+				// $("select").select2('destroy').val("").select2();
+				// $('#your_select_input').val([]);
+				// $("#er-status").text("");
+				 // $('#er-status').select2().val(null).trigger("change");
+				 $("#er-status").each(function () { //added a each loop here
+			        $(this).select2('val', '');
+			    });
+				 $('#er-status').prop('disabled',true);
+				});
+				$(document).on('ifUnchecked', '#er_all', function(event) {
+				 // alert('done'); 
+				 $('#er-status').prop('disabled',false);
+				});
+			});
 
 		//	}
 //	}

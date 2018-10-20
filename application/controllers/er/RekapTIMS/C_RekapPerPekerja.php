@@ -90,6 +90,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
 		$noinduk 	= $this->input->post('slcNoInduk');
+		// print_r($noinduk);exit();
 		$status     = $this->input->post('slcStatus');
 		$detail 	= $this->input->post('detail');
 		
@@ -99,6 +100,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		}
 
 		$count = count($noinduk);
+		// echo $count;exit();
 		$nomer_induk ="";
 		foreach ($noinduk as $noind) {
 			$count--;
@@ -109,6 +111,7 @@ class C_RekapPerPekerja extends CI_Controller {
 				$nomer_induk .= '\''.$noind.'\'';
 			}
 		}
+		// echo $nomer_induk[8]; exit();
 
 		if ($detail==0) {
 			$data['periode1']	= $periode1;
@@ -118,6 +121,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);*/
 
 			$data['rekap'] = $this->M_rekaptims->rekapTIMS($periode1, $periode2 , FALSE, $nomer_induk);
+			// print_r($data['rekap']);exit();
 			$this->load->view('er/RekapTIMS/V_rekap_per_pekerja',$data);
 		}
 		else {
