@@ -33,7 +33,7 @@
                                         <div class="form-group">
                                             <label for="radioJenisPencarian" class="control-label col-lg-2">Jenis Pencarian</label>
                                             <div class="col-md-2">
-                                                <input style="display: none" type="radio" class="form-check-input" name="radioJenisPencarian" value="noind" ></input>
+                                                <input style="display: none" type="radio" class="form-check-input1" name="radioJenisPencarian" value="noind" ></input>
                                                 <input type="button" class="btn btn-default mencoba" name="radioJenisPencarian" value="noind" id="RekapRiwayatMutasi-radioJenisPencarian-noind"></input>
                                             </div>
                                             <div class="col-md-2">
@@ -187,35 +187,3 @@
         </div>
     </div>
 </section>
-<script type="text/javascript">
-    $(document).ready(function () {
-            $('.form-check-input2').prop('disabled', true);
-            $('.form-check-input').prop('disabled', true); 
-            $('.form-check-input3').prop('disabled', true); 
-    $('.mencoba').click(function () {
-            $('.form-check-input').prop('disabled', false);
-            $('.form-check-input').iCheck('check');
-            $('.form-check-input2').iCheck('uncheck');
-            $('.form-check-input3').iCheck('uncheck');
-            $('.form-check-input3').prop('disabled', true);
-            $('.form-check-input2').prop('disabled', true);
-    });
-    $('.mencoba2').click(function () { 
-            $('.form-check-input2').prop('disabled', false);
-            $('.form-check-input2').iCheck('check');
-            $('.form-check-input').iCheck('uncheck');
-            $('.form-check-input3').iCheck('uncheck');
-            $('.form-check-input3').prop('disabled', true);
-            $('.form-check-input').prop('disabled', true); 
-    });
-        $('.mencoba3').click(function () {   
-            $('.form-check-input3').prop('disabled', false);  
-            $('.form-check-input3').iCheck('check');
-            $('.form-check-input').iCheck('uncheck');
-            $('.form-check-input2').iCheck('uncheck');
-            $('.form-check-input2').prop('disabled', true);
-            $('.form-check-input').prop('disabled', true); 
-    });
-
-});
-</script>

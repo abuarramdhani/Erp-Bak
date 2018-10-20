@@ -11,6 +11,7 @@
 
 	    public function rekapTIMS($tgl1, $tgl2, $year_month = FALSE, $noind = FALSE, $kode_status_kerja = FALSE, $dept = FALSE, $bidang = FALSE, $unit = FALSE, $seksi = FALSE)
 	    {
+	    	// print_r($kode_status_kerja);exit();
 	    	// Menentukan rekap periode bulanan atau tidak
 	    	if($year_month === FALSE)
 	    	{
@@ -19,6 +20,11 @@
 
 	    	$parameter 	=	'';
 	    	// Menentukan parameter rekap
+	    	// if (strlen($noind) < 1) {
+	    	// 	echo strlen(string);
+	    	// }
+	    	// echo $noind;exit();
+	    	$status ="";
 	    	if($noind !== FALSE)
 	    	{
 	    		$parameter 	= '	pri.noind in ('.$noind.')';
@@ -28,10 +34,24 @@
 	    		if ($kode_status_kerja == 'All')
 	    		{
 					$kode_status_kerja = "pri.kode_status_kerja";
+					// exit();
 				}
 				else
 				{
-					$kode_status_kerja = "'".$kode_status_kerja."'";
+					$count = count($kode_status_kerja);
+					// echo $count;exit();
+					
+					foreach ($kode_status_kerja as $noind) {
+						$count--;
+						if ($count !== 0) {
+							$status .= '\''.$noind.'\',';
+						}
+						else{
+							$status .= '\''.$noind.'\'';
+						}
+					}
+					// $kode_status_kerja = "'".$kode_status_kerja."'";
+					// print_r($status); exit();
 				}
 
 				if ($dept == 'All')
@@ -67,15 +87,24 @@
 				}
 				else
 				{
-					$seksi = "rtrim('".$seksi."')";
+					$seksi = "rtrim('".$seksi ."')";
 				}
 
-	    		$parameter 	= '	pri.kode_status_kerja='.$kode_status_kerja.'
+				if ($kode_status_kerja == 'pri.kode_status_kerja') {
+	    			$parameter 	= '	pri.kode_status_kerja='.$kode_status_kerja.'
 	    						and 	rtrim(tseksi.dept)='.$dept.'
 	    						and 	rtrim(tseksi.bidang)='.$bidang.'
 	    						and 	rtrim(tseksi.unit)='.$unit.'
 	    						and 	rtrim(tseksi.seksi)='.$seksi.'
 	    						and 	pri.keluar=false';
+				}else{
+					$parameter 	= '	pri.kode_status_kerja in'."(".$status.")".'
+	    						and 	rtrim(tseksi.dept)='.$dept.'
+	    						and 	rtrim(tseksi.bidang)='.$bidang.'
+	    						and 	rtrim(tseksi.unit)='.$unit.'
+	    						and 	rtrim(tseksi.seksi)='.$seksi.'
+	    						and 	pri.keluar=false';
+				}
 	    	}
 
 	    	$rekapTIMS		= "	select 		pri.noind,
@@ -558,7 +587,8 @@
 								order by 	tseksi.kodesie,
 											pri.kd_jabatan,
 											pri.noind";
-			/*echo $rekapTIMS.'<br/>';*/
+			// echo $rekapTIMS.'<br/>'; exit();
+			// echo $parameter;exit();
 			$queryRekapTIMS =	$this->personalia->query($rekapTIMS);
 			return $queryRekapTIMS->result_array();
 	    }
