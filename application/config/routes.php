@@ -406,6 +406,9 @@ $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/G
 			$route['RekapTIMSPromosiPekerja/RekapDataPresensiTim'] 			=	'er/RekapTIMS/C_RekapDataPresensiTIM';
 			$route['RekapTIMSPromosiPekerja/RekapDataPresensiTim/(:any)'] 	=	'er/RekapTIMS/C_RekapDataPresensiTIM/$1';
 	//	}
+	// Rekap Bobot TIM
+			$route['RekapTIMSPromosiPekerja/RekapBobot']  =  'er/RekapTIMS/C_RekapBobot';
+			$route['RekapTIMSPromosiPekerja/RekapBobot/(:any)']  =  'er/RekapTIMS/C_RekapBobot/$1';
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
 $route['StockControl/item'] = 'StockControl/C_Item/index';
