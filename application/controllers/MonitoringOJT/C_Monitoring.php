@@ -858,6 +858,8 @@ class C_Monitoring extends CI_Controller
 		// echo strtotime($tanggal_rekap); exit();
 		$tanggal_rekap = $this->input->post('tuanggal');
 		$id_orientasi = $this->input->post('id');
+		$tahapan = $this->M_monitoring->tahapan($id_orientasi);
+		echo json_encode($tahapan[0]['tahapan']);
 		// echo "<script type='text/javascript'>alert($tahapan);</script>";
 		// redirect('OnJobTraining/Monitoring/'.$id_orientasi); exit();
 		if(isset($id_orientasi) and !empty($id_orientasi)){
