@@ -1,7 +1,5 @@
 //var baseurl = document.location.origin;
 
-
-
 $('#tblCore').DataTable({
     dom: 'Bfrtip',
     buttons: ['excel', 'pdf']
@@ -633,7 +631,7 @@ $("#tanggal_cetak").on("click", function() {
             $.each(results,function(i,data){
                 html += "<tr><td align='center'>"+ 1 +"</td>"+
                         "<td align='center'>" +
-                            "<a style='margin-right:4px' href='"+baseurl+"/ManufacturingOperationUP2L/QualityControl/read_detail/"+data.moulding_id+"' data-toggle='tooltip' data-placement='bottom' title='Read Data'><span class='fa fa-list-alt fa-2x'></span></a>" +
+                            "<a style='margin-right:4px' href='"+baseurl+"ManufacturingOperationUP2L/QualityControl/read_detail/"+data.moulding_id+"' data-toggle='tooltip' data-placement='bottom' title='Read Data'><span class='fa fa-list-alt fa-2x'></span></a>" +
                         "</td>" +
                         "<td>"+ data.component_code +"</td>" +
                         "<td>"+ data.component_description +"</td>" +
