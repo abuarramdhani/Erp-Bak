@@ -78,6 +78,13 @@ class C_infokirim extends CI_Controller
 			$data['kategori'] = $this->input->post('txtPilihKat');
 			$data['text'] = $this->input->post('txtHiddenValue');
 			$periode = $this->input->post('txtPeriodeInfo');
+			if (isset($_POST['txtValueSek'])) {
+				$data['value'] = $this->input->post('txtValueSek');
+				$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
+			}else{
+				$data['value'] = $this->input->post('txtValueLim');
+				$data['tabel'] = $this->M_info->chartSeksi($data['value'],$periode);
+			}
 		}else{
 			$data['periode'] = date('F Y');
 			$data['kategori'] = "seksi";
@@ -87,14 +94,9 @@ class C_infokirim extends CI_Controller
 				}
 			}
 			$periode = date('F Y');
+			$data['tabel'] = $this->M_info->chartLimbah($kodesie,$periode);
 		}
-		if (isset($_POST['txtValueSek'])) {
-			$data['value'] = $this->input->post('txtValueSek');
-			$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
-		}else{
-			$data['value'] = $this->input->post('txtValueLim');
-			$data['tabel'] = $this->M_info->chartSeksi($data['value'],$periode);
-		}
+		
 
 		// print_r($_POST);
 		// echo $data['value'].$data['text'].$data['kategori'];
