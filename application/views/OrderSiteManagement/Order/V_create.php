@@ -42,6 +42,7 @@
                                                         <option value=""></option>
                                                         <option value="Perbaikan Kursi">Perbaikan Kursi</option>
                                                         <option value="Cleaning Service">Cleaning Service</option>
+                                                        <option value="Pembakaran Arsip">Pembakaran Arsip</option>
                                                         <option value="Lain-Lain">Lain-Lain</option>
                                                     </select>
                                                 </div>
