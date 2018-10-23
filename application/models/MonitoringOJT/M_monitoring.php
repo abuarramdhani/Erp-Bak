@@ -500,4 +500,12 @@
 									between pro.tgl_awal and pro.tgl_akhir');
  			return $query->result_array();
  		}
+
+ 		public function tahapan($id_orientasi)
+ 		{
+ 			$sql = "select tahapan from ojt.tb_orientasi where id_orientasi = '$id_orientasi'";
+
+ 			$query = $this->db->query($sql);
+ 			return $query->result_array();
+ 		}
  	}
