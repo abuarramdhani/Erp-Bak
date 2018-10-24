@@ -46,15 +46,18 @@
 					
 					<div class="box-body">
 						
-						<div class="table-responsive" style="overflow:hidden;">
+						<div class="table-responsive" style="overflow:auto;">
 							
 							<div class="table-responsive">
 								<?php if($this->session->userdata['user'] != 'B0269' && $this->session->userdata['user'] != 'P0255'): ?>
 								<div style="margin-bottom:10px">
 								<button data-toggle="collapse" data-target="#demo" class="btn btn-warning">Dangerous Function</button>
 								</div>
-								<div style="margin-bottom:10px">
 								<?php endif; ?>
+
+
+
+								<div style="margin-bottom:10px">
 								<a href="http://produksi.quick.com/adexe-print-qr-assets/" class="btn btn-success">Generate QR Code</a>
 								</div>
 							</div>
