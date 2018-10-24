@@ -71,7 +71,19 @@ class C_RekapBobot extends CI_Controller {
 		$periode1	= $this->input->post('rekapBegin');
 		$periode2	= $this->input->post('rekapEnd');
 		$l 			= $this->input->post('slcNoInduk[]');
-		$noind 		= $l[0];
+		$noind 		= "";
+		$jml = count($l);
+		
+		for($k=0;$k<$jml;$k++){
+			$split_id = $l[$k];
+			
+			if ($noind=="") {
+				$noind = "'".$split_id."'";
+			}else{
+				$noind = $noind.",'".$split_id."'";
+			}
+			
+		}
 		$keluar 	= $this->input->post('slcStatus');
 		$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 		$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
