@@ -45,9 +45,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$invoice = $this->M_monitoringinvoice->showInvoice();
-		// echo "<pre>";
-		// print_r($invoice);
-		// exit();
 
 		$no = 0;
 		$keputusan = array();
@@ -352,7 +349,6 @@ class C_monitoringinvoice extends CI_Controller{
 			foreach ($checkList as $dt => $value2) {
 				$inv = $value2['invoice_id'];
 				$no_po = $value2['po_number'];
-				// $no_lppb = $value2['lppb_number'];
 				$line_number = $value2['line_number'];
 				$checkListSubmitted = $this->M_monitoringinvoice->checkStatus($no_po,$line_number);
 

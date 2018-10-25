@@ -29,6 +29,7 @@
 											<th class="text-center">Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
+											<th class="text-center">Status Invoice</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -43,6 +44,17 @@
 											<td><?php echo  $inv['batch_num'] ?></td>
 											<td><?php echo  $inv['submited_date'] ?></td>
 											<td><?php echo $inv['jml_invoice']; ?></td>
+											<?php if ($inv['last_purchasing_invoice_status'] == 0 ) {
+												$stat = 'New/Draft';
+												} elseif ($inv['last_purchasing_invoice_status'] == 1) {
+													$stat = 'Submited by Kasie Purc';
+												} elseif($inv['last_purchasing_invoice_status'] == 2){
+													$stat = 'Approved By Kasie Purc';
+												} elseif($inv['last_purchasing_invoice_status'] == 3){
+													$stat = 'Rejected by Kasie Purc';
+												}
+											?>
+											<td><?php echo $stat; ?></td>
 										</tr>
 										<?php $no++; } } ?>
 									</tbody>

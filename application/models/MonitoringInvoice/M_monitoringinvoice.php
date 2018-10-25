@@ -17,15 +17,16 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    rsl.item_description description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     rsh.receipt_num no_lppb,
-                                    rt.currency_code currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     rsh.shipment_num shipment,
                                     rt.transaction_type status, 
                                     rt.quantity qty_receipt,
                                     rsh.creation_date transaction,
-                                    msib.SEGMENT1 item_id
+                                    msib.SEGMENT1 item_id,
+                                    pol.QUANTITY quantity
                             from rcv_shipment_headers rsh
                             ,rcv_shipment_lines rsl
                             ,PO_VENDORS POV
@@ -47,7 +48,8 @@ class M_monitoringinvoice extends CI_Model {
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                        and msib.ORGANIZATION_ID = 81
                         and poh.po_header_id(+) = pol.po_header_id
                         AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -59,23 +61,27 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    NULL description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     NULL no_lppb,
-                                    NULL currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     NULL shipment,
                                     NULL status, 
                                     NULL qty_receipt,
                                     NULL transaction,
-                                    NULL item_id
+                                    msib.segment1 item_id,
+                                    pol.QUANTITY quantity
                         FROM PO_VENDORS POV
                             ,HR_ALL_ORGANIZATION_UNITS_TL ORG
                             ,PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
                         WHERE poh.po_header_id(+) = pol.po_header_id
                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                            and msib.ORGANIZATION_ID = 81
                             and pol.po_line_id not in (
                                         SELECT 
                                                  pol.PO_LINE_ID
@@ -101,21 +107,22 @@ class M_monitoringinvoice extends CI_Model {
                                                                       WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                                       and rts.po_line_id = pol.PO_LINE_ID
                                                                       AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                                            and msib.ORGANIZATION_ID = 81
                                             and poh.po_header_id(+) = pol.po_header_id
                                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
                                         )
                         )
                     WHERE no_po = '$po_numberInv'
-                    order by line_num ");
+                    order by line_num");
 		return $query->result_array();
 	}
 
     public function statusPo($po_numberInv){
         $oracle = $this->load->database('oracle',TRUE);
         $sql = $oracle->query("SELECT *
-                    FROM (SELECT distinct
+                    FROM (SELECT distinct pol.line_num line_num,
                                     pll.quantity_billed quantity_billed, 
                                     rt.transaction_type transaction_type,
                                     poh.segment1 no_po
@@ -140,12 +147,13 @@ class M_monitoringinvoice extends CI_Model {
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                        and msib.ORGANIZATION_ID = 81
                         and poh.po_header_id(+) = pol.po_header_id
                         AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
                         union all
-                        SELECT distinct 
+                        SELECT distinct pol.line_num line_num,
                                     pll.quantity_billed quantity_billed,
                                     NULL transaction_type,
                                     poh.segment1 no_po
@@ -154,6 +162,7 @@ class M_monitoringinvoice extends CI_Model {
                             ,PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
                         WHERE poh.po_header_id(+) = pol.po_header_id
                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -182,7 +191,8 @@ class M_monitoringinvoice extends CI_Model {
                                                                       WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                                       and rts.po_line_id = pol.PO_LINE_ID
                                                                       AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                                            and msib.ORGANIZATION_ID = 81
                                             and poh.po_header_id(+) = pol.po_header_id
                                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -279,6 +289,7 @@ class M_monitoringinvoice extends CI_Model {
                             FROM ap.ap_monitoring_invoice ami,
                         (select aipo.* from ap.ap_invoice_purchase_order aipo) aaipo
                         where aaipo.invoice_id = ami.invoice_id
+                        and ami.purchasing_batch_number is null
                 order by ami.invoice_id";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
@@ -403,10 +414,10 @@ class M_monitoringinvoice extends CI_Model {
 
     public function showListSubmitted(){
         $oracle = $this->load->database('erp_db',true);
-        $sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date
+        $sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status
                 FROM ap.ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
-                GROUP BY batch_num, submited_date 
+                GROUP BY batch_num, submited_date , last_purchasing_invoice_status
                 ORDER BY batch_num";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -506,15 +517,16 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    rsl.item_description description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     rsh.receipt_num no_lppb,
-                                    rt.currency_code currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     rsh.shipment_num shipment,
                                     rt.transaction_type status, 
                                     rt.quantity qty_receipt,
                                     rsh.creation_date transaction,
-                                    msib.SEGMENT1 item_id
+                                    msib.SEGMENT1 item_id,
+                                    pol.QUANTITY quantity
                             from rcv_shipment_headers rsh
                             ,rcv_shipment_lines rsl
                             ,PO_VENDORS POV
@@ -536,7 +548,8 @@ class M_monitoringinvoice extends CI_Model {
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                        and msib.ORGANIZATION_ID = 81
                         and poh.po_header_id(+) = pol.po_header_id
                         AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -548,23 +561,27 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    NULL description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     NULL no_lppb,
-                                    NULL currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     NULL shipment,
                                     NULL status, 
                                     NULL qty_receipt,
                                     NULL transaction,
-                                    NULL item_id
+                                    msib.segment1 item_id,
+                                    pol.QUANTITY quantity
                         FROM PO_VENDORS POV
                             ,HR_ALL_ORGANIZATION_UNITS_TL ORG
                             ,PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
                         WHERE poh.po_header_id(+) = pol.po_header_id
                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                            and msib.ORGANIZATION_ID = 81
                             and pol.po_line_id not in (
                                         SELECT 
                                                  pol.PO_LINE_ID
@@ -590,14 +607,15 @@ class M_monitoringinvoice extends CI_Model {
                                                                       WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                                       and rts.po_line_id = pol.PO_LINE_ID
                                                                       AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                                            and msib.ORGANIZATION_ID = 81
                                             and poh.po_header_id(+) = pol.po_header_id
                                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
                                         )
                         )
-            WHERE no_po = $po_number
-            and no_lppb = $lppb_number");
+                    WHERE no_po = $po_number
+                    and no_lppb = $lppb_number");
         return $query->result_array();
     }
 
@@ -612,15 +630,16 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    rsl.item_description description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     rsh.receipt_num no_lppb,
-                                    rt.currency_code currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     rsh.shipment_num shipment,
                                     rt.transaction_type status, 
                                     rt.quantity qty_receipt,
                                     rsh.creation_date transaction,
-                                    msib.SEGMENT1 item_id
+                                    msib.SEGMENT1 item_id,
+                                    pol.QUANTITY quantity
                             from rcv_shipment_headers rsh
                             ,rcv_shipment_lines rsl
                             ,PO_VENDORS POV
@@ -642,7 +661,8 @@ class M_monitoringinvoice extends CI_Model {
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                        and msib.ORGANIZATION_ID = 81
                         and poh.po_header_id(+) = pol.po_header_id
                         AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -654,23 +674,27 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    NULL description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     NULL no_lppb,
-                                    NULL currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     NULL shipment,
                                     NULL status, 
                                     NULL qty_receipt,
                                     NULL transaction,
-                                    NULL item_id
+                                    msib.segment1 item_id,
+                                    pol.QUANTITY quantity
                         FROM PO_VENDORS POV
                             ,HR_ALL_ORGANIZATION_UNITS_TL ORG
                             ,PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
                         WHERE poh.po_header_id(+) = pol.po_header_id
                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                            and msib.ORGANIZATION_ID = 81
                             and pol.po_line_id not in (
                                         SELECT 
                                                  pol.PO_LINE_ID
@@ -696,14 +720,15 @@ class M_monitoringinvoice extends CI_Model {
                                                                       WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                                       and rts.po_line_id = pol.PO_LINE_ID
                                                                       AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                                            and msib.ORGANIZATION_ID = 81
                                             and poh.po_header_id(+) = pol.po_header_id
                                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
                                         )
                         )
-            WHERE no_po = $po_number
-            and line_num = $line_num";
+                        WHERE no_po = $po_number
+                        and line_num = $line_num";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -749,15 +774,16 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    rsl.item_description description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     rsh.receipt_num no_lppb,
-                                    rt.currency_code currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     rsh.shipment_num shipment,
                                     rt.transaction_type status, 
                                     rt.quantity qty_receipt,
                                     rsh.creation_date transaction,
-                                    msib.SEGMENT1 item_id
+                                    msib.SEGMENT1 item_id,
+                                    pol.QUANTITY quantity
                             from rcv_shipment_headers rsh
                             ,rcv_shipment_lines rsl
                             ,PO_VENDORS POV
@@ -779,7 +805,8 @@ class M_monitoringinvoice extends CI_Model {
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                        and msib.ORGANIZATION_ID = 81
                         and poh.po_header_id(+) = pol.po_header_id
                         AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -791,23 +818,27 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    NULL description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     NULL no_lppb,
-                                    NULL currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     NULL shipment,
                                     NULL status, 
                                     NULL qty_receipt,
                                     NULL transaction,
-                                    NULL item_id
+                                    msib.segment1 item_id,
+                                    pol.QUANTITY quantity
                         FROM PO_VENDORS POV
                             ,HR_ALL_ORGANIZATION_UNITS_TL ORG
                             ,PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
                         WHERE poh.po_header_id(+) = pol.po_header_id
                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                            and msib.ORGANIZATION_ID = 81
                             and pol.po_line_id not in (
                                         SELECT 
                                                  pol.PO_LINE_ID
@@ -833,7 +864,8 @@ class M_monitoringinvoice extends CI_Model {
                                                                       WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                                       and rts.po_line_id = pol.PO_LINE_ID
                                                                       AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                                            and msib.ORGANIZATION_ID = 81
                                             and poh.po_header_id(+) = pol.po_header_id
                                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -875,15 +907,16 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    rsl.item_description description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     rsh.receipt_num no_lppb,
-                                    rt.currency_code currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     rsh.shipment_num shipment,
                                     rt.transaction_type status, 
                                     rt.quantity qty_receipt,
                                     rsh.creation_date transaction,
                                     msib.SEGMENT1 item_id,
+                                    pol.QUANTITY quantity,
                                     poh.attribute2 ppn
                             from rcv_shipment_headers rsh
                             ,rcv_shipment_lines rsl
@@ -906,7 +939,8 @@ class M_monitoringinvoice extends CI_Model {
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                        and msib.ORGANIZATION_ID = 81
                         and poh.po_header_id(+) = pol.po_header_id
                         AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
@@ -918,24 +952,28 @@ class M_monitoringinvoice extends CI_Model {
                                     pov.VENDOR_NAME vendor_name,
                                     pol.unit_price unit_price,
                                     pll.quantity_rejected rejected, 
-                                    NULL description,
+                                    pol.item_description description,
                                     pll.quantity_billed quantity_billed,
                                     NULL no_lppb,
-                                    NULL currency, 
+                                    poh.CURRENCY_CODE currency, 
                                     NULL shipment,
                                     NULL status, 
                                     NULL qty_receipt,
                                     NULL transaction,
-                                    NULL item_id,
+                                    msib.segment1 item_id,
+                                    pol.QUANTITY quantity,
                                     poh.attribute2 ppn
                         FROM PO_VENDORS POV
                             ,HR_ALL_ORGANIZATION_UNITS_TL ORG
                             ,PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
                         WHERE poh.po_header_id(+) = pol.po_header_id
                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                            and msib.ORGANIZATION_ID = 81
                             and pol.po_line_id not in (
                                         SELECT 
                                                  pol.PO_LINE_ID
@@ -961,7 +999,8 @@ class M_monitoringinvoice extends CI_Model {
                                                                       WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                                       and rts.po_line_id = pol.PO_LINE_ID
                                                                       AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
+                                            and msib.ORGANIZATION_ID = 81
                                             and poh.po_header_id(+) = pol.po_header_id
                                             AND POV.VENDOR_ID (+) = poh.VENDOR_ID
                                             AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
