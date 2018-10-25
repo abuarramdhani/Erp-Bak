@@ -72,6 +72,16 @@
 									<div class="row" style="margin: 10px 10px;vertical-align: middle">
 										<div class="col-md-8">
 										</div>
+										<div class="col-md-3">
+											<div class="form-group" style="vertical-align: middle">
+												<div class="checkbox">
+													<label>
+														<input id="toggle_button" name="detail" type="checkbox" value="1">
+														Tampilkan Detail Data TIMS
+													</label>
+												</div>
+											</div>
+										</div>
 										<div class="col-md-1">
 											<span id="submit-filter-no-induk-bobot" class="btn btn-primary pull-right" style="vertical-align: middle">
 												PROSES

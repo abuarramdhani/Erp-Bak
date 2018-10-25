@@ -28,7 +28,7 @@ foreach ($bobot as $rekap_data) {}
 							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">
-							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($bobot); foreach ($bobot as $rkp_export) { $count--; if ($count !== 0) { echo $rkp_export['noind'];} else { echo $rkp_export['noind'];} } ?>">
+							<input type="hidden" name="txtNoInduk_export" value="<?php $count = count($bobot); foreach ($bobot as $rkp_export) { $count--; if ($count !== 0) { echo "'".$rkp_export['noind']."'".",";} else { echo "'".$rkp_export['noind']."'";} } ?>">
 							<button class="btn btn-default pull-right">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 							</button>
@@ -172,9 +172,7 @@ foreach ($bobot as $rekap_data) {}
 													
 												</td>
 												<td style="text-align:center;">
-														<?php echo $masakerja['tahun']?> tahun
-														<?php echo $masakerja['bulan']?> bulan
-														<?php echo $masakerja['hari']?> hari
+														<?php echo $rekap_data['masa_kerja']?>
 												</td>
 												<td style="text-align:center; vertical-align: middle; white-space: nowrap;">
 													<?php echo $rekap_data['dept']; ?>
