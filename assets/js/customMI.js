@@ -115,6 +115,8 @@ $(document).ready(function(){
 						        alert('Hapus dibatalkan');
 						    }
 						});
+						var inputCurr = $('input[name="currency[]"]').val();
+						$('#currency').append(inputCurr);
 				});
 			}
 		});

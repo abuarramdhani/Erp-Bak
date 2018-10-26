@@ -140,7 +140,7 @@
 							</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span id="AmountOtomatis"></span>
+							<label>Po Amount : </label><span id="AmountOtomatis"></span><span id="currency"></span>
 						</div>
 						<div class="col-md-2 pull-right">
 							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>">
