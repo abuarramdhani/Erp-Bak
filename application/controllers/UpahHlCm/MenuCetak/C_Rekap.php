@@ -85,7 +85,11 @@ class C_Rekap extends CI_Controller {
 
 		$data['kom'] = $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$noind);
 		$data['nom'] = $this->M_prosesgaji->ambilNominalGaji();
-		$data['rekap'] = $this->M_cetakdata->ambildataRekap($tanggalawal,$tanggalakhir);
+		$data['rekap'] = $this->M_cetakdata->ambildataRekap();
+
+		// echo "<pre>";
+		// print_r($data['rekap']);
+		// exit();
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'F4', 8, '', 12, 15, 15, 15, 10, 20);

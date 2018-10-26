@@ -19,9 +19,6 @@
 								<option value="02">Tuksono</option>
 							</select>
 						</div>
-						<div class="col-lg-8">
-							<button class="btn btn-default pull-right"><a class="text-muted" href="<?php echo base_url('HitungHlcm/DataPekerja/tambahData');?>">Tambah Data</a></button>
-						</div>
 					</div>
 				</div>
 				<br>

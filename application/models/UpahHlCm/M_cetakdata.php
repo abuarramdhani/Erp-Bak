@@ -18,11 +18,11 @@ class M_cetakdata extends CI_Model {
 	}
 	public function ambilKepalaTukang()
 	{
-		$query = "select tp.noind,tp.nama,(select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where tp.nama in ('WALUYO','MUGIYANA','KLIMIN','PARTIMIN','MUHAMMAD SADALI','SURAJI','NUR SIHONO','SUKRI','PARLAN','SUJONO','HERU WIDODO') and noind like 'R%' group by tp.noind,tp,nama,pekerjaan order by pekerjaan";
+		$query = "select tp.noind,tp.nama,tp.lokasi_kerja,(select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where noind like 'R%' group by tp.noind,tp,nama,tp.lokasi_kerja,pekerjaan order by pekerjaan";
 		$data = $this->personalia->query($query);
 		return $data->result_array();
 	}
-	public function ambildataRekap($tanggalawal,$tanggalakhir)
+	public function ambildataRekap()
 	{
 		$query = "select pk.no_rekening, pk.noind, pk.atas_nama, (select b.nama_bank from hlcm.hlcm_bank b where pk.bank=b.code_bank) as bank from hlcm.hlcm_datapekerja pk";
 		$data = $this->erp->query($query);

@@ -210,6 +210,7 @@ $(function () {
          var result = JSON.parse(result);
 
           $('#namapekerja').val(result['nama']);
+          $('#jabatanpekerja').val(result['jabatan']);
         }
 
       		});

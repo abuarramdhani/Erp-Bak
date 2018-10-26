@@ -54,9 +54,9 @@ class M_upahphl extends CI_Model {
 	}
 	public function getDataPekerja($lokasi_kerja)
 	{
-		$this->erp->where('lokasi_kerja',$lokasi_kerja);
-		$query = $this->erp->get('hlcm.hlcm_datapekerja');
-		return $query->result_array();
+		$query = "select dp.*,(select b.nama_bank from hlcm.hlcm_bank b where b.code_bank=dp.bank) as nama_bank from hlcm.hlcm_datapekerja dp where dp.lokasi_kerja='$lokasi_kerja' order by dp.last_updated,dp.noind";
+		$data = $this->erp->query($query);
+		return $data->result_array();
 	}
 	public function getPekerja($pekerja,$lokasi_kerja)
 	{
@@ -86,7 +86,7 @@ class M_upahphl extends CI_Model {
 	}
 	public function namaPekerja($noind)
 	{
-		$query = "select tp.nama from hrd_khs.tpribadi tp where tp.noind='$noind'";
+		$query = "select tp.noind,tp.kodesie,tp.nama,(select jabatan from hrd_khs.trefjabatan where noind='$noind') as jabatan,(select p.pekerjaan from hrd_khs.tpekerjaan p where tp.kodesie=p.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where tp.noind='$noind'";
 		// $this->personalia->where('noind',$noind);
 		// $data = $this->personalia->get('hrd_khs.tpribadi');
 		$data = $this->personalia->query($query);
@@ -112,7 +112,7 @@ class M_upahphl extends CI_Model {
 
 	public function ambilDataApproval($id)
 	{
-		$query = "select * from hlcm.hlcm_approval ORDER BY id_approval ASC";
+		$query = "select * from hlcm.hlcm_approval where id_approval='$id' ORDER BY id_approval ASC";
 		// $this->erp->where('id_approval',$id);
 		// $this->erp->order_by('id_approval','ASC');
 		$data = $this->erp->query($query);
@@ -158,6 +158,29 @@ class M_upahphl extends CI_Model {
 	{
 		$this->erp->where('id_pekerja',$id);
 		$this->erp->delete('hlcm.hlcm_datapekerja');
+		return;
+	}
+	public function ambilPekerjaHL()
+	{
+		$query="select tp.nama,tp.noind,tp.lokasi_kerja, (select tpk.kdpekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as kdpekerjaan from hrd_khs.tpribadi tp where left(tp.noind,1)='R' and keluar='0' order by tp.noind";
+		$data=$this->personalia->query($query);
+		return $data->result_array();
+	}
+	public function ambilDataPekerjaHL()
+	{
+		$query="select noind from hlcm.hlcm_datapekerja";
+		$data=$this->erp->query($query);
+		return $data->result_array();
+	}
+	public function cekdataAda($noind,$nama,$kdpkj,$loker)
+	{
+		$query="select * from hlcm.hlcm_datapekerja where noind='$noind' and nama='$nama' and kode_pekerjaan='$kdpkj' and lokasi_kerja='$loker'";
+		$data=$this->erp->query($query);
+		return $data->num_rows();
+	}
+	public function insertDataPekerja($array)
+	{
+		$data = $this->erp->insert('hlcm.hlcm_datapekerja',$array);
 		return;
 	}
 };
