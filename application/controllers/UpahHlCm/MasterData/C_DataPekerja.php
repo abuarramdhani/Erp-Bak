@@ -47,6 +47,29 @@ class C_DataPekerja extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
+		$tpri = $this->M_upahphl->ambilPekerjaHL();
+		$tdat = $this->M_upahphl->ambilDataPekerjaHL();
+		// echo "<pre>";
+		// print_r($tpri);
+		// exit();
+		foreach ($tpri as $key) {
+			$noind = $key['noind'];
+			$nama  = $key['nama'];
+			$kdpkj = $key['kdpekerjaan'];
+			$loker = $key['lokasi_kerja'];
+
+			$cek = $this->M_upahphl->cekdataAda($noind,$nama,$kdpkj,$loker);
+			if ($cek=='0') {
+				$array = array(
+								'noind' => $noind,
+								'nama' => $nama,
+								'kode_pekerjaan' => $kdpkj,
+								'lokasi_kerja' => $loker,
+							);
+				$this->M_upahphl->insertDataPekerja($array);
+			}
+		}
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -97,7 +120,7 @@ class C_DataPekerja extends CI_Controller {
 			<td>".$pekerja."</td>
 			<td>".$key['no_rekening']."</td>
 			<td>".$key['atas_nama']."</td>
-			<td>".$key['bank']."</td>
+			<td>".$key['nama_bank']."</td>
 			<td>".$key['cabang']."</td>
 			<td style='text-align:center;'><a href='".base_url('HitungHlcm/DataPekerja/editData'.'/'.$id)."'><span class='glyphicon glyphicon-edit'></span></a>
 			<a style='margin-left:5px;' href='".base_url('HitungHlcm/DataPekerja/deleteData'.'/'.$id)."'><span class='glyphicon glyphicon-trash'></span></a>
@@ -109,24 +132,6 @@ class C_DataPekerja extends CI_Controller {
 		echo $tr;
 	}
 
-	public function tambahData()
-	{
-		$this->checkSession();
-		$user_id = $this->session->userid;
-		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('UpahHlCm/MasterData/V_TambahDataPekerja',$data);
-		$this->load->view('V_Footer',$data);
-	}
 
 	public function editData($id)
 	{
@@ -147,8 +152,13 @@ class C_DataPekerja extends CI_Controller {
 
 		$kdpkj = $er[0]['kode_pekerjaan'];
 		$data['pekerjaan'] = $this->M_upahphl->pekerjaankode($kdpkj);
-		$kdbank = $er[0]['bank'];
-		$data['bank'] = $this->M_upahphl->ambilnamaBank($kdbank);
+		if ($er[0]['bank'] != null or $er[0]['bank'] != "") {
+			$kdbank = $er[0]['bank'];
+			$bank = $this->M_upahphl->ambilnamaBank($kdbank);
+			$data['bank'] = $bank[0]['nama_bank'];			
+		}else {
+			$data['bank'] = "";
+		}
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -167,9 +177,9 @@ class C_DataPekerja extends CI_Controller {
 		$bank= $this->input->post('bankpekerja');
 		$cabang= $this->input->post('cabangbank');
 
-		$data = $this->M_upahphl->ambilkodeBank($bank);
-		$kodebank = $data[0]['code_bank'];
-
+		// echo $bank;
+		// exit();
+		
 		$p = $this->M_upahphl->pekerjaan($pekerjaan);
 		$kdpkj = $p[0]['kdpekerjaan'];
 
@@ -180,8 +190,9 @@ class C_DataPekerja extends CI_Controller {
 						'kode_pekerjaan' => $kdpkj,
 						'no_rekening' => $norek,
 						'atas_nama' => $atas_nama,
-						'bank' => $kodebank,
-						'cabang' => $cabang,
+						'bank' => $bank,
+						'cabang' => $cabang,						
+						'last_updated' => date('Y-m-d H:i:s'),
 					);
 		$this->M_upahphl->updateDataPekerja($array,$id);
 		redirect ('HitungHlcm/DataPekerja');

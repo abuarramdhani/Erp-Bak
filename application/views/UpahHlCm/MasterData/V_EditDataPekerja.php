@@ -86,7 +86,7 @@
 						</div>
 						<div class="col-lg-5">
 							<select id="slc_bank" name="bankpekerja" class="form-control" required="required">
-								<option selected="selected"><?php echo $bank[0]['nama_bank']?></option>
+								<option selected="selected"><?php echo $bank?></option>
 							</select>
 						</div>
 					</div>

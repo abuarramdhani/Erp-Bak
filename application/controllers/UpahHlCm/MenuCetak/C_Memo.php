@@ -87,6 +87,10 @@ class C_Memo extends CI_Controller {
 		$kom = $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$noind);
 		$nom = $this->M_prosesgaji->ambilNominalGaji();
 
+		
+		// echo "<pre>";
+		// print_r($kom);
+		// exit();
 		$total_p_ktukang ="";
 		$total_p_tukang ="";
 		$total_p_serabutan ="";

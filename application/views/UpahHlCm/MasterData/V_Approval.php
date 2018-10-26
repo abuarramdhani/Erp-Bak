@@ -14,6 +14,7 @@
 							<th style="text-align: center;">Posisi</th>
 							<th style="text-align: center;">Nama</th>
 							<th style="text-align: center;">No Induk</th>
+							<th style="text-align: center;">Jabatan</th>
 							<th style="text-align: center;">Lokasi Kerja</th>
 							<th style="text-align: center;">Action</th>
 						</tr>
@@ -29,6 +30,7 @@
 								<td><?php echo $key['posisi'];?></td>
 								<td><?php echo $key['nama'];?></td>
 								<td style="text-align: center;"><?php echo $key['noind'];?></td>
+								<td style="text-align: center;"><?php echo $key['jabatan'];?></td>								
 								<td style="text-align: center;">
 									<?php if ($key['lokasi_kerja'] == '01') {
 										echo "Jogja";

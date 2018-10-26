@@ -75,6 +75,16 @@
 							</div>
 						</div>
 					</div>
+					<div style="margin-top: 5px" class="row">
+						<div class="form-group">
+							<div align="right" class="col-lg-2">
+								<label class="control-label">Jabatan</label>
+							</div>
+							<div class="col-lg-5">
+								<input class="form-control" id="jabatanpekerja" name="jabatanpekerja" readonly="readonly" value="<?php echo $data[0]['jabatan']?>"></input>
+							</div>
+						</div>
+					</div>
 					<div style="margin-top: 5px; margin-left: 10px" class="row">
 						<div class="form-group">
 							<div align="right" class="col-lg-4">

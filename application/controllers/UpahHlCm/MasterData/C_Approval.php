@@ -76,7 +76,8 @@ class C_Approval extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+		// echo $id;
+		// exit();
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -86,6 +87,9 @@ class C_Approval extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['data'] = $this->M_upahphl->ambilDataApproval($id);
+		// echo "<pre>";
+		// print_r($data['data']);
+		// exit();
 		$data['id'] = $id;
 		
 		$this->load->view('V_Header',$data);
@@ -109,7 +113,13 @@ class C_Approval extends CI_Controller {
 	{
 		$noind = $this->input->post('noind');
 		$data = $this->M_upahphl->namaPekerja($noind);
-		$array = array('nama' => $data[0]['nama']);
+		if (substr($noind, 0,1) == 'R') {
+			$array = array('nama' => $data[0]['nama'],
+							'jabatan' => $data[0]['pekerjaan']);
+		}else{
+			$array = array('nama' => $data[0]['nama'],
+							'jabatan' => $data[0]['jabatan']);
+		}
 
 		echo json_encode($array);
 	
@@ -121,6 +131,7 @@ class C_Approval extends CI_Controller {
 		$noind = $this->input->post('noindukpekerja');
 		$posisi = $this->input->post('posisipekerja');
 		$loker = $this->input->post('lokasikerja');
+		$jabatan = $this->input->post('jabatanpekerja');
 
 		if ($noind != null) {
 			$array = array(
@@ -128,6 +139,7 @@ class C_Approval extends CI_Controller {
 							'nama' => $nama,
 							'id_status' => $posisi,
 							'lokasi_kerja' => $loker,
+							'jabatan' => $jabatan,
 						);
 			
 		}else {

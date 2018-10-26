@@ -86,7 +86,7 @@ class C_TandaTerima extends CI_Controller {
 		$data['pj']  = $this->M_cetakdata->ambilPenanggungjawab();
 
 		// echo "<pre>";
-		// print_r($data['pj']);
+		// print_r($data['pekerja']);
 		// exit();
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'F4', 8, '', 5, 5, 5, 15, 10, 20);
