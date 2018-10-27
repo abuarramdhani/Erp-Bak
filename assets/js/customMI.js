@@ -74,11 +74,6 @@ $(document).ready(function(){
 				$('#tablePoLines').html(response);
 				$('#poLinesTable').DataTable();
 
-				var message = $('#messageGbs').val();
-				if (message != '') {
-					alert(message);
-				}
-
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
 				    'received_date','item_description','item_id','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
@@ -238,5 +233,9 @@ $('.saveTaxInvoice').click(function(){
 			alert('Tax Invoice Number telah di tambahkan');
 		}
 	});
+});
+
+$('#btnToFinance').click(function(){
+	alert('Invoice has submitted to finance');
 });
 

@@ -206,18 +206,6 @@ class C_monitoringinvoice extends CI_Controller{
 	public function getPoNumber($no_po)
 	{
 		$data['invoice'] = $this->M_monitoringinvoice->getInvNumber($no_po);
-		$hasil = $hasil2 = '';
-		if (!$data['invoice']) {
-			$statusPo = $this->M_monitoringinvoice->statusPo($no_po);
-			if ($statusPo['TRANSACTION_TYPE'] != 'DELIVER') {
-				$hasil = $statusPo['TRANSACTION_TYPE'];
-			}
-			if ($statusPo['QUANTITY_BILLED'] != '0') {
-				$hasil2 = $statusPo['QUANTITY_BILLED'];
-			}
-		}
-		$data['hasil'] = $hasil;
-		$data['hasil2'] = $hasil2;
 
 		$returnView = $this->load->view('MonitoringInvoice/V_tableadd',$data,TRUE);
 		

@@ -66,18 +66,3 @@
 		<div class="col-md-2 pull-left">
 			<button type="button" id="btnAddPoNumber" class="btn btn-success" style="margin-top: 10px">Add</button>
 		</div>
-
-
-		<?php if ($hasil != '' || $hasil2 != '') { 
-			$message = '';
-			if ($hasil != '') {
-				$message .= " STATUS DATE NYA $hasil  ";
-			}
-			if ($hasil2 != '') {
-				$message .= " QUANTITY_BILLED NYA $hasil2  ";
-			}
-			?>
-		<input type="hidden" id="messageGbs" name="" value="<?= $message?>">
-		<?php }else{ ?>
-		<input type="hidden" id="messageGbs" name="" value="">
-		<?php } ?>
