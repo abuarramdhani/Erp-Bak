@@ -91,7 +91,10 @@
 															$a = $key['id_jenis_limbah'];
 															$b = $key['jenis_limbah'];
 															$c = $key['kode_limbah'];
-															echo "<option value='$a'>$c - $b</option>";
+															if ($a !== '26' and $a !== '27' and $a !== '28') {
+																echo "<option value='$a'>$c - $b</option>";
+															}
+															
 														}
 														?>
 													</select>
