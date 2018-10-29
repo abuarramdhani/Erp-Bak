@@ -149,7 +149,7 @@ class M_presensi_dl extends CI_Model
                                     when
                                         max(td.waktu)<max(tsp.jam_plg)
                                     then
-                                        1
+                                        0
                                     else
                                         0
                                 end
