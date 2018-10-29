@@ -232,7 +232,7 @@
 				$device_server_ip	=	$device['server_ip'];
 				$device_server_port =	$device['server_port'];
 				$parameter 			.=	"sn=".$device_sn;
-				$parameter 			.=	"&limit=900";
+				$parameter 			.=	"&limit=500";
 				$url 			=	$device_server_ip."/scanlog/all/paging";
 				$server_output	=	$this->lib_monitoringpresensi->send_to_sdk_server($device_server_port, $url, $parameter);
 
