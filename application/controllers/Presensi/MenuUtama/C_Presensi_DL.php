@@ -114,6 +114,8 @@ public function CariDataDinasLuar(){
 		$v_bidang		= $this->input->post('cmbBidang');
 		$v_unit		= $this->input->post('cmbUnit');
 		$v_seksi		= $this->input->post('cmbSeksi');
+		// echo $v_unit;
+		// exit();
 
 		if ($v_tanggal!=null) {
 			$split_tanggal = explode(' - ',$v_tanggal);
@@ -185,19 +187,38 @@ public function CariDataDinasLuar(){
 	                        }
 	                    }
 	                }else{
-	                    $dept = "";
-	                    $bidang = "and left(kodesie,3)='$bidang'";
+	                	if ($tanggal1!=null || $noind!=null) {
+	                		$dept = "";
+	                    	$bidang = "and left(kodesie,3)='$bidang'";
+	                	}else {
+		                    $dept = "";
+		                    $bidang = "left(kodesie,3)='$bidang'";	                		
+	                	}
 	                }
 	            }else{
-	                $dept = "";
-	                $bidang = "";
-	                $unit = "and left(kodesie,5)='$unit'";
+	            	if ($tanggal1!=null || $noind!=null) {
+		                $dept = "";
+		                $bidang = "";
+		                $unit = "and left(kodesie,5)='$unit'";	            		
+	            	}else{
+	            		$dept = "";
+		                $bidang = "";
+		                $unit = "left(kodesie,5)='$unit'";	
+	            	}
 	            }
 	        }else{
-	            $dept = "";
-	            $bidang = "";
-	            $unit = "";
-	            $seksi = "and left(kodesie,7)='$seksi'";
+	        	if ($tanggal1!=null || $noind!=null) {
+	        		$dept = "";
+		            $bidang = "";
+		            $unit = "";
+		            $seksi = "and left(kodesie,7)='$seksi'";
+	        	}else {
+		            $dept = "";
+		            $bidang = "";
+		            $unit = "";
+		            $seksi = "left(kodesie,7)='$seksi'";
+	        		
+	        	}
 	        }
 	        if($tanggal1!=null){
 	            if($noind!=null){

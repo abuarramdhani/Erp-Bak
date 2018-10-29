@@ -88,13 +88,6 @@ $(document).ready(function(){
 		}
 	});
 
-	$("#actDate").on('change', function(){
-        if(this.checked){
-        	$('#idTglBerangkat_prs').removeAttr('disabled','disabled');
-        }else{
-        	$('#idTglBerangkat_prs').attr('disabled','disabled');
-        }
-    });
 
     $('.prs-datatable').DataTable({
     });
@@ -113,7 +106,12 @@ $(document).ready(function(){
 		}
 	});
 });
-
+ 	$(document).on('ifChecked', '#actDate', function(){
+ 		$('#idTglBerangkat_prs').removeAttr('disabled')
+	});
+	$(document).on('ifUnchecked', '#actDate', function(){
+ 		$('#idTglBerangkat_prs').attr('disabled','disabled')
+	});
 // 	-------Presensi Catering--------------------------------------------start
 	$(function()
 	{
