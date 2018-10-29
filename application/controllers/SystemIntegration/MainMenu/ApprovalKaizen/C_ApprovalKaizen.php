@@ -72,7 +72,6 @@ class C_ApprovalKaizen extends CI_Controller
 			$data['thread'] = $this->M_log->ShowLog($id);
 			$atasan1 = $this->M_submit->getAtasan($employee_code, 2);
 			$atasan2 = $this->M_submit->getAtasan($employee_code, 2);
-			// $atasan3 = $this->M_submit->getAtasan($employee_code, 3);
 			$data['option_atasan'] = $this->M_submit->getAtasan($employee_code, 3);
 			$data['option_atasan2'] = $this->M_submit->getAtasan($employee_code, 4);
 			$data['kaizen'][0]['employee_code'] = '';
@@ -89,41 +88,37 @@ class C_ApprovalKaizen extends CI_Controller
 				$data['kaizen'][0]['komponen'] = $komponen;
 			}
 
+			$data['levelku'] = '';
+			$data['statusku'] = '';
 			$reason_app = array();
 			$reason_rev = array();
 			$reason_rej = array();
 
 			$getAllApprover = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
-			$jmlMaxApp =  count($getAllApprover);
-			$data['levelku'] = '';
-			$data['statusku'] = '';
 
-			$a = 0; for ($i=1; $i <= $jmlMaxApp; $i++) { 
-				$getApprovalLvl = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'], $i);
-				$data['kaizen'][0]['status_app'][$a]['level'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['level'] : 0;
-				$data['kaizen'][0]['status_app'][$a]['staff'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
-				$data['kaizen'][0]['status_app'][$a]['staff_code'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_code'] :'' ;
-				$data['kaizen'][0]['status_app'][$a]['reason'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['reason'] :'';
-					if (($getApprovalLvl) && ($employee_code == $getApprovalLvl[0]['employee_code'])) {
-						$data['levelku'] = $getApprovalLvl[0]['level'];
-						$data['statusku'] = $getApprovalLvl[0]['status'];
-					}
+			$a = 0;
+			foreach ($getAllApprover as $key => $value) {
+				$data['kaizen'][0]['status_app'][$value['level']]['level'] = $value['level'];
+				$data['kaizen'][0]['status_app'][$value['level']]['staff'] = $value['employee_name'];
+				$data['kaizen'][0]['status_app'][$value['level']]['staff_code'] = $value['employee_code'];
+				$data['kaizen'][0]['status_app'][$value['level']]['reason'] = $value['reason'];
+				if ($employee_code == $value['employee_code']) {
+					$data['kaizen'][0]['employee_code'] = $value['employee_code'];
+					$data['levelku'] = $value['level'];
+					$data['statusku'] = $value['status'];
 
-					if ($getApprovalLvl) {
-						if ($getApprovalLvl[0]['employee_code'] == $employee_code ) {
-							$data['kaizen'][0]['employee_code'] = $getApprovalLvl[0]['employee_code'];
-							if ($getApprovalLvl[0]['status'] == 4 ) {
-								array_push($reason_rev, $data['kaizen'][0]['status_app'][$a]['reason'.$i]);
-							}elseif ($data['kaizen'][0]['status'] == 5) {
-								array_push($reason_rej, $data['kaizen'][0]['status_app'][$a]['reason'.$i]);
-							}elseif ($data['kaizen'][0]['status'] == 3) {
-								array_push($reason_app, $data['kaizen'][0]['status_app'][$a]['reason'.$i]);
-							}
-						}
+				}
+					if ($value['status'] == 4 ) {
+						array_push($reason_rev, $value['reason']);
+					}elseif ($value['status'] == 5) {
+						array_push($reason_rej, $value['reason']);
+					}elseif ($value['status'] == 3) {
+						array_push($reason_app, $value['reason']);
 					}
 
 				$a++;
 			}
+			// 
 
 			$data['kaizen'][0]['reason_app'] = implode(',', $reason_app);
 			$data['kaizen'][0]['reason_rev'] = implode(',', $reason_rev);
@@ -133,6 +128,8 @@ class C_ApprovalKaizen extends CI_Controller
 				$getApprovalLvl = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'], 6);
 				$data['kaizen'][0]['employee_code_realisasi'] = $getApprovalLvl[0]['employee_code'];
 			}
+
+			$data['section_user'] = $this->M_approvalkaizen->getSectAll($data['kaizen'][0]['noinduk']);
 			// echo "<pre>";
 			// print_r($data);
 			// exit();
@@ -149,6 +146,30 @@ class C_ApprovalKaizen extends CI_Controller
 			$reason = $this->input->post('txtReason');
 			$level = $this->input->post('levelApproval');
 			$update = $this->M_approvalkaizen->updateStatusApprove($kaizen_id,$employee_code,$status,$reason,$level);
+
+			$status_name = ($status == '3') ? 'Approved' : (($status == '4') ? 'Revision' : 'Rejected'); 
+			$name_user = $this->session->employee;
+
+			//log thread
+			$getTemplateLog = $this->M_log->getTemplateLog(13);
+				$title = $getTemplateLog[0]['title'];
+				$body = $getTemplateLog[0]['body'];
+			$detail = "(";
+			$detail .=  sprintf($title, $status_name);
+			$detail .= ") - ";
+			$detail .= sprintf($body, $name_user, $status_name);
+				if ($reason) {
+				$detail .=" dengan alasan : ".$reason;	
+				}
+
+			$datalog =array(
+					'kaizen_id' => $kaizen_id,
+					'status' => $status,
+					'detail' => $detail,
+					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+				 );
+			$this->M_log->save_log($datalog);
+			
 			// $level = $update[0]['level'];
 			$getApprover = $this->M_approvalkaizen->getApprover($kaizen_id,FALSE);
 			$yangApprove = array();
@@ -180,24 +201,13 @@ class C_ApprovalKaizen extends CI_Controller
 			if ($yangApprove && !$yangReject && !$yangRevisi && !$yangBelum) {
 				$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
 				$this->M_approvalkaizen->UpdateStatus($kaizen_id, 3, $status_date);
-				//nomor kaizen
-				$getrequester_code = $this->M_approvalkaizen->getRequester($kaizen_id);
-				$requester_code = $getrequester_code[0]['noinduk'];
-				$getSection = $this->M_approvalkaizen->getSectCode($requester_code);
-				$sectCode = $getSection[0]['code'];
-				$tempNumb = 'KZ/'.$sectCode.'/'.date('m/Y');
-			 	$getNumb = $this->M_approvalkaizen->getNumb($tempNumb);
-			 	if ($getNumb) {
-			 		$new = substr($getNumb[0]['no_kaizen'], 15);
-			 		$newA =  $new+1;
-			 		$newB = str_pad($newA,3,'0', STR_PAD_LEFT);
 
-			 		$newNumb = 'KZ/'.$sectCode.'/'.date('m/Y').'/'.$newB;
-			 	}
-				$data = array('no_kaizen' => $newNumb, );
-				//$this->M_submit->saveUpdate($kaizen_id,$data);
-				$detail = "(Approval Complete) - ";
-				$detail .= "Ide Kaizen ini sudah selesai proses Approval, segera laksanakan kaizen";
+				//log thread
+				$getTemplateLog = $this->M_log->getTemplateLog(3);
+					$title = $getTemplateLog[0]['title'];
+					$body = $getTemplateLog[0]['body'];
+				$detail = "($title) - ";
+				$detail .= $body;
 
 				$datalog =array(
 					'kaizen_id' => $kaizen_id,
@@ -206,6 +216,7 @@ class C_ApprovalKaizen extends CI_Controller
 					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
 					 );
 				$this->M_log->save_log($datalog);
+
 				}elseif($yangRevisi && !$yangReject) {
 					$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
 					$this->M_approvalkaizen->UpdateStatus($kaizen_id, 4, $status_date);
@@ -228,9 +239,14 @@ class C_ApprovalKaizen extends CI_Controller
 				$getname = $this->M_approvalkaizen->getName($approver);
 				$name= $getname[0]['employee_name'];
 				$this->EmailAlert($approver,$kaizen_id);
+
+				//log thread
 				$username = $this->session->userdata('employee');
-				$detail = "(Approval Add Set) - ";
-				$detail .= "Kaizen ini telah dimintakan approve kepada ".$name." oleh".$username;
+				$getTemplateLog = $this->M_log->getTemplateLog(12);
+					$title = $getTemplateLog[0]['title'];
+					$body = $getTemplateLog[0]['body'];
+				$detail = "($title) - ";
+				$detail .= sprintf($body, $name, $username);
 
 				$datalog =array(
 					'kaizen_id' => $kaizen_id,
@@ -254,19 +270,7 @@ class C_ApprovalKaizen extends CI_Controller
 				}
 			}
 
-			$status_name = ($status == '3') ? 'Approved' : (($status == '4') ? 'Revision' : 'Rejected'); 
-			$name_user = $this->session->employee;
-
-			$detail = "(Approval $status_name) - ";
-			$detail .= $name_user." telah memberi keputusan ".$status_name." pada kaizen ini";
-
-			$datalog =array(
-					'kaizen_id' => $kaizen_id,
-					'status' => $status,
-					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
-				 );
-			$this->M_log->save_log($datalog);
+			
 
 			redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
 		}
@@ -285,8 +289,17 @@ class C_ApprovalKaizen extends CI_Controller
 			$status_name = 'Approved'; 
 			$name_user = $this->session->employee;
 
-			$detail = "(Approval Realisasi $status_name) - ";
-			$detail .= $name_user." telah memberi keputusan ".$status_name." pada kaizen ini";
+			//log thread
+			$getTemplateLog = $this->M_log->getTemplateLog(7);
+				$title = $getTemplateLog[0]['title'];
+				$body = $getTemplateLog[0]['body'];
+			$detail  = "(";
+			$detail .=  sprintf($title, $status_name);
+			$detail .= ") - ";
+			$detail .= sprintf($body, $name_user, $status_name);
+			if ($reason) {
+				$detail .=" dengan alasan : ".$reason;	
+				}
 
 			$datalog =array(
 					'kaizen_id' => $kaizen_id,

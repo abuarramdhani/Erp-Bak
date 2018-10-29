@@ -71,7 +71,7 @@
 
           <div class="tab-pane <?= $a == 0 ? 'active' : '' ?>" id="<?= $desc[$a]['id_tab'] ?>">
             <div class="">
-              <table width="100%" class="table table-bordered table-fit" id="<?= $desc[$a]['id_table'] ?>" >
+              <table width="100%" class="table table-bordered table-fit tblSIKaizen" id="<?= $desc[$a]['id_table'] ?>" >
                 <thead>
                   <tr class="<?= $desc[$a]['bg_color'] ?>">
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="2%">No</th>
@@ -139,7 +139,7 @@
                           <?php endif; ?>
                           <!-- </a> -->
                         <?php }elseif ($kaizen_item['status'] == 9) { ?>
-                          <span class="label label-success btn-real-dis" >Laporkan <b class="fa fa-check-circle"></b>
+                         <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <i class="fa fa-check-circle text-info"></i>
                           </span>
                             <br>(<?= date('d M Y', strtotime($kaizen_item['status_date'])) ?>)
                         <?php } else{?>

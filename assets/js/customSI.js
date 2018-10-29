@@ -17,11 +17,73 @@ $('#txtPertimbangan').redactor({
         }          
     });
 
-    $('#txtRencanaRealisasiSI, #txtEndDateSI, #txtStartDateSI').datepicker({
+    $('#txtRencanaRealisasiSI, #txtEndDateSI, #txtStartDateSI ,.datetimeSI').datepicker({
     autoclose: true,
     todayHighlight: true
   });
 
+  // $('#checkKaizenKomp').parent().attr('id', 'chkkkompsi');
+  // $('#checkKaizenKomp').closest('div').find('ins').attr('id', 'chkkkompsi2');
+
+  $('input#checkKaizenKomp').on('ifChecked', function (event){
+    // return false;
+    $(this).closest("input").attr('checked', true); 
+    $('.komponenKaizenSI').removeAttr('disabled');         
+  });
+  $('input#checkKaizenKomp').on('ifUnchecked', function (event) {
+      // return false;
+      $(this).closest("input").attr('checked', false);
+       $('.komponenKaizenSI').attr("disabled","disabled");
+      $('.komponenKaizenSI').val(null).trigger('change');
+  });
+
+$('input#checkNextApprover').on('ifChecked',function(event){
+    $('input#checkNextApprover').attr("checked","checked");
+    $('select#slcApprover').removeAttr("disabled");
+});
+
+$('input#checkNextApprover').on('ifUnchecked',function(event){
+    $('input#checkNextApprover').removeAttr("checked");
+    $('select#slcApprover').attr("disabled","disabled");
+    $('select#slcApprover').val(null).trigger('change');
+});
+  $('input#checkRealisasiKai').on('ifChecked', function (event){
+    // return false;
+    var name  = $(this).attr('data-class');
+    $(this).closest("input").attr('checked', 'checked'); 
+    $(this).parent().parent().parent().find(".must").removeAttr('disabled');  
+    $(this).parent().parent().parent().find(".must").attr('required','required');  
+        $('.'+name).redactor({
+            imageUpload: baseurl+'SystemIntegration/KaizenGenerator/Submit/upload',
+
+            imageUploadErrorCallback: function(json)
+            {
+                alert(json.error);
+            }          
+        });  
+    checkFillRealisasi();      
+  });
+  $('input#checkRealisasiKai').on('ifUnchecked', function (event) {
+      var name  = $(this).attr('data-class');
+      // return false;
+      $(this).closest("input").removeAttr('checked');
+      $(this).parent().parent().parent().find(".must").attr("disabled","disabled");
+      $(this).parent().parent().parent().find(".must").removeAttr('required');  
+      $(this).closest("input.must").val(null).trigger('change');
+
+        $('.'+name).redactor({
+            imageUpload: baseurl+'SystemIntegration/KaizenGenerator/Submit/upload',
+
+            imageUploadErrorCallback: function(json)
+            {
+                alert(json.error);
+            }          
+        });        
+      $('.'+name).redactor('destroy');
+      $('.'+name).val('');
+      $('.'+name).attr('disabled','disabled');
+    checkFillRealisasi();      
+  });
 
     $('.select2si').select2({
      allowClear : true,
@@ -87,16 +149,15 @@ $('#btnAprroveNotSI').click(function(){
       $('#modalReason').modal('show');
 });
 
-  $("#tblKaizen").DataTable();
-  $("#tblKaizenCheck").DataTable();
-  $("#tblKaizenOkIde").DataTable();
-  $("#tblKaizenOk").DataTable();
-  $("#tblKaizenRevise").DataTable();
-  $("#tblKaizenReject").DataTable();
+  $(".tblSIKaizen").DataTable();
+  // $("#tblKaizen").DataTable();
+  // $("#tblKaizenCheck").DataTable();
+  // $("#tblKaizenOkIde").DataTable();
+  // $("#tblKaizenOk").DataTable();
+  // $("#tblKaizenRevise").DataTable();
+  // $("#tblKaizenReject").DataTable();
 $(".komponenKaizenSI").select2({
    tags: true,
-   // closeOnSelect: false,
-   // tokenSeparators: [','],
    allowClear:true,
    minimumInputLength: 3,
    ajax: {
@@ -118,26 +179,8 @@ $(".komponenKaizenSI").select2({
         },
         // cache: true
       },
-   // templateSelection: function(selection) {
-   //      if(selection.selected) {
-   //          return $.parseHTML('<span class="customclass">' + selection.text + '</span>');
-   //      }
-   //      else {
-   //          return $.parseHTML('<span class="customclass">' + selection.text + '</span>');
-   //      }
-   //  }
 
   });
-
-  // $("#komponenKaizenSI").on("select2:select", function(e) { 
-  // $("li[aria-selected='true']").addClass("customclass");
-  // $("li[aria-selected='false']").removeClass("customclass");
-  // $('.select2-search-choice:not(.my-custom-css)', this).addClass('my-custom-css');
-  // });
-
-  // $("#komponenKaizenSI").on("select2:unselect", function(e) { 
-  // $("li[aria-selected='false']").removeClass("customclass");
-  // });
 
 }); 
 
@@ -154,14 +197,8 @@ $('#rlthreadkai').click(function(){
   $('#rmthreadkai').show();
 });
 
-$('#checkNextApprover').click(function(){
-  if($('#checkNextApprover').is(':checked')){
-    $('#checkNextApprover').closest('div').find('select').removeAttr("disabled");
-  }else{
-    $('#checkNextApprover').closest('div').find('select').attr("disabled","disabled");
-    $('#checkNextApprover').closest('div').find('select').val(null).trigger('change');
-  }
-});
+
+
 
 $('#btn_result').click(function(){
   var val = $('#txtReason').val();
@@ -191,12 +228,12 @@ $('.siSlcTgr').change(function(){
   var type = $('input[name="typeApp"]').val();
   var a = $('select[name="SlcAtasanLangsung"]').val();
   var b = $('select[name="SlcAtasanAtasanLangsung"]').val();
-  var c = $('select[name="SlcAtasanDepartment"]').val();
-  var value = [a,b,c];
+  // var c = $('select[name="SlcAtasanDepartment"]').val();
+  var value = [a,b];
 
   var checkFill = function(val){
     if (type == 1) {
-      if ( (a !== "") && (b !== "") && (c !== "") && (val == 1) ) {
+      if ( (a !== "") && (b !== "") && (val == 1) ) {
         $('#subApprSI').removeAttr("disabled");
       }else{
         $('#subApprSI').attr("disabled","disabled");
@@ -217,33 +254,40 @@ $('.siSlcTgr').change(function(){
   }
 
   if (type == 1) {
+      if (typeof a !== typeof undefined && a !== false){
         if ((a == b) && (a !== "" && b !== "") ){
             var select = [1,2];
             $('#subApprSI').attr("disabled","disabled");
             error(select);
             checkFill(0);
-          }else if((a == c) && (a !== "" && c !== "")){
-            var select = [1,3];
-            error(select);
-            $('#subApprSI').attr("disabled","disabled");
-            checkFill(0);
-          }else if((b == c) && (c !== "" && b !== "")){
-            var select = [2,3];
-            error(select);
-            $('#subApprSI').attr("disabled","disabled");
-            checkFill(0);
-          }else if( ((b == c) && (a == b)) && (a !== "" && b !== "" && c !== "") ){
-            var select = [1,2,3];
-            error(select);
-            $('#subApprSI').attr("disabled","disabled");
-            checkFill(0);
-          }else{
+          }
+          // else if((a == c) && (a !== "" && c !== "")){
+          //   var select = [1,3];
+          //   error(select);
+          //   $('#subApprSI').attr("disabled","disabled");
+          //   checkFill(0);
+          // }else if((b == c) && (c !== "" && b !== "")){
+          //   var select = [2,3];
+          //   error(select);
+          //   $('#subApprSI').attr("disabled","disabled");
+          //   checkFill(0);
+          // }else if( ((b == c) && (a == b)) && (a !== "" && b !== "" && c !== "") ){
+          //   var select = [1,2,3];
+          //   error(select);
+          //   $('#subApprSI').attr("disabled","disabled");
+          //   checkFill(0);
+          // }
+          else{
             $('.sel1').removeClass('has-error');
             $('.sel2').removeClass('has-error');
-            $('.sel3').removeClass('has-error');
+            // $('.sel3').removeClass('has-error');
           $('#subApprSI').removeAttr("disabled");
             checkFill(1);
           }
+      }else{
+            checkFill(1);
+      }
+
     }else{
       checkFill(0);
     }
@@ -255,7 +299,8 @@ $('.buttonsi').click(function(){
   $('.custNotifBody').slideToggle('slow');
 });
 
-$('#checkKaizenKomp').change(function(){
+
+$('input#checkKaizenKomp').on('ifChecked',function(){
   if($(this).is(':checked')){
     $('.komponenKaizenSI').removeAttr('disabled');
   }else{
@@ -278,7 +323,7 @@ $('#SIlaporkanKai').click(function(){
     $(this).parent().html('<img id="dingdingload" src="'+baseurl+'assets/img/gif/spinner.gif">');
 
     request.done(function(output) {
-       $('#dingdingload').parent().html(' <span class="label label-success btn-real-dis" >Laporkan <b class="fa fa-check-circle"></b>'+
+       $('#dingdingload').parent().html(' <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <b class="fa fa-check-circle text-info"></b>'+
                           '</span><br>('+output+')');     
        $('#SIpdf').removeClass('btn-default disabled');          
        $('#SIpdf').addClass('btn-info');          
@@ -311,3 +356,31 @@ function getDelDataSI(th){
  $('#delUrlSI').attr('href', '');
  $('#delUrlSI').attr('href', baseurl+'SystemIntegration/KaizenGenerator/Delete/'+kaizen_id);
 }
+
+
+// function giveValueSIKomp(th){
+//    if ($(th).children().hasClass('checked')){
+//     $('.komponenKaizenSI').attr("disabled","disabled");
+//     $('.komponenKaizenSI').val(null).trigger('change');
+//   }else{
+//     $('.komponenKaizenSI').removeAttr('disabled');
+//   }
+
+// }
+
+
+function checkFillRealisasi(){
+  var Standarisasi  = $('textarea[name="txtNomorWI"]').val();
+  var tglsosialisasi = $('input[name="txtTanggalPelaksanaan"]').val();
+  var methodSosialisasi = $('textarea[name="txtMetodeSosialisasi"]').val();
+  var Standarisasi = $('input[name="chkStandarisasiRealisasi"]').val();
+  var Sosialisasi = $('input[name="chkSosialisasiRealisasi"]').val();
+
+  if (($('input[name="chkStandarisasiRealisasi"]').is(':checked')) && ($('input[name="chkSosialisasiRealisasi"]').is(':checked')) ) {
+      $("#btnSubmitRealisasi").removeAttr("disabled");
+  }else{
+      $("#btnSubmitRealisasi").attr("disabled","disabled");
+  }
+
+}
+

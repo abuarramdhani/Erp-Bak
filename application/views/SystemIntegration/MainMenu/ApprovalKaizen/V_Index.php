@@ -17,32 +17,69 @@
           <li class="pull-left header"><i class="fa fa-tag"></i> Approval Kaizen</li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane active" id="kaizen-all">
+          <?php 
+
+            $desc[0]['name'] = '';
+            $desc[0]['id_tab'] = 'kaizen-all';
+            $desc[0]['id_table'] = 'tblKaizen';
+            $desc[0]['name_array'] = 'kaizen';
+            $desc[0]['bg_color'] = 'bg-primary';
+
+            $desc[1]['name'] = 'Unchecked';
+            $desc[1]['id_tab'] = 'kaizen-check';
+            $desc[1]['id_table'] = 'tblKaizenCheck';
+            $desc[1]['name_array'] = 'kaizen_unchecked';
+            $desc[1]['bg_color'] = 'bg-info';
+
+            $desc[2]['name'] = 'Approved';
+            $desc[2]['id_tab'] = 'kaizen-ok';
+            $desc[2]['id_table'] = 'tblKaizenOk';
+            $desc[2]['name_array'] = 'kaizen_approved';
+            $desc[2]['bg_color'] = 'bg-green';
+
+            $desc[3]['name'] = 'Revisi';
+            $desc[3]['id_tab'] = 'kaizen-revise';
+            $desc[3]['id_table'] = 'tblKaizenRevise';
+            $desc[3]['name_array'] = 'kaizen_revised';
+            $desc[3]['bg_color'] = 'bg-yellow';
+
+            $desc[4]['name'] = 'Rejected';
+            $desc[4]['id_tab'] = 'kaizen-reject';
+            $desc[4]['id_table'] = 'tblKaizenReject';
+            $desc[4]['name_array'] = 'kaizen_rejected';
+            $desc[4]['bg_color'] = 'bg-red';
+
+
+          for ($i=0; $i < 5; $i++) {   
+          ?>
+          <div class="tab-pane <?= $i == 0 ? 'active' : '' ?>" id="<?= $desc[$i]['id_tab'] ?>">
             <div class="table-responsive">
-              <table class="table table-bordered table-fit" id="tblKaizen">
+              <table class="table table-bordered table-fit tblSIKaizen" id="<?= $desc[$i]['id_table'] ?>">
                 <thead>
-                  <tr class="bg-success">
+                  <tr class="<?= $desc[$i]['bg_color'] ?>">
                     <th class="text-center" width="6%">No</th>
-                    <th class="text-center">Judul Kaizen</th>
-                    <th class="text-center">Tanggal Dibuat</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center" style="">Action</th>
+                    <th class="text-center" width="34%">Judul Kaizen</th>
+                    <th class="text-center" width="20%">Pencetus</th>
+                    <th class="text-center" width="12%">Tanggal Dibuat</th>
+                    <th class="text-center" width="23%">Status</th>
+                    <th class="text-center" width="5%">Action</th>
                   </tr>
                 </thead>
                  <tbody>
-                  <?php if ($kaizen): $no = 0; foreach ($kaizen as $kaizen_item):; $no++ ?>
+                  <?php if ($kaizen): $no = 0; foreach ($$desc[$i]['name_array'] as $kaizen_item):; $no++ ?>
                     <tr>
                       <td class="text-center"><?= $no; ?></td>
                       <td><?= $kaizen_item['judul']; ?></td>
+                      <td><?= $kaizen_item['pencetus']; ?></td>
                       <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
                       <td class="text-left">
                             <?php if ($kaizen_item['status'] == 2
                                       || $kaizen_item['status'] == 3 
                                       || $kaizen_item['status'] == 4
                                       || $kaizen_item['status'] == 5) { ?>
-                                <table>
+                                <table width="100%">
                                         <tr>
-                                            <td style="">
+                                            <td width="38%">
                                               <span class="label 
                                               label-<?= ($kaizen_item['status_approve'] == 5) ? 'danger' 
                                                         : (($kaizen_item['status_approve'] == 3) ? 'success' 
@@ -61,12 +98,11 @@
 
                                                 ?>
                                                 
-                                              </span>
+                                              </span> 
                                             </td>
-                                            <td class="pull-left">
-                                              <?php /* if($kaizen_item['status_date'] != null) {
-                                              echo '('.date("d M Y", strtotime($kaizen_item['status_date'])).')';
-                                                } */ ?>
+                                            <td width="62%">
+                                              &nbsp;&nbsp;<b class="fa fa-angle-double-right"> 
+                                                </b> <?= $kaizen_item['level'] == 6 ? 'Approval Realisasi' : 'Approval Ide' ?> 
                                             </td>
                                           
                                         </tr>
@@ -79,309 +115,13 @@
                         <a title="View Kaizen.." class="btn btn-xs btn-success" href="<?= base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/View/'.$kaizen_item['kaizen_id']); ?>"><i class="fa fa-eye"></i></a>
                       </td>
                     </tr>
-                  <?php endforeach;else: ?>
-                    <tr>
-                      <td colspan="5"> No Kaizen- </td>
-                    </tr>
-                  <?php endif; ?>
+                  <?php endforeach;endif;?>
                 </tbody>
                
               </table>
             </div>
           </div>
-          <div class="tab-pane" id="kaizen-check">
-            <div class="table-responsive">
-              <table class="table table-bordered table-fit" id="tblKaizenCheck">
-                <thead>
-                  <tr class="bg-success">
-                    <th class="text-center" width="6%">No</th>
-                    <th class="text-center">Judul Kaizen</th>
-                    <th class="text-center">Tanggal Dibuat</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center" >Action</th>
-                  </tr>
-                </thead>
-               <tbody>
-                  <?php
-                    if ($kaizen_unchecked):
-                   $no = 0; foreach ($kaizen_unchecked as $kaizen_item):; $no++ ?>
-                    <tr>
-                      <td class="text-center"><?= $no; ?></td>
-                      <td><?= $kaizen_item['judul']; ?></td>
-                      <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
-                      <td class="text-left">
-                            <?php if ($kaizen_item['status'] == 2
-                                      || $kaizen_item['status'] == 3 
-                                      || $kaizen_item['status'] == 4
-                                      || $kaizen_item['status'] == 5) { ?>
-                                <table>
-                                        <tr>
-                                            <td style="">
-                                              <span class="label 
-                                              label-<?= ($kaizen_item['status_approve'] == 5) ? 'danger' 
-                                                        : (($kaizen_item['status_approve'] == 3) ? 'success' 
-                                                        : (($kaizen_item['status_approve'] == 4) ? 'warning' 
-                                                        : (($kaizen_item['status_approve'] == 2) ? 'info' : 'default' )));  ?>">
-                                                <?php 
-                                                  if ($kaizen_item['status_approve'] == 2) {
-                                                    echo "Req. Approve";
-                                                  }elseif ($kaizen_item['status_approve'] == 3) {
-                                                    echo "Approved";
-                                                  }elseif ($kaizen_item['status_approve'] == 4) {
-                                                    echo "Revision";
-                                                  }elseif ($kaizen_item['status_approve'] == 5) {
-                                                    echo "Rejected";
-                                                  }
-
-                                                ?>
-                                                
-                                              </span>
-                                            </td>
-                                            <td class="pull-left">
-                                              <?php if($kaizen_item['status_date'] != null) {
-                                              echo '('.date("d M Y", strtotime($kaizen_item['status_date'])).')';
-                                                } ?>
-                                            </td>
-                                          
-                                        </tr>
-                                </table>
-
-                            <?php } ?>
-                      </td>
-                      <td class="text-center">
-                        <!-- view -->
-                        <a title="View Kaizen.." class="btn btn-xs btn-success" href="<?= base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/View/'.$kaizen_item['kaizen_id']); ?>"><i class="fa fa-eye"></i></a>
-                      </td>
-                    </tr>
-                  <?php endforeach;
-                  else: ?>
-                    <tr>
-                      <td colspan="5"> No Unchecked Kaizen- </td>
-                    </tr>
-                  <?php endif; ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="tab-pane" id="kaizen-ok">
-            <div class="table-responsive">
-              <table class="table table-bordered table-fit" id="tblKaizenOk">
-                <thead>
-                  <tr class="bg-success">
-                    <th class="text-center" width="6%">No</th>
-                    <th class="text-center">Judul Kaizen</th>
-                    <th class="text-center">Tanggal Dibuat</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center" >Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php if($kaizen_approved): $no = 0; foreach ($kaizen_approved as $kaizen_item):; $no++ ?>
-                    <tr>
-                      <td class="text-center"><?= $no; ?></td>
-                      <td><?= $kaizen_item['judul']; ?></td>
-                      <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
-                      <td class="text-left">
-                            <?php if ($kaizen_item['status'] == 2
-                                      || $kaizen_item['status'] == 3 
-                                      || $kaizen_item['status'] == 4
-                                      || $kaizen_item['status'] == 5) { ?>
-                                <table>
-                                        <tr>
-                                            <td style="">
-                                              <span class="label 
-                                              label-<?= ($kaizen_item['status_approve'] == 5) ? 'danger' 
-                                                        : (($kaizen_item['status_approve'] == 3) ? 'success' 
-                                                        : (($kaizen_item['status_approve'] == 4) ? 'warning' 
-                                                        : (($kaizen_item['status_approve'] == 2) ? 'info' : 'default' )));  ?>">
-                                                <?php 
-                                                  if ($kaizen_item['status_approve'] == 2) {
-                                                    echo "Req. Approve";
-                                                  }elseif ($kaizen_item['status_approve'] == 3) {
-                                                    echo "Approved";
-                                                  }elseif ($kaizen_item['status_approve'] == 4) {
-                                                    echo "Revision";
-                                                  }elseif ($kaizen_item['status_approve'] == 5) {
-                                                    echo "Rejected";
-                                                  }
-
-                                                ?>
-                                                
-                                              </span>
-                                            </td>
-                                            <td class="pull-left">
-                                              <?php if($kaizen_item['status_date'] != null) {
-                                              echo '('.date("d M Y", strtotime($kaizen_item['status_date'])).')';
-                                                } ?>
-                                            </td>
-                                          
-                                        </tr>
-                                </table>
-
-                            <?php } ?>
-                      </td>
-                      <td class="text-center">
-                        <!-- view -->
-                        <a title="View Kaizen.." class="btn btn-xs btn-success" href="<?= base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/View/'.$kaizen_item['kaizen_id']); ?>"><i class="fa fa-eye"></i></a>
-                      </td>
-                    </tr>
-                  <?php endforeach; 
-                  else: ?>
-                    <tr>
-                      <td colspan="5"> No Approved Kaizen- </td>
-                    </tr>
-                  <?php endif;?>
-                </tbody>
-                
-              </table>
-            </div>
-          </div>
-          <div class="tab-pane" id="kaizen-revise">
-            <div class="table-responsive">
-              <table class="table table-bordered table-fit" id="tblKaizenRevise">
-                <thead>
-                  <tr class="bg-success">
-                    <th class="text-center" width="6%">No</th>
-                    <th class="text-center">Judul Kaizen</th>
-                    <th class="text-center">Tanggal Dibuat</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center" >Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php if($kaizen_revised): $no = 0; foreach ($kaizen_revised as $kaizen_item):; $no++ ?>
-                    <tr>
-                      <td class="text-center"><?= $no; ?></td>
-                      <td><?= $kaizen_item['judul']; ?></td>
-                      <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
-                      <td class="text-left">
-                            <?php if ($kaizen_item['status'] == 2
-                                      || $kaizen_item['status'] == 3 
-                                      || $kaizen_item['status'] == 4
-                                      || $kaizen_item['status'] == 5) { ?>
-                                <table>
-                                        <tr>
-                                            <td style="">
-                                              <span class="label 
-                                              label-<?= ($kaizen_item['status_approve'] == 5) ? 'danger' 
-                                                        : (($kaizen_item['status_approve'] == 3) ? 'success' 
-                                                        : (($kaizen_item['status_approve'] == 4) ? 'warning' 
-                                                        : (($kaizen_item['status_approve'] == 2) ? 'info' : 'default' )));  ?>">
-                                                <?php 
-                                                  if ($kaizen_item['status_approve'] == 2) {
-                                                    echo "Req. Approve";
-                                                  }elseif ($kaizen_item['status_approve'] == 3) {
-                                                    echo "Approved";
-                                                  }elseif ($kaizen_item['status_approve'] == 4) {
-                                                    echo "Revision";
-                                                  }elseif ($kaizen_item['status_approve'] == 5) {
-                                                    echo "Rejected";
-                                                  }
-
-                                                ?>
-                                                
-                                              </span>
-                                            </td>
-                                            <td class="pull-left">
-                                              <?php if($kaizen_item['status_date'] != null) {
-                                              echo '('.date("d M Y", strtotime($kaizen_item['status_date'])).')';
-                                                } ?>
-                                            </td>
-                                          
-                                        </tr>
-                                </table>
-
-                            <?php } ?>
-                      </td>
-                      <td class="text-center">
-                        <!-- view -->
-                        <a title="View Kaizen.." class="btn btn-xs btn-success" href="<?= base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/View/'.$kaizen_item['kaizen_id']); ?>"><i class="fa fa-eye"></i></a>
-                      </td>
-                    </tr>
-                  <?php endforeach; else: ?>
-                    <tr>
-                      <td colspan="5"> No Revised Kaizen- </td>
-                    </tr>
-                  <?php endif; ?>
-                </tbody>
-               
-              </table>
-            </div>
-          </div>
-          <div class="tab-pane" id="kaizen-reject">
-            <div class="table-responsive">
-              <table class="table table-bordered table-fit" id="tblKaizenReject">
-                <thead>
-                  <tr class="bg-success">
-                    <th class="text-center" width="6%">No</th>
-                    <th class="text-center">Judul Kaizen</th>
-                    <th class="text-center">Tanggal Dibuat</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center" >Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tbody>
-                  <?php if ($kaizen_rejected): $no = 0; foreach ($kaizen_rejected as $kaizen_item):; $no++ ?>
-                    <tr>
-                      <td class="text-center"><?= $no; ?></td>
-                      <td><?= $kaizen_item['judul']; ?></td>
-                      <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
-                      <td class="text-left">
-                            <?php if ($kaizen_item['status'] == 2
-                                      || $kaizen_item['status'] == 3 
-                                      || $kaizen_item['status'] == 4
-                                      || $kaizen_item['status'] == 5) { ?>
-                                <table>
-                                        <tr>
-                                            <td style="">
-                                              <span class="label 
-                                              label-<?= ($kaizen_item['status_approve'] == 5) ? 'danger' 
-                                                        : (($kaizen_item['status_approve'] == 3) ? 'success' 
-                                                        : (($kaizen_item['status_approve'] == 4) ? 'warning' 
-                                                        : (($kaizen_item['status_approve'] == 2) ? 'info' : 'default' )));  ?>">
-                                                <?php 
-                                                  if ($kaizen_item['status_approve'] == 2) {
-                                                    echo "Req. Approve";
-                                                  }elseif ($kaizen_item['status_approve'] == 3) {
-                                                    echo "Approved";
-                                                  }elseif ($kaizen_item['status_approve'] == 4) {
-                                                    echo "Revision";
-                                                  }elseif ($kaizen_item['status_approve'] == 5) {
-                                                    echo "Rejected";
-                                                  }
-
-                                                ?>
-                                                
-                                              </span>
-                                            </td>
-                                            <td class="pull-left">
-                                              <?php if($kaizen_item['status_date'] != null) {
-                                              echo '('.date("d M Y", strtotime($kaizen_item['status_date'])).')';
-                                                } ?>
-                                            </td>
-                                          
-                                        </tr>
-                                </table>
-
-                            <?php } ?>
-                      </td>
-                      <td class="text-center">
-                        <!-- view -->
-                        <a title="View Kaizen.." class="btn btn-xs btn-success" href="<?= base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/View/'.$kaizen_item['kaizen_id']); ?>"><i class="fa fa-eye"></i></a>
-                      </td>
-                    </tr>
-                  <?php endforeach; else: ?>
-                    <tr>
-                      <td colspan="5"> No Rejected Kaizen- </td>
-                    </tr>
-                  <?php endif; ?>
-                </tbody>
-                 
-                </tbody>
-              </table>
-            </div>
-          </div>
+            <?php } ?>
         </div>
       </div>
     </div>
