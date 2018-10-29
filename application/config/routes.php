@@ -1643,6 +1643,13 @@ $route['ProductionEngineering/Laporan/add'] = 'MonitoringPEIA/C_AccountReceivabl
 $route['ProductionEngineering/Laporan/edit/(:any)'] = 'MonitoringPEIA/C_AccountReceivables/EditLaporan/$1';
 $route['ProductionEngineering/Laporan/update'] = 'MonitoringPEIA/C_AccountReceivables/UpdateLaporan';
 
+$route['ProductionEngineering/JobHarianPIEA'] = 'MonitoringPEIA/JobHarian/C_JobHarian/Laporan';
+$route['ProductionEngineering/JobHarian/Input'] = 'MonitoringPEIA/JobHarian/C_JobHarian/NewLaporan';
+$route['ProductionEngineering/JobHarian/add'] = 'MonitoringPEIA/JobHarian/C_JobHarian/insertSemua';
+$route['ProductionEngineering/JobHarian/edit/(:any)'] = 'MonitoringPEIA/JobHarian/C_JobHarian/EditLaporan/$1';
+$route['ProductionEngineering/JobHarian/update'] = 'MonitoringPEIA/JobHarian/C_JobHarian/UpdateLaporan/';
+$route['ProductionEngineering/JobHarian/deleteLaporan/(:any)'] = 'MonitoringPEIA/JobHarian/C_JobHarian/deleteLaporan/$1';
+
 //------------------------------------ Manufacturing Operation ----------------------------------------
 $route['ManufacturingOperation']								= 'ManufacturingOperation/C_Index/index';
 $route['ManufacturingOperation/Core']							= 'ManufacturingOperation/MainMenu/C_Core';
