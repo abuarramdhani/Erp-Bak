@@ -8,7 +8,7 @@
 				</p>
 			</div>
 			<div class="box-body">
-			<form method="post" action="<?php echo base_url('ProductionEngineering/Laporan/update')?>">
+			<form method="post" action="<?php echo base_url('ProductionEngineering/JobHarian/update')?>">
 				<div class="row">
 					<div class="col-md-4">
 							<label>TANGGAL ORDER</label>
@@ -19,7 +19,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<!-- <div class="row">
+				
 					<div class="col-md-4">
 							<label>SEKSI</label>
 					</div>
@@ -38,7 +39,7 @@
 						</select>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<div class="row">
 					<div class="col-md-4">
 							<label>NAMA</label>
@@ -50,7 +51,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col-md-4">
 							<label>ORDER</label>
 					</div>
@@ -89,7 +90,7 @@
 						</select>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<div class="row">
 					<div class="col-md-4">
 							<label>KETERANGAN</label>
@@ -101,7 +102,7 @@
 					</div>
 				</div>
 				<div style="float:right">
-				<a href="<?php echo base_url('ProductionEngineering/Laporan')?>" class="btn btn-danger">BACK</a>
+				<a href="<?php echo base_url('ProductionEngineering/JobHarian')?>" class="btn btn-danger">BACK</a>
 				<button type ='submit'class="btn btn-success">SAVE</button>
 			</div>
 			</form>

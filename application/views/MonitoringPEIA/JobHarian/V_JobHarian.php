@@ -3,11 +3,11 @@
 		<div class="row">
 			<div class="col-md-11">
 				<div class="text-right">
-					<h1><b>LAPORAN</b></h1>
+					<h1><b>JOB HARIAN</b></h1>
 				</div>
 			</div>
 			<div class="col-md-1">
-			<a class="btn btn-default btn-lg" href="<?php echo base_url('ProductionEngineering/Input'); ?>">
+			<a class="btn btn-default btn-lg" href="<?php echo base_url('ProductionEngineering/JobHarian/Input'); ?>">
 					<i class="icon-plus icon-2x"></i>
 					<span ><br /></span>
 				</a>
@@ -26,7 +26,7 @@
 						<input class="form-control" id="tanggalan2" type="date" name="daterakhir"/>	
 					</div>
 					<div class="form-group">
-						<a class="btn btn-success submit-date">Submit</a>
+						<a class="btn btn-success submit-datemon">Submit</a>
 					</div>
 				</div>
 		</div>
@@ -35,29 +35,23 @@
 			<!-- </form> -->
 			<table style="margin-top:10px" id="credit" class="table table-striped table-bordered table-responsive table-hover" >
 				<thead style="background:#22aadd; color:#FFFFFF;">
-					<th style="text-align:center">NO</th>
-					<th width="10%" style="text-align:center">TANGGAL ORDER</th>
-					<th style="text-align:center">SEKSI</th>
-					<th style="text-align:center">NAMA</th>
-					<th style="text-align:center">ORDER</th>
-					<th style="text-align:center">JENIS ORDER</th>
-					<th style="text-align:center">KETERANGAN</th>
-					<th style="text-align:center">ACTION</th>
+					<th style="width: 5%;text-align:center">NO</th>
+					<th style="width: 10%;text-align:center">TANGGAL</th>
+					<th style="width: 10%;text-align:center">NAMA</th>
+					<th style="width: 55%;text-align:center">KETERANGAN</th>
+					<th style="width: 20%;text-align:center">ACTION</th>
 				</thead>
 				<tbody class="table-filter">
 				<?php	$no=1 ;foreach ($laporan as $cl) { ?>
 		 			 <tr row-id="<?php echo $cl['id']?>">
 						<td style="text-align:center"><?php echo $no ?></td>
 						<td style="text-align:center"><?php echo $cl['tanggal']?></td>
-						<td style="text-align:center"><?php echo $cl['seksi']?></td>
 						<td style="text-align:center"><?php echo $cl['nama']?></td>
-						<td style="text-align:center"><?php echo $cl['order_']?></td>
-						<td style="text-align:center"><?php echo $cl['jenis_order']?></td>
 						<td style="text-align:left"><?php echo $cl['keterangan']?></td>
 						<td style="text-align:center" class="col-md-2">
 							<div class="btn-group-justified" role="group">
-								<a class="btn btn-warning" href="<?php echo base_url(); ?>ProductionEngineering/Laporan/edit/<?php echo $cl['id']?>">EDIT</a>
-								<a class="btn btn-danger hapus" onclick="DeleteLaporan(<?php echo $cl['id']?>)">DELETE</a>
+								<a class="btn btn-warning" href="<?php echo base_url(); ?>ProductionEngineering/JobHarian/edit/<?php echo $cl['id']?>">EDIT</a>
+								<a class="btn btn-danger hapus" onclick="DeleteJobHarian(<?php echo $cl['id']?>)">DELETE</a>
 							</div>
 						</td>
 					</tr>
