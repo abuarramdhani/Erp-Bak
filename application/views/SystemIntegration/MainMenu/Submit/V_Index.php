@@ -26,7 +26,11 @@
         </div>
         <div class="col-lg-12">
           <div class="form-group">
-            <label class="checkbox-inline"><input type="checkbox" value="1" id="checkKaizenKomp"><b>Kaizen Komponen</b></label>
+            <label class="checkbox-inline" style="padding: 5px; padding-left: 0" >
+              <!-- <button id="chkkkkkkkk" style="display: block;"> -->
+              <input type="checkbox" value="1" id="checkKaizenKomp" ><b> &nbsp;Kaizen Komponen</b>
+              <!-- </button> -->
+            </label>
             <select class="form-control komponenKaizenSI" multiple disabled name="slcKomponen[]">
             </select>
           </div>
@@ -56,7 +60,7 @@
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
-              <input type="text" class="form-control pull-right" id="txtRencanaRealisasiSI" name="txtRencanaRealisasi" required>
+              <input type="text" class="form-control pull-right datetimeSI" id="txtRencanaRealisasiSI" name="txtRencanaRealisasi" required>
             </div>
           </div>
         </div>
