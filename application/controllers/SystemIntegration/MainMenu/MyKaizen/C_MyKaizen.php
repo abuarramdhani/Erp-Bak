@@ -264,8 +264,8 @@ class C_MyKaizen extends CI_Controller
 		{
 			//email
 			$getEmail = $this->M_submit->getEmail($user);
-			// $emailUser = $getEmail[0]['internal_mail'];
-			$emailUser = 'kuswandaru@quick.com';
+			$emailUser = $getEmail[0]['internal_mail'];
+			// $emailUser = 'kuswandaru@quick.com';
 			//get Rincian Kaizen
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 
