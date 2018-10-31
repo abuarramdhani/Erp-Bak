@@ -66,7 +66,7 @@ class M_upahphl extends CI_Model {
 	}
 	public function pekerjaApproval($pekerja)
 	{
-		$query = "select tp.noind,tp.nama, (select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) from hrd_khs.tpribadi tp where (tp.noind like '%$pekerja%' or tp.nama like '%$pekerja%') order by tp.noind";
+		$query = "select tp.noind,tp.nama, (select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) from hrd_khs.tpribadi tp where (tp.noind like '%$pekerja%' or tp.nama like '%$pekerja%') and tp.keluar='0' order by tp.noind";
 		$data = $this->personalia->query($query);
 		return $data->result_array();
 	}
@@ -86,7 +86,7 @@ class M_upahphl extends CI_Model {
 	}
 	public function namaPekerja($noind)
 	{
-		$query = "select tp.noind,tp.kodesie,tp.nama,(select jabatan from hrd_khs.trefjabatan where noind='$noind') as jabatan,(select p.pekerjaan from hrd_khs.tpekerjaan p where tp.kodesie=p.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where tp.noind='$noind'";
+		$query = "select tp.noind,tp.kodesie,tp.nama,(select jabatan from hrd_khs.trefjabatan where noind='$noind') as jabatan,(select p.pekerjaan from hrd_khs.tpekerjaan p where tp.kd_pkj=p.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where tp.noind='$noind' and tp.keluar='0'";
 		// $this->personalia->where('noind',$noind);
 		// $data = $this->personalia->get('hrd_khs.tpribadi');
 		$data = $this->personalia->query($query);
