@@ -79,5 +79,6 @@ class M_mykaizen extends CI_Model
 		$sql = "UPDATE si.si_approval SET ready = '$val' 
 				WHERE kaizen_id = '$kaizen_id' AND level = '$level'";
 		$query = $this->db->query($sql);
+		// return $sql;
 	}
 }
