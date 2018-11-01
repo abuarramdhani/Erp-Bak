@@ -19,4 +19,10 @@ class M_log extends CI_Model {
         $query  = $this->db->query($sql);
         return $query->result_array();
     }
+
+    function getTemplateLog($statusid){
+        $sql = "SELECT * FROM si.si_thread_template WHERE status_thread = '$statusid' ";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }
