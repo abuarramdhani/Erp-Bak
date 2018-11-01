@@ -29,7 +29,7 @@
 											<span><label>Vendor</label></span>
 										</td>
 										<td>
-		                     				<select id="slcVendor" name="vendor_number" class="form-control select2 select2-hidden-accessible" style="width:320px;" required="required">
+		                     				<select id="slcVendor" name="vendor_number" class="form-control select2 select2-hidden-accessible" style="width:320px;">
 												<option value="" > Nama Vendor </option>
 												<?php foreach ($allVendor as $av) { ?>
 												<option value="<?php echo $av['VENDOR_ID'] ?>"><?php echo $av['VENDOR_NAME'] ?></option>
@@ -124,7 +124,8 @@
 										<th class="text-center">Receive Date</th>
 										<th class="text-center">Item Code</th>
 										<th class="text-center">Item Desc</th>
-										<th class="text-center">Qty Receipt</th>
+										<th class="text-center">Qty Amount</th>
+										<th class="text-center">Qty Billed</th>
 										<th class="text-center">Qty Reject</th>
 										<th class="text-center">Currency</th>
 										<th class="text-center">Unit Price</th>

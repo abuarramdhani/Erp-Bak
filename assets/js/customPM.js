@@ -648,6 +648,14 @@ function InsertLokasiFinger(th) {
 
 				$('#PresenceManagement-daftarUser').DataTable({
 				});
+				$('#PresenceManagement-cekdata').DataTable({
+					'paging'      : true,
+			      	'lengthChange': true,
+			      	'searching'   : true,
+			      	'ordering'    : true,
+			      	'info'        : true,
+			      	'autoWidth'   : true,
+				});
 
 				$('#PresenceManagement-daftarAksesUser').DataTable({
 					scrollY: '250px',

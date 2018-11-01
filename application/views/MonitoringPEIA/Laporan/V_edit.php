@@ -20,7 +20,6 @@
 					</div>
 				</div>
 				<div class="row">
-				
 					<div class="col-md-4">
 							<label>SEKSI</label>
 					</div>

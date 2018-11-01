@@ -56,8 +56,8 @@
 						<td style="text-align:left"><?php echo $cl['keterangan']?></td>
 						<td style="text-align:center" class="col-md-2">
 							<div class="btn-group-justified" role="group">
-								<a class="btn btn-default" href="<?php echo base_url(); ?>ProductionEngineering/Laporan/edit/<?php echo $cl['id']?>">EDIT</a>
-								<a class="btn btn-default hapus" onclick="DeleteLaporan(<?php echo $cl['id']?>)">DELETE</a>
+								<a class="btn btn-warning" href="<?php echo base_url(); ?>ProductionEngineering/Laporan/edit/<?php echo $cl['id']?>">EDIT</a>
+								<a class="btn btn-danger hapus" onclick="DeleteLaporan(<?php echo $cl['id']?>)">DELETE</a>
 							</div>
 						</td>
 					</tr>

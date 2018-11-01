@@ -23,6 +23,7 @@ class M_fleetpickendaraan extends CI_Model
                                                     when    pic.employee_id is not null and pic.pic_kodesie is null 
                                                         then    concat_ws('<br/>', er.employee_code, er.employee_name)
                                             end as pic,
+                                            (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                             (select jenis_kendaraan from ga.ga_fleet_jenis_kendaraan jenis where jenis.jenis_kendaraan_id = kdrn.jenis_kendaraan_id) jenis_kendaraan,
                                             concat_ws('<br/>sampai dengan<br/>', to_char(pic.dari_periode, 'DD-MM-YYYY'), to_char(pic.sampai_periode,'DD-MM-YYYY')) as periode,
                                             to_char(pic.creation_date,'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
@@ -41,6 +42,8 @@ class M_fleetpickendaraan extends CI_Model
             $ambilPICKendaraan  = " select  pic.pic_kendaraan_id as kode_pic_kendaraan,
                                             pic.kendaraan_id as kode_kendaraan,
                                             kdrn.nomor_polisi as nomor_polisi,
+                                            (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
+                                            (select jenis_kendaraan from ga.ga_fleet_jenis_kendaraan jenis where jenis.jenis_kendaraan_id = kdrn.jenis_kendaraan_id) jenis_kendaraan,
                                             coalesce(pic.employee_id, pic.pic_kodesie) as kode,
                                             case    when    pic.employee_id is null and pic.pic_kodesie is not null then 'seksi'
                                                     when    pic.employee_id is not null and pic.pic_kodesie is null then 'pekerja'
@@ -73,6 +76,8 @@ class M_fleetpickendaraan extends CI_Model
         $query = $this->db->query("select  pic.pic_kendaraan_id as kode_pic_kendaraan,
                                             pic.kendaraan_id as kode_kendaraan,
                                             kdrn.nomor_polisi as nomor_polisi,
+                                            (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
+                                            (select jenis_kendaraan from ga.ga_fleet_jenis_kendaraan jenis where jenis.jenis_kendaraan_id = kdrn.jenis_kendaraan_id) jenis_kendaraan,
                                             coalesce(pic.employee_id, pic.pic_kodesie) as kode,
                                             case    when    pic.employee_id is null and pic.pic_kodesie is not null then 'seksi'
                                                     when    pic.employee_id is not null and pic.pic_kodesie is null then 'pekerja'
@@ -102,6 +107,8 @@ class M_fleetpickendaraan extends CI_Model
             $ambilPICKendaraanDeleted   = " select  pic.pic_kendaraan_id as kode_pic_kendaraan,
                                                     pic.kendaraan_id as kode_kendaraan,
                                                     kdrn.nomor_polisi as nomor_polisi,
+                                                    (select jenis_kendaraan from ga.ga_fleet_jenis_kendaraan jenis where jenis.jenis_kendaraan_id = kdrn.jenis_kendaraan_id) jenis_kendaraan,
+                                                    (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                                     case    when    pic.employee_id is null and pic.pic_kodesie is not null then 'seksi'
                                                             when    pic.employee_id is not null and pic.pic_kodesie is null then 'pekerja'
                                                     end as pilihan,                                                    

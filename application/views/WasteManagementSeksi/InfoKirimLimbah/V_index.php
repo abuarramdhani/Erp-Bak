@@ -30,7 +30,7 @@
 											</div>
 											<div class="form-group">
 												<div class="col-lg-4">
-													<input type="text" name="txtPeriodeInfo" id="txtPeriodeInfo" class="date form-control" placeholder="<?php echo date('d M Y')?>" data-date-format="yyyy-mm-dd" required>
+													<input type="text" name="txtPeriodeInfo" id="txtPeriodeInfo" class="date form-control" value="<?php echo date('F Y') ?>" required>
 												</div>
 											</div>
 											<div class="form-group">
@@ -47,12 +47,25 @@
 											</div>
 											<div class="form-group">
 												<div class="col-lg-4">
-													<select class="select select2 col-lg-8" name="txtValueSek" id="txtValueSek" data-placeholder="Nama Seksi" style="width:100%;" disabled>
-														<option></option>
+													<select class="select select2 col-lg-8" name="txtValueSek1" id="txtValueSek1" data-placeholder="Nama Seksi" style="width:100%;" disabled>
 														<?php foreach ($seksi as $key) {
 															$a = $key['section_code'];
 															$b = $key['section_name'];
-															echo "<option value='$a'>$a - $b</option>";
+															if ($kodesie == $a) {
+																echo "<option value='$a'>$a - $b</option>";
+															}
+															
+														} 
+														?>
+													</select>
+													<select class="hidden-lg hidden-md hidden-sm hidden-xs" name="txtValueSek" id="txtValueSek" data-placeholder="Nama Seksi" style="width:100%;" disabled>
+														<?php foreach ($seksi as $key) {
+															$a = $key['section_code'];
+															$b = $key['section_name'];
+															if ($kodesie == $a) {
+																echo "<option value='$a'>$a - $b</option>";
+															}
+															
 														} 
 														?>
 													</select>

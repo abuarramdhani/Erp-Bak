@@ -31,7 +31,7 @@
 												<label for="txtTanggalKirimLimbah" class="control-label col-lg-4">Tanggal Kirim</label>
 												<div class="col-lg-4">
 													<div class="col-lg-6">
-														<input type="text" name="txtTanggalKirimLimbah" id="txtTanggalKirimLimbah" class="date form-control" placeholder="<?php echo date('d M Y')?>" data-date-format="yyyy-mm-dd" required>
+														<input type="text" name="txtTanggalKirimLimbah" id="txtTanggalKirimLimbah" class="date form-control" value="<?php echo date('Y M d')?>" data-date-format="yyyy-mm-dd" required>
 													</div>
 													<div class="col-lg-6">
 														<div class="col-lg-12 input-group bootstrap-timepicker timepicker">
@@ -49,9 +49,22 @@
 															<option value=""></option>
 															<?php 
 																foreach ($JenisLimbah as $key) {
-																	echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']."-".$key['jenis_limbah']."</option>";
+																	echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']." - ".$key['jenis_limbah']."</option>";
 																}
 															?>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
+												<div class="col-lg-4">
+													<div class="col-lg-12">
+														<select class="select select2" id="txtSeksiPengirim" data-placeholder="Seksi Pengirim" style="width: 100%">
+															<option></option>
+															<?php foreach ($Seksi2 as $key) { ?>
+																<option value="<?php echo $key['section_code'] ?>"><?php echo $key['section_code']." - ".$key['section_name']  ?></option>
+															<?php } ?>
 														</select>
 													</div>
 												</div>
@@ -62,11 +75,6 @@
 													<div class="col-lg-5">
 														<select class="select select2" name="txtPengirimLimbah" id="txtPengirimLimbah" data-placeholder="Noind" style="width:100%;" required>
 															<option value=""></option>
-															<?php 
-																foreach ($Pekerja as $key) {
-																	echo "<option value='".$key['employee_code']."' data-name='".$key['employee_name']."' >".$key['employee_code']."</option>";
-																}
-															?>
 														</select>
 													</div>
 													<div class="col-lg-7">

@@ -10,7 +10,8 @@ class M_cetakttbpjs extends CI_Model {
 
 	}
 	public function ambilData()
-	{
+	{	
+		$query = $this->erp->where('stat_cetak','0');
 		$query = $this->erp->get('kk.kk_cetaktanterbpjs');
 		return $query->result_array();
 	}
@@ -35,9 +36,15 @@ class M_cetakttbpjs extends CI_Model {
 	}
 	public function deleteData($id)
 	{
-		$this->erp->where('id_cetaktanterbpjs',$id);
-		$this->erp->delete('kk.kk_cetaktanterbpjs');
-		return;
+		$query = "update kk.kk_cetaktanterbpjs set stat_cetak='1' where stat_cetak = '0' and id_cetaktanterbpjs = '$id';";
+		$this->erp->query($query);
+		// $this->erp->where('id_cetaktanterbpjs',$id);
+		// $this->erp->delete('kk.kk_cetaktanterbpjs');
+		// return;
 	}
 	
+	public function deleteDataAll(){
+		$query = "update kk.kk_cetaktanterbpjs set stat_cetak='1' where stat_cetak = '0';";
+		$this->erp->query($query);
+	}
 };

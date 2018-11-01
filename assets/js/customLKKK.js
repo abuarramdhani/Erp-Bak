@@ -87,6 +87,17 @@ $(function () {
     $('#tbl_lkkk_1').dataTable({ 
 
     });
+    $('#tbl_datacetak').dataTable({ 
+    	  "paging": true,
+          "lengthChange": false,
+          "searching": true,
+          "ordering": true,
+		  "info": true,
+          "autoWidth": false,
+		  "deferRender" : true,
+		  "scroller": true,
+    });
+
 
     $('#exampleModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal

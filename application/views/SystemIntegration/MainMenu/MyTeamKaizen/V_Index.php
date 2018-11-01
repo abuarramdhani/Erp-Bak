@@ -71,7 +71,7 @@
 
           <div class="tab-pane <?= $a == 0 ? 'active' : '' ?>" id="<?= $desc[$a]['id_tab'] ?>">
             <div class="">
-              <table width="100%" class="table table-bordered table-fit" id="<?= $desc[$a]['id_table'] ?>" >
+              <table width="100%" class="table table-bordered table-fit tblSIKaizen" id="<?= $desc[$a]['id_table'] ?>" >
                 <thead>
                   <tr class="<?= $desc[$a]['bg_color'] ?>">
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="2%">No</th>
@@ -105,7 +105,7 @@
                                 <span class="label label-warning">Revisi Ide</span>
                             <?php } elseif (in_array($kaizen_item['status'], $arrIdeDone)) { ?>
                                 <strong><i class="fa fa-angle-right"></i> </strong>
-                                <span class="label label-success">Approved Ide <b class="fa fa-check-circle"></b></span>
+                                 <span class="label label-success">Approved Ide <b class="fa fa-check-circle"> </b></span>
                             <?php } elseif ($kaizen_item['status'] == 5) { ?>
                                 <strong><i class="fa fa-angle-right"></i> </strong>
                                 <span class="label label-danger">Rejected Ide</span>
@@ -124,7 +124,7 @@
                                 <span class="label label-info btn-real-ena">Requested Approve <b class="fa fa-info-circle"></b></span>
                               <?php } ?>
                         <?php } elseif ($kaizen_item['status'] == 7 || $kaizen_item['status'] == 9 ) {?>
-                          <span class="label label-success">Submit Realisasi <b class="fa fa-check-circle"></b></span>
+                          <span class="label label-success">Approved Realisasi <b class="fa fa-check-circle"></b></span>
                         <?php } else {?>
                           <span class="label label-default btn-real-dis">Submit Realisasi </span>
                         <?php } ?>
@@ -139,7 +139,7 @@
                           <?php endif; ?>
                           <!-- </a> -->
                         <?php }elseif ($kaizen_item['status'] == 9) { ?>
-                          <span class="label label-success btn-real-dis" >Laporkan <b class="fa fa-check-circle"></b>
+                          <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <i class="fa fa-check-circle text-info"></i>
                           </span>
                             <br>(<?= date('d M Y', strtotime($kaizen_item['status_date'])) ?>)
                         <?php } else{?>
@@ -183,10 +183,7 @@
                       <?php endif; ?>
                       </td>
                     </tr>
-                  <?php endforeach;else: ?>
-                    <tr>
-                      <td colspan="5"> No <?= $desc[$a]['name'] ?> Kaizen - </td>
-                    </tr>
+                  <?php endforeach; ?>
                   <?php endif; ?>
                 </tbody>
                

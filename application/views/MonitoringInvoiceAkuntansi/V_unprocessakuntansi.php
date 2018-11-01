@@ -46,8 +46,8 @@
 											</a></td>
 											<td><?php echo date('d-M-Y',strtotime($u['invoice_date']))?></td>
 											<td><?php echo $u['tax_invoice_number']?></td>
-											<td class="inv_amount"><?php echo $u['invoice_amount']?></td>
-											<td class="po_amount"><?php echo $u['po_amount']?></td>
+											<td class="inv_amount"><?php echo round($u['invoice_amount'])?></td>
+											<td class="po_amount"><?php echo round($u['po_amount'])?></td>
 											<td><?php echo $u['last_status_purchasing_date']?></td>
 											<td>
 												<button type="submit" data-id="<?= $u['invoice_id'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Process</button>

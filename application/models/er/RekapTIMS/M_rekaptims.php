@@ -9,6 +9,126 @@
 	        $this->personalia 	=	$this->load->database('personalia', TRUE);
 	    }
 
+
+	    public function rekapBobotTIM($period1,$period2,$noind,$keluar)
+	    {
+	    	$query = "select pri.noind,pri.nama, ts.dept,ts.bidang,ts.unit,ts.seksi,
+	    					(select sum(case 
+	    									when tdtim.kd_ket='TT'
+	    									then tdtim.point
+	    									else 0
+	    								end)
+	    					from \"Presensi\".tdatatim as tdtim inner join hrd_khs.tpribadi tp on tp.noind=tdtim.noind where tdtim.noind = pri.noind and tdtim.tanggal between '$period1' and '$period2') as pointtt,
+	    					(select sum(case
+	    									when tdtim.kd_ket='TIK'
+	    									then tdtim.point
+	    									else 0
+	    								end)
+	    					from \"Presensi\".tdatatim as tdtim inner join hrd_khs.tpribadi tp on tp.noind=tdtim.noind where tdtim.noind = pri.noind and tdtim.tanggal between '$period1' and '$period2') as pointtik,
+	    					(select sum(case
+	    									when tdtim.kd_ket='TM'
+	    									then tdtim.point
+	    									else 0
+	    								end)
+	    					from \"Presensi\".tdatatim as tdtim inner join hrd_khs.tpribadi tp on tp.noind=tdtim.noind where tdtim.noind = pri.noind and tdtim.tanggal between '$period1' and '$period2') as pointtm,
+	    					(
+							select 	concat(masa_kerja.tahun, ' tahun ', masa_kerja.bulan, ' bulan ', masa_kerja.hari, ' hari')
+							from (
+							select 		(
+											masa_kerja.total_tahun
+											+
+											(
+												case 	when 	masa_kerja.total_bulan>11
+																then 	floor(masa_kerja.total_bulan/12)
+														else 	0
+												end
+											)
+											+
+											(
+												case 	when 	masa_kerja.total_hari>364
+																then 	floor(masa_kerja.total_hari/365)
+														else 	0
+												end
+											)
+										) as tahun,
+										(
+											(
+												case 	when 	masa_kerja.total_bulan>11
+																then 	masa_kerja.total_bulan-(floor(masa_kerja.total_bulan/12)*12)
+														else 	masa_kerja.total_bulan
+												end
+											)
+											+
+											(
+												case 	when 	masa_kerja.total_hari>29
+																then 	floor(masa_kerja.total_hari/30)
+														else 	0
+												end
+											)
+										) as bulan,
+										(
+											(
+												case 	when 	masa_kerja.total_hari>29
+																then 	masa_kerja.total_hari-(floor(masa_kerja.total_hari/30)*30)
+														else 	masa_kerja.total_hari
+												end
+											)
+										) as hari
+							from 		(
+											select 		sum(extract(year from master_masa_kerja.masa_kerja)) as total_tahun,
+														sum(extract(month from master_masa_kerja.masa_kerja)) as total_bulan,
+														sum(extract(day from master_masa_kerja.masa_kerja)) as total_hari
+											from 		(
+															select 		pri3.*,
+																		(
+																			case 	when 	pri3.keluar=false
+																							then 	(
+																										case 	when 	pri3.kode_status_kerja in ('A', 'B')
+																														then 	(
+																																				age(current_date, pri3.diangkat)
+																																			)
+																															else  	(
+																																		age(current_date, pri3.masukkerja)
+																																	)
+																													end
+																												)
+																								else 	(
+																											case 	when 	pri3.kode_status_kerja in ('A', 'B')
+																															then 	(
+																																		age(pri3.tglkeluar, pri3.diangkat)
+																																	)
+																													else  	(
+																																age(pri3.tglkeluar, pri3.masukkerja)
+																															)
+																											end
+																										)
+																						end
+																					) as masa_kerja
+																		from 		(
+																						select 		pri2.noind,
+																									pri2.nik,
+																									pri2.tgllahir,
+																									pri2.kode_status_kerja,
+																									pri2.keluar,
+																									pri2.masukkerja,
+																									pri2.diangkat,
+																									pri2.tglkeluar,
+																									pri2.akhkontrak
+																						from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																						where 		pri2.nik=pri.nik
+																									and 	pri2.tgllahir=pri.tgllahir
+																					) as pri3
+																	) master_masa_kerja
+													) as masa_kerja
+									) as masa_kerja
+						) as masa_kerja
+	    				from hrd_khs.tpribadi pri inner join hrd_khs.tseksi ts on pri.kodesie=ts.kodesie where pri.noind in ($noind)
+	    				 and  pri.keluar='$keluar'
+	    	";
+	    	$data = $this->personalia->query($query);
+	    	return $data->result_array();
+	    }
+
 	    public function rekapTIMS($tgl1, $tgl2, $year_month = FALSE, $noind = FALSE, $kode_status_kerja = FALSE, $dept = FALSE, $bidang = FALSE, $unit = FALSE, $seksi = FALSE)
 	    {
 	    	// print_r($kode_status_kerja);exit();

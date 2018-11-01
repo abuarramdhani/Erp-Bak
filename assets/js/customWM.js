@@ -9,6 +9,16 @@ $(function() {
       dom: 'frtp',
     });
 
+  //titipan bpjs awal
+  $('#dataTables-masterParamPtkp').DataTable( {
+    "destroy": true,
+      dom: 'Bfrtip',
+      buttons: [
+        'excel'
+      ]
+    });
+  //akhir
+
     $('#txtTanggalKirimHeader').datepicker({
 		"autoclose": true,
 		"todayHiglight": true,

@@ -87,7 +87,7 @@ $db['default'] = array(
 
 $db['oracle'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.1:1521/PROD',
+	'hostname' => '192.168.7.1:1521/PROD', //192.168.7.3:1522/DEV
 	'username' => 'apps',
 	'password' => 'apps',
 	'database' => 'KHS_PROD',
@@ -107,27 +107,28 @@ $db['oracle'] = array(
 	'save_queries' => TRUE
 );
 
-$db['mssql'] = array(
-	'dsn'	=> '',
-	'hostname' => '192.168.6.20:1433',
-	'username' => 'sa',
-	'password' => 'sa',
-	'database' => '',
-	'dbdriver' => 'mssql',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
+// tidak lagi digunakan
+// $db['mssql'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => '192.168.6.20:1433',
+// 	'username' => 'sa',
+// 	'password' => 'sa',
+// 	'database' => '',
+// 	'dbdriver' => 'mssql',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => TRUE,
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE
+// );
 
 // $db['personalia'] = array(
 // 	'dsn'	=> '',
@@ -269,35 +270,13 @@ $db['ticket'] = array(
 
 $db['oracle_dev'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.1:1521/PROD',
+	'hostname' => '192.168.7.3:1522/DEV',
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_PROD',
+	'database' => 'KHS_DEV',
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt'  => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
-
-$db['erp'] = array(
-	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
-	'username' => 'postgres',
-	'password' => 'password',
-	'database' => 'erp',
-	'dbdriver' => 'postgre',
-	'dbprefix' => '',
-	'pconnect' => TRUE,
 	'db_debug' => TRUE,
 	'cache_on' => FALSE,
 	'cachedir' => '',
@@ -355,29 +334,6 @@ $db['daerah'] = array(
 	'save_queries' => TRUE
 );
 
-
-$db['tokoquick'] = array(
-	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
-	'database' => 'tokoquick',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE,
-	'port' => 3306
-);
 $db['erp_db'] = array(
 	'dsn'	=> '',
 	'hostname' => 'database.quick.com',

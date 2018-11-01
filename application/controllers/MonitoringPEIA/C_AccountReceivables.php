@@ -405,8 +405,8 @@ class C_AccountReceivables extends CI_Controller {
 						<td style="text-align:center">'.$cl['keterangan'].'</td>
 						<td style="text-align:center" class="col-md-2">
 							<div class="btn-group-justified" role="group">
-								<a class="btn btn-default" href="'.base_url().'ProductionEngineering/Laporan/edit/'.$cl['id'].'">EDIT</a>
-								<a class="btn btn-default hapus" onclick="DeleteLaporan('.$cl['id'].')">DELETE</a>
+								<a class="btn btn-warning" href="'.base_url().'ProductionEngineering/Laporan/edit/'.$cl['id'].'">EDIT</a>
+								<a class="btn btn-danger hapus" onclick="DeleteLaporan('.$cl['id'].')">DELETE</a>
 							</div>
 						</td>
 					</tr>';

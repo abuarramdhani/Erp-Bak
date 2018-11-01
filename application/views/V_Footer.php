@@ -12,7 +12,7 @@
 		<!--END FOOTER -->
      
 	<script type="text/javascript">
-	var baseurl = "<?php echo base_url(); ?>";
+	const baseurl = "<?php echo base_url(); ?>";
 	</script>
 	<!-- Slimscroll -->
     <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>" type="text/javascript"></script>
@@ -85,7 +85,6 @@
 	<script src="<?php echo base_url('assets/js/customAPD.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPRS.js');?>" type="text/javascript"></script>
@@ -99,7 +98,7 @@
 	<script src="<?php echo base_url('assets/js/customWM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customSL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
+	<!-- <script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
 	<!--	<script src="<?php echo base_url('assets/js/customLKH.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
@@ -120,9 +119,13 @@
 	<script src="<?php echo base_url('assets/js/customLKKK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWH.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWMS.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customMI.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customUM.js');?>" type="text/javascript"></script>
-    <script type="text/javascript">
+	<script src="<?php echo base_url('assets/js/customHLCM.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/js/customMI.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customSI.js');?>" type="text/javascript"></script>
+	<!-- <script src="<?php echo base_url('assets/js/customIMO.js');?>" type="text/javascript"></script> -->
+	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customERC.js');?>" type="text/javascript"></script>
+<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
 		}

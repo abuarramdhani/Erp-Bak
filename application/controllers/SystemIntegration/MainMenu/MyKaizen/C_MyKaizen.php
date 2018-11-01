@@ -54,16 +54,6 @@ class C_MyKaizen extends CI_Controller
 
 			//all
 			$i = 0; foreach ($data['kaizen'] as $key => $value) {
-				// $a = 0; for ($x=1; $x < 4; $x++) { 
-				// $getApprovalLvl = $this->M_mykaizen->getApprover($value['kaizen_id'], $x);
-				// $data['kaizen'][$i]['status_app'][$a]['level'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
-				// $data['kaizen'][$i]['status_app'][$a]['staff'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
-				// $data['kaizen'][$i]['status_app'][$a]['staff_code'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_code'] :'' ;
-				// $data['kaizen'][$i]['status_app'][$a]['reason'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['reason'] :'';
-				// 	$a++;
-				// }
-				// $i++;
-
 				$getAllApprover = $this->M_mykaizen->getApprover($value['kaizen_id'],FALSE);
 				$a = 0; foreach ($getAllApprover as $key => $value) {
 					if ($value['level'] != 6):
@@ -171,27 +161,29 @@ class C_MyKaizen extends CI_Controller
 			$level1 = $this->input->post('SlcAtasanLangsung');
 			$level2 = $this->input->post('SlcAtasanAtasanLangsung');
 			$level3 = $this->input->post('SlcAtasanDepartment');
+			$approval_level = $this->input->post('approval_level');
 			$typeApproval = $this->input->post('typeApp');
 			$approverExist = array();
+			$approverPertama = "";
 			if ($typeApproval == 1){
-			for ($i=1; $i < 3; $i++) { 
-				$var = 'level'.$i;
-				if ($$var) {
-					$data = array('approver' => $$var ,
-								  'level' => $i,
+
+			foreach ($approval_level as $key => $value) {
+				$approvernya = $value == '1' ? $level1 : $level2;
+				$data = array('approver' =>  $approvernya,
+								  'level' => $value,
 								  'kaizen_id' => $kaizen_id);
-					$checkExist = $this->M_submit->checkExist($data);
+				$checkExist = $this->M_submit->checkExist($data);
 					if ($checkExist == 0) {
 						$this->M_submit->SaveApprover($data);
 					}
-					if ($i == 1) {
-						$this->EmailAlert($$var,$kaizen_id);
-						$updateReady = $this->M_mykaizen->updateReady($i, $kaizen_id, 1);
+					$jml_app = count($approval_level);
+					if ( ($jml_app == 1) || ($jml_app == 2 && $value == 1) ) {
+						$this->EmailAlert($approvernya,$kaizen_id);
+						$this->M_mykaizen->updateReady($value, $kaizen_id, 1);
+						$approverPertama = $value;
 					}
 
-
-					$approverExist[] = $$var;
-				}
+					$approverExist[] = $approvernya;
 			}
 
 			if (!$level1 && !$level2 && !$level3) {
@@ -205,8 +197,13 @@ class C_MyKaizen extends CI_Controller
 					$name[] = $getname[0]['employee_name'];
 				}
 				$ApproverName = implode(' , ', $name);
-				$detail = "(Set Approver) - ";
-				$detail .= "Kaizen ini telah dimintakan approve kepada ".$ApproverName;
+
+				//log thread
+				$getTemplateLog = $this->M_log->getTemplateLog(2);
+					$title = $getTemplateLog[0]['title'];
+					$body = $getTemplateLog[0]['body'];
+				$detail =  "($title) - ";
+				$detail .= sprintf($body, $ApproverName);
 
 				$datalog =array(
 					'kaizen_id' => $kaizen_id,
@@ -220,9 +217,10 @@ class C_MyKaizen extends CI_Controller
 			if ($approverExist) {
 				$approverId = implode("','", $approverExist);
 				$this->M_submit->DeleteApproverByApprover($kaizen_id,$approverId);
-				$this->M_submit->ResetApprover($kaizen_id,$approverId);
+				$this->M_submit->ResetApprover($kaizen_id,$approverId,$approverPertama);
 			}
 		}elseif ($typeApproval ==2){
+			echo "<br> masuk ke tipe approval 2";
 			$data = array('approver' => $level1 ,
 						  'level' => 6,
 						  'kaizen_id' => $kaizen_id);
@@ -238,8 +236,13 @@ class C_MyKaizen extends CI_Controller
 			//log
 			$getname = $this->M_mykaizen->getName($level1);
 			$name = $getname[0]['employee_name'];
-			$detail = "(Set Approver Realisasi) - ";
-			$detail .= "Kaizen ini telah dimintakan approve kepada ".$name;
+
+			//log thread
+			$getTemplateLog = $this->M_log->getTemplateLog(16);
+				$title = $getTemplateLog[0]['title'];
+				$body = $getTemplateLog[0]['body'];
+			$detail =  "($title) - ";
+			$detail .= sprintf($body, $name);
 
 			$datalog =array(
 				'kaizen_id' => $kaizen_id,
@@ -261,8 +264,8 @@ class C_MyKaizen extends CI_Controller
 		{
 			//email
 			$getEmail = $this->M_submit->getEmail($user);
-			// $emailUser = $getEmail[0]['internal_mail'];
-			$emailUser = 'kuswandaru@quick.com';
+			$emailUser = $getEmail[0]['internal_mail'];
+			// $emailUser = 'kuswandaru@quick.com';
 			//get Rincian Kaizen
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 

@@ -74,27 +74,50 @@ class M_simple extends CI_Model
 		return $result->result_array();
 	}
 
-	public function insertSimpleDetail($id_simple, $data){
-		$query = "select max(cast(id_simple_detail as int))+1 max from ga.ga_limbah_simple_detail";
-		$result = $this->db->query($query);
-		$arr = $result->result_array();
-		if ($arr['0']['max'] == null) {
-			$arr['0']['max'] = '1';
+	// public function insertSimpleDetail($id_simple, $data){
+	// 	$query = "select max(cast(id_simple_detail as int))+1 max from ga.ga_limbah_simple_detail";
+	// 	$result = $this->db->query($query);
+	// 	$arr = $result->result_array();
+	// 	if ($arr['0']['max'] == null) {
+	// 		$arr['0']['max'] = '1';
+	// 	}
+	// 	$id_detail 	= $arr['0']['max'];
+	// 	$jenis 		= $data['Jenis'];
+	// 	$tanggal 	= $data['Tanggal'];
+	// 	$manifest 	= $data['Manifest'];
+	// 	$jumlah 	= $data['Jumlah'];
+	// 	$catatan 	= $data['Catatan'];
+	// 	$query = "insert into ga.ga_limbah_simple_detail
+	// 	(id_simple_detail, id_simple, id_jenis_limbah, tanggal_dihasilkan, kode_manifest, jumlah, catatan)
+	// 	 values('$id_detail','$id_simple','$jenis','$tanggal','$manifest','$jumlah','$catatan')";
+
+	// 	// echo $query;
+	// 	// exit;
+
+	// 	 $this->db->query($query);
+	// }
+
+	public function insertSimpleDetail($id_simple, $arrkirim){
+
+		foreach ($arrkirim as $key) {
+			$query = "select max(cast(id_simple_detail as int))+1 max from ga.ga_limbah_simple_detail";
+
+			$result = $this->db->query($query);
+			$arr = $result->result_array();
+			if ($arr['0']['max'] == null) {
+				$arr['0']['max'] = '1';
+			}
+			$id_detail 	= $arr['0']['max'];
+
+			$query = 	"insert into ga.ga_limbah_simple_detail
+						(id_simple_detail, id_simple, id_jenis_limbah, tanggal_dihasilkan,jumlah)
+					 	select '$id_detail','$id_simple', id_jenis_limbah, cast(tanggal_kirim as date), cast(cast(berat_kirim as float)/1000 as float)
+						from ga.ga_limbah_kirim where id_kirim = '".$key."'";
+			 $this->db->query($query);
+			 $query = 	"update ga.ga_limbah_kirim set status_simple = '1'
+						where id_kirim = '".$key."';";
+			 $this->db->query($query);
 		}
-		$id_detail 	= $arr['0']['max'];
-		$jenis 		= $data['Jenis'];
-		$tanggal 	= $data['Tanggal'];
-		$manifest 	= $data['Manifest'];
-		$jumlah 	= $data['Jumlah'];
-		$catatan 	= $data['Catatan'];
-		$query = "insert into ga.ga_limbah_simple_detail
-		(id_simple_detail, id_simple, id_jenis_limbah, tanggal_dihasilkan, kode_manifest, jumlah, catatan)
-		 values('$id_detail','$id_simple','$jenis','$tanggal','$manifest','$jumlah','$catatan')";
-
-		// echo $query;
-		// exit;
-
-		 $this->db->query($query);
 	}
 
 	public function getSimpleDetailById($id){
@@ -125,6 +148,28 @@ class M_simple extends CI_Model
 			from ga.ga_limbah_simple_detail detail
 			inner join ga.ga_limbah_jenis jenis on jenis.id_jenis_limbah = detail.id_jenis_limbah
 			where detail.id_simple ='$id';";
+		$result = $this->db->query($query);
+		return $result->result_array();
+	}
+
+	public function getLimbahKirimBySimple($id){
+		$query = 	"select cast(lk.tanggal_kirim as date) tanggal,
+					es.section_name seksi,
+					lk.berat_kirim berat,
+					lk.id_kirim,
+					lk.status_simple status,
+					lj.jenis_limbah jenis
+					from ga.ga_limbah_simple ls
+					inner join ga.ga_limbah_kirim lk
+						on lk.id_jenis_limbah = ls.id_jenis_limbah 
+						and to_char(lk.tanggal_kirim,'yyyy m') = to_char(ls.periode,'yyyy m')
+						and lk.status_simple = '0'
+					inner join er.er_section es
+						on es.section_code = concat(lk.kodesie_kirim,'00')
+					inner join ga.ga_limbah_jenis lj
+						on lj.id_jenis_limbah = lk.id_jenis_limbah
+					where id_simple = '$id'
+					order by lk.status_simple, cast(lk.tanggal_kirim as date) asc";
 		$result = $this->db->query($query);
 		return $result->result_array();
 	}

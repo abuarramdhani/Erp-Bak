@@ -175,6 +175,33 @@
 		});
 	});
 
+	$('#submit-filter-no-induk-bobot').click(function(){
+			$('.alert').alert('close');
+			$('body').addClass('noscroll');
+			$('#loadingAjax').addClass('overlay_loading');
+			$('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
+			$.ajax({
+				type:'POST',
+				data:$("#filter-rekap-bobot").serialize(),
+				url:baseurl+"RekapTIMSPromosiPekerja/RekapBobot/tampilkanData",
+				success:function(result)
+				{
+					$('#table-div').html(result);
+					$('body').removeClass('noscroll');
+					$('#loadingAjax').html('');
+					$('#loadingAjax').removeClass('overlay_loading');
+					rekap_datatable();
+					rekap_datatable_detail();
+				},
+				error: function() {
+					$('body').removeClass('noscroll');
+					$('#loadingAjax').html('');
+					$('#loadingAjax').removeClass('overlay_loading');
+					document.getElementById("errordiv").html = '<div style="width: 50%;margin: 0 auto" class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Terjadi Kesalahan</div>';
+				}
+			});
+		});
+
 	//---------------------------------REKAP TIMS.end-------------------------------
 function rekap_datatable() {
 	var rekap_table = $('#rekap-tims').DataTable({

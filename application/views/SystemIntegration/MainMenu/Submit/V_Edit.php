@@ -1,3 +1,17 @@
+<style type="text/css">
+    .text-approve {
+    color: #77ac4f;
+  }
+
+  .text-revisi {
+    color: #c98b2d;
+  }
+
+  .text-reject {
+    color: #dd5a4e;
+  }
+</style>
+
 <section class="content">
   <div class="box box-default color-palette-box">
     <div class="box-header with-border">
@@ -25,7 +39,7 @@
         </div>
         <div class="col-lg-12">
           <div class="form-group">
-            <label class="checkbox-inline"><input type="checkbox" <?= $kaizen[0]['komponen'] ? 'checked' :'' ?> value="1" id="checkKaizenKomp"><b>Kaizen Komponen</b></label>
+            <label class="checkbox-inline" style="padding: 5px; padding-left: 0"  ><input type="checkbox" <?= $kaizen[0]['komponen'] ? 'checked' :'' ?> value="1" id="checkKaizenKomp"><b> &nbsp;Kaizen Komponen</b></label>
             <select class="form-control komponenKaizenSI" multiple <?= $kaizen[0]['komponen'] ? '' :'disabled' ?> name="slcKomponen[]">
               <?php foreach ($kaizen[0]['komponen'] as $key => $value) { ?>
                <option selected value="<?= $value['id'] ?>"><?= $value['code'].' -- '.$value['name']; ?></option>
@@ -58,14 +72,14 @@
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
-              <input type="text" class="form-control pull-right" id="txtRencanaRealisasiSI" name="txtRencanaRealisasi" value="<?php echo date("m/d/Y", strtotime($kaizen[0]['rencana_realisasi'])) ?>">
+              <input type="text" class="form-control pull-right datetimeSI" id="txtRencanaRealisasiSI" name="txtRencanaRealisasi" value="<?php echo date("m/d/Y", strtotime($kaizen[0]['rencana_realisasi'])) ?>">
             </div>
           </div>
         </div>
       </div>
       <div class="box-footer">
         <div class="pull-right">
-          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="submit" class="btn btn-primary"> Update</button>
           <a href="<?php echo base_url('SystemIntegration/KaizenGenerator/View/'.$kaizen[0]['kaizen_id']) ?>";" class="btn btn-warning">Cancel</a>
         </div>
          <div style="margin-top: 20px" class="col-lg-12">
@@ -74,23 +88,27 @@
            Log Thread 
           </label>
           <div class="col-lg-12" style="overflow: auto; height: 120px;">
-            <?php $x = 0; foreach ($thread as $key => $value) { ?>
-             <?php if ($x >= 5) { ?>
+            <?php $y = count($thread);$x = 0; foreach ($thread as $key => $value) {
+                $colortext = ($value['status'] == '3') ? 'approve' 
+                                : ($value['status'] == '4' ? 'revisi' 
+                                  : ($value['status'] == '5' ? 'reject' : 'default') ); 
+             ?>
+              <?php if ($x >= 5) { ?>
                 <?php if ($x == 5) { ?>
                     <span id="rmthreadkai">
                       <a  style="cursor: pointer;">Read More</a> .. <br>
                     </span> 
-                <?php } ?>
                 <span id="threadmorekai" style="display: none">
-                  [ <?= date('d/M/Y h:i:s', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?><br>
-                </span>
-                <?php if ($x == 5) { ?>
+                <?php } ?>
+                  <em class="text-<?= $colortext ?>" >[ <?= date('d/M/Y h:i:s', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?></em><br>
+                <?php if ($x == ($y-1)) { ?>
+                    </span>
                      <span id="rlthreadkai" style="display: none"> ..
                     <a  style="cursor: pointer;">Read less</a><br>
                     </span>
                 <?php } ?>
               <?php }else{ ?>
-              [ <?= date('d/M/Y h:i:s ', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?><br>
+               <em class="text-<?= $colortext ?>" >[ <?= date('d/M/Y h:i:s ', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?> </em><br>
               <?php } ?>
             <?php $x++; } ?>
           </div>

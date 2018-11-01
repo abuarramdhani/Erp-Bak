@@ -34,6 +34,8 @@ class C_infokirim extends CI_Controller
 	}
 
 	public function index(){
+		redirect(site_url('WasteManagementSeksi/InfoKirimLimbah/Grafik'));
+		$kodesie = substr($this->session->kodesie, 0,7);
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Info Kirim Limbah';
@@ -47,6 +49,7 @@ class C_infokirim extends CI_Controller
 
 		$data['seksi'] = $this->M_info->getSeksi();
 		$data['limbah'] = $this->M_info->getLimbah();
+		$data['kodesie'] = $kodesie;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -55,6 +58,7 @@ class C_infokirim extends CI_Controller
 	}
 
 	public function Grafik(){
+		$kodesie = substr($this->session->kodesie, 0,7);
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Info Kirim Limbah';
@@ -68,19 +72,31 @@ class C_infokirim extends CI_Controller
 
 		$data['seksi'] = $this->M_info->getSeksi();
 		$data['limbah'] = $this->M_info->getLimbah();
-
-		$data['periode'] = $this->input->post('txtPeriodeInfo');
-		$data['kategori'] = $this->input->post('txtPilihKat');
-		$data['text'] = $this->input->post('txtHiddenValue');
-		$periode = $this->input->post('txtPeriodeInfo');
-		$periode = explode(" - ", $periode);
-		if (isset($_POST['txtValueSek'])) {
-			$data['value'] = $this->input->post('txtValueSek');
-			$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
+		$data['kodesie'] = $kodesie;
+		if (!empty($_POST)) {
+			$data['periode'] = $this->input->post('txtPeriodeInfo');
+			$data['kategori'] = $this->input->post('txtPilihKat');
+			$data['text'] = $this->input->post('txtHiddenValue');
+			$periode = $this->input->post('txtPeriodeInfo');
+			if (isset($_POST['txtValueSek'])) {
+				$data['value'] = $this->input->post('txtValueSek');
+				$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
+			}else{
+				$data['value'] = $this->input->post('txtValueLim');
+				$data['tabel'] = $this->M_info->chartSeksi($data['value'],$periode);
+			}
 		}else{
-			$data['value'] = $this->input->post('txtValueLim');
-			$data['tabel'] = $this->M_info->chartSeksi($data['value'],$periode);
+			$data['periode'] = date('F Y');
+			$data['kategori'] = "seksi";
+			foreach ($data['seksi'] as $key) {
+				if ($kodesie == $key['section_code']) {
+					$data['text'] = $key['section_name'];
+				}
+			}
+			$periode = date('F Y');
+			$data['tabel'] = $this->M_info->chartLimbah($kodesie,$periode);
 		}
+		
 
 		// print_r($_POST);
 		// echo $data['value'].$data['text'].$data['kategori'];
@@ -95,7 +111,6 @@ class C_infokirim extends CI_Controller
 	public function Chart(){
 
 		$periode = $this->input->post('txtPeriodeInfo');
-		$periode = explode(" - ", $periode);
 
 		if (isset($_POST['txtValueSek'])) {
 			$seksi = $this->input->post('txtValueSek');

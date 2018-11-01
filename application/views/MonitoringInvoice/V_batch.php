@@ -52,8 +52,8 @@
 											<td><?php echo $inv['invoice_number'] ?></td>
 											<td><?php echo date('d-M-Y',strtotime($inv['invoice_date'])) ?></td>
 											<td><?php echo $inv['tax_invoice_number'] ?></td>
-											<td class="inv_amount" ><?php echo $inv['invoice_amount'] ?></td>
-											<td class="po_amount"><?php echo $inv['po_amount'] ?></td>
+											<td class="inv_amount" ><?php echo round($inv['invoice_amount']) ?></td>
+											<td class="po_amount"><?php echo round($inv['po_amount']) ?></td>
 											<td><?php echo $inv['status'] ?></td>
 											<td><?php echo $inv['reason'] ?></td>
 										</tr>

@@ -89,6 +89,7 @@ class C_kasiepembelian extends CI_Controller{
 		}
 		$data['batch_number'] = $batchNumber;
 		$data['batch'] =$batch;
+		// echo "<pre>";print_r($data['batch']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -96,58 +97,62 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function addReason(){
+	public function addReasonAsli(){
 		$status = $this->input->post('radioForReason[]');
 		$reason = $this->input->post('inputReason[]');
 		$nomorbatch = $this->input->post('nomor_batch');
 		$jenisButton = $this->input->post('submitButton');
 		$saveDate = date('Y-m-d H:i:s', strtotime('+5 hours'));
 
-		if ($status != "") {
+		if ($status) {
 			if ($jenisButton == 1) {
-			$a = 0;
-			foreach ($status as $key => $value) {
-				foreach ($value as $key2 => $value2) {
-					 $id_invoice = $key2;
-					 $checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
-					 if ($checkExist[0]['purchasing_status'] == 2) {
-						 $status = $value2;						 
-						 $this->M_kasiepembelian->btnSubmitToPurchasing($id_invoice,$jenisButton,$saveDate);
-						 $this->M_kasiepembelian->submitToActionDetail($jenisButton,$saveDate,$status);
-					 }
-				}
-			$a++;
-			}
-			redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
-		}
-		else{
 				$a = 0;
 				foreach ($status as $key => $value) {
 					foreach ($value as $key2 => $value2) {
-						$id_invoice = $key2;
-
-					 	$checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
-					 	if ($checkExist[0]['purchasing_status'] == 0) {
-					 			$reason1 = $reason[$a][$key2]; 
-
-					 		if ($value2 == 3 && $reason1 == NULL) {
-					 			echo "<script>
-										window.alert('Action harus di pilih');
-										window.location.href = 'batchDetailPembelian/".$nomorbatch."';
-						      		</script>";
-					 		}
-					 		else{
-					 			$status = $value2;
-					 	 		$reason_inv = $reason[$a][$key2];
-					 	 		$this->M_kasiepembelian->inputActionAndReason($id_invoice,$status,$reason_inv);
-								$this->M_kasiepembelian->inputActionAndReason2($status,$saveDate);
-								redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
-					 		}
-					 	}
+						 $id_invoice = $key2;
+						 $checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
+						 print_r($checkExist);
+						 if ($checkExist[0]['purchasing_status'] == 0) {
+						 	echo "saving<br>";
+							 $stat = $value2;						 
+							$s1 = $this->M_kasiepembelian->btnSubmitToPurchasing($id_invoice,$jenisButton,$saveDate);
+							$s2 = $this->M_kasiepembelian->submitToActionDetail($jenisButton,$saveDate,$stat);
+							print_r($s1);
+							print_r($s2);
+						 }
 					}
-				$a++;
+					$a++;
 				}
-				}	
+				exit;
+				redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+			}else{
+						$a = 0;
+						foreach ($status as $key => $value) {
+							foreach ($value as $key2 => $value2) {
+								$id_invoice = $key2;
+
+							 	$checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
+							 	if ($checkExist[0]['purchasing_status'] == 0) {
+							 			$reason1 = $reason[$a][$key2]; 
+
+							 		if ($value2 == 3 && $reason1 == NULL) {
+							 			echo "<script>
+												window.alert('Action harus di pilih');
+												window.location.href = 'batchDetailPembelian/".$nomorbatch."';
+								      		</script>";
+							 		}
+							 		else{
+							 			$status = $value2;
+							 	 		$reason_inv = $reason[$a][$key2];
+							 	 		$this->M_kasiepembelian->inputActionAndReason($id_invoice,$status,$reason_inv);
+										$this->M_kasiepembelian->inputActionAndReason2($status,$saveDate);
+										redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+							 		}
+							 	}
+							}
+						$a++;
+					}
+				}
 		}else{
 			echo "<script>
 				window.alert('Action harus di pilih');
@@ -155,6 +160,46 @@ class C_kasiepembelian extends CI_Controller{
       		</script>";
 			redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
 		}
+
+	}
+
+	public function addReasonModifikasi(){
+		$status = $this->input->post('radioForReason');
+		$reason = $this->input->post('inputReason');
+
+		$nomorbatch = $this->input->post('nomor_batch');
+		$jenisButton = $this->input->post('submitButton');
+		$saveDate = date('Y-m-d H:i:s', strtotime('+5 hours'));
+
+		if ($status) {
+			if ($jenisButton == 2) {
+				foreach ($status as $s => $value) {
+
+					foreach ($value as $v => $value2) {
+						$invoice_id = $v;
+						$stat = $value2;
+						$rsn = $reason[$s][$v];
+
+						$update = $this->M_kasiepembelian->inputActionAndReason($invoice_id,$stat,$rsn);
+						$insert = $this->M_kasiepembelian->inputActionAndReason2($stat,$saveDate);
+					}
+				}
+			}else{
+				foreach ($status as $s => $value) {
+
+					foreach ($value as $v => $value2) {
+						$invoice_id = $v;
+						$stat = $value2;
+						
+						if ($stat == 2) {
+							$this->M_kasiepembelian->btnSubmitToPurchasing($invoice_id,$jenisButton,$saveDate);
+							$this->M_kasiepembelian->submitToActionDetail($jenisButton,$saveDate,$stat);
+						}
+					}
+				}
+			}
+		}redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+
 
 	}
 

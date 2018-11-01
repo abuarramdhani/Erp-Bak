@@ -82,10 +82,10 @@ class C_Submit extends CI_Controller
 		$this->form_validation->set_rules('txtRencanaRealisasi', 'Rencana Realisasi', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('template/V_header', $data);
-			$this->load->view('template/V_sidemenu', $data);
+			$this->load->view('V_Header', $data);
+			$this->load->view('V_Sidemenu', $data);
 			$this->load->view('SystemIntegration/MainMenu/Submit/V_Index',$data);
-			$this->load->view('template/V_footer');
+			$this->load->view('V_Footer');
 		} else {
 			if (strpos($this->input->post('txtKondisiAwal'), '<img src') !== false) {
     			$kondisi_awal = str_replace('<img src', '<img class="img img-responsive" src', $this->input->post('txtKondisiAwal'));
@@ -120,8 +120,13 @@ class C_Submit extends CI_Controller
 
 			$this->M_submit->setKaizen($data);
 			$kaizen_id = $this->db->insert_id();
-			$detail = "(Created) - ";
-			$detail .= $this->input->post('txtPencetus')." telah membuat kaizen  baru dengan judul ".$this->input->post('txtJudul');
+
+			//log thread
+			$getTemplateLog = $this->M_log->getTemplateLog(0);
+				$title = $getTemplateLog[0]['title'];
+				$body = $getTemplateLog[0]['body'];
+			$detail =  "($title) - ";
+			$detail .= sprintf($body, $this->input->post('txtPencetus') , $this->input->post('txtJudul'));
 
 			$datalog =array(
 				'kaizen_id' => $kaizen_id,
@@ -138,6 +143,7 @@ class C_Submit extends CI_Controller
 	public function view($id)
 		{
 			$this->checkSession();
+			$this->load->model('SystemIntegration/M_approvalkaizen');
 			$user_id = $this->session->userid;
 			$noinduk = $this->session->userdata['user'];
 			$data['Menu'] = 'View Kaizen';
@@ -148,10 +154,44 @@ class C_Submit extends CI_Controller
 			$data['user'] = $this->session->userdata('logged_in');
 			$data['kaizen'] = $this->M_submit->getKaizen($id, FALSE);
 			$data['thread'] = $this->M_log->ShowLog($id);
-			$atasan1 = $this->M_submit->getAtasan($noinduk, 2);
-			$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
-			$atasan3 = $this->M_submit->getAtasan($noinduk, 3);
+
+			
+			//get form input approval
+			$form_approval = array();
+			if ($data['kaizen'] && in_array($data['kaizen'][0]['status'], $needthisform = array(0,1))  ):
+			$getKodeJabatan = $this->M_submit->getKodeJabatan($noinduk);
+			if ($getKodeJabatan >= 13) {
+				$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
+				$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
+				$form_approval[0]['title'] = 'Atasan 1';
+				$form_approval[0]['level'] = '1';
+				$form_approval[0]['namefrm'] = 'SlcAtasanLangsung';
+				$form_approval[0]['option'] = $atasan1;
+
+				$form_approval[1]['title'] = 'Atasan 2';
+				$form_approval[1]['level'] = '2';
+				$form_approval[1]['namefrm'] = 'SlcAtasanAtasanLangsung';
+				$form_approval[1]['option'] = $atasan2;
+				
+			}else{
+				$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
+				$form_approval[0]['title'] = 'Atasan';
+				$form_approval[0]['level'] = '2';
+				$form_approval[0]['namefrm'] = 'SlcAtasanAtasanLangsung';
+				$form_approval[0]['option'] = $atasan2;
+
+			}
+			elseif($data['kaizen'][0]['status'] == 6):
+				$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
+				$form_approval[0]['title'] = 'Atasan';
+				$form_approval[0]['level'] = '6';
+				$form_approval[0]['namefrm'] = 'SlcAtasanLangsung';
+				$form_approval[0]['option'] = $atasan1;
+			endif;
+			$data['form_approval'] = $form_approval;
+			
 			$data['kaizen'][0]['employee_code'] = '';
+			$data['section_user'] = $this->M_approvalkaizen->getSectAll($data['kaizen'][0]['noinduk']);
 
 			if ($data['kaizen'][0]['komponen']) {
 				$arrayKomponen = explode(',', $data['kaizen'][0]['komponen']);
@@ -165,39 +205,46 @@ class C_Submit extends CI_Controller
 				$data['kaizen'][0]['komponen'] = $komponen;
 			}
 
-			$allAtasan = $this->M_submit->getAllUser();
-			foreach ($allAtasan as $key => $value) {
-				$arrayUser[] = $value['user_name'];
-			}
-
-			for ($i=1; $i < 4; $i++) { 
-				$name = 'atasan'.$i;
-				foreach ($$name as $key => $value) {
-					if (in_array($value['employee_code'], $arrayUser) === true) {
-						$data['atasan'.$i][] = $value;
-					}
-				}
-			}
 
 			$reason_app = array();
 			$reason_rev = array();
 			$reason_rej = array();
 
-			$a = 0; for ($i=1; $i < 3; $i++) { 
-				$getApprovalLvl = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'], $i);
-				$data['kaizen'][0]['status_app'][$a]['level'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
-				$data['kaizen'][0]['status_app'][$a]['staff'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
-				$data['kaizen'][0]['status_app'][$a]['staff_code'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_code'] :'' ;
-				$data['kaizen'][0]['status_app'][$a]['reason'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['reason'] :'';
+			// $a = 0; for ($i=1; $i < 3; $i++) { 
+			// 	$getApprovalLvl = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'], $i);
+			// 	$data['kaizen'][0]['status_app']['level'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
+			// 	$data['kaizen'][0]['status_app']['staff'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
+			// 	$data['kaizen'][0]['status_app']['staff_code'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_code'] :'' ;
+			// 	$data['kaizen'][0]['status_app']['reason'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['reason'] :'';
 
-					if ($getApprovalLvl) {
-						if ($getApprovalLvl[0]['status'] == 4 ) {
-							array_push($reason_rev, $data['kaizen'][0]['status_app'][$a]['reason'.$i]);
-						}elseif ($data['kaizen'][0]['status'] == 5) {
-							array_push($reason_rej, $data['kaizen'][0]['status_app'][$a]['reason'.$i]);
-						}elseif ($data['kaizen'][0]['status'] == 3) {
-							array_push($reason_app, $data['kaizen'][0]['status_app'][$a]['reason'.$i]);
-						}
+			// 		if ($getApprovalLvl) {
+			// 			if ($getApprovalLvl[0]['status'] == 4 ) {
+			// 				array_push($reason_rev, $data['kaizen'][0]['status_app']['reason'.$i]);
+			// 			}elseif ($data['kaizen'][0]['status'] == 5) {
+			// 				array_push($reason_rej, $data['kaizen'][0]['status_app']['reason'.$i]);
+			// 			}elseif ($data['kaizen'][0]['status'] == 3) {
+			// 				array_push($reason_app, $data['kaizen'][0]['status_app']['reason'.$i]);
+			// 			}
+			// 		}
+
+			// 	$a++;
+			// }
+
+			$getAllApprover = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
+
+			$a = 0;
+			foreach ($getAllApprover as $key => $value) {
+				$data['kaizen'][0]['status_app'][$value['level']]['level'] = $value['level'];
+				$data['kaizen'][0]['status_app'][$value['level']]['staff'] = $value['employee_name'];
+				$data['kaizen'][0]['status_app'][$value['level']]['staff_code'] = $value['employee_code'];
+				$data['kaizen'][0]['status_app'][$value['level']]['reason'] = $value['reason'];
+				
+					if ($value['status'] == 4 ) {
+						array_push($reason_rev, $value['reason']);
+					}elseif ($value['status'] == 5) {
+						array_push($reason_rej, $value['reason']);
+					}elseif ($value['status'] == 3) {
+						array_push($reason_app, $value['reason']);
 					}
 
 				$a++;
@@ -267,15 +314,19 @@ class C_Submit extends CI_Controller
 					'usulan_kaizen' => $this->input->post('txtUsulan'),
 					'pertimbangan' => $this->input->post('txtPertimbangan'),
 					'rencana_realisasi' => date("Y-m-d", strtotime($this->input->post('txtRencanaRealisasi'))),
-					'updated_date' => date('Y-m-d'),
-					'status_date' => date('Y-m-d'),
+					'updated_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'status_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
 					'status' => $status_new,
 					'komponen' => $komponen,
 				);
 
 				$this->M_submit->saveUpdate($id,$data);
-				$detail = "(Edited) - ";
-				$detail .= $this->input->post('txtPencetus')." telah mengedit kaizen yang berjudul ".$this->input->post('txtJudul');
+				//log thread
+				$getTemplateLog = $this->M_log->getTemplateLog(1);
+					$title = $getTemplateLog[0]['title'];
+					$body = $getTemplateLog[0]['body'];
+				$detail =  "($title) - ";
+				$detail .= sprintf($body, $this->input->post('txtPencetus') , $this->input->post('txtJudul'));
 
 				$datalog =array(
 					'kaizen_id' => $id,
@@ -284,8 +335,7 @@ class C_Submit extends CI_Controller
 					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
 					 );
 				$this->M_log->save_log($datalog);
-				$this->view($id);
-
+				redirect(base_url("SystemIntegration/KaizenGenerator/View/$id"));
 			}
 
 
@@ -384,6 +434,7 @@ class C_Submit extends CI_Controller
 
 	public function realisasi($id)
 	{
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Realisasi Kaizen';
@@ -416,25 +467,55 @@ class C_Submit extends CI_Controller
 			$this->load->view('SystemIntegration/MainMenu/Submit/V_Realisasi', $data);
 			$this->load->view('V_Footer');
 		}else{
-			$data = array(
-					'kondisi_akhir' => $this->input->post('txtKondisiAkhir'),
-					'tgl_realisasi' => date("Y-m-d", strtotime($this->input->post('txtTanggalRealisasi'))),
-					'updated_date' => date('Y-m-d'),
-					'status_date' => date('Y-m-d'),
-					'status' => 6
-				);
-			$this->M_submit->saveUpdate($id,$data);
-			$detail = "(Submit Realisasi) - ";
-			$detail .= $this->input->post('txtPencetus')." telah Submit Realisasi untuk kaizen ini";
-			$datalog =array(
-				'kaizen_id' => $id,
-				'status' => 6,
-				'detail' => $detail,
-				'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
-				 );
-			$this->M_log->save_log($datalog);
-			$this->view($id);
+			$kondisi_akhir = $this->input->post('txtKondisiAkhir');
+			$tgl_realisasi = $this->input->post('txtTanggalRealisasi');
+			$realisasi_kaizen = $this->input->post('chkSosialisasiRealisasi');
+			$standarisasi_kaizen = $this->input->post('chkStandarisasiRealisasi');
+			$standarisasi_kaizen_thread = $this->input->post('txtStandarisasi');
+			$sosialisasi_kaizen = $this->input->post('chkSosialisasiRealisasi');
+			$sosialisasi_pelaksanaan  = $this->input->post('txtTanggalPelaksanaan');
+			$sosialisasi_method  = $this->input->post('txtMetodeSosialisasi');
 
+
+			if ($realisasi_kaizen && $sosialisasi_kaizen) {
+				$data = array(
+						'kondisi_akhir' => $this->input->post('txtKondisiAkhir'),
+						'tgl_realisasi' => date("Y-m-d h:i:s", strtotime($this->input->post('txtTanggalRealisasi'))),
+						'updated_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+						'status_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+						'status' => 6,
+						'standarisasi_kaizen' => $standarisasi_kaizen_thread,
+						'sosialisasi_pelaksanaan' => date("Y-m-d", strtotime($sosialisasi_pelaksanaan)),
+						'sosialisasi_kaizen' => $sosialisasi_method
+					);
+
+					$this->M_submit->saveUpdate($id,$data);
+
+					//log thread
+					$getTemplateLog = $this->M_log->getTemplateLog(6);
+						$title = $getTemplateLog[0]['title'];
+						$body = $getTemplateLog[0]['body'];
+					$detail =  "($title) - ";
+					$detail .= sprintf($body, $this->input->post('txtPencetus'));
+
+					$datalog =array(
+						'kaizen_id' => $id,
+						'status' => 6,
+						'detail' => $detail,
+						'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+						 );
+					$this->M_log->save_log($datalog);
+					
+			}else{
+					$data = array(
+							'kondisi_akhir' => $this->input->post('txtKondisiAkhir'),
+							'tgl_realisasi' => date("Y-m-d h:i:s", strtotime($this->input->post('txtTanggalRealisasi'))),
+							'updated_date' =>date('Y-m-d h:i:s', strtotime('+5 hours')),
+						);
+					$this->M_submit->saveUpdate($id,$data);
+			}
+			
+			redirect(base_url("SystemIntegration/KaizenGenerator/View/$id"));
 		}
 
 	}

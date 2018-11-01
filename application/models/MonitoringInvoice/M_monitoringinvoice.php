@@ -8,117 +8,209 @@ class M_monitoringinvoice extends CI_Model {
 	}
 
 	public function getInvNumber($po_numberInv){
-		$oracle = $this->load->database('oracle',TRUE);
-		$query = $oracle->query("SELECT DISTINCT
-                pol.po_line_id line_id,
-                pol.line_num line_num,
-                rsh.receipt_num no_lppb, 
-                rsh.shipment_num shipment,
-                rt.transaction_type status, 
-                rsh.creation_date transaction,
-                DECODE (rt.source_document_code,
-                        'PO', pov.vendor_name,
-                        'RMA', NULL,
-                        org.NAME
-                       ) vendor_name,
-                poh.segment1 no_po,
-                pol.unit_price unit_price,
-                rt.currency_code currency,
-                plla.quantity_received received,
-                plla.quantity_rejected rejected, 
-                pol.item_description description,
-                msib.SEGMENT1 item_id,
-                plla.quantity_billed quantity_billed
-           FROM rcv_shipment_headers rsh,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                rcv_transactions rt,
-                hr_all_organization_units_tl org,
-                po_headers_all poh,
-                po_lines_all pol,
-                ap_terms apt,
-                po_line_locations_all plla,
-                mtl_system_items_b msib
-                -- po_distributions_all pd
-          WHERE rsh.shipment_header_id = rsl.shipment_header_id
-            AND rsh.shipment_header_id = rt.shipment_header_id
-            AND org.organization_id(+) = rsl.from_organization_id
-            AND apt.term_id = poh.terms_id
-            AND poh.po_header_id = pol.po_header_id
-            AND pov.vendor_id(+) = rt.vendor_id
-            AND poh.po_header_id(+) = rt.po_header_id
-            AND pol.po_line_id(+) = rt.po_line_id
-            AND org.LANGUAGE(+) = USERENV ('LANG')
-            AND pol.po_line_id = plla.po_line_id
-            -- AND plla.line_location_id = pd.line_location_id
-            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
-                          FROM RCV_TRANSACTIONS RTS
-                          WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
-                          and rts.po_line_id = pol.PO_LINE_ID
-                          AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE')
-                          )
-            -- AND plla.quantity_billed = 0
-            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
-            AND poh.segment1 = '$po_numberInv'
-        ORDER BY pol.line_num
-            ");
+		$oracle = $this->load->database("oracle",TRUE);
+		$query = $oracle->query("SELECT *
+                    FROM (SELECT distinct
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    rsl.item_description description,
+                                    pll.quantity_billed quantity_billed,
+                                    rsh.receipt_num no_lppb,
+                                    rt.currency_code currency, 
+                                    rsh.shipment_num shipment,
+                                    rt.transaction_type status, 
+                                    rt.quantity qty_receipt,
+                                    rsh.creation_date transaction,
+                                    msib.SEGMENT1 item_id
+                            from rcv_shipment_headers rsh
+                            ,rcv_shipment_lines rsl
+                            ,PO_VENDORS POV
+                            ,RCV_TRANSACTIONS RT
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
+                        where rsh.shipment_header_id = rsl.shipment_header_id 
+                        and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                        AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                        AND rsl.shipment_line_id = rt.shipment_line_id
+                        AND POV.VENDOR_ID = RT.VENDOR_ID
+                        AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                        AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                        AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                  FROM RCV_TRANSACTIONS RTS
+                                                  WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                  and rts.po_line_id = pol.PO_LINE_ID
+                                                  AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and poh.po_header_id(+) = pol.po_header_id
+                        AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        union all
+                        SELECT distinct 
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    NULL description,
+                                    pll.quantity_billed quantity_billed,
+                                    NULL no_lppb,
+                                    NULL currency, 
+                                    NULL shipment,
+                                    NULL status, 
+                                    NULL qty_receipt,
+                                    NULL transaction,
+                                    NULL item_id
+                        FROM PO_VENDORS POV
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and pol.po_line_id not in (
+                                        SELECT 
+                                                 pol.PO_LINE_ID
+                                                from rcv_shipment_headers rsh
+                                                ,rcv_shipment_lines rsl
+                                                ,PO_VENDORS POV
+                                                ,RCV_TRANSACTIONS RT
+                                                ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                                                ,PO_HEADERS_ALL POH
+                                                ,PO_LINES_ALL POL
+                                                ,PO_LINE_LOCATIONS_ALL PLL
+                                                ,MTL_SYSTEM_ITEMS_B msib
+                                            where rsh.shipment_header_id = rsl.shipment_header_id 
+                                            and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                                            AND rsl.shipment_line_id = rt.shipment_line_id
+                                            AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                                            AND POV.VENDOR_ID = RT.VENDOR_ID
+                                            AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                                            AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                                            AND org.LANGUAGE(+) = USERENV ('LANG')
+                                            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                                      FROM RCV_TRANSACTIONS RTS
+                                                                      WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                                      and rts.po_line_id = pol.PO_LINE_ID
+                                                                      AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and poh.po_header_id(+) = pol.po_header_id
+                                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                                        )
+                        )
+                    WHERE no_po = '$po_numberInv'
+                    order by line_num ");
 		return $query->result_array();
 	}
 
     public function statusPo($po_numberInv){
         $oracle = $this->load->database('oracle',TRUE);
-        $sql = $oracle->query("SELECT rt.transaction_type,  plla.quantity_billed
-                FROM rcv_shipment_headers rsh,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                rcv_transactions rt,
-                hr_all_organization_units_tl org,
-                po_headers_all poh,
-                po_lines_all pol,
-                ap_terms apt,
-                po_line_locations_all plla,
-                mtl_system_items_b msib
-                WHERE rsh.shipment_header_id = rsl.shipment_header_id
-                    AND rsh.shipment_header_id = rt.shipment_header_id
-                    AND org.organization_id(+) = rsl.from_organization_id
-                    AND apt.term_id = poh.terms_id
-                    AND poh.po_header_id = pol.po_header_id
-                    AND pov.vendor_id(+) = rt.vendor_id
-                    AND poh.po_header_id(+) = rt.po_header_id
-                    AND pol.po_line_id(+) = rt.po_line_id
-                    AND org.LANGUAGE(+) = USERENV ('LANG')
-                    AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
-                          FROM RCV_TRANSACTIONS RTS
-                          WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
-                          and rts.po_line_id = pol.PO_LINE_ID
-                          AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE')
-                          )
-                    and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
-                    AND pol.po_line_id = plla.po_line_id
-                    AND poh.segment1 = '$po_numberInv'
-                    ");
+        $sql = $oracle->query("SELECT *
+                    FROM (SELECT distinct
+                                    pll.quantity_billed quantity_billed, 
+                                    rt.transaction_type transaction_type,
+                                    poh.segment1 no_po
+                            from rcv_shipment_headers rsh
+                            ,rcv_shipment_lines rsl
+                            ,PO_VENDORS POV
+                            ,RCV_TRANSACTIONS RT
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
+                        where rsh.shipment_header_id = rsl.shipment_header_id 
+                        and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                        AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                        AND rsl.shipment_line_id = rt.shipment_line_id
+                        AND POV.VENDOR_ID = RT.VENDOR_ID
+                        AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                        AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                        AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                  FROM RCV_TRANSACTIONS RTS
+                                                  WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                  and rts.po_line_id = pol.PO_LINE_ID
+                                                  AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and poh.po_header_id(+) = pol.po_header_id
+                        AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        union all
+                        SELECT distinct 
+                                    pll.quantity_billed quantity_billed,
+                                    NULL transaction_type,
+                                    poh.segment1 no_po
+                        FROM PO_VENDORS POV
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and pol.po_line_id not in (
+                                        SELECT 
+                                                 pol.PO_LINE_ID
+                                                from rcv_shipment_headers rsh
+                                                ,rcv_shipment_lines rsl
+                                                ,PO_VENDORS POV
+                                                ,RCV_TRANSACTIONS RT
+                                                ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                                                ,PO_HEADERS_ALL POH
+                                                ,PO_LINES_ALL POL
+                                                ,PO_LINE_LOCATIONS_ALL PLL
+                                                ,MTL_SYSTEM_ITEMS_B msib
+                                            where rsh.shipment_header_id = rsl.shipment_header_id 
+                                            and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                                            AND rsl.shipment_line_id = rt.shipment_line_id
+                                            AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                                            AND POV.VENDOR_ID = RT.VENDOR_ID
+                                            AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                                            AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                                            AND org.LANGUAGE(+) = USERENV ('LANG')
+                                            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                                      FROM RCV_TRANSACTIONS RTS
+                                                                      WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                                      and rts.po_line_id = pol.PO_LINE_ID
+                                                                      AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and poh.po_header_id(+) = pol.po_header_id
+                                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                                        )
+                        )
+                    WHERE no_po = '$po_numberInv'
+                    order by line_num ");
         return $sql->result_array();
     }
 
     public function getInvoiceById($id)
     {
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT * FROM ap.ap_invoice_purchase_order aipo, ap.ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id and ami.invoice_id = $id ";
-        // print_r($query);exit();
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
 
      public function getInvoiceByPoId($id)
     {
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT * FROM ap.ap_invoice_purchase_order aipo, ap.ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id AND aipo.invoice_id = $id";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
 
     public function savePoNumber($po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$inv_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "INSERT INTO ap.ap_invoice_purchase_order
                     (po_number, lppb_number, shipment_number,
                     received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
@@ -128,10 +220,9 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "INSERT INTO ap.ap_monitoring_invoice
-                    (invoice_number, invoice_date, invoice_amount,
-                    tax_invoice_number, vendor_number, vendor_name)
+                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name)
                     VALUES 
                     ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name')";
         $oracle->query($query);
@@ -162,7 +253,7 @@ class M_monitoringinvoice extends CI_Model {
 
 
     public function showInvoice(){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
@@ -181,7 +272,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function getUnitPrice($invoice_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT unit_price , qty_invoice 
                   FROM ap.ap_invoice_purchase_order
                     WHERE invoice_id = $invoice_id";
@@ -190,7 +281,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function deleteInvoice($invoice_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query1 = "DELETE 
                     FROM ap.ap_invoice_purchase_order
                     WHERE invoice_id = '$invoice_id' ";
@@ -203,7 +294,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showEditList1($invoice_id){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "SELECT invoice_id invoice_id, 
                     po_number po_number,
                     lppb_number lppb_number,
@@ -222,7 +313,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showEditList2($invoice_id){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -235,7 +326,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function saveEditInvoice1($invoice_id,$po_number,$lppb_number,$shipment_number,$received_date,$item_description,$qty_receipt,$qty_reject,$currency,$unit_price,$qty_invoice){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "UPDATE ap.ap_invoice_purchase_order 
         SET po_number = '$po_number',
             lppb_number = '$lppb_number',
@@ -255,7 +346,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$vendor_number)
     {
-       $oracle = $this->load->database('erp',true);
+       $oracle = $this->load->database('erp_db',true);
        $query2 = "UPDATE ap.ap_monitoring_invoice 
                   SET invoice_number = '$invoice_number', 
                     invoice_date = '$invoice_date',
@@ -268,7 +359,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function saveBatchNumberById($id, $num, $date){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $query = "UPDATE ap.ap_monitoring_invoice
                     SET purchasing_batch_number = '$num',
                     last_status_purchasing_date = '$date'
@@ -278,7 +369,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function checkNumBatchExist()
     {
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT max(purchasing_batch_number) batch_num
                   FROM ap.ap_monitoring_invoice LIMIT 1";
         $query = $oracle->query($sql);
@@ -286,7 +377,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showListSubmitted(){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date
                 FROM ap.ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
@@ -297,14 +388,14 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function getJmlInvPerBatch($batch){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT purchasing_batch_number FROM ap.ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $query = $oracle->query($sql);
         return $query->num_rows();
     }
 
     public function showDetailPerBatch($batch){
-        $oracle = $this->load->database('erp',true);
+        $oracle = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -318,7 +409,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showInvoiceInDetail($invoice_id){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT invoice_id invoice_id,
                          vendor_name vendor_name,
                          invoice_number invoice_number, 
@@ -334,7 +425,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showInvoiceInDetail2($invoice_id){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT invoice_id invoice_id,
                         po_number po_number,
                         lppb_number lppb_number,
@@ -362,7 +453,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function checkInvoiceDate($uw){
-        $erp = $this->load->database('erp',true);
+        $erp = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_date
                 FROM ap.ap_monitoring_invoice
                 WHERE invoice_date = '$uw' limit 1";
@@ -371,7 +462,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function checkInvoiceDatecount($uw){
-        $erp = $this->load->database('erp',true);
+        $erp = $this->load->database('erp_db',true);
         $sql = "SELECT invoice_date
                 FROM ap.ap_monitoring_invoice
                 WHERE invoice_date = '$uw'";
@@ -382,120 +473,222 @@ class M_monitoringinvoice extends CI_Model {
      public function checkListSubmitted($po_number,$lppb_number)
     {
         $oracle = $this->load->database('oracle',TRUE);
-        $query = $oracle->query("SELECT DISTINCT
-                pol.po_line_id line_id,
-                pol.line_num line_num,
-                rsh.receipt_num no_lppb, 
-                rsh.shipment_num shipment,
-                rt.transaction_type status_lppb, 
-                rsh.creation_date transaction,
-                DECODE (rt.source_document_code,
-                        'PO', pov.vendor_name,
-                        'RMA', NULL,
-                        org.NAME
-                       ) vendor_name,
-                poh.segment1 no_po,
-                pol.unit_price unit_price,
-                rt.currency_code currency,
-                plla.quantity_received received,
-                plla.quantity_rejected rejected, 
-                pol.item_description description,
-                msib.SEGMENT1 item_code,
-                plla.quantity_billed quantity_billed
-           FROM rcv_shipment_headers rsh,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                rcv_transactions rt,
-                hr_all_organization_units_tl org,
-                po_headers_all poh,
-                po_lines_all pol,
-                ap_terms apt,
-                po_line_locations_all plla,
-                mtl_system_items_b msib
-          WHERE rsh.shipment_header_id = rsl.shipment_header_id
-            AND rsh.shipment_header_id = rt.shipment_header_id
-            AND org.organization_id(+) = rsl.from_organization_id
-            AND apt.term_id = poh.terms_id
-            AND poh.po_header_id = pol.po_header_id
-            AND pov.vendor_id(+) = rt.vendor_id
-            AND poh.po_header_id(+) = rt.po_header_id
-            AND pol.po_line_id(+) = rt.po_line_id
-            AND org.LANGUAGE(+) = USERENV ('LANG')
-            AND pol.po_line_id = plla.po_line_id
-            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
-                          FROM RCV_TRANSACTIONS RTS
-                          WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
-                          and rts.po_line_id = pol.PO_LINE_ID
-                          AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE')
-                          )
-            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
-            AND poh.segment1 = $po_number
-            and rsh.receipt_num = $lppb_number");
+        $query = $oracle->query("SELECT *
+                    FROM (SELECT distinct
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    rsl.item_description description,
+                                    pll.quantity_billed quantity_billed,
+                                    rsh.receipt_num no_lppb,
+                                    rt.currency_code currency, 
+                                    rsh.shipment_num shipment,
+                                    rt.transaction_type status, 
+                                    rt.quantity qty_receipt,
+                                    rsh.creation_date transaction,
+                                    msib.SEGMENT1 item_id
+                            from rcv_shipment_headers rsh
+                            ,rcv_shipment_lines rsl
+                            ,PO_VENDORS POV
+                            ,RCV_TRANSACTIONS RT
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
+                        where rsh.shipment_header_id = rsl.shipment_header_id 
+                        and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                        AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                        AND rsl.shipment_line_id = rt.shipment_line_id
+                        AND POV.VENDOR_ID = RT.VENDOR_ID
+                        AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                        AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                        AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                  FROM RCV_TRANSACTIONS RTS
+                                                  WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                  and rts.po_line_id = pol.PO_LINE_ID
+                                                  AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and poh.po_header_id(+) = pol.po_header_id
+                        AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        union all
+                        SELECT distinct 
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    NULL description,
+                                    pll.quantity_billed quantity_billed,
+                                    NULL no_lppb,
+                                    NULL currency, 
+                                    NULL shipment,
+                                    NULL status, 
+                                    NULL qty_receipt,
+                                    NULL transaction,
+                                    NULL item_id
+                        FROM PO_VENDORS POV
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and pol.po_line_id not in (
+                                        SELECT 
+                                                 pol.PO_LINE_ID
+                                                from rcv_shipment_headers rsh
+                                                ,rcv_shipment_lines rsl
+                                                ,PO_VENDORS POV
+                                                ,RCV_TRANSACTIONS RT
+                                                ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                                                ,PO_HEADERS_ALL POH
+                                                ,PO_LINES_ALL POL
+                                                ,PO_LINE_LOCATIONS_ALL PLL
+                                                ,MTL_SYSTEM_ITEMS_B msib
+                                            where rsh.shipment_header_id = rsl.shipment_header_id 
+                                            and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                                            AND rsl.shipment_line_id = rt.shipment_line_id
+                                            AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                                            AND POV.VENDOR_ID = RT.VENDOR_ID
+                                            AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                                            AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                                            AND org.LANGUAGE(+) = USERENV ('LANG')
+                                            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                                      FROM RCV_TRANSACTIONS RTS
+                                                                      WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                                      and rts.po_line_id = pol.PO_LINE_ID
+                                                                      AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and poh.po_header_id(+) = pol.po_header_id
+                                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                                        )
+                        )
+            WHERE no_po = $po_number
+            and no_lppb = $lppb_number");
         return $query->result_array();
     }
 
      public function checkStatus($po_number,$lppb,$item_id,$qty_reject,$qty_receipt,$unit_price)
     {
         $oracle = $this->load->database('oracle',TRUE);
-        $query = "SELECT DISTINCT
-                pol.po_line_id line_id,
-                pol.line_num line_num,
-                rsh.receipt_num no_lppb, 
-                rsh.shipment_num shipment,
-                rt.transaction_type status_lppb, 
-                rsh.creation_date transaction,
-                DECODE (rt.source_document_code,
-                        'PO', pov.vendor_name,
-                        'RMA', NULL,
-                        org.NAME
-                       ) vendor_name,
-                poh.segment1 no_po,
-                pol.unit_price unit_price,
-                rt.currency_code currency,
-                plla.quantity_received received,
-                plla.quantity_rejected rejected, 
-                pol.item_description description,
-                msib.SEGMENT1 item_code,
-                plla.quantity_billed quantity_billed
-           FROM rcv_shipment_headers rsh,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                rcv_transactions rt,
-                hr_all_organization_units_tl org,
-                po_headers_all poh,
-                po_lines_all pol,
-                ap_terms apt,
-                po_line_locations_all plla,
-                mtl_system_items_b msib
-          WHERE rsh.shipment_header_id = rsl.shipment_header_id
-            AND rsh.shipment_header_id = rt.shipment_header_id
-            AND org.organization_id(+) = rsl.from_organization_id
-            AND apt.term_id = poh.terms_id
-            AND poh.po_header_id = pol.po_header_id
-            AND pov.vendor_id(+) = rt.vendor_id
-            AND poh.po_header_id(+) = rt.po_header_id
-            AND pol.po_line_id(+) = rt.po_line_id
-            AND org.LANGUAGE(+) = USERENV ('LANG')
-            AND pol.po_line_id = plla.po_line_id
-            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
-                          FROM RCV_TRANSACTIONS RTS
-                          WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
-                          and rts.po_line_id = pol.PO_LINE_ID
-                          AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE')
-                          )
-            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
-            AND poh.segment1 = $po_number
-            and rsh.receipt_num = $lppb
-            and msib.SEGMENT1 = '$item_id'
-            and plla.quantity_rejected = '$qty_reject'
-            and  plla.quantity_received = '$qty_receipt'
-            and pol.unit_price = '$unit_price'";
+        $query = "SELECT *
+                    FROM (SELECT distinct
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    rsl.item_description description,
+                                    pll.quantity_billed quantity_billed,
+                                    rsh.receipt_num no_lppb,
+                                    rt.currency_code currency, 
+                                    rsh.shipment_num shipment,
+                                    rt.transaction_type status, 
+                                    rt.quantity qty_receipt,
+                                    rsh.creation_date transaction,
+                                    msib.SEGMENT1 item_id
+                            from rcv_shipment_headers rsh
+                            ,rcv_shipment_lines rsl
+                            ,PO_VENDORS POV
+                            ,RCV_TRANSACTIONS RT
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
+                        where rsh.shipment_header_id = rsl.shipment_header_id 
+                        and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                        AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                        AND rsl.shipment_line_id = rt.shipment_line_id
+                        AND POV.VENDOR_ID = RT.VENDOR_ID
+                        AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                        AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                        AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                  FROM RCV_TRANSACTIONS RTS
+                                                  WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                  and rts.po_line_id = pol.PO_LINE_ID
+                                                  AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and poh.po_header_id(+) = pol.po_header_id
+                        AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        union all
+                        SELECT distinct 
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    NULL description,
+                                    pll.quantity_billed quantity_billed,
+                                    NULL no_lppb,
+                                    NULL currency, 
+                                    NULL shipment,
+                                    NULL status, 
+                                    NULL qty_receipt,
+                                    NULL transaction,
+                                    NULL item_id
+                        FROM PO_VENDORS POV
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and pol.po_line_id not in (
+                                        SELECT 
+                                                 pol.PO_LINE_ID
+                                                from rcv_shipment_headers rsh
+                                                ,rcv_shipment_lines rsl
+                                                ,PO_VENDORS POV
+                                                ,RCV_TRANSACTIONS RT
+                                                ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                                                ,PO_HEADERS_ALL POH
+                                                ,PO_LINES_ALL POL
+                                                ,PO_LINE_LOCATIONS_ALL PLL
+                                                ,MTL_SYSTEM_ITEMS_B msib
+                                            where rsh.shipment_header_id = rsl.shipment_header_id 
+                                            and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                                            AND rsl.shipment_line_id = rt.shipment_line_id
+                                            AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                                            AND POV.VENDOR_ID = RT.VENDOR_ID
+                                            AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                                            AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                                            AND org.LANGUAGE(+) = USERENV ('LANG')
+                                            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                                      FROM RCV_TRANSACTIONS RTS
+                                                                      WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                                      and rts.po_line_id = pol.PO_LINE_ID
+                                                                      AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and poh.po_header_id(+) = pol.po_header_id
+                                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                                        )
+                        )
+            WHERE no_po = $po_number
+            and no_lppb = $lppb
+            and item_id = '$item_id'
+            and rejected = '$qty_reject'
+            and  qty_receipt = '$qty_receipt'
+            and unit_price = '$unit_price'";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
 
     public function exportExcelMonitoringInvoice($dateFrom,$dateTo){
-        $oracle = $this->load->database('erp', true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "SELECT ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
@@ -520,37 +713,233 @@ class M_monitoringinvoice extends CI_Model {
 
     public function podetails($po_number,$lppb_number){
        $oracle = $this->load->database('oracle',TRUE);
-        $query = $oracle->query("SELECT DISTINCT
-                poh.segment1||'-'||pol.line_num||'-'||rsh.receipt_num||'-'||rt.transaction_type as po_detail
-           FROM rcv_shipment_headers rsh,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                rcv_transactions rt,
-                hr_all_organization_units_tl org,
-                po_headers_all poh,
-                po_lines_all pol,
-                ap_terms apt,
-                po_line_locations_all plla,
-                mtl_system_items_b msib
-          WHERE rsh.shipment_header_id = rsl.shipment_header_id
-            AND rsh.shipment_header_id = rt.shipment_header_id
-            AND org.organization_id(+) = rsl.from_organization_id
-            AND apt.term_id = poh.terms_id
-            AND poh.po_header_id = pol.po_header_id
-            AND pov.vendor_id(+) = rt.vendor_id
-            AND poh.po_header_id(+) = rt.po_header_id
-            AND pol.po_line_id(+) = rt.po_line_id
-            AND org.LANGUAGE(+) = USERENV ('LANG')
-            AND pol.po_line_id = plla.po_line_id
-            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
-                          FROM RCV_TRANSACTIONS RTS
-                          WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
-                          and rts.po_line_id = pol.PO_LINE_ID
-                          AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE')
-                          )
-            and msib.INVENTORY_ITEM_ID = pol.ITEM_ID
-            AND poh.segment1 = $po_number
-            and rsh.receipt_num = $lppb_number");
-        return $query->result_array();
+        $query = "SELECT no_po||'-'||line_num||'-'||no_lppb||'-'||status as po_detail
+                    FROM (SELECT distinct
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    rsl.item_description description,
+                                    pll.quantity_billed quantity_billed,
+                                    rsh.receipt_num no_lppb,
+                                    rt.currency_code currency, 
+                                    rsh.shipment_num shipment,
+                                    rt.transaction_type status, 
+                                    rt.quantity qty_receipt,
+                                    rsh.creation_date transaction,
+                                    msib.SEGMENT1 item_id
+                            from rcv_shipment_headers rsh
+                            ,rcv_shipment_lines rsl
+                            ,PO_VENDORS POV
+                            ,RCV_TRANSACTIONS RT
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
+                        where rsh.shipment_header_id = rsl.shipment_header_id 
+                        and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                        AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                        AND rsl.shipment_line_id = rt.shipment_line_id
+                        AND POV.VENDOR_ID = RT.VENDOR_ID
+                        AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                        AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                        AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                  FROM RCV_TRANSACTIONS RTS
+                                                  WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                  and rts.po_line_id = pol.PO_LINE_ID
+                                                  AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and poh.po_header_id(+) = pol.po_header_id
+                        AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        union all
+                        SELECT distinct 
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    NULL description,
+                                    pll.quantity_billed quantity_billed,
+                                    NULL no_lppb,
+                                    NULL currency, 
+                                    NULL shipment,
+                                    NULL status, 
+                                    NULL qty_receipt,
+                                    NULL transaction,
+                                    NULL item_id
+                        FROM PO_VENDORS POV
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and pol.po_line_id not in (
+                                        SELECT 
+                                                 pol.PO_LINE_ID
+                                                from rcv_shipment_headers rsh
+                                                ,rcv_shipment_lines rsl
+                                                ,PO_VENDORS POV
+                                                ,RCV_TRANSACTIONS RT
+                                                ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                                                ,PO_HEADERS_ALL POH
+                                                ,PO_LINES_ALL POL
+                                                ,PO_LINE_LOCATIONS_ALL PLL
+                                                ,MTL_SYSTEM_ITEMS_B msib
+                                            where rsh.shipment_header_id = rsl.shipment_header_id 
+                                            and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                                            AND rsl.shipment_line_id = rt.shipment_line_id
+                                            AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                                            AND POV.VENDOR_ID = RT.VENDOR_ID
+                                            AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                                            AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                                            AND org.LANGUAGE(+) = USERENV ('LANG')
+                                            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                                      FROM RCV_TRANSACTIONS RTS
+                                                                      WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                                      and rts.po_line_id = pol.PO_LINE_ID
+                                                                      AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and poh.po_header_id(+) = pol.po_header_id
+                                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                                        )
+                        )
+                    WHERE no_po = $po_number
+                    and no_lppb = $lppb_number";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function savePoNumberNew($po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$id){
+        $oracle = $this->load->database('erp',true);
+        $query = "INSERT INTO ap.ap_invoice_purchase_order
+                    (po_number, lppb_number, shipment_number,
+                    received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
+                    VALUES 
+                    ('$po_number','$lppb_number', '$shipment_number', '$received_date', '$item_description', '$item_code','$qty_receipt', '$qty_reject', '$currency', '$unit_price', '$qty_invoice',$id)";
+        $oracle->query($query);
+    }
+
+    public function saveInvoiveAmount($invoice_amount,$invoice_id)
+    {
+       $oracle = $this->load->database('erp',true);
+       $query2 = "UPDATE ap.ap_monitoring_invoice 
+                  SET invoice_amount = '$invoice_amount'
+                 WHERE invoice_id = '$invoice_id' ";
+        $runQuery2 = $oracle->query($query2);
+    }
+
+    public function checkPPN($po_numberInv){
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "SELECT ppn
+                    FROM (SELECT distinct
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    rsl.item_description description,
+                                    pll.quantity_billed quantity_billed,
+                                    rsh.receipt_num no_lppb,
+                                    rt.currency_code currency, 
+                                    rsh.shipment_num shipment,
+                                    rt.transaction_type status, 
+                                    rt.quantity qty_receipt,
+                                    rsh.creation_date transaction,
+                                    msib.SEGMENT1 item_id,
+                                    poh.attribute2 ppn
+                            from rcv_shipment_headers rsh
+                            ,rcv_shipment_lines rsl
+                            ,PO_VENDORS POV
+                            ,RCV_TRANSACTIONS RT
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                            ,MTL_SYSTEM_ITEMS_B msib
+                        where rsh.shipment_header_id = rsl.shipment_header_id 
+                        and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                        AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                        AND rsl.shipment_line_id = rt.shipment_line_id
+                        AND POV.VENDOR_ID = RT.VENDOR_ID
+                        AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                        AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                        AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                  FROM RCV_TRANSACTIONS RTS
+                                                  WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                  and rts.po_line_id = pol.PO_LINE_ID
+                                                  AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                        and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                        and poh.po_header_id(+) = pol.po_header_id
+                        AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        union all
+                        SELECT distinct 
+                                    pol.po_line_id line_id,
+                                    pol.line_num line_num,
+                                    poh.SEGMENT1 no_po,
+                                    pov.VENDOR_NAME vendor_name,
+                                    pol.unit_price unit_price,
+                                    pll.quantity_rejected rejected, 
+                                    NULL description,
+                                    pll.quantity_billed quantity_billed,
+                                    NULL no_lppb,
+                                    NULL currency, 
+                                    NULL shipment,
+                                    NULL status, 
+                                    NULL qty_receipt,
+                                    NULL transaction,
+                                    NULL item_id,
+                                    poh.attribute2 ppn
+                        FROM PO_VENDORS POV
+                            ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                            ,PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                            and pol.po_line_id not in (
+                                        SELECT 
+                                                 pol.PO_LINE_ID
+                                                from rcv_shipment_headers rsh
+                                                ,rcv_shipment_lines rsl
+                                                ,PO_VENDORS POV
+                                                ,RCV_TRANSACTIONS RT
+                                                ,HR_ALL_ORGANIZATION_UNITS_TL ORG
+                                                ,PO_HEADERS_ALL POH
+                                                ,PO_LINES_ALL POL
+                                                ,PO_LINE_LOCATIONS_ALL PLL
+                                                ,MTL_SYSTEM_ITEMS_B msib
+                                            where rsh.shipment_header_id = rsl.shipment_header_id 
+                                            and RSH.SHIPMENT_HEADER_ID = RT.SHIPMENT_HEADER_ID
+                                            AND rsl.shipment_line_id = rt.shipment_line_id
+                                            AND ORG.ORGANIZATION_ID (+) = RSL.FROM_ORGANIZATION_ID
+                                            AND POV.VENDOR_ID = RT.VENDOR_ID
+                                            AND POH.PO_HEADER_ID = RT.PO_HEADER_ID
+                                            AND POL.PO_LINE_ID = RT.PO_LINE_ID
+                                            AND org.LANGUAGE(+) = USERENV ('LANG')
+                                            AND RT.TRANSACTION_ID = (SELECT MAX(RTS.TRANSACTION_ID)
+                                                                      FROM RCV_TRANSACTIONS RTS
+                                                                      WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
+                                                                      and rts.po_line_id = pol.PO_LINE_ID
+                                                                      AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
+                                            and msib.INVENTORY_ITEM_ID = rsl.ITEM_ID
+                                            and poh.po_header_id(+) = pol.po_header_id
+                                            AND POV.VENDOR_ID (+) = poh.VENDOR_ID
+                                            AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                                        )
+                        )
+                    WHERE no_po = $po_numberInv";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
     }
 }

@@ -20,3 +20,10 @@ application/logs/*
 /assets/limbah/
 /server-status/
 /ekatalog/
+/assets/upload_kaizen/
+/assets/database/
+/assets/upload-bca/
+/assets/upload_cr/
+/assets_backup/
+/info.php
+/trial/

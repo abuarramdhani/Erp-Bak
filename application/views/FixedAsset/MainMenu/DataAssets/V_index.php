@@ -46,7 +46,7 @@
 					
 					<div class="box-body">
 						
-						<div class="table-responsive" style="overflow:hidden;">
+						<div class="table-responsive" style="overflow:auto;">
 							
 							<div class="table-responsive">
 								<?php if($this->session->userdata['user'] != 'B0269' && $this->session->userdata['user'] != 'P0255'): ?>
@@ -54,6 +54,13 @@
 								<button data-toggle="collapse" data-target="#demo" class="btn btn-warning">Dangerous Function</button>
 								</div>
 								<?php endif; ?>
+
+
+
+								<div style="margin-bottom:10px">
+								<a href="http://produksi.quick.com/adexe-print-qr-assets/" class="btn btn-success">Generate QR Code</a>
+								</div>
+							</div>
 							<form method="post" id="frmUploadAsset" action="<?php echo site_url('FixedAsset/DataAssets/ExportImport') ?>"  enctype="multipart/form-data"> </form>
 							<form method="post" id="frmDeleteAsset" action="<?php echo site_url('FixedAsset/DataAssets/DeleteShown') ?>" > </form>
 							<form method="post" id="frmUpdateAsset" action="<?php echo site_url('FixedAsset/DataAssets/UpdateShown') ?>" > </form>

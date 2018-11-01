@@ -33,6 +33,20 @@
   .has-error .select2-selection {
     border-color: rgb(185, 74, 72) !important;
 }
+
+  .text-approve {
+    color: #77ac4f;
+  }
+
+  .text-revisi {
+    color: #c98b2d;
+  }
+
+  .text-reject {
+    color: #dd5a4e;
+  }
+
+  
 </style>
 
 <section class="content">
@@ -41,6 +55,7 @@
       <h3 class="box-title"><i class="fa fa-dashboard"></i> <b>Lihat Kaizen</b></h3>
       <div class="pull-right">
         <?php $arrKaiDone = array('3','6','7','9') ?>
+        <?php $arrAppDone = array('3','4','5','6','7','9') ?>
         <?php $arrKaiReal = array('6','7','9') ?>
         <!-- BUTTON FOR USER-->
         <?php if($kaizen[0]['user_id'] == $this->session->userid): ?>
@@ -92,13 +107,13 @@
             <b style="color: <?= $colorSign; ?>"><?= $statusku == 3 ? 'Approve' : ($statusku == '4' ? 'Revisi' : 'Reject')?></b>
           </span>
         <?php } ?>
-          <button id="btnAprroveOkSI" <?= $kaizen[0]['status'] == 3 ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-success" 
+          <button id="btnAprroveOkSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-success" 
             data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="3" data-level=<?= $levelku; ?>> Approve
           </button>
-          <button id="btnAprroveRevSI" <?= $kaizen[0]['status'] == 3 ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-warning" 
+          <button id="btnAprroveRevSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-warning text-warning" 
             data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="4" data-level=<?= $levelku; ?>> Revisi
           </button>
-          <button id="btnAprroveNotSI" <?= $kaizen[0]['status'] == 3 ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-danger" 
+          <button id="btnAprroveNotSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-danger" 
             data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="5" data-level=<?= $levelku; ?>> Reject
           </button>
         <?php  endif; ?>
@@ -167,7 +182,7 @@
                   $body_notif = '<b> Alasan: </b> </br>
                                "'.$kaizen[0]['reason_rej'].'" </br>
                                <hr class="custGaris" style=" border: 0.5px solid #e62424;">
-                               Silahkan membuat kaizen yang baru.  <a href="'.base_url('SystemIntegration/KaizenGenerator/Submit/create').'">
+                               Silahkan membuat kaizen yang baru.  <a href="'.base_url('SystemIntegration/KaizenGenerator/Submit/index').'">
                                 <b><u>Disini</u></b></a>';
                 }else{
                   $body_notif = '<b> Alasan: </b> </br>
@@ -230,13 +245,13 @@
             <tr>
               <td style="border-top: 1px solid #000">Seksi</td>
               <td style="border-top: 1px solid #000">:</td>
-              <td style="border-top: 1px solid #000; border-right: 1px solid #000">ICT</td>
+              <td style="border-top: 1px solid #000; border-right: 1px solid #000"><?= $section_user[0]['section_name'] ?></td>
               <td style="border: none" colspan="3"></td>
             <tr>
             <tr>
               <td style="border-top: 1px solid #000">Unit</td>
               <td style="border-top: 1px solid #000">:</td>
-              <td style="border-top: 1px solid #000; border-right: 1px solid #000">ICT & Akuntansi</td>
+              <td style="border-top: 1px solid #000; border-right: 1px solid #000"><?= $section_user[0]['unit_name'] ?></td>
               <td style="border-top: 1px solid #000">tembusan</td>
               <td style="border-top: 1px solid #000">:</td>
               <td style="border-top: 1px solid #000"></td>
@@ -244,7 +259,7 @@
             <tr>
               <td style="border-top: 1px solid #000">Departemen</td>
               <td style="border-top: 1px solid #000">:</td>
-              <td style="border-top: 1px solid #000; border-right: 1px solid #000">Keuangan</td>
+              <td style="border-top: 1px solid #000; border-right: 1px solid #000"><?= $section_user[0]['department_name'] ?></td>
               <td style="border-top: 1px solid #000" colspan="3">1. Kepala Unit</td>
             <tr>
             <tr>
@@ -312,7 +327,11 @@
            Log Thread 
           </label>
           <div class="col-lg-12" style="overflow: auto; height: 120px;">
-            <?php $y = count($thread);$x = 0; foreach ($thread as $key => $value) { ?>
+            <?php $y = count($thread);$x = 0; foreach ($thread as $key => $value) {
+                $colortext = ($value['status'] == '3') ? 'approve' 
+                                : ($value['status'] == '4' ? 'revisi' 
+                                  : ($value['status'] == '5' ? 'reject' : 'default') ); 
+             ?>
               <?php if ($x >= 5) { ?>
                 <?php if ($x == 5) { ?>
                     <span id="rmthreadkai">
@@ -320,7 +339,7 @@
                     </span> 
                 <span id="threadmorekai" style="display: none">
                 <?php } ?>
-                  [ <?= date('d/M/Y h:i:s', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?><br>
+                  <em class="text-<?= $colortext ?>" >[ <?= date('d/M/Y h:i:s', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?></em><br>
                 <?php if ($x == ($y-1)) { ?>
                     </span>
                      <span id="rlthreadkai" style="display: none"> ..
@@ -328,7 +347,7 @@
                     </span>
                 <?php } ?>
               <?php }else{ ?>
-              [ <?= date('d/M/Y h:i:s ', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?><br>
+               <em class="text-<?= $colortext ?>" >[ <?= date('d/M/Y h:i:s ', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?> </em><br>
               <?php } ?>
             <?php $x++; } ?>
           </div>
@@ -341,6 +360,7 @@
   </div>
 </section>
 
+<?php if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
 <div class="modal fade"  id="req<?= $kaizen[0]['kaizen_id'] ?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                           <div class="modal-dialog" style="min-width:800px;">
                             <div class="modal-content">
@@ -353,48 +373,38 @@
                               <div class="modal-body" >
                                 <div class="row">
 
-                                 <div class="col-lg-12" style="margin: 5px; text-align: left;">
+
+                                <?php 
+                                $arrayTerisi = array();
+                                foreach ($form_approval as $kuy => $frmapp) { ?>
+                                  <div class="col-lg-12" style="margin: 5px; text-align: left;">
                                     <div class="form-group">
-                                        <label for="norm" class="control-label col-lg-4">Atasan Langsung</label>
+                                        <label for="norm" class="control-label col-lg-4"><?= $frmapp['title'] ?></label>
                                         <div class="col-lg-8 sel1">
                                           <input type="hidden" name="kaizen_id" value="<?= $kaizen[0]['kaizen_id']; ?>">
-                                          <select data-placeholder="Pilih Atasan Langsung" class="form-control select4 siSlcTgr" style="width: 100%" name="SlcAtasanLangsung">
+                                          <input type="hidden" name="approval_level[]" value="<?= $frmapp['level']?>">
+                                          <select data-placeholder="Pilih Atasan.. " class="form-control select4 siSlcTgr" style="width: 100%" name="<?= $frmapp['namefrm'] ?>">
                                               <option></option>
-                                            <?php foreach ($atasan1 as $key => $value) { ?>
-                                              <option <?= $kaizen[0]['status_app'][0]['level1'] != 0 ? (($kaizen[0]['status_app'][0]['staff_code1'] == $value['employee_code'] && $kaizen[0]['status'] != 6 ) ? 'selected' : '' ) : ''; ?>
+                                            <?php foreach ($frmapp['option'] as $key => $value) { ?>
+                                              <option <?= ($frmapp['level'] != 6 && $kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? (($kaizen[0]['status_app'][$frmapp['level']]['staff_code'] == $value['employee_code'] ) ? 'selected' : 'ti' ) : 'tit'; ?>
                                                value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
                                             <?php } ?>
                                           </select>
                                         </div>
                                     </div>
                                   </div>
-                                <?php if ($kaizen[0]['status'] != 6) { ?>
-                                  <div class="col-lg-12" style="margin: 5px; text-align: left;">
-                                    <div class="form-group">
-                                        <label for="norm" class="control-label col-lg-4">Atasan Dari Atasan Langsung</label>
-                                        <div class="col-lg-8 sel2">
-                                          <select data-placeholder="Pilih Atasan dari Atasan Langsung" class="form-control select4 siSlcTgr" style="width: 100%" name="SlcAtasanAtasanLangsung">
-                                              <option></option>
-                                               <?php foreach ($atasan2 as $key => $value) { ?>
-                                              <option <?= $kaizen[0]['status_app'][1]['level2'] != 0 ? (($kaizen[0]['status_app'][1]['staff_code2'] == $value['employee_code'] ) ? 'selected' : '' ) : ''; ?> 
-                                              value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
-                                            <?php } ?>
-                                          </select>
-                                        </div>
-                                    </div>
-                                  </div>
-                                <?php } ?>
+                                 <?php  
+                                  $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
+                                  array_push($arrayTerisi, $terisi); 
+                               } ?>
+
                                 </div>
                               </div>
                               <div class="modal-footer">
                                 <?php 
-                                  $filled = 0;
-                                  if ($kaizen[0]['status'] != 6) {
-                                    if(
-                                      ($kaizen[0]['status_app'][0]['level1'] != 0) &&
-                                      ($kaizen[0]['status_app'][1]['level2'] != 0)){
-                                        $filled = 1;
-                                    }
+                                  $filled = 1;
+                                  if (in_array('0', $arrayTerisi)) {
+                                    $filled = 0;
                                   }
                                 ?>
                                 <button type="submit" class="btn btn-success " <?= $filled == 0 ? 'disabled' :'' ?> id="subApprSI" >Submit</button>
@@ -404,7 +414,7 @@
                             </div>
                           </div>
                         </div>
-
+<?php } ?>
 
 
 <div class="modal fade" role="dialog" id="modalReason">
@@ -432,10 +442,10 @@
             <h6>Jika Kaizen ini memerlukan Persetujuan dari <?= $next_level ?> maka silahkan pilih dibawah ini</h6>
             <h6>Jika tidak , silahkan langsung Submit</h6>
             <input type="hidden" name="next" id="next" value="0">
-            <label class="checkbox-inline"><input type="checkbox" value="1" name="checkNextApprover" id="checkNextApprover"><b>Set Approver Selanjutnya</b></label>
+            <label class="checkbox-inline" style="padding: 5px"><input type="checkbox" value="1" name="checkNextApprover" id="checkNextApprover"><b> Set Approver Selanjutnya</b></label>
             <br>
             <input type="hidden" name="levelnext" value="<?= $levelku == 2 ? '3' : ($levelku == 3 ? '4' : '') ?>">
-            <select class="form-control select2si" style="width: 100%" data-placeholder="Select Employee" name="slcApprover" disabled>
+            <select class="form-control select2si" style="width: 100%" data-placeholder="Select Employee" id="slcApprover" name="slcApprover" disabled>
               <option></option>
               <?php 
               $name_array = $next_level = $levelku == 2 ? 'option_atasan' : 'option_atasan2';
