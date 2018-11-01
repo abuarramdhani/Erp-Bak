@@ -1,7 +1,6 @@
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 class M_approvalkaizen extends CI_Model
 {
-	
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
@@ -35,16 +34,22 @@ class M_approvalkaizen extends CI_Model
 		if ($status === FALSE) {
 			$sql = "SELECT *, approval.status status_approve
 					FROM si.si_kaizen kaizen 
-					INNER JOIN si.si_approval approval ON kaizen.kaizen_id = approval.kaizen_id
-					WHERE approval.approver = '$employee_code' 
-					AND approval.ready = '1'
+					INNER JOIN (SELECT approval1.* 
+									FROM si.si_approval approval1
+									INNER JOIN (SELECT max(level) levelist ,kaizen_id from si.si_approval where approver = '$employee_code' group by kaizen_id) approval2 
+											ON approval1.level = approval2.levelist and approval1.kaizen_id = approval2.kaizen_id
+									WHERE approval1.approver = '$employee_code') approval ON approval.kaizen_id = kaizen.kaizen_id
+					WHERE approval.ready = '1'
 					AND kaizen.status <> 8";
 		}else{
 			$sql = "SELECT *, approval.status status_approve
 					FROM si.si_kaizen kaizen 
-					INNER JOIN si.si_approval approval ON kaizen.kaizen_id = approval.kaizen_id
-					WHERE approval.approver = '$employee_code' 
-					AND approval.ready = '1'
+					INNER JOIN (SELECT approval1.* 
+									FROM si.si_approval approval1
+									INNER JOIN (SELECT max(level) levelist ,kaizen_id from si.si_approval where approver = '$employee_code' group by kaizen_id) approval2 
+											ON approval1.level = approval2.levelist and approval1.kaizen_id = approval2.kaizen_id
+									WHERE approval1.approver = '$employee_code') approval ON approval.kaizen_id = kaizen.kaizen_id
+					WHERE approval.ready = '1'
 					AND approval.status = $status
 					AND kaizen.status <> 8";
 		}

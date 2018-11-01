@@ -79,6 +79,7 @@ class M_submit extends CI_Model
 	}
 
 	function getAtasan($noind , $jabatan){
+		$data = array();
 		$personalia = $this->load->database('personalia',true);
 		$sql1 		= "SELECT kd_jabatan FROM hrd_khs.tpribadi WHERE noind = '$noind'";
 		$query1 	= $personalia->query($sql1);
@@ -98,17 +99,39 @@ class M_submit extends CI_Model
 			$where = "c.kd_jabatan = '01'";
 		}
 		
-		$sql = "SELECT 
+		$sql2 = "SELECT 
 					a.noind employee_code
 					,a.nama employee_name,
 					c.* 
+					,b.bidang
 				FROM hrd_khs.tpribadi a 
 					INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
 					INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
-				WHERE $where 
+				WHERE $where
+					and substring( a.kodesie, 1, 4 )=(
+										SELECT substring( kodesie, 1, 4 )
+										FROM hrd_khs.tpribadi d
+										WHERE d.noind = '$noind'
+											 and d.keluar = '0')
+					and a.keluar ='0'
+
 				ORDER BY a.noind,a.nama";
-		$query = $personalia->query($sql);
-		return $query->result_array();
+		$query2 = $personalia->query($sql2);
+		$result2 = $query2->result_array();
+
+		$allAtasan = $this->getAllUser();
+			foreach ($allAtasan as $key => $value) {
+				$arrayUser[] = $value['user_name'];
+			}
+
+			foreach ($result2 as $key => $value) {
+				if (in_array($value['employee_code'], $arrayUser) === true) {
+					$data[] = $value;
+				}
+			}
+
+		return $data;
+
 	}
 
 	function SaveApprover($data){
@@ -150,10 +173,10 @@ class M_submit extends CI_Model
 		$query = $this->db->query($sql);
 	}
 
-	function ResetApprover($kaizen_id,$idexist){
+	function ResetApprover($kaizen_id,$idexist,$pertama){
 		$sql = "UPDATE si.si_approval SET status = '2' , reason = NULL WHERE approver in ('".$idexist."') AND kaizen_id = $kaizen_id";
 		$query = $this->db->query($sql);
-		$sql2 = "UPDATE si.si_approval SET ready = '0' WHERE level in ('2','3') AND kaizen_id = $kaizen_id";
+		$sql2 = "UPDATE si.si_approval SET ready = '0' WHERE level <> $pertama AND kaizen_id = $kaizen_id";
 		$query2 = $this->db->query($sql2);
 	}
 
@@ -200,6 +223,7 @@ class M_submit extends CI_Model
 	function getMasterItem($term=FALSE,$id=FALSE)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle',TRUE);
 		if($id===FALSE){	
 			$sql = "SELECT DISTINCT(SEGMENT1) segment1, DESCRIPTION item_name ,INVENTORY_ITEM_ID
 					FROM mtl_system_items_b 
@@ -213,6 +237,18 @@ class M_submit extends CI_Model
 		}
 		$query = $oracle->query($sql);
 		return $query->result_array();
+	}
+
+
+	function getKodeJabatan($noinduk)
+	{
+		$personalia = $this->load->database('personalia',true);
+		$sql1 		= "SELECT kd_jabatan FROM hrd_khs.tpribadi WHERE noind = '$noinduk'";
+		$query1 	= $personalia->query($sql1);
+		$result1 	= $query1->result_array();
+		$jabatan_user = $result1[0]['kd_jabatan'];
+		$jabatan2 = str_pad($jabatan_user,2,"0",STR_PAD_LEFT);
+		return $jabatan2;
 	}
 
 }
