@@ -209,6 +209,7 @@ class C_Submit extends CI_Controller
 			$reason_app = array();
 			$reason_rev = array();
 			$reason_rej = array();
+			$data['kaizen'][0]['status_app'] = '';
 
 			// $a = 0; for ($i=1; $i < 3; $i++) { 
 			// 	$getApprovalLvl = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'], $i);
