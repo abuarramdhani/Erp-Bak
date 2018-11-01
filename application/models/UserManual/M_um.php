@@ -11,7 +11,7 @@ class M_um extends CI_Model
 		parent::__construct();
         $this->load->database();
         $this->personalia   =   $this->load->database('personalia', TRUE) ;
-        $this->erp          =   $this->load->database('erp', TRUE);
+        $this->erp          =   $this->load->database('erp_db', TRUE);
 	}
 
 	public function tabel()
