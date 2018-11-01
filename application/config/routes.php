@@ -1533,3 +1533,9 @@ $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)'] = 'MonitoringInvoic
 $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
 $route['AccountPayables/MonitoringInvoice/Finish'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishInvoice';
 $route['AccountPayables/MonitoringInvoice/Finish/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
+//--------------------------------------------------- User Manual --------------------------------------------------//
+$route['usermanual'] = 'UserManual/C_Index';
+$route['usermanual/upload'] = 'UserManual/C_Index/upload';
+$route['usermanual/upload/(:any)'] = 'UserManual/C_Index/$1';
+$route['usermanual/upload/(:any)/(:any)'] = 'UserManual/C_Index/$1/$2';
+$route['usermanual/upload/(:any)/(:any)/(:any)'] = 'UserManual/C_Index/$1/$2/$3';
