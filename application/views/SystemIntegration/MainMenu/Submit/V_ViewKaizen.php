@@ -386,7 +386,7 @@
                                           <select data-placeholder="Pilih Atasan.. " class="form-control select4 siSlcTgr" style="width: 100%" name="<?= $frmapp['namefrm'] ?>">
                                               <option></option>
                                             <?php foreach ($frmapp['option'] as $key => $value) { ?>
-                                              <option <?= ($frmapp['level'] != 6 && $kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? (($kaizen[0]['status_app'][$frmapp['level']]['staff_code'] == $value['employee_code'] ) ? 'selected' : 'ti' ) : 'tit'; ?>
+                                              <option <?= ($frmapp['level'] != 6 && $kaizen[0]['status_app']) ? (($kaizen[0]['status_app'][$frmapp['level']]['staff_code'] == $value['employee_code'] ) ? 'selected' : '' ) : ''; ?>
                                                value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
                                             <?php } ?>
                                           </select>
@@ -394,18 +394,25 @@
                                     </div>
                                   </div>
                                  <?php  
-                                  $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
-                                  array_push($arrayTerisi, $terisi); 
-                               } ?>
+                                 if ($kaizen[0]['status_app']) {
+                                      $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
+                                      array_push($arrayTerisi, $terisi); 
+                                     } 
+                                 }
+                               ?>
 
                                 </div>
                               </div>
                               <div class="modal-footer">
                                 <?php 
-                                  $filled = 1;
+                                  $filled = 0;
+                                  if ($arrayTerisi):
                                   if (in_array('0', $arrayTerisi)) {
                                     $filled = 0;
+                                  }else{
+                                    $filled = 1;
                                   }
+                                  endif;
                                 ?>
                                 <button type="submit" class="btn btn-success " <?= $filled == 0 ? 'disabled' :'' ?> id="subApprSI" >Submit</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
