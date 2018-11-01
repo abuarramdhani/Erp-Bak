@@ -818,7 +818,9 @@
 		                        $('#phoneModal').modal('show');
 		                    },
 		                    error:function(xhr, ajaxOptions, thrownError){
-        alert(xhr.status); //===Show Error Message==== 
+		                    	$.toaster(xhr+','+ajaxOptions+','+thrownError);
+        						// alert(xhr.status); 
+        					//===Show Error Message==== 
     }
 			             });
 			             // End AJAX function
