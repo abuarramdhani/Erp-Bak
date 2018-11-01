@@ -563,6 +563,10 @@ $route['CateringManagement/PengajuanLibur/Read/(:any)'] = 'CateringManagement/Pe
 $route['CateringManagement/PengajuanLibur/Edit/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Edit/$1/$2';
 $route['CateringManagement/PengajuanLibur/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Delete/$1/$2';
 
+$route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering';
+$route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 
@@ -1940,8 +1944,6 @@ $route['HitungHlcm/Memo'] 	= 'UpahHlCm/MenuCetak/C_Memo';
 $route['HitungHlcm/Memo/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Memo/$1';
 $route['HitungHlcm/Memo/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Memo/$1/$2';
 
-
-
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
 $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder';
@@ -2021,3 +2023,9 @@ $route['EmployeeRecruitment/Setting/delete']		= 'EmployeeRecruitment/C_Setting/d
 //delete
 $route['EmployeeRecruitment/Delete/index']		= 'EmployeeRecruitment/C_Delete/index';
 $route['EmployeeRecruitment/Delete/delete']		= 'EmployeeRecruitment/C_Delete/delete';
+//--------------------------------------------------- User Manual --------------------------------------------------//
+$route['usermanual'] = 'UserManual/C_Index';
+$route['usermanual/upload'] = 'UserManual/C_Index/upload';
+$route['usermanual/upload/(:any)'] = 'UserManual/C_Index/$1';
+$route['usermanual/upload/(:any)/(:any)'] = 'UserManual/C_Index/$1/$2';
+$route['usermanual/upload/(:any)/(:any)/(:any)'] = 'UserManual/C_Index/$1/$2/$3';
