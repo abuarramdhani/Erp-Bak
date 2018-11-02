@@ -259,7 +259,7 @@ class C_ApprovalKaizen extends CI_Controller
 			}
 
 			if ($status == 3) {
-				if ($level == 1 && (array_key_exists(3, $NoindApprover) === true)) {
+				if ($level == 1 && (array_key_exists(2, $NoindApprover) === true)) {
 					$this->EmailAlert($NoindApprover[2], $kaizen_id);
 					$this->sendPidgin($NoindApprover[2], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(2, $kaizen_id, 1);
