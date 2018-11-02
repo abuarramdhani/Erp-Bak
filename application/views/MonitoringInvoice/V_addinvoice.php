@@ -62,7 +62,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control invoice_amount" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amount" >
+											<input class="form-control" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amount" >
 										</td>
 									</tr>
 									<tr>
@@ -96,7 +96,7 @@
 														</div>
 													</td>
 													<td>
-														<div><button class="btn btn-md btn-success pull-left" type="button" id="btnSearchPoNumber">Search</button>
+														<div><button class="btn btn-md btn-success pull-left btn_search" type="button" id="btnSearchPoNumber">Search</button>
 														</div>
 													</td>
 												</tr>
@@ -122,13 +122,14 @@
 										<th class="text-center">Status LPPB</th>
 										<th class="text-center">Shipment Number</th>
 										<th class="text-center">Receive Date</th>
-										<th class="text-center">Item Code</th>
 										<th class="text-center">Item Desc</th>
+										<th class="text-center">Item Code</th>
 										<th class="text-center">Qty Amount</th>
 										<th class="text-center">Qty Billed</th>
 										<th class="text-center">Qty Reject</th>
 										<th class="text-center">Currency</th>
 										<th class="text-center">Unit Price</th>
+										<th class="text-center">Qty Po</th>
 										<th class="text-center">Qty Invoice</th>
 										<th class="text-center">Action</th>
 									</tr>
@@ -139,7 +140,7 @@
 							</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span id="AmountOtomatis"></span>
+							<label>Po Amount : </label><span id="AmountOtomatis"></span><span id="currency"></span>
 						</div>
 						<div class="col-md-2 pull-right">
 							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>">

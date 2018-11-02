@@ -42,15 +42,14 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th class="text-center">Po Detail</th>
+											<th width="20%" class="text-center">Po Detail</th>
 											<th width="5%"class="text-center">PPN</th>
 											<th width="5%"class="text-center">Status</th>
 											<th class="text-center">Reason</th>
 										</tr>
 									</thead>
 									<tbody>
-									<?php $no=1; foreach($invoice as $inv){ ?>
-									
+									<?php $no=1; if ($invoice) { foreach($invoice as $inv){ ?>
 									<tr id="<?php echo $no; ?>">
 										<td><?php echo $no ?></td>
 										<td>
@@ -68,15 +67,39 @@
 										</td>
 										<td><?php echo  $inv['invoice_number'] ?></td>
 										<td> <?php echo date('d-M-Y',strtotime($inv['invoice_date'])) ?></td>
-										<td><?php echo  $inv['tax_invoice_number']?></td>
+										<td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['invoice_id']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['tax_invoice_number']?>" > 
+											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
+											</button></td>
 										<td id="inv_amount" class="inv_amount"><?php echo round($inv['invoice_amount']) ?></td>
 										<td id="po_amount" class="po_amount"><?php echo round($inv['po_amount'])?></td>
-										<td><?php echo  $inv['status_lppb']?></td>
+										<td><?php if($keputusan[$inv['invoice_id']]){foreach ($keputusan[$inv['invoice_id']] as $k) { ?>
+											<?php echo  $k ?>
+										<?php }} ?></td>
 										<td><?php echo  $inv['ppn']?></td>
-										<td><?php echo  $inv['status']?></td>
+										<?php if ( $inv['status'] == 0) {
+											$stat = 'New/Draft';
+										}elseif ($inv['status'] == 1) {
+											$stat = 'Submited by Kasie Purc';
+										}elseif ($inv['status'] == 2) {
+											$stat = 'Approved By Kasie Purc';
+										}elseif ($inv['status'] == 3) {
+											$stat = 'Rejected by Kasie Purc';
+										} 
+
+										if ($inv['purchasing_batch_number'] != 0) { 
+										 	$batchnumber = 'SUBMITTED';
+										}else{
+										 	$batchnumber = 'NO SUMBIT';
+										} ?>
+										<td><?php echo $stat.'<br>'?>
+										<span class="btn-sm  <?php if ($inv['purchasing_batch_number'] != 0): ?>
+											btn-success
+										<?php else: ?>
+											btn-warning
+										<?php endif ?>"  ><?php echo $batchnumber?></span></td>
 										<td><?php echo  $inv['reason']?></td>
 									</tr>
-									<?php $no++; }?>
+									<?php $no++; }}?>
 								</tbody>
 								</table>
 							</div>

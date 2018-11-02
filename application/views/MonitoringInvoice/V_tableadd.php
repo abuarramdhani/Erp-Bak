@@ -14,6 +14,7 @@
 		<input type="hidden" value="<?= $po_num['REJECTED'] ?>" name="qty_reject">
 		<input type="hidden" value="<?= $po_num['CURRENCY'] ?>" name="currency">
 		<input type="hidden" value="<?= $po_num['UNIT_PRICE'] ?>" name="unit_price">
+		<input type="hidden" value="<?= $po_num['QUANTITY'] ?>" name="quantity">
 		<?php }} ?>
 
 		<table id="poLinesTable" class="table table-striped table-bordered table-hover text-center dataTable">
@@ -32,8 +33,9 @@
 					<th class="text-center">Qty Amount</th>
 					<th class="text-center">Qty Billed</th>
 					<th class="text-center">Qty Reject</th>
-					<th class="text-center">Currency</th>
+					<th class="text-center" style="display: none">Currency</th>
 					<th class="text-center" style="display: none">Unit Price</th>
+					<th class="text-center">Qty PO</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,8 +56,9 @@
 					<td class="text-center"> <?php echo $po_num['QTY_RECEIPT']?> </td>
 					<td class="text-center"> <?php echo $po_num['QUANTITY_BILLED']?> </td>
 					<td class="text-center"> <?php echo $po_num['REJECTED']?> </td>
-					<td class="text-center"> <?php echo $po_num['CURRENCY']?> </td>
+					<td class="text-center" style="display: none"> <?php echo $po_num['CURRENCY']?> </td>
 					<td class="text-center" id="unit_price" style="display: none"> <?php echo $po_num['UNIT_PRICE']?> </td> 
+					<td class="text-center" id="quantity"> <?php echo $po_num['QUANTITY']?> </td> 
 				</tr>
 				<?php $no++;} ?>
 			</tbody>
@@ -63,18 +66,3 @@
 		<div class="col-md-2 pull-left">
 			<button type="button" id="btnAddPoNumber" class="btn btn-success" style="margin-top: 10px">Add</button>
 		</div>
-
-
-		<?php if ($hasil != '' || $hasil2 != '') { 
-			$message = '';
-			if ($hasil != '') {
-				$message .= " STATUS DATE NYA $hasil  ";
-			}
-			if ($hasil2 != '') {
-				$message .= " QUANTITY_BILLED NYA $hasil2  ";
-			}
-			?>
-		<input type="hidden" id="messageGbs" name="" value="<?= $message?>">
-		<?php }else{ ?>
-		<input type="hidden" id="messageGbs" name="" value="">
-		<?php } ?>

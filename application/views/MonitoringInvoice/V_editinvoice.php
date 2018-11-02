@@ -29,7 +29,7 @@
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['invoice_number']?>" required="required">
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['invoice_number']?>">
 										</td>
 									</tr>
 									<tr>
@@ -37,7 +37,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control idDateInvoice" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['invoice_date'])) ?>" required="required" name="invoice_date">
+						                    <input type='text' class="form-control idDateInvoice" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['invoice_date'])) ?>" name="invoice_date">
 										</td>
 									</tr>
 									<tr>
@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['invoice_amount'])?>" id="invoice_amount" required="required">
+											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['invoice_amount'])?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -53,7 +53,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['tax_invoice_number']?>" required="required">
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['tax_invoice_number']?>">
 										</td>
 									</tr>
 									<tr>
@@ -86,6 +86,7 @@
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
+														<th class="text-center">Line Number</th>
 														<th class="text-center">PO Number</th>
 														<th class="text-center">LPPB Number</th>
 														<th class="text-center">Shipment Number</th>
@@ -104,6 +105,9 @@
 														<td>
 															<?php echo $no ?>
 														</td> 
+														<td class="text-center">
+															<input class="form-control" type="text" value="<?php echo $po_num['line_number']?>"> 
+														</td>
 														<td class="text-center">
 															<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['po_number']?>"> 
 														</td>

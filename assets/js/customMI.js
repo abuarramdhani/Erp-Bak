@@ -48,6 +48,17 @@ $(document).ready(function(){
 	
 	$('#invoice_amount').change(function(){$('#invoice_amount').moneyFormat();});
 
+	var $po_num_btn = $('#slcPoNumberMonitoring');
+	$('.btn_search').on('mousedown', function () {
+	    $(this).data('inputFocused', $po_num_btn.is(":focus"));
+	}).click(function () {
+	    if ($(this).data('inputFocused')) {
+	        $po_num_btn.blur();
+	    } else {
+	        $po_num_btn.focus();
+	    }
+	});
+
 	$('#btnSearchPoNumber').click(function(){
 		$('#tablePoLines').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /><p style='color:#575555;'>Searching Data</p></center><br />");
      	
@@ -62,11 +73,6 @@ $(document).ready(function(){
 				
 				$('#tablePoLines').html(response);
 				$('#poLinesTable').DataTable();
-
-				var message = $('#messageGbs').val();
-				if (message != '') {
-					alert(message);
-				}
 
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
@@ -104,6 +110,8 @@ $(document).ready(function(){
 						        alert('Hapus dibatalkan');
 						    }
 						});
+						var inputCurr = $('input[name="currency[]"]').val();
+						$('#currency').append(inputCurr);
 				});
 			}
 		});
@@ -130,7 +138,7 @@ $(document).on('input click', '.qty_invoice, .del_row', function(){
 		var rowtotal = qty*price;
 		total+=Number(rowtotal);
 	});
-	$('#AmountOtomatis').html(Math.round(total));
+	$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
 
 	if (total == invAmount) {
 			$('#invoice_amount, #AmountOtomatis').css("background-color","white");
@@ -206,4 +214,28 @@ $('.RejectByKasiePurc').click(function(){
 	alert('NOT OK = ALASAN HARUS DI ISI');
 });
 
+$("input[name='tax_input']").attr({ maxLength : 19 }).keyup(function() {
+    	$(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{2})(\d)+$/, "$1.$2-$3.$4"));
+	});
+
+$('.saveTaxInvoice').click(function(){
+	var tax_invoice_number = $(this).siblings('.tax_id').val();
+	var id = $(this).siblings('.text_invoice_id').val();
+
+	$.ajax({
+		type: 'POST',
+		url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/tax_invoice_number/",
+		data: {
+			tax_input : tax_invoice_number,
+			id : id
+		},
+		success: function(response){
+			alert('Tax Invoice Number telah di tambahkan');
+		}
+	});
+});
+
+$('#btnToFinance').click(function(){
+	alert('Invoice has submitted to finance');
+});
 

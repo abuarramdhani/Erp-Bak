@@ -65,6 +65,74 @@
 		                     			</td>
 									</tr>
 								</table>
+								<div>
+							<table class="table table-bordered table-hover table-striped text-center">
+								<thead style="width: 100%">
+									<tr class="bg-primary">
+										<th class="text-center" width= "1%">No</th>
+										<th class="text-center" width= "1%">Line Number</th>
+										<th class="text-center" width= "20%">Vendor Name</th>
+										<th class="text-center" width= "10%">PO Number</th>
+										<th class="text-center" width= "10%">LPPB Number</th>
+										<th class="text-center" width= "15%">Shipment Number</th>
+										<th class="text-center" width= "10%">Receive Date</th>
+										<th class="text-center" width= "15%">Item Code</th>
+										<th class="text-center" width= "40%">Item Desc</th>
+										<th class="text-center" width= "5%">Qty Amount</th>
+										<th class="text-center" width= "3%">Qty Reject</th>
+										<th class="text-center" width= "10%">Currency</th>
+										<th class="text-center" width= "10%">Unit Price</th>
+										<th class="text-center" width= "5%">Qty Invoice</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php $no=1; $po_amount=0; foreach($invoice as $po_num) { ?>
+										<tr id="<?php echo $no; ?>">
+											<td>
+												<?php echo $no ?>
+											</td> 
+											<td class="text-center">
+												<input class="form-control" type="text" value="<?php echo $po_num['line_number']?>"  readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['vendor_name']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['po_number']?>" readonly> 
+											</td>
+											<td class="text-center"> 
+												<input class="form-control" type="text" name="lppb_number[]" value="<?php echo $po_num['lppb_number']?>" readonly> 
+											</td>
+											<td class="text-center"> 
+												<input class="form-control" type="text" name="shipment_number[]" value="<?php echo $po_num['shipment_number']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="received_date[]" value="<?php echo $po_num['received_date']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['item_code']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['item_description']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="qty_receipt[]" value="<?php echo $po_num['qty_receipt']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="qty_reject[]" value="<?php echo $po_num['qty_reject']?>" readonly> 
+											</td>
+											<td class="text-center">
+												<input class="form-control" type="text" name="currency[]" value="<?php echo $po_num['currency']?>" readonly> 
+											</td>
+											<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price[]" value="<?php echo $po_num['unit_price']?>" readonly> 
+											 </td> 
+											<td class="text-center" id="qty_invoice"> <input class="form-control qty_invoice" type="text" name="qty_invoice[]" value="<?php echo $po_num['qty_invoice']?>" readonly> 
+											</td> 
+										</tr>
+									<?php $no++; } ?>
+								</tbody>
+							</table>
+						</div>
 								<div class="box box-primary box-solid">
 									<div class="box-body">
 										<div class="box-header with-border">
@@ -106,7 +174,7 @@
 								<thead>
 									<tr class="bg-primary">
 										<th class="text-center">No</th>
-										<th class="text-center">Line Number</th>
+										<th class="text-center" style="width: 2%">Line Number</th>
 										<th class="text-center">Vendor Name</th>
 										<th class="text-center">PO Number</th>
 										<th class="text-center">LPPB Number</th>
@@ -125,7 +193,7 @@
 									</tr>
 								</thead>
 								<tbody id="tbodyPoDetailAll">
-
+									
 								</tbody>
 							</table>
 						</div>
