@@ -179,6 +179,7 @@ class C_MyKaizen extends CI_Controller
 					$jml_app = count($approval_level);
 					if ( ($jml_app == 1) || ($jml_app == 2 && $value == 1) ) {
 						$this->EmailAlert($approvernya,$kaizen_id);
+						$this->sendPidgin($approvernya,$kaizen_id);
 						$this->M_mykaizen->updateReady($value, $kaizen_id, 1);
 						$approverPertama = $value;
 					}
@@ -220,7 +221,6 @@ class C_MyKaizen extends CI_Controller
 				$this->M_submit->ResetApprover($kaizen_id,$approverId,$approverPertama);
 			}
 		}elseif ($typeApproval ==2){
-			echo "<br> masuk ke tipe approval 2";
 			$data = array('approver' => $level1 ,
 						  'level' => 6,
 						  'kaizen_id' => $kaizen_id);
@@ -229,6 +229,7 @@ class C_MyKaizen extends CI_Controller
 				$this->M_submit->SaveApprover($data);
 			}
 				$this->EmailAlert($level1,$kaizen_id);
+				$this->sendPidgin($approvernya,$kaizen_id);
 				$updateReady = $this->M_mykaizen->updateReady(6, $kaizen_id, 1);
 			$data2 = array('approval_realisasi' => '1');
 			$this->M_submit->saveUpdate($kaizen_id,$data2);
@@ -309,8 +310,29 @@ class C_MyKaizen extends CI_Controller
 				echo "Mailer Error: " . $mail->ErrorInfo;
 				exit();
 			} else {
-				echo "Message sent!";
+				// echo "Message sent!";
 			}
+		}
+
+	private function sendPidgin($user, $kaizen_id)
+		{
+			//email
+			$this->load->library('sendmessage');
+			$getEmail = $this->M_submit->getEmail($user);
+			$userAccount = $getEmail[0]['pidgin_account'];
+			// $userAccount = 'kuswandaru@chat.quick.com';
+			//get Rincian Kaizen
+			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
+
+			//get template
+			$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+			$getEmailTemplate = $this->M_submit->getEmailTemplate(2);
+			$subject = $getEmailTemplate[0]['subject'];
+			$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
+			$body = str_replace('<br />', "\n", $body);
+
+			$pidgin = new sendmessage;
+			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
 
 	public function report(){

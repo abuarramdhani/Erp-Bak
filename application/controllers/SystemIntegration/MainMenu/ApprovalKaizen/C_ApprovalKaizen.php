@@ -239,6 +239,7 @@ class C_ApprovalKaizen extends CI_Controller
 				$getname = $this->M_approvalkaizen->getName($approver);
 				$name= $getname[0]['employee_name'];
 				$this->EmailAlert($approver,$kaizen_id);
+				$this->section_user($approver,$kaizen_id);
 
 				//log thread
 				$username = $this->session->userdata('employee');
@@ -258,14 +259,17 @@ class C_ApprovalKaizen extends CI_Controller
 			}
 
 			if ($status == 3) {
-				if ($level == 1) {
+				if ($level == 1 && (array_key_exists(3, $NoindApprover) === true)) {
 					$this->EmailAlert($NoindApprover[2], $kaizen_id);
+					$this->sendPidgin($NoindApprover[2], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(2, $kaizen_id, 1);
-				}elseif ($level == 2) {
+				}elseif ($level == 2 && (array_key_exists(3, $NoindApprover) === true) ) {
 					$this->EmailAlert($NoindApprover[3], $kaizen_id);
+					$this->sendPidgin($NoindApprover[3], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(3, $kaizen_id, 1);
-				}elseif ($level == 3) {
-					$this->EmailAlert($NoindApprover[3], $kaizen_id);
+				}elseif ($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
+					$this->EmailAlert($NoindApprover[4], $kaizen_id);
+					$this->sendPidgin($NoindApprover[4], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
 				}
 			}
@@ -312,7 +316,7 @@ class C_ApprovalKaizen extends CI_Controller
 
 		}
 
-		public function EmailAlert($user, $kaizen_id)
+		private function EmailAlert($user, $kaizen_id)
 		{
 			//email
 			$getEmail = $this->M_submit->getEmail($user);
@@ -363,5 +367,27 @@ class C_ApprovalKaizen extends CI_Controller
 			} else {
 				echo "Message sent!";
 			}
+		}
+
+
+		private function sendPidgin($user, $kaizen_id)
+		{
+			//email
+			$this->load->library('sendmessage');
+			$getEmail = $this->M_submit->getEmail($user);
+			$userAccount = $getEmail[0]['pidgin_account'];
+			// $userAccount = 'kuswandaru@chat.quick.com';
+			//get Rincian Kaizen
+			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
+
+			//get template
+			$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+			$getEmailTemplate = $this->M_submit->getEmailTemplate(2);
+			$subject = $getEmailTemplate[0]['subject'];
+			$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
+			$body = str_replace('<br />', "\n", $body);
+
+			$pidgin = new sendmessage;
+			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
 }
