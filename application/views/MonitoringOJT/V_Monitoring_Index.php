@@ -613,8 +613,8 @@
 									<div class="col-lg-12">
 										<label  for="" class="col-lg-2 control-label">
 											Pilih kegiatan yang diikuti<br/>
-											<input onclick="slcAllERC(this)"  type="button" class="btn btn-warning" id="MonitoringOJT-chkOrientasi-checkAll" value="Pilih Semua" /><br/>
-											<input onclick="delAllERC(this)" type="button" class="btn btn-danger" id="MonitoringOJT-chkOrientasi-uncheckAll" value="Kosongkan Semua" /><br/>
+											<input onclick="OJT_slcAllERC(this)"  type="button" class="btn btn-warning" id="MonitoringOJT-chkOrientasi-checkAll" value="Pilih Semua" /><br/>
+											<input onclick="OJT_delAllERC(this)" type="button" class="btn btn-danger" id="MonitoringOJT-chkOrientasi-uncheckAll" value="Kosongkan Semua" /><br/>
 										</label>
 										<div class="col-lg-10">
 											<?php
@@ -827,7 +827,7 @@
 			         });
 			     });
 
-	function slcAllERC(th) { 
+	function OJT_slcAllERC(th) { 
 	$('.tabledelERC tr').find("td").each(function( i ) {
 
 			// $(this).find('input[name="chkOrientasi[]"]').attr('checked', 'checked');
@@ -838,7 +838,7 @@
 	});
 	}
 
-	function delAllERC(th) {
+	function OJT_delAllERC(th) {
 	$('.tabledelERC tr').find("td").each(function( i ) {
 	// alert('a');	
 			// $(this).find('input[name="chkOrientasi[]"]').removeAttr('checked', 'checked');

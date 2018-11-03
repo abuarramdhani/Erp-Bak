@@ -723,6 +723,8 @@ class C_Monitoring extends CI_Controller
 		$pekerjaKeluar 		=	array
 		(
 			'tunda' 				=>	TRUE,
+			'keluar' 				=>	FALSE,
+			'selesai' 				=>  FALSE,
 			'tunda_selesai_pdca' 	=>	$status_pdca,
 			'last_update_timestamp'	=>	$waktuEksekusi,
 			'last_update_user'		=>	$user,
@@ -744,6 +746,8 @@ class C_Monitoring extends CI_Controller
 		$pekerjaKeluar 		=	array
 		(
 			'keluar' 				=>	TRUE,
+			'tunda'					=> FALSE,
+			'selesai' 				=> FALSE,
 			'keluar_tanggal' 		=>	$keluar_tanggal,
 			'keluar_alasan' 		=>	$keluar_alasan,
 			'last_update_timestamp'	=>	$waktuEksekusi,
@@ -765,7 +769,8 @@ class C_Monitoring extends CI_Controller
 		$pekerja_selesai 		=	array
 		(
 			'selesai' 				=>	TRUE,
-			'tunda'					=>	'false',
+			'keluar' 				=>	FALSE,
+			'tunda'					=> FALSE,
 			'last_update_timestamp'	=>	$waktuEksekusi,
 			'last_update_user'		=>	$user,
 			);
