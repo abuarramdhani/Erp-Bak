@@ -46,6 +46,22 @@
     height: 350px;
 }
 </style>
+<?php
+  $arrayMount = array(
+              '01' => 'Januari',
+              '02' => 'Februari',
+              '03' => 'Maret',
+              '04' => 'April',
+              '05' => 'Mei',
+              '06' => 'Juni',
+              '07' => 'Juli',
+              '08' => 'Agustus',
+              '09' => 'September',
+              '10' => 'Oktober',
+              '11' => 'November',
+              '12' => 'Desember',
+          );
+?>
 
 <section class="content">
   <div class="box box-primary color-palette-box">
@@ -54,6 +70,7 @@
     </div>
     <div class="box-body">
       <h3>Grafik Kaizen Seksi : <b><?= $seksi ?></b> </h3>
+      <h4>Bulan : <b><?= $arrayMount[date('m')]; ?></b> </h4>
 
       <div class="tab">
         <button class="tablinks active"  onclick="openTabSI(this,'seksi')" id="defaultOpen">Seksi</button>
