@@ -354,7 +354,8 @@
 											from 		ojt.tb_proses as proses
 														join 	ojt.tb_orientasi as orientasi
 																on 	orientasi.id_orientasi=proses.id_orientasi
-											where 		$tanggal_rekap between proses.tgl_awal and proses.tgl_akhir
+														left join er.er_employee_all er on er.employee_code = proses.noind
+											where 		$tanggal_rekap between proses.tgl_awal and proses.tgl_akhir and er.resign='0'
 											group by 	proses.id_orientasi,
 														orientasi.tahapan;";
 			$query 						=	$this->db->query($rekap_kegiatan_harian);
@@ -480,7 +481,7 @@
  			// $tahapan = "'".$tahapan."'";
  			// $id_orientasi = "'".$id_orientasi."'";
  			// echo $tahapan.'-'.$id_orientasi; exit();
- 			$resign = " and resign='0' ";
+ 			$resign = " and er.resign='0' ";
  			// $tanggal_rekap = "'".$tanggal_rekap."'";
  			$data = "select pro.noind, pro.id_orientasi, ori.tahapan, er.employee_name from ojt.tb_proses pro
 									left join ojt.tb_orientasi ori on ori.id_orientasi = pro.id_orientasi
