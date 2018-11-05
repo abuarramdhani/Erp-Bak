@@ -18,6 +18,15 @@ $(document).ready(function(){
     	format:'dd/mm/yyyy',
     	autoclose: true
 	});
+	$('#txtTanggalUndanganPelatihan').datepicker({
+    	"autoclose": true,
+		"todayHiglight": true,
+		"format": 'dd MM yyyy'
+	});
+	$('#txtWaktuUndanganPelatihan').timepicker({
+    	maxHours:24,
+  		showMeridian:false,
+	});
 	$('.singledateADM_Que').datepicker({
     	format:'yyyy/mm/dd',
     	autoclose: true
@@ -35,6 +44,18 @@ $(document).ready(function(){
 		"scrollX": true,
 	});
 
+	// DATATABLE UNDANGAN
+	$('.datatable-undangan-adm').DataTable({
+		dom: 'frtp',
+	});
+
+	// SELECT2 UNDANGAN
+	$('#txtPesertaUndanganPelatihan').select2({
+		maximumSelectionLength : 15,
+		allowClear: true,
+		placeholder: "Peserta"
+	});
+
 	//DATATABLE PENJADWALAN PAKET
 	$('#tblpackagetraining').DataTable({
 		"filter": false,
@@ -42,6 +63,7 @@ $(document).ready(function(){
 		"ordering": false,
 		"autoWidth": false,
 		"scrollX": true,
+		"paging":false
 	});
 
 	//DATATABLE RECORD PELATIHAN

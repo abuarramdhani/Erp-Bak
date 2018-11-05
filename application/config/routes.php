@@ -1009,6 +1009,14 @@ $route['ADMPelatihan/Report/(:any)']					= 'ADMPelatihan/C_Report/$1';
 $route['ADMPelatihan/Report/(:any)/(:any)']				= 'ADMPelatihan/C_Report/$1/$2';
 $route['ADMPelatihan/Report/(:any)/(:any)/(:any)']		= 'ADMPelatihan/C_Report/$1/$2/$3';
 
+$route['ADMPelatihan/Cetak/Undangan']					= 'ADMPelatihan/C_Undangan';
+$route['ADMPelatihan/Cetak/Undangan/(:any)']			= 'ADMPelatihan/C_Undangan/$1';
+$route['ADMPelatihan/Cetak/Undangan/(:any)/(:any)']		= 'ADMPelatihan/C_Undangan/$1/$2';
+
+$route['ADMPelatihan/Cetak/Daftarhadir'] 				= 'ADMPelatihan/C_DaftarHadir';
+$route['ADMPelatihan/Cetak/Daftarhadir/(:any)'] 		= 'ADMPelatihan/C_DaftarHadir/$1';
+$route['ADMPelatihan/Cetak/Daftarhadir/(:any)/(:any)'] 	= 'ADMPelatihan/C_DaftarHadir/$1/$2';
+
 //---------------------------------------- JURNAL PELATIHAN ----------------------------------------
 // dashboard
 $route['JurnalPenilaian'] 								= 'JurnalPenilaian/C_JurnalPenilaian';
