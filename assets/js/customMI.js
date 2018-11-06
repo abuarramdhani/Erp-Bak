@@ -204,8 +204,8 @@ $('#btnGenerate').click(function(){
 });
 
 function clickExcel(){
-	$('#clickExcel').click(function(){
-		$('#tarik_data').slideUp();
+	$('.clickExcel').click(function(){
+		$('#tarik_data').modal('show');
 	});
 }
 
@@ -236,6 +236,6 @@ $('.saveTaxInvoice').click(function(){
 });
 
 $('#btnToFinance').click(function(){
-	alert('Invoice has submitted to finance');
+	alert('Invoice akan di submit ke finance');
 });
 

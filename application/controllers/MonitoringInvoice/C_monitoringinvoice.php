@@ -45,18 +45,17 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$invoice = $this->M_monitoringinvoice->showInvoice();
-
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {
 			//get po amount
 
-			$invoice_id = $inv['invoice_id'] ;
-			$po_detail = $inv['po_detail'];
-			$po_number = $inv['po_number'];
-			$batch_number = $inv['purchasing_batch_number'];
+			$invoice_id = $inv['INVOICE_ID'] ;
+			$po_detail = $inv['PO_DETAIL'];
+			$po_number = $inv['PO_NUMBER'];
+			$batch_number = $inv['PURCHASING_BATCH_NUMBER'];
 
-			$keputusan[$inv['invoice_id']] = "";
+			$keputusan[$inv['INVOICE_ID']] = "";
 			$hasil_komitmen = '';
 
 			if ($po_detail) {
@@ -64,7 +63,7 @@ class C_monitoringinvoice extends CI_Controller{
 				$n=0;
 				$podetail = array();
 				foreach ($expPoDetail as $ep => $value) {
-					$exp_lagi = explode(' - ', $value);
+					$exp_lagi = explode('-', $value);
 
 							$po_number_explode = $exp_lagi[0];
 							$lppb_number_explode = $exp_lagi[1];
@@ -82,7 +81,7 @@ class C_monitoringinvoice extends CI_Controller{
 							$podetail[$ep] = $value.' - '.$status;
 				}
 
-				$keputusan[$inv['invoice_id']] = $podetail;
+				$keputusan[$inv['INVOICE_ID']] = $podetail;
 
 				$n++;
 			}
@@ -91,7 +90,7 @@ class C_monitoringinvoice extends CI_Controller{
 			$unit = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
 			foreach ($unit as $price) {
-				$total = $price['unit_price'] * $price['qty_invoice'];
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
 				$po_amount = $po_amount + $total;
 			}
 
@@ -99,10 +98,11 @@ class C_monitoringinvoice extends CI_Controller{
 			// //cekPPN
 			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number);
 
-			$invoice[$no]['ppn'] = $cekPPN[0]['PPN'];
-			$invoice[$no]['po_amount'] = $po_amount;
+			$invoice[$no]['PPN'] = $cekPPN[0]['PPN'];
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
+
 
 		$data['keputusan'] = $keputusan;
 		$data['invoice'] =$invoice;
@@ -112,6 +112,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('MonitoringInvoice/V_invoice',$data);
 		$this->load->view('V_Footer',$data);
 	}
+
 
 	public function listSubmited()
 	{
@@ -129,10 +130,10 @@ class C_monitoringinvoice extends CI_Controller{
 		
 		$no = 0;
 		foreach ($listBatch as $key => $value) {
-			$jmlInv = $this->M_monitoringinvoice->getJmlInvPerBatch($value['batch_num']);
-			echo $value['batch_num'];
+			$jmlInv = $this->M_monitoringinvoice->getJmlInvPerBatch($value['BATCH_NUM']);
+			echo $value['BATCH_NUM'];
 
-			$listBatch[$no]['jml_invoice'] = $jmlInv.' invoice';
+			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' invoice';
 			$no++;
 		}
 
@@ -181,16 +182,16 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice = $this->M_monitoringinvoice->showDetailPerBatch($batch);
 		$no = 0;
 		foreach ($invoice as $inv ) {
-			$invoice_id = $inv['invoice_id'] ;
+			$invoice_id = $inv['INVOICE_ID'] ;
 			$po_amount = 0;
 			$modal = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
 			foreach ($modal as $price) {
-				$total = $price['unit_price'] * $price['qty_invoice'];
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
 				$po_amount = $po_amount + $total;
 			}
 
-			$invoice[$no]['po_amount'] = $po_amount;
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
 		$data['batch_number'] = $batch;
@@ -231,14 +232,13 @@ class C_monitoringinvoice extends CI_Controller{
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
-        
+
 		
 		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0]);
-
-
 		
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['lastval']);
+
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
 		
 		}
 
@@ -264,19 +264,19 @@ class C_monitoringinvoice extends CI_Controller{
 		$invNumber = $this->input->post('po_numberInv');
 		$data['allVendor'] = $this->M_monitoringinvoice->getVendorName();
 
-		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
+		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);		
 		$no = 0;
 		foreach ($invoice as $inv ) {
-			$invoice_id = $inv['invoice_id'] ;
+			$invoice_id = $inv['INVOICE_ID'] ;
 			$nol = 0;
 			$modal = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
 			foreach ($modal as $price) {
-				$total = $price['unit_price'] * $price['qty_invoice'];
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
 				$po_amount = $nol + $total;
 			}
 
-			$invoice[$no]['po_amount'] = $po_amount;
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
 		
@@ -327,17 +327,17 @@ class C_monitoringinvoice extends CI_Controller{
 
 		$hasilExplode = explode(",", $ArrayIdInv);
 		$checkNumBatchExist = $this->M_monitoringinvoice->checkNumBatchExist();
-		$BatchNumberNew = $checkNumBatchExist[0]['batch_num'] + 1;
-		$saveDate = date('Y-m-d H:i:s', strtotime('+5 hours'));
+		$BatchNumberNew = $checkNumBatchExist[0]['BATCH_NUM'] + 1;
+		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
 		$array2 = array_map("unserialize", array_unique(array_map("serialize", $checkList)));
 
 		foreach ($array2 as $po => $value) {
 			$checkList = $this->M_monitoringinvoice->getInvoiceById($value);
 
 			foreach ($checkList as $dt => $value2) {
-				$inv = $value2['invoice_id'];
-				$no_po = $value2['po_number'];
-				$line_number = $value2['line_number'];
+				$inv = $value2['INVOICE_ID'];
+				$no_po = $value2['PO_NUMBER'];
+				$line_number = $value2['LINE_NUMBER'];
 				$checkListSubmitted = $this->M_monitoringinvoice->checkStatus($no_po,$line_number);
 
 				if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
@@ -369,7 +369,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice = $this->M_monitoringinvoice->showInvoiceInDetail($invoice_id);
 
 		foreach ($invoice as $key => $value) {
-			$invoice[0]['detail_invoice'] = $this->M_monitoringinvoice->showInvoiceInDetail2($invoice_id);
+			$invoice[0]['DETAIL_INVOICE'] = $this->M_monitoringinvoice->showInvoiceInDetail2($invoice_id);
 		}
 
 		$data['batch_number'] = $batch;
@@ -384,18 +384,18 @@ class C_monitoringinvoice extends CI_Controller{
 
 	public function GenerateInvoice(){
 		$date = $this->input->post('invoice_date');
+		$dt =  date('d/M/Y', strtotime($date));
+		$uw = strtoupper(str_replace('/', '', $date));
 
-		$uw = strtoupper(str_replace('-', '', $date));
-
-		$checkdate=$this->M_monitoringinvoice->checkInvoiceDate($date);
-		$checkcount =$this->M_monitoringinvoice->checkInvoiceDatecount($date);
+		$checkdate=$this->M_monitoringinvoice->checkInvoiceDate($dt);
+		$checkcount =$this->M_monitoringinvoice->checkInvoiceDatecount($dt);
 		
 		if($checkdate){
-			$checkdate = $checkdate[0]['invoice_date'];
-			$checkdate = date('d-M-Y',strtotime($checkdate));
+			$checkdate = $checkdate[0]['INVOICE_DATE'];
+			$checkdate = date('d/M/Y',strtotime($checkdate));
 		}
-		if ($checkdate == $date) {
-			$uw = strtoupper(str_replace('-', '', $date));
+		if ($checkdate == $dt) {
+			$uw = strtoupper(str_replace('/', '', $dt));
 			echo $uw.'-'.count($checkcount);
 		}else {
 			echo $uw;
@@ -407,6 +407,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 		$dateTarikFrom = $this->input->post('dateTarikFrom');
 		$dateTarikTo = $this->input->post('dateTarikTo');
+		$batch_num = $this->input->post('batch_num');
 
 		$objPHPExcel = new PHPExcel();
 
@@ -477,26 +478,26 @@ class C_monitoringinvoice extends CI_Controller{
             $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
 
-        $tarikData = $this->M_monitoringinvoice->exportExcelMonitoringInvoice($dateTarikFrom,$dateTarikTo);
+        $tarikData = $this->M_monitoringinvoice->exportExcelMonitoringInvoice($dateTarikFrom,$dateTarikTo,$batch_num);
 
         $no = 1;
         $numrow = 5;
         foreach($tarikData as $data){
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data['lppb_number']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data['vendor_name']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['po_number']);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['po_line']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data['LPPB_NUMBER']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data['VENDOR_NAME']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['PO_NUMBER']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['LINE_NUMBER']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['total_price']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['currency']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['CURRENCY']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['term_of_payment']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['invoice_date']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['invoice_number']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data['last_status_purchasing_date']);
-            //$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $data['purchasing_batch_number']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $data['last_status_finance_date']);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $data['ppn']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, $data['tax_invoice_number']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['INVOICE_DATE']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['INVOICE_NUMBER']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data['LAST_STATUS_PURCHASING_DATE']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $data['BATCH_NUM']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $data['LAST_STATUS_FINANCE_DATE']);
+            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $data['PPN']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, $data['TAX_INVOICE_NUMBER']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, $data['accept_by_purchasing']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $data['batch']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$numrow, $data['accept_by_accounting']);
@@ -508,14 +509,14 @@ class C_monitoringinvoice extends CI_Controller{
             $objPHPExcel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
-            // $objPHPExcel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_row);
-            //$objPHPExcel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('O'.$numrow)->applyFromArray($style_row);
@@ -564,16 +565,16 @@ class C_monitoringinvoice extends CI_Controller{
 
 		$no = 0;
 		foreach ($invoice as $inv ) {
-			$invoice_id = $inv['invoice_id'] ;
+			$invoice_id = $inv['INVOICE_ID'] ;
 			$nol = 0;
 			$modal = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
 			foreach ($modal as $price) {
-				$total = $price['unit_price'] * $price['qty_invoice'];
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
 				$po_amount = $nol + $total;
 			}
 
-			$invoice[$no]['po_amount'] = $po_amount;
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
 		
@@ -610,16 +611,16 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
 		$no = 0;
 		foreach ($invoice as $inv ) {
-			$invoice_id = $inv['invoice_id'] ;
+			$invoice_id = $inv['INVOICE_ID'] ;
 			$nol = 0;
 			$modal = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
 			foreach ($modal as $price) {
-				$total = $price['unit_price'] * $price['qty_invoice'];
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
 				$po_amount = $nol + $total;
 			}
 
-			$invoice[$no]['po_amount'] = $po_amount;
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
 		

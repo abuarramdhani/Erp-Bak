@@ -28,14 +28,14 @@
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td><?php echo $detail[0]['invoice_number']?></td>
+										<td><?php echo $detail[0]['INVOICE_NUMBER']?></td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-											<?php echo  date('d-M-Y',strtotime($detail[0]['invoice_date']))?>
+											<?php echo  date('d-M-Y',strtotime($detail[0]['INVOICE_DATE']))?>
 										</td>
 									</tr>
 									<tr>
@@ -43,7 +43,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td class="inv_amount">
-											<?php echo round($detail[0]['invoice_amount'])?>
+											<?php echo round($detail[0]['INVOICE_AMOUNT'])?>
 										</td>
 									</tr>
 									<tr>
@@ -51,7 +51,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<?php echo $detail[0]['tax_invoice_number']?>
+											<?php echo $detail[0]['TAX_INVOICE_NUMBER']?>
 										</td>
 									</tr>
 								</table>
@@ -79,19 +79,19 @@
 								<?php $no=1; $po_amount=0; foreach($detail as $b){?>
 								<tr id="<?php echo $no;?>">
 									<td class="text-center"><?php echo $no ?></td>
-									<td class="text-center"><?php echo $b['vendor_name']?></td>
-									<td class="text-center"><?php echo $b['po_number']?></td>
-									<td class="text-center"><?php echo $b['lppb_number']?></td>
-									<td class="text-center"><?php echo $b['shipment_number']?></td>
-									<td class="text-center"><?php echo $b['received_date']?></td>
-									<td class="text-center"><?php echo $b['item_description']?></td>
-									<td class="text-center"><?php echo $b['qty_receipt']?></td>
-									<td class="text-center"><?php echo $b['qty_reject']?></td>
-									<td class="text-center"><?php echo $b['currency']?></td>
-									<td class="text-center"><?php echo $b['unit_price']?></td>
-									<td class="text-center"><?php echo $b['qty_invoice']?></td>
+									<td class="text-center"><?php echo $b['VENDOR_NAME']?></td>
+									<td class="text-center"><?php echo $b['PO_NUMBER']?></td>
+									<td class="text-center"><?php echo $b['LPPB_NUMBER']?></td>
+									<td class="text-center"><?php echo $b['SHIPMENT_NUMBER']?></td>
+									<td class="text-center"><?php echo $b['RECEIVED_DATE']?></td>
+									<td class="text-center"><?php echo $b['ITEM_DESCRIPTION']?></td>
+									<td class="text-center"><?php echo $b['QTY_RECEIPT']?></td>
+									<td class="text-center"><?php echo $b['QTY_REJECT']?></td>
+									<td class="text-center"><?php echo $b['CURRENCY']?></td>
+									<td class="text-center"><?php echo $b['UNIT_PRICE']?></td>
+									<td class="text-center"><?php echo $b['QTY_INVOICE']?></td>
 								</tr>
-								<?php $no++; $po_amount=$po_amount+($b['unit_price'] * $b['qty_invoice']); }?>
+								<?php $no++; $po_amount=$po_amount+($b['UNIT_PRICE'] * $b['QTY_INVOICE']); }?>
 							</tbody>
 						</table>
 						</div>
@@ -99,7 +99,7 @@
 							<label>Po Amount: <span class="po_amount"><?php echo round($po_amount)?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
-						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/');?>">
+						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$batch_num);?>">
 							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
 						</a>
 						</div>

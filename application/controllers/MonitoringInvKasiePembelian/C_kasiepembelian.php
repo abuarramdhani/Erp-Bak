@@ -47,10 +47,10 @@ class C_kasiepembelian extends CI_Controller{
 		$listBatch = $this->M_kasiepembelian->showListSubmittedForChecking();
 		$no = 0;
 		foreach($listBatch as $lb){
-			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['batch_num']);
-			echo $lb['batch_num'];
+			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['BATCH_NUM']);
+			echo $lb['BATCH_NUM'];
 
-			$listBatch[$no]['jml_invoice'] = $jmlInv.' Invoice';
+			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' Invoice';
 			$no++;
 		}
 		$data['batch'] = $listBatch;
@@ -75,21 +75,20 @@ class C_kasiepembelian extends CI_Controller{
 		$batch = $this->M_kasiepembelian->showDetailPerBatch($batchNumber);
 		$no = 0;
 		foreach ($batch as $bl) {
-			$invoice_id = $bl['invoice_id'] ;
+			$invoice_id = $bl['INVOICE_ID'] ;
 
 			$po_amount = 0;
 			$modal = $this->M_kasiepembelian->getUnitPrice($invoice_id);
 
 			foreach ($modal as $price) {
-				$total = $price['unit_price'] * $price['qty_invoice'];
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
 				$po_amount = $po_amount + $total;
 			}
-			$batch[$no]['po_amount'] = $po_amount;
+			$batch[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
 		$data['batch_number'] = $batchNumber;
 		$data['batch'] =$batch;
-		// echo "<pre>";print_r($data['batch']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -102,7 +101,7 @@ class C_kasiepembelian extends CI_Controller{
 		$reason = $this->input->post('inputReason[]');
 		$nomorbatch = $this->input->post('nomor_batch');
 		$jenisButton = $this->input->post('submitButton');
-		$saveDate = date('Y-m-d H:i:s', strtotime('+5 hours'));
+		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
 
 		if ($status) {
 			if ($jenisButton == 1) {
@@ -112,7 +111,7 @@ class C_kasiepembelian extends CI_Controller{
 						 $id_invoice = $key2;
 						 $checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
 						 print_r($checkExist);
-						 if ($checkExist[0]['purchasing_status'] == 0) {
+						 if ($checkExist[0]['PURCHASING_STATUS'] == 0) {
 						 	echo "saving<br>";
 							 $stat = $value2;						 
 							$s1 = $this->M_kasiepembelian->btnSubmitToPurchasing($id_invoice,$jenisButton,$saveDate);
@@ -132,7 +131,7 @@ class C_kasiepembelian extends CI_Controller{
 								$id_invoice = $key2;
 
 							 	$checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
-							 	if ($checkExist[0]['purchasing_status'] == 0) {
+							 	if ($checkExist[0]['PURCHASING_STATUS'] == 0) {
 							 			$reason1 = $reason[$a][$key2]; 
 
 							 		if ($value2 == 3 && $reason1 == NULL) {
@@ -169,7 +168,7 @@ class C_kasiepembelian extends CI_Controller{
 
 		$nomorbatch = $this->input->post('nomor_batch');
 		$jenisButton = $this->input->post('submitButton');
-		$saveDate = date('Y-m-d H:i:s', strtotime('+5 hours'));
+		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
 
 		if ($status) {
 			if ($jenisButton == 2) {
@@ -179,9 +178,8 @@ class C_kasiepembelian extends CI_Controller{
 						$invoice_id = $v;
 						$stat = $value2;
 						$rsn = $reason[$s][$v];
-
-						$update = $this->M_kasiepembelian->inputActionAndReason($invoice_id,$stat,$rsn);
-						$insert = $this->M_kasiepembelian->inputActionAndReason2($stat,$saveDate);
+							$update = $this->M_kasiepembelian->inputActionAndReason($invoice_id,$stat,$rsn);
+							$insert = $this->M_kasiepembelian->inputActionAndReason2($stat,$saveDate);
 					}
 				}
 			}else{
@@ -198,7 +196,8 @@ class C_kasiepembelian extends CI_Controller{
 					}
 				}
 			}
-		}redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+		}
+		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
 
 
 	}

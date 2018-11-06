@@ -29,7 +29,6 @@
 									<div class="col-md-6">
 										<button type="button" class="btn btn-primary pull-left" id="btnSubmitChecking" data-toggle="modal" data-target="#mdlChecking">Submit for Checking</button>
 									</div>
-									<div class="col-md-6"><button type="button" class="btn btn-success pull-right" id="clickExcel" onclick="clickExcel()" data-toggle="modal" data-target="#modaltariktanggal" >Export Excel</button></div>
 								</div>
 								<table id="tbListInvoice" class="table text-center dataTable">
 									<thead>
@@ -54,29 +53,29 @@
 										<td><?php echo $no ?></td>
 										<td>
 											<div class="checkbox">
-											<input  type="checkbox" name="mi-check-list[]" value="<?php echo $inv['invoice_id']?>">
+											<input  type="checkbox" name="mi-check-list[]" value="<?php echo $inv['INVOICE_ID']?>">
 											</div>
 										</td>
 										<td>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['invoice_id'])?>">
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>">
 											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
 											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['invoice_id'])?>">
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['INVOICE_ID'])?>">
 											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
 											</a>
 										</td>
-										<td><?php echo  $inv['invoice_number'] ?></td>
-										<td> <?php echo date('d-M-Y',strtotime($inv['invoice_date'])) ?></td>
-										<td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['invoice_id']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['tax_invoice_number']?>" > 
+										<td><?php echo  $inv['INVOICE_NUMBER'] ?></td>
+										<td> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
+										<td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['INVOICE_ID']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['TAX_INVOICE_NUMBER']?>" > 
 											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
 											</button></td>
-										<td id="inv_amount" class="inv_amount"><?php echo round($inv['invoice_amount']) ?></td>
-										<td id="po_amount" class="po_amount"><?php echo round($inv['po_amount'])?></td>
-										<td><?php if($keputusan[$inv['invoice_id']]){foreach ($keputusan[$inv['invoice_id']] as $k) { ?>
+										<td id="inv_amount" class="inv_amount"><?php echo round($inv['INVOICE_AMOUNT']) ?></td>
+										<td id="po_amount" class="po_amount"><?php echo round($inv['PO_AMOUNT'])?></td>
+										<td><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ?>
 										<?php }} ?></td>
-										<td><?php echo  $inv['ppn']?></td>
-										<?php if ( $inv['status'] == 0) {
+										<td><?php echo  $inv['PPN']?></td>
+										<?php if ( $inv['STATUS'] == 0) {
 											$stat = 'New/Draft';
 										}elseif ($inv['status'] == 1) {
 											$stat = 'Submited by Kasie Purc';
@@ -86,18 +85,18 @@
 											$stat = 'Rejected by Kasie Purc';
 										} 
 
-										if ($inv['purchasing_batch_number'] != 0) { 
+										if ($inv['PURCHASING_BATCH_NUMBER'] != 0) { 
 										 	$batchnumber = 'SUBMITTED';
 										}else{
 										 	$batchnumber = 'NO SUMBIT';
 										} ?>
 										<td><?php echo $stat.'<br>'?>
-										<span class="btn-sm  <?php if ($inv['purchasing_batch_number'] != 0): ?>
+										<span class="btn-sm  <?php if ($inv['PURCHASING_BATCH_NUMBER'] != 0): ?>
 											btn-success
 										<?php else: ?>
 											btn-warning
 										<?php endif ?>"  ><?php echo $batchnumber?></span></td>
-										<td><?php echo  $inv['reason']?></td>
+										<td><?php echo  $inv['REASON']?></td>
 									</tr>
 									<?php $no++; }}?>
 								</tbody>
@@ -124,50 +123,6 @@
 		      <div class="col-md-12">Apakah Anda yakin akan melakukan Submit For Checking untuk <b id="jmlChecked"></b> Invoices ?</div>
 		    </div>
 		    <input type="hidden" name="idYangDiPilih" value="">
-		  </div>
-		  <div class="modal-footer">
-		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		    <button type="submit" class="btn btn-primary">Yes</button>
-		  </div>
-		</div>
- 	</div>
-</div>
-</form>
-
-<!-- Modal Tarikan Tanggal -->
-<form action="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/exportExcelMonitoringInvoice') ?>" method="post">
-	
-<div id="modaltariktanggal" class="modal fade" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content"  id="tarik_data" >
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		    <h5 class="modal-title">Periode Tanggal Tarikan Data</h5>
-		  </div>
-		  <div class="modal-body">
-		    <table id="filter">
-				<tr>
-					<td>
-						<div class="input-group date" data-provide="datepicker">
-	    					<input size="30" type="text" class="form-control" name="dateTarikFrom" id="dateTarikFrom" placeholder="From">
-	    					<div class="input-group-addon">
-	        					<span class="glyphicon glyphicon-calendar"></span>
-	    					</div>
-						</div>
-					</td>
-					<td>
-						<span class="align-middle">s/d</span>
-					</td>
-					<td>
-						<div class="input-group date" data-provide="datepicker">
-	    					<input size="30" type="text" class="form-control" name="dateTarikTo" id="dateTarikTo" placeholder="To">
-	    					<div class="input-group-addon">
-	        					<span class="glyphicon glyphicon-calendar"></span>
-	    					</div>
-						</div>
-					</td>
-				</tr>
-			</table>
 		  </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>

@@ -32,23 +32,25 @@
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Finance Process Date</th>
+											<th class="text-center">Batch Number</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php $no=1; if($finish){foreach($finish as $f){?>
 										<tr>
 											<td><?php echo $no ?></td>
-											<td><?php echo $f['vendor_name']?></td>
-											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/DetailProcessed/'.$f['invoice_id']);?>">
-												<?php echo $f['invoice_number']?>
+											<td><?php echo $f['VENDOR_NAME']?></td>
+											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/DetailProcessed/'.$f['INVOICE_ID']);?>">
+												<?php echo $f['INVOICE_NUMBER']?>
 												</a>
 											</td>
-											<td><?php echo date('d-M-Y',strtotime($f['invoice_date']))?></td>
-											<td><?php echo $f['tax_invoice_number']?></td>
-											<td class="inv_amount"><?php echo round($f['invoice_amount'])?></td>
-											<td class="po_amount"><?php echo round($f['po_amount'])?></td>
-											<td><?php echo $f['last_status_purchasing_date']?></td>
-											<td><?php echo $f['last_status_finance_date']?></td>
+											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
+											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
+											<td class="inv_amount"><?php echo round($f['INVOICE_AMOUNT'])?></td>
+											<td class="po_amount"><?php echo round($f['PO_AMOUNT'])?></td>
+											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
+											<td><?php echo $f['LAST_STATUS_FINANCE_DATE']?></td>
+											<td><?php echo $f['BATCH_NUM']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

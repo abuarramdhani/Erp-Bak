@@ -13,6 +13,7 @@
 					<div class="col-lg-12">
 						<div class="text-left ">
 							<span><b>Unprocessed Invoice</b></span>
+							<input type="hidden" value="<?php echo $batch_num ?>">
 						</div>
 					</div>
 				</div>
@@ -40,17 +41,20 @@
 										<?php $no=1; foreach($unprocess as $u){?>
 										<tr>
 											<td><?php echo $no ?></td>
-											<td><?php echo $u['vendor_name']?></td>
-											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['invoice_id']);?>">
-												<?php echo $u['invoice_number']?>
+											<td><?php echo $u['VENDOR_NAME']?></td>
+											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['BATCH_NUM'].'/'.$u['INVOICE_ID']);?>">
+												<?php echo $u['INVOICE_NUMBER']?>
 											</a></td>
-											<td><?php echo date('d-M-Y',strtotime($u['invoice_date']))?></td>
-											<td><?php echo $u['tax_invoice_number']?></td>
-											<td class="inv_amount"><?php echo round($u['invoice_amount'])?></td>
-											<td class="po_amount"><?php echo round($u['po_amount'])?></td>
-											<td><?php echo $u['last_status_purchasing_date']?></td>
-											<td>
-												<button type="submit" data-id="<?= $u['invoice_id'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Process</button>
+											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
+											<td class="inv_amount"><?php echo round($u['INVOICE_AMOUNT'])?></td>
+											<td class="po_amount"><?php echo round($u['PO_AMOUNT'])?></td>
+											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
+											<td><?php if($u['LAST_STATUS_FINANCE_DATE'] == null){ ?>
+												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Process</button>
+											<?php }else{ ?>
+												<span type="button" data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</button>
+											<?php } ?>
 											</td>
 										</tr>
 										<?php $no++; } ?>

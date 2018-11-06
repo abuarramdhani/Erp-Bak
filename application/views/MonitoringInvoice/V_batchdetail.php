@@ -30,7 +30,7 @@
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $po_num['invoice_number']?>" readonly>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $po_num['INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -38,7 +38,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($po_num['invoice_date']))?>"  name="invoice_date" readonly>
+						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($po_num['INVOICE_DATE']))?>"  name="invoice_date" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -46,7 +46,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($po_num['invoice_amount'])?>" id="invoice_amount" readonly>
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($po_num['INVOICE_AMOUNT'])?>" id="invoice_amount" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -54,7 +54,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $po_num['tax_invoice_number']?>" readonly>
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $po_num['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -62,7 +62,7 @@
 											<span><label>Vendor Name</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['vendor_name']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['VENDOR_NAME']?>" readonly>
 		                     			</td>
 									</tr>
 									<?php $no++;} ?>
@@ -88,41 +88,41 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php $no=1; $po_amount=0; foreach($po_num['detail_invoice'] as $p) { ?>
+													<?php $no=1; $po_amount=0; foreach($po_num['DETAIL_INVOICE'] as $p) { ?>
 													<tr id="<?php echo $no; ?>">
 														<td>
 															<?php echo $no ?>
 														</td> 
 														<td class="text-center">
-															<input class="form-control" type="text" name="po_number" value="<?php echo $p['po_number']?>" readonly> 
+															<input class="form-control" type="text" name="po_number" value="<?php echo $p['PO_NUMBER']?>" readonly> 
 														</td>
 														<td class="text-center"> 
-															<input class="form-control" type="text" name="lppb_number" value="<?php echo $p['lppb_number']?>" readonly> 
+															<input class="form-control" type="text" name="lppb_number" value="<?php echo $p['LPPB_NUMBER']?>" readonly> 
 														</td>
 														<td class="text-center"> 
-															<input class="form-control" type="text" name="shipment_number" value="<?php echo $p['shipment_number']?>" readonly> 
+															<input class="form-control" type="text" name="shipment_number" value="<?php echo $p['SHIPMENT_NUMBER']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="received_date" value="<?php echo $p['received_date']?>" readonly> 
+															<input class="form-control" type="text" name="received_date" value="<?php echo $p['RECEIVED_DATE']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_description" value="<?php echo $p['item_description']?>" readonly> 
+															<input class="form-control" type="text" name="item_description" value="<?php echo $p['ITEM_DESCRIPTION']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="qty_receipt" value="<?php echo $p['qty_receipt']?>" readonly> 
+															<input class="form-control" type="text" name="qty_receipt" value="<?php echo $p['QTY_RECEIPT']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="qty_reject" value="<?php echo $p['qty_reject']?>" readonly> 
+															<input class="form-control" type="text" name="qty_reject" value="<?php echo $p['QTY_REJECT']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="currency" value="<?php echo $p['currency']?>" readonly> 
+															<input class="form-control" type="text" name="currency" value="<?php echo $p['CURRENCY']?>" readonly> 
 														</td>
-														<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price" value="<?php echo $p['unit_price']?>" readonly> 
+														<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price" value="<?php echo $p['UNIT_PRICE']?>" readonly> 
 														 </td> 
-														<td class="text-center"> <input class="form-control" type="text" name="qty_invoice" value="<?php echo $p['qty_invoice']?>" readonly> 
+														<td class="text-center"> <input class="form-control" type="text" name="qty_invoice" value="<?php echo $p['QTY_INVOICE']?>" readonly> 
 														</td> 
 													</tr>
-												<?php $no++; $po_amount=$po_amount+($p['unit_price'] * $p['qty_invoice'] );} ?>
+												<?php $no++; $po_amount=$po_amount+($p['UNIT_PRICE'] * $p['QTY_INVOICE'] );} ?>
 											</tbody>
 										</table>
 									</div>

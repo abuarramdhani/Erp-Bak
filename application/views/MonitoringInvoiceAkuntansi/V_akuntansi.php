@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>List Submited For Checking</b></span>
+							<span><b>List Batch Finance</b></span>
 						</div>
 					</div>
 				</div>
@@ -29,34 +29,22 @@
 											<th class="text-center">Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
-											<th class="text-center">Status Invoice</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php $no=1; foreach($invoice as $inv) { ?>
-										<tr id="<?php echo $no; ?>">
-											<td><?php echo $no ?> </td>
+										<?php $no=1; if($batch) { foreach($batch as $b) { ?>
+										<tr id="<?php echo $no;?>">
+											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/batchDetail/'.$inv['BATCH_NUM'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$b['BATCH_NUM'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo  $inv['BATCH_NUM'] ?></td>
-											<td><?php echo  $inv['SUBMITED_DATE'] ?></td>
-											<td><?php echo $inv['JML_INVOICE']; ?></td>
-											<?php if ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 0 ) {
-												$stat = 'New/Draft';
-												} elseif ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 1) {
-													$stat = 'Submited by Kasie Purc';
-												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 2){
-													$stat = 'Approved By Kasie Purc';
-												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 3){
-													$stat = 'Rejected by Kasie Purc';
-												}
-											?>
-											<td><?php echo $stat; ?></td>
+											<td><?php echo $b['BATCH_NUM']?></td>
+											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
+											<td><?php echo $b['JML_INVOICE']?></td>
 										</tr>
-										<?php $no++; } ?>
+										<?php $no++; }} ?>
 									</tbody>
 								</table>
 							</div>
