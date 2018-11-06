@@ -19,7 +19,7 @@ class C_Undangan extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('ADMPElatihan/M_undangan');
+		$this->load->model('ADMPelatihan/M_undangan');
 
 		$this->checkSession();
 	}
