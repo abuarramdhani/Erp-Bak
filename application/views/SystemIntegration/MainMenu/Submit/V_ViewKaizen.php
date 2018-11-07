@@ -395,8 +395,10 @@
                                   </div>
                                  <?php  
                                  if ($kaizen[0]['status_app']) {
-                                      $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
-                                      array_push($arrayTerisi, $terisi); 
+                                      if (isset($kaizen[0]['status_app'][$frmapp['level']]['staff_code'])) {
+                                        $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
+                                        array_push($arrayTerisi, $terisi); 
+                                      }
                                      } 
                                  }
                                ?>
