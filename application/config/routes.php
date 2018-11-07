@@ -1863,22 +1863,29 @@ $route['p2k3adm/datamasuk'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk';
 $route['p2k3adm/datamasuk/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk/$1';
 $route['p2k3adm/datamasuk/(:any)/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk/$1/$2';
 $route['p2k3adm/datamasuk/(:any)/(:any)/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk/$1/$2/$3';
+
 //--------------------------------------------------- Monitoring Invoice Admin Pembelian --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/Invoice'] = 'MonitoringInvoice/C_monitoringinvoice';
 $route['AccountPayables/MonitoringInvoice/Invoice/(:any)'] = 'MonitoringInvoice/C_monitoringinvoice/$1';
 $route['AccountPayables/MonitoringInvoice/Invoice/(:any)/(:any)'] = 'MonitoringInvoice/C_monitoringinvoice/$1/$2';
+$route['AccountPayables/MonitoringInvoice/Invoice/Rejected'] = 'MonitoringInvoice/C_monitoringinvoice/viewreject';
+$route['AccountPayables/MonitoringInvoice/Invoice/Rejected/(:any)'] = 'MonitoringInvoice/C_monitoringinvoice/viewreject/$1';
+$route['AccountPayables/MonitoringInvoice/Invoice/Rejected/(:any)/(:any)'] = 'MonitoringInvoice/C_monitoringinvoice/$1/$2';
 $route['AccountPayables/MonitoringInvoice/ListSubmitedChecking'] = 'MonitoringInvoice/C_monitoringinvoice/listSubmited';
 $route['AccountPayables/MonitoringInvoice/ListSubmitedChecking/(:any)/(:any)'] = 'MonitoringInvoice/C_monitoringinvoice/$1/$2';
 $route['AccountPayables/MonitoringInvoice/ListSubmitedChecking/(:any)/(:any)/(:any)'] = 'MonitoringInvoice/C_monitoringinvoice/$1/$2/$3';
+
 //--------------------------------------------------- Monitoring Invoice Kasie Pembelian --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie'] = 'MonitoringInvKasiePembelian/C_kasiepembelian';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2/$3';
+
 //--------------------------------------------------- Monitoring Invoice Akuntansi --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/Unprocess'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi';
 $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1';
 $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
+$route['AccountPayables/MonitoringInvoice/Unprocess/(:any)/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2/$3';
 $route['AccountPayables/MonitoringInvoice/Finish'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishInvoice';
 $route['AccountPayables/MonitoringInvoice/Finish/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
 

@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount">
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -88,7 +88,7 @@
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="poLinesTable" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
+											<table id="editlinespo" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
@@ -148,7 +148,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span class="po"><?php echo round($po_amount) ?></span>
+										<label>Po Amount : </label><span class="po_amount"><?php echo round($po_amount) ?></span>
 									</div>
 								</div>
 							</div>

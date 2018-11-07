@@ -647,4 +647,64 @@ class C_monitoringinvoice extends CI_Controller{
 		echo $id;
 	}
 
+	public function viewreject()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+		$view = $this->M_monitoringinvoice->invoicereject();
+		$no = 0;
+		foreach ($view as $v) {
+		$invoice_id = $view[0]['INVOICE_ID'];
+		$nol = 0;
+
+			$getamount = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
+			foreach ($getamount as $get) {
+				$total = ($get['UNIT_PRICE'] * $get['QTY_INVOICE']);
+
+				$po_amount = $nol + $total;
+			}
+
+			$view[$no]['PO_AMOUNT'] = $po_amount;
+			$no++;
+
+		}
+
+		$data['invoice'] = $view;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoice/V_rejected',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function Detail($invoice_id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$invoice = $this->M_monitoringinvoice->getInvoiceById($invoice_id);
+
+
+		$data['invoice'] = $invoice;
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoice/V_rejecteddetail',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 }

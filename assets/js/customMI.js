@@ -136,9 +136,10 @@ $(document).ready(function(){
 
 $(document).on('input click', '.qty_invoice, .del_row', function(){
 	var total=0;
-	var invAmount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
-	invAmount = invAmount.substring(0, invAmount.length-2);
-	Math.round(invAmount);
+	var invAmount = $('#invoice_amount').val();
+	var reverse = invAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	// ribuan = ribuan.substring(0, ribuan.length-2);
+	Math.round(reverse);
 
 	$('.qty_invoice').each(function() {
 		var qty = $(this).val();
@@ -149,7 +150,7 @@ $(document).on('input click', '.qty_invoice, .del_row', function(){
 	});
 	$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
 
-	if (total == invAmount) {
+	if (total == reverse) {
 			$('#invoice_amount, #AmountOtomatis').css("background-color","white");
 		}else{
 		 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
@@ -163,7 +164,7 @@ $('#btnHapus').click(function(){
 });
 
 
-$('table#tbListInvoice tbody tr,#tbListBatchPembelian tbody tr,#poLinesTable tbody tr,#detailUnprocessed tbody tr,#finishInvoice tbody tr,#processedinvoice tbody tr').each(function(){
+$('table#tbListInvoice tbody tr, #rejectinvoice tbody tr, #rejectdetail tbody tr, #rejectpo tbody tr, #tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbListBatchPembelian tbody tr,#poLinesTable tbody tr,#detailUnprocessed tbody tr,#finishInvoice tbody tr,#processedinvoice tbody tr').each(function(){
 		var po_amount = $(this).find('.po_amount').text();
 		var inv_amount = $(this).find('.inv_amount').text();
 

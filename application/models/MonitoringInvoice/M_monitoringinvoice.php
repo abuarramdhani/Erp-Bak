@@ -775,4 +775,23 @@ class M_monitoringinvoice extends CI_Model {
                     order by line_num");
         return $query->result_array();
     }
+
+    public function invoicereject()
+    {
+        $oracle = $this->load->database("oracle_dev",TRUE);
+        $query = "SELECT  distinct  ami.invoice_number invoice_number,
+                            ami.invoice_date invoice_date,
+                            ami.tax_invoice_number tax_invoice_number,
+                            ami.invoice_amount invoice_amount,
+                            ami.reason reason,
+                            ami.last_purchasing_invoice_status last_purchasing_invoice_status,
+                            aipo.invoice_id invoice_id,
+                            ami.last_status_purchasing_date last_status_purchasing_date,
+                            ami.purchasing_batch_number purchasing_batch_number
+                            FROM khs_ap_invoice_purchase_order aipo, khs_ap_monitoring_invoice ami 
+                            WHERE aipo.invoice_id = ami.invoice_id 
+                            and last_purchasing_invoice_status = 3";
+        $run = $oracle->query($query);
+        return $run->result_array();
+    }
 }

@@ -44,7 +44,6 @@
 											<th width="20%" class="text-center">Po Detail</th>
 											<th width="5%"class="text-center">PPN</th>
 											<th width="5%"class="text-center">Status</th>
-											<th class="text-center">Reason</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -96,7 +95,6 @@
 										<?php else: ?>
 											btn-warning
 										<?php endif ?>"  ><?php echo $batchnumber?></span></td>
-										<td><?php echo  $inv['REASON']?></td>
 									</tr>
 									<?php $no++; }}?>
 								</tbody>
