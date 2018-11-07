@@ -229,7 +229,7 @@ class C_MyKaizen extends CI_Controller
 				$this->M_submit->SaveApprover($data);
 			}
 				$this->EmailAlert($level1,$kaizen_id);
-				$this->sendPidgin($approvernya,$kaizen_id);
+				$this->sendPidgin($level1,$kaizen_id);
 				$updateReady = $this->M_mykaizen->updateReady(6, $kaizen_id, 1);
 			$data2 = array('approval_realisasi' => '1');
 			$this->M_submit->saveUpdate($kaizen_id,$data2);
