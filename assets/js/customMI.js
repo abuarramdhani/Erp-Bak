@@ -136,10 +136,10 @@ $(document).ready(function(){
 
 $(document).on('input click', '.qty_invoice, .del_row', function(){
 	var total=0;
-	var invAmount = $('#invoice_amount').val();
-	var reverse = invAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	var invAmount = $('#invoice_amount').val().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	// var reverse = invAmount.toString();
 	// ribuan = ribuan.substring(0, ribuan.length-2);
-	Math.round(reverse);
+	Math.round(invAmount);
 
 	$('.qty_invoice').each(function() {
 		var qty = $(this).val();
@@ -150,7 +150,7 @@ $(document).on('input click', '.qty_invoice, .del_row', function(){
 	});
 	$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
 
-	if (total == reverse) {
+	if (total == invAmount) {
 			$('#invoice_amount, #AmountOtomatis').css("background-color","white");
 		}else{
 		 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
