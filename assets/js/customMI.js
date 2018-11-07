@@ -64,9 +64,17 @@ $(document).ready(function(){
      	
 		var po_no = $('#slcPoNumberMonitoring').val();
 
+		var line_number_sent = '0';
+
+		$('.line_number').each(function(){
+			var linenumval = $(this).val();
+			line_number_sent += (', '+linenumval);
+		});
+
 		$.ajax({
 			type: "POST",
 			url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/getPoNumber/"+po_no,
+			data: {line_number_sent:line_number_sent},
 			// dataType: "json",
 			success: function (response) {
 				// console.log(response);
@@ -116,6 +124,7 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
 
 	$('.idDateInvoice').datepicker({
 		format: 'dd-M-yyyy',
@@ -135,7 +144,7 @@ $(document).on('input click', '.qty_invoice, .del_row', function(){
 		var qty = $(this).val();
 		var rownum = $(this).attr('row-num')
 		var price = $('.unit_price[row-num="'+rownum+'"]').val();
-		var rowtotal = qty*price;
+		var rowtotal = Number(qty)*Number(price);
 		total+=Number(rowtotal);
 	});
 	$('#AmountOtomatis').html(Math.round(total)).moneyFormat();

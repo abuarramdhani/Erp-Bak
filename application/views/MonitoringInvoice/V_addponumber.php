@@ -87,46 +87,35 @@
 								</thead>
 								<tbody>
 									<?php $no=1; $po_amount=0; foreach($invoice as $po_num) { ?>
-										<tr id="<?php echo $no; ?>">
+										<tr>
 											<td>
 												<?php echo $no ?>
 											</td> 
-											<td class="text-center">
-												<input class="form-control" type="text" value="<?php echo $po_num['LINE_NUMBER']?>"  readonly> 
+											<td class="text-center"><?php echo $po_num['LINE_NUMBER']?>
+											<input type="hidden" name="line_number" class="line_number" value="<?php echo $po_num['LINE_NUMBER']?>"> 
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['VENDOR_NAME']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['VENDOR_NAME']?></td>
+											<td class="text-center"><?php echo $po_num['PO_NUMBER']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['PO_NUMBER']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['LPPB_NUMBER']?>
 											</td>
-											<td class="text-center"> 
-												<input class="form-control" type="text" name="lppb_number[]" value="<?php echo $po_num['LPPB_NUMBER']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['SHIPMENT_NUMBER']?>
 											</td>
-											<td class="text-center"> 
-												<input class="form-control" type="text" name="shipment_number[]" value="<?php echo $po_num['SHIPMENT_NUMBER']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['RECEIVED_DATE']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="received_date[]" value="<?php echo $po_num['RECEIVED_DATE']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['ITEM_CODE']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['ITEM_CODE']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['ITEM_DESCRIPTION']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['ITEM_DESCRIPTION']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['QTY_RECEIPT']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="qty_receipt[]" value="<?php echo $po_num['QTY_RECEIPT']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['QTY_REJECT']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="qty_reject[]" value="<?php echo $po_num['QTY_REJECT']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['CURRENCY']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="currency[]" value="<?php echo $po_num['CURRENCY']?>" readonly> 
-											</td>
-											<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price[]" value="<?php echo $po_num['UNIT_PRICE']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['UNIT_PRICE']?>
 											 </td> 
-											<td class="text-center" id="qty_invoice"> <input class="form-control qty_invoice" type="text" name="qty_invoice[]" value="<?php echo $po_num['QTY_INVOICE']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['QTY_INVOICE']?>
 											</td> 
 										</tr>
 									<?php $no++; } ?>

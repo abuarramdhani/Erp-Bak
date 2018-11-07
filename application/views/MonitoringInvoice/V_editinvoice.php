@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount">
+											<input class="form-control amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -140,7 +140,7 @@
 														</td>
 														<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price[]" value="<?php echo $po_num['UNIT_PRICE']?>"> 
 														 </td> 
-														<td class="text-center" id="qty_invoice"> <input class="form-control qty_invoice" type="text" name="qty_invoice[]" value="<?php echo $po_num['QTY_INVOICE']?>"> 
+														<td class="text-center" id="qty_invoice"> <input class="form-control " type="text" name="qty_invoice[]" value="<?php echo $po_num['QTY_INVOICE']?>"> 
 														</td> 
 													</tr>
 												<?php $no++; $po_amount=$po_amount+($po_num['UNIT_PRICE']*$po_num['QTY_INVOICE']); } ?>
@@ -148,7 +148,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span id="AmountOtomatis"><?php echo round($po_amount) ?></span>
+										<label>Po Amount : </label><span class="po"><?php echo round($po_amount) ?></span>
 									</div>
 								</div>
 							</div>
