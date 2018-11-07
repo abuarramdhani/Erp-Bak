@@ -5,7 +5,7 @@
 
 
 
-class sendmessage 
+class Sendmessage 
 {
 	// $ci = & get_instance();
 	// $ci->send();
