@@ -2037,3 +2037,9 @@ $route['usermanual/upload'] = 'UserManual/C_Index/upload';
 $route['usermanual/upload/(:any)'] = 'UserManual/C_Index/$1';
 $route['usermanual/upload/(:any)/(:any)'] = 'UserManual/C_Index/$1/$2';
 $route['usermanual/upload/(:any)/(:any)/(:any)'] = 'UserManual/C_Index/$1/$2/$3';
+
+//-----------------------------------------------------ADM Cabang------------------------------------------------------//
+$route['AdmCabang'] = 'ADMCabang/C_Index';
+
+$route['AdmCabang/PresensiHarian'] = 'ADMCabang/C_PresensiHarian';
+$route['AdmCabang/PresensiHarian/(:any)'] = 'ADMCabang/C_PresensiHarian/$1';
