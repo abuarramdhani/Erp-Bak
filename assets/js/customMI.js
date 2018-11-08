@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
 	$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
@@ -49,7 +48,7 @@ function chkAllAddMonitoringInvoice() {
 
 	$('#slcVendor').val($('#slcVendor').attr('value')).trigger('change');
 	
-	$('#invoice_amount').change(function(){$('#invoice_amount').moneyFormat();});
+	/*$('#invoice_amount').change(function(){$('#invoice_amount').moneyFormat();});*/
 
 	var $po_num_btn = $('#slcPoNumberMonitoring');
 	$('.btn_search').on('mousedown', function () {
