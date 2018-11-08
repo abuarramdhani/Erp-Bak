@@ -384,8 +384,8 @@ class C_monitoringinvoice extends CI_Controller{
 
 	public function GenerateInvoice(){
 		$date = $this->input->post('invoice_date');
-		$dt =  date('d/M/Y', strtotime($date));
-		$uw = strtoupper(str_replace('/', '', $date));
+		$dt =  date('d-M-Y', strtotime($date));
+		$uw = strtoupper(str_replace('-', '', $date));
 
 		$checkdate=$this->M_monitoringinvoice->checkInvoiceDate($dt);
 		$checkcount =$this->M_monitoringinvoice->checkInvoiceDatecount($dt);
