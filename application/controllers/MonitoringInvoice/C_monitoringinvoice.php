@@ -338,7 +338,8 @@ class C_monitoringinvoice extends CI_Controller{
 				$inv = $value2['INVOICE_ID'];
 				$no_po = $value2['PO_NUMBER'];
 				$line_number = $value2['LINE_NUMBER'];
-				$checkListSubmitted = $this->M_monitoringinvoice->checkStatus($no_po,$line_number);
+				$lppb_number = $value2['LPPB_NUMBER'];
+				$checkListSubmitted = $this->M_monitoringinvoice->podetails($no_po,$lppb_number,$line_number);
 
 				if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
 					$cekstatus = $checkListSubmitted[0]['STATUS'];
