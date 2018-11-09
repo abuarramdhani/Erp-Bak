@@ -8,7 +8,7 @@ class M_kasiepembelian extends CI_Model {
 	}
 
 	public function showListSubmittedForChecking(){
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
@@ -19,14 +19,14 @@ class M_kasiepembelian extends CI_Model {
 	}
 
 	public function getJmlInvPerBatch($batch){
-        $erp_db = $this->load->database('oracle_dev',true);
+        $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $run = $erp_db->query($sql);
         return $run->num_rows();
     }
 
     public function showDetailPerBatch($batchNumber){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT invoice_id invoice_id,
         				 vendor_name vendor_name,
                          invoice_number invoice_number, 
@@ -42,7 +42,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function getUnitPrice($invoice_id){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "SELECT unit_price , qty_invoice 
                   FROM khs_ap_invoice_purchase_order
                     WHERE invoice_id = $invoice_id";
@@ -51,7 +51,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function inputActionAndReason($id,$status,$reason){
-    	$erp_db = $this->load->database('oracle_dev',true);
+    	$erp_db = $this->load->database('oracle',true);
     	$sql = "UPDATE khs_ap_monitoring_invoice
     			SET last_purchasing_invoice_status = $status, 
                 reason = '$reason' WHERE invoice_id = $id";
@@ -60,7 +60,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function inputActionAndReason2($status,$action_date){
-    	$erp_db = $this->load->database('oracle_dev',true);
+    	$erp_db = $this->load->database('oracle',true);
     	$sql = "INSERT INTO khs_ap_invoice_action_detail (purchasing_status,action_date)
     			VALUES ($status,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
     	$run = $erp_db->query($sql);
@@ -68,7 +68,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function btnSubmitToPurchasing($id,$finance_status,$finance_date){
-    	$erp_db = $this->load->database('oracle_dev',true);
+    	$erp_db = $this->load->database('oracle',true);
     	$sql = "UPDATE khs_ap_monitoring_invoice
                 set last_finance_invoice_status = $finance_status,
                 last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
@@ -78,14 +78,14 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function submitToActionDetail($status,$action_date,$purchasing_status){
-        $erp_db = $this->load->database('oracle_dev',true);
+        $erp_db = $this->load->database('oracle',true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (finance_status,action_date,purchasing_status)
                 VALUES ($status,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$purchasing_status')";
         $run = $erp_db->query($sql);
     }
 
     public function getSubmitToFinance($id){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "SELECT last_purchasing_invoice_status status_finance 
                   FROM  khs_ap_monitoring_invoice
                   WHERE invoice_id = $id";
@@ -94,7 +94,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function invoiceDetail($invoice_id){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT invoice_number invoice_number,
                 invoice_date invoice_date,
                 invoice_amount invoice_amount,
@@ -119,7 +119,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getNamaVendor($id)
     {
-        $oracle = $this->load->database('oracle_dev',TRUE);
+        $oracle = $this->load->database('oracle',TRUE);
         $sql = "SELECT * 
                 FROM po_vendors pov
                 WHERE vendor_id = $id";
@@ -129,7 +129,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function checkExist($id)
     {
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "SELECT last_purchasing_invoice_status purchasing_status
                   FROM  khs_ap_monitoring_invoice
                   WHERE invoice_id = $id";

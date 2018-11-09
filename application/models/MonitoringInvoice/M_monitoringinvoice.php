@@ -8,7 +8,7 @@ class M_monitoringinvoice extends CI_Model {
 	}
 
 	public function getInvNumber($po_numberInv){
-		$oracle = $this->load->database("oracle_dev",TRUE);
+		$oracle = $this->load->database("oracle",TRUE);
 		$query = $oracle->query("SELECT line_id, line_num,no_po,vendor_name,unit_price,rejected,description,quantity_billed,no_lppb
             ,currency,shipment,status,qty_receipt,transaction,item_id,quantity
                     FROM (SELECT distinct
@@ -123,7 +123,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function getInvoiceById($id)
     {
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "SELECT * FROM khs_ap_invoice_purchase_order aipo, khs_ap_monitoring_invoice ami WHERE aipo.invoice_id = ami.invoice_id and aipo.invoice_id = $id ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
@@ -148,7 +148,7 @@ class M_monitoringinvoice extends CI_Model {
                 $lppb_number = $lppb_number;
             }
             
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_invoice_purchase_order
                     (line_number,po_number, lppb_number, shipment_number,
                     received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
@@ -158,7 +158,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
                     (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name)
                     VALUES 
@@ -206,7 +206,7 @@ class M_monitoringinvoice extends CI_Model {
 
 
     public function showInvoice(){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT distinct ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
@@ -230,7 +230,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function getUnitPrice($invoice_id){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "SELECT unit_price , qty_invoice 
                   FROM khs_ap_invoice_purchase_order
                     WHERE invoice_id = $invoice_id";
@@ -239,7 +239,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function deleteInvoice($invoice_id){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query1 = "DELETE 
                     FROM khs_ap_invoice_purchase_order
                     WHERE invoice_id = '$invoice_id' ";
@@ -252,7 +252,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showEditList1($invoice_id){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "SELECT invoice_id invoice_id, 
                     po_number po_number,
                     lppb_number lppb_number,
@@ -271,7 +271,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showEditList2($invoice_id){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -303,7 +303,7 @@ class M_monitoringinvoice extends CI_Model {
                 $lppb_number = $lppb_number;
             }
 
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "UPDATE khs_ap_invoice_purchase_order 
         SET po_number = '$po_number',
             lppb_number = $lppb_number,
@@ -323,7 +323,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$vendor_number)
     {
-       $oracle = $this->load->database('oracle_dev',true);
+       $oracle = $this->load->database('oracle',true);
        $query2 = "UPDATE khs_ap_monitoring_invoice 
                   SET invoice_number = '$invoice_number', 
                     invoice_date = '$invoice_date',
@@ -336,7 +336,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function saveBatchNumberById($id, $num, $date){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "UPDATE khs_ap_monitoring_invoice
                     SET purchasing_batch_number = '$num',
                     last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS')
@@ -346,7 +346,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function checkNumBatchExist()
     {
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT max(purchasing_batch_number) batch_num
                   FROM khs_ap_monitoring_invoice 
                   WHERE ROWNUM >= 1";
@@ -355,7 +355,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showListSubmitted(){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
@@ -365,21 +365,21 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function getJmlInvPerBatch($batch){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $query = $oracle->query($sql);
         return $query->num_rows();
     }
 
      public function batch_number($batch){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
 
     public function showDetailPerBatch($batch){
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $sql = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -394,7 +394,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showInvoiceInDetail($invoice_id){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT invoice_id invoice_id,
                          vendor_name vendor_name,
                          invoice_number invoice_number, 
@@ -410,7 +410,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function showInvoiceInDetail2($invoice_id){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT invoice_id invoice_id,
                         po_number po_number,
                         lppb_number lppb_number,
@@ -438,7 +438,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function checkInvoiceDate($uw){ 
-    $erp_db = $this->load->database('oracle_dev',true); 
+    $erp_db = $this->load->database('oracle',true); 
     $sql = "SELECT invoice_date FROM
     khs_ap_monitoring_invoice WHERE invoice_date = to_date('$uw',
     'DD/MM/YYYY') AND ROWNUM = 1"; 
@@ -446,7 +446,7 @@ class M_monitoringinvoice extends CI_Model {
     return $runQuery->result_array(); }
 
     public function checkInvoiceDatecount($uw){
-        $erp_db = $this->load->database('oracle_dev',true);
+        $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT invoice_date
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_date = to_date('$uw', 'DD/MM/YYYY')";
@@ -505,7 +505,7 @@ class M_monitoringinvoice extends CI_Model {
     }
 
     public function exportExcelMonitoringInvoice($dateFrom,$dateTo,$batch_num){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
@@ -606,7 +606,7 @@ class M_monitoringinvoice extends CI_Model {
                 $lppb_number = $lppb_number;
             }
 
-        $oracle = $this->load->database('oracle_dev',true);
+        $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_invoice_purchase_order
                     (line_number,po_number, lppb_number, shipment_number,
                     received_date,item_description,item_code,qty_receipt, qty_reject, currency, unit_price, qty_invoice,invoice_id)
@@ -617,7 +617,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function saveInvoiveAmount($invoice_amount,$invoice_id)
     {
-       $oracle = $this->load->database('oracle_dev',true);
+       $oracle = $this->load->database('oracle',true);
        $query2 = "UPDATE khs_ap_monitoring_invoice 
                   SET invoice_amount = '$invoice_amount'
                  WHERE invoice_id = '$invoice_id' ";
@@ -645,7 +645,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function tax_invoice_number($invoice_id,$tax_invoice_number)
     {
-       $oracle = $this->load->database('oracle_dev',true);
+       $oracle = $this->load->database('oracle',true);
        $query2 = "UPDATE khs_ap_monitoring_invoice 
                   SET tax_invoice_number = '$tax_invoice_number'
                  WHERE invoice_id = '$invoice_id' ";
@@ -654,7 +654,7 @@ class M_monitoringinvoice extends CI_Model {
 
 
     public function cekpo_number($po_number,$line_number){
-        $oracle = $this->load->database("oracle_dev",TRUE);
+        $oracle = $this->load->database("oracle",TRUE);
         $query = $oracle->query("SELECT line_id, line_num,no_po,vendor_name,unit_price,rejected,description,quantity_billed,no_lppb
             ,currency,shipment,status,qty_receipt,transaction,item_id,quantity
                     FROM (SELECT distinct
@@ -778,7 +778,7 @@ class M_monitoringinvoice extends CI_Model {
 
     public function invoicereject()
     {
-        $oracle = $this->load->database("oracle_dev",TRUE);
+        $oracle = $this->load->database("oracle",TRUE);
         $query = "SELECT  distinct  ami.invoice_number invoice_number,
                             ami.invoice_date invoice_date,
                             ami.tax_invoice_number tax_invoice_number,

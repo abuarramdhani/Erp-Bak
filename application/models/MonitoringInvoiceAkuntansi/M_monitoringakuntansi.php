@@ -9,7 +9,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function unprocessedInvoice($batchNumber)
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT invoice_id invoice_id,
 				vendor_name vendor_name,
 				invoice_number invoice_number,
@@ -18,7 +18,8 @@ class M_monitoringakuntansi extends CI_Model {
 				invoice_amount invoice_amount,
 				last_status_purchasing_date last_status_purchasing_date,
 				last_status_finance_date last_status_finance_date,
-				purchasing_batch_number batch_num
+				purchasing_batch_number batch_num,
+				LAST_FINANCE_INVOICE_STATUS LAST_FINANCE_INVOICE_STATUS
 				FROM khs_ap_monitoring_invoice
 				WHERE last_finance_invoice_status = 1
 				AND purchasing_batch_number = $batchNumber";
@@ -28,7 +29,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function poAmount($id)
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT unit_price unit_price,
 				qty_invoice qty_invoice
 				FROM khs_ap_invoice_purchase_order
@@ -39,7 +40,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function namaVendor($id)
 	{
-		$oracle = $this->load->database('oracle_dev',true);
+		$oracle = $this->load->database('oracle',true);
 		$sql = "SELECT vendor_name 
 				FROM po_vendors
 				WHERE vendor_id = $id";
@@ -49,7 +50,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function DetailUnprocess($batch_num,$invoice_id)
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
         		invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -78,7 +79,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function saveProses($proses,$finance_date,$id)
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
 		$sql = "UPDATE khs_ap_monitoring_invoice
 				SET last_finance_invoice_status = $proses,
 				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
@@ -88,7 +89,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function saveProses2($id,$finance_status,$action_date)
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
         $sql = "UPDATE khs_ap_invoice_action_detail
 				SET finance_status = $finance_status,
 				action_date = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
@@ -98,7 +99,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function processedInvoice()
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT invoice_id invoice_id,
 				vendor_name vendor_name,
 				invoice_number invoice_number,
@@ -117,7 +118,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function DetailProcess($invoice_id)
 	{
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
         		invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -143,7 +144,7 @@ class M_monitoringakuntansi extends CI_Model {
 	}
 
 	public function showListSubmittedForChecking(){
-		$erp_db = $this->load->database('oracle_dev',true);
+		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
@@ -154,7 +155,7 @@ class M_monitoringakuntansi extends CI_Model {
 	}
 
 	public function getJmlInvPerBatch($batch){
-        $erp_db = $this->load->database('oracle_dev',true);
+        $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch
         and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
