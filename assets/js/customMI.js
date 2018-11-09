@@ -1,6 +1,7 @@
+
 $(document).ready(function(){
 
-	$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
+$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
         "pagingType": "full_numbers"
 } );
 
@@ -34,10 +35,7 @@ function chkAllAddMonitoringInvoice() {
 	};
 }
 
-
-
-
-	var num=0;
+	
 
 	$('.inv_amount').moneyFormat();
 	$('.po_amount').moneyFormat();
@@ -48,7 +46,25 @@ function chkAllAddMonitoringInvoice() {
 
 	$('#slcVendor').val($('#slcVendor').attr('value')).trigger('change');
 	
-	/*$('#invoice_amount').change(function(){$('#invoice_amount').moneyFormat();});*/
+	$('#invoice_amounttttt').change(function(){
+		// alert('satu');
+		var total=0;
+		var invAmount = $('#invoice_amounttttt').moneyFormat();
+		$('.qty_invoice').each(function() {
+			var qty = $(this).val();
+			var rownum = $(this).attr('row-num')
+			var price = $('.unit_price[row-num="'+rownum+'"]').val();
+			var rowtotal = qty*price;
+			total+=Number(rowtotal);
+		});
+		$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
+
+		if (total == invAmount) {
+				$('#invoice_amount, #AmountOtomatis').css("background-color","white");
+			}else{
+			 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
+			}
+	});
 
 	var $po_num_btn = $('#slcPoNumberMonitoring');
 	$('.btn_search').on('mousedown', function () {
@@ -61,6 +77,32 @@ function chkAllAddMonitoringInvoice() {
 	    }
 	});
 
+
+ 	$('#invoice_amounttttt').change(function(){
+ 		$(document).on('input click', '.qty_invoice, .del_row', function(){
+		// alert('dua');
+		var total=0;
+		var invAmount = $('#invoice_amounttttt').val().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+		$('.qty_invoice').each(function() {
+			var qty = $(this).val();
+			var rownum = $(this).attr('row-num')
+			var price = $('.unit_price[row-num="'+rownum+'"]').val();
+			var rowtotal = qty*price;
+			total+=Number(rowtotal);
+		});
+		$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
+
+		if (total == invAmount) {
+				$('#invoice_amount, #AmountOtomatis').css("background-color","white");
+			}else{
+			 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
+			}
+		});
+
+		
+	});
+	
+	var num=0;
 	$('#btnSearchPoNumber').click(function(){
 		$('#tablePoLines').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /><p style='color:#575555;'>Searching Data</p></center><br />");
      	
@@ -133,28 +175,6 @@ function chkAllAddMonitoringInvoice() {
 		autoclose: true,
 	});
 
-	$(document).on('input click', '.qty_invoice, .del_row', function(){
-		var total=0;
-		var invAmount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
-		invAmount = invAmount.substring(0, invAmount.length-2);
- 		Math.round(invAmount);
-
-		$('.qty_invoice').each(function() {
-			var qty = $(this).val();
-			var rownum = $(this).attr('row-num')
-			var price = $('.unit_price[row-num="'+rownum+'"]').val();
-			var rowtotal = qty*price;
-			total+=Number(rowtotal);
-		});
-		$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
-
-		if (total == invAmount) {
-				$('#invoice_amount, #AmountOtomatis').css("background-color","white");
-			}else{
-			 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
-			}
-		
-	});
 	$('#btnHapus').click(function(){
 		alert('Yakin untuk menghapusnya ?');
 	});
