@@ -524,7 +524,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and poh.po_header_id(+) = pol.po_header_idunion
+                        and poh.po_header_id(+) = pol.po_header_id union
                         SELECT distinct 
                                     pol.line_num line_num,
                                     poh.SEGMENT1 no_po,
