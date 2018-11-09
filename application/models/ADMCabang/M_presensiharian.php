@@ -71,15 +71,27 @@ class M_presensiharian extends Ci_Model
 		$tanggal = explode(" - ", $tgl);
 		$tgl1 = $tanggal[0];
 		$tgl2 = $tanggal[1];
-		$sql = "select tsp.tanggal,
-				to_char(tsp.tanggal,'dd/mm/yyyy') tgl,
-				ts.shift 
-				from \"Presensi\".tshiftpekerja tsp
-				inner join \"Presensi\".tshift ts 
-					on ts.kd_shift = tsp.kd_shift
-				where tsp.noind = '$noind' 
-				and tsp.tanggal between '$tgl1' and '$tgl2'
-				order by tsp.tanggal";
+		$sql = "select * from
+				(
+					select tsp.tanggal,
+					to_char(tsp.tanggal,'dd/mm/yyyy') tgl,
+					ts.shift 
+					from \"Presensi\".tshiftpekerja tsp
+					inner join \"Presensi\".tshift ts 
+						on ts.kd_shift = tsp.kd_shift
+					where tsp.noind = '$noind' 
+					and tsp.tanggal between '$tgl1' and '$tgl2'
+					union
+					select cast(dates as date) , to_char(dates,'dd/mm/yyyy') tgl, null
+					from generate_series('$tgl1','$tgl2',interval '1 days') as dates
+					where dates not in(
+									select tsp.tanggal
+									from \"Presensi\".tshiftpekerja tsp
+									where tsp.noind = 'F2228' 
+									and tsp.tanggal between '$tgl1' and '$tgl2'
+										)
+				) as shift
+				order by shift.tanggal";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
