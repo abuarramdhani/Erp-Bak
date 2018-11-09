@@ -77,28 +77,17 @@ SELECT DISTINCT pol.po_line_id line_id,
                 po_headers_all poh,
                 po_lines_all pol,
                 po_line_locations_all pll,
-                mtl_system_items_b msib
+                mtl_system_items_b msib,
+                rcv_transactions rt 
           WHERE poh.po_header_id(+) = pol.po_header_id
             AND pov.vendor_id(+) = poh.vendor_id
             AND pol.po_line_id(+) = pll.po_line_id
             AND msib.inventory_item_id = pol.item_id
             AND msib.organization_id = 81
             AND poh.segment1 = '$po_numberInv'
-            AND pol.po_line_id NOT IN (
-                   SELECT pol.po_line_id
-                     FROM rcv_transactions rt,
-                          po_headers_all poh,
-                          po_lines_all pol
-                    WHERE poh.po_header_id = rt.po_header_id
-                      AND pol.po_line_id = rt.po_line_id
-                      AND rt.transaction_id =
-                             (SELECT MAX (rts.transaction_id)
-                                FROM rcv_transactions rts
-                               WHERE rt.shipment_header_id = rts.shipment_header_id
-                                 AND rts.po_line_id = pol.po_line_id
-                                 AND rts.transaction_type IN
-                                        ('REJECT', 'DELIVER', 'ACCEPT','RECEIVE', 'TRANSFER'))
-                      AND poh.po_header_id(+) = pol.po_header_id)");
+            AND rt.po_line_id(+) = pol.po_line_id 
+            AND rt.transaction_type = NULL
+           ");
 		return $query->result_array();
 	}
 
