@@ -3,10 +3,9 @@
 	.text-left span {
 		font-size: 36px
 	}
-	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
+	#tbFilterPO tr td,#rejectdetail tr td{padding: 5px}
 </style>
 
-<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/showInvoiceInDetail/') ?>">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -14,7 +13,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Invoice Details</b></span>
+							<span><b>Reject Invoice Details</b></span>
 						</div>
 					</div>
 				</div>
@@ -23,14 +22,14 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="tbInvoice" >
-									<?php $no=1; foreach($invoice as $po_num) { ?>
+								<table id="rejectdetail" >
+									<?php $no=1; ?>
 									<tr>
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $po_num['INVOICE_NUMBER']?>" readonly>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -38,7 +37,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($po_num['INVOICE_DATE']))?>"  name="invoice_date" readonly>
+						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>"  name="invoice_date" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -46,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($po_num['INVOICE_AMOUNT'])?>" id="invoice_amount" readonly>
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -54,7 +53,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $po_num['TAX_INVOICE_NUMBER']?>" readonly>
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -62,16 +61,16 @@
 											<span><label>Vendor Name</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['VENDOR_NAME']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
 		                     			</td>
 									</tr>
-									<?php $no++;} ?>
+									<?php $no++; ?>
 								</table>
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="poLinesTable" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
+											<table id="rejectpo" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
@@ -88,8 +87,8 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php $no=1; $po_amount=0; foreach($po_num['DETAIL_INVOICE'] as $p) { ?>
-													<tr id="<?php echo $no; ?>">
+													<?php $no=1; $po_amount=0; foreach($invoice as $p) { ?>
+													<tr>
 														<td>
 															<?php echo $no ?>
 														</td> 
@@ -133,7 +132,7 @@
 							</div>
 						</div>
 						<div class="col-md-2 pull-right">
-							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/batchDetail/'.$batch_number)?>">
+							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected')?>">
 							<button type="button" id="btnBack" class="btn btn-success" style="margin-top: 10px">Back</button>
 							</a>
 						</div>
@@ -143,4 +142,3 @@
 		</div>
 	</div>
 </section>
-</form>

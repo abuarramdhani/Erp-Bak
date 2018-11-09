@@ -6,7 +6,7 @@
 	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
 </style>
 
-<form method="post" action="<?php echo base_url("AccountPayables/MonitoringInvoice/Invoice/addPoNumber2/".$invoice[0]['invoice_id']) ?>">
+<form method="post" action="<?php echo base_url("AccountPayables/MonitoringInvoice/Invoice/addPoNumber2/".$invoice[0]['INVOICE_ID']) ?>">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -29,7 +29,7 @@
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['invoice_number']?>" readonly>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -37,7 +37,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['invoice_date']))?>"  name="invoice_date" readonly>
+						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>"  name="invoice_date" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['invoice_amount'])?>" id="invoice_amount">
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -53,7 +53,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['tax_invoice_number']?>" readonly>
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -61,7 +61,7 @@
 											<span><label>Vendor Name</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['vendor_name']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
 		                     			</td>
 									</tr>
 								</table>
@@ -87,46 +87,35 @@
 								</thead>
 								<tbody>
 									<?php $no=1; $po_amount=0; foreach($invoice as $po_num) { ?>
-										<tr id="<?php echo $no; ?>">
+										<tr>
 											<td>
 												<?php echo $no ?>
 											</td> 
-											<td class="text-center">
-												<input class="form-control" type="text" value="<?php echo $po_num['line_number']?>"  readonly> 
+											<td class="text-center"><?php echo $po_num['LINE_NUMBER']?>
+											<input type="hidden" name="line_number" class="line_number" value="<?php echo $po_num['LINE_NUMBER']?>"> 
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['vendor_name']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['VENDOR_NAME']?></td>
+											<td class="text-center"><?php echo $po_num['PO_NUMBER']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['po_number']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['LPPB_NUMBER']?>
 											</td>
-											<td class="text-center"> 
-												<input class="form-control" type="text" name="lppb_number[]" value="<?php echo $po_num['lppb_number']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['SHIPMENT_NUMBER']?>
 											</td>
-											<td class="text-center"> 
-												<input class="form-control" type="text" name="shipment_number[]" value="<?php echo $po_num['shipment_number']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['RECEIVED_DATE']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="received_date[]" value="<?php echo $po_num['received_date']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['ITEM_CODE']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['item_code']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['ITEM_DESCRIPTION']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['item_description']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['QTY_RECEIPT']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="qty_receipt[]" value="<?php echo $po_num['qty_receipt']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['QTY_REJECT']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="qty_reject[]" value="<?php echo $po_num['qty_reject']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['CURRENCY']?>
 											</td>
-											<td class="text-center">
-												<input class="form-control" type="text" name="currency[]" value="<?php echo $po_num['currency']?>" readonly> 
-											</td>
-											<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price[]" value="<?php echo $po_num['unit_price']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['UNIT_PRICE']?>
 											 </td> 
-											<td class="text-center" id="qty_invoice"> <input class="form-control qty_invoice" type="text" name="qty_invoice[]" value="<?php echo $po_num['qty_invoice']?>" readonly> 
+											<td class="text-center"><?php echo $po_num['QTY_INVOICE']?>
 											</td> 
 										</tr>
 									<?php $no++; } ?>
@@ -174,20 +163,21 @@
 								<thead>
 									<tr class="bg-primary">
 										<th class="text-center">No</th>
-										<th class="text-center" style="width: 2%">Line Number</th>
+										<th class="text-center">Line Number</th>
 										<th class="text-center">Vendor Name</th>
 										<th class="text-center">PO Number</th>
 										<th class="text-center">LPPB Number</th>
 										<th class="text-center">Status LPPB</th>
 										<th class="text-center">Shipment Number</th>
 										<th class="text-center">Receive Date</th>
-										<th class="text-center">Item Code</th>
 										<th class="text-center">Item Desc</th>
+										<th class="text-center">Item Code</th>
 										<th class="text-center">Qty Amount</th>
 										<th class="text-center">Qty Billed</th>
 										<th class="text-center">Qty Reject</th>
 										<th class="text-center">Currency</th>
 										<th class="text-center">Unit Price</th>
+										<th class="text-center">Qty Po</th>
 										<th class="text-center">Qty Invoice</th>
 										<th class="text-center">Action</th>
 									</tr>
@@ -201,7 +191,7 @@
 							<label>Po Amount : </label><span id="AmountOtomatis"></span>
 						</div>
 						<div class="col-md-2 pull-right">
-							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$invoice[0]['invoice_id'])?>">
+							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$invoice[0]['INVOICE_ID'])?>">
 							<button type="button" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Cancel</button>
 							</a>
 							<a href="">

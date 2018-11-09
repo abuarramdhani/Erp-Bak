@@ -36,13 +36,13 @@
 										<tr id="<?php echo $no;?>">
 											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$b['batch_num'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$b['BATCH_NUM'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo $b['batch_num']?></td>
-											<td><?php echo date('d-M-Y',strtotime($b['submited_date']))?></td>
-											<td><?php echo $b['jml_invoice']?></td>
+											<td><?php echo $b['BATCH_NUM']?></td>
+											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
+											<td><?php echo $b['JML_INVOICE']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>
