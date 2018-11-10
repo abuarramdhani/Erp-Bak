@@ -33,7 +33,7 @@
 									</thead>
 									<tbody>
 										<?php $no=1; if($batch) { foreach($batch as $b) { ?>
-										<tr id="<?php echo $no;?>">
+										<tr>
 											<td><?php echo $no ?></td>
 											<td>
 												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$b['BATCH_NUM'])?>">

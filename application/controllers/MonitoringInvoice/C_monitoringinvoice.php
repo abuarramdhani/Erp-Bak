@@ -48,7 +48,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {
-			//get po amount
 
 			$invoice_id = $inv['INVOICE_ID'] ;
 			$po_detail = $inv['PO_DETAIL'];
@@ -60,17 +59,22 @@ class C_monitoringinvoice extends CI_Controller{
 
 			if ($po_detail) {
 				$expPoDetail = explode('<br>', $po_detail);
+				if (!$expPoDetail) {
+					$expPoDetail = $po_detail;
+				}
+
+					
 				$n=0;
 				$podetail = array();
 				foreach ($expPoDetail as $ep => $value) {
 					$exp_lagi = explode('-', $value);
 
+
 							$po_number_explode = $exp_lagi[0];
-							$lppb_number_explode = $exp_lagi[1];
-							$line_number_explode = $exp_lagi[2];
+							$lppb_number_explode = $exp_lagi[2];
+							$line_number_explode = $exp_lagi[1];
 
 							$perbandingan = $this->M_monitoringinvoice->podetails($po_number_explode,$lppb_number_explode,$line_number_explode);
-
 
 							if (!$perbandingan) {
 								$status = "No Status";
@@ -95,7 +99,6 @@ class C_monitoringinvoice extends CI_Controller{
 			}
 
 
-			// //cekPPN
 			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number);
 
 			$invoice[$no]['PPN'] = $cekPPN[0]['PPN'];
@@ -216,7 +219,7 @@ class C_monitoringinvoice extends CI_Controller{
 	public function addPoNumber(){
 		$invoice_number = $this->input->post('invoice_number');
 		$invoice_date = $this->input->post('invoice_date');
-		$invoice_amount = substr(preg_replace( "/[^0-9]/", "",$this->input->post('invoice_amount')),0,-2);
+		$invoice_amount = $this->input->post('invoice_amount');
 		$tax_invoice_number = $this->input->post('tax_invoice_number');
 		$vendor_name = $this->input->post('vendor_name[]');
 		$vendor_number = $this->input->post('vendor_number');
@@ -232,6 +235,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
+
+		// $amount = str_replace(',', '', $invoice_amount);
 
 		
 		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0]);
@@ -293,7 +298,7 @@ class C_monitoringinvoice extends CI_Controller{
 	public function saveEditInvoice($invoice_id){
 		$invoice_number = $this->input->post('invoice_number');
 		$invoice_date = $this->input->post('invoice_date');
-		$invoice_amount = substr(preg_replace( "/[^0-9]/", "",$this->input->post('invoice_amount')),0,-2);
+		$invoice_amount = $this->input->post('invoice_amount');
 		$tax_invoice_number = $this->input->post('tax_invoice_number');
 		$vendor_number = $this->input->post('vendor_number');
 		$po_number = $this->input->post('po_number[]');
@@ -306,6 +311,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$currency = $this->input->post('currency[]');
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
+
+		// $amount = str_replace(',', '', $invoice_amount);
 
 		
 		$vendor_name = $this->M_monitoringinvoice->namavendor($vendor_number);
@@ -405,9 +412,6 @@ class C_monitoringinvoice extends CI_Controller{
 
 	public function exportExcelMonitoringInvoice(){
 		$this->load->library('Excel');
-
-		$dateTarikFrom = $this->input->post('dateTarikFrom');
-		$dateTarikTo = $this->input->post('dateTarikTo');
 		$batch_num = $this->input->post('batch_num');
 
 		$objPHPExcel = new PHPExcel();
@@ -443,7 +447,7 @@ class C_monitoringinvoice extends CI_Controller{
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(TRUE);
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "Date : ".$dateTarikFrom.' s/d '.$dateTarikTo);
+        // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "Date : ".$dateTarikFrom.' s/d '.$dateTarikTo);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4', "No");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B4', "LPPB Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Vendor Name");
@@ -479,7 +483,7 @@ class C_monitoringinvoice extends CI_Controller{
             $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
 
-        $tarikData = $this->M_monitoringinvoice->exportExcelMonitoringInvoice($dateTarikFrom,$dateTarikTo,$batch_num);
+        $tarikData = $this->M_monitoringinvoice->exportExcelMonitoringInvoice($batch_num);
 
         $no = 1;
         $numrow = 5;
@@ -543,7 +547,7 @@ class C_monitoringinvoice extends CI_Controller{
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="Report_Monitoring_Invoice '.$dateTarikFrom.' to '.$dateTarikTo.'.xlsx"');
+		header('Content-Disposition: attachment;filename="Report_Monitoring_Invoice Batch Number '.$batch_num.'.xlsx"');
 		$objWriter->save("php://output");
 
 	}
@@ -592,7 +596,7 @@ class C_monitoringinvoice extends CI_Controller{
 	public function addPoNumber2($id){
 		// $invoice_number = $this->input->post('invoice_number');
 		// $invoice_date = $this->input->post('invoice_date');
-		$invoice_amount = substr(preg_replace( "/[^0-9]/", "",$this->input->post('invoice_amount')),0,-2);
+		$invoice_amount = $this->input->post('invoice_amount');
 		// $tax_invoice_number = $this->input->post('tax_invoice_number');
 		// $vendor_name = $this->input->post('vendor_name[]');
 		// $vendor_number = $this->input->post('vendor_number');
@@ -609,6 +613,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
 		
+		// $amount2 = str_replace(',', '', $invoice_amount);
+
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
 		$no = 0;
 		foreach ($invoice as $inv ) {

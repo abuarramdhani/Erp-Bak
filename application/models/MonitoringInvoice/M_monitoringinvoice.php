@@ -84,9 +84,10 @@ SELECT DISTINCT pol.po_line_id line_id,
             AND msib.inventory_item_id = pol.item_id
             AND msib.organization_id = 81
             AND poh.segment1 = '$po_numberInv'
-            AND pol.po_line_id NOT IN 
-            (SELECT rt.PO_LINE_ID FROM rcv_transactions rt WHERE rt.PO_LINE_ID=pol.PO_LINE_ID )
-           ");
+            AND pol.po_line_id NOT IN (
+                   SELECT rt.po_line_id
+                     FROM rcv_transactions rt
+                    WHERE pol.po_line_id = rt.po_line_id)");
 		return $query->result_array();
 	}
 
@@ -223,7 +224,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showEditList1($invoice_id){
         $oracle = $this->load->database('oracle',true);
-        $query = "SELECT invoice_id invoice_id, 
+        $query = "SELECT distinct invoice_id invoice_id, 
                     po_number po_number,
                     lppb_number lppb_number,
                     shipment_number shipment_number,
@@ -242,7 +243,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showEditList2($invoice_id){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT invoice_id invoice_id,
+        $query = "SELECT distinct invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
                          tax_invoice_number tax_invoice_number,
@@ -336,21 +337,21 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function getJmlInvPerBatch($batch){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
+        $sql = "SELECT  purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $query = $oracle->query($sql);
         return $query->num_rows();
     }
 
      public function batch_number($batch){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
+        $sql = "SELECT  purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
 
     public function showDetailPerBatch($batch){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT invoice_id invoice_id,
+        $sql = "SELECT distinct invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
                          tax_invoice_number tax_invoice_number,
@@ -365,7 +366,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showInvoiceInDetail($invoice_id){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT invoice_id invoice_id,
+        $query = "SELECT distinct invoice_id invoice_id,
                          vendor_name vendor_name,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
@@ -381,7 +382,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showInvoiceInDetail2($invoice_id){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT invoice_id invoice_id,
+        $query = "SELECT distinct invoice_id invoice_id,
                         po_number po_number,
                         lppb_number lppb_number,
                         shipment_number shipment_number,
@@ -409,7 +410,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function checkInvoiceDate($uw){ 
     $erp_db = $this->load->database('oracle',true); 
-    $sql = "SELECT invoice_date FROM
+    $sql = "SELECT distinct invoice_date FROM
     khs_ap_monitoring_invoice WHERE invoice_date = to_date('$uw',
     'DD/MM/YYYY') AND ROWNUM = 1"; 
     $runQuery = $erp_db->query($sql); 
@@ -417,7 +418,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function checkInvoiceDatecount($uw){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT invoice_date
+        $sql = "SELECT distinct invoice_date
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_date = to_date('$uw', 'DD/MM/YYYY')";
         $runQuery = $erp_db->query($sql);
@@ -474,9 +475,9 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
     }
 
-    public function exportExcelMonitoringInvoice($dateFrom,$dateTo,$batch_num){
+    public function exportExcelMonitoringInvoice($batch_num){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT ami.invoice_number invoice_number, 
+        $query = "SELECT distinct ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, 
@@ -495,8 +496,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                          aipo.line_number line_number
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
-                WHERE ami.invoice_date BETWEEN TO_DATE('$dateFrom','dd/mm/yyyy') AND TO_DATE('$dateTo','dd/mm/yyyy')
-                AND ami.purchasing_batch_number = '$batch_num'";
+                WHERE ami.purchasing_batch_number = '$batch_num'";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -504,7 +504,7 @@ SELECT DISTINCT pol.po_line_id line_id,
     public function podetails($po_number,$lppb_number,$line_number){
        
        $oracle = $this->load->database('oracle',TRUE);
-        $query = "SELECT * FROM (SELECT distinct
+        $query = "SELECT * FROM(SELECT distinct
                             pol.line_num line_num,
                             poh.SEGMENT1 no_po,
                             rsh.receipt_num no_lppb,
@@ -524,7 +524,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                                                   WHERE RT.SHIPMENT_HEADER_ID = RTS.SHIPMENT_HEADER_ID
                                                   and rts.po_line_id = pol.PO_LINE_ID
                                                   AND RTS.TRANSACTION_TYPE IN ('REJECT','DELIVER','ACCEPT','RECEIVE','TRANSFER'))
-                        and poh.po_header_id(+) = pol.po_header_id union
+                        and poh.po_header_id(+) = pol.po_header_id
+                        union
                         SELECT distinct 
                                     pol.line_num line_num,
                                     poh.SEGMENT1 no_po,
@@ -534,8 +535,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                             ,PO_LINES_ALL POL
                         WHERE poh.po_header_id(+) = pol.po_header_id)
                 WHERE no_po = '$po_number'
-                AND no_lppb = '$lppb_number'
-                and line_num = $line_number ";
+                and line_num = $line_number
+                and no_lppb = '$lppb_number' ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -687,21 +688,9 @@ SELECT DISTINCT pol.po_line_id line_id,
                             and aipo.line_number not in ($line_number)
                             and poh.segment1 = '$po_number'
                             AND pol.po_line_id NOT IN (
-                               SELECT pol.po_line_id
-                                 FROM rcv_transactions rt,
-                                      po_headers_all poh,
-                                      po_lines_all pol
-                                WHERE poh.po_header_id = rt.po_header_id
-                                  AND pol.po_line_id = rt.po_line_id
-                                  AND rt.transaction_id =
-                                         (SELECT MAX (rts.transaction_id)
-                                            FROM rcv_transactions rts
-                                           WHERE rt.shipment_header_id = rts.shipment_header_id
-                                             AND rts.po_line_id = pol.po_line_id
-                                             AND rts.transaction_type IN
-                                                    ('REJECT', 'DELIVER', 'ACCEPT',
-                                                     'RECEIVE', 'TRANSFER'))
-                                  AND poh.po_header_id(+) = pol.po_header_id)");
+                               SELECT rt.po_line_id
+                                 FROM rcv_transactions rt
+                                WHERE pol.po_line_id = rt.po_line_id)");
         return $query->result_array();
     }
 
