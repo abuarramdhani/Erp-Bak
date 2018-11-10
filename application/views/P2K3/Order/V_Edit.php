@@ -71,7 +71,7 @@
                                                                                     <tr row-id="1" class="multiinput">
                                                                                     <td style="text-align:center; width:30px" id="nomor" ><?php echo $x?></td>
                                                                                     <td>
-                                                                                        <div class="form-group" style="width: 155px;">
+                                                                                        <div class="form-group" style="width: 200px;">
                                                                                             <div class="col-lg-12">
                                                                                                 <select required class="form-control apd-select2" name="txtJenisAPD[]" id="txtJenisAPD" data-id="1" onchange="JenisAPD(this)">
                                                                                                     <option><?php echo $key['item']?></option>
@@ -80,7 +80,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
-                                                                                        <div class="form-group" >
+                                                                                        <div class="form-group"  style="width: 155px;">
                                                                                             <div class="col-lg-12">
                                                                                             <input type="text" name="txtKodeItem[]" id="txtKodeItem" class="form-control" value="<?php echo $key['kode_item'];?>" data-id="<?php echo $x;?>" readonly/>
                                                                                             </div>
@@ -92,14 +92,14 @@
                                                                                         { 
                                                                                     ?>
                                                                                     <td>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group"  style="width: 100px;">
                                                                                             <div class="col-lg-12">
                                                                                             <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group" style="width: 100px;">
                                                                                             <div class="col-xs-12">
                                                                                             <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" />
                                                                                             </div>
@@ -111,14 +111,14 @@
                                                                                     ?>
                                                                                     <td>
                                                                                         <div class="form-group">
-                                                                                            <div class="col-lg-12">
+                                                                                            <div class="col-lg-12" style="width: 100px;">
                                                                                             <input type="hidden" name="jmlpekerjaan[]" value="<?php echo $i;?>">
                                                                                             <input required type="number" name="txtKebutuhanUmum[]" id="txtKebutuhanUmum" class="form-control" min="0" step="0" value="<?php echo $key['jml_umum'];?>" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group" style="width: 300px;">
                                                                                             <div class="col-lg-12">
                                                                                             <input type="text" name="txtKeterangan[]" id="txtKeterangan" class="form-control" value="<?php echo $key['desc'];?>" />
                                                                                             </div>
