@@ -229,7 +229,7 @@ class C_MyKaizen extends CI_Controller
 				$this->M_submit->SaveApprover($data);
 			}
 				$this->EmailAlert($level1,$kaizen_id);
-				$this->sendPidgin($approvernya,$kaizen_id);
+				$this->sendPidgin($level1,$kaizen_id);
 				$updateReady = $this->M_mykaizen->updateReady(6, $kaizen_id, 1);
 			$data2 = array('approval_realisasi' => '1');
 			$this->M_submit->saveUpdate($kaizen_id,$data2);
@@ -317,7 +317,7 @@ class C_MyKaizen extends CI_Controller
 	private function sendPidgin($user, $kaizen_id)
 		{
 			//email
-			$this->load->library('sendmessage');
+			$this->load->library('Sendmessage');
 			$getEmail = $this->M_submit->getEmail($user);
 			$userAccount = $getEmail[0]['pidgin_account'];
 			// $userAccount = 'kuswandaru@chat.quick.com';
@@ -331,7 +331,7 @@ class C_MyKaizen extends CI_Controller
 			$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
 			$body = str_replace('<br />', "\n", $body);
 
-			$pidgin = new sendmessage;
+			$pidgin = new Sendmessage;
 			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
 

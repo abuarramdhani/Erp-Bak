@@ -1870,3 +1870,21 @@ $(document).ready(function(){
 			$('#txtPelaksana').val('');
 		}
 	}
+
+	//ADM Cabang
+$(function(){
+	$('#txtPeriodePresensiHarian').daterangepicker({
+		"todayHighlight" : true,
+		"autoclose": true,
+		locale: {
+					format: 'DD MMMM YYYY'
+				},
+	});
+	$('#txtPeriodePresensiHarian').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD MMMM YYYY') + ' - ' + picker.endDate.format('DD MMMM YYYY'));
+	});
+
+	$('#txtPeriodePresensiHarian').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+});
