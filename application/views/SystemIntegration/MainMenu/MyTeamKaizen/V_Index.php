@@ -76,15 +76,15 @@
                   <tr class="<?= $desc[$a]['bg_color'] ?>">
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="2%">No</th>
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="24%">Judul Kaizen</th>
-                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="13%">Pencetus</th>
+                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="17%">Pencetus</th>
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="10%">Tanggal Dibuat</th>
-                    <th class="text-center" style="vertical-align: middle;" colspan="2" width="24%">Status</th>
-                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="10%">Lapor</th>
+                    <th class="text-center" style="vertical-align: middle;" colspan="2" width="30%">Status</th>
+                    <!-- <th class="text-center" style="vertical-align: middle;" rowspan="2" width="10%">Lapor</th> -->
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="13%">Action</th>
                   </tr>
                   <tr class="<?= $desc[$a]['bg_color'] ?>">
-                    <th class="text-center" style="vertical-align: middle;" width="12%" >Ide Kaizen</th>
-                    <th class="text-center" style="vertical-align: middle;" width="12%" >Realisasi Ide </th>
+                    <th class="text-center" style="vertical-align: middle;" width="15%" >Ide Kaizen</th>
+                    <th class="text-center" style="vertical-align: middle;" width="15%" >Realisasi Ide </th>
                   </tr>
                 </thead>
                  <tbody>
@@ -129,23 +129,6 @@
                           <span class="label label-success">Approved Realisasi <b class="fa fa-check-circle"></b></span>
                         <?php } else {?>
                           <span class="label label-default btn-real-dis">Submit Realisasi </span>
-                        <?php } ?>
-                      </td>
-                      <td class="text-center ">
-                        <?php if ($kaizen_item['status'] == 7) { ?>
-                          <!-- <a href="" > -->
-                          <?php if($kaizen_item['user_id'] == $this->session->userdata('userid')): ?>
-                          <span data-id="<?= $kaizen_item['kaizen_id'] ?>" id="SIlaporkanKai" class="label label-primary btn-real-ena faa-flash faa-slow animated">Laporkan <b class="fa fa-arrow-right"></b></span>
-                          <?php else: ?>
-                            <span data-id="<?= $kaizen_item['kaizen_id'] ?>" class="label label-primary btn-real-ena faa-flash faa-slow animated">Laporkan <b class="fa fa-arrow-right"></b></span>
-                          <?php endif; ?>
-                          <!-- </a> -->
-                        <?php }elseif ($kaizen_item['status'] == 9) { ?>
-                          <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <i class="fa fa-check-circle text-info"></i>
-                          </span>
-                            <br>(<?= date('d M Y', strtotime($kaizen_item['status_date'])) ?>)
-                        <?php } else{?>
-                          <span class="label label-default btn-real-dis">Laporkan </span>
                         <?php } ?>
                       </td>
                       <td class="text-center">

@@ -2,7 +2,15 @@
   .select2-container {
     width: 100% !important;
     padding: 0;
-}
+  }
+      .btn-real-dis{
+   /*cursor: pointer;*/
+   color: #888;
+  }
+
+  .btn-real-ena{
+    cursor: pointer;
+  }
 </style>
 <section class="content">
   <div class="box box-default color-palette-box">
@@ -57,11 +65,12 @@
               <table class="table table-bordered table-fit tblSIKaizen" id="<?= $desc[$i]['id_table'] ?>">
                 <thead>
                   <tr class="<?= $desc[$i]['bg_color'] ?>">
-                    <th class="text-center" width="6%">No</th>
-                    <th class="text-center" width="34%">Judul Kaizen</th>
+                    <th class="text-center" width="3%">No</th>
+                    <th class="text-center" width="28%">Judul Kaizen</th>
                     <th class="text-center" width="20%">Pencetus</th>
                     <th class="text-center" width="12%">Tanggal Dibuat</th>
-                    <th class="text-center" width="23%">Status</th>
+                    <th class="text-center" width="22%">Status</th>
+                    <th class="text-center" width="10%">Lapor</th>
                     <th class="text-center" width="5%">Action</th>
                   </tr>
                 </thead>
@@ -73,10 +82,7 @@
                       <td><?= $kaizen_item['pencetus']; ?></td>
                       <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
                       <td class="text-left">
-                            <?php if ($kaizen_item['status'] == 2
-                                      || $kaizen_item['status'] == 3 
-                                      || $kaizen_item['status'] == 4
-                                      || $kaizen_item['status'] == 5) { ?>
+                            <?php if ($kaizen_item['status_approve']) { ?>
                                 <table width="100%">
                                         <tr>
                                             <td width="38%">
@@ -109,6 +115,19 @@
                                 </table>
 
                             <?php } ?>
+                      </td>
+                      <td class="text-center">
+                         <?php if ($kaizen_item['status'] == 7) { ?>
+                          <!-- <a href="" > -->
+                          <span data-id="<?= $kaizen_item['kaizen_id'] ?>" id="SIlaporkanKai" class="label label-primary btn-real-ena faa-flash faa-slow animated">Laporkan <b class="fa fa-arrow-right"></b></span>
+                          <!-- </a> -->
+                        <?php }elseif ($kaizen_item['status'] == 9) { ?>
+                          <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <i class="fa fa-check-circle text-info"></i>
+                          </span>
+                            <br>(<?= date('d M Y', strtotime($kaizen_item['status_date'])) ?>)
+                        <?php } else{?>
+                          <span class="label label-default btn-real-dis">Laporkan </span>
+                        <?php } ?>
                       </td>
                       <td class="text-center">
                         <!-- view -->

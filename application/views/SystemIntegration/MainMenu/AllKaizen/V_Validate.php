@@ -40,13 +40,13 @@
 </form>
 <div class="col-md-12" style="margin-top: 20px">
 <?php if (isset($find)) { ?>
-  <table class="table table-bordered table-striped" id="tblKaizen">
+  <table class="table table-bordered table-striped " id="tblKaizen">
     <thead>
-      <tr class="bg-blue">
+      <tr class="bg-info">
         <th width="5%">No.</th>
         <th width="10%">Nomor Kaizen</th>
         <th width="30%">Judul</th>
-        <th width="20%">Creator</th>
+        <th width="20%">Pencetus</th>
         <th width="17%">Departemen</th>
         <!-- <th width="12%">Tanggal Lapor</th> -->
         <th width="6%"></th>
@@ -63,7 +63,7 @@
           <!-- <td><?php echo date('Y-m-d',strtotime($list['lapor_date'])); ?></td> -->
           <td>
             <center>
-            <a class="btn btn-sm btn-danger" href="<?php echo base_url('SystemIntegration/KaizenGenerator/View/'.$list['kaizen_id']); ?>"><i class="fa fa-file-pdf-o"></i></a>
+            <a class="btn btn-sm btn-danger" target="_blank" href="<?php echo base_url('SystemIntegration/KaizenGenerator/View/'.$list['kaizen_id']); ?>"><i class="fa fa-eye"></i></a>
             </center>
           </td>
         </tr>

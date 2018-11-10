@@ -72,7 +72,7 @@
           <!-- <td><?php echo date('Y-m-d',strtotime($list['lapor_date'])); ?></td> -->
           <td>
             <center>
-            <a class="btn btn-sm btn-danger" href="<?php echo base_url('SystemIntegration/KaizenGenerator/Pdf/'.$list['kaizen_id']); ?>"><i class="fa fa-file-pdf-o"></i></a>
+            <a class="btn btn-sm btn-danger" target="_blank" href="<?php echo base_url('SystemIntegration/KaizenGenerator/Pdf/'.$list['kaizen_id']); ?>"><i class="fa fa-file-pdf-o"></i></a>
             </center>
           </td>
         </tr>

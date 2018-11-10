@@ -97,8 +97,8 @@
           <td style="max-height: 50px ;border-top: 1px solid #000; font-weight: bold;" colspan="3" class="text-center">Kondisi Setelah Kaizen(Uraian / Gambar / Sket / Foto)</td>
         </tr>
         <tr>
-          <td style="border-right: 1px solid #000; vertical-align: top; text-align: justify" colspan="3"><?= $kaizen[0]['kondisi_awal'] ?></td>
-          <td style="border-right: 1px solid #000; vertical-align: top; text-align: justify" colspan="3"><?= $kaizen[0]['kondisi_akhir'] ?></td>
+          <td style="border-right: 1px solid #000; vertical-align: top; text-align: justify ; max-height:200px" colspan="3"  ><?= $kaizen[0]['kondisi_awal'] ?></td>
+          <td style="border-right: 1px solid #000; vertical-align: top; text-align: justify ; max-height:200px" colspan="3"  ><?= $kaizen[0]['kondisi_akhir'] ?></td>
         </tr>
       </tbody>
     </table>
