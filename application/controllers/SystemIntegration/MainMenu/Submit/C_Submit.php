@@ -300,6 +300,21 @@ class C_Submit extends CI_Controller
 				$this->load->view('SystemIntegration/MainMenu/Submit/V_Edit', $data);
 				$this->load->view('V_Footer');
 			} else {
+				if (strpos($this->input->post('txtKondisiAwal'), '<img src') !== false) {
+    			$kondisi_awal = str_replace('<img src', '<img class="img img-responsive" src', $this->input->post('txtKondisiAwal'));
+				} else {
+					$kondisi_awal = $this->input->post('txtKondisiAwal');
+				}
+				if (strpos($this->input->post('txtUsulan'), '<img src') !== false) {
+	    			$usulan_kaizen = str_replace('<img src', '<img class="img img-responsive" src', $this->input->post('txtUsulan'));
+				} else {
+					$usulan_kaizen = $this->input->post('txtUsulan');
+				}
+				if (strpos($this->input->post('txtPertimbangan'), '<img src') !== false) {
+	    			$pertimbangan = str_replace('<img src', '<img class="img img-responsive" src', $this->input->post('txtPertimbangan'));
+				} else {
+					$pertimbangan = $this->input->post('txtPertimbangan');
+				}
 				$komponen = $this->input->post('slcKomponen');
 				if (isset($komponen)) {
 					$komponen = implode(',', $komponen);
@@ -396,17 +411,22 @@ class C_Submit extends CI_Controller
 		}
 		
 		if (strpos($data['kaizen'][0]['kondisi_awal'], '<img') !== FALSE) {
-			$data['kaizen'][0]['kondisi_awal'] = str_replace('<img', '<img style="width: auto;height:auto" ', $data['kaizen'][0]['kondisi_awal']);
+			$data['kaizen'][0]['kondisi_awal'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['kondisi_awal']);
 		} else {
 			$data['kaizen'][0]['kondisi_awal'] = $data['kaizen'][0]['kondisi_awal'];
 		}
 		if (strpos($data['kaizen'][0]['usulan_kaizen'], '<img') !== FALSE) {
-			$data['kaizen'][0]['usulan_kaizen'] = str_replace('<img', '<img style="width: auto;height:auto" ', $data['kaizen'][0]['usulan_kaizen']);
+			$data['kaizen'][0]['usulan_kaizen'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['usulan_kaizen']);
 		} else {
 			$data['kaizen'][0]['usulan_kaizen'] = $data['kaizen'][0]['usulan_kaizen'];
 		}
+		if (strpos($data['kaizen'][0]['kondisi_akhir'], '<img') !== FALSE) {
+			$data['kaizen'][0]['kondisi_akhir'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['kondisi_akhir']);
+		} else {
+			$data['kaizen'][0]['kondisi_akhir'] = $data['kaizen'][0]['kondisi_akhir'];
+		}
 		if (strpos($data['kaizen'][0]['pertimbangan'], '<img') !== FALSE) {
-			$data['kaizen'][0]['pertimbangan'] = str_replace('<img', '<img style="width: auto;height:auto" ', $data['kaizen'][0]['pertimbangan']);
+			$data['kaizen'][0]['pertimbangan'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['pertimbangan']);
 		} else {
 			$data['kaizen'][0]['pertimbangan'] = $data['kaizen'][0]['pertimbangan'];
 		}

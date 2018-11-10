@@ -75,15 +75,15 @@
                 <thead>
                   <tr class="<?= $desc[$a]['bg_color'] ?>">
                     <th class="text-center" style="vertical-align: middle;" rowspan="2" width="2%">No</th>
-                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="24%">Judul Kaizen</th>
-                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="10%">Tanggal Dibuat</th>
-                    <th class="text-center" style="vertical-align: middle;" colspan="2" width="36%">Status</th>
-                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="15%">Lapor</th>
-                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="13%">Action</th>
+                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="30%">Judul Kaizen</th>
+                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="12%">Tanggal Dibuat</th>
+                    <th class="text-center" style="vertical-align: middle;" colspan="2" width="40%">Status</th>
+                    <!-- <th class="text-center" style="vertical-align: middle;" rowspan="2" width="15%">Lapor</th> -->
+                    <th class="text-center" style="vertical-align: middle;" rowspan="2" width="16%">Action</th>
                   </tr>
                   <tr class="<?= $desc[$a]['bg_color'] ?>">
                     <th class="text-center" style="vertical-align: middle;" width="24%" >Ide Kaizen</th>
-                    <th class="text-center" style="vertical-align: middle;" width="12%" >Realisasi Ide </th>
+                    <th class="text-center" style="vertical-align: middle;" width="16%" >Realisasi Ide </th>
                   </tr>
                 </thead>
                  <tbody>
@@ -148,35 +148,23 @@
                       <td class="text-center">
                         <?php if ($kaizen_item['status'] == 3) { ?>
                           <a href="<?= base_url('SystemIntegration/KaizenGenerator/SubmitRealisasi/'.$kaizen_item['kaizen_id']);?>" >
-                          <span class="label label-primary btn-real-ena faa-flash faa-slow animated">Submit Realisasi <b class="fa fa-arrow-right"></b></span>
+                          <span class="label label-primary btn-real-ena faa-flash faa-slow animated">Submit Realisasi <b class="fa fa-arrow-right"></b>&nbsp;</span>
                           </a>
                         <?php } elseif ($kaizen_item['status'] == 6) { ?>
                               <?php if ($kaizen_item['approval_realisasi'] == 1) { ?>
                                 <span class="label label-info ">Req. Approve Realisasi</span>
                               <?php }else{ ?>
                                 <a href="<?= base_url('SystemIntegration/KaizenGenerator/View/'.$kaizen_item['kaizen_id']);?>" >
-                                <span class="label label-info btn-real-ena faa-flash faa-slow animated">Request Approve <b class="fa fa-info-circle"></b></span>
+                                <span class="label label-info btn-real-ena faa-flash faa-slow animated">Request Approve <b class="fa fa-info-circle"></b>&nbsp;</span>
                                 </a>
                               <?php } ?>
                         <?php } elseif ($kaizen_item['status'] == 7 || $kaizen_item['status'] == 9 ) {?>
-                          <span class="label label-success">Approved Realisasi <b class="fa fa-check-circle"></b></span>
+                          <span class="label label-success">Approved Realisasi <b class="fa fa-check-circle"></b>&nbsp;</span>
                         <?php } else {?>
                           <span class="label label-default btn-real-dis">Submit Realisasi </span>
                         <?php } ?>
                       </td>
-                      <td class="text-center ">
-                        <?php if ($kaizen_item['status'] == 7) { ?>
-                          <!-- <a href="" > -->
-                          <span data-id="<?= $kaizen_item['kaizen_id'] ?>" id="SIlaporkanKai" class="label label-primary btn-real-ena faa-flash faa-slow animated">Laporkan <b class="fa fa-arrow-right"></b></span>
-                          <!-- </a> -->
-                        <?php }elseif ($kaizen_item['status'] == 9) { ?>
-                          <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <i class="fa fa-check-circle text-info"></i>
-                          </span>
-                            <br>(<?= date('d M Y', strtotime($kaizen_item['status_date'])) ?>)
-                        <?php } else{?>
-                          <span class="label label-default btn-real-dis">Laporkan </span>
-                        <?php } ?>
-                      </td>
+                     
                       <td class="text-center">
                         <!-- Req Approve -->
                         <!-- <a class="btn btn-xs btn-info"  href="#" data-toggle="modal" data-target="#req<?= $kaizen_item['kaizen_id'] ?>"><i class="fa fa-check"></i></a> -->

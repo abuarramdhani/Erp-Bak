@@ -18,7 +18,7 @@ class M_approvalkaizen extends CI_Model
 					FROM si.si_approval siap
 					LEFT JOIN er.er_employee_all emplo ON siap.approver = emplo.employee_code
 					WHERE siap.kaizen_id = $kaizen_id
-					order by level";
+					order by level"; 
 		}else{
 			$sql = "SELECT siap.* , emplo.*
 					FROM si.si_approval siap
@@ -32,7 +32,7 @@ class M_approvalkaizen extends CI_Model
 
 	function getMyApproval($employee_code = FALSE , $status = FALSE){
 		if ($status === FALSE) {
-			$sql = "SELECT *, approval.status status_approve
+			$sql = "SELECT kaizen.*, approval.status status_approve, approval.level
 					FROM si.si_kaizen kaizen 
 					INNER JOIN (SELECT approval1.* 
 									FROM si.si_approval approval1
@@ -42,7 +42,7 @@ class M_approvalkaizen extends CI_Model
 					WHERE approval.ready = '1'
 					AND kaizen.status <> 8";
 		}else{
-			$sql = "SELECT *, approval.status status_approve
+			$sql = "SELECT kaizen.*, approval.status status_approve, approval.level
 					FROM si.si_kaizen kaizen 
 					INNER JOIN (SELECT approval1.* 
 									FROM si.si_approval approval1

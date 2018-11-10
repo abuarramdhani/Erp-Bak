@@ -26,10 +26,10 @@ class C_Report extends CI_Controller
 
 	public function checkSession()
 		{
-				if ($this->session->is_logged) {
-				}else{
-					redirect();
-				}
+			if ($this->session->is_logged) {
+			}else{
+				redirect();
+			}
 		}
 
 	public function index()
@@ -77,14 +77,14 @@ class C_Report extends CI_Controller
 			$user_id = $this->session->userid;
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
-			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 			$this->input->post('txtStartDate');
 			$this->input->post('txtEndDate');
 			
 			$start = date("Y-m-d", strtotime($this->input->post('txtStartDate')));
-			$end = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
+			$end   = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
 			$data['find'] = $this->M_report->getKaizenExport($start, $end);
 			$data['start'] = $start;
 			$data['end'] = $end;
@@ -98,7 +98,7 @@ class C_Report extends CI_Controller
 	public function export()
 	{
 		$start = date("Y-m-d", strtotime($this->input->post('txtStartDate')));
-		$end = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
+		$end   = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
 		
 		// $realisasi=$this->input->post('txtRealisasi');
 		$data = $this->M_report->getKaizenExport($start, $end);
