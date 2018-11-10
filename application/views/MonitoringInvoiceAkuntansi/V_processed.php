@@ -28,7 +28,7 @@
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td><?php echo $processed[0]['INVOICE_NUMBER']?></td>
+										<td class="inv_amount" id="invoice_amount"><?php echo $processed[0]['INVOICE_NUMBER']?></td>
 									</tr>
 									<tr>
 										<td>

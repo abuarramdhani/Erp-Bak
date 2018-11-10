@@ -62,7 +62,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amount" >
+											<input class="form-control" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="invoice_amounttttt" >
 										</td>
 									</tr>
 									<tr>

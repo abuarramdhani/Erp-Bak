@@ -68,8 +68,8 @@
 										<td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['INVOICE_ID']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['TAX_INVOICE_NUMBER']?>" > 
 											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
 											</button></td>
-										<td id="inv_amount" class="inv_amount"><?php echo round($inv['INVOICE_AMOUNT']) ?></td>
-										<td id="po_amount" class="po_amount"><?php echo round($inv['PO_AMOUNT'])?></td>
+										<td class="inv_amount"><?php echo $inv['INVOICE_AMOUNT']?></td>
+										<td class="po_amount"><?php echo $inv['PO_AMOUNT']?></td>
 										<td><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ?>
 										<?php }} ?></td>

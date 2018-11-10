@@ -22,7 +22,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="rejectdetail" >
+								<table id="rejectdetail"  >
 									<?php $no=1; ?>
 									<tr>
 										<td>
@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" id="invoice_amount" readonly>
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" readonly>
 										</td>
 									</tr>
 									<tr>

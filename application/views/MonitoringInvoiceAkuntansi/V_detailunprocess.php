@@ -42,7 +42,7 @@
 										<td>
 											<span><label>Invoice Amount</label></span>
 										</td>
-										<td class="inv_amount">
+										<td class="inv_amount" id="invoice_amount">
 											<?php echo round($detail[0]['INVOICE_AMOUNT'])?>
 										</td>
 									</tr>

@@ -47,13 +47,13 @@
 											</a></td>
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
-											<td class="inv_amount"><?php echo round($u['INVOICE_AMOUNT'])?></td>
+											<td class="inv_amount" id="invoice_amount"><?php echo round($u['INVOICE_AMOUNT'])?></td>
 											<td class="po_amount"><?php echo round($u['PO_AMOUNT'])?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
-											<td><?php if($u['LAST_STATUS_FINANCE_DATE'] == null){ ?>
+											<td><?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
 												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Process</button>
 											<?php }else{ ?>
-												<span type="button" data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</button>
+												<span data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</span>
 											<?php } ?>
 											</td>
 										</tr>

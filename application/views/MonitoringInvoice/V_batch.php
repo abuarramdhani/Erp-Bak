@@ -4,7 +4,7 @@
 		font-size: 36px
 	}
 </style>
-
+<form action="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/exportExcelMonitoringInvoice') ?>" method="post">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -12,11 +12,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Batch Detail</b></span>
+							<span><b>Batch Detail</b></span><input type="hidden" style="width: 10%" name="batch_num" class="form-control" value="<?php echo $batch_number; ?>">
 						</div>
 					</div>
 					<div class="col-lg-12">
-						<button type="button" class="btn btn-success pull-right clickExcel" id="clickExcel" onclick="clickExcel()" data-toggle="modal" data-target="#modaltariktanggal" >Export Excel</button>
+						<button type="sumbit" class="btn btn-success pull-right" id="clickExcel">Export Excel</button>
 					</div>
 				</div>
 				<br />
@@ -80,49 +80,8 @@
 			</div>
 		</div>
 	</div>
-	<!-- Modal Tarikan Tanggal -->
-<form action="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/exportExcelMonitoringInvoice') ?>" method="post">
-<div id="modaltariktanggal" class="modal fade" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content"  id="tarik_data" >
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		    <h5 class="modal-title">Periode Tanggal Tarikan Data</h5><input type="hidden" style="width: 10%" name="batch_num" class="form-control" value="<?php echo $batch_number; ?>" readonly>
-		  </div>
-		  <div class="modal-body">
-		    <table id="filter">
-				<tr>
-					<td>
-						<div class="input-group date" data-provide="datepicker">
-	    					<input size="30" type="text" class="form-control" name="dateTarikFrom" id="dateTarikFrom" placeholder="From">
-	    					<div class="input-group-addon">
-	        					<span class="glyphicon glyphicon-calendar"></span>
-	    					</div>
-						</div>
-					</td>
-					<td>
-						<span class="align-middle">s/d</span>
-					</td>
-					<td>
-						<div class="input-group date" data-provide="datepicker">
-	    					<input size="30" type="text" class="form-control" name="dateTarikTo" id="dateTarikTo" placeholder="To">
-	    					<div class="input-group-addon">
-	        					<span class="glyphicon glyphicon-calendar"></span>
-	    					</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		  </div>
-		  <div class="modal-footer">
-		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		    <button type="submit" class="btn btn-primary">Yes</button>
-		  </div>
-		</div>
- 	</div>
-</div>
-</form>
 </section>
+</form>
 
 
 	

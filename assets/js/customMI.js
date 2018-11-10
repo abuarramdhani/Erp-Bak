@@ -1,39 +1,39 @@
 
 $(document).ready(function(){
 
-$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
-        "pagingType": "full_numbers"
-} );
+	$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
+	        "pagingType": "full_numbers"
+	} );
 
-$('#btnSubmitChecking').click(function(){
-	var jml = 0;
-	var arrId = [];
-	$('input[name="mi-check-list[]"]').each(function(){
-		if ($(this).parent().hasClass('checked')) {
-			jml = jml +1;
-			valueId = $(this).val();
-			arrId.push(valueId);
-			var hasil = arrId.join();
-			$('input[name="idYangDiPilih"]').val(hasil);
-		}
+	$('#btnSubmitChecking').click(function(){
+		var jml = 0;
+		var arrId = [];
+		$('input[name="mi-check-list[]"]').each(function(){
+			if ($(this).parent().hasClass('checked')) {
+				jml = jml +1;
+				valueId = $(this).val();
+				arrId.push(valueId);
+				var hasil = arrId.join();
+				$('input[name="idYangDiPilih"]').val(hasil);
+			}
+		});
+		$('#jmlChecked').text(jml);
+		$('#content1').slideDown();
+		$('#content2').slideUp();
 	});
-	$('#jmlChecked').text(jml);
-	$('#content1').slideDown();
-	$('#content2').slideUp();
-});
 
 
-function chkAllAddMonitoringInvoice() {
-	if ($('.chkAllAddMonitoringInvoice').is(':checked')) {
-		$('.addMonitoringInvoice').each(function () {
-			$(this).prop('checked',true);
-		});
-	}else{
-		$('.addMonitoringInvoice').each(function () {
-			$(this).prop('checked',false);
-		});
-	};
-}
+	function chkAllAddMonitoringInvoice() {
+		if ($('.chkAllAddMonitoringInvoice').is(':checked')) {
+			$('.addMonitoringInvoice').each(function () {
+				$(this).prop('checked',true);
+			});
+		}else{
+			$('.addMonitoringInvoice').each(function () {
+				$(this).prop('checked',false);
+			});
+		};
+	}
 
 	
 
@@ -46,25 +46,6 @@ function chkAllAddMonitoringInvoice() {
 
 	$('#slcVendor').val($('#slcVendor').attr('value')).trigger('change');
 	
-	$('#invoice_amounttttt').change(function(){
-		// alert('satu');
-		var total=0;
-		var invAmount = $('#invoice_amounttttt').moneyFormat();
-		$('.qty_invoice').each(function() {
-			var qty = $(this).val();
-			var rownum = $(this).attr('row-num')
-			var price = $('.unit_price[row-num="'+rownum+'"]').val();
-			var rowtotal = qty*price;
-			total+=Number(rowtotal);
-		});
-		$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
-
-		if (total == invAmount) {
-				$('#invoice_amount, #AmountOtomatis').css("background-color","white");
-			}else{
-			 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
-			}
-	});
 
 	var $po_num_btn = $('#slcPoNumberMonitoring');
 	$('.btn_search').on('mousedown', function () {
@@ -77,30 +58,30 @@ function chkAllAddMonitoringInvoice() {
 	    }
 	});
 
+	// $("input[id='invoice_amounttttt']").keyup(function() {
+ //    	var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	// });
 
- 	$('#invoice_amounttttt').change(function(){
- 		$(document).on('input click', '.qty_invoice, .del_row', function(){
-		// alert('dua');
+	$(document).on('input click', '.qty_invoice, .del_row, input[id="invoice_amounttttt"]', function(){
 		var total=0;
-		var invAmount = $('#invoice_amounttttt').val().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+		var invAmount = $("input[id='invoice_amounttttt']").val(); //.replace( /[^0-9]+/g, "");
 		$('.qty_invoice').each(function() {
 			var qty = $(this).val();
 			var rownum = $(this).attr('row-num')
 			var price = $('.unit_price[row-num="'+rownum+'"]').val();
 			var rowtotal = qty*price;
-			total+=Number(rowtotal);
-		});
-		$('#AmountOtomatis').html(Math.round(total)).moneyFormat();
+			total+=Math.round(Number(rowtotal));
+		});	
+		$('#AmountOtomatis').html(total);
+		//$('#AmountOtomatis').html($('#AmountOtomatis').html().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 
 		if (total == invAmount) {
-				$('#invoice_amount, #AmountOtomatis').css("background-color","white");
+				$('#invoice_amounttttt, #AmountOtomatis').css("background-color","white");
 			}else{
-			 	$('#invoice_amount, #AmountOtomatis').css("background-color","red");
+			 	$('#invoice_amounttttt, #AmountOtomatis').css("background-color","red");
 			}
-		});
-
-		
 	});
+
 	
 	var num=0;
 	$('#btnSearchPoNumber').click(function(){
@@ -179,39 +160,36 @@ function chkAllAddMonitoringInvoice() {
 		alert('Yakin untuk menghapusnya ?');
 	});
 
+	$('table#tbListInvoice tbody tr').each(function(){
+		var po_amount = $(this).find('.po_amount').text();
+		var inv_amount = $(this).find('.inv_amount').text();
 
-	$('table#tbListInvoice tbody tr, #rejectinvoice tbody tr, #rejectdetail tbody tr, #rejectpo tbody tr, #tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbListBatchPembelian tbody tr,#poLinesTable tbody tr,#detailUnprocessed tbody tr,#finishInvoice tbody tr,#processedinvoice tbody tr').each(function(){
+
+		if (po_amount == inv_amount) {
+			$(this).find('.po_amount').css("background-color","white");
+			$(this).find('.inv_amount').css("background-color","white");
+		}else{
+			$(this).find('.po_amount').css("background-color","red").css("color","white");
+			$(this).find('.inv_amount').css("background-color","red").css("color","white");
+		}
+	})
+
+
+	$('table#rejectinvoice tbody tr, #rejectdetail tbody tr, #rejectpo tbody tr, #tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbListBatchPembelian tbody tr, #poLinesTable tbody tr, #detailUnprocessed tbody tr,#finishInvoice tbody tr,#processedinvoice tbody tr, #invoiceKasiePembelian tbody tr, #tbInvoiceKasie tbody tr').each(function(){
 			var po_amount = $(this).find('.po_amount').text();
-			var inv_amount = $(this).find('.inv_amount').text();
+			var inv_amount = $(this).find('#invoice_amount').text();
 
 
 			if (po_amount == inv_amount) {
 				$(this).find('.po_amount').css("background-color","white");
-				$(this).find('.inv_amount').css("background-color","white");
+				$(this).find('#invoice_amount').css("background-color","white");
 			}else{
 				$(this).find('.po_amount').css("background-color","red").css("color","white");
-				$(this).find('.inv_amount').css("background-color","red").css("color","white");
+				$(this).find('#invoice_amount').css("background-color","red").css("color","white");
 			}
-		});
+	});
 
-	function prosesInvMI(th){
-	var invoice_id = $(th).attr('data-id');
-	var proses = $(th).attr('value');
-
-	var request = $.ajax ({
-			url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/prosesAkuntansi/'+invoice_id,
-			data: {
-					proses : proses
-					},
-			type: 'POST',
-			dataType: 'html', 
-		});
-		$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
-		
-		request.done(function(output){
-			$("#gambarloading").parent().html('<button class="btn btn-success">Success</button>');
-		});
-	}
+	
 
 	$('#btnGenerate').click(function(){
 		var invoice_date = $('#invoice_dateid').val();
@@ -228,12 +206,6 @@ function chkAllAddMonitoringInvoice() {
 			}
 		});
 	});
-
-	function clickExcel(){
-		$('.clickExcel').click(function(){
-			$('#tarik_data').modal('show');
-		});
-	}
 
 
 	$('.RejectByKasiePurc').click(function(){
@@ -265,6 +237,25 @@ function chkAllAddMonitoringInvoice() {
 		alert('Invoice akan di submit ke finance');
 	});
 });
+
+function prosesInvMI(th){
+	var invoice_id = $(th).attr('data-id');
+	var proses = $(th).attr('value');
+
+	var request = $.ajax ({
+			url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/prosesAkuntansi/'+invoice_id,
+			data: {
+					proses : proses
+					},
+			type: 'POST',
+			dataType: 'html', 
+		});
+		$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
+		
+		request.done(function(output){
+			$("#gambarloading").parent().html('<button class="btn btn-success">Success</button>');
+		});
+	}
 
 
 

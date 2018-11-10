@@ -214,7 +214,6 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$detail = $this->M_kasiepembelian->invoiceDetail($invoice_id);
-		
 
 		$data['invoice_detail'] = $detail;
 		$data['batch_number'] = $nomorbatch;

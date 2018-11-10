@@ -50,7 +50,7 @@
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($b['INVOICE_DATE']))?></td>
 											<td><?php echo $b['TAX_INVOICE_NUMBER']?></td>
-											<td class="inv_amount"><?php echo round($b['INVOICE_AMOUNT'])?></td>
+											<td class="inv_amount" id="invoice_amount"><?php echo round($b['INVOICE_AMOUNT'])?></td>
 											<td class="po_amount"><?php echo round($b['PO_AMOUNT'])?></td>
 											<td style="background-color: <?php if ($b['FINANCE_STATUS'] == '1') { ?>
 												grey

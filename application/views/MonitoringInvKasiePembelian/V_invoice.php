@@ -3,7 +3,7 @@
 	.text-left span {
 		font-size: 36px
 	}
-	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
+	#tbFilterPO tr td,#tbInvoiceKasie tr td{padding: 5px}
 </style>
 
 <section class="content">
@@ -23,7 +23,7 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 							<form id="filInvoice" >
-								<table id="tbInvoice" >
+								<table id="tbInvoiceKasie" >
 									<tr>
 										<td>
 											<span><label>Invoice Number</label></span>
@@ -42,7 +42,7 @@
 										<td>
 											<span><label>Invoice Amount</label></span>
 										</td>
-										<td>
+										<td class="inv_amount" id="invoice_amount">
 											<?php echo round($invoice_detail[0]['INVOICE_AMOUNT'])?>
 										</td>
 									</tr>
@@ -58,7 +58,7 @@
 							</form>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow: auto">
-						<table class="table table-bordered table-hover table-striped text-center" style="width: 200%">
+						<table id="invoiceKasiePembelian" class="table table-bordered table-hover table-striped text-center" style="width: 200%">
 							<thead>
 								<tr class="bg-primary">
 									<th class="text-center">No</th>
@@ -77,14 +77,14 @@
 							</thead>
 							<tbody>
 								<?php $no=1; $po_amount=0; foreach($invoice_detail as $b){?>
-								<tr id="<?php echo $no;?>">
+								<tr>
 									<td class="text-center"><?php echo $no ?></td>
 									<td class="text-center"><?php echo $b['VENDOR_NAME']?></td>
 									<td class="text-center"><?php echo $b['PO_NUMBER']?></td>
 									<td class="text-center"><?php echo $b['LPPB_NUMBER']?></td>
 									<td class="text-center"><?php echo $b['SHIPMENT_NUMBER']?></td>
 									<td class="text-center"><?php echo $b['RECEIVED_DATE']?></td>
-									<td class="text-center"><?php echo $b['ITEM_DESCTIPTION']?></td>
+									<td class="text-center"><?php echo $b['ITEM_DESCRIPTION']?></td>
 									<td class="text-center"><?php echo $b['QTY_RECEIPT']?></td>
 									<td class="text-center"><?php echo $b['QTY_REJECT']?></td>
 									<td class="text-center"><?php echo $b['CURRENCY']?></td>
@@ -96,7 +96,7 @@
 						</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span><?php echo round($po_amount) ?></span>
+							<label>Po Amount : </label><span class="po_amount"><?php echo round($po_amount) ?></span>
 						</div>
 						<div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$batch_number)?>">

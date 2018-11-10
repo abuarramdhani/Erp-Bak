@@ -48,10 +48,10 @@
 											<td class="inv_amount"><?php echo round($f['INVOICE_AMOUNT'])?></td>
 											<td class="po_amount"><?php echo round($f['PO_AMOUNT'])?></td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
-											<?php if($f['LAST_PURCHASING_INVOICE_STATUS'] == 2){ 
-												$status = 'Rejected by Kasie Purchasing';
-											} ?>
-											<td><?php echo $status ?></td>
+											<?php if($f['LAST_PURCHASING_INVOICE_STATUS'] == 3){
+												$status = 'Rejected by Kasie Purchasing'; 
+												?> <td><?php echo $status?></td> <?php
+											} else{ ?> <td><?php echo 'Invoice Tidak Reject'?></td> <?php }?>
 											<td><?php echo $f['REASON']?></td>
 											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
 										</tr>
