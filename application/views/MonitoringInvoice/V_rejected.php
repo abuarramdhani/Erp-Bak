@@ -45,8 +45,8 @@
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
-											<td class="inv_amount"><?php echo round($f['INVOICE_AMOUNT'])?></td>
-											<td class="po_amount"><?php echo round($f['PO_AMOUNT'])?></td>
+											<td class="inv_amount"><?php echo $f['INVOICE_AMOUNT']?></td>
+											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<?php if($f['LAST_PURCHASING_INVOICE_STATUS'] == 3){
 												$status = 'Rejected by Kasie Purchasing'; 

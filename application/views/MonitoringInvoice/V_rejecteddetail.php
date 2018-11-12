@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo round($invoice[0]['INVOICE_AMOUNT'])?>" readonly>
+											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -126,7 +126,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span class="po_amount"><?php echo round($po_amount) ?></span>
+										<label>Po Amount : </label><span class="po_amount"><?php echo $po_amount ?></span>
 									</div>
 								</div>
 							</div>
