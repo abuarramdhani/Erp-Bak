@@ -55,8 +55,8 @@
 											<td><?php echo $inv['INVOICE_NUMBER'] ?></td>
 											<td><?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
 											<td><?php echo $inv['TAX_INVOICE_NUMBER'] ?></td>
-											<td class="inv_amount" ><?php echo round($inv['INVOICE_AMOUNT']) ?></td>
-											<td class="po_amount"><?php echo round($inv['PO_AMOUNT']) ?></td>
+											<td class="inv_amount" ><?php echo $inv['INVOICE_AMOUNT'] ?></td>
+											<td class="po_amount"><?php echo $inv['PO_AMOUNT'] ?></td>
 											<?php if ( $inv['STATUS'] == 0) {
 												$stat = 'New/Draft';
 												}elseif ($inv['STATUS'] == 1) {
