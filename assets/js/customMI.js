@@ -37,8 +37,8 @@ $(document).ready(function(){
 
 	
 
-	$('.inv_amount').moneyFormat();
-	$('.po_amount').moneyFormat();
+	// $('.inv_amount').moneyFormat();
+	// $('.po_amount').moneyFormat();
 
 	$("input[name='tax_invoice_number']").attr({ maxLength : 19 }).keyup(function() {
     	$(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{2})(\d)+$/, "$1.$2-$3.$4"));

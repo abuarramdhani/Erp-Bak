@@ -178,7 +178,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showInvoice(){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT distinct ami.invoice_number invoice_number, 
+        $query = "SELECT ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, 
@@ -224,7 +224,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showEditList1($invoice_id){
         $oracle = $this->load->database('oracle',true);
-        $query = "SELECT distinct invoice_id invoice_id, 
+        $query = "SELECT invoice_id invoice_id, 
                     po_number po_number,
                     lppb_number lppb_number,
                     shipment_number shipment_number,
@@ -243,7 +243,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showEditList2($invoice_id){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT distinct invoice_id invoice_id,
+        $query = "SELECT invoice_id invoice_id,
                          invoice_number invoice_number, 
                          invoice_date invoice_date, 
                          tax_invoice_number tax_invoice_number,
@@ -410,15 +410,16 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function checkInvoiceDate($uw){ 
     $erp_db = $this->load->database('oracle',true); 
-    $sql = "SELECT distinct invoice_date FROM
-    khs_ap_monitoring_invoice WHERE invoice_date = to_date('$uw',
-    'DD/MM/YYYY') AND ROWNUM = 1"; 
-    $runQuery = $erp_db->query($sql); 
-    return $runQuery->result_array(); }
+    $sql = "SELECT invoice_date FROM
+            khs_ap_monitoring_invoice WHERE invoice_date = to_date('$uw',
+            'DD/MM/YYYY') AND ROWNUM = 1"; 
+            $runQuery = $erp_db->query($sql); 
+    return $runQuery->result_array(); 
+    }
 
     public function checkInvoiceDatecount($uw){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT distinct invoice_date
+        $sql = "SELECT invoice_date
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_date = to_date('$uw', 'DD/MM/YYYY')";
         $runQuery = $erp_db->query($sql);

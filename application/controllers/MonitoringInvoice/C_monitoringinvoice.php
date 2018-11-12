@@ -397,17 +397,13 @@ class C_monitoringinvoice extends CI_Controller{
 
 		$checkdate=$this->M_monitoringinvoice->checkInvoiceDate($dt);
 		$checkcount =$this->M_monitoringinvoice->checkInvoiceDatecount($dt);
-		
-		if($checkdate){
-			$checkdate = $checkdate[0]['INVOICE_DATE'];
-			$checkdate = date('d/M/Y',strtotime($checkdate));
-		}
-		if ($checkdate == $dt) {
-			$uw = strtoupper(str_replace('/', '', $dt));
+
+		if ($checkdate) {
+			$uw = strtoupper(str_replace('-', '', $dt));
 			echo $uw.'-'.count($checkcount);
-		}else {
+		}else{
 			echo $uw;
-		}				
+		}			
 	}
 
 	public function exportExcelMonitoringInvoice(){
