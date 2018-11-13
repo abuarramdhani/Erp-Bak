@@ -160,7 +160,7 @@ $(document).ready(function(){
 		alert('Yakin untuk menghapusnya ?');
 	});
 
-	$('table#tbListInvoice tbody tr').each(function(){
+	$('table#tbListInvoice tbody tr, #tbListBatchPembelian  tbody tr, #finishInvoice tbody tr').each(function(){
 		var po_amount = $(this).find('.po_amount').text();
 		var inv_amount = $(this).find('.inv_amount').text();
 
@@ -175,17 +175,29 @@ $(document).ready(function(){
 	})
 
 
-	$('table#rejectinvoice tbody tr, #rejectdetail tbody tr, #rejectpo tbody tr, #tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbListBatchPembelian tbody tr, #poLinesTable tbody tr, #detailUnprocessed tbody tr,#finishInvoice tbody tr,#processedinvoice tbody tr, #invoiceKasiePembelian tbody tr, #tbInvoiceKasie tbody tr').each(function(){
-			var po_amount = $(this).find('.po_amount').text();
-			var inv_amount = $(this).find('#invoice_amount').text();
-
+	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #tbInvoice tbody tr, processedinvoice tbody tr').each(function(){
+			var po_amount = $('.po_amount').text();
+			var inv_amount = $('#invoice_amount').text().replace( /[^0-9]+/g, "");
 
 			if (po_amount == inv_amount) {
-				$(this).find('.po_amount').css("background-color","white");
-				$(this).find('#invoice_amount').css("background-color","white");
+				$('.po_amount').css("background-color","white");
+				$('#invoice_amount').css("background-color","white");
 			}else{
-				$(this).find('.po_amount').css("background-color","red").css("color","white");
-				$(this).find('#invoice_amount').css("background-color","red").css("color","white");
+				$('.po_amount').css("background-color","red").css("color","white");
+				$('#invoice_amount').css("background-color","red").css("color","white");
+			}
+	});
+
+	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr').each(function(){
+			var po_amount = $('.po_amount').text();
+			var inv_amount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
+
+			if (po_amount == inv_amount) {
+				$('.po_amount').css("background-color","white");
+				$('#invoice_amount').css("background-color","white");
+			}else{
+				$('.po_amount').css("background-color","red").css("color","white");
+				$('#invoice_amount').css("background-color","red").css("color","white");
 			}
 	});
 

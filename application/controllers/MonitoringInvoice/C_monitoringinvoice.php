@@ -183,6 +183,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$invoice = $this->M_monitoringinvoice->showDetailPerBatch($batch);
+
 		$no = 0;
 		foreach ($invoice as $inv ) {
 			$invoice_id = $inv['INVOICE_ID'] ;
@@ -267,7 +268,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$invNumber = $this->input->post('po_numberInv');
-		$data['allVendor'] = $this->M_monitoringinvoice->getVendorName();
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);		
 		$no = 0;
@@ -300,7 +300,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice_date = $this->input->post('invoice_date');
 		$invoice_amount = $this->input->post('invoice_amount');
 		$tax_invoice_number = $this->input->post('tax_invoice_number');
-		$vendor_number = $this->input->post('vendor_number');
 		$po_number = $this->input->post('po_number[]');
 		$lppb_number = $this->input->post('lppb_number[]');
 		$shipment_number = $this->input->post('shipment_number[]');
@@ -314,11 +313,8 @@ class C_monitoringinvoice extends CI_Controller{
 
 		// $amount = str_replace(',', '', $invoice_amount);
 
-		
-		$vendor_name = $this->M_monitoringinvoice->namavendor($vendor_number);
-		$vendorname = $vendor_name[0]['VENDOR_NAME'];
 
-		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendorname,$vendor_number);
+		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number);
 
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_id,$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
@@ -455,12 +451,12 @@ class C_monitoringinvoice extends CI_Controller{
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I4', "Invoice Date");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J4', "Invoice Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K4', "Accept by Purchasing");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L4', "Batch");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L4', "Purchase Batch Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M4', "Accept by Accounting");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N4', "PPN");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O4', "Tax Invoice Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P4', "Accept by Purchasing");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q4', "Batch");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q4', "Finance Batch Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R4', "Accept by Accounting");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S4', "Update by Purchasing");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T4', "Update by Accounting");
@@ -489,18 +485,18 @@ class C_monitoringinvoice extends CI_Controller{
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data['VENDOR_NAME']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['PO_NUMBER']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['LINE_NUMBER']);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['total_price']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['PO_AMOUNT']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['CURRENCY']);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['term_of_payment']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['TERMS_OF_PAYMENT']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['INVOICE_DATE']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['INVOICE_NUMBER']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data['LAST_STATUS_PURCHASING_DATE']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $data['BATCH_NUM']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $data['LAST_STATUS_FINANCE_DATE']);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $data['PPN']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $data['PPN']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, $data['TAX_INVOICE_NUMBER']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, $data['accept_by_purchasing']);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $data['batch']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $data['FINANCE_BATCH_NUMBER']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$numrow, $data['accept_by_accounting']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$numrow, $data['update_by_purchasing']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$numrow, $data['update_by_accounting']);
@@ -511,18 +507,18 @@ class C_monitoringinvoice extends CI_Controller{
             $objPHPExcel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
-            // $objPHPExcel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style_row);
-            // $objPHPExcel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_row);
-            // $objPHPExcel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('O'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('P'.$numrow)->applyFromArray($style_row);
-            // $objPHPExcel->getActiveSheet()->getStyle('Q'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('Q'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('R'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('S'.$numrow)->applyFromArray($style_row);
             // $objPHPExcel->getActiveSheet()->getStyle('T'.$numrow)->applyFromArray($style_row);

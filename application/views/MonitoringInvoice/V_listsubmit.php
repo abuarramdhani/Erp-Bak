@@ -34,7 +34,7 @@
 									</thead>
 									<tbody>
 										<?php $no=1; foreach($invoice as $inv) { ?>
-										<tr id="<?php echo $no; ?>">
+										<tr>
 											<td><?php echo $no ?> </td>
 											<td>
 												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/batchDetail/'.$inv['BATCH_NUM'])?>">

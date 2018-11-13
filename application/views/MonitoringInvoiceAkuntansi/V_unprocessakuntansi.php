@@ -42,13 +42,13 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
-											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['BATCH_NUM'].'/'.$u['INVOICE_ID']);?>">
+											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['FINANCE_BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>">
 												<?php echo $u['INVOICE_NUMBER']?>
 											</a></td>
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
+											<td class="po_amount"><?php echo round($u['PO_AMOUNT'])?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
 												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Process</button>

@@ -44,11 +44,11 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$listBatch = $this->M_monitoringakuntansi->showListSubmittedForChecking();
+		$listBatch = $this->M_monitoringakuntansi->showFinanceNumber();
 		$no = 0;
 		foreach($listBatch as $lb){
-			$jmlInv = $this->M_monitoringakuntansi->getJmlInvPerBatch($lb['BATCH_NUM']);
-			echo $lb['BATCH_NUM'];
+			$jmlInv = $this->M_monitoringakuntansi->jumlahFinanceBatch($lb['FINANCE_BATCH_NUMBER']);
+			echo $lb['FINANCE_BATCH_NUMBER'];
 
 			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' Invoice';
 			$no++;
@@ -76,7 +76,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$unprocess = $this->M_monitoringakuntansi->unprocessedInvoice($batchNumber);
 
 		if ($unprocess != null) {
-			$batch = $unprocess[0]['BATCH_NUM'];
+			$batch = $unprocess[0]['FINANCE_BATCH_NUMBER'];
 		} else {
 			$batch = '';
 		}
@@ -118,7 +118,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$unprocess = $this->M_monitoringakuntansi->DetailUnprocess($batch_num,$invoice_id);
-		$batch = $unprocess[0]['BATCH_NUM'];
+		$batch = $unprocess[0]['FINANCE_BATCH_NUMBER'];
 		$no = 0;
 		foreach ($unprocess as $key ) {
 			$invoice = $key['INVOICE_ID'];

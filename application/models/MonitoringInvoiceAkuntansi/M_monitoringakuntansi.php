@@ -18,11 +18,11 @@ class M_monitoringakuntansi extends CI_Model {
 				invoice_amount invoice_amount,
 				last_status_purchasing_date last_status_purchasing_date,
 				last_status_finance_date last_status_finance_date,
-				purchasing_batch_number batch_num,
+				finance_batch_number finance_batch_number,
 				LAST_FINANCE_INVOICE_STATUS LAST_FINANCE_INVOICE_STATUS
 				FROM khs_ap_monitoring_invoice
 				WHERE last_finance_invoice_status = 1
-				AND purchasing_batch_number = $batchNumber";
+				AND finance_batch_number = $batchNumber";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
@@ -67,12 +67,12 @@ class M_monitoringakuntansi extends CI_Model {
                 currency currency,
                 unit_price unit_price,
                 qty_invoice qty_invoice,
-                ami.purchasing_batch_number  batch_num
+                ami.finance_batch_number  finance_batch_number
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE aipo.invoice_id = $invoice_id
                 AND ami.last_purchasing_invoice_status = 2
-                and ami.purchasing_batch_number = $batch_num";
+                and ami.finance_batch_number = $batch_num";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
 	}
@@ -85,6 +85,7 @@ class M_monitoringakuntansi extends CI_Model {
 				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE invoice_id = $id";
 		$erp_db->query($sql);
+		oci_commit($erp_db);
 	}
 
 	public function saveProses2($id,$finance_status,$action_date)
@@ -95,6 +96,7 @@ class M_monitoringakuntansi extends CI_Model {
 				action_date = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE action_id = $id";
         $erp_db->query($sql);
+        oci_commit($erp_db);
 	}
 
 	public function processedInvoice()
@@ -108,7 +110,7 @@ class M_monitoringakuntansi extends CI_Model {
 				invoice_amount invoice_amount,
 				last_status_purchasing_date last_status_purchasing_date,
 				last_status_finance_date last_status_finance_date,
-				purchasing_batch_number batch_num
+				finance_batch_number finance_batch_number
 				FROM khs_ap_monitoring_invoice
 				WHERE last_finance_invoice_status = 2
 				ORDER BY last_status_finance_date ";
@@ -143,20 +145,20 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
 	}
 
-	public function showListSubmittedForChecking(){
+	public function showFinanceNumber(){
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT purchasing_batch_number batch_num, last_status_purchasing_date submited_date
+		$sql = "SELECT finance_batch_number finance_batch_number, last_status_purchasing_date submited_date
                 FROM khs_ap_monitoring_invoice
-                WHERE purchasing_batch_number is not null
-                GROUP BY purchasing_batch_number, last_status_purchasing_date 
-                ORDER BY batch_num";
+                WHERE finance_batch_number is not null
+                GROUP BY finance_batch_number, last_status_purchasing_date 
+                ORDER BY finance_batch_number";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
 
-	public function getJmlInvPerBatch($batch){
+	public function jumlahFinanceBatch($batch){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch
+        $sql = "SELECT finance_batch_number FROM khs_ap_monitoring_invoice WHERE finance_batch_number = $batch
         and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
         return $run->num_rows();
