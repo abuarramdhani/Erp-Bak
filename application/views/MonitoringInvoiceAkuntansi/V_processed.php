@@ -28,7 +28,7 @@
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td class="inv_amount" id="invoice_amount"><?php echo $processed[0]['INVOICE_NUMBER']?></td>
+										<td><?php echo $processed[0]['INVOICE_NUMBER']?></td>
 									</tr>
 									<tr>
 										<td>
@@ -42,7 +42,7 @@
 										<td>
 											<span><label>Invoice Amount</label></span>
 										</td>
-										<td class="inv_amount">
+										<td id="invoice_amount">
 											<?php echo $processed[0]['INVOICE_AMOUNT']?>
 										</td>
 									</tr>
@@ -77,7 +77,7 @@
 							</thead>
 							<tbody>
 								<?php $no=1; $po_amount=0; foreach($processed as $b){?>
-								<tr id="<?php echo $no;?>">
+								<tr>
 									<td class="text-center"><?php echo $no ?></td>
 									<td class="text-center"><?php echo $b['VENDOR_NAME']?></td>
 									<td class="text-center"><?php echo $b['PO_NUMBER']?></td>
@@ -96,7 +96,7 @@
 						</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount: <span class="po_amount"><?php echo $po_amount?></span></label>
+							<label>Po Amount: <span class="po_amount"><?php echo round($po_amount)?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/');?>">

@@ -69,7 +69,7 @@
 											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
 											</button></td>
 										<td class="inv_amount"><?php echo $inv['INVOICE_AMOUNT']?></td>
-										<td class="po_amount"><?php echo $inv['PO_AMOUNT']?></td>
+										<td class="po_amount"><?php echo round($inv['PO_AMOUNT'])?></td>
 										<td><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ?>
 										<?php }} ?></td>

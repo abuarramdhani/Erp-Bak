@@ -56,7 +56,7 @@ class M_kasiepembelian extends CI_Model {
     			SET last_purchasing_invoice_status = $status, 
                 reason = '$reason' WHERE invoice_id = $id";
     	$run = $erp_db->query($sql);
-        return $sql;
+        oci_commit($erp_db);
     }
 
     public function inputActionAndReason2($status,$action_date){
@@ -64,17 +64,29 @@ class M_kasiepembelian extends CI_Model {
     	$sql = "INSERT INTO khs_ap_invoice_action_detail (purchasing_status,action_date)
     			VALUES ($status,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
     	$run = $erp_db->query($sql);
-        return $sql;
+        oci_commit($erp_db);
     }
 
-    public function btnSubmitToPurchasing($id,$finance_status,$finance_date){
+    public function btnSubmitToPurchasing($id,$finance_status,$finance_date,$finance_batch_number){
     	$erp_db = $this->load->database('oracle',true);
     	$sql = "UPDATE khs_ap_monitoring_invoice
                 set last_finance_invoice_status = $finance_status,
-                last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
+                last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
+                finance_batch_number = '$finance_batch_number'
     			WHERE invoice_id = $id
                 and last_purchasing_invoice_status = 2";
     	$run = $erp_db->query($sql);
+        oci_commit($erp_db);
+    }
+
+    public function checkFinanceNumber()
+    {
+        $oracle = $this->load->database('oracle',true);
+        $sql = "SELECT max(finance_batch_number) finance_batch_number
+                  FROM khs_ap_monitoring_invoice 
+                  WHERE ROWNUM >= 1";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
     public function submitToActionDetail($status,$action_date,$purchasing_status){
@@ -82,6 +94,7 @@ class M_kasiepembelian extends CI_Model {
         $sql = "INSERT INTO khs_ap_invoice_action_detail (finance_status,action_date,purchasing_status)
                 VALUES ($status,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$purchasing_status')";
         $run = $erp_db->query($sql);
+        oci_commit($erp_db);
     }
 
     public function getSubmitToFinance($id){

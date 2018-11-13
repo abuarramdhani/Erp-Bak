@@ -38,7 +38,7 @@
 									</thead>
 									<tbody>
 										<?php $no=1; foreach($batch as $b){ ?>
-										<tr id="<?php echo $no;?>">
+										<tr>
 											<td><?php echo $no ?></td>
 											<td>
 												<?php echo $b['VENDOR_NAME']?>
@@ -51,8 +51,8 @@
 											<td><?php echo date('d-M-Y',strtotime($b['INVOICE_DATE']))?></td>
 											<td><?php echo $b['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $b['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $b['PO_AMOUNT']?></td>
-											<td style="background-color: <?php if ($b['FINANCE_STATUS'] == '1') { ?>
+											<td class="po_amount"><?php echo round($b['PO_AMOUNT'])?></td>
+											<td style="background-color: <?php if ($b['FINANCE_STATUS'] == '1' or $b['FINANCE_STATUS'] == '2') { ?>
 												grey
 											<?php }else if($b['STATUS'] == '2' ){ ?>
 												green

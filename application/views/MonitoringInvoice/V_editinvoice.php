@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>">
+											<input class="form-control" size="40" type="text" name="invoice_amount" id="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>">
 										</td>
 									</tr>
 									<tr>
@@ -55,26 +55,6 @@
 										<td>
 											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>">
 										</td>
-									</tr>
-									<tr>
-										<td>
-											<span><label>Vendor</label></span>
-										</td>
-										<td>
-		                     				<select id="" name="vendor_name" class="form-control select2" style="width:320px;" >
-												<?php foreach ($allVendor as $av) { 
-													if ($av['VENDOR_ID']==$invoice[0]['VENDOR_NUMBER']) {
-														$selected = "selected";
-													} else {
-														$selected = "";
-													}
-													
-												?>
-												<option <?= $invoice[0]['VENDOR_NAME'] == $av['VENDOR_ID'] ? 'selected' : '' ?> value="<?php echo $av['VENDOR_ID'] ?>" <?= $selected ?>><?php echo $av['VENDOR_NAME'] ?></option>
-												<?php } ?>
-
-											</select>
-		                     			</td>
 									</tr>
 									<tr>
 										<td>
@@ -93,6 +73,7 @@
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
 														<th class="text-center">Line Number</th>
+														<th class="text-center">Vendor Name</th>
 														<th class="text-center">PO Number</th>
 														<th class="text-center">LPPB Number</th>
 														<th class="text-center">Shipment Number</th>
@@ -113,6 +94,9 @@
 														</td> 
 														<td class="text-center">
 															<input class="form-control" type="text" value="<?php echo $po_num['LINE_NUMBER']?>"> 
+														</td>
+														<td class="text-center">
+															<input class="form-control" type="text" value="<?php echo $po_num['VENDOR_NAME']?>"> 
 														</td>
 														<td class="text-center">
 															<input class="form-control" type="text" name="po_number[]" value="<?php echo $po_num['PO_NUMBER']?>"> 
@@ -148,7 +132,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span class="po_amount"><?php echo $po_amount ?></span>
+										<label>Po Amount : </label><span class="po_amount"><?php echo round($po_amount) ?></span>
 									</div>
 								</div>
 							</div>

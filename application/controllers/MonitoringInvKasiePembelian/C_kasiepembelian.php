@@ -45,6 +45,7 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$listBatch = $this->M_kasiepembelian->showListSubmittedForChecking();
+
 		$no = 0;
 		foreach($listBatch as $lb){
 			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['BATCH_NUM']);
@@ -73,6 +74,7 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$batch = $this->M_kasiepembelian->showDetailPerBatch($batchNumber);
+		
 		$no = 0;
 		foreach ($batch as $bl) {
 			$invoice_id = $bl['INVOICE_ID'] ;
@@ -170,6 +172,10 @@ class C_kasiepembelian extends CI_Controller{
 		$jenisButton = $this->input->post('submitButton');
 		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
 
+		$checkFinanceNumber = $this->M_kasiepembelian->checkFinanceNumber();
+		$finance_batch_number = $checkFinanceNumber[0]['FINANCE_BATCH_NUMBER'] + 1;
+
+
 		if ($status) {
 			if ($jenisButton == 2) {
 				foreach ($status as $s => $value) {
@@ -190,7 +196,7 @@ class C_kasiepembelian extends CI_Controller{
 						$stat = $value2;
 						
 						if ($stat == 2) {
-							$this->M_kasiepembelian->btnSubmitToPurchasing($invoice_id,$jenisButton,$saveDate);
+							$this->M_kasiepembelian->btnSubmitToPurchasing($invoice_id,$jenisButton,$saveDate,$finance_batch_number);
 							$this->M_kasiepembelian->submitToActionDetail($jenisButton,$saveDate,$stat);
 						}
 					}
