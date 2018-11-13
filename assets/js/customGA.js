@@ -309,6 +309,13 @@ function TambahBarisMaintenanceKendaraan(base){
                                 +"<td>"
                                 +"<div class='form-group'>"
                                 +"<div class='col-lg-12'>"
+                                +"<input type='number' placeholder='Jumlah' name='txtJumlahLine1[]' id='txtJumlahLine1' class='form-control input_money' value='1' />"
+                                +"</div>"
+                                +"</div>"
+                                +"</td>"
+                                +"<td>"
+                                +"<div class='form-group'>"
+                                +"<div class='col-lg-12'>"
                                 +"<input type='text' placeholder='Biaya' name='txtBiayaLine1[]' id='txtBiayaLine1' class='form-control input_money'/>"
                                 +"</div>"
                                 +"</div>"
@@ -854,6 +861,10 @@ $(document).ready(function(){
           $(this).addClass("btn-primary");
           $('input[name="OpsiPIC"]').val(values);
         }
+    });
+
+    $('.txtJenisMaintenanceLine1').select2({
+        tags: true
     });
 
     $('#txtJenisMaintenanceLine1').select2({
