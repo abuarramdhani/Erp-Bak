@@ -108,7 +108,8 @@
                                                                                 <tr class="bg-primary">
                                                                                     <th style="text-align:center; width:30px">No</th>
                                                                                     <th style="text-align:center;">Action</th>
-																					<th style="text-align:center;">Jenis Maintenance</th>
+                                                                                    <th style="text-align:center;">Jenis Maintenance</th>
+																					<th style="text-align:center;">Jumlah</th>
 																					<th style="text-align:center;">Biaya</th>
                                                                                 </tr>
                                                                             </thead>
@@ -134,8 +135,14 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
-
-																					<td>
+                                                                                    <td width="100px">
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-lg-12">
+                                                                                            <input type="number" placeholder="Jumlah" name="txtJumlahLine1[]" id="txtJumlahLine1" class="form-control input_money" value="1" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+																					<td width="200px">
 																						<div class="form-group">
                                                                                             <div class="col-lg-12">
                                                                                             <input type="text" placeholder="Biaya" name="txtBiayaLine1[]" id="txtBiayaLine1" class="form-control input_money"/>

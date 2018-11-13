@@ -75,7 +75,8 @@
                                                                                 <thead>
                                                                                     <tr class="bg-primary">
                                                                                         <th style="text-align:center; width:30px">No</th>
-																						<th style="text-align:center;">Jenis Maintenance</th>
+                                                                                        <th style="text-align:center;">Jenis Maintenance</th>
+																						<th style="text-align:center;">Jumlah</th>
 																						<th style="text-align:center;">Biaya</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -83,7 +84,8 @@
                                                                                     <?php $no = 1; foreach($FleetMaintenanceKendaraanDetail as $lines1_row): ?>
                                                                                     <tr>
                                                                                         <td style="text-align:center; width:30px"><?php echo $no++;?></td>
-																						<td><?php echo $lines1_row['jenis_maintenance']; ?></td>
+                                                                                        <td><?php echo $lines1_row['jenis_maintenance']; ?></td>
+																						<td><?php echo $lines1_row['jumlah_item']; ?></td>
 																						<td>Rp<?php echo number_format($lines1_row['biaya'],0,",","."); ?></td>
                                                                                     </tr>
                                                                                     <?php endforeach; ?>

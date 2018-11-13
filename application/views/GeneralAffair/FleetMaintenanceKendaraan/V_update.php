@@ -140,7 +140,8 @@
                                                                                 <tr class="bg-primary">
                                                                                     <th style="text-align:center; width:30px">No</th>
                                                                                     <th style="text-align:center;">Action</th>
-																					<th style="text-align:center;">Jenis Maintenance</th>
+                                                                                    <th style="text-align:center;">Jenis Maintenance</th>
+																					<th style="text-align:center;">Jumlah</th>
 																					<th style="text-align:center;">Biaya</th>
                                                                                 </tr>
                                                                             </thead>
@@ -162,9 +163,27 @@
                                                                                     </td>
                                                                                     
 																					<td>
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-lg-12">
+                                                                                            <!-- <input type="text" placeholder="Jenis Maintenance" name="txtJenisMaintenanceLine1[]" id="txtJenisMaintenanceLine1" class="form-control" value="<?php  // echo $lines1_row['jenis_maintenance']; ?>"/> -->
+
+                                                                                            <select class="form-control txtJenisMaintenanceLine1" name="txtJenisMaintenanceLine1[]" id="txtJenisMaintenanceLine1" style="width: 100%">
+                                                                                                <option></option>
+                                                                                                <?php 
+                                                                                                foreach ($jenisMaintenance as $key) { ?>
+                                                                                                    <option <?php if ($key['jenis_maintenance'] == $lines1_row['jenis_maintenance']) {
+                                                                                                        echo 'selected';
+                                                                                                    } ?>><?php echo $key['jenis_maintenance'] ?></option>
+                                                                                                <?php }?>
+                                                                                            </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+
+                                                                                    <td>
 																						<div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="text" placeholder="Jenis Maintenance" name="txtJenisMaintenanceLine1[]" id="txtJenisMaintenanceLine1" class="form-control" value="<?php echo $lines1_row['jenis_maintenance']; ?>"/>
+                                                                                            <input type="number" placeholder="Jenis Maintenance" name="txtJumlahLine1[]" id="txtJumlahLine1" class="form-control" value="<?php echo $lines1_row['jumlah_item']; ?>"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
