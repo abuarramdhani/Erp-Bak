@@ -32,7 +32,7 @@
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
-											<th class="text-center">Batch Number</th>
+											<th class="text-center">Purchase Batch Number</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -50,9 +50,11 @@
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<?php if($f['LAST_PURCHASING_INVOICE_STATUS'] == 3){
 												$status = 'Rejected by Kasie Purchasing'; 
-												?> <td><?php echo $status?></td> <?php
-											} else{ ?> <td><?php echo 'Invoice Tidak Reject'?></td> <?php }?>
-											<td><?php echo $f['REASON']?></td>
+											} elseif($f['LAST_FINANCE_INVOICE_STATUS'] == 3){ 
+												$status = 'Rejected by Kasie Finance';
+											}?>
+											<td><?php echo $status; ?></td>
+											<td><?php echo $f['REASON_FINANCE']?></td>
 											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
 										</tr>
 										<?php $no++; }} ?>

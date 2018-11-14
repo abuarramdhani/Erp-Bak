@@ -264,11 +264,17 @@ function prosesInvMI(th){
 		});
 		$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 		
-		request.done(function(output){
-			$("#gambarloading").parent().html('<button class="btn btn-success">Success</button>');
-		});
+		if (proses == 2) {
+			request.done(function(output){
+				$("#gambarloading").parent().html('<button class="btn btn-success">Accept</button>');
+			});
+		} else {
+			request.done(function(output){
+				$("#gambarloading").parent().html('<button class="btn btn-danger">Reject</button>');
+				alert('Alasan harus diisi');
+			});
+		}
 	}
-
 
 
 

@@ -4,7 +4,7 @@
 		font-size: 36px
 	}
 </style>
-
+<form action="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/saveReasonAkuntansi')?>" method="POST">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -13,7 +13,7 @@
 					<div class="col-lg-12">
 						<div class="text-left ">
 							<span><b>Unprocessed Invoice</b></span>
-							<input type="hidden" value="<?php echo $batch_num ?>">
+							<input type="hidden" name="batch_num" value="<?php echo $batch_num ?>">
 						</div>
 					</div>
 				</div>
@@ -34,7 +34,8 @@
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Purchasing Submit Date</th>
-											<th class="text-center">Action</th>
+											<th class="text-center" width="10%">Action</th>
+											<th class="text-center">Alasan Reject</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -51,16 +52,27 @@
 											<td class="po_amount"><?php echo round($u['PO_AMOUNT'])?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
-												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Process</button>
+												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses"><i class="fa fa-download" style="width: 12px; height: 12px"></i></button>
 											<?php }else{ ?>
 												<span data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</span>
 											<?php } ?>
+												<button type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger" value="3" name="proses" >
+													<i class="fa fa-reply-all" style="width: 12px; height: 12px"></i>
+												</button>
+											</td>
+											<td>
+												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON_FINANCE']?>" > 
+											</td>
+											<td>
+												<input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
 								</table>
-								<!-- </div> -->
+								<div class="col-md-2 pull-right">
+									<button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px" >Submit</button>
+								</div>
 								</div>
 							</div>
 						</div>
@@ -69,4 +81,5 @@
 			</div>
 		</div>
 	</div>
-</section>
+</section>	
+</form>

@@ -1,7 +1,7 @@
 <style type="text/css">
 	#filter tr td{padding: 5px}
 	.text-left span {
-		font-size: 36px
+		font-size: 36px;
 	}
 </style>
 
@@ -26,7 +26,7 @@
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Action</th>
-											<th class="text-center">Batch Number</th>
+											<th class="text-center">Purchasing Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
 											<th class="text-center">Status Invoice</th>
@@ -44,16 +44,15 @@
 											<td><?php echo  $inv['BATCH_NUM'] ?></td>
 											<td><?php echo  $inv['SUBMITED_DATE'] ?></td>
 											<td><?php echo $inv['JML_INVOICE']; ?></td>
-											<?php if ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 0 ) {
-												$stat = 'New/Draft';
-												} elseif ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 1) {
-													$stat = 'Submited by Kasie Purc';
+											<?php if ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $inv['LAST_FINANCE_INVOICE_STATUS'] == 2) {
+												$stat = 'Approved by Kasie Finance';
 												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 2){
 													$stat = 'Approved By Kasie Purc';
-												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 3){
-													$stat = 'Rejected by Kasie Purc';
-												}
-											?>
+												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 0 or $inv['LAST_PURCHASING_INVOICE_STATUS'] == null ){
+													$stat = 'New/Draf';
+												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 1 ){
+													$stat = 'Submit to Kasie Purchasing';
+												} ?>
 											<td><?php echo $stat; ?></td>
 										</tr>
 										<?php $no++; } ?>

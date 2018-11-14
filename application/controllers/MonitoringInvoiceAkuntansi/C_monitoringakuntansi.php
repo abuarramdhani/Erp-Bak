@@ -74,7 +74,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$unprocess = $this->M_monitoringakuntansi->unprocessedInvoice($batchNumber);
-
+		
 		if ($unprocess != null) {
 			$batch = $unprocess[0]['FINANCE_BATCH_NUMBER'];
 		} else {
@@ -223,6 +223,18 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_processed',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function saveReasonAkuntansi(){
+		$alasan = $this->input->post('reason_finance[]');
+		$id = $this->input->post('id_reason[]');
+
+		for ($i=0; $i < count($id); $i++) { 
+			echo $id[$i]."<br>".$alasan[$i]."<br><br>";
+			$this->M_monitoringakuntansi->reason_finance($id[$i],$alasan[$i]);
+		}
+
+		redirect('AccountPayables/MonitoringInvoice/Finish');
 	}
 
 }

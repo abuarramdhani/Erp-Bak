@@ -289,7 +289,7 @@ SELECT DISTINCT pol.po_line_id line_id,
             qty_invoice = '$qty_invoice'
         WHERE invoice_id = $invoice_id ";
         $runQuery = $oracle->query($query);
-        oci_commit($oracle);
+        //oci_commit($oracle);
         
     }
 
@@ -303,7 +303,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     tax_invoice_number = '$tax_invoice_number'
                  WHERE invoice_id = $invoice_id ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function saveBatchNumberById($id, $num, $date){
@@ -313,7 +313,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE invoice_id = $id";
         $oracle->query($query);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function checkNumBatchExist()
@@ -328,7 +328,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showListSubmitted(){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status
+        $sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
                 ORDER BY batch_num";
@@ -585,7 +585,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     VALUES 
                     ($line_number,'$po_number',$lppb_number, '$shipment_number', '$received_date', '$item_description', '$item_code',$qty_receipt, $qty_reject, '$currency', '$unit_price', '$qty_invoice',$id)";
         $oracle->query($query);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function saveInvoiveAmount($invoice_amount,$invoice_id)
@@ -595,7 +595,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                   SET invoice_amount = '$invoice_amount'
                  WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function checkPPN($po_numberInv){
@@ -618,7 +618,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                   SET tax_invoice_number = '$tax_invoice_number'
                  WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
 
@@ -722,14 +722,16 @@ SELECT DISTINCT pol.po_line_id line_id,
                             ami.invoice_date invoice_date,
                             ami.tax_invoice_number tax_invoice_number,
                             ami.invoice_amount invoice_amount,
-                            ami.reason reason,
+                            ami.reason_finance reason_finance,
                             ami.last_purchasing_invoice_status last_purchasing_invoice_status,
-                            aipo.invoice_id invoice_id,
+                            ami.invoice_id invoice_id,
                             ami.last_status_purchasing_date last_status_purchasing_date,
-                            ami.purchasing_batch_number purchasing_batch_number
+                            ami.purchasing_batch_number purchasing_batch_number,
+                            ami.last_finance_invoice_status last_finance_invoice_status
                             FROM khs_ap_invoice_purchase_order aipo, khs_ap_monitoring_invoice ami 
                             WHERE aipo.invoice_id = ami.invoice_id 
-                            and last_purchasing_invoice_status = 3";
+                            and last_purchasing_invoice_status = 3
+                            or last_finance_invoice_status = 3";
         $run = $oracle->query($query);
         return $run->result_array();
     }

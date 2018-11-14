@@ -130,6 +130,9 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id); 
 
 		$listBatch = $this->M_monitoringinvoice->showListSubmitted();
+		// echo "<pre>";
+		// print_r($listBatch);
+		// exit();
 		
 		$no = 0;
 		foreach ($listBatch as $key => $value) {

@@ -19,7 +19,8 @@ class M_monitoringakuntansi extends CI_Model {
 				last_status_purchasing_date last_status_purchasing_date,
 				last_status_finance_date last_status_finance_date,
 				finance_batch_number finance_batch_number,
-				LAST_FINANCE_INVOICE_STATUS LAST_FINANCE_INVOICE_STATUS
+				LAST_FINANCE_INVOICE_STATUS LAST_FINANCE_INVOICE_STATUS,
+				REASON_FINANCE REASON_FINANCE
 				FROM khs_ap_monitoring_invoice
 				WHERE last_finance_invoice_status = 1
 				AND finance_batch_number = $batchNumber";
@@ -85,7 +86,7 @@ class M_monitoringakuntansi extends CI_Model {
 				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE invoice_id = $id";
 		$erp_db->query($sql);
-		oci_commit($erp_db);
+		// oci_commit($erp_db);
 	}
 
 	public function saveProses2($id,$finance_status,$action_date)
@@ -96,7 +97,7 @@ class M_monitoringakuntansi extends CI_Model {
 				action_date = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE action_id = $id";
         $erp_db->query($sql);
-        oci_commit($erp_db);
+        // oci_commit($erp_db);
 	}
 
 	public function processedInvoice()
@@ -149,7 +150,7 @@ class M_monitoringakuntansi extends CI_Model {
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT finance_batch_number finance_batch_number, last_status_purchasing_date submited_date
                 FROM khs_ap_monitoring_invoice
-                WHERE finance_batch_number is not null
+                WHERE last_finance_invoice_status = 1
                 GROUP BY finance_batch_number, last_status_purchasing_date 
                 ORDER BY finance_batch_number";
 		$run = $erp_db->query($sql);
@@ -162,5 +163,15 @@ class M_monitoringakuntansi extends CI_Model {
         and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
         return $run->num_rows();
+    }
+
+    public function reason_finance($invoice_id,$reason_finance)
+    {
+       $oracle = $this->load->database('oracle',true);
+       $query2 = "UPDATE khs_ap_monitoring_invoice 
+                  SET reason_finance = '$reason_finance'
+                 WHERE invoice_id = '$invoice_id' ";
+        $runQuery2 = $oracle->query($query2);
+        // oci_commit($oracle);
     }
 }

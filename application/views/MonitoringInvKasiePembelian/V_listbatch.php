@@ -26,7 +26,7 @@
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Action</th>
-											<th class="text-center">Batch Number</th>
+											<th class="text-center">Purchasing Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
 										</tr>
