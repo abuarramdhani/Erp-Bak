@@ -871,6 +871,10 @@ $(document).ready(function(){
         tags: true
     });
 
+    $('.select-jenis').select2({
+        tags: true
+    });
+
 });
 
 $(document).ready(function(){
@@ -906,8 +910,9 @@ $(document).ready(function(){
 
   function TambahBarisCetakSPK(base){  
       var e = jQuery.Event( "click" );
+      var opt = $('#txtJenisMaintenanceLine1').html();
 
-        var newRow  = jQuery("<tr>"
+      var newRow  = jQuery("<tr>"
                                 +"<td style='text-align:center; width:'"+"30px"+"'></td>"
                                 +"<td align='center' width='60px'>"
                                 +"<a onclick='delSpesifikRow(this)' class='del-row btn btn-xs btn-danger' data-toggle='tooltip' data-placement='bottom' title='Delete Data'><span class='fa fa-times'></span></a>"
@@ -915,13 +920,19 @@ $(document).ready(function(){
                                 +"<td>"
                                 +"<div class='form-group'>"
                                 +"<div class='col-lg-12'>"
-                                +"<input type='text' placeholder='Jenis Maintenance' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceSPK' class='form-control'/>"
+                                +"<select class='form-control select-jenis' name='txtJenisMaintenanceSPK[]' id='txtJenisMaintenanceLine1' style='width: 100%'>"
+                                +"<option></option>"
+                                +opt
+                                +"</select>"
                                 +"</div>"
                                 +"</div>"
                                 +"</td>"
                                 +"</tr>");
         jQuery("#tblFleetMaintenanceKendaraanDetail").append(newRow);
         $('.input_money').maskMoney({prefix:'Rp', thousands:'.', decimal:',',precision:0});
+        $('.select-jenis').select2({
+          tags: true
+        });
   }
 
   $(document).on('click', '.deleteSPKDetail', function(){
