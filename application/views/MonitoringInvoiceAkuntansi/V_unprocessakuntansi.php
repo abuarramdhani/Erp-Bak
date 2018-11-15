@@ -58,12 +58,12 @@
 											<?php }} ?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
-												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses"><i class="fa fa-download" style="width: 12px; height: 12px"></i></button>
+												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Approve</button>
 											<?php }else{ ?>
 												<span data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</span>
 											<?php } ?>
 												<button type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger" value="3" name="proses" >
-													<i class="fa fa-reply-all" style="width: 12px; height: 12px"></i>
+												 Reject
 												</button>
 											</td>
 											<td>
