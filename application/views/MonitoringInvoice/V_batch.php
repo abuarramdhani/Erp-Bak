@@ -36,11 +36,13 @@
 											<th class="text-center">Action</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
+											<th class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
+											<th class="text-center">Supplier</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -54,9 +56,10 @@
 											</td>
 											<td><?php echo $inv['INVOICE_NUMBER'] ?></td>
 											<td><?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
+											<td><?php echo $inv['PPN']?></td>
 											<td><?php echo $inv['TAX_INVOICE_NUMBER'] ?></td>
 											<td class="inv_amount" ><?php echo $inv['INVOICE_AMOUNT'] ?></td>
-											<td class="po_amount"><?php echo round($inv['PO_AMOUNT']) ?></td>
+											<td class="po_amount"><?php echo $inv['PO_AMOUNT'] ?></td>
 											<?php if ( $inv['STATUS'] == 0) {
 												$stat = 'New/Draft';
 												}elseif ($inv['STATUS'] == 1) {
@@ -68,6 +71,7 @@
 												} ?>
 											<td><?php echo  $stat ?></td>
 											<td><?php echo $inv['REASON'] ?></td>
+											<td><?php echo $inv['VENDOR_NAME']?></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

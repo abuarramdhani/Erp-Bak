@@ -80,22 +80,65 @@ class C_monitoringakuntansi extends CI_Controller{
 		} else {
 			$batch = '';
 		}
-		
 
 		$no = 0;
-		foreach ($unprocess as $key ) {
-			$invoice = $key['INVOICE_ID'];
-			
-			$hasil = 0;
-			$poAmount = $this->M_monitoringakuntansi->poAmount($invoice);
-			foreach ($poAmount as $p) {
-				$total = $p['UNIT_PRICE'] * $p['QTY_INVOICE'];
-				$hasil = $hasil + $total;
-			}
-			$unprocess[$no]['PO_AMOUNT'] = $hasil;
+		$keputusan = array();
+		foreach ($unprocess as $inv ) {
 
+			$invoice_id = $inv['INVOICE_ID'] ;
+			$po_detail = $inv['PO_DETAIL'];
+			$po_number = $inv['PO_NUMBER'];
+
+			$keputusan[$inv['INVOICE_ID']] = "";
+			$hasil_komitmen = '';
+
+			if ($po_detail) {
+				$expPoDetail = explode('<br>', $po_detail);
+				if (!$expPoDetail) {
+					$expPoDetail = $po_detail;
+				}
+
+					
+				$n=0;
+				$podetail = array();
+				foreach ($expPoDetail as $ep => $value) {
+					$exp_lagi = explode('-', $value);
+
+
+							$po_number_explode = $exp_lagi[0];
+							$lppb_number_explode = $exp_lagi[2];
+							$line_number_explode = $exp_lagi[1];
+
+							$perbandingan = $this->M_monitoringakuntansi->podetails($po_number_explode,$lppb_number_explode,$line_number_explode);
+
+							if (!$perbandingan) {
+								$status = "No Status";
+							}else{
+								$status = $perbandingan[$n]['STATUS'];
+							}
+
+							$podetail[$ep] = $value.' - '.$status;
+				}
+
+				$keputusan[$inv['INVOICE_ID']] = $podetail;
+
+				$n++;
+			}
+			
+			$po_amount = 0;
+			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$unprocess[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
+
+		$data['keputusan'] = $keputusan;
 		$data['unprocess'] =$unprocess;
 		$data['batch_num'] =$batch;
 

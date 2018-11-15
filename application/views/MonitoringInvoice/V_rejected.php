@@ -29,10 +29,12 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
+											<th class="text-center" width="35%" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
 											<th class="text-center">Purchase Batch Number</th>
+											<th class="text-center">Supplier</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -46,7 +48,10 @@
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount"><?php echo $f['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo round($f['PO_AMOUNT'])?></td>
+											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
+											<td><?php if($keputusan[$f['INVOICE_ID']]){foreach ($keputusan[$f['INVOICE_ID']] as $k) { ?>
+												<?php echo  $k ."<br>" ?>
+											<?php }} ?></td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<?php if($f['LAST_PURCHASING_INVOICE_STATUS'] == 3){
 												$status = 'Rejected by Kasie Purchasing'; 
@@ -56,6 +61,7 @@
 											<td><?php echo $status; ?></td>
 											<td><?php echo $f['REASON_FINANCE']?></td>
 											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
+											<td><?php echo $f['VENDOR_NAME']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>
