@@ -37,7 +37,7 @@
 											<th class="text-center" width="25%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center" width="10%">Action</th>
-											<th class="text-center">Alasan Reject</th>
+											<th class="text-center">Alasan Ditolak</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -58,12 +58,12 @@
 											<?php }} ?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
-												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Approve</button>
+												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Terima</button>
 											<?php }else{ ?>
 												<span data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</span>
 											<?php } ?>
 												<button type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger" value="3" name="proses" >
-												 Reject
+												 Tolak
 												</button>
 											</td>
 											<td>
