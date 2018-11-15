@@ -112,7 +112,15 @@
                                                                                 <td>
                                                                                     <div class="form-group">
                                                                                         <div class="col-lg-12">
-                                                                                        <input type="text" placeholder="Jenis Maintenance" name="txtJenisMaintenanceSPK[]" id="txtJenisMaintenanceSPK" class="form-control"/>
+                                                                                        <!-- <input type="text" placeholder="Jenis Maintenance" name="txtJenisMaintenanceSPK[]" id="txtJenisMaintenanceSPK" class="form-control"/> -->
+
+                                                                                        <select class="form-control" name="txtJenisMaintenanceSPK[]" id="txtJenisMaintenanceLine1" style="width: 100%">
+                                                                                                <option></option>
+                                                                                                <?php 
+                                                                                                foreach ($jenisMaintenance as $key) { ?>
+                                                                                                    <option><?php echo $key['jenis_maintenance'] ?></option>
+                                                                                                <?php }?>
+                                                                                            </select>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>

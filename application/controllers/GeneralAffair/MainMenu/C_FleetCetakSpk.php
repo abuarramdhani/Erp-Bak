@@ -15,6 +15,7 @@ class C_FleetCetakSpk extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetcetakspk');
+		$this->load->model('GeneralAffair/MainMenu/M_fleetmaintenancekendaraan');
 		$this->load->model('GeneralAffair/MainMenu/M_location');
 		
 		$this->checkSession();
@@ -166,6 +167,7 @@ class C_FleetCetakSpk extends CI_Controller
 		$data['FleetKendaraan'] = $this->M_fleetcetakspk->getFleetKendaraan($query_lokasi);
 		$data['FleetMaintenanceKategori'] = $this->M_fleetcetakspk->getFleetMaintenanceKategori();
 		$data['FleetBengkel'] = $this->M_fleetcetakspk->getFleetBengkel();
+		$data['jenisMaintenance'] = $this->M_fleetmaintenancekendaraan->selectJenisMaintenance();
 
 		/* LINES DROPDOWN DATA */
 		$this->form_validation->set_rules('cmbKendaraanIdHeader', 'kendaraan', 'required');
@@ -176,7 +178,7 @@ class C_FleetCetakSpk extends CI_Controller
 			$this->load->view('GeneralAffair/FleetCetakSpk/V_create', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
-			$data = array(
+			$dataMain = array(
 				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader'),
 				'tanggal_maintenance' => date('Y-m-d H:i:s',strtotime($this->input->post('txtTanggalMaintenanceHeader',TRUE))),
 				'maintenance_kategori_id' => $this->input->post('cmbMaintenanceKategoriIdHeader'),
@@ -188,7 +190,7 @@ class C_FleetCetakSpk extends CI_Controller
 				'no_surat' => $this->input->post('txtNoSuratHeader'),
 				'kode_lokasi_kerja' => $lokasi
     		);
-			$this->M_fleetcetakspk->setFleetCetakSpk($data);
+			$this->M_fleetcetakspk->setFleetCetakSpk($dataMain);
 			$header_id = $this->db->insert_id();
 
 			$JenisMaintnce = $this->input->post('txtJenisMaintenanceSPK');
@@ -206,7 +208,15 @@ class C_FleetCetakSpk extends CI_Controller
 				$this->M_fleetcetakspk->setFleetCetakSpkDetail($lines);
 			}
 
-			redirect(site_url('GeneralAffair/FleetCetakSpk'));
+			$data['isi'] = $dataMain;
+			$data['tabel'] = $JenisMaintnce;
+
+			// echo "<pre>";print_r($data['tabel']);print_r($data['jenisMaintenance']);exit();
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('GeneralAffair/FleetCetakSpk/V_createmaintenance', $data);
+			$this->load->view('V_Footer',$data);
 		}
 	}
 
