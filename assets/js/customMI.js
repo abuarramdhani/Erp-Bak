@@ -277,7 +277,24 @@ function prosesInvMI(th){
 				alert('Alasan harus diisi');
 			});
 		}
-	}
+}
+
+function deleteLinePO(th){
+
+	var id = $(th).attr('data-id');
+
+	$.ajax({
+		url: baseurl+'AccountPayables/MonitoringInvoice/Invoice/deletePOLine/'+id,
+		data: {
+			invoice_po_id : id
+		},
+		type: 'POST',
+		success: function(response){
+			alert('Po Line di hapus');
+			 $(th).parent('td').parent('tr').remove();
+		}
+	});
+}
 
 
 

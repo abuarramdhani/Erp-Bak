@@ -10,10 +10,10 @@ class M_kasiepembelian extends CI_Model {
 	public function showListSubmittedForChecking(){
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date,
-                        last_purchasing_invoice_status, last_finance_invoice_status
+                        last_purchasing_invoice_status, last_finance_invoice_status, vendor_name vendor_name, invoice_number
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
-                ORDER BY submited_date";
+                ORDER BY vendor_name, invoice_number ";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
@@ -63,7 +63,7 @@ class M_kasiepembelian extends CI_Model {
     			SET last_purchasing_invoice_status = $status, 
                 reason = '$reason' WHERE invoice_id = $id";
     	$run = $erp_db->query($sql);
-        oci_commit($erp_db);
+        // oci_commit($erp_db);
     }
 
     public function inputActionAndReason2($status,$action_date){
@@ -71,7 +71,7 @@ class M_kasiepembelian extends CI_Model {
     	$sql = "INSERT INTO khs_ap_invoice_action_detail (purchasing_status,action_date)
     			VALUES ($status,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
     	$run = $erp_db->query($sql);
-        oci_commit($erp_db);
+        // oci_commit($erp_db);
     }
 
     public function btnSubmitToPurchasing($id,$finance_status,$finance_date,$finance_batch_number){
@@ -83,7 +83,7 @@ class M_kasiepembelian extends CI_Model {
     			WHERE invoice_id = $id
                 and last_purchasing_invoice_status = 2";
     	$run = $erp_db->query($sql);
-        oci_commit($erp_db);
+        // oci_commit($erp_db);
     }
 
     public function checkFinanceNumber()
@@ -101,7 +101,7 @@ class M_kasiepembelian extends CI_Model {
         $sql = "INSERT INTO khs_ap_invoice_action_detail (finance_status,action_date,purchasing_status)
                 VALUES ($status,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$purchasing_status')";
         $run = $erp_db->query($sql);
-        oci_commit($erp_db);
+        // oci_commit($erp_db);
     }
 
     public function getSubmitToFinance($id){

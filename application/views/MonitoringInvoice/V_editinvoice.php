@@ -84,6 +84,7 @@
 														<th class="text-center">Currency</th>
 														<th class="text-center">Unit Price</th>
 														<th class="text-center">Qty Invoice</th>
+														<th class="text-center">Action</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -125,6 +126,10 @@
 														<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price[]" value="<?php echo $po_num['UNIT_PRICE']?>"> 
 														 </td> 
 														<td class="text-center" id="qty_invoice"> <input class="form-control " type="text" name="qty_invoice[]" value="<?php echo $po_num['QTY_INVOICE']?>"> 
+														</td>
+														<td>
+															<button type="button" class="btn btn-danger" onclick="deleteLinePO(this)" data-id="<?php echo $po_num['INVOICE_PO_ID']?>"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
+															<input type="hidden" name="invoice_po_id" value="<?php echo $po_num['INVOICE_PO_ID']?>">
 														</td> 
 													</tr>
 												<?php $no++; $po_amount=$po_amount+($po_num['UNIT_PRICE']*$po_num['QTY_INVOICE']); } ?>

@@ -754,4 +754,9 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function deletePOLine(){
+		$invoice_po_id = $this->input->post('invoice_po_id');
+		$this->M_monitoringinvoice->deletePOLine($invoice_po_id);
+	}
+
 }

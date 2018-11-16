@@ -746,4 +746,13 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $run->result_array();
     }
 
+    public function deletePOLine($invoice_po_id){
+        $oracle = $this->load->database('oracle',true);
+        $query1 = "DELETE 
+                    FROM khs_ap_invoice_purchase_order
+                    WHERE invoice_po_id = '$invoice_po_id' ";
+        $runQuery1 = $oracle->query($query1);      
+        oci_commit($oracle);
+    }
+
 }
