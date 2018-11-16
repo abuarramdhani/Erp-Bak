@@ -24,6 +24,7 @@
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">Tax Invoice Number</th>
@@ -34,17 +35,17 @@
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
 											<th class="text-center">Purchase Batch Number</th>
-											<th class="text-center">Supplier</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php $no=1; if($invoice){foreach($invoice as $f){?>
 										<tr>
 											<td><?php echo $no ?></td>
+											<td><?php echo $f['VENDOR_NAME']?></td>
 											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>">
 												<?php echo $f['INVOICE_NUMBER']?>
 												</a>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$f['INVOICE_ID'])?>">
     											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
     											</a>
 											</td>
@@ -64,7 +65,6 @@
 											<td><?php echo $status; ?></td>
 											<td><?php echo $f['REASON_FINANCE']?></td>
 											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
-											<td><?php echo $f['VENDOR_NAME']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>
