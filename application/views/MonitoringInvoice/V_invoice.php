@@ -30,19 +30,20 @@
 										<button type="button" class="btn btn-primary pull-left" id="btnSubmitChecking" data-toggle="modal" data-target="#mdlChecking">Submit for Checking</button>
 									</div>
 								</div>
-								<table id="tbListInvoice" class="table text-center dataTable">
+								<table id="tabel_invoice" class="table text-center datatable">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
 											<th width="5%" class="text-center">Submit Checking</th>
 											<th width="10%" class="text-center">Action</th>
+											<th width="5%"class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
+											<th width="5%"class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th width="20%" class="text-center">Po Detail</th>
-											<th width="5%"class="text-center">PPN</th>
+											<th width="20%" class="text-center" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th width="5%"class="text-center">Status</th>
 										</tr>
 									</thead>
@@ -63,17 +64,18 @@
 											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
 											</a>
 										</td>
+										<td><?php echo $inv['VENDOR_NAME']?></td>
 										<td><?php echo  $inv['INVOICE_NUMBER'] ?></td>
 										<td> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
+										<td><?php echo  $inv['PPN']?></td>
 										<td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['INVOICE_ID']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['TAX_INVOICE_NUMBER']?>" > 
 											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
 											</button></td>
 										<td class="inv_amount"><?php echo $inv['INVOICE_AMOUNT']?></td>
-										<td class="po_amount"><?php echo round($inv['PO_AMOUNT'])?></td>
+										<td class="po_amount"><?php echo $inv['PO_AMOUNT']?></td>
 										<td><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
-											<?php echo  $k ?>
+											<?php echo  $k ."<br>" ?>
 										<?php }} ?></td>
-										<td><?php echo  $inv['PPN']?></td>
 										<?php if ( $inv['STATUS'] == 0) {
 											$stat = 'New/Draft';
 										}elseif ($inv['status'] == 1) {

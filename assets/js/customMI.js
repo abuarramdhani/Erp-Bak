@@ -1,9 +1,12 @@
 
 $(document).ready(function(){
 
-	$('#tbListSubmit','#tbListInvoice','#tbListBatchPembelian').DataTable( {
-	        "pagingType": "full_numbers"
-	} );
+	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListBatchPembelian, #tbListSubmit, #finishInvoice, #unprocessTabel').dataTable({
+		"pageLength": 10,
+        "paging": true,
+        "searching": true,
+        "order": [[0, "asc"]]
+	});
 
 	$('#btnSubmitChecking').click(function(){
 		var jml = 0;
@@ -70,7 +73,7 @@ $(document).ready(function(){
 			var rownum = $(this).attr('row-num')
 			var price = $('.unit_price[row-num="'+rownum+'"]').val();
 			var rowtotal = qty*price;
-			total+=Math.round(Number(rowtotal));
+			total+=Number(rowtotal);
 		});	
 		$('#AmountOtomatis').html(total);
 		//$('#AmountOtomatis').html($('#AmountOtomatis').html().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
@@ -160,7 +163,7 @@ $(document).ready(function(){
 		alert('Yakin untuk menghapusnya ?');
 	});
 
-	$('table#tbListInvoice tbody tr, #tbListBatchPembelian  tbody tr, #finishInvoice tbody tr').each(function(){
+	$('table#tbListInvoice tbody tr, #tbListBatchPembelian  tbody tr, #finishInvoice tbody tr, #tabel_invoice tbody tr, #unprocessTabel tbody tr, #rejectinvoice tbody tr').each(function(){
 		var po_amount = $(this).find('.po_amount').text();
 		var inv_amount = $(this).find('.inv_amount').text();
 
@@ -175,7 +178,7 @@ $(document).ready(function(){
 	})
 
 
-	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #tbInvoice tbody tr, processedinvoice tbody tr').each(function(){
+	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #tbInvoice tbody tr, #processedinvoice tbody tr, #rejectdetail tbody tr, #rejectpo tbody tr').each(function(){
 			var po_amount = $('.po_amount').text();
 			var inv_amount = $('#invoice_amount').text().replace( /[^0-9]+/g, "");
 
@@ -264,11 +267,17 @@ function prosesInvMI(th){
 		});
 		$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 		
-		request.done(function(output){
-			$("#gambarloading").parent().html('<button class="btn btn-success">Success</button>');
-		});
+		if (proses == 2) {
+			request.done(function(output){
+				$("#gambarloading").parent().html('<button class="btn btn-success">Accept</button>');
+			});
+		} else {
+			request.done(function(output){
+				$("#gambarloading").parent().html('<button class="btn btn-danger">Reject</button>');
+				alert('Alasan harus diisi');
+			});
+		}
 	}
-
 
 
 

@@ -128,12 +128,12 @@ SELECT DISTINCT pol.po_line_id line_id,
         $oracle->query($query);
     }
 
-    public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name){
+    public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
-                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name)
+                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name, last_admin_date)
                     VALUES 
-                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name')";
+                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $oracle->query($query);
 
         if ($vendor_name) {
@@ -187,14 +187,16 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.invoice_id invoice_id,
                          ami.purchasing_batch_number purchasing_batch_number,
                          aaipo.po_detail po_detail,
-                         aaipo.po_number
+                         aaipo.po_number,
+                         ami.last_admin_date last_admin_date,
+                         ami.vendor_name vendor_name
                 FROM khs_ap_monitoring_invoice ami,
                  (select aipo.invoice_id, aipo.po_number, replace((rtrim (xmlagg (xmlelement (e, to_char(aipo.po_number || '-' || aipo.line_number || '-' || aipo.lppb_number) || '@')).extract ('//text()'), '@')), '@', '<br>') po_detail
                 from khs_ap_invoice_purchase_order aipo
                 group by aipo.invoice_id , aipo.po_number) aaipo
                 where aaipo.invoice_id = ami.invoice_id
                 and ami.purchasing_batch_number is null
-                order by ami.invoice_id
+                order by ami.last_admin_date
                 ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
@@ -289,7 +291,7 @@ SELECT DISTINCT pol.po_line_id line_id,
             qty_invoice = '$qty_invoice'
         WHERE invoice_id = $invoice_id ";
         $runQuery = $oracle->query($query);
-        oci_commit($oracle);
+        //oci_commit($oracle);
         
     }
 
@@ -303,7 +305,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     tax_invoice_number = '$tax_invoice_number'
                  WHERE invoice_id = $invoice_id ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function saveBatchNumberById($id, $num, $date){
@@ -313,7 +315,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE invoice_id = $id";
         $oracle->query($query);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function checkNumBatchExist()
@@ -328,10 +330,10 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showListSubmitted(){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status
+        $sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
-                ORDER BY batch_num";
+                ORDER BY batch_num desc";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
@@ -361,7 +363,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.reason reason,
                          ami.purchasing_batch_number batch_num,
                          aipo.po_number po_number,
-                         poh.attribute2 ppn
+                         poh.attribute2 ppn,
+                         ami.vendor_name vendor_name
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -585,7 +588,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     VALUES 
                     ($line_number,'$po_number',$lppb_number, '$shipment_number', '$received_date', '$item_description', '$item_code',$qty_receipt, $qty_reject, '$currency', '$unit_price', '$qty_invoice',$id)";
         $oracle->query($query);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function saveInvoiveAmount($invoice_amount,$invoice_id)
@@ -595,7 +598,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                   SET invoice_amount = '$invoice_amount'
                  WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
     public function checkPPN($po_numberInv){
@@ -618,7 +621,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                   SET tax_invoice_number = '$tax_invoice_number'
                  WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
 
 
@@ -718,18 +721,27 @@ SELECT DISTINCT pol.po_line_id line_id,
     public function invoicereject()
     {
         $oracle = $this->load->database("oracle",TRUE);
-        $query = "SELECT  distinct  ami.invoice_number invoice_number,
+        $query = "SELECT   ami.invoice_number invoice_number,
                             ami.invoice_date invoice_date,
                             ami.tax_invoice_number tax_invoice_number,
                             ami.invoice_amount invoice_amount,
-                            ami.reason reason,
+                            ami.reason_finance reason_finance,
                             ami.last_purchasing_invoice_status last_purchasing_invoice_status,
-                            aipo.invoice_id invoice_id,
+                            ami.invoice_id invoice_id,
                             ami.last_status_purchasing_date last_status_purchasing_date,
-                            ami.purchasing_batch_number purchasing_batch_number
-                            FROM khs_ap_invoice_purchase_order aipo, khs_ap_monitoring_invoice ami 
-                            WHERE aipo.invoice_id = ami.invoice_id 
-                            and last_purchasing_invoice_status = 3";
+                            ami.purchasing_batch_number purchasing_batch_number,
+                            ami.last_finance_invoice_status last_finance_invoice_status,
+                            aaipo.po_detail po_detail,
+                            ami.vendor_name vendor_name
+                            FROM khs_ap_monitoring_invoice ami,
+                                (select aipo.invoice_id, aipo.po_number, replace((rtrim (xmlagg (xmlelement (e, to_char(aipo.po_number || '-' || aipo.line_number || '-' || aipo.lppb_number) || '@')).extract ('//text()'), '@')), '@', '<br>') po_detail
+                                from khs_ap_invoice_purchase_order aipo
+                                group by aipo.invoice_id , aipo.po_number) aaipo
+                            WHERE aaipo.invoice_id = ami.invoice_id 
+                            and (last_purchasing_invoice_status = 3
+                            or last_finance_invoice_status = 3)
+                            order by last_status_purchasing_date";
+
         $run = $oracle->query($query);
         return $run->result_array();
     }

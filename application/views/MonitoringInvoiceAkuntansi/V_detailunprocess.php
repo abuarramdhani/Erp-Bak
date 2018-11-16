@@ -96,7 +96,7 @@
 						</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount: <span class="po_amount"><?php echo round($po_amount) ?></span></label>
+							<label>Po Amount: <span class="po_amount"><?php echo $po_amount ?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$batch_num);?>">

@@ -24,35 +24,46 @@
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
+											<th class="text-center" width="35%" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
-											<th class="text-center">Batch Number</th>
+											<th class="text-center">Purchase Batch Number</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php $no=1; if($invoice){foreach($invoice as $f){?>
 										<tr>
 											<td><?php echo $no ?></td>
+											<td><?php echo $f['VENDOR_NAME']?></td>
 											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>">
 												<?php echo $f['INVOICE_NUMBER']?>
 												</a>
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$f['INVOICE_ID'])?>">
+    											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
+    											</a>
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount"><?php echo $f['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo round($f['PO_AMOUNT'])?></td>
+											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
+											<td><?php if($keputusan[$f['INVOICE_ID']]){foreach ($keputusan[$f['INVOICE_ID']] as $k) { ?>
+												<?php echo  $k ."<br>" ?>
+											<?php }} ?></td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<?php if($f['LAST_PURCHASING_INVOICE_STATUS'] == 3){
 												$status = 'Rejected by Kasie Purchasing'; 
-												?> <td><?php echo $status?></td> <?php
-											} else{ ?> <td><?php echo 'Invoice Tidak Reject'?></td> <?php }?>
-											<td><?php echo $f['REASON']?></td>
+											} elseif($f['LAST_FINANCE_INVOICE_STATUS'] == 3){ 
+												$status = 'Rejected by Kasie Finance';
+											}?>
+											<td><?php echo $status; ?></td>
+											<td><?php echo $f['REASON_FINANCE']?></td>
 											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
 										</tr>
 										<?php $no++; }} ?>

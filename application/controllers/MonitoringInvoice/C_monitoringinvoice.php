@@ -130,6 +130,9 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id); 
 
 		$listBatch = $this->M_monitoringinvoice->showListSubmitted();
+		// echo "<pre>";
+		// print_r($listBatch);
+		// exit();
 		
 		$no = 0;
 		foreach ($listBatch as $key => $value) {
@@ -236,11 +239,13 @@ class C_monitoringinvoice extends CI_Controller{
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
+		$last_admin_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+
 
 		// $amount = str_replace(',', '', $invoice_amount);
 
 		
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0]);
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date);
 		
 		foreach ($po_number as $key => $value) {
 
@@ -339,18 +344,18 @@ class C_monitoringinvoice extends CI_Controller{
 
 			foreach ($checkList as $dt => $value2) {
 				$inv = $value2['INVOICE_ID'];
-				$no_po = $value2['PO_NUMBER'];
-				$line_number = $value2['LINE_NUMBER'];
-				$lppb_number = $value2['LPPB_NUMBER'];
-				$checkListSubmitted = $this->M_monitoringinvoice->podetails($no_po,$lppb_number,$line_number);
+				// $no_po = $value2['PO_NUMBER'];
+				// $line_number = $value2['LINE_NUMBER'];
+				// $lppb_number = $value2['LPPB_NUMBER'];
+				// $checkListSubmitted = $this->M_monitoringinvoice->podetails($no_po,$lppb_number,$line_number);
+				$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
+				// if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
+				// 	$cekstatus = $checkListSubmitted[0]['STATUS'];
 
-				if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
-					$cekstatus = $checkListSubmitted[0]['STATUS'];
-
-					$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
-				}elseif ($checkListSubmitted[0]['STATUS'] == 'DELIVER' AND $checkListSubmitted[0]['STATUS'] == '') {
-					$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
-				}
+				// 	// $data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
+				// }elseif ($checkListSubmitted[0]['STATUS'] == 'DELIVER' AND $checkListSubmitted[0]['STATUS'] == '') {
+				// 	$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
+				// }
 
 			}
 			
@@ -658,26 +663,69 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		
-		$view = $this->M_monitoringinvoice->invoicereject();
+		$invoice = $this->M_monitoringinvoice->invoicereject();
+		// echo "<pre>";
+		// print_r($invoice);
+		// exit();
 		$no = 0;
-		foreach ($view as $v) {
-		$invoice_id = $view[0]['INVOICE_ID'];
-		$nol = 0;
+		$keputusan = array();
+		foreach ($invoice as $inv ) {
 
-			$getamount = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
-			foreach ($getamount as $get) {
-				$total = ($get['UNIT_PRICE'] * $get['QTY_INVOICE']);
+			$invoice_id = $inv['INVOICE_ID'] ;
+			$po_detail = $inv['PO_DETAIL'];
+			$batch_number = $inv['PURCHASING_BATCH_NUMBER'];
 
-				$po_amount = $nol + $total;
+			$keputusan[$inv['INVOICE_ID']] = "";
+			$hasil_komitmen = '';
+
+			if ($po_detail) {
+				$expPoDetail = explode('<br>', $po_detail);
+				if (!$expPoDetail) {
+					$expPoDetail = $po_detail;
+				}
+
+					
+				$n=0;
+				$podetail = array();
+				foreach ($expPoDetail as $ep => $value) {
+					$exp_lagi = explode('-', $value);
+
+
+							$po_number_explode = $exp_lagi[0];
+							$lppb_number_explode = $exp_lagi[2];
+							$line_number_explode = $exp_lagi[1];
+
+							$perbandingan = $this->M_monitoringinvoice->podetails($po_number_explode,$lppb_number_explode,$line_number_explode);
+
+							if (!$perbandingan) {
+								$status = "No Status";
+							}else{
+								$status = $perbandingan[$n]['STATUS'];
+							}
+
+							$podetail[$ep] = $value.' - '.$status;
+				}
+
+				$keputusan[$inv['INVOICE_ID']] = $podetail;
+
+				$n++;
+			}
+			
+			$po_amount = 0;
+			$unit = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
 			}
 
-			$view[$no]['PO_AMOUNT'] = $po_amount;
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
-
 		}
 
-		$data['invoice'] = $view;
+
+		$data['keputusan'] = $keputusan;
+		$data['invoice'] =$invoice;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
