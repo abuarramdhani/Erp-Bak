@@ -36,6 +36,7 @@
 											<th width="5%" class="text-center">No</th>
 											<th width="5%" class="text-center">Submit Checking</th>
 											<th width="10%" class="text-center">Action</th>
+											<th width="5%"class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th width="5%"class="text-center">PPN</th>
@@ -44,7 +45,6 @@
 											<th class="text-center">Po Amount</th>
 											<th width="20%" class="text-center" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th width="5%"class="text-center">Status</th>
-											<th width="5%"class="text-center">Supplier</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -64,6 +64,7 @@
 											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
 											</a>
 										</td>
+										<td><?php echo $inv['VENDOR_NAME']?></td>
 										<td><?php echo  $inv['INVOICE_NUMBER'] ?></td>
 										<td> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
 										<td><?php echo  $inv['PPN']?></td>
@@ -96,7 +97,6 @@
 										<?php else: ?>
 											btn-warning
 										<?php endif ?>"  ><?php echo $batchnumber?></span></td>
-										<td><?php echo $inv['VENDOR_NAME']?></td>
 									</tr>
 									<?php $no++; }}?>
 								</tbody>
