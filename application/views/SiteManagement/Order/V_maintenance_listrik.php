@@ -58,7 +58,7 @@
 												<td><?php echo $row['tgl_order'] ?></td>
 												<td><?php echo $row['ket_order'] ?></td>
 												<td><?php echo $row['due_date'] ?></td>
-												<td align="center" style="<?php if($row['remarks']==='t'){echo "color: green";}else{echo "color: orange";} ?>"><?php echo $row['remarks'] ?></td>
+												<td align="center" style="<?php if($row['remarks']==='t'){echo "color: green";}else{echo "color: orange";} ?>"><?php if($row['remarks']==='t'){echo "<b>Confirm</b>";}else{echo "<b>Pending</b>";} ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
