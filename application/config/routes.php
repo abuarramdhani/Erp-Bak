@@ -1692,6 +1692,39 @@ $route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
 $route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
 $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
+$route['MasterPekerja'] 					=	'MasterPekerja/C_Index';
+
+$route['MasterPekerja/Surat'] 				=	'MasterPekerja/Surat/C_Surat';
+$route['MasterPekerja/Surat/(:any)'] 		=	'MasterPekerja/Surat/C_Surat/$1';
+
+
+$route['MasterPekerja/Surat/SuratLayout']				=	'MasterPekerja/Surat/LayoutSurat/C_Index';
+$route['MasterPekerja/Surat/SuratLayout/(:any)']		=	'MasterPekerja/Surat/LayoutSurat/C_Index/$1';
+$route['MasterPekerja/Surat/SuratLayout/(:any)/(:any)']	=	'MasterPekerja/Surat/LayoutSurat/C_Index/$1/$2';
+
+$route['MasterPekerja/Surat/SuratMutasi']								=	'MasterPekerja/Surat/C_Mutasi';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)']						=	'MasterPekerja/Surat/C_Mutasi/$1';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)/(:any)']					=	'MasterPekerja/Surat/C_Mutasi/$1/$2';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)/(:any)/(:any)']			=	'MasterPekerja/Surat/C_Mutasi/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)/(:any)/(:any)/(:any)']	=	'MasterPekerja/Surat/C_Mutasi/$1/$2/$3/$4';
+
+$route['MasterPekerja/Surat/SuratDemosi']               =   'MasterPekerja/Surat/Demosi/C_Index';
+$route['MasterPekerja/Surat/SuratDemosi/(:any)']        =   'MasterPekerja/Surat/Demosi/C_Index/$1';
+$route['MasterPekerja/Surat/SuratDemosi/(:any)/(:any)'] =   'MasterPekerja/Surat/Demosi/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPerbantuan']           =   'MasterPekerja/Surat/Perbantuan/C_Index';
+$route['MasterPekerja/Surat/SuratPerbantuan/(:any)']    =   'MasterPekerja/Surat/Perbantuan/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPerbantuan/(:any)/(:any)'] ='MasterPekerja/Surat/Perbantuan/C_Index/$1/$2';
+$route['MasterPekerja/Surat/SuratPerbantuan/(:any)/(:any)/(:any)'] ='MasterPekerja/Surat/Perbantuan/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPromosi']              =   'MasterPekerja/Surat/Promosi/C_Index';
+$route['MasterPekerja/Surat/SuratPromosi/(:any)']       =   'MasterPekerja/Surat/Promosi/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPromosi/(:any)/(:any)']=   'MasterPekerja/Surat/Promosi/C_Index/$1/$2';
+$route['MasterPekerja/Surat/SuratPromosi/(:any)/(:any)/(:any)']=   'MasterPekerja/Surat/Promosi/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratRotasi']               =   'MasterPekerja/Surat/Rotasi/C_Index';
+$route['MasterPekerja/Surat/SuratRotasi/(:any)']        =   'MasterPekerja/Surat/Rotasi/C_Index/$1';
+$route['MasterPekerja/Surat/SuratRotasi/(:any)/(:any)'] =   'MasterPekerja/Surat/Rotasi/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPengangkatan']               =   'MasterPekerja/Surat/Pengangkatan/C_Index';
+$route['MasterPekerja/Surat/SuratPengangkatan/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPengangkatan/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
 
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';

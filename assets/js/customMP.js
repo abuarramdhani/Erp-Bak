@@ -2,21 +2,17 @@ $('#tableseksi').DataTable({
     dom: 'Bfrtip',
     buttons: ['excel', 'pdf']
 });
-
 $('#tableorder').DataTable({
     dom: 'Bfrtip',
     buttons: ['excel', 'pdf']
 });
-
 $('#tablejenisorder').DataTable({
     dom: 'Bfrtip',
     buttons: ['excel', 'pdf']
 });
-
 $('#credit').DataTable({
     dom: 'frtip'
 });
-
 function MPdelete(id) {
     var confirmDel = confirm('Apakah anda Yakin?');
     if(confirmDel){
@@ -35,7 +31,6 @@ function MPdelete(id) {
         })
     }
 }
-
 function DeleteOrder(id) {
     var confirmDel = confirm('Apakah anda Yakin?');
     if(confirmDel){
@@ -54,7 +49,6 @@ function DeleteOrder(id) {
         })
     }
 }
-
 function DeleteJenisOrder(id) {
     var confirmDel = confirm('Apakah anda Yakin?');
     if(confirmDel){
@@ -73,7 +67,6 @@ function DeleteJenisOrder(id) {
         })
     }
 }
-
 function DeleteLaporan(id) {
     var confirmDel = confirm('Apakah anda Yakin?');
     if(confirmDel){
@@ -92,7 +85,6 @@ function DeleteLaporan(id) {
         })
     }
 }
-
 function DeleteJobHarian(id) {
     var confirmDel = confirm('Apakah anda Yakin?');
     if(confirmDel){
@@ -111,16 +103,12 @@ function DeleteJobHarian(id) {
         })
     }
 }
-
 $(function() {
     $('input[name="daterange"]').daterangepicker();
 });
-
 $('.datepicker_mp').datepicker({
     dateFormat: 'dd-mm-yy'
 });
-
-
 $(".submit-date").click(function(){
     tgl1 = $("#tanggalan1").val();
     tgl2 = $("#tanggalan2").val();
@@ -153,10 +141,7 @@ $(".submit-date").click(function(){
                 $.toaster(textStatus+' | '+errorThrown, name, 'danger');
             }
         })
-
 })
-
-
 $(".submit-datemon").click(function(){
     tgl1 = $("#tanggalan1").val();
     tgl2 = $("#tanggalan2").val();
@@ -189,9 +174,7 @@ $(".submit-datemon").click(function(){
                 $.toaster(textStatus+' | '+errorThrown, name, 'danger');
             }
         })
-
 })
-
 function generatePDFpe() {
     tgl1 = $("#tanggalan1").val();
     tgl2 = $("#tanggalan2").val();
