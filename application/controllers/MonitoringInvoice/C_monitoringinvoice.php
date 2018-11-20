@@ -240,18 +240,21 @@ class C_monitoringinvoice extends CI_Controller{
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
 		$last_admin_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
 
 
 		// $amount = str_replace(',', '', $invoice_amount);
 
 		
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date);
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date,$action_date);
 		
 		foreach ($po_number as $key => $value) {
 
 			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
-		
+		 
 		}
+
+		$this->M_monitoringinvoice->savePoNumber3($add2['invoice'][0]['INVOICE_ID'],$action_date);
 
 		redirect('AccountPayables/MonitoringInvoice/Invoice/addListInv');
 	}
@@ -315,6 +318,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$currency = $this->input->post('currency[]');
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
+		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
 
 		// $amount = str_replace(',', '', $invoice_amount);
 
@@ -325,6 +329,8 @@ class C_monitoringinvoice extends CI_Controller{
 			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_id,$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
 		
 		}
+
+		$this->M_monitoringinvoice->saveEditInvoice3($invoice_id,$action_date);
 		redirect('AccountPayables/MonitoringInvoice/Invoice');
 	}
 
@@ -332,6 +338,7 @@ class C_monitoringinvoice extends CI_Controller{
 	public function saveBatchNumber(){
 		$ArrayIdInv = $this->input->post('idYangDiPilih');
 		$checkList = $this->input->post('mi-check-list[]');
+		$status = $this->input->post('status_purchase');
 
 		$hasilExplode = explode(",", $ArrayIdInv);
 		$checkNumBatchExist = $this->M_monitoringinvoice->checkNumBatchExist();
@@ -348,7 +355,8 @@ class C_monitoringinvoice extends CI_Controller{
 				// $line_number = $value2['LINE_NUMBER'];
 				// $lppb_number = $value2['LPPB_NUMBER'];
 				// $checkListSubmitted = $this->M_monitoringinvoice->podetails($no_po,$lppb_number,$line_number);
-				$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
+				$this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate,$status);
+				$this->M_monitoringinvoice->saveBatchNumberById2($inv,$saveDate,$status);
 				// if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
 				// 	$cekstatus = $checkListSubmitted[0]['STATUS'];
 

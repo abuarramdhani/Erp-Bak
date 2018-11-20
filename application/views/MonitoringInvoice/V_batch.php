@@ -60,14 +60,16 @@
 											<td><?php echo $inv['TAX_INVOICE_NUMBER'] ?></td>
 											<td class="inv_amount" ><?php echo $inv['INVOICE_AMOUNT'] ?></td>
 											<td class="po_amount"><?php echo $inv['PO_AMOUNT'] ?></td>
-											<?php if ( $inv['STATUS'] == 0) {
-												$stat = 'New/Draft';
+											<?php if ($inv['LAST_FINANCE_INVOICE_STATUS'] == 2 && $inv['STATUS'] = 2) {
+												$stat = 'Approved by Kasie Finance';
 												}elseif ($inv['STATUS'] == 1) {
 													$stat = 'Submited by Kasie Purc';
 												}elseif ($inv['STATUS'] == 2) {
 													$stat = 'Approved By Kasie Purc';
 												}elseif ($inv['STATUS'] == 3) {
 													$stat = 'Rejected by Kasie Purc';
+												}elseif ($inv['STATUS'] == 0) {
+													$Stat = 'New/Draft';
 												} ?>
 											<td><?php echo  $stat ?></td>
 											<td><?php echo $inv['REASON'] ?></td>

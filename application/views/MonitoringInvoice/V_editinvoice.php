@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="invoice_amount" id="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>">
+											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>">
 										</td>
 									</tr>
 									<tr>
@@ -137,7 +137,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span class="po_amount"><?php echo $po_amount ?></span>
+										<label>Po Amount : </label><span><?php echo $po_amount ?></span>
 									</div>
 								</div>
 							</div>

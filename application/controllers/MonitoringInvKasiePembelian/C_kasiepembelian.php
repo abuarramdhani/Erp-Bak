@@ -98,114 +98,41 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function addReasonAsli(){
-		$status = $this->input->post('radioForReason[]');
-		$reason = $this->input->post('inputReason[]');
-		$nomorbatch = $this->input->post('nomor_batch');
-		$jenisButton = $this->input->post('submitButton');
+	public function submittofinance(){
+		$finance = $this->input->post('submit_finance');
 		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
-
-		if ($status) {
-			if ($jenisButton == 1) {
-				$a = 0;
-				foreach ($status as $key => $value) {
-					foreach ($value as $key2 => $value2) {
-						 $id_invoice = $key2;
-						 $checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
-						 print_r($checkExist);
-						 if ($checkExist[0]['PURCHASING_STATUS'] == 0) {
-						 	echo "saving<br>";
-							 $stat = $value2;						 
-							$s1 = $this->M_kasiepembelian->btnSubmitToPurchasing($id_invoice,$jenisButton,$saveDate);
-							$s2 = $this->M_kasiepembelian->submitToActionDetail($jenisButton,$saveDate,$stat);
-							print_r($s1);
-							print_r($s2);
-						 }
-					}
-					$a++;
-				}
-				exit;
-				redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
-			}else{
-						$a = 0;
-						foreach ($status as $key => $value) {
-							foreach ($value as $key2 => $value2) {
-								$id_invoice = $key2;
-
-							 	$checkExist = $this->M_kasiepembelian->checkExist($id_invoice);
-							 	if ($checkExist[0]['PURCHASING_STATUS'] == 0) {
-							 			$reason1 = $reason[$a][$key2]; 
-
-							 		if ($value2 == 3 && $reason1 == NULL) {
-							 			echo "<script>
-												window.alert('Action harus di pilih');
-												window.location.href = 'batchDetailPembelian/".$nomorbatch."';
-								      		</script>";
-							 		}
-							 		else{
-							 			$status = $value2;
-							 	 		$reason_inv = $reason[$a][$key2];
-							 	 		$this->M_kasiepembelian->inputActionAndReason($id_invoice,$status,$reason_inv);
-										$this->M_kasiepembelian->inputActionAndReason2($status,$saveDate);
-										redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
-							 		}
-							 	}
-							}
-						$a++;
-					}
-				}
-		}else{
-			echo "<script>
-				window.alert('Action harus di pilih');
-				window.location.href = 'batchDetailPembelian/".$nomorbatch."';
-      		</script>";
-			redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
-		}
-
-	}
-
-	public function addReasonModifikasi(){
-		$status = $this->input->post('radioForReason');
-		$reason = $this->input->post('inputReason');
-
-		$nomorbatch = $this->input->post('nomor_batch');
-		$jenisButton = $this->input->post('submitButton');
-		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$invoice_id = $this->input->post('invoice_id');
 
 		$checkFinanceNumber = $this->M_kasiepembelian->checkFinanceNumber();
 		$finance_batch_number = $checkFinanceNumber[0]['FINANCE_BATCH_NUMBER'] + 1;
 
+		$this->M_kasiepembelian->btnSubmitToFinance($invoice_id,$finance,$saveDate,$finance_batch_number);
+		$this->M_kasiepembelian->insertstatusfinance($invoice_id,$saveDate,$finance);
 
-		if ($status) {
-			if ($jenisButton == 2) {
-				foreach ($status as $s => $value) {
+		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch');
+	}
 
-					foreach ($value as $v => $value2) {
-						$invoice_id = $v;
-						$stat = $value2;
-						$rsn = $reason[$s][$v];
-							$update = $this->M_kasiepembelian->inputActionAndReason($invoice_id,$stat,$rsn);
-							$insert = $this->M_kasiepembelian->inputActionAndReason2($stat,$saveDate);
-					}
-				}
-			}else{
-				foreach ($status as $s => $value) {
+	public function approvedbykasiepurchasing(){
+		$approved = $this->input->post('prosesapproved');
+		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$invoice_id = $this->input->post('invoice_id');
+		$nomorbatch = $this->input->post('nomor_batch');
 
-					foreach ($value as $v => $value2) {
-						$invoice_id = $v;
-						$stat = $value2;
-						
-						if ($stat == 2) {
-							$this->M_kasiepembelian->btnSubmitToPurchasing($invoice_id,$jenisButton,$saveDate,$finance_batch_number);
-							$this->M_kasiepembelian->submitToActionDetail($jenisButton,$saveDate,$stat);
-						}
-					}
-				}
-			}
-		}
+		$this->M_kasiepembelian->approvedbykasiepurchasing($invoice_id,$approved,$saveDate);
+		$this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$approved);
 		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+	}
 
+	public function rejectbykasiepurchasing(){
+		$rejected = $this->input->post('prosesreject');
+		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$invoice_id = $this->input->post('invoice_id');
+		$nomorbatch = $this->input->post('nomor_batch');
+		$alasan_reject = $this->input->post('alasan_reject');
 
+		$this->M_kasiepembelian->rejectbykasiepurchasing($invoice_id, $rejected, $saveDate, $alasan_reject);
+		$this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$rejected);
+		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
 	}
 
 	public function invoiceDetail($invoice_id,$nomorbatch){
@@ -227,6 +154,106 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_invoice',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function finishBatch(){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$listBatch = $this->M_kasiepembelian->showFinishBatch();
+
+		$no = 0;
+		foreach($listBatch as $lb){
+			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['BATCH_NUM']);
+			// echo $lb['BATCH_NUM'];
+
+			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' Invoice';
+			$no++;
+		}
+		$data['batch'] = $listBatch;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_finishBatch',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function finishdetailinvoice($batchNumber){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+	
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$batch = $this->M_kasiepembelian->finish_detail($batchNumber);
+		
+		$no = 0;
+		foreach ($batch as $bl) {
+			$invoice_id = $bl['INVOICE_ID'] ;
+
+			$po_amount = 0;
+			$modal = $this->M_kasiepembelian->getUnitPrice($invoice_id);
+
+			foreach ($modal as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+			}
+			$batch[$no]['PO_AMOUNT'] = $po_amount;
+			$no++;
+		}
+		$data['batch_number'] = $batchNumber;
+		$data['batch'] =$batch;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_finishdetailinvoice',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function finishinvoice($invoice_id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+	
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$detail_invoice = $this->M_kasiepembelian->finish_detail_invoice($invoice_id);
+		
+		$no = 0;
+		foreach ($detail_invoice as $bl) {
+			$invoice_id = $bl['INVOICE_ID'] ;
+
+			$po_amount = 0;
+			$modal = $this->M_kasiepembelian->getUnitPrice($invoice_id);
+
+			foreach ($modal as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+			}
+			$detail_invoice[$no]['PO_AMOUNT'] = $po_amount;
+			$no++;
+		}
+		$data['invoice'] =$detail_invoice;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_finishinvoice',$data);
 		$this->load->view('V_Footer',$data);
 	}
 

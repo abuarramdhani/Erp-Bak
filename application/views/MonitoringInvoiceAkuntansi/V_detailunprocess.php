@@ -28,22 +28,23 @@
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td><?php echo $detail[0]['INVOICE_NUMBER']?></td>
+										<td><input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['INVOICE_NUMBER']?>" readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-											<?php echo  date('d-M-Y',strtotime($detail[0]['INVOICE_DATE']))?>
+											<input  class="form-control" size="40" type="text" value="<?php echo  date('d-M-Y',strtotime($detail[0]['INVOICE_DATE']))?>" readonly>
 										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Amount</label></span>
 										</td>
-										<td class="inv_amount" id="invoice_amount">
-											<?php echo $detail[0]['INVOICE_AMOUNT']?>
+										<td>
+											<input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['INVOICE_AMOUNT']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -51,7 +52,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<?php echo $detail[0]['TAX_INVOICE_NUMBER']?>
+											<input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 								</table>
@@ -96,7 +97,7 @@
 						</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount: <span class="po_amount"><?php echo $po_amount ?></span></label>
+							<label>Po Amount: <span><?php echo $po_amount ?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$batch_num);?>">

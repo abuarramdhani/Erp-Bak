@@ -5,7 +5,7 @@
 	}
 	#tbFilterPO tr td,#tbInvoiceKasie tr td{padding: 5px}
 </style>
-
+<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/approvedbykasiepurchasing')?>" >
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -14,6 +14,7 @@
 					<div class="col-lg-12">
 						<div class="text-left ">
 							<span><b>Invoice Details</b></span>
+							<input type="hidden" name="nomor_batch"  value="<?php echo $invoice_detail[0]['PURCHASING_BATCH_NUMBER']?>">
 						</div>
 					</div>
 				</div>
@@ -28,22 +29,24 @@
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td><?php echo $invoice_detail[0]['INVOICE_NUMBER']?></td>
+										<td><input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice_detail[0]['INVOICE_NUMBER']?>" readonly>
+											<input type="hidden" name="invoice_id" value="<?php echo $invoice_detail[0]['INVOICE_ID']?>">
+										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-											<?php echo date('d-M-Y',strtotime($invoice_detail[0]['INVOICE_DATE']))?>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo date('d-M-Y',strtotime($invoice_detail[0]['INVOICE_DATE']))?>" readonly>
 										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Amount</label></span>
 										</td>
-										<td id="invoice_amount">
-											<?php echo $invoice_detail[0]['INVOICE_AMOUNT']?>
+										<td >
+											<input class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice_detail[0]['INVOICE_AMOUNT']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -51,7 +54,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<?php echo $invoice_detail[0]['TAX_INVOICE_NUMBER']?>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice_detail[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 								</table>
@@ -95,12 +98,14 @@
 							</tbody>
 						</table>
 						</div>
-						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span class="po_amount"><?php echo $po_amount ?></span>
+						<div class="col-md-2 pull-left">
+							<label>Po Amount : </label><span><?php echo $po_amount ?></span>
 						</div>
-						<div class="col-md-2 pull-right">
+						<div class="col-md-8 pull-right">
+							<button class="btn btn-danger" type="button" style="margin-top: 10px" data-toggle="modal" data-target="#mdlreject">Reject</button>
+							<button class="btn btn-success" type="submit" value="2" name="prosesapproved" style="margin-top: 10px">Approved</button>
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$batch_number)?>">
-							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
+							<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px" >Back</button>
 						</a>
 						</div>
 					</div>
@@ -109,3 +114,30 @@
 		</div>
 	</div>
 </section>
+</form>
+<!-- Modal Submit For Reject Invoice -->
+<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/rejectbykasiepurchasing')?>">
+<div id="mdlreject" class="modal fade" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content"  id="content1" >
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h5 class="modal-title">Reject Invoice Confirmation</h5>
+		  </div>
+		  <div class="modal-body">
+		    <div class="row">
+		      <div class="col-md-12">Reject Nomor Invoice </div>
+		    </div>
+		    <br>
+		    <input type="text" class="form-control" placeholder="Alasan Reject" name="alasan_reject">
+		    <input type="hidden" name="invoice_id" value="<?php echo $invoice_detail[0]['INVOICE_ID']?>">
+		    <input type="hidden" name="nomor_batch" value="<?php echo $invoice_detail[0]['PURCHASING_BATCH_NUMBER']?>">
+		  </div>
+		  <div class="modal-footer">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		    <button type="submit" class="btn btn-primary" name="prosesreject" value="3">Yes</button>
+		  </div>
+		</div>
+ 	</div>
+</div>
+</form>
