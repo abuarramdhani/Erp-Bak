@@ -89,7 +89,33 @@ class M_transaction extends CI_Model {
 			FROM khs_packinglist_transactions
 			WHERE mo_number= '$spbNumber'
 			GROUP BY packing_code
-			ORDER BY packing_code
+			ORDER BY SUBSTR(PACKING_CODE, 4, 2) DESC
+		";
+
+		$query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function getPackingWeight($spbNumber,$packing_code)
+	{
+		$sql = "
+			SELECT distinct weight
+			FROM khs_packinglist_transactions
+			WHERE mo_number= '$spbNumber'
+			AND PACKING_CODE = '$packing_code'
+		";
+
+		$query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function getPackingEkspedisi($spbNumber){
+		$sql = "
+			SELECT distinct EXPEDITION_CODE
+			FROM khs_packinglist_transactions
+			WHERE mo_number= '$spbNumber'
+			GROUP BY EXPEDITION_CODE
+			ORDER BY EXPEDITION_CODE
 		";
 
 		$query = $this->oracle->query($sql);
@@ -104,6 +130,7 @@ class M_transaction extends CI_Model {
 				kpt.mo_number,
 				kpt.packing_qty,
 				kpt.packing_code,
+				kpt.item_coly,
 				msib.segment1,
 				msib.description,
 				msib.primary_uom_code,

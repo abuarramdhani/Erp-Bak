@@ -1,3 +1,38 @@
+// $("#inputPackingPlus").on('keyup',function(e){
+//     if(e.keyCode  === 13){
+
+//     }
+// });
+
+$("#formPackingList").ready(function() {
+  console.log('ini lo udah ke load');
+  
+  $.ajax({
+    url: baseurl + "Warehouse/Ajax/checkSPB",
+    type: 'POST',
+    data: {DATA:'none'},
+    success:function(result){
+        console.log(result);
+        if(result != '"FALSE"'){
+            $('input[name="nomerSPB"]').prop('readonly', true);
+            $('input[name="nomerSPB"]').attr('readonly', true);
+        }
+        if(result == 'FALSE'){
+            console.log('astagfirullah');   
+        }else{
+            result = result.replace('"','');
+            result = result.replace('"','');
+            getDataFapingList(result);
+        }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
+    }
+  });
+
+});
+
+
 function getDataSPB() {
     event.preventDefault();
     $.ajax({
@@ -9,6 +44,7 @@ function getDataSPB() {
             $('#tableSPBArea').empty();
         },
         success: function(result) {
+            console.log(result);
             $('#tableSPBArea').html(result);
             $('#loadingArea').hide();
         },
@@ -18,12 +54,11 @@ function getDataSPB() {
     });
 }
 
-function getDataPackingList() {
-    event.preventDefault();
+function getDataFapingList(nomerSPBU){
     $.ajax({
         url: baseurl + "Warehouse/Ajax/PackingList",
         type: 'POST',
-        data: $('#formPackingList').serialize(),
+        data: {nomerSPB : nomerSPBU},
         beforeSend: function() {
             $('#loadingArea').show();
             $('#tablePackingListArea').empty();
@@ -58,6 +93,93 @@ function getDataPackingList() {
             $('.toupper').keyup(function(){
                 this.value = this.value.toUpperCase();
             });
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
+            console.log(textStatus);
+        }
+    });
+}
+
+function getDataPackingList() {
+    event.preventDefault();
+    $.ajax({
+        url: baseurl + "Warehouse/Ajax/PackingList",
+        type: 'POST',
+        data: $('#formPackingList').serialize(),
+        beforeSend: function() {
+            $('#loadingArea').show();
+            $('#tablePackingListArea').empty();
+        },
+        success: function(result) {
+           
+
+            $('input[name="nomerSPB"]').val('');
+            $('#tablePackingListArea').html(result);
+            $('#loadingArea').hide();
+            $('.select2-custom').select2({
+                placeholder: "Choose Option",
+                allowClear: true,
+                width: 'element',
+                tags: true,
+                id: function(object) {
+                    return object.text;
+                },
+                createSearchChoice: function(term, data) {
+                    if ($(data).filter(function() {
+                            return this.text.localeCompare(term) === 0;
+                        }).length === 0) {
+                        return {
+                            id: term,
+                            text: term
+                        };
+                    }
+                }
+            });
+            $('select#ekspedisi').select2({
+                placeholder: "Choose Option",
+                allowClear: true,
+            });
+            $('.toupper').keyup(function(){
+                this.value = this.value.toUpperCase();
+            });
+            
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
+            console.log(textStatus);
+        }
+    });
+}
+
+function setDataTemp(noSPB){
+    $.ajax({
+        url: baseurl + "Warehouse/Ajax/setSPB",
+        type: 'POST',
+        data: {NO_SPB: noSPB},
+        success: function(result) {
+            $('input[name="nomerSPB"]').val('');
+            console.log(result);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
+            console.log(textStatus);
+        }
+    });
+}
+
+function delTemp(){
+    $.ajax({
+        url: baseurl + "Warehouse/Ajax/delTemp",
+        type: 'POST',
+        data: {DATA:'none'},
+        success:function(result){
+            console.log('adexe');
+            $('input[name="nomerSPB"]').attr('readonly', false);
+            $('input[name="nomerSPB"]').prop('readonly', false);
+            document.location.reload();
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
@@ -65,8 +187,8 @@ function getDataPackingList() {
     });
 }
 
-function updatePackingQty(e, th) {
-    if (e.keyCode === 13) {
+function updatePackingQty(event, th) {
+    if (event.keyCode === 13) {
         var value       = $(th).val();
         var qty         = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val());
         var maxPack     = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack[]"]').val());
@@ -74,10 +196,15 @@ function updatePackingQty(e, th) {
         var qtyNow      = qty+1;
         var kasih       = Number($('input[name="totalQtyKasih"]').val());
 
+
+
         if (qtyNow>maxPack) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
+            $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
+
         }else if (qtyNow>maxOnhand) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
+            $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
         }else if ($('#tblSPB tbody tr[data-row="'+value+'"]').length) {
             $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val(qtyNow);
             kasih+=1;
@@ -86,10 +213,14 @@ function updatePackingQty(e, th) {
 
         $(th).val('');
         if (kasih>0 && $('#btnSubmitPacking').attr('disabled')) {
-            $('#btnSubmitPacking').removeAttr('disabled');
+            $('#btnSubmitPacking').prop('disabled',false);
         }
+    }else{
+        console.log("ADEXE");
     }
 }
+
+
 
 function mdlPackingQtyCustom(th, itemcode) {
     var qty = $(th).closest('tr').find('input[name="packingqty[]"]').val();
@@ -120,6 +251,12 @@ function getSum(th) {
     }
 }
 
+function resetThis(th){
+    $(th).closest('tr').find('input[name="packingqty[]"]').val(null);
+    
+}
+
+
 function packingqtyCustom(th) {
     event.preventDefault();
     var qty         = Number($(th).closest('form').find('input[name="qty"]').val());
@@ -135,6 +272,14 @@ function packingqtyCustom(th) {
 
 function setPacking() {
     event.preventDefault();
+    var nomerSPB = $('#spbNumber').val();
+    var itemColy = $('#idItemColy').val();
+    
+    $('input[name="itemColy"]').val(itemColy);
+
+    console.log(itemColy);
+    console.log(nomerSPB);
+
     $.ajax({
         url: baseurl + "Warehouse/Ajax/setPacking",
         type: 'POST',
@@ -144,10 +289,18 @@ function setPacking() {
             $('#submitPacking').modal('hide');
         },
         success: function(result) {
+           
+            setDataTemp(nomerSPB);
+
+            console.log(data);
+            $('#btnSubmitPacking').prop('disabled',true);
+            window.open(baseurl+'Warehouse/Transaction/cetakPackingListPDF/'+nomerSPB);
             var data = JSON.parse(result);
             var array = $.map(data, function(value, index) {
                 return [value];
             });
+
+
 
             for (var n = 0; n < array.length; n++) {
                 var qtyBefore = $('#tblSPB tbody tr[data-id="'+array[n]['INVENTORY_ITEM_ID']+'"] input[name="maxPack[]"]').val();
@@ -165,13 +318,21 @@ function setPacking() {
             a += 1;
             $('#inputPackingAct').val(a);
 
+
+            
+
+
             var kasih = Number($('input[name="totalQtyKasih"]').val());
             var minta = Number($('input[name="totalQtyMinta"]').val());
             if (minta == kasih || minta < kasih && a > 1) {
                 $('#cetakPackingList').attr('disabled', false);
-                $('#cetakPackingList').removeAttr('onclick');
             }
             $('#formSetPacking input[name="weight"]').val('');
+
+
+            $('input[name="nomerSPB"]').prop('readonly', true);
+            $('input[name="nomerSPB"]').attr('readonly', true);
+
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             $('#loadingMdl').modal('hide');
@@ -183,7 +344,9 @@ function setPacking() {
 function enaDisItemScan() {
     var kemasan     = $('select[name="kemasan"]').val();
     var ekspedisi   = $('#ekspedisi').val();
+    
     $('input[name="EkspedisiValue"]').val(ekspedisi);
+
     if (kemasan) {
         $('input[name="ItemCode"]').removeAttr('disabled');
         $('input[name="kemasanValue"]').val(kemasan);
