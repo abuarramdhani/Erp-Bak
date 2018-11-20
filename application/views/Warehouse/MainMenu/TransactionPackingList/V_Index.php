@@ -1,4 +1,4 @@
-<section class="content">
+<section class="content" >
     <div class="inner">
         <div class="row">
             <div class="col-lg-12">
@@ -35,7 +35,7 @@
                                     <div class="col-md-12">
                                         <form id="formPackingList" onsubmit="getDataPackingList()">
                                             <div class="col-md-10">
-                                                <input type="number" name="nomerSPB" class="form-control" placeholder="Masukkan Nomer SPB..." required="" min="0">
+                                                <input type="number"  name="nomerSPB" class="form-control" placeholder="Masukkan Nomer SPB..." required="" min="0">
                                             </div>
                                             <div class="col-md-2">
                                                 <button type="submit" class="btn btn-primary btn-sm btn-block">SEARCH</button>
