@@ -182,7 +182,7 @@ class C_kasiepembelian extends CI_Controller{
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringInvKasiePembelian/V_finishBatch',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_finishbatch',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
