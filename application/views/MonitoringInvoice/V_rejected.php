@@ -24,13 +24,14 @@
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center">Action</th>
 											<th class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th class="text-center" width="35%" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
+											<th class="text-center" width="15%" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
@@ -41,10 +42,21 @@
 										<?php $no=1; if($invoice){foreach($invoice as $f){?>
 										<tr>
 											<td><?php echo $no ?></td>
+											<td>
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>" class="btn btn-info"> Detail
+											</a>
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$f['INVOICE_ID'])?>">
+											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
+											</a>
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$f['INVOICE_ID'])?>">
+											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
+											</a>
+
+											</td>
 											<td><?php echo $f['VENDOR_NAME']?></td>
-											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>">
+											<td>
 												<?php echo $f['INVOICE_NUMBER']?>
-												</a>
+												
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>

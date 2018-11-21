@@ -34,7 +34,7 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th class="text-center" width="20%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
+											<th class="text-center" width="13%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center" width="15%">Action</th>
 											<th class="text-center">Alasan</th>
@@ -45,9 +45,7 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
-											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['FINANCE_BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>">
-												<?php echo $u['INVOICE_NUMBER']?>
-											</a></td>
+											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN']?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
@@ -57,7 +55,10 @@
 												<?php echo  $k ."<br>" ?>
 											<?php }} ?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
-											<td><?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
+											<td>
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['FINANCE_BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info"> Detail
+												</a>
+											<?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
 												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Terima</button>
 											<?php }else{ ?>
 												<span data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</span>
