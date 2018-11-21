@@ -45,10 +45,10 @@
 											<td>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>" class="btn btn-info"> Detail
 											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>">
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$f['INVOICE_ID'])?>">
 											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
 											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['INVOICE_ID'])?>">
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$f['INVOICE_ID'])?>">
 											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
 											</a>
 
