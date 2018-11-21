@@ -34,7 +34,7 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th class="text-center" width="15%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
+											<th class="text-center" width="10%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center" width="15%">Action</th>
 											<th class="text-center">Alasan</th>
