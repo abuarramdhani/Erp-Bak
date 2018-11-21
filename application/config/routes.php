@@ -1914,6 +1914,7 @@ $route['AccountPayables/MonitoringInvoice/InvoiceKasie'] = 'MonitoringInvKasiePe
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2/$3';
+$route['AccountPayables/MonitoringInvoice/FinishBatch'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/finishBatch';
 
 //--------------------------------------------------- Monitoring Invoice Akuntansi --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/Unprocess'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi';

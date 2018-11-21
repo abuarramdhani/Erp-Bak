@@ -37,7 +37,7 @@
 											<th class="text-center" width="20%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center" width="15%">Action</th>
-											<th class="text-center">Alasan Ditolak</th>
+											<th class="text-center">Alasan</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -62,12 +62,12 @@
 											<?php }else{ ?>
 												<span data-id="<?= $u['INVOICE_ID'] ?>" class="btn btn-success" value="2" name="success">Success</span>
 											<?php } ?>
-												<button type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger" value="3" name="proses" >
+												<button type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger" value="3" name="proses">
 												 Tolak
 												</button>
 											</td>
 											<td>
-												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON_FINANCE']?>" > <input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
+												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON']?>" > <input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
 										</tr>
 										<?php $no++; } ?>

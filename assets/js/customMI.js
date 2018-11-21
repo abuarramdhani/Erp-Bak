@@ -112,7 +112,7 @@ $(document).ready(function(){
 
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
-				    'received_date','item_description','item_id','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
+				    'received_date','item_id','item_description','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
 						$('.addMonitoringInvoice').each(function () {
 								var html ='';
 					           if (this.checked) {
@@ -178,9 +178,22 @@ $(document).ready(function(){
 	})
 
 
-	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #tbInvoice tbody tr, #processedinvoice tbody tr, #rejectdetail tbody tr, #rejectpo tbody tr').each(function(){
+	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #processedinvoice tbody tr').each(function(){
 			var po_amount = $('.po_amount').text();
 			var inv_amount = $('#invoice_amount').text().replace( /[^0-9]+/g, "");
+
+			if (po_amount == inv_amount) {
+				$('.po_amount').css("background-color","white");
+				$('#invoice_amount').css("background-color","white");
+			}else{
+				$('.po_amount').css("background-color","red").css("color","white");
+				$('#invoice_amount').css("background-color","red").css("color","white");
+			}
+	});
+
+	$('table#tbInvoice tbody tr, #rejectdetail tbody tr').each(function(){
+			var po_amount = $('.po_amount').text();
+			var inv_amount = $('#invoice_amount').text();
 
 			if (po_amount == inv_amount) {
 				$('.po_amount').css("background-color","white");
@@ -196,8 +209,8 @@ $(document).ready(function(){
 			var inv_amount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
 
 			if (po_amount == inv_amount) {
-				$('.po_amount').css("background-color","white");
-				$('#invoice_amount').css("background-color","white");
+				$('.po_amount').css("background-color","white").css("color","black");
+				$('#invoice_amount').css("background-color","white").css("color","black");
 			}else{
 				$('.po_amount').css("background-color","red").css("color","white");
 				$('#invoice_amount').css("background-color","red").css("color","white");
@@ -277,7 +290,24 @@ function prosesInvMI(th){
 				alert('Alasan harus diisi');
 			});
 		}
-	}
+}
+
+function deleteLinePO(th){
+
+	var id = $(th).attr('data-id');
+
+	$.ajax({
+		url: baseurl+'AccountPayables/MonitoringInvoice/Invoice/deletePOLine/'+id,
+		data: {
+			invoice_po_id : id
+		},
+		type: 'POST',
+		success: function(response){
+			alert('Po Line di hapus');
+			 $(th).parent('td').parent('tr').remove();
+		}
+	});
+}
 
 
 

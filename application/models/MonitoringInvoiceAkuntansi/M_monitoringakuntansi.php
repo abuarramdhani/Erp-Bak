@@ -20,7 +20,7 @@ class M_monitoringakuntansi extends CI_Model {
 				    ami.last_status_finance_date last_status_finance_date,
 				    ami.finance_batch_number finance_batch_number,
 				    ami.LAST_FINANCE_INVOICE_STATUS LAST_FINANCE_INVOICE_STATUS,
-				    ami.REASON_FINANCE REASON_FINANCE,
+				    ami.reason reason,
 				    poh.attribute2 PPN,
 				    aaipo.po_number po_number,
 				    aaipo.po_detail po_detail
@@ -110,6 +110,14 @@ class M_monitoringakuntansi extends CI_Model {
         // oci_commit($erp_db);
 	}
 
+    public function insertproses($invoice_id,$action_date,$finance_status)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,finance_status)
+                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$finance_status')";
+        $run = $oracle->query($sql);
+    }
+
 	public function processedInvoice()
 	{
 		$erp_db = $this->load->database('oracle',true);
@@ -180,11 +188,11 @@ class M_monitoringakuntansi extends CI_Model {
         return $run->num_rows();
     }
 
-    public function reason_finance($invoice_id,$reason_finance)
+    public function reason_finance($invoice_id,$reason)
     {
        $oracle = $this->load->database('oracle',true);
        $query2 = "UPDATE khs_ap_monitoring_invoice 
-                  SET reason_finance = '$reason_finance'
+                  SET reason = '$reason'
                  WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);

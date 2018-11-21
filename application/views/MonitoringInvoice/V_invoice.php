@@ -15,7 +15,7 @@
 						<div class="text-left ">
 							<span><b>List Data Invoice</b></span>
 							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/addListInv');?>">
-							<button type="button" class="btn btn-lg btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+							<button type="button"  class="btn btn-lg btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i></button>
 							</a>
 						</div>
 					</div>
@@ -126,7 +126,7 @@
 		  </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		    <button type="submit" class="btn btn-primary">Yes</button>
+		    <button type="submit" class="btn btn-primary" name="status_purchase" value="1">Yes</button>
 		  </div>
 		</div>
  	</div>

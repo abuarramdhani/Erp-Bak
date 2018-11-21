@@ -4,7 +4,7 @@
 		font-size: 36px
 	}
 </style>
-<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/addReasonModifikasi/') ?>">
+<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/submittofinance') ?>">
 	<input type="hidden" name="nomor_batch" value="<?= $batch_number; ?>">
 <section class="content">
 	<div class="inner" >
@@ -33,8 +33,7 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th width="40%" class="text-center ">Action</th>
-											<th class="text-center ">Reason</th>
+											<th class="text-center ">Status</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -43,6 +42,7 @@
 											<td><?php echo $no ?></td>
 											<td>
 												<?php echo $b['VENDOR_NAME']?>
+												<input type="hidden" name="invoice_id" value="<?php echo $b['INVOICE_ID']?>">
 											</td>
 											<td>
 												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/invoiceDetail/'.$b['INVOICE_ID'].'/'.$batch_number)?>">
@@ -54,32 +54,20 @@
 											<td><?php echo $b['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $b['INVOICE_AMOUNT']?></td>
 											<td class="po_amount"><?php echo $b['PO_AMOUNT']?></td>
-											<td style="background-color: <?php if ($b['FINANCE_STATUS'] == '1' or $b['FINANCE_STATUS'] == '2') { ?>
-												grey
-											<?php }else if($b['STATUS'] == '2' ){ ?>
-												green
-											<?php }else if($b['STATUS'] == '3'){ ?>
-												red
-											<?php } ?>">
-												<label  class="radio-inline">
-													<input type="radio" id="approvedByKasiePurc" <?php if ($b['STATUS'] == '2'): ?>
-													checked
-												<?php endif ?>  name="radioForReason[][<?php echo $b['INVOICE_ID'] ?>]" value="2"> Ok</label>
-												<label class="radio-inline RejectByKasiePurc">
-													<input  type="radio" id="RejectByKasiePurc" <?php if ($b['STATUS'] == '3'): ?>
-														checked
-													<?php endif ?> name="radioForReason[][<?php echo $b['INVOICE_ID'] ?>]" value="3">Not OK</label>
-											</td>
-											<td>
-												<input style="width: 200px" type="text" id="alasan" name="inputReason[][<?php echo $b['INVOICE_ID']?>]" class="form-control" value="<?php echo $b['REASON'] ?>">
-											</td>
+											<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] = 2){
+												$status = 'Approved';
+											}elseif($b['LAST_PURCHASING_INVOICE_STATUS'] = 3){
+												$status = 'Rejected';
+											}else{
+												$status = 'Submited by purchase';
+											}?>
+											<td><?php echo $status?></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
 								</table>
 								<div class="col-md-3 pull-right">
-									<button type="submit" id="btnSaveBatch" name="submitButton" class="btn btn-success" style="margin-top: 10px" value="2">Save</button>
-									<button type="submit" id="btnToFinance" name="submitButton" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
+									<button type="submit" id="btnToFinance" name="submit_finance" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
 									</div>
 								</div>
 							</div>

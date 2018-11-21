@@ -6,7 +6,6 @@
 	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
 </style>
 
-<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/showInvoiceInDetail/') ?>">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -46,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $po_num['INVOICE_AMOUNT']?>" id="invoice_amount" readonly>
+											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo $po_num['INVOICE_AMOUNT']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -71,7 +70,7 @@
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="poLinesTable" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
+											<table id="invoice_detail" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
@@ -127,7 +126,7 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span class="po_amount"><?php echo $po_amount ?></span>
+										<label>Po Amount : </label><span><?php echo $po_amount ?></span>
 									</div>
 								</div>
 							</div>
@@ -143,4 +142,3 @@
 		</div>
 	</div>
 </section>
-</form>

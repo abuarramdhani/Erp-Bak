@@ -3,7 +3,7 @@
 	.text-left span {
 		font-size: 36px
 	}
-	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
+	#tbFilterPO tr td,#finishInvoiceTable tr td{padding: 5px}
 </style>
 
 <section class="content">
@@ -23,19 +23,20 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 							<form id="filInvoice" >
-								<table id="tbInvoice" >
+								<table id="finishInvoiceTable" >
 									<tr>
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td><?php echo $processed[0]['INVOICE_NUMBER']?></td>
+										<td><input  class="form-control" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>" readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-											<?php echo date('d-M-Y',strtotime($processed[0]['INVOICE_DATE']))?>
+											<input  class="form-control" size="40" type="text" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -43,7 +44,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<?php echo $processed[0]['INVOICE_AMOUNT']?>
+											<input class="form-control" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -51,7 +52,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<?php echo $processed[0]['TAX_INVOICE_NUMBER']?>
+											<input  class="form-control" size="40" type="text" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 								</table>
@@ -76,7 +77,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<?php $no=1; $po_amount=0; foreach($processed as $b){?>
+								<?php $no=1; $po_amount=0; foreach($invoice as $b){?>
 								<tr>
 									<td class="text-center"><?php echo $no ?></td>
 									<td class="text-center"><?php echo $b['VENDOR_NAME']?></td>
@@ -98,11 +99,11 @@
 						<div class="col-md-4 pull-left">
 							<label>Po Amount: <span><?php echo $po_amount?></span></label>
 						</div>
-						<div class="col-md-2 pull-right">
+						<!-- <div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/');?>">
 							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
 						</a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

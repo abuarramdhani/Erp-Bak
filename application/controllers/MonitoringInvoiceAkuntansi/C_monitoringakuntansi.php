@@ -190,7 +190,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
 
 		$this->M_monitoringakuntansi->saveProses($proses,$saveDate,$id);
-		$this->M_monitoringakuntansi->saveProses2($id,$proses,$saveDate);
+		$this->M_monitoringakuntansi->insertproses($id,$saveDate,$proses);
 
 	}
 
