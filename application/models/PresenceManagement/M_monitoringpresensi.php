@@ -386,4 +386,56 @@
 	    	$this->quick->order_by('kode_finger');
 	    	return $this->quick->get()->result_array();
 	    }
+
+	    var $table = 'db_datapresensi.tb_user';
+	    var	$column_order = array('noind','noind_baru','nama');
+	    var	$column_search = array('noind','noind_baru','nama');
+	    var $order = array('noind' => 'asc');
+
+	    public function user_table_query(){
+	    	
+	    	$this->quick->from($this->table);
+	    	$i = 0;
+	    	foreach ($this->column_search as $item) {
+	    		if ($_POST['search']['value']) {
+	    			if ($i===0) {
+	    				$this->quick->group_start();
+	    				$this->quick->like($item,$_POST['search']['value']);
+	    			}else{
+	    				$this->quick->or_like($item,$_POST['search']['value']);
+	    			}
+	    			if (count($this->column_search)-1 == $i) {
+	    				$this->quick->group_end();
+	    			}
+	    			$i++;
+	    		}
+	    	}
+	    	if (isset($_POST['order'])) {
+	    		$this->quick->order_by($this->column_order[$_POST['order']['0']['column']],$_POST['order']['0']['dir']);
+	    	}elseif (isset($this->order)) {
+	    		$order = $this->order;
+	    		$this->quick->order_by(key($order),$order[key($order)]);
+	    	}
+	    }
+
+	    public function user_table(){
+	    	$this->user_table_query();
+	    	if ($_POST['length'] != -1) {
+	    		$this->quick->limit($_POST['length'],$_POST['start']);
+	    		$query = $this->quick->get();
+	    		return $query->result();
+	    	}
+	    }
+
+	    public function count_filtered(){
+	    	$this->user_table_query();
+	    	$query = $this->quick->get();
+	    	return $query->num_rows();
+	    }
+
+	    public function count_all(){
+	    	$this->quick->from($this->table);
+	    	$query = $this->quick->get();
+	    	return $query->num_rows();
+	    }
  	}
