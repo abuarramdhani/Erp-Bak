@@ -93,7 +93,7 @@
                                 </a>
 							</div>
 							<div class="box-body">
-								<table class="table table-bordered" id="PresenceManagement-daftarUser">
+								<table class="table table-bordered" id="PresenceManagement-daftarUser-ServerSide">
 									<thead>
 										<tr>
 											<th class="text-center">No.</th>
@@ -103,22 +103,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php
-											$no 	=	1;
-											foreach ($user_list as $user) 
-											{
-												$encrypted_string 	=	$this->general->enkripsi($user['id_user']);
-										?>
-										<tr>
-											<td class="text-center"><?php echo $no;?></td>
-											<td><?php echo $user['noind_baru'];?></td>
-											<td><?php echo $user['noind'];?></td>
-											<td><?php echo $user['nama'];?></td>
-										</tr>
-										<?php
-												$no++;
-											}
-										?>
 									</tbody>
 								</table>
 							</div>
@@ -289,3 +273,4 @@
 		</div>
 	</form>
 </section>
+

@@ -32,12 +32,37 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 		$data 	=	$this->general->loadHeaderandSidemenu('Monitoring Presensi - Quick ERP', 'Monitoring Presensi', 'Monitoring Presensi', 'Pengaturan');
 
 		$data['device_fingerprint']		=	$this->M_monitoringpresensi->device_fingerprint();
-		$data['user_list'] 				=	$this->M_monitoringpresensi->user_list();
+		// $data['user_list'] 				=	$this->M_monitoringpresensi->user_list();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PresenceManagement/MonitoringPresensi/V_Pengaturan',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function UserListTable(){
+		$list = $this->M_monitoringpresensi->user_table();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $key) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $key->noind_baru;
+			$row[] = $key->noind;
+			$row[] = $key->nama;
+
+			$data[] = $row;
+		}
+
+		$output = array(
+			'draw' => $_POST['draw'], 
+			'recordsTotal' =>$this->M_monitoringpresensi->count_all(),
+			'recordsFiltered' => $this->M_monitoringpresensi->count_filtered(),
+			'data' => $data
+		);
+
+		echo json_encode($output);
 	}
 
 	//	Device Management
