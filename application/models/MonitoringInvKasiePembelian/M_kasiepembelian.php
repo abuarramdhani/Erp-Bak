@@ -9,10 +9,12 @@ class M_kasiepembelian extends CI_Model {
 
 	public function showListSubmittedForChecking(){
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date,
-                        last_purchasing_invoice_status, last_finance_invoice_status
-                FROM khs_ap_monitoring_invoice
-                WHERE last_purchasing_invoice_status = 1
+		$sql = "SELECT distinct purchasing_batch_number batch_num, to_date(last_status_purchasing_date) submited_date,
+                last_purchasing_invoice_status, last_finance_invoice_status
+                FROM khs_ap_monitoring_invoice 
+                WHERE (last_purchasing_invoice_status = 1
+                OR last_purchasing_invoice_status = 2)
+                AND LAST_FINANCE_INVOICE_STATUS=0
                 ORDER BY submited_date";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
