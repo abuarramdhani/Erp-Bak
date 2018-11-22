@@ -173,11 +173,11 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function showFinanceNumber(){
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT finance_batch_number finance_batch_number, to_date(last_status_purchasing_date) submited_date
-                FROM khs_ap_monitoring_invoice
-                WHERE last_finance_invoice_status = 1
-                GROUP BY finance_batch_number, to_date(last_status_purchasing_date) 
-                ORDER BY submited_date;";
+        $sql = "SELECT finance_batch_number finance_batch_number, to_date(last_status_purchasing_date) submited_date
+        FROM khs_ap_monitoring_invoice
+        WHERE last_finance_invoice_status = 1
+        GROUP BY finance_batch_number, to_date(last_status_purchasing_date) 
+        ORDER BY submited_date";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
