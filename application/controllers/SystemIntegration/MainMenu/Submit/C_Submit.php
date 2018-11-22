@@ -160,7 +160,7 @@ class C_Submit extends CI_Controller
 			$form_approval = array();
 			if ($data['kaizen'] && in_array($data['kaizen'][0]['status'], $needthisform = array(0,1))  ):
 			$getKodeJabatan = $this->M_submit->getKodeJabatan($noinduk);
-			if ($getKodeJabatan >= 13) {
+			if (($getKodeJabatan >= 13) && ($getKodeJabatan != 19)) {
 				$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
 				$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
 				$form_approval[0]['title'] = 'Atasan 1';
