@@ -178,7 +178,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function showFinishBatch(){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT distinct purchasing_batch_number, FINANCE_BATCH_NUMBER, to_date(last_status_purchasing_date) submited_date,
+        $sql = "SELECT distinct purchasing_batch_number BATCH_NUM, FINANCE_BATCH_NUMBER, to_date(last_status_purchasing_date) submited_date,
                         last_purchasing_invoice_status, last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE (last_purchasing_invoice_status = 2
