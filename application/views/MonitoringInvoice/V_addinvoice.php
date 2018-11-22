@@ -122,8 +122,8 @@
 										<th class="text-center">Status LPPB</th>
 										<th class="text-center">Shipment Number</th>
 										<th class="text-center">Receive Date</th>
+										<th class="text-center">Item Description</th>
 										<th class="text-center">Item Code</th>
-										<th class="text-center">Item Desc</th>
 										<th class="text-center">Qty Amount</th>
 										<th class="text-center">Qty Billed</th>
 										<th class="text-center">Qty Reject</th>

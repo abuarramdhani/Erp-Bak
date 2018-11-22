@@ -112,7 +112,7 @@ $(document).ready(function(){
 
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
-				    'received_date','item_id','item_description','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
+				    'received_date','item_description','item_id','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
 						$('.addMonitoringInvoice').each(function () {
 								var html ='';
 					           if (this.checked) {

@@ -68,7 +68,7 @@
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="editlinespo" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
+											<table id="editlinespo" class="table text-center dataTable" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
@@ -78,7 +78,8 @@
 														<th class="text-center">LPPB Number</th>
 														<th class="text-center">Shipment Number</th>
 														<th class="text-center">Receive Date</th>
-														<th class="text-center">Item Desc</th>
+														<th class="text-center">Item Description</th>
+														<th class="text-center">Item Code</th>
 														<th class="text-center">Qty Receipt</th>
 														<th class="text-center">Qty Reject</th>
 														<th class="text-center">Currency</th>
@@ -115,6 +116,9 @@
 															<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['ITEM_DESCRIPTION']?>"> 
 														</td>
 														<td class="text-center">
+															<input class="form-control" type="text" name="item_code[]" value="<?php echo $po_num['ITEM_CODE']?>"> 
+														</td>
+														<td class="text-center">
 															<input class="form-control" type="text" name="qty_receipt[]" value="<?php echo $po_num['QTY_RECEIPT']?>"> 
 														</td>
 														<td class="text-center">
@@ -129,8 +133,10 @@
 														</td>
 														<td>
 															<button type="button" class="btn btn-danger" onclick="deleteLinePO(this)" data-id="<?php echo $po_num['INVOICE_PO_ID']?>"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
-															<input type="hidden" name="invoice_po_id" value="<?php echo $po_num['INVOICE_PO_ID']?>">
-														</td> 
+														</td>
+														<td>
+															<input type="hidden" name="invoice_po_id[]" value="<?php echo $po_num['INVOICE_PO_ID']?>">
+														</td>
 													</tr>
 												<?php $no++; $po_amount=$po_amount+($po_num['UNIT_PRICE']*$po_num['QTY_INVOICE']); } ?>
 											</tbody>

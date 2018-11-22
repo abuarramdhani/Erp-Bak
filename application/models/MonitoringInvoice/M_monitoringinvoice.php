@@ -246,6 +246,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     shipment_number shipment_number,
                     received_date received_date,
                     item_description item_description,
+                    item_code item_code,
                     qty_invoice qty_invoice,
                     qty_reject qty_reject,
                     currency currency,
@@ -271,7 +272,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
     }
 
-    public function saveEditInvoice1($invoice_id,$po_number,$lppb_number,$shipment_number,$received_date,$item_description,$qty_receipt,$qty_reject,$currency,$unit_price,$qty_invoice){
+    public function saveEditInvoice1($invoice_po_id,$po_number,$lppb_number,$shipment_number,$received_date,$item_description,$item_code,$qty_receipt,$qty_reject,$currency,$unit_price,$qty_invoice){
         if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
                 $received_date = NULL;
             }else{
@@ -297,12 +298,13 @@ SELECT DISTINCT pol.po_line_id line_id,
             shipment_number = '$shipment_number',
             received_date = '$received_date',
             item_description = '$item_description',
+            item_code = '$item_code',
             qty_receipt = $qty_receipt,
             qty_reject = $qty_reject,
             currency = '$currency',
             unit_price = '$unit_price',
             qty_invoice = '$qty_invoice'
-        WHERE invoice_id = $invoice_id ";
+        WHERE invoice_po_id = $invoice_po_id ";
         $runQuery = $oracle->query($query);
         //oci_commit($oracle);
         
@@ -432,6 +434,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                         shipment_number shipment_number,
                         received_date received_date,
                         item_description item_description,
+                        item_code item_code,
                         qty_receipt qty_receipt,
                         qty_reject qty_reject,
                         currency currency,
