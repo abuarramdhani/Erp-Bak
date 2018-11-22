@@ -27,6 +27,7 @@
 											<th class="text-center">No</th>
 											<th class="text-center">Action</th>
 											<th class="text-center">Purchasing Batch Number</th>
+											<th class="text-center">Finance Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
 											<th class="text-center">Status Invoice</th>
@@ -42,6 +43,7 @@
 												</a>
 											</td>
 											<td><?php echo $b['BATCH_NUM']?></td>
+											<td><?php echo $b['FINANCE_BATCH_NUMBER']?></td>
 											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
 											<td><?php echo $b['JML_INVOICE']?></td>
 											<?php if ($b['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $b['LAST_FINANCE_INVOICE_STATUS'] == 2) {
