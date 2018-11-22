@@ -319,6 +319,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$item_code = $this->input->post('item_code[]');
+		$invoice_po_id = $this->input->post('invoice_po_id[]');
 
 		// $amount = str_replace(',', '', $invoice_amount);
 
@@ -326,7 +328,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number);
 
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_id,$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
+			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
 		
 		}
 

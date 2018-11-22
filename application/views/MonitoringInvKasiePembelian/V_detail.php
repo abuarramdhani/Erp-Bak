@@ -22,7 +22,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="tbListBatchPembelian" class="table table-striped table-bordered table-hover text-center dataTable" style="width: 100%">
+								<table id="tbListBatchPembelian" class="table text-center dataTable" style="width: 100%">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -33,7 +33,7 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th class="text-center ">Status</th>
+											<th class="text-center">Info Status</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -42,7 +42,6 @@
 											<td><?php echo $no ?></td>
 											<td>
 												<?php echo $b['VENDOR_NAME']?>
-												<input type="hidden" name="invoice_id" value="<?php echo $b['INVOICE_ID']?>">
 											</td>
 											<td>
 												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/invoiceDetail/'.$b['INVOICE_ID'].'/'.$batch_number)?>">
@@ -54,14 +53,17 @@
 											<td><?php echo $b['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $b['INVOICE_AMOUNT']?></td>
 											<td class="po_amount"><?php echo $b['PO_AMOUNT']?></td>
-											<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] = 2){
-												$status = 'Approved';
-											}elseif($b['LAST_PURCHASING_INVOICE_STATUS'] = 3){
-												$status = 'Rejected';
-											}else{
-												$status = 'Submited by purchase';
-											}?>
+											<?php if($b['FINANCE_STATUS'] == 1 and $b['STATUS'] == 2){
+												$status = 'Done';
+											}elseif($b['STATUS'] == 2){
+												$status = 'Approve';
+											}elseif($b['STATUS'] == 3){
+												$status = 'Reject'.' - '.$b['REASON'];
+											}elseif ($b['STATUS'] == 1) {
+												$status = 'Sumbit';
+											} ?>
 											<td><?php echo $status?></td>
+											<td><input type="hidden" name="invoice_id[]" value="<?php echo $b['INVOICE_ID']?>"></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

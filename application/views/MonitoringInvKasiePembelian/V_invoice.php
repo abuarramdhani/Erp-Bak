@@ -70,7 +70,8 @@
 									<th class="text-center">LPPB Number</th>
 									<th class="text-center">Shipment Number</th>
 									<th class="text-center">Receive Date</th>
-									<th class="text-center">Item Desc</th>
+									<th class="text-center">Item Description</th>
+									<th class="text-center">Item Code</th>
 									<th class="text-center">Qty Receipt</th>
 									<th class="text-center">Qty Reject</th>
 									<th class="text-center">Currency</th>
@@ -88,6 +89,7 @@
 									<td class="text-center"><?php echo $b['SHIPMENT_NUMBER']?></td>
 									<td class="text-center"><?php echo $b['RECEIVED_DATE']?></td>
 									<td class="text-center"><?php echo $b['ITEM_DESCRIPTION']?></td>
+									<td class="text-center"><?php echo $b['ITEM_CODE']?></td>
 									<td class="text-center"><?php echo $b['QTY_RECEIPT']?></td>
 									<td class="text-center"><?php echo $b['QTY_REJECT']?></td>
 									<td class="text-center"><?php echo $b['CURRENCY']?></td>
@@ -98,15 +100,15 @@
 							</tbody>
 						</table>
 						</div>
-						<div class="col-md-2 pull-left">
+						<div class="pull-left">
 							<label>Po Amount : </label><span><?php echo $po_amount ?></span>
 						</div>
-						<div class="col-md-8 pull-right">
-							<button class="btn btn-danger" type="button" style="margin-top: 10px" data-toggle="modal" data-target="#mdlreject">Reject</button>
-							<button class="btn btn-success" type="submit" value="2" name="prosesapproved" style="margin-top: 10px">Approved</button>
+						<div class="col-md-12">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$batch_number)?>">
-							<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px" >Back</button>
+							<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px; margin-left: 10px" >Back</button>
 						</a>
+							<button class="btn btn-danger pull-right" type="button" style="margin-top: 10px; margin-left: 10px" data-toggle="modal" data-target="#mdlreject">Reject</button>
+							<button class="btn btn-success pull-right" type="submit" value="2" name="prosesapproved" style="margin-top: 10px">Approved</button>
 						</div>
 					</div>
 				</div>

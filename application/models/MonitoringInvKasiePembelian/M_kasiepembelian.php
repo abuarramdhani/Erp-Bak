@@ -90,7 +90,7 @@ class M_kasiepembelian extends CI_Model {
     public function btnSubmitToFinance($id,$finance_status,$finance_date,$finance_batch_number){
         $erp_db = $this->load->database('oracle',true);
         $sql = "UPDATE khs_ap_monitoring_invoice
-                set last_finance_invoice_status = $finance_status,
+                set last_finance_invoice_status = '$finance_status',
                 last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
                 finance_batch_number = '$finance_batch_number'
                 WHERE invoice_id = $id
@@ -138,6 +138,7 @@ class M_kasiepembelian extends CI_Model {
                 aipo.shipment_number shipment_number,
                 aipo.received_date received_date,
                 aipo.item_description item_description,
+                aipo.item_code item_code,
                 aipo.qty_receipt qty_receipt,
                 aipo.qty_reject qty_reject,
                 aipo.currency currency,
@@ -221,6 +222,7 @@ class M_kasiepembelian extends CI_Model {
                 shipment_number shipment_number,
                 received_date received_date,
                 item_description item_description,
+                item_code item_code,
                 qty_receipt qty_receipt,
                 qty_reject qty_reject,
                 currency currency,
@@ -231,6 +233,15 @@ class M_kasiepembelian extends CI_Model {
                 WHERE aipo.invoice_id = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
+    }
+
+    public function checkApprove($invoice_id){
+        $oracle = $this->load->database('oracle',true);
+        $sql = "SELECT last_purchasing_invoice_status 
+                FROM khs_ap_monitoring_invoice
+                WHERE invoice_id = $invoice_id";
+        $run = $oracle->query($sql);
+        return $run->result_array();
     }
 
 }

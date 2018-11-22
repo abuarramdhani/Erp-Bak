@@ -74,6 +74,9 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$batch = $this->M_kasiepembelian->showDetailPerBatch($batchNumber);
+		// echo "<pre>";
+		// print_r($batch);
+		// exit();
 		
 		$no = 0;
 		foreach ($batch as $bl) {
@@ -101,13 +104,21 @@ class C_kasiepembelian extends CI_Controller{
 	public function submittofinance(){
 		$finance = $this->input->post('submit_finance');
 		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
-		$invoice_id = $this->input->post('invoice_id');
+		$invoice_id = $this->input->post('invoice_id[]');
 
 		$checkFinanceNumber = $this->M_kasiepembelian->checkFinanceNumber();
 		$finance_batch_number = $checkFinanceNumber[0]['FINANCE_BATCH_NUMBER'] + 1;
 
-		$this->M_kasiepembelian->btnSubmitToFinance($invoice_id,$finance,$saveDate,$finance_batch_number);
-		$this->M_kasiepembelian->insertstatusfinance($invoice_id,$saveDate,$finance);
+		foreach ($invoice_id as $id => $value) {
+			$inv_id = $value;
+
+			$checkStatus = $this->M_kasiepembelian->checkApprove($inv_id);
+			if ($checkStatus[0]['LAST_PURCHASING_INVOICE_STATUS'] == 2) {
+				$this->M_kasiepembelian->btnSubmitToFinance($inv_id,$finance,$saveDate,$finance_batch_number);
+				$this->M_kasiepembelian->insertstatusfinance($inv_id,$saveDate,$finance);
+				
+			}
+		}
 
 		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch');
 	}
