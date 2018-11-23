@@ -321,51 +321,53 @@ class C_ApprovalKaizen extends CI_Controller
 			//email
 			$getEmail = $this->M_submit->getEmail($user);
 			$emailUser = $getEmail[0]['internal_mail'];
-			// $emailUser = 'kuswandaru@quick.com';
-			//get Rincian Kaizen
-			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
+			if ($emailUser) {
+				// $emailUser = 'kuswandaru@quick.com';
+				//get Rincian Kaizen
+				$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 
-			//get template
-			$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
-			$getEmailTemplate = $this->M_submit->getEmailTemplate(1);
-			$subject = $getEmailTemplate[0]['subject'];
-			$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
+				//get template
+				$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+				$getEmailTemplate = $this->M_submit->getEmailTemplate(1);
+				$subject = $getEmailTemplate[0]['subject'];
+				$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
 
-			//send Email
+				//send Email
 
-			$this->load->library('PHPMailerAutoload');
-			$mail = new PHPMailer();
-	        $mail->SMTPDebug = 0;
-	        $mail->Debugoutput = 'html';
-			
-	        // set smtp
-	        $mail->isSMTP();
-	        $mail->Host = 'm.quick.com';
-	        $mail->Port = 465;
-	        $mail->SMTPAuth = true;
-			$mail->SMTPSecure = 'ssl';
-			$mail->SMTPOptions = array(
-					'ssl' => array(
-					'verify_peer' => false,
-					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-					);
-	        $mail->Username = 'no-reply';
-	        $mail->Password = '123456';
-	        $mail->WordWrap = 50;
-			
-	        // set email content
-	        $mail->setFrom('no-reply@quick.com', 'Email Sistem');
-	        $mail->addAddress($emailUser);
-	        $mail->Subject = $subject;
-			$mail->msgHTML($body);
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer();
+		        $mail->SMTPDebug = 0;
+		        $mail->Debugoutput = 'html';
+				
+		        // set smtp
+		        $mail->isSMTP();
+		        $mail->Host = 'm.quick.com';
+		        $mail->Port = 465;
+		        $mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+						'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true)
+						);
+		        $mail->Username = 'no-reply';
+		        $mail->Password = '123456';
+		        $mail->WordWrap = 50;
+				
+		        // set email content
+		        $mail->setFrom('no-reply@quick.com', 'Email Sistem');
+		        $mail->addAddress($emailUser);
+		        $mail->Subject = $subject;
+				$mail->msgHTML($body);
 
-			
-			if (!$mail->send()) {
-				echo "Mailer Error: " . $mail->ErrorInfo;
-				exit();
-			} else {
-				echo "Message sent!";
+				
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+					exit();
+				} else {
+					echo "Message sent!";
+				}
 			}
 		}
 
@@ -375,19 +377,21 @@ class C_ApprovalKaizen extends CI_Controller
 			//email
 			$this->load->library('Sendmessage');
 			$getEmail = $this->M_submit->getEmail($user);
-			$userAccount = $getEmail[0]['pidgin_account'];
-			// $userAccount = 'kuswandaru@chat.quick.com';
-			//get Rincian Kaizen
-			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
+			if ($getEmail) {
+				$userAccount = $getEmail[0]['pidgin_account'];
+				// $userAccount = 'kuswandaru@chat.quick.com';
+				//get Rincian Kaizen
+				$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 
-			//get template
-			$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
-			$getEmailTemplate = $this->M_submit->getEmailTemplate(2);
-			$subject = $getEmailTemplate[0]['subject'];
-			$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
-			$body = str_replace('<br />', "\n", $body);
+				//get template
+				$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+				$getEmailTemplate = $this->M_submit->getEmailTemplate(2);
+				$subject = $getEmailTemplate[0]['subject'];
+				$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
+				$body = str_replace('<br />', "\n", $body);
 
-			$pidgin = new Sendmessage;
-			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
+				$pidgin = new Sendmessage;
+				@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
+			}
 		}
 }
