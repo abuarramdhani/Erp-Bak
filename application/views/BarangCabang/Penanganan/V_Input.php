@@ -26,7 +26,7 @@
 							$tglCek = '';
 						} ?>
 						<div class="form-group">
-						<input id="tanggal" type="text" name="textDate" class="form-control datepicker_bi" placeholder="Pilih Tanggal" value="<?php echo $tglCek; ?>" required>
+						<input id="tanggalBranch" type="text" name="textDate" class="form-control datepicker_bi" placeholder="Pilih Tanggal" value="<?php echo $tglCek; ?>" required>
 						</div>
 					</div>
 				</div>
