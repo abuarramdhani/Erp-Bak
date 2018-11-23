@@ -2085,3 +2085,35 @@ $route['AdmCabang'] = 'ADMCabang/C_Index';
 
 $route['AdmCabang/PresensiHarian'] = 'ADMCabang/C_PresensiHarian';
 $route['AdmCabang/PresensiHarian/(:any)'] = 'ADMCabang/C_PresensiHarian/$1';
+
+
+//--------------------------------------------- Branch Item --------------------------------------------
+$route['BranchItem'] = 'BarangCabang/C_branchitem';
+$route['BranchItem/PemindahanBarang/Input'] = 'BarangCabang/C_branchitem/InputBarang';
+$route['BranchItem/PemindahanBarang/Input/(:any)'] = 'BarangCabang/C_branchitem/InputBarang/$1';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah'] = 'BarangCabang/C_branchitem/Addpemindahan';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah/insert'] = 'BarangCabang/C_branchitem/insertPemindahanHeader';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah/insert/line'] = 'BarangCabang/C_branchitem/insertPemindahanLine';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah/flagging'] = 'BarangCabang/C_branchitem/FlaggingPemindahanHeader';
+$route['BranchItem/PemindahanBarang/Input/edit/(:any)'] = 'BarangCabang/C_branchitem/EditPemindahan/$1';
+$route['BranchItem/PemindahanBarang/Input/edit/update'] = 'BarangCabang/C_branchitem/UpdatePemindahanLine/';
+$route['BranchItem/PemindahanBarang/Input/edit/update/(:any)'] = 'BarangCabang/C_branchitem/UpdatePemindahanLine/$1';
+$route['BranchItem/PemindahanBarang/View'] = 'BarangCabang/C_branchitem/Viewpemindahan';
+$route['BranchItem/PemindahanBarang/View/Data'] = 'BarangCabang/C_branchitem/SearchTanggalPemindahan';
+$route['BranchItem/PemindahanBarang/View/Detail/(:any)'] = 'BarangCabang/C_branchitem/Viewdetailpemindahan/$1';
+
+$route['BranchItem/PenangananBarang/Input'] = 'BarangCabang/C_branchitem/InputPenanganan';
+$route['BranchItem/PenangananBarang/Input/(:any)'] = 'BarangCabang/C_branchitem/InputPenanganan/$1';
+$route['BranchItem/PenangananBarang/Input/AddMasalah'] = 'BarangCabang/C_branchitem/AddPenanganan';
+$route['BranchItem/PenangananBarang/Input/AddMasalah/insert'] = 'BarangCabang/C_branchitem/insertPenangananHeader';
+$route['BranchItem/PenangananBarang/Input/AddMasalah/insert/insertLine'] = 'BarangCabang/C_branchitem/insertPenangananLine';
+$route['BranchItem/PenangananBarang/Input/AddMasalah/flagging'] = 'BarangCabang/C_branchitem/FlaggingPenangananHeader';
+$route['BranchItem/PenangananBarang/Input/edit/(:any)'] = 'BarangCabang/C_branchitem/EditPenanganan/$1';
+$route['BranchItem/PenangananBarang/Input/edit/update'] = 'BarangCabang/C_branchitem/UpdatePenangananLine/';
+$route['BranchItem/PenangananBarang/Input/edit/update/(:any)'] = 'BarangCabang/C_branchitem/UpdatePenangananLine/$1';
+$route['BranchItem/PenangananBarang/View'] = 'BarangCabang/C_branchitem/Viewpenanganan';
+$route['BranchItem/PenangananBarang/View/Data'] = 'BarangCabang/C_branchitem/SearchPenanganan';
+$route['BranchItem/PenangananBarang/View/Detail/(:any)'] = 'BarangCabang/C_branchitem/ViewDetailPenanganan/$1';
+
+$route['BranchItem/getOrg'] = 'BarangCabang/C_branchitem/getOrg';
+$route['BranchItem/getBarang'] = 'BarangCabang/C_branchitem/getBarang';
