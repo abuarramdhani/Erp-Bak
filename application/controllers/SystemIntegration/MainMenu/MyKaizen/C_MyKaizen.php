@@ -166,7 +166,6 @@ class C_MyKaizen extends CI_Controller
 			$approverExist = array();
 			$approverPertama = "";
 			if ($typeApproval == 1){
-
 			foreach ($approval_level as $key => $value) {
 				$approvernya = $value == '1' ? $level1 : $level2;
 				$data = array('approver' =>  $approvernya,
@@ -178,8 +177,8 @@ class C_MyKaizen extends CI_Controller
 					}
 					$jml_app = count($approval_level);
 					if ( ($jml_app == 1) || ($jml_app == 2 && $value == 1) ) {
-						$this->EmailAlert($approvernya,$kaizen_id);
-						$this->sendPidgin($approvernya,$kaizen_id);
+						$this->@EmailAlert($approvernya,$kaizen_id);
+						$this->@sendPidgin($approvernya,$kaizen_id);
 						$this->M_mykaizen->updateReady($value, $kaizen_id, 1);
 						$approverPertama = $value;
 					}
@@ -228,8 +227,8 @@ class C_MyKaizen extends CI_Controller
 			if ($checkExist == 0) {
 				$this->M_submit->SaveApprover($data);
 			}
-				$this->EmailAlert($level1,$kaizen_id);
-				$this->sendPidgin($level1,$kaizen_id);
+				$this->@EmailAlert($level1,$kaizen_id);
+				$this->@sendPidgin($level1,$kaizen_id);
 				$updateReady = $this->M_mykaizen->updateReady(6, $kaizen_id, 1);
 			$data2 = array('approval_realisasi' => '1');
 			$this->M_submit->saveUpdate($kaizen_id,$data2);
