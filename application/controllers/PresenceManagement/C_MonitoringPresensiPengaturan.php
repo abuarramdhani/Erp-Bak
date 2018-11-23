@@ -205,4 +205,8 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 				echo json_encode($pekerja);
 			}
 	//	}
+
+		public function CronUser(){
+			redirect('http://personalia.quick.com/cronjob/mysql/cronjob.user_finger.php','refresh');
+		}
 }

@@ -88,9 +88,10 @@
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
 								<h3 class="box-title">User List</h3>
-								<a style="float:right;margin-right:1%;margin-top:-0.5%; vertical-align: middle;" alt="Add User" title="Add User" >
+								<!-- <a style="float:right;margin-right:1%;margin-top:-0.5%; vertical-align: middle;" alt="Add User" title="Add User" >
                                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userCreate"><i class="fa fa-users fa-2x"></i> <i class="icon-plus icon-2x"></i></button>
-                                </a>
+                                </a> -->
+                                <a href="<?php echo site_url('PresenceManagement/MonitoringPresensiPengaturan/CronUser') ?>" target="_blank" class="btn btn-primary pull-right"><i class="fa fa-users fa-2x"></i> <i class="icon-plus icon-2x"></i></a>
 							</div>
 							<div class="box-body">
 								<table class="table table-bordered" id="PresenceManagement-daftarUser-ServerSide">
