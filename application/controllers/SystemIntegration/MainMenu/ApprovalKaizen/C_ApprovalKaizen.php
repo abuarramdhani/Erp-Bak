@@ -238,7 +238,7 @@ class C_ApprovalKaizen extends CI_Controller
 				}
 				$getname = $this->M_approvalkaizen->getName($approver);
 				$name= $getname[0]['employee_name'];
-				$this->EmailAlert($approver,$kaizen_id);
+				$this->@EmailAlert($approver,$kaizen_id);
 				$this->section_user($approver,$kaizen_id);
 
 				//log thread
@@ -260,16 +260,16 @@ class C_ApprovalKaizen extends CI_Controller
 
 			if ($status == 3) {
 				if ($level == 1 && (array_key_exists(2, $NoindApprover) === true)) {
-					$this->EmailAlert($NoindApprover[2], $kaizen_id);
-					$this->sendPidgin($NoindApprover[2], $kaizen_id);
+					$this->@EmailAlert($NoindApprover[2], $kaizen_id);
+					$this->@sendPidgin($NoindApprover[2], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(2, $kaizen_id, 1);
 				}elseif ($level == 2 && (array_key_exists(3, $NoindApprover) === true) ) {
-					$this->EmailAlert($NoindApprover[3], $kaizen_id);
-					$this->sendPidgin($NoindApprover[3], $kaizen_id);
+					$this->@EmailAlert($NoindApprover[3], $kaizen_id);
+					$this->@sendPidgin($NoindApprover[3], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(3, $kaizen_id, 1);
 				}elseif ($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
-					$this->EmailAlert($NoindApprover[4], $kaizen_id);
-					$this->sendPidgin($NoindApprover[4], $kaizen_id);
+					$this->@EmailAlert($NoindApprover[4], $kaizen_id);
+					$this->@sendPidgin($NoindApprover[4], $kaizen_id);
 					$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
 				}
 			}
