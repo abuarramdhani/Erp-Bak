@@ -115,7 +115,14 @@ class C_kasiepembelian extends CI_Controller{
 			$checkStatus = $this->M_kasiepembelian->checkApprove($inv_id);
 			if ($checkStatus[0]['LAST_PURCHASING_INVOICE_STATUS'] == 2) {
 				$this->M_kasiepembelian->btnSubmitToFinance($inv_id,$finance,$saveDate,$finance_batch_number);
-				$this->M_kasiepembelian->insertstatusfinance($inv_id,$saveDate,$finance);
+				$getStatus = $this->M_kasiepembelian->getLastStatusActionDetail($inv_id);
+				$statuslama = ($getStatus) ? $getStatus[0]['PURCHASING_STATUS'] : '';
+				// if ($getStatus) {
+				// 	$statuslama  = $getStatus[0]['PURCHASING_STATUS'];
+				// }else{
+				// 	$statuslama = '';
+				// }
+				$this->M_kasiepembelian->insertstatusfinance($inv_id,$saveDate,$finance,$statuslama);
 				
 			}
 		}
@@ -181,13 +188,11 @@ class C_kasiepembelian extends CI_Controller{
 
 		$listBatch = $this->M_kasiepembelian->showFinishBatch();
 
-		$no = 0;
-		foreach($listBatch as $lb){
-			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['BATCH_NUM']);
-			// echo $lb['BATCH_NUM'];
-
-			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' Invoice';
-			$no++;
+		foreach($listBatch as $key => $lb){
+			$detail = $this->M_kasiepembelian->detailBatch($lb['PURCHASING_BATCH_NUMBER']);
+			$listBatch[$key]['approved'] = 'Approve : '.$detail[0]['APPROVE'].' Invoice';
+			$listBatch[$key]['rejected'] = 'Reject : '.$detail[0]['REJECT'].' Invoice';
+			$listBatch[$key]['submited'] = 'Submit : '.$detail[0]['SUBMIT'].' Invoice';
 		}
 		$data['batch'] = $listBatch;
 

@@ -29,8 +29,8 @@
 											<th class="text-center">Purchasing Batch Number</th>
 											<th class="text-center">Finance Batch Number</th>
 											<th class="text-center">Submited Date</th>
-											<th class="text-center">Invoices</th>
-											<th class="text-center">Status Invoice</th>
+											<th class="text-center">Total Invoice</th>
+											<th class="text-center">Detail</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -38,24 +38,25 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/finishdetailinvoice/'.$b['BATCH_NUM'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/finishdetailinvoice/'.$b['PURCHASING_BATCH_NUMBER'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo $b['BATCH_NUM']?></td>
+											<td><?php echo $b['PURCHASING_BATCH_NUMBER']?></td>
 											<td><?php echo $b['FINANCE_BATCH_NUMBER']?></td>
-											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
+											<?php if ($b['SUBMITED_DATE']) {
+												$tanggal = date('d-M-Y',strtotime($b['SUBMITED_DATE']));
+												}else{
+												$tanggal = '';
+												}?>
+											<td><?php echo $tanggal; ?></td>
 											<td><?php echo $b['JML_INVOICE']?></td>
-											<?php if ($b['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $b['LAST_FINANCE_INVOICE_STATUS'] == 2) {
-												$stat = 'Approved by Kasie Finance';
-												} elseif($b['LAST_PURCHASING_INVOICE_STATUS'] == 2){
-													$stat = 'Approved By Kasie Purc';
-												} elseif($b['LAST_PURCHASING_INVOICE_STATUS'] == 0 or $b['LAST_PURCHASING_INVOICE_STATUS'] == null ){
-													$stat = 'New/Draf';
-												} elseif($b['LAST_PURCHASING_INVOICE_STATUS'] == 3 ){
-													$stat = 'Rejected by Kasie Purc';
-												} ?>
-											<td><?php echo $stat; ?></td>
+											<td><?php echo $b['approved']; ?>
+												<br/>
+												<?php echo $b['rejected']; ?>
+												<br/>
+												<?php echo $b['submited']; ?>
+											</td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

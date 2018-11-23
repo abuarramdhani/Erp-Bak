@@ -362,7 +362,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showListSubmitted(){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct purchasing_batch_number batch_num, last_status_purchasing_date submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
+        $sql = "SELECT distinct purchasing_batch_number batch_num, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE purchasing_batch_number is not null
                 and last_purchasing_invoice_status in(1,2)
@@ -537,7 +537,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.vendor_name vendor_name,
                          aipo.currency currency,
                          ami.last_status_finance_date last_status_finance_date,
-                         ami.last_status_purchasing_date last_status_purchasing_date,
+                         to_date(ami.last_status_purchasing_date) last_status_purchasing_date,
                          aipo.received_date received_date,
                          ami.reason reason,
                          ami.purchasing_batch_number batch_num,
@@ -764,7 +764,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                             ami.reason reason,
                             ami.last_purchasing_invoice_status last_purchasing_invoice_status,
                             ami.invoice_id invoice_id,
-                            ami.last_status_purchasing_date last_status_purchasing_date,
+                            to_date(ami.last_status_purchasing_date) last_status_purchasing_date,
                             ami.purchasing_batch_number purchasing_batch_number,
                             ami.last_finance_invoice_status last_finance_invoice_status,
                             aaipo.po_detail po_detail,
