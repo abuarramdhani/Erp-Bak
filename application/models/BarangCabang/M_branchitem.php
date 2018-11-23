@@ -1,17 +1,17 @@
 <?php
 class M_branchitem extends CI_Model {
 
-	var $oracle;
+  var $oracle;
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
         $this->oracle = $this->load->database('oracle', true);
     }
-	
-	public function IO($cb)
-	{
-		$sql = "SELECT distinct mp.ORGANIZATION_CODE
+  
+  public function IO($cb)
+  {
+    $sql = "SELECT distinct mp.ORGANIZATION_CODE
                   FROM hr_all_organization_units hou
                       ,mtl_secondary_inventories msi
                       ,hr_locations_all hla
@@ -26,10 +26,10 @@ class M_branchitem extends CI_Model {
                    AND ood.organization_id = hou.organization_id
                    AND hou.ORGANIZATION_ID = mp.ORGANIZATION_ID
                    AND hla.LOCATION_CODE = '$cb'";
-		
-		$query = $this->oracle->query($sql);
-		return $query->result_array();
-	}
+    
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
 
     public function ORG_ALL()
     {
@@ -98,9 +98,9 @@ class M_branchitem extends CI_Model {
         return $query->result_array();
     }
     
-	public function subInv($cb,$organisasi)
-	{
-		$sql = "SELECT msi.SECONDARY_INVENTORY_NAME
+  public function subInv($cb,$organisasi)
+  {
+    $sql = "SELECT msi.SECONDARY_INVENTORY_NAME
                   FROM HR_ALL_ORGANIZATION_UNITS hou
                       ,mtl_secondary_inventories msi
                       ,hr_locations_all hla
@@ -116,10 +116,10 @@ class M_branchitem extends CI_Model {
                    AND hou.ORGANIZATION_ID = mp.ORGANIZATION_ID
                    AND mp.ORGANIZATION_CODE = '$organisasi'
                    AND hla.LOCATION_CODE = '$cb'";
-		
-		$query = $this->oracle->query($sql);
-		return $query->result_array();
-	}
+    
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
 
     public function Barang($organisasi)
     {
