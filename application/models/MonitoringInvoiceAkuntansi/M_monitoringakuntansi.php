@@ -119,26 +119,27 @@ class M_monitoringakuntansi extends CI_Model {
         $run = $oracle->query($sql);
     }
 
-	public function processedInvoice()
+	public function processedInvoice($batchNumber)
 	{
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct ami.invoice_id invoice_id,
-				ami.vendor_name vendor_name,
-				ami.invoice_number invoice_number,
-				ami.invoice_date invoice_date,
-				ami.tax_invoice_number tax_invoice_number,
-				ami.invoice_amount invoice_amount,
-				ami.last_status_purchasing_date last_status_purchasing_date,
-				ami.last_status_finance_date last_status_finance_date,
-				ami.finance_batch_number finance_batch_number,
-                poh.attribute2 ppn
-				FROM khs_ap_monitoring_invoice ami,
-                khs_ap_invoice_purchase_order aipo,
-                po_headers_all poh
-				WHERE last_finance_invoice_status = 2
-                AND ami.invoice_id = aipo.invoice_id
-                AND aipo.po_number = poh.segment1
-				ORDER BY last_status_finance_date";
+                         ami.vendor_name vendor_name,
+                         ami.invoice_number invoice_number, 
+                         ami.invoice_date invoice_date, 
+                         ami.tax_invoice_number tax_invoice_number,
+                         ami.invoice_amount invoice_amount, 
+                         poh.attribute2 ppn,
+                         to_date(ami.last_status_purchasing_date) last_status_purchasing_date,
+                         ami.purchasing_batch_number purchasing_batch_number,
+                         to_date(ami.last_status_finance_date) last_status_finance_date,
+                         finance_batch_number finance_batch_number
+                FROM khs_ap_monitoring_invoice ami,
+                     khs_ap_invoice_purchase_order aipo,
+                     po_headers_all poh
+                WHERE purchasing_batch_number = $batchNumber
+                and ami.invoice_id = aipo.invoice_id
+                and poh.segment1 = aipo.po_number
+                ORDER BY vendor_name, invoice_number";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
@@ -146,27 +147,28 @@ class M_monitoringakuntansi extends CI_Model {
 	public function DetailProcess($invoice_id)
 	{
 		$erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT aipo.invoice_id invoice_id, 
-        		invoice_number invoice_number,
-                invoice_date invoice_date,
-                invoice_amount invoice_amount,
-                tax_invoice_number tax_invoice_number,
-                vendor_name vendor_name,
-                po_number po_number,
-                lppb_number lppb_number,
-                shipment_number shipment_number,
-                received_date received_date,
-                item_description item_description,
-                item_code item_code,
-                qty_receipt qty_receipt,
-                qty_reject qty_reject,
-                currency currency,
-                unit_price unit_price,
-                qty_invoice qty_invoice
+        $sql = "SELECT ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.invoice_amount invoice_amount,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.vendor_name vendor_name,
+                aipo.po_number po_number,
+                aipo.lppb_number lppb_number,
+                aipo.shipment_number shipment_number,
+                aipo.received_date received_date,
+                aipo.item_description item_description,
+                aipo.item_code item_code,
+                aipo.qty_receipt qty_receipt,
+                aipo.qty_reject qty_reject,
+                aipo.currency currency,
+                aipo.unit_price unit_price,
+                aipo.qty_invoice qty_invoice,
+                ami.invoice_id invoice_id,
+                ami.purchasing_batch_number purchasing_batch_number
                 FROM khs_ap_monitoring_invoice ami
-                JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
-                WHERE aipo.invoice_id = $invoice_id
-                AND last_finance_invoice_status = 2";
+                ,khs_ap_invoice_purchase_order aipo
+                WHERE ami.invoice_id = aipo.invoice_id
+                AND ami.invoice_id = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
 	}
@@ -238,5 +240,44 @@ class M_monitoringakuntansi extends CI_Model {
                 and no_lppb = '$lppb_number' ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
+    }
+
+    public function showFinishBatch(){
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT DISTINCT a.purchasing_batch_number, 
+                                a.finance_batch_number, 
+                                a.last_purchasing_invoice_status, 
+                                a.last_finance_invoice_status,
+                                (SELECT DISTINCT to_date(d.action_date)
+                                            FROM khs_ap_invoice_action_detail d
+                                           WHERE d.invoice_id = a.invoice_id
+                                             AND d.finance_status = 1
+                                             AND d.purchasing_status = 2) submited_date,
+                                (SELECT COUNT (*)
+                                   FROM khs_ap_monitoring_invoice b
+                                  WHERE b.purchasing_batch_number = a.purchasing_batch_number)jml_invoice
+                FROM khs_ap_monitoring_invoice a
+                ORDER BY submited_date";
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+    }
+
+    public function detailBatch($batch_number){
+        $oracle = $this->load->database('oracle',true);
+        $sql = "SELECT distinct (SELECT COUNT (last_purchasing_invoice_status)
+                      FROM khs_ap_monitoring_invoice b
+                     WHERE b.last_purchasing_invoice_status = 2
+                       AND b.purchasing_batch_number = '$batch_number') approve,
+                   (SELECT COUNT (last_purchasing_invoice_status)
+                      FROM khs_ap_monitoring_invoice c
+                     WHERE c.last_purchasing_invoice_status = 3
+                       AND c.purchasing_batch_number = '$batch_number') reject,
+                   (SELECT COUNT (last_purchasing_invoice_status)
+                      FROM khs_ap_monitoring_invoice d
+                     WHERE d.last_purchasing_invoice_status = 1
+                       AND d.purchasing_batch_number = '$batch_number') submit
+              FROM khs_ap_monitoring_invoice a";
+        $run = $oracle->query($sql);
+        return $run->result_array();
     }
 }

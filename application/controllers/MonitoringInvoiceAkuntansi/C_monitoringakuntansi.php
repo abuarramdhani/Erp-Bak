@@ -194,7 +194,7 @@ class C_monitoringakuntansi extends CI_Controller{
 
 	}
 
-	public function finishInvoice(){
+	public function finishInvoice($batchNumber){
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -206,7 +206,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$finish = $this->M_monitoringakuntansi->processedInvoice();
+		$finish = $this->M_monitoringakuntansi->processedInvoice($batchNumber);
 
 		$no = 0;
 		foreach ($finish as $key ) {
@@ -278,6 +278,34 @@ class C_monitoringakuntansi extends CI_Controller{
 		}
 
 		redirect('AccountPayables/MonitoringInvoice/Finish');
+	}
+
+	public function finishBatchInvoice(){
+
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$listBatch = $this->M_monitoringakuntansi->showFinishBatch();
+
+		foreach($listBatch as $key => $lb){
+			$detail = $this->M_monitoringakuntansi->detailBatch($lb['PURCHASING_BATCH_NUMBER']);
+			$listBatch[$key]['approved'] = 'Approve : '.$detail[0]['APPROVE'].' Invoice';
+			$listBatch[$key]['rejected'] = 'Reject : '.$detail[0]['REJECT'].' Invoice';
+			$listBatch[$key]['submited'] = 'Submit : '.$detail[0]['SUBMIT'].' Invoice';
+		}
+		$data['batch'] = $listBatch;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoiceAkuntansi/V_finishBatchAkt',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 }

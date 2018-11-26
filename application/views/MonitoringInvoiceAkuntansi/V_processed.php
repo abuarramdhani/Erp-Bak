@@ -101,7 +101,7 @@
 							<label>Po Amount: <span><?php echo $po_amount?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
-						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/');?>">
+						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['PURCHASING_BATCH_NUMBER']);?>">
 							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
 						</a>
 						</div>
