@@ -244,13 +244,14 @@ class C_monitoringinvoice extends CI_Controller{
 
 
 		// $amount = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
 
 		
 		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date,$action_date);
 		
 		foreach ($po_number as $key => $value) {
 
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
 		 
 		}
 
@@ -323,12 +324,13 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice_po_id = $this->input->post('invoice_po_id[]');
 
 		// $amount = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
 
 
 		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number);
 
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
+			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
 		
 		}
 
@@ -621,6 +623,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$line_number = $this->input->post('line_num[]');
 		
 		// $amount2 = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
 		$no = 0;
@@ -646,7 +649,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 		
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
 		
 		}
 
