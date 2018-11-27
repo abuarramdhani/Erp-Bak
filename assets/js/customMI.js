@@ -25,21 +25,6 @@ $(document).ready(function(){
 		$('#content2').slideUp();
 	});
 
-
-	function chkAllAddMonitoringInvoice() {
-		if ($('.chkAllAddMonitoringInvoice').is(':checked')) {
-			$('.addMonitoringInvoice').each(function () {
-				$(this).prop('checked',true);
-			});
-		}else{
-			$('.addMonitoringInvoice').each(function () {
-				$(this).prop('checked',false);
-			});
-		};
-	}
-
-	
-
 	// $('.inv_amount').moneyFormat();
 	// $('.po_amount').moneyFormat();
 
@@ -307,6 +292,18 @@ function deleteLinePO(th){
 			 $(th).parent('td').parent('tr').remove();
 		}
 	});
+}
+
+function chkAllAddMonitoringInvoice() {
+		if ($('.chkAllAddMonitoringInvoice').is(':checked')) {
+			$('.addMonitoringInvoice').each(function () {
+				$(this).prop('checked',true);
+			});
+		}else{
+			$('.addMonitoringInvoice').each(function () {
+				$(this).prop('checked',false);
+			});
+	};
 }
 
 

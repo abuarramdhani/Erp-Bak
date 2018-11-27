@@ -45,7 +45,7 @@
 											<td>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>" class="btn btn-info"> Detail
 											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$f['INVOICE_ID'])?>">
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/viewEditReject/'.$f['INVOICE_ID'])?>">
 											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
 											</a>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$f['INVOICE_ID'])?>">

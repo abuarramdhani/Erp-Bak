@@ -130,9 +130,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id); 
 
 		$listBatch = $this->M_monitoringinvoice->showListSubmitted();
-		// echo "<pre>";
-		// print_r($listBatch);
-		// exit();
 		
 		$no = 0;
 		foreach ($listBatch as $key => $value) {
@@ -244,13 +241,14 @@ class C_monitoringinvoice extends CI_Controller{
 
 
 		// $amount = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
 
 		
 		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date,$action_date);
 		
 		foreach ($po_number as $key => $value) {
 
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
 		 
 		}
 
@@ -323,12 +321,13 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice_po_id = $this->input->post('invoice_po_id[]');
 
 		// $amount = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
 
 
 		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number);
 
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
+			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
 		
 		}
 
@@ -621,6 +620,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$line_number = $this->input->post('line_num[]');
 		
 		// $amount2 = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
 		$no = 0;
@@ -646,7 +646,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 		
 		foreach ($po_number as $key => $value) {
-			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_description[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
+			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
 		
 		}
 
@@ -674,9 +674,6 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$invoice = $this->M_monitoringinvoice->invoicereject();
-		// echo "<pre>";
-		// print_r($invoice);
-		// exit();
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {
@@ -767,6 +764,78 @@ class C_monitoringinvoice extends CI_Controller{
 	public function deletePOLine(){
 		$invoice_po_id = $this->input->post('invoice_po_id');
 		$this->M_monitoringinvoice->deletePOLine($invoice_po_id);
+	}
+
+	public function viewEditReject($id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);		
+		$no = 0;
+		foreach ($invoice as $inv ) {
+			$invoice_id = $inv['INVOICE_ID'] ;
+			$nol = 0;
+			$modal = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
+
+			foreach ($modal as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $nol + $total;
+			}
+
+			$invoice[$no]['PO_AMOUNT'] = $po_amount;
+			$no++;
+		}
+		
+
+		$data['invoice'] =$invoice;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoice/V_editReject',$data);
+		$this->load->view('V_Footer',$data);
+
+	}
+
+	public function saveEditReject($invoice_id){
+		$invoice_number = $this->input->post('invoice_number');
+		$invoice_date = $this->input->post('invoice_date');
+		$invoice_amount = $this->input->post('invoice_amount');
+		$tax_invoice_number = $this->input->post('tax_invoice_number');
+		$po_number = $this->input->post('po_number[]');
+		$lppb_number = $this->input->post('lppb_number[]');
+		$shipment_number = $this->input->post('shipment_number[]');
+		$receive_date = $this->input->post('received_date[]');
+		$item_description = $this->input->post('item_description[]');
+		$qty_receipt = $this->input->post('qty_receipt[]');
+		$qty_reject = $this->input->post('qty_reject[]');
+		$currency = $this->input->post('currency[]');
+		$unit_price = $this->input->post('unit_price[]');
+		$qty_invoice = $this->input->post('qty_invoice[]');
+		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$item_code = $this->input->post('item_code[]');
+		$invoice_po_id = $this->input->post('invoice_po_id[]');
+		$status = $this->input->post('saveReject');
+
+		// $amount = str_replace(',', '', $invoice_amount);
+		$item_desc = str_replace("'", "", $item_description);
+
+
+		$data['invoice2'] = $this->M_monitoringinvoice->saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$status);
+
+		foreach ($po_number as $key => $value) {
+			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
+		
+		}
+
+		$this->M_monitoringinvoice->saveEditInvoice3($invoice_id,$action_date);
+		redirect('AccountPayables/MonitoringInvoice/Invoice');
 	}
 
 }
