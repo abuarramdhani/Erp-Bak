@@ -128,6 +128,7 @@
 	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customERC.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customBI.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMA.js');?>" type="text/javascript"></script>
 	<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
