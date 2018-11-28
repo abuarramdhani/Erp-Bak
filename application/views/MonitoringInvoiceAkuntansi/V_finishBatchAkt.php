@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>List Batch Finance</b></span>
+							<span><b>List Batch Invoice Finish -Kasie Akuntansi-</b></span>
 						</div>
 					</div>
 				</div>
@@ -28,7 +28,8 @@
 											<th class="text-center">Action</th>
 											<th class="text-center">Finance Batch Number</th>
 											<th class="text-center">Submited Date</th>
-											<th class="text-center">Invoices</th>
+											<th class="text-center">Total Invoice</th>
+											<th class="text-center">Detail</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -36,13 +37,20 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$b['FINANCE_BATCH_NUMBER'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['FINANCE_BATCH_NUMBER'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
 											<td><?php echo $b['FINANCE_BATCH_NUMBER']?></td>
-											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
-											<td><?php echo $b['jml_invoice']?></td>
+											<?php if ($b['SUBMITED_DATE']) {
+												$tanggal = date('d-M-Y',strtotime($b['SUBMITED_DATE']));
+												}else{
+												$tanggal = '';
+												}?>
+											<td><?php echo $tanggal; ?></td>
+											<td><?php echo $b['JML_INVOICE']?></td>
+											<td><?php echo $b['approved']; ?>
+											</td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

@@ -51,9 +51,7 @@
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
 											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
-											<td><?php if($keputusan[$u['INVOICE_ID']]){foreach ($keputusan[$u['INVOICE_ID']] as $k) { ?>
-												<?php echo  $k ."<br>" ?>
-											<?php }} ?></td>
+											<td><?php echo $u['PO_NUMBER']?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>
 												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['FINANCE_BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info"> Detail
