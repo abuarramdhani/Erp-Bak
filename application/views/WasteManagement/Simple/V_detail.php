@@ -18,54 +18,83 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								<div class="col-lg-11">
-									<h4><?php echo $Simple['0']['jenis_limbah']." - ".$Simple['0']['periode']; ?></h4>
-								</div>
-								<div class="col-lg-1 text-right">
-									<a href="<?php echo site_url('WasteManagement/Simple/Add_Detail/'.$SimpleId); ?>" class="btn btn-primary icon-plus icon-2x"></a>
-								</div>
 							</div>
 							<div class="box-body">
-								<div class="table-responsive">
-									<table class="datatable table table striped table-bordered table-hover text-left dataTable-Simple">
-										<thead class="bg-primary">
-											<tr>
-												<th>No</th>
-												<th>Action</th>
-												<th>Kode Limbah</th>
-												<th>Tanggal Dihasilkan</th>
-												<th>Kode Manifest</th>
-												<th>Jumlah (Ton)</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php $a=1;
-												foreach ($SimpleDetail as $key) {
-												$encrypted_text = $this->encrypt->encode($key['id_simple_detail']);
-												$encrypted_text = str_replace(array('+','/','='), array('-','_','~'), $encrypted_text);
-												$Read = 'WasteManagement/Simple/Edit_Detail/'.$encrypted_text;
-												$Delete = 'WasteManagement/Simple/Delete_Detail/'.$encrypted_text;
-											?>
-											<tr>
-												<td><?php echo $a; ?></td>
-												<td class="text-center">
-													<a href="<?php echo site_url($Read); ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit Data">
-														<span class="fa fa-pencil-square-o fa-2x"></span>
-													</a>
-													<a href="<?php echo site_url($Delete); ?>" data-toggle="tooltip" data-placement="bottom" data-original-title="Delete Data" onclick="return confirm('Apakah Anda yakin Ingin Menghapus Data Ini ?')">
-														<span class="fa fa-trash fa-2x"></span>
-													</a>
-												</td>
-												<td><?php echo $key['kode_limbah']; ?></td>
-												<td><?php echo $key['tanggal_dihasilkan']; ?></td>
-												<td><?php echo $key['kode_manifest']; ?></td>
-												<td><?php echo $key['jumlah']; ?></td>
-											</tr>
-											<?php 
-											$a++;	} 
-											?>
-										</tbody>
-									</table>
+								<ul class="nav nav-pills nav-justified">
+									<li class="active"><a data-toggle="pill" href="#awal">Belum Proses</a></li>
+									<li><a data-toggle="pill" href="#akhir">Sudah Proses</a></li>
+								</ul>
+
+								<div class="tab-content">
+									<div id="awal" class="tab-pane fade in active">
+										<div class="row">
+											<div class="col-lg-12">
+												<form class="form-horizontal" id="ProsesSimpleExport" target="_blank" method="POST" action="<?php echo site_url('WasteManagement/Simple/Proses/'); ?>">
+													<div class="form-group">
+														<div class="col-lg-12">
+															<div class="table-responsive">
+																<table class="datatable table table-bordered table-striped table-hover text-left">
+																	<thead class="bg-primary">
+																		<tr>
+																			<th>Action</th>
+																			<th>Tanggal Kirim</th>
+																			<th>Jenis Limbah</th>
+																			<th>Seksi</th>
+																			<th>Berat (Kg)</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<?php foreach ($DetailBelum as $key) { ?>
+																			<tr>
+																				<td class="text-center status-simple">
+																					<input type="checkbox" class="simpleDetailCheck" name="txtInsert[]" value="<?php echo $key['id_kirim'] ?>">
+																				</td>
+																				<td><?php echo $key['tanggal'] ?></td>
+																				<td><?php echo $key['jenis'] ?></td>
+																				<td><?php echo $key['seksi'] ?></td>
+																				<td><?php echo $key['berat'] ?></td>
+																			</tr>
+																		<?php } ?>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-lg-2 text-right">
+															<input type="checkbox" name="selectAll" id="simpleSelectAll" class="simpleSelectAll"> Select All
+														</div>
+														<div class="col-lg-9 text-right">
+															<input class="btn btn-danger" type="submit" name="statusButton" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ?')" value="Delete">
+															<input class="btn btn-info" type="submit" name="statusButton" value="Proses">
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<div id="akhir" class="tab-pane fade ">
+										<div class="row">
+											<div class="col-lg-12">
+												<br>
+												<div class="table-responsive">
+													<table class="datatable table table-bordered table-striped table-hover text-left simple-sudahproses-serverside">
+														<thead class="bg-primary">
+															<tr>
+																<th style="width: 5%">No.</th>
+																<th style="width: 20%">Tanggal Kirim</th>
+																<th style="width: 20%">Jenis Limbah</th>
+																<th style="width: 40%">Seksi</th>
+																<th style="width: 10%">Berat (Kg)</th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -74,4 +103,7 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		var idJenisLimbahSimpleDetail = '<?php echo $idSimple; ?>';
+	</script>
 </section>

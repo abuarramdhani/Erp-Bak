@@ -282,3 +282,48 @@ $(document).on('click','#btnSubmitSimple',function(e){
 $(document).on('click','#btnCloseSimple',function(e){
   $('#Simple-Create').modal("hide");
 });
+
+// $(document).on('ready',function(){
+//   $('#ProsesSimpleExport').submit(function(e){
+//       e.preventDefault();
+//       this.submit()
+//       setTimeout(function(){
+//         window.open(window.location, '_self');
+//       }), 100 ;
+// });
+
+  $('#ProsesSimpleExport').submit(function(e){ 
+    e.preventDefault();
+    this.submit()
+    setTimeout(function(){
+      window.open(window.location, '_self');
+    }), 500 ;
+  });
+
+  
+
+  $(document).on('ready',function(){
+    $('#simpleSelectAll').on('ifChecked',function(event){
+      $('.simpleDetailCheck').iCheck('check');
+    });
+     $('#simpleSelectAll').on('ifUnchecked',function(event){
+      $('.simpleDetailCheck').iCheck('uncheck');
+    });
+    $('.simple-sudahproses-serverside').DataTable({
+      "processing" : true,
+      "serverSide" : true,
+      "autoWidth": false,
+      "order" : [],
+      "ajax":{
+        "url": baseurl+'WasteManagement/Simple/tabelProses/'+idJenisLimbahSimpleDetail,
+        "type": "post"
+      },
+
+      "columnDefs" : [
+      {
+        "targets":[0],
+        "orderable":false
+      },
+      ],
+    });
+  });
