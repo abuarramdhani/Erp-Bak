@@ -113,7 +113,7 @@ foreach ($kom as $key) {
 				<td style="width: 140px;">
 					<?php 
 					if ($nomgpokok != null) {
-						echo $nomgpokok;						
+						echo number_format($nomgpokok,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -123,7 +123,7 @@ foreach ($kom as $key) {
 				<td style="text-align: center;">
 					<?php 
 					if ($gpokok != null and $nomgpokok != null) {
-						echo $gpokok*$nomgpokok;						
+						echo number_format($gpokok*$nomgpokok,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -148,7 +148,7 @@ foreach ($kom as $key) {
 				<td>
 					<?php 
 					if ($nomgpokok != null) {
-						echo $nomgpokok/7;						
+						echo number_format($nomgpokok/7,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -158,7 +158,7 @@ foreach ($kom as $key) {
 				<td style="text-align: center;">
 					<?php 
 					if ($lembur != null and $nomgpokok != null) {
-						echo $lembur*($nomgpokok/7);						
+						echo number_format($lembur*($nomgpokok/7),'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -183,7 +183,7 @@ foreach ($kom as $key) {
 				<td>
 					<?php 
 					if ($nomum != null) {
-						echo $nomum;						
+						echo number_format($nomum,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -193,7 +193,7 @@ foreach ($kom as $key) {
 				<td style="text-align: center;">
 					<?php 
 					if ($um != null and $nomum != null) {
-						echo $um*$nomum;						
+						echo number_format($um*$nomum,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -218,7 +218,7 @@ foreach ($kom as $key) {
 				<td>
 					<?php 
 					if ($nomlain != "") {
-						echo $nomlain;						
+						echo number_format($nomlain,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -228,7 +228,7 @@ foreach ($kom as $key) {
 				<td style="text-align: center;">
 					<?php 
 					if ($lain != null and $nomlain != null) {
-						echo $lain*$nomlain;						
+						echo number_format($lain*$nomlain,'0',',','.');						
 					}else{
 						echo "...";
 					}
@@ -239,7 +239,7 @@ foreach ($kom as $key) {
 				<td colspan="6"></td>
 				<td>Total Diterima</td>
 				<td style="border-top: 1px black solid;">Rp</td>
-				<td style="text-align: center;"><?php echo ($gpokok*$nomgpokok)+($lembur*($nomgpokok/7))+($um*$nomum)+($lain*$nomlain)?></td>
+				<td style="text-align: center;"><?php echo number_format(($gpokok*$nomgpokok)+($lembur*($nomgpokok/7))+($um*$nomum)+($lain*$nomlain),'0',',','.')?></td>
 			</tr>
 	</table>
 	<div style="margin-top: 50px;margin-left: 440px;font-size: 14px;">
