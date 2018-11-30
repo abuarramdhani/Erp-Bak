@@ -131,7 +131,7 @@
 		      <div class="col-md-12">Reject Nomor Invoice </div>
 		    </div>
 		    <br>
-		    <input type="text" class="form-control" placeholder="Alasan Reject" name="alasan_reject">
+		    <input type="text" class="form-control" placeholder="Alasan Reject" name="alasan_reject" required="required">
 		    <input type="hidden" name="invoice_id" value="<?php echo $invoice_detail[0]['INVOICE_ID']?>">
 		    <input type="hidden" name="nomor_batch" value="<?php echo $invoice_detail[0]['PURCHASING_BATCH_NUMBER']?>">
 		  </div>

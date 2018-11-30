@@ -66,7 +66,7 @@
 												</button>
 											</td>
 											<td>
-												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON']?>" > <input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
+												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON']?>"> <input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
 										</tr>
 										<?php $no++; } ?>
