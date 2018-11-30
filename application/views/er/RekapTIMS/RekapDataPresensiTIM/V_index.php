@@ -23,6 +23,9 @@
                                                 <div class="col-lg-6">
                                                     <input type="text" name="txtTanggalRekap" class="RekapDataPresensiTIM-daterangepicker form-control" value="<?php if ( isset($tanggalRekap) ) {echo $tanggalRekap;}?>" required="" />
                                                 </div>
+                                                <div class="col-lg-2">
+                                                    <input type="checkbox" value="susulan" name="checkSusulanDataPresensi"> Susulan
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="RekapDataPresensiTIM-cmbKeteranganPresensi" class="control-label col-lg-4">Keterangan Presensi</label>
