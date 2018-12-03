@@ -9,8 +9,8 @@ class C_Ajax extends CI_Controller {
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
-        $this->load->model('Warehouse/Ajax/M_ajax');
-        $this->load->model('Warehouse/MainMenu/M_transaction');
+        $this->load->model('WarehouseSPB/Ajax/M_ajax');
+        $this->load->model('WarehouseSPB/MainMenu/M_transaction');
     }
 	
 	public function getSPB()
@@ -24,7 +24,7 @@ class C_Ajax extends CI_Controller {
 			// echo "<pre>";
 			// print_r($data);
 			// exit();
-			$this->load->view('Warehouse/Ajax/TransactionSPB/V_Spb',$data);
+			$this->load->view('WarehouseSPB/Ajax/TransactionSPB/V_Spb',$data);
 		}
 	}
 	
@@ -44,7 +44,7 @@ class C_Ajax extends CI_Controller {
 				$data['last_pack'] = intval($lastPackCode[0]['LASTPACKNUMBER'])+1;
 			}
 			if ($SubInv || $data['spb'] ) {
-				$this->load->view('Warehouse/Ajax/TransactionPackingList/V_Packinglist',$data);
+				$this->load->view('WarehouseSPB/Ajax/TransactionPackingList/V_Packinglist',$data);
 			}else{
 				echo "Data is empty";
 			}	

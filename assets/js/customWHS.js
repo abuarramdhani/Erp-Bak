@@ -8,7 +8,7 @@ $("#formPackingList").ready(function() {
   console.log('ini lo udah ke load');
   
   $.ajax({
-    url: baseurl + "Warehouse/Ajax/checkSPB",
+    url: baseurl + "WarehouseSPB/Ajax/checkSPB",
     type: 'POST',
     data: {DATA:'none'},
     success:function(result){
@@ -36,7 +36,7 @@ $("#formPackingList").ready(function() {
 function getDataSPB() {
     event.preventDefault();
     $.ajax({
-        url: baseurl + "Warehouse/Ajax/getSPB",
+        url: baseurl + "WarehouseSPB/Ajax/getSPB",
         type: 'POST',
         data: $('#formSPB').serialize(),
         beforeSend: function() {
@@ -56,7 +56,7 @@ function getDataSPB() {
 
 function getDataFapingList(nomerSPBU){
     $.ajax({
-        url: baseurl + "Warehouse/Ajax/PackingList",
+        url: baseurl + "WarehouseSPB/Ajax/PackingList",
         type: 'POST',
         data: {nomerSPB : nomerSPBU},
         beforeSend: function() {
@@ -105,7 +105,7 @@ function getDataFapingList(nomerSPBU){
 function getDataPackingList() {
     event.preventDefault();
     $.ajax({
-        url: baseurl + "Warehouse/Ajax/PackingList",
+        url: baseurl + "WarehouseSPB/Ajax/PackingList",
         type: 'POST',
         data: $('#formPackingList').serialize(),
         beforeSend: function() {
@@ -155,7 +155,7 @@ function getDataPackingList() {
 
 function setDataTemp(noSPB){
     $.ajax({
-        url: baseurl + "Warehouse/Ajax/setSPB",
+        url: baseurl + "WarehouseSPB/Ajax/setSPB",
         type: 'POST',
         data: {NO_SPB: noSPB},
         success: function(result) {
@@ -171,7 +171,7 @@ function setDataTemp(noSPB){
 
 function delTemp(){
     $.ajax({
-        url: baseurl + "Warehouse/Ajax/delTemp",
+        url: baseurl + "WarehouseSPB/Ajax/delTemp",
         type: 'POST',
         data: {DATA:'none'},
         success:function(result){
@@ -281,7 +281,7 @@ function setPacking() {
     console.log(nomerSPB);
 
     $.ajax({
-        url: baseurl + "Warehouse/Ajax/setPacking",
+        url: baseurl + "WarehouseSPB/Ajax/setPacking",
         type: 'POST',
         data: $('#formSetPacking').serialize(),
         beforeSend: function() {
@@ -294,7 +294,7 @@ function setPacking() {
 
             console.log(data);
             $('#btnSubmitPacking').prop('disabled',true);
-            window.open(baseurl+'Warehouse/Transaction/cetakPackingListPDF/'+nomerSPB);
+            window.open(baseurl+'WarehouseSPB/Transaction/cetakPackingListPDF/'+nomerSPB);
             var data = JSON.parse(result);
             var array = $.map(data, function(value, index) {
                 return [value];
