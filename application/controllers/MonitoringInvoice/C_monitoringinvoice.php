@@ -51,7 +51,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 			$invoice_id = $inv['INVOICE_ID'] ;
 			$po_detail = $inv['PO_DETAIL'];
-			$po_number = $inv['PO_NUMBER'];
+			// $po_number = $inv['PO_NUMBER'];
 			$batch_number = $inv['PURCHASING_BATCH_NUMBER'];
 
 			$keputusan[$inv['INVOICE_ID']] = "";
@@ -99,7 +99,7 @@ class C_monitoringinvoice extends CI_Controller{
 			}
 
 
-			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number);
+			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number_explode);
 
 			$invoice[$no]['PPN'] = $cekPPN[0]['PPN'];
 			$invoice[$no]['PO_AMOUNT'] = $po_amount;
