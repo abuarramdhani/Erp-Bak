@@ -191,25 +191,41 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showInvoice(){
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT ami.invoice_number invoice_number, 
-                         ami.invoice_date invoice_date, 
+        $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
                          ami.tax_invoice_number tax_invoice_number,
-                         ami.invoice_amount invoice_amount, 
-                         ami.last_purchasing_invoice_status status, 
-                         ami.reason reason,
+                         ami.invoice_amount invoice_amount,
+                         ami.last_purchasing_invoice_status status, ami.reason reason,
                          ami.invoice_id invoice_id,
                          ami.purchasing_batch_number purchasing_batch_number,
                          aaipo.po_detail po_detail,
-                         aaipo.po_number,
-                         ami.last_admin_date last_admin_date,
-                         ami.vendor_name vendor_name
+                         ami.last_admin_date last_admin_date, ami.vendor_name vendor_name
                 FROM khs_ap_monitoring_invoice ami,
-                 (select aipo.invoice_id, aipo.po_number, replace((rtrim (xmlagg (xmlelement (e, to_char(aipo.po_number || '-' || aipo.line_number || '-' || aipo.lppb_number) || '@')).extract ('//text()'), '@')), '@', '<br>') po_detail
-                from khs_ap_invoice_purchase_order aipo
-                group by aipo.invoice_id , aipo.po_number) aaipo
-                where aaipo.invoice_id = ami.invoice_id
-                and ami.purchasing_batch_number is null
-                order by ami.last_admin_date
+                     (SELECT   aipo.invoice_id,
+                               REPLACE
+                                  ((RTRIM
+                                       (XMLAGG (XMLELEMENT (e,
+                                                               TO_CHAR
+                                                                      (   aipo.po_number
+                                                                       || '-'
+                                                                       || aipo.line_number
+                                                                       || '-'
+                                                                       || aipo.lppb_number
+                                                                      )
+                                                            || '@'
+                                                           )
+                                               ).EXTRACT ('//text()'),
+                                        '@'
+                                       )
+                                   ),
+                                   '@',
+                                   '<br>'
+                                  ) po_detail
+                          FROM (SELECT DISTINCT invoice_id, po_number, line_number, lppb_number
+                                                      FROM khs_ap_invoice_purchase_order) aipo
+                      GROUP BY aipo.invoice_id) aaipo
+               WHERE aaipo.invoice_id = ami.invoice_id
+                 AND ami.purchasing_batch_number IS NULL
+            ORDER BY ami.last_admin_date
                 ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
