@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('Warehouse/Transaction/Spb');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WarehouseSPB/Transaction/Spb');?>">
                                     <i aria-hidden="true" class="fa fa-line-chart fa-2x">
                                     </i>
                                 </a>

@@ -13,7 +13,7 @@ class C_Transaction extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('Warehouse/MainMenu/M_transaction');
+        $this->load->model('WarehouseSPB/MainMenu/M_transaction');
     }
 	
 	public function checkSession(){
@@ -39,7 +39,7 @@ class C_Transaction extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('Warehouse/MainMenu/TransactionSPB/V_Index',$data);
+		$this->load->view('WarehouseSPB/MainMenu/TransactionSPB/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 		
 	}
@@ -59,7 +59,7 @@ class C_Transaction extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('Warehouse/MainMenu/TransactionPackingList/V_Index',$data);
+		$this->load->view('WarehouseSPB/MainMenu/TransactionPackingList/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 		
 	}
@@ -67,7 +67,7 @@ class C_Transaction extends CI_Controller {
 	public function PackingListReset($id)
 	{
 		$this->M_transaction->deletePackingList($id);
-		redirect(base_url('Warehouse/Transaction/PackingList'));
+		redirect(base_url('WarehouseSPB/Transaction/PackingList'));
 	}
 
 	public function cetakPackingListPDF($spbNumber)
@@ -182,27 +182,27 @@ class C_Transaction extends CI_Controller {
 		// ------ GENERATE QRCODE ------
 			$this->load->library('ciqrcode');
 			// ------ create directory temporary qrcode ------
-				if(!is_dir('./assets/upload/Warehouse'))
+				if(!is_dir('./assets/upload/WarehouseSPB'))
 				{
-					mkdir('./assets/upload/Warehouse', 0777, true);
-					chmod('./assets/upload/Warehouse', 0777);
+					mkdir('./assets/upload/WarehouseSPB', 0777, true);
+					chmod('./assets/upload/WarehouseSPB', 0777);
 				}
-				if(!is_dir('./assets/upload/Warehouse/temp'))
+				if(!is_dir('./assets/upload/WarehouseSPB/temp'))
 				{
-					mkdir('./assets/upload/Warehouse/temp', 0777, true);
-					chmod('./assets/upload/Warehouse/temp', 0777);
+					mkdir('./assets/upload/WarehouseSPB/temp', 0777, true);
+					chmod('./assets/upload/WarehouseSPB/temp', 0777);
 				}
-				if(!is_dir('./assets/upload/Warehouse/temp/qrcode'))
+				if(!is_dir('./assets/upload/WarehouseSPB/temp/qrcode'))
 				{
-					mkdir('./assets/upload/Warehouse/temp/qrcode', 0777, true);
-					chmod('./assets/upload/Warehouse/temp/qrcode', 0777);
+					mkdir('./assets/upload/WarehouseSPB/temp/qrcode', 0777, true);
+					chmod('./assets/upload/WarehouseSPB/temp/qrcode', 0777);
 				}
 			$params['data']		= $spbNumber;
 			$params['level']	= 'H';
 			$params['size']		= 10;
 			$params['black']	= array(255,255,255);
 			$params['white']	= array(0,0,0);
-			$params['savename'] = './assets/upload/Warehouse/temp/qrcode/'.$spbNumber.'.png';
+			$params['savename'] = './assets/upload/WarehouseSPB/temp/qrcode/'.$spbNumber.'.png';
 			$this->ciqrcode->generate($params);
 		// ------ GENERATE PDF ------
 			// $this->load->library('Pdf');
@@ -220,9 +220,9 @@ class C_Transaction extends CI_Controller {
 			$pdf 		= $this->pdf->load();
 			$pdf 		= new mPDF('utf-8','A4', 0, '', 5, 5, 5, 5, 5, 3);
 			$filename 	= 'PACKINGLIST_'.date('d-M-Y').'.pdf';
-			$header 		= $this->load->view('Warehouse/MainMenu/TransactionPackingList/Report/V_Header', $data, true);
-			$content 		= $this->load->view('Warehouse/MainMenu/TransactionPackingList/Report/V_Content', $data, true);
-			$footer 		= $this->load->view('Warehouse/MainMenu/TransactionPackingList/Report/V_Footer', $data, true);
+			$header 		= $this->load->view('WarehouseSPB/MainMenu/TransactionPackingList/Report/V_Header', $data, true);
+			$content 		= $this->load->view('WarehouseSPB/MainMenu/TransactionPackingList/Report/V_Content', $data, true);
+			$footer 		= $this->load->view('WarehouseSPB/MainMenu/TransactionPackingList/Report/V_Footer', $data, true);
 			
 				// $pdf->WriteHTML($header, 0);
 				$pdf->WriteHTML($content, 0);

@@ -143,7 +143,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-        <a class="btn btn-primary" href="<?php echo base_url('Warehouse/Transaction/PackingListReset/'.$nomerspb) ?>">RESET</a>
+        <a class="btn btn-primary" href="<?php echo base_url('WarehouseSPB/Transaction/PackingListReset/'.$nomerspb) ?>">RESET</a>
       </div>
     </div>
   </div>
