@@ -45,13 +45,10 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$listBatch = $this->M_monitoringakuntansi->showFinanceNumber();
-		$no = 0;
-		foreach($listBatch as $lb){
-			$jmlInv = $this->M_monitoringakuntansi->jumlahFinanceBatch($lb['FINANCE_BATCH_NUMBER']);
-			echo $lb['FINANCE_BATCH_NUMBER'];
-
-			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' Invoice';
-			$no++;
+		foreach($listBatch as $key => $value){
+			$batchNumber = $value['FINANCE_BATCH_NUMBER'];
+			$jmlInv = $this->M_monitoringakuntansi->jumlahInvoice($batchNumber);
+			$listBatch[$key]['jml_invoice'] = $jmlInv[0]['JUMLAH_INVOICE'].' Invoice';
 		}
 		$data['batch'] = $listBatch;
 		
@@ -82,48 +79,10 @@ class C_monitoringakuntansi extends CI_Controller{
 		}
 
 		$no = 0;
-		$keputusan = array();
 		foreach ($unprocess as $inv ) {
 
-			$invoice_id = $inv['INVOICE_ID'] ;
-			$po_detail = $inv['PO_DETAIL'];
-			$po_number = $inv['PO_NUMBER'];
-
-			$keputusan[$inv['INVOICE_ID']] = "";
-			$hasil_komitmen = '';
-
-			if ($po_detail) {
-				$expPoDetail = explode('<br>', $po_detail);
-				if (!$expPoDetail) {
-					$expPoDetail = $po_detail;
-				}
-
-					
-				$n=0;
-				$podetail = array();
-				foreach ($expPoDetail as $ep => $value) {
-					$exp_lagi = explode('-', $value);
-
-
-							$po_number_explode = $exp_lagi[0];
-							$lppb_number_explode = $exp_lagi[2];
-							$line_number_explode = $exp_lagi[1];
-
-							$perbandingan = $this->M_monitoringakuntansi->podetails($po_number_explode,$lppb_number_explode,$line_number_explode);
-
-							if (!$perbandingan) {
-								$status = "No Status";
-							}else{
-								$status = $perbandingan[$n]['STATUS'];
-							}
-
-							$podetail[$ep] = $value.' - '.$status;
-				}
-
-				$keputusan[$inv['INVOICE_ID']] = $podetail;
-
-				$n++;
-			}
+			$invoice_id = $inv['INVOICE_ID'];
+			$string_id = $inv['PO_DETAIL'];
 			
 			$po_amount = 0;
 			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
@@ -135,12 +94,29 @@ class C_monitoringakuntansi extends CI_Controller{
 			} 
 
 			$unprocess[$no]['PO_AMOUNT'] = $po_amount;
+
+			if ($string_id) {
+				$explodeId = explode(',', $string_id);
+				if (!$explodeId) {
+					$explodeId = $string_id;
+				}
+
+				foreach ($explodeId as $exp => $value) {
+					$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
+					foreach ($cekPPN as $key => $value2) {
+						foreach ($value2 as $va2 => $value3) {
+							$ppn = $value3;
+						}
+					}
+				}
+			}
+			
 			$no++;
 		}
 
-		$data['keputusan'] = $keputusan;
 		$data['unprocess'] =$unprocess;
 		$data['batch_num'] =$batch;
+		$data['ppn'] = $ppn;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -295,10 +271,8 @@ class C_monitoringakuntansi extends CI_Controller{
 		$listBatch = $this->M_monitoringakuntansi->showFinishBatch();
 
 		foreach($listBatch as $key => $lb){
-			$detail = $this->M_monitoringakuntansi->detailBatch($lb['PURCHASING_BATCH_NUMBER']);
+			$detail = $this->M_monitoringakuntansi->detailBatch($lb['FINANCE_BATCH_NUMBER']);
 			$listBatch[$key]['approved'] = 'Approve : '.$detail[0]['APPROVE'].' Invoice';
-			$listBatch[$key]['rejected'] = 'Reject : '.$detail[0]['REJECT'].' Invoice';
-			$listBatch[$key]['submited'] = 'Submit : '.$detail[0]['SUBMIT'].' Invoice';
 		}
 		$data['batch'] = $listBatch;
 

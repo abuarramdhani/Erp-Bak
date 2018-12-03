@@ -51,6 +51,13 @@
           <div class="form-group">
             <label>Kondisi Awal</label>
            
+            <div style="border: 1px solid #d2d6de; background-color: #eee; padding-left: 10px"> <?= $kaizen[0]['kondisi_awal'] ?></div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label>Usulan Kaizen</label>
+           
             <div style="border: 1px solid #d2d6de; background-color: #eee; padding-left: 10px"> <?= $kaizen[0]['usulan_kaizen'] ?></div>
           </div>
         </div>

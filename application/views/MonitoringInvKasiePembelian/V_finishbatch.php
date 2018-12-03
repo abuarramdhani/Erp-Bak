@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>List Batch Invoice Finish</b></span>
+							<span><b>List Batch Invoice Finish -Kasie Purchasing-</b></span>
 						</div>
 					</div>
 				</div>

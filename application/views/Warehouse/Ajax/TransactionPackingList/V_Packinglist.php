@@ -12,7 +12,6 @@
 			<option value="KP">Kardus Panjang</option>
 			<option value="PP">Karung</option>
 			<option value="PT">Peti</option>
-			<option value="LL">Lain - Lain</option>
 		</select>
 	</div>
 	<div class="col-md-3">
@@ -26,16 +25,18 @@
 				<option value="ADEX">ADIKA EXPRESS</option>
 				<option value="KHS">KHS</option>
 				<option value="CUSTOMER">CUSTOMER</option>
-				<option value="LAIN">LAIN LAIN</option>
 			</select>
 		<?php } ?>
 	</div>
-	<div class="col-md-6">
-		<input type="text" name="ItemCode" class="form-control" placeholder="Packing item" disabled onkeyup="updatePackingQty(event,this)">
+	<div class="col-md-2">
+		<input type="text" id="idItemColy" name="coly" class="form-control" placeholder="Item Coly" >
+	</div>
+	<div class="col-md-4">
+		<input type="text" id="inputPackingPlus" name="ItemCode" class="form-control" placeholder="Packing item" disabled onkeyup="updatePackingQty(event,this)">
 	</div>
 </div>
 <form onsubmit="setPacking()" id="formSetPacking">
-	<input type="hidden" name="spbNumber" value="<?php echo $nomerspb; ?>">
+	<input type="hidden" id="spbNumber" name="spbNumber" value="<?php echo $nomerspb; ?>">
 	<input type="hidden" name="packingNumber" value="<?php echo $last_pack; ?>">
 	<div class="row" style="padding-top:10px;">
 		<div class="col-md-12">
@@ -46,17 +47,26 @@
 					<td>ITEM DESCRIPTION</td>
 					<!-- <td>ONHAND</td> -->
 					<!-- <td>QUANTITY</td> -->
-					<td colspan="2" class="text-center">PACKING</td>
+					<td colspan="3" class="text-center">PACKING</td>
 				</thead>
 				<tbody>
-					<?php $totalQtyMinta=0; $no=1; foreach ($spb as $value) {
-						if ($value['QUANTITY_TRANSACT']==NULL) {
+					<?php 
+					// echo "<pre>";
+					// print_r($spb);
+					// exit();
+
+					$totalQtyMinta=0; $no=1; foreach ($spb as $value) {
+						if ($value['QUANTITY_TRANSACT'] == NULL) {
 							$a = 'class="bg-danger" title="Data belum transact!"';
+						}elseif ($value['QUANTITY_TRANSACT'] == 0){
+							$a = 'class="bg-success"';
 						}else{
 							$a = '';
 						}
 					?>
+						
 						<tr data-row="<?php echo $value['ITEM_CODE']; ?>" data-id="<?php echo $value['INVENTORY_ITEM_ID']; ?>" <?php echo $a; ?>>
+						
 							<input type="hidden" name="item_id[]" value="<?php echo $value['INVENTORY_ITEM_ID'] ?>">
 							<input type="hidden" name="maxPack[]" value="<?php echo $value['QUANTITY_TRANSACT'] ?>">
 							<input type="hidden" name="maxOnhand[]" value="<?php echo $value['QTY_ATT'] ?>">
@@ -66,11 +76,23 @@
 							<!-- <td><?php //echo $value['QTY_ONHAND']; ?></td> -->
 							<!-- <td class="quantityArea"><?php // echo $value['QUANTITY_NORMAL']; ?></td> -->
 							<td>
-								<input type="number" name="packingqty[]" class="form-control" readonly="" placeholder="Total Item" max="<?php echo $value['QUANTITY_TRANSACT'] ?>" min="0">
+								<input type="number" name="packingqty[]" class="form-control" readonly="" placeholder=<?php 
+								if($value['LINE_STATUS'] == 6){
+									echo "Cancel";
+								}else{
+									echo "Total Item";
+								}
+								?> 
+								max="<?php echo $value['QUANTITY_TRANSACT'] ?>" min="0">
 							</td>
 							<td width="25px">
 								<button type="button" class="btn btn-default" onclick="mdlPackingQtyCustom(this,'<?php echo $value['ITEM_CODE']; ?>')">
 									<i class="fa fa-edit"></i>
+								</button>
+							</td>
+							<td width="25px">
+								<button type="button" class="btn btn-danger" onclick="resetThis(this)">
+									<i class="fa fa-trash"></i>
 								</button>
 							</td>
 						</tr>
@@ -85,11 +107,12 @@
 	<input type="hidden" name="inputPackingAct" id="inputPackingAct" value="0">
 	<input type="hidden" name="kemasanValue">
 	<input type="hidden" name="EkspedisiValue" value="<?php echo $ekpedisi[0]['ATTRIBUTE15'] ?>">
+	<input type="hidden" name="itemColy" value="0">
 	<div class="row">
 		<div class="col-md-12">
 			<button type="button" class="btn btn-warning pull-right" disabled="" id="btnSubmitPacking" data-toggle="modal" data-target="#submitPacking">PACKING <i class="fa fa-arrow-right"></i></button>
-			<a class="btn btn-success pull-right" id="cetakPackingList" target="_blank" <?php if ($totalQtyMinta > 0) {echo 'onclick="return false" disabled';} ?> href="<?php echo base_url('Warehouse/Transaction/cetakPackingListPDF/'.$nomerspb) ?>">CETAK <i class="fa fa-file-pdf-o"></i></a>
-			<a class="btn btn-danger pull-right" id="reset" data-toggle="modal" data-target="#resetPacking">RESET <i class="fa fa-trash"></i></a>
+			<button onclick="delTemp()" type="button" class="btn btn-success pull-right"  id="cetakPackingList" <?php if ($totalQtyMinta > 0 || $spb[0]['QUANTITY_TRANSACT']==NULL ) {echo 'disabled';} ?> >VERIFIKASI <i class="fa fa-file-pdf-o"></i></button>
+			<!-- <a class="btn btn-danger pull-right" id="reset" data-toggle="modal" data-target="#resetPacking">RESET <i class="fa fa-trash"></i></a> -->
 		</div>
 	</div>
 	<div class="modal fade" id="submitPacking" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -97,14 +120,14 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Packing Weight</h4>
+	        <h4 class="modal-title" id="myModalLabel">Packing Weight (.Kg)</h4>
 	      </div>
 	      <div class="modal-body">
-	      	<input type="number" name="weight" class="form-control" placeholder="Weight" required="">
+	      	<input type="number"  pattern="[0-9]+([,\.][0-9]+)?" step="0.01" title="This should be a number with up to 2 decimal places." name="weight" class="form-control" placeholder="Weight (.Kg)" required="">
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-	        <button type="submit" class="btn btn-primary">SUBMIT</button>
+	        <button type="submit" class="btn btn-primary">CETAK</button>
 	      </div>
 	    </div>
 	  </div>

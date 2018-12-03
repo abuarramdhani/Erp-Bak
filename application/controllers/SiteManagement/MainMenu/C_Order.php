@@ -366,7 +366,7 @@ class C_Order extends CI_Controller {
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('SiteManagement/Order/V_create_cm', $data);
+			$this->load->view('SiteManagement/Order/V_create_ml', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(
@@ -420,7 +420,7 @@ class C_Order extends CI_Controller {
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('SiteManagement/Order/V_update_cm', $data);
+			$this->load->view('SiteManagement/Order/V_update_ml', $data);
 			$this->load->view('V_Footer',$data);	
 		} else {
 			$data = array(

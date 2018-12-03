@@ -1,10 +1,13 @@
 <table class="table table-bordered">
     <tr>
-        <td rowspan="2" width="13%" class="center-hor center-ver">
-            <img src="<?php echo base_url('assets/upload/Warehouse/temp/qrcode/'.$spbNumber.'.png') ?>" style="height: 80px;"/>
-        </td>
+        <!-- <td rowspan="2" width="13%" class="center-hor center-ver">
+            <img src="<?php echo base_url('assets/upload/Warehouse/temp/qrcode/'.$spbNumber.'.png') ?>" style="height: 80px;"/> 
+        </td> -->
         <td rowspan="2" class="top-ver">
-            Catatan
+            <p align="left">Catatan</p>
+            <br>
+
+            Ekspedisi : <h1 align="center-hor"><?php echo $ekspedisi[0]['EXPEDITION_CODE']; ?></h1>
         </td>
         <td colspan="2" class="center-hor">
             Gudang
@@ -39,7 +42,6 @@
 			FRM-WHS-02-SP-01, REV.02
 		</td>
 		<td class="right-hor">
-			Page {PAGENO} of {nb}
 		</td>
 	</tr>
 </table>

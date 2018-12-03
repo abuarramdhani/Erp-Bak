@@ -600,7 +600,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function savePoNumberNew($line_number,$po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$id){
         if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
-                $received_date = 'NULL';
+                $received_date = NULL;
             }else{
                 $received_date = "".$received_date."";
             }
@@ -789,6 +789,25 @@ SELECT DISTINCT pol.po_line_id line_id,
                     WHERE invoice_po_id = '$invoice_po_id' ";
         $runQuery1 = $oracle->query($query1);      
         oci_commit($oracle);
+    }
+
+    public function saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$last_purchasing_invoice_status)
+    {
+       $oracle = $this->load->database('oracle',true);
+       $query2 = "UPDATE khs_ap_monitoring_invoice 
+                  SET invoice_number = '$invoice_number',
+                    invoice_date = '$invoice_date',
+                    invoice_amount = '$invoice_amount',
+                    tax_invoice_number = '$tax_invoice_number',
+                    last_purchasing_invoice_status = '$last_purchasing_invoice_status',
+                    purchasing_batch_number = null,
+                    finance_batch_number = null,
+                    last_status_purchasing_date = null,
+                    last_status_finance_date = null,
+                    reason = null
+                 WHERE invoice_id = $invoice_id ";
+        $runQuery2 = $oracle->query($query2);
+        // oci_commit($oracle);
     }
 
 }

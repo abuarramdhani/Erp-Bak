@@ -42,7 +42,7 @@
 											</td>
 											<td><?php echo $b['FINANCE_BATCH_NUMBER']?></td>
 											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
-											<td><?php echo $b['JML_INVOICE']?></td>
+											<td><?php echo $b['jml_invoice']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

@@ -1692,6 +1692,39 @@ $route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
 $route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
 $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
+$route['MasterPekerja'] 					=	'MasterPekerja/C_Index';
+
+$route['MasterPekerja/Surat'] 				=	'MasterPekerja/Surat/C_Surat';
+$route['MasterPekerja/Surat/(:any)'] 		=	'MasterPekerja/Surat/C_Surat/$1';
+
+
+$route['MasterPekerja/Surat/SuratLayout']				=	'MasterPekerja/Surat/LayoutSurat/C_Index';
+$route['MasterPekerja/Surat/SuratLayout/(:any)']		=	'MasterPekerja/Surat/LayoutSurat/C_Index/$1';
+$route['MasterPekerja/Surat/SuratLayout/(:any)/(:any)']	=	'MasterPekerja/Surat/LayoutSurat/C_Index/$1/$2';
+
+$route['MasterPekerja/Surat/SuratMutasi']								=	'MasterPekerja/Surat/C_Mutasi';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)']						=	'MasterPekerja/Surat/C_Mutasi/$1';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)/(:any)']					=	'MasterPekerja/Surat/C_Mutasi/$1/$2';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)/(:any)/(:any)']			=	'MasterPekerja/Surat/C_Mutasi/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratMutasi/(:any)/(:any)/(:any)/(:any)']	=	'MasterPekerja/Surat/C_Mutasi/$1/$2/$3/$4';
+
+$route['MasterPekerja/Surat/SuratDemosi']               =   'MasterPekerja/Surat/Demosi/C_Index';
+$route['MasterPekerja/Surat/SuratDemosi/(:any)']        =   'MasterPekerja/Surat/Demosi/C_Index/$1';
+$route['MasterPekerja/Surat/SuratDemosi/(:any)/(:any)'] =   'MasterPekerja/Surat/Demosi/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPerbantuan']           =   'MasterPekerja/Surat/Perbantuan/C_Index';
+$route['MasterPekerja/Surat/SuratPerbantuan/(:any)']    =   'MasterPekerja/Surat/Perbantuan/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPerbantuan/(:any)/(:any)'] ='MasterPekerja/Surat/Perbantuan/C_Index/$1/$2';
+$route['MasterPekerja/Surat/SuratPerbantuan/(:any)/(:any)/(:any)'] ='MasterPekerja/Surat/Perbantuan/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPromosi']              =   'MasterPekerja/Surat/Promosi/C_Index';
+$route['MasterPekerja/Surat/SuratPromosi/(:any)']       =   'MasterPekerja/Surat/Promosi/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPromosi/(:any)/(:any)']=   'MasterPekerja/Surat/Promosi/C_Index/$1/$2';
+$route['MasterPekerja/Surat/SuratPromosi/(:any)/(:any)/(:any)']=   'MasterPekerja/Surat/Promosi/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratRotasi']               =   'MasterPekerja/Surat/Rotasi/C_Index';
+$route['MasterPekerja/Surat/SuratRotasi/(:any)']        =   'MasterPekerja/Surat/Rotasi/C_Index/$1';
+$route['MasterPekerja/Surat/SuratRotasi/(:any)/(:any)'] =   'MasterPekerja/Surat/Rotasi/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPengangkatan']               =   'MasterPekerja/Surat/Pengangkatan/C_Index';
+$route['MasterPekerja/Surat/SuratPengangkatan/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPengangkatan/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
 
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
@@ -1821,9 +1854,10 @@ $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja
 
 //--------------------------------------------------- Warehouse --------------------------------------------------//
 
-$route['Warehouse'] 						= 'Warehouse/C_Index';
-$route['Warehouse/Transaction/Spb'] 		= 'Warehouse/MainMenu/C_Transaction';
-$route['Warehouse/Ajax/Spb']		 		= 'Warehouse/Ajax/C_Ajax/getSPB';
+$route['Warehouse'] 								= 'Warehouse/C_Index';
+$route['Warehouse/Transaction/(:any)'] 				= 'Warehouse/MainMenu/C_Transaction/$1';
+$route['Warehouse/Transaction/(:any)/(:any)']		= 'Warehouse/MainMenu/C_Transaction/$1/$2';
+$route['Warehouse/Ajax/(:any)']		 				= 'Warehouse/Ajax/C_Ajax/$1';
  //---------------------------------------------------------- P2K3 -----------------------------------------------------------//
  $route['P2K3'] = 'P2K3/C_P2K3';
  $route['P2K3/Order'] = 'P2K3/MainMenu/C_Order';
@@ -2051,3 +2085,35 @@ $route['AdmCabang'] = 'ADMCabang/C_Index';
 
 $route['AdmCabang/PresensiHarian'] = 'ADMCabang/C_PresensiHarian';
 $route['AdmCabang/PresensiHarian/(:any)'] = 'ADMCabang/C_PresensiHarian/$1';
+
+
+//--------------------------------------------- Branch Item --------------------------------------------
+$route['BranchItem'] = 'BarangCabang/C_branchitem';
+$route['BranchItem/PemindahanBarang/Input'] = 'BarangCabang/C_branchitem/InputBarang';
+$route['BranchItem/PemindahanBarang/Input/(:any)'] = 'BarangCabang/C_branchitem/InputBarang/$1';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah'] = 'BarangCabang/C_branchitem/Addpemindahan';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah/insert'] = 'BarangCabang/C_branchitem/insertPemindahanHeader';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah/insert/line'] = 'BarangCabang/C_branchitem/insertPemindahanLine';
+$route['BranchItem/PemindahanBarang/Input/AddMasalah/flagging'] = 'BarangCabang/C_branchitem/FlaggingPemindahanHeader';
+$route['BranchItem/PemindahanBarang/Input/edit/(:any)'] = 'BarangCabang/C_branchitem/EditPemindahan/$1';
+$route['BranchItem/PemindahanBarang/Input/edit/update'] = 'BarangCabang/C_branchitem/UpdatePemindahanLine/';
+$route['BranchItem/PemindahanBarang/Input/edit/update/(:any)'] = 'BarangCabang/C_branchitem/UpdatePemindahanLine/$1';
+$route['BranchItem/PemindahanBarang/View'] = 'BarangCabang/C_branchitem/Viewpemindahan';
+$route['BranchItem/PemindahanBarang/View/Data'] = 'BarangCabang/C_branchitem/SearchTanggalPemindahan';
+$route['BranchItem/PemindahanBarang/View/Detail/(:any)'] = 'BarangCabang/C_branchitem/Viewdetailpemindahan/$1';
+
+$route['BranchItem/PenangananBarang/Input'] = 'BarangCabang/C_branchitem/InputPenanganan';
+$route['BranchItem/PenangananBarang/Input/(:any)'] = 'BarangCabang/C_branchitem/InputPenanganan/$1';
+$route['BranchItem/PenangananBarang/Input/AddMasalah'] = 'BarangCabang/C_branchitem/AddPenanganan';
+$route['BranchItem/PenangananBarang/Input/AddMasalah/insert'] = 'BarangCabang/C_branchitem/insertPenangananHeader';
+$route['BranchItem/PenangananBarang/Input/AddMasalah/insert/insertLine'] = 'BarangCabang/C_branchitem/insertPenangananLine';
+$route['BranchItem/PenangananBarang/Input/AddMasalah/flagging'] = 'BarangCabang/C_branchitem/FlaggingPenangananHeader';
+$route['BranchItem/PenangananBarang/Input/edit/(:any)'] = 'BarangCabang/C_branchitem/EditPenanganan/$1';
+$route['BranchItem/PenangananBarang/Input/edit/update'] = 'BarangCabang/C_branchitem/UpdatePenangananLine/';
+$route['BranchItem/PenangananBarang/Input/edit/update/(:any)'] = 'BarangCabang/C_branchitem/UpdatePenangananLine/$1';
+$route['BranchItem/PenangananBarang/View'] = 'BarangCabang/C_branchitem/Viewpenanganan';
+$route['BranchItem/PenangananBarang/View/Data'] = 'BarangCabang/C_branchitem/SearchPenanganan';
+$route['BranchItem/PenangananBarang/View/Detail/(:any)'] = 'BarangCabang/C_branchitem/ViewDetailPenanganan/$1';
+
+$route['BranchItem/getOrg'] = 'BarangCabang/C_branchitem/getOrg';
+$route['BranchItem/getBarang'] = 'BarangCabang/C_branchitem/getBarang';

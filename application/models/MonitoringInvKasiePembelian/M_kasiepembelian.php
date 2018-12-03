@@ -39,13 +39,18 @@ class M_kasiepembelian extends CI_Model {
                          ami.reason reason, 
                          ami.last_finance_invoice_status finance_status,
                          aipo.po_number po_number,
-                         poh.attribute2 ppn
+                         poh.attribute2 ppn,
+                         aiac2.action_date action_date,
+                         ami.purchasing_batch_number purchasing_batch_number,
+                         ami.last_purchasing_invoice_status last_purchasing_invoice_status
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
-                     po_headers_all poh
-                WHERE purchasing_batch_number = $batchNumber
+                     po_headers_all poh,
+                     (select distinct min(action_date) over (partition by invoice_id) action_date, invoice_id from khs_ap_invoice_action_detail aiac) aiac2
+                WHERE purchasing_batch_number = '$batchNumber'
                 and ami.invoice_id = aipo.invoice_id
                 and poh.segment1 = aipo.po_number
+                and aiac2.invoice_id = ami.invoice_id
                 ORDER BY vendor_name, invoice_number";
         $query = $oracle->query($sql);
         return $query->result_array();

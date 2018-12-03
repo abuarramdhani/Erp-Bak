@@ -26,7 +26,6 @@
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Action</th>
-											<th class="text-center">Purchasing Batch Number</th>
 											<th class="text-center">Finance Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Total Invoice</th>
@@ -38,11 +37,10 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['PURCHASING_BATCH_NUMBER'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['FINANCE_BATCH_NUMBER'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo $b['PURCHASING_BATCH_NUMBER']?></td>
 											<td><?php echo $b['FINANCE_BATCH_NUMBER']?></td>
 											<?php if ($b['SUBMITED_DATE']) {
 												$tanggal = date('d-M-Y',strtotime($b['SUBMITED_DATE']));
@@ -52,10 +50,6 @@
 											<td><?php echo $tanggal; ?></td>
 											<td><?php echo $b['JML_INVOICE']?></td>
 											<td><?php echo $b['approved']; ?>
-												<br/>
-												<?php echo $b['rejected']; ?>
-												<br/>
-												<?php echo $b['submited']; ?>
 											</td>
 										</tr>
 										<?php $no++; }} ?>

@@ -660,6 +660,25 @@ function InsertLokasiFinger(th) {
 				$('#PresenceManagement-daftarAksesUser').DataTable({
 					scrollY: '250px',
 				});
+
+				$(document).ready(function(){
+					$('#PresenceManagement-daftarUser-ServerSide').DataTable({
+						"processing" : true,
+						"serverSide" : true,
+						"order" : [],
+						"ajax":{
+							"url": baseurl+'PresenceManagement/MonitoringPresensiPengaturan/UserListTable',
+							"type": "post"
+						},
+
+						"columnDefs" : [
+						{
+							"targets":[0],
+							"orderable":false
+						},
+						],
+					});
+				});
 		//	}
 
 		//	Form Behavior

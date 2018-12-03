@@ -17,56 +17,56 @@ class M_ajax extends CI_Model {
 		return $query->result_array();
     }
 
+    public function checkSPB($ip){
+    	$query = "SELECT * FROM KHS_PACKINGLIST_TRANSACT_TEMP WHERE IP = '$ip'";
+    	$result = $this->oracle->query($query);
+
+    	if($result->num_rows() > 0){
+    		return $result->result_array();
+    	}
+    }
+
 	function getSPB($id, $subInv)
 	{
-		$sql	= "
-					SELECT
-						DISTINCT mtrh.request_number no_spb,
-						mtrl.line_number,
-						msib.segment1 item_code,
-						msib.description item_desc,
-						mtrl.quantity quantity_normal,
-						mtrl.quantity_detailed quantity_allocate,
-						(
-							mtrl.quantity_delivered - NVL(( SELECT SUM( NVL( kpt.packing_qty, 0 )) FROM khs_packinglist_transactions kpt WHERE kpt.mo_number = mtrh.request_number AND kpt.inventory_item_id = mtrl.inventory_item_id ), 0 )
-						) quantity_transact,
-						khs_inv_qty_att(
-							mtrl.organization_id,
-							mtrl.inventory_item_id,
-							'$subInv',
-							'',
-							''
-						) qty_att,
-						khs_inv_qty_atr(
-							mtrl.organization_id,
-							mtrl.inventory_item_id,
-							'$subInv',
-							'',
-							''
-						) qty_atr,
-						(
-							SELECT
-								SUM( moqd.primary_transaction_quantity )
-							FROM
-								mtl_onhand_quantities_detail moqd
-							WHERE
-								moqd.subinventory_code = '$subInv'
-								AND moqd.inventory_item_id = mtrl.inventory_item_id
-								AND moqd.organization_id = mtrl.organization_id
-						) qty_total,
-						msib.inventory_item_id
-					FROM
-						mtl_txn_request_headers mtrh,
-						mtl_txn_request_lines mtrl,
-						mtl_system_items_b msib
-					WHERE
-						mtrh.header_id = mtrl.header_id
-						AND msib.inventory_item_id = mtrl.inventory_item_id
-						AND mtrh.request_number = '$id'
-						-- AND mtrl.organization_id = 225
-					ORDER BY
-						no_spb,
-						line_number";
+		$sql	= "SELECT DISTINCT mtrh.request_number no_spb, mtrl.line_number,
+                msib.segment1 item_code, msib.description item_desc,
+                mtrl.quantity quantity_normal,
+                mtrl.quantity_detailed quantity_allocate,
+                (  mtrl.quantity_delivered
+                 - NVL ((SELECT SUM (NVL (kpt.packing_qty, 0))
+                           FROM khs_packinglist_transactions kpt
+                          WHERE kpt.mo_number = mtrh.request_number
+                            AND kpt.inventory_item_id = mtrl.inventory_item_id),
+                        0
+                       )
+                ) quantity_transact,
+                khs_inv_qty_att (mtrl.organization_id,
+                                 mtrl.inventory_item_id,
+                                 '$subInv',
+                                 '',
+                                 ''
+                                ) qty_att,
+                khs_inv_qty_atr (mtrl.organization_id,
+                                 mtrl.inventory_item_id,
+                                 '$subInv',
+                                 '',
+                                 ''
+                                ) qty_atr,
+                (SELECT SUM (moqd.primary_transaction_quantity)
+                   FROM mtl_onhand_quantities_detail moqd
+                  WHERE moqd.subinventory_code = '$subInv'
+                    AND moqd.inventory_item_id = mtrl.inventory_item_id
+                    AND moqd.organization_id = mtrl.organization_id)
+                                                                    qty_total,
+                msib.inventory_item_id, mtrl.line_status
+           FROM mtl_txn_request_headers mtrh,
+                mtl_txn_request_lines mtrl,
+                mtl_system_items_b msib
+          WHERE mtrh.header_id = mtrl.header_id
+            AND msib.inventory_item_id = mtrl.inventory_item_id
+            AND mtrh.request_number = '$id'
+		-- AND mtrl.organization_id = 225
+		ORDER BY  no_spb, line_number";
 
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
@@ -92,10 +92,19 @@ class M_ajax extends CI_Model {
 			FROM
 				KHS_PACKINGLIST_TRANSACTIONS KPT
 			WHERE
-				KPT.MO_NUMBER = '2933134'
+				KPT.MO_NUMBER = '$id'
 		";
 
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
+	}
+
+	public function insertTemp($data){
+		return $this->oracle->insert('KHS_PACKINGLIST_TRANSACT_TEMP',$data);
+	}
+
+	public function delTemp($ip){
+		$this->oracle->where('IP',$ip);
+		$this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
 	}
 }

@@ -47,13 +47,11 @@
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
-											<td><?php echo $u['PPN']?></td>
+											<td><?php echo $ppn ?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
 											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
-											<td><?php if($keputusan[$u['INVOICE_ID']]){foreach ($keputusan[$u['INVOICE_ID']] as $k) { ?>
-												<?php echo  $k ."<br>" ?>
-											<?php }} ?></td>
+											<td><?php echo $u['PO_DETAIL']?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>
 												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['FINANCE_BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info"> Detail
@@ -68,7 +66,7 @@
 												</button>
 											</td>
 											<td>
-												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON']?>" > <input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
+												 <input type="text" name="reason_finance[]" class="reason_finance_class" value="<?php echo $u['REASON']?>"> <input type="hidden" name="id_reason[]" class="reason_invoice_id" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
 										</tr>
 										<?php $no++; } ?>

@@ -230,6 +230,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 			$line1_jenis_maintenance = $this->input->post('txtJenisMaintenanceLine1');
 			$line1_biaya = $this->input->post('txtBiayaLine1');
+			$line1_jumlah = $this->input->post('txtJumlahLine1');
 
 			foreach ($line1_jenis_maintenance as $i => $loop) {
 				if($line1_jenis_maintenance[$i] != '' && $line1_biaya[$i] != '') {
@@ -237,6 +238,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 						'maintenance_kendaraan_id' 		=> $header_id,
 						'jenis_maintenance' 			=> $line1_jenis_maintenance[$i],
 						'biaya' 						=> str_replace(array('Rp','.'), '', $line1_biaya[$i]),
+						'jumlah_item' 					=> $line1_jumlah[$i],
 						'start_date' 					=> $waktu_eksekusi,
 						'end_date' 						=> '9999-12-12 00:00:00',
 						'creation_date' 				=> $waktu_eksekusi,
@@ -329,6 +331,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 		$data['FleetKendaraan'] = $this->M_fleetmaintenancekendaraan->getFleetKendaraan($query_lokasi);
 		$data['FleetMaintenanceKategori'] = $this->M_fleetmaintenancekendaraan->getFleetMaintenanceKategori();
 		$data['FleetBengkel'] = $this->M_fleetmaintenancekendaraan->selectBengkel();
+		$data['jenisMaintenance'] = $this->M_fleetmaintenancekendaraan->selectJenisMaintenance();
 
 		/* LINES DROPDOWN DATA */
 
@@ -369,6 +372,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 
 			$line1_jenis_maintenance = $this->input->post('txtJenisMaintenanceLine1');
 			$line1_biaya = $this->input->post('txtBiayaLine1');
+			$line1_jumlah = $this->input->post('txtJumlahLine1');
 			$maintenance_kendaraan_detail_id = $this->input->post('hdnMaintenanceKendaraanDetailId');
 
 			foreach ($line1_jenis_maintenance as $i => $loop) {
@@ -377,6 +381,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 					$data_line1[$i] = array(
 						'maintenance_kendaraan_id' 	=> $plaintext_string,
 						'jenis_maintenance' 		=> $line1_jenis_maintenance[$i],
+						'jumlah_item' 				=> $line1_jumlah[$i],
 						'biaya' 					=> str_replace(array('Rp','.'), '', $line1_biaya[$i]),
 						'last_updated' 				=> $waktu_eksekusi,
 						'last_updated_by' 			=> $this->session->userid,
@@ -394,6 +399,7 @@ class C_FleetMaintenanceKendaraan extends CI_Controller
 						$data_line1[$i] = array(
 						'maintenance_kendaraan_id' 	=> $plaintext_string,
 						'jenis_maintenance' 		=> $line1_jenis_maintenance[$i],
+						'jumlah_item' 				=> $line1_jumlah[$i],
 						'biaya' 					=> str_replace(array('Rp','.'), '', $line1_biaya[$i]),
 						'start_date' 				=> $waktu_eksekusi,
 						'end_date' 					=> '9999-12-12 00:00:00',

@@ -76,8 +76,8 @@
 										<th class="text-center" width= "10%">LPPB Number</th>
 										<th class="text-center" width= "15%">Shipment Number</th>
 										<th class="text-center" width= "10%">Receive Date</th>
-										<th class="text-center" width= "40%">Item Description</th>
 										<th class="text-center" width= "15%">Item Code</th>
+										<th class="text-center" width= "40%">Item Description</th>
 										<th class="text-center" width= "5%">Qty Amount</th>
 										<th class="text-center" width= "3%">Qty Reject</th>
 										<th class="text-center" width= "10%">Currency</th>
