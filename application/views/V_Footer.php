@@ -119,6 +119,7 @@
 	<script src="<?php echo base_url('assets/js/customECM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customLKKK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWHS.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customWH.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMI.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customUM.js');?>" type="text/javascript"></script>

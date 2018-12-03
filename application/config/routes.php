@@ -2147,3 +2147,19 @@ $route['ManagementAdmin/Cetak/(:any)'] = 'ManagementAdmin/MainMenu/C_Cetak/$1';
 
 
 $route['ManagementAdminUser'] = 'ManagementAdmin/MainMenu/C_Proses';
+
+//------------------------------------ Aplikasi Warehouse ----------------------------
+$route['Warehouse']									= 'Warehouse/C_Index';
+$route['Warehouse/MasterItem']						= 'Warehouse/MainMenu/C_MasterItem';
+$route['Warehouse/MasterItem/(:any)']				= 'Warehouse/MainMenu/C_MasterItem/$1';
+$route['Warehouse/MasterItem/(:any)/(:any)']		= 'Warehouse/MainMenu/C_MasterItem/$1/$2';
+$route['Warehouse/Transaksi']						= 'Warehouse/MainMenu/C_Transaksi';
+$route['Warehouse/Transaksi/(:any)']				= 'Warehouse/MainMenu/C_Transaksi/$1';
+$route['Warehouse/Transaksi/(:any)/(:any)']			= 'Warehouse/MainMenu/C_Transaksi/$1/$2';
+$route['Warehouse/Transaksi/(:any)/(:any)/(:any)']	= 'Warehouse/MainMenu/C_Transaksi/$1/$2/$3';
+$route['Warehouse/Transaksi/(:any)/(:any)/(:any)']	= 'Warehouse/MainMenu/C_Transaksi/$1/$2/$3';
+$route['Warehouse/Transaksi/Keluar/Consumable']		= 'Warehouse/MainMenu/C_Transaksi/KeluarConsumable';
+$route['Warehouse/Transaksi/CreatePeminjamanConsumable']	= 'Warehouse/MainMenu/C_Transaksi/CreatePeminjamanConsumable';
+$route['Warehouse/Transaksi/addNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/addNewItemConsumable';
+$route['Warehouse/Transaksi/UpdateItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/UpdateItemConsumable';
+$route['Warehouse/Transaksi/removeNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/removeNewItemConsumable';
