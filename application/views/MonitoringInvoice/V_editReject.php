@@ -78,8 +78,8 @@
 														<th class="text-center">LPPB Number</th>
 														<th class="text-center">Shipment Number</th>
 														<th class="text-center">Receive Date</th>
-														<th class="text-center">Item Description</th>
 														<th class="text-center">Item Code</th>
+														<th class="text-center">Item Description</th>
 														<th class="text-center">Qty Receipt</th>
 														<th class="text-center">Qty Reject</th>
 														<th class="text-center">Currency</th>
@@ -113,10 +113,10 @@
 															<input class="form-control" type="text" name="received_date[]" value="<?php echo $po_num['RECEIVED_DATE']?>"> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['ITEM_DESCRIPTION']?>"> 
+															<input class="form-control" type="text" name="item_code[]" value="<?php echo $po_num['ITEM_CODE']?>"> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_code[]" value="<?php echo $po_num['ITEM_CODE']?>"> 
+															<input class="form-control" type="text" name="item_description[]" value="<?php echo $po_num['ITEM_DESCRIPTION']?>"> 
 														</td>
 														<td class="text-center">
 															<input class="form-control" type="text" name="qty_receipt[]" value="<?php echo $po_num['QTY_RECEIPT']?>"> 

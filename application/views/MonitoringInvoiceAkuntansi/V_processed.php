@@ -67,8 +67,8 @@
 									<th class="text-center">LPPB Number</th>
 									<th class="text-center">Shipment Number</th>
 									<th class="text-center">Receive Date</th>
-									<th class="text-center">Item Description</th>
 									<th class="text-center">Item Code</th>
+									<th class="text-center">Item Description</th>
 									<th class="text-center">Qty Receipt</th>
 									<th class="text-center">Qty Reject</th>
 									<th class="text-center">Currency</th>
@@ -85,8 +85,8 @@
 									<td class="text-center"><?php echo $b['LPPB_NUMBER']?></td>
 									<td class="text-center"><?php echo $b['SHIPMENT_NUMBER']?></td>
 									<td class="text-center"><?php echo $b['RECEIVED_DATE']?></td>
-									<td class="text-center"><?php echo $b['ITEM_DESCRIPTION']?></td>
 									<td class="text-center"><?php echo $b['ITEM_CODE']?></td>
+									<td class="text-center"><?php echo $b['ITEM_DESCRIPTION']?></td>
 									<td class="text-center"><?php echo $b['QTY_RECEIPT']?></td>
 									<td class="text-center"><?php echo $b['QTY_REJECT']?></td>
 									<td class="text-center"><?php echo $b['CURRENCY']?></td>
@@ -101,7 +101,7 @@
 							<label>Po Amount: <span><?php echo $po_amount?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
-						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/');?>">
+						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['PURCHASING_BATCH_NUMBER']);?>">
 							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
 						</a>
 						</div>

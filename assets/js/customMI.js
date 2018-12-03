@@ -1,11 +1,15 @@
-
 $(document).ready(function(){
 
-	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListBatchPembelian, #tbListSubmit, #finishInvoice, #unprocessTabel').dataTable({
+	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListSubmit, #finishInvoice, #unprocessTabel, #tabel_detail_purchasing').DataTable({
 		"pageLength": 10,
         "paging": true,
         "searching": true,
-        "order": [[0, "asc"]]
+	});
+
+	$('#tabel_invoice_modal').DataTable({
+		"pageLength": 3,
+        "paging": true,
+        "searching": true,
 	});
 
 	$('#btnSubmitChecking').click(function(){
@@ -97,7 +101,7 @@ $(document).ready(function(){
 
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
-				    'received_date','item_description','item_id','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
+				    'received_date','item_id','item_description','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
 						$('.addMonitoringInvoice').each(function () {
 								var html ='';
 					           if (this.checked) {
@@ -116,7 +120,7 @@ $(document).ready(function(){
 					           				}
 					           			});
 					           		})
-					               html+='<td><input required type="text" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
+					               html+='<td><input type="text" onchange="PresTab(this)" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
 					               html+='<td><button type="button"class="del_row btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
 					               html+='</tr>'; 
 					               $('#tbodyPoDetailAll').append(html);
@@ -148,7 +152,7 @@ $(document).ready(function(){
 		alert('Yakin untuk menghapusnya ?');
 	});
 
-	$('table#tbListInvoice tbody tr, #tbListBatchPembelian  tbody tr, #finishInvoice tbody tr, #tabel_invoice tbody tr, #unprocessTabel tbody tr, #rejectinvoice tbody tr').each(function(){
+	$('table#tbListInvoice tbody tr, #tabel_detail_purchasing tbody tr, #finishInvoice tbody tr, #tabel_invoice tbody tr, #unprocessTabel tbody tr, #rejectinvoice tbody tr').each(function(){
 		var po_amount = $(this).find('.po_amount').text();
 		var inv_amount = $(this).find('.inv_amount').text();
 
@@ -249,6 +253,7 @@ $(document).ready(function(){
 	$('#btnToFinance').click(function(){
 		alert('Invoice akan di submit ke finance');
 	});
+
 });
 
 function prosesInvMI(th){
@@ -267,11 +272,11 @@ function prosesInvMI(th){
 		
 		if (proses == 2) {
 			request.done(function(output){
-				$("#gambarloading").parent().html('<button class="btn btn-success">Accept</button>');
+				$("#gambarloading").parent().html('<span class="alert alert-success">Diterima</span>');
 			});
 		} else {
 			request.done(function(output){
-				$("#gambarloading").parent().html('<button class="btn btn-danger">Reject</button>');
+				$("#gambarloading").parent().html('<span class="alert alert-danger">Ditolak (Isikan Alasan)</span>');
 				alert('Alasan harus diisi');
 			});
 		}
@@ -306,6 +311,24 @@ function chkAllAddMonitoringInvoice() {
 	};
 }
 
-
-
+function bukaMOdal(elm){
+	var id = $(elm).attr('inv');
+	$.ajax({
+		url: baseurl+'AccountPayables/MonitoringInvoice/InvoiceKasie/modal_approve_reject_invoice/'+id,
+		data:{
+			invoice_id: id
+		},
+		type: 'POST',
+		success: function(response){
+		$('.body_invoice').html(response);
+		$('.invoice_id').val(id);
+		$('#modal-invoice').modal('show');
+		}
+	});
+}
+ 
+function PresTab(th)
+{
+   $(th).parent().parent().next().find('.qty_invoice').focus();
+}
 

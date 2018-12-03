@@ -78,8 +78,8 @@
 														<th class="text-center">LPPB Number</th>
 														<th class="text-center">Shipment Number</th>
 														<th class="text-center">Receive Date</th>
-														<th class="text-center">Item Desctiption</th>
 														<th class="text-center">Item Code</th>
+														<th class="text-center">Item Desctiption</th>
 														<th class="text-center">Qty Receipt</th>
 														<th class="text-center">Qty Reject</th>
 														<th class="text-center">Currency</th>
@@ -106,10 +106,10 @@
 															<input class="form-control" type="text" name="received_date" value="<?php echo $p['RECEIVED_DATE']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_description" value="<?php echo $p['ITEM_DESCRIPTION']?>" readonly> 
+															<input class="form-control" type="text" name="item_code" value="<?php echo $p['ITEM_CODE']?>" readonly> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_code" value="<?php echo $p['ITEM_CODE']?>" readonly> 
+															<input class="form-control" type="text" name="item_description" value="<?php echo $p['ITEM_DESCRIPTION']?>" readonly> 
 														</td>
 														<td class="text-center">
 															<input class="form-control" type="text" name="qty_receipt" value="<?php echo $p['QTY_RECEIPT']?>" readonly> 

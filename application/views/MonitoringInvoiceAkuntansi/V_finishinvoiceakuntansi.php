@@ -33,7 +33,7 @@
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Finance Process Date</th>
-											<th class="text-center">Batch Number</th>
+											<th class="text-center">Finance Batch Number</th>
 										</tr>
 									</thead>
 									<tbody>
