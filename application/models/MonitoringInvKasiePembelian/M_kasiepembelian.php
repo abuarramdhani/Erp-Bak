@@ -191,7 +191,7 @@ class M_kasiepembelian extends CI_Model {
                                             FROM khs_ap_invoice_action_detail d
                                            WHERE d.invoice_id = a.invoice_id
                                              AND d.finance_status = 1
-                                             AND d.purchasing_status = 2) submited_date,
+                                             AND d.purchasing_status = 2 AND rownum = 1) submited_date,
                                 (SELECT COUNT (*)
                                    FROM khs_ap_monitoring_invoice b
                                   WHERE b.purchasing_batch_number = a.purchasing_batch_number)jml_invoice
