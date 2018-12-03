@@ -104,7 +104,7 @@
 		
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		    <input type="hidden" name="nomor_batch" value="<?php echo $batch[0]['PURCHASING_BATCH_NUMBER']?>">
 			<button type="submit" class="btn btn-success" name="prosesapprove" value="2">Approve</button>
 			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdlreject">Reject</button>
@@ -124,7 +124,7 @@
 		  </div>
 		  <div class="modal-body">
 		    <div class="row">
-		      <div class="col-md-12">Reject Nomor Invoice </div>
+		      <div class="col-md-12">Alasan Reject </div>
 		    </div>
 		    <br>
 		    <input type="text" class="form-control" placeholder="Alasan Reject" name="alasan_reject" required="required">
