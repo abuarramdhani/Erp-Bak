@@ -70,7 +70,7 @@
 											}elseif($b['STATUS'] == 3){
 												$status = 'Reject'.' - '.$b['REASON'];
 											}elseif ($b['STATUS'] == 1) {
-												$status = 'Sumbit';
+												$status = 'Submit';
 											} ?>
 											<td><?php echo $status?></td>
 											<td><input type="hidden" name="invoice_id[]" value="<?php echo $b['INVOICE_ID']?>"></td>
