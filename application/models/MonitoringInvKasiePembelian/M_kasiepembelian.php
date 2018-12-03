@@ -196,6 +196,7 @@ class M_kasiepembelian extends CI_Model {
                                    FROM khs_ap_monitoring_invoice b
                                   WHERE b.purchasing_batch_number = a.purchasing_batch_number)jml_invoice
                 FROM khs_ap_monitoring_invoice a
+                WHERE a.finance_batch_number IS NOT NULL
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
         return $run->result_array();
