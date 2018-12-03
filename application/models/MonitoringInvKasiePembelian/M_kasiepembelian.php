@@ -40,7 +40,9 @@ class M_kasiepembelian extends CI_Model {
                          ami.last_finance_invoice_status finance_status,
                          aipo.po_number po_number,
                          poh.attribute2 ppn,
-                         aiac2.action_date action_date
+                         aiac2.action_date action_date,
+                         ami.purchasing_batch_number purchasing_batch_number,
+                         ami.last_purchasing_invoice_status last_purchasing_invoice_status
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh,

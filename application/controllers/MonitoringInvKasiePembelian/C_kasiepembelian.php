@@ -76,8 +76,8 @@ class C_kasiepembelian extends CI_Controller{
 		$batch = $this->M_kasiepembelian->showDetailPerBatch($batchNumber);
 		
 		$no = 0;
-		foreach ($batch as $bl) {
-			$invoice_id = $bl['INVOICE_ID'];
+		foreach ($batch as $bl => $value) {
+			$invoice_id = $value['INVOICE_ID'];
 
 			$po_amount = 0;
 			$modal = $this->M_kasiepembelian->getUnitPrice($invoice_id);
@@ -128,7 +128,7 @@ class C_kasiepembelian extends CI_Controller{
 	}
 
 	public function approvedbykasiepurchasing(){
-		$approved = $this->input->post('prosesapproved');
+		$approved = $this->input->post('prosesapprove');
 		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
 		$invoice_id = $this->input->post('invoice_id');
 		$nomorbatch = $this->input->post('nomor_batch');
@@ -268,6 +268,14 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_finishinvoice',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function modal_approve_reject_invoice($invoice_id){
+		$detail = $this->M_kasiepembelian->invoiceDetail($invoice_id);
+		$data['invoice'] = $detail;
+		$return = $this->load->view('MonitoringInvKasiePembelian/V_modal_invoice',$data,TRUE);
+		
+		echo ($return);
 	}
 
 }

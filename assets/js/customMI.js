@@ -7,6 +7,12 @@ $(document).ready(function(){
         "searching": true,
 	});
 
+	$('#tabel_invoice_modal').DataTable({
+		"pageLength": 3,
+        "paging": true,
+        "searching": true,
+	});
+
 	$('#btnSubmitChecking').click(function(){
 		var jml = 0;
 		var arrId = [];
@@ -307,14 +313,19 @@ function chkAllAddMonitoringInvoice() {
 }
 
 function bukaMOdal(elm){
-	var id = elm.attr('inv');
-	// $.ajax({
-	// 	url: baseurl+'AccountPayables/MonitoringInvKasiePembelian/'+id,
-	// 	type: 'POST',
-	// 	success: function(response){
-	// 	}
-	// });
-	$('#modal-invoice').modal('show');
+	var id = $(elm).attr('inv');
+	$.ajax({
+		url: baseurl+'AccountPayables/MonitoringInvoice/InvoiceKasie/modal_approve_reject_invoice/'+id,
+		data:{
+			invoice_id: id
+		},
+		type: 'POST',
+		success: function(response){
+		$('.body_invoice').html(response);
+		$('.invoice_id').val(id);
+		$('#modal-invoice').modal('show');
+		}
+	});
 }
  
 function PresTab(th)

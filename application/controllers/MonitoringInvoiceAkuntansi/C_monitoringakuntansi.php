@@ -81,7 +81,8 @@ class C_monitoringakuntansi extends CI_Controller{
 		$no = 0;
 		foreach ($unprocess as $inv ) {
 
-			$invoice_id = $inv['INVOICE_ID'] ;
+			$invoice_id = $inv['INVOICE_ID'];
+			$string_id = $inv['PO_DETAIL'];
 			
 			$po_amount = 0;
 			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
@@ -93,11 +94,29 @@ class C_monitoringakuntansi extends CI_Controller{
 			} 
 
 			$unprocess[$no]['PO_AMOUNT'] = $po_amount;
+
+			if ($string_id) {
+				$explodeId = explode(',', $string_id);
+				if (!$explodeId) {
+					$explodeId = $string_id;
+				}
+
+				foreach ($explodeId as $exp => $value) {
+					$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
+					foreach ($cekPPN as $key => $value2) {
+						foreach ($value2 as $va2 => $value3) {
+							$ppn = $value3;
+						}
+					}
+				}
+			}
+			
 			$no++;
 		}
 
 		$data['unprocess'] =$unprocess;
 		$data['batch_num'] =$batch;
+		$data['ppn'] = $ppn;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

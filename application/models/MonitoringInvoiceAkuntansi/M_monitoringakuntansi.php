@@ -10,29 +10,30 @@ class M_monitoringakuntansi extends CI_Model {
 	public function unprocessedInvoice($batchNumber)
 	{
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT ami.invoice_id invoice_id,
-				    ami.vendor_name vendor_name,
-				    ami.invoice_number invoice_number,
-				    ami.invoice_date invoice_date,
-				    ami.tax_invoice_number tax_invoice_number,
-				    ami.invoice_amount invoice_amount,
-				    ami.last_status_purchasing_date last_status_purchasing_date,
-				    ami.last_status_finance_date last_status_finance_date,
-				    ami.finance_batch_number finance_batch_number,
-				    ami.LAST_FINANCE_INVOICE_STATUS LAST_FINANCE_INVOICE_STATUS,
-				    ami.reason reason,
-				    poh.attribute2 PPN,
-				    aaipo.po_number po_number
-				FROM khs_ap_monitoring_invoice ami,
-				(select aipo.invoice_id, aipo.po_number
-            from khs_ap_invoice_purchase_order aipo
-            group by aipo.invoice_id , aipo.po_number) aaipo
-				,po_headers_all poh
-				WHERE aaipo.invoice_id = ami.invoice_id 
-				AND last_finance_invoice_status = 1
-				AND finance_batch_number = $batchNumber
-				and poh.SEGMENT1 = aaipo.po_number
-				ORDER BY vendor_name";
+		$sql = "SELECT DISTINCT ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, aipo2.po_detail
+               FROM khs_ap_monitoring_invoice ami,
+                    (SELECT   aipo.invoice_id,
+                              RTRIM
+                                 (XMLAGG (XMLELEMENT (e, aipo.po_number || ',')).EXTRACT
+                                                                       ('//text()'),
+                                  ','
+                                 ) po_detail
+                         FROM (SELECT DISTINCT invoice_id, po_number
+                                          FROM khs_ap_invoice_purchase_order) aipo
+                     GROUP BY aipo.invoice_id) aipo2
+              WHERE ami.invoice_id = aipo2.invoice_id
+                AND ami.last_finance_invoice_status = 1
+                AND ami.finance_batch_number = '$batchNumber'
+           ORDER BY vendor_name";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
@@ -282,5 +283,18 @@ class M_monitoringakuntansi extends CI_Model {
                      AND last_finance_invoice_status = 1";
         $run = $oracle->query($sql);
         return $run->result_array();
+    }
+
+    public function checkPPN($po_numberInv){
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "SELECT distinct poh.attribute2 ppn
+                            from PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        where poh.po_header_id(+) = pol.po_header_id
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        AND POH.SEGMENT1 = '$po_numberInv' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
     }
 }
