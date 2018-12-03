@@ -272,11 +272,11 @@ function prosesInvMI(th){
 		
 		if (proses == 2) {
 			request.done(function(output){
-				$("#gambarloading").parent().html('<span class="badge badge-success">Diterima</span>');
+				$("#gambarloading").parent().html('<span class="alert alert-success">Diterima</span>');
 			});
 		} else {
 			request.done(function(output){
-				$("#gambarloading").parent().html('<span class="badge badge-danger">Ditolak (Isikan Alasan)</span>');
+				$("#gambarloading").parent().html('<span class="alert alert-danger">Ditolak (Isikan Alasan)</span>');
 				alert('Alasan harus diisi');
 			});
 		}
