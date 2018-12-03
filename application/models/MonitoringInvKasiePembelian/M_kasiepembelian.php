@@ -109,8 +109,8 @@ class M_kasiepembelian extends CI_Model {
     public function insertstatusfinance($invoice_id,$action_date,$finance_status)
     {
         $oracle = $this->load->database('oracle',true);
-        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,finance_status)
-                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$finance_status')";
+        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','$finance_status')";
         $run = $oracle->query($sql);
     }
     public function checkFinanceNumber()
