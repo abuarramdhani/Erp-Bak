@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
 	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListSubmit, #finishInvoice, #unprocessTabel, #tabel_detail_purchasing').DataTable({
@@ -273,11 +272,11 @@ function prosesInvMI(th){
 		
 		if (proses == 2) {
 			request.done(function(output){
-				$("#gambarloading").parent().html('<button class="btn btn-success">Accept</button>');
+				$("#gambarloading").parent().html('<span class="badge badge-success">Diterima</span>');
 			});
 		} else {
 			request.done(function(output){
-				$("#gambarloading").parent().html('<button class="btn btn-danger">Reject</button>');
+				$("#gambarloading").parent().html('<span class="badge badge-danger">Ditolak (Isikan Alasan)</span>');
 				alert('Alasan harus diisi');
 			});
 		}
