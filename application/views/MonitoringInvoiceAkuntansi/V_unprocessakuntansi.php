@@ -34,9 +34,9 @@
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th class="text-center" width="13%" title="No PO - Line Number - LPPB Number - Status LPPB">Po Detail</th>
+											<th class="text-center">PO Number</th>
 											<th class="text-center">Purchasing Submit Date</th>
-											<th class="text-center" width="15%">Action</th>
+											<th class="text-center" width="15px">Action</th>
 											<th class="text-center">Alasan</th>
 										</tr>
 									</thead>
@@ -74,7 +74,6 @@
 								</table>
 								<div class="col-md-2 pull-right">
 									<button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px" >Submit</button>
-								</div>
 								</div>
 							</div>
 						</div>

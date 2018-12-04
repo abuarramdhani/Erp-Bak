@@ -96,7 +96,7 @@ class C_monitoringakuntansi extends CI_Controller{
 			$unprocess[$no]['PO_AMOUNT'] = $po_amount;
 
 			if ($string_id) {
-				$explodeId = explode(',', $string_id);
+				$explodeId = explode('<br>', $string_id);
 				if (!$explodeId) {
 					$explodeId = $string_id;
 				}
