@@ -163,7 +163,7 @@ class C_monitoringakuntansi extends CI_Controller{
 
 	public function prosesAkuntansi($id){
 		$proses = $this->input->post('proses');
-		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$saveDate = date('d-m-Y H:i:s');
 
 		$this->M_monitoringakuntansi->saveProses($proses,$saveDate,$id);
 		$this->M_monitoringakuntansi->insertproses($id,$saveDate,$proses);
