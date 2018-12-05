@@ -57,8 +57,6 @@ class M_trackinginvoice extends CI_Model {
                    $parameter_invoice
                 ORDER BY ami.last_admin_date";
 
-                echo $query;
-                exit;
         $run = $db->query($query);
         return $run->result_array();
     }

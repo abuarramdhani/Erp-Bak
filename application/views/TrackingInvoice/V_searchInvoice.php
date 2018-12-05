@@ -52,7 +52,7 @@
 												<div class="col-md-6">
 													<table>
 														<tr>
-															<td><label>Nomor Invoice*</label></td>
+															<td><label>Nomor Invoice</label></td>
 															<td>
 																<input type="text" class="form-control" name="invoice_number" id="invoice_number" style="margin: 5px" size="30" >
 															</td>
