@@ -106,5 +106,13 @@ class M_proses extends CI_Model
 				from ma.ma_pelaksanaan pk where pk.total_waktu > total_target and pk.id_pelaksanaan = $id";
 		$this->db->query($sql);
 	}
+
+	public function deleteData($id){
+		$this->db->where('id_pelaksanaan',$id);
+		$this->db->delete('ma.ma_pelaksanaan');
+
+		$this->db->where('id_pelaksanaan',$id);
+		$this->db->delete('ma.ma_pending');
+	}
 }
 ?>

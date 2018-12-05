@@ -142,6 +142,9 @@
 																			<th>Waktu Selesai</th>
 																			<th>Total Waktu</th>
 																			<th>Keterangan</th>
+																			<?php if ($delete == '1') { ?>
+																				<th>Action</th>
+																			<?php } ?>
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -167,6 +170,13 @@
 																								}
 																							?>
 																						</td>
+																						<?php if ($delete == '1') { ?>
+																						<td><?php 
+																						$encrypted_String = $this->encrypt->encode($val['id_pelaksanaan']);
+																						$encrypted_String = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_String) ?>
+																							<a href="<?php echo site_url('ManagementAdmin/Proses/Delete/'.$encrypted_String) ?>" class="fa fa-trash fa-2x" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ?')"></a>
+																						</td>
+																					<?php } ?> 
 																					</tr>
 																		<?php		$angka++;	
 																				}

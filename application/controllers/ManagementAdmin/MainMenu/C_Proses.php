@@ -53,6 +53,7 @@ class C_Proses extends CI_Controller
 			$data['Menu'] 			= 'Proses';
 			$data['SubMenuOne'] 	= '';
 			$data['SubMenuTwo'] 	= '';
+			$data['delete']			= '0';
 		}else{
 			$data['table_proses'] 	= $this->M_proses->getDataproses();
 			$data['table_selesai'] 	= $this->M_proses->getDataselesai();
@@ -60,6 +61,7 @@ class C_Proses extends CI_Controller
 			$data['Menu'] 			= 'Proses';
 			$data['SubMenuOne'] 	= '';
 			$data['SubMenuTwo'] 	= '';
+			$data['delete']			= '1';
 		}
 		
 
@@ -103,6 +105,13 @@ class C_Proses extends CI_Controller
 			$this->M_proses->updateDataSelesai($key);
 			$this->M_proses->insertPending($key);
 		}
+		redirect(site_url('ManagementAdmin/Proses'));
+	}
+
+	public function Delete($id){
+		$decrypted_String = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$decrypted_String = $this->encrypt->decode($decrypted_String);
+		$this->M_proses->deleteData($decrypted_String);
 		redirect(site_url('ManagementAdmin/Proses'));
 	}
 }
