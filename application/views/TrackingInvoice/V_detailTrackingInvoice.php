@@ -21,6 +21,8 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
+								<div class="row">
+								<div class="col-md-6">
 								<table id="tbInvoice" >
 									<?php $no=1; foreach($invoice as $po_num) { ?>
 									<tr>
@@ -65,6 +67,28 @@
 									</tr>
 									<?php $no++;} ?>
 								</table>
+								</div><div class="col-md-6">
+								<span><label>Invoice History</label></span><br>
+								<table id="tbHistoryInvoice" class="table table-striped table-bordered table-hover text-center dataTable" >
+								<thead style="vertical-align: middle;"> 
+									<tr class="bg-primary">
+										<th class="text-center">No</th>
+										<th class="text-center">Action Date</th>
+										<th class="text-center">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php $no=1; foreach($historyinvoice as $hi) { ?>
+									<tr>
+										<td><?php echo $no?></td>
+										<td><?php echo $hi['ACTION_DATE']?></td>
+										<td><?php echo $hi['STATUS']?></td>
+									</tr>
+									<?php $no++;}?>
+								</tbody>												
+								</table>
+								</div>
+								</div>
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div class="col-md-12">
@@ -92,7 +116,7 @@
 														<td>
 															<?php echo $no ?>
 														</td> 
-														<td class="text-center"><?php echo $p['PO_NUMBER']?>>
+														<td class="text-center"><?php echo $p['PO_NUMBER']?>
 														</td>
 														<td class="text-center"> 
 															<?php echo $p['LPPB_NUMBER']?>

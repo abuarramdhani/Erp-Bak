@@ -25,7 +25,7 @@
 												<div class="col-md-6">
 													<table>
 														<tr>
-															<td><label>Nama Vendor</label></td>
+															<td><label>Nama Vendor*</label></td>
 															<td>
 																<select id="vendor_name" name="vendor_name" class="form-control select2" style="width: 100%" disabled="disabled">
 																<option></option>
@@ -42,7 +42,7 @@
 															</td>
 														</tr>
 														<tr>
-															<td><label>Keyword Lain</label></td>
+															<td><label>Keyword Lain*</label></td>
 															<td>
 																<input type="text" class="form-control" name="any_keyword" id="any_keyword" style="margin: 5px" size="30" disabled="disabled">
 															</td>
@@ -52,19 +52,22 @@
 												<div class="col-md-6">
 													<table>
 														<tr>
-															<td><label>Nomor Invoice</label></td>
+															<td><label>Nomor Invoice*</label></td>
 															<td>
-																<input type="text" class="form-control" name="invoice_number" id="invoice_number" style="margin: 5px" size="30" disabled="disabled">
+																<input type="text" class="form-control" name="invoice_number" id="invoice_number" style="margin: 5px" size="30" >
 															</td>
 														</tr>
 														<tr>
-															<td><label>Tanggal Invoice</label></td>
+															<td><label>Tanggal Invoice*</label></td>
 															<td>
 																<input type="text" class="form-control" name="invoice_date" id="invoice_date" style="margin: 5px" size="30" disabled="disabled">
 															</td>
 														</tr>
 													</table>
-													<div class="pull-right">
+													<div class="pull-left">
+														* Dalam Pengembangan<br>
+														** Gunakan <strong>%</strong> untuk pencarian wildcard
+													</div><div class="pull-right">
 														<button type="button" class="btn btn-primary" id="btn_search_invoice">Search</button>
 													</div>
 												</div>
