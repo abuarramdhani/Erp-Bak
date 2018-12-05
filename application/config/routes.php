@@ -2163,3 +2163,9 @@ $route['Warehouse/Transaksi/CreatePeminjamanConsumable']	= 'Warehouse/MainMenu/C
 $route['Warehouse/Transaksi/addNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/addNewItemConsumable';
 $route['Warehouse/Transaksi/UpdateItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/UpdateItemConsumable';
 $route['Warehouse/Transaksi/removeNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/removeNewItemConsumable';
+
+//------------------------------------ TRACKING INVOICE ----------------------------
+$route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';
+$route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/TrackingInvoice';
+$route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
+$route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
