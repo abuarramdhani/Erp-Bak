@@ -236,8 +236,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
-		$last_admin_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
-		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$last_admin_date = date('d-m-Y H:i:s');
+		$action_date = date('d-m-Y H:i:s');
 
 
 		// $amount = str_replace(',', '', $invoice_amount);
@@ -316,7 +316,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$currency = $this->input->post('currency[]');
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
-		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$action_date = date('d-m-Y H:i:s');
 		$item_code = $this->input->post('item_code[]');
 		$invoice_po_id = $this->input->post('invoice_po_id[]');
 
@@ -344,7 +344,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$hasilExplode = explode(",", $ArrayIdInv);
 		$checkNumBatchExist = $this->M_monitoringinvoice->checkNumBatchExist();
 		$BatchNumberNew = $checkNumBatchExist[0]['BATCH_NUM'] + 1;
-		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$saveDate = date('d-m-Y H:i:s');
 		$array2 = array_map("unserialize", array_unique(array_map("serialize", $checkList)));
 
 		foreach ($array2 as $po => $value) {
@@ -818,7 +818,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$currency = $this->input->post('currency[]');
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
-		$action_date = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$action_date = date('d-m-Y H:i:s');
 		$item_code = $this->input->post('item_code[]');
 		$invoice_po_id = $this->input->post('invoice_po_id[]');
 		$status = $this->input->post('saveReject');

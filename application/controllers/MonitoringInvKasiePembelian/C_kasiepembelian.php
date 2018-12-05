@@ -100,7 +100,7 @@ class C_kasiepembelian extends CI_Controller{
 
 	public function submittofinance(){
 		$finance = $this->input->post('submit_finance');
-		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$saveDate = date('d-m-Y H:i:s');
 		$invoice_id = $this->input->post('invoice_id[]');
 
 		$checkFinanceNumber = $this->M_kasiepembelian->checkFinanceNumber();
@@ -129,7 +129,7 @@ class C_kasiepembelian extends CI_Controller{
 
 	public function approvedbykasiepurchasing(){
 		$approved = $this->input->post('prosesapprove');
-		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$saveDate = date('d-m-Y H:i:s');
 		$invoice_id = $this->input->post('invoice_id');
 		$nomorbatch = $this->input->post('nomor_batch');
 
@@ -140,7 +140,7 @@ class C_kasiepembelian extends CI_Controller{
 
 	public function rejectbykasiepurchasing(){
 		$rejected = $this->input->post('prosesreject');
-		$saveDate = date('d-m-Y H:i:s', strtotime('+6 hours'));
+		$saveDate = date('d-m-Y H:i:s');
 		$invoice_id = $this->input->post('invoice_id');
 		$nomorbatch = $this->input->post('nomor_batch');
 		$alasan_reject = $this->input->post('alasan_reject');

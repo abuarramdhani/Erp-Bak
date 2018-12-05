@@ -22,17 +22,26 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.reason reason, aipo2.po_detail
                FROM khs_ap_monitoring_invoice ami,
                     (SELECT   aipo.invoice_id,
-                              RTRIM
-                                 (XMLAGG (XMLELEMENT (e, aipo.po_number || ',')).EXTRACT
-                                                                       ('//text()'),
-                                  ','
-                                 ) po_detail
+                               REPLACE
+                                  ((RTRIM
+                                       (XMLAGG (XMLELEMENT (e,
+                                                               TO_CHAR
+                                                                      (aipo.po_number)
+                                                            || '@'
+                                                           )
+                                               ).EXTRACT ('//text()'),
+                                        '@'
+                                       )
+                                   ),
+                                   '@',
+                                   '<br>'
+                                  ) po_detail
                          FROM (SELECT DISTINCT invoice_id, po_number
                                           FROM khs_ap_invoice_purchase_order) aipo
                      GROUP BY aipo.invoice_id) aipo2
               WHERE ami.invoice_id = aipo2.invoice_id
                 AND ami.last_finance_invoice_status = 1
-                AND ami.finance_batch_number = '$batchNumber'
+                AND ami.finance_batch_number = $batchNumber
            ORDER BY vendor_name";
 		$run = $erp_db->query($sql);
 		return $run->result_array();

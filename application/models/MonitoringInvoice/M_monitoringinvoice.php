@@ -770,30 +770,52 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $query->result_array();
     }
 
-    public function invoicereject()
+   public function invoicereject()
     {
         $oracle = $this->load->database("oracle",TRUE);
-        $query = "SELECT   ami.invoice_number invoice_number,
-                            ami.invoice_date invoice_date,
-                            ami.tax_invoice_number tax_invoice_number,
-                            ami.invoice_amount invoice_amount,
-                            ami.reason reason,
-                            ami.last_purchasing_invoice_status last_purchasing_invoice_status,
-                            ami.invoice_id invoice_id,
-                            to_date(ami.last_status_purchasing_date) last_status_purchasing_date,
-                            ami.purchasing_batch_number purchasing_batch_number,
-                            ami.last_finance_invoice_status last_finance_invoice_status,
-                            aaipo.po_detail po_detail,
-                            ami.vendor_name vendor_name
-                            FROM khs_ap_monitoring_invoice ami,
-                                (select aipo.invoice_id, aipo.po_number, replace((rtrim (xmlagg (xmlelement (e, to_char(aipo.po_number || '-' || aipo.line_number || '-' || aipo.lppb_number) || '@')).extract ('//text()'), '@')), '@', '<br>') po_detail
-                                from khs_ap_invoice_purchase_order aipo
-                                group by aipo.invoice_id , aipo.po_number) aaipo
-                            WHERE aaipo.invoice_id = ami.invoice_id 
-                            and (last_purchasing_invoice_status = 3
-                            or last_finance_invoice_status = 3)
-                            order by last_status_purchasing_date";
-
+        $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
+                     ami.tax_invoice_number tax_invoice_number,
+                     ami.invoice_amount invoice_amount, ami.reason reason,
+                     ami.last_purchasing_invoice_status last_purchasing_invoice_status,
+                     ami.invoice_id invoice_id,
+                     TO_DATE (ami.last_status_purchasing_date)
+                                                              last_status_purchasing_date,
+                     ami.purchasing_batch_number purchasing_batch_number,
+                     ami.last_finance_invoice_status last_finance_invoice_status,
+                     aaipo.po_detail po_detail, ami.vendor_name vendor_name,
+                     (SELECT MAX(action_date)
+                                               FROM khs_ap_invoice_action_detail aiac
+                                              WHERE ((purchasing_status = 3 and finance_status = 0)
+                                                 OR (purchasing_status = 2 and finance_status = 3))
+                                                AND aiac.invoice_id = ami.invoice_id) reject_date
+                FROM khs_ap_monitoring_invoice ami,
+                     (SELECT   aipo.invoice_id, aipo.po_number,
+                               REPLACE
+                                  ((RTRIM
+                                       (XMLAGG (XMLELEMENT (e,
+                                                               TO_CHAR
+                                                                      (   aipo.po_number
+                                                                       || '-'
+                                                                       || aipo.line_number
+                                                                       || '-'
+                                                                       || aipo.lppb_number
+                                                                      )
+                                                            || '@'
+                                                           )
+                                               ).EXTRACT ('//text()'),
+                                        '@'
+                                       )
+                                   ),
+                                   '@',
+                                   '<br>'
+                                  ) po_detail
+                          FROM khs_ap_invoice_purchase_order aipo
+                      GROUP BY aipo.invoice_id, aipo.po_number) aaipo
+               WHERE aaipo.invoice_id = ami.invoice_id
+                 AND (last_purchasing_invoice_status = 3
+                      OR last_finance_invoice_status = 3
+                     )
+            ORDER BY last_status_purchasing_date";
         $run = $oracle->query($query);
         return $run->result_array();
     }

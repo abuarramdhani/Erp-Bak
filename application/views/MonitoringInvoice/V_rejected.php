@@ -20,7 +20,8 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="rejectinvoice" class="table table-striped table-bordered table-hover text-center dataTable">
+								<div style="overflow:auto;">
+								<table id="rejectinvoice" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -36,6 +37,7 @@
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
 											<th class="text-center">Purchase Batch Number</th>
+											<th class="text-center">Reject Date</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -74,10 +76,12 @@
 											<td><?php echo $status; ?></td>
 											<td><?php echo $f['REASON']?></td>
 											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
+											<td><?php echo $f['REJECT_DATE']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>
 								</table>
+								</div>
 								</div>
 							</div>
 						</div>
