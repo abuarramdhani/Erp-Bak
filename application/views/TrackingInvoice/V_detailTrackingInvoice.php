@@ -65,7 +65,7 @@
 		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['VENDOR_NAME']?>" readonly>
 		                     			</td>
 									</tr>
-									<?php $no++;} ?>
+									<?php $no++; break;} ?>
 								</table>
 								</div><div class="col-md-6">
 								<span><label>Invoice History</label></span><br>
