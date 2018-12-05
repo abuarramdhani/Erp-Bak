@@ -47,7 +47,7 @@ class C_trackingInvoice extends CI_Controller{
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('V_index',$data);
+		// $this->load->view('V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -84,26 +84,28 @@ class C_trackingInvoice extends CI_Controller{
 
 		if ($nama_vendor != '' OR $nama_vendor != NULL) {
 			if ($param_inv=='') {$param_inv.='AND(';} else{$param_inv.='OR';}
-			$param_inv .= "ami.vendor_name LIKE '$nama_vendor%'";
+			$param_inv .= " ami.vendor_name LIKE '$nama_vendor' ";
 		}
 
 		if ($po_number != '' OR $po_number != NULL) {
 			if ($param_inv=='') {$param_inv.='AND(';} else{$param_inv.='OR';}
-			$param_inv .= "aaipo.po_detail LIKE '$po_number%'";
+			$param_inv .= " aaipo.po_detail LIKE '$po_number' ";
 		}
 
 		if ($invoice_number != '' OR $invoice_number != NULL) {
 			if ($param_inv=='') {$param_inv.='AND(';} else{$param_inv.='OR';}
-			$param_inv .= "ami.invoice_number LIKE '$invoice_number%'";
+			$param_inv .= " ami.invoice_number LIKE '$invoice_number' ";
 		}
 
 		if ($invoice_date != '' OR $invoice_date != NULL) {
 			if ($param_inv=='') {$param_inv.='AND(';} else{$param_inv.='OR';}
-			$param_inv .= "ami.invoice_date LIKE '$invoice_date%'";
+			$param_inv .= " ami.invoice_date LIKE '$invoice_date' ";
 		}
 
 		if ($param_inv!='') {$param_inv.=')';}
 
+		echo $param_inv;
+		exit();
 		$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv);
 
 		$status = array();
@@ -159,6 +161,7 @@ class C_trackingInvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['invoice'] = $this->M_trackingInvoice->detailInvoice($invoice_id);
+		$data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
