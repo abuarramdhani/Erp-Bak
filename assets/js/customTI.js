@@ -24,4 +24,10 @@ $(document).ready(function(){
 			}
 		});
 	})
+
+	$('#table_tracking_invoice').DataTable({
+		"pageLength": 10,
+        "paging": true,
+        "searching": true,
+	});
 })

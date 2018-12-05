@@ -68,8 +68,8 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div class="col-md-12">
-									<div style="overflow:auto;">
-											<table id="invoice_detail" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:150%;">
+									<div>
+											<table id="table_tracking_invoice" class="table table-striped table-bordered table-hover text-center dataTable">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>
@@ -92,36 +92,35 @@
 														<td>
 															<?php echo $no ?>
 														</td> 
-														<td class="text-center">
-															<input class="form-control" type="text" name="po_number" value="<?php echo $p['PO_NUMBER']?>" readonly> 
+														<td class="text-center"><?php echo $p['PO_NUMBER']?>>
 														</td>
 														<td class="text-center"> 
-															<input class="form-control" type="text" name="lppb_number" value="<?php echo $p['LPPB_NUMBER']?>" readonly> 
+															<?php echo $p['LPPB_NUMBER']?>
 														</td>
 														<td class="text-center"> 
-															<input class="form-control" type="text" name="shipment_number" value="<?php echo $p['SHIPMENT_NUMBER']?>" readonly> 
+															<?php echo $p['SHIPMENT_NUMBER']?>
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="received_date" value="<?php echo $p['RECEIVED_DATE']?>" readonly> 
+															<?php echo $p['RECEIVED_DATE']?>
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_code" value="<?php echo $p['ITEM_CODE']?>" readonly> 
+															<?php echo $p['ITEM_CODE']?>
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="item_description" value="<?php echo $p['ITEM_DESCRIPTION']?>" readonly> 
+															<?php echo $p['ITEM_DESCRIPTION']?>
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="qty_receipt" value="<?php echo $p['QTY_RECEIPT']?>" readonly> 
+															<?php echo $p['QTY_RECEIPT']?>
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="qty_reject" value="<?php echo $p['QTY_REJECT']?>" readonly> 
+															<?php echo $p['QTY_REJECT']?> 
 														</td>
 														<td class="text-center">
-															<input class="form-control" type="text" name="currency" value="<?php echo $p['CURRENCY']?>" readonly> 
+															<?php echo $p['CURRENCY']?> 
 														</td>
-														<td class="text-center" id="unit_price"> <input class="form-control" type="text" name="unit_price" value="<?php echo $p['UNIT_PRICE']?>" readonly> 
+														<td class="text-center" id="unit_price"> <?php echo $p['UNIT_PRICE']?> 
 														 </td> 
-														<td class="text-center"> <input class="form-control" type="text" name="qty_invoice" value="<?php echo $p['QTY_INVOICE']?>" readonly> 
+														<td class="text-center"><?php echo $p['QTY_INVOICE']?> 
 														</td> 
 													</tr>
 												<?php $no++; $po_amount=$po_amount+($p['UNIT_PRICE'] * $p['QTY_INVOICE'] );} ?>
