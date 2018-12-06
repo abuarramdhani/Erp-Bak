@@ -6,7 +6,7 @@
 
 <body>
 <?php foreach ($dataKIB as $key => $value) { ?>
-	<div style="width:210mm; height: 330mm; float: left" >
+	<div style="width:210mm; height: 330mm; float: left; padding-top: 20mm" >
 		<table style="width: 100%; height: 100%; ">
 			<tr>
 				<td style="height: 15mm; vertical-align: bottom;">
@@ -107,10 +107,17 @@
 					<table style="width: 200mm; font-size: 32px">
 						<tr>
 							<td style="width: 70mm;vertical-align: top" >
-								Keterangan
+								Keterangan<br>
 							</td>
-							<td  style="width: 70mm; text-align: right;">
+							<td  style="width: 70mm; text-align: right;" rowspan="2">
 								<img style="width: 62mm; height: auto;" src="<?php echo base_url('assets/img/'.$value['REQUEST_NUMBER'].'.png') ?>">
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 70mm;vertical-align: bottom;">
+								<b style="font-size: 86px; ">
+								 <?php echo $value['ALIAS_KODE']; ?>
+								</b>
 							</td>
 						</tr>
 						<tr>
