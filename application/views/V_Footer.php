@@ -125,7 +125,7 @@
 	<script src="<?php echo base_url('assets/js/customUM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customHLCM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customSI.js');?>" type="text/javascript"></script>
-	<!-- <script src="<?php echo base_url('assets/js/customIMO.js');?>" type="text/javascript"></script> -->
+	<script src="<?php echo base_url('assets/js/customIMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customERC.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customBI.js');?>" type="text/javascript"></script>
