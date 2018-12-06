@@ -182,9 +182,9 @@ class C_MoveOrder extends CI_Controller
 				$a++;
 			}
 
-			// echo "<pre>";
-			// print_r($dataall);
-			// exit();
+			echo "<pre>";
+			print_r($dataall);
+			exit();
 
 			$head		= array();
 			$jobNo		= array();
