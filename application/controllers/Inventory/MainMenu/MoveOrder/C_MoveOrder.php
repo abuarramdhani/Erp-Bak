@@ -133,7 +133,11 @@ class C_MoveOrder extends CI_Controller
 			$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
 			array_push($array_mo, $no_mo);
 			//pdfoutput
-			$this->pdf($array_mo);
+			if ($array_mo) {
+				$this->pdf($array_mo);
+			}else{
+				exit('No data found :(');
+			}
 
 		
 		// }
@@ -182,9 +186,9 @@ class C_MoveOrder extends CI_Controller
 				$a++;
 			}
 
-			echo "<pre>";
-			print_r($dataall);
-			exit();
+			// echo "<pre>";
+			// print_r($dataall);
+			// exit();
 
 			$head		= array();
 			$jobNo		= array();
@@ -296,7 +300,12 @@ class C_MoveOrder extends CI_Controller
 			}
 		}
 
-		$this->pdf($array_mo);
+		if ($array_mo) {
+			$this->pdf($array_mo);
+		}else{
+			exit('No data found :(');
+		}
+
 
 	}
 }
