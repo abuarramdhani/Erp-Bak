@@ -14,7 +14,7 @@ class C_CreateKIB extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('InventoryKIB/M_CreateKIB');
+			$this->load->model('InventoryKIB/M_createkib');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -50,19 +50,19 @@ class C_CreateKIB extends CI_Controller
 	public function search($no){
 		// check Period
 		$date = date('M-y');
-		$period = $this->M_CreateKIB->getPeriod($date);
+		$period = $this->M_createkib->getPeriod($date);
 		if ($period == 'N') {
 			exit('Period Belum Dimulai, Silahkan Hubungi Akuntansi :)');
 		} 		
-		$data['header'] = $this->M_CreateKIB->getHeader($no);
-		$data['detail'] = $this->M_CreateKIB->getDetail($no);
+		$data['header'] = $this->M_createkib->getHeader($no);
+		$data['detail'] = $this->M_createkib->getDetail($no);
 		if ($data['header']) {
-			$getOrg = $this->M_CreateKIB->getOrgFrom($no);
+			$getOrg = $this->M_createkib->getOrgFrom($no);
 			$org_from = $getOrg[0]['ORGANIZATION_CODE'];
-			$data['handling'] = $this->M_CreateKIB->getHandling($data['header'][0]['ITEM_CODE'],$org_from);
+			$data['handling'] = $this->M_createkib->getHandling($data['header'][0]['ITEM_CODE'],$org_from);
 
 
-			$getDefaultValue = $this->M_CreateKIB->getDataDefault($no);
+			$getDefaultValue = $this->M_createkib->getDataDefault($no);
 			if ($getDefaultValue) {
 				$data['valdef']['to_org_id'] = ($getDefaultValue[0]['TO_ORGANIZATION_ID']) ? $getDefaultValue[0]['TO_ORGANIZATION_ID'] : '';
 				$data['valdef']['to_sub_inv'] = ($getDefaultValue[0]['TO_SUBINVENTORY_CODE']) ? $getDefaultValue[0]['TO_SUBINVENTORY_CODE'] : '';
@@ -86,9 +86,9 @@ class C_CreateKIB extends CI_Controller
 
 				foreach ($data['detail'] as $key => $value) {
 					$status = $value['STATUS'] == 'OK' ? '1' : ($value['STATUS'] == 'REJECT' ? '2' : '3' );
-					$getMO = $this->M_CreateKIB->getMO($no,$status);
+					$getMO = $this->M_createkib->getMO($no,$status);
 					if ($getMO == 0) {
-						$getKIB = $this->M_CreateKIB->getKIB2($status,$no);
+						$getKIB = $this->M_createkib->getKIB2($status,$no,null);
 						$resultMO = count($getKIB) > 0 ? '1' : '0';
 					} else {
 						$resultMO = $getMO > 0 ? '1' : '0';
@@ -107,7 +107,7 @@ class C_CreateKIB extends CI_Controller
 	}
 
 	public function qtyComparation($no){
-		$getQty = $this->M_CreateKIB->getQty($no);
+		$getQty = $this->M_createkib->getQty($no);
 		if ($getQty) {
 			$qty_plan   = $getQty[0]['PLAN_QTY'];
 			$qty_actual = $getQty[0]['ACTUAL_QTY'];
@@ -122,7 +122,7 @@ class C_CreateKIB extends CI_Controller
 
 	public function getSubInv(){
 		$org = $this->input->post('org');
-		$getSubInv = $this->M_CreateKIB->getSubInv($org);
+		$getSubInv = $this->M_createkib->getSubInv($org);
 			echo "<option></option>";
 		foreach ($getSubInv as $key => $value) {
 			echo '<option data-desc="'.$value['SUB_INV_DESC'].'" value ="'.$value['SUB_INV_CODE'].'" > '.$value['SUB_INV_CODE'].' </option>';
@@ -132,22 +132,38 @@ class C_CreateKIB extends CI_Controller
 	public function getLocator(){
 		$org = $this->input->post('org');
 		$subInv = $this->input->post('subinv');
-		$getLocator = $this->M_CreateKIB->getLocator($org,$subInv);
+		$getLocator = $this->M_createkib->getLocator($org,$subInv);
 		foreach ($getLocator as $key => $value) {
 			echo '<option value ="'.$value['INVENTORY_LOCATION_ID'].'" > '.$value['DESCRIPTION'].' </option>';
 		}
 	}
 
-	public function pdf($status,$no_batch){
+	public function pdf($status,$no_batch,$kib){
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
 		$pdf 			= $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(210,330), 0, '', 13, 13, 0, 5, 0, 0);
 
+		if ($status == '0' && $kib == '0') {
+			exit('Status & No kib is null');
+		}
+
+		if ($kib == '0') {
+			$kib = null;
+		}
+
+		if ($status == '0') {
+			$status = null;
+		}
+
+
 		$dataKIBKelompok  =array();
 		$arrayREQNUM = array();
-		$dataKIB = $this->M_CreateKIB->getKIB($status,$no_batch);
-		if (!$dataKIB) { $dataKIB = $this->M_CreateKIB->getKIB2($status,$no_batch);}
+		$dataKIB = $this->M_createkib->getKIB($status,$no_batch,$kib);
+		if (!$dataKIB) { $dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);}
+		// echo "<pre>";
+		// print_r($dataKIB);
+		// exit();
 		$a = 0;
 		foreach ($dataKIB as $key => $value) {
 
@@ -157,9 +173,9 @@ class C_CreateKIB extends CI_Controller
 														'ACTIVITY' => $value['ACTIVITY']);
 			} else {
 				array_push($arrayREQNUM, $value['REQUEST_NUMBER']);
-				$getOrg = $this->M_CreateKIB->getOrgFrom($no_batch);
+				$getOrg = $this->M_createkib->getOrgFrom($no_batch);
 				$org_from = $getOrg[0]['ORGANIZATION_CODE'];
-				$qty_handling_nu = $this->M_CreateKIB->getHandling($value['TO_SUBINVENTORY_CODE'],$org_from);
+				$qty_handling_nu = $this->M_createkib->getHandling($value['TO_SUBINVENTORY_CODE'],$org_from);
 				$indexnya = array_search($value['REQUEST_NUMBER'], $arrayREQNUM);
 				// $arrayREQNUM[] = $value['REQUEST_NUMBER'];
 				$dataKIBKelompok[$indexnya]['FROM_SUBINVENTORY_CODE'] = $value['FROM_SUBINVENTORY_CODE'];
@@ -178,12 +194,17 @@ class C_CreateKIB extends CI_Controller
 				$dataKIBKelompok[$indexnya]['STATUS'] = $value['STATUS'];
 				$dataKIBKelompok[$indexnya]['REQUEST_NUMBER'] = $value['REQUEST_NUMBER'];
 				$dataKIBKelompok[$indexnya]['BATCH_NUMBER'] = $value['BATCH_NUMBER'];
+				$dataKIBKelompok[$indexnya]['ALIAS_KODE'] = $value['ALIAS_KODE'];
 				// $a++;
 			}
 			
-
+		}
+		if ($dataKIBKelompok) {
+			$this->M_createkib->updateFlagPrint($no_batch,$kib);
 		}
 		$data['dataKIB'] = $dataKIBKelompok;
+
+
 		if($data['dataKIB']):
 			// ------ GENERATE QRCODE ------
 			if(!is_dir('./assets/img'))
@@ -232,17 +253,17 @@ class C_CreateKIB extends CI_Controller
 		$org = $this->input->post('slcOrgIMO');
 		$qty_handling = $this->input->post('qtyHandling');
 		$qty_target = $this->input->post('txtQtyTarget');
-		$getOrg = $this->M_CreateKIB->getOrgFrom($no_batch);
+		$getOrg = $this->M_createkib->getOrgFrom($no_batch);
 		$org_from = $getOrg[0]['ORGANIZATION_CODE'];
 
 		//check again, chill
-		$getMO = $this->M_CreateKIB->getMO($no_batch,$status);
+		$getMO = $this->M_createkib->getMO($no_batch,$status);
 
 		if ($getMO == 0):
 		//check Org 
 		if($org  == $org_from){
 			//get Job ID & inventory item id
-			$getJobID = $this->M_CreateKIB->getJobID($no_batch);
+			$getJobID = $this->M_createkib->getJobID($no_batch);
 			if ($getJobID) {
 				$job_id = $getJobID[0]['BATCH_ID'];
 				$inv_item_id = $getJobID[0]['INVENTORY_ITEM_ID'];
@@ -260,18 +281,18 @@ class C_CreateKIB extends CI_Controller
 								'IP_ADDRESS' => $ip_address,
 								'JOB_ID' => $job_id);
 				//create TEMP
-				$this->M_CreateKIB->createTemp($data);
+				$this->M_createkib->createTemp($data);
 
 				//create MO
-				$this->M_CreateKIB->createMO($i,$ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom,$status);
+				$this->M_createkib->createMO($i,$ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom,$status);
 
 				//delete
-				$this->M_CreateKIB->deleteTemp($ip_address,$job_id);
+				$this->M_createkib->deleteTemp($ip_address,$job_id);
 
 			}
 		}else{
 			//get Job ID & inventory item id
-			$getJobID = $this->M_CreateKIB->getJobID($no_batch);
+			$getJobID = $this->M_createkib->getJobID($no_batch);
 			if ($getJobID) {
 				$job_id = $getJobID[0]['BATCH_ID'];
 				$inv_item_id = $getJobID[0]['INVENTORY_ITEM_ID'];
@@ -279,12 +300,12 @@ class C_CreateKIB extends CI_Controller
 				exit('No job ID / Inventory Item Id');
 			}
 
-			$getDataKIB = $this->M_CreateKIB->getDataKIB($qty_handling,$no_batch);
-			$getOrgId = $this->M_CreateKIB->getOrgId($org);
+			$getDataKIB = $this->M_createkib->getDataKIB($qty_handling,$no_batch);
+			$getOrgId = $this->M_createkib->getOrgId($org);
 			$orgId = $getOrgId[0]['ORGANIZATION_ID'];
 			$per_handling = ceil($qty_target/$qty_handling);
 			for ($i=1; $i <= $per_handling; $i++) { 
-				$getNumKIB = $this->M_CreateKIB->getKIBNumber2($job_id);
+				$getNumKIB = $this->M_createkib->getKIBNumber2($job_id);
 				$numKIB = $getNumKIB[0]['NO_KIB'];
 				$qty = $i == $per_handling ? ($qty_target%$qty_handling) : $qty_handling ;
 
@@ -315,7 +336,7 @@ class C_CreateKIB extends CI_Controller
 							'ITEM_STATUS' => $status,
 						);
 
-						$this->M_CreateKIB->saveKIB($data);
+						$this->M_createkib->saveKIB($data);
 						endif;
 					}
 				}
@@ -326,7 +347,7 @@ class C_CreateKIB extends CI_Controller
 		endif;
 
 		//output
-		$this->pdf($status,$no_batch);
+		$this->pdf($status,$no_batch,0);
 
 	}
 
