@@ -9,10 +9,12 @@ class C_MoveOrder extends CI_Controller
 	        $this->load->helper('url');
 	        $this->load->helper('html');
 	        $this->load->library('form_validation');
+	        $this->load->library('ciqrcode');
 	          //load the login model
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
+			$this->load->model('Inventory/M_moveorder','M_MoveOrder');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -27,6 +29,7 @@ class C_MoveOrder extends CI_Controller
 				}else{
 					redirect();
 				}
+
 		}
 
 	public function index(){
@@ -37,10 +40,263 @@ class C_MoveOrder extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['DataMonitoring'] = $this->M_joblistmonitoring->getData($user_id);
+		$data['dept'] = $this->M_MoveOrder->getDept();
+		$data['shift'] = $this->M_MoveOrder->getShift(FALSE);
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		// $this->load->view('MonitoringICT/MainMenu/JobListMonitoring/V_JobListMonitoring',$data);
+		$this->load->view('Inventory/MainMenu/MoveOrder/V_MoveOrder',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function getShift(){
+		$date = $this->input->post('date');
+		// $date = date('Y/m/d',strtotime($date));
+		$date2 = explode('/', $date);
+		$datenew = $date ? $date2[2].'/'.$date2[1].'/'.$date2[0] : '';
+		$data = $this->M_MoveOrder->getShift($datenew);
+		echo json_encode($data);
+	}
+
+	public function search(){
+		$date = $this->input->post('date');
+		$dept = $this->input->post('dept');
+		$shift = $this->input->post('shift');
+		$date2 = explode('/', $date);
+		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
+		$date = strtoupper(date('d-M-y', strtotime($datenew)));
+		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift);
+		$array_sudah = array();
+		$array_terkelompok = array();
+		foreach ($dataGET as $key => $value) {
+			if (in_array($value['WIP_ENTITY_NAME'], $array_sudah)) {
+				
+			}else{
+				array_push($array_sudah, $value['WIP_ENTITY_NAME']);
+				$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME']);
+				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
+				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 
+			}
+
+		}
+		$data['requirement'] = $array_terkelompok;
+
+		// echo "<pre>";
+		// print_r($array_terkelompok);
+		// exit();
+
+		$this->load->view('Inventory/MainMenu/MoveOrder/V_Result',$data);
+	}
+
+	public function create(){
+		$ip_address =  $this->input->ip_address();
+		$job = $this->input->post('no_job');
+		$err = $this->input->post('error_exist');
+		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
+		$array_mo = array();
+		// if (count($checkPicklist) > 0) {
+		// 	$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
+		// 	array_push($array_mo, $no_mo);
+		// 	//pdfoutput
+		// 	$this->pdf($array_mo);
+		// } else {
+
+			$qty 	  = $this->input->post('qty');
+			$invID = $this->input->post('invID');
+			$uom 		  = $this->input->post('uom');
+			$job_id 	  = $this->input->post('job_id');
+			$subinv_to 	  = $this->input->post('subinvto');
+			$locator_to 	  = $this->input->post('locatorto');
+			$subinv_from 	  = $this->input->post('subinvfrom');
+			$locator_from 	  = $this->input->post('locatorfrom');
+
+			$i = 1; 
+			foreach ($invID as $key => $value) {
+				$data = array('NO_URUT' => $i,
+								'INVENTORY_ITEM_ID' => $value,
+								'QUANTITY' => $qty[$key],
+								'UOM' => $uom[$key],
+								'IP_ADDRESS' => $ip_address,
+								'JOB_ID' => $job_id[$key]);
+				//create TEMP
+				$this->M_MoveOrder->createTemp($data);
+				$i++;
+
+			}
+				//create MO
+				$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$subinv_from[0],$locator_from[0]);
+
+				//delete
+				$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+
+			$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
+			$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
+			array_push($array_mo, $no_mo);
+			//pdfoutput
+			$this->pdf($array_mo);
+
+		
+		// }
+	}
+
+	public function pdf($array_mo){
+		// ------ GET DATA ------
+			$temp_filename = array();
+			foreach ($array_mo as $key => $mo) {
+				$moveOrderAwal = $moveOrderAkhir = $mo;
+				$mentahHead	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
+				$mentahLine	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
+
+
+		// ------ GENERATE QRCODE ------
+				if(!is_dir('./assets/img'))
+				{
+					mkdir('./assets/img', 0777, true);
+					chmod('./assets/img', 0777);
+				}
+
+				foreach ($mentahHead as $mh) {
+					$params['data']		= $mh['MOVE_ORDER_NO'];
+					$params['level']	= 'H';
+					$params['size']		= 3;
+					$config['black']	= array(224,255,255);
+					$config['white']	= array(70,130,180);
+					$params['savename'] = './assets/img/'.$mh['MOVE_ORDER_NO'].'.png';
+					$this->ciqrcode->generate($params);
+					array_push($temp_filename, $params['savename']);
+				}
+			}
+
+
+		// ------ GENERATE PDF ------
+			$this->load->library('Pdf');
+			$pdf 				= $this->pdf->load();
+			$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 20, 21, 2, 4);
+			// $pdf 				= new mPDF('utf-8','A5-L', 0, '', 2, 2, 18.5, 21, 2, 2);
+			$filename			= 'Picklist_'.time().'.pdf';
+			$a = 0;
+			foreach ($array_mo as $key => $mo) {
+				$moveOrderAwal = $moveOrderAkhir = $mo;
+				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
+				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
+				$a++;
+			}
+
+			// echo "<pre>";
+			// print_r($dataall);
+			// exit();
+
+			$head		= array();
+			$jobNo		= array();
+			$gudang		= array();
+			$line		= array();
+			$data['dataall'] = $dataall;
+			$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
+			$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index', $data, true);
+			$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
+			$pdf->SetHTMLHeader($head);
+			$pdf->SetHTMLFooter($foot);
+			$pdf->WriteHTML($line,0);
+			$pdf->Output($filename, 'I');
+
+			if (!empty($temp_filename)) {
+				foreach ($temp_filename as $tf) {
+					if(is_file($tf)){
+						unlink($tf);
+					}
+				}
+			}
+	}
+
+	public function createall(){
+		$ip_address =  $this->input->ip_address();
+		$no_job 	= $this->input->post('no_job');
+		$qty 	  = $this->input->post('qty');
+		$invID 		  = $this->input->post('invID');
+		$uom 		  = $this->input->post('uom');
+		$job_id 	  = $this->input->post('job_id');
+		$subinv_to 	  = $this->input->post('subinvto');
+		$locator_to 	  = $this->input->post('locatorto');
+		$subinv_from 	  = $this->input->post('subinvfrom');
+		$locator_from 	  = $this->input->post('locatorfrom');
+		$selected = $this->input->post('selectedPicklistIMO');
+		$arraySelected = explode('+', $selected);
+		$array_mo = array();
+
+		foreach ($no_job as $key => $value) {
+			if (strpos($value, '<>')) {
+				$no_job2		= explode('<>', $no_job[$key]);
+				$qty2		= explode('<>', $qty[$key]);
+				$invID2			= explode('<>', $invID[$key]);
+				$uom2			= explode('<>', $uom[$key]);
+				$job_id2		= explode('<>', $job_id[$key]);
+				$subinv_to2		= explode('<>', $subinv_to[$key]);
+				$locator_to2	= explode('<>', $locator_to[$key]);
+				$subinv_from2	= explode('<>', $subinv_from[$key]);
+				$locator_from2	= explode('<>', $locator_from[$key]);
+				$i =1;
+				if (in_array($no_job2[0], $arraySelected)){
+					$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
+					if (count($checkPicklist) > 0) {
+						$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
+						array_push($array_mo, $no_mo);
+					} else {
+							foreach ($no_job2 as $k => $v) {
+								$data = array('NO_URUT' => $i,
+										'INVENTORY_ITEM_ID' => $invID2[$k],
+										'QUANTITY' => $qty2[$k],
+										'UOM' => $uom2[$k],
+										'IP_ADDRESS' => $ip_address,
+										'JOB_ID' => $job_id2[$k]);
+								//create TEMP
+								$this->M_MoveOrder->createTemp($data);
+
+								$i++;
+
+							}
+
+							//create MO
+							$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$subinv_from2[0],$locator_from2[0]);
+
+							//delete
+							$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
+							$checkPicklist = $this->M_MoveOrder->checkPicklist($job_id2[0]);
+							$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
+							array_push($array_mo, $no_mo);
+						}
+					}
+			}else{
+				if (in_array($value, $arraySelected)){
+					$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
+					if (count($checkPicklist) > 0) {
+						$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
+						array_push($array_mo, $no_mo);
+					} else {
+						$data = array('NO_URUT' => 1,
+								'INVENTORY_ITEM_ID' => $invID[$key],
+								'QUANTITY' => $qty[$key],
+								'UOM' => $uom[$key],
+								'IP_ADDRESS' => $ip_address,
+								'JOB_ID' => $job_id[$key]);
+	;
+						//create TEMP
+						$this->M_MoveOrder->createTemp($data);
+
+						//create MO
+						$this->M_MoveOrder->createMO($ip_address,$job_id[$key],$subinv_to[$key],$locator_to[$key],$subinv_from[$key],$locator_from[$key]);
+
+						//delete
+						$this->M_MoveOrder->deleteTemp($ip_address,$job_id[$key]);
+
+						$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
+						$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
+						array_push($array_mo, $no_mo);
+					}
+				}
+			}
+		}
+
+		$this->pdf($array_mo);
+
 	}
 }
