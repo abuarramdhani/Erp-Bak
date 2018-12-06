@@ -956,34 +956,41 @@ public function createLaporan1(){
 
 			if(($tgl_transaksi > $tanggal1 && $tgl_transaksi < $tanggal2) || $tgl_transaksi == $tanggal1 || $tgl_transaksi == $tanggal2){
 				
-				$worksheet->setCellValue('A'.$highestRow,$no);
+				if($sc['qty_kembali'] != 0){
 
-				if($sc['status_kembali'] == 1){
-					$worksheet->setCellValue('C'.$highestRow,$sc['tgl_transaksi']);	
-					$worksheet->setCellValue('B'.$highestRow,$sc['creation_date']);
-				}else{
-					$worksheet->setCellValue('B'.$highestRow,$sc['tgl_transaksi']);		
+
+
+					$worksheet->setCellValue('A'.$highestRow,$no);
+
+					if($sc['status_kembali'] == 1){
+						$worksheet->setCellValue('C'.$highestRow,$sc['tgl_transaksi']);	
+						$worksheet->setCellValue('B'.$highestRow,$sc['creation_date']);
+					}else{
+						$worksheet->setCellValue('B'.$highestRow,$sc['tgl_transaksi']);		
+					}
+
+					$worksheet->setCellValue('D'.$highestRow,$sc['item_id']);
+					$worksheet->setCellValue('E'.$highestRow,$sc['item_name']);
+					$worksheet->setCellValue('F'.$highestRow,$sc['merk']);
+					$worksheet->setCellValue('G'.$highestRow,$sc['item_qty']);
+
+
+
+					$worksheet->setCellValue('H'.$highestRow,$sc['qty_kembali']);	
+
+					$worksheet->setCellValue('I'.$highestRow,$sc['shift']);
+					$worksheet->setCellValue('J'.$highestRow,$sc['name']);
+					$worksheet->setCellValue('K'.$highestRow,$sc['toolman']);
+					$worksheet->setCellValue('L'.$highestRow,$sc['item_desc']);
+
+
+					$highestRow++;
+					$no++;
 				}
-
-				$worksheet->setCellValue('D'.$highestRow,$sc['item_id']);
-				$worksheet->setCellValue('E'.$highestRow,$sc['item_name']);
-				$worksheet->setCellValue('F'.$highestRow,$sc['merk']);
-				$worksheet->setCellValue('G'.$highestRow,$sc['item_qty']);
-
-
-
-				$worksheet->setCellValue('H'.$highestRow,$sc['qty_kembali']);	
-
-				$worksheet->setCellValue('I'.$highestRow,$sc['shift']);
-				$worksheet->setCellValue('J'.$highestRow,$sc['name']);
-				$worksheet->setCellValue('K'.$highestRow,$sc['toolman']);
-				$worksheet->setCellValue('L'.$highestRow,$sc['item_desc']);
-
-				$highestRow++;
-				$no++;
 			}
 		}
 	}
+
 			// $worksheet->setCellValue('F'.$highestRow, $no++);
 			// $worksheet->setCellValue('G'.$highestRow, $sc['print_code']);
 
