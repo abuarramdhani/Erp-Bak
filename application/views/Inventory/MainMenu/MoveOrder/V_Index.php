@@ -44,9 +44,8 @@
 <body>
 	<?php 
 	foreach ($dataall as $k => $v) {
-
 		foreach ($v['head'] as $key => $hd) {
-			if ($key!=0) {
+			if ($k!=0) {
 				echo "<pagebreak />";
 			}
 		?>
@@ -103,7 +102,7 @@
 				</tr>
 				<?php
 				$no=1;
-				foreach ($dataall[$key]['line'] as $ln) {
+				foreach ($dataall[$k]['line'] as $ln) {
 					if ($ln['JOB_NO'] == $hd['JOB_NO'] && $ln['LOKASI'] == $hd['LOKASI']) {
 				?>
 						<tr class=" table-line">
