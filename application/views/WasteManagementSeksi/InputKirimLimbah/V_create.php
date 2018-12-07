@@ -48,9 +48,22 @@
 														<select class="select select2" name="txtJenisLimbah" id="txtJenisLimbah" data-placeholder="Jenis Limbah" style="width:100%;" required>
 															<option value=""></option>
 															<?php 
-																foreach ($JenisLimbah as $key) {
-																	echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']." - ".$key['jenis_limbah']."</option>";
+																$user = $this->session->user;
+																if ($user !== 'B0791') {
+																	foreach ($JenisLimbah as $key) {
+																		$a = $key['id_jenis_limbah'];
+																		$b = $key['jenis_limbah'];
+																		$c = $key['kode_limbah'];
+																		if ($a !== '26' and $a !== '27' and $a !== '28') {
+																			echo "<option value='$a'>$c - $b</option>";
+																		}
+																	}
+																}else{
+																	foreach ($JenisLimbah as $key) {
+																		echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']." - ".$key['jenis_limbah']."</option>";
+																	}
 																}
+																
 															?>
 														</select>
 													</div>
