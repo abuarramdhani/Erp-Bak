@@ -956,7 +956,7 @@ public function createLaporan1(){
 
 			if(($tgl_transaksi > $tanggal1 && $tgl_transaksi < $tanggal2) || $tgl_transaksi == $tanggal1 || $tgl_transaksi == $tanggal2){
 				
-				if($sc['qty_kembali'] != 0){
+				// if($sc['qty_kembali'] != 0){
 
 
 
@@ -974,8 +974,6 @@ public function createLaporan1(){
 					$worksheet->setCellValue('F'.$highestRow,$sc['merk']);
 					$worksheet->setCellValue('G'.$highestRow,$sc['item_qty']);
 
-
-
 					$worksheet->setCellValue('H'.$highestRow,$sc['qty_kembali']);	
 
 					$worksheet->setCellValue('I'.$highestRow,$sc['shift']);
@@ -986,7 +984,7 @@ public function createLaporan1(){
 
 					$highestRow++;
 					$no++;
-				}
+				// }
 			}
 		}
 	}
