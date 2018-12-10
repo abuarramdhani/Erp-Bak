@@ -68,7 +68,7 @@
 														<div class="form-group">
 															<label class="control-label col-lg-4">Noind</label>
 															<div class="col-lg-8">
-																<select class="selectPekerja" id="selectPekerja" name="txtNoind" style="width: 100%"></select>
+																<select class="selectPekerjaMasterMA" id="selectPekerjaMasterMA" name="txtNoind" style="width: 100%"></select>
 															</div>
 														</div>
 														<div class="form-group">

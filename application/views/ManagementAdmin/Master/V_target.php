@@ -33,7 +33,11 @@
 														<div class="form-group">
 															<label class="control-label col-lg-4">Kode</label>
 															<div class="col-lg-8">
-																<input type="text" class="form-control" name="txtKode" value="<?php echo $kode['0']['kode']; ?>" disabled>
+																<input type="text" class="form-control" name="txtKode" value="<?php if(!empty($kode['0']['kode'])){
+																	echo $kode['0']['kode'];
+																}else{
+																	echo '1';
+																} ?>" disabled>
 															</div>
 														</div>
 														<div class="form-group">
@@ -76,7 +80,8 @@
 														<div class="form-group">
 															<label class="control-label col-lg-4">Kode</label>
 															<div class="col-lg-8">
-																<input type="text" class="form-control" name="txtKode" id="txtUpdateId" disabled>
+																<input type="text" class="form-control" name="txtUrut" id="txtUpdateUrut" disabled>
+																<input type="hidden" name="txtKode" id="txtUpdateId">
 															</div>
 														</div>
 														<div class="form-group">
@@ -131,7 +136,7 @@
 															<td><?php echo $key['pekerjaan'] ?></td>
 															<td class="text-center"><?php echo $key['target_waktu'] ?></td>
 															<td class="text-center">
-																<button type="button" data-pekerjaan="<?php echo $key['pekerjaan'] ?>" data-targetwaktu="<?php echo $key['target_waktu'] ?>" data-idtarget="<?php echo $key['id_target'] ?>" id="btnUpdateDataTargetPekerjaan" class="btn btn-success btn-xs"><i class="fa fa-pencil-square-o fa-2x"></i></button>
+																<button type="button" data-pekerjaan="<?php echo $key['pekerjaan'] ?>" data-targetwaktu="<?php echo $key['target_waktu'] ?>" data-idtarget="<?php echo $key['id_target'] ?>" data-nouruttarget="<?php echo $key['no_urut'] ?>" id="btnUpdateDataTargetPekerjaan" class="btn btn-success btn-xs"><i class="fa fa-pencil-square-o fa-2x"></i></button>
 																<a href="<?php echo site_url('ManagementAdmin/Target/Delete/'.$encrypted_string) ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-2x" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ?')"></i></a>
 															</td>
 														</tr>

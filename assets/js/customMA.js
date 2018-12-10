@@ -35,10 +35,12 @@ $(document).on('click','#btnUpdateDataTargetPekerjaan',function(e){
 	var target = $(this).attr('data-targetwaktu');
 	var pekerjaan = $(this).attr('data-pekerjaan');
 	var id = $(this).attr('data-idtarget');
+	var no = $(this).attr('data-nouruttarget');
 
 	$('#txtUpdateTargetWaktu').val(target);
 	$('#txtUpdatePekerjaan').val(pekerjaan);
 	$('#txtUpdateId').val(id);
+	$('#txtUpdateUrut').val(no);
 
   $('#target-update').modal("show");
 });
@@ -70,7 +72,7 @@ $(document).on('click','#btnSubmitUpdateTargetAdmin',function(e){
 //pekerja start
 //create start
 $(document).on('ready',function(){
-	$('.selectPekerja').select2({
+	$('.selectPekerjaMasterMA').select2({
 		dropdownParent: $('#pekerja-Create'),
 		placeholder: "Noind",
 		searching: true,
@@ -98,9 +100,9 @@ $(document).on('ready',function(){
 	});
 });
 
-$('.selectPekerja').on('change',function(){
-	var noind = $('.selectPekerja').find(':selected').text();
-	var employee_id = $('.selectPekerja').find(':selected').val();
+$('.selectPekerjaMasterMA').on('change',function(){
+	var noind = $('.selectPekerjaMasterMA').find(':selected').text();
+	var employee_id = $('.selectPekerjaMasterMA').find(':selected').val();
 	$.ajax({
 		type: 'POST',
 		data: {id : employee_id},
@@ -116,8 +118,8 @@ $(document).on('click','#btnCancelPekerja',function(e){
 });
 
 $(document).on('click','#btnSubmitPekerja',function(e){
-  	var noind = $('.selectPekerja').find(':selected').text();
-	var employee_id = $('.selectPekerja').find(':selected').val();
+  	var noind = $('.selectPekerjaMasterMA').find(':selected').text();
+	var employee_id = $('.selectPekerjaMasterMA').find(':selected').val();
 	var nama = $('input[name="txtNamaPekerja"]').val();
 	$.ajax({
 		type: 'POST',
