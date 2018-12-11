@@ -228,7 +228,7 @@ function ModalTampilPending(btn){
 
 //Manual start
 //cetak start
-$(document).on('ready',function(){
+$(document).ready(function(){
 	$('#txtPeriodeCetak').daterangepicker({
 		"autoclose": true,
 		"todayHiglight": true,
@@ -240,7 +240,7 @@ $(document).on('ready',function(){
 });
 //cetak end
 //input start
-$(document).on('ready',function(){
+$(document).ready(function(){
 	$('.tanggalPelaksanaan').datepicker({
 		"autoclose": true,
       	"todayHiglight": true,
