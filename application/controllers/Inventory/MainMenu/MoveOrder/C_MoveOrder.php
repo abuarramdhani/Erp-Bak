@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR die('No direct script access allowed');
+ <?php defined('BASEPATH') OR die('No direct script access allowed');
 class C_MoveOrder extends CI_Controller
 {
 	
@@ -94,12 +94,15 @@ class C_MoveOrder extends CI_Controller
 		$err = $this->input->post('error_exist');
 		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
 		$array_mo = array();
-		// if (count($checkPicklist) > 0) {
-		// 	$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
-		// 	array_push($array_mo, $no_mo);
+		// echo "<pre>";
+		if (count($checkPicklist) > 0) {
+			foreach ($checkPicklist as $key => $value) {
+				$no_mo = $value['REQUEST_NUMBER'];
+				array_push($array_mo, $no_mo);
+			}
 		// 	//pdfoutput
-		// 	$this->pdf($array_mo);
-		// } else {
+			$this->pdf($array_mo);
+		} else {
 
 			$qty 	  = $this->input->post('qty');
 			$invID = $this->input->post('invID');
@@ -110,28 +113,39 @@ class C_MoveOrder extends CI_Controller
 			$subinv_from 	  = $this->input->post('subinvfrom');
 			$locator_from 	  = $this->input->post('locatorfrom');
 
-			$i = 1; 
+
 			foreach ($invID as $key => $value) {
-				$data = array('NO_URUT' => $i,
+				$data[$subinv_from[$key]][] = array('NO_URUT' => '',
 								'INVENTORY_ITEM_ID' => $value,
 								'QUANTITY' => $qty[$key],
 								'UOM' => $uom[$key],
 								'IP_ADDRESS' => $ip_address,
 								'JOB_ID' => $job_id[$key]);
-				//create TEMP
-				$this->M_MoveOrder->createTemp($data);
-				$i++;
 
 			}
-				//create MO
-				$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$subinv_from[0],$locator_from[0]);
+			
+			foreach ($data as $key => $value) {
+				$i = 1; 
+				// echo "PROSES SUB INV $key { ";
+				foreach ($value as $key2 => $value2) {
+					$dataNew = $value2;
+					$dataNew['NO_URUT'] = $i;
+					//create TEMP
+					$this->M_MoveOrder->createTemp($dataNew);
+					$i++;
+				}
+					//create MO         
+					$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locator_from[0]);
 
-				//delete
-				$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+					//delete
+					$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+			}
 
 			$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
-			$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
-			array_push($array_mo, $no_mo);
+			foreach ($checkPicklist as $key => $value) {
+				$no_mo = $value['REQUEST_NUMBER'];
+				array_push($array_mo, $no_mo);
+			}
 			//pdfoutput
 			if ($array_mo) {
 				$this->pdf($array_mo);
@@ -140,7 +154,7 @@ class C_MoveOrder extends CI_Controller
 			}
 
 		
-		// }
+		}
 	}
 
 	public function pdf($array_mo){
@@ -179,9 +193,10 @@ class C_MoveOrder extends CI_Controller
 			// $pdf 				= new mPDF('utf-8','A5-L', 0, '', 2, 2, 18.5, 21, 2, 2);
 			$filename			= 'Picklist_'.time().'.pdf';
 			$a = 0;
+			// echo "<pre>";
 			foreach ($array_mo as $key => $mo) {
 				$moveOrderAwal = $moveOrderAkhir = $mo;
-				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
+				echo $dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 				$a++;
 			}
@@ -242,39 +257,55 @@ class C_MoveOrder extends CI_Controller
 				if (in_array($no_job2[0], $arraySelected)){
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
 					if (count($checkPicklist) > 0) {
-						$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
-						array_push($array_mo, $no_mo);
+						foreach ($checkPicklist as $keymo => $valuemo) {
+							$no_mo = $valuemo['REQUEST_NUMBER'];
+							array_push($array_mo, $no_mo);
+						}
 					} else {
+						$data = array();
+						// START
 							foreach ($no_job2 as $k => $v) {
-								$data = array('NO_URUT' => $i,
-										'INVENTORY_ITEM_ID' => $invID2[$k],
-										'QUANTITY' => $qty2[$k],
-										'UOM' => $uom2[$k],
-										'IP_ADDRESS' => $ip_address,
-										'JOB_ID' => $job_id2[$k]);
-								//create TEMP
-								$this->M_MoveOrder->createTemp($data);
-
-								$i++;
+								$data[$subinv_from[$key]][] = array('NO_URUT' => '',
+												'INVENTORY_ITEM_ID' => $invID2[$k],
+												'QUANTITY' => $qty2[$k],
+												'UOM' => $uom2[$k],
+												'IP_ADDRESS' => $ip_address,
+												'JOB_ID' => $job_id2[$k]);
 
 							}
+							
+							foreach ($data as $key => $value) {
+								$i = 1; 
+								foreach ($value as $key2 => $value2) {
+									$dataNew = $value2;
+									$dataNew['NO_URUT'] = $i;
+									//create TEMP
+									$this->M_MoveOrder->createTemp($dataNew);
+									$i++;
+								}
+									//create MO         
+									$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locator_from[0]);
 
-							//create MO
-							$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$subinv_from2[0],$locator_from2[0]);
+									//delete
+									$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+							}
+						// END
 
-							//delete
-							$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
 							$checkPicklist = $this->M_MoveOrder->checkPicklist($job_id2[0]);
-							$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
-							array_push($array_mo, $no_mo);
+							foreach ($checkPicklist as $keymo => $valuemo) {
+								$no_mo = $valuemo['REQUEST_NUMBER'];
+								array_push($array_mo, $no_mo);
+							}
 						}
 					}
 			}else{
 				if (in_array($value, $arraySelected)){
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 					if (count($checkPicklist) > 0) {
-						$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
-						array_push($array_mo, $no_mo);
+						foreach ($checkPicklist as $keymo => $valuemo) {
+							$no_mo = $valuemo['REQUEST_NUMBER'];
+							array_push($array_mo, $no_mo);
+						}
 					} else {
 						$data = array('NO_URUT' => 1,
 								'INVENTORY_ITEM_ID' => $invID[$key],
@@ -293,8 +324,10 @@ class C_MoveOrder extends CI_Controller
 						$this->M_MoveOrder->deleteTemp($ip_address,$job_id[$key]);
 
 						$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
-						$no_mo = $checkPicklist[0]['REQUEST_NUMBER'];
-						array_push($array_mo, $no_mo);
+						foreach ($checkPicklist as $keymo => $valuemo) {
+							$no_mo = $valuemo['REQUEST_NUMBER'];
+							array_push($array_mo, $no_mo);
+						}
 					}
 				}
 			}

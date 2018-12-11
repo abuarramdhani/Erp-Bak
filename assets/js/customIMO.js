@@ -237,6 +237,3 @@ $('.ch_komp_imo').on('click',function(){
 
 });
 
-$('.button-coba').click(function(){
-	alert('sick u`re really sick');
-});

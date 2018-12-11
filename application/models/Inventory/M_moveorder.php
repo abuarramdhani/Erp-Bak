@@ -105,7 +105,13 @@ class M_moveorder extends CI_Model
 					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
 					and bic.ATTRIBUTE1 is not null
 					and we.WIP_ENTITY_NAME = '$job_no'
-				";
+					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
+                    ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
+                    ,bor.COMPLETION_SUBINVENTORY,bor.COMPLETION_LOCATOR_ID ,mil2.SEGMENT1
+                    ,wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2
+                    ,bd.DEPARTMENT_CLASS_CODE, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE
+                    order by bic.ATTRIBUTE1, bic.ATTRIBUTE2
+		 		";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -173,14 +179,14 @@ class M_moveorder extends CI_Model
                  msib_produk.organization_id, 
                  KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id) kategori_produk, 
                  TO_CHAR( SYSDATE, 'DD/MM/YYYY HH24:MI:SS' ) Print_date, 
-                 TO_CHAR( mtrl.DATE_REQUIRED, 'DD/MM/YYYY HH24:MI:SS' ) Date_Required, 
+                 TO_CHAR( mtrh.DATE_REQUIRED, 'DD/MM/YYYY HH24:MI:SS' ) Date_Required, 
                  bd.DEPARTMENT_CLASS_CODE department, 
                  we.WIP_ENTITY_NAME job_no, 
                  wdj.start_quantity, 
-                 mtrl.FROM_SUBINVENTORY_CODE lokasi, 
+                 mtrh.FROM_SUBINVENTORY_CODE lokasi, 
                  bcs.DESCRIPTION || '(' || TO_CHAR( TO_DATE( bst.FROM_TIME, 'SSSSS' ), 'HH24:MI:SS' )|| ' s/d ' || TO_CHAR( TO_DATE( bst.to_TIME, 'SSSSS' ), 'HH24:MI:SS' )|| ')' SCHEDULE, 
                  mtrh.request_number move_order_no 
-                 FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl, --MTL_MATERIAL_TRANSACTIONS_TEMP mmtt, --blm transact 
+                 FROM mtl_txn_request_headers mtrh, --mtl_txn_request_lines mtrl, --MTL_MATERIAL_TRANSACTIONS_TEMP mmtt, --blm transact 
                  mtl_system_items_b msib_compnt, --JOB
                  wip_entities we, wip_discrete_jobs wdj, 
                  wip_requirement_operations wro, 
@@ -189,11 +195,12 @@ class M_moveorder extends CI_Model
                  mtl_system_items_b msib_produk, --shift 
                  BOM_SHIFT_TIMES bst, 
                  BOM_CALENDAR_SHIFTS bcs 
-                 WHERE mtrh.header_id = mtrl.header_id
+                 WHERE 
+--                 mtrh.header_id = mtrl.header_id
 --                 AND mtrl.line_id = mmtt.MOVE_ORDER_LINE_ID 
 --                 AND mmtt.INVENTORY_ITEM_ID = msib_compnt.INVENTORY_ITEM_ID 
 --                 AND mmtt.ORGANIZATION_ID = msib_compnt.organization_id -- job 
-                 AND mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID 
+                 mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID 
                  AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID 
                  AND wdj.primary_item_id = msib_produk.INVENTORY_ITEM_ID 
                  AND wdj.ORGANIZATION_ID = msib_produk.ORGANIZATION_ID -- wro 
@@ -210,9 +217,17 @@ class M_moveorder extends CI_Model
                  AND bcs.shift_num = bst.shift_num --hard_code 
                  AND mtrh.request_number = '$moveOrderAwal'
 --                 AND mmtt.SUBINVENTORY_CODE NOT LIKE 'INT%' 
-                 GROUP BY we.WIP_ENTITY_NAME, 
-                 mtrl.FROM_SUBINVENTORY_CODE, 
-                        msib_produk.segment1, msib_produk.description, msib_produk.inventory_item_id, msib_produk.organization_id, TO_CHAR( mtrl.DATE_REQUIRED, 'DD/MM/YYYY HH24:MI:SS' ), bd.DEPARTMENT_CLASS_CODE, wdj.start_quantity, bcs.DESCRIPTION || '(' || TO_CHAR( TO_DATE( bst.FROM_TIME, 'SSSSS' ), 'HH24:MI:SS' )|| ' s/d ' || TO_CHAR( TO_DATE( bst.to_TIME, 'SSSSS' ), 'HH24:MI:SS' )|| ')' , mtrh.request_number 
+                 GROUP BY msib_produk.segment1, 
+                     msib_produk.description, 
+                     msib_produk.inventory_item_id, 
+                     msib_produk.organization_id, 
+                     mtrh.DATE_REQUIRED , 
+                     bd.DEPARTMENT_CLASS_CODE, 
+                     we.WIP_ENTITY_NAME, 
+                     wdj.start_quantity, 
+                     mtrh.FROM_SUBINVENTORY_CODE , 
+                     bcs.DESCRIPTION,bst.FROM_TIME,bst.to_TIME, 
+                     mtrh.request_number  
                  ORDER BY we.WIP_ENTITY_NAME --mmtt.SUBINVENTORY_CODE
 		";
 
