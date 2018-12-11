@@ -27,6 +27,21 @@
 			}
 
 		});
+		$('.checkedAllIMO').on('click', function(){
+			var check = 0;
+			if ($(this).is(":checked")) {
+				check = 1;
+			}else{
+				check = 0;
+			}
+			$('input[name="ch_komp[]"]').each(function(){
+				if (check == 1) {
+					$(this).prop('checked', true);
+				}else{
+					$(this).prop('checked', false);
+				}
+			});
+		});
 	</script>
 	
  <style type="text/css">
@@ -42,7 +57,9 @@
 <table class="table tblResultIMO table-responsive table-striped table-bordered table-hover ">
 	<thead>
 		<tr class="bg-primary ">
-			<th>NO.</th>
+			<th> &nbsp;
+				<input type="checkbox" class="checkedAllIMO">&nbsp;
+			</th>
 			<th>WIP NAME</th>
 			<th>KODE ITEM</th>
 			<th>NAMA ITEM </th>
