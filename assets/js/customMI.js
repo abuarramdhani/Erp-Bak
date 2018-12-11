@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListSubmit, #finishInvoice, #unprocessTabel, #tabel_detail_purchasing').DataTable({
+	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListSubmit, #finishInvoice, #unprocessTabel').DataTable({
 		"pageLength": 10,
         "paging": true,
         "searching": true,
@@ -10,6 +10,10 @@ $(document).ready(function(){
 		"pageLength": 3,
         "paging": true,
         "searching": true,
+	});
+
+	$('#tabel_detail_purchasing').DataTable({
+        "searching": true
 	});
 
 	$('#btnSubmitChecking').click(function(){
@@ -22,6 +26,8 @@ $(document).ready(function(){
 				arrId.push(valueId);
 				var hasil = arrId.join();
 				$('input[name="idYangDiPilih"]').val(hasil);
+				
+				$('.invoice_category').val($(this).attr('inv-cat'));
 			}
 		});
 		$('#jmlChecked').text(jml);
@@ -254,6 +260,23 @@ $(document).ready(function(){
 		alert('Invoice akan di submit ke finance');
 	});
 
+	// new edit icheck testing chamber
+	$(document).on('ifChanged','.submit_checking_all', function() {
+		if ($('.submit_checking_all').iCheck('update')[0].checked) {
+			// alert('satu');
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',true);
+				$(this).iCheck('check');
+			});
+		}else{
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',false);
+				$(this).iCheck('uncheck');
+			});
+			// alert('dua');
+		};
+	})
+
 });
 
 function prosesInvMI(th){
@@ -331,4 +354,5 @@ function PresTab(th)
 {
    $(th).parent().parent().next().find('.qty_invoice').focus();
 }
+
 

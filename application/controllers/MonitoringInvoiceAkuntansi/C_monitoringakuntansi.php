@@ -46,7 +46,7 @@ class C_monitoringakuntansi extends CI_Controller{
 
 		$listBatch = $this->M_monitoringakuntansi->showFinanceNumber();
 		foreach($listBatch as $key => $value){
-			$batchNumber = $value['FINANCE_BATCH_NUMBER'];
+			$batchNumber = $value['BATCH_NUMBER'];
 			$jmlInv = $this->M_monitoringakuntansi->jumlahInvoice($batchNumber);
 			$listBatch[$key]['jml_invoice'] = $jmlInv[0]['JUMLAH_INVOICE'].' Invoice';
 		}
@@ -59,7 +59,7 @@ class C_monitoringakuntansi extends CI_Controller{
 	}
 
 	public function unprocess($batchNumber)
-	{
+	{	$batchNumber = str_replace('%20', ' ', $batchNumber);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -73,7 +73,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$unprocess = $this->M_monitoringakuntansi->unprocessedInvoice($batchNumber);
 		
 		if ($unprocess != null) {
-			$batch = $unprocess[0]['FINANCE_BATCH_NUMBER'];
+			$batch = $unprocess[0]['BATCH_NUMBER'];
 		} else {
 			$batch = '';
 		}
@@ -125,7 +125,7 @@ class C_monitoringakuntansi extends CI_Controller{
 	}
 
 	public function DetailUnprocess($batch_num,$invoice_id)
-	{
+	{	$batch_num = str_replace('%20', ' ', $batch_num);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -137,7 +137,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$unprocess = $this->M_monitoringakuntansi->DetailUnprocess($batch_num,$invoice_id);
-		$batch = $unprocess[0]['FINANCE_BATCH_NUMBER'];
+		$batch = $unprocess[0]['BATCH_NUMBER'];
 		$no = 0;
 		foreach ($unprocess as $key ) {
 			$invoice = $key['INVOICE_ID'];
@@ -171,7 +171,7 @@ class C_monitoringakuntansi extends CI_Controller{
 	}
 
 	public function finishInvoice($batchNumber){
-
+		$batchNumber = str_replace('%20', ' ', $batchNumber);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -271,7 +271,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$listBatch = $this->M_monitoringakuntansi->showFinishBatch();
 
 		foreach($listBatch as $key => $lb){
-			$detail = $this->M_monitoringakuntansi->detailBatch($lb['FINANCE_BATCH_NUMBER']);
+			$detail = $this->M_monitoringakuntansi->detailBatch($lb['BATCH_NUMBER']);
 			$listBatch[$key]['approved'] = 'Approve : '.$detail[0]['APPROVE'].' Invoice';
 		}
 		$data['batch'] = $listBatch;

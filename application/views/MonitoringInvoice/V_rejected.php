@@ -35,9 +35,9 @@
 											<th class="text-center" width="15%" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Status</th>
-											<th class="text-center">Reason</th>
-											<th class="text-center">Purchase Batch Number</th>
 											<th class="text-center">Reject Date</th>
+											<th class="text-center">Reason</th>
+											<th class="text-center">Batch Number</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -74,9 +74,9 @@
 												$status = 'Rejected by Kasie Finance';
 											}?>
 											<td><?php echo $status; ?></td>
-											<td><?php echo $f['REASON']?></td>
-											<td><?php echo $f['PURCHASING_BATCH_NUMBER']?></td>
 											<td><?php echo $f['REJECT_DATE']?></td>
+											<td><?php echo $f['REASON']?></td>
+											<td><?php echo $f['BATCH_NUMBER']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

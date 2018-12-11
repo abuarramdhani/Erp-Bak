@@ -79,7 +79,11 @@
 									</tbody>
 								</table>
 								<div class="col-md-3 pull-right">
+									<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] == 1){?>
+									<button disabled="disabled" type="button" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
+									<?php }else{ ?>
 									<button type="submit" id="btnToFinance" name="submit_finance" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
+									<?php } ?>
 									</div>
 								</div>
 							</div>
@@ -105,7 +109,7 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		    <input type="hidden" name="nomor_batch" value="<?php echo $batch[0]['PURCHASING_BATCH_NUMBER']?>">
+		    <input type="hidden" name="nomor_batch" value="<?php echo $batch[0]['BATCH_NUMBER']?>">
 			<button type="submit" class="btn btn-success" name="prosesapprove" value="2">Approve</button>
 			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdlreject">Reject</button>
 		</div>
@@ -129,7 +133,7 @@
 		    <br>
 		    <input type="text" class="form-control" placeholder="Alasan Reject" name="alasan_reject" required="required">
 		    <input type="hidden" name="invoice_id" class="invoice_id">
-		    <input type="hidden" name="nomor_batch" value="<?php echo $batch[0]['PURCHASING_BATCH_NUMBER']?>">
+		    <input type="hidden" name="nomor_batch" value="<?php echo $batch[0]['BATCH_NUMBER']?>">
 		  </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>

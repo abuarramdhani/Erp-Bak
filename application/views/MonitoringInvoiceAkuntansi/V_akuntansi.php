@@ -26,7 +26,7 @@
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Action</th>
-											<th class="text-center">Finance Batch Number</th>
+											<th class="text-center">Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
 										</tr>
@@ -36,11 +36,11 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$b['FINANCE_BATCH_NUMBER'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$b['BATCH_NUMBER'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo $b['FINANCE_BATCH_NUMBER']?></td>
+											<td><?php echo $b['BATCH_NUMBER']?></td>
 											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
 											<td><?php echo $b['jml_invoice']?></td>
 										</tr>

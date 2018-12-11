@@ -29,13 +29,17 @@
 									<div class="col-md-6">
 										<button type="button" class="btn btn-primary pull-left" id="btnSubmitChecking" data-toggle="modal" data-target="#mdlChecking">Submit for Checking</button>
 									</div>
+									<div class="col-md-6">
+										<span class="btn btn-warning pull-right" style="cursor: none"><i class="fa fa-exclamation-triangle"></i> Submit hanya berdasarkan kategori invoice yang sama</span>
+									</div>
 								</div>
 								<table id="tabel_invoice" class="table text-center datatable">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
-											<th width="5%" class="text-center">Submit Checking</th>
+											<th width="5%" class="text-center"><input type="checkbox" class="submit_checking_all" onclick="chkSubmitChecking($(this));"></th>
 											<th width="10%" class="text-center">Action</th>
+											<th width="10%" class="text-center">Invoice Category</th>
 											<th width="5%"class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
@@ -52,9 +56,7 @@
 									<tr id="<?php echo $no; ?>">
 										<td><?php echo $no ?></td>
 										<td>
-											<div class="checkbox">
-											<input  type="checkbox" name="mi-check-list[]" value="<?php echo $inv['INVOICE_ID']?>">
-											</div>
+											<input  type="checkbox" class="chckInvoice" name="mi-check-list[]" value="<?php echo $inv['INVOICE_ID']?>" inv-cat="<?php echo $inv['INVOICE_CATEGORY']?>">
 										</td>
 										<td>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>">
@@ -64,6 +66,7 @@
 											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
 											</a>
 										</td>
+										<td><?php echo $inv['INVOICE_CATEGORY']?></td>
 										<td><?php echo $inv['VENDOR_NAME']?></td>
 										<td><?php echo  $inv['INVOICE_NUMBER'] ?></td>
 										<td> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
@@ -78,25 +81,14 @@
 										<?php }} ?></td>
 										<?php if ( $inv['STATUS'] == 0) {
 											$stat = 'New/Draft';
-										}elseif ($inv['status'] == 1) {
+										}elseif ($inv['STATUS'] == 1) {
 											$stat = 'Submited by Kasie Purc';
-										}elseif ($inv['status'] == 2) {
+										}elseif ($inv['STATUS'] == 2) {
 											$stat = 'Approved By Kasie Purc';
-										}elseif ($inv['status'] == 3) {
+										}elseif ($inv['STATUS'] == 3) {
 											$stat = 'Rejected by Kasie Purc';
-										} 
-
-										if ($inv['PURCHASING_BATCH_NUMBER'] != 0) { 
-										 	$batchnumber = 'SUBMITTED';
-										}else{
-										 	$batchnumber = 'NO SUMBIT';
-										} ?>
-										<td><?php echo $stat.'<br>'?>
-										<span class="btn-sm  <?php if ($inv['PURCHASING_BATCH_NUMBER'] != 0): ?>
-											btn-success
-										<?php else: ?>
-											btn-warning
-										<?php endif ?>"  ><?php echo $batchnumber?></span></td>
+										} ?> 
+										<td><?php echo $stat?></td>
 									</tr>
 									<?php $no++; }}?>
 								</tbody>
@@ -123,6 +115,7 @@
 		      <div class="col-md-12">Apakah Anda yakin akan melakukan Submit For Checking untuk <b id="jmlChecked"></b> Invoices ?</div>
 		    </div>
 		    <input type="hidden" name="idYangDiPilih" value="">
+		    <input type="hidden" name="invoice_category" class="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>">
 		  </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>

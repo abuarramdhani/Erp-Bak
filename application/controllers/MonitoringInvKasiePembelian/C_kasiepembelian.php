@@ -48,8 +48,7 @@ class C_kasiepembelian extends CI_Controller{
 
 		$no = 0;
 		foreach($listBatch as $lb){
-			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['BATCH_NUM']);
-			echo $lb['BATCH_NUM'];
+			$jmlInv = $this->M_kasiepembelian->getJmlInvPerBatch($lb['BATCH_NUMBER']);
 
 			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' Invoice';
 			$no++;
@@ -63,6 +62,7 @@ class C_kasiepembelian extends CI_Controller{
 	}
 
 	public function batchDetailPembelian($batchNumber){
+		$batchNumber = str_replace('%20', ' ', $batchNumber);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -103,15 +103,12 @@ class C_kasiepembelian extends CI_Controller{
 		$saveDate = date('d-m-Y H:i:s');
 		$invoice_id = $this->input->post('invoice_id[]');
 
-		$checkFinanceNumber = $this->M_kasiepembelian->checkFinanceNumber();
-		$finance_batch_number = $checkFinanceNumber[0]['FINANCE_BATCH_NUMBER'] + 1;
-
 		foreach ($invoice_id as $id => $value) {
 			$inv_id = $value;
 
 			$checkStatus = $this->M_kasiepembelian->checkApprove($inv_id);
 			if ($checkStatus[0]['LAST_PURCHASING_INVOICE_STATUS'] == 2) {
-				$this->M_kasiepembelian->btnSubmitToFinance($inv_id,$finance,$saveDate,$finance_batch_number);
+				$this->M_kasiepembelian->btnSubmitToFinance($inv_id,$finance,$saveDate);
 				$getStatus = $this->M_kasiepembelian->getLastStatusActionDetail($inv_id);
 				$statuslama = ($getStatus) ? $getStatus[0]['PURCHASING_STATUS'] : '';
 				// if ($getStatus) {
@@ -151,6 +148,7 @@ class C_kasiepembelian extends CI_Controller{
 	}
 
 	public function invoiceDetail($invoice_id,$nomorbatch){
+		$nomorbatch = str_replace('%20', ' ', $nomorbatch);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -186,7 +184,7 @@ class C_kasiepembelian extends CI_Controller{
 		$listBatch = $this->M_kasiepembelian->showFinishBatch();
 
 		foreach($listBatch as $key => $lb){
-			$detail = $this->M_kasiepembelian->detailBatch($lb['PURCHASING_BATCH_NUMBER']);
+			$detail = $this->M_kasiepembelian->detailBatch($lb['BATCH_NUMBER']);
 			$listBatch[$key]['approved'] = 'Approve : '.$detail[0]['APPROVE'].' Invoice';
 			$listBatch[$key]['rejected'] = 'Reject : '.$detail[0]['REJECT'].' Invoice';
 			$listBatch[$key]['submited'] = 'Submit : '.$detail[0]['SUBMIT'].' Invoice';
@@ -200,6 +198,7 @@ class C_kasiepembelian extends CI_Controller{
 	}
 
 	public function finishdetailinvoice($batchNumber){
+		$batchNumber = str_replace('%20', ' ', $batchNumber);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		

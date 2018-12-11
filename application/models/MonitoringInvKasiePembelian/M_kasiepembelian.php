@@ -9,7 +9,7 @@ class M_kasiepembelian extends CI_Model {
 
 	public function showListSubmittedForChecking(){
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct purchasing_batch_number batch_num, to_date(last_status_purchasing_date) submited_date,
+		$sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date,
                 last_purchasing_invoice_status, last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice 
                 WHERE (last_purchasing_invoice_status = 1
@@ -22,7 +22,7 @@ class M_kasiepembelian extends CI_Model {
 
 	public function getJmlInvPerBatch($batch){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT purchasing_batch_number FROM khs_ap_monitoring_invoice WHERE purchasing_batch_number = $batch";
+        $sql = "SELECT batch_number FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch'";
         $run = $erp_db->query($sql);
         return $run->num_rows();
     }
@@ -41,13 +41,16 @@ class M_kasiepembelian extends CI_Model {
                          aipo.po_number po_number,
                          poh.attribute2 ppn,
                          aiac2.action_date action_date,
-                         ami.purchasing_batch_number purchasing_batch_number,
-                         ami.last_purchasing_invoice_status last_purchasing_invoice_status
+                         ami.batch_number batch_number,
+                         ami.last_purchasing_invoice_status last_purchasing_invoice_status,
+                         ami.info info,
+                         ami.invoice_category invoice_category,
+                         ami.nominal_dpp nominal_dpp
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh,
                      (select distinct min(action_date) over (partition by invoice_id) action_date, invoice_id from khs_ap_invoice_action_detail aiac) aiac2
-                WHERE purchasing_batch_number = '$batchNumber'
+                WHERE batch_number = '$batchNumber'
                 and ami.invoice_id = aipo.invoice_id
                 and poh.segment1 = aipo.po_number
                 and aiac2.invoice_id = ami.invoice_id
@@ -94,12 +97,11 @@ class M_kasiepembelian extends CI_Model {
         $run = $oracle->query($sql);
     }
 
-    public function btnSubmitToFinance($id,$finance_status,$finance_date,$finance_batch_number){
+    public function btnSubmitToFinance($id,$finance_status,$finance_date){
         $erp_db = $this->load->database('oracle',true);
         $sql = "UPDATE khs_ap_monitoring_invoice
                 set last_finance_invoice_status = '$finance_status',
-                last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
-                finance_batch_number = '$finance_batch_number'
+                last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
                 WHERE invoice_id = $id
                 and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
@@ -152,7 +154,10 @@ class M_kasiepembelian extends CI_Model {
                 aipo.unit_price unit_price,
                 aipo.qty_invoice qty_invoice,
                 ami.invoice_id invoice_id,
-                ami.purchasing_batch_number purchasing_batch_number
+                ami.batch_number batch_number,
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp
                 FROM khs_ap_monitoring_invoice ami
                 ,khs_ap_invoice_purchase_order aipo
                 WHERE ami.invoice_id = aipo.invoice_id
@@ -183,7 +188,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function showFinishBatch(){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT DISTINCT a.purchasing_batch_number, 
+        $sql = "SELECT DISTINCT a.batch_number, 
                                 a.finance_batch_number, 
                                 a.last_purchasing_invoice_status, 
                                 a.last_finance_invoice_status,
@@ -194,9 +199,10 @@ class M_kasiepembelian extends CI_Model {
                                              AND d.purchasing_status = 2 AND rownum = 1) submited_date,
                                 (SELECT COUNT (*)
                                    FROM khs_ap_monitoring_invoice b
-                                  WHERE b.purchasing_batch_number = a.purchasing_batch_number)jml_invoice
+                                  WHERE b.batch_number = a.batch_number)jml_invoice
                 FROM khs_ap_monitoring_invoice a
-                WHERE a.finance_batch_number IS NOT NULL
+                WHERE a.batch_number IS NOT NULL
+                AND (a.last_finance_invoice_status = 1 and a.last_purchasing_invoice_status = 2)
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
         return $run->result_array();
@@ -212,11 +218,14 @@ class M_kasiepembelian extends CI_Model {
                          ami.invoice_amount invoice_amount, 
                          poh.attribute2 ppn,
                          ami.last_status_purchasing_date last_status_purchasing_date,
-                         ami.purchasing_batch_number purchasing_batch_number
+                         ami.batch_number batch_number,
+                         ami.info info,
+                         ami.invoice_category invoice_category,
+                         ami.nominal_dpp nominal_dpp
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
-                WHERE purchasing_batch_number = $batchNumber
+                WHERE ami.batch_number = '$batchNumber'
                 and ami.invoice_id = aipo.invoice_id
                 and poh.segment1 = aipo.po_number
                 ORDER BY vendor_name, invoice_number";
@@ -243,7 +252,10 @@ class M_kasiepembelian extends CI_Model {
                 qty_reject qty_reject,
                 currency currency,
                 unit_price unit_price,
-                qty_invoice qty_invoice
+                qty_invoice qty_invoice,
+                info info,
+                invoice_category,
+                nominal_dpp
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE aipo.invoice_id = $invoice_id";
@@ -274,15 +286,15 @@ class M_kasiepembelian extends CI_Model {
         $sql = "SELECT distinct (SELECT COUNT (last_purchasing_invoice_status)
                       FROM khs_ap_monitoring_invoice b
                      WHERE b.last_purchasing_invoice_status = 2
-                       AND b.purchasing_batch_number = '$batch_number') approve,
+                       AND b.batch_number = '$batch_number') approve,
                    (SELECT COUNT (last_purchasing_invoice_status)
                       FROM khs_ap_monitoring_invoice c
                      WHERE c.last_purchasing_invoice_status = 3
-                       AND c.purchasing_batch_number = '$batch_number') reject,
+                       AND c.batch_number = '$batch_number') reject,
                    (SELECT COUNT (last_purchasing_invoice_status)
                       FROM khs_ap_monitoring_invoice d
                      WHERE d.last_purchasing_invoice_status = 1
-                       AND d.purchasing_batch_number = '$batch_number') submit
+                       AND d.batch_number = '$batch_number') submit
               FROM khs_ap_monitoring_invoice a";
         $run = $oracle->query($sql);
         return $run->result_array();

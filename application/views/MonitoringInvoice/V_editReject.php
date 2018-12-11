@@ -58,6 +58,30 @@
 									</tr>
 									<tr>
 										<td>
+											<span><label>Invoice Category</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>">
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>">
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+		                     				<textarea class="form-control" size="40" type="text" name="note_admin"><?php echo $invoice[0]['INFO']?></textarea> 
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/addListPo/'.$invoice[0]['INVOICE_ID']);?>">
 											<button type="button" class="btn btn-sm btn-primary">Tambah PO  <i class="glyphicon glyphicon-plus" style="width: 12px; height: 12px;"></i></button>
 											</a>

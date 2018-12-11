@@ -35,6 +35,30 @@
 										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
 									</td>
 								</tr>
+								<tr>
+									<td>
+										<span><label>Invoice Category</label></span>
+									</td>
+									<td>
+										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span><label>NOMINAL DPP</label></span>
+									</td>
+									<td>
+										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span><label>Info</label></span>
+									</td>
+									<td>
+										<textarea class="form-control" size="40" type="text" readonly><?php echo $invoice[0]['INFO']?></textarea>
+									</td>
+								</tr>
 							</table>
 							<span><b>Invoice PO Detail</b></span>
 							<div style="overflow: auto">

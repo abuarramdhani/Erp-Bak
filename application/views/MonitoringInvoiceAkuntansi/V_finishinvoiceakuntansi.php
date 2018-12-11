@@ -33,7 +33,7 @@
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Finance Process Date</th>
-											<th class="text-center">Finance Batch Number</th>
+											<th class="text-center">Batch Number</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -52,7 +52,7 @@
 											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php echo $f['LAST_STATUS_FINANCE_DATE']?></td>
-											<td><?php echo $f['FINANCE_BATCH_NUMBER']?></td>
+											<td><?php echo $f['BATCH_NUMBER']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

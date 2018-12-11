@@ -26,10 +26,18 @@
 								<table id="tbInvoice" >
 									<tr>
 										<td>
+											<span><label>Vendor Name</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>">
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>" readonly>
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>">
 										</td>
 									</tr>
 									<tr>
@@ -37,7 +45,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>"  name="invoice_date" readonly>
+						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>"  name="invoice_date">
 										</td>
 									</tr>
 									<tr>
@@ -53,15 +61,31 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>">
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<span><label>Vendor Name</label></span>
+											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>">
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>">
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+		                     				<textarea class="form-control" size="40" type="text" name="note_admin"><?php echo $invoice[0]['INFO']?></textarea> 
 		                     			</td>
 									</tr>
 								</table>

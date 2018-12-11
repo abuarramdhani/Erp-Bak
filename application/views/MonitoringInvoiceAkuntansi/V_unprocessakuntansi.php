@@ -54,7 +54,7 @@
 											<td><?php echo $u['PO_DETAIL']?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['FINANCE_BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info"> Detail
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info"> Detail
 												</a>
 											<?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
 												<button type="submit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-primary" value="2" name="proses">Terima</button>

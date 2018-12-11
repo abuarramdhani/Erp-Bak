@@ -26,6 +26,14 @@
 									<?php $no=1; ?>
 									<tr>
 										<td>
+											<span><label>Vendor Name</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
@@ -58,10 +66,26 @@
 									</tr>
 									<tr>
 										<td>
-											<span><label>Vendor Name</label></span>
+											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+		                     				<textarea class="form-control" size="40" type="text" name="note_admin" readonly><?php echo $invoice[0]['INFO']?></textarea> 
 		                     			</td>
 									</tr>
 									<?php $no++; ?>
