@@ -60,7 +60,7 @@ class M_cetakcard extends CI_Model
                                     ),30) as seksi,
                                     (case 
                                     when 
-                                        (left(tp.noind,1)in('C','H','K','P'))
+                                        (left(tp.noind,1)in('C','H','K','P','A','D','G','E'))
                                     then null
                                     else left(upper(tsj.nama_jabatan),30)
                                     end) as jabatan,
@@ -124,7 +124,7 @@ class M_cetakcard extends CI_Model
                                         ),30) as seksi,
                                         (case 
                                         when 
-                                            (left(tp.noind,1)in('C','H','K','P'))
+                                            (left(tp.noind,1)in('C','H','K','P','A','D','G','E'))
                                         then null
                                         else left(upper(tsj.nama_jabatan),30)
                                         end) as jabatan,
