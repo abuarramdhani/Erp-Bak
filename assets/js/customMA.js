@@ -1,4 +1,4 @@
-$(document).on('ready',function(){
+$(document).ready(function(){
 	$('.datatable-ma').DataTable({
 		dom : 'frtp'
 	});
@@ -71,7 +71,7 @@ $(document).on('click','#btnSubmitUpdateTargetAdmin',function(e){
 
 //pekerja start
 //create start
-$(document).on('ready',function(){
+$(document).ready(function(){
 	$('.selectPekerjaMasterMA').select2({
 		dropdownParent: $('#pekerja-Create'),
 		placeholder: "Noind",
@@ -135,7 +135,7 @@ $(document).on('click','#btnSubmitPekerja',function(e){
 
 //proses start
 //awal start
-$(document).on('ready',function(){
+$(document).ready(function(){
 	$('.selectPekerjaProses').select2({
 		placeholder: "Pekerja",
 		searching: true,
