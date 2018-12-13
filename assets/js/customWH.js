@@ -1,356 +1,693 @@
-// $("#inputPackingPlus").on('keyup',function(e){
-//     if(e.keyCode  === 13){
 
-//     }
-// });
 
-$("#formPackingList").ready(function() {
-  console.log('ini lo udah ke load');
-  
-  $.ajax({
-    url: baseurl + "Warehouse/Ajax/checkSPB",
-    type: 'POST',
-    data: {DATA:'none'},
-    success:function(result){
-        console.log(result);
-        if(result != '"FALSE"'){
-            $('input[name="nomerSPB"]').prop('readonly', true);
-            $('input[name="nomerSPB"]').attr('readonly', true);
-        }
-        if(result == 'FALSE'){
-            console.log('astagfirullah');   
-        }else{
-            result = result.replace('"','');
-            result = result.replace('"','');
-            getDataFapingList(result);
-        }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-        $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-    }
-  });
 
+$(document).ready(function() {
+	
+	$("#tanggalReportAwal" ).datepicker({ format: 'DD, dd MM yyyy' });
+	$("#tanggalReportAkhir" ).datepicker({ format: 'DD, dd MM yyyy' });
+	$("#txtTanggalUsableKu").datepicker({ format: 'DD, dd MM yyyy' });
+	$("#txtTanggalConsumableKu").datepicker({ format: 'DD, dd MM yyyy' });
+	$("#txtTanggalPengembalian").datepicker({ format: 'DD, dd MM yyyy' });
+
+
+	$('#tblMasterItemConsumable').DataTable({"lengthChange": false});
+	$(".select-item-wh").select2({
+		allowClear: true,
+		placeholder: "[Select Item]",
+		minimumInputLength: 3,
+		ajax: {		
+				url: baseurl+"Warehouse/Transaksi/getItem",
+				dataType: 'json',
+				type: "POST",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term
+					}
+					return queryParameters; 
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.item_id, text:obj.item_id+" ( "+obj.item_name+" )"};
+						})
+					};
+				}
+			}
+	});
+	
+	$(".select-item-wh-consumable").select2({
+		allowClear: true,
+		placeholder: "[Select Item]",
+		minimumInputLength: 3,
+		ajax: {		
+				url: baseurl+"Warehouse/Transaksi/getItemConsumable",
+				dataType: 'json',
+				type: "POST",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term
+					}
+					return queryParameters; 
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.consumable_id, text:obj.item_code+" ( "+obj.item_name+" )"};
+						})
+					};
+				}
+			}
+	});
+	$(".select-noind-wh").select2({
+		allowClear: true,
+		placeholder: "[Select Noind]",
+		minimumInputLength: 1,
+		ajax: {		
+				url: baseurl+"Warehouse/Transaksi/getNoind",
+				dataType: 'json',
+				type: "POST",
+				data: function (params) {
+					var queryParameters = {
+						term: params.term
+					}
+					return queryParameters; 
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							return { id:obj.noind, text:obj.noind+" ( "+obj.nama+" )"};
+						})
+					};
+				}
+			}
+	});
+	
+	if(window.location.href == baseurl+"Warehouse/Transaksi/CreatePeminjaman"){
+		window.onload = function() {            
+		function realtime() {
+		   $.ajax({
+					url :baseurl+"Warehouse/Transaksi/Time_",
+					success:function(result){
+						$('#hdnDate').val(result);
+					}
+				});
+		}
+		setInterval(realtime, 1000);
+	}
+	}
 });
 
+$(document).on("click", "#btnExecuteSaveWh", function () {
+	var shift = $('#txsShift option:selected').attr('value');
+	var noind = $('#txtNoind').val();
+	var user = $('#hdnUser').val();
+	var date = $('#txtTanggalUsableKu').val();
+	var name = $('#txtName').val();
 
-function getDataSPB() {
-    event.preventDefault();
-    $.ajax({
-        url: baseurl + "Warehouse/Ajax/getSPB",
-        type: 'POST',
-        data: $('#formSPB').serialize(),
-        beforeSend: function() {
-            $('#loadingArea').show();
-            $('#tableSPBArea').empty();
-        },
-        success: function(result) {
-            console.log(result);
-            $('#tableSPBArea').html(result);
-            $('#loadingArea').hide();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-        }
-    });
+
+	if(shift.length === 0 || noind.length === 0 || date.length === 0){
+		alert('your application form is not complete yet (SHIFT/NOIND/DATE). Please check again !!');
+	}else{
+		$.ajax({
+			type:'POST',
+			data:{noind: noind,user:user,date:date,shift:shift,name:name},
+			url :baseurl+"Warehouse/Transaksi/addNewLending",
+			success:function(result){
+				$('#table-create-peminjaman tbody tr').each(function() {
+					var item_id = $(this).find(".item_id").html();    
+					var item_name = $(this).find(".item_name").html();    
+					var sisa_stok = $(this).find(".sisa_stok").html();    
+					var item_out = $(this).find(".item_out").val();
+					$.ajax({
+						type:'POST',
+						data:{noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result},
+						url :baseurl+"Warehouse/Transaksi/addNewLendingList"
+					});
+				});
+				$('#table-create-peminjaman tbody').html("");
+				$('#txtNoind').val('');
+				$('#txtName').val('');
+				$('#txsSelect').val('');
+				$('#txtTanggalUsableKu').val('');
+				alert('List Item Has Been Added !');
+			}
+		});
+	}
+	$('#txtBarcode').focus();
+});
+
+$(document).on("click", "#btnExecuteSaveWhConsumable", function () {
+	var shift = $('#txsShift option:selected').attr('value');
+	var noind = $('#txtNoind').val();
+	var user = $('#hdnUser').val();
+	var date = $('#txtTanggalConsumableKu').val();
+	var name = $('#txtName').val();
+
+	if(shift.length === 0 || noind.length === 0 || date.length === 0){
+		alert('your application form is not complete yet (SHIFT/NOIND/DATE). Please check again !!');
+	}else{
+		$.ajax({
+			type:'POST',
+			data:{noind: noind,user:user,date:date,shift:shift,name:name},
+			url :baseurl+"Warehouse/Transaksi/addNewLendingConsumable",
+			success:function(result){
+				$('#table-create-peminjaman tbody tr').each(function() {
+					var item_id = $(this).find(".item_id").html();    
+					var item_name = $(this).find(".item_name").html();    
+					var sisa_stok = $(this).find(".sisa_stok").html();    
+					var item_out = $(this).find(".item_out").val();
+					$.ajax({
+						type:'POST',
+						data:{noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result},
+						url :baseurl+"Warehouse/Transaksi/addNewLendingList"
+					});
+				});
+				$('#table-create-peminjaman tbody').html("");
+				$('#txtNoind').val('');
+				$('#txtName').val('');
+				$('#txsSelect').val('');
+				$('#txtTanggalConsumableKu').val('');
+				alert('List Item Has Been Added !');
+				clearListOutItemWhConsumable(0)
+			}
+		});
+	}
+	$('#txtBarcode').focus();
+});
+
+$(document).on("click", "#btnExecuteUpdateWh", function () {
+	var id = $('#txtID').val();
+	var noind = $('#txtNoind').val();
+	var shift = $('#txsShift').val();
+	var user = $('#hdnUser').val();
+	var date = $('#hdnDate').val();
+	var txtQtyPinjam = $('#txtQtyPinjam').val();
+	$.ajax({
+		type:'POST',
+		data:{id:id,noind: noind,user:user,date:date,shift:shift,txtQtyPinjam:txtQtyPinjam},
+		url :baseurl+"Warehouse/Transaksi/UpdateNewLendingList",
+		success:function(result){
+			$('#table-update-peminjaman tbody tr').each(function() {
+				var list_id = $(this).find(".list_id").html();    
+				var item_id = $(this).find(".item_id").html();    
+				var item_name = $(this).find(".item_name").html();    
+				var sisa_stok = $(this).find(".sisa_stok").html();    
+				var item_out = $(this).find(".item_out").val();
+				$.ajax({
+					type:'POST',
+					data:{id:id,noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result,list_id:list_id},
+					
+				});
+			});
+			window.location.replace(baseurl+"Warehouse/Transaksi/Keluar");
+			alert('List Item Has Been Updated !');
+		}
+	});
+});
+
+$(document).on("click", "#btnExecuteUpdateWhConsumable", function () {
+	var id = $('#txtID').val();
+	var noind = $('#txtNoind').val();
+	var shift = $('#txsShift').val();
+	var user = $('#hdnUser').val();
+	var date = $('#hdnDate').val();
+	var txtQtyPinjam = $('#txtQtyPinjam').val();
+	$.ajax({
+		type:'POST',
+		data:{id:id,noind: noind,user:user,date:date,shift:shift,txtQtyPinjam:txtQtyPinjam},
+		url :baseurl+"Warehouse/Transaksi/UpdateNewLendingList",
+		success:function(result){
+			$('#table-update-peminjaman tbody tr').each(function() {
+				var list_id = $(this).find(".list_id").html();    
+				var item_id = $(this).find(".item_id").html();    
+				var item_name = $(this).find(".item_name").html();    
+				var sisa_stok = $(this).find(".sisa_stok").html();    
+				var item_out = $(this).find(".item_out").val();
+				$.ajax({
+					type:'POST',
+					data:{id:id,noind: noind,user:user,date:date,item_id:item_id,item_name:item_name,sisa_stok:sisa_stok,item_out:item_out,id_transaction:result,list_id:list_id},
+					
+				});
+			});
+			window.location.replace(baseurl+"Warehouse/Transaksi/Keluar/Consumable");
+			alert('List Item Has Been Updated !');
+		}
+	});
+});
+
+function AddItemWh(exe){
+	var barcode = $('#txtBarcode').val(),
+		user = $('#hdnUser').val(),
+		type = $('#txtID').val(),
+		count = $('#table-'+exe+'-peminjaman tbody tr').length,
+		no = 0;
+
+		console.log(exe);
+
+		$('#txtBarcode').attr("readonly", 'readonly');
+		if(count == 0){
+			no = parseInt(no)+1;
+			$.ajax({
+					type:'POST',
+					data:{id: barcode},
+					url :baseurl+"Warehouse/Transaksi/getItemUpdate",
+					success:function(result){
+						if(result == "null"){
+							alert('There is no item !!!');
+						}else if(result == "out"){
+							alert('Out Of Stock !!!');
+						}else{
+							$('#table-'+exe+'-peminjaman tbody').append(result);
+							$('#no_mor').html(no);
+						}
+					}
+				});
+			$('#txtBarcode').removeAttr("readonly", 'readonly');
+		}else{
+			$('#table-'+exe+'-peminjaman tbody tr').each(function() {
+				no = parseInt(no)+1;
+				var barcode2 = $(this).find(".item_id").html(),
+					stok = $(this).find(".sisa_stok").html();
+					if(stok == 0 && barcode2 == barcode){
+						alert('Out Of Stock !!!');
+					}else{
+						if(barcode == barcode2){
+							var item_out = $(this).find(".item_out").val();
+							$(this).find(".item_out").val(parseInt(item_out)+1);
+							$(this).find(".sisa_stok").html(parseInt(stok));
+							return false;
+						}else if(no==count){
+							no = parseInt(no)+1;
+							 $.ajax({
+									type:'POST',
+									data:{id: barcode,no:no},
+									url :baseurl+"Warehouse/Transaksi/getItemUpdate",
+									success:function(result){
+										if(result == "null"){
+											alert('There is no item !!!');
+										}else if(result == "out"){
+											alert('Out Of Stock !!!');
+										}else{
+											$('#table-'+exe+'-peminjaman tbody tr:last').after(result);
+										}
+									}
+								});
+						}		
+					}	
+			});
+		}
+	$('#txtBarcode').removeAttr("readonly", 'readonly');
+	$('#txtBarcode').val('');
+	$( "#txtNoind" ).focus();
 }
 
-function getDataFapingList(nomerSPBU){
-    $.ajax({
-        url: baseurl + "Warehouse/Ajax/PackingList",
-        type: 'POST',
-        data: {nomerSPB : nomerSPBU},
-        beforeSend: function() {
-            $('#loadingArea').show();
-            $('#tablePackingListArea').empty();
-        },
-        success: function(result) {
-            $('input[name="nomerSPB"]').val('');
-            $('#tablePackingListArea').html(result);
-            $('#loadingArea').hide();
-            $('.select2-custom').select2({
-                placeholder: "Choose Option",
-                allowClear: true,
-                width: 'element',
-                tags: true,
-                id: function(object) {
-                    return object.text;
-                },
-                createSearchChoice: function(term, data) {
-                    if ($(data).filter(function() {
-                            return this.text.localeCompare(term) === 0;
-                        }).length === 0) {
-                        return {
-                            id: term,
-                            text: term
-                        };
-                    }
-                }
-            });
-            $('select#ekspedisi').select2({
-                placeholder: "Choose Option",
-                allowClear: true,
-            });
-            $('.toupper').keyup(function(){
-                this.value = this.value.toUpperCase();
-            });
-
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-            console.log(textStatus);
-        }
-    });
+function AddItemWhConsumable(exe){
+	var barcode = $('#txtBarcode').val(),
+		user = $('#hdnUser').val(),
+		type = $('#txtID').val(),
+		count = $('#table-'+exe+'-peminjaman tbody tr').length,
+		no = 0;
+		$('#txtBarcode').attr("readonly", 'readonly');
+		if(count == 0){
+			no = parseInt(no)+1;
+			$.ajax({
+					type:'POST',
+					data:{id: barcode},
+					url :baseurl+"Warehouse/Transaksi/getItemUpdateConsumable",
+					success:function(result){
+						if(result == "null"){
+							alert('There is no item !!!');
+						}else if(result == "out"){
+							alert('Out Of Stock !!!');
+						}else{
+							$('#table-'+exe+'-peminjaman tbody').append(result);
+							$('#no_mor').html(no);
+						}
+					}
+				});
+			$('#txtBarcode').removeAttr("readonly", 'readonly');
+		}else{
+			$('#table-'+exe+'-peminjaman tbody tr').each(function() {
+				no = parseInt(no)+1;
+				var barcode2 = $(this).find(".item_id").html(),
+					stok = $(this).find(".sisa_stok").html();
+					if(stok == 0 && barcode2 == barcode){
+						alert('Out Of Stock !!!');
+					}else{
+						if(barcode == barcode2){
+							var item_out = $(this).find(".item_out").val();
+							$(this).find(".item_out").val(parseInt(item_out)+1);
+							$(this).find(".sisa_stok").html(parseInt(stok));
+							return false;
+						}else if(no==count){
+							no = parseInt(no)+1;
+							 $.ajax({
+									type:'POST',
+									data:{id: barcode,no:no},
+									url :baseurl+"Warehouse/Transaksi/getItemUpdateConsumable",
+									success:function(result){
+										if(result == "null"){
+											alert('There is no item !!!');
+										}else if(result == "out"){
+											alert('Out Of Stock !!!');
+										}else{
+											$('#table-'+exe+'-peminjaman tbody tr:last').after(result);
+										}
+									}
+								});
+						}		
+					}	
+			});
+		}
+	$('#txtBarcode').removeAttr("readonly", 'readonly');
+	$('#txtBarcode').val('');
+	$( "#txtNoind" ).focus();
 }
 
-function getDataPackingList() {
-    event.preventDefault();
-    $.ajax({
-        url: baseurl + "Warehouse/Ajax/PackingList",
-        type: 'POST',
-        data: $('#formPackingList').serialize(),
-        beforeSend: function() {
-            $('#loadingArea').show();
-            $('#tablePackingListArea').empty();
-        },
-        success: function(result) {
-           
-
-            $('input[name="nomerSPB"]').val('');
-            $('#tablePackingListArea').html(result);
-            $('#loadingArea').hide();
-            $('.select2-custom').select2({
-                placeholder: "Choose Option",
-                allowClear: true,
-                width: 'element',
-                tags: true,
-                id: function(object) {
-                    return object.text;
-                },
-                createSearchChoice: function(term, data) {
-                    if ($(data).filter(function() {
-                            return this.text.localeCompare(term) === 0;
-                        }).length === 0) {
-                        return {
-                            id: term,
-                            text: term
-                        };
-                    }
-                }
-            });
-            $('select#ekspedisi').select2({
-                placeholder: "Choose Option",
-                allowClear: true,
-            });
-            $('.toupper').keyup(function(){
-                this.value = this.value.toUpperCase();
-            });
-            
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-            console.log(textStatus);
-        }
-    });
+function removeListOutItemWh(id,id_trans,user){
+	$.ajax({
+		type:'POST',
+		data:{id: id,id_trans:id_trans,user:user},
+		url :baseurl+"Warehouse/Transaksi/removeNewItem",
+		success:function(result){
+			if(id_trans == 0){
+			console.log(result)
+				$('#table-create-peminjaman tbody').html(result);
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
+		}
+	});
 }
 
-function setDataTemp(noSPB){
-    $.ajax({
-        url: baseurl + "Warehouse/Ajax/setSPB",
-        type: 'POST',
-        data: {NO_SPB: noSPB},
-        success: function(result) {
-            $('input[name="nomerSPB"]').val('');
-            console.log(result);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-            console.log(textStatus);
-        }
-    });
+function removeListOutItemWhConsumable(id,id_trans,user){
+	$.ajax({
+		type:'POST',
+		data:{id: id,id_trans:id_trans,user:user},
+		url :baseurl+"Warehouse/Transaksi/removeNewItemConsumable",
+		success:function(result){
+			if(id_trans == 0){
+			console.log(result)
+				$('#table-create-peminjaman tbody').html(result);
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
+		}
+	});
 }
 
-function delTemp(){
-    $.ajax({
-        url: baseurl + "Warehouse/Ajax/delTemp",
-        type: 'POST',
-        data: {DATA:'none'},
-        success:function(result){
-            console.log('adexe');
-            $('input[name="nomerSPB"]').attr('readonly', false);
-            $('input[name="nomerSPB"]').prop('readonly', false);
-            document.location.reload();
-
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-        }
-    });
+function clearListOutItemWh(id){
+	$.ajax({
+		type:'POST',
+		data:{id: id},
+		url :baseurl+"Warehouse/Transaksi/clearNewItem",
+		success:function(result){
+				$('#table-create-peminjaman tbody').html(result);
+		}
+	});
 }
 
-function updatePackingQty(event, th) {
-    if (event.keyCode === 13) {
-        var value       = $(th).val();
-        var qty         = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val());
-        var maxPack     = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack[]"]').val());
-        var maxOnhand   = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxOnhand[]"]').val());
-        var qtyNow      = qty+1;
-        var kasih       = Number($('input[name="totalQtyKasih"]').val());
-
-
-
-        if (qtyNow>maxPack) {
-            $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
-            $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
-
-        }else if (qtyNow>maxOnhand) {
-            $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
-            $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
-        }else if ($('#tblSPB tbody tr[data-row="'+value+'"]').length) {
-            $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val(qtyNow);
-            kasih+=1;
-            $('input[name="totalQtyKasih"]').val(kasih);
-        }
-
-        $(th).val('');
-        if (kasih>0 && $('#btnSubmitPacking').attr('disabled')) {
-            $('#btnSubmitPacking').prop('disabled',false);
-        }
-    }else{
-        console.log("ADEXE");
-    }
+function clearListOutItemWhConsumable(id){
+	$.ajax({
+		type:'POST',
+		data:{id: id},
+		url :baseurl+"Warehouse/Transaksi/clearNewItemConsumable",
+		success:function(result){
+				$('#table-create-peminjaman tbody').html(result);
+		}
+	});
 }
 
-
-
-function mdlPackingQtyCustom(th, itemcode) {
-    var qty = $(th).closest('tr').find('input[name="packingqty[]"]').val();
-    var onhand = $(th).closest('tr').find('input[name="maxOnhand[]"]').val();
-    var required = $(th).closest('tr').find('input[name="maxPack[]"]').val();
-    $('#packingqtyMdl input[name="qty"]').val(qty);
-    $('#packingqtyMdl input[name="onhand"]').val(onhand);
-    $('#packingqtyMdl input[name="required"]').val(required);
-    $('#packingqtyMdl input[name="itemcode"]').val(itemcode);
-    $('#packingqtyMdl input[name="totalItems"]').val('');
-    $('#packingqtyMdl input[name="sum"]').val('');
-    $('#packingqtyMdl').modal('show');
+function getNameWh(){
+	var id = $('#txtNoind').val();
+	$.ajax({
+		type:'POST',
+		data:{id: id},
+		url :baseurl+"Warehouse/Transaksi/getName",
+		success:function(result){
+			if(result == "null"){
+				alert('No matching Id Number !');
+				$('#txtName').val('');
+			}else{
+				$('#txtName').val(result);
+			}
+		}
+	});
 }
 
-function getSum(th) {
-    var qty = Number($(th).closest('tr').find('input[name="qty"]').val());
-    var onhand = Number($(th).closest('tr').find('input[name="onhand"]').val());
-    var required = Number($(th).closest('tr').find('input[name="required"]').val());
-    var items = Number($(th).val());
-    var sum = qty*items;
+function AddPengembalianItemWh(){
+	// var barcode = $('#txtBarcode').val();
+	// var txtQtyKembali = $('#txtQtyKembali').val();
+	// $.ajax({
+	// 	type:'POST',
+	// 	data:{barcode: barcode,trans : id,date:date,txtQtyKembali:txtQtyKembali},
+	// 	url :baseurl+"Warehouse/Transaksi/addNewPengembalianItem",
+	// 	success:function(result){
+	// 		$('#table-create-pengembalian-today tbody').html(result);
+		
+	// }
+	// });
 
-    if (sum>onhand) {
-        $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
-    }else if (sum>required) {
-        $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
-    }else{
-        $(th).closest('tr').find('input[name="sum"]').val(sum);
-    }
+	var induk = $('#txtNoInduk').val();
+	var barcode = $('#txtBarcode').val();
+	var txtQtyKembali = $('#txtQtyKembali').val();
+	var id = $('#table-create-pengembalian-today').find('#barcode'+barcode).find('input[type="hidden"]').val();
+	var	date = $('#txtTanggalPengembalian').val();
+	console.log(id);
+	 $.ajax({
+		type:'POST',
+		data:{barcode: barcode,txtQtyKembali:txtQtyKembali,induk:induk,id:id,date:date},
+		url :baseurl+"Warehouse/Transaksi/addNewPengembalianItem",
+		success:function(result){
+			console.log(result);
+			searchPekerja()
+			//$('#table-create-pengembalian-today tbody').html(result);
+		}
+	});
+
+
+	$('#txtBarcode').val('');
+	$('#txtQtyKembali').val('');
+	$('#txtTanggalPengembalian').val('');
+	$('#txtTanggalPengembalian').attr('disabled','disabled');
+	$('#txtQtyKembali').attr('readonly','readonly');
 }
 
-function resetThis(th){
-    $(th).closest('tr').find('input[name="packingqty[]"]').val(null);
-    
+function openTanggal(){
+	var barcode = $('#txtBarcode').val();
+	$.ajax({
+		type:'POST',
+		data:{barcode: barcode},
+		url :baseurl+"Warehouse/Transaksi/CheckBarcodekembali",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}
+			else{
+				$('#txtTanggalPengembalian').removeAttr('disabled');
+			}
+		}
+	});
+}
+
+function openInputQtyKembali(){
+	var date = $('#txtTanggalPengembalian').val();
+	if(date.length > 0){
+		$('#txtQtyKembali').removeAttr('disabled');
+	}	
 }
 
 
-function packingqtyCustom(th) {
-    event.preventDefault();
-    var qty         = Number($(th).closest('form').find('input[name="qty"]').val());
-    var sum         = Number($(th).closest('form').find('input[name="sum"]').val());
-    var itemcode    = $(th).closest('form').find('input[name="itemcode"]').val();
-    var kasih       = Number($('input[name="totalQtyKasih"]').val());
-    var a = sum-qty;
-    kasih += a;
-    $('input[name="totalQtyKasih"]').val(kasih);
-    $('#tblSPB tbody tr[data-row="'+itemcode+'"] input[name="packingqty[]"]').val(sum);
-    $('#packingqtyMdl').modal('hide');
+
+function copyPekerjaWh(){
+	var noind = $('#slcModalNoind').val();
+	$('#txtNoind').val(noind);
+	$.ajax({
+		type:'POST',
+		data:{id: noind},
+		url :baseurl+"Warehouse/Transaksi/getName",
+		success:function(result){
+			if(result == "null"){
+				alert('No matching Id Number !');
+				$('#txtName').val('');
+			}else{
+				$('#txtName').val(result);
+			}
+		}
+	});
+	$('#modalSearchNoind').modal('hide');
 }
 
-function setPacking() {
-    event.preventDefault();
-    var nomerSPB = $('#spbNumber').val();
-    var itemColy = $('#idItemColy').val();
-    
-    $('input[name="itemColy"]').val(itemColy);
-
-    console.log(itemColy);
-    console.log(nomerSPB);
-
-    $.ajax({
-        url: baseurl + "Warehouse/Ajax/setPacking",
-        type: 'POST',
-        data: $('#formSetPacking').serialize(),
-        beforeSend: function() {
-            $('#loadingMdl').modal('show');
-            $('#submitPacking').modal('hide');
-        },
-        success: function(result) {
-           
-            setDataTemp(nomerSPB);
-
-            console.log(data);
-            $('#btnSubmitPacking').prop('disabled',true);
-            window.open(baseurl+'Warehouse/Transaction/cetakPackingListPDF/'+nomerSPB);
-            var data = JSON.parse(result);
-            var array = $.map(data, function(value, index) {
-                return [value];
-            });
-
-
-
-            for (var n = 0; n < array.length; n++) {
-                var qtyBefore = $('#tblSPB tbody tr[data-id="'+array[n]['INVENTORY_ITEM_ID']+'"] input[name="maxPack[]"]').val();
-                var qtyAfter = qtyBefore-(Number(array[n]['PACKING_QTY']));
-                $('#tblSPB tbody tr[data-id="'+array[n]['INVENTORY_ITEM_ID']+'"] td.quantityArea').html(qtyAfter);
-                $('#tblSPB tbody tr[data-id="'+array[n]['INVENTORY_ITEM_ID']+'"] input[name="maxPack[]"]').val(qtyAfter);
-                $('#tblSPB tbody tr[data-id="'+array[n]['INVENTORY_ITEM_ID']+'"] input[name="packingqty[]"]').val('');
-            }
-
-            var a = Number($('#formSetPacking input[name="packingNumber"]').val());
-            var b = a+1;
-            $('#formSetPacking input[name="packingNumber"]').val(b);
-            $('#loadingMdl').modal('hide');
-            var a = Number($('#inputPackingAct').val());
-            a += 1;
-            $('#inputPackingAct').val(a);
-
-
-            
-
-
-            var kasih = Number($('input[name="totalQtyKasih"]').val());
-            var minta = Number($('input[name="totalQtyMinta"]').val());
-            if (minta == kasih || minta < kasih && a > 1) {
-                $('#cetakPackingList').attr('disabled', false);
-            }
-            $('#formSetPacking input[name="weight"]').val('');
-
-
-            $('input[name="nomerSPB"]').prop('readonly', true);
-            $('input[name="nomerSPB"]').attr('readonly', true);
-
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $('#loadingMdl').modal('hide');
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-        }
-    });
+function copyItemWh(){
+	var barcode = $('#slcModalBarcode').val();
+	var user = $('#hdnUser').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:0},
+		url :baseurl+"Warehouse/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-create-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
 }
 
-function enaDisItemScan() {
-    var kemasan     = $('select[name="kemasan"]').val();
-    var ekspedisi   = $('#ekspedisi').val();
-    
-    $('input[name="EkspedisiValue"]').val(ekspedisi);
-
-    if (kemasan) {
-        $('input[name="ItemCode"]').removeAttr('disabled');
-        $('input[name="kemasanValue"]').val(kemasan);
-    }else{
-        $('input[name="ItemCode"]').attr('disabled', 'disabled');
-    }
+function copyItemUpdateWh(){
+	var barcode = $('#slcModalBarcodeUpdate').val();
+	var user = $('#hdnUser').val();
+	var type = $('#txtID').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:type},
+		url :baseurl+"Warehouse/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
 }
+
+function copyItemWhConsumable(){
+	var barcode = $('#slcModalBarcodeConsumable').val();
+	var user = $('#hdnUser').val();
+	console.log('consum');
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:0},
+		url :baseurl+"Warehouse/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-create-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
+}
+
+function copyItemUpdateWhConsumable(){
+	var barcode = $('#slcModalBarcodeUpdateConsumable').val();
+	var user = $('#hdnUser').val();
+	var type = $('#txtID').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:type},
+		url :baseurl+"Warehouse/Transaksi/addNewItemConsumable",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
+}
+
+function copyItemWhConsumable(){
+	var barcode = $('#slcModalBarcodeConsumable').val();
+	var user = $('#hdnUser').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:0},
+		url :baseurl+"Warehouse/Transaksi/addNewItemConsumable",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-create-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
+}
+
+function copyItemUpdateWhConsumable(){
+	var barcode = $('#slcModalBarcodeUpdateConsumable').val();
+	var user = $('#hdnUser').val();
+	var type = $('#txtID').val();
+	$.ajax({
+		type:'POST',
+		data:{id: barcode,user:user,type:type},
+		url :baseurl+"Warehouse/Transaksi/addNewItem",
+		success:function(result){
+			if(result == "null"){
+				alert('There is no item !!!');
+			}else if(result == "out"){
+				alert('Out Of Stock !!!');
+			}else{
+				$('#table-update-peminjaman tbody').html(result);
+			}
+		}
+	});
+	$('#txtBarcode').val('');
+	$('#modalSearchItem').modal('hide');
+}
+
+function copyPekerjaUpdateWh(){
+	var noind = $('#slcNoindUpdate').val();
+	$('#txtNoind').val(noind);
+	$.ajax({
+		type:'POST',
+		data:{id: noind},
+		url :baseurl+"Warehouse/Transaksi/getName",
+		success:function(result){
+			if(result == "null"){
+				alert('No matching Id Number !');
+				$('#txtName').val('');
+			}else{
+				$('#txtName').val(result);
+			}
+		}
+	});
+	$('#modalSearchNoind').modal('hide');
+}
+
+function searchPekerja(){
+	var noind = $('#txtNoInduk').val();
+	
+	$.ajax({
+		type:'POST',
+		data:{id: noind},
+		url :baseurl+"Warehouse/Transaksi/getPinjamanUser",
+		success:function(result){
+			if(result == "null"){
+				alert('Tidak ada data pinjaman');
+				$('#txtNoInduk').val('');
+			}else{
+				$('#table-create-pengembalian-today tbody').html(result);
+				$('#txtBarcode').removeAttr('readonly');
+			}
+		},
+		error:function(error,status){
+			console.log(error);
+		}
+	});
+}
+
+
+

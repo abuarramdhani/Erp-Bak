@@ -133,14 +133,14 @@
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" />
+                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" required/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" />
+                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" required/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>

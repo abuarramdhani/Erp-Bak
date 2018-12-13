@@ -1854,10 +1854,10 @@ $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja
 
 //--------------------------------------------------- Warehouse --------------------------------------------------//
 
-$route['Warehouse'] 								= 'Warehouse/C_Index';
-$route['Warehouse/Transaction/(:any)'] 				= 'Warehouse/MainMenu/C_Transaction/$1';
-$route['Warehouse/Transaction/(:any)/(:any)']		= 'Warehouse/MainMenu/C_Transaction/$1/$2';
-$route['Warehouse/Ajax/(:any)']		 				= 'Warehouse/Ajax/C_Ajax/$1';
+$route['WarehouseSPB'] 								= 'WarehouseSPB/C_Index';
+$route['WarehouseSPB/Transaction/(:any)'] 				= 'WarehouseSPB/MainMenu/C_Transaction/$1';
+$route['WarehouseSPB/Transaction/(:any)/(:any)']		= 'WarehouseSPB/MainMenu/C_Transaction/$1/$2';
+$route['WarehouseSPB/Ajax/(:any)']		 				= 'WarehouseSPB/Ajax/C_Ajax/$1';
  //---------------------------------------------------------- P2K3 -----------------------------------------------------------//
  $route['P2K3'] = 'P2K3/C_P2K3';
  $route['P2K3/Order'] = 'P2K3/MainMenu/C_Order';
@@ -2006,7 +2006,7 @@ $route['InventoryManagement/CreateKIB/(:any)'] = 'InventoryKIB/MainMenu/CreateKI
 $route['InventoryManagement/CreateKIB/search/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/search/$1';
 $route['InventoryManagement/CreateKIB/getSubInv'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/getSubInv';
 $route['InventoryManagement/CreateKIB/submitpdf'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/submitpdf';
-$route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf/$1/$2';
+$route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf/$1/$2/$3';
 
 
 
@@ -2117,6 +2117,52 @@ $route['BranchItem/PenangananBarang/View/Detail/(:any)'] = 'BarangCabang/C_branc
 
 $route['BranchItem/getOrg'] = 'BarangCabang/C_branchitem/getOrg';
 $route['BranchItem/getBarang'] = 'BarangCabang/C_branchitem/getBarang';
+
+//--------------------------------------------------Management Admin----------------------------------------------------//
+$route['ManagementAdmin'] = 'ManagementAdmin/C_Index';
+
+$route['ManagementAdmin/Target'] = 'ManagementAdmin/MainMenu/C_Target';
+$route['ManagementAdmin/Target/(:any)'] = 'ManagementAdmin/MainMenu/C_Target/$1';
+$route['ManagementAdmin/Target/(:any)/(:any)'] = 'ManagementAdmin/MainMenu/C_Target/$1/$2';
+
+$route['ManagementAdmin/Pekerja'] = 'ManagementAdmin/MainMenu/C_Pekerja';
+$route['ManagementAdmin/Pekerja/(:any)'] = 'ManagementAdmin/MainMenu/C_Pekerja/$1';
+$route['ManagementAdmin/Pekerja/(:any)/(:any)'] = 'ManagementAdmin/MainMenu/C_Pekerja/$1/$2';
+
+$route['ManagementAdmin/Proses'] = 'ManagementAdmin/MainMenu/C_Proses';
+$route['ManagementAdmin/Proses/(:any)'] = 'ManagementAdmin/MainMenu/C_Proses/$1';
+$route['ManagementAdmin/Proses/(:any)/(:any)'] = 'ManagementAdmin/MainMenu/C_Proses/$1/$2';
+
+$route['ManagementAdmin/Pending'] = 'ManagementAdmin/MainMenu/C_Pending';
+$route['ManagementAdmin/Pending/(:any)'] = 'ManagementAdmin/MainMenu/C_Pending/$1';
+$route['ManagementAdmin/Pending/(:any)/(:any)'] = 'ManagementAdmin/MainMenu/C_Pending/$1/$2';
+
+$route['ManagementAdmin/Monitoring'] = 'ManagementAdmin/MainMenu/C_Monitoring';
+
+$route['ManagementAdmin/Input'] = 'ManagementAdmin/MainMenu/C_Input';
+$route['ManagementAdmin/Input/(:any)'] = 'ManagementAdmin/MainMenu/C_Input/$1';
+
+$route['ManagementAdmin/cetak'] = 'ManagementAdmin/MainMenu/C_Cetak';
+$route['ManagementAdmin/Cetak/(:any)'] = 'ManagementAdmin/MainMenu/C_Cetak/$1';
+
+
+$route['ManagementAdminUser'] = 'ManagementAdmin/MainMenu/C_Proses';
+
+//------------------------------------ Aplikasi Warehouse ----------------------------
+$route['Warehouse']									= 'Warehouse/C_Index';
+$route['Warehouse/MasterItem']						= 'Warehouse/MainMenu/C_MasterItem';
+$route['Warehouse/MasterItem/(:any)']				= 'Warehouse/MainMenu/C_MasterItem/$1';
+$route['Warehouse/MasterItem/(:any)/(:any)']		= 'Warehouse/MainMenu/C_MasterItem/$1/$2';
+$route['Warehouse/Transaksi']						= 'Warehouse/MainMenu/C_Transaksi';
+$route['Warehouse/Transaksi/(:any)']				= 'Warehouse/MainMenu/C_Transaksi/$1';
+$route['Warehouse/Transaksi/(:any)/(:any)']			= 'Warehouse/MainMenu/C_Transaksi/$1/$2';
+$route['Warehouse/Transaksi/(:any)/(:any)/(:any)']	= 'Warehouse/MainMenu/C_Transaksi/$1/$2/$3';
+$route['Warehouse/Transaksi/(:any)/(:any)/(:any)']	= 'Warehouse/MainMenu/C_Transaksi/$1/$2/$3';
+$route['Warehouse/Transaksi/Keluar/Consumable']		= 'Warehouse/MainMenu/C_Transaksi/KeluarConsumable';
+$route['Warehouse/Transaksi/CreatePeminjamanConsumable']	= 'Warehouse/MainMenu/C_Transaksi/CreatePeminjamanConsumable';
+$route['Warehouse/Transaksi/addNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/addNewItemConsumable';
+$route['Warehouse/Transaksi/UpdateItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/UpdateItemConsumable';
+$route['Warehouse/Transaksi/removeNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/removeNewItemConsumable';
 
 //------------------------------------ TRACKING INVOICE ----------------------------
 $route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';

@@ -93,9 +93,6 @@ class C_trackingInvoice extends CI_Controller{
 		$invoice_number = $this->input->post('invoice_number');
 		$invoice_date = $this->input->post('invoice_date');
 
-		// echo "<pre>";
-		// print_r($_POST);
-
 		$param_inv = '';
 
 		if ($nama_vendor != '' OR $nama_vendor != NULL) {

@@ -72,7 +72,7 @@
 			<td>
 				<center>
 					<?php if ($value['MO'] == 1) { ?>
-						<a href="<?= base_url("InventoryManagement/CreateKIB/pdf/$value[STATUS_ITEM]")."/".$header[0]['BATCH_NUMBER'] ?>" target="blank">
+						<a href="<?= base_url("InventoryManagement/CreateKIB/pdf/$value[STATUS_ITEM]")."/".$header[0]['BATCH_NUMBER']."/0" ?>" target="blank">
 						<button type="submit" class="btn btn-sm btn-success">
 							<b class="fa fa-print"></b> Print KIB
 						</button>

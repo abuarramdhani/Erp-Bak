@@ -11,30 +11,63 @@ $(document).ready(function(){
 
 $('.selectIMO').select2({
 	allowClear : true,
-})
 });
 
-function getRequirementMO(th){
-	var nojob = $('#NoJob').val();
-
-	if (nojob != "") {
-		$('#NoJob').css("border-color","#d2d6de");
-	var request = $.ajax({
-		url: baseurl+'InventoryManagement/CreateMoveOrder/search/'+nojob,
-		datatype: 'html',
-		type: "GET",
+$('.dateIMO').datepicker({
+		todayHighlight: true,
 	});
 
-	$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
 
+});
+
+
+$('#txtTanggalIMO').change(function(){
+	var date = $('input[name="txtTanggalIMO"]').val();
+	var html = '<option></option>';
+	$.ajax({
+			url : baseurl+('InventoryManagement/CreateMoveOrder/getShift'),
+			type : 'POST',
+			data : {
+				date : date
+				},
+			datatype : 'json',
+			success: function(result) {
+				$.each(JSON.parse(result), function(key, value) {
+					html += '<option value="'+value.SHIFT_NUM+'">'+value.DESCRIPTION+'</option>';
+					$('.inputShiftIMO').removeAttr("disabled");
+				});
+					$('.inputShiftIMO').html(html);
+					$('.inputShiftIMO').val(null).trigger('change');
+			}
+		});
+});
+
+
+function getRequirementMO(th){
+	var dept = $('select[name="slcDeptIMO"]').val();
+	var date = $('input[name="txtTanggalIMO"]').val();
+	var shift = $('select[name="slcShiftIMO"]').val();
+
+	// if (nojob != "") {
+		// $('#NoJob').css("border-color","#d2d6de");
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
+		data: {
+			dept : dept, date : date, shift : shift
+		},
+		type: "POST",
+		datatype: 'html', 
+	});
+		$('#ResultJob').html('');
+		$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
 
 	request.done(function(result){
-		$('#ResultJob').html(result);
-	});
+			$('#ResultJob').html(result);
+		})
 
-	}else{
-		$('#NoJob').css("border-color","red");
-	}
+	// }else{
+	// 	$('#NoJob').css("border-color","red");
+	// }
 }
 
 
@@ -168,3 +201,39 @@ function checkFill(){
 		$('#id_imo_btn_sub').attr('disabled','disabled');
 	}
 }
+
+function seeDetailIMO(th, idnya){
+	var title = $(th).text();
+	$('#detail'+idnya).slideToggle('slow');
+	
+}
+
+function formsubmitIMO(id){
+	alert(id);
+	form = $('form'+id);
+	form.submit();
+}
+
+
+$('.ch_komp_imo').on('click',function(){
+	var a = 0;
+	var jml = 0;
+	var val = '';
+	$('input[name="ch_komp[]"]').each(function(){
+		if ($(this).is(":checked") === true ) {
+			a = 1;
+			jml +=1;
+			val += $(this).val();
+		}
+	});
+	if (a == 0) {
+		$('#btnSelectedIMO').attr("disabled","disabled");
+		$('#jmlSlcIMO').text('');
+	}else{
+		$('#btnSelectedIMO').removeAttr("disabled");
+		$('#jmlSlcIMO').text('('+jml+')');
+		$('input[name="selectedPicklistIMO"]').val(val);
+	}
+
+});
+

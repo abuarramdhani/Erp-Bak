@@ -49,7 +49,12 @@
 				$tanggal_rekap 			=	$this->input->post('txtTanggalRekap');
 				$keterangan_presensi 	=	$this->input->post('cmbKeteranganPresensi');
 				$noind 					=	$this->input->post('cmbPekerja');
+				$susulan 				=	$this->input->post('checkSusulanDataPresensi');
 
+				$parameter_susulan = "";
+				if (!empty($susulan)) {
+					$parameter_susulan = $susulan;
+				}
 				$data['tanggal_rekap'] 	=	$tanggal_rekap;
 
 				$tanggal_rekap 	=	explode(' - ', $tanggal_rekap);
@@ -88,7 +93,7 @@
 					}
 				}
 				
-				$data['rekap_data_presensi_tim'] 	=	$this->M_rekapdatapresensitim->rekap_data_presensi_tim($tanggal_awal, $tanggal_akhir, $parameter_keterangan, $parameter_noind);
+				$data['rekap_data_presensi_tim'] 	=	$this->M_rekapdatapresensitim->rekap_data_presensi_tim($tanggal_awal, $tanggal_akhir, $parameter_keterangan, $parameter_noind,$parameter_susulan);
 
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);

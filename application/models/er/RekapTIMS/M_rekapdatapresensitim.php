@@ -8,10 +8,16 @@
 			$this->personalia = $this->load->database('personalia', TRUE );
 	    }
 
-		public function rekap_data_presensi_tim($tanggal_awal, $tanggal_akhir, $keterangan_presensi = FALSE, $noind = FALSE)
+		public function rekap_data_presensi_tim($tanggal_awal, $tanggal_akhir, $keterangan_presensi = FALSE, $noind = FALSE, $susulan = FALSE)
 		{
+
+			if (!empty($susulan)) {
+				$join_susulan = 'inner join "Presensi".tsusulan sus on pres.noind = sus.noind and pres.tanggal = sus.tanggal';
+			}else{
+				$join_susulan = '';
+			}
 			$rekap_data_presensi_tim 		= "		select 		pres.*
-													from 		\"Presensi\".v_presensi_pekerja as pres
+													from 		\"Presensi\".v_presensi_pekerja as pres ".$join_susulan." 
 													where 		pres.tanggal between '$tanggal_awal' and '$tanggal_akhir'";
 			if ( !(empty($keterangan_presensi)) )
 			{
@@ -37,7 +43,7 @@
 																						and 	pri2.nik=pri.nik
 															)";
 			}
-
+			
 			$query_rekap_data_presensi_tim 	=	$this->personalia->query($rekap_data_presensi_tim);
 			return $query_rekap_data_presensi_tim->result_array();
 		}

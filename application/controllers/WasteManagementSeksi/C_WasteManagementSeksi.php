@@ -31,7 +31,7 @@ class C_WasteManagementSeksi extends CI_Controller
 		$this->checksession();
 		$user_id = $this->session->userid;
 
-		$data['Menu'] = 'Waste Management Seksi';
+		$data['Menu'] = 'Pengiriman Limbah';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		
