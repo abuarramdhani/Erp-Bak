@@ -2117,3 +2117,9 @@ $route['BranchItem/PenangananBarang/View/Detail/(:any)'] = 'BarangCabang/C_branc
 
 $route['BranchItem/getOrg'] = 'BarangCabang/C_branchitem/getOrg';
 $route['BranchItem/getBarang'] = 'BarangCabang/C_branchitem/getBarang';
+
+//------------------------------------ TRACKING INVOICE ----------------------------
+$route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';
+$route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/TrackingInvoice';
+$route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
+$route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
