@@ -29,6 +29,9 @@
 		});
 		$('.checkedAllIMO').on('click', function(){
 			var check = 0;
+			var a = 0;
+			var jml = 0;
+			var val = '';
 			if ($(this).is(":checked")) {
 				check = 1;
 			}else{
@@ -41,6 +44,22 @@
 					$(this).prop('checked', false);
 				}
 			});
+
+			$('input[name="ch_komp[]"]').each(function(){
+				if ($(this).is(":checked") === true ) {
+					a = 1;
+					jml +=1;
+					val += $(this).val();
+				}
+			});
+			if (a == 0) {
+				$('#btnSelectedIMO').attr("disabled","disabled");
+				$('#jmlSlcIMO').text('');
+			}else{
+				$('#btnSelectedIMO').removeAttr("disabled");
+				$('#jmlSlcIMO').text('('+jml+')');
+				$('input[name="selectedPicklistIMO"]').val(val);
+			}
 		});
 	</script>
 	
@@ -52,21 +71,32 @@
  	table td{
  		border: 1px solid black;
  	}
+
+ 	table th{
+ 		text-align: center;
+ 		vertical-align: middle;
+ 	}
+
+ 	.hdr {
+ 		text-align: center;
+ 		vertical-align: middle;
+ 	}
  	
  </style>
-<table class="table tblResultIMO table-responsive table-striped table-bordered table-hover ">
+<table class="table tblResultIMO table-stripe table-bordered table-hover " width="100%">
 	<thead>
 		<tr class="bg-primary ">
-			<th> &nbsp;
+			<th width="5%"> &nbsp;
 				<input type="checkbox" class="checkedAllIMO">&nbsp;
 			</th>
-			<th>WIP NAME</th>
-			<th>KODE ITEM</th>
-			<th>NAMA ITEM </th>
-			<th>QUANTITY</th>
-			<th>DEPT CLASS</th>
-			<th>DESCRIPTION</th>
-			<th></th>
+			<th width="10%">WIP NAME</th>
+			<th width="13%">KODE ITEM</th>
+			<th width="14%">NAMA ITEM </th>
+			<th width="5%">QTY</th>
+			<th width="10%">DEPT CLASS</th>
+			<th width="20%">DESCRIPTION</th>
+			<th width="15%">KETERANGAN</th>
+			<th width="8%"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -88,8 +118,8 @@
 			$penanda = (count($arrErr) > 0) ? 'bg-danger' : '' 
 
 		?>
-		<tr >
-			<td rowspan="2"   class="<?= $penanda ?>" style="vertical-align: middle;" >
+		<tr class="hdr" >
+			<td rowspan="2"   class="<?= $penanda ?>" style="vertical-align: top;" >
 				<center><b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
 					<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
 						value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
@@ -101,6 +131,9 @@
 			<td class="<?= $penanda ?>" ><?= $value['header']['START_QUANTITY'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
+			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? 'Sudah Dibuat Picklist' : 'Belum Dibuat Picklist' ?>
+				
+			</td>
 			<td class="<?= $penanda ?>">
 				<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
 						 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
@@ -109,7 +142,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="7"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
+			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
 				<div style="margin-top: 5px ; display: none; " id="detail<?= $key ?>" >
 				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?= base_url('InventoryManagement/CreateMoveOrder/create') ?>" >
 				<table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">

@@ -79,6 +79,15 @@ class C_MoveOrder extends CI_Controller
 			}
 
 		}
+		foreach ($array_terkelompok as $key => $value) {
+		 	$checkPicklist = $this->M_MoveOrder->checkPicklist($key);
+		 	if ($checkPicklist > 0) {
+				$array_terkelompok[$key]['header']['KET'] = 1 ;
+		 	}else{
+				$array_terkelompok[$key]['header']['KET'] = 0 ;
+		 	}
+		 } 
+
 		$data['requirement'] = $array_terkelompok;
 
 		// echo "<pre>";
@@ -189,19 +198,33 @@ class C_MoveOrder extends CI_Controller
 		// ------ GENERATE PDF ------
 			$this->load->library('Pdf');
 			$pdf 				= $this->pdf->load();
-			$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 20, 21, 2, 4);
+			$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 49.5, 21, 2, 4);
 			// $pdf 				= new mPDF('utf-8','A5-L', 0, '', 2, 2, 18.5, 21, 2, 2);
 			$filename			= 'Picklist_'.time().'.pdf';
 			$a = 0;
 			// echo "<pre>";
 			foreach ($array_mo as $key => $mo) {
 				$moveOrderAwal = $moveOrderAkhir = $mo;
-				echo $dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
+				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 				$a++;
 			}
+			echo "<pre>";
 
-			// echo "<pre>";
+			// foreach ($dataall as $key => $value) {
+				// $bagilembar = ceil(count($value['line'])/10);
+				// for ($i=0; $i < $bagilembar; $i++) { 
+				// 	$datanew[$key]['head'][$i] = $dataall[$key]['head'][0];
+				// }
+				// $a = 0;
+				// foreach ($value['line'] as $key2 => $value2) {
+					// $datanew[$key]['line'][$a][] = $value2;
+					// if (($key2+1)%10 == 0) {
+						// $a++;
+					// }
+				// }
+			// }
+
 			// print_r($dataall);
 			// exit();
 
@@ -209,13 +232,20 @@ class C_MoveOrder extends CI_Controller
 			$jobNo		= array();
 			$gudang		= array();
 			$line		= array();
-			$data['dataall'] = $dataall;
-			$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
-			$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index', $data, true);
-			$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
-			$pdf->SetHTMLHeader($head);
-			$pdf->SetHTMLFooter($foot);
-			$pdf->WriteHTML($line,0);
+			$pdf->SetTitle('Picklist_'.date('d/m/Y H/i/s').'.pdf');
+			foreach ($dataall as $key => $value) {
+				// print_r($value);
+				$pdf->AliasNbPageGroups('[pagetotal]');
+				$data['dataall'] = $value;
+				$data['urut'] = $key;
+				$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
+				$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index', $data, TRUE);
+				$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
+				$pdf->SetHTMLHeader($head);
+				$pdf->SetHTMLFooter($foot);
+				$pdf->WriteHTML($line,0);
+			}
+			// exit();
 			$pdf->Output($filename, 'I');
 
 			if (!empty($temp_filename)) {
