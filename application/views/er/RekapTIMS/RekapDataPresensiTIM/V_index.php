@@ -72,6 +72,7 @@
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Keterangan</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">User Input</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Input</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Susulan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -109,6 +110,9 @@
                                                         echo date('Y-m-d', strtotime($rekap['create_timestamp']));
                                                     }
                                                 ?>
+                                            </td>
+                                            <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
+                                                <?php echo $rekap['susulan'];?>
                                             </td>
                                         </tr>
                                         <?php

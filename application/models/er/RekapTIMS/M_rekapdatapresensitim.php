@@ -13,10 +13,12 @@
 
 			if (!empty($susulan)) {
 				$join_susulan = 'inner join "Presensi".tsusulan sus on pres.noind = sus.noind and pres.tanggal = sus.tanggal';
+				$select_susulan = ",'Susulan' susulan";
 			}else{
 				$join_susulan = '';
+				$select_susulan = ",'-' susulan";
 			}
-			$rekap_data_presensi_tim 		= "		select 		pres.*
+			$rekap_data_presensi_tim 		= "		select 		pres.* $select_susulan
 													from 		\"Presensi\".v_presensi_pekerja as pres ".$join_susulan." 
 													where 		pres.tanggal between '$tanggal_awal' and '$tanggal_akhir'";
 			if ( !(empty($keterangan_presensi)) )
