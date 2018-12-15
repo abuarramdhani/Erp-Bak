@@ -2169,3 +2169,9 @@ $route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';
 $route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/TrackingInvoice';
 $route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
 $route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
+
+//--------------------------------------------------- Check PPh --------------------------------------------------//
+$route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
+$route['AccountPayables/CheckPPh/Upload/(:any)'] = 'CheckPPH/MainMenu/C_Upload/$1';
+$route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
+$route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
