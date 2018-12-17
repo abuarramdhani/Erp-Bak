@@ -114,7 +114,12 @@
 			foreach ($value['body'] as $k => $v) {
 				if($v['REQUIRED_QUANTITY'] > $v['ATR']) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
 			}
-			$penanda = (count($arrErr) > 0) ? 'bg-danger' : '' 
+			$penanda = ((count($arrErr) > 0) && ($value['header']['KET'] == 0)) ? 'bg-danger' : '' ;
+			if ((count($arrErr) > 0) && ($value['header']['KET'] == 0)) {
+				$penandabutton = 1;
+			}else{
+				$penandabutton = 0;
+			}
 
 		?>
 		<tr class="hdr" >
@@ -134,10 +139,16 @@
 				
 			</td>
 			<td class="<?= $penanda ?>">
+				<?php if ($penandabutton == 1) { ?>
+				<button class="btn btn-sm  'disabled btn-default' " target="_blank" >
+						 Create Picklist 
+				</button>
+				<?php } else{ ?>
 				<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
 						 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 						 Create Picklist 
 				</button>
+				<?php } ?>
 			</td>
 		</tr>
 		<tr>
