@@ -23,12 +23,12 @@ class M_trackinginvoice extends CI_Model {
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, aaipo.po_detail po_detail,
                          ami.invoice_id invoice_id,
-                         (SELECT CASE payment_status_flag
-                         WHEN 'Y' THEN 'PAID'
-                         WHEN 'N' THEN 'UNPAID'
-                         ELSE '-'
+                         COALESCE((SELECT CASE payment_status_flag
+                         WHEN 'Y' THEN 'Paid'
+                         WHEN 'N' THEN 'Non Paid'
+                         ELSE 'Inprocess Vouching'
                          END
-                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ) AS status_payment
+                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment
                     FROM khs_ap_monitoring_invoice ami,
                          (SELECT   aipo.invoice_id,
                                    REPLACE
